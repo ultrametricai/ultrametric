@@ -1,17 +1,33 @@
 {
-  "hash": "af9de38a292cde90affa8860c1725c17f2539185a0b0d4305cc882457a883bd1",
+  "hash": "f365b63f3a0bf11a8e9c8de792920c2da8eedbecd24b732e9caef5155fb917ac",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Discord documents a REST API (bot/OAuth2 auth, Gateway, webhooks), so this story applies. However, nothing in the evidence pack mentions API version numbers, version selection, or a deprecation policy or timeline. Describing the API as a REST API does not establish versioning or deprecation guarantees.",
-    "evidenceIds": [],
+    "rationale": "Discord's API Reference documents path-based API versioning (/api/v{version_number}) and a version-status table: v10 and v9 are Available, v8 and below are Deprecated or Discontinued, and discontinued versions return 400 Bad Request. A change log is linked, and the official OpenAPI spec is pinned to API version 10, which corroborates the versioning scheme. missing for 10: explicit deprecation timelines or minimum notice periods before a version is discontinued, and independent or hands-on corroboration that the policy is followed in practice.",
+    "evidenceIds": [
+      "discord-api-versioning-20261105",
+      "discord-openapi-spec-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "discord-api-versioning-20261105",
+          "quote": "Discord exposes different versions of our API. You should specify which version to use by including it in the request path like https://discord.com/api/v{version_number}"
+        },
+        {
+          "evidenceId": "discord-api-versioning-20261105",
+          "quote": "v10 and v9 Available, v8 and below Deprecated or Discontinued; discontinued versions return 400 Bad Request"
+        },
+        {
+          "evidenceId": "discord-openapi-spec-20261105",
+          "quote": "API version 10, covering 150+ paths of the stable public API"
+        }
+      ]
     },
     "productId": "discord",
     "storyId": "api-versioning-policy"

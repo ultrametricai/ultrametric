@@ -5226,13 +5226,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents an official LangGraph CLI, but only for building and running the Agent Server locally. Nothing in the pack shows a one-command scaffold of a new agent project from a CLI or template, so that capability is unevidenced and the CLI is only adjacent.",
-    "evidenceIds": [],
+    "rationale": "The evidence documents an official LangGraph CLI, but only for building and running the Agent Server locally (`langgraph dev`, `langgraph up`). No evidence shows a one-command scaffold or template for creating a new agent project, so the CLI is an adjacent feature rather than the story's capability. A project-scaffolding CLI is a fair ask for an agent framework, so the verdict is none rather than na.",
+    "evidenceIds": [
+      "langgraph-docs-23"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an ai-native user, I can have a coding agent scaffold a new agent project from an official CLI or template in one command",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langgraph-docs-23",
+          "quote": "LangGraph CLI is a command-line tool for building and running the Agent Server locally."
+        }
+      ]
     }
   },
   {
@@ -5241,10 +5248,11 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Hands-on probes show LangChain's docs site serves an llms.txt index (HTTP 200) that covers the LangGraph docs. Individual LangGraph pages are served as Markdown (.md) and each carries a 'Documentation Index' header pointing agents back to llms.txt, so an agent can be pointed straight at agent-oriented docs. missing for 10: independent community confirmation of agents using these docs in practice, and first-party guidance on llms.txt usage (e.g., an llms-full.txt variant).",
+    "rationale": "Live probes confirm LangChain's docs serve an llms.txt index (HTTP 200) and markdown versions of the LangGraph pages. Each .md page tells agents to fetch the complete documentation index from llms.txt, and the llms.txt also lists the Agent Server OpenAPI spec. Missing for 10: no evidence of a full-content llms-full.txt variant or first-party guidance on pointing coding agents at these docs.",
     "evidenceIds": [
       "langgraph-probe-1",
-      "langgraph-probe-2"
+      "langgraph-probe-2",
+      "langgraph-agent-server-openapi-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -5253,11 +5261,15 @@
       "citations": [
         {
           "evidenceId": "langgraph-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.langchain.com/llms.txt"
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.langchain.com/llms.txt # Docs by LangChain"
         },
         {
           "evidenceId": "langgraph-probe-2",
           "quote": "Fetch the complete documentation index at: https://docs.langchain.com/llms.txt"
+        },
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "The docs llms.txt lists it under \"## OpenAPI Specs\" as \"[agent-server-openapi](/langsmith/agent-server-openapi.json)\""
         }
       ]
     }
@@ -5268,10 +5280,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LangGraph is a low-level orchestration framework, and its tooling ecosystem could plausibly ship built-in AI insights, so the axis applies. However, nothing in the evidence shows the product itself generating insights or suggestions from a user's data. LLM-driven nodes, memory stores and LangSmith tracing are developer building blocks for constructing such a feature, not the feature itself, so they earn no credit.",
+    "rationale": "LangGraph is a low-level orchestration framework that developers use to build their own LLM-driven agents. That is a building block for creating an insights feature, not a built-in capability that gives users AI-generated insights or suggestions from their data inside the product. The LangSmith debugging material covers execution traces and runtime metrics, not AI-generated insights about user data.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": []
@@ -5281,15 +5293,14 @@
     "productId": "langgraph",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LangGraph documents durable, long-running stateful agents that persist through failures and resume automatically. It also documents an Agent Server exposing run and thread endpoints, so autonomous, extended execution is the product's own capability. However, nothing in the evidence shows background or scheduled triggers: no cron, recurring schedules, event triggers or fire-and-forget background runs. Long-running execution is not the same as a set-up automation. Missing for 10: documented scheduled/cron or recurring runs, background-run or trigger configuration, independent hands-on corroboration of unattended automations.",
+    "rationale": "LangGraph's own Agent Server runtime publishes Crons and Runs endpoints in its OpenAPI spec, which points to recurring scheduled runs. Its durable-execution features also let agents run for extended periods and resume automatically. However, scheduling and background execution appear only as endpoint-group names and marketing lines, with no documented setup flow. missing for 10: documentation on creating and managing cron schedules, explicit background/async run semantics, independent or hands-on corroboration of autonomous scheduled automations.",
     "evidenceIds": [
+      "langgraph-agent-server-openapi-20261105",
       "langgraph-gh-6",
-      "langgraph-gh-12",
-      "langgraph-gh-9",
       "langgraph-docs-30",
-      "langgraph-docs-25"
+      "langgraph-gh-12"
     ],
     "support": {
       "relation": "direct",
@@ -5297,16 +5308,20 @@
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": [
         {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "Threads, Thread Runs, Stateless Runs, Crons, Store, A2A, MCP, and System endpoints"
+        },
+        {
           "evidenceId": "langgraph-gh-6",
           "quote": "Build agents that persist through failures and can run for extended periods, automatically resuming from exactly where they left off."
         },
         {
-          "evidenceId": "langgraph-gh-12",
-          "quote": "LangGraph is a low-level orchestration framework for building, managing, and deploying long-running, stateful agents."
+          "evidenceId": "langgraph-docs-30",
+          "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc."
         },
         {
-          "evidenceId": "langgraph-docs-30",
-          "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
+          "evidenceId": "langgraph-gh-12",
+          "quote": "LangGraph is a low-level orchestration framework for building, managing, and deploying long-running, stateful agents."
         }
       ]
     }
@@ -5317,7 +5332,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LangGraph is a low-level framework for developers to build their own agents. The evidence covers building blocks such as graphs, checkpointers, interrupts and streaming. Nothing shows a built-in AI assistant inside the product that a user can hand tasks to. The 'assistants' API endpoints on the Agent Server serve developer-built graphs, which makes them a developer building block rather than a built-in assistant, so they earn no credit.",
+    "rationale": "LangGraph is a low-level orchestration framework for building agents. A developer tool could plausibly ship a built-in assistant, so the axis applies, but the evidence shows no first-party AI assistant that users can delegate tasks to inside the product. The Agent Server's \"Assistants\" are user-configured instances of a user's own graph, which is a developer building block rather than a built-in assistant, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5329,27 +5344,23 @@
   {
     "productId": "langgraph",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangGraph is a pip-installable orchestration library whose graphs are invoked programmatically, for example through the stream/astream methods and by re-invoking the graph with Command. Its official CLI builds and runs the Agent Server locally, exposing API endpoints for runs and threads, so it can operate without a UI. However, nothing in the evidence documents CI usage or headless automation recipes specifically. missing for 10: explicit CI/CD integration docs, headless/non-interactive run guidance for the CLI, and independent hands-on corroboration of CI automation.",
+    "rationale": "LangGraph is a pip-installed orchestration library whose graphs run programmatically through stream/astream iterators. Its official CLI builds and runs the Agent Server locally, with `langgraph dev` for in-memory runs and `langgraph up` for a Docker-based production-like test stack. The Agent Server exposes Stateless Runs and Crons endpoints, so the product can be driven headlessly for automation. missing for 10: explicit CI pipeline documentation (e.g., GitHub Actions or non-interactive test-runner recipes), independent or hands-on corroboration of CI usage.",
     "evidenceIds": [
       "langgraph-gh-5",
       "langgraph-docs-18",
-      "langgraph-docs-15",
       "langgraph-docs-30",
-      "langgraph-docs-23",
+      "langgraph-local-dev-testing-20261105",
+      "langgraph-agent-server-openapi-20261105",
       "langgraph-probe-4"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
-        {
-          "evidenceId": "langgraph-gh-5",
-          "quote": "pip install -U langgraph"
-        },
         {
           "evidenceId": "langgraph-docs-18",
           "quote": "LangGraph graphs expose the stream (sync) and astream (async) methods to yield streamed outputs as iterators."
@@ -5357,6 +5368,14 @@
         {
           "evidenceId": "langgraph-docs-30",
           "quote": "LangGraph CLI is a command-line tool for building and running the Agent Server locally. The resulting server exposes all API endpoints for runs, threads, assistants, etc."
+        },
+        {
+          "evidenceId": "langgraph-local-dev-testing-20261105",
+          "quote": "`langgraph up`: A production-like testing environment for validation"
+        },
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "covering Assistants (\"An assistant is a configured instance of a graph.\"), Threads, Thread Runs, Stateless Runs, Crons, Store, A2A, MCP, and System endpoints"
         }
       ]
     }
@@ -5367,9 +5386,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "First-party LangChain docs state that agents call tools on MCP servers through MCPAdapter, which discovers a server's tools and adapts them into LangChain tools, so MCP tools can be wired into LangGraph agents. However, this support sits in the companion LangChain layer rather than LangGraph core, and it rests on a single thin mention. Missing for 10: LangGraph-specific MCP integration docs, transport/auth/configuration details, and independent or hands-on corroboration.",
+    "rationale": "The first-party LangChain docs document MCPAdapter, which discovers an MCP server's tools and adapts them into LangChain tools, and community evidence says LangChain tool abstractions are optional add-ons usable within LangGraph graphs. The documented consumer, however, is \"LangChain agents\", not LangGraph itself, so LangGraph-native MCP client support is only implied. missing for 10: LangGraph-specific docs for connecting MCP servers to a graph or ToolNode, transport/auth configuration details, hands-on or independent corroboration.",
     "evidenceIds": [
-      "langgraph-docs-22"
+      "langgraph-docs-22",
+      "langgraph-comm-7"
     ],
     "support": {
       "relation": "direct",
@@ -5379,6 +5399,10 @@
         {
           "evidenceId": "langgraph-docs-22",
           "quote": "LangChain agents call tools defined on MCP servers through MCPAdapter, which discovers a server's tools and adapts them into LangChain tools."
+        },
+        {
+          "evidenceId": "langgraph-comm-7",
+          "quote": "tool abstractions are optional LangChain add-ons"
         }
       ]
     }
@@ -5386,16 +5410,23 @@
   {
     "productId": "langgraph",
     "storyId": "agentic-mcp-server",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "LangGraph is an orchestration framework, not itself an agent, so publishing an official MCP server is a fair axis. The evidence shows no first-party MCP server or hosted MCP endpoint. The only MCP evidence is client-side: MCPAdapter lets agents call tools on other MCP servers. The Agent Server is described only as exposing run, thread and assistant API endpoints, with no MCP endpoint mentioned.",
-    "evidenceIds": [],
+    "rationale": "LangGraph is an orchestration framework and platform, not itself an agent, so an official MCP server is a fair axis. The first-party Agent Server OpenAPI spec lists MCP endpoints alongside Assistants, Threads and Runs, which indicates the LangGraph runtime itself exposes an MCP endpoint. That evidence is only a single line in an endpoint inventory; the MCPAdapter material describes client-side tool consumption and is not credited here. Missing for 10: documentation of how agents connect to the MCP endpoint, which graphs or tools it exposes, and auth or transport details, plus any hands-on or independent corroboration.",
+    "evidenceIds": [
+      "langgraph-agent-server-openapi-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "covering Assistants (\"An assistant is a configured instance of a graph.\"), Threads, Thread Runs, Stateless Runs, Crons, Store, A2A, MCP, and System endpoints"
+        }
+      ]
     }
   },
   {
@@ -5404,7 +5435,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows that LangGraph itself can be driven by natural-language commands. The evidence describes a code-level orchestration framework with a Python API, stream methods, and a CLI for running the Agent Server. Its LLM-driven agentic steps are building blocks developers use to create agents, not a natural-language interface for operating the product, so they earn no credit.",
+    "rationale": "The evidence describes LangGraph as a low-level orchestration framework that developers program in code: graphs, nodes, edges, checkpointers and a CLI for running the Agent Server. Nothing shows the product itself being operated through natural-language commands. Agents built with LangGraph can process natural language, but that is a developer building block, not a natural-language interface for operating the product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5417,14 +5448,15 @@
     "productId": "langgraph",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "LangGraph has a first-party, documented LangGraph CLI that builds and runs the Agent Server locally, exposing API endpoints for runs, threads and assistants. A probe confirms the official CLI docs page, and a community post mentions running `langgraph serve` locally. missing for 10: a documented subcommand/command reference showing the CLI's breadth (e.g. build, deploy and scaffolding commands), independent hands-on evidence of CLI use beyond local serving, and evidence of CLI features aimed at agent-driven or AI-native workflows.",
+    "rationale": "LangGraph ships an official, first-party LangGraph CLI for building and running the Agent Server locally. The docs name concrete commands: `langgraph dev` (lightweight in-memory dev server) and `langgraph up` (production-like Docker stack). A community post also mentions running `langgraph serve` locally, which corroborates that the CLI is used in practice. Missing for 10: a full command reference (e.g. build/deploy subcommands and flags), and evidence of agent-friendly CLI traits such as machine-readable output or non-interactive automation.",
     "evidenceIds": [
       "langgraph-docs-23",
       "langgraph-docs-30",
       "langgraph-docs-37",
       "langgraph-probe-4",
+      "langgraph-local-dev-testing-20261105",
       "langgraph-comm-5"
     ],
     "support": {
@@ -5441,6 +5473,10 @@
           "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
         },
         {
+          "evidenceId": "langgraph-local-dev-testing-20261105",
+          "quote": "`langgraph dev`: A lightweight development server for rapid iteration"
+        },
+        {
           "evidenceId": "langgraph-probe-4",
           "quote": "official CLI documented at https://docs.langchain.com/langsmith/cli"
         }
@@ -5451,17 +5487,15 @@
     "productId": "langgraph",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "LangGraph is driven programmatically through its documented library API: the Graph API for defining state, nodes and edges, the `stream`/`astream` methods for execution, and `Command` for resuming interrupted runs. The LangGraph CLI also runs a local Agent Server that \"exposes all API endpoints for runs, threads, assistants,\" giving a documented HTTP surface. missing for 10: an OpenAPI/endpoint reference for the Agent Server HTTP API (the probe found none at the checked docs paths), and independent hands-on corroboration of driving the server API in production.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "LangGraph's Agent Server publishes an OpenAPI 3.1 spec covering Assistants, Threads, Runs, Crons, Store, A2A and MCP endpoints, and every server ships an interactive /docs reference. The CLI runs a local server that exposes all API endpoints, and the control-plane API documents path versioning. The probe's 404s on generic OpenAPI paths do not contradict this, because the spec is served at its own documented path. missing for 10: a documented deprecation/sunset policy for the data-plane API, independent hands-on corroboration of driving the API.",
     "evidenceIds": [
+      "langgraph-agent-server-openapi-20261105",
+      "langgraph-api-playground-20261105",
       "langgraph-docs-30",
-      "langgraph-docs-37",
-      "langgraph-docs-18",
-      "langgraph-docs-27",
-      "langgraph-docs-5",
-      "langgraph-docs-6",
-      "langgraph-probe-3"
+      "langgraph-api-versioning-20261105",
+      "langgraph-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -5469,20 +5503,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "docs.langchain.com publishes the Agent Server (LangGraph Platform runtime) OpenAPI 3.1 document"
+        },
+        {
           "evidenceId": "langgraph-docs-30",
-          "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
+          "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc."
         },
         {
-          "evidenceId": "langgraph-docs-18",
-          "quote": "LangGraph graphs expose the stream (sync) and astream (async) methods to yield streamed outputs as iterators."
+          "evidenceId": "langgraph-api-playground-20261105",
+          "quote": "every deployed or locally run Agent Server ships a built-in interactive API docs endpoint"
         },
         {
-          "evidenceId": "langgraph-docs-27",
-          "quote": "LangGraph models agent workflows as graphs. You define the behavior of your agents using three key components: State, Nodes, Edges."
-        },
-        {
-          "evidenceId": "langgraph-docs-5",
-          "quote": "you resume execution by re-invoking the graph using Command, which then becomes the return value of the interrupt() call from inside the node"
+          "evidenceId": "langgraph-api-versioning-20261105",
+          "quote": "Each endpoint path is prefixed with a version (e.g. `v1`, `v2`)"
         }
       ]
     }
@@ -5493,7 +5527,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scoped, least-privilege credentials are a fair question for LangGraph, since it ships a deployable Agent Server that exposes API endpoints. However, nothing in the evidence pack mentions API keys, credential scoping, permissions, or authorization controls. The CLI and Agent Server items only describe running endpoints for runs, threads and assistants, not issuing restricted credentials.",
+    "rationale": "LangGraph and its Agent Server platform could reasonably offer scoped API credentials, so the axis applies. Nothing in the evidence pack documents issuing API keys, scopes, or least-privilege credentials for an agent. The OpenAPI, CLI, and deployment docs cover runs, threads, assistants and versioning, but none mention credential scoping.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5508,12 +5542,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LangGraph is itself an official, installable Python library (`pip install -U langgraph`) with documented programmatic APIs such as stream/astream and first-party checkpoint packages, so developers clearly build against first-party code. The evidence shows only the Python framework, not a broader set of official SDKs. missing for 10: evidence of multiple language SDKs (e.g., JS/TS), an official client SDK for the Agent Server API, SDK reference docs, and independent corroboration of SDK quality.",
+    "rationale": "LangGraph ships as an official, pip-installable Python library with documented programmatic APIs such as graph construction, stream/astream, checkpointers and interrupts, so developers can build directly against first-party code. The evidence does not show a dedicated official client SDK for the Agent Server API (only an OpenAPI spec and CLI) or SDKs in other languages. Missing for 10: documented official client SDK for the Agent Server/deployment API, multi-language SDK coverage (e.g. JS/TS), independent corroboration of SDK quality.",
     "evidenceIds": [
       "langgraph-gh-5",
+      "langgraph-gh-12",
       "langgraph-docs-18",
       "langgraph-docs-13",
-      "langgraph-gh-12"
+      "langgraph-agent-server-openapi-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -5525,16 +5560,16 @@
           "quote": "pip install -U langgraph"
         },
         {
+          "evidenceId": "langgraph-gh-12",
+          "quote": "LangGraph is a low-level orchestration framework for building, managing, and deploying long-running, stateful agents."
+        },
+        {
           "evidenceId": "langgraph-docs-18",
           "quote": "LangGraph graphs expose the stream (sync) and astream (async) methods to yield streamed outputs as iterators."
         },
         {
           "evidenceId": "langgraph-docs-13",
-          "quote": "from langgraph.checkpoint.postgres import PostgresSaver"
-        },
-        {
-          "evidenceId": "langgraph-gh-12",
-          "quote": "LangGraph is a low-level orchestration framework for building, managing, and deploying long-running, stateful agents."
+          "quote": "In production, use a checkpointer backed by a database: from langgraph.checkpoint.postgres import PostgresSaver"
         }
       ]
     }
@@ -5545,7 +5580,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for an agent orchestration framework with a deployable Agent Server, but the evidence never mentions registrable outbound HTTP callbacks. The pack documents in-process streaming iterators (stream/astream, stream modes) and Agent Server API endpoints for runs and threads. Those are adjacent consumption mechanisms, not webhook subscriptions.",
+    "rationale": "Webhook subscriptions are a fair question for an agent orchestration framework with a deployable Agent Server, so the axis applies. The evidence only shows in-process stream/astream iterators and Agent Server API endpoints (runs, threads, crons). None of these is a registrable outbound HTTP callback, and streaming is an adjacent feature that earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5557,61 +5592,119 @@
   {
     "productId": "langgraph",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "An interactive API reference is a fair question for a developer framework, so the axis applies. The evidence pack documents no interactive or runnable API reference: the OpenAPI probe returned 404 on every candidate path. The llms.txt and markdown docs are machine-readable documentation, an adjacent feature rather than an interactive reference with runnable examples.",
-    "evidenceIds": [],
+    "rationale": "First-party docs say every Agent Server deployment ships a built-in interactive API docs endpoint at /docs, and the hosted reference pages render a live \"Try it\" playground for each endpoint. This is backed by a published OpenAPI 3.1 spec covering Assistants, Threads, Runs, Store and other endpoints. The probe's 404s were only at guessed root paths, so they don't contradict the spec at its documented location. Missing for 10: independent or hands-on confirmation that the playground works, and evidence of runnable examples in the Python library's own API reference (not just the Agent Server HTTP API).",
+    "evidenceIds": [
+      "langgraph-api-playground-20261105",
+      "langgraph-agent-server-openapi-20261105",
+      "langgraph-docs-30"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langgraph-api-playground-20261105",
+          "quote": "every deployed or locally run Agent Server ships a built-in interactive API docs endpoint"
+        },
+        {
+          "evidenceId": "langgraph-api-playground-20261105",
+          "quote": "The hosted reference pages on docs.langchain.com additionally render a live \"Try it\" API playground per endpoint"
+        },
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "docs.langchain.com publishes the Agent Server (LangGraph Platform runtime) OpenAPI 3.1 document"
+        }
+      ]
     }
   },
   {
     "productId": "langgraph",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The axis applies because LangGraph's CLI runs an Agent Server that exposes API endpoints for runs, threads, and assistants. However, no evidence shows a downloadable OpenAPI or equivalent spec. The probe found every candidate OpenAPI/Swagger path returning 404, and llms.txt is a documentation index, not an API spec.",
-    "evidenceIds": [],
+    "rationale": "The docs publish a downloadable OpenAPI 3.1 document for the Agent Server, the LangGraph Platform runtime. It covers assistants, threads, runs, crons, store, A2A, MCP and system endpoints, is listed under \"OpenAPI Specs\" in llms.txt, and the control plane serves its own spec. The probe's 404s at generic well-known paths do not contradict the spec published at its documented path. missing for 10: independent or hands-on confirmation of the spec download, a spec at a discoverable well-known path, and a spec for the open-source library itself rather than only the Agent Server and deployment layer.",
+    "evidenceIds": [
+      "langgraph-agent-server-openapi-20261105",
+      "langgraph-api-playground-20261105",
+      "langgraph-docs-30"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "docs.langchain.com publishes the Agent Server (LangGraph Platform runtime) OpenAPI 3.1 document"
+        },
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "the deployment control plane serves its own spec at https://api.host.langchain.com/openapi.json"
+        },
+        {
+          "evidenceId": "langgraph-api-playground-20261105",
+          "quote": "every deployed or locally run Agent Server ships a built-in interactive API docs endpoint"
+        }
+      ]
     }
   },
   {
     "productId": "langgraph",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence never documents a sandbox or test environment that is isolated from production data. The LangGraph CLI runs an Agent Server locally with its own managed database for checkpointing, and the docs recommend a database-backed checkpointer for production. That is a local-development feature, not a documented sandbox guarantee, so it counts only as adjacent support. Nothing shows that agent runs or tool calls are kept away from production data during testing.",
-    "evidenceIds": [],
+    "rationale": "LangGraph's own docs describe two isolated local test environments: `langgraph dev` (in-memory state) and `langgraph up` (a production-like local Docker stack with its own PostgreSQL/Redis), with production deployment as a separate later step. This is true environment isolation, not merely a dry-run mode, so tests do not touch production data. missing for 10: independent or hands-on corroboration of the isolation, evidence of a hosted sandbox or staging deployment tier, and explicit documentation guaranteeing separation from production data stores.",
+    "evidenceIds": [
+      "langgraph-local-dev-testing-20261105",
+      "langgraph-docs-30",
+      "langgraph-docs-23"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langgraph-local-dev-testing-20261105",
+          "quote": "`langgraph up`: A production-like testing environment for validation"
+        },
+        {
+          "evidenceId": "langgraph-local-dev-testing-20261105",
+          "quote": "`langgraph dev`: A lightweight development server for rapid iteration"
+        },
+        {
+          "evidenceId": "langgraph-docs-30",
+          "quote": "includes supporting services such as a managed database for checkpointing and storage"
+        }
+      ]
     }
   },
   {
     "productId": "langgraph",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Versioning and deprecation policy is a fair question for an orchestration framework and its Agent Server APIs, so the axis applies. The evidence pack contains no documentation of versioned APIs, semver guarantees, or a deprecation policy. One community report (langgraph-comm-6) cites frequent breaking changes, but with no vendor claim to contradict, that cannot make this 'disputed'. Absence of evidence yields 'none'.",
-    "evidenceIds": [],
+    "rationale": "The deployment control plane API documents path-based versioning, with endpoints prefixed v1/v2 and version-labelled groups. That covers the versioned-API half of the story. The same evidence states that no standalone deprecation or sunset policy exists for the Agent Server data-plane API, so the deprecation half is not met. Missing for 10: a documented deprecation/sunset policy, versioning of the Agent Server data-plane API, and independent corroboration of version stability.",
+    "evidenceIds": [
+      "langgraph-api-versioning-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langgraph-api-versioning-20261105",
+          "quote": "Each endpoint path is prefixed with a version (e.g. `v1`, `v2`)"
+        }
+      ]
     }
   },
   {
@@ -5620,7 +5713,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for an orchestration framework, so the axis applies. However, the evidence pack documents no batch API, fan-out or map-reduce over many items, or other bulk-operation feature. The only related evidence is community remarks about built-in parallelism and Pregel/BSP orchestration. That is a general execution primitive, not a documented capability for operating on many items at once.",
+    "rationale": "Bulk operations are a fair question for an agent orchestration framework and runtime, but the pack never documents a batch API, a bulk-run endpoint, or a fan-out over many items. The closest evidence is a community note on Pregel-based parallelism and an OpenAPI listing of Stateless Runs and Crons endpoints; neither describes bulk operations across many items, so both are adjacent building blocks at best and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5635,7 +5728,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents graph composition (nodes and edges), interrupts and resume, checkpointing, and output streaming. None of it shows rules that automatically trigger actions when external events occur. Graph edges and deterministic steps are developer building blocks for control flow, and streaming exposes execution output rather than event-driven triggers, so neither earns credit.",
+    "rationale": "Automatic action on events is a fair question for an agent orchestration framework and runtime. The evidence, however, documents no feature for defining rules or triggers that fire actions when events occur. Graph nodes and edges, deterministic logic, interrupts, and streaming are developer building blocks or adjacent features, and the Agent Server's Crons endpoint is a recurring time schedule, not an event trigger, so none of these count.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5647,16 +5740,28 @@
   {
     "productId": "langgraph",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a workflow orchestration framework, so the axis applies. The pack never documents cron, recurring, or time-based triggers. Community mentions of LangGraph \"scheduling\" describe its internal Pregel-style node execution, not recurring job schedules. The Agent Server's run endpoints cover one-off invocation, not a recurring schedule.",
-    "evidenceIds": [],
+    "rationale": "The Agent Server (the LangGraph Platform runtime, which the LangGraph CLI builds and runs) publishes an OpenAPI spec that includes a 'Crons' endpoint group, so recurring scheduled runs are a first-party capability. The evidence only names that endpoint group, with no description of cron syntax, management, or behavior. It also appears tied to the server/deployment layer rather than the open-source graph library. Community mentions of 'scheduling' refer to execution scheduling inside the framework, not recurring jobs, so they are not credited. Missing for 10: documentation of how cron jobs are created and managed, schedule syntax and limits, clarity on availability outside the platform runtime, hands-on or independent corroboration.",
+    "evidenceIds": [
+      "langgraph-agent-server-openapi-20261105",
+      "langgraph-docs-30"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "covering Assistants (\"An assistant is a configured instance of a graph.\"), Threads, Thread Runs, Stateless Runs, Crons, Store, A2A, MCP, and System endpoints"
+        },
+        {
+          "evidenceId": "langgraph-docs-30",
+          "quote": "LangGraph CLI is a command-line tool for building and running the Agent Server locally. The resulting server exposes all API endpoints for runs, threads, assistants, etc."
+        }
+      ]
     }
   },
   {
@@ -5665,10 +5770,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows checkpointers and time travel, which persist and rewind a thread's runtime graph state. That is rollback of execution state, an adjacent capability, not versioning, reviewing, or rolling back the automation (graph) definitions themselves. Nothing in the pack documents version history, diff or review, or rollback of deployed graphs or assistants.",
+    "rationale": "The evidence pack has nothing on versioning, reviewing, or rolling back automation definitions themselves (graphs, assistants, or deployments). Checkpointer 'time travel' rewinds a thread's execution state, not the automation's version. API path-versioning covers the control-plane API, not user automations. The dev/test-then-deploy workflow describes staging, not version history or rollback. These are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can version, review, and roll back my automations",
       "citations": []
@@ -5680,15 +5785,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "LangGraph's own docs describe checkpointers that persist a thread's graph state for fault tolerance and write the exact graph state so a run can resume even from an error state. A Postgres-backed checkpointer is documented for production, the GitHub README advertises durable execution that resumes exactly where it left off, and community comments confirm checkpointing is a core framework feature. Community wishes that persistence were better developed are general, not a concrete failure. Missing for 10: hands-on or independent evidence of resuming after an actual process crash or restart, and detailed docs on the resume-after-failure invocation mechanics.",
+    "rationale": "LangGraph's own docs say checkpointers persist a thread's graph state, explicitly for fault tolerance, and write the exact graph state so a run can resume later, even from an error state. The README advertises durable execution that resumes from exactly where it left off, and a database-backed PostgresSaver is documented for production restarts; community posts confirm checkpointing is a core framework feature. Missing for 10: independent hands-on corroboration of resuming after an actual crash or process restart, and documentation detail on crash-recovery semantics (e.g., how partial or in-flight node writes are handled).",
     "evidenceIds": [
       "langgraph-docs-2",
       "langgraph-docs-25",
-      "langgraph-docs-13",
       "langgraph-gh-6",
+      "langgraph-docs-13",
       "langgraph-docs-10",
-      "langgraph-comm-7",
-      "langgraph-docs-30"
+      "langgraph-comm-7"
     ],
     "support": {
       "relation": "direct",
@@ -5724,7 +5828,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence presents LangGraph as a low-level orchestration framework built from State, Nodes and Edges. Nothing in the pack documents typed custom tool definitions or a few-line agent constructor. The community note that tools are optional LangChain add-ons and that nodes are 'just functions' only describes building blocks. The MCPAdapter material covers LangChain agents consuming MCP tools, which belongs to a different story.",
+    "rationale": "The evidence covers LangGraph's graph model (State, Nodes, Edges), persistence, streaming and interrupts, but nothing documents defining typed custom tools or a concise few-line agent constructor. The community notes that tool abstractions such as ToolNode are optional LangChain add-ons rather than LangGraph features. MCPAdapter tool adaptation is a LangChain, MCP-client capability and does not transfer to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5736,21 +5840,23 @@
   {
     "productId": "langgraph",
     "storyId": "durable-long-running",
-    "verdict": "partial",
-    "quality": 7,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "LangGraph natively documents durable execution: agents persist through failures and resume where they left off, checkpointers write exact graph state (even in error states), and a Postgres-backed checkpointer is recommended for production. That implies state survives outside the process, but the evidence never explicitly shows resumption after a process restart or a redeploy. missing for 10: explicit documentation of resuming runs after process restarts and deploys, any evidence of durable-execution integrations (e.g., external workflow engines), independent hands-on corroboration of crash/restart recovery.",
+    "rationale": "LangGraph natively provides durable execution. Its docs say agents 'persist through failures and can run for extended periods, automatically resuming from exactly where they left off.' Checkpointers write the exact graph state so a run can resume 'even when in an error state', and production use calls for a database-backed checkpointer (PostgresSaver). The Agent Server also ships a managed database for checkpointing, and the deployment infrastructure is built for 'stateful, long-running workflows'. Together these cover resumption after process restarts and deploys; native durability satisfies the story's 'natively or via integrations' requirement. missing for 10: explicit documentation of resuming in-flight runs across redeploys or version changes, independent or hands-on evidence of recovery after a restart, and any evidence of third-party durable-execution integrations (e.g. Temporal).",
     "evidenceIds": [
       "langgraph-gh-6",
-      "langgraph-docs-2",
+      "langgraph-gh-1",
       "langgraph-docs-25",
       "langgraph-docs-13",
-      "langgraph-gh-12",
-      "langgraph-docs-30"
+      "langgraph-docs-2",
+      "langgraph-docs-30",
+      "langgraph-gh-9",
+      "langgraph-gh-12"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an engineering-lead, I can run long-lived agents durably across process restarts and deploys, natively or via durable-execution integrations",
       "citations": [
         {
@@ -5766,8 +5872,12 @@
           "quote": "In production, use a checkpointer backed by a database: from langgraph.checkpoint.postgres import PostgresSaver"
         },
         {
-          "evidenceId": "langgraph-docs-2",
-          "quote": "Use them for short-term, thread-scoped memory, including conversation continuity, human-in-the-loop workflows, time travel, and fault tolerance."
+          "evidenceId": "langgraph-docs-30",
+          "quote": "includes supporting services such as a managed database for checkpointing and storage"
+        },
+        {
+          "evidenceId": "langgraph-gh-9",
+          "quote": "Deploy sophisticated agent systems confidently with scalable infrastructure designed to handle the unique challenges of stateful, long-running workflows."
         }
       ]
     }
@@ -5778,7 +5888,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Evals and CI are a fair axis for an agent orchestration framework, but the evidence shows only LangSmith tracing, debugging visualization and workflow comparison. Nothing documents built-in eval scoring or running evals in CI. Tracing is an adjacent observability feature, not quality scoring, so it earns no credit here.",
+    "rationale": "The evidence pack documents tracing and debugging via LangSmith and local test servers (`langgraph dev`/`langgraph up`). None of it shows built-in evaluators that score agent quality, or a documented way to run evals in CI. Tracing and local dev environments are adjacent features, not an eval capability, and the axis is a fair question for an agent framework, so absence of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5791,13 +5901,13 @@
     "productId": "langgraph",
     "storyId": "examples-runnable-headless",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LangGraph ships an official CLI that builds and runs the Agent Server locally from a terminal. That server exposes run, thread and assistant API endpoints, so an agent could drive a graph headlessly and check the results. The evidence never shows the CLI running the framework's example agents directly, or a one-shot terminal run-and-verify flow; it only shows a local server whose endpoints must then be called. Missing for 10: documented example agents runnable from the CLI, a direct headless run command with output for verification, and hands-on corroboration.",
+    "rationale": "The official LangGraph CLI runs the Agent Server locally from a terminal (`langgraph dev` in-memory, `langgraph up` in Docker). That server exposes run and thread API endpoints, so a built graph can be invoked and checked without a UI. However, nothing in the evidence shows shipped example agents, or a one-shot CLI command that runs an agent and returns its output directly; verification means starting a server and then calling its API. Missing for 10: documented runnable example or template agents, a single-command headless run/output mode suited to agent self-verification, and hands-on corroboration.",
     "evidenceIds": [
-      "langgraph-docs-23",
       "langgraph-docs-30",
-      "langgraph-docs-37",
+      "langgraph-local-dev-testing-20261105",
+      "langgraph-docs-23",
       "langgraph-probe-4"
     ],
     "support": {
@@ -5806,12 +5916,12 @@
       "subject": "As an ai-native user, I can run the framework's example agents headlessly from a terminal so an agent can verify what it just built",
       "citations": [
         {
-          "evidenceId": "langgraph-docs-23",
-          "quote": "LangGraph CLI is a command-line tool for building and running the Agent Server locally."
+          "evidenceId": "langgraph-docs-30",
+          "quote": "LangGraph CLI is a command-line tool for building and running the Agent Server locally. The resulting server exposes all API endpoints for runs, threads, assistants, etc."
         },
         {
-          "evidenceId": "langgraph-docs-30",
-          "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
+          "evidenceId": "langgraph-local-dev-testing-20261105",
+          "quote": "`langgraph dev`: A lightweight development server for rapid iteration"
         }
       ]
     }
@@ -5819,10 +5929,10 @@
   {
     "productId": "langgraph",
     "storyId": "explicit-workflow-graphs",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "high",
-    "rationale": "LangGraph's core Graph API models agent workflows as explicit graphs of State, Nodes and Edges, and states that composing them creates \"complex, looping workflows\". Its multi-agent docs let you embed other patterns as nodes in a custom workflow, and community users confirm its Pregel/BSP design supports cycles and parallelism. Missing for 10: first-party documentation of conditional branching and of parallel fan-out (parallelism is evidenced only by community reports).",
+    "rationale": "LangGraph's own docs say agent workflows are modeled as graphs of State, Nodes and Edges, that agents and other patterns can be embedded as nodes, and that composing nodes and edges creates looping workflows. Parallelism is corroborated only by community reports (\"Pregel/BSP-based orchestration for cycles and parallelism\", \"built-in parallelism\"), and branching is never explicitly documented in the evidence. missing for 10: first-party documentation of conditional branching/routing edges, first-party documentation of parallel (fan-out/fan-in) step execution.",
     "evidenceIds": [
       "langgraph-docs-27",
       "langgraph-docs-16",
@@ -5833,7 +5943,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can compose agents into an explicit graph or workflow with branching, loops, and parallel steps",
       "citations": [
         {
@@ -5851,6 +5961,10 @@
         {
           "evidenceId": "langgraph-comm-1",
           "quote": "It's a Pregel/BSP-based orchestration for cycles and parallelism without data races; can design your graph as a state machine."
+        },
+        {
+          "evidenceId": "langgraph-comm-8",
+          "quote": "built-in parallelism in LangGraph, while promising, can complicate debugging a lot"
         }
       ]
     }
@@ -5861,7 +5975,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents short-term memory through checkpointers and multi-turn conversation persistence. It never mentions trimming, summarizing, or filtering message history to stay within a context window. Generic state-manipulation nodes are developer building blocks, not this capability, so they earn no credit.",
+    "rationale": "The evidence documents short-term, thread-scoped memory via checkpointers and says nodes can be arbitrary state-manipulation functions. It never shows a first-party capability to trim, summarize, or filter message history to fit a context window. Arbitrary nodes are only a developer building block for constructing such logic, so they earn no credit toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5876,7 +5990,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "LangGraph's first-party docs describe interrupts that pause graph execution at specific points to wait for external input. Execution resumes by re-invoking the graph with Command, whose value becomes the return value of interrupt() inside the node. Checkpointers persist the paused state, and the docs name human-in-the-loop as a supported use, which community comments on human-in-the-loop with time travel corroborate. Missing for 10: no hands-on or independent walkthrough of an approval/resume cycle specifically (community corroboration is general, not a tested pause-approve-resume run).",
+    "rationale": "LangGraph's first-party interrupts docs describe pausing graph execution at specific points to wait for external input. Execution resumes by re-invoking the graph with Command, whose value becomes the return value of interrupt() inside the node. Checkpointers persist state so the run can resume later, and community comments corroborate the human-in-the-loop state machine. Missing for 10: an independent hands-on report of the approve/resume round-trip working in practice (the community comments describe the capability rather than testing it).",
     "evidenceIds": [
       "langgraph-docs-4",
       "langgraph-docs-5",
@@ -5916,7 +6030,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Guardrails are a fair axis for an agent orchestration framework, but the evidence pack documents no first-party input/output guardrail feature that validates, transforms, or blocks unsafe content. A community note says nodes can be arbitrary pre/post-processing functions, and the docs describe interrupts for human review. These are developer building blocks or adjacent controls, not a guardrails capability, so they earn no credit.",
+    "rationale": "Input/output guardrails are a fair question for an agent orchestration framework, but the evidence pack documents no guardrail feature that validates, transforms, or blocks unsafe content. The closest material is that nodes can be arbitrary functions, including preprocessing and postprocessing nodes. That is a developer building block for constructing guardrails yourself, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5929,14 +6043,15 @@
     "productId": "langgraph",
     "storyId": "long-term-memory",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "LangGraph's own docs describe Stores that persist application-defined data outside graph state for long-term, cross-thread memory, and say long-term memory holds user-specific or application-level data across sessions. The GitHub README also claims long-term persistent memory across sessions. Missing for 10: independent or hands-on corroboration of cross-thread Store usage, and documented detail on production store backends, namespacing and retrieval or search over stored memories.",
+    "rationale": "LangGraph's own docs say Stores persist application-defined data outside graph state, for long-term, cross-thread memory. This is separate from checkpointers, which cover short-term, thread-scoped memory. The add-memory guide and the GitHub README both describe long-term memory across sessions, and the Agent Server OpenAPI includes Store endpoints. Missing for 10: independent or hands-on corroboration that cross-thread Store memory works in practice, and deeper detail on memory search and management in the evidence.",
     "evidenceIds": [
       "langgraph-docs-3",
       "langgraph-docs-33",
       "langgraph-gh-8",
-      "langgraph-docs-30"
+      "langgraph-docs-30",
+      "langgraph-agent-server-openapi-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -5954,10 +6069,6 @@
         {
           "evidenceId": "langgraph-gh-8",
           "quote": "long-term persistent memory across sessions"
-        },
-        {
-          "evidenceId": "langgraph-docs-30",
-          "quote": "includes supporting services such as a managed database for checkpointing and storage"
         }
       ]
     }
@@ -5965,32 +6076,38 @@
   {
     "productId": "langgraph",
     "storyId": "managed-deployment",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangGraph's own CLI builds and runs an Agent Server that exposes API endpoints for runs, threads and assistants, with a managed database for checkpointing. The repo also claims production-ready deployment on scalable infrastructure. However, the evidence only documents running that server locally and never shows a hosted, managed runtime you deploy to. A community question asks how to deploy beyond local `langgraph serve`, which is an open question rather than a contradiction. missing for 10: documented managed/hosted runtime deployment flow, evidence of calling a remotely deployed endpoint, independent hands-on corroboration.",
+    "rationale": "LangGraph's Agent Server (documented as the 'LangGraph Platform runtime', titled 'LangSmith Deployment') exposes API endpoints for assistants, threads, runs, crons and store, published as an OpenAPI 3.1 spec. A hosted deployment control plane at api.host.langchain.com, with a versioned Deployments API, supports deploying to a managed runtime. Every deployed Agent Server ships a /docs endpoint, and the documented workflow runs from local dev to production deployment. The community question about deploying beyond `langgraph serve` is only a question, not a contradiction. Missing for 10: step-by-step managed-deployment docs in the pack (the deploy step is only referenced, not detailed), and independent or hands-on corroboration of calling a managed deployment's endpoint.",
     "evidenceIds": [
+      "langgraph-agent-server-openapi-20261105",
+      "langgraph-api-playground-20261105",
       "langgraph-docs-30",
-      "langgraph-docs-37",
-      "langgraph-gh-9",
-      "langgraph-docs-8"
+      "langgraph-local-dev-testing-20261105",
+      "langgraph-api-versioning-20261105",
+      "langgraph-gh-9"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an engineering-lead, I can deploy an agent to a managed runtime and call it as an API endpoint",
       "citations": [
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "docs.langchain.com publishes the Agent Server (LangGraph Platform runtime) OpenAPI 3.1 document, info title \"LangSmith Deployment\", covering Assistants"
+        },
+        {
+          "evidenceId": "langgraph-api-playground-20261105",
+          "quote": "every deployed or locally run Agent Server ships a built-in interactive API docs endpoint"
+        },
         {
           "evidenceId": "langgraph-docs-30",
           "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
         },
         {
-          "evidenceId": "langgraph-gh-9",
-          "quote": "Production-ready deployment — Deploy sophisticated agent systems confidently with scalable infrastructure designed to handle the unique challenges of stateful, long-running workflows."
-        },
-        {
-          "evidenceId": "langgraph-docs-8",
-          "quote": "LangGraph offers several benefits when building agents and workflows, including persistence, streaming, and support for debugging as well as deployment."
+          "evidenceId": "langgraph-api-versioning-20261105",
+          "quote": "the endpoint groups are version-labelled (Integrations v1, Deployments v2, Listeners v2)"
         }
       ]
     }
@@ -6001,7 +6118,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Model and provider portability is a fair question for an agent orchestration framework, so the axis applies. However, nothing in the evidence documents swapping the LLM provider or model without rewriting the agent. The closest material is community comments that nodes are arbitrary functions and that LangChain abstractions are optional add-ons, which are developer building blocks rather than a documented provider-swap capability.",
+    "rationale": "Swapping LLM providers is a fair question for an agent orchestration framework, so the axis applies. The pack has no documentation of a model-agnostic interface, provider integrations, or configurable model selection. Community notes that nodes are 'just functions that can do whatever you want' (langgraph-comm-7) describe a building block a developer could use to construct provider swapping, not a documented swap capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6016,14 +6133,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LangGraph's multi-agent docs describe patterns for coordinating specialized components. Its custom-workflow pattern lets you embed other multi-agent patterns as nodes in one LangGraph workflow alongside deterministic steps, and streaming exposes a subgraphs projection, which suggests nested graphs are supported. Missing for 10: the handoff and subagent patterns are not named or detailed in the evidence, and there is no hands-on or independent corroboration of multi-agent orchestration specifically.",
+    "rationale": "LangGraph's multi-agent documentation describes patterns for building multi-agent systems in which specialized components coordinate on complex workflows. Its custom-workflow pattern lets other patterns be embedded as nodes in a single graph, and streaming exposes a separate subgraphs projection, which supports composing multiple agents inside one workflow. missing for 10: explicit documentation of handoff and subagent mechanics (the specific patterns are not enumerated in the evidence), and independent hands-on corroboration of multi-agent orchestration.",
     "evidenceIds": [
       "langgraph-docs-21",
       "langgraph-docs-39",
+      "langgraph-docs-14",
       "langgraph-docs-12",
-      "langgraph-docs-19",
       "langgraph-docs-35",
-      "langgraph-gh-12"
+      "langgraph-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -6039,7 +6156,7 @@
           "quote": "Multi-agent systems coordinate specialized components to tackle complex workflows."
         },
         {
-          "evidenceId": "langgraph-docs-12",
+          "evidenceId": "langgraph-docs-14",
           "quote": "Build bespoke execution flows with LangGraph, mixing deterministic logic and agentic behavior. Embed other patterns as nodes in your workflow."
         },
         {
@@ -6053,15 +6170,14 @@
     "productId": "langgraph",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangGraph is a code-first framework, so its core operations (running graphs, inspecting and modifying state, resuming interrupts, streaming) are done programmatically rather than through a UI. Its Agent Server exposes API endpoints for runs, threads and assistants. However, no evidence explicitly claims or demonstrates parity between these APIs and the debugging/visualization UI, and the OpenAPI probe at the docs domain returned 404. Missing for 10: an explicit API-to-UI parity statement, a published OpenAPI spec or API reference, and independent hands-on confirmation that UI actions (e.g. LangSmith debugging/visualization) are API-accessible.",
+    "rationale": "LangGraph is code-first, and its Agent Server publishes an OpenAPI 3.1 spec. That spec covers assistants, threads, runs, crons, store, A2A, MCP and system endpoints, and a separate control-plane API with path versioning manages deployments. Together these suggest broad programmatic coverage. However, no evidence explicitly states that the API matches the Studio/LangSmith UI feature for feature. missing for 10: an explicit API/UI parity statement or feature mapping, independent hands-on confirmation that every UI action has an API equivalent, and a data-plane API deprecation policy.",
     "evidenceIds": [
       "langgraph-docs-30",
-      "langgraph-docs-37",
-      "langgraph-gh-2",
-      "langgraph-docs-5",
-      "langgraph-docs-18"
+      "langgraph-agent-server-openapi-20261105",
+      "langgraph-api-playground-20261105",
+      "langgraph-api-versioning-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -6073,12 +6189,12 @@
           "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
         },
         {
-          "evidenceId": "langgraph-gh-2",
-          "quote": "Seamlessly incorporate human oversight by inspecting and modifying agent state at any point during execution."
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "covering Assistants (\"An assistant is a configured instance of a graph.\"), Threads, Thread Runs, Stateless Runs, Crons, Store, A2A, MCP, and System endpoints"
         },
         {
-          "evidenceId": "langgraph-docs-18",
-          "quote": "LangGraph graphs expose the stream (sync) and astream (async) methods to yield streamed outputs as iterators."
+          "evidenceId": "langgraph-api-versioning-20261105",
+          "quote": "Each endpoint path is prefixed with a version (e.g. `v1`, `v2`)"
         }
       ]
     }
@@ -6089,10 +6205,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability is a fair question for an agent framework and runtime. LangGraph includes managed persistence through checkpointers, stores and the Agent Server's managed database, so the axis applies. However, the evidence pack documents no export feature, no open-format data dump and no migration-out path. Being able to back checkpoints with a user's own Postgres database is a storage choice, not an export capability, so it earns no credit.",
+    "rationale": "The evidence shows LangGraph persisting state through checkpointers (including a Postgres-backed saver) and stores, and the Agent Server API exposes Threads and Store endpoints. None of it documents an export-all-data capability, open export formats, or an offboarding path. Persistence primitives and API endpoints are developer building blocks a user could use to build an export, not the export capability itself.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -6102,14 +6218,13 @@
     "productId": "langgraph",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LangGraph's source is publicly hosted in the langchain-ai/langgraph GitHub repository, and LangChain's docs index describes its open source packages, with LangGraph docs under the /oss/ path. However, no specific license is named and nothing explicitly ties an open license to the LangGraph repo itself. Missing for 10: named license (e.g., MIT) for the LangGraph repo, explicit first-party statement that LangGraph is open source, independent corroboration of license terms.",
+    "rationale": "LangGraph's source is hosted in a public GitHub repository (github.com/langchain-ai/langgraph), and LangChain's docs index describes its packages as \"open source\" under an /oss/ docs path. However, no evidence names the actual license or its terms, so the \"open license\" half of the story is only implied. Missing for 10: the specific license name and terms (e.g. a LICENSE file or license statement), and independent corroboration of the licensing.",
     "evidenceIds": [
-      "langgraph-gh-13",
       "langgraph-gh-12",
-      "langgraph-probe-1",
-      "langgraph-gh-5"
+      "langgraph-gh-5",
+      "langgraph-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -6117,16 +6232,16 @@
       "subject": "As an AI-native user, I can read the product's source under an open license",
       "citations": [
         {
+          "evidenceId": "langgraph-gh-12",
+          "quote": "LangGraph is a low-level orchestration framework for building, managing, and deploying long-running, stateful agents."
+        },
+        {
           "evidenceId": "langgraph-probe-1",
           "quote": "Documentation for LangSmith, Fleet, and our open source packages."
         },
         {
-          "evidenceId": "langgraph-gh-13",
-          "quote": "Low-level orchestration framework for building stateful agents."
-        },
-        {
-          "evidenceId": "langgraph-gh-12",
-          "quote": "LangGraph is a low-level orchestration framework for building, managing, and deploying long-running, stateful agents."
+          "evidenceId": "langgraph-gh-5",
+          "quote": "pip install -U langgraph"
         }
       ]
     }
@@ -6137,12 +6252,13 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LangGraph's core is an open-source framework installed with pip and run in your own environment. The official LangGraph CLI also builds and runs the Agent Server locally, with all run/thread/assistant endpoints and a managed database for checkpointing, and you can plug in your own Postgres checkpointer. However, the evidence only documents local runs; production self-hosting of the server is not documented, and a community member asks how to deploy beyond running `langgraph serve` locally. missing for 10: documented production self-hosted deployment of the Agent Server, explicit open-source license terms, independent hands-on corroboration of self-hosting.",
+    "rationale": "LangGraph's core framework installs locally via pip and runs on the user's own infrastructure with a database-backed checkpointer. The LangGraph CLI also runs the Agent Server locally, including a production-like Docker stack with PostgreSQL and Redis. The evidence stops at local development and validation, though, and a community question shows production self-hosting beyond `langgraph serve` is unclear. missing for 10: documented production self-hosted deployment of the Agent Server (beyond local dev/test), an explicit open-source license statement, independent hands-on corroboration of a self-hosted production setup.",
     "evidenceIds": [
       "langgraph-gh-5",
       "langgraph-gh-12",
+      "langgraph-docs-13",
       "langgraph-docs-30",
-      "langgraph-docs-13"
+      "langgraph-local-dev-testing-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -6154,16 +6270,16 @@
           "quote": "pip install -U langgraph"
         },
         {
-          "evidenceId": "langgraph-docs-30",
-          "quote": "LangGraph CLI is a command-line tool for building and running the Agent Server locally. The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
-        },
-        {
           "evidenceId": "langgraph-docs-13",
           "quote": "In production, use a checkpointer backed by a database: from langgraph.checkpoint.postgres import PostgresSaver"
         },
         {
-          "evidenceId": "langgraph-gh-12",
-          "quote": "LangGraph is a low-level orchestration framework for building, managing, and deploying long-running, stateful agents."
+          "evidenceId": "langgraph-docs-30",
+          "quote": "LangGraph CLI is a command-line tool for building and running the Agent Server locally. The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
+        },
+        {
+          "evidenceId": "langgraph-local-dev-testing-20261105",
+          "quote": "`langgraph up`: A production-like testing environment for validation"
         }
       ]
     }
@@ -6174,7 +6290,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Region and data-residency choice is a fair axis for a framework with deployment offerings, but the evidence documents no region or residency selection. The only related material is pluggable checkpointers such as PostgresSaver. That is a developer building block: the user hosts their own database, and the product does not itself provide a residency control.",
+    "rationale": "The evidence contains no documented region or data-residency selection for LangGraph or its hosted Agent Server/LangSmith Deployment. Pluggable checkpointers (e.g. PostgresSaver) and local Docker stacks let developers run their own databases. That is a building block for self-hosting, not a residency control the product provides, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -6189,7 +6305,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LangGraph is an orchestration framework with an associated deployment and tracing platform (LangSmith), so a training-data opt-out or no-training policy is a fair question. Nothing in the evidence pack addresses whether user data is excluded from AI model training. Self-hosted persistence, such as a Postgres-backed checkpointer, is a deployment detail, not a documented training-data protection, so it earns no credit.",
+    "rationale": "LangGraph is an orchestration framework that also has a hosted deployment platform (LangSmith Deployment), so a buyer could fairly ask about its data-training posture. Nothing in the evidence pack addresses whether customer data is used for model training, nor any opt-out or no-training commitment. Self-hosted persistence such as a PostgresSaver checkpointer is a storage choice, not a training-data control, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6204,7 +6320,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows that LangGraph persists data through checkpointers and stores and can use a user-chosen Postgres backend. However, nothing documents retention policies, TTLs, or deletion of threads, checkpoints, or stored memories. Choosing your own persistence backend is a building block, not a retention or deletion control, so the axis applies but is unevidenced.",
+    "rationale": "Data retention and deletion is a fair question for a stateful agent framework that persists checkpoints and long-term stores. The evidence documents only that data is persisted (checkpointers, stores, a Postgres-backed checkpointer, Threads/Store API endpoints). Nothing in the pack documents retention policies, TTLs or deletion of threads, checkpoints or store items. Choosing your own database backend is a user-side arrangement, not a retention or deletion control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6219,7 +6335,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for an orchestration framework that ships a CLI and a local Agent Server, so the axis applies. The evidence pack only describes LangSmith tracing and debugging features. Nothing documents a setting or mechanism to disable telemetry or usage tracking.",
+    "rationale": "Telemetry opt-out is a fair privacy question for an agent framework and its CLI or server tooling, so the axis applies. Nothing in the pack documents disabling telemetry or usage tracking. The LangSmith tracing mentions describe an observability feature, not a telemetry opt-out control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6232,15 +6348,16 @@
     "productId": "langgraph",
     "storyId": "run-on-own-infra",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LangGraph installs as a library via pip and runs graphs in your own process. It persists state to a database you run, such as PostgresSaver. The CLI builds and runs the Agent Server locally, with all run/thread/assistant endpoints. The evidence never explicitly says there is no dependence on the vendor's platform, and a community question asks how to deploy production-grade beyond running `langgraph serve` locally. missing for 10: documented production self-hosting of the Agent Server on own infrastructure, explicit statement that no LangSmith/vendor service is required, independent hands-on corroboration of fully self-hosted deployment.",
+    "rationale": "LangGraph is an open-source framework installed via pip that runs in your own process, and its docs recommend a self-chosen database-backed checkpointer (PostgresSaver) for production. The LangGraph CLI can also run the Agent Server locally, including a Docker stack with PostgreSQL/Redis. However, the pack frames that local stack as a 'production-like testing environment' before a separate deployment step, and a community user asks how to deploy beyond running locally. missing for 10: documented self-hosted production deployment of the Agent Server, an explicit statement that no vendor platform or licence is required, independent hands-on corroboration of fully vendor-independent operation.",
     "evidenceIds": [
       "langgraph-gh-5",
       "langgraph-gh-12",
       "langgraph-docs-13",
       "langgraph-docs-30",
-      "langgraph-docs-23"
+      "langgraph-local-dev-testing-20261105",
+      "langgraph-comm-5"
     ],
     "support": {
       "relation": "direct",
@@ -6260,8 +6377,8 @@
           "quote": "LangGraph CLI is a command-line tool for building and running the Agent Server locally. The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
         },
         {
-          "evidenceId": "langgraph-gh-12",
-          "quote": "LangGraph is a low-level orchestration framework for building, managing, and deploying long-running, stateful agents."
+          "evidenceId": "langgraph-local-dev-testing-20261105",
+          "quote": "`langgraph up`: A production-like testing environment for validation"
         }
       ]
     }
@@ -6272,9 +6389,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LangGraph's own README and docs point to first-party debugging with LangSmith, whose visualization tools trace execution paths, capture state transitions and give runtime metrics. The docs also direct users to a tracing quickstart to see data flow through each step. However, the UI lives in the companion LangSmith product, and the evidence never says that every LLM call and tool invocation is captured individually. missing for 10: explicit evidence of per-LLM-call and per-tool-invocation trace capture, in-depth tracing setup docs, independent or hands-on corroboration of the observability UI.",
+    "rationale": "LangGraph's own README and docs present tracing through LangSmith as a LangGraph feature: visualization tools that trace execution paths, capture state transitions and give runtime metrics, plus a tracing quickstart for following data through each step. The UI, however, is the separate LangSmith product, and the evidence never says each individual LLM call and tool invocation is captured. missing for 10: explicit evidence that every LLM call and tool invocation is traced, first-party tracing setup/UI detail, independent or hands-on corroboration.",
     "evidenceIds": [
       "langgraph-gh-10",
+      "langgraph-gh-11",
       "langgraph-docs-29"
     ],
     "support": {
@@ -6288,7 +6406,7 @@
         },
         {
           "evidenceId": "langgraph-docs-29",
-          "quote": "Trace and compare these workflow patterns with LangSmith"
+          "quote": "Trace and compare these workflow patterns with LangSmith... Follow the tracing quickstart to see how data flows through each step."
         }
       ]
     }
@@ -6299,12 +6417,13 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LangGraph's own docs describe stream/astream iterators with stream modes including messages, updates, tasks, custom and debug, plus per-projection event iterators, so token and intermediate-step streaming is a first-party capability. The evidence does not explicitly show tool-call events being streamed, and community reports say delivering the stream to a UI is a full implementation every client must build themselves, so coverage of the story is incomplete. missing for 10: explicit documentation of tool-call event streaming, a documented first-party path for delivering streams to a UI client, independent hands-on corroboration of real-time UI streaming.",
+    "rationale": "LangGraph's own docs say graphs stream execution through `stream`/`astream`, with modes including messages, updates, tasks, custom and debug, and with separate event iterators per projection. That covers the core of streaming LLM output and step-level events. However, token-level streaming and tool-call events are only implied by the mode names, and delivery to a UI is not documented; community users report that every client must implement streaming themselves. Missing for 10: explicit documentation of token-by-token and tool-call event streaming, documented first-party transport or SDK for pushing events to a frontend UI, independent hands-on corroboration of real-time UI streaming.",
     "evidenceIds": [
       "langgraph-docs-6",
       "langgraph-docs-18",
       "langgraph-docs-35",
-      "langgraph-comm-13"
+      "langgraph-docs-8",
+      "langgraph-comm-4"
     ],
     "support": {
       "relation": "direct",
@@ -6312,16 +6431,16 @@
       "subject": "As a developer, I can stream tokens and intermediate agent events (tool calls, steps) to my UI in real time",
       "citations": [
         {
-          "evidenceId": "langgraph-docs-18",
-          "quote": "LangGraph graphs expose the stream (sync) and astream (async) methods to yield streamed outputs as iterators."
-        },
-        {
           "evidenceId": "langgraph-docs-6",
           "quote": "It exposes graph execution through stream modes such as updates, values, messages, custom, checkpoints, tasks, and debug."
         },
         {
+          "evidenceId": "langgraph-docs-18",
+          "quote": "LangGraph graphs expose the stream (sync) and astream (async) methods to yield streamed outputs as iterators."
+        },
+        {
           "evidenceId": "langgraph-docs-35",
-          "quote": "Event streaming gives you separate iterators per projection (messages, values, subgraphs, output) so you can consume them independently"
+          "quote": "Event streaming gives you separate iterators per projection (messages, values, subgraphs, output) so you can consume them independently instead of branching on `stream_mode` chunks."
         }
       ]
     }
@@ -6332,7 +6451,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Structured output is a fair question for an agent orchestration framework, so the axis applies. However, the evidence pack never mentions schema-validated output or retries triggered by validation failures. Durable execution, checkpoint resumption and looping graphs are adjacent building blocks, not this capability.",
+    "rationale": "Structured output is a fair question for an agent orchestration framework like LangGraph, so the axis applies. However, the evidence pack never mentions schema-validated output or automatic retries on validation failure. Looping graph workflows are only a developer building block that could be used to build such a retry loop, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6347,12 +6466,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "LangGraph ships interrupts as a first-party feature. They pause graph execution at specific points and wait for external input, and the graph resumes via Command, backed by checkpointer persistence for human-in-the-loop workflows and compile-time breakpoints. That gives a native way to gate a node, such as a sensitive tool step, on human input. The evidence never explicitly documents approving or rejecting individual tool calls, so the per-tool approval policy has to be wired by the developer. Missing for 10: explicit documentation of per-tool-call approval gating (approve/edit/reject of specific tool invocations), a worked example of interrupting before a sensitive tool executes, and independent hands-on corroboration of approval gating.",
+    "rationale": "LangGraph's own interrupts can pause graph execution at chosen points and wait for external input, then resume via Command. This supports an approval gate placed before a step, and compile-time breakpoints plus checkpointer-backed human-in-the-loop reinforce it. The evidence never shows approval tied specifically to individual sensitive tool calls, nor any approve/reject/edit semantics, so the gate is a general pause point rather than a documented per-tool approval policy. Missing for 10: documented per-tool approval configuration, explicit approve/reject/edit decision handling for tool calls, independent hands-on corroboration of tool-call gating.",
     "evidenceIds": [
       "langgraph-docs-4",
       "langgraph-docs-5",
-      "langgraph-docs-2",
       "langgraph-docs-10",
+      "langgraph-docs-2",
       "langgraph-gh-7",
       "langgraph-comm-2"
     ],
@@ -6386,7 +6505,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Restricting an agent's actions is a fair question for an agent orchestration framework, so the axis applies. The evidence pack never documents fine-grained tool permissions or sandboxed execution. The \"fine-grained control\" docs describe mixing deterministic and agentic steps, and the interrupts and human-in-the-loop features are adjacent oversight controls, not tool permissioning or execution isolation.",
+    "rationale": "The evidence pack documents no tool-permission policy and no sandboxed execution environment for agent actions. The \"fine-grained control\" claim is about mixing deterministic and agentic steps in a graph, not about permissions. Interrupts and human-in-the-loop are a related control, not tool restriction or isolation. The `langgraph dev`/`up` environments are for testing deployments, not for sandboxing what an agent executes.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6401,7 +6520,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies, since a Python agent-orchestration framework could plausibly offer typed state schemas and build-time validation. The pack shows none: the only related item is that graph compilation runs \"a few basic checks on the structure of your graph (no orphaned nodes, etc)\". That is a structural check, not strict typing or schema validation of state or tool inputs. Nothing documents typed state schemas, validation, or static type-checking that would let a coding agent catch its own mistakes at build time.",
+    "rationale": "The evidence pack never documents strict typing, typed state schemas, or schema validation that would let a coding agent catch its own mistakes at build time. The only related item is the graph compile step's \"basic checks on the structure of your graph (no orphaned nodes, etc)\". That is a structural sanity check, an adjacent feature rather than type or schema validation, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6416,7 +6535,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit testing is a fair axis for an agent orchestration framework, but the evidence pack never documents testing utilities, fake or mocked chat models, or tool mocking. The closest evidence, that nodes are plain functions and graphs mix deterministic steps, is a developer building block that could make testing easier, not a testing capability itself.",
+    "rationale": "Unit-testing agents is a fair axis for an agent orchestration framework, but the evidence pack never documents mocking models or tools, fake LLMs, or a unit-testing harness. The 'Local development & testing' page covers local server environments (langgraph dev/up), not mocked unit tests. The community note that nodes are plain functions is at most a developer building block, which earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

@@ -1,17 +1,34 @@
 {
-  "hash": "3b050f4f0c6f1100fd90262a81834a48e1ce5591ce999d800389ff90ff5e69c0",
+  "hash": "2c68fe3056bbfc364c33270125dc2d69aba486e1bda30793ca7a0fa7408a7d1f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The axis applies because LangGraph's CLI runs an Agent Server that exposes API endpoints for runs, threads, and assistants. However, no evidence shows a downloadable OpenAPI or equivalent spec. The probe found every candidate OpenAPI/Swagger path returning 404, and llms.txt is a documentation index, not an API spec.",
-    "evidenceIds": [],
+    "rationale": "The docs publish a downloadable OpenAPI 3.1 document for the Agent Server, the LangGraph Platform runtime. It covers assistants, threads, runs, crons, store, A2A, MCP and system endpoints, is listed under \"OpenAPI Specs\" in llms.txt, and the control plane serves its own spec. The probe's 404s at generic well-known paths do not contradict the spec published at its documented path. missing for 10: independent or hands-on confirmation of the spec download, a spec at a discoverable well-known path, and a spec for the open-source library itself rather than only the Agent Server and deployment layer.",
+    "evidenceIds": [
+      "langgraph-agent-server-openapi-20261105",
+      "langgraph-api-playground-20261105",
+      "langgraph-docs-30"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "docs.langchain.com publishes the Agent Server (LangGraph Platform runtime) OpenAPI 3.1 document"
+        },
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "the deployment control plane serves its own spec at https://api.host.langchain.com/openapi.json"
+        },
+        {
+          "evidenceId": "langgraph-api-playground-20261105",
+          "quote": "every deployed or locally run Agent Server ships a built-in interactive API docs endpoint"
+        }
+      ]
     },
     "productId": "langgraph",
     "storyId": "api-machine-spec"

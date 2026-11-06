@@ -1,17 +1,33 @@
 {
-  "hash": "1efcdea6a089779875c72aa78d5a375d948edcba9e36d9ec8b26cab5adaa5eb1",
+  "hash": "f0c8f22055707b96a751da3f412e6e5e233ea3fddae88e8270fd1f476cfe3e87",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "vLLM runs an HTTP API server, so offering a downloadable machine-readable API spec is a fair question for it. The evidence only says the server is OpenAI-compatible (also Anthropic Messages and gRPC) and never mentions an OpenAPI or equivalent spec being published or downloadable. API compatibility with another vendor is an adjacent feature, not a spec the product itself provides.",
-    "evidenceIds": [],
+    "rationale": "vLLM's own server publishes a machine-readable FastAPI OpenAPI schema by default; it can be turned off with --disable-fastapi-docs. It also exposes Swagger UI and ReDoc explorers, with an offline mode for air-gapped setups. However, the spec only exists on a running instance: there is no downloadable static spec file, and the docs never state the /openapi.json path. Missing for 10: a published static OpenAPI file downloadable without deploying a server, documentation of the literal schema path, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "vllm-openapi-endpoint-20261105",
+      "vllm-interactive-docs-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "vllm-openapi-endpoint-20261105",
+          "quote": "Disable FastAPI's OpenAPI schema, Swagger UI, and ReDoc endpoint. Default: False"
+        },
+        {
+          "evidenceId": "vllm-openapi-endpoint-20261105",
+          "quote": "every running server publishes a machine-readable FastAPI OpenAPI schema by default"
+        },
+        {
+          "evidenceId": "vllm-interactive-docs-20261105",
+          "quote": "To enable offline access in air-gapped environments, use the --enable-offline-docs flag"
+        }
+      ]
     },
     "productId": "vllm",
     "storyId": "api-machine-spec"

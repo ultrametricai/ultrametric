@@ -2212,7 +2212,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a browser-agent platform, so adaptive crawling is a fair question to ask of it, but the evidence pack never documents a crawling mode that stops automatically once enough information has been gathered to answer a query. The nearby features are different capabilities: web search (docs-2), URL-to-markdown fetch (docs-3), goal-driven agents (docs-16), and pauseWhen (docs-23), which pauses a run for human input rather than ending a crawl on sufficiency.",
+    "rationale": "Browserbase is a browser and web-data platform for agents, so adaptive crawling is a fair axis to ask about. The evidence covers search, URL fetch, concurrent sessions, and goal-driven agents. None of it documents a crawler that measures information sufficiency and stops automatically once it has enough to answer the query. Goal-described agents and pausing runs (pauseWhen, which waits for human input) are adjacent features, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2227,9 +2227,10 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A hands-on probe confirms Browserbase serves an llms.txt at docs.browserbase.com/llms.txt (HTTP 200) with agent-oriented content. Doc pages are also served as markdown (.md URLs), and Browserbase Skills give coding agents like Claude Code, Cursor and Codex agent-targeted guidance. Missing for 10: independent or community corroboration of agents consuming these docs well, and no evidence of an expanded llms-full.txt.",
+    "rationale": "A live probe confirms Browserbase serves an llms.txt at docs.browserbase.com/llms.txt (HTTP 200) with agent-directed content. Docs pages are also exposed as .md files, and the llms.txt indexes the OpenAPI spec, so an agent can be pointed directly at machine-readable docs. Browserbase Skills add agent-oriented guidance for coding agents like Claude Code, Cursor and Codex. Missing for 10: evidence of a full-content llms-full.txt variant, and independent community corroboration of agents using these docs.",
     "evidenceIds": [
       "browserbase-probe-1",
+      "browserbase-openapi-spec-20261105",
       "browserbase-docs-15"
     ],
     "support": {
@@ -2239,7 +2240,11 @@
       "citations": [
         {
           "evidenceId": "browserbase-probe-1",
-          "quote": "HTTP 200 at https://docs.browserbase.com/llms.txt # Browserbase Documentation"
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.browserbase.com/llms.txt"
+        },
+        {
+          "evidenceId": "browserbase-openapi-spec-20261105",
+          "quote": "The docs llms.txt lists it under an \"## OpenAPI Specs\" heading"
         },
         {
           "evidenceId": "browserbase-docs-15",
@@ -2254,7 +2259,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The dashboard's Optimize tool reads a completed Agent run's event history and suggests a better system prompt, and it can turn the run into a reusable Stagehand script. That is an in-product, AI-generated suggestion drawn from the user's own run data, but it is narrowly scoped to improving agent prompts and scripts rather than general insights. Missing for 10: general analytics or insights over session and run data, insights across multiple runs, any evidence of AI analysis of extracted data, and independent or hands-on corroboration.",
+    "rationale": "Browserbase's dashboard Optimize tool reads an Agent run's event history and helps turn it into a better system prompt or a reusable Stagehand script. That is an in-product, AI-driven suggestion built from the user's own run data, but it is narrow: limited to agent-run optimization rather than general insights. Missing for 10: broader AI insights across the user's session and usage data, documented depth of the suggestions, and independent or hands-on corroboration.",
     "evidenceIds": [
       "browserbase-docs-25",
       "browserbase-docs-17"
@@ -2279,16 +2284,15 @@
     "productId": "browserbase",
     "storyId": "agentic-autonomous-automation",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Browserbase documents deploying browser agents that run on a recurring schedule or on demand. Agents can be created from the dashboard by describing a goal in natural language, can run continuously and alert you when something breaks, and webhooks report status changes without polling. Missing for 10: detailed docs on configuring schedules (cron syntax, recurrence options, failure/retry handling), independent or hands-on corroboration of unattended background runs.",
+    "rationale": "Browserbase documents creating an Agent from the dashboard by describing a goal in natural language, then deploying and running it on Browserbase on a schedule or on demand. Agents can run continuously, and webhooks push run status to your endpoint, so automations execute unattended in the background. missing for 10: in-depth scheduling documentation (recurrence/cron configuration details beyond a one-line mention), independent or hands-on corroboration of scheduled background runs.",
     "evidenceIds": [
       "browserbase-docs-14",
-      "browserbase-docs-11",
       "browserbase-docs-16",
+      "browserbase-docs-11",
       "browserbase-docs-19",
-      "browserbase-docs-23",
-      "browserbase-docs-12"
+      "browserbase-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -2300,12 +2304,12 @@
           "quote": "Deploy and run browser agents on Browserbase, on a schedule or on demand."
         },
         {
-          "evidenceId": "browserbase-docs-11",
-          "quote": "Run agents that click through your product continuously and alert you the moment something breaks."
-        },
-        {
           "evidenceId": "browserbase-docs-16",
           "quote": "Create your Browserbase Agent from the dashboard by describing the goal in natural language."
+        },
+        {
+          "evidenceId": "browserbase-docs-11",
+          "quote": "Run agents that click through your product continuously and alert you the moment something breaks."
         },
         {
           "evidenceId": "browserbase-docs-19",
@@ -2320,13 +2324,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Browserbase ships a first-party Agent that users create from the dashboard by describing a goal in natural language. Supporting docs show it can run on a schedule or on demand, pause to ask the user for input and then resume, handle downloaded files, and have completed runs optimized in the dashboard's run view. missing for 10: independent or hands-on corroboration of the built-in Agent, and documentation of a conversational in-product assistant beyond goal-based agent runs.",
+    "rationale": "Browserbase ships a first-party Browserbase Agent. You create it in the dashboard by describing a goal in natural language, run it on demand or on a schedule, and it can pause to ask you for input before continuing. The dashboard's Optimize tool also helps refine the agent's prompt or turn a completed run into a reusable script. missing for 10: independent or hands-on corroboration of the built-in agent, and detail on the in-product assistant experience beyond brief doc snippets.",
     "evidenceIds": [
       "browserbase-docs-16",
       "browserbase-docs-14",
       "browserbase-docs-23",
       "browserbase-docs-25",
-      "browserbase-docs-27"
+      "browserbase-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -2355,21 +2359,20 @@
   {
     "productId": "browserbase",
     "storyId": "agentic-headless",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Browserbase is built to be driven without a UI. Its official SDK controls headless browsers running on its cloud, sessions can be created and controlled programmatically, a terminal-based Browse CLI exists, and agents can run on a schedule or on demand. A community comment also describes it as a serverless headless browser product. missing for 10: explicit CI-pipeline integration docs (e.g. GitHub Actions examples), hands-on corroboration of CI usage.",
+    "rationale": "Browserbase's own docs show it is headless and programmatically driven: an official SDK controls headless browsers, a Browse CLI keeps agents working in the terminal, and agents can be deployed to run on a schedule or on demand. No evidence pack item shows running it inside a CI pipeline, so coverage is partial rather than complete. missing for 10: explicit CI integration documentation (e.g. CI pipeline examples or guides), independent or hands-on corroboration of headless/CI automation use.",
     "evidenceIds": [
       "browserbase-docs-22",
       "browserbase-docs-1",
       "browserbase-docs-14",
       "browserbase-docs-24",
-      "browserbase-probe-4",
-      "browserbase-comm-3"
+      "browserbase-probe-4"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -2386,7 +2389,7 @@
         },
         {
           "evidenceId": "browserbase-docs-24",
-          "quote": "Use the Browse CLI when you want your agent to stay in the terminal"
+          "quote": "Use the Browse CLI when you want your agent to stay in the terminal for workflows like"
         }
       ]
     }
@@ -2397,7 +2400,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a browser-agent platform with its own hosted Agents, so letting users plug in external MCP servers as tools is a fair question for it. The pack only documents Browserbase's own official MCP server (probe-3), which is the server role and does not show its agents consuming third-party MCP servers. No evidence shows Browserbase acting as an MCP client.",
+    "rationale": "Browserbase ships its own agents (a dashboard Agent and the Stagehand SDK), so acting as an MCP client is a fair question for this product. However, nothing in the evidence shows users can register or plug external MCP servers into it to use their tools. The documented official MCP server (probe-3) is the opposite role: it exposes Browserbase to other agents, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2409,16 +2412,16 @@
   {
     "productId": "browserbase",
     "storyId": "agentic-mcp-server",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Browserbase is a browser-infrastructure platform, not an agent, so the official-MCP-server axis applies. A probe confirms a first-party MCP server documented under the docs' integrations section, but the pack has no detail on what it does or how to connect to it. missing for 10: details of the MCP server's tools and capabilities, setup and connection instructions for agent clients, independent or hands-on corroboration that agents connect successfully.",
+    "rationale": "Browserbase is a browser-infrastructure platform, not an agent, so publishing an official MCP server is an applicable axis. A probe confirms an official MCP server is documented at docs.browserbase.com/integrations/mcp/introduction, which directly delivers the story's core. Missing for 10: details on the MCP server's tools, transport/setup and supported clients, plus independent or hands-on corroboration of connecting an agent through it.",
     "evidenceIds": [
       "browserbase-probe-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
       "citations": [
         {
@@ -2434,11 +2437,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Browserbase documents natural-language operation for its Agent feature: you create an agent in the dashboard by describing the goal in plain language, the Stagehand SDK offers natural-language selectors, and paused runs resume when you reply. Natural language is not shown as a way to operate the broader product, such as managing sessions, settings, or webhooks, and the claims rest only on vendor docs. missing for 10: natural-language control of the broader platform beyond agent goals and selectors, independent or hands-on corroboration that natural-language commands work reliably.",
+    "rationale": "Browserbase documents its own natural-language interfaces: users create Agents in the dashboard by describing the goal in natural language, can reply to a paused run so it continues, and Stagehand offers natural-language selectors for browser actions. Coverage is not complete, because the evidence shows natural-language control of agent tasks and browser actions, not of the product overall. Missing for 10: documented natural-language control of platform operations such as session, settings and webhook management; independent or hands-on corroboration that the natural-language commands work reliably.",
     "evidenceIds": [
       "browserbase-docs-16",
       "browserbase-docs-5",
-      "browserbase-docs-23"
+      "browserbase-docs-23",
+      "browserbase-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -2466,7 +2470,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Browserbase documents a first-party Browse CLI on its own docs site, positioned for agents that work in the terminal, which matches an official CLI for AI-native use. The evidence is limited to a single doc snippet and a probe confirming the page exists, so command coverage and install details are not shown. missing for 10: details of CLI commands and installation, evidence that it covers session management beyond browsing, independent or hands-on corroboration.",
+    "rationale": "Browserbase documents an official Browse CLI that lets agents work in the terminal, and a probe confirms the official CLI docs page exists. The evidence only establishes that the CLI exists and what it is for; it says little about its commands or depth. Missing for 10: details of CLI commands and coverage (sessions, auth, install), independent or hands-on corroboration of CLI usage.",
     "evidenceIds": [
       "browserbase-docs-24",
       "browserbase-probe-4"
@@ -2491,16 +2495,16 @@
     "productId": "browserbase",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Browserbase documents programmatic creation, control, and observation of browser sessions. It also documents a Downloads API, an official Node SDK reference, and API-key access advertised in llms.txt, so the product can be driven through a documented public API. Missing for 10: a published machine-readable OpenAPI spec (all probed paths returned 404), explicit REST endpoint reference content in the pack, and independent or hands-on corroboration of API use.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Browserbase publishes an OpenAPI 3.0.0 \"Browserbase API\" spec at /reference/api/openapi.v1.yaml, served at api.browserbase.com. Its generated API reference pages include a live \"Try it\" playground, and an official SDK lets users create, control, and observe sessions programmatically. The 404s on the conventional OpenAPI paths only show the spec lives at a different path, not that it is missing. missing for 10: independent or hands-on community corroboration of actually driving the product through the API.",
     "evidenceIds": [
+      "browserbase-openapi-spec-20261105",
+      "browserbase-api-playground-20261105",
       "browserbase-docs-1",
-      "browserbase-docs-18",
-      "browserbase-docs-19",
       "browserbase-docs-22",
-      "browserbase-probe-1",
-      "browserbase-probe-2"
+      "browserbase-docs-18",
+      "browserbase-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -2508,20 +2512,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
+          "evidenceId": "browserbase-openapi-spec-20261105",
+          "quote": "docs.browserbase.com publishes a downloadable OpenAPI 3.0.0 document whose info block reads \"title: Browserbase API\" and \"description: Browserbase API for 3rd party developers\", version v1, server url https://api.browserbase.com."
+        },
+        {
+          "evidenceId": "browserbase-api-playground-20261105",
+          "quote": "The \"Create a Session\" API reference page renders a live \"Try it\" API playground (the Mintlify api.playground runtime) with a runnable request to https://api.browserbase.com/v1/sessions."
+        },
+        {
           "evidenceId": "browserbase-docs-1",
           "quote": "Create, control, and observe browser sessions programmatically."
         },
         {
-          "evidenceId": "browserbase-docs-18",
-          "quote": "Retrieve it with the Downloads API using the sessionId from the run."
-        },
-        {
           "evidenceId": "browserbase-docs-22",
           "quote": "the official `@browserbasehq/sdk` package is the easiest way\nto connect to and control headless browsers running on Browserbase."
-        },
-        {
-          "evidenceId": "browserbase-probe-1",
-          "quote": "Browserbase is the Browser Agent Platform: one API key gives your agent everything it nee"
         }
       ]
     }
@@ -2532,7 +2536,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is an API platform for browser agents, so issuing scoped or least-privilege credentials is a fair question to ask of it. The evidence never documents scoped, permission-limited or per-agent API keys. The only credential mention, the llms.txt description of 'one API key' giving the agent everything it needs, points to a single broad key rather than least-privilege scoping.",
+    "rationale": "Browserbase is an API platform where agents authenticate with API keys, so issuing scoped credentials is a fair axis. The evidence never documents scoped, restricted or least-privilege keys; the llms.txt probe instead describes a single API key giving the agent everything it needs. Webhooks, the SDK, the MCP server and the CLI are other capabilities and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2547,12 +2551,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Browserbase documents an official `@browserbasehq/sdk` Node.js package for connecting to and controlling its hosted browsers. It also documents an SDK for browser agents and SDK-based webhook management. This shows first-party SDKs a developer can build against. Missing for 10: evidence of official SDKs beyond Node.js/TypeScript (e.g. Python), independent or hands-on corroboration of SDK quality.",
+    "rationale": "Browserbase documents an official `@browserbasehq/sdk` Node.js package for connecting to and controlling its browsers, and the SDK also manages webhook endpoints. It additionally positions Stagehand as its SDK for browser agents. missing for 10: evidence of official SDKs in other languages (e.g. Python), independent or hands-on corroboration of the SDKs in use.",
     "evidenceIds": [
       "browserbase-docs-22",
       "browserbase-docs-5",
-      "browserbase-docs-20",
-      "browserbase-docs-1"
+      "browserbase-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -2578,9 +2581,9 @@
     "productId": "browserbase",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Browserbase documents first-party webhooks that send an HTTP POST to a user-owned endpoint when a subscribed event happens. Endpoints can be registered from Settings or through the SDK, and the docs cover signature verification for deliveries. missing for 10: an enumerated catalog of subscribable event types, independent or hands-on corroboration of webhook delivery.",
+    "rationale": "Browserbase's own docs describe webhooks that send an HTTP POST to an endpoint you own whenever a subscribed event happens. Endpoints can be registered from Settings or through the SDK, and each delivery carries a signature you can verify, so programmatic subscription is covered end to end. Missing for 10: independent or hands-on corroboration, and an enumerated catalog of subscribable event types.",
     "evidenceIds": [
       "browserbase-docs-19",
       "browserbase-docs-20",
@@ -2612,12 +2615,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Browserbase's docs present its own browser-agent SDK with \"natural language selectors\", which replaces hand-written selectors. Its agents \"pull data from any website\" and can be created by describing the goal in natural language. However, no evidence shows a documented structured or schema-based extraction method, so the structured-data part of the story is only implied. Missing for 10: an explicit natural-language extract API with schema-typed output, details on extraction quality or accuracy, and independent hands-on corroboration.",
+    "rationale": "Browserbase's first-party docs describe an SDK with \"natural language selectors\" and agents, defined by a natural-language goal, that pull data from websites. That covers natural-language instructions in place of hand-written selectors. However, no evidence shows a dedicated structured-extraction call that returns schema-typed data. The URL-to-JSON fetch is a format conversion, not instruction-driven extraction. Missing for 10: a documented extract API with schema-defined structured output, examples of natural-language extraction instructions, and independent or hands-on corroboration of extraction quality.",
     "evidenceIds": [
       "browserbase-docs-5",
       "browserbase-docs-8",
-      "browserbase-docs-16",
-      "browserbase-docs-3"
+      "browserbase-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -2626,7 +2628,7 @@
       "citations": [
         {
           "evidenceId": "browserbase-docs-5",
-          "quote": "The SDK for browser agents. Natural language selectors, self-healing actions, and caching at scale."
+          "quote": "Natural language selectors, self-healing actions, and caching at scale."
         },
         {
           "evidenceId": "browserbase-docs-8",
@@ -2642,31 +2644,65 @@
   {
     "productId": "browserbase",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Browserbase documents a Node.js SDK reference and offers ready-made templates, but nothing in the evidence describes an interactive API reference or playground with runnable in-page examples. The OpenAPI probe returned 404 on every candidate path, so there is no indication of a spec-driven explorer either. A static SDK reference and starter templates are adjacent features, not the interactive, runnable reference this story asks for.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Browserbase's API reference pages render a live Mintlify \"Try it\" playground with runnable requests to api.browserbase.com. The pages are generated from a published OpenAPI 3.0.0 document, so users can explore the API interactively and execute examples. The openapi.json probe 404s were only at guessed paths; the spec is published at /reference/api/openapi.v1.yaml, so this does not contradict the claim. Missing for 10: independent or hands-on corroboration of the playground, and evidence of how deep the per-endpoint examples go (e.g., multi-language code samples).",
+    "evidenceIds": [
+      "browserbase-api-playground-20261105",
+      "browserbase-openapi-spec-20261105",
+      "browserbase-probe-1"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "browserbase-api-playground-20261105",
+          "quote": "The \"Create a Session\" API reference page renders a live \"Try it\" API playground (the Mintlify api.playground runtime) with a runnable request to https://api.browserbase.com/v1/sessions."
+        },
+        {
+          "evidenceId": "browserbase-api-playground-20261105",
+          "quote": "The same \"Try it\" control appears across the /reference/api endpoint pages, which are generated from the published OpenAPI document."
+        },
+        {
+          "evidenceId": "browserbase-openapi-spec-20261105",
+          "quote": "docs.browserbase.com publishes a downloadable OpenAPI 3.0.0 document whose info block reads \"title: Browserbase API\""
+        }
+      ]
     }
   },
   {
     "productId": "browserbase",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Browserbase is an API platform, so a downloadable machine-readable API spec is a fair question to ask. The probe found every candidate OpenAPI/Swagger path returning 404, and no documentation mentions a published spec. The llms.txt file and the Node.js SDK reference are adjacent resources, not a machine-readable API specification, so they earn no credit.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Browserbase publishes a downloadable OpenAPI 3.0.0 document (\"Browserbase API\", v1) at /reference/api/openapi.v1.yaml, and its llms.txt lists it under an \"OpenAPI Specs\" heading. The API reference pages and their \"Try it\" playground are generated from that published spec. The probe's 404s were on generic guessed paths (openapi.json, swagger.json), not the documented location, so they do not contradict the claim. Missing for 10: independent or hands-on confirmation of downloading and validating the spec file.",
+    "evidenceIds": [
+      "browserbase-openapi-spec-20261105",
+      "browserbase-api-playground-20261105",
+      "browserbase-probe-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "browserbase-openapi-spec-20261105",
+          "quote": "docs.browserbase.com publishes a downloadable OpenAPI 3.0.0 document whose info block reads \"title: Browserbase API\""
+        },
+        {
+          "evidenceId": "browserbase-openapi-spec-20261105",
+          "quote": "The docs llms.txt lists it under an \"## OpenAPI Specs\" heading as \"[openapi.v1](/reference/api/openapi.v1.yaml)\"."
+        },
+        {
+          "evidenceId": "browserbase-api-playground-20261105",
+          "quote": "which are generated from the published OpenAPI document"
+        }
+      ]
     }
   },
   {
@@ -2675,7 +2711,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a browser-agent SaaS platform, so a sandbox or test environment separate from production data is a fair axis. The evidence pack documents no sandbox, test mode, test API keys, or production-data isolation. Programmatic browser sessions and continuous product-testing agents are adjacent features and do not show a non-production testing environment.",
+    "rationale": "The evidence pack documents programmatic browser sessions, an API 'Try it' playground, and agent deployment. None of it describes a sandbox or test environment, or a test mode kept separate from production data. The 'Try it' playground sends live requests to the production API endpoint, so it is not sandbox isolation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2687,16 +2723,28 @@
   {
     "productId": "browserbase",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Browserbase is an API-driven browser platform, so API versioning and deprecation policy is a fair question. The evidence pack documents the SDK, webhooks, CLI and MCP server, but nothing mentions API versions, version pinning, or a deprecation or sunset policy. The OpenAPI probe also returned 404 on every candidate path.",
-    "evidenceIds": [],
+    "rationale": "Browserbase publishes a versioned OpenAPI document (openapi.v1, version v1), and its endpoints are served under a /v1 path, so the versioning half of the story is documented. Nothing in the pack shows a deprecation policy, sunset timelines, or changelog commitments. missing for 10: documented deprecation policy, deprecation/sunset notice process, evidence of how version transitions are handled, independent corroboration.",
+    "evidenceIds": [
+      "browserbase-openapi-spec-20261105",
+      "browserbase-api-playground-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "browserbase-openapi-spec-20261105",
+          "quote": "version v1, server url https://api.browserbase.com"
+        },
+        {
+          "evidenceId": "browserbase-api-playground-20261105",
+          "quote": "a runnable request to https://api.browserbase.com/v1/sessions"
+        }
+      ]
     }
   },
   {
@@ -2705,7 +2753,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Browserbase's own site directly claims that its agents get past forms, CAPTCHAs and login prompts automatically, including logging in through login walls, which covers every element of the story. The support is homepage marketing only, with no technical docs or hands-on corroboration. The pauseWhen feature hands control back to a human, so it is not credited as automatic. Missing for 10: technical documentation of the CAPTCHA-solving and authentication mechanism, independent or hands-on corroboration that walls are bypassed without intervention.",
+    "rationale": "Browserbase's own marketing directly claims that agents get past all three wall types without user intervention: forms, CAPTCHAs, and login prompts are 'handled', and agents log in 'login walls included'. The evidence is only short homepage marketing lines, though, with no technical documentation of how CAPTCHA solving or credential handling works and no independent confirmation. missing for 10: technical docs on CAPTCHA-solving and authentication mechanisms, hands-on or independent corroboration.",
     "evidenceIds": [
       "browserbase-docs-10",
       "browserbase-docs-8"
@@ -2732,7 +2780,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a browser-infrastructure API, so automatic cost-optimized configuration selection is a fair axis for it. However, nothing in the evidence shows the API automatically choosing the cheapest setup that still succeeds. The dashboard Optimize tool turns a completed Agent run into a Stagehand script or a better system prompt; that is an adjacent feature, not automatic cost-based configuration selection.",
+    "rationale": "Browserbase is a browser-session API, so automatic cost-aware configuration selection is a fair axis for it. However, no evidence shows the API picks the cheapest configuration that still succeeds. The Optimize tool turns completed Agent runs into reusable scripts or better system prompts. That is an adjacent optimization feature, not automatic cost-based configuration selection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2747,7 +2795,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Proxy handling is a fair question for a cloud browser platform, so the axis applies. The evidence pack never mentions proxies, proxy chains, or automatic retry when a request is blocked. The CAPTCHA-handling claim (docs-10) is an adjacent anti-bot feature, not proxy failover, so it earns no credit.",
+    "rationale": "Proxy failover is a fair question for a cloud browser platform like Browserbase, so the axis applies. However, the evidence pack never mentions proxies, proxy chains, or automatic retry when anti-bot detection blocks a request. The only nearby claim is CAPTCHA and login handling, which is a different capability from proxy-chain failover.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2759,40 +2807,27 @@
   {
     "productId": "browserbase",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Browserbase documents spinning up thousands of concurrent browser sessions, which lets agents work across many items in parallel. However, there is no documented batch or bulk-operation API or feature for acting on many items in one operation; fan-out appears to be left to the user's orchestration. Missing for 10: a documented bulk/batch operation API or workflow, per-item result aggregation and error handling, and hands-on or independent corroboration of bulk runs.",
-    "evidenceIds": [
-      "browserbase-docs-9",
-      "browserbase-docs-12"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Browserbase can run thousands of concurrent browser sessions. That is a scaling primitive a developer could use to build a fan-out, not a documented bulk or batch operation applied to many items at once. No batch API, bulk endpoint or multi-item action feature appears in the pack, so this is adjacent support only and earns no credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": [
-        {
-          "evidenceId": "browserbase-docs-9",
-          "quote": "Spin up thousands of concurrent browser sessions and return answers immediately"
-        },
-        {
-          "evidenceId": "browserbase-docs-12",
-          "quote": "Track prices, job listings, product changes, and competitor moves as they happen."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "browserbase",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Browserbase's own webhooks fire an HTTP POST automatically when a subscribed event happens. Endpoints can be managed from Settings or the SDK, and the product also markets agents that alert you the moment something breaks. That is real event-triggered behavior, but the only documented action is a notification to your endpoint, with no in-product rule definition, conditions, or action chaining; scheduled runs are time-based, not event-based, and earn no credit here. Missing for 10: a documented rules engine for defining event conditions, configurable in-product actions beyond webhook delivery, an event catalog detailing which events can trigger actions, and independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Browserbase's own `pauseWhen` lets a user define a condition under which the Agent automatically pauses a run and asks for input, and monitoring agents can alert when something breaks. These are narrow product-native condition→action behaviors, not a general rule engine. Webhooks only notify your endpoint of subscribed events, so any resulting action is user-built, and scheduled runs are a recurring schedule, not an event trigger. Neither earns credit here. Missing for 10: a general user-defined event→action rule system, documented choice of trigger events and resulting actions, independent or hands-on corroboration.",
     "evidenceIds": [
-      "browserbase-docs-19",
-      "browserbase-docs-20",
+      "browserbase-docs-23",
       "browserbase-docs-11"
     ],
     "support": {
@@ -2801,12 +2836,8 @@
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
-          "evidenceId": "browserbase-docs-19",
-          "quote": "Browserbase webhooks send an HTTP POST to an endpoint you own as soon as a subscribed event happens, so you don't have to poll the API for status changes."
-        },
-        {
-          "evidenceId": "browserbase-docs-20",
-          "quote": "You can manage endpoints from Settings as well as through the SDK. Both act on the same webhooks."
+          "evidenceId": "browserbase-docs-23",
+          "quote": "With `pauseWhen`, the Agent can pause the run, tell you what it needs, and continue exactly where it left off once you reply."
         },
         {
           "evidenceId": "browserbase-docs-11",
@@ -2818,17 +2849,18 @@
   {
     "productId": "browserbase",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Browserbase's own docs say agents can be deployed and run on a schedule or on demand. Its product pages also describe agents running continuously to monitor products and alert on breakage, which is a recurring workflow. Missing for 10: detailed docs on schedule configuration (cron/interval syntax, management via API/SDK, run history), independent or hands-on corroboration.",
+    "rationale": "Browserbase's own docs say browser agents can be deployed and run 'on a schedule or on demand', which directly claims recurring execution. Marketing copy about agents that run 'continuously' and track changes 'as they happen' supports the recurring-use case. However, scheduling appears only as a single one-line mention, with no detail on how schedules are defined, managed or monitored. missing for 10: documented schedule configuration (cron/interval syntax, API or dashboard schedule management), schedule run history and failure handling, independent or hands-on corroboration of recurring runs.",
     "evidenceIds": [
       "browserbase-docs-14",
-      "browserbase-docs-11"
+      "browserbase-docs-11",
+      "browserbase-docs-12"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
       "citations": [
         {
@@ -2848,7 +2880,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase deploys and runs browser agents, so versioning, reviewing, and rolling back automations is a fair axis for it. The pack documents no versioning, version history, or rollback of agents or automations. The Optimize tool, which turns a run into a Stagehand script or a better prompt, and session replay or logs for reviewing runs are adjacent features. Keeping exported scripts in a user's own version control would be a user-side workaround, not a product capability.",
+    "rationale": "Browserbase's evidence covers session replay and observability (docs-26), turning a completed Agent run into a reusable Stagehand script (docs-17), and refining a run into a better system prompt (docs-25). None of these documents versioning automation definitions, reviewing changes between versions, or rolling back to a prior version. Replay reviews runs rather than automation revisions, and keeping exported scripts in an external repo would be a user-side workaround, so no credit applies.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2863,11 +2895,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Browserbase documents running thousands of concurrent browser sessions and converting any URL into HTML, JSON or markdown, which supports high-volume scraping. Its webhooks remove the need to poll for status changes. However, there is no documented batch-submission or async job API for feeding in a list of thousands of URLs, so the batching and orchestration appear to be left to the user. Missing for 10: a documented batch/async bulk-URL scrape endpoint, job queuing/retry semantics for large URL lists, and independent or hands-on corroboration of scale.",
+    "rationale": "Browserbase documents running thousands of concurrent browser sessions, a URL-to-HTML/JSON/markdown fetch capability, and webhooks that report session status changes so you don't have to poll. That covers the scale and async pieces of the story. There is no documented batch-job or bulk-URL submission API, so the data engineer must fan out and orchestrate the URL list themselves. Missing for 10: a documented batch/bulk scrape endpoint or job queue, documented throughput limits and retry behaviour, and independent hands-on corroboration of scraping thousands of URLs.",
     "evidenceIds": [
       "browserbase-docs-9",
       "browserbase-docs-3",
-      "browserbase-docs-19"
+      "browserbase-docs-19",
+      "browserbase-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -2895,10 +2928,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ad blocking is a fair question for a cloud headless-browser platform, so the axis applies. The pack has no documented ad-blocking feature. The only related item is generic network interception (browserbase-docs-4), a developer building block someone could use to construct ad blocking, which earns no credit here.",
+    "rationale": "Ad blocking is a fair question for a hosted headless-browser platform, but nothing in the evidence documents a Browserbase ad-blocking setting or feature. The only related item is general 'network interception', a developer building block for constructing request blocking yourself, which earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can block ads on the target page to speed up scraping requests",
       "citations": []
@@ -2910,13 +2943,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Blocking resources is a fair question for a hosted headless-browser platform, so the axis applies. The pack has no Browserbase setting or session option that blocks images or CSS by default. The only related item is a generic mention of \"network interception\" (browserbase-docs-4). That is a developer building block a user could script, not the product's own default resource-blocking capability, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "The evidence pack has no documented Browserbase setting or session option that blocks images or CSS by default to save bandwidth. The only related item is a generic mention of 'network interception' in browser control. That is a developer building block for constructing request blocking, not the default resource-blocking capability itself, so it earns no credit.",
+    "evidenceIds": [
+      "browserbase-docs-4"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can block images and CSS resources by default to reduce bandwidth and speed up requests",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "browserbase-docs-4",
+          "quote": "Full browser control with auto-waits, network interception, and multi-tab support."
+        }
+      ]
     }
   },
   {
@@ -2925,7 +2965,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no per-tier concurrency limits, no pricing tiers, and no cost to raise a concurrency cap. The only related item is marketing copy about running thousands of concurrent sessions, which states general scale rather than a documented tier limit, so it is adjacent at best.",
+    "rationale": "The evidence pack has no pricing-tier documentation. It does not state a concurrent-session cap per plan or the cost to raise that cap. The only related item is a marketing claim about spinning up 'thousands of concurrent browser sessions', which describes scale in general rather than tier-specific limits or upgrade pricing, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2940,12 +2980,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Browserbase's own materials say you can spin up thousands of concurrent browser sessions, create and control sessions programmatically, and pull data from websites. Together these cover the core of large-scale concurrent scraping. Missing for 10: in-depth documentation of concurrency limits, quotas and plan tiers; independent or hands-on corroboration of scale and reliability under load.",
+    "rationale": "Browserbase's own materials directly claim the core capability. Sessions can be created programmatically through an SDK and API, the platform says it can 'spin up thousands of concurrent browser sessions,' and its agents pull data from websites, including price and listing tracking. That covers concurrency, scraping and scale, but only at the level of marketing and overview claims. Missing for 10: documented concurrency limits or plan quotas, detailed scaling or reliability guidance (rate limits, retries, throughput), and independent or hands-on corroboration of large-scale concurrent scraping.",
     "evidenceIds": [
       "browserbase-docs-9",
       "browserbase-docs-1",
       "browserbase-docs-8",
-      "browserbase-docs-12"
+      "browserbase-docs-12",
+      "browserbase-api-playground-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -2963,6 +3004,10 @@
         {
           "evidenceId": "browserbase-docs-8",
           "quote": "Your agent logs in, navigates, and pulls data from any website, login walls included."
+        },
+        {
+          "evidenceId": "browserbase-docs-12",
+          "quote": "Track prices, job listings, product changes, and competitor moves as they happen."
         }
       ]
     }
@@ -2971,13 +3016,14 @@
     "productId": "browserbase",
     "storyId": "content-change-monitoring",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Browserbase's marketing directly claims this use case (\"Track prices, job listings, product changes, and competitor moves as they happen\"), and its docs show browser agents can run on a schedule, which gives recurring checks rather than one-off runs. However, there is no documented change-detection or diffing feature. The webhooks are described only for generic \"subscribed events\" and status changes, not content-change alerts. missing for 10: documented content-change detection/diffing, a notification mechanism tied to page-content changes, configuration docs for monitors, independent or hands-on corroboration.",
+    "rationale": "Browserbase markets this use case directly: it says it can \"Track prices, job listings, product changes, and competitor moves as they happen\". It also documents scheduled agent runs and outbound webhooks for subscribed events, which together support recurring checks with programmatic delivery. However, the evidence never documents a built-in change-detection or diffing feature, nor a webhook event that fires on page-content changes; the webhooks are framed around status changes. Missing for 10: documented content-change or diff detection, a webhook or notification event tied to detected content changes, and hands-on or independent corroboration of monitoring workflows.",
     "evidenceIds": [
       "browserbase-docs-12",
       "browserbase-docs-14",
-      "browserbase-docs-19"
+      "browserbase-docs-19",
+      "browserbase-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -2994,7 +3040,7 @@
         },
         {
           "evidenceId": "browserbase-docs-19",
-          "quote": "Browserbase webhooks send an HTTP POST to an endpoint you own as soon as a subscribed event happens"
+          "quote": "Browserbase webhooks send an HTTP POST to an endpoint you own as soon as a subscribed event happens, so you don't have to poll the API for status changes."
         }
       ]
     }
@@ -3005,7 +3051,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Viewport control is a fair question for a hosted headless-browser platform like Browserbase, so the axis applies. However, the evidence only makes generic claims about controlling sessions and browsers ('full browser control', 'create, control, and observe browser sessions'). Nothing documents setting viewport width or height when rendering a page.",
+    "rationale": "Viewport control is a fair question for a hosted headless-browser platform, so the axis applies. However, nothing in the evidence pack mentions setting viewport width or height. The generic claims of 'full browser control' and the Create a Session API page do not document viewport or screen-size parameters, so they cannot be credited.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3020,7 +3066,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a browser-automation and scraping platform, so honoring robots.txt and target-site rate limits is a fair question for it. However, no evidence item mentions robots.txt compliance or automatic per-site throttling. The claims about high concurrency, scheduling and CAPTCHA handling are adjacent features and do not deliver polite-crawling controls.",
+    "rationale": "Browserbase is a browser-automation and scraping platform, so honouring robots.txt and per-site rate limits is a fair question to ask of it. However, nothing in the evidence pack documents any robots.txt compliance setting or automatic target-site rate limiting. Concurrency at scale, CAPTCHA handling and scheduling are related features but do not deliver this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3035,7 +3081,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Billing behavior when a plan quota is exceeded is a fair question for a usage-priced SaaS like Browserbase. However, nothing in the evidence pack covers pricing plans, credit or request quotas, overage charges, or hard cutoffs. The cited items concern sessions, agents, webhooks, the SDK and the CLI, so they do not bear on this story.",
+    "rationale": "Billing behavior when a plan's quota is exceeded is a fair question for a metered SaaS browser platform like Browserbase, so the axis applies. However, nothing in the evidence pack covers pricing, credits, quotas, overage charges or hard cutoffs.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3050,7 +3096,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Field extraction is a fair question for a browser automation platform, but no evidence item documents CSS or XPath selector rules for pulling specific fields. The closest items are adjacent and earn no credit: natural-language selectors in the SDK (docs-5), URL-to-HTML/JSON/markdown conversion (docs-3), and generic full browser control (docs-4).",
+    "rationale": "The evidence pack never documents a Browserbase feature that extracts fields using CSS or XPath selector rules. The closest items are natural-language selectors in the SDK (docs-5), generic browser control (docs-4), and URL-to-HTML/JSON/markdown conversion (docs-3). These are adjacent features or developer building blocks, not declarative CSS/XPath field extraction.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3065,7 +3111,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Browserbase documents deploying and running browser agents on its own platform, on a schedule or on demand, and hosts browser sessions at scale, so developers avoid managing browser infrastructure. Agent runs can also be converted into reusable Stagehand scripts. However, the evidence does not explicitly show that arbitrary developer-written scraping scripts can be uploaded and executed serverlessly. Missing for 10: explicit docs on deploying custom code/scripts (not just agents) to Browserbase runtime, details on the deployment workflow and runtime limits, independent hands-on corroboration.",
+    "rationale": "Browserbase documents deploying and running browser agents on its own platform, on a schedule or on demand. It also runs hosted, highly concurrent browser sessions, so developers don't manage browser infrastructure, and it can convert agent runs into reusable Stagehand scripts. However, the evidence frames deployment around agents, not arbitrary developer-written scraping code hosted as serverless functions. missing for 10: explicit documentation of deploying custom developer-authored script code to run on the platform, details of the deployment workflow and runtime limits, independent hands-on corroboration.",
     "evidenceIds": [
       "browserbase-docs-14",
       "browserbase-docs-17",
@@ -3089,6 +3135,10 @@
         {
           "evidenceId": "browserbase-docs-9",
           "quote": "Spin up thousands of concurrent browser sessions and return answers immediately"
+        },
+        {
+          "evidenceId": "browserbase-docs-1",
+          "quote": "Create, control, and observe browser sessions programmatically."
         }
       ]
     }
@@ -3099,7 +3149,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any export or migration capability for scraped data or job configurations in a portable, provider-neutral format. Nearby features are different capabilities and earn no credit here: the Downloads API retrieves files downloaded during a session, and the Optimize tool turns an Agent run into a Stagehand script, but neither is documented as a way to export data or configs for another provider. Community mentions of open-source alternatives do not show the product itself offers anti-lock-in export.",
+    "rationale": "Data and configuration portability is a fair question for a hosted browser-agent platform, but the evidence never documents exporting scraped data or job configurations for migration to another provider. The closest items are adjacent: the Downloads API retrieves files a session downloaded, and the Optimize tool turns an Agent run into a Stagehand script. Neither is described as a portable export or migration path.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3114,7 +3164,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Browserbase documents its own session observability (rich logs, live view, session replay) and registrable webhooks that POST to your endpoint when subscribed events occur. Together these give a data engineer job monitoring and programmatic status notifications. Nothing in the pack covers validating the quality of extracted data, and the webhooks are not explicitly documented as firing on job failure. Missing for 10: data-quality validation capability, explicit failure-event alerting, job performance metrics or dashboards beyond session logs and replay, independent corroboration.",
+    "rationale": "Browserbase documents session observability (rich logs, live view, session replay) and registrable webhooks that POST to your endpoint when subscribed events occur, which covers monitoring and failure alerting for browser jobs. Nothing in the evidence shows built-in data-quality validation, and there is no documented job-performance metrics view. missing for 10: data-quality validation of extracted output, explicit job-performance metrics/dashboards, documented failure-specific webhook event types, independent corroboration.",
     "evidenceIds": [
       "browserbase-docs-26",
       "browserbase-docs-1",
@@ -3132,16 +3182,16 @@
           "quote": "best-in-class observability (rich logs, live view, and session replay)"
         },
         {
-          "evidenceId": "browserbase-docs-1",
-          "quote": "Create, control, and observe browser sessions programmatically."
-        },
-        {
           "evidenceId": "browserbase-docs-19",
           "quote": "Browserbase webhooks send an HTTP POST to an endpoint you own as soon as a subscribed event happens, so you don't have to poll the API for status changes."
         },
         {
-          "evidenceId": "browserbase-docs-11",
-          "quote": "Run agents that click through your product continuously and alert you the moment something breaks."
+          "evidenceId": "browserbase-docs-20",
+          "quote": "You can manage endpoints from Settings as well as through the SDK."
+        },
+        {
+          "evidenceId": "browserbase-docs-1",
+          "quote": "Create, control, and observe browser sessions programmatically."
         }
       ]
     }
@@ -3152,7 +3202,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Deep crawling is a fair question for a browser-automation and web-data platform, so the axis applies. The evidence only covers single-URL fetch, web search, and concurrent browser sessions. Nothing documents a crawl feature with a breadth-first strategy or a configurable maximum page limit.",
+    "rationale": "Deep crawling is a fair question for a browser-automation and web-data platform, but the evidence documents no crawl feature, breadth-first strategy, or maximum page limit. It shows only single-URL fetching, web search, and concurrent browser sessions a developer could use to build a crawler, which are building blocks rather than the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3167,7 +3217,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting a browser and scraping service via Docker is a fair question for this kind of product, so the axis applies. The evidence only shows Browserbase's own hosted platform (\"Deploy and run browser agents on Browserbase\"), with no Docker image or self-hosted container deployment documented. A community thread framing an open-source project as the self-hosted alternative points the same way but is not first-party evidence.",
+    "rationale": "Self-hosted container deployment is a fair question for a browser/scraping infrastructure product, so the axis applies. However, the evidence pack contains no Docker image, container deployment guide, or self-hosting documentation. The only deployment evidence covers running agents on Browserbase's own hosted platform, which is a different capability from deploying via Docker.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3182,7 +3232,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is an API-key-driven platform, so a documented per-key rate limit is a fair question. The evidence pack contains no documented requests-per-second or requests-per-minute limit, and no throttling behavior. The claim of 'thousands of concurrent browser sessions' is about concurrency scale, not a documented API rate limit, so it earns no credit.",
+    "rationale": "Browserbase is an API platform, so a documented per-key rate limit is a fair question for it. The evidence pack has no documented requests-per-second or per-minute limit and no description of throttling behavior. The 'thousands of concurrent browser sessions' marketing claim is about concurrency scale, not a published rate limit, and the OpenAPI spec and playground evidence do not mention one.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3197,7 +3247,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a metered cloud browser and fetch/search API, so whether failed, blocked, or empty-result requests count against billing quota is a fair question for it. The evidence pack, however, has no documentation on billing rules, quota consumption, or how failed or blocked sessions are charged. The pack covers only sessions, agents, webhooks, SDKs and observability, none of which addresses billing for failed requests.",
+    "rationale": "The question applies to Browserbase, since it is a metered browser-session and fetch service. However, nothing in the evidence pack says whether failed, blocked, or empty-result requests count against billing quota. The evidence covers sessions, search, fetch, webhooks, SDK and observability, but none of it addresses billing treatment of failed requests.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3212,7 +3262,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows single-URL fetching ('converting any URL into HTML, JSON or markdown'), web search, and concurrent browser sessions. None of it documents a crawl capability that discovers and returns every page of a site from one request. Single-page fetch and session concurrency are adjacent building blocks, not site-wide crawling, so the axis applies but is unevidenced.",
+    "rationale": "Whole-site crawling is a fair axis for a browser-agent platform, but the evidence never shows a crawl capability that returns all of a site's pages from one request. The Fetch feature converts a single URL, and concurrent sessions or agents are only building blocks a developer would use to assemble a crawler. Neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3227,7 +3277,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesting a country-specific proxy is a fair question for a cloud browser-infrastructure product, so the axis applies. However, nothing in the evidence pack mentions proxies, geolocation, or country selection. The CAPTCHA and login handling claims are a different anti-bot capability and do not transfer to this story.",
+    "rationale": "Country-targeted proxies are a fair question for a hosted browser-infrastructure product, but nothing in the evidence pack mentions proxies, geolocation, or country selection. The CAPTCHA/login handling and session-creation API items are adjacent features and do not show geo-targeted proxy support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3242,7 +3292,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a browser and web-extraction platform for agents, so automatic image captioning is a fair extraction-quality question. However, the evidence only shows URL conversion to HTML, JSON or markdown, with no mention of generating captions or alt-text descriptions for images. Converting a page to markdown is an adjacent feature and does not deliver captions.",
+    "rationale": "Browserbase is a browser-agent platform with content extraction, so automatic image captioning is a fair question for it. The pack documents converting URLs into HTML, JSON or markdown, but nothing about generating captions or alt-text descriptions for images. Text conversion of a page is an adjacent feature and does not show that visual content is captioned for a text-only model.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3255,14 +3305,14 @@
     "productId": "browserbase",
     "storyId": "interactive-browser-sandbox",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Browserbase documents managed remote browser sessions that developers create, control, and observe, and it advertises a live view. The evidence frames these sessions as programmatic and agent-driven, though, and never shows a human manually driving the browser. missing for 10: documented human-interactive manual browsing (e.g. a controllable live view or takeover), explicit sandbox isolation details, independent hands-on corroboration.",
+    "rationale": "Browserbase clearly provides managed remote browser sessions on its own infrastructure and offers a live view of them, so the core 'managed remote browser' part of the story is direct. However, the evidence frames these sessions as programmatically or agent-controlled. Live view is described only as observability, not as a way for a human to drive the browser interactively. Missing for 10: documentation of human/manual interactive control of a session (e.g. an interactive live view or takeover), explicit sandbox-isolation description, and independent hands-on corroboration of manual browsing workflows.",
     "evidenceIds": [
       "browserbase-docs-1",
       "browserbase-docs-22",
       "browserbase-docs-26",
-      "browserbase-docs-23"
+      "browserbase-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -3275,7 +3325,7 @@
         },
         {
           "evidenceId": "browserbase-docs-22",
-          "quote": "the official `@browserbasehq/sdk` package is the easiest way\nto connect to and control headless browsers running on Browserbase."
+          "quote": "connect to and control headless browsers running on Browserbase"
         },
         {
           "evidenceId": "browserbase-docs-26",
@@ -3290,11 +3340,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Browserbase runs real browser sessions with auto-waits and offers a fetch capability that converts any URL into HTML. Together these imply rendered-HTML output for dynamic pages. However, no evidence states that JavaScript-heavy SPAs are fully rendered before the HTML is returned, and there is no hands-on corroboration. missing for 10: explicit documentation that JS/SPA content is executed and rendered before HTML is returned, documented wait/render-completion controls for the fetch output, independent or hands-on corroboration of SPA rendering.",
+    "rationale": "Browserbase documents real headless browser sessions with auto-waits, plus a fetch capability that converts any URL into HTML. Together these imply that JavaScript is executed and rendered HTML is returned. However, no evidence explicitly addresses JS-heavy single-page applications or guarantees the returned HTML is the fully rendered post-hydration DOM. Missing for 10: explicit documentation that the fetch/HTML output reflects fully rendered SPA content (post-JS execution and hydration), wait-for-render controls tied to HTML extraction, and independent or hands-on corroboration of SPA rendering.",
     "evidenceIds": [
       "browserbase-docs-3",
+      "browserbase-docs-4",
       "browserbase-docs-1",
-      "browserbase-docs-4"
+      "browserbase-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -3310,8 +3361,8 @@
           "quote": "Full browser control with auto-waits, network interception, and multi-tab support."
         },
         {
-          "evidenceId": "browserbase-docs-1",
-          "quote": "Create, control, and observe browser sessions programmatically."
+          "evidenceId": "browserbase-docs-22",
+          "quote": "to connect to and control headless browsers running on Browserbase"
         }
       ]
     }
@@ -3322,7 +3373,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies, since Browserbase offers data-pulling and URL-fetch features, but nothing in the evidence shows a developer passing a JSON schema and getting back schema-conforming data. The fetch feature can return a URL as \"HTML, JSON or markdown\", but that is a generic output format, not schema-driven extraction. The Stagehand SDK claims (natural language selectors, self-healing actions) never mention schema-based structured output.",
+    "rationale": "The evidence pack never documents passing a JSON schema to get schema-conformant structured output. The closest item is a URL fetch that converts pages into \"HTML, JSON or markdown\", which is output-format conversion rather than schema-guided extraction. Stagehand's natural-language selectors and the agent data-pulling claims likewise never mention a schema parameter. The axis clearly applies to a browser-agent and web-extraction platform, so the absence of evidence is \"none\", not \"na\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3337,7 +3388,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a browser-agent and web-extraction platform, so large-table extraction is a fair axis for it. The evidence covers only general data pulling, URL-to-JSON/markdown conversion, and processing downloaded spreadsheets. Nothing documents intelligent chunking of very large tables to fit processing limits.",
+    "rationale": "Browserbase markets web data extraction: agents that pull data from websites and URL-to-HTML/JSON/markdown conversion. That makes large-table extraction a fair axis for this product. However, the evidence pack never mentions chunking large tables or handling processing or context limits, so general extraction claims are adjacent, not support for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3352,7 +3403,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a developer-facing control over when content is returned, such as wait-until conditions, timeouts, or early-return options on the fetch or session APIs. The fetch feature (URL to HTML/JSON/markdown) is described without any timing controls. Auto-waits are an automatic browser-control behavior, not a latency-versus-completeness knob, so they are an adjacent feature and earn no credit.",
+    "rationale": "Browserbase offers a URL fetch feature that returns HTML, JSON or markdown, so a latency-versus-completeness control is a fair question for this product. However, no evidence documents a setting such as a wait-until condition, timeout or readiness option that lets a developer decide when content is returned. Auto-waits during browser control and the marketing line about returning answers immediately are adjacent behaviors, not a developer-controlled return-timing capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3367,7 +3418,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase advertises session-level observability (logs, live view, session replay) and has a dashboard for creating and optimizing agents. None of the evidence documents a real-time dashboard showing system metrics or browser-pool and concurrency status. Session live view is an adjacent feature, not pool or system monitoring, so it earns no credit.",
+    "rationale": "The evidence documents session-level observability: rich logs, live view of a browser session, and session replay. It also shows a dashboard used for creating agents and optimizing runs. Nothing documents a real-time dashboard of system metrics or browser/worker pool status, such as concurrency usage, pool health, or capacity. Per-session live view is an adjacent feature, not the story's capability.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3382,11 +3433,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Browserbase's own SDK offers natural-language selectors in place of hand-written ones, its agents pull data from websites, and its fetch feature converts any URL into JSON. Together these support LLM-driven extraction without pre-written selectors. However, no evidence shows an LLM reading a page and deciding which structured fields to extract, or any schema-driven extraction. missing for 10: documented LLM-driven structured/schema extraction API, evidence of the model choosing fields itself, examples of extraction output quality, independent or hands-on corroboration.",
+    "rationale": "Browserbase's SDK offers natural-language selectors that replace hand-written CSS/XPath, its fetch can turn any URL into JSON, and its agents are documented as pulling data from websites. No document says an LLM reads a page and decides which structured fields to extract. missing for 10: documented LLM-driven structured extraction where the model chooses the fields, schema or output-format details, independent or hands-on corroboration of extraction quality.",
     "evidenceIds": [
       "browserbase-docs-5",
       "browserbase-docs-3",
-      "browserbase-docs-8"
+      "browserbase-docs-8",
+      "browserbase-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -3411,18 +3463,19 @@
   {
     "productId": "browserbase",
     "storyId": "llm-ready-text-instead-of-raw-html",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Browserbase has its own fetch capability that converts any URL into markdown or JSON for agents (docs-3). Its browser platform claims to handle CAPTCHAs and login walls (docs-10, docs-8), which addresses the blocking and rendering parts of the story. The evidence is only marketing-level, though, so the depth of the clean-text output is unproven. missing for 10: detailed docs on the fetch/markdown API (cleanup or boilerplate stripping, LLM-ready formatting), evidence that blocking and anti-bot handling apply to the fetch path itself rather than only to full browser sessions, and any independent or hands-on corroboration of output quality.",
+    "rationale": "Browserbase markets a fetch capability that converts any URL into markdown or JSON for agent context, which gives LLM-ready output without parsing raw HTML. It runs on real browser sessions that claim to handle CAPTCHAs and login walls, which covers the rendering and blocking concerns. missing for 10: in-depth first-party docs on the fetch/markdown endpoint (output cleanliness, boilerplate stripping, limits), evidence that blocking handling applies specifically to the fetch path, independent or hands-on corroboration.",
     "evidenceIds": [
       "browserbase-docs-3",
       "browserbase-docs-10",
-      "browserbase-docs-8"
+      "browserbase-docs-8",
+      "browserbase-docs-15"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an ai-native user, I can get clean LLM-ready text directly instead of dealing with blocking, rendering, and messy HTML myself",
       "citations": [
         {
@@ -3446,7 +3499,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase offers AI-driven extraction through Stagehand and its agents, so choosing the extraction model is a fair question for this product. However, nothing in the evidence pack documents configuring a local or self-hosted LLM, or any model-provider choice at all. The community items about BrowserStation as an open-source alternative concern self-hosting browsers, not LLM backends, so they do not count toward this story.",
+    "rationale": "The axis applies: Browserbase ships an agent SDK (Stagehand) and data extraction features, so model backend choice is a fair question. However, nothing in the evidence pack documents configuring a local or self-hosted LLM, or any choice of LLM provider, for extraction. Community mentions of open-source alternatives concern self-hosting the browser infrastructure, not the LLM, so they do not count.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3459,9 +3512,9 @@
     "productId": "browserbase",
     "storyId": "markdown-output",
     "verdict": "full",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Browserbase's own site advertises a fetch capability that converts any URL into markdown as well as HTML or JSON, so developers can get markdown output instead of raw HTML. The support comes from a single marketing line with no API reference or examples. missing for 10: detailed API docs for the markdown fetch output, evidence the markdown is clean (boilerplate/nav stripped), independent or hands-on corroboration.",
+    "rationale": "Browserbase's own site says its fetch capability converts any URL into HTML, JSON or markdown. That directly covers getting scraped content as markdown instead of raw HTML. The evidence is a single marketing-level line with no API reference or output examples. missing for 10: API/endpoint documentation for the markdown fetch option, evidence the markdown output is clean (boilerplate stripped), independent or hands-on corroboration",
     "evidenceIds": [
       "browserbase-docs-3"
     ],
@@ -3483,7 +3536,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a browser-agent infrastructure platform, so a public marketplace for monetizing scrapers is a fair question for this kind of product. The evidence shows only deploying agents, ready-made templates, and reusable scripts. Nothing documents publishing a scraper publicly or earning revenue from other users. The 30+ templates are first-party starter content, not a developer marketplace.",
+    "rationale": "A public marketplace for publishing and monetizing scrapers is a fair question for a browser-automation and scraping platform, so the axis applies. However, the evidence shows only first-party ready-made templates and the ability to deploy agents for your own use. Nothing documents publishing scrapers for others to use or earning revenue from them.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3498,7 +3551,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Browserbase's own fetch capability is described as converting any URL into HTML, JSON or markdown, so it offers several output formats directly. The evidence is a single marketing line and does not show how a developer selects the format per request. missing for 10: documented per-request format selection parameter, plain-text output, frontmatter output, API reference detail, independent or hands-on corroboration.",
+    "rationale": "Browserbase's own fetch capability converts any URL into HTML, JSON or markdown, which covers part of the story's format range. The evidence is a single marketing line, and it does not show how a developer selects the format or that plain text or frontmatter are offered. Missing for 10: plain-text output, frontmatter output, documented format-selection parameter, API reference depth, independent or hands-on corroboration.",
     "evidenceIds": [
       "browserbase-docs-3"
     ],
@@ -3520,7 +3573,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions a prebuilt n8n, Zapier, or other no-code automation connector for Browserbase. Webhooks, the SDK, the MCP server and the CLI are developer building blocks or adjacent integrations, not a prebuilt connector, so they earn no credit here. The axis applies to a scraping and browser API platform, so the verdict is none rather than na.",
+    "rationale": "Nothing in the evidence pack mentions a prebuilt n8n, Zapier or other no-code connector for Browserbase. The documented webhooks, OpenAPI spec, SDK, MCP server and CLI are developer building blocks a user could wire up themselves, not a prebuilt connector, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3535,7 +3588,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never names Playwright, Puppeteer, Selenium, or Scrapy as supported automation libraries. The only related items describe generic programmatic browser control and Browserbase's own SDK and Stagehand framework, which are not the open-source libraries the story asks about. This axis clearly applies to a hosted headless-browser platform, but it is unevidenced here.",
+    "rationale": "The evidence shows Browserbase lets developers control headless browser sessions programmatically through its own SDK and Stagehand. However, no item names Playwright, Puppeteer, Selenium, or Scrapy, or documents connecting those open-source libraries to Browserbase sessions. Generic 'full browser control' language cannot be credited as support for specific third-party library compatibility, so this applicable axis is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3548,17 +3601,17 @@
     "productId": "browserbase",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Browserbase documents programmatic control of browser sessions, a Downloads API, and explicit UI/SDK parity for webhook endpoint management. However, agent creation is documented through the dashboard and the Optimize tool lives in the dashboard run view, with no API equivalent shown, and no OpenAPI spec was found. Missing for 10: documented API parity for agent creation and the Optimize tool, a published OpenAPI spec, and any explicit statement of full UI/API parity.",
+    "rationale": "Browserbase documents a substantial programmatic surface: a published OpenAPI v1 spec, sessions that can be created, controlled and observed programmatically, a Downloads API, and webhooks that can be managed through either Settings or the SDK and act on the same objects. However, several features are documented only in the dashboard: Agents are created there and the Optimize tool lives in the dashboard run view, with no API equivalent shown, so full UI parity is not demonstrated. The 404s at the standard OpenAPI paths are explained by the spec being published at /reference/api/openapi.v1.yaml and are not a contradiction. Missing for 10: API equivalents for dashboard-only Agent creation and the Optimize tool, an explicit statement of API/UI parity, independent corroboration.",
     "evidenceIds": [
       "browserbase-docs-1",
       "browserbase-docs-20",
+      "browserbase-openapi-spec-20261105",
+      "browserbase-api-playground-20261105",
       "browserbase-docs-18",
-      "browserbase-docs-22",
       "browserbase-docs-16",
-      "browserbase-docs-25",
-      "browserbase-probe-2"
+      "browserbase-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -3574,6 +3627,10 @@
           "quote": "Create, control, and observe browser sessions programmatically."
         },
         {
+          "evidenceId": "browserbase-openapi-spec-20261105",
+          "quote": "description: Browserbase API for 3rd party developers"
+        },
+        {
           "evidenceId": "browserbase-docs-18",
           "quote": "Retrieve it with the Downloads API using the sessionId from the run."
         }
@@ -3586,7 +3643,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no account-level data export or offboarding capability for Browserbase. The Downloads API only retrieves files that a browser session downloaded. URL-to-HTML/JSON/markdown conversion is a web-fetch feature for agents, not an export of the user's own data. Neither is evidence that a user can export all their data in open formats and leave.",
+    "rationale": "Browserbase is a SaaS platform, so a full data-export and exit story is a fair question, but the evidence documents no account-wide export of user data in open formats. The Downloads API only retrieves files fetched during a session. URL-to-HTML/JSON/markdown conversion is a web-fetch feature. Turning agent runs into Stagehand scripts is adjacent, not a data-export capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3601,7 +3658,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is available under an open license is a fair question for a browser-infrastructure SaaS, so the axis applies. Nothing in the pack says Browserbase's source is published or openly licensed. Community discussion instead presents BrowserStation as an open-source alternative to the commercial Browserbase service, and SDK and framework mentions say nothing about licensing.",
+    "rationale": "Open-source availability is a fair question for a browser-infrastructure platform, but nothing in the evidence shows Browserbase publishing its source under an open license. The SDK and Stagehand references say nothing about licensing, and community discussion frames BrowserStation as the open-source alternative to the commercial Browserbase service.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3616,7 +3673,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a hosted browser-infrastructure platform, so the axis applies. The evidence only describes sessions running on Browserbase's own cloud, and community threads present BrowserStation as an open-source alternative for people who want a self-hosted option, not as a Browserbase feature. No evidence shows Browserbase offers a self-hostable deployment of its core product.",
+    "rationale": "Self-hosting is a fair question for a browser-infrastructure platform, so the axis applies. However, every first-party item describes browsers 'running on Browserbase' via its hosted API, and none documents a self-hosted deployment. The community thread points users to BrowserStation as an open-source alternative, which is a user-side workaround and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3631,7 +3688,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The story applies to a browser and fetch platform, but nothing in the evidence documents passing user-supplied session cookies to the fetch API or to sessions. The closest items are marketing claims that agents log in and get past login walls, which is a different mechanism (the agent authenticating itself), and network interception, which is only a developer building block. Neither earns credit for this story.",
+    "rationale": "The evidence pack does not document any way to supply your own session cookies to the fetch API or to a session. The only related claims describe an agent that logs in and handles login prompts itself, which is a different capability. Generic browser control and network interception are building blocks, not this feature, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3646,7 +3703,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Browserbase's Agents documentation says agents can process downloaded content such as PDFs and spreadsheets, retrieved via the Downloads API. That is first-party, hosted file handling, but the docs do not explicitly describe text extraction and never mention Word or PowerPoint. The URL-to-markdown fetch converts web pages, not office documents, so it does not count here. missing for 10: explicit document text-extraction docs, Word (.docx) support, PowerPoint (.pptx) support, extraction-quality details, independent or hands-on corroboration.",
+    "rationale": "Browserbase Agents documentation says agents can process downloaded content such as PDFs and spreadsheets, and those files can be retrieved through the Downloads API. This is a thin, glancing mention of hosted document handling. Text extraction quality is not described. missing for 10: explicit text-extraction capability and output format, Word and PowerPoint support, documentation of extraction quality and fidelity, independent or hands-on corroboration.",
     "evidenceIds": [
       "browserbase-docs-27",
       "browserbase-docs-18"
@@ -3673,7 +3730,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a browser-automation and web-fetch platform, so per-URL-pattern crawl configuration within a batch job is a fair question for this kind of product. The evidence documents concurrent sessions, URL fetching and scheduled agents, but nothing describes batch crawl jobs or applying different configurations to different URL patterns. Building this from concurrent sessions would be a developer building block, not the product's own capability.",
+    "rationale": "Browserbase is a browser-automation and web-fetch platform, so per-URL-pattern crawl configuration in a batch job is a fair question for it. The evidence pack does not document any batch crawl job, nor any way to map different crawl configurations to URL patterns. Thousands of concurrent sessions and single-URL fetch to HTML/JSON/markdown are adjacent capabilities and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3688,7 +3745,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents persistent browser profiles, saved cookies, or login state reused across sessions or requests. Mentions of logging in past login walls and handling login prompts describe authenticating within a single run, not persisting that state for later requests. The axis clearly applies to a cloud browser platform, so absence of evidence yields none.",
+    "rationale": "The evidence pack shows Browserbase can handle login walls and prompts within a session. Nothing documents a persistent browser profile or context that saves cookies and login state and can be reused across separate sessions or requests. Logging in during a run and pausing or resuming a single run are adjacent features, not reusable persisted state.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3703,7 +3760,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "PII detection and redaction is a fair question for a browser-automation and scraping platform. However, the evidence pack documents no built-in feature that detects or filters personally identifiable information from scraped content before storage. Related features such as URL-to-markdown fetching, network interception, and file processing are adjacent building blocks, not PII filtering.",
+    "rationale": "PII detection and filtering is a fair question for a web-data extraction platform like Browserbase, so the axis applies. Nothing in the evidence pack documents automatic detection or redaction of personally identifiable information in scraped content. Features such as network interception, URL-to-markdown fetching and file processing are adjacent building blocks, not a PII-filtering capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3718,7 +3775,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Browserbase's own docs describe programmatic browser sessions with full control, and agents that log in, fill forms and pass login walls to pull data, so the core interact-and-authenticate flow is first-party. The docs do not explicitly show continuing interaction on the same page or session after a scrape or fetch: the URL-fetch product is described separately from interactive sessions. missing for 10: explicit documentation of persisting or continuing a session from an already-scraped page, concrete click and form-fill API examples, independent or hands-on corroboration of authenticated scraping.",
+    "rationale": "Browserbase's own docs describe programmatically controlled browser sessions with full browser control, and agents that log in and handle forms to pull data from behind login walls. The specific flow of continuing to interact with a page already fetched or scraped is not explicitly documented. Missing for 10: explicit documentation that a scraped page or session can be resumed for further clicks and form fills, a detailed form-filling and authentication workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "browserbase-docs-1",
       "browserbase-docs-4",
@@ -3756,7 +3813,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no marketplace of ready-made, runnable scrapers. The only related item is \"30+ ready-made templates\", which are starter code for building your own automation, an adjacent feature rather than a marketplace of scrapers you can run directly. Browserbase otherwise provides browser infrastructure, SDKs and agent tooling for building scrapers yourself.",
+    "rationale": "The evidence pack documents no marketplace of ready-made scrapers that a developer can run directly. The only related item is a claim of \"30+ ready-made templates\" to start building from. That is a starter-code building block, not a runnable scraper marketplace, so it earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3771,7 +3828,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Proxies are a fair axis for a headless-browser platform, but nothing in the evidence pack mentions residential or datacenter proxies. The CAPTCHA and login handling claims are adjacent anti-bot features and do not count as proxy support.",
+    "rationale": "Proxies are a fair axis for a browser-infrastructure platform, but the evidence pack never mentions residential or datacenter proxies. The CAPTCHA and login-wall handling claims are adjacent anti-bot features and are not proxy support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3786,7 +3843,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data region and residency selection is a fair question for a cloud browser-session platform like Browserbase, so the axis applies. Nothing in the evidence pack mentions choosing a region, data residency, or storage location. The community note about self-hosted alternatives describes a user-side workaround, not a product capability.",
+    "rationale": "Data region and residency selection is a fair question for a cloud browser-session platform like Browserbase, so the axis applies. However, none of the evidence mentions choosing a region, data residency, or where session data is stored. The items cover session control, agents, webhooks, SDK, CLI, MCP, and the OpenAPI spec, none of which address residency.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3801,7 +3858,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a cloud browser and agent platform that handles user data, so an AI-training opt-out or a no-training policy is a fair privacy question to ask of it. Nothing in the evidence pack mentions training-data use, opt-out controls, or a data-usage policy.",
+    "rationale": "Browserbase is a cloud browser platform that processes user and session data, so a training opt-out or no-training commitment is a fair privacy question for it. The evidence pack has no data-usage policy, training opt-out, or no-training guarantee. The pages provided cover only session control, agents, webhooks, SDK, and observability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3816,7 +3873,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a cloud browser platform that stores session logs, replays and downloaded files, so data retention and deletion controls are a fair question for it. The evidence pack documents no retention settings, deletion APIs or data-lifecycle controls. The Downloads API and session replay are about retrieving and observing data, not about controlling how long it is kept or deleting it.",
+    "rationale": "Data retention and deletion controls are a fair privacy question for a cloud browser-session platform, so the axis applies. However, nothing in the evidence pack documents retention settings, deletion APIs, or data lifecycle controls. The Downloads API, session replay and logs describe retrieving and observing data, not controlling how long it is kept or deleting it.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3831,7 +3888,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry or usage tracking is a fair privacy question for a SaaS browser platform with SDKs and a CLI, so the axis applies. Nothing in the evidence pack mentions telemetry settings, opt-out flags, or disabling usage tracking. The observability features (logs, live view, session replay) are customer-facing session monitoring, not vendor telemetry controls, so they do not count.",
+    "rationale": "Opting out of telemetry is a fair question for a cloud browser platform with SDKs and a CLI, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out. The observability features (logs, live view, session replay) are user-facing session monitoring, not a telemetry control, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3846,7 +3903,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a hosted cloud service, so a public status page with uptime history and incident postmortems is a fair question for it. However, nothing in the evidence pack documents a status page, uptime history, or postmortems. The session observability features (logs, live view, replay) are a different capability and earn no credit here.",
+    "rationale": "A public status page with uptime history and incident postmortems is a fair question for a hosted browser-infrastructure service, so the axis applies. Nothing in the evidence pack mentions a status page, uptime history, or postmortems. Session observability, webhooks, and customer-facing monitoring agents are different features and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3859,9 +3916,9 @@
     "productId": "browserbase",
     "storyId": "ready-made-templates",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Browserbase's docs directly state that developers can 'start building right away with 30+ ready-made templates', which matches the story. The evidence is a single marketing-level line with no detail on what the templates cover or how they are used. Missing for 10: documentation of template contents, languages and use cases, a template gallery or instantiation workflow, and independent or hands-on corroboration.",
+    "rationale": "Browserbase's own docs say developers can \"start building right away with 30+ ready-made templates\", which matches the story directly. The evidence is a single one-line claim, though, with no detail on what the templates cover or how to use them. Missing for 10: documentation of template contents, languages, use cases and setup flow; independent or hands-on corroboration.",
     "evidenceIds": [
       "browserbase-docs-7"
     ],
@@ -3883,7 +3940,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase ships autonomous Agents for data gathering, created from natural-language goals and run on a schedule or on demand, so this axis applies. However, no evidence shows a configurable reasoning-effort setting (low/medium/high) for those agents. The documented Agent controls (pauseWhen, Optimize, system-prompt tuning) are adjacent features and earn no credit here.",
+    "rationale": "Browserbase ships autonomous Agents, created from natural-language goals and run on a schedule or on demand, so a reasoning-effort control is a fair question for this product. However, no evidence item documents any setting for agent reasoning effort (low/medium/high). The pause, optimize and scheduling features are different controls and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3898,10 +3955,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase offers agent web search, URL-to-JSON/markdown fetching, and 30+ generic templates. None of the evidence documents a preset configuration tuned for research agents, or output that is structured and citable with source attributions. These features are adjacent building blocks, not the named capability.",
+    "rationale": "The evidence shows adjacent building blocks: an agent web-search API, URL-to-JSON/markdown fetching, and 30+ generic templates. None of it documents a preset configuration tuned for research agents that returns structured, citable output. Generic templates and structured fetch output are adjacent features, not the named research preset, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an ai-native user, I can apply a preset configuration tuned for research agents that returns structured, citable output",
       "citations": []
@@ -3913,7 +3970,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Crash-resumable crawling is a fair question for a browser-automation and data-extraction platform, but the evidence pack does not document crawl checkpointing or resuming after a crash. The `pauseWhen` feature is an intentional human-in-the-loop pause that continues once the user replies. That is an adjacent control, not checkpoint-based crash recovery, so it earns no credit here.",
+    "rationale": "Crash recovery for crawls is a fair question for a browser-automation and scraping platform, but the evidence pack never documents saving crawl checkpoints or resuming a crashed crawl. The `pauseWhen` feature is a deliberate human-in-the-loop pause that resumes after the user replies, not checkpoint-based recovery after a crash. Session replay is observability only, so neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3928,7 +3985,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Proxy routing is a fair question for a hosted headless-browser platform, so the axis applies. However, nothing in the evidence pack documents proxy IPs, IP rotation, or a proxy pool. CAPTCHA handling (docs-10) and network interception (docs-4) are adjacent anti-bot and network features, not proxy rotation, so they earn no credit.",
+    "rationale": "Proxy routing is a fair question for a hosted headless-browser platform, so the axis applies. However, nothing in the evidence pack mentions proxies, IP rotation or residential/datacenter IP pools. The closest item, CAPTCHA and login handling (docs-10), is an adjacent anti-bot feature, not proxy routing, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3943,7 +4000,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Browserbase's docs say agents can be deployed and run 'on a schedule or on demand.' That is a first-party recurring-schedule capability, not just a one-off run, so the core of the story is present. However, it rests on a single brief mention, with no detail on how schedules are set or whether exact run times can be specified. Missing for 10: documentation of schedule configuration (cron or specific-time syntax), how scheduled runs are managed and monitored, and independent or hands-on confirmation of scheduled scraping.",
+    "rationale": "Browserbase's own docs state that browser agents can be deployed and run 'on a schedule or on demand', so recurring scheduled runs are a first-party capability. However, this rests on a single thin marketing-level line with no detail on configuring specific times or cron expressions, and no detail on how scraping jobs are scheduled. missing for 10: documentation of how to configure schedules (cron/time-of-day syntax, timezone handling), evidence that scraping jobs specifically can be scheduled, schedule management via API/SDK, independent or hands-on corroboration.",
     "evidenceIds": [
       "browserbase-docs-14"
     ],
@@ -3965,7 +4022,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Screenshot capture is a fair axis for a headless-browser platform, but the evidence pack never mentions full-page or region screenshots. The nearest items are URL-to-HTML/JSON/markdown conversion, generic 'full browser control', and session replay. These are different outputs or adjacent features and do not document screenshot capture.",
+    "rationale": "Screenshot capture is a fair question for a headless-browser platform, but nothing in the evidence documents full-page or region screenshots. The cited output formats are HTML, JSON and markdown, and session replay and live view are observability features, not screenshot capture. Generic 'full browser control' is a developer building block, not a documented screenshot capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3980,12 +4037,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Browserbase documents programmatic control of headless browser sessions through its SDK, including full browser control with auto-waits. Stagehand adds natural-language selectors and self-healing actions, and the marketing pages mention clicking through products and handling forms. However, the evidence never shows a concrete scripting API for click, fill and scroll steps that run before content is returned. Missing for 10: explicit documentation of click/type/scroll action methods, any mention of scrolling, evidence that the URL-fetch endpoint accepts pre-return interaction steps, and independent hands-on corroboration.",
+    "rationale": "Browserbase documents programmatic browser control through its SDK, with auto-waits and network interception, so developers can script sessions before extracting content. Its marketing also says agents click through products and handle forms. missing for 10: explicit documentation of scripted click, fill and scroll primitives (scrolling is never mentioned), a concrete interaction-then-return-content example, and independent hands-on corroboration.",
     "evidenceIds": [
       "browserbase-docs-1",
       "browserbase-docs-4",
       "browserbase-docs-22",
-      "browserbase-docs-5",
       "browserbase-docs-10",
       "browserbase-docs-11"
     ],
@@ -4007,8 +4063,8 @@
           "quote": "the official `@browserbasehq/sdk` package is the easiest way\nto connect to and control headless browsers running on Browserbase."
         },
         {
-          "evidenceId": "browserbase-docs-5",
-          "quote": "Natural language selectors, self-healing actions, and caching at scale."
+          "evidenceId": "browserbase-docs-11",
+          "quote": "Run agents that click through your product continuously"
         },
         {
           "evidenceId": "browserbase-docs-10",
@@ -4023,7 +4079,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes Browserbase only as a hosted platform: browsers 'running on Browserbase' and agents deployed 'on Browserbase'. Nothing documents a self-hostable or open-source edition of the product. Community discussion points to BrowserStation, a separate product, as the open-source alternative, and that does not count as Browserbase's own capability.",
+    "rationale": "Self-hosting is a fair question for browser-automation and scraping infrastructure, so the axis applies. However, the evidence describes only Browserbase's hosted cloud: sessions run 'on Browserbase', and agents are deployed 'on Browserbase'. Community discussion points to BrowserStation, a separate project, as the open-source alternative, which is a user-side workaround rather than Browserbase's own capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4038,7 +4094,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase documents converting a URL into HTML, JSON or markdown, but these are whole-page output formats. Nothing in the evidence shows an option to request semantically chunked output for retrieval pipelines. Chunking is a fair axis for a web-context fetch product, so the verdict is none rather than na.",
+    "rationale": "Browserbase documents converting a URL into HTML, JSON or markdown. That is a choice of output format, not semantic chunking: nothing in the pack shows it splitting content into retrieval-ready chunks. The axis applies to a web-context fetching product, so the lack of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4050,17 +4106,17 @@
   {
     "productId": "browserbase",
     "storyId": "single-call-html-extraction",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Browserbase's marketing describes a fetch capability that converts any URL into HTML, JSON or markdown. That directly matches getting a page's HTML back, and the Skills docs separately mention fetching pages. The evidence is only a marketing-level claim with no API reference details. missing for 10: explicit documentation that this is a single API call (endpoint/request shape), confirmation that the returned HTML is raw rather than rendered or processed, independent or hands-on corroboration.",
+    "rationale": "Browserbase's marketing page documents a fetch capability that converts any URL into HTML, JSON or markdown, and the Skills docs mention fetching pages, so the product itself offers URL-to-HTML retrieval. The evidence does not show this as one API call returning raw HTML. missing for 10: documented single-endpoint API reference for the fetch call, explicit confirmation that the output is raw (unprocessed) HTML, request/response details, and independent hands-on corroboration.",
     "evidenceIds": [
       "browserbase-docs-3",
       "browserbase-docs-15"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can scrape a web page with a single API call and get its raw HTML back",
       "citations": [
         {
@@ -4069,7 +4125,7 @@
         },
         {
           "evidenceId": "browserbase-docs-15",
-          "quote": "fetch pages"
+          "quote": "how to browse and interact with the web, fetch pages, and manage browser infrastructure"
         }
       ]
     }
@@ -4080,7 +4136,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Spending caps and usage alerts are a fair question for a usage-billed cloud browser platform, but the evidence pack never mentions budget limits, credit caps, or billing alerts. The webhooks in docs-19 are not shown to emit usage or billing events. The monitoring alerts in docs-11 concern product breakage, not spend, so they are an adjacent feature and earn no credit.",
+    "rationale": "Spending caps and usage alerts are a fair question for a usage-billed browser-infrastructure service, but nothing in the evidence documents budget limits, credit caps, or consumption alerts. The webhooks (docs-19) and 'alert you the moment something breaks' (docs-11) are about session events and product-monitoring agents, not billing, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4095,7 +4151,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sticky proxy IPs are a fair question for a headless-browser infrastructure platform with anti-bot positioning, so the axis applies. However, the evidence pack never mentions proxies or IP persistence. References to browser sessions and sessionIds concern session control and downloads, not routing requests through one proxy IP.",
+    "rationale": "Sticky proxy IPs are a fair question for a headless-browser platform that markets anti-bot and login handling, so the axis applies. However, the evidence pack never mentions proxies, IP persistence, or routing requests through the same IP via a session identifier. Browser sessions and CAPTCHA handling are adjacent features and do not show a sticky proxy IP capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4107,16 +4163,16 @@
   {
     "productId": "browserbase",
     "storyId": "structured-json-output",
-    "verdict": "full",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "Browserbase's own site says it can convert any URL into HTML, JSON or markdown, which directly names JSON as an output format for fetched web content. The support rests on one marketing line with no detailed docs. missing for 10: documentation of the JSON structure or schema, schema-driven structured extraction details, API/SDK reference for the JSON output, independent or hands-on corroboration.",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Browserbase's own marketing says its fetch capability converts any URL into HTML, JSON or markdown, so receiving scraped content as JSON is a first-party feature. The only evidence is that one homepage line, with nothing on schemas, structured extraction or response format. Missing for 10: detailed docs on the JSON output structure, schema-driven structured extraction, API reference examples of JSON responses, and independent or hands-on corroboration.",
     "evidenceIds": [
       "browserbase-docs-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can receive scraped content as structured JSON",
       "citations": [
         {
@@ -4132,7 +4188,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase is a hosted browser-automation platform, so team sharing and role-based access are a fair question for it. However, the evidence pack never mentions organizations, teammates, sharing scripts or agents, or role-based permissions. The Settings and dashboard references concern webhooks and agents only, not access control.",
+    "rationale": "Team and organization management with role-based permissions is a fair question for a developer cloud platform like Browserbase, so the axis applies. Nothing in the evidence pack covers sharing scrapers or scripts with teammates, organizations, or roles; the only governance-adjacent item is webhook endpoint management from Settings, which is a different feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4147,7 +4203,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any stealth or undetected browser mode, fingerprint management, or bot-detection evasion. The only nearby claim is marketing copy that CAPTCHAs and login prompts are 'handled.' Solving challenges is a different feature from running undetected, so it earns no credit here.",
+    "rationale": "Anti-bot evasion is a fair axis for a cloud headless-browser platform, but the evidence pack never documents an undetected, stealth or fingerprint-evasion browser mode. The only related material is a marketing line saying CAPTCHAs and login prompts are 'handled'. That is challenge handling, an adjacent feature rather than a mode that avoids detection, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4162,7 +4218,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents browser sessions, a web search API that finds relevant websites from a query, and a fetch API that converts a single URL into HTML, JSON or markdown. None of these is a site-mapping or URL-discovery capability that lists all URLs on a website without crawling. Search and fetch are adjacent features and earn no credit, and URL discovery is a fair axis for a web-data and browser platform, so the verdict is none rather than na.",
+    "rationale": "Browserbase documents a web search API that finds relevant websites from a query and a fetch API that converts a single URL into HTML, JSON or markdown. Neither is a site-mapping or URL-discovery capability that lists all URLs on a site without crawling, and nothing in the evidence describes one. The axis applies because Browserbase ships web-data APIs, but there is no evidence it delivers this one.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4177,7 +4233,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes a Fetch-style capability that converts a URL to HTML, JSON or markdown, plus 'auto-waits' within full browser control. Neither documents a parameter that makes the API wait for a specific selector before returning the rendered page. Auto-waits during interactive browser sessions are a related control and a developer building block, not this capability, so they earn no credit.",
+    "rationale": "Browserbase documents a Fetch capability that converts a URL into HTML, JSON or markdown, but nothing shows that API accepting a selector to wait for before returning. The \"full browser control with auto-waits\" claim describes session-level browser automation. That is a developer building block (you would script the waiting yourself), not an API option that waits on a specified selector, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4192,7 +4248,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Browserbase documents a web search feature that finds relevant websites from a single query, and a separate fetch feature that converts any URL into HTML, JSON or markdown. Nothing shows search results returning full page content in one call. Chaining the two endpoints is a developer workaround, not the single-call capability the story asks for.",
+    "rationale": "Browserbase documents a web search feature that finds relevant websites from a single query, and a separate fetch feature that converts a URL into HTML, JSON or markdown. Nothing shows search results returning full page content in a single call; chaining search and fetch is a user-side composition, not the capability the story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",

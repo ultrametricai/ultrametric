@@ -1,14 +1,13 @@
 {
-  "hash": "47e5269f211e4dbd1fd626002517ced08b79cb72f12cedc7f3a416518d76524d",
+  "hash": "d4fe0c20e3fcf750f9a8e2586bc077cd551f4f82f2e86a1b93858f61a76db336",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The documented CLI flag `lms load --gpu=max|auto|0.0-1.0` lets users offload a fractional share of a model to the GPU, which implies a CPU+GPU split. LM Studio also runs on llama.cpp. However, no evidence explicitly describes splitting layers between CPU and GPU or running models larger than VRAM. missing for 10: explicit docs on CPU+GPU layer splitting, confirmation that models exceeding VRAM load and run, GUI offload controls, hands-on corroboration of performance with partial offload.",
+    "rationale": "LM Studio's CLI documents a fractional GPU offload flag (`--gpu=max|auto|0.0-1.0`) on model load. That implies splitting layers between GPU and CPU, which is the core mechanism for running models larger than VRAM. The evidence is a single terse syntax line, with no explanation of the CPU fallback or of fitting oversized models. missing for 10: explicit documentation that the remaining layers run on CPU or that models larger than VRAM are supported, GUI offload controls, memory-fit guidance, and independent hands-on corroboration of mixed CPU+GPU inference.",
     "evidenceIds": [
-      "lm-studio-docs-13",
-      "lm-studio-docs-29"
+      "lm-studio-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -18,10 +17,6 @@
         {
           "evidenceId": "lm-studio-docs-13",
           "quote": "lms load [--gpu=max|auto|0.0-1.0] [--context-length=1-N]"
-        },
-        {
-          "evidenceId": "lm-studio-docs-29",
-          "quote": "structured outputs via `llama.cpp` or `Apple MLX`"
         }
       ]
     },

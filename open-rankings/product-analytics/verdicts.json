@@ -3675,12 +3675,13 @@
     "productId": "mixpanel",
     "storyId": "ab-experiments",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Mixpanel's own docs say it supports designing, running, and analyzing tests and rollouts, and its Feature Flags API assigns users to experiment variants. So a first-party A/B experiment capability exists. The evidence never mentions defining goal metrics or reporting statistical significance on results, so only the core experiment-running part of the story is supported. Missing for 10: documented goal-metric configuration for experiments, statistical significance reporting on results, an in-depth experiments report doc, independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mixpanel's own materials say it supports designing, running and analyzing tests and rollouts. They also document a Feature Flags API that assigns users to experiment variants, and they list an Experiments OpenAPI spec. Nothing in the evidence shows goal-metric configuration or statistical significance on results. missing for 10: documented goal/primary metric setup for experiments, statistical significance or confidence reporting on results, in-depth experiment docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-13",
-      "mixpanel-docs-36"
+      "mixpanel-docs-36",
+      "mixpanel-openapi-specs-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -3694,6 +3695,10 @@
         {
           "evidenceId": "mixpanel-docs-36",
           "quote": "Use the Feature Flags API to assign your users to variants for experiments, rollout, and releases."
+        },
+        {
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification."
         }
       ]
     }
@@ -3704,15 +3709,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Mixpanel documents a hosted MCP server that gives AI assistants direct access to project data. Through it, an agent can query events, funnels, flows and retention in natural language. A Query API also returns the same calculated results as the web app's reports, plus JQL for custom queries, so an agent can answer growth questions from live product data either way. Missing for 10: independent or hands-on corroboration that agents reliably answer growth questions via the MCP server or API.",
+    "rationale": "Mixpanel documents a hosted MCP server that gives AI assistants direct access to project data. Through it an agent can query events, funnels, flows and retention in natural language, and a probe confirms the MCP docs page exists. The Query API independently returns the same calculated report results seen in the web app, and agent-oriented OpenAPI specs are published. missing for 10: independent or hands-on corroboration that agents reliably answer growth questions via the MCP server or Query API.",
     "evidenceIds": [
       "mixpanel-docs-10",
-      "mixpanel-docs-19",
       "mixpanel-docs-26",
       "mixpanel-docs-43",
       "mixpanel-docs-39",
-      "mixpanel-docs-37",
-      "mixpanel-probe-3"
+      "mixpanel-probe-3",
+      "mixpanel-openapi-specs-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -3740,7 +3744,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Mixpanel documents a hosted MCP server that gives AI assistants direct access to project data, including a Create-Dashboard tool that builds a dashboard with text cards and reports. An agent can also query events, funnels and retention in natural language, so it can identify key metrics and assemble a dashboard without the UI. missing for 10: detailed docs on how the agent defines or configures the individual report cards (metrics, filters, layout), a REST API path for dashboard creation (the Query API only reads results), and independent or hands-on corroboration of an end-to-end agent-built dashboard.",
+    "rationale": "Mixpanel documents a hosted MCP server that gives AI assistants direct access to project data. It exposes a Create-Dashboard tool that creates a new dashboard with text cards and reports, and agents can query events, funnels, retention and more in natural language, which covers the end-to-end agent-built dashboard flow. missing for 10: detailed docs on how the agent defines and creates the underlying metric reports for dashboard cards, documented REST API endpoints for dashboard creation (the Query API shown only returns computed results), independent or hands-on corroboration of agent-built dashboards.",
     "evidenceIds": [
       "mixpanel-docs-10",
       "mixpanel-docs-11",
@@ -3770,23 +3774,28 @@
   {
     "productId": "mixpanel",
     "storyId": "agent-manages-feature-flags",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Mixpanel's docs show a Feature Flags API used to assign users to variants. That is runtime flag evaluation, not management: nothing documents creating flags, configuring targeting rules, or toggling flags. The hosted MCP server is documented only for data queries and dashboard creation, with no flag-management tools, so the evidence does not show an agent can create, target, or toggle flags.",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mixpanel documents its own Feature Flags API, published as an OpenAPI spec on its 'Docs for AI Agents' page, so an agent can work with flags programmatically. The only described function, though, is assigning users to variants (evaluation and rollout). Nothing shows creating, targeting or toggling flags, and the hosted MCP server's documented tools cover analytics queries and dashboards, not flags. missing for 10: documented flag create/update/toggle endpoints, targeting-rule management via API, MCP tools for feature flags, hands-on or independent corroboration of agent-driven flag management.",
     "evidenceIds": [
       "mixpanel-docs-36",
+      "mixpanel-openapi-specs-20261105",
       "mixpanel-docs-10",
-      "mixpanel-docs-11"
+      "mixpanel-docs-13"
     ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an ai-native user, I can have an agent create, target, and toggle feature flags through the API or MCP server",
       "citations": [
         {
           "evidenceId": "mixpanel-docs-36",
           "quote": "Use the Feature Flags API to assign your users to variants for experiments, rollout, and releases."
+        },
+        {
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification. Use these to generate client code, validate requests"
         }
       ]
     }
@@ -3795,11 +3804,13 @@
     "productId": "mixpanel",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms Mixpanel serves an llms.txt at docs.mixpanel.com/llms.txt (HTTP 200). It is structured as an index linking to markdown (.md) versions of doc pages, so an agent can be pointed at it directly. The many docs citations served from .md URLs corroborate that agent-friendly markdown docs exist. Missing for 10: evidence of an llms-full.txt or explicit first-party documentation describing agent-oriented docs usage, and independent corroboration of agents using it.",
+    "rationale": "A probe confirms a live llms.txt at docs.mixpanel.com returning HTTP 200 with a structured index of .md doc links. Mixpanel also publishes a dedicated \"Docs for AI Agents\" page that lists downloadable OpenAPI specs, and the same list appears in llms.txt, so agents have purpose-built entry points. Missing for 10: independent or hands-on corroboration of an agent actually consuming these docs successfully.",
     "evidenceIds": [
-      "mixpanel-probe-1"
+      "mixpanel-probe-1",
+      "mixpanel-openapi-specs-20261105",
+      "mixpanel-ingestion-spec-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -3808,11 +3819,15 @@
       "citations": [
         {
           "evidenceId": "mixpanel-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.mixpanel.com/llms.txt"
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.mixpanel.com/llms.txt # Mixpanel"
         },
         {
-          "evidenceId": "mixpanel-probe-1",
-          "quote": "[What is Mixpanel?](https://docs.mixpanel.com/docs/what-is-mixpanel.md): An introduction to Mixpanel produ"
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "The same list appears under \"## OpenAPI Specs\" in the docs llms.txt."
+        },
+        {
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification. Use these to generate client code, validate requests"
         }
       ]
     }
@@ -3820,10 +3835,10 @@
   {
     "productId": "mixpanel",
     "storyId": "agentic-ai-insights",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel's own site claims in-product AI agents that continuously surface insights and recommend next steps, along with AI trend-spotting across replays and heatmaps and AI summaries of replay playlists. That covers both the insights and the suggestions in the story. The MCP server only serves external assistants, so it is not credited here. Missing for 10: in-depth first-party docs for the in-product AI agents or insights feature (evidence is homepage marketing only), and independent or hands-on corroboration.",
+    "rationale": "Mixpanel's homepage claims in-product AI agents that surface insights and recommend next steps, plus AI-generated summaries and trend-spotting across session replays and heatmaps. However, all of this comes from marketing copy, with no in-depth product documentation or hands-on corroboration; the MCP server serves external assistants and is not credited as in-product. missing for 10: first-party docs detailing the in-product AI insights/agents feature, evidence of how suggestions are generated and delivered across core reports (funnels, retention, flows), independent or hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-44",
       "mixpanel-docs-21",
@@ -3832,7 +3847,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": [
         {
@@ -3860,7 +3875,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Mixpanel's homepage claims first-party agents that monitor the product continuously and proactively surface insights. That is a product-native background capability, but it is a single marketing line with no documentation on how users configure, schedule or trigger these automations, or what actions they can take. Warehouse sync, export APIs and MCP query tools are adjacent features and earn no credit here. Missing for 10: documented user-configurable automation setup, recurring schedules/triggers, autonomous actions beyond surfacing insights, first-party technical docs, independent or hands-on corroboration.",
+    "rationale": "Mixpanel's homepage claims first-party agents that 'monitor your product continuously' and proactively surface insights, which is autonomous background behavior. But this is a single marketing line with no docs on how a user configures, schedules, or triggers such automations or what actions they can take. Warehouse sync and the MCP server are related but not user-defined background automations. Missing for 10: documented setup/configuration of automations, user-defined triggers or recurring schedules, the actions automations can take, in-depth first-party docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-44"
     ],
@@ -3882,12 +3897,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Mixpanel's marketing site describes built-in AI: agents that continuously monitor the product and surface insights, AI that spots trends across session replays, and AI summaries of replay playlists. There is no in-depth documentation of a user delegating arbitrary tasks to an in-product assistant. The hosted MCP server serves external AI assistants and is a different capability, so it is not credited here. Missing for 10: first-party docs describing an in-product assistant that users can hand tasks to, the scope of task delegation and actions it can take, and independent or hands-on corroboration.",
+    "rationale": "Mixpanel's homepage claims built-in agents that continuously monitor the product and surface insights, plus in-product AI that spots trends across replays and summarizes them. This is the product's own AI, but the evidence is marketing copy only and shows no conversational assistant that users hand tasks to. The hosted MCP server serves external AI assistants, which is a different story, so it earns no credit here. Missing for 10: documentation of an in-product assistant users can delegate tasks to, the scope of actions it can perform, and hands-on or independent corroboration.",
     "evidenceIds": [
       "mixpanel-docs-44",
       "mixpanel-docs-21",
-      "mixpanel-docs-27",
-      "mixpanel-docs-15"
+      "mixpanel-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -3915,15 +3929,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel documents its own programmatic, UI-free interfaces. The Query API returns the same calculated results as web-app reports, the Raw Event Export API supports high-volume exports, and JQL runs custom JavaScript queries on the query engine. Together these allow scripted, headless use of core analytics. However, the evidence never mentions CI pipelines, a CLI, or automation-oriented credentials, and probes found no OpenAPI spec. Missing for 10: an official CLI or CI integration docs, documented service-account/token auth for unattended runs, a machine-readable API spec, and independent hands-on corroboration of CI usage.",
+    "rationale": "Mixpanel documents its own non-UI programmatic surface. The Query API returns the same results as web-app reports, the Import and Raw Export APIs move data server-side, Service Accounts are the recommended auth, and OpenAPI specs cover every API, so automated scripts can drive it without the dashboard. Nothing in the evidence documents a CLI, CI-specific guidance, or a headless runner, so CI use has to be assembled from raw API calls. missing for 10: official CLI or CI integration (e.g. GitHub Action), documented CI/automation workflows, hands-on corroboration of headless automation use.",
     "evidenceIds": [
       "mixpanel-docs-43",
       "mixpanel-docs-39",
       "mixpanel-docs-7",
-      "mixpanel-docs-17",
-      "mixpanel-docs-40",
-      "mixpanel-docs-36",
-      "mixpanel-probe-2"
+      "mixpanel-api-playground-20261105",
+      "mixpanel-auth-deprecation-20261105",
+      "mixpanel-openapi-specs-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -3935,12 +3948,20 @@
           "quote": "The Query API allows you to obtain the same calculated and formatted results that you see from a report in our web app."
         },
         {
-          "evidenceId": "mixpanel-docs-17",
-          "quote": "To export raw event data, use the Raw Event Export API... This method is recommended for high volume exports."
+          "evidenceId": "mixpanel-api-playground-20261105",
+          "quote": "Use this API to send batches of events from your servers to Mixpanel"
         },
         {
-          "evidenceId": "mixpanel-docs-40",
-          "quote": "This JavaScript will be compiled, and the main() function will be executed by the query engine."
+          "evidenceId": "mixpanel-docs-7",
+          "quote": "To export raw event data, use the Raw Event Export API."
+        },
+        {
+          "evidenceId": "mixpanel-auth-deprecation-20261105",
+          "quote": "the recommended authentication mechanism going forward"
+        },
+        {
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification."
         }
       ]
     }
@@ -3951,7 +3972,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Mixpanel offers AI features, including agents that monitor the product, so letting those AI features use external MCP servers is a fair question for this product. The evidence only documents Mixpanel acting as a hosted MCP server that gives outside AI assistants access to its data. That is the server role, not the client role this story asks about, so it earns no credit, and nothing shows Mixpanel connecting to third-party MCP servers.",
+    "rationale": "Mixpanel has built-in AI features, such as agents that monitor your product, so asking whether it can consume external MCP servers is a fair question. The evidence documents only Mixpanel's hosted MCP server, which exposes Mixpanel data to outside AI assistants. That is the server role, not this client story, so it earns no credit. Nothing shows Mixpanel connecting to or using tools from third-party MCP servers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3966,11 +3987,11 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Mixpanel's first-party docs describe a hosted, official MCP server that gives AI assistants direct access to Mixpanel data. Once connected, an agent can query events, funnels, flows, retention and session replays in natural language and use tools such as Create-Dashboard; a probe confirms the official MCP documentation page exists. missing for 10: independent or hands-on corroboration of connecting an agent, and documented setup/auth details in the pack.",
+    "rationale": "Mixpanel is an analytics SaaS, not an agent, so the official-MCP-server axis applies. Its docs describe a hosted MCP server that gives AI assistants direct access to Mixpanel data, with natural-language querying of events, funnels, retention and session replays, and tools such as Create-Dashboard. A probe independently confirmed the MCP documentation page exists. Missing for 10: independent hands-on or community corroboration of agent connections, and documented auth/setup details for connecting clients.",
     "evidenceIds": [
       "mixpanel-docs-10",
-      "mixpanel-docs-26",
       "mixpanel-docs-11",
+      "mixpanel-docs-26",
       "mixpanel-probe-3"
     ],
     "support": {
@@ -4003,13 +4024,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Mixpanel's first-party hosted MCP server lets users query events, funnels, flows, retention and session replays in natural language without navigating dashboards, and exposes some write actions such as Create-Dashboard. The natural-language operation happens through an external AI assistant connected to that server, and the evidence covers mainly querying rather than operating the full product. missing for 10: a documented in-product natural-language command interface, evidence of natural-language control beyond querying and dashboard creation (e.g., configuration, cohorts, experiments), and independent or hands-on corroboration that the natural-language workflows work as claimed.",
+    "rationale": "Mixpanel documents a first-party hosted MCP server that lets AI assistants query events, funnels, flows, retention and session replays in natural language, with no dashboard navigation required. It also exposes action tools such as Create-Dashboard. However, natural-language operation runs through an external AI assistant connected over MCP, and broader in-product natural-language command coverage is only implied by homepage marketing about agents. Missing for 10: a documented native in-app natural-language command interface, evidence that natural language covers the full breadth of product operations beyond querying and dashboard creation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-10",
       "mixpanel-docs-19",
       "mixpanel-docs-26",
       "mixpanel-docs-11",
-      "mixpanel-probe-3"
+      "mixpanel-probe-3",
+      "mixpanel-docs-44"
     ],
     "support": {
       "relation": "direct",
@@ -4017,12 +4039,12 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
-          "evidenceId": "mixpanel-docs-26",
-          "quote": "Once connected, you can query events, funnels, flows, retention, session replays, and more using natural language — no dashboard navigation required."
-        },
-        {
           "evidenceId": "mixpanel-docs-10",
           "quote": "Mixpanel provides a hosted Model Context Protocol (MCP) server that gives AI assistants direct access to your Mixpanel data."
+        },
+        {
+          "evidenceId": "mixpanel-docs-26",
+          "quote": "Once connected, you can query events, funnels, flows, retention, session replays, and more using natural language — no dashboard navigation required."
         },
         {
           "evidenceId": "mixpanel-docs-11",
@@ -4037,7 +4059,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a SaaS analytics product, but nothing in the evidence pack documents a Mixpanel CLI. The REST APIs (Raw Export, Query, Engage), JQL and the hosted MCP server are other features or developer building blocks, not a CLI, so they earn no credit.",
+    "rationale": "An official CLI is a fair ask for a SaaS analytics platform, so the axis applies, but no evidence shows Mixpanel ships one. The hosted MCP server, REST APIs (Query, Raw Export, Ingestion) and downloadable OpenAPI specs are adjacent building blocks or different capabilities, not an official command-line tool.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4050,20 +4072,20 @@
     "productId": "mixpanel",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Mixpanel documents several public APIs. The Query API returns the same calculated results as web-app reports, and there are the Raw Event Export API, the Engage API for profiles, a Feature Flags API, JQL custom queries and GDPR deletion/retrieval APIs, so an AI-native user can query and export programmatically. Coverage leans toward read and export; the probe found no OpenAPI spec at the standard paths, and write or management operations are evidenced only through the MCP server's Create-Dashboard tool. missing for 10: documented API coverage for configuring and managing reports and projects, a machine-readable OpenAPI spec, independent hands-on corroboration of API use.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Mixpanel documents a broad public REST API surface: ingestion, query, raw export, Engage, identity, service accounts, lexicon, annotations, GDPR, feature flags, experiments, data pipelines and warehouse connectors. Each has a downloadable OpenAPI spec, a live per-endpoint 'Try it' playground, service-account auth and dated deprecation notices, so an agent can programmatically ingest, query and manage the product. The probe's 404s on root OpenAPI paths do not contradict this, since the specs are published under docs.mixpanel.com/openapi/. Missing for 10: independent or hands-on corroboration of driving the product via the API, and any documented REST endpoint for creating or managing reports and dashboards (that is shown only via MCP).",
     "evidenceIds": [
+      "mixpanel-openapi-specs-20261105",
+      "mixpanel-ingestion-spec-20261105",
+      "mixpanel-api-playground-20261105",
       "mixpanel-docs-39",
       "mixpanel-docs-43",
       "mixpanel-docs-7",
-      "mixpanel-docs-9",
       "mixpanel-docs-8",
       "mixpanel-docs-36",
-      "mixpanel-docs-37",
-      "mixpanel-docs-12",
-      "mixpanel-docs-25",
-      "mixpanel-probe-2"
+      "mixpanel-auth-deprecation-20261105",
+      "mixpanel-api-sunsets-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -4071,24 +4093,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification. Use these to generate client code, validate requests"
+        },
+        {
           "evidenceId": "mixpanel-docs-43",
           "quote": "The Query API allows you to obtain the same calculated and formatted results that you see from a report in our web app."
-        },
-        {
-          "evidenceId": "mixpanel-docs-39",
-          "quote": "The Mixpanel Query API endpoints can: Filter or break down Events * Return user profiles. * Return an activity/event stream for a user. * Return a cohort of users."
-        },
-        {
-          "evidenceId": "mixpanel-docs-7",
-          "quote": "To export raw event data, use the Raw Event Export API. The events payload is returned as JSONL"
         },
         {
           "evidenceId": "mixpanel-docs-36",
           "quote": "Use the Feature Flags API to assign your users to variants for experiments, rollout, and releases."
         },
         {
-          "evidenceId": "mixpanel-docs-8",
-          "quote": "To export User Profile data, use the Engage API."
+          "evidenceId": "mixpanel-docs-7",
+          "quote": "To export raw event data, use the Raw Event Export API. The events payload is returned as JSONL"
         }
       ]
     }
@@ -4096,31 +4114,50 @@
   {
     "productId": "mixpanel",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Mixpanel exposes APIs (Query, Raw Export, Engage, Feature Flags) and a hosted MCP server, so scoped agent credentials are a fair question for this product. However, nothing in the evidence describes service accounts, scoped tokens, role-limited keys, or least-privilege permissions for API or MCP access. The MCP server and API docs describe data access, not credential scoping, so they earn no credit here.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mixpanel documents Service Accounts as its recommended authentication mechanism and publishes a Service Accounts API spec, so it offers dedicated non-human credentials an agent could use. Nothing in the evidence shows these credentials can be scoped to specific projects, roles or permissions, so the least-privilege part of the story is unproven. missing for 10: documented per-credential scopes/roles or permission limits, project-level restriction of service accounts, MCP/agent-specific credential scoping, independent corroboration.",
+    "evidenceIds": [
+      "mixpanel-auth-deprecation-20261105",
+      "mixpanel-openapi-specs-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mixpanel-auth-deprecation-20261105",
+          "quote": "the recommended authentication mechanism going forward"
+        },
+        {
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification."
+        }
+      ]
     }
   },
   {
     "productId": "mixpanel",
     "storyId": "agentic-sdks",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence pack documents HTTP APIs (Raw Event Export, Engage, Query, Feature Flags), JQL and a hosted MCP server. None of it mentions official client SDKs or language libraries for building against Mixpanel. APIs and MCP are adjacent interfaces, not the SDKs this story asks for, so absence of SDK evidence for an applicable axis yields none.",
-    "evidenceIds": [],
+    "rationale": "The only mention of SDKs is a changelog note that the retired `/decide` endpoint \"was used in older versions of Mixpanel SDKs\", which confirms first-party SDKs exist but documents nothing about them. The OpenAPI specs for generating client code are developer building blocks, not official SDKs, so they earn no credit here. Missing for 10: SDK documentation listing supported languages and platforms, install and usage guides for current SDK versions, any agent-oriented SDK guidance, and independent or hands-on corroboration of SDK quality.",
+    "evidenceIds": [
+      "mixpanel-api-sunsets-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can build against official SDKs",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mixpanel-api-sunsets-20261105",
+          "quote": "which was used in older versions of Mixpanel SDKs"
+        }
+      ]
     }
   },
   {
@@ -4129,7 +4166,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Outbound event webhooks are a fair capability to ask of a product-analytics SaaS, so the axis applies. However, the evidence pack documents no registrable outbound HTTP callbacks. The only data-access paths shown are pull-based: the Raw Event Export API, the Query API, the MCP server and warehouse connectors. These are adjacent mechanisms, not webhook subscriptions.",
+    "rationale": "The evidence pack documents only pull-based access: the Raw Event Export API, the Query API, and the MCP server. Nothing shows registrable outbound HTTP callbacks that let a programmatic consumer subscribe to Mixpanel events. Pull-based exports and inbound warehouse connectors are adjacent features and earn no credit for this webhooks story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4144,16 +4181,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Mixpanel documents a Query API that returns the same calculated report results as the web app, plus JQL for custom JavaScript queries, which covers running analytical queries. It also documents a Raw Event Export API that returns all event properties as JSONL and is recommended for high-volume exports, which covers pulling raw event data. missing for 10: independent hands-on corroboration of the query/export APIs, and a machine-readable OpenAPI spec (the probe found all candidate paths returning 404).",
+    "rationale": "Mixpanel documents a Query API that returns the same calculated results as its web-app reports, including filtered and broken-down events, user profiles, activity streams and cohorts. It also documents a Raw Event Export API that returns event data as JSONL with all properties and is recommended for high-volume exports, plus JQL for custom queries. Both the Query and Raw Data Export APIs ship OpenAPI specs. Missing for 10: independent hands-on corroboration of query and export API behavior; the only community comment is a vague remark that the 'export policy is great'.",
     "evidenceIds": [
+      "mixpanel-docs-39",
+      "mixpanel-docs-43",
       "mixpanel-docs-7",
       "mixpanel-docs-9",
       "mixpanel-docs-17",
-      "mixpanel-docs-25",
-      "mixpanel-docs-39",
-      "mixpanel-docs-43",
       "mixpanel-docs-37",
       "mixpanel-docs-40",
+      "mixpanel-openapi-specs-20261105",
       "mixpanel-comm-13"
     ],
     "support": {
@@ -4161,14 +4198,6 @@
       "coverage": "complete",
       "subject": "As a developer, I can run analytical queries and pull raw event data back through a documented query/export API",
       "citations": [
-        {
-          "evidenceId": "mixpanel-docs-7",
-          "quote": "To export raw event data, use the Raw Event Export API. The events payload is returned as JSONL"
-        },
-        {
-          "evidenceId": "mixpanel-docs-9",
-          "quote": "The raw export API allows you to download your event data as it is received and stored within Mixpanel, complete with all event properties"
-        },
         {
           "evidenceId": "mixpanel-docs-43",
           "quote": "The Query API allows you to obtain the same calculated and formatted results that you see from a report in our web app."
@@ -4178,8 +4207,16 @@
           "quote": "The Mixpanel Query API endpoints can: Filter or break down Events"
         },
         {
-          "evidenceId": "mixpanel-docs-40",
-          "quote": "The JQL JavaScript code must define a main() function. This JavaScript will be compiled, and the main() function will be executed by the query engine."
+          "evidenceId": "mixpanel-docs-7",
+          "quote": "To export raw event data, use the Raw Event Export API. The events payload is returned as JSONL"
+        },
+        {
+          "evidenceId": "mixpanel-docs-9",
+          "quote": "The raw export API allows you to download your event data as it is received and stored within Mixpanel, complete with all event properties"
+        },
+        {
+          "evidenceId": "mixpanel-docs-37",
+          "quote": "Create custom queries using Javascript code"
         }
       ]
     }
@@ -4187,61 +4224,115 @@
   {
     "productId": "mixpanel",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Mixpanel documents API reference pages for the Raw Event Export, Query, and Feature Flags APIs. Nothing in the evidence shows that reference is interactive or offers runnable examples, such as a try-it console. The OpenAPI probe also returned 404 on every candidate path, so no machine-readable spec backs an explorable reference.",
-    "evidenceIds": [],
+    "rationale": "Mixpanel's API reference renders a live \"Try it\" playground for each endpoint, with generated multi-language request examples (e.g. Import Events). Downloadable OpenAPI specs for its APIs back it up. The probe's 404s were at guessed root paths, not the documented /openapi/ directory, so they do not contradict this. Missing for 10: independent or hands-on corroboration that the playground runs successfully, and breadth across all endpoints is shown with only one example.",
+    "evidenceIds": [
+      "mixpanel-api-playground-20261105",
+      "mixpanel-openapi-specs-20261105",
+      "mixpanel-ingestion-spec-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mixpanel-api-playground-20261105",
+          "quote": "The API reference renders a live \"Try it\" API playground per endpoint"
+        },
+        {
+          "evidenceId": "mixpanel-api-playground-20261105",
+          "quote": "with generated multi-language request examples"
+        },
+        {
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification. Use these to generate client code, validate requests"
+        }
+      ]
     }
   },
   {
     "productId": "mixpanel",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Mixpanel documents several APIs (Raw Event Export, Query API, Feature Flags API), so a downloadable machine-readable spec is a fair question for this product. However, the probe found every candidate OpenAPI/Swagger path returning 404, and no evidence shows a downloadable OpenAPI or equivalent spec. The llms.txt file and the MCP server are adjacent AI-access features, not an API specification, so they earn no credit here.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Mixpanel's \"Docs for AI Agents\" page says every API is described by an OpenAPI spec and lists thirteen downloadable specs under docs.mixpanel.com/openapi/, also indexed in llms.txt. The Ingestion spec itself downloads as a valid OpenAPI 3.0.2 YAML document. The probe's 404s only cover guessed root paths, not the documented /openapi/ location, so they do not contradict this. Missing for 10: independent or hands-on confirmation that the other twelve specs download and are complete.",
+    "evidenceIds": [
+      "mixpanel-openapi-specs-20261105",
+      "mixpanel-ingestion-spec-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification. Use these to generate client code, validate requests"
+        },
+        {
+          "evidenceId": "mixpanel-ingestion-spec-20261105",
+          "quote": "The Ingestion API spec file itself downloads as an OpenAPI 3.0.2 YAML document"
+        }
+      ]
     }
   },
   {
     "productId": "mixpanel",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment, such as separate dev or test projects isolated from production data, is a fair capability for an analytics SaaS. The pack documents no such feature. Experiments, feature flags, the MCP server and export APIs are adjacent capabilities that provide no isolation from production data, so they earn no credit here.",
-    "evidenceIds": [],
+    "rationale": "Mixpanel documents its own isolation pattern: separate projects with per-environment token switching so testing data does not contaminate production, and its partner guide includes a 'Setting up a Sandbox' section that uses a free account as a sandbox. This is real data isolation, not a dry-run, but it is not a dedicated sandbox or test mode, and the docs state there is no API-level test-mode parameter. missing for 10: a first-class sandbox/test mode or API test flag, documented provisioning of sandbox environments for agent workflows (e.g. via MCP), independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mixpanel-dev-environments-20261105",
+      "mixpanel-sandbox-account-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mixpanel-dev-environments-20261105",
+          "quote": "Keep development data out of production by using separate Mixpanel projects and switching tokens per environment"
+        },
+        {
+          "evidenceId": "mixpanel-sandbox-account-20261105",
+          "quote": "Sign up for a free Mixpanel account, which you can use as a sandbox when building and testing your integration."
+        }
+      ]
     }
   },
   {
     "productId": "mixpanel",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel is a SaaS analytics product with public APIs, so API versioning and a deprecation policy are a fair axis. The evidence documents APIs (Raw Event Export, Engage, Query, Feature Flags, JQL) and an MCP server. However, nothing in the pack mentions API version identifiers, versioned endpoints, or a documented deprecation or sunset policy, and the OpenAPI probe returned 404 on every candidate path.",
-    "evidenceIds": [],
+    "rationale": "Mixpanel documents dated deprecations and sunsets with migration paths, such as the Project Secret auth retirement on March 3, 2027 and the /decide endpoint retirement in the changelog. However, the evidence says there is no single numbered API-version policy and no version headers, so the 'versioned APIs' half of the story is not delivered. Downloadable OpenAPI specs describe the APIs but do not establish versioning. Missing for 10: explicit API versioning (numbered versions or version headers), a single formal published deprecation policy with guaranteed notice windows, independent corroboration.",
+    "evidenceIds": [
+      "mixpanel-auth-deprecation-20261105",
+      "mixpanel-api-sunsets-20261105",
+      "mixpanel-openapi-specs-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mixpanel-auth-deprecation-20261105",
+          "quote": "This authentication method has been deprecated and will be fully retired on March 3, 2027"
+        },
+        {
+          "evidenceId": "mixpanel-api-sunsets-20261105",
+          "quote": "Starting April 2026, we will be fully retiring the `/decide` endpoint, which was used in older versions of Mixpanel SDKs"
+        }
+      ]
     }
   },
   {
@@ -4250,7 +4341,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents automatic capture of clicks, pageviews, or form interactions. The closest items are Session Replay sampling managed from the UI without code changes, which is a different feature, and warehouse connectors, which are a different ingestion method; neither counts as event autocapture. Absent first-party evidence of autocapture, this applicable axis is judged none.",
+    "rationale": "The evidence pack has no documentation of automatic capture of clicks, pageviews, or form interactions. The closest items are adjacent features that do not count here: Session Replay sampling configurable without code changes, the Ingestion/Import APIs that require explicit event sending, and warehouse connectors. Event autocapture is a fair axis for a product analytics tool, so the absence of evidence yields none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4262,16 +4353,33 @@
   {
     "productId": "mixpanel",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence shows high-volume raw event export, warehouse sync and GDPR deletion/retrieval APIs. These are export, import and privacy capabilities, not documented bulk operations such as batch edit, delete or update across many items at once. Bulk export maps to a separate data-export story and does not transfer here, so no direct evidence supports bulk actions.",
-    "evidenceIds": [],
+    "rationale": "Mixpanel's own APIs support batch-level operations. The Import Events endpoint accepts batches of events, and the Raw Event Export API is documented for high-volume exports. That covers bulk ingestion and bulk retrieval, but there is no evidence of bulk modify or delete actions across many items, such as dashboards, cohorts, or profiles, through the API or MCP. Missing for 10: bulk update/delete operations across many items, bulk actions via MCP or agent tooling, independent hands-on corroboration.",
+    "evidenceIds": [
+      "mixpanel-api-playground-20261105",
+      "mixpanel-docs-17",
+      "mixpanel-docs-25"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mixpanel-api-playground-20261105",
+          "quote": "Use this API to send batches of events from your servers to Mixpanel"
+        },
+        {
+          "evidenceId": "mixpanel-docs-17",
+          "quote": "This method is recommended for high volume exports."
+        },
+        {
+          "evidenceId": "mixpanel-docs-25",
+          "quote": "large volume raw data export from our APIs"
+        }
+      ]
     }
   },
   {
@@ -4280,7 +4388,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation rules are a fair axis for a product analytics platform, but the evidence pack never documents user-defined rules or triggers that fire actions when events occur. The closest items describe agents that 'monitor your product continuously' and surface insights, plus export, query and MCP access APIs. These are adjacent monitoring or data-access features, not a rule-to-action automation capability.",
+    "rationale": "Rule-based automation on events is a fair question for a product analytics platform, so the axis applies. However, the evidence pack never documents user-defined rules or triggers that fire actions when events occur. The closest items are marketing copy about agents that 'monitor your product continuously' and 'tell your team what to do next', which describes insight surfacing rather than configurable event-triggered actions, and export and query APIs, which are developer building blocks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4295,7 +4403,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a way for users to define or schedule their own recurring jobs or workflows, such as scheduled reports, cron-style tasks or scheduled automations. Warehouse connector syncs and the marketing claim that agents 'monitor your product continuously' are adjacent features, not user-configurable recurring schedules. The MCP server and Query API are building blocks that would need an external scheduler, so they earn no credit here.",
+    "rationale": "Scheduling recurring jobs is a fair axis for an analytics SaaS like Mixpanel, but the evidence pack never documents a user-configurable recurring job, scheduled report, or workflow scheduler. The closest items are warehouse-connector syncs, which only imply periodic data syncs, and a marketing claim that 'Agents monitor your product continuously.' Neither is a user-schedulable job or workflow, so both are adjacent at most and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4310,7 +4418,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Mixpanel's evidence mentions agents that monitor the product and feature-flag rollouts. Nothing documents versioning, review, or rollback of automations, so the axis applies but there is no evidence it is delivered. Feature-flag rollouts are a different capability and earn no credit here.",
+    "rationale": "Mixpanel is an analytics platform that markets monitoring agents, so asking whether automations can be versioned, reviewed and rolled back is a fair question. However, the evidence pack contains nothing on version history, review workflows or rollback for automations, agents, alerts or any other configured workflow. The API deprecation changelog is about API lifecycle, not user automations, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4325,7 +4433,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party capability to stream events from Mixpanel to third-party destinations such as CRMs, ad platforms, or registrable outbound webhooks. The Raw Event Export API is a pull-based download, which is only a building block a developer could use to construct forwarding. Warehouse Connectors and partners like Census and Vendo bring data into Mixpanel rather than routing it onward.",
+    "rationale": "The pack documents pull-based export only: the Raw Event Export API and the Engage API. Nothing shows Mixpanel itself forwarding events onward to CRMs, ad platforms or registrable webhooks. The only data-forwarding mention is a legacy feature being sunset, the cohort-sync guide covers a different capability (cohorts, not event streaming), and partner listings like mParticle and Census are third-party tools, not Mixpanel's own capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4337,16 +4445,33 @@
   {
     "productId": "mixpanel",
     "storyId": "client-server-sdks",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack never documents official Mixpanel SDKs for web, mobile, or backend languages. The only ingestion evidence is Warehouse Connectors and third-party partners such as mParticle, Census and Vendo. Those are different ingestion paths and do not count toward this story.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The pack confirms that Mixpanel SDKs exist through a passing changelog reference to \"older versions of Mixpanel SDKs\". It also documents a first-party Ingestion API, including a server-side POST /import endpoint for sending events from backends. However, no evidence names which official SDKs exist or which web, mobile and backend languages they cover. Missing for 10: a documented list of official SDKs by platform and language, evidence of web and mobile SDKs specifically, SDK install and usage docs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mixpanel-api-sunsets-20261105",
+      "mixpanel-api-playground-20261105",
+      "mixpanel-ingestion-spec-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can send events from web, mobile, and backend apps through official SDKs for the major languages and platforms",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mixpanel-api-sunsets-20261105",
+          "quote": "the `/decide` endpoint, which was used in older versions of Mixpanel SDKs"
+        },
+        {
+          "evidenceId": "mixpanel-api-playground-20261105",
+          "quote": "Use this API to send batches of events from your servers to Mixpanel"
+        },
+        {
+          "evidenceId": "mixpanel-ingestion-spec-20261105",
+          "quote": "APIs allowing for event-based tracking and user profile handling"
+        }
+      ]
     }
   },
   {
@@ -4355,7 +4480,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cookieless tracking is a fair axis for a product analytics tool, but the evidence pack never mentions cookies, cookieless modes, or consent-banner avoidance. The privacy items cover GDPR deletion/retrieval APIs and EU data residency, which are adjacent compliance features rather than cookie-free tracking, so they earn no credit.",
+    "rationale": "Cookieless tracking is a fair question for a product analytics tool, but the evidence pack never documents a cookieless mode, cookie-free persistence, or guidance on avoiding consent banners. The GDPR deletion APIs, EU data residency and server-side Import Events API are adjacent privacy and ingestion features, not a documented cookieless tracking capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4370,11 +4495,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Mixpanel's own hosted MCP server documents a Create-Dashboard tool that builds dashboards with text cards and reports, so dashboards can be created programmatically. That is only creation, and only through MCP. The Query API returns calculated report results but is read-only and does not manage insights. Missing for 10: documented REST endpoints for dashboard CRUD, update/delete/manage operations on dashboards, programmatic create/manage of saved insights (reports), and independent or hands-on corroboration.",
+    "rationale": "Mixpanel's own hosted MCP server exposes a documented Create-Dashboard tool that builds dashboards with text cards and reports, so programmatic dashboard creation exists. However, the Query API only returns calculated report results, and the published OpenAPI spec list has no dashboards or saved-insights API. Missing for 10: a documented REST endpoint for creating dashboards, update/delete/list management of dashboards, programmatic creation and management of saved insights/reports, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-11",
       "mixpanel-docs-10",
-      "mixpanel-docs-43"
+      "mixpanel-docs-43",
+      "mixpanel-openapi-specs-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -4388,10 +4514,6 @@
         {
           "evidenceId": "mixpanel-docs-10",
           "quote": "Mixpanel provides a hosted Model Context Protocol (MCP) server that gives AI assistants direct access to your Mixpanel data."
-        },
-        {
-          "evidenceId": "mixpanel-docs-43",
-          "quote": "The Query API allows you to obtain the same calculated and formatted results that you see from a report in our web app."
         }
       ]
     }
@@ -4402,12 +4524,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel documents its own dashboards built from reports: an MCP 'Create-Dashboard' tool adds text cards and reports to a new dashboard, and marketing copy describes a dashboard 'you and your team can keep working from.' However, there is no dedicated dashboard documentation and no detail on how saved reports are added or how sharing works. Missing for 10: dedicated docs on composing saved reports into dashboards in the UI, documented sharing and permission controls for teammates, independent or hands-on corroboration.",
+    "rationale": "Mixpanel's own docs list a Create-Dashboard capability that assembles reports and text cards into a dashboard. Marketing copy says analyses are delivered as a dashboard the team can keep working from. Dedicated dashboard documentation is thin, though, and the composition evidence comes mainly from the MCP tool listing rather than the core UI workflow. Missing for 10: first-party docs on saving insights and adding them to dashboards in the UI, documented sharing/permission controls for teammates, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-11",
       "mixpanel-docs-15",
-      "mixpanel-docs-14",
-      "mixpanel-docs-41"
+      "mixpanel-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -4433,12 +4554,13 @@
     "productId": "mixpanel",
     "storyId": "feature-flags-targeting",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel documents a Feature Flags API that assigns users to variants for experiments, rollouts, and releases, and its homepage mentions running rollouts, so it has its own feature-flag capability. Nothing in the pack shows flag targeting by user properties, cohorts, or percentage rollouts; the cohort mention concerns analytics grouping, not flag targeting. missing for 10: documented targeting by user properties, cohort-based flag targeting, percentage-rollout configuration, SDK flag evaluation details, independent or hands-on corroboration.",
+    "rationale": "Mixpanel documents its own Feature Flags API that assigns users to variants for experiments, rollouts, and releases, and it publishes a Feature Flags OpenAPI spec, so the product directly ships feature flagging. The evidence never describes the targeting mechanics the story asks for. missing for 10: documented targeting by user properties, cohort-based flag targeting, percentage-rollout controls, SDK flag-evaluation docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-36",
-      "mixpanel-docs-13"
+      "mixpanel-docs-13",
+      "mixpanel-openapi-specs-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -4460,17 +4582,16 @@
     "productId": "mixpanel",
     "storyId": "founder-self-serve-answers",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Mixpanel documents a Funnels report that measures conversion through a series of events. Its marketing claims it surfaces critical drop-off points, and its reports are interactive and run 'with just a few clicks'. Session Replay and natural-language MCP queries over funnels let a non-analyst find and explain drop-offs, and community comments note PMs building custom reports quickly. Missing for 10: in-depth docs on per-step drop-off breakdowns (the funnel evidence is a one-line description), and independent hands-on corroboration of funnel drop-off analysis by non-analysts (community praise is mostly about Flows, with some usability complaints).",
+    "rationale": "Mixpanel documents a Funnels report that measures conversion through a series of events. It markets finding \"critical drop-off points,\" and Session Replay lets users explore why customers drop off. Self-serve use is supported by its point-and-click interactive reports, natural-language funnel queries, and a community account of PMs building their own reports quickly. missing for 10: detailed first-party documentation of per-step conversion/drop-off breakdowns in funnels, independent hands-on corroboration specific to funnel drop-off analysis by non-analysts.",
     "evidenceIds": [
       "mixpanel-docs-2",
-      "mixpanel-docs-41",
       "mixpanel-docs-45",
+      "mixpanel-docs-41",
       "mixpanel-docs-4",
       "mixpanel-docs-19",
-      "mixpanel-comm-12",
-      "mixpanel-comm-15"
+      "mixpanel-comm-12"
     ],
     "support": {
       "relation": "direct",
@@ -4483,7 +4604,7 @@
         },
         {
           "evidenceId": "mixpanel-docs-45",
-          "quote": "Discover critical drop-off points and calibrate user journeys"
+          "quote": "Discover critical drop-off points and calibrate user journeys to optimize every touchpoint"
         },
         {
           "evidenceId": "mixpanel-docs-41",
@@ -4491,11 +4612,11 @@
         },
         {
           "evidenceId": "mixpanel-docs-4",
-          "quote": "you can quickly follow up by exploring why customers drop off"
+          "quote": "Now, with Mixpanel Session Replay, you can quickly follow up by exploring why customers drop off."
         },
         {
           "evidenceId": "mixpanel-docs-19",
-          "quote": "you can query events, funnels, flows, retention, session replays, and more using natural language"
+          "quote": "you can query events, funnels, flows, retention, session replays, and more using natural language — no dashboard navigation required."
         },
         {
           "evidenceId": "mixpanel-comm-12",
@@ -4510,7 +4631,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Mixpanel documents a Funnels report that measures conversion through a series of events, and its marketing describes finding critical drop-off points, so the core multi-step funnel exists. Filtering is documented only generically through properties, and breakdowns only for events in the Query API, not within funnels. missing for 10: explicit documentation of filters and breakdowns inside the Funnels report, step-level drop-off visualization details, independent hands-on corroboration of funnel breakdowns.",
+    "rationale": "Mixpanel's first-party Funnels report documents measuring conversion through a series of events, and its marketing says it helps teams find critical drop-off points, so the multi-step funnel core is clearly present. Filtering is documented only as a general property capability, and breakdowns appear only in the Query API, not specifically within funnels. missing for 10: explicit documentation of filters and breakdowns inside funnel reports, step-level drop-off visualization detail, independent hands-on corroboration of funnel building.",
     "evidenceIds": [
       "mixpanel-docs-2",
       "mixpanel-docs-45",
@@ -4536,7 +4657,7 @@
         },
         {
           "evidenceId": "mixpanel-docs-39",
-          "quote": "Filter or break down Events"
+          "quote": "The Mixpanel Query API endpoints can: Filter or break down Events"
         }
       ]
     }
@@ -4547,7 +4668,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only evidence is a single community report that Mixpanel offers group-level/account-level analytics for B2B SaaS, gated to higher price plans. No first-party docs describe how account-level funnels or retention work. missing for 10: first-party documentation of group/account analytics, evidence of account-level funnels and retention reports, plan availability details, hands-on corroboration",
+    "rationale": "The only evidence is a community comment confirming that Mixpanel has group- or account-level analytics for B2B SaaS, but that it is gated to higher-priced plans. No first-party docs show how account-level funnels or retention work. Missing for 10: first-party documentation of account/company-level analysis, evidence that funnels and retention can be computed per account, plan-availability details, hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-comm-9"
     ],
@@ -4567,14 +4688,14 @@
     "productId": "mixpanel",
     "storyId": "historical-event-import",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Mixpanel's own Warehouse Connectors sync data from Snowflake, BigQuery, Databricks, Redshift, and Postgres into Mixpanel, with Mirror change tracking. That gives a first-party bulk-ingestion path for historical event data once it has been staged in a warehouse. The export APIs run in the wrong direction, and the partner tools (Census, Vendo) are third-party, so neither counts. Missing for 10: a documented bulk import API or file-based upload, direct migration from other analytics tools, explicit handling of historical timestamps and backfill limits, and independent or hands-on corroboration.",
+    "rationale": "Mixpanel documents its own batch ingestion endpoint, Import Events (POST /import), for sending batches of events from servers. It also offers Warehouse Connectors that sync event data from Snowflake, BigQuery, Databricks, Redshift and Postgres, which gives a first-party path for bulk-loading exported data. However, the evidence never says these paths accept historical or backdated events, and there is no documented migration path from another analytics tool. Missing for 10: explicit documentation of historical/backdated timestamp import and its limits, a first-party migration guide or importer for other analytics tools, and independent hands-on corroboration of bulk historical imports.",
     "evidenceIds": [
+      "mixpanel-api-playground-20261105",
+      "mixpanel-ingestion-spec-20261105",
       "mixpanel-docs-24",
-      "mixpanel-docs-6",
-      "mixpanel-intdir-5",
-      "mixpanel-intdir-6"
+      "mixpanel-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -4582,12 +4703,16 @@
       "subject": "As a developer, I can bulk-import historical events from another analytics tool or a data export into the platform",
       "citations": [
         {
-          "evidenceId": "mixpanel-docs-24",
-          "quote": "With Warehouse Connectors, you can sync data from data warehouses like Snowflake, BigQuery, Databricks, Redshift, and Postgres to Mixpanel."
+          "evidenceId": "mixpanel-api-playground-20261105",
+          "quote": "\"Import Events\" (POST /import, \"Use this API to send batches of events from your servers to Mixpanel\")"
         },
         {
-          "evidenceId": "mixpanel-intdir-5",
-          "quote": "Mixpanel will create and manage the necessary STREAM objects in the \\MIXPANEL\\ schema"
+          "evidenceId": "mixpanel-ingestion-spec-20261105",
+          "quote": "describing \"APIs allowing for event-based tracking and user profile handling\""
+        },
+        {
+          "evidenceId": "mixpanel-docs-24",
+          "quote": "With Warehouse Connectors, you can sync data from data warehouses like Snowflake, BigQuery, Databricks, Redshift, and Postgres to Mixpanel."
         }
       ]
     }
@@ -4595,63 +4720,60 @@
   {
     "productId": "mixpanel",
     "storyId": "identity-resolution",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Identity resolution is a core, applicable axis for a product-analytics platform, but nothing in the evidence pack documents identifying users across devices or merging anonymous pre-signup activity into an identified profile. The only nearby evidence is profile export (Engage API) and Query API profile and activity-stream retrieval, which are adjacent features and do not show identity merging.",
-    "evidenceIds": [],
-    "support": {
-      "relation": "absent",
-      "coverage": "none",
-      "subject": "As a developer, I can identify users across devices and merge anonymous pre-signup activity into their identified profile",
-      "citations": []
-    }
-  },
-  {
-    "productId": "mixpanel",
-    "storyId": "metric-alerts",
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is homepage marketing saying Mixpanel agents 'monitor your product continuously' and 'surface insights before you think to ask', with an example insight about a 19% signup dip. That loosely implies proactive detection of metric changes. Nothing documents dashboard subscriptions, configurable alert thresholds, anomaly detection, or how alerts are delivered. missing for 10: documented dashboard subscriptions/scheduled delivery, configurable metric alerts or anomaly detection, alert delivery channels (email/Slack), first-party docs beyond marketing copy, independent or hands-on corroboration.",
+    "rationale": "The only on-topic evidence is that Mixpanel publishes a first-party \"Identity\" API (one of its OpenAPI specs) and an Ingestion API covering \"user profile handling\". That points to product-owned identity management, but nothing in the pack describes how users are identified across devices or how anonymous pre-signup events merge into an identified profile. missing for 10: documentation of cross-device identification, documented merging of anonymous activity into identified profiles (identify/alias/merge semantics), SDK-level identity methods, independent or hands-on corroboration.",
     "evidenceIds": [
-      "mixpanel-docs-44",
-      "mixpanel-docs-15",
-      "mixpanel-docs-20"
+      "mixpanel-openapi-specs-20261105",
+      "mixpanel-ingestion-spec-20261105"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
-      "subject": "As a product-manager, I can subscribe to dashboards and get alerted when a key metric moves abnormally",
+      "subject": "As a developer, I can identify users across devices and merge anonymous pre-signup activity into their identified profile",
       "citations": [
         {
-          "evidenceId": "mixpanel-docs-44",
-          "quote": "Agents monitor your product continuously, surface insights before you think to ask, and tell your team exactly what to do next."
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Ingestion, Query, Raw Data Export, Identity, Service Accounts"
         },
         {
-          "evidenceId": "mixpanel-docs-15",
-          "quote": "Diagnose what changed, and why, in seconds, delivered as a dashboard you and your team can keep working from."
+          "evidenceId": "mixpanel-ingestion-spec-20261105",
+          "quote": "APIs allowing for event-based tracking and user profile handling"
         }
       ]
     }
   },
   {
     "productId": "mixpanel",
+    "storyId": "metric-alerts",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents no dashboard subscriptions and no alerts or anomaly notifications. The marketing lines about agents that \"monitor your product continuously\" and about diagnosing what changed \"delivered as a dashboard\" describe a related insight feature, not subscribing to a dashboard or being alerted when a metric moves abnormally. That evidence is adjacent at best and earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a product-manager, I can subscribe to dashboards and get alerted when a key metric moves abnormally",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mixpanel",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Mixpanel documents broad programmatic surfaces. The Query API returns the same calculated results as web-app reports, and there are raw-event and profile export APIs, a Feature Flags API, JQL custom queries, GDPR deletion/retrieval APIs, and a hosted MCP server that can create dashboards. None of this shows the API matches everything the UI can do. Missing for 10: explicit UI/API parity statement, documented API for configuration and admin tasks (e.g., session replay sampling, cohort and report management), a published OpenAPI spec (probe returned 404), and independent corroboration of parity.",
+    "rationale": "Mixpanel documents broad API coverage. It publishes OpenAPI specs for many APIs (Ingestion, Query, Raw Data Export, Identity, Service Accounts, Lexicon Schemas, Annotations, GDPR, Feature Flags, Experiments, Data Pipelines, Warehouse Connectors). Its Query API returns the same calculated results seen in web-app reports, and the hosted MCP server can create dashboards. However, nothing documents full UI-to-API parity: report and dashboard authoring is shown only through MCP, and Session Replay sampling is described as managed from the UI. missing for 10: explicit UI/API parity statement, documented REST API for creating/editing reports and dashboards, API control of Session Replay settings and other UI-only configuration, independent corroboration of parity.",
     "evidenceIds": [
       "mixpanel-docs-43",
+      "mixpanel-openapi-specs-20261105",
       "mixpanel-docs-39",
-      "mixpanel-docs-7",
-      "mixpanel-docs-8",
-      "mixpanel-docs-36",
-      "mixpanel-docs-37",
       "mixpanel-docs-11",
-      "mixpanel-docs-12",
-      "mixpanel-probe-2"
+      "mixpanel-docs-7",
+      "mixpanel-docs-36",
+      "mixpanel-docs-29"
     ],
     "support": {
       "relation": "direct",
@@ -4663,20 +4785,16 @@
           "quote": "The Query API allows you to obtain the same calculated and formatted results that you see from a report in our web app."
         },
         {
-          "evidenceId": "mixpanel-docs-39",
-          "quote": "The Mixpanel Query API endpoints can: Filter or break down Events"
-        },
-        {
-          "evidenceId": "mixpanel-docs-36",
-          "quote": "Use the Feature Flags API to assign your users to variants for experiments, rollout, and releases."
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification. Use these to generate client code, validate requests"
         },
         {
           "evidenceId": "mixpanel-docs-11",
           "quote": "Create a new dashboard with text cards and reports"
         },
         {
-          "evidenceId": "mixpanel-docs-7",
-          "quote": "To export raw event data, use the Raw Event Export API."
+          "evidenceId": "mixpanel-docs-36",
+          "quote": "Use the Feature Flags API to assign your users to variants for experiments, rollout, and releases."
         }
       ]
     }
@@ -4685,17 +4803,17 @@
     "productId": "mixpanel",
     "storyId": "openness-full-export",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Mixpanel documents exporting raw event data with all event properties as JSONL through the Raw Event Export API, which it recommends for high volume. User profiles can be exported via the Engage API and small batches as CSV from the UI, and a community user calls its export policy 'great'. Missing for 10: documented export of non-event assets (session replays, cohorts, report/dashboard definitions), a documented continuous bulk export to your own warehouse, and an account-closure/offboarding path.",
+    "rationale": "Mixpanel documents its own export paths for the core data. The Raw Event Export API returns all events with every property as JSONL and is recommended for high-volume exports. The Engage API exports user profiles, and the UI can export events as CSV. A community comment independently calls the export policy great. missing for 10: evidence that saved reports, dashboards, cohorts and session replays can be exported, and a documented offboarding or account-exit process.",
     "evidenceIds": [
       "mixpanel-docs-7",
-      "mixpanel-docs-9",
       "mixpanel-docs-8",
-      "mixpanel-docs-25",
+      "mixpanel-docs-9",
       "mixpanel-docs-17",
+      "mixpanel-docs-18",
+      "mixpanel-docs-25",
       "mixpanel-docs-30",
-      "mixpanel-docs-12",
       "mixpanel-comm-13"
     ],
     "support": {
@@ -4732,7 +4850,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product analytics platform publishes its source under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence pack shows Mixpanel releasing its source code or naming an open-source license. The pack covers hosted analytics, export APIs, JQL custom queries and an MCP server, none of which make the product's source readable.",
+    "rationale": "Source availability under an open license is a fair question for a product analytics platform, so the axis applies. The evidence pack contains nothing showing Mixpanel publishes its source code or licenses it openly. It covers only hosted SaaS features, APIs, OpenAPI specs and an MCP server, none of which amount to open source.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4747,7 +4865,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a product analytics platform, so the axis applies. Nothing in the evidence shows Mixpanel offering a self-hosted or on-prem deployment: the docs describe a hosted service with EU data residency, warehouse connectors, export APIs and a hosted MCP server, all of which are adjacent features. The community report of a company building its own BigQuery/Kubernetes replacement is a user-side workaround, not a product capability.",
+    "rationale": "Self-hosting is a fair question for a product analytics platform, so the axis applies. The evidence pack only describes Mixpanel as a hosted service: a hosted MCP server, EU Data Residency in Mixpanel's own infrastructure, warehouse sync into Mixpanel, and export APIs. Data residency and export are adjacent controls, not a self-hostable deployment, and a community report of building an in-house replacement is a user-side workaround, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4759,16 +4877,16 @@
   {
     "productId": "mixpanel",
     "storyId": "privacy-data-residency",
-    "verdict": "full",
-    "quality": 6,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel's privacy docs offer an EU Data Residency Program, so customers can choose to process and store personal data in Europe rather than the default location. That directly delivers the core of choosing a storage region. Missing for 10: documentation of how a project's region is selected or migrated, any regions beyond the EU, and independent or hands-on corroboration.",
+    "rationale": "Mixpanel's own privacy docs describe an EU Data Residency Program that lets customers process and store personal data in Europe, so a first-party residency choice exists. The evidence shows only a single EU option and does not explain how a project selects or switches regions. missing for 10: documentation of the region-selection mechanism (per project, at signup, migration), any regions beyond the EU, scope of what data stays in-region, independent or hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-38"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
       "citations": [
         {
@@ -4784,7 +4902,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Mixpanel is an analytics SaaS that ships AI features (MCP server, AI summaries, agents), so an AI-training opt-out is a fair question for it. The evidence pack contains no documented control or policy preventing customer data from being used to train AI models. GDPR deletion APIs and EU Data Residency are adjacent privacy features, not an AI-training opt-out, and earn no credit.",
+    "rationale": "Mixpanel is a SaaS analytics product with AI features (MCP server, AI replay summaries, agents), so an AI-training opt-out is a fair question to ask. The evidence pack contains no documented control or policy preventing customer data from being used to train AI models. GDPR deletion APIs and EU data residency are adjacent privacy controls, not an AI-training opt-out, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4797,11 +4915,12 @@
     "productId": "mixpanel",
     "storyId": "privacy-retention-controls",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel's privacy docs say it provides deletion APIs to help implementations meet GDPR requirements, so the deletion half of the story is covered by a first-party capability, though only through a single brief mention. Nothing in the pack shows Mixpanel offering its own retention-period controls; the warehouse retention settings belong to Snowflake and Databricks, not Mixpanel. Missing for 10: documented data-retention period controls, detail on the deletion API's scope and workflow, AI/MCP-driven deletion or retention management, independent corroboration.",
+    "rationale": "Mixpanel documents its own deletion and retrieval APIs for GDPR compliance, and publishes a GDPR & CCPA OpenAPI spec usable by AI agents, so the deletion half of the story is covered. Nothing shows user control over how long data is kept. Missing for 10: configurable data-retention periods or policies, detail on deletion scope and behavior (events vs. profiles, timelines), independent or hands-on corroboration.",
     "evidenceIds": [
-      "mixpanel-docs-12"
+      "mixpanel-docs-12",
+      "mixpanel-openapi-specs-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -4811,6 +4930,10 @@
         {
           "evidenceId": "mixpanel-docs-12",
           "quote": "Mixpanel deletion and retrieval APIs are in place to help Mixpanel implementations meet the requirements outlined by the General Data Protection Regulation (GDPR) legislation."
+        },
+        {
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification. Use these to generate client code, validate requests"
         }
       ]
     }
@@ -4821,7 +4944,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of tracking is a fair question for an analytics product, whose SDKs could plausibly expose an opt-out. However, the evidence pack documents no opt-out control for telemetry or usage tracking. The GDPR deletion and retrieval APIs, EU data residency and Session Replay sampling are adjacent privacy and data controls, not an opt-out capability, so they earn no credit.",
+    "rationale": "Opting out of tracking is a fair question for an analytics/tracking product, but the evidence pack never documents an opt-out mechanism for telemetry or usage tracking. The closest items are GDPR deletion/retrieval APIs, EU data residency and Session Replay sampling controls. These are adjacent privacy features, not a user-facing or SDK-level opt-out of tracking.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4836,11 +4959,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel's Session Replay docs say replays let you follow up on why customers drop off, and replay playlists can be built from events or properties. That implies a path from funnel drop-off to the affected users' replays, but the evidence never documents a direct one-click jump from a funnel step or an error event. missing for 10: explicit documentation of the funnel-step-to-replay drill-down workflow, any evidence of jumping from error events to replays, independent or hands-on corroboration.",
+    "rationale": "Mixpanel's Session Replay docs say you can follow up on drop-offs by exploring why customers drop off. Replays can also be grouped into playlists based on events or properties, so product-owned replay tied to funnel drop-off and event filters is documented. However, the evidence is thin on the actual one-click jump from a funnel step to the affected users' replays, and error events are never mentioned. Missing for 10: documented drill-down UI from a funnel drop-off step to the replays of those specific users, explicit support for jumping from error events to replays, independent or hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-4",
+      "mixpanel-docs-23",
       "mixpanel-docs-27",
-      "mixpanel-docs-42"
+      "mixpanel-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -4853,7 +4977,7 @@
         },
         {
           "evidenceId": "mixpanel-docs-27",
-          "quote": "Save playlists of replays based on events or properties"
+          "quote": "Save playlists of replays based on events or properties, and quickly review with AI summaries"
         }
       ]
     }
@@ -4864,12 +4988,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel documents a dedicated Retention report that measures user engagement over a specified period, which covers the 'retention over time' half of the story. Cohorts exist as groups built from properties, and the Query API can return a cohort, but no evidence shows retention being sliced by behaviorally defined cohorts. Missing for 10: documented breakdown or segmentation of retention by cohort, evidence that cohorts can be defined by behavior (events performed) rather than only properties, independent or hands-on corroboration of retention analysis.",
+    "rationale": "Mixpanel documents a Retention report that measures user engagement over a specified period, and it documents cohorts (groups of users) that can be used to filter events or users. However, the evidence never shows the Retention report being segmented or broken down by cohorts, and it never describes cohorts defined by behavior rather than properties. Missing for 10: documented cohort breakdown or filtering inside the Retention report, explicit behavioral (event-based) cohort definitions, retention curve/interval detail, and independent hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-3",
       "mixpanel-docs-16",
       "mixpanel-docs-39",
-      "mixpanel-docs-19"
+      "mixpanel-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -4897,7 +5021,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel's own docs establish Session Replay for watching user sessions to see why customers drop off, with UI-managed sampling and saved replay playlists. Nothing in the evidence says sensitive inputs are masked by default, which is half the story. Missing for 10: documentation of default masking of sensitive inputs, any privacy or redaction controls for replays, independent or hands-on corroboration.",
+    "rationale": "Mixpanel's own docs describe a Session Replay feature for watching user sessions, with sampling managed from the UI and saved playlists of replays, so the core of watching real user sessions is covered. Nothing in the evidence documents masking of sensitive input, by default or otherwise, which is half of the story. Missing for 10: documented default masking of sensitive inputs, any privacy controls specific to replay, and independent or hands-on corroboration of replay.",
     "evidenceIds": [
       "mixpanel-docs-4",
       "mixpanel-docs-42",
@@ -4914,16 +5038,12 @@
           "quote": "Now, with Mixpanel Session Replay, you can quickly follow up by exploring why customers drop off."
         },
         {
-          "evidenceId": "mixpanel-docs-42",
-          "quote": "Mixpanel Session Replay provides the fastest way to gain a comprehensive understanding of your customers and make informed product decisions"
+          "evidenceId": "mixpanel-docs-5",
+          "quote": "teams can manage Session Replay sampling directly from the Mixpanel UI — no code changes or redeployment required."
         },
         {
           "evidenceId": "mixpanel-docs-27",
           "quote": "Save playlists of replays based on events or properties, and quickly review with AI summaries"
-        },
-        {
-          "evidenceId": "mixpanel-docs-5",
-          "quote": "teams can manage Session Replay sampling directly from the Mixpanel UI — no code changes or redeployment required."
         }
       ]
     }
@@ -4934,7 +5054,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel documents JQL, an in-platform query engine where developers write custom JavaScript queries with a main() function. That is a programmatic query language, but it is not SQL, and the evidence does not explicitly show it running over raw events. The Query API returns report-level calculated results, and the MCP natural-language querying is not an SQL-equivalent language, so neither adds credit. Missing for 10: actual SQL support, explicit documentation that JQL operates on raw event records, and hands-on or independent corroboration of JQL depth or current status.",
+    "rationale": "Mixpanel documents JQL, an in-platform custom query language: users write JavaScript with a main() function that its query engine compiles and executes. This is a programmatic, SQL-equivalent way to query data, but it is JavaScript, not SQL. The evidence does not show it running over raw event rows, and the Query API only returns report-style calculated results. missing for 10: actual SQL support, explicit documentation that JQL queries raw events, depth on JQL capabilities and limits, independent or hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-37",
       "mixpanel-docs-40"
@@ -4961,12 +5081,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel's own docs list \"flows\" among the analyses users can query, and a community user praises the Flow feature for showing user flows quickly and clearly. Another user reports a hover-heavy UI that is hard to dig into. No first-party doc in the pack describes a Flows report or how to anchor it on a key event to see paths before or after it. missing for 10: first-party Flows report documentation, explicit before/after-event path exploration, recent hands-on corroboration.",
+    "rationale": "Mixpanel's own docs list 'flows' as a first-party report type you can query, and community users praise the Flow feature for showing user flows. However, no first-party documentation in the pack describes exploring paths before or after a chosen anchor event, and the hands-on community evidence is old and notes hover-based usability friction. Missing for 10: first-party docs of a Flows report anchored on a key event, explicit evidence of both preceding and following path exploration, and recent independent hands-on corroboration.",
     "evidenceIds": [
       "mixpanel-docs-26",
       "mixpanel-docs-19",
       "mixpanel-comm-15",
-      "mixpanel-comm-17"
+      "mixpanel-comm-17",
+      "mixpanel-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -4975,11 +5096,15 @@
       "citations": [
         {
           "evidenceId": "mixpanel-docs-26",
-          "quote": "you can query events, funnels, flows, retention, session replays, and more using natural language"
+          "quote": "Once connected, you can query events, funnels, flows, retention, session replays, and more using natural language"
         },
         {
           "evidenceId": "mixpanel-comm-15",
           "quote": "This really gets to the heart of most of the information you need on user flows and its fast and clear."
+        },
+        {
+          "evidenceId": "mixpanel-docs-45",
+          "quote": "Discover critical drop-off points and calibrate user journeys"
         }
       ]
     }
@@ -4990,13 +5115,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Mixpanel's own Warehouse Connectors sync data from Snowflake, BigQuery, Databricks, Redshift and Postgres into Mixpanel, and Mirror mode uses change tracking to keep those syncs current. The reverse direction is only a pull-based Raw Event Export API returning JSONL, with no documented continuous export into a customer warehouse. Missing for 10: documented continuous or scheduled event export into the user's warehouse, direct in-product querying of warehouse tables without ingestion, independent hands-on corroboration of the connectors.",
+    "rationale": "Mixpanel's Warehouse Connectors sync data from Snowflake, BigQuery, Databricks, Redshift and Postgres into Mixpanel, and a Mirror mode tracks warehouse changes via Snowflake Streams and Databricks Change Data Feed. That covers the warehouse-to-platform half of the story. The outbound half is only evidenced by the pull-based Raw Event Export API and a bare 'Data Pipelines' spec name, with no documented continuous push of events into the user's warehouse. Missing for 10: documented continuous event export to the customer's warehouse (Data Pipelines details, destinations, schedule or freshness), in-place querying of warehouse tables rather than ingestion, and independent or hands-on corroboration of sync reliability.",
     "evidenceIds": [
       "mixpanel-docs-24",
       "mixpanel-intdir-5",
       "mixpanel-intdir-6",
       "mixpanel-docs-7",
-      "mixpanel-docs-17"
+      "mixpanel-docs-17",
+      "mixpanel-openapi-specs-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -5009,11 +5135,11 @@
         },
         {
           "evidenceId": "mixpanel-intdir-5",
-          "quote": "Mixpanel will create and manage the necessary STREAM objects in the \\MIXPANEL\\ schema created in \\Step 1."
+          "quote": "Mixpanel will create and manage the necessary STREAM objects"
         },
         {
-          "evidenceId": "mixpanel-docs-7",
-          "quote": "To export raw event data, use the Raw Event Export API. The events payload is returned as JSONL"
+          "evidenceId": "mixpanel-docs-17",
+          "quote": "To export raw event data, use the Raw Event Export API... This method is recommended for high volume exports."
         }
       ]
     }

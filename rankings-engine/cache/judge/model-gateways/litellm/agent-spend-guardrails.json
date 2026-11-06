@@ -1,18 +1,18 @@
 {
-  "hash": "4e0b901a94ac539bc24c7ad73cc79cd2334fa1b2718e2ab085fcb6e9699bb807",
+  "hash": "53eeb8b418a361d652f0cfcc83988329622768b06f35bb7976259ff9d14fbcc7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy issues virtual keys that can carry individual spending limits, with max_budget and budget_duration resets, so an agent can get its own capped key. Rate guardrails appear only as an rpm_limit on a team object, so per-key rate limiting is not directly shown. missing for 10: explicit per-key rpm/tpm rate-limit documentation, documented enforcement behavior when a key exceeds its budget or rate (e.g. blocking/rejection), independent or hands-on corroboration of key-level guardrails.",
+    "rationale": "LiteLLM's proxy issues virtual keys with per-key spend tracking and individual spending limits, configured with max_budget and budget_duration. That covers the budget half of giving an agent its own capped key. The rate-guardrail half is only shown as an rpm_limit on a team object, not documented for an individual key. Missing for 10: documented per-key rpm/tpm rate limits, evidence that a key is hard-blocked once its budget is exhausted, any agent-specific key guidance, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "litellm-docs-5",
       "litellm-docs-7",
       "litellm-docs-8",
-      "litellm-docs-25",
       "litellm-docs-35",
+      "litellm-docs-25",
       "litellm-docs-26",
+      "litellm-docs-6",
       "litellm-docs-15"
     ],
     "support": {
@@ -25,6 +25,10 @@
           "quote": "Personal budgets: Create virtual keys without team_id for individual spending limits"
         },
         {
+          "evidenceId": "litellm-docs-8",
+          "quote": "Track Spend, and control model access via virtual keys for the proxy"
+        },
+        {
           "evidenceId": "litellm-docs-35",
           "quote": "max_budget: 0 # (float) sets max budget as $0 USD  budget_duration: 30d # (str) frequency of reset"
         },
@@ -35,10 +39,6 @@
         {
           "evidenceId": "litellm-docs-15",
           "quote": "See who is driving spend, cap it before it runs"
-        },
-        {
-          "evidenceId": "litellm-docs-5",
-          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
         }
       ]
     },

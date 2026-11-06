@@ -1,17 +1,29 @@
 {
-  "hash": "be2929077ffaeaaf93f0316e3b964fd3d87117b244fdf1aac26f020e7771d0ec",
+  "hash": "34c092a1c7f5ff6189b3d60a75a43434f14d7a47b20c68df84d3229a5706a549",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Mixpanel exposes APIs (Query, Raw Export, Engage, Feature Flags) and a hosted MCP server, so scoped agent credentials are a fair question for this product. However, nothing in the evidence describes service accounts, scoped tokens, role-limited keys, or least-privilege permissions for API or MCP access. The MCP server and API docs describe data access, not credential scoping, so they earn no credit here.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mixpanel documents Service Accounts as its recommended authentication mechanism and publishes a Service Accounts API spec, so it offers dedicated non-human credentials an agent could use. Nothing in the evidence shows these credentials can be scoped to specific projects, roles or permissions, so the least-privilege part of the story is unproven. missing for 10: documented per-credential scopes/roles or permission limits, project-level restriction of service accounts, MCP/agent-specific credential scoping, independent corroboration.",
+    "evidenceIds": [
+      "mixpanel-auth-deprecation-20261105",
+      "mixpanel-openapi-specs-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mixpanel-auth-deprecation-20261105",
+          "quote": "the recommended authentication mechanism going forward"
+        },
+        {
+          "evidenceId": "mixpanel-openapi-specs-20261105",
+          "quote": "Every Mixpanel API is described by an OpenAPI specification."
+        }
+      ]
     },
     "productId": "mixpanel",
     "storyId": "agentic-scoped-keys"

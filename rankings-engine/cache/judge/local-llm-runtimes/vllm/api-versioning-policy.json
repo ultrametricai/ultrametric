@@ -1,17 +1,33 @@
 {
-  "hash": "5d9783dc1c6849f1695457f483a30d441b6db3ba1dfd7e382f674777d208a7f1",
+  "hash": "7caa9ce9c442d3e26c0a321a5846307638d697500b833c5fd51e1bd7830c827a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "vLLM exposes APIs (an OpenAI-compatible server, the Anthropic Messages API and gRPC), so API versioning and deprecation policy is a fair question for this product. However, the evidence pack contains no documentation of versioned API endpoints or of a deprecation policy. The only version reference is a release note that `required` tool_choice arrived in vllm>=0.8.3, which is a release version, not an API versioning or deprecation guarantee.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "vLLM publishes a formal Deprecation Policy that explicitly covers the OpenAI-compatible API server, CLI flags, configuration and public Python APIs. It defines a three-stage deprecation pipeline tied to semantic-versioned minor releases, with no removals in patch releases. Docs also gate behavior by release version (e.g. `required` tool_choice as of vllm>=0.8.3). Missing for 10: explicit API-level versioning such as path or header version contracts, and independent or hands-on corroboration that the policy is followed in practice.",
+    "evidenceIds": [
+      "vllm-deprecation-policy-20261105",
+      "vllm-docs-19"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "vllm-deprecation-policy-20261105",
+          "quote": "This document outlines the official policy and process for deprecating features in the vLLM project."
+        },
+        {
+          "evidenceId": "vllm-deprecation-policy-20261105",
+          "quote": "Deprecations are tied to our minor (Y) releases following semantic versioning (X.Y.Z)"
+        },
+        {
+          "evidenceId": "vllm-docs-19",
+          "quote": "`required` (as of `vllm>=0.8.3`)"
+        }
+      ]
     },
     "productId": "vllm",
     "storyId": "api-versioning-policy"
