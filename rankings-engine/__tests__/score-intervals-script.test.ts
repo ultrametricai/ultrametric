@@ -3,9 +3,9 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
+import { ProductSchema, RankingsSchema, ScoreIntervalsArraySchema, VerdictSchema } from '../../lib/schemas'
 
 const repoRoot = path.resolve(__dirname, '../..')
-const tsxCli = path.join(repoRoot, 'node_modules', 'tsx', 'dist', 'cli.mjs')
 const script = path.join(repoRoot, 'rankings-engine', 'scripts', 'compute-confidence-intervals.ts')
 const categories = ['meeting-ai', 'virtual-mailboxes'] as const
 const triggerCategory = categories[0]
@@ -39,7 +39,7 @@ function makeFixture(): string {
 }
 
 function run(dataDir: string, args: string[]): void {
-  execFileSync(process.execPath, [tsxCli, script, ...args], {
+  execFileSync(process.execPath, ['--import', 'tsx', script, ...args], {
     cwd: repoRoot,
     env: { ...process.env, UM_DATA_DIR: dataDir },
     stdio: 'pipe',
@@ -84,5 +84,67 @@ describe('compute-confidence-intervals script', () => {
     for (const category of categories) {
       expect(intervalBytes(dataDir, category)).toBe('[]\n')
     }
+  })
+
+  it('covers a newly derived bring-up product without judging again', () => {
+    const dataDir = makeFixture()
+    tmpDirs.push(dataDir)
+    run(dataDir, [])
+
+    const arenaDir = path.join(dataDir, triggerCategory)
+    const productsPath = path.join(arenaDir, 'products.json')
+    const verdictsPath = path.join(arenaDir, 'verdicts.json')
+    const products = ProductSchema.array().parse(JSON.parse(fs.readFileSync(productsPath, 'utf8')))
+    const verdicts = VerdictSchema.array().parse(JSON.parse(fs.readFileSync(verdictsPath, 'utf8')))
+    const fixtureId = 'radar-bringup-fixture'
+    // Reuse recorded verdict cells only inside this temporary fixture. No judge is invoked.
+    const source = products[0]
+    products.push({ ...source, id: fixtureId, name: 'Radar bring-up fixture' })
+    verdicts.push(...verdicts.filter((verdict) => verdict.productId === source.id)
+      .map((verdict) => ({ ...verdict, productId: fixtureId })))
+    fs.writeFileSync(productsPath, `${JSON.stringify(products, null, 2)}\n`)
+    fs.writeFileSync(verdictsPath, `${JSON.stringify(verdicts, null, 2)}\n`)
+    execFileSync(process.execPath, ['--import', 'tsx', path.join(repoRoot, 'rankings-engine', 'cli.ts'),
+      'derive', '--category', triggerCategory], {
+      cwd: repoRoot,
+      env: { ...process.env, UM_DATA_DIR: dataDir },
+      stdio: 'pipe',
+    })
+
+    const rankings = RankingsSchema.parse(JSON.parse(fs.readFileSync(path.join(arenaDir, 'rankings.json'), 'utf8')))
+    const staleIntervals = ScoreIntervalsArraySchema.parse(JSON.parse(intervalBytes(dataDir, triggerCategory)))
+    expect(rankings.leaderboard.some((entry) => entry.productId === fixtureId)).toBe(true)
+    expect(staleIntervals.some((entry) => entry.productId === fixtureId)).toBe(false)
+    fs.writeFileSync(path.join(dataDir, nonTriggerCategory, 'score-intervals.json'), '[]\n')
+
+    run(dataDir, [])
+    for (const category of categories) {
+      const published = RankingsSchema.parse(JSON.parse(
+        fs.readFileSync(path.join(dataDir, category, 'rankings.json'), 'utf8'),
+      )).leaderboard
+      const intervals = ScoreIntervalsArraySchema.parse(JSON.parse(intervalBytes(dataDir, category)))
+      expect(intervals.map((entry) => entry.productId).sort())
+        .toEqual(published.map((entry) => entry.productId).sort())
+      for (const entry of published) {
+        const interval = intervals.find((value) => value.productId === entry.productId)!
+        for (const [score, low, high] of [
+          ['aiEra', 'aiEraLow', 'aiEraHigh'],
+          ['agentReady', 'agentReadyLow', 'agentReadyHigh'],
+        ] as const) {
+          if (entry[score] === null) {
+            expect(interval[low]).toBeNull()
+            expect(interval[high]).toBeNull()
+          } else {
+            expect(interval[low]).not.toBeNull()
+            expect(interval[high]).not.toBeNull()
+            expect(interval[low]).toBeLessThanOrEqual(entry[score]!)
+            expect(interval[high]).toBeGreaterThanOrEqual(entry[score]!)
+          }
+        }
+      }
+    }
+    const firstPass = categories.map((category) => intervalBytes(dataDir, category))
+    run(dataDir, [])
+    expect(categories.map((category) => intervalBytes(dataDir, category))).toEqual(firstPass)
   })
 })
