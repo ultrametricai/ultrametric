@@ -1,17 +1,41 @@
 {
-  "hash": "50f29c777f2cb4515eafbe11d6b3be6ee5e4ed6dd096ce6c08fd9e8ecc5dd52a",
+  "hash": "1e3f8200e8b80f2aafe16e1a25110fff60ed59dc3a538dea061fb9950119154f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Fellow documents API keys sent in a header and recommends a separate named key per application. However, nothing shows these keys can be limited by scope, permission, or resource. Keys simply act with the authenticated user's access, and the only other credential tier is broader Super Admin keys. Admin control over which MCP tools members' assistants can use is a separate MCP governance feature, not scoped API credentials, so it earns no credit here.",
-    "evidenceIds": [],
+    "rationale": "Fellow lets users generate multiple named API keys, recommending one per application. It distinguishes User, Workspace and Super Admin keys. For agent access through MCP, admins decide which tools members' AI assistants can use, connections only see data the user already has, and owners can revoke connections and see last-used timestamps. However, nothing shows that an individual API key can be limited to specific scopes, endpoints or read-only access; user keys simply inherit the user's full permissions. Missing for 10: per-key permission scopes (e.g. read-only or resource-limited keys), per-credential rather than workspace-wide MCP tool restrictions, key expiry or rotation controls, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "fellow-docs-56",
+      "fellow-help-api-20261106",
+      "fellow-docs-10",
+      "fellow-docs-49",
+      "fellow-docs-50",
+      "fellow-docs-7"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fellow-docs-56",
+          "quote": "You can have multiple API keys, and we recommend generating a different one for each application"
+        },
+        {
+          "evidenceId": "fellow-docs-10",
+          "quote": "As a workspace admin, you decide which MCP tools your members’ AI assistants can use."
+        },
+        {
+          "evidenceId": "fellow-docs-49",
+          "quote": "The MCP Server only gives users access to the data they already have access to within Fellow."
+        },
+        {
+          "evidenceId": "fellow-docs-50",
+          "quote": "can revoke connections at any time, and see the last-used timestamp for every connection"
+        }
+      ]
     },
     "productId": "fellow",
     "storyId": "agentic-scoped-keys"

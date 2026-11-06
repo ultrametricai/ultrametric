@@ -1,17 +1,36 @@
 {
-  "hash": "1506893ce76f0ef5082febafbfdf881ff2a3dffbfea410e281beb44cfe2c8141",
+  "hash": "9e812f3cdabadb2108f6d8d4a5585b878625705c326a662c83ef0358ea78d563",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows a REST API with non-expiring workspace API keys and an MCP server for reading meeting notes. These are programmatic data-access surfaces, which belong to a separate API/MCP story. Nothing documents running Granola itself headlessly or in a CI pipeline, such as a CLI, headless mode, or server-side capture without the desktop or mobile app. The pack cites no OpenAPI spec (the probe found 404s), and recording and note generation are described only as desktop and mobile app flows.",
-    "evidenceIds": [],
+    "rationale": "Granola ships its own REST API (OpenAPI 3.1, public-api.granola.ai) authenticated by bearer keys, including workspace API keys that don't expire. That supports unattended, scripted access to notes, transcripts and folders from automation. The core product, though, is a desktop or mobile app that captures meeting audio, and nothing shows that capture or note generation can run headlessly. Missing for 10: a headless or CLI mode for the product itself, CI-specific documentation or examples, a sandbox/test environment (the FAQ says 'Not currently'), and independent hands-on corroboration of CI usage.",
+    "evidenceIds": [
+      "granola-docs-28",
+      "granola-docs-33",
+      "granola-openapi-spec-20261106",
+      "granola-playground-20261106",
+      "granola-no-sandbox-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "granola-docs-28",
+          "quote": "Workspace admins on Business and Enterprise plans can also create workspace API keys. These belong to the workspace rather than an individual user, don't expire"
+        },
+        {
+          "evidenceId": "granola-docs-33",
+          "quote": "This RESTful API enables you to integrate Granola with your existing tools"
+        },
+        {
+          "evidenceId": "granola-playground-20261106",
+          "quote": "API keys are rate limited to 25 requests burst capacity with a sustained rate of 5 requests/second."
+        }
+      ]
     },
     "productId": "granola",
     "storyId": "agentic-headless"

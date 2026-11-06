@@ -1286,7 +1286,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document a user access review feature: no periodic review campaigns, no in-app reviewer sign-off, and no review artifact filed to an evidence library. Integrations that monitor user accounts (GitHub user access, Google Workspace accounts, AWS IAM users) and Fieldwork's scheduled evidence collection are related features, not the access-review workflow itself, so they earn no credit.",
+    "rationale": "The evidence shows Oneleet integrations monitoring user accounts and access in GitHub, Google Workspace and AWS IAM. It also shows Fieldwork agents collecting evidence on a schedule. Neither documents an access review feature: no periodic review campaigns across connected apps, no in-app reviewer sign-off, and no review artifact filed into an evidence library. Access monitoring and generic evidence collection are adjacent capabilities and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1301,7 +1301,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a SaaS compliance and security platform, so publishing llms.txt or agent-oriented docs is a fair question. Probes found no such docs: llms.txt and the markdown docs path both returned 404. The documented MCP server and service keys belong to a different story (agent connectivity) and do not count as agent-oriented documentation.",
+    "rationale": "Probes found no llms.txt (HTTP 404 at docs.oneleet.com/llms.txt) and no markdown docs endpoint (404). The downloadable OpenAPI specs and the MCP server belong to separate API-spec and MCP stories, not agent-oriented documentation, so they earn no credit here. The axis applies to a SaaS platform with public docs, but there is no evidence it is delivered.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1316,7 +1316,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "None of the evidence shows Oneleet generating AI insights or suggestions from a user's data inside the product. The MCP server lets an external assistant act on the workspace, which is a client-side building block rather than in-product AI insights. Fieldwork's AI agents collect, validate and package evidence, which is automation rather than insights or suggestions. The MDM secure baseline is a static recommendation, not AI-generated.",
+    "rationale": "The evidence does not document any in-product AI feature that produces insights or suggestions from the user's data. Fieldwork's AI agents collect, validate and package compliance evidence, which is a different task from surfacing insights. The MCP server and service keys let external assistants act on the workspace, which is not insight generation inside Oneleet. The recommended MDM baseline is a static default, not AI-generated.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1331,10 +1331,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Oneleet's Fieldwork page says users describe a control and its AI agents collect, validate, and package evidence 'on your schedule', which is a first-party, user-defined recurring background automation. However, this is a single marketing line. Built-in daily code scans are fixed system behavior, and service keys for agent automation are developer building blocks, so neither counts here. Missing for 10: documentation of how automations are configured and scheduled, what triggers or actions are supported, monitoring and run history for background jobs, and independent or hands-on corroboration.",
+    "rationale": "Oneleet's Fieldwork marketing page says its AI agents collect, validate, and package compliance evidence 'on your schedule', which suggests user-scheduled agentic work running in the background. Code Security also runs a fixed daily scan on its own, but that is a built-in schedule rather than an automation the user sets up. Service keys and the MCP server are only building blocks a developer would use to construct automations, so they earn no credit here. Missing for 10: documentation on how to configure, schedule, and monitor autonomous automations; user-defined triggers or workflows beyond evidence collection; any hands-on or independent corroboration of Fieldwork's agents.",
     "evidenceIds": [
-      "oneleet-docs-16",
-      "oneleet-docs-41"
+      "oneleet-docs-52",
+      "oneleet-docs-50"
     ],
     "support": {
       "relation": "direct",
@@ -1342,8 +1342,12 @@
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": [
         {
-          "evidenceId": "oneleet-docs-16",
-          "quote": "Describe your control. Fieldwork’s AI agents collect, validate, and package the evidence – across your enterprise systems, on your schedule."
+          "evidenceId": "oneleet-docs-52",
+          "quote": "Fieldwork's AI agents collect, validate, and package the evidence – across your enterprise systems, on your schedule."
+        },
+        {
+          "evidenceId": "oneleet-docs-50",
+          "quote": "Oneleet scans the target branch of each repository once a day"
         }
       ]
     }
@@ -1354,7 +1358,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only first-party evidence of an in-product AI is a single marketing line on the Fieldwork page: you describe a control and Fieldwork's AI agents collect, validate, and package the evidence. That is a narrow form of task delegation. The MCP server and service keys let external assistants act on the workspace, which is an adjacent capability, not a built-in assistant, so they earn no credit here. Missing for 10: documentation of a general-purpose built-in assistant, a description of how tasks are delegated in the UI, the range of tasks beyond evidence collection, and independent or hands-on corroboration.",
+    "rationale": "The only first-party evidence of in-product AI is a marketing claim that Fieldwork's AI agents collect, validate, and package compliance evidence after you describe a control. That is a narrow form of task delegation to built-in agents. The MCP/OAuth docs describe connecting external assistants, which is adjacent and not credited here. Missing for 10: documentation of a general-purpose built-in assistant, detail on what tasks can be delegated and how, product docs beyond a single marketing line, and independent or hands-on corroboration.",
     "evidenceIds": [
       "oneleet-docs-16",
       "oneleet-docs-41"
@@ -1377,13 +1381,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Oneleet documents service keys meant for AI agent automation, MCP servers and scripts. These keys are decoupled from user accounts and scope-limited, which supports headless, non-interactive access. Its Code Security product also provides a CI check that blocks new issues in pull requests. There is no documented CLI, CI runner or pipeline integration guide, and probes found no public OpenAPI spec, so how deeply it can be automated is unproven. Missing for 10: documented CLI or headless runner, CI pipeline integration docs beyond the PR check, a public API reference/OpenAPI spec, and independent hands-on corroboration.",
+    "rationale": "Oneleet documents service keys, decoupled from user accounts, for 'AI agent automation, MCP servers, and scripts', plus a public OpenAPI-specified API that supports non-interactive scripted use. Its Code Security product also offers a CI check on pull requests. However, nothing documents a CLI, a CI pipeline setup guide, or running the product's scans or workflows headlessly within a user's CI job. The CI check is a PR gate rather than a general CI automation surface. Missing for 10: documented CLI or headless runner, CI pipeline integration docs (e.g., GitHub Actions setup), and hands-on corroboration of automated use.",
     "evidenceIds": [
       "oneleet-docs-2",
       "oneleet-docs-42",
-      "oneleet-docs-3",
       "oneleet-docs-30",
-      "oneleet-probe-3"
+      "oneleet-openapi-spec-20261106",
+      "oneleet-api-docs-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1395,12 +1399,12 @@
           "quote": "Use **service keys** for AI agent automation, MCP servers, and scripts to interact with your Oneleet workspace. Service keys are decoupled from user accounts and can be scoped for specific tasks."
         },
         {
-          "evidenceId": "oneleet-docs-42",
-          "quote": "Grant Full access to all tenant service-key scopes, or choose Limit access to… to grant only specific scopes."
-        },
-        {
           "evidenceId": "oneleet-docs-30",
           "quote": "with a CI check that keeps new issues out of your pull requests"
+        },
+        {
+          "evidenceId": "oneleet-openapi-spec-20261106",
+          "quote": "Oneleet serves a downloadable OpenAPI 3.0.3 document for its Public API (157 paths) at the API origin"
         }
       ]
     }
@@ -1411,7 +1415,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a compliance and security platform that runs its own AI agents (Fieldwork), so letting it consume external MCP servers is a fair question for this kind of product. The evidence only shows the opposite role: Oneleet publishes its own MCP server for external assistants to connect to. Nothing shows Oneleet itself registering or calling third-party MCP servers' tools. Server-side evidence comes from a different story and does not transfer here.",
+    "rationale": "Oneleet's evidence only documents the reverse direction: an official Oneleet MCP server that external AI assistants connect to, using OAuth or service keys. Nothing shows Oneleet itself, including its Fieldwork AI agents, acting as an MCP client that can register third-party MCP servers and call their tools. Server-side MCP evidence does not transfer to this client-side story, and since an agentic compliance platform could plausibly ship this, the axis applies and the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1425,15 +1429,14 @@
     "storyId": "agentic-mcp-server",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Oneleet documents an official MCP server that AI assistants connect to through a browser OAuth flow (log in, review the request, pick a workspace). It also supports scoped service keys for agent automation, and the assistant acts within the member's role with every action attributed to their account. Missing for 10: documentation of which tools and actions the MCP server exposes, and independent or hands-on corroboration that the connection works.",
+    "confidence": "high",
+    "rationale": "Oneleet's first-party docs describe an official Oneleet MCP server. You add it to your assistant and connect through an OAuth browser login with workspace selection, or use scoped service keys for agent automation. The assistant acts with the member's role permissions, and every action is attributed to that member. Missing for 10: independent or hands-on corroboration of the MCP server working, documentation of the specific MCP tools/capabilities exposed.",
     "evidenceIds": [
       "oneleet-docs-1",
       "oneleet-docs-43",
-      "oneleet-docs-54",
-      "oneleet-docs-55",
+      "oneleet-docs-44",
       "oneleet-docs-57",
-      "oneleet-docs-19",
+      "oneleet-docs-2",
       "oneleet-docs-42",
       "oneleet-probe-4"
     ],
@@ -1447,8 +1450,97 @@
           "quote": "add the Oneleet MCP server to your assistant, and it opens a browser window where you log in to Oneleet, review what the assistant is asking for, and pick the workspace it should work in."
         },
         {
-          "evidenceId": "oneleet-docs-55",
-          "quote": "Once connected, the assistant acts as you. It can only see and do what your own role in the workspace allows, and every action is attributed to your account."
+          "evidenceId": "oneleet-docs-44",
+          "quote": "Once connected, the assistant acts as you. It can only see and do what your own role in the workspace allows, every action is attributed to your account"
+        },
+        {
+          "evidenceId": "oneleet-docs-2",
+          "quote": "Use **service keys** for AI agent automation, MCP servers, and scripts to interact with your Oneleet workspace."
+        },
+        {
+          "evidenceId": "oneleet-docs-57",
+          "quote": "Any member can connect — no admin involvement is required — but what the assistant can do is limited by that member’s role."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "oneleet",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Oneleet ships an official MCP server, so users can drive their workspace in natural language through an external AI assistant that acts as them, limited to their role. Fieldwork also takes a plain-language control description and has AI agents collect the evidence. Natural-language operation still depends on a third-party assistant rather than a native command interface. Missing for 10: a native in-product natural-language command interface, documentation of which MCP tools/actions are exposed, and independent or hands-on corroboration of NL-driven operation.",
+    "evidenceIds": [
+      "oneleet-docs-1",
+      "oneleet-docs-44",
+      "oneleet-docs-54",
+      "oneleet-docs-57",
+      "oneleet-probe-4",
+      "oneleet-docs-16"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can operate the product with natural-language commands",
+      "citations": [
+        {
+          "evidenceId": "oneleet-docs-1",
+          "quote": "add the Oneleet MCP server to your assistant, and it opens a browser window where you log in to Oneleet, review what the assistant is asking for, and pick the workspace it should work in."
+        },
+        {
+          "evidenceId": "oneleet-docs-44",
+          "quote": "Once connected, the assistant acts as you. It can only see and do what your own role in the workspace allows, every action is attributed to your account"
+        },
+        {
+          "evidenceId": "oneleet-docs-16",
+          "quote": "Describe your control. Fieldwork’s AI agents collect, validate, and package the evidence – across your enterprise systems, on your schedule."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "oneleet",
+    "storyId": "agentic-official-cli",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Oneleet is a security/compliance SaaS platform, and such a platform could plausibly ship an official CLI, so the axis applies. The evidence documents an MCP server, a public API with OpenAPI specs, service keys for scripts, and a CI check, but no official command-line tool. API access, MCP connectivity and the CI check are adjacent building blocks or different features, so they earn no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can use an official CLI",
+      "citations": []
+    }
+  },
+  {
+    "productId": "oneleet",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Oneleet documents a versioned Public API (/api/v1/) with a downloadable OpenAPI 3.0.3 spec covering 157 paths, a separate Auditor API spec, and Scalar-rendered interactive references. Access uses scoped service keys intended for scripts and AI agents. The probe 404s were on docs.oneleet.com paths and do not contradict the spec served at api.oneleet.com. Missing for 10: independent or hands-on corroboration of driving the API, and a published versioning/deprecation policy or changelog with a stated notice window.",
+    "evidenceIds": [
+      "oneleet-openapi-spec-20261106",
+      "oneleet-api-docs-20261106",
+      "oneleet-scalar-reference-20261106",
+      "oneleet-deprecations-20261106",
+      "oneleet-docs-19",
+      "oneleet-docs-42"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "oneleet-openapi-spec-20261106",
+          "quote": "Oneleet serves a downloadable OpenAPI 3.0.3 document for its Public API (157 paths) at the API origin"
+        },
+        {
+          "evidenceId": "oneleet-api-docs-20261106",
+          "quote": "OpenAPI specifications and interactive references:"
         },
         {
           "evidenceId": "oneleet-docs-19",
@@ -1463,100 +1555,11 @@
   },
   {
     "productId": "oneleet",
-    "storyId": "agentic-nl-commands",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Oneleet ships a first-party MCP server. Once a user connects an AI assistant through OAuth, the assistant \"acts as you\" and can see and do whatever the user's role allows, so the workspace can be driven with natural-language commands. Those commands go through an external assistant, not a native in-product interface, and the docs never list which operations the MCP tools expose. missing for 10: native in-product natural-language interface, documented list of MCP tools and actions covered, hands-on or independent corroboration of natural-language operation.",
-    "evidenceIds": [
-      "oneleet-docs-1",
-      "oneleet-docs-44",
-      "oneleet-docs-54",
-      "oneleet-docs-57",
-      "oneleet-probe-4"
-    ],
-    "support": {
-      "relation": "direct",
-      "coverage": "partial",
-      "subject": "As an AI-native user, I can operate the product with natural-language commands",
-      "citations": [
-        {
-          "evidenceId": "oneleet-docs-1",
-          "quote": "add the Oneleet MCP server to your assistant, and it opens a browser window where you log in to Oneleet, review what the assistant is asking for, and pick the workspace it should work in."
-        },
-        {
-          "evidenceId": "oneleet-docs-44",
-          "quote": "Once connected, the assistant acts as you. It can only see and do what your own role in the workspace allows"
-        },
-        {
-          "evidenceId": "oneleet-docs-54",
-          "quote": "You can connect an AI assistant to your Oneleet workspace by signing in with your Oneleet account."
-        }
-      ]
-    }
-  },
-  {
-    "productId": "oneleet",
-    "storyId": "agentic-official-cli",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Oneleet is a SaaS security and compliance platform, so an official CLI is a fair axis to ask about. The evidence documents an official MCP server and service keys for scripts, but these are adjacent integration surfaces and developer building blocks, not a CLI. No first-party command-line tool appears anywhere in the pack.",
-    "evidenceIds": [],
-    "support": {
-      "relation": "absent",
-      "coverage": "none",
-      "subject": "As an AI-native user, I can use an official CLI",
-      "citations": []
-    }
-  },
-  {
-    "productId": "oneleet",
-    "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Oneleet documents programmatic access in an 'API and MCP' docs section. Scoped service keys are offered for 'AI agent automation, MCP servers, and scripts to interact with your Oneleet workspace', and an official MCP server supports OAuth sign-in with role-limited, attributed actions. However, no API reference, endpoint list or OpenAPI spec is evidenced, and probes for an OpenAPI spec and llms.txt returned 404. That leaves the depth of the public API itself unproven. Missing for 10: a documented REST/GraphQL endpoint reference or OpenAPI spec, evidence of what operations the API covers, and independent or hands-on corroboration of driving the product via the API.",
-    "evidenceIds": [
-      "oneleet-docs-2",
-      "oneleet-docs-42",
-      "oneleet-docs-1",
-      "oneleet-docs-44",
-      "oneleet-docs-54",
-      "oneleet-probe-4",
-      "oneleet-probe-3"
-    ],
-    "support": {
-      "relation": "direct",
-      "coverage": "partial",
-      "subject": "As an AI-native user, I can drive the product through a documented public API",
-      "citations": [
-        {
-          "evidenceId": "oneleet-docs-2",
-          "quote": "Use **service keys** for AI agent automation, MCP servers, and scripts to interact with your Oneleet workspace."
-        },
-        {
-          "evidenceId": "oneleet-docs-42",
-          "quote": "Grant Full access to all tenant service-key scopes, or choose Limit access to… to grant only specific scopes."
-        },
-        {
-          "evidenceId": "oneleet-docs-44",
-          "quote": "Once connected, the assistant acts as you. It can only see and do what your own role in the workspace allows, every action is attributed to your account"
-        },
-        {
-          "evidenceId": "oneleet-docs-1",
-          "quote": "add the Oneleet MCP server to your assistant, and it opens a browser window where you log in to Oneleet"
-        }
-      ]
-    }
-  },
-  {
-    "productId": "oneleet",
     "storyId": "agentic-scoped-keys",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Oneleet documents service keys for AI agent automation and MCP servers. The keys are decoupled from user accounts and can be limited to specific scopes instead of full tenant access, which directly delivers least-privilege credentials for an agent. An OAuth alternative also confines the assistant to the connecting member's role. missing for 10: an enumerated list of available scopes, documentation of key expiry/rotation/revocation, independent or hands-on corroboration.",
+    "confidence": "high",
+    "rationale": "Oneleet's documentation describes service keys built for AI agent automation and MCP servers. These keys are decoupled from user accounts and can be granted either full access or only specific selected scopes, which is least-privilege credential issuance. OAuth-connected assistants are additionally limited to the connecting member's role. Missing for 10: an enumerated catalog of available scopes, documentation of key expiry or rotation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "oneleet-docs-2",
       "oneleet-docs-42",
@@ -1578,7 +1581,7 @@
         },
         {
           "evidenceId": "oneleet-docs-55",
-          "quote": "Once connected, the assistant acts as you. It can only see and do what your own role in the workspace allows, and every action is attributed to your account."
+          "quote": "It can only see and do what your own role in the workspace allows, and every action is attributed to your account."
         }
       ]
     }
@@ -1589,10 +1592,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a SaaS security and compliance platform, so official SDKs are a fair question to ask. The evidence documents an official MCP server and service keys for scripts, but these are adjacent access mechanisms, not SDKs. No official SDK or client library is mentioned, and the OpenAPI probes returned 404.",
+    "rationale": "The evidence documents a public REST API with downloadable OpenAPI specs, interactive Scalar references, service keys and an MCP server, but no official SDK or client library. The docs only say you can use the spec to generate your own API client, which is a developer building block and earns no credit for an official SDK.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": []
@@ -1604,7 +1607,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a compliance and security SaaS platform, so outbound webhooks are a fair axis, but the evidence pack documents no registrable outbound HTTP event callbacks. The adjacent features shown are an MCP server, service keys, and status-page email notifications, and none of these is a webhook subscription.",
+    "rationale": "Webhooks are a fair axis for a SaaS security and compliance platform with a public API, but nothing in the evidence documents registrable outbound HTTP callbacks. The OpenAPI, service-key and MCP evidence covers inbound API access only, and the status page offers email notifications about Oneleet's own incidents, which is an adjacent feature and not a webhook.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1619,7 +1622,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a compliance and security platform, so AI-drafted security questionnaire answers are a fair capability to ask about. The evidence pack never documents questionnaire ingestion or AI-drafted answers for review. The nearby evidence covers other things: a human vCISO who helps 'pass security reviews', a Trust Center, Fieldwork AI agents that collect control evidence, and an MCP server that is only a building block. None of these is the questionnaire-answering capability itself.",
+    "rationale": "Oneleet is a compliance platform, so AI questionnaire answering is a fair question to ask of it. The evidence pack never documents AI-drafted security questionnaire answers grounded in controls or a knowledge base. The nearby items are other features: a Trust Center, vCISO help with security reviews, Fieldwork AI agents that collect evidence, and an MCP server for external assistants. None of these is the questionnaire-drafting capability itself, so none earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1631,31 +1634,61 @@
   {
     "productId": "oneleet",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Oneleet is a SaaS platform with an API-and-MCP docs section, so an interactive API reference is a fair question to ask. The evidence documents only MCP server connection and service keys, not an interactive API reference with runnable examples. Probes for OpenAPI/Swagger specs all returned 404.",
-    "evidenceIds": [],
+    "rationale": "Oneleet hosts its own Scalar-rendered API references for both the Public and Auditor APIs. They load the live OpenAPI 3.0.3 spec, and the docs explicitly call them \"interactive references\", so the core of the story is first-party. Whether examples actually run is only implied: the request client is the unconfigured Scalar default, and executing calls needs a real service key against your own workspace data. Missing for 10: confirmed runnable try-it requests or hands-on verification, a sandbox or test workspace for safe execution, curated example payloads, and independent corroboration.",
+    "evidenceIds": [
+      "oneleet-scalar-reference-20261106",
+      "oneleet-api-docs-20261106",
+      "oneleet-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "oneleet-scalar-reference-20261106",
+          "quote": "Oneleet hosts Scalar-rendered API references for both APIs (the page loads the live OpenAPI document via data-url=\"./openapi.json\"; the Auditor API has its own reference page)."
+        },
+        {
+          "evidenceId": "oneleet-api-docs-20261106",
+          "quote": "The docs link the machine specs and consoles directly (\"OpenAPI specifications and interactive references:\")"
+        },
+        {
+          "evidenceId": "oneleet-openapi-spec-20261106",
+          "quote": "Oneleet serves a downloadable OpenAPI 3.0.3 document for its Public API (157 paths) at the API origin"
+        }
+      ]
     }
   },
   {
     "productId": "oneleet",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Oneleet is a SaaS platform with an 'API and MCP' docs section, so a downloadable machine-readable API spec is a fair question. However, no evidence documents an OpenAPI or equivalent spec, and probes of common OpenAPI/Swagger paths all returned 404. The MCP server and service keys are a different capability and do not count as a downloadable API spec.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Oneleet serves a downloadable OpenAPI 3.0.3 document for its Public API (157 paths) and a separate Auditor API spec at api.oneleet.com. Its docs link these specs directly and note they can be imported into Postman or used to generate clients. The 404 probes only tested docs.oneleet.com paths, a different host, so they do not contradict this. Missing for 10: independent or hands-on corroboration beyond first-party docs and the spec itself.",
+    "evidenceIds": [
+      "oneleet-openapi-spec-20261106",
+      "oneleet-api-docs-20261106",
+      "oneleet-scalar-reference-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "oneleet-openapi-spec-20261106",
+          "quote": "Oneleet serves a downloadable OpenAPI 3.0.3 document for its Public API (157 paths) at the API origin, plus a second document for the Auditor API"
+        },
+        {
+          "evidenceId": "oneleet-api-docs-20261106",
+          "quote": "The docs link the machine specs and consoles directly (\"OpenAPI specifications and interactive references:\") and note you can import the spec into Postman or use it to generate an API client"
+        }
+      ]
     }
   },
   {
@@ -1664,7 +1697,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a SaaS platform with an API, service keys and an MCP server, so a sandbox or test tenant is a fair thing to ask about. Nothing in the evidence documents a sandbox environment, test mode, or non-production workspace. Workspace selection during MCP OAuth, scoped service keys and role-based permissions limit what an agent can do, but they are adjacent access controls, not isolation from production data. Its DAST application testing is a different product capability.",
+    "rationale": "Oneleet ships a public API and an MCP server, so a sandbox or test environment is a fair question to ask of it. The evidence documents no sandbox, test tenant, or dry-run mode. The Scalar reference notes that executing requests needs a real service key against the caller's own workspace data. Scoped service keys and RBAC limit what an agent can do, but they are adjacent access controls, not an isolated environment that keeps tests away from production data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1676,16 +1709,32 @@
   {
     "productId": "oneleet",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Oneleet is a SaaS platform that exposes an API and MCP server through service keys and OAuth, so versioned APIs with a deprecation policy is a fair question to ask of it. Nothing in the evidence mentions API versioning, version identifiers, changelogs, or a deprecation policy. The OpenAPI probe paths all returned 404.",
-    "evidenceIds": [],
+    "rationale": "Oneleet's public API is URI-versioned under /api/v1/. Its OpenAPI spec marks deprecated fields with migration guidance and separates the public API from internal routes that 'can change without notice'. There is no documented deprecation policy itself: no policy page exists, the changelog returns 404, and no notice window is stated. Missing for 10: a published versioning/deprecation policy page, a stated deprecation notice window, a changelog, and independent corroboration.",
+    "evidenceIds": [
+      "oneleet-deprecations-20261106",
+      "oneleet-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "oneleet-deprecations-20261106",
+          "quote": "all routes are URI-versioned under /api/v1/"
+        },
+        {
+          "evidenceId": "oneleet-deprecations-20261106",
+          "quote": "the spec carries \"deprecated\": true members with migration guidance"
+        },
+        {
+          "evidenceId": "oneleet-openapi-spec-20261106",
+          "quote": "Oneleet serves a downloadable OpenAPI 3.0.3 document for its Public API (157 paths) at the API origin"
+        }
+      ]
     }
   },
   {
@@ -1694,7 +1743,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a compliance automation platform, so a per-framework readiness view is a fair question for it. The pack only shows multi-framework support (SOC 2, ISO 27001, HIPAA, etc.) and framework-linked controls being added or removed. Nothing documents a readiness dashboard, passing-versus-open control counts, or a per-framework completion percentage.",
+    "rationale": "Oneleet is a compliance platform with per-framework controls (docs-15, docs-29), so a readiness view is a fair question to ask of it. However, the evidence never mentions a readiness dashboard, a count of passing controls versus open gaps, or a per-framework audit-readiness percentage. Framework support and control management are adjacent features and do not deliver this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1706,16 +1755,28 @@
   {
     "productId": "oneleet",
     "storyId": "auditor-access",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Oneleet is a compliance platform, so an auditor-access workflow is a fair question to ask of it. However, the evidence pack never documents an auditor portal, an auditor role, or auditors reviewing controls and evidence inside the platform. Generic RBAC organization roles with custom permissions are an adjacent control, not a documented scoped auditor view, and the 'straight into your audit' line refers to pentest results rather than auditor collaboration.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Oneleet documents a dedicated 'Oneleet Auditor API' with 25 paths and its own reference page. That shows a first-party, auditor-specific way to reach workspace data, but the evidence never describes an in-platform auditor UI where auditors review controls and evidence, or how that access is scoped. Custom RBAC roles are a related control, not an auditor view, so they earn no credit here. Missing for 10: a documented auditor portal or view in the platform, scoping of auditor access to specific controls and evidence, an in-platform auditor review or request workflow replacing email, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "oneleet-openapi-spec-20261106",
+      "oneleet-scalar-reference-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a founder, my auditor works directly in the platform — a scoped auditor view of controls and evidence replaces email threads of PDFs",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "oneleet-openapi-spec-20261106",
+          "quote": "a second document for the Auditor API (/api/v1/public/auditor/openapi.json, \"Oneleet Auditor API\", 25 paths)"
+        },
+        {
+          "evidenceId": "oneleet-scalar-reference-20261106",
+          "quote": "the Auditor API has its own reference page"
+        }
+      ]
     }
   },
   {
@@ -1724,10 +1785,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a vetted auditor network, an in-house audit arm, or a way to book the SOC 2/ISO audit through Oneleet. The mentions that come close are about other things. 'Straight into your audit' refers to the included pentest, 'one price, everything included' does not say an audit is included, and the pricing page's 'scope + timeline' is a sales-quote step, not published audit-timeline expectations.",
+    "rationale": "The evidence pack does not document that a founder can book the audit through Oneleet, whether through a vetted auditor network or an in-house audit arm, and gives no audit-timeline expectations. The closest items are adjacent rather than direct support. The existence of an \"Auditor API\" shows auditors can work against the platform, but it is a developer building block, not an audit-booking service. The line about a pentest going \"straight into your audit\" concerns the pentest, not who performs or schedules the audit. The pricing page's \"scope + timeline\" refers to a sales quote, not a documented audit timeline.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a founder, I can book the audit itself through the vendor — a vetted auditor network or in-house audit arm with published expectations on timeline",
       "citations": []
@@ -1738,10 +1799,11 @@
     "storyId": "automated-evidence",
     "verdict": "partial",
     "quality": 5,
-    "confidence": "medium",
-    "rationale": "Oneleet's Fieldwork page says its AI agents collect, validate, and package evidence across enterprise systems on a schedule. The docs also describe monitoring integrations for AWS, GitHub, and Google Workspace. However, the scheduled collection claim is a single marketing line, and the docs do not show integration monitoring output becoming audit evidence or artifacts being timestamped. missing for 10: documented recurring collection cadence per integration, timestamped artifact format/provenance, explicit mapping of integration data to control evidence, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Oneleet's Fieldwork page claims AI agents collect, validate, and package evidence across enterprise systems on the customer's schedule. Integration docs show automated monitoring of AWS, GitHub, and Google Workspace resources. However, this is a thin marketing claim, and no documentation shows how the collected artifacts are timestamped, stored, or presented to auditors in place of screenshots and CSV exports. missing for 10: documented scheduling configuration for evidence collection, timestamped artifact format and audit trail, explicit mapping of integration data to control evidence, independent or hands-on corroboration.",
     "evidenceIds": [
       "oneleet-docs-16",
+      "oneleet-docs-41",
       "oneleet-docs-5",
       "oneleet-docs-6",
       "oneleet-docs-7"
@@ -1760,8 +1822,8 @@
           "quote": "Oneleet currently monitors the following AWS resources: Accounts, RDS instances, Application and Classic load balancers, IAM users"
         },
         {
-          "evidenceId": "oneleet-docs-7",
-          "quote": "Oneleet currently monitors the following on Google Workspace: User accounts, GMail settings"
+          "evidenceId": "oneleet-docs-6",
+          "quote": "You can use it to monitor your GitHub configuration, user access, and Dependabot vulnerabilities."
         }
       ]
     }
@@ -1772,10 +1834,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Oneleet documents one product-native bulk action: a single 'Publish draft policies' button that publishes every draft not requiring review at once. A one-click secure baseline also pre-fills organization-wide device policy. Beyond these narrow UI cases there is no general bulk-operation capability, and nothing shows bulk actions through the MCP server or service keys. Missing for 10: general multi-select bulk edit, assign or resolve across findings, controls and tasks; bulk operations exposed via MCP/API for AI agents; independent or hands-on corroboration.",
+    "rationale": "Oneleet documents one native bulk action: 'Publish draft policies' publishes every draft that doesn't need review from the Policies page in a single step. That is real multi-item handling, but only for policy publishing. Nothing shows bulk actions on findings, controls or devices, and nothing shows batch endpoints in the API or MCP server that an AI-native user would drive. missing for 10: bulk operations across other item types (findings triage/assign, controls, devices), documented batch API or MCP operations, independent or hands-on corroboration.",
     "evidenceIds": [
       "oneleet-docs-12",
-      "oneleet-docs-10"
+      "oneleet-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -1785,10 +1847,6 @@
         {
           "evidenceId": "oneleet-docs-12",
           "quote": "On the **Policies** page, choose **Publish draft policies** to publish drafts that don’t require review."
-        },
-        {
-          "evidenceId": "oneleet-docs-10",
-          "quote": "Applying the secure defaults pre-fills settings as your organization-wide device policy"
         }
       ]
     }
@@ -1799,7 +1857,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no user-definable rule engine in Oneleet that triggers actions on events. Related items do not qualify: daily scheduled code scans and Fieldwork running 'on your schedule' are recurring schedules, not event-triggered rules. Automatically added framework controls and the CI pull-request check are fixed built-in behaviors, and status-page email notifications are an adjacent alerting feature.",
+    "rationale": "The evidence pack contains no documented capability for users to define event-triggered rules that run actions automatically in Oneleet. What it does show is adjacent: fixed daily repository scans, a built-in CI check on pull requests, Fieldwork evidence collection 'on your schedule', and status-page incident emails. These are recurring schedules, built-in behaviors, or notifications, not user-defined event→action rules.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1814,10 +1872,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Oneleet's Fieldwork page says its AI agents collect, validate, and package evidence 'on your schedule', which implies user-defined recurring evidence-collection workflows, but no documentation describes how to configure that schedule. The fixed daily repository scan is a recurring job the platform runs itself, not one the user schedules, so it only supports the story in a limited way. Missing for 10: documented user-configurable scheduling (cron, intervals, triggers), the ability to schedule arbitrary workflows beyond evidence collection, API/MCP access to create schedules, and hands-on corroboration.",
+    "rationale": "The only product-level hint of user-controlled recurring work is Fieldwork's marketing claim that its AI agents collect, validate, and package evidence \"on your schedule.\" That phrase is vague and has no documented scheduling configuration behind it. The once-a-day repository scan is a fixed platform cadence, not a recurring job the user schedules, so it earns no credit. Missing for 10: documented user-defined recurring schedules (cron or interval), scheduling of arbitrary workflows or jobs, API/MCP access to create or manage schedules, and any hands-on or independent corroboration.",
     "evidenceIds": [
       "oneleet-docs-16",
-      "oneleet-docs-50"
+      "oneleet-docs-41"
     ],
     "support": {
       "relation": "direct",
@@ -1827,10 +1885,6 @@
         {
           "evidenceId": "oneleet-docs-16",
           "quote": "Fieldwork’s AI agents collect, validate, and package the evidence – across your enterprise systems, on your schedule."
-        },
-        {
-          "evidenceId": "oneleet-docs-50",
-          "quote": "Oneleet scans the target branch of each repository once a day, and you can start a scan manually at any time with New scan."
         }
       ]
     }
@@ -1841,7 +1895,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a security and compliance platform with agent-driven automation (MCP server, service keys, Fieldwork AI agents collecting evidence on a schedule), so versioning and rolling back automations is a fair question to ask of it. The evidence pack never documents versioning, change review, or rollback for any automation. Policy draft publishing and control review history are adjacent features about documents and controls, not automations, so they earn no credit.",
+    "rationale": "Oneleet offers automation surfaces (Fieldwork AI agents, MCP server, service keys), so this axis applies. However, nothing in the pack documents versioning, reviewing, or rolling back automations. The closest items are adjacent: URI-versioned API routes with deprecation notes, draft policy publishing, and control review history. None of these is version history or rollback for user-defined automations, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1854,13 +1908,15 @@
     "productId": "oneleet",
     "storyId": "byo-integration-api",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Oneleet documents an 'API and MCP' area where scoped service keys let scripts and automation interact with a workspace, so it has a first-party programmatic interface. Nothing shows that interface can push evidence or test results from uncatalogued systems, and probes found no published OpenAPI spec. Missing for 10: documented evidence/test-result upload endpoints, a published API reference or OpenAPI spec, custom-integration guides, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Oneleet documents a versioned public API with a downloadable OpenAPI 3.0.3 spec (157 paths), interactive references, and scoped service keys intended for scripts and automation. That is a real first-party foundation for custom integrations. However, nothing in the evidence shows endpoints for pushing custom evidence or test results from uncovered systems. missing for 10: documented evidence/test-result ingestion endpoints, a custom-integration guide or examples, hands-on or independent corroboration.",
     "evidenceIds": [
-      "oneleet-docs-2",
+      "oneleet-openapi-spec-20261106",
+      "oneleet-api-docs-20261106",
+      "oneleet-docs-19",
       "oneleet-docs-42",
-      "oneleet-probe-3"
+      "oneleet-scalar-reference-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1868,8 +1924,16 @@
       "subject": "As a developer, I can build private/custom integrations against a documented API to push evidence and test results from systems the catalog doesn't cover",
       "citations": [
         {
-          "evidenceId": "oneleet-docs-2",
-          "quote": "Use **service keys** for AI agent automation, MCP servers, and scripts to interact with your Oneleet workspace."
+          "evidenceId": "oneleet-openapi-spec-20261106",
+          "quote": "Oneleet serves a downloadable OpenAPI 3.0.3 document for its Public API (157 paths)"
+        },
+        {
+          "evidenceId": "oneleet-docs-19",
+          "quote": "Use service keys for AI agent automation, MCP servers, and scripts to interact with your Oneleet workspace."
+        },
+        {
+          "evidenceId": "oneleet-api-docs-20261106",
+          "quote": "note you can import the spec into Postman or use it to generate an API client"
         },
         {
           "evidenceId": "oneleet-docs-42",
@@ -1884,13 +1948,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Oneleet documents ongoing Cloud Security monitoring of connected systems (AWS resources, GitHub configuration and access, Google Workspace) and daily code scans whose results become triageable findings. That is continuous-ish monitoring, but nothing documents automated tests mapped to compliance controls or a detection cadence of hours. missing for 10: documented automated control tests tied to framework controls, a stated monitoring frequency or alerting within hours on failing controls, independent or hands-on corroboration.",
+    "rationale": "Oneleet documents its own Cloud Security monitoring of connected systems: AWS accounts, RDS, load balancers and IAM users; GitHub configuration, user access and Dependabot vulnerabilities; and Google Workspace users and Gmail settings. That covers ongoing checks against connected systems, but no evidence states how often these checks run, ties them to pass/fail control tests, or says failures surface within hours. The daily code scan is a separate code-security capability and does not substitute. Missing for 10: documented test cadence or near-real-time detection, explicit mapping of monitors to compliance controls with failing-control alerts, and independent or hands-on corroboration.",
     "evidenceIds": [
       "oneleet-docs-5",
       "oneleet-docs-6",
       "oneleet-docs-7",
-      "oneleet-docs-50",
-      "oneleet-docs-3"
+      "oneleet-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -1903,19 +1966,11 @@
         },
         {
           "evidenceId": "oneleet-docs-6",
-          "quote": "This integration supports Cloud Security monitoring for GitHub."
+          "quote": "This integration supports Cloud Security monitoring for GitHub. You can use it to monitor your GitHub configuration, user access, and Dependabot vulnerabilities."
         },
         {
           "evidenceId": "oneleet-docs-7",
           "quote": "Oneleet currently monitors the following on Google Workspace: User accounts, GMail settings"
-        },
-        {
-          "evidenceId": "oneleet-docs-50",
-          "quote": "Oneleet scans the target branch of each repository once a day"
-        },
-        {
-          "evidenceId": "oneleet-docs-3",
-          "quote": "The results become findings you can triage, assign, and resolve on the platform"
         }
       ]
     }
@@ -1926,7 +1981,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Oneleet's docs say controls are added automatically per framework and stay in place when another framework requires them. That implies one control and its evidence can serve several frameworks, and Oneleet lists SOC 2, ISO 27001 and HIPAA among its supported frameworks. However, the shared-control model is only inferred from a page about removing frameworks, and nothing shows the overlap being displayed. Missing for 10: explicit documentation of cross-framework control/evidence mapping, a view showing overlap between SOC 2, ISO 27001 and HIPAA, confirmation that evidence automatically counts toward multiple frameworks, and independent corroboration.",
+    "rationale": "Oneleet's framework-removal docs say controls are added automatically per framework and stay when another framework also requires them, so a single control and its evidence are shared across frameworks. The platform also supports SOC 2, ISO 27001 and HIPAA. However, nothing documents an explicit cross-framework mapping, automatic crediting of SOC 2 work toward ISO 27001 or HIPAA, or any view of the overlap. Missing for 10: documented control-to-requirement mapping across frameworks, an explicit statement that evidence counts automatically toward multiple frameworks, an overlap or coverage visualization, and independent corroboration.",
     "evidenceIds": [
       "oneleet-docs-15",
       "oneleet-docs-29"
@@ -1942,7 +1997,7 @@
         },
         {
           "evidenceId": "oneleet-docs-29",
-          "quote": "Whether you need SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR, or another framework. Oneleet's all-in-one platform simplifies your compliance journey."
+          "quote": "Whether you need SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR, or another framework."
         }
       ]
     }
@@ -1953,7 +2008,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "There is thin, indirect evidence of custom controls. Oneleet's Fieldwork page invites users to \"Describe your control\" and have AI agents collect and validate evidence for it, and the framework-removal docs note that controls can hold \"custom content\" and evidence. Nothing documents creating custom frameworks or defining your own automated tests and evidence requirements alongside the built-in ones. Missing for 10: documented custom framework creation, explicit custom control creation workflow, user-defined tests, user-defined evidence requirements, independent corroboration.",
+    "rationale": "Oneleet's Fieldwork page says users can \"Describe your control\" and have AI agents collect and validate evidence for it. The framework-removal docs also mention controls holding \"custom content.\" Together these give thin first-party signals of custom-control support, but nothing documents building custom frameworks or attaching user-defined tests. Missing for 10: documented custom framework creation, custom control creation workflow, user-defined automated tests, configurable evidence requirements alongside built-in controls, and independent or hands-on corroboration.",
     "evidenceIds": [
       "oneleet-docs-16",
       "oneleet-docs-15"
@@ -1980,12 +2035,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Oneleet ships its own MDM. Admins can see each device's security posture and enforce security settings from the compliance dashboard, and there is a one-click secure baseline for macOS and Windows, so device-level compliance tracking is a documented first-party capability. The evidence never names the specific checks in the story or shows that devices map to employees. Missing for 10: explicit disk encryption, screen lock and password manager checks, per-employee compliance attribution or reporting, and independent hands-on corroboration.",
+    "rationale": "Oneleet ships its own MDM. Admins can confirm devices are managed, see each device's security posture and enforce security settings, with a one-click secure baseline for macOS and Windows. That covers the core of device compliance monitoring, but the evidence never names the specific checks in the story or shows per-employee tracking. Missing for 10: explicit disk-encryption, screen-lock and password-manager checks; per-employee compliance attribution or reporting; independent or hands-on corroboration.",
     "evidenceIds": [
       "oneleet-docs-9",
-      "oneleet-docs-22",
       "oneleet-docs-10",
-      "oneleet-docs-47"
+      "oneleet-docs-22",
+      "oneleet-docs-47",
+      "oneleet-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -1994,15 +2050,19 @@
       "citations": [
         {
           "evidenceId": "oneleet-docs-9",
-          "quote": "Admins can confirm that devices are managed, see each device’s security posture, enforce security settings"
+          "quote": "Admins can confirm that devices are managed, see each device’s security posture, enforce security settings, and take remote action when a device is lost, stolen, or being offboarded."
+        },
+        {
+          "evidenceId": "oneleet-docs-10",
+          "quote": "Oneleet offers a recommended secure baseline for macOS and Windows that can be applied in one click."
         },
         {
           "evidenceId": "oneleet-docs-22",
           "quote": "Oneleet MDM lets your team manage company-owned devices from the same dashboard as the rest of your security and compliance program."
         },
         {
-          "evidenceId": "oneleet-docs-10",
-          "quote": "Oneleet offers a recommended secure baseline for macOS and Windows that can be applied in one click."
+          "evidenceId": "oneleet-docs-47",
+          "quote": "Macs enroll through Apple's Mobile Device Management framework, either manually or zero-touch through Automated Device Enrollment"
         }
       ]
     }
@@ -2013,7 +2073,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Oneleet monitors AWS, GitHub and Google Workspace configuration, and that findings can be triaged, assigned and resolved in the platform. Nothing documents control-failure or drift alerts being delivered to Slack, email or a ticketing system, or what context such alerts would carry. The status-page email subscription covers Oneleet's own service incidents, not customer control failures, so it is an adjacent feature and earns no credit.",
+    "rationale": "The evidence shows Oneleet monitors AWS, GitHub, and Google Workspace configurations and turns scan results into findings that can be triaged and assigned in the platform. Nothing documents alerts for control failures or configuration drift being pushed to Slack, email, or a ticketing system. The status-page email notifications cover Oneleet's own service incidents, not customer control failures, and the public API is only a developer building block for constructing such alerting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2028,7 +2088,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Oneleet's frameworks page names HIPAA, PCI DSS and GDPR alongside SOC 2 and ISO 27001 within its 'all-in-one platform'. The framework-removal docs show multiple frameworks coexisting in one workspace with shared controls, which supports the same-platform claim. Missing for 10: detailed first-party docs on HIPAA, GDPR and PCI DSS control mappings and templates, and independent or hands-on confirmation that these frameworks work in practice.",
+    "rationale": "Oneleet's frameworks page names HIPAA, PCI DSS and GDPR alongside SOC 2 and ISO 27001 on its 'all-in-one platform.' The docs on removing frameworks show several frameworks coexisting in one workspace with shared controls, and pricing claims there are no per-framework fees. Missing for 10: per-framework documentation (HIPAA/GDPR/PCI DSS control mappings, templates, evidence depth) and independent or hands-on confirmation that these frameworks work beyond the marketing claim.",
     "evidenceIds": [
       "oneleet-docs-29",
       "oneleet-docs-15",
@@ -2060,13 +2120,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Oneleet documents per-provider integration pages for cloud (AWS, via an AssumeRole role you can delete), identity (Google Workspace user accounts and Gmail settings), and code hosting (GitHub configuration, user access and Dependabot). The GitHub page notes it does not require access to repository contents, which points toward limited scopes. MDM appears only as Oneleet's own first-party MDM rather than a connector to an existing MDM, and HR and ticketing integrations are not evidenced. missing for 10: HR integrations, ticketing integrations, connectors to third-party MDM, an explicit read-only scope or permissions listing per integration, a browsable catalog overview, independent corroboration.",
+    "rationale": "Oneleet documents per-integration pages under /integrations/ for AWS (cloud, via AssumeRole), GitHub (code hosting, explicitly without access to repository contents) and Google Workspace (identity), so it covers part of a real-stack integrations catalog with some scope minimization. However, the evidence shows no HR or ticketing integrations, and its MDM is Oneleet's own product rather than a connector to a third-party MDM. Read-only scoping is only implied for GitHub and AWS, not documented as read-only. Missing for 10: HR integrations, ticketing integrations, third-party MDM connectors, explicit read-only scope documentation, a browsable catalog overview, independent corroboration.",
     "evidenceIds": [
       "oneleet-docs-5",
-      "oneleet-docs-45",
       "oneleet-docs-6",
       "oneleet-docs-7",
-      "oneleet-docs-22"
+      "oneleet-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -2078,16 +2137,16 @@
           "quote": "Oneleet currently monitors the following AWS resources: Accounts, RDS instances, Application and Classic load balancers, IAM users"
         },
         {
-          "evidenceId": "oneleet-docs-45",
-          "quote": "Oneleet uses the AWS AssumeRole API to work with AWS resources — if you'd like to remove Oneleet's access to your workspace, simply delete the created role"
-        },
-        {
           "evidenceId": "oneleet-docs-6",
-          "quote": "You can use it to monitor your GitHub configuration, user access, and Dependabot vulnerabilities. It does not require access to repository contents."
+          "quote": "This integration supports Cloud Security monitoring for GitHub. You can use it to monitor your GitHub configuration, user access, and Dependabot vulnerabilities. It does not require access to repository contents."
         },
         {
           "evidenceId": "oneleet-docs-7",
           "quote": "Oneleet currently monitors the following on Google Workspace: User accounts, GMail settings"
+        },
+        {
+          "evidenceId": "oneleet-docs-45",
+          "quote": "Oneleet uses the AWS AssumeRole API to work with AWS resources — if you'd like to remove Oneleet's access to your workspace, simply delete the created role"
         }
       ]
     }
@@ -2098,7 +2157,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Oneleet's frameworks page names ISO 27001 as a supported framework, and its docs describe adding frameworks that automatically bring in their own controls, so ISO 27001 is a first-party framework rather than an outside workaround. Nothing in the evidence shows how deep that support goes. Missing for 10: documentation of the current (2022) Annex A control set, Statement of Applicability generation, certification-audit artifacts or auditor workflow, and independent or hands-on corroboration of ISO 27001 depth.",
+    "rationale": "Oneleet's frameworks page lists ISO 27001 among its supported frameworks, and its docs show that adding a framework automatically adds its controls, so ISO 27001 is a documented framework in the product. Nothing shows it is first-class beyond that listing. Missing for 10: current Annex A (2022) control set, Statement of Applicability generation, ISO certification-audit artifacts or auditor workflow specific to ISO, independent or hands-on corroboration.",
     "evidenceIds": [
       "oneleet-docs-29",
       "oneleet-docs-15"
@@ -2122,31 +2181,37 @@
   {
     "productId": "oneleet",
     "storyId": "manual-evidence-workflow",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Oneleet is a compliance platform, so a manual-evidence workflow is a fair question to ask of it. However, the pack documents no workflow for manual artifacts: there is no evidence of owners, due dates, renewal reminders or expiry tracking. The only related items are a passing note that controls can hold 'evidence, review history, assignments' and Fieldwork's claim of AI-automated collection 'on your schedule'. Both are adjacent features, not the requested manual-evidence lifecycle.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is a passing mention that controls can contain evidence, review history, and assignments. That suggests evidence can be tied to owners, but nothing describes a dedicated workflow for manual artifacts. missing for 10: documented manual-evidence upload workflow, due dates, renewal reminders, expiry tracking, per-artifact owner assignment, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "oneleet-docs-15"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an operations lead, evidence that can't be automated has a real workflow — owners, due dates, renewal reminders, and expiry tracking on every manual artifact",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "oneleet-docs-15",
+          "quote": "Controls stay when another framework requires them or when they contain work such as evidence, review history, assignments, or custom content."
+        }
+      ]
     }
   },
   {
     "productId": "oneleet",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Oneleet documents its own programmatic surface: an official MCP server and service keys for 'AI agent automation, MCP servers, and scripts to interact with your Oneleet workspace.' An OAuth-connected assistant 'can only see and do what your own role in the workspace allows,' which implies role-bounded action but does not establish API-to-UI parity. No public API reference or OpenAPI spec was found (probes returned 404), so the breadth of coverage is unproven. Missing for 10: documented API reference/OpenAPI spec, explicit statement or evidence of full UI-to-API parity, per-feature endpoint coverage, independent hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Oneleet ships its own public API: an OpenAPI 3.0.3 spec with 157 paths, a separate Auditor API, service keys, and an official MCP server through which an OAuth-connected assistant can do whatever the user's role allows. That is real programmatic coverage. However, nothing documents parity with the UI, and the spec itself says the routes behind the web application are not part of the public API and reject service keys and OAuth tokens. missing for 10: an explicit statement or mapping of API/UI feature parity, evidence that UI-only actions (e.g., MDM remote actions, policy publishing, Trust Center setup) are exposed via the API, and independent hands-on corroboration.",
     "evidenceIds": [
-      "oneleet-docs-2",
+      "oneleet-openapi-spec-20261106",
+      "oneleet-api-docs-20261106",
+      "oneleet-docs-19",
       "oneleet-docs-44",
-      "oneleet-docs-42",
-      "oneleet-docs-1",
-      "oneleet-probe-3",
       "oneleet-probe-4"
     ],
     "support": {
@@ -2155,16 +2220,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "oneleet-docs-2",
-          "quote": "Use **service keys** for AI agent automation, MCP servers, and scripts to interact with your Oneleet workspace."
+          "evidenceId": "oneleet-openapi-spec-20261106",
+          "quote": "Oneleet serves a downloadable OpenAPI 3.0.3 document for its Public API (157 paths) at the API origin"
+        },
+        {
+          "evidenceId": "oneleet-docs-19",
+          "quote": "Use service keys for AI agent automation, MCP servers, and scripts to interact with your Oneleet workspace."
         },
         {
           "evidenceId": "oneleet-docs-44",
           "quote": "Once connected, the assistant acts as you. It can only see and do what your own role in the workspace allows"
-        },
-        {
-          "evidenceId": "oneleet-docs-42",
-          "quote": "Grant Full access to all tenant service-key scopes, or choose Limit access to… to grant only specific scopes."
         }
       ]
     }
@@ -2175,7 +2240,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export and portability is a fair question for a compliance SaaS platform, but the evidence pack documents no bulk export of policies, evidence, controls or findings in open formats, and no offboarding or exit path. The MCP server and service keys are developer building blocks for scripting access, not a documented export capability. 'Nothing is locked in' refers to MDM default settings, and deleting the AWS role only revokes Oneleet's access to AWS; neither is data export.",
+    "rationale": "Data export and offboarding is a fair question for a compliance and security SaaS like Oneleet, so the axis applies. The evidence pack documents no export feature, no bulk-download format, and no account-exit process. The public API (157-path OpenAPI spec) and the MCP server are developer building blocks someone could use to construct an export, not a documented export capability. Deleting the AWS IAM role only revokes Oneleet's access to your cloud; it does not export your Oneleet data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2190,7 +2255,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is available under an open license is a fair question for a SaaS security and compliance platform like Oneleet, so the axis applies. Nothing in the evidence pack mentions a public repository, an open-source license, or source availability. The docs describe only a hosted platform, an MCP server and service keys.",
+    "rationale": "Oneleet is a commercial SaaS security and compliance platform, and publishing its source under an open license is a fair question for that kind of product, so the axis applies. Nothing in the evidence shows a public source repository or an open-source license. The downloadable OpenAPI specs describe the API surface; they are not readable product source under an open license.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2205,7 +2270,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a compliance and security platform, so the axis applies. Nothing in the evidence pack documents a self-hosted, on-prem or open-source deployment of Oneleet. Every item describes a hosted workspace, dashboard or managed services, and none of these are a self-hosting capability.",
+    "rationale": "Self-hosting is a fair question for a compliance and security platform, since some products of this kind ship self-hostable editions, so the axis applies. Nothing in the evidence documents a self-hosted or on-prem deployment of Oneleet. All documented access, including the API, the MCP server and the web app, runs through Oneleet's hosted service at api.oneleet.com.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2220,7 +2285,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a compliance platform, so HR-synced onboarding and offboarding checklists are a fair axis, but the pack documents no HR integration, no onboarding or offboarding checklists, and no tracking of security-training completion. The MDM remote action for offboarded devices and the monitoring of Google Workspace and GitHub user accounts are adjacent features. They do not show that every leaver lost access or that every hire completed training.",
+    "rationale": "Oneleet is a compliance platform, so HR-synced onboarding and offboarding checklists are a fair axis. The evidence pack never documents an HR integration, onboarding or offboarding checklists, or training-completion tracking. The nearest items are adjacent features (MDM remote action on offboarded devices, and monitoring of Google Workspace, GitHub and AWS IAM user accounts), and they do not prove that every hire got training or every leaver lost access.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2233,9 +2298,9 @@
     "productId": "oneleet",
     "storyId": "policy-management",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Oneleet documents a policy template library in two tiers (Formal minimum-viable and Comprehensive) that can be customized. It also has a draft-and-publish flow on the Policies page that implies some policies require review before publishing. Missing for 10: evidence the templates are lawyer-grade, a documented policy editor, policy versioning/history, an explicit approval workflow, per-employee policy acceptance tracking, and independent corroboration.",
+    "rationale": "Oneleet documents a built-in policy template library in two tiers (Formal minimum-viable and Comprehensive) that users customize. It also has a draft/publish workflow on the Policies page, and the reference to drafts that \"don't require review\" implies a review step for others. That covers roughly half the story. Missing for 10: evidence of lawyer-grade or legally vetted templates, a documented in-app policy editor, policy version history, an explicit approval workflow, per-employee policy acceptance tracking, and independent corroboration.",
     "evidenceIds": [
       "oneleet-docs-48",
       "oneleet-docs-60",
@@ -2268,7 +2333,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a SaaS security and compliance platform, so choosing a data storage region is a fair question to ask of it. Nothing in the evidence pack documents region or residency selection. Picking a workspace during MCP OAuth and supporting the GDPR compliance framework are different capabilities and earn no credit here.",
+    "rationale": "Oneleet is a SaaS security and compliance platform that stores customer workspace data, so letting customers choose a storage region is a fair question for it. Nothing in the evidence pack mentions region selection, data residency, or storage location. Workspace selection, scoped service keys and RBAC are different controls and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2283,7 +2348,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a security and compliance SaaS that handles customer data and ships AI features (Fieldwork AI agents, MCP access), so an AI-training opt-out is a fair question to ask of it. The evidence pack contains no documented commitment, setting, or contractual control that prevents customer data from being used to train AI models. Role-scoped assistant access and service-key scopes are adjacent access controls, not training opt-outs.",
+    "rationale": "Oneleet is a compliance and security SaaS that handles customer data and ships AI features (Fieldwork AI agents, an MCP server), so a no-training guarantee or opt-out is a fair question to ask of it. The evidence pack contains no statement about AI model training, data-use opt-outs, or training exclusions. The OAuth, RBAC and service-key scoping evidence covers access control, not training use.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2298,7 +2363,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a SaaS compliance and security platform, so user control over retention and deletion of the data it holds is a fair question. The pack documents no retention settings or data-deletion controls. Removing frameworks (which prunes unused controls), deleting the AWS role to revoke Oneleet's access, and MDM remote actions on devices are adjacent features, not control over data retention or deletion.",
+    "rationale": "Data retention and deletion controls are a fair question for a security and compliance SaaS platform, but the evidence pack documents no retention settings or data-deletion capability for customer data held by Oneleet. The closest items are adjacent and earn no credit: removing a framework also removes its unused controls, deleting the AWS role revokes Oneleet's access, and MDM remote actions apply to managed devices.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2313,7 +2378,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a SaaS security and compliance platform, so letting users opt out of telemetry and usage tracking is a fair axis for it. The evidence pack contains no documentation of any telemetry or usage-tracking opt-out. Related controls such as deleting the AWS role, RBAC scoping and MDM settings govern access or device policy, not the product's own telemetry, so they earn no credit.",
+    "rationale": "Opting out of telemetry is a fair privacy question for a SaaS compliance and security platform like Oneleet, so the axis applies. Nothing in the evidence pack documents telemetry collection, usage tracking, or any opt-out control. The MCP OAuth scoping, RBAC and service-key scopes items are adjacent access controls, not telemetry opt-out, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2328,7 +2393,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Oneleet's own docs say customers can set up and publish a customizable Trust Center and link it from their landing page, so a hosted public trust center exists. Nothing describes what it contains or how access is gated. Missing for 10: live control status display, certification listing, report sharing under click-through NDA, evidence that it shortens security reviews, independent or hands-on corroboration.",
+    "rationale": "Oneleet's docs confirm a hosted, customizable Trust Center that customers can publish and link from their landing page, so the core capability is a direct first-party feature. Nothing describes what it actually shows or how gated sharing works. Missing for 10: live control status display, certification listing, report sharing behind click-through NDA, evidence that it shortens security reviews, independent or hands-on corroboration.",
     "evidenceIds": [
       "oneleet-docs-17",
       "oneleet-docs-27",
@@ -2345,7 +2410,7 @@
         },
         {
           "evidenceId": "oneleet-docs-27",
-          "quote": "You can add a link to the Trust Center on your Landing Page to show your ongoing commitment to security."
+          "quote": "set up and publish your customizable Trust Center. You can add a link to the Trust Center on your Landing Page to show your ongoing commitment to security."
         }
       ]
     }
@@ -2356,7 +2421,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a security and compliance platform, so questionnaire import and export is a fair axis for it. The evidence never mentions importing or exporting SIG, CAIQ, portal or spreadsheet questionnaires. The Trust Center and vCISO help with security reviews are adjacent features, not questionnaire format handling.",
+    "rationale": "Questionnaire import and export is a fair question for a compliance and security platform like Oneleet, so the axis applies. However, the evidence pack never mentions importing SIG, CAIQ, portal or spreadsheet questionnaires, or exporting answers in the customer's format. The Trust Center and the vCISO help with security reviews are adjacent features and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2371,7 +2436,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a compliance and security platform, so a built-in risk register is a fair question to ask of it. However, nothing in the evidence pack documents a risk register, risk scoring, treatment plans, risk owners, or review cycles linked to controls. The closest items are adjacent features (code-security findings triage, policy templates, control management during framework removal), and none of them is a risk register.",
+    "rationale": "The evidence pack never documents a risk register. It has no scored risks, treatment plans, risk owners, review cycles, or risk-to-control mapping. The only nearby item is a deprecated API field that mentions a personalized 'risk assessment' summary, which does not show a register in the platform.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2386,7 +2451,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Security awareness training is a fair axis for a compliance platform like Oneleet, but the evidence pack never mentions training modules, assignment on hire, completion tracking, or training records used as audit evidence. The policy, MDM, evidence-collection and RBAC items are adjacent features and earn no credit for this story.",
+    "rationale": "Security awareness training is a fair axis for a compliance and security platform like Oneleet. The evidence pack covers policies, MDM, pentests, code and app security, integrations, and APIs, but never mentions training that is assigned on hire, tracked to completion, or accepted as audit evidence. Policy templates and device management are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2401,15 +2466,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Oneleet documents SOC 2 as a supported framework that automatically adds its controls. It also ships Formal and Comprehensive policy templates you can adapt and publish, and offers AI-agent evidence collection through Fieldwork. Nothing in the evidence explicitly covers Type I versus Type II, so end-to-end program support is only implied. missing for 10: explicit Type I and Type II audit support, named Trust Services Criteria control mapping, documented evidence-request workflows tied to SOC 2 controls, independent or hands-on corroboration.",
+    "rationale": "Oneleet lists SOC 2 as a supported framework and offers a vCISO to create your SOC 2 program. Its docs say controls are added automatically when you add a framework, it ships Formal and Comprehensive policy templates, and Fieldwork's AI agents collect and package evidence. The evidence never addresses Type I versus Type II, never names the Trust Services Criteria, and never describes the audit workflow from start to finish. missing for 10: explicit Type I and Type II support, documented Trust Services Criteria control mapping, documented evidence-request workflow tied to SOC 2 audits, independent or hands-on corroboration.",
     "evidenceIds": [
       "oneleet-docs-29",
       "oneleet-docs-62",
       "oneleet-docs-15",
       "oneleet-docs-48",
       "oneleet-docs-60",
-      "oneleet-docs-12",
-      "oneleet-docs-16"
+      "oneleet-docs-16",
+      "oneleet-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -2418,11 +2483,11 @@
       "citations": [
         {
           "evidenceId": "oneleet-docs-29",
-          "quote": "Whether you need SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR, or another framework. Oneleet's all-in-one platform simplifies your compliance journey."
+          "quote": "Whether you need SOC 2, ISO 27001, HIPAA, PCI DSS, GDPR, or another framework."
         },
         {
           "evidenceId": "oneleet-docs-62",
-          "quote": "Leverage Oneleet as your security team with a dedicated vCISO to create your SOC 2 program & help you pass security reviews."
+          "quote": "Leverage Oneleet as your security team with a dedicated vCISO to create your SOC 2 program"
         },
         {
           "evidenceId": "oneleet-docs-15",
@@ -2430,11 +2495,15 @@
         },
         {
           "evidenceId": "oneleet-docs-48",
-          "quote": "Our platform offers two types of policy templates to assist you in this process: Formal (Minimum Viable Policies)... Comprehensive"
+          "quote": "Our platform offers two types of policy templates to assist you in this process"
         },
         {
           "evidenceId": "oneleet-docs-16",
-          "quote": "Fieldwork’s AI agents collect, validate, and package the evidence – across your enterprise systems, on your schedule."
+          "quote": "Fieldwork’s AI agents collect, validate, and package the evidence"
+        },
+        {
+          "evidenceId": "oneleet-docs-13",
+          "quote": "Oneleet includes a human-led one, straight into your audit."
         }
       ]
     }
@@ -2445,7 +2514,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Oneleet offers a customizable Trust Center that users set up and publish. Nothing shows that subprocessor lists, document renewals or control status sync into it automatically from the platform. Having a trust center is adjacent to the story, not proof of self-updating content.",
+    "rationale": "Oneleet documents a customizable Trust Center you can set up and publish. Nothing in the evidence shows it updating itself from the platform: there is no automatic sync of subprocessor lists, no document-renewal tracking and no live control-status feed. Publishing a trust center by hand is adjacent to this story, not the self-updating capability it asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2460,7 +2529,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Oneleet is a security and compliance platform, so vendor inventory and third-party risk review is a fair axis for it. However, the evidence pack never mentions vendor management, vendor inventories, vendor security reviews, data-access tracking, or review cadence. The cited material covers cloud and GitHub monitoring, MDM, policies, code security, the Trust Center and MCP access, none of which is third-party vendor risk review.",
+    "rationale": "Oneleet is a compliance and security platform, so vendor inventory and third-party risk review is a fair axis, but nothing in the evidence pack documents a vendor inventory, vendor security-posture or data-access tracking, or vendor review cadence. The only nearby item is an API field about a generic risk assessment, which is not shown to cover third-party vendors.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3984,12 +4053,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sprinto has a first-party doc page titled \"Perform Access Review for a Critical System\", and its integrations map users with access to connected systems and check offboarding. That shows an in-platform access review capability tied to integrated apps, but the pack contains only page titles and integration blurbs, with no detail on the review workflow itself. missing for 10: evidence of periodic/recurring review scheduling, in-app reviewer sign-off workflow, reviews spanning multiple connected apps (only a single critical system is named), the review artifact automatically landing in the evidence library, and any independent or hands-on corroboration.",
+    "rationale": "Sprinto documents its own access review capability: a docs page titled \"Perform Access Review for a Critical System\", an \"Monitor Access Checks\" page, and integrations that map users with access to connected systems. The pack gives only page titles and an integration snippet, so the depth of the workflow is unproven. missing for 10: evidence that reviews run on a periodic or recurring schedule, coverage across all connected apps rather than one critical system, in-app reviewer sign-off, review artifacts landing in an evidence library, and independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-8",
       "sprinto-docs-7",
-      "sprinto-docs-67",
-      "sprinto-docs-25"
+      "sprinto-docs-67"
     ],
     "support": {
       "relation": "direct",
@@ -3998,19 +4066,15 @@
       "citations": [
         {
           "evidenceId": "sprinto-docs-8",
-          "quote": "Perform Access Review for a Critical System"
+          "quote": "Perform Access Review for a Critical System | Sprinto Docs"
         },
         {
           "evidenceId": "sprinto-docs-7",
-          "quote": "Monitor Access Checks"
+          "quote": "Monitor Access Checks | Sprinto Docs"
         },
         {
           "evidenceId": "sprinto-docs-67",
           "quote": "It helps Sprinto to map and check if the user with access offboards the organization."
-        },
-        {
-          "evidenceId": "sprinto-docs-25",
-          "quote": "Maintain readiness with continuous monitoring, alerts, and evidence collection."
         }
       ]
     }
@@ -4019,14 +4083,13 @@
     "productId": "sprinto",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms Sprinto serves an llms.txt documentation index at docs.sprinto.com (HTTP 200). A second probe confirms Markdown versions of the docs pages that point back to that index, so an agent can be directed at agent-friendly docs. Missing for 10: evidence of a full-content llms-full.txt or other agent-specific guidance, and independent or hands-on corroboration of agents actually consuming these docs.",
+    "rationale": "A live probe confirms Sprinto serves an llms.txt index at docs.sprinto.com/llms.txt (HTTP 200). The docs also offer markdown versions of pages that point to llms.txt as the complete documentation index, so an agent can read the docs directly. Missing for 10: no evidence of an llms-full.txt or agent-specific usage guidance, and no independent hands-on report of agents consuming these docs.",
     "evidenceIds": [
       "sprinto-probe-1",
       "sprinto-probe-2",
-      "sprinto-docs-19",
-      "sprinto-docs-26"
+      "sprinto-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -4050,7 +4113,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sprinto documents in-product AI that analyses user-submitted data and returns findings. Sprinto AI validates uploaded audit evidence and flags gaps such as outdated timestamps or irrelevant screenshots, and AI-assisted due diligence reviews are also offered. However, the AI insight capability is documented only for these narrow workflows, not as broad insights across the user's compliance data. missing for 10: general AI-generated insights or recommendations across compliance posture and dashboards, detail on the AI-assisted due diligence output, independent or hands-on corroboration.",
+    "rationale": "Sprinto documents in-product AI that analyzes the user's own data: Sprinto AI validates uploaded audit evidence and flags gaps such as outdated timestamps or irrelevant screenshots, and it offers AI-assisted due diligence reviews. These are scoped point features rather than a broad insight layer, and nothing independent confirms they work. Missing for 10: general AI-generated insights or recommendations across compliance posture, risks and dashboards; detail on what the AI-assisted due diligence produces; independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-28",
       "sprinto-docs-47",
@@ -4082,13 +4145,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sprinto documents user-built ingestion workflows, which its AI Editor can create from natural-language prompts and which webhooks trigger automatically. It also claims continuous monitoring, automated evidence collection and configurable AI risk auto-scoring, so some automation runs in the background without manual action. What the evidence shows is event-triggered and built-in monitoring rather than user-defined recurring schedules or autonomous agent runs, and the depth is thinly documented. Missing for 10: user-configurable recurring schedules or triggers beyond webhooks, documented autonomous multi-step agent execution, run history or observability for user automations, independent or hands-on corroboration.",
+    "rationale": "Sprinto documents user-built ingestion workflows, including creating them with an AI Editor from natural-language prompts. Those workflows can be triggered by incoming webhooks, and the platform also runs continuous monitoring, alerting, evidence collection and configurable AI risk auto-scoring in the background. However, the docs show only event-triggered ingestion and vendor-defined monitoring, not a general user-configurable autonomous automation engine. missing for 10: user-defined recurring schedules or triggers beyond ingestion webhooks, documentation of what configured automations can do autonomously (actions, conditions, run history), independent hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-26",
       "sprinto-docs-59",
-      "sprinto-docs-48",
       "sprinto-docs-25",
       "sprinto-docs-64",
+      "sprinto-docs-52",
       "sprinto-docs-21"
     ],
     "support": {
@@ -4119,9 +4182,9 @@
     "productId": "sprinto",
     "storyId": "agentic-builtin-assistant",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Sprinto documents several built-in AI features that perform work on the user's behalf. Its AI Editor builds and edits ingestion workflows from natural-language prompts, Sprinto AI validates uploaded evidence and flags gaps, and due diligence reviews can be AI-assisted. These are narrow, feature-scoped AI functions rather than a general assistant you can hand arbitrary tasks to, and there is no hands-on corroboration. The external compliance-skills repo runs in outside agents, not inside the product, so it earns no credit here. Missing for 10: a general-purpose in-product AI assistant/agent for delegating arbitrary tasks, depth documentation of what the AI Editor can do, and independent or hands-on corroboration.",
+    "rationale": "Sprinto documents several built-in AI features that take on specific tasks. The AI Editor builds and edits ingestion workflows from natural language prompts, Sprinto AI validates uploaded evidence and flags gaps, and AI-assisted due diligence reviews are offered. These are scoped features, not a general assistant you can hand arbitrary tasks to across the product. missing for 10: a general-purpose in-product AI assistant or agent for open-ended delegation, documentation of the assistant's scope, actions and approval flow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-26",
       "sprinto-docs-28",
@@ -4142,10 +4205,6 @@
           "quote": "Use Sprinto AI to automatically validate your uploaded evidence for relevance, scope, and timeliness before audit submission."
         },
         {
-          "evidenceId": "sprinto-docs-47",
-          "quote": "Sprinto AI analyses your submission and flags gaps such as outdated timestamps or irrelevant screenshots"
-        },
-        {
           "evidenceId": "sprinto-docs-42",
           "quote": "Sprinto supports both manual and AI-assisted due diligence reviews."
         }
@@ -4155,16 +4214,31 @@
   {
     "productId": "sprinto",
     "storyId": "agentic-headless",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Sprinto is a SaaS compliance platform, so running it headlessly or in CI is a fair question, but the pack documents no headless mode, CLI, or CI integration. The nearest items are API reference page titles (custom integration push APIs, framework health APIs), inbound webhooks that let external systems send data in, and agent skills installed via npx for coding assistants. These are integration building blocks or adjacent features, not a documented way to run the product's compliance workflows from automation, and the OpenAPI probe returned 404 on every path.",
-    "evidenceIds": [],
+    "rationale": "Sprinto documents its own key-authenticated GraphQL Developer API, including Framework Health and Vendor Data APIs and custom-integration push APIs, plus inbound webhook endpoints. Scripts and pipelines could use these to drive or feed the platform without the UI. Nothing in the evidence describes a CLI, a CI plugin or action, or a documented headless/CI workflow, so automation-in-CI is only implied through the API surface. Missing for 10: an official CLI or CI integration (e.g., GitHub Action or pipeline step), documented headless/CI usage guides, a downloadable API spec (OpenAPI probes returned 404), and hands-on corroboration of CI automation.",
+    "evidenceIds": [
+      "sprinto-introspection-20261106",
+      "sprinto-docs-17",
+      "sprinto-docs-16",
+      "sprinto-docs-48",
+      "sprinto-probe-3"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sprinto-introspection-20261106",
+          "quote": "The Sprinto Developer API is built using GraphQL"
+        },
+        {
+          "evidenceId": "sprinto-docs-48",
+          "quote": "Each webhook generates a unique endpoint URL that receives incoming requests from external services."
+        }
+      ]
     }
   },
   {
@@ -4173,7 +4247,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto ships AI features, including an AI Editor for ingestion workflows and AI evidence validation, so a buyer could fairly ask whether it can act as an MCP client. Nothing in the evidence shows it can connect to external MCP servers or use their tools. Its compliance-skills GitHub repo provides skills for other agents, and its integrations and inbound webhooks are fixed connectors, not MCP client support.",
+    "rationale": "Sprinto ships AI features (an AI Editor for ingestion workflows and AI evidence gap analysis), so it is fair to ask whether it can act as an MCP client. However, no evidence shows that users can connect external MCP servers for Sprinto to call. The compliance-skills GitHub repo provides skills for other agents to install, and inbound webhooks and integrations are adjacent features, not MCP client support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4188,7 +4262,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto is a SaaS compliance platform, so an official MCP server is a fair question, but the evidence pack never mentions an MCP server or MCP endpoint. Adjacent items such as the GitHub compliance-skills agent skills, llms.txt and webhooks are not an MCP server agents can connect to, so they earn no credit here.",
+    "rationale": "Sprinto is a SaaS compliance platform, so an official MCP server is a fair question, but nothing in the evidence pack documents one. The GraphQL Developer API is only a developer building block, and the compliance-skills repo is an agent skills package rather than an MCP server, so neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4203,7 +4277,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Sprinto documents an AI Editor that lets users create and modify ingestion workflows with natural-language prompts. That is a real first-party natural-language interface, but it covers only one narrow feature area rather than general operation of the product. The other AI features (evidence gap analysis, AI-assisted due diligence) and the compliance-skills repo for coding agents are not natural-language control of Sprinto itself, so they earn no credit here. Missing for 10: natural-language control beyond ingestion workflows (controls, risks, policies, audits, tasks), a conversational assistant or chat interface for the platform, and independent or hands-on corroboration of the AI Editor.",
+    "rationale": "Sprinto documents an AI Editor that creates and modifies ingestion workflows from natural-language prompts. That is a first-party natural-language capability, but it covers only one narrow area rather than general operation of the product. Missing for 10: natural-language control across the platform (controls, risks, audits, vendors, policies), a conversational assistant or command interface, documentation of supported commands and limits, and independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-26"
     ],
@@ -4225,7 +4299,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto is a compliance SaaS platform, so an official CLI is a fair axis to ask about. The evidence pack documents no Sprinto CLI. The `npx skills add gosprinto/compliance-skills` command installs agent skills through a generic skills installer rather than a Sprinto-provided command-line tool, so it is adjacent and earns no credit. The other material (dashboards, webhooks, APIs, AI editor) covers different capabilities.",
+    "rationale": "A CLI is a fair axis for a SaaS compliance platform, but the evidence shows no official Sprinto CLI. What the pack does show doesn't count: a GraphQL Developer API with a browser-based playground (a developer building block), and agent skills installed via a generic `npx skills add` command, which is not a Sprinto-owned CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4237,32 +4311,33 @@
   {
     "productId": "sprinto",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Sprinto's docs include an API reference section, with pages for 'Custom Integration Push APIs' (Integration Monitoring) and 'Framework Health & Vendor Data APIs', plus inbound webhook endpoints that push data into Sprinto. So a documented public API exists, but the evidence shows only page titles and suggests a narrow scope focused on data push and read-out rather than full programmatic control. The OpenAPI/Swagger probes all returned 404. missing for 10: evidence of endpoint breadth covering core actions (controls, policies, tasks, evidence, audits), authentication and rate-limit docs, a machine-readable OpenAPI spec, and independent or hands-on corroboration of driving the product via API.",
+    "rationale": "Sprinto documents a public GraphQL Developer API. It is authenticated by API key, supports schema introspection covering queries and mutations, and ships a browser-based API Playground plus API reference pages such as Framework Health & Vendor Data APIs and custom-integration push APIs. That clearly lets a programmatic or agent client drive the product. Missing for 10: a downloadable OpenAPI/Postman schema artifact (the probe found every OpenAPI path returns 404 and introspection is key-gated), documented breadth showing which product functions mutations cover, and independent hands-on corroboration that the API runs.",
     "evidenceIds": [
-      "sprinto-docs-16",
+      "sprinto-introspection-20261106",
+      "sprinto-playground-20261106",
       "sprinto-docs-17",
-      "sprinto-docs-48",
+      "sprinto-docs-16",
       "sprinto-probe-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
+          "evidenceId": "sprinto-introspection-20261106",
+          "quote": "Introspection allows the API to describe its schema, including available queries, mutations, and response types."
+        },
+        {
+          "evidenceId": "sprinto-playground-20261106",
+          "quote": "lets you interact with the Sprinto Developer API without installing any client libraries or GraphQL tools"
+        },
+        {
           "evidenceId": "sprinto-docs-17",
           "quote": "Framework Health & Vendor Data APIs | Sprinto Docs"
-        },
-        {
-          "evidenceId": "sprinto-docs-16",
-          "quote": "Integration Monitoring | Sprinto Docs"
-        },
-        {
-          "evidenceId": "sprinto-docs-48",
-          "quote": "Each webhook generates a unique endpoint URL that receives incoming requests from external services."
         }
       ]
     }
@@ -4273,7 +4348,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto exposes APIs (custom integration push APIs and framework health/vendor data APIs), so scoped API credentials are a fair question for this product. However, no evidence describes issuing API keys or tokens, permission scopes, or least-privilege credentials for an agent. Webhook endpoint URLs and role checks on integrated third-party systems are adjacent features, not scoped credential issuance.",
+    "rationale": "Sprinto is a SaaS compliance platform with a Developer API, so issuing scoped credentials is a fair question to ask of it. The evidence only shows that the API playground needs an admin account and \"a valid API key\". Nothing documents scoping, permission granularity, read-only keys, or agent-specific least-privilege credentials, so a generic API key does not satisfy this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4288,7 +4363,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto is a SaaS compliance platform, so an official SDK is a fair thing for a buyer to ask about. The evidence shows only raw API reference pages (custom integration push APIs, framework health/vendor data APIs) and an agent-skills GitHub repo. Nothing documents an official client SDK in any language, and the OpenAPI probe returned 404 on every candidate path. Raw APIs and agent skills are adjacent building blocks, not SDKs, so they earn no credit.",
+    "rationale": "Sprinto is a SaaS compliance platform, so asking about official SDKs is fair. The evidence shows only a GraphQL Developer API with introspection and a browser playground, which the docs describe as working \"without installing any client libraries.\" No official SDK or client library is documented. The raw API and the GitHub compliance-skills agent skills are adjacent building blocks, not SDKs.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4303,25 +4378,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Sprinto's documented webhooks are inbound ingestion endpoints that let external systems push data into Sprinto, not registrable outbound HTTP callbacks that notify a consumer of Sprinto events. The only outbound notification in the pack is status-page email, which does not qualify. The axis applies to a compliance SaaS platform, but there is no evidence of outbound event subscriptions.",
-    "evidenceIds": [
-      "sprinto-docs-27",
-      "sprinto-docs-48"
-    ],
+    "rationale": "Sprinto's documented webhooks are inbound only: each one creates an endpoint that receives data from external systems to trigger ingestion workflows. Nothing in the evidence shows registrable outbound HTTP callbacks that let a consumer subscribe to Sprinto events. Status-page email notifications are a different channel and do not count.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
-      "citations": [
-        {
-          "evidenceId": "sprinto-docs-27",
-          "quote": "Webhooks allow external systems to send data directly into Sprinto."
-        },
-        {
-          "evidenceId": "sprinto-docs-48",
-          "quote": "Each webhook generates a unique endpoint URL that receives incoming requests from external services."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -4330,10 +4393,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers questionnaires Sprinto sends to vendors and AI-assisted review of vendor due diligence. That is outbound vendor-risk assessment, which is adjacent to but different from AI drafting answers to inbound customer questionnaires from your own controls and knowledge base. Nothing in the pack documents AI-generated answer drafts for a sales team to review, so the axis applies but is unevidenced.",
+    "rationale": "Sprinto's questionnaire evidence covers the opposite workflow. It sends security questionnaires to vendors and supports AI-assisted review of vendor due diligence. Nothing shows AI drafting answers to inbound customer questionnaires from the company's own controls and knowledge base, and the vendor-side features are adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a sales lead, security questionnaires get answered by AI from my actual controls and knowledge base — drafts I review, not blank spreadsheets I fill",
       "citations": []
@@ -4342,31 +4405,61 @@
   {
     "productId": "sprinto",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Sprinto's docs do have an API reference section, with page titles like 'Integration Monitoring' and 'Framework Health & Vendor Data APIs'. But no evidence shows that reference is interactive or offers runnable or try-it examples, and the OpenAPI/Swagger probe paths all returned 404. A static API reference is adjacent to this story and does not deliver an interactive, runnable explorer.",
-    "evidenceIds": [],
+    "rationale": "Sprinto documents an API Playground, a browser-based GraphQL explorer. It lets users explore the API schema and run queries and mutations against the live API in real time, backed by GraphQL introspection, which covers the core of an interactive, runnable API reference. Access requires administrator privileges and a valid API key, requests run against the live tenant rather than a sandbox, and the explorer returned 403 to the automated probe, so runnability rests on vendor docs alone. missing for 10: pre-built runnable example snippets in the reference, sandbox/non-production execution, downloadable OpenAPI/Postman spec, independent hands-on corroboration.",
+    "evidenceIds": [
+      "sprinto-playground-20261106",
+      "sprinto-introspection-20261106",
+      "sprinto-probe-3"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sprinto-playground-20261106",
+          "quote": "The Sprinto API Playground is a browser-based GraphQL explorer that lets you interact with the Sprinto Developer API without installing any client libraries or GraphQL tools"
+        },
+        {
+          "evidenceId": "sprinto-playground-20261106",
+          "quote": "You can use the playground to explore the API schema, test queries and mutations, and validate responses in real time."
+        },
+        {
+          "evidenceId": "sprinto-introspection-20261106",
+          "quote": "Introspection allows the API to describe its schema, including available queries, mutations, and response types."
+        }
+      ]
     }
   },
   {
     "productId": "sprinto",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Sprinto is a SaaS compliance platform with API reference pages (Integration Monitoring, Framework Health & Vendor Data APIs), so a downloadable OpenAPI-style spec is a fair question to ask. The evidence shows no such spec: probes of the common OpenAPI and Swagger paths all returned 404. The llms.txt and markdown docs exist but are documentation indexes, not machine-readable API specs.",
-    "evidenceIds": [],
+    "rationale": "Sprinto's Developer API is GraphQL and supports introspection, so its schema can be retrieved in machine-readable form. However, that requires an API key, and no downloadable OpenAPI or Postman artifact exists: the common OpenAPI paths return 404, and OpenAPI fragments appear only embedded in a docs page for the custom-integration sync API. Missing for 10: a public, downloadable spec file (OpenAPI or GraphQL SDL), spec coverage for the full API surface, and independent corroboration that introspection works.",
+    "evidenceIds": [
+      "sprinto-introspection-20261106",
+      "sprinto-playground-20261106",
+      "sprinto-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sprinto-introspection-20261106",
+          "quote": "Introspection allows the API to describe its schema, including available queries, mutations, and response types."
+        },
+        {
+          "evidenceId": "sprinto-playground-20261106",
+          "quote": "You can use the playground to explore the API schema, test queries and mutations, and validate responses in real time."
+        }
+      ]
     }
   },
   {
@@ -4375,13 +4468,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto is a SaaS compliance platform with APIs, webhooks and ingestion workflows, so a sandbox or test environment is a fair question for it. The evidence pack never mentions a sandbox, test tenant, or dry-run mode that keeps testing away from production data. Webhooks, the AI Editor, and AI evidence validation are adjacent features and earn no credit here.",
-    "evidenceIds": [],
+    "rationale": "Sprinto is a compliance SaaS with a developer API, so a sandbox or test-tenant environment is a fair question, but nothing in the evidence documents one. The closest feature, the API Playground, is a query-testing tool whose requests run against the live tenant. That is the opposite of isolation from production data.",
+    "evidenceIds": [
+      "sprinto-playground-20261106"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sprinto-playground-20261106",
+          "quote": "You can use the playground to explore the API schema, test queries and mutations, and validate responses in real time."
+        }
+      ]
     }
   },
   {
@@ -4390,7 +4490,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto is a SaaS platform with an API reference (custom integration push APIs, Framework Health & Vendor Data APIs), so the axis applies. However, nothing in the evidence documents API versioning or a deprecation policy, and the OpenAPI spec probes all returned 404. An API reference existing does not show versioned APIs with a documented deprecation policy.",
+    "rationale": "Sprinto documents a GraphQL Developer API with introspection, an API playground, and push APIs, so this axis applies. However, nothing in the evidence describes API versioning, version identifiers, or a deprecation or sunset policy. Having an API does not show that it is versioned or governed by a deprecation policy.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4405,12 +4505,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sprinto documents live dashboards that show compliance posture across multiple frameworks (SOC 2, ISO 27001, etc.). A 'Framework Health' API page suggests per-framework health tracking, but the evidence never describes a readiness view that breaks out passing controls, open gaps and remaining work, or a single readiness percentage. Missing for 10: documented per-framework readiness percentage, breakdown of passing vs failing controls, remaining-work view, and independent or hands-on corroboration.",
+    "rationale": "Sprinto's own docs describe live dashboards of compliance posture across multiple frameworks, and list a Framework Health API page, so a readiness view plausibly exists. However, the pack shows no per-framework readiness percentage and no breakdown of passing versus failing controls. missing for 10: documented per-framework readiness percentage, passing-control and open-gap counts in the view, a 'what's left' breakdown, independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-22",
       "sprinto-docs-23",
-      "sprinto-docs-17",
-      "sprinto-docs-25"
+      "sprinto-docs-25",
+      "sprinto-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -4426,12 +4526,12 @@
           "quote": "One platform, multiple frameworks: Manage SOC 2, ISO 27001, GDPR, HIPAA, PCI-DSS, and others in one place."
         },
         {
-          "evidenceId": "sprinto-docs-17",
-          "quote": "Framework Health & Vendor Data APIs"
-        },
-        {
           "evidenceId": "sprinto-docs-25",
           "quote": "Audit readiness by design: Maintain readiness with continuous monitoring, alerts, and evidence collection."
+        },
+        {
+          "evidenceId": "sprinto-docs-17",
+          "quote": "Framework Health & Vendor Data APIs | Sprinto Docs"
         }
       ]
     }
@@ -4441,11 +4541,12 @@
     "storyId": "auditor-access",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Sprinto's own docs claim collaborative tooling that lets you 'work cross-functionally with your team and auditor in-platform', and there is an audits section on selecting an audit partner, so auditor in-platform collaboration is a documented first-party capability. The pack does not describe a scoped, read-only auditor role or what auditors can see. missing for 10: documented scoped auditor role/permissions, auditor view of controls and evidence, evidence-request/review workflow detail replacing email, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Sprinto's own docs say teams can work with their auditor in-platform, and they reference audit submission and audit-partner selection. That supports the core idea of the auditor collaborating inside the product rather than over email. However, nothing documents a dedicated, permission-scoped auditor view of controls and evidence, and the support rests on a single marketing-level line. Missing for 10: documented auditor role/scoped access permissions, auditor-facing view of controls and evidence, an auditor commenting/request workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-24",
       "sprinto-docs-5",
+      "sprinto-docs-28",
       "sprinto-docs-11"
     ],
     "support": {
@@ -4458,8 +4559,8 @@
           "quote": "Collaborative tooling: Assign tasks, set deadlines, and work cross-functionally with your team and auditor in-platform."
         },
         {
-          "evidenceId": "sprinto-docs-11",
-          "quote": "Selecting an Audit Partner | Sprinto Docs"
+          "evidenceId": "sprinto-docs-28",
+          "quote": "Use Sprinto AI to automatically validate your uploaded evidence for relevance, scope, and timeliness before audit submission."
         }
       ]
     }
@@ -4470,10 +4571,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sprinto has a documented in-product audits action titled 'Selecting an Audit Partner', and its docs describe working with your auditor in-platform. This suggests founders can choose an auditor through the vendor, but the pack contains only the page title, with no detail on the network, vetting or booking. missing for 10: evidence of a vetted auditor network or in-house audit arm, booking flow details, published audit timeline expectations, independent corroboration.",
+    "rationale": "Sprinto has its own docs page titled \"Selecting an Audit Partner\" under its Audits section, and it lets users collaborate with their auditor in-platform. That points to a first-party way to pick an auditor through the product, but the pack gives only the page title, with no detail on the network or booking flow. missing for 10: evidence of a vetted auditor network or in-house audit arm, a documented booking flow, published audit timeline expectations, independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-11",
-      "sprinto-docs-5"
+      "sprinto-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -4482,10 +4583,10 @@
       "citations": [
         {
           "evidenceId": "sprinto-docs-11",
-          "quote": "Selecting an Audit Partner | Sprinto Docs"
+          "quote": "Selecting an Audit Partner"
         },
         {
-          "evidenceId": "sprinto-docs-5",
+          "evidenceId": "sprinto-docs-24",
           "quote": "work cross-functionally with your team and auditor in-platform"
         }
       ]
@@ -4497,7 +4598,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sprinto's own docs say it integrates with the cloud stack, continuously monitors systems, and collects evidence, and integrations such as FreeAgent pull access data automatically. The evidence-gap feature, however, analyses uploaded evidence and flags 'irrelevant screenshots', which suggests manual artifacts still play a role. Missing for 10: documented collection schedule or frequency, description of timestamped machine-gathered artifacts, explicit replacement of screenshots and CSV exports, independent or hands-on corroboration.",
+    "rationale": "Sprinto's docs say it integrates with the cloud stack, continuously monitors systems, and collects evidence, and integrations such as FreeAgent run automated access and offboarding checks. These are high-level marketing statements, though, and the AI gap-analysis feature still validates uploaded screenshots, so manual artifacts have not clearly been replaced. Missing for 10: documented collection schedules or cadence, a description of timestamped machine-gathered evidence artifacts, detail on which connected systems produce automated evidence, and independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-25",
       "sprinto-docs-65",
@@ -4512,15 +4613,15 @@
       "citations": [
         {
           "evidenceId": "sprinto-docs-25",
-          "quote": "Maintain readiness with continuous monitoring, alerts, and evidence collection."
+          "quote": "Audit readiness by design: Maintain readiness with continuous monitoring, alerts, and evidence collection."
         },
         {
           "evidenceId": "sprinto-docs-65",
-          "quote": "integrating with your existing cloud stack, continuously monitoring your systems, assigning responsibilities, and generating audit-ready reports."
+          "quote": "Sprinto simplifies and automates the path to compliance by integrating with your existing cloud stack, continuously monitoring your systems, assigning responsibilities, and generating audit-ready reports."
         },
         {
           "evidenceId": "sprinto-docs-21",
-          "quote": "Automate 80% of manual effort with pre-mapped controls, integrations, and workflows."
+          "quote": "Fast-track audits: Automate 80% of manual effort with pre-mapped controls, integrations, and workflows."
         },
         {
           "evidenceId": "sprinto-docs-67",
@@ -4535,7 +4636,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a compliance SaaS platform, so the axis applies. However, nothing in the evidence documents a bulk-action capability, such as bulk-assigning, bulk-updating or bulk-approving many controls, tasks, vendors or access-review items at once. The cited features (task assignment, AI system management, findings, webhooks for ingestion) are all per-item or adjacent workflows, not bulk operations.",
+    "rationale": "Bulk operations are a fair question for a compliance-automation platform, but nothing in the evidence documents bulk actions such as multi-select edits, batch assignment or bulk updates across many items. The GraphQL Developer API with mutations and the inbound ingestion webhooks are developer building blocks, not a documented bulk-operation capability, and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4550,11 +4651,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sprinto documents user-defined ingestion workflows, which can be built and edited with natural-language prompts in the AI Editor, and incoming webhooks that receive external events and trigger those workflows. That is a real, product-native event-to-action mechanism, but it is scoped to data ingestion rather than a general rule engine. Missing for 10: general-purpose event-condition-action rules beyond ingestion, documentation of the available rule conditions and action types (e.g., auto-creating tickets or tasks on events), and independent or hands-on corroboration.",
+    "rationale": "Sprinto documents user-built ingestion workflows, which can be created and edited with natural-language prompts in its AI Editor. Webhooks receive external events and trigger those workflows, and admins can configure AI risk auto-scoring with thresholds. The event-to-action automation shown is limited to data ingestion and risk scoring, not a general rule engine. Missing for 10: a general-purpose event/condition/action rule builder across modules, documented action types beyond ingestion, and hands-on or independent corroboration.",
     "evidenceIds": [
       "sprinto-docs-26",
       "sprinto-docs-48",
-      "sprinto-docs-59"
+      "sprinto-docs-59",
+      "sprinto-docs-64"
     ],
     "support": {
       "relation": "direct",
@@ -4567,11 +4669,15 @@
         },
         {
           "evidenceId": "sprinto-docs-59",
-          "quote": "Trigger ingestion workflows, Process external events"
+          "quote": "You can use webhooks to: Receive incoming payloads, Trigger ingestion workflows, Process external events"
         },
         {
           "evidenceId": "sprinto-docs-48",
           "quote": "Each webhook generates a unique endpoint URL that receives incoming requests from external services."
+        },
+        {
+          "evidenceId": "sprinto-docs-64",
+          "quote": "You can configure: AI risk auto-scoring, Risk thresholds and scoring levels"
         }
       ]
     }
@@ -4582,7 +4688,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto documents automated workflows, ingestion workflows built with an AI Editor, webhook-triggered ingestion, and continuous monitoring. None of this evidence shows a user-configurable recurring schedule (cron, cadence or interval) for jobs or workflows. Webhook triggers are event-driven one-off actions, and continuous monitoring is a built-in platform behavior rather than user-scheduled recurring jobs, so neither counts toward this story.",
+    "rationale": "The evidence describes continuous monitoring, webhook-triggered ingestion workflows, AI-edited workflows and task deadlines. None of it documents a user-configurable recurring schedule (cron, interval or repeat cadence) for jobs or workflows. Event-triggered webhooks and one-off due dates are not recurring scheduling, and vendor-run continuous monitoring is an adjacent feature, not user scheduling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4597,7 +4703,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto documents automated workflows, and its AI Editor can create and modify ingestion workflows from natural-language prompts. Nothing in the evidence shows version history, review or approval of changes, or rollback for those automations. Versioning automations is a fair question for a compliance automation platform, so the axis applies and the absence of evidence is 'none'.",
+    "rationale": "Sprinto documents automated workflows and an AI Editor that creates and modifies ingestion workflows from natural language prompts. Nothing in the evidence shows version history, change review or approval, or rollback for those automations. Editing a workflow is a related but different capability and earns no credit, so the axis applies but is unsupported.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4610,14 +4716,15 @@
     "productId": "sprinto",
     "storyId": "byo-integration-api",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Sprinto documents inbound webhooks: each one generates a unique endpoint URL that external systems can call to push data in and trigger ingestion workflows. Its API reference also has a 'custom-integration-push-apis' section with an Integration Monitoring page, so a developer-facing push path for uncovered systems exists. However, the pack shows only that page's title, says nothing about payload schemas for evidence or test results, and the OpenAPI probe returned 404 on every candidate path. Missing for 10: documented push-API endpoints and schemas for evidence and test results, auth details, a published OpenAPI spec, and independent or hands-on corroboration of building a custom integration.",
+    "rationale": "Sprinto documents a GraphQL Developer API with introspection, a mutation-capable API playground, a 'Custom Integration Push APIs' reference section, and ingestion webhooks that let external systems send data directly into Sprinto. Together these give developers a documented way to push data from systems the catalog doesn't cover. However, the evidence never explicitly shows pushing evidence artifacts or control test results, and no downloadable OpenAPI or Postman spec exists (the probe returned 404s). missing for 10: explicit documentation of pushing evidence/test results into controls, payload schema examples for custom-integration push, downloadable API spec, independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-16",
       "sprinto-docs-48",
-      "sprinto-docs-49",
-      "sprinto-docs-27"
+      "sprinto-docs-59",
+      "sprinto-introspection-20261106",
+      "sprinto-playground-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4629,8 +4736,16 @@
           "quote": "Webhooks allow external systems to send data directly into Sprinto. Each webhook generates a unique endpoint URL that receives incoming requests from external services."
         },
         {
-          "evidenceId": "sprinto-docs-49",
-          "quote": "Receive incoming payloads * Trigger ingestion workflows * Process external events"
+          "evidenceId": "sprinto-docs-59",
+          "quote": "Receive incoming payloads, Trigger ingestion workflows, Process external events"
+        },
+        {
+          "evidenceId": "sprinto-introspection-20261106",
+          "quote": "The Sprinto Developer API is built using GraphQL and supports **introspection**."
+        },
+        {
+          "evidenceId": "sprinto-playground-20261106",
+          "quote": "You can use the playground to explore the API schema, test queries and mutations, and validate responses in real time."
         },
         {
           "evidenceId": "sprinto-docs-16",
@@ -4645,10 +4760,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sprinto's own docs say it integrates with the cloud stack and continuously monitors connected systems, with alerts and live dashboards. An integration page shows automated checks, such as detecting whether a user with access has offboarded. However, the evidence is largely quickstart-level summary claims plus page titles, with no detail on how the tests run or how often. missing for 10: documented check frequency or latency showing failures surface within hours, detail on automated control tests and how failures are flagged and alerted, independent or hands-on corroboration.",
+    "rationale": "Sprinto's own docs say it integrates with the cloud stack, continuously monitors those systems, and provides alerts, real-time monitoring and live posture dashboards. Integration-level checks are only lightly evidenced (e.g., FreeAgent offboarding and role checks, and page titles for access-check and continuous risk monitoring). The evidence is mostly high-level quickstart claims with no detail on test cadence or how fast failures surface. Missing for 10: documented test frequency or latency showing failures surface within hours, detail on the automated control tests and their failure alerting, independent or hands-on corroboration.",
     "evidenceIds": [
-      "sprinto-docs-65",
       "sprinto-docs-25",
+      "sprinto-docs-65",
       "sprinto-docs-18",
       "sprinto-docs-22",
       "sprinto-docs-67",
@@ -4661,16 +4776,16 @@
       "subject": "As a security engineer, automated tests run continuously against my connected systems — failing controls surface within hours, not at the annual audit",
       "citations": [
         {
-          "evidenceId": "sprinto-docs-65",
-          "quote": "Sprinto simplifies and automates the path to compliance by integrating with your existing cloud stack, continuously monitoring your systems, assigning responsibilities, and generating audit-ready reports."
-        },
-        {
           "evidenceId": "sprinto-docs-25",
           "quote": "Audit readiness by design: Maintain readiness with continuous monitoring, alerts, and evidence collection."
         },
         {
+          "evidenceId": "sprinto-docs-65",
+          "quote": "Sprinto simplifies and automates the path to compliance by integrating with your existing cloud stack, continuously monitoring your systems, assigning responsibilities, and generating audit-ready reports."
+        },
+        {
           "evidenceId": "sprinto-docs-18",
-          "quote": "Sprinto enables businesses to streamline compliance operations effortlessly with automated workflows, real-time monitoring, and seamless integrations across security frameworks."
+          "quote": "automated workflows, real-time monitoring, and seamless integrations across security frameworks"
         },
         {
           "evidenceId": "sprinto-docs-67",
@@ -4682,16 +4797,33 @@
   {
     "productId": "sprinto",
     "storyId": "cross-framework-mapping",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Sprinto manages several frameworks (SOC 2, ISO 27001, GDPR, HIPAA, PCI-DSS) in one place and mentions \"pre-mapped controls.\" It never documents controls or evidence being cross-mapped between frameworks, SOC 2 work counting automatically toward ISO 27001 or HIPAA, or any view of framework overlap. Managing multiple frameworks side by side is an adjacent capability, not the cross-framework mapping this story asks for.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Sprinto's docs mention pre-mapped controls and managing SOC 2, ISO 27001, HIPAA and other frameworks in one platform, which loosely suggests shared control mapping. Nothing states that SOC 2 work automatically counts toward other frameworks or that the overlap is shown. missing for 10: explicit documentation of cross-framework control/evidence mapping, automatic reuse of SOC 2 work toward ISO 27001 and HIPAA, an overlap view, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "sprinto-docs-21",
+      "sprinto-docs-23",
+      "sprinto-docs-18"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a security engineer, controls and evidence map ACROSS frameworks — work done for SOC 2 counts toward ISO 27001 and HIPAA automatically, with the overlap shown",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sprinto-docs-21",
+          "quote": "Automate 80% of manual effort with pre-mapped controls, integrations, and workflows."
+        },
+        {
+          "evidenceId": "sprinto-docs-23",
+          "quote": "One platform, multiple frameworks: Manage SOC 2, ISO 27001, GDPR, HIPAA, PCI-DSS, and others in one place."
+        },
+        {
+          "evidenceId": "sprinto-docs-18",
+          "quote": "seamless integrations across security frameworks"
+        }
+      ]
     }
   },
   {
@@ -4700,7 +4832,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents built-in, pre-mapped controls and support for standard frameworks (SOC 2, ISO 27001, GDPR, HIPAA, PCI-DSS), but nothing shows users creating custom frameworks or custom controls with their own tests and evidence requirements. Custom fields in AI Systems configuration and webhook/ingestion workflows are adjacent features and earn no credit, so the axis applies but is unevidenced.",
+    "rationale": "The evidence shows only built-in, pre-mapped controls and a fixed list of supported frameworks (SOC 2, ISO 27001, GDPR, HIPAA, PCI-DSS). Nothing documents creating custom frameworks or custom controls with user-defined tests or evidence requirements. Custom fields in AI-system configuration and ingestion webhooks are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4715,7 +4847,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Per-employee workstation compliance is a fair question for a compliance automation platform like Sprinto, so the axis applies. However, the pack documents no endpoint agent and no device checks for disk encryption, screen lock, or password managers. The only related item is a bare 'JumpCloud Integration' page title, which does not say that device posture data is collected or tracked per employee. The general 'continuous monitoring' claims are not specific to workstations.",
+    "rationale": "The evidence pack has no documentation of per-employee workstation checks such as disk encryption, screen lock or password manager, and no endpoint agent is mentioned. The only possibly related item is a bare 'JumpCloud Integration' doc title, which does not say that device posture is tracked. Generic 'continuous monitoring' claims are not specific to workstations, so the axis applies but has no supporting evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4730,7 +4862,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sprinto's own docs claim continuous monitoring with alerts, which is the core of the story. Nothing documents where those alerts are delivered or what they contain. The ClickUp and Jira ticketing integrations are documented as Change Management connections, not as a channel for sending control-failure alerts. The webhooks receive inbound data only, and the status-page email covers Sprinto's own incidents, so neither counts. Missing for 10: documented Slack delivery of control-failure or drift alerts, documented email alerts for failing controls, automatic ticket creation for findings, alert content with remediation context, and independent corroboration.",
+    "rationale": "Sprinto's own docs claim continuous monitoring with alerts, so alerting on monitored compliance posture is a first-party capability, but the evidence is a single marketing-level line. The ClickUp and Jira integrations appear to be ticketing systems connected for change-management checks, not channels for routing control-failure alerts. The webhooks are inbound-only, and the status-page emails cover Sprinto's own incidents, so neither counts. missing for 10: documented delivery of control-failure/drift alerts to Slack, email alerts for failing controls, auto-creation of tickets from findings, evidence of remediation context in alerts, independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-25",
       "sprinto-docs-3",
@@ -4758,12 +4890,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Sprinto's own quickstart docs state that SOC 2, ISO 27001, GDPR, HIPAA, PCI-DSS and other frameworks are managed in one place, which covers every framework named in the story within a single platform. The support is a headline-level claim rather than in-depth per-framework documentation. Missing for 10: detailed docs on HIPAA and PCI DSS control mappings, evidence of cross-framework control reuse, and independent or hands-on corroboration of multi-framework use.",
+    "rationale": "Sprinto's own quickstart docs say SOC 2, ISO 27001, GDPR, HIPAA and PCI-DSS can all be managed in one platform, which matches the story exactly. The support is a single overview-level claim repeated across pages, with no framework-specific documentation. Missing for 10: in-depth docs on HIPAA and PCI DSS control mappings or workflows, cross-framework control reuse details, independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-23",
       "sprinto-docs-4",
-      "sprinto-docs-66",
-      "sprinto-docs-17"
+      "sprinto-docs-38"
     ],
     "support": {
       "relation": "direct",
@@ -4775,8 +4906,8 @@
           "quote": "One platform, multiple frameworks: Manage SOC 2, ISO 27001, GDPR, HIPAA, PCI-DSS, and others in one place."
         },
         {
-          "evidenceId": "sprinto-docs-66",
-          "quote": "help cloud-hosted companies meet and maintain compliance across standards like SOC 2, ISO 27001, GDPR, and more"
+          "evidenceId": "sprinto-docs-38",
+          "quote": "meet and maintain compliance across standards like SOC 2, ISO 27001, GDPR, and more"
         }
       ]
     }
@@ -4787,14 +4918,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sprinto documents an integrations catalog (docs under /integrations/overview), with step-by-step pages for ticketing (Jira, ClickUp), identity (JumpCloud), and FreeAgent for offboarding and role checks, and it claims to integrate with your existing cloud stack. The evidence does not show coverage of every category in the story, and nothing documents read-only scopes. Missing for 10: documented read-only or least-privilege scopes, specific cloud-provider (AWS/GCP/Azure), code-hosting, MDM and HRIS integrations, and independent or hands-on corroboration.",
+    "rationale": "Sprinto documents an integrations catalog under /integrations/overview with per-integration setup guides. These cover ticketing (Jira, ClickUp), identity/directory (JumpCloud) and FreeAgent, which is used for offboarding and role checks, and the docs claim integration with the customer's cloud stack. The evidence does not show the full breadth of categories the story names, and nothing addresses read-only scopes. Missing for 10: documented read-only/least-privilege scopes, evidence of specific cloud-provider, code-hosting, MDM and HR integrations, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "sprinto-docs-65",
+      "sprinto-docs-36",
+      "sprinto-docs-58",
       "sprinto-docs-13",
       "sprinto-docs-14",
-      "sprinto-docs-36",
-      "sprinto-docs-50",
-      "sprinto-docs-67",
-      "sprinto-docs-65"
+      "sprinto-docs-67"
     ],
     "support": {
       "relation": "direct",
@@ -4802,12 +4933,16 @@
       "subject": "As an IT admin, I can connect my real stack — cloud providers, identity, HR, code hosting, MDM, ticketing — through a documented integrations catalog with read-only scopes",
       "citations": [
         {
-          "evidenceId": "sprinto-docs-36",
-          "quote": "Sprinto integrates with ClickUp ticketing system."
+          "evidenceId": "sprinto-docs-65",
+          "quote": "Sprinto simplifies and automates the path to compliance by integrating with your existing cloud stack, continuously monitoring your systems"
         },
         {
-          "evidenceId": "sprinto-docs-13",
-          "quote": "Jira Integration | Sprinto Docs"
+          "evidenceId": "sprinto-docs-36",
+          "quote": "Sprinto integrates with ClickUp ticketing system. This article provides a step-by-step guide to setting up the integration between Sprinto and ClickUp ticketing system."
+        },
+        {
+          "evidenceId": "sprinto-docs-58",
+          "quote": "Search for ClickUp under Ticketing Softwares and click on connect."
         },
         {
           "evidenceId": "sprinto-docs-14",
@@ -4816,10 +4951,6 @@
         {
           "evidenceId": "sprinto-docs-67",
           "quote": "It helps Sprinto to map and check if the user with access offboards the organization."
-        },
-        {
-          "evidenceId": "sprinto-docs-65",
-          "quote": "integrating with your existing cloud stack"
         }
       ]
     }
@@ -4830,13 +4961,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sprinto's own docs list ISO 27001 as a supported framework alongside SOC 2 and others. They also describe pre-mapped controls, audit-ready reports and in-platform auditor collaboration, so the core framework support exists. Nothing in the evidence shows ISO 27001 is first-class rather than just mapped, and the only detailed launchpad flow documented is for SOC 2. missing for 10: current Annex A (2022) control set, Statement of Applicability generation, ISO-specific certification-audit artifacts (e.g. Stage 1/Stage 2 support), and independent or hands-on corroboration of ISO 27001 depth.",
+    "rationale": "Sprinto's own docs list ISO 27001 among the frameworks it manages, alongside pre-mapped controls and audit-ready reports. Nothing in the pack shows ISO 27001 treated as first-class beyond being named and mapped, which is exactly what the story asks to go beyond. Missing for 10: evidence of the current (2022) Annex A control set, Statement of Applicability generation or management, ISO-specific certification-audit artifacts (e.g. Stage 1/Stage 2 support, ISMS scope documents), and any independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-23",
       "sprinto-docs-38",
       "sprinto-docs-21",
-      "sprinto-docs-65",
-      "sprinto-docs-24"
+      "sprinto-docs-65"
     ],
     "support": {
       "relation": "direct",
@@ -4857,11 +4987,7 @@
         },
         {
           "evidenceId": "sprinto-docs-65",
-          "quote": "generating audit-ready reports."
-        },
-        {
-          "evidenceId": "sprinto-docs-24",
-          "quote": "work cross-functionally with your team and auditor in-platform."
+          "quote": "generating audit-ready reports"
         }
       ]
     }
@@ -4872,7 +4998,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sprinto documents in-platform task assignment with deadlines, and AI checks of uploaded (manual) evidence for timeliness that flag outdated timestamps before audit. That gives glancing support for ownership, due dates and staleness on manual artifacts. The owner and due-date tracking that is documented in detail belongs to AI-system findings, not general manual evidence. Missing for 10: per-artifact owner assignment for manual evidence, recurring renewal reminders, expiry-date tracking on every manual artifact, and any hands-on corroboration.",
+    "rationale": "Sprinto documents in-platform task assignment with deadlines. It also documents AI validation of uploaded evidence for timeliness, which flags outdated timestamps before an audit. Together these give manual evidence a thin owner/due-date and staleness check. However, nothing ties owners and due dates specifically to each manual artifact, and there are no recurring renewal reminders or expiry dates. missing for 10: per-artifact owner and due-date assignment for manual evidence, recurring renewal reminders, expiry-date tracking on evidence, independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-24",
       "sprinto-docs-28",
@@ -4903,12 +5029,14 @@
     "productId": "sprinto",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Sprinto documents an API reference, but the only visible sections are custom-integration push APIs (Integration Monitoring) and Framework Health & Vendor Data APIs. Nothing shows that UI workflows such as access reviews, AI-system governance, findings and tasks, or questionnaires can be done through the API, and probes for an OpenAPI spec all returned 404. Webhooks are inbound ingestion only, so they add nothing toward API parity. Missing for 10: evidence of API coverage matching the UI, a published OpenAPI spec, write endpoints for core workflows, and independent corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Sprinto documents its own GraphQL Developer API with queries, mutations and schema introspection, plus an admin API playground and named API areas (Framework Health & Vendor Data, custom-integration push APIs). Nothing in the evidence shows that the API covers everything the UI does. Most documented workflows, such as AI systems, findings, questionnaires and access reviews, appear only as dashboard actions. Missing for 10: any statement or mapping of UI-to-API parity, documented API coverage for core UI workflows (policies, risks, audits, tasks, AI governance), a downloadable schema artifact, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "sprinto-docs-16",
+      "sprinto-playground-20261106",
+      "sprinto-introspection-20261106",
       "sprinto-docs-17",
+      "sprinto-docs-16",
       "sprinto-probe-3"
     ],
     "support": {
@@ -4917,12 +5045,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "sprinto-docs-17",
-          "quote": "Framework Health & Vendor Data APIs | Sprinto Docs"
+          "evidenceId": "sprinto-introspection-20261106",
+          "quote": "Introspection allows the API to describe its schema, including available queries, mutations, and response types."
         },
         {
-          "evidenceId": "sprinto-docs-16",
-          "quote": "Integration Monitoring | Sprinto Docs"
+          "evidenceId": "sprinto-playground-20261106",
+          "quote": "You can use the playground to explore the API schema, test queries and mutations, and validate responses in real time."
+        },
+        {
+          "evidenceId": "sprinto-docs-17",
+          "quote": "Framework Health & Vendor Data APIs | Sprinto Docs"
         }
       ]
     }
@@ -4933,7 +5065,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto is a SaaS compliance platform, so full data export and portability is a fair question to ask of it. The evidence pack contains no documented bulk export, open-format download, or offboarding/data-portability capability. The only nearby items are a data-API page title, audit-ready reports and inbound webhooks, which are adjacent features and earn no credit. Community posts about contract termination concern billing terms, not data export, so they do not bear on this story.",
+    "rationale": "Exporting data is a fair question for a compliance SaaS, so the axis applies. However, the evidence pack documents no full-account export or open-format export, and nothing describing an offboarding or data-portability flow. The GraphQL Developer API and its introspection are developer building blocks someone could use to build an export, and 'audit-ready reports' is an adjacent reporting feature; neither counts as a documented export-and-leave capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4948,7 +5080,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto is a proprietary SaaS compliance platform. Whether a software product's source is available under an open license is a fair question for this kind of product, so the axis applies. The only GitHub evidence is the goSprinto/compliance-skills repo of add-on agent skills. It is not the product's own source, and no license is stated, so there is no evidence that Sprinto's source can be read under an open license.",
+    "rationale": "Whether source is available under an open license is a fair question for any software product, so the axis applies. The evidence shows Sprinto as a hosted proprietary compliance SaaS. The only GitHub item is a separate agent-skills repo (compliance-skills) with no stated license, not the product's own source, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4963,7 +5095,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a compliance-automation platform, so the axis applies. The evidence only describes Sprinto as a hosted platform for cloud-hosted companies and documents no self-hosted or on-prem deployment. The open-source compliance-skills repo is a set of agent skills, not the core product, so it earns no credit here.",
+    "rationale": "Self-hosting is a fair question for a compliance-automation platform, so the axis applies. The evidence pack contains no documented self-hosted, on-prem, or downloadable deployment option. It describes Sprinto only as a cloud platform running on vendor-hosted regional apps (e.g. eu.sprinto.com), and the open-source compliance-skills repo is a set of agent skills, not the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4978,11 +5110,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sprinto's own integration docs say it uses an integration to map users and check whether a user with access has offboarded, which covers part of the leaver-access element of the story. The 'Monitor Access Checks' and JumpCloud pages appear only as titles, with no supporting detail. missing for 10: HR-synced onboarding checklists, evidence of training-completion tracking for new hires, automated access-revocation proof across systems, a documented end-to-end offboarding workflow, independent or hands-on corroboration.",
+    "rationale": "Sprinto's own integration docs say it maps users with access and checks whether they have offboarded the organization, which is a first-party offboarding-access check. Nothing in the evidence shows HR-synced onboarding/offboarding checklists or proof that new hires completed training. Missing for 10: HR-system sync driving the joiner/leaver lifecycle, onboarding checklists, training-completion tracking for new hires, documented access-revocation evidence for leavers, independent corroboration.",
     "evidenceIds": [
       "sprinto-docs-67",
-      "sprinto-docs-37",
-      "sprinto-docs-7"
+      "sprinto-docs-37"
     ],
     "support": {
       "relation": "direct",
@@ -5002,7 +5133,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only policy-related evidence is a passing mention that the SOC 2 Launchpad guide helps you \"action policies\". Nothing in the pack documents a lawyer-grade template library, a policy editor, versioning, approval workflows, or per-employee acceptance tracking. The GDPR document pack in the compliance-skills repo covers a different capability, generating documents from a code scan, and does not transfer to this story.",
+    "rationale": "The only policy-related evidence is a passing mention that the SOC 2 Launchpad lets you 'action policies'. Nothing in the pack documents a lawyer-grade policy template library, a policy editor, versioning, approval workflows, or per-employee acceptance tracking. The GitHub GDPR document pack is a code-scan skill that generates GDPR documents, which is a different capability from a policy management module, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5014,16 +5145,23 @@
   {
     "productId": "sprinto",
     "storyId": "privacy-data-residency",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Choosing a data storage region is a fair question for a SaaS compliance platform like Sprinto, but nothing in the evidence pack documents region selection or data residency controls. Its support for managing GDPR and other frameworks is about compliance workflows, not where Sprinto stores customer data, so it earns no credit.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only on-topic evidence is a passing note that Sprinto runs \"live regional apps\" such as eu.sprinto.com. That implies region-specific hosting (e.g. an EU instance), but nothing documents that a customer can choose or configure where their data is stored. missing for 10: documentation of a user-selectable data region or residency option at signup or in settings, a list of available regions, residency guarantees for stored data and backups, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "sprinto-playground-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sprinto-playground-20261106",
+          "quote": "The explorer is hosted on the live regional apps (e.g. https://eu.sprinto.com/dev-api/explorer)"
+        }
+      ]
     }
   },
   {
@@ -5032,7 +5170,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto is a SaaS platform with its own AI features (AI Editor, Sprinto AI evidence analysis), so a training opt-out is a fair question to ask. The evidence pack never documents a setting or policy that keeps customer data out of AI model training. Its AI governance and Shadow AI features help customers govern other AI systems, which is an adjacent capability and earns no credit here.",
+    "rationale": "Sprinto ships its own AI features (the AI Editor and Sprinto AI evidence analysis), so asking whether customer data can be excluded from model training is a fair question for this product. The pack contains no documented training opt-out, no data-usage policy for its AI, and no setting that keeps customer data out of model training. Its AI governance and Shadow AI modules govern other AI tools an organisation uses, and that is an adjacent feature, not a control over Sprinto's own use of your data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5047,7 +5185,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto is a compliance SaaS that holds customer data, so controlling retention and deletion is a fair question for it. However, nothing in the evidence documents user-facing retention settings, deletion controls, or data purge for data held in Sprinto. The GDPR gap analysis and document-pack skills audit the customer's own codebase, which is an adjacent feature rather than control over Sprinto's own data retention.",
+    "rationale": "Sprinto is a compliance SaaS platform that holds customer data, so controlling data retention and deletion is a fair question for it. The evidence pack documents no retention settings, deletion controls, or data-purge capability. GDPR gap analysis and generated document packs (DPA, ROPA, DPIA) are adjacent compliance artifacts, not product controls over data retention or deletion, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5062,7 +5200,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair question for a SaaS compliance platform and its developer skills, so the axis applies. Nothing in the evidence pack mentions telemetry, usage analytics, or any opt-out control for Sprinto's platform or its compliance-skills tooling. The PII-detection and GDPR features are about scanning customer codebases, not about Sprinto's own data collection.",
+    "rationale": "Opting out of telemetry and usage tracking is a fair question for a SaaS compliance platform and its distributed compliance-skills plugin, so the axis applies. However, nothing in the evidence pack documents a telemetry, analytics or usage-tracking opt-out setting for the platform, the API or the GitHub skills. With no evidence for an applicable capability, the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5077,7 +5215,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sprinto is a compliance automation platform, so a hosted public trust center is a fair axis to ask about. However, nothing in the evidence pack documents a public trust center, external sharing of control status or certifications, or click-through NDA gating. The 'live dashboards and reports' evidence describes internal compliance posture visibility, which is an adjacent feature and does not count toward this story.",
+    "rationale": "A hosted public trust center is a fair question for a compliance automation platform like Sprinto, so the axis applies. However, the evidence pack never mentions a trust center, a public security page, or click-through NDA document sharing. The 'live dashboards and reports' and 'audit-ready reports' in the evidence describe internal compliance posture views, not a customer-facing hosted trust portal.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5092,7 +5230,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers only outbound vendor due diligence: sending security questionnaires to vendors, creating them, and uploading questionnaire templates. Nothing documents importing inbound customer questionnaires (SIG, CAIQ, portals, spreadsheets) or exporting answers back in the customer's original format. Vendor-side questionnaire tooling is an adjacent feature and earns no credit for this sales-side story.",
+    "rationale": "The evidence covers only outbound vendor due diligence: Sprinto sends security questionnaires to vendors and lets admins upload questionnaire templates for that purpose. Nothing shows it importing customer-sent SIG, CAIQ, portal or spreadsheet questionnaires and exporting answers in the customer's original format. Vendor-assessment questionnaires are an adjacent feature, not this sales-side capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5107,13 +5245,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sprinto's own getting-started docs say users manage and action risks in the platform, and a 'Continuous Risk Monitoring' page exists. However, documented risk scoring with thresholds is shown only for the AI Systems module, not for a general risk register. Owner assignment and remediation tasks are likewise documented only for AI governance findings. missing for 10: evidence of a general risk register with scored risks, documented treatment plans, risk owners on register entries, periodic risk review cycles, explicit risk-to-control mapping, and independent or hands-on corroboration.",
+    "rationale": "Sprinto's docs say the platform includes enterprise risk management: the getting-started guide covers \"manage risks\", and the SOC 2 Launchpad has users \"action policies, risks, and evidence\". The AI-system risk scoring and vendor risk assessment features cover different scopes and are not credited here. missing for 10: documented risk scoring for the general risk register, treatment plans, risk owners, recurring review cycles, risk-to-control mapping, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-19",
-      "sprinto-docs-6",
-      "sprinto-docs-12",
-      "sprinto-docs-41",
-      "sprinto-docs-64"
+      "sprinto-docs-20",
+      "sprinto-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -5125,12 +5261,8 @@
           "quote": "configure governance, build a security programme, and manage risks for complete compliance readiness"
         },
         {
-          "evidenceId": "sprinto-docs-6",
-          "quote": "action policies, risks, and evidence"
-        },
-        {
-          "evidenceId": "sprinto-docs-41",
-          "quote": "Learn how to assess, score, and manage AI system risk in Sprinto using configurable AI risk factors and automated risk scoring workflows."
+          "evidenceId": "sprinto-docs-20",
+          "quote": "generate your blueprint, and action policies, risks, and evidence"
         }
       ]
     }
@@ -5141,7 +5273,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Security awareness training is a fair question for a compliance automation platform like Sprinto, but the evidence pack never documents built-in training content, assignment on hire, completion tracking, or training records used as audit evidence. Generic task assignment and a GDPR skill that generates a 'training' document are adjacent features, not this capability.",
+    "rationale": "Security awareness training is a fair axis for a compliance automation platform like Sprinto, but the evidence pack never documents a built-in training module, assignment on hire, completion tracking, or training records used as audit evidence. Generic task assignment, onboarding and offboarding checks, and a GitHub skill that generates a 'training' document are adjacent features, not the training capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5156,7 +5288,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Sprinto's own docs describe a SOC 2 Launchpad that generates a blueprint and lets you action policies, risks, and evidence. They also cite pre-mapped controls, continuous evidence collection, audit-partner selection, and AI validation of evidence before audit submission, so the core SOC 2 program is built in. The evidence never distinguishes Type I from Type II or names the Trust Services Criteria, and all of it is vendor-claimed. Missing for 10: explicit Type I and Type II audit support, a documented Trust Services Criteria control library, specifics on the built-in policy templates, independent or hands-on corroboration.",
+    "rationale": "Sprinto's docs describe a SOC 2 Launchpad that generates a blueprint and lets you action policies, risks, and evidence. They also cite pre-mapped controls, continuous evidence collection, audit-partner selection, and AI validation of uploaded evidence, so the core SOC 2 program is built in. However, the docs never distinguish Type I from Type II, never name the Trust Services Criteria, and give no detail on the policy templates or evidence-request depth. missing for 10: explicit Type I and Type II audit support, named Trust Services Criteria control mapping, detail on built-in required policy templates, independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-6",
       "sprinto-docs-21",
@@ -5164,7 +5296,7 @@
       "sprinto-docs-25",
       "sprinto-docs-11",
       "sprinto-docs-28",
-      "sprinto-docs-65"
+      "sprinto-docs-39"
     ],
     "support": {
       "relation": "direct",
@@ -5196,7 +5328,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A self-updating trust center is a fair axis for a compliance automation platform like Sprinto, but the evidence pack never mentions a trust center at all. The nearby evidence is only adjacent: internal continuous monitoring and live dashboards, vendor document requests, and a GitHub skill that pre-fills a sub-processor register from code. None of it shows a public trust center whose subprocessor lists, document renewals, or control status update automatically from the platform.",
+    "rationale": "Nothing in the evidence pack documents a Sprinto trust center, so there is no evidence that public-facing subprocessor lists, document renewals or control status sync from the platform. A trust center is a fair axis for a compliance automation platform. Continuous monitoring and live dashboards are internal posture features, and the GitHub skill's generated sub-processor register is a one-off document pack, not an auto-updating trust center, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5211,14 +5343,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sprinto documents a Vendors section in its data library with Vendor Risk Assessment and Send and Review Security Questionnaires pages, plus a Vendor Data API. Its AI Systems due-diligence workflows also cover reviewing AI vendor security posture and requesting vendor documents. However, the general vendor-module evidence is only page titles, so the depth of the inventory and the risk review is unproven. Missing for 10: documented vendor inventory fields, tracking of vendor data access, recurring review cadence or reassessment scheduling, detail on general (non-AI) vendor risk scoring, and independent or hands-on corroboration.",
+    "rationale": "Sprinto's docs include a Vendors section with pages titled 'Vendor Risk Assessment' and 'Send and Review Security Questionnaires', plus a Vendor Data API. This shows an in-platform vendor inventory and risk review exists, but the evidence is mostly page titles. The detailed security-posture review language comes from the AI-systems due-diligence workflow, which covers AI vendors rather than all third parties. Missing for 10: documented detail of the general vendor inventory fields, vendor data-access tracking, recurring review cadence or reminders, and independent or hands-on corroboration.",
     "evidenceIds": [
       "sprinto-docs-10",
       "sprinto-docs-9",
       "sprinto-docs-17",
       "sprinto-docs-34",
-      "sprinto-docs-43",
-      "sprinto-docs-40"
+      "sprinto-docs-55"
     ],
     "support": {
       "relation": "direct",
@@ -5238,7 +5369,7 @@
           "quote": "Review AI vendor security posture"
         },
         {
-          "evidenceId": "sprinto-docs-43",
+          "evidenceId": "sprinto-docs-55",
           "quote": "Request documents from vendors"
         }
       ]

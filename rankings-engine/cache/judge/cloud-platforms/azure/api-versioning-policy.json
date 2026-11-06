@@ -1,17 +1,39 @@
 {
-  "hash": "60531bb28ca3d4108ab1f56708abc5be7eaf8b0bff7974ec0a312cd5157af199",
+  "hash": "1306ab0d4150b7c9816765a3ff1ed1296ccf9709b729dd17189439cbb927bef3",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "API versioning and deprecation policy are a fair question for a cloud platform like Azure, so the axis applies. However, nothing in the evidence pack documents versioned APIs or a deprecation policy. The REST API docs cited cover only curl usage, client libraries and Entra registration, none of which addresses versioning or deprecation.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "high",
+    "rationale": "Azure REST APIs are explicitly versioned: every request requires an api-version query parameter, and the canonical spec repo publishes stable and preview specifications in date-named version folders. The Azure SDK/lifecycle policy explicitly covers REST APIs with 12 months' retirement notice, and the Modern Lifecycle Policy adds 30-day action notices, but these commitments apply at service/SDK level, exclude preview and free surfaces, and leave individual api-version retirements to per-service announcements. missing for 10: a uniform documented deprecation policy for individual api-versions, deprecation coverage for preview APIs, independent or hands-on corroboration of the policy in practice.",
+    "evidenceIds": [
+      "azure-rest-try-it-20261106",
+      "azure-rest-api-specs-20261106",
+      "azure-lifecycle-faq-20261106",
+      "azure-modern-lifecycle-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "azure-rest-try-it-20261106",
+          "quote": "The same pages document the api-version query-string convention every Azure REST request requires (e.g. resourcegroups?api-version=2021-04-01)."
+        },
+        {
+          "evidenceId": "azure-rest-api-specs-20261106",
+          "quote": "publishes downloadable per-service specification documents versioned in stable/ and preview/ folders named by api-version date"
+        },
+        {
+          "evidenceId": "azure-lifecycle-faq-20261106",
+          "quote": "The Microsoft Azure SDK policy covers Microsoft Azure SDK authoring tools, REST APIs, client libraries, command-line utilities, compute & storage emulators, and Azure Tools for Microsoft Visual Studio"
+        },
+        {
+          "evidenceId": "azure-modern-lifecycle-20261106",
+          "quote": "Microsoft will provide a minimum of 12 months' notification prior to ending support if no successor product or service is offered—excluding free services or preview releases"
+        }
+      ]
     },
     "productId": "azure",
     "storyId": "api-versioning-policy"
