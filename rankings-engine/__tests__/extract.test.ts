@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Evidence } from '@/lib/schemas'
-import { buildEvidence } from '@/rankings-engine/stages/extract'
+import { buildEvidence, stripNavLinkLines } from '@/rankings-engine/stages/extract'
 
 describe('buildEvidence', () => {
   const urls = { site: 'https://omarchy.org/', github: 'https://github.com/basecamp/omarchy' }
@@ -97,5 +97,26 @@ describe('buildEvidence', () => {
       expect(ids).toContain('omarchy-gh-1') // retained
       expect(ids).toContain('omarchy-gh-2') // new, continues after existing gh-1
     })
+  })
+})
+
+describe('stripNavLinkLines', () => {
+  it('drops pure link-list navigation lines and keeps prose, including prose with links', () => {
+    const page = [
+      '<!-- source: https://example.com/api/intro -->',
+      '*   [Create an invoice](/api/v3/invoices/#create-an-invoice)',
+      '    *   [Email an invoice](/api/v3/invoices/#email-an-invoice)',
+      '[Sign In](https://example.com/signin)',
+      'The Example API is built on REST principles.',
+      '- [API Reference](/api): full endpoint documentation.',
+      'Use [OAuth 2.0](/api/oauth) to authenticate every request.',
+    ].join('\n')
+    const kept = stripNavLinkLines(page)
+    expect(kept).not.toContain('Create an invoice')
+    expect(kept).not.toContain('Email an invoice')
+    expect(kept).not.toContain('Sign In')
+    expect(kept).toContain('The Example API is built on REST principles.')
+    expect(kept).toContain('full endpoint documentation') // link bullet with a description survives
+    expect(kept).toContain('Use [OAuth 2.0](/api/oauth) to authenticate') // prose containing a link survives
   })
 })
