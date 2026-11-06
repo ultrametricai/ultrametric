@@ -108,3 +108,11 @@ Reviewer follow-up accepted the inputs and the re-judge process; the one open qu
 (whether generic assistant file Q&A clears the image-understanding bar at partial q4,
 given the counter row's API-only scoping) is escalated to a maintainer ruling and the
 cell ships as judged pending it.
+
+A second escalation joins it: kimi agentic-mcp-server flipped na to none in the
+side-effect re-roll, with the rationale applying the axis because the umbrella product
+"includes... a developer API platform" while the arena ranks the assistant (ten of the
+fifteen arena products are na on this story). The pack is complete and the counter row
+is acknowledged in the rationale, so the na-vs-none call is rubric applicability, the
+penalty-direction twin of the image-understanding question; both ship as judged pending
+the same maintainer ruling.
