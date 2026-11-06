@@ -2909,7 +2909,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo's pricing page documents A/B testing of subject lines or content variants aimed at improving opens and clicks, so the core testing capability is first-party. Nothing in the evidence says a winner is picked automatically from real engagement. The only evidence is one thin marketing line. Missing for 10: documented automatic winner selection based on engagement metrics (opens/clicks), configuration details (test split size, test duration, winning criteria), and independent or hands-on corroboration.",
+    "rationale": "Brevo's pricing page documents A/B testing of subject lines or content variants aimed at improving opens and clicks. That covers the testing half of the story. Nothing in the evidence shows the winner being picked automatically from real engagement, or how the test is configured. Missing for 10: documented automatic winner selection based on opens/clicks, details on test configuration (split size, test duration, winning criteria), and independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-30"
     ],
@@ -2931,7 +2931,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo documents an MCP integration that lets AI assistants interact with the account, explicitly covering campaigns and contacts. Its API supports organizing contact lists programmatically and exporting 7 days of raw transactional events for analytics. That covers audiences and some reporting data, but there is no evidence that an agent can read live automation workflows or pull marketing campaign performance results. Missing for 10: programmatic read access to live automations/workflows, documented campaign-results/statistics retrieval via API or MCP, independent or hands-on corroboration of agent reporting.",
+    "rationale": "Brevo documents an MCP integration that lets AI assistants interact with the account, and says users can manage campaigns and contacts from ChatGPT and Claude. Contact lists are also available programmatically, so audiences and campaigns are reachable by an agent. Missing for 10: documented programmatic read access to live automations/workflows, documented API or MCP access to marketing campaign results and stats (the only analytics export covers 7 days of transactional events), and independent or hands-on corroboration of agent reporting.",
     "evidenceIds": [
       "brevo-docs-15",
       "brevo-docs-27",
@@ -2965,38 +2965,16 @@
   {
     "productId": "brevo",
     "storyId": "agent-builds-segment",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Brevo documents its own MCP integration, which lets AI models act on a Brevo account and manage campaigns and contacts from ChatGPT or Claude. It also documents filter-based segments built on demographics, website activity, engagement and custom events. However, nothing shows segments being created through the API or MCP, so an agent turning a plain-language description into a saved segment is only implied. Aura AI answers plain-language questions about data, but it is not shown creating segments. Missing for 10: a documented segment-creation endpoint or MCP tool, evidence that filter criteria can be expressed programmatically, and any hands-on or independent confirmation of an agent creating a segment.",
-    "evidenceIds": [
-      "brevo-docs-15",
-      "brevo-docs-27",
-      "brevo-docs-28",
-      "brevo-docs-4"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Brevo offers an MCP server and AI-tool management of \"campaigns and contacts,\" and its UI supports filter-based segments. None of the evidence documents creating a filter-based segment through the API or MCP. Programmatic list organization and Aura AI's plain-language Q&A are adjacent features, not a way to turn a plain-language description into a real segment.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, an agent can translate a plain-language audience description into a real segment via the platform's programmatic surface",
-      "citations": [
-        {
-          "evidenceId": "brevo-docs-15",
-          "quote": "Enable AI models to interact with your Brevo account through standardized endpoints."
-        },
-        {
-          "evidenceId": "brevo-docs-27",
-          "quote": "Manage campaigns and contacts directly from ChatGPT, Claude & other AI tools"
-        },
-        {
-          "evidenceId": "brevo-docs-28",
-          "quote": "Search, save, and manage contacts with filters like demographics, website activity, campaign engagement, and custom events. Create as many segments as you need."
-        },
-        {
-          "evidenceId": "brevo-docs-4",
-          "quote": "Import, update, and organize your contact lists programmatically."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -3005,10 +2983,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Brevo documents an MCP integration and states that users can manage campaigns from ChatGPT, Claude and other AI tools. It also documents segments and one-off scheduling of future sends, so an agent can plausibly create a campaign against a segment and schedule it. Nothing in the evidence shows a draft or queued state, or a human-approval gate before send, and the scheduling citation is a one-off future send rather than an approval workflow. missing for 10: documented agent creation of segment-targeted campaigns via API/MCP, a draft or pending-approval state, a human sign-off step before send, and hands-on corroboration.",
+    "rationale": "Brevo documents managing campaigns from AI tools such as ChatGPT and Claude through its MCP integration. It also documents segments and scheduled sends, so an agent can plausibly build a campaign against a segment and set a future send time rather than sending immediately. However, no evidence describes a draft state, an approval queue, or a human sign-off gate before send, and the scheduling citation appears tied to transactional email. missing for 10: documented campaign draft/approval workflow, explicit scheduling of marketing campaigns via API/MCP, segment targeting of campaigns via the agent interface, hands-on corroboration.",
     "evidenceIds": [
-      "brevo-docs-15",
       "brevo-docs-27",
+      "brevo-docs-15",
       "brevo-docs-28",
       "brevo-docs-6"
     ],
@@ -3042,12 +3020,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A probe confirms Brevo serves an llms.txt at developers.brevo.com/llms.txt (HTTP 200) with an explicit 'Instructions for AI Agents' section. A second probe confirms per-page clean Markdown via a .md suffix, and the llms.txt indexes substantive docs pages such as batch sending, sandbox mode and n8n. Missing for 10: independent or hands-on corroboration of agents consuming these docs effectively, and no evidence of an llms-full.txt full-content variant.",
+    "rationale": "A live probe confirms Brevo serves an llms.txt at developers.brevo.com (HTTP 200) containing an explicit \"Instructions for AI Agents\" section. A second probe confirms docs pages are available as clean Markdown by appending .md, and the llms.txt indexes topical guides (batch sends, sandbox mode, n8n, Supabase). missing for 10: independent or hands-on corroboration of agents successfully consuming these docs, and no visible llms-full.txt or full-corpus file in the evidence.",
     "evidenceIds": [
       "brevo-probe-1",
       "brevo-probe-2",
       "brevo-docs-17",
-      "brevo-docs-19"
+      "brevo-docs-19",
+      "brevo-docs-21"
     ],
     "support": {
       "relation": "direct",
@@ -3056,15 +3035,15 @@
       "citations": [
         {
           "evidenceId": "brevo-probe-1",
-          "quote": "## Instructions for AI Agents"
-        },
-        {
-          "evidenceId": "brevo-probe-1",
-          "quote": "For clean Markdown of any page, append `.md` to the page URL"
+          "quote": "# Brevo API Documentation\n\n## Instructions for AI Agents\n\n- For clean Markdown of any page, append `.md` to the page URL"
         },
         {
           "evidenceId": "brevo-probe-2",
           "quote": "For clean Markdown of any page, append .md to the page URL."
+        },
+        {
+          "evidenceId": "brevo-docs-19",
+          "quote": "Test transactional emails without sending them using sandbox mode"
         }
       ]
     }
@@ -3075,9 +3054,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo's pricing page says Aura AI lets users \"ask plain-language questions and get instant answers from your data,\" so the product itself offers AI-generated insights from user data. Proactive AI suggestions or recommendations drawn from that data are not documented. The one-click live-chat summarization is a related AI feature, but it summarizes conversations rather than providing data insights, so it gets no credit here. missing for 10: documented proactive AI-generated suggestions/recommendations from account data, in-depth first-party docs on Aura AI's scope and data coverage, independent or hands-on corroboration.",
+    "rationale": "Brevo documents Aura AI as an in-product way to ask plain-language questions and get instant answers from your data, which covers AI-generated insights. However, the evidence is limited to brief marketing lines with no depth on proactive suggestions or what kinds of insights it produces. Send-time optimization and contact scoring are related automations, not documented AI insight features, so they earn no credit here. Missing for 10: documented AI-generated suggestions or recommendations for the user drawn from their data, in-depth docs on Aura AI's insight scope and data sources, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "brevo-docs-33"
+      "brevo-docs-33",
+      "brevo-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -3087,6 +3067,10 @@
         {
           "evidenceId": "brevo-docs-33",
           "quote": "Ask plain‑language questions and get instant answers from your data with Aura AI."
+        },
+        {
+          "evidenceId": "brevo-docs-53",
+          "quote": "Ask questions in plain language and get instant answers."
         }
       ]
     }
@@ -3097,13 +3081,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brevo documents unlimited automated, multi-step workflows that engage users at key moments, plus signup-triggered follow-ups, score-based triggers and send-time optimization, all of which run in the background once configured. The evidence is pricing-page and marketing-level only. Missing for 10: in-depth docs on workflow triggers, conditions and execution, evidence that automations can be set up via the API, MCP or AI tools, and independent or hands-on corroboration that the automations run reliably.",
+    "rationale": "Brevo documents unlimited automated, multi-step workflows that run on their own, triggered by events like form sign-ups, contact scores, or optimal send times. That is background automation the product itself provides, not just a one-off scheduled send. The evidence is marketing-level first-party copy, and nothing shows AI tools such as the MCP server being able to create or configure these automations. Missing for 10: in-depth workflow/automation docs (trigger types, conditions, monitoring), evidence that AI agents can set up automations, independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-29",
       "brevo-docs-26",
       "brevo-docs-32",
       "brevo-docs-31",
-      "brevo-docs-6"
+      "brevo-docs-38"
     ],
     "support": {
       "relation": "direct",
@@ -3135,9 +3119,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo documents a built-in assistant, Aura AI, that answers plain-language questions about your data. It also offers in-product AI help that summarizes live chats, tailors replies and polishes notes into messages. These are question-answering and writing aids rather than delegation of multi-step tasks. The MCP and ChatGPT/Claude integrations are external AI tools, not a built-in assistant, so they earn no credit here. Missing for 10: evidence that the built-in assistant can take actions on the user's behalf (e.g. build campaigns, segments or workflows), documentation of Aura's scope, and independent or hands-on corroboration.",
+    "rationale": "Brevo documents a built-in AI assistant, Aura AI, that answers plain-language questions about your data, plus in-product AI features that draft email copy, adjust tone, and summarize live chats. These are question-answering and content-assist features; the evidence does not show the assistant executing multi-step tasks on the user's behalf. The MCP and ChatGPT/Claude integrations involve external assistants, so they are not credited here. Missing for 10: evidence that the built-in assistant can take actions or complete delegated tasks (e.g., building campaigns, segments, or workflows), depth of documentation on the assistant, and independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-33",
+      "brevo-docs-53",
+      "brevo-docs-44",
       "brevo-docs-36"
     ],
     "support": {
@@ -3150,6 +3136,10 @@
           "quote": "Ask plain‑language questions and get instant answers from your data with Aura AI."
         },
         {
+          "evidenceId": "brevo-docs-44",
+          "quote": "Draft subject lines and email copy, adjust tone, and more."
+        },
+        {
           "evidenceId": "brevo-docs-36",
           "quote": "Summarize live chats in one click, tailor replies to your tone, and turn quick notes into polished messages"
         }
@@ -3160,15 +3150,16 @@
     "productId": "brevo",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo can be driven without its UI through its own REST API. It documents machine-to-machine OAuth for server-to-server integrations, official SDKs with full API coverage, idempotency keys for safe retries, and a sandbox mode for testing transactional emails without sending them. However, the evidence shows no CLI and no CI-specific guidance, and unwhitelisted IPs trigger an emailed one-click authorization, which is a manual step that could interrupt ephemeral CI runners. Missing for 10: an official CLI or headless runner, documented CI/CD pipeline integration, a non-interactive way past IP authorization for dynamic CI IPs, and independent hands-on corroboration.",
+    "rationale": "Brevo can be driven without its UI through its own API: API-key and machine-to-machine OAuth for server-to-server use, official SDKs, idempotency keys, and a sandbox mode for testing sends without delivering them. All of these suit unattended automation. However, nothing documents a CLI or CI-specific usage, and the IP-whitelisting flow relies on a one-click email authorization, which can get in the way of ephemeral CI runners. missing for 10: official CLI or headless runner, CI/CD integration docs or examples, guidance for non-interactive auth from dynamic CI IPs, independent hands-on corroboration",
     "evidenceIds": [
       "brevo-docs-12",
       "brevo-docs-13",
-      "brevo-docs-18",
       "brevo-docs-19",
-      "brevo-docs-16"
+      "brevo-docs-18",
+      "brevo-docs-16",
+      "brevo-docs-50"
     ],
     "support": {
       "relation": "direct",
@@ -3200,7 +3191,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Brevo's MCP evidence (brevo-docs-15, brevo-docs-27) describes Brevo acting as an MCP server, so external AI assistants can operate on a Brevo account. That is the opposite role and does not transfer to this story. Nothing in the pack shows Brevo or its Aura AI connecting to external MCP servers to use their tools, so the axis applies but has no supporting evidence.",
+    "rationale": "Brevo's MCP evidence is server-side only: it describes AI assistants such as ChatGPT and Claude connecting to Brevo. Nothing shows Brevo, or its Aura AI assistant, acting as an MCP client that can plug in external MCP servers and use their tools. The axis is plausible for a SaaS platform with built-in AI, so absence of evidence is 'none', not 'na'.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3215,9 +3206,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brevo's developer docs say it integrates with AI assistants via the Model Context Protocol, letting AI models act on a Brevo account. The pricing page adds that campaigns and contacts can be managed directly from ChatGPT, Claude and other AI tools. Missing for 10: detailed MCP server setup and connection docs, a list of exposed tools and their scope, auth details for the MCP endpoint, and independent or hands-on confirmation that it works.",
+    "rationale": "Brevo's own developer docs say it integrates with AI assistants via the Model Context Protocol, letting AI models act on a Brevo account through standardized endpoints. The pricing page adds that campaigns and contacts can be managed from ChatGPT, Claude and other AI tools, so this is a first-party MCP offering. missing for 10: setup and connection details (endpoint URL, auth flow), a list of exposed tools and their scope, and independent or hands-on proof that agents connect successfully.",
     "evidenceIds": [
       "brevo-docs-15",
+      "brevo-docs-43",
       "brevo-docs-27"
     ],
     "support": {
@@ -3242,11 +3234,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brevo documents first-party natural-language operation: you can manage campaigns and contacts from ChatGPT, Claude and other AI tools via its Model Context Protocol integration, and its built-in Aura AI answers plain-language questions about your data. The claims are brief marketing and docs statements, with no detail on which actions can be driven by natural language. Missing for 10: documented scope of natural-language-controllable operations beyond campaigns and contacts, in-depth setup docs for the AI integration, and independent or hands-on corroboration.",
+    "rationale": "Brevo documents its own natural-language control paths. Users can manage campaigns and contacts directly from ChatGPT, Claude and other AI tools through Brevo's Model Context Protocol integration, and Aura AI answers plain-language questions about account data. Supporting AI features also cover drafting copy and summarizing chats. Missing for 10: detailed docs on which operations the MCP/AI interfaces support beyond campaigns and contacts, in-product natural-language command execution (Aura is described only as Q&A), and independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-27",
       "brevo-docs-15",
-      "brevo-docs-33"
+      "brevo-docs-33",
+      "brevo-docs-53",
+      "brevo-docs-44",
+      "brevo-docs-36"
     ],
     "support": {
       "relation": "direct",
@@ -3259,7 +3254,7 @@
         },
         {
           "evidenceId": "brevo-docs-15",
-          "quote": "Integrate Brevo with AI assistants using the Model Context Protocol. Enable AI models to interact with your Brevo account through standardized endpoints."
+          "quote": "Enable AI models to interact with your Brevo account through standardized endpoints."
         },
         {
           "evidenceId": "brevo-docs-33",
@@ -3274,7 +3269,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a reasonable thing to ask of a SaaS messaging platform like Brevo, so the axis applies. However, the evidence only documents official SDKs (Node.js, Python, PHP), a Postman workspace, an MCP integration, an n8n node and llms.txt. None of these is a command-line tool, so they earn no credit.",
+    "rationale": "An official CLI is a fair question for a developer-facing SaaS platform like Brevo, so the axis applies. The evidence documents official SDKs (Node.js, Python, PHP), a Postman workspace, an MCP integration, an n8n node and llms.txt, but no official command-line tool. These adjacent developer tools do not count as a CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3289,14 +3284,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Brevo has a documented public developer API. It covers transactional email, SMS/WhatsApp, contacts, eCommerce, conversations and event tracking, with API-key and OAuth 2.0 M2M authentication, official SDKs, and a Postman workspace. The docs are AI-agent-friendly: a verified llms.txt and Markdown versions of pages. Missing for 10: independent or hands-on corroboration that the API works as documented for agent-driven use.",
+    "rationale": "Brevo publishes a documented public developer API on developers.brevo.com. It covers transactional email, SMS/WhatsApp, contacts, ecommerce, conversations and events, with API key and OAuth 2.0 M2M auth, official SDKs, a Postman workspace, and per-endpoint reference docs. Agent-oriented aids include llms.txt and Markdown versions of pages (both confirmed by probe) plus an MCP integration. missing for 10: independent hands-on corroboration of using the API in practice.",
     "evidenceIds": [
       "brevo-docs-4",
       "brevo-docs-12",
       "brevo-docs-13",
       "brevo-docs-14",
-      "brevo-docs-17",
-      "brevo-docs-22",
+      "brevo-docs-51",
+      "brevo-docs-15",
       "brevo-probe-1",
       "brevo-probe-2"
     ],
@@ -3306,6 +3301,10 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
+          "evidenceId": "brevo-docs-4",
+          "quote": "Import, update, and organize your contact lists programmatically."
+        },
+        {
           "evidenceId": "brevo-docs-12",
           "quote": "Authenticate with an API key, or with OAuth 2.0 — including machine-to-machine (M2M) for server-to-server integrations."
         },
@@ -3314,8 +3313,8 @@
           "quote": "Official SDKs with full API coverage. Available for Node.js, Python, and PHP."
         },
         {
-          "evidenceId": "brevo-docs-4",
-          "quote": "Import, update, and organize your contact lists programmatically."
+          "evidenceId": "brevo-docs-14",
+          "quote": "Explore and test API endpoints with our pre-configured Postman workspace."
         },
         {
           "evidenceId": "brevo-probe-1",
@@ -3330,7 +3329,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Brevo documents API-key and OAuth 2.0 (including M2M) authentication, plus IP whitelisting, but nothing in the evidence shows credentials that can be limited to specific permissions, scopes or resources for an agent. Generic authentication and IP allowlisting are adjacent controls, not least-privilege credential scoping, so they earn no credit.",
+    "rationale": "The evidence shows Brevo supports API keys and OAuth 2.0 machine-to-machine credentials, plus IP allowlisting. Nothing documents permission scopes, per-key restrictions, or least-privilege credentials that could be issued for an agent. IP allowlisting is an adjacent network control, not privilege scoping, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3345,9 +3344,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brevo's developer docs say it ships official SDKs with full API coverage for Node.js, Python, and PHP, which directly delivers the story. The evidence is a single brief first-party statement with no depth or outside confirmation. Missing for 10: in-depth SDK documentation (installation, versioning, usage examples), independent or hands-on corroboration that the SDKs work as claimed, and SDKs for other major languages.",
+    "rationale": "Brevo's developer docs state it ships official SDKs with full API coverage for Node.js, Python, and PHP, which directly delivers the story. The evidence is a single first-party claim, though. Supporting developer surface (OAuth/API keys, Postman workspace, llms.txt and Markdown docs for agents) adds context. Missing for 10: SDK-specific documentation depth (install/usage guides, versioning), coverage beyond three languages, and independent or hands-on corroboration of SDK quality.",
     "evidenceIds": [
-      "brevo-docs-13"
+      "brevo-docs-13",
+      "brevo-docs-12",
+      "brevo-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -3367,10 +3368,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo's developer docs say webhooks can receive and process incoming emails, and separately claim real-time notifications about email events. Together these indicate first-party outbound event callbacks, but the evidence is thin: one-line claims with no detail on how a subscription is set up. Missing for 10: documented registration/configuration of webhook endpoints, a list of subscribable event types beyond email/inbound email, payload and security details (signing, retries), and independent or hands-on corroboration.",
+    "rationale": "Brevo's developer docs describe receiving real-time notifications about email events, and separately describe receiving and processing incoming emails through webhooks. Together these indicate first-party outbound HTTP callbacks a programmatic consumer can receive. The evidence is thin, though: docs-3 does not explicitly say \"webhook\", and docs-8 covers only inbound-email parsing. missing for 10: documented webhook registration/subscription API, event-type catalog, payload/signature verification and retry semantics, independent or hands-on corroboration.",
     "evidenceIds": [
-      "brevo-docs-8",
-      "brevo-docs-3"
+      "brevo-docs-3",
+      "brevo-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -3378,12 +3379,12 @@
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
       "citations": [
         {
-          "evidenceId": "brevo-docs-8",
-          "quote": "Receive and process incoming emails through webhooks to handle customer inquiries and support requests."
-        },
-        {
           "evidenceId": "brevo-docs-3",
           "quote": "Receive real-time notifications about email events and automate workflows."
+        },
+        {
+          "evidenceId": "brevo-docs-8",
+          "quote": "Receive and process incoming emails through webhooks to handle customer inquiries and support requests."
         }
       ]
     }
@@ -3391,16 +3392,23 @@
   {
     "productId": "brevo",
     "storyId": "ai-content-drafting",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows built-in AI drafting or refining subject lines or email copy inside the email composer. The AI evidence covers live-chat summaries and replies, data Q&A via Aura AI, and campaign management from external AI tools such as ChatGPT and Claude. Subject-line A/B testing and the drag-and-drop editor are adjacent features, not AI copy generation.",
-    "evidenceIds": [],
+    "rationale": "Brevo's pricing page lists a built-in AI capability to \"Draft subject lines and email copy, adjust tone, and more,\" which directly covers the core of the story. The evidence is a single marketing line, so it is unclear whether this works inside the email composer or generates from a brief. missing for 10: confirmation that the AI runs inside the email composer, documentation of drafting from a brief or prompt, refinement workflow details, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "brevo-docs-44"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a marketer, I can have the platform's built-in AI draft or refine subject lines and email copy from a brief, inside the composer",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "brevo-docs-44",
+          "quote": "Draft subject lines and email copy, adjust tone, and more."
+        }
+      ]
     }
   },
   {
@@ -3409,9 +3417,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo documents a pre-configured Postman workspace for exploring and testing API endpoints, which provides runnable, interactive API calls. However, nothing shows an interactive \"try it\" console inside its own API reference, and the explorer depends on an external tool. missing for 10: in-docs interactive API reference with runnable examples, detail on what the Postman workspace covers, independent or hands-on corroboration.",
+    "rationale": "Brevo offers a first-party, pre-configured Postman workspace for exploring and testing API endpoints, and it hosts API reference pages at developers.brevo.com/reference. The evidence does not show an in-browser interactive \"try it\" console or runnable examples embedded in the reference itself, so the runnable part depends on an external tool. Missing for 10: evidence of interactive in-docs request execution, runnable code examples embedded in the reference pages, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "brevo-docs-14"
+      "brevo-docs-14",
+      "brevo-docs-51",
+      "brevo-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -3421,6 +3431,10 @@
         {
           "evidenceId": "brevo-docs-14",
           "quote": "Explore and test API endpoints with our pre-configured Postman workspace."
+        },
+        {
+          "evidenceId": "brevo-docs-51",
+          "quote": "You can filter by active/inactive status using `templateStatus` and by editor type using `editorType`"
         }
       ]
     }
@@ -3431,10 +3445,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not mention a downloadable OpenAPI, Swagger, or equivalent machine-readable API specification. What it shows instead is adjacent: a pre-configured Postman workspace for exploring endpoints, an llms.txt index, Markdown versions of doc pages, and SDKs. None of these is documented as a downloadable API spec, so they earn no credit for this story.",
+    "rationale": "The evidence pack never mentions a downloadable OpenAPI, Swagger or equivalent machine-readable spec file. What it does show is adjacent: a pre-configured Postman workspace for exploring endpoints, an llms.txt documentation index, Markdown versions of doc pages, and SDKs. None of these is documented as a downloadable API specification, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
       "citations": []
@@ -3446,7 +3460,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Brevo documents its own \"sandbox mode\" that lets you test transactional emails without sending them, which directly addresses part of the story. However, it behaves like a dry-run flag scoped to transactional email sends. Nothing shows a separate sandbox environment with isolated, non-production data. Missing for 10: a documented isolated sandbox or test environment separate from production account data, sandbox coverage beyond transactional email (contacts, campaigns, CRM, SMS), and independent or hands-on corroboration.",
+    "rationale": "Brevo documents a sandbox mode that lets users test transactional emails without actually sending them. That is a product-native capability, but it works as a send-suppression (dry-run-style) flag on the email API, not an isolated sandbox environment with separate data, and no other API surface is shown to run against non-production data. missing for 10: an isolated sandbox or test environment separate from production account data, sandbox coverage beyond transactional email (contacts, campaigns, SMS), detailed docs on sandbox behavior, independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-19"
     ],
@@ -3468,7 +3482,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack covers Brevo's API capabilities, SDKs, authentication, MCP integration and llms.txt, but no item mentions API versioning, version identifiers or a deprecation policy. The axis applies to an API-offering SaaS platform, so the absence of evidence yields none.",
+    "rationale": "Versioning and deprecation policy are a fair question for an API-driven SaaS platform like Brevo. However, no evidence in the pack mentions API version numbers, version pinning, changelogs, or a deprecation or sunset policy. The pack covers endpoints, SDKs, auth, MCP and llms.txt, but none of that addresses this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3480,19 +3494,19 @@
   {
     "productId": "brevo",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Brevo documents its own batch capability for transactional email: up to 1000 personalized email versions in a single API request, with idempotency keys for batch requests. It also says contact lists can be imported and updated programmatically. Bulk operations are clearly evidenced only for email sending, and the contact import/update claim is thin, so the broader 'many items at once' story is only partly covered. missing for 10: documented bulk update/delete across contacts, campaigns and other object types, explicit batch-size or limit details beyond email sends, evidence that bulk operations are exposed through the MCP/AI-assistant path, and independent or hands-on corroboration.",
+    "rationale": "Brevo documents true batch operations. One API request can send up to 1000 personalized email versions, batch requests support idempotency keys to prevent duplicates, and contact lists can be imported and updated programmatically. Missing for 10: documented bulk update/delete operations for other item types such as contacts, deals and campaigns, explicit bulk support via the MCP/AI-assistant interface, and independent hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-17",
-      "brevo-docs-5",
       "brevo-docs-18",
+      "brevo-docs-5",
       "brevo-docs-4"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": [
         {
@@ -3500,12 +3514,12 @@
           "quote": "Send up to 1000 personalized email versions in a single API request"
         },
         {
-          "evidenceId": "brevo-docs-5",
-          "quote": "Send customized emails to multiple recipients in a single request."
-        },
-        {
           "evidenceId": "brevo-docs-18",
           "quote": "Prevent duplicate emails by using idempotency keys in batch transactional email requests"
+        },
+        {
+          "evidenceId": "brevo-docs-5",
+          "quote": "Send customized emails to multiple recipients in a single request."
         },
         {
           "evidenceId": "brevo-docs-4",
@@ -3517,19 +3531,20 @@
   {
     "productId": "brevo",
     "storyId": "automation-rules-engine",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Brevo documents event-triggered automation: unlimited multi-step workflows, follow-up emails triggered automatically on form sign-up, and contact scores that trigger automations. The evidence is marketing-level only and does not show the rule-definition model or a way to define rules programmatically or through AI, so story coverage is incomplete. missing for 10: documentation of rule/condition configuration (triggers, branching, event types), programmatic or AI-driven definition of automation rules, independent or hands-on corroboration.",
+    "rationale": "Brevo documents unlimited automated multi-step workflows. It also documents event-driven triggers: follow-up emails fire on signup, and engagement, purchase and behavior scores can trigger automations, with custom events tracked through JavaScript or REST APIs. Real-time event notifications are offered to automate workflows. All of this comes from marketing and pricing claims rather than in-depth rule-configuration docs. missing for 10: detailed documentation of trigger/condition rule definition (event types, branching logic), evidence of programmatic or AI-driven workflow creation, independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-29",
       "brevo-docs-26",
       "brevo-docs-32",
-      "brevo-docs-11"
+      "brevo-docs-11",
+      "brevo-docs-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
@@ -3547,6 +3562,10 @@
         {
           "evidenceId": "brevo-docs-11",
           "quote": "Track custom user events and behaviors."
+        },
+        {
+          "evidenceId": "brevo-docs-3",
+          "quote": "Receive real-time notifications about email events and automate workflows."
         }
       ]
     }
@@ -3557,25 +3576,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows two related capabilities, but neither is a recurring schedule. Brevo can schedule an email for a single future time (a one-off action), and it offers event-triggered multi-step automation workflows. No evidence shows jobs or workflows set to repeat on a cron-like or recurring cadence, so this is adjacent support only.",
-    "evidenceIds": [
-      "brevo-docs-6",
-      "brevo-docs-29"
-    ],
+    "rationale": "Brevo documents one-off scheduled email sends and event-triggered multi-step automation workflows. Neither shows a recurring schedule, such as a cron-like, daily or weekly repeating job or workflow. A one-off future send is not a recurring schedule, so the story's core capability is unevidenced.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
-      "citations": [
-        {
-          "evidenceId": "brevo-docs-6",
-          "quote": "Schedule emails to be sent at a specific time in the future."
-        },
-        {
-          "evidenceId": "brevo-docs-29",
-          "quote": "Create an unlimited number of automated, multi-step workflows to engage users at key moments along their journey."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -3584,7 +3591,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Brevo documents unlimited automated, multi-step workflows, so the automation-depth axis applies. Nothing in the evidence shows versioning, change review, or rollback of those automations. Workflow creation alone is an adjacent feature and earns no credit.",
+    "rationale": "Brevo documents unlimited multi-step automation workflows (brevo-docs-29), but nothing in the evidence shows versioning, change review, version history, or rollback for those automations. A/B testing of content variants and API access to templates are adjacent features, not automation version control. Since a marketing automation platform could plausibly offer workflow versioning, the axis applies and the absence of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3599,10 +3606,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Brevo documents revenue attribution to campaigns, which covers the conversions part of the story. It also documents an export of raw transactional events from the past 7 days for analytics reports, but that is transactional rather than campaign data and is limited in time range. Nothing in the evidence shows per-campaign or per-automation-step reporting of opens, clicks and unsubscribes over time. Missing for 10: documented per-campaign open/click/unsubscribe reports, per-automation-step metrics, time-series trend views, and independent or hands-on corroboration.",
+    "rationale": "Brevo's own docs say its ecommerce integration can 'attribute revenue to campaigns', which covers per-campaign conversions. Nothing in the pack documents a campaign or automation report showing opens, clicks or unsubscribes. The 7-day raw transactional event export and the event webhooks are developer building blocks for transactional email, not campaign analytics, so they earn no credit. missing for 10: per-campaign open/click/unsubscribe reporting, per-automation-step metrics, time-series/trend views, independent or hands-on corroboration",
     "evidenceIds": [
-      "brevo-docs-9",
-      "brevo-docs-7"
+      "brevo-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -3612,10 +3618,6 @@
         {
           "evidenceId": "brevo-docs-9",
           "quote": "Track customer behavior and attribute revenue to campaigns."
-        },
-        {
-          "evidenceId": "brevo-docs-7",
-          "quote": "Generate reports with unaggregated data for analytics."
         }
       ]
     }
@@ -3626,12 +3628,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo's developer docs describe API sends of customized emails to multiple recipients in one request (up to 1000 versions) and scheduling emails for a future time. Its MCP integration also claims campaign management from AI tools through standardized endpoints. However, the documented API scheduling appears to sit in the transactional-email context, and no evidence shows a dedicated marketing-campaign create/schedule endpoint. Missing for 10: an explicitly documented campaign/broadcast creation endpoint, documented campaign scheduling via the API, and independent hands-on corroboration of a dashboard-free campaign workflow.",
+    "rationale": "Brevo's developer docs describe API-based batch sends of personalized emails to multiple recipients (up to 1000 versions per request) and scheduling emails for a future time, which approximates a scheduled broadcast through the public API. The evidence never documents a marketing-campaign creation endpoint; the campaign-management claim is framed through AI tools (MCP) rather than a documented REST campaign API. Missing for 10: an explicitly documented campaign create/schedule API endpoint, confirmation that scheduling applies to campaigns rather than only transactional emails, and independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-5",
       "brevo-docs-6",
       "brevo-docs-17",
-      "brevo-docs-15",
       "brevo-docs-27"
     ],
     "support": {
@@ -3648,6 +3649,10 @@
           "quote": "Schedule emails to be sent at a specific time in the future."
         },
         {
+          "evidenceId": "brevo-docs-17",
+          "quote": "Send up to 1000 personalized email versions in a single API request"
+        },
+        {
           "evidenceId": "brevo-docs-27",
           "quote": "Manage campaigns and contacts directly from ChatGPT, Claude & other AI tools"
         }
@@ -3658,9 +3663,9 @@
     "productId": "brevo",
     "storyId": "contacts-crud-api",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Brevo's own developer docs say contact lists can be imported and updated programmatically, and official SDKs claim full API coverage, so the core create/update path via API is documented. The evidence does not show suppression or blocklisting through the API, custom contact attributes, or production-scale guarantees such as bulk limits or rate limits. missing for 10: API-based contact suppression/unsubscribe, custom contact properties/attributes via API, evidence of production-scale bulk throughput or rate limits, independent or hands-on corroboration",
+    "rationale": "Brevo's developer docs state that contact lists can be imported, updated, and organized programmatically, which covers the core create/update part of the story. Missing for 10: documented contact suppression/blocklisting via API, explicit custom contact attributes in the API, production-scale evidence (bulk limits, rate limits, throughput) for contact operations, and independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-4",
       "brevo-docs-13"
@@ -3687,7 +3692,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Brevo documents drag-and-drop email composition with templates (\"just drag, drop, and send\"), unlimited contact segments, scheduled future sending, and send-time optimization, so the core loop is evidenced. The links between steps are only implied: no doc explicitly shows choosing a segment as a campaign's audience, and the scheduling citation sits among developer API docs rather than marketing campaign docs. missing for 10: explicit evidence of selecting a list/segment as a campaign's recipients, campaign-specific (non-API) scheduling documentation, independent or hands-on corroboration of the end-to-end campaign send.",
+    "rationale": "Brevo documents composing campaign emails with a drag-and-drop editor and templates, picking an audience through segments, and sending ('drag, drop, and send'). Scheduling is documented only generically on the developer site ('Schedule emails to be sent at a specific time in the future'), which is not clearly tied to the marketing-campaign loop, and send-time optimization is a related but different feature. missing for 10: explicit documentation that marketing campaigns can be scheduled for a chosen time, explicit linkage of segments or lists as the recipients when sending a campaign, independent or hands-on corroboration of the end-to-end compose→audience→send/schedule loop.",
     "evidenceIds": [
       "brevo-docs-23",
       "brevo-docs-24",
@@ -3710,15 +3715,11 @@
         },
         {
           "evidenceId": "brevo-docs-28",
-          "quote": "Create as many segments as you need."
+          "quote": "Search, save, and manage contacts with filters like demographics, website activity, campaign engagement, and custom events. Create as many segments as you need."
         },
         {
           "evidenceId": "brevo-docs-6",
           "quote": "Schedule emails to be sent at a specific time in the future."
-        },
-        {
-          "evidenceId": "brevo-docs-31",
-          "quote": "Automatically send emails when each contact is most likely to engage."
         }
       ]
     }
@@ -3729,7 +3730,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sending-domain authentication is a fair question for an email platform like Brevo, but the evidence pack never mentions SPF, DKIM, DMARC, DNS records, or a domain verification flow. The only related item describes configuring Brevo as Supabase's SMTP provider so mail sends 'from your own domain', which is an adjacent integration, not documented domain authentication with guided DNS setup.",
+    "rationale": "Brevo is an email-sending platform, so domain authentication is a fair question to ask of it. However, the evidence pack contains nothing about SPF, DKIM or DMARC setup, guided DNS records, or domain verification. The only related lines describe sending from your own domain via SMTP relay for Supabase, which is SMTP configuration, not documented domain authentication.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3744,10 +3745,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents generic email event notifications and a 7-day raw export of transactional events, but never names bounces, complaints, or blocklist signals per send. It also shows no deliverability monitoring or guidance when deliverability degrades. Generic event data is adjacent at best and does not show this story's capability.",
+    "rationale": "Deliverability monitoring is a fair axis for an email marketing platform, but the evidence pack never mentions bounce, complaint, or blocklist reporting, and nothing describes guidance when deliverability degrades. The only related items are generic event webhooks and a 7-day raw transactional event export. These are developer building blocks and do not name the specific signals, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a marketer, I can see bounce, complaint, and blocklist signals per send and get actionable guidance when deliverability degrades",
       "citations": []
@@ -3759,13 +3760,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Brevo's marketing pages document a drag-and-drop email editor and responsive, ready-made templates. Its API docs document per-recipient personalization through dynamic variables, so the core design-and-template workflow is present. Missing for 10: evidence of cross-client rendering or testing, evidence that personalization tokens work inside the visual editor (they are documented only for the transactional API), brand-kit or on-brand style controls, saving custom templates for reuse, and independent or hands-on corroboration.",
+    "rationale": "Brevo documents a drag-and-drop email builder, responsive and ready-made templates (also retrievable as SMTP templates via the API), and per-recipient personalization through dynamic variables. Correct rendering across email clients is only implied by the word \"responsive\", and personalization is documented mainly in the API batch-send context rather than as editor tokens. missing for 10: documented cross-client rendering/preview testing, explicit personalization tokens inside the visual editor, brand kit/on-brand style controls, independent hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-23",
       "brevo-docs-24",
       "brevo-docs-38",
       "brevo-docs-5",
-      "brevo-docs-17"
+      "brevo-docs-17",
+      "brevo-docs-51"
     ],
     "support": {
       "relation": "direct",
@@ -3781,12 +3783,12 @@
           "quote": "Jumpstart campaigns with responsive templates tailored to your industry and use case."
         },
         {
-          "evidenceId": "brevo-docs-38",
-          "quote": "Skip the learning curve with ready-made templates"
-        },
-        {
           "evidenceId": "brevo-docs-5",
           "quote": "Personalize content for each recipient using dynamic variables."
+        },
+        {
+          "evidenceId": "brevo-docs-38",
+          "quote": "Skip the learning curve with ready-made templates"
         }
       ]
     }
@@ -3794,23 +3796,16 @@
   {
     "productId": "brevo",
     "storyId": "engagement-data-api-read",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Brevo documents an API capability to export raw, unaggregated transactional event data, which is the closest first-party evidence of reading engagement events programmatically. That export is limited to the past 7 days and to transactional email. Nothing shows a per-contact lookup or campaign-level sent, opened and clicked history. Webhooks push events rather than read history, and the segment filters are a UI feature, so neither earns credit here. Missing for 10: a documented per-contact engagement or activity endpoint, explicit sent/opened/clicked fields, coverage of marketing campaigns beyond transactional email, history beyond 7 days, and hands-on corroboration.",
-    "evidenceIds": [
-      "brevo-docs-7"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence documents an API endpoint that returns a contact's engagement history (what was sent, opened, clicked). The closest items are a bulk export of raw transactional events limited to the past 7 days (brevo-docs-7) and real-time email-event webhooks (brevo-docs-3). These are adjacent building blocks a developer could use to assemble such a history, not the per-contact capability itself. Engagement-based segmentation (brevo-docs-28) is a UI feature, not API read access.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a developer, I can read per-person engagement history — what was sent, opened, clicked — through the API for any contact",
-      "citations": [
-        {
-          "evidenceId": "brevo-docs-7",
-          "quote": "Export raw data of all transactional events from the past 7 days. Generate reports with unaggregated data for analytics."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -3819,7 +3814,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo documents tracking custom user events via JavaScript or REST APIs and offers unlimited automated multi-step workflows, and custom events can drive segmentation. The evidence never explicitly says a custom event fired from your product can trigger a workflow for the specific contact who generated it, so the core link is only implied. Missing for 10: explicit documentation that custom events act as automation triggers, per-contact event-to-workflow binding details, independent or hands-on corroboration.",
+    "rationale": "Brevo documents firing custom user events from your product via JavaScript or REST APIs. It also documents unlimited automated multi-step workflows and segmenting contacts by custom events. However, no evidence explicitly states that a custom event triggers an automation for the specific contact who fired it; that link is only implied. Missing for 10: explicit documentation of custom-event workflow triggers, per-contact targeting of the triggered automation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-11",
       "brevo-docs-29",
@@ -3851,7 +3846,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Brevo documents unlimited automated multi-step workflows. Nothing in the evidence shows per-contact visibility into a person's position within a running automation, or any ability to remove or re-enter an individual contact without disrupting the flow. Workflow existence alone is an adjacent capability and does not cover this story.",
+    "rationale": "Brevo documents unlimited automated, multi-step workflows, so this lifecycle-automation axis applies to it. However, nothing in the evidence shows a per-contact view of where someone sits in a workflow, or controls to remove or re-enter a contact mid-flow without disrupting it. Generic workflow and contact-management claims are adjacent capabilities and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3866,7 +3861,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a self-serve export of contacts, custom fields, tags, engagement history, or the suppression list in an open format. The contact API is described only as import, update, and organize. The only export mentioned covers 7 days of raw transactional events, a different capability from exporting the audience. Data sync connectors and SFTP describe syncing data with other systems, not an audience export.",
+    "rationale": "The evidence pack never documents a self-serve export of contacts, custom fields, tags, or suppression lists. The closest items are programmatic contact import/organization, a 7-day raw export of transactional email events, and SFTP sync connectors. These are adjacent features (import, transactional logs, data sync), not a full audience export in an open format.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3881,7 +3876,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Brevo documents its own contact-list import, but only as a programmatic (API) capability. Nothing in the evidence shows a guided migration flow from another email platform, or that tags, custom fields, or unsubscribe state carry over. missing for 10: guided/UI import or migration wizard from other platforms, documented preservation of tags, custom-field mapping, unsubscribe/suppression state handling, independent or hands-on corroboration.",
+    "rationale": "Brevo's own docs say contact lists can be imported programmatically, which covers the core of bringing a list in from elsewhere. Nothing in the evidence shows a guided migration flow, a source-platform importer, or that tags, custom fields, and unsubscribe status carry over. Missing for 10: guided/UI import wizard, migration from named email platforms, preservation of tags, custom-field mapping, preservation of unsubscribe/suppression state, independent corroboration.",
     "evidenceIds": [
       "brevo-docs-4"
     ],
@@ -3903,7 +3898,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented API endpoint for retrieving marketing campaign or automation-flow performance metrics. The closest items are adjacent: a raw export of transactional email events from the past 7 days, revenue attribution to campaigns within the ecommerce feature, and customer-data sync with warehouses. None of these shows a developer pulling campaign or flow performance stats through the API.",
+    "rationale": "The evidence pack does not document any API endpoint for retrieving marketing campaign or automation-flow performance metrics. The closest item is an export of raw transactional email events from the past 7 days (brevo-docs-7), which is an adjacent feature rather than campaign or flow analytics. The warehouse sync (brevo-docs-35) covers customer data and revenue attribution (brevo-docs-9) covers e-commerce sync, so neither shows pulling campaign or flow metrics into your own systems.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3918,14 +3913,17 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo documents a broad first-party API: contact management, transactional email/SMS/WhatsApp, ecommerce sync, programmatic conversations, event tracking, loyalty program creation and an MCP integration. That covers much of the platform programmatically. However, nothing states that the API matches the UI, and several UI features have no documented API equivalent. missing for 10: an explicit API/UI parity claim, documented API coverage for UI features such as the drag-and-drop editor, landing pages, forms, A/B testing, segments, multi-step automation workflows and Aura AI, and independent corroboration of coverage depth.",
+    "rationale": "Brevo documents a broad first-party API covering transactional email, SMS and WhatsApp, contacts, ecommerce sync, conversations, event tracking, loyalty programs and webhooks, plus SDKs and an MCP integration. However, nothing claims UI/API parity, and several UI features (drag-and-drop editor, landing pages, forms, A/B testing, Aura AI, multi-brand management) have no API evidence. The template endpoint even notes only `richTextEditor` is supported as an editor-type filter. Missing for 10: an explicit UI–API parity statement, API evidence for the drag-and-drop editor, landing pages, forms, A/B tests, segments, automations and Aura AI, and independent hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-4",
       "brevo-docs-9",
       "brevo-docs-10",
-      "brevo-docs-22",
+      "brevo-docs-11",
+      "brevo-docs-13",
       "brevo-docs-15",
-      "brevo-docs-13"
+      "brevo-docs-22",
+      "brevo-docs-27",
+      "brevo-docs-51"
     ],
     "support": {
       "relation": "direct",
@@ -3937,16 +3935,20 @@
           "quote": "Import, update, and organize your contact lists programmatically."
         },
         {
-          "evidenceId": "brevo-docs-10",
-          "quote": "Integrate live chat widgets and manage conversations programmatically."
-        },
-        {
           "evidenceId": "brevo-docs-22",
           "quote": "Learn how to create, configure, and publish a loyalty program via the Brevo API."
         },
         {
-          "evidenceId": "brevo-docs-15",
-          "quote": "Enable AI models to interact with your Brevo account through standardized endpoints."
+          "evidenceId": "brevo-docs-10",
+          "quote": "Integrate live chat widgets and manage conversations programmatically."
+        },
+        {
+          "evidenceId": "brevo-docs-13",
+          "quote": "Official SDKs with full API coverage. Available for Node.js, Python, and PHP."
+        },
+        {
+          "evidenceId": "brevo-docs-27",
+          "quote": "Manage campaigns and contacts directly from ChatGPT, Claude & other AI tools"
         }
       ]
     }
@@ -3956,11 +3958,11 @@
     "storyId": "openness-full-export",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "Brevo documents its own export of raw transactional event data, but only for the past 7 days and with no stated file format. It also documents syncing customer data to warehouses or over SFTP, though it is unclear whether that sync covers full outbound export. Nothing shows a complete account-wide export in open formats that supports leaving the platform. Missing for 10: full account export (contacts, campaigns, templates, automations, CRM data), documented open export formats, export history beyond 7 days, an offboarding or portability path, and independent corroboration.",
+    "confidence": "medium",
+    "rationale": "Brevo documents its own export of raw, unaggregated transactional event data, but only for the past 7 days. Nothing in the pack shows a full-account export of contacts, campaigns, templates, CRM or automations, or names the export formats. Missing for 10: full-account data export covering contacts, campaigns, templates, CRM and automation data; documented open export formats (e.g., CSV/JSON); event history beyond 7 days; account-closure/offboarding documentation; independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-7",
-      "brevo-docs-35"
+      "brevo-docs-40"
     ],
     "support": {
       "relation": "direct",
@@ -3969,11 +3971,11 @@
       "citations": [
         {
           "evidenceId": "brevo-docs-7",
-          "quote": "Export raw data of all transactional events from the past 7 days."
+          "quote": "Export raw data of all transactional events from the past 7 days. Generate reports with unaggregated data for analytics."
         },
         {
-          "evidenceId": "brevo-docs-35",
-          "quote": "Sync customer data across your warehouse, POS, ERP, and other systems with Brevo via direct connectors or secure SFTP"
+          "evidenceId": "brevo-docs-40",
+          "quote": "Export raw data of all transactional events from the past 7 days."
         }
       ]
     }
@@ -3984,7 +3986,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a SaaS marketing platform publishes its source under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence shows Brevo's source is available or open-licensed. The official SDKs, MCP integration and llms.txt docs do not show the product's source is readable under an open license.",
+    "rationale": "Whether a SaaS marketing and CRM platform publishes its source under an open license is a fair question for this kind of product, so the axis applies. The evidence pack never mentions open-source code, a public repository, or a license. The official SDKs are noted, but nothing says their source is openly licensed, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3999,7 +4001,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an email and marketing platform, since self-hostable alternatives exist in this category, so the axis applies. Nothing in the evidence shows Brevo offering a self-hosted or on-premises deployment of its core product. Everything documented is a hosted SaaS service reached through APIs, SDKs and MCP; data-sync connectors and SFTP are integrations, not self-hosting.",
+    "rationale": "Self-hosting is a fair question for an email-marketing and CRM platform, since self-hostable alternatives exist in this category, so the axis applies. Nothing in the evidence shows a self-hosted or on-premises deployment of Brevo. Everything documented is a hosted SaaS API, SMTP relay, or SFTP data sync, which are integrations rather than self-hosting the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4013,8 +4015,8 @@
     "storyId": "outbound-webhooks",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "Brevo's developer docs claim real-time notifications about email events, which points to a first-party event-webhook capability. The pack never names the specific events, the payload schema, or any signing, and the inbound-email webhook (brevo-docs-8) covers a different use case. Missing for 10: explicit registrable HTTP webhook subscription docs, coverage of sends/opens/clicks/bounces/unsubscribes, a documented payload schema, payload signing/verification, and independent corroboration.",
+    "confidence": "medium",
+    "rationale": "Brevo's developer docs claim real-time notifications about email events, which is the product's own outbound event-notification capability. The pack does not list which events are covered, does not describe the payload, and does not mention signing; the inbound-email webhook item is a different capability and is not credited. Missing for 10: documented event types (sends, opens, clicks, bounces, unsubscribes), a subscription/registration API or UI for webhooks, documented payload schema, payload signing/verification, independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-3"
     ],
@@ -4036,7 +4038,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a storage region or data residency is a fair question for a SaaS marketing and email platform like Brevo, so the axis applies. Nothing in the evidence pack mentions region selection, data residency, or storage location. The IP whitelisting, SFTP sync and security-incident items are about other things and do not count toward this story.",
+    "rationale": "Brevo is a SaaS marketing and messaging platform, so a buyer could fairly ask whether they can choose a data storage region. The pack has no evidence of region selection or residency controls. IP whitelisting and SFTP sync are adjacent security and integration features, not residency choice.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4051,7 +4053,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Brevo is a SaaS marketing platform with AI features such as Aura AI, live-chat summarization and an MCP integration, so an AI-training opt-out is a fair question to ask of it. However, nothing in the evidence pack documents any control or policy that keeps customer data out of AI model training. The MCP and AI-feature items describe AI capabilities, not data-use controls, and the community items are about account compromise, not training data.",
+    "rationale": "Brevo ships AI features (Aura AI, AI copy drafting, MCP integration), so the question of whether customer data can be excluded from AI model training applies to it. Nothing in the evidence pack mentions an AI-training opt-out, a data-usage policy, or any no-training commitment. The IP whitelisting and security-incident items are about a different topic and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4066,7 +4068,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a marketing and CRM SaaS like Brevo, but the evidence pack documents no retention settings, deletion APIs, or erasure workflows. The nearest items are contact import/update/organize and a 7-day raw event export, which are adjacent features rather than user-controlled retention or deletion.",
+    "rationale": "Data retention and deletion controls are a fair question for an email/CRM SaaS like Brevo, but the evidence pack documents no retention settings, deletion endpoints, or erasure workflows. The closest items, contact-list import/update/organize and a 7-day transactional event export window, are adjacent features and not user-controlled retention or deletion.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4081,7 +4083,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry or usage tracking is a fair privacy question for a SaaS platform like Brevo, so the axis applies. However, nothing in the evidence documents a setting to opt out of Brevo's own telemetry or usage tracking. The tracking features in the pack (custom event tracking, website activity monitoring) are tools for tracking end-users, not opt-out controls, so they do not count.",
+    "rationale": "The evidence pack never mentions a way for Brevo users to opt out of telemetry or usage tracking by Brevo, in its SaaS app, SDKs, or MCP integration. The tracking features shown (custom event tracking, behavior tracking) are tools for tracking the customer's own contacts, not a privacy control over Brevo's telemetry. The axis is a fair question for a SaaS platform with SDKs, so absence of evidence is 'none'.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4096,7 +4098,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo's ecommerce API documents syncing orders and attributing revenue to campaigns, which covers revenue-to-email attribution beyond opens and clicks. The evidence is a single marketing-level line. It does not show attribution to automation flows or attribution of signups. Custom event tracking exists but is not described as attribution. Missing for 10: attribution of revenue to automation flows/workflows, signup or conversion attribution to specific emails, documented attribution model and reporting depth, independent or hands-on corroboration.",
+    "rationale": "Brevo's ecommerce docs say it syncs orders and can \"attribute revenue to campaigns,\" so revenue attribution to campaigns is a first-party capability. The evidence does not cover attribution to automation flows or to signups, and the claim comes from a single brief developer-docs line. Custom event tracking exists but is a building block, not attribution itself. Missing for 10: documented attribution of revenue to automation flows/workflows, signup or conversion attribution to specific emails, attribution reporting depth or models, independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-9"
     ],
@@ -4118,7 +4120,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents authentication via API key or OAuth 2.0 machine-to-machine and IP whitelisting, but none of it mentions scoped, read-only, or permission-restricted credentials that could read analytics without send rights. IP allowlisting and generic auth methods are adjacent controls and do not count toward this story.",
+    "rationale": "The evidence documents API-key and OAuth 2.0 M2M authentication and IP allowlisting. None of it says credentials can be scoped or made read-only so that a holder can read analytics but cannot send. Authentication methods and IP restriction are adjacent controls, not scoped permissions, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4133,11 +4135,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Brevo documents its own segmentation that filters contacts by demographics, website activity, campaign engagement and custom events, plus engagement-based scores usable for segments. That covers profile attributes and behavioral events. Nothing in the pack says segments update live as data changes or that tags can be used as filters. missing for 10: evidence that segments refresh dynamically as contact data changes, tag-based segment filters, independent or hands-on corroboration.",
+    "rationale": "Brevo documents segment building from demographics, website activity, campaign engagement, and custom events, with unlimited segments, plus behavioral event tracking and contact scores usable for segmentation. It does not document tag-based filters or that segments update dynamically as data changes. Community items are off-topic. Missing for 10: tag-based segment criteria, evidence that segments stay live/dynamic as data changes, in-depth segmentation docs, independent hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-28",
+      "brevo-docs-11",
       "brevo-docs-32",
-      "brevo-docs-11"
+      "brevo-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -4149,12 +4152,12 @@
           "quote": "Search, save, and manage contacts with filters like demographics, website activity, campaign engagement, and custom events. Create as many segments as you need."
         },
         {
-          "evidenceId": "brevo-docs-32",
-          "quote": "Get contact scores based on engagement, purchases, and behaviors to trigger automations or create targeted segments."
-        },
-        {
           "evidenceId": "brevo-docs-11",
           "quote": "Track custom user events and behaviors."
+        },
+        {
+          "evidenceId": "brevo-docs-32",
+          "quote": "Get contact scores based on engagement, purchases, and behaviors to trigger automations or create targeted segments."
         }
       ]
     }
@@ -4165,7 +4168,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo's developer docs say contact lists can be imported, updated, and organized programmatically, which covers the list-management core of the story. Segments appear only as a product feature on the pricing page, with no API evidence, and nothing shows reading back list or segment membership. Missing for 10: documented API for creating/updating segments or tags, documented endpoint to read back exact list/segment membership, independent or hands-on corroboration.",
+    "rationale": "Brevo's developer docs say contact lists can be imported, updated and organized programmatically, which covers the create/update half of the story for lists. Segment creation is documented only as a marketing-platform feature, with no evidence of an API for it. Nothing in the pack shows reading back list or segment membership via the API. Missing for 10: documented API endpoints for creating and updating segments or tags, an API to read back exact list or segment membership, and independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-4",
       "brevo-docs-28"
@@ -4178,10 +4181,6 @@
         {
           "evidenceId": "brevo-docs-4",
           "quote": "Import, update, and organize your contact lists programmatically."
-        },
-        {
-          "evidenceId": "brevo-docs-28",
-          "quote": "Create as many segments as you need."
         }
       ]
     }
@@ -4192,9 +4191,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Brevo documents its own direct connectors for syncing customer data from a warehouse, POS, ERP and other systems. That covers the data-warehouse and product-database part of the story at a generic level. None of the specific named integrations appear, and the ecommerce sync and n8n node are an API and a third-party workflow node rather than maintained first-party connectors. Missing for 10: named first-party Stripe or Shopify integrations, a Segment/CDP connector, evidence that the connectors are maintained, connector catalog depth, and independent corroboration.",
+    "rationale": "Brevo documents its own 'direct connectors' for syncing customer data from a warehouse, POS, ERP and other systems, which partly covers connecting a product database. It also documents a native n8n node and Supabase SMTP setup, but none of the named Stripe, Shopify or Segment integrations appear. Its ecommerce product/order sync is described as an API, which is a developer building block rather than a maintained connector. Missing for 10: named first-party Stripe/Shopify connectors, a Segment/CDP integration, an integration catalog showing maintenance, independent corroboration.",
     "evidenceIds": [
-      "brevo-docs-35"
+      "brevo-docs-35",
+      "brevo-docs-21",
+      "brevo-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -4204,6 +4205,10 @@
         {
           "evidenceId": "brevo-docs-35",
           "quote": "Sync customer data across your warehouse, POS, ERP, and other systems with Brevo via direct connectors or secure SFTP"
+        },
+        {
+          "evidenceId": "brevo-docs-21",
+          "quote": "Use the native Brevo node in n8n to send transactional emails and manage contacts as part of a workflow."
         }
       ]
     }
@@ -4214,7 +4219,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Suppression is a fair axis for an email platform like Brevo. However, the evidence pack never mentions automatic suppression of unsubscribes, bounces, or spam complaints, nor suppression being honored across transactional and marketing sends. The only nearby item is real-time webhook notifications about email events (brevo-docs-3), which is an adjacent building block rather than automatic suppression, so it earns no credit.",
+    "rationale": "Brevo is an email/SMS sending platform, so automatic suppression of unsubscribes, bounces and complaints is an applicable axis. The evidence pack contains nothing about suppression lists, unsubscribe handling, bounce or complaint processing, or cross-channel enforcement. Event webhooks and event exports are only adjacent building blocks, not automatic suppression.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4227,12 +4232,12 @@
     "productId": "brevo",
     "storyId": "templates-as-code",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only on-topic evidence is that Brevo's API lets you personalize email content per recipient with dynamic variables, including batch sends of up to 1000 personalized versions. That covers variable substitution, but nothing shows template management as code. The other template mentions are drag-and-drop and ready-made templates aimed at non-developers. missing for 10: documented template CRUD API, HTML/MJML template support, template versioning or version-control workflow, template variable syntax docs, independent corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Brevo documents an SMTP templates API endpoint that can filter templates by status and editor type, so templates are API-managed. It also documents personalizing email content per recipient with dynamic variables. The evidence does not show creating or updating templates from HTML/MJML source, and nothing shows templates kept under version control. Missing for 10: documented template create/update via API with raw HTML/MJML, explicit template variable syntax tied to stored templates, version-control or templates-as-code workflow, independent or hands-on corroboration.",
     "evidenceIds": [
-      "brevo-docs-5",
-      "brevo-docs-17"
+      "brevo-docs-51",
+      "brevo-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -4240,12 +4245,12 @@
       "subject": "As a developer, I can manage email templates as code — HTML/MJML or API-managed templates with variable substitution — under version control",
       "citations": [
         {
-          "evidenceId": "brevo-docs-5",
-          "quote": "Personalize content for each recipient using dynamic variables."
+          "evidenceId": "brevo-docs-51",
+          "quote": "You can filter by active/inactive status using `templateStatus` and by editor type using `editorType` (currently only `richTextEditor` is supported)."
         },
         {
-          "evidenceId": "brevo-docs-17",
-          "quote": "Send up to 1000 personalized email versions in a single API request"
+          "evidenceId": "brevo-docs-5",
+          "quote": "Personalize content for each recipient using dynamic variables."
         }
       ]
     }
@@ -4254,17 +4259,15 @@
     "productId": "brevo",
     "storyId": "transactional-send-api",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Brevo's developer docs describe API-driven transactional email for order confirmations, password resets and other automated sends. They add batch personalization, idempotency keys and a sandbox mode, and document magic links sent via SMTP for Supabase Auth. All of this sits on a single platform that also runs marketing campaigns. Missing for 10: independent or hands-on corroboration of transactional sending in practice, and explicit docs showing marketing campaign sends through the same API.",
+    "rationale": "Brevo's developer docs describe API-driven transactional email for order confirmations, password resets and other automated emails. They also document batch transactional requests with idempotency keys, a sandbox test mode, an SMTP relay, and magic-link delivery (via Supabase Auth SMTP). The same platform runs marketing campaigns, so transactional and marketing sends live together. Missing for 10: independent or hands-on corroboration of transactional delivery, and explicit documentation that marketing campaigns are sent through the same API surface.",
     "evidenceIds": [
       "brevo-docs-1",
-      "brevo-docs-5",
       "brevo-docs-18",
       "brevo-docs-19",
       "brevo-docs-20",
-      "brevo-docs-12",
-      "brevo-docs-13",
+      "brevo-docs-42",
       "brevo-docs-37",
       "brevo-docs-27"
     ],
@@ -4278,16 +4281,12 @@
           "quote": "Send order confirmations, password resets, and other automated emails to your users."
         },
         {
-          "evidenceId": "brevo-docs-20",
-          "quote": "sign-up confirmations, magic links, password resets, and invites send from your own domain"
-        },
-        {
           "evidenceId": "brevo-docs-18",
           "quote": "Prevent duplicate emails by using idempotency keys in batch transactional email requests"
         },
         {
-          "evidenceId": "brevo-docs-19",
-          "quote": "Test transactional emails without sending them using sandbox mode"
+          "evidenceId": "brevo-docs-20",
+          "quote": "sign-up confirmations, magic links, password resets, and invites send from your own domain"
         },
         {
           "evidenceId": "brevo-docs-37",
@@ -4302,11 +4301,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Brevo documents a distinct transactional email channel, with an API for automated emails such as order confirmations and password resets, transactional-specific event exports, and a transactional sandbox mode. This suggests transactional sending is a separate stream from marketing campaigns, but nothing in the evidence shows it actually keeps suppression, templates, or reputation separate. missing for 10: evidence of separate transactional suppression rules, delivery to unsubscribed marketing contacts, separate templates, dedicated reputation or IP isolation, independent corroboration.",
+    "rationale": "Brevo documents a dedicated transactional email product for order confirmations and password resets. It also has its own transactional (SMTP) template endpoint and transactional event exports, which suggests transactional sending is a separate stream from marketing campaigns. Nothing in the pack shows separate suppression rules, separate sending reputation or IPs, or that transactional mail reaches contacts who unsubscribed from marketing. missing for 10: transactional-specific suppression/unsubscribe handling, separate sending reputation/IP isolation, explicit evidence receipts deliver to marketing-unsubscribed contacts, independent corroboration.",
     "evidenceIds": [
       "brevo-docs-1",
-      "brevo-docs-7",
-      "brevo-docs-19"
+      "brevo-docs-51",
+      "brevo-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -4318,12 +4317,12 @@
           "quote": "Send order confirmations, password resets, and other automated emails to your users."
         },
         {
-          "evidenceId": "brevo-docs-7",
-          "quote": "Export raw data of all transactional events from the past 7 days."
+          "evidenceId": "brevo-docs-51",
+          "quote": "You can filter by active/inactive status using `templateStatus` and by editor type using `editorType`"
         },
         {
-          "evidenceId": "brevo-docs-19",
-          "quote": "Test transactional emails without sending them using sandbox mode"
+          "evidenceId": "brevo-docs-7",
+          "quote": "Export raw data of all transactional events from the past 7 days."
         }
       ]
     }
@@ -4334,7 +4333,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Brevo's pricing page documents unlimited automated, multi-step workflows along the customer journey, and automatic follow-up emails triggered by form signups, which covers the core of welcome-style lifecycle automation. The evidence never mentions branching logic, delay steps, or exit rules, and it gives no specific winback or onboarding detail. Missing for 10: documented conditional branches, wait/delay steps, exit/goal rules, winback examples, independent or hands-on corroboration.",
+    "rationale": "Brevo's own pricing docs claim unlimited automated multi-step workflows that engage users along their journey. They also document sign-up-triggered follow-up emails, which fits a welcome series, and score-based automation triggers. However, nothing in the pack documents conditional branches, wait or delay steps, or exit rules, and there is no hands-on corroboration. Missing for 10: documented branching/conditional splits, delay/wait steps, exit/goal rules, explicit onboarding/winback templates, independent or hands-on corroboration.",
     "evidenceIds": [
       "brevo-docs-29",
       "brevo-docs-26",

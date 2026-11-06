@@ -1242,14 +1242,15 @@
     "productId": "mailersend",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 7,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A probe confirms a live llms.txt (HTTP 200) at developers.mailersend.com, and a second llms.txt at www.mailersend.com indexes product and API documentation with descriptive entries an agent can follow. That satisfies the core of pointing an agent at llms.txt. However, per-page markdown docs (.md) return 404 and no OpenAPI spec is discoverable at the probed paths. missing for 10: markdown-rendered doc pages, a machine-readable OpenAPI spec, an llms-full.txt or deeper agent-oriented guidance, independent or hands-on corroboration of agents using the docs.",
+    "rationale": "MailerSend publishes llms.txt files at both developers.mailersend.com and www.mailersend.com, and a live probe confirmed the developer one returns HTTP 200 with a structured documentation index. The content summarizes API capabilities (WhatsApp, scheduled messages, verification, templates) in agent-readable form, which delivers the story's core of pointing an agent at llms.txt. missing for 10: per-page markdown doc variants (the /.md probe returned 404), a machine-readable OpenAPI spec (all probed paths 404), and independent hands-on corroboration of agents consuming these docs.",
     "evidenceIds": [
       "mailersend-probe-1",
       "mailersend-docs-17",
-      "mailersend-docs-23",
+      "mailersend-docs-18",
       "mailersend-docs-8",
+      "mailersend-docs-12",
       "mailersend-probe-2",
       "mailersend-probe-3"
     ],
@@ -1263,8 +1264,8 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://developers.mailersend.com/llms.txt # Documentation"
         },
         {
-          "evidenceId": "mailersend-docs-23",
-          "quote": "Create, fetch, update, and delete single templates or a list of templates."
+          "evidenceId": "mailersend-docs-17",
+          "quote": "Send template-based WhatsApp messages with the MailerSend WhatsApp API."
         },
         {
           "evidenceId": "mailersend-docs-8",
@@ -1279,7 +1280,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "In-product AI insights are a fair question for an email SaaS, so the axis applies. The evidence shows only conventional analytics (open/click/bounce tracking, DMARC report analysis) and a way to connect MailerSend to external AI tools like Claude or Gemini. That external connection is an adjacent integration, not AI-generated insights or suggestions produced inside the product, so nothing documents the capability itself.",
+    "rationale": "The evidence pack documents analytics, delivery logs, DMARC monitoring and an MCP server that lets external AI assistants act on the account. None of it shows AI-generated insights or suggestions produced inside MailerSend itself. Connecting outside tools like Claude through MCP is an adjacent capability and earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1294,7 +1295,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "MailerSend documents one autonomous background automation of its own: inbound emails are automatically parsed and routed using rules and webhooks. The Scheduled Messages API covers one-off deferred sends, not recurring or general-purpose automations, and webhooks are event notifications rather than user-defined automations. Missing for 10: a general automation or workflow builder (triggers, conditions, actions), recurring schedules, agent-driven background tasks, in-depth docs on rule configuration, and independent corroboration.",
+    "rationale": "MailerSend's own inbound routing automatically parses and routes incoming emails by rules and webhooks, so a narrow, rule-based automation runs in the background without user action. The Scheduled Messages API covers only one-off scheduled sends, not recurring schedules, and webhooks are notification building blocks rather than automations. missing for 10: a general-purpose automation/workflow builder, recurring or triggered multi-step automations, agent-driven autonomous execution, and in-depth docs or hands-on corroboration of background automation behavior.",
     "evidenceIds": [
       "mailersend-docs-8",
       "mailersend-docs-18"
@@ -1321,10 +1322,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair question for a SaaS email platform like MailerSend, but the evidence pack never documents one inside the product. The only AI-related item describes connecting MailerSend to external AI tools such as Claude or Gemini. That is an integration with outside assistants, not an in-product assistant you can delegate tasks to, so it earns no credit here.",
+    "rationale": "The evidence shows only a hosted MCP server and integrations that let external AI tools such as Claude or Gemini operate MailerSend. That is an adjacent capability, not a built-in AI assistant inside the product that users can delegate tasks to. No in-product assistant is documented.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
       "citations": []
@@ -1336,12 +1337,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MailerSend is an API-first service: email can be sent through its Email API or SMTP relay, and it ships official language libraries. That makes non-interactive, scripted use from automation possible, but nothing in the evidence documents a CLI, CI guidance, or a CI integration. missing for 10: an official CLI or headless runner, documented CI/CD usage (e.g. a GitHub Action or pipeline examples), a published OpenAPI spec (the probe returned 404), and independent hands-on corroboration of CI use.",
+    "rationale": "MailerSend is API-first: its own Email API, official SDKs and SMTP relay let scripts send email and manage templates and account resources without the UI, so headless automation is directly supported in principle. However, nothing in the evidence documents a CLI, CI-specific guidance, or a published OpenAPI spec (the probe returned 404). missing for 10: official CLI, CI/CD integration docs or examples (e.g. a pipeline action), machine-readable OpenAPI spec, hands-on corroboration of CI usage.",
     "evidenceIds": [
       "mailersend-docs-1",
-      "mailersend-docs-2",
+      "mailersend-docs-26",
       "mailersend-docs-4",
-      "mailersend-docs-15",
+      "mailersend-docs-23",
+      "mailersend-docs-27",
       "mailersend-probe-3"
     ],
     "support": {
@@ -1351,15 +1353,19 @@
       "citations": [
         {
           "evidenceId": "mailersend-docs-1",
-          "quote": "transactional emails can be sent through MailerSend’s Email API or using SMTP relay."
+          "quote": "transactional emails can be sent through MailerSend’s Email API or using SMTP relay"
         },
         {
-          "evidenceId": "mailersend-docs-2",
-          "quote": "MailerSend supports this list of official libraries for your favorite programming language."
+          "evidenceId": "mailersend-docs-26",
+          "quote": "MailerSend supports this list of official libraries for your favorite programming language. This is the easiest way to integrate MailerSend with your application."
         },
         {
-          "evidenceId": "mailersend-docs-4",
-          "quote": "This endpoint allows you to send an asynchronous email."
+          "evidenceId": "mailersend-docs-23",
+          "quote": "Create, fetch, update, and delete single templates or a list of templates."
+        },
+        {
+          "evidenceId": "mailersend-docs-27",
+          "quote": "It returns the status of the email sent with an `x-message-id` that can be used to continuously query for the status using the Email API."
         }
       ]
     }
@@ -1370,7 +1376,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MailerSend is a transactional email, SMS and WhatsApp API platform, not an AI agent or assistant. Acting as an MCP client that consumes other servers' tools is outside its product role. The only AI-related evidence (\"Connect MailerSend directly to AI tools like Claude or Gemini\") describes exposing MailerSend to AI clients, which is the server direction, so it does not make this client axis applicable.",
+    "rationale": "MailerSend is a transactional email, SMS and WhatsApp delivery service, not an AI agent or assistant that consumes tools, so acting as an MCP client is outside its product role. The evidence shows only the opposite role: an MCP server that AI assistants connect to (mcp.mailersend.com). That server-side evidence does not make the client axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1382,18 +1388,28 @@
   {
     "productId": "mailersend",
     "storyId": "agentic-mcp-server",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "MailerSend's own llms.txt says it can connect directly to AI tools like Claude or Gemini, which is a first-party agent-connection capability. The evidence never names MCP or an official MCP server, and gives no setup or tool details, so the support is thin. Missing for 10: explicit confirmation of an official MCP server, documented setup/endpoint or install instructions, list of exposed tools, independent or hands-on corroboration.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "MailerSend's first-party docs describe an official MCP server at https://mcp.mailersend.com/mcp. Its MCP tools let AI assistants send emails and SMS and manage domains, templates, webhooks, suppressions, sender identities and users, and the llms.txt says it connects directly to AI tools like Claude or Gemini. missing for 10: independent or hands-on corroboration that the server works, documented authentication/setup details beyond adding the remote URL",
     "evidenceIds": [
+      "mailersend-docs-32",
+      "mailersend-docs-33",
       "mailersend-docs-12"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
       "citations": [
+        {
+          "evidenceId": "mailersend-docs-32",
+          "quote": "This server enables AI assistants to send emails and SMS, manage domains, templates, webhooks, suppressions, sender identities, users, and many other things through standardized MCP tools."
+        },
+        {
+          "evidenceId": "mailersend-docs-33",
+          "quote": "Usually, you would just add `https://mcp.mailersend.com/mcp` as a remote MCP address in any tooling that you are working with."
+        },
         {
           "evidenceId": "mailersend-docs-12",
           "quote": "Connect MailerSend directly to AI tools like Claude or Gemini."
@@ -1404,18 +1420,28 @@
   {
     "productId": "mailersend",
     "storyId": "agentic-nl-commands",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "MailerSend's own llms.txt says users can 'Connect MailerSend directly to AI tools like Claude or Gemini.' That is a first-party capability for driving the product through natural-language assistants, but it is a single thin marketing line, with no documentation of which operations are exposed or how commands are interpreted. The llms.txt file itself only helps machines read the docs and earns no credit. Missing for 10: documented connector or MCP setup, the list of operations available via natural language, any native in-app natural-language interface, and hands-on or independent corroboration.",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "MailerSend ships a first-party hosted MCP server at mcp.mailersend.com. It lets AI assistants like Claude or Gemini operate the product in natural language, covering sending email and SMS and managing domains, templates, webhooks, suppressions, sender identities and users. The natural-language layer comes from the connected AI client, and the only evidence is vendor docs. Missing for 10: a native in-app natural-language interface, independent or hands-on corroboration that the MCP tools work reliably, and documentation of tool-level limits.",
     "evidenceIds": [
+      "mailersend-docs-32",
+      "mailersend-docs-33",
       "mailersend-docs-12"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
+        {
+          "evidenceId": "mailersend-docs-32",
+          "quote": "This server enables AI assistants to send emails and SMS, manage domains, templates, webhooks, suppressions, sender identities, users, and many other things through standardized MCP tools."
+        },
+        {
+          "evidenceId": "mailersend-docs-33",
+          "quote": "Usually, you would just add `https://mcp.mailersend.com/mcp` as a remote MCP address in any tooling that you are working with."
+        },
         {
           "evidenceId": "mailersend-docs-12",
           "quote": "Connect MailerSend directly to AI tools like Claude or Gemini."
@@ -1429,7 +1455,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a developer-focused email SaaS like MailerSend, so the axis applies. The evidence documents the Email API, SMTP relay, official language libraries and connections to AI tools like Claude, but none of these is a command-line interface. SDKs and AI-tool integrations are adjacent building blocks and earn no credit for this story.",
+    "rationale": "An official CLI is a fair question for a developer-focused email API service, so the axis applies. The evidence pack documents official SDK libraries, SMTP relay, a REST API and a hosted MCP server, but never an official command-line tool. Those are adjacent capabilities and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1444,15 +1470,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "MailerSend documents a broad public REST API covering async email sending, templates CRUD, webhooks, SMS, WhatsApp, email verification, scheduled messages, and account limits. It also offers official client libraries and an llms.txt index of its developer docs. missing for 10: a discoverable machine-readable OpenAPI spec (probes at standard paths returned 404), independent or hands-on corroboration of API usage.",
+    "rationale": "MailerSend publishes a broad, documented public REST API under developers.mailersend.com. It covers async email sending with status querying, webhooks, templates CRUD, SMS, WhatsApp, email verification, scheduled messages and account limits, backed by official client libraries and an llms.txt index. Missing for 10: a machine-readable OpenAPI/Swagger spec (all probed paths returned 404), and independent or hands-on corroboration of API use.",
     "evidenceIds": [
       "mailersend-docs-1",
-      "mailersend-docs-2",
       "mailersend-docs-4",
-      "mailersend-docs-5",
-      "mailersend-docs-16",
-      "mailersend-docs-22",
+      "mailersend-docs-27",
       "mailersend-docs-23",
+      "mailersend-docs-22",
+      "mailersend-docs-21",
+      "mailersend-docs-26",
+      "mailersend-docs-5",
       "mailersend-probe-1",
       "mailersend-probe-3"
     ],
@@ -1462,20 +1489,24 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "mailersend-docs-1",
-          "quote": "transactional emails can be sent through MailerSend’s Email API or using SMTP relay"
-        },
-        {
           "evidenceId": "mailersend-docs-4",
           "quote": "This endpoint allows you to send an asynchronous email."
+        },
+        {
+          "evidenceId": "mailersend-docs-27",
+          "quote": "It returns the status of the email sent with an `x-message-id` that can be used to continuously query for the status using the Email API."
         },
         {
           "evidenceId": "mailersend-docs-23",
           "quote": "Create, fetch, update, and delete single templates or a list of templates."
         },
         {
-          "evidenceId": "mailersend-docs-2",
-          "quote": "MailerSend supports this list of official libraries for your favorite programming language."
+          "evidenceId": "mailersend-docs-22",
+          "quote": "Get your account's plan, email usage, API rate limits and resource limits in one request."
+        },
+        {
+          "evidenceId": "mailersend-docs-26",
+          "quote": "MailerSend supports this list of official libraries for your favorite programming language. This is the easiest way to integrate MailerSend with your application."
         }
       ]
     }
@@ -1486,7 +1517,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions API tokens with scopes, permissions or least-privilege restrictions. The only related item covers team-member access roles, which control human users rather than API credentials for an agent, so it is adjacent and earns no credit. Scoped credentials are a fair axis for an email API platform, so the verdict is none rather than na.",
+    "rationale": "Scoped API credentials are a fair axis for an email API platform, but the evidence pack never documents API tokens with limited scopes, permissions or domain restrictions. The only related item covers team-member access roles (mailersend-docs-11), which is user access management, not least-privilege API credentials for an agent, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1499,17 +1530,22 @@
     "productId": "mailersend",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "MailerSend's developer docs state that it offers official libraries for multiple programming languages, so developers can build against first-party SDKs for its API. The evidence is a single statement that does not name the languages or describe what the SDKs cover. Missing for 10: the specific list of SDK languages, evidence of SDK feature coverage across the API surface (SMS, WhatsApp, webhooks, etc.), and independent or hands-on corroboration of SDK quality.",
+    "rationale": "MailerSend's developer docs say it ships official libraries for multiple programming languages and call them the easiest way to integrate, so it directly offers official SDKs. The evidence does not show which languages are covered or how deep each SDK goes. Missing for 10: the specific language list and per-SDK API coverage, plus independent or hands-on corroboration of SDK quality.",
     "evidenceIds": [
-      "mailersend-docs-2"
+      "mailersend-docs-2",
+      "mailersend-docs-26"
     ],
     "support": {
       "relation": "direct",
       "coverage": "complete",
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": [
+        {
+          "evidenceId": "mailersend-docs-26",
+          "quote": "MailerSend supports this list of official libraries for your favorite programming language. This is the easiest way to integrate MailerSend with your application."
+        },
         {
           "evidenceId": "mailersend-docs-2",
           "quote": "MailerSend supports this list of official libraries for your favorite programming language."
@@ -1521,14 +1557,14 @@
     "productId": "mailersend",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "MailerSend's first-party API docs describe webhooks that subscribe to real-time event notifications. Delivery is to registered URLs, with a reachability test request on create or update and automatic exponential-backoff retries for about 3 days. That covers registrable outbound HTTP callbacks a programmatic consumer can receive. Missing for 10: no independent or hands-on corroboration, and the pack does not enumerate event types or document signature verification.",
+    "rationale": "MailerSend's first-party webhooks API lets users subscribe to real-time event notifications at a URL they provide. It sends a verification test request when a webhook is created or updated, and it retries non-2xx responses with exponential backoff for about 3 days. Its MCP server can also manage webhooks for agent-driven setup. Missing for 10: an enumerated list of subscribable event types, payload signing/verification details, and independent hands-on corroboration.",
     "evidenceIds": [
       "mailersend-docs-5",
       "mailersend-docs-6",
       "mailersend-docs-7",
-      "mailersend-docs-8"
+      "mailersend-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -1540,12 +1576,16 @@
           "quote": "Webhooks allow you to subscribe to real-time notifications about various events that occur in MailerSend."
         },
         {
+          "evidenceId": "mailersend-docs-7",
+          "quote": "When creating or updating a webhook, MailerSend will send a test request to the provided URL to verify that it is reachable."
+        },
+        {
           "evidenceId": "mailersend-docs-6",
           "quote": "If your endpoint is unreachable or returns a non-2xx response, MailerSend automatically retries with exponential backoff for up to about 3 days."
         },
         {
-          "evidenceId": "mailersend-docs-7",
-          "quote": "When creating or updating a webhook, MailerSend will send a test request to the provided URL to verify that it is reachable."
+          "evidenceId": "mailersend-docs-32",
+          "quote": "This server enables AI assistants to send emails and SMS, manage domains, templates, webhooks, suppressions, sender identities, users, and many other things through standardized MCP tools."
         }
       ]
     }
@@ -1556,7 +1596,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MailerSend has API reference documentation, including endpoint pages for email and webhooks. Nothing in the evidence shows an interactive explorer, a 'try it' console, or runnable examples, and the OpenAPI spec probes all returned 404. A static endpoint reference is adjacent to this story, not the interactive, runnable capability it asks for.",
+    "rationale": "MailerSend publishes an API reference with endpoint pages such as the Email API and Webhooks, but nothing in the evidence shows an interactive console, a try-it feature, or runnable examples. Probes for an OpenAPI or Swagger spec all returned 404, so there is also no machine-readable spec that would back an interactive explorer. A static reference alone does not deliver this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1571,7 +1611,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MailerSend is an API-first transactional email service, so a downloadable OpenAPI spec is a fair question. The pack has no evidence of one: probes of the common OpenAPI/Swagger paths all returned 404. The llms.txt documentation index is a different, adjacent artifact and is not a machine-readable API spec.",
+    "rationale": "The evidence pack documents no downloadable OpenAPI, Swagger or equivalent machine-readable API spec. A probe found every common OpenAPI/Swagger path returning 404. The llms.txt index and the MCP server are adjacent AI-facing features, not a machine-readable API specification, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1586,7 +1626,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test mode is a fair question for a transactional email API, but nothing in the evidence documents a sandbox environment, test mode, or test domain that avoids production sending or data. The webhook reachability test request and the free trial are adjacent features, not sandbox isolation.",
+    "rationale": "A sandbox or test mode is a fair axis for a transactional email API, but the evidence pack never documents a sandbox environment, test domain, or test API mode isolated from production. The webhook reachability test request and the free trial are adjacent features, not sandbox isolation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1601,7 +1641,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Several documentation URLs contain a '/api/v1/' path segment, which hints at URL-based versioning. However, no evidence item describes a versioning scheme, version lifecycle, or any deprecation or sunset policy. The core of the story, a documented deprecation policy, has no evidence, and a version number in a URL alone does not establish it.",
+    "rationale": "The only hint of versioning is the '/api/v1/' segment in documentation URLs (e.g., the email and webhooks endpoint pages); no evidence text describes an API versioning scheme. Nothing documents a deprecation policy, sunset timelines, or change notices, so the story's core is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1614,9 +1654,9 @@
     "productId": "mailersend",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "MailerSend documents its own bulk capabilities in two areas: bulk email verification through its Email Verification API, and operations on lists of templates. Beyond those two resource types, the evidence shows no general bulk or batch operation support. missing for 10: documented bulk/batch email sending, bulk operations across other resources (domains, recipients, messages), limits and behavior of bulk endpoints, independent or hands-on corroboration.",
+    "rationale": "MailerSend documents a first-party bulk capability in its Email Verification API, which verifies addresses \"in bulk\". The templates API also mentions operating on \"a list of templates\". Bulk support is evidenced only for these narrow resources, not as a general batch-operation capability across items. Missing for 10: a documented bulk email-sending or batch endpoint, bulk operations across other resources (suppressions, domains, recipients), details on batch size limits and async job handling, and independent hands-on corroboration.",
     "evidenceIds": [
       "mailersend-docs-21",
       "mailersend-docs-23"
@@ -1643,7 +1683,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "MailerSend documents its own rule-based automation for one event type: incoming emails are automatically parsed and routed using rules and webhooks. Webhooks also push real-time event notifications with retries, but that is outbound notification, not a user-defined rule engine for arbitrary events. Missing for 10: a general event-to-action rule or workflow builder beyond inbound routing, documentation of rule conditions and action types, and independent or hands-on corroboration.",
+    "rationale": "MailerSend documents its own event-driven automation: inbound email routing uses rules to automatically parse and forward incoming mail, and webhooks automatically fire real-time event notifications to a registered URL with retries. However, the evidence shows no general rule or workflow builder that lets users define conditions and actions across arbitrary events. Missing for 10: a general-purpose trigger/condition/action rule engine, documentation of which rule conditions and actions are available, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mailersend-docs-8",
       "mailersend-docs-5",
@@ -1661,6 +1701,10 @@
         {
           "evidenceId": "mailersend-docs-5",
           "quote": "Webhooks allow you to subscribe to real-time notifications about various events that occur in MailerSend."
+        },
+        {
+          "evidenceId": "mailersend-docs-6",
+          "quote": "MailerSend automatically retries with exponential backoff for up to about 3 days."
         }
       ]
     }
@@ -1671,7 +1715,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a transactional messaging platform, so the axis applies. The only related evidence is the Scheduled Messages API, which covers one-off scheduled sends, not recurring schedules or workflows. This is an adjacent feature and earns no credit toward the story.",
+    "rationale": "Recurring scheduled jobs or workflows are a fair question for a transactional email platform, but the evidence shows only a Scheduled Messages API for tracking scheduled messages. That is one-off scheduled sending, not a recurring schedule or workflow automation, so it counts only as an adjacent feature and earns no credit. The webhooks, MCP server and inbound routing in the pack are event-driven, not scheduled.",
     "evidenceIds": [
       "mailersend-docs-18"
     ],
@@ -1693,7 +1737,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MailerSend is an email/messaging platform where automation versioning is a fair axis, so the story applies. The evidence pack documents no versioning, review, or rollback of automations. Template CRUD, inbound routing rules, and delivery logs are adjacent features and do not deliver version history or rollback.",
+    "rationale": "The evidence pack never mentions versioning, review/approval, or rollback for automations or workflows. Template create/update/delete endpoints and inbound routing rules are adjacent features, not version history or rollback. Automation version control is a fair question for an email platform, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1708,7 +1752,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only a single-email send endpoint and merge-field personalization. Nothing in the pack shows a batch or bulk send that accepts multiple personalized messages in one request and returns per-message status. The bulk capability that is cited (email verification) belongs to a different story and does not transfer.",
+    "rationale": "The evidence documents only a single asynchronous email send endpoint that returns one `x-message-id`, plus merge-field personalization. Nothing shows a bulk or batch endpoint that accepts many personalized messages in one request and returns per-message status. Per-email status lookup and personalization are adjacent features and do not show batch sending.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1723,7 +1767,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions React Email, MJML, or any first-party email-as-code framework. It also says nothing about keeping templates in version control. The Templates API (create/fetch/update/delete) is a developer building block a user could script against from a repo, not the documented code-authoring capability the story asks for, so it earns no credit.",
+    "rationale": "The evidence pack never mentions React Email, MJML, or any first-party email-as-code framework. The Templates CRUD API and the drag-and-drop editor are adjacent: they would only let a developer build their own code-to-template sync workflow, and that does not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1738,7 +1782,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions dedicated IP provisioning or any warmup capability, whether automated ramp-up or a published schedule. The only IP-related item is blocklist monitoring of sending IPs, which is an adjacent deliverability feature and is not credited. Dedicated IPs are a fair axis for a transactional email service, so the verdict is none rather than na.",
+    "rationale": "The evidence pack never mentions dedicated IPs, IP warmup, automated ramp-up, or a published warmup schedule. The only IP-related item is blocklist monitoring of sending domains and IPs, which is an adjacent feature and does not deliver dedicated IP provisioning or warmup. Dedicated IPs are a fair question for a transactional email service, so the absence of evidence makes this \"none\" rather than \"na\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1753,11 +1797,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MailerSend documents real-time analytics for opens, clicks, bounces and unsubscribes. It also offers blocklist monitoring for domains and IPs, plus DMARC report analysis to identify potential sending issues, which covers part of the sender-reputation insight beyond raw counts. Missing for 10: explicit spam-complaint analytics, inbox placement guidance or testing, a sender reputation score or actionable recommendations, and independent or hands-on corroboration.",
+    "rationale": "MailerSend documents real-time analytics for opens, clicks, bounces and unsubscribes. It also offers reputation-related tooling: blocklist monitoring for sending domains and IPs, and DMARC report analysis to identify potential sending issues. This goes beyond raw counts on reputation signals, but complaint analytics and inbox-placement guidance are not evidenced. Missing for 10: complaint/spam-report analytics, inbox placement testing or guidance, an explicit sender reputation score or recommendations, independent or hands-on corroboration.",
     "evidenceIds": [
       "mailersend-docs-13",
       "mailersend-docs-19",
-      "mailersend-docs-20"
+      "mailersend-docs-20",
+      "mailersend-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -1785,11 +1830,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "MailerSend documents registrable webhooks for real-time event notifications, with automatic retries using exponential backoff for about 3 days and a test request to verify the endpoint is reachable. However, the evidence only says 'various events' and never lists delivered, bounced, or complained as webhook event types. missing for 10: explicit documentation of delivered/bounced/complained webhook event types, payload schemas, independent or hands-on corroboration of delivery and retry behavior.",
+    "rationale": "MailerSend documents registrable webhooks for real-time event notifications, with explicit retry behavior: exponential backoff for about 3 days on non-2xx or unreachable endpoints, plus a test request to verify the URL. The evidence does not name the delivered, bounced, or complained event types as webhook triggers; bounce tracking appears only as analytics data. missing for 10: documented webhook event types for delivered/bounced/complained, payload/signature documentation, independent or hands-on corroboration.",
     "evidenceIds": [
       "mailersend-docs-5",
       "mailersend-docs-6",
-      "mailersend-docs-7"
+      "mailersend-docs-7",
+      "mailersend-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -1817,7 +1863,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "MailerSend's own docs say content can be personalized with merge fields and conditional logic, and a templates API supports create, fetch, update and delete. That covers part of the story, but the evidence is a single thin marketing-style line with no documented templating syntax. Missing for 10: a documented templating language specification, loop/iteration support, preview or test-render before sending, and independent or hands-on corroboration.",
+    "rationale": "MailerSend's own docs say it personalizes content with merge fields and conditional logic, and it offers a template management API with create, fetch, update and delete. The evidence does not name or document a templating language, and nothing shows the rest of the story. Missing for 10: loop support, documented templating-language syntax reference, a template preview or test-render capability, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mailersend-docs-9",
       "mailersend-docs-23"
@@ -1842,12 +1888,13 @@
     "productId": "mailersend",
     "storyId": "engagement-event-history",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "MailerSend documents open and click tracking and filterable delivery logs for reviewing message activity, and webhooks deliver real-time event notifications. However, nothing in the evidence shows an API endpoint for querying a specific message's event history, and the activity logs are not described as API-accessible. missing for 10: documented per-message event/activity query API endpoint, evidence that open/click data is retrievable via the API, independent or hands-on corroboration.",
+    "rationale": "MailerSend documents open and click tracking and filterable delivery logs. The Email API returns an x-message-id that can be used to query a message's status. Webhooks push real-time event notifications. Missing for 10: explicit API docs for a per-message event history (opens, clicks, deliveries listed per message), confirmation that open/click data is exposed through the API rather than only the dashboard, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mailersend-docs-13",
       "mailersend-docs-14",
+      "mailersend-docs-27",
       "mailersend-docs-5"
     ],
     "support": {
@@ -1858,6 +1905,10 @@
         {
           "evidenceId": "mailersend-docs-13",
           "quote": "Track open rates, click-throughs, bounces, and unsubscribes with real-time data."
+        },
+        {
+          "evidenceId": "mailersend-docs-27",
+          "quote": "It returns the status of the email sent with an `x-message-id` that can be used to continuously query for the status using the Email API."
         },
         {
           "evidenceId": "mailersend-docs-14",
@@ -1876,9 +1927,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MailerSend's pricing page documents a free trial that grants access to all Professional plan features before subscribing. Professional is a production sending plan, which implies real sending during evaluation. However, the evidence never states trial volumes, recipient restrictions, or duration, so it is unproven whether the trial allows unrestricted real deliveries to your own users. One community report of an account being denied without explanation is a single anecdote and does not concretely contradict the trial. Missing for 10: explicit confirmation that trial or free sends reach arbitrary real recipients, documented trial or free-tier quotas and duration, any recipient or domain-verification restrictions during trial, independent hands-on corroboration.",
+    "rationale": "MailerSend documents a free trial that grants access to all Professional plan features before subscribing, so a founder can integrate and evaluate the service. However, the evidence never states that the trial permits real deliveries to arbitrary recipients, nor what its volume, duration or recipient limits are. One community report of an account being denied without explanation adds some uncertainty about onboarding, but it does not concretely contradict the trial claim. Missing for 10: explicit confirmation that trial or free sending reaches real external recipients, documented trial or free-tier limits (volume, duration, domain verification), and independent hands-on corroboration of production sends during the trial.",
     "evidenceIds": [
-      "mailersend-docs-24"
+      "mailersend-docs-24",
+      "mailersend-comm-1"
     ],
     "support": {
       "relation": "direct",
@@ -1898,7 +1950,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents MailerSend generating SPF/DKIM/DMARC DNS records, verifying them, or exposing domain verification status via the API. The DMARC Monitoring and Blocklist Monitoring APIs are adjacent features: they analyze reports and blocklist hits rather than authenticating a domain, so they earn no credit.",
+    "rationale": "The evidence pack never documents MailerSend generating SPF/DKIM/DMARC DNS records, verifying them, or exposing domain verification status via the API. The nearest items are adjacent and earn no credit: DMARC report monitoring, blocklist monitoring of sending domains, and an MCP server that can 'manage domains' without specifying DNS record generation or verification.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1913,7 +1965,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents an asynchronous send endpoint but says nothing about idempotency keys, request deduplication, or duplicate-suppression semantics for retried sends. The only retry evidence covers MailerSend retrying its own outbound webhook deliveries, which is a different feature and does not prevent double-sending on a client-side retry.",
+    "rationale": "The evidence pack has no idempotency keys or documented duplicate-suppression semantics for the send endpoint. The webhook retry behavior describes MailerSend retrying deliveries to your endpoint, not safe client retries of sends. The x-message-id is a status-tracking identifier, not a deduplication key, so both are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1926,11 +1978,14 @@
     "productId": "mailersend",
     "storyId": "inbound-parse",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "MailerSend's own docs say it can automatically parse incoming emails and route them via rules and webhooks, so inbound mail is a first-party capability. The evidence is a single marketing-level line, though. It does not document MX setup, which parsed fields are delivered, or any inbound API. Missing for 10: documented MX record configuration, an explicit parsed payload schema (headers, body, attachments), API retrieval of inbound messages, and independent or hands-on corroboration.",
+    "rationale": "MailerSend's own docs state it can 'automatically parse and route incoming emails using rules and webhooks', which is a first-party inbound-mail capability. Its webhook docs show reliable delivery with retries and URL verification. The inbound evidence is a single summary line, with no detail on MX setup or the parsed payload. Missing for 10: documentation of pointing MX records at MailerSend, the parsed payload structure (headers, body, attachments), an API to retrieve inbound messages, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "mailersend-docs-8"
+      "mailersend-docs-8",
+      "mailersend-docs-5",
+      "mailersend-docs-6",
+      "mailersend-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -1940,6 +1995,10 @@
         {
           "evidenceId": "mailersend-docs-8",
           "quote": "Automatically parse and route incoming emails using rules and webhooks."
+        },
+        {
+          "evidenceId": "mailersend-docs-6",
+          "quote": "If your endpoint is unreachable or returns a non-2xx response, MailerSend automatically retries with exponential backoff for up to about 3 days."
         }
       ]
     }
@@ -1949,8 +2008,8 @@
     "storyId": "inbound-routing-rules",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "MailerSend's own docs say it can parse and route incoming email using rules and webhooks, so the core capability is first-party and direct. The evidence is a single one-line marketing claim, with no detail on how rules work or which actions exist. Missing for 10: documented rule matching on recipient or pattern, forward and store actions, routing to multiple distinct POST endpoints, inbound payload/API docs, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "MailerSend's own docs state that it can parse and route incoming emails using rules and webhooks, so inbound routing is a first-party capability. That is a single thin mention, though. It does not detail what rules can match on, which actions exist, or whether different rules can target different endpoints. The general webhook docs cover event notifications, not inbound-mail routing, so they are not credited here. Missing for 10: documented recipient/pattern matching criteria, forward and store actions, per-rule POST to different endpoints, inbound routing API docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mailersend-docs-8"
     ],
@@ -1972,7 +2031,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Tenant isolation is a fair question for a transactional email service, but the evidence pack never documents subaccounts, subusers, or per-domain isolation of credentials, suppression lists, or reputation. Team member roles and blocklist monitoring of sending domains are adjacent features, not tenant isolation.",
+    "rationale": "The pack does not document tenant isolation: no subaccounts, and no per-domain or per-tenant credentials, suppression lists, or reputation separation. The closest items are team-member access roles and an MCP tool list that mentions managing domains, suppressions and users. Both are adjacent features and do not show isolation between tenants.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1987,18 +2046,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MailerSend documents a broad first-party API covering many resources: email sending, webhook management, template CRUD, scheduled messages, SMS, WhatsApp, blocklist and DMARC monitoring, email verification, and account plan/usage/limits. That suggests wide programmatic coverage. However, nothing in the evidence claims or shows full UI-to-API parity, and some UI features (e.g. team member and role management, delivery-log filtering) are not shown as API-accessible. Missing for 10: an explicit UI/API parity statement, evidence that team/user management and other dashboard features are exposed via API, a published OpenAPI spec (probes returned 404), and independent corroboration.",
+    "rationale": "MailerSend documents a broad API surface. It covers sending email, SMS and WhatsApp, template CRUD, webhooks, scheduled messages, blocklist and DMARC monitoring, email verification, and account usage and limits. Its MCP server also exposes domains, suppressions, sender identities and users. However, nothing in the evidence claims or shows full UI-to-API parity, and webhook re-enabling is described only as a dashboard action. Missing for 10: an explicit API/UI parity statement, a published OpenAPI spec (probes returned 404), evidence that UI-only features like the drag-and-drop editor and webhook re-enabling are API-accessible, and independent corroboration.",
     "evidenceIds": [
-      "mailersend-docs-4",
-      "mailersend-docs-5",
       "mailersend-docs-23",
+      "mailersend-docs-32",
       "mailersend-docs-18",
-      "mailersend-docs-19",
-      "mailersend-docs-20",
-      "mailersend-docs-21",
       "mailersend-docs-22",
-      "mailersend-docs-16",
-      "mailersend-docs-17",
+      "mailersend-docs-21",
+      "mailersend-docs-5",
+      "mailersend-docs-28",
       "mailersend-probe-3"
     ],
     "support": {
@@ -2011,28 +2067,16 @@
           "quote": "Create, fetch, update, and delete single templates or a list of templates."
         },
         {
+          "evidenceId": "mailersend-docs-32",
+          "quote": "This server enables AI assistants to send emails and SMS, manage domains, templates, webhooks, suppressions, sender identities, users, and many other things through standardized MCP tools."
+        },
+        {
           "evidenceId": "mailersend-docs-22",
           "quote": "Get your account's plan, email usage, API rate limits and resource limits in one request."
         },
         {
           "evidenceId": "mailersend-docs-18",
           "quote": "Keep track of scheduled messages using MailerSend's Scheduled Messages API endpoint."
-        },
-        {
-          "evidenceId": "mailersend-docs-19",
-          "quote": "Monitor your sending domains and IP addresses for blocklist hits with MailerSend's Blocklist Monitoring API."
-        },
-        {
-          "evidenceId": "mailersend-docs-20",
-          "quote": "Receive and analyze DMARC reports and identify potential sending issues with MailerSend's DMARC Monitoring API."
-        },
-        {
-          "evidenceId": "mailersend-docs-21",
-          "quote": "Verify a single email address or in bulk with MailerSend's Email Verification API."
-        },
-        {
-          "evidenceId": "mailersend-docs-5",
-          "quote": "Webhooks allow you to subscribe to real-time notifications about various events that occur in MailerSend."
         }
       ]
     }
@@ -2043,7 +2087,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability and account exit are fair questions for a SaaS email platform, so the axis applies. However, the evidence pack documents no bulk data-export feature, open-format export, or account-exit path. Template fetch APIs and filterable delivery logs are developer building blocks or adjacent features, not a documented capability to export all data and leave.",
+    "rationale": "The evidence pack has no documented capability to export all account data in open formats, and nothing on account offboarding or portability. API endpoints that fetch templates or activity logs are developer building blocks for assembling an export yourself, not a first-party export feature, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2058,7 +2102,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-sourcing a product's code under an open license is a fair question for a SaaS email platform, so the axis applies. The evidence pack never mentions MailerSend's source being available or any open license. The reference to 'official libraries' covers client SDKs, not the product's own source, and gives no license terms, so it earns no credit.",
+    "rationale": "MailerSend is a hosted transactional email SaaS, and whether its source is published under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence shows the product's source is published or open-licensed. The mention of official client libraries does not establish open-licensed product source.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2073,7 +2117,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a transactional email platform, since self-hostable email delivery systems exist, so the axis applies. The evidence describes MailerSend only as a hosted service reached through its Email API, SMTP relay and paid plans. Nothing documents a self-hosted or on-premises deployment of the core product.",
+    "rationale": "Self-hosting is a fair question for a transactional email service, so the axis applies. The evidence describes only a hosted SaaS: the API, SMTP relay and remote MCP endpoint all run on MailerSend's infrastructure, and pricing is plan-based. Nothing shows a self-hostable or on-premise deployment of the core product, and the MCP server is not the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2088,7 +2132,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency or region selection is a fair question for a SaaS email platform like MailerSend. Nothing in the evidence pack mentions choosing a storage region, EU/US data centers, or residency controls. The cited material covers sending, webhooks, analytics and related features only.",
+    "rationale": "Data residency or region selection is a fair axis for a transactional email SaaS. However, nothing in the evidence pack mentions choosing a storage region, EU/US hosting, or any residency controls. Absence of evidence for an applicable capability yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2103,7 +2147,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MailerSend is a SaaS email platform that handles customer and recipient data, so an AI-training opt-out or data-use policy is a fair question to ask of it. The evidence pack has nothing about AI training, data-use opt-outs, or a privacy policy on model training. The only AI-related item (connecting to Claude or Gemini) is an adjacent integration feature, not a data-training control.",
+    "rationale": "MailerSend is a SaaS email/SMS service that handles customer data, so a buyer can fairly ask whether it offers an AI-training opt-out. Nothing in the evidence pack covers AI training, data-use policies or opt-out controls. The MCP server and AI-tool connection evidence concerns integrations, not training-data privacy, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2118,7 +2162,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair privacy question for a transactional email SaaS, so the axis applies. The evidence pack documents no retention periods, retention settings, or deletion of message, log, or recipient data. The only deletion evidence covers deleting email templates, a different feature that earns no credit for this story.",
+    "rationale": "Data retention and deletion is a fair question for a transactional email service that stores message logs and recipient data, so the axis applies. The pack has no documented retention settings or data-deletion controls. Template CRUD (including delete) and suppression management are adjacent features, not control over retained data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2133,7 +2177,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair privacy question for a SaaS email platform, but nothing in the evidence documents a way for the account holder to opt out of telemetry or usage tracking. The open/click tracking feature (mailersend-docs-13) covers recipient engagement analytics, a different capability, so it earns no credit.",
+    "rationale": "Privacy controls such as opting out of telemetry or usage tracking are a fair question for a SaaS email platform and its SDKs, so the axis applies. The evidence pack never documents such an opt-out. The open and click tracking it describes measures email recipients' behavior, a different feature, and does not count as opting the user out of product telemetry.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2148,7 +2192,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "MailerSend has a public pricing page that names a Professional plan and lets users subscribe themselves after a free trial, so self-serve plan selection without a sales call is evidenced. Nothing in the pack shows per-volume tier prices, overage rates, or add-on costs such as dedicated IPs or validation credits. Missing for 10: published per-volume tier pricing, overage rates, dedicated IP add-on pricing, email validation pricing, independent corroboration.",
+    "rationale": "MailerSend has a public pricing page that names plans (e.g. the Professional plan) and offers self-serve subscription after a free trial, so some pricing is published without a sales call. The evidence does not show actual tier prices, volume bands, overage rates, or add-on costs. Missing for 10: published per-volume tier prices, overage rates, dedicated IP add-on pricing, email validation/verification credit pricing, independent corroboration.",
     "evidenceIds": [
       "mailersend-docs-24"
     ],
@@ -2168,15 +2212,14 @@
     "productId": "mailersend",
     "storyId": "quickstart-first-email",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "MailerSend claims email can be 'set up in minutes' and offers official libraries for multiple languages plus a send endpoint, so the core of a fast path to a first email is asserted. No quickstart content is evidenced, and one community report of an unexplained account denial hints at onboarding friction, though it is a single anecdote. Missing for 10: a documented copy-paste quickstart per language, disclosure of required setup steps (e.g. domain/sender verification), and independent hands-on timing from signup to first delivered email.",
+    "rationale": "MailerSend documents official libraries per language, calling them 'the easiest way to integrate', and an async send endpoint, and it markets setup 'in minutes'. Nothing in the pack shows a copy-paste-complete quickstart or that required setup (e.g., domain verification, API key creation) is surfaced up front. Missing for 10: evidence of an actual step-by-step quickstart per language, disclosure of required setup steps such as sending-domain verification, and hands-on corroboration of time-to-first-email.",
     "evidenceIds": [
+      "mailersend-docs-26",
       "mailersend-docs-25",
-      "mailersend-docs-2",
       "mailersend-docs-4",
-      "mailersend-docs-24",
-      "mailersend-comm-1"
+      "mailersend-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -2184,12 +2227,12 @@
       "subject": "As a developer, I can go from signup to my first delivered email in minutes — the quickstart is copy-paste complete for my language and doesn't hide required setup",
       "citations": [
         {
-          "evidenceId": "mailersend-docs-25",
-          "quote": "Transactional email, WhatsApp and SMS you can set up in minutes and deliver in seconds."
+          "evidenceId": "mailersend-docs-26",
+          "quote": "MailerSend supports this list of official libraries for your favorite programming language. This is the easiest way to integrate MailerSend with your application."
         },
         {
-          "evidenceId": "mailersend-docs-2",
-          "quote": "MailerSend supports this list of official libraries for your favorite programming language."
+          "evidenceId": "mailersend-docs-25",
+          "quote": "Transactional email, WhatsApp and SMS you can set up in minutes and deliver in seconds."
         },
         {
           "evidenceId": "mailersend-docs-4",
@@ -2203,8 +2246,8 @@
     "storyId": "rate-limit-transparency",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "MailerSend documents an endpoint that returns an account's API rate limits and resource limits, so a platform engineer can discover their limits programmatically. The pack gives no actual numbers or throttling semantics. missing for 10: documented requests-per-second figures, burst behavior, rate-limit response headers, 429/throttling error documentation, independent corroboration.",
+    "confidence": "medium",
+    "rationale": "MailerSend documents an account endpoint that returns the account's API rate limits, so a platform engineer can programmatically find the limits that apply to them. The pack contains no published limit values, burst semantics or throttling signals. Missing for 10: documented requests-per-second figures, burst/bucket behavior, rate-limit response headers, 429/throttling error documentation, independent corroboration.",
     "evidenceIds": [
       "mailersend-docs-22"
     ],
@@ -2226,7 +2269,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Testing sends without delivering real email is a fair axis for a transactional email API, but the evidence pack never documents a sandbox domain, test mode, or test API keys for MailerSend. The webhook verification test request (docs-7) only checks that an endpoint URL is reachable; it does not provide a non-delivering send mode, so it is adjacent and earns no credit. The free trial (docs-24) is not a test environment either.",
+    "rationale": "Nothing in the evidence pack documents a sandbox domain, test mode, or test API keys that accept messages without delivering them. The webhook verification test request (mailersend-docs-7) is an adjacent feature, not a send sandbox, and the free trial is a pricing arrangement, so neither earns credit. The axis clearly applies to a transactional email API, so absence of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2240,8 +2283,8 @@
     "storyId": "scheduled-send-api",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "MailerSend documents a first-party Scheduled Messages API endpoint, which shows that scheduled emails exist and can be tracked through the API. The pack never shows how to set a future send time on the email send endpoint, and nothing documents cancelling or deleting a scheduled message before delivery. missing for 10: an explicit scheduling parameter on the send API, a documented cancel/delete endpoint for scheduled messages, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "MailerSend documents a Scheduled Messages API endpoint, which implies emails can be scheduled for later delivery and tracked via the API. However, the evidence only says it is used to 'keep track of' scheduled messages. Nothing explicitly shows a scheduling parameter on the send endpoint or a call to cancel or delete a scheduled message. missing for 10: explicit documentation of a send-time/schedule parameter in the Email API, documented cancellation of a scheduled email before delivery, independent or hands-on corroboration",
     "evidenceIds": [
       "mailersend-docs-18",
       "mailersend-docs-4"
@@ -2266,13 +2309,14 @@
     "productId": "mailersend",
     "storyId": "single-send-quality",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "MailerSend documents a dedicated Email API endpoint for sending transactional email asynchronously and offers official libraries in several languages, so the core single-call send capability is there. The pack does not show the request's required fields, any quickstart code, or what the response returns. Missing for 10: documented minimal required fields, copy-paste quickstart code sample, evidence that a message id is returned for tracking, independent hands-on corroboration.",
+    "rationale": "MailerSend documents a single send endpoint for asynchronous transactional email that returns an `x-message-id` for status tracking. It also offers official libraries as the easiest integration path, which covers the core of the story. Missing for 10: documentation of the minimal required request fields, explicit copy-paste quickstart code samples, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mailersend-docs-4",
-      "mailersend-docs-1",
-      "mailersend-docs-2"
+      "mailersend-docs-27",
+      "mailersend-docs-26",
+      "mailersend-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -2284,12 +2328,16 @@
           "quote": "This endpoint allows you to send an asynchronous email."
         },
         {
-          "evidenceId": "mailersend-docs-1",
-          "quote": "transactional emails can be sent through MailerSend’s Email API or using SMTP relay."
+          "evidenceId": "mailersend-docs-27",
+          "quote": "It returns the status of the email sent with an `x-message-id` that can be used to continuously query for the status using the Email API."
         },
         {
-          "evidenceId": "mailersend-docs-2",
-          "quote": "MailerSend supports this list of official libraries for your favorite programming language."
+          "evidenceId": "mailersend-docs-26",
+          "quote": "This is the easiest way to integrate MailerSend with your application."
+        },
+        {
+          "evidenceId": "mailersend-docs-1",
+          "quote": "transactional emails can be sent through MailerSend’s Email API or using SMTP relay."
         }
       ]
     }
@@ -2298,12 +2346,13 @@
     "productId": "mailersend",
     "storyId": "smtp-relay-endpoint",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "MailerSend's own docs say transactional email can be sent through an SMTP relay as an alternative to the Email API, including from existing software or services, which fits the legacy-app case. The evidence does not show how SMTP credentials are generated or managed, or give connection details. Missing for 10: documented SMTP credential generation/management, relay host/port/auth details, independent or hands-on corroboration.",
+    "rationale": "MailerSend's own docs say transactional email can be sent through its SMTP relay instead of the Email API, including from existing software or services. That covers the legacy-app fallback at the core of this story. The evidence never shows generated SMTP credentials or connection details. Missing for 10: documented SMTP credential generation, documented host/port/auth configuration details, independent or hands-on corroboration.",
     "evidenceIds": [
       "mailersend-docs-1",
-      "mailersend-docs-15"
+      "mailersend-docs-15",
+      "mailersend-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -2317,6 +2366,10 @@
         {
           "evidenceId": "mailersend-docs-15",
           "quote": "Use MailerSend's SMTP to send emails via existing software or services."
+        },
+        {
+          "evidenceId": "mailersend-docs-31",
+          "quote": "Our SMTP relay service takes care of your email delivery so you don’t have to manage an email server."
         }
       ]
     }
@@ -2324,16 +2377,23 @@
   {
     "productId": "mailersend",
     "storyId": "suppression-list-api",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack never documents an API for reading or managing bounce, complaint, or unsubscribe suppression lists. The nearby items cover different capabilities: bounce and unsubscribe analytics tracking, pre-send email verification, domain/IP blocklist monitoring, and event webhooks. None of these is a suppression-list management API, so they earn no credit.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "MailerSend's first-party MCP server documents managing 'suppressions' as a standardized tool. That is the product's own programmatic interface over its suppression data, but the pack contains no REST endpoint docs for suppression lists. Bounce and unsubscribe tracking (docs-13) and webhooks are adjacent features and earn no credit here. Missing for 10: documented REST/API endpoints to list, add and delete suppressions; explicit separate hard-bounce, complaint and unsubscribe list types; evidence of automatic blocking of re-sends to suppressed addresses; independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mailersend-docs-32"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a platform engineer, I can read and manage bounce, complaint, and unsubscribe suppression lists via the API so my app never re-emails a hard bounce",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mailersend-docs-32",
+          "quote": "This server enables AI assistants to send emails and SMS, manage domains, templates, webhooks, suppressions, sender identities, users, and many other things through standardized MCP tools."
+        }
+      ]
     }
   },
   {
@@ -2342,11 +2402,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MailerSend documents an API to create, fetch, update and delete templates. It also has an email send endpoint and merge-field personalization, so the core of programmatic template management is there. The evidence does not show template versioning, and it does not explicitly show sending by template id with a variable payload. Missing for 10: template versioning via API, explicit documentation of sending by template_id with a variables payload, independent or hands-on corroboration.",
+    "rationale": "MailerSend documents API endpoints to create, fetch, update, and delete templates, and it advertises merge-field personalization, which covers the template-management and variable parts of the story. The evidence never shows template versioning, and no cited send-endpoint doc states that a send can be triggered by template id with a variable payload. Missing for 10: template versioning via API, documented send-by-template-id with variable substitution payload, independent corroboration.",
     "evidenceIds": [
       "mailersend-docs-23",
-      "mailersend-docs-4",
-      "mailersend-docs-9"
+      "mailersend-docs-9",
+      "mailersend-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -2358,12 +2418,12 @@
           "quote": "Create, fetch, update, and delete single templates or a list of templates."
         },
         {
-          "evidenceId": "mailersend-docs-4",
-          "quote": "This endpoint allows you to send an asynchronous email."
-        },
-        {
           "evidenceId": "mailersend-docs-9",
           "quote": "Personalize content with merge fields and conditional logic."
+        },
+        {
+          "evidenceId": "mailersend-docs-4",
+          "quote": "This endpoint allows you to send an asynchronous email."
         }
       ]
     }
@@ -2374,7 +2434,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows MailerSend has registrable webhooks with retries and a reachability test request on creation, but nothing about signed payloads, signing secrets, or signature verification code. A reachability test and retry behavior are adjacent webhook features and do not establish authenticity verification, so the applicable axis has no supporting evidence.",
+    "rationale": "The evidence documents MailerSend webhooks: event subscriptions, retries with exponential backoff, and a reachability test request on creation. Nothing in the pack mentions signed payloads, signing secrets, or signature verification code, so the authenticity capability is unevidenced. The reachability test checks the endpoint URL and is not payload authentication.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
