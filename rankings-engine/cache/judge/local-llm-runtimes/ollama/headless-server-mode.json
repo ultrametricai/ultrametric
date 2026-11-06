@@ -1,11 +1,11 @@
 {
-  "hash": "866bc2aacbcb6c01c62fba314f8d3fe8b30f7a309c4715bf59cf389f31170118",
+  "hash": "6b9ad26487a1b8dfbe122a2b86c946ae118a2df2e41f129d2880843faaf2f5d0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Ollama runs as a server exposing a REST API at http://localhost:11434 and installs on Linux via a shell script. Community reports describe running it on Linux for inference without the desktop app (which isn't on Linux) and using shipped ROCm containers, which implies headless server use, but no first-party doc explicitly describes headless or CI operation. missing for 10: explicit first-party documentation of headless/daemon serve mode, documented CI pipeline usage or official container docs, hands-on CI corroboration.",
+    "rationale": "Ollama runs as a local HTTP server: there is a REST API with an OpenAPI spec served at localhost:11434, a shell install script, and community reports of shipped ROCm containers and long-running Linux inference even though the desktop app was not available on Linux. Together these imply headless server operation. However, no first-party doc explicitly describes running without a GUI, a serve or daemon mode, or CI usage. Missing for 10: explicit first-party documentation of headless/daemon operation (e.g. a serve command or systemd service), official container/Docker docs, and documented CI-pipeline usage.",
     "evidenceIds": [
       "ollama-gh-4",
       "ollama-openapi-spec-20261105",
@@ -24,6 +24,10 @@
           "quote": "Ollama has a REST API for running and managing models."
         },
         {
+          "evidenceId": "ollama-openapi-spec-20261105",
+          "quote": "server url http://localhost:11434"
+        },
+        {
           "evidenceId": "ollama-docs-14",
           "quote": "curl -fsSL https://ollama.com/install.sh | sh"
         },
@@ -34,6 +38,10 @@
         {
           "evidenceId": "ollama-comm-9",
           "quote": "They have shipped ROCm containers since 0.1.27."
+        },
+        {
+          "evidenceId": "ollama-comm-4",
+          "quote": "instead of restarting the server"
         }
       ]
     },

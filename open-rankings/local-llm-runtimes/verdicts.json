@@ -14036,7 +14036,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Hardware backend support is a fair question for a local model-inference runtime like Ollama, so the axis applies. However, the evidence only mentions AMD GPUs via ROCm containers and Apple silicon via MLX. Nothing in the pack shows TPU or Gaudi support, or a plugin mechanism for adding accelerator backends.",
+    "rationale": "Hardware acceleration is a fair axis for a local inference runtime like Ollama, but the evidence pack never mentions TPU or Gaudi support, or any plugin mechanism for adding accelerator backends. The only hardware evidence covers AMD ROCm GPUs and Apple silicon via MLX, which are different capabilities and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14051,12 +14051,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe found an llms.txt at ollama.com/llms.txt (HTTP 200), and the docs site also serves an llms.txt that indexes an OpenAPI spec. API docs are published as markdown (e.g. /api/introduction.md), giving agents machine-readable entry points. missing for 10: independent or hands-on corroboration of agents consuming these docs, a markdown docs index at ollama.com/docs.md (returned 404).",
+    "rationale": "A probe confirms Ollama serves an llms.txt at ollama.com/llms.txt (HTTP 200), and docs.ollama.com also publishes an llms.txt indexing agent-consumable resources such as the OpenAPI spec, with docs pages available as .md files. Missing for 10: no hands-on or independent corroboration of agents consuming these docs, the ollama.com/docs.md markdown variant returns 404, and there is no evidence of an llms-full.txt or full-content dump.",
     "evidenceIds": [
       "ollama-probe-1",
       "ollama-openapi-spec-20261105",
-      "ollama-api-versioning-20261105",
-      "ollama-probe-2"
+      "ollama-api-versioning-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -14065,7 +14064,7 @@
       "citations": [
         {
           "evidenceId": "ollama-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://ollama.com/llms.txt # Ollama"
+          "quote": "PROBE llms.txt: HTTP 200 at https://ollama.com/llms.txt"
         },
         {
           "evidenceId": "ollama-openapi-spec-20261105",
@@ -14077,16 +14076,33 @@
   {
     "productId": "ollama",
     "storyId": "agentic-ai-insights",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Ollama runs open models that users can chat with (CLI, desktop app, API). However, no evidence shows a built-in feature that analyzes the user's own data inside the product and surfaces insights or suggestions. Generic model chat and API access are building blocks a user could apply to their data, not a documented in-product insights capability.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Ollama's own chat app and CLI let a user chat with local models, and a hands-on report says multimodal input works, so users can feed in their own content and get AI-generated responses. There is no documented feature that analyzes data held in the product and surfaces proactive insights or suggestions. missing for 10: documented in-product analysis of user data, proactive insight/suggestion features, first-party docs describing data-grounded insights, independent corroboration of such a workflow",
+    "evidenceIds": [
+      "ollama-gh-3",
+      "ollama-comm-18",
+      "ollama-docs-7"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "ollama-gh-3",
+          "quote": "Run and chat with [Gemma 4](https://ollama.com/library/gemma4):"
+        },
+        {
+          "evidenceId": "ollama-comm-18",
+          "quote": "Multimodal and Markdown support works as expected."
+        },
+        {
+          "evidenceId": "ollama-docs-7",
+          "quote": "Nothing you run locally ever leaves your machine."
+        }
+      ]
     }
   },
   {
@@ -14095,7 +14111,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is a model runtime and launcher. The evidence shows it powering external agents (Claude Code, Codex, OpenClaw) and serving a REST API, but nothing documents Ollama itself letting users set up background automations, triggers or recurring schedules. OpenClaw's assistant and the developer API are an integration and building blocks, so they earn no credit.",
+    "rationale": "The evidence shows Ollama serving models to agents and launching third-party coding tools (ollama launch, OpenClaw integration). Nothing shows Ollama itself letting users configure automations, recurring schedules, or background tasks that run autonomously. OpenClaw and Claude Code are separate products Ollama connects to, so they are adjacent integrations and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14110,7 +14126,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Ollama's own surfaces let you chat directly with a model: `ollama run` (\"Run and chat with Gemma 4\") and the new macOS/Windows app, where reviewers report multimodal and Markdown support working. That is a basic built-in assistant you can hand prompts to. The agentic delegation it advertises (`ollama launch`, OpenClaw) runs third-party agents like Claude Code and Codex on top of Ollama's models, so it earns no credit as a built-in assistant. missing for 10: a documented first-party agent that carries out multi-step tasks or tool actions, any documentation of the app's assistant capabilities beyond basic chat, and hands-on evidence of delegating real tasks inside the product.",
+    "rationale": "Ollama ships its own way to chat with models: the CLI \"run and chat\" flow and a first-party desktop chat app for macOS and Windows that a hands-on user says handles multimodal and Markdown. That is a basic built-in assistant, but there is no evidence of agentic task delegation inside the product; the agents it mentions (Claude Code, Codex, OpenClaw) are external tools it launches or connects to, which does not count as a built-in assistant. Missing for 10: documented in-product agentic task delegation (multi-step actions, tool use by the built-in assistant), first-party docs describing the chat app's assistant capabilities, Linux availability of the app.",
     "evidenceIds": [
       "ollama-gh-3",
       "ollama-comm-16",
@@ -14142,15 +14158,16 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Ollama has its own headless surfaces suited to automation: a scriptable shell install, a REST API for running and managing models, curl-driven requests, CLI commands like `ollama run` and `ollama pull`, and a long-running server that community users drive programmatically (e.g. a Discord bot), with containers also reported. However, no evidence documents CI usage specifically. missing for 10: first-party CI/headless deployment documentation (e.g. CI pipeline examples, official headless or daemon configuration guide), first-party container image docs, independent corroboration of use in CI pipelines.",
+    "rationale": "Ollama documents headless operation: a one-line shell install script, a local REST API server at localhost:11434 with an OpenAPI spec, curl examples, Python/JS libraries, and cloud calls by API key with no installation required. Community reports confirm it running unattended behind a bot and in ROCm containers. However, the pack has no first-party guidance on CI pipelines, containers or non-interactive automation. Missing for 10: documented CI/CD usage (e.g. GitHub Actions recipes), official headless/daemon or container deployment docs, non-interactive CLI flags for scripted runs.",
     "evidenceIds": [
-      "ollama-gh-4",
       "ollama-docs-14",
+      "ollama-gh-4",
       "ollama-docs-9",
-      "ollama-comm-3",
+      "ollama-openapi-spec-20261105",
+      "ollama-docs-20",
+      "ollama-docs-19",
       "ollama-comm-4",
-      "ollama-comm-9",
-      "ollama-openapi-spec-20261105"
+      "ollama-comm-9"
     ],
     "support": {
       "relation": "direct",
@@ -14158,20 +14175,20 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "ollama-gh-4",
-          "quote": "Ollama has a REST API for running and managing models."
-        },
-        {
           "evidenceId": "ollama-docs-14",
           "quote": "curl -fsSL https://ollama.com/install.sh | sh"
+        },
+        {
+          "evidenceId": "ollama-gh-4",
+          "quote": "Ollama has a REST API for running and managing models."
         },
         {
           "evidenceId": "ollama-docs-9",
           "quote": "Learn the local and cloud base URLs, then send a request with curl."
         },
         {
-          "evidenceId": "ollama-comm-4",
-          "quote": "the ability to 'hotswap' models with different utility instead of restarting the server"
+          "evidenceId": "ollama-docs-20",
+          "quote": "Call cloud models with an API key. No Ollama installation required."
         },
         {
           "evidenceId": "ollama-comm-9",
@@ -14186,7 +14203,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is a model runtime with a desktop app, so it could plausibly act as an MCP client and the axis applies. Nothing in the evidence pack shows Ollama itself connecting to or consuming MCP servers. Launching or connecting third-party agents such as Claude Code or Codex is a separate capability of those tools, not Ollama's own MCP-client support, so it earns no credit.",
+    "rationale": "Ollama is a model runner with an API and a desktop app, so acting as an MCP client is a fair question for this kind of product. The evidence pack never mentions Ollama itself connecting to MCP servers or consuming their tools. The listed integrations (Claude Code, Codex, OpenClaw, VS Code) are external agents that use Ollama as a model backend, which is adjacent and does not show Ollama plugging in MCP servers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14201,7 +14218,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is a model runtime and platform, not an agent, so publishing an official MCP server is a fair question and the axis applies. The pack documents a REST API, OpenAI/Anthropic-compatible endpoints, SDKs and a launcher for coding agents. None of these is an MCP server, and the 'Apps' connection for Claude/ChatGPT Desktop is never described as MCP, so this counts as absence of evidence.",
+    "rationale": "Ollama is a model runtime and API server, not an agent, so shipping an official MCP server is a fair question for it. However, the evidence pack never mentions an MCP server. Its agent connections run through REST, OpenAI-compatible and Anthropic-compatible APIs and the 'ollama launch' command. These are adjacent integrations, not an official MCP server.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14216,10 +14233,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama lets users chat with models in natural language and plug models into external coding agents. However, the evidence shows no way to operate Ollama itself (pulling, removing, switching or configuring models) through natural-language commands. Its control surfaces are CLI commands like `ollama launch`, `ollama pull` and `ollama rm`, plus a REST API, and chatting with a hosted model is the product's payload rather than natural-language control of the product.",
+    "rationale": "The evidence shows Ollama serves models that users chat with, and that it connects to external agents such as Claude Code and OpenClaw. Nothing shows Ollama itself being operated or managed through natural-language commands: model pull, rm and run are CLI commands, and the conversational assistants are separate tools. Chatting with a hosted model and third-party agent integrations are adjacent features, not natural-language control of the product.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": []
@@ -14231,13 +14248,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Ollama ships its own first-party CLI. The vendor documents the `ollama launch` command, which sets up and runs coding agents like Claude Code, OpenCode, and Codex, and hands-on community reports confirm everyday use of `ollama run --verbose`, `ollama pull`, and `ollama rm` for model management. missing for 10: a comprehensive first-party CLI command reference in the evidence, and evidence of machine-friendly CLI features (e.g. structured/JSON output, non-interactive scripting flags) for agentic use.",
+    "rationale": "Ollama ships its own first-party `ollama` CLI. The vendor documents the `ollama launch` command, which sets up and runs coding agents such as Claude Code, OpenCode and Codex against local or cloud models with no config files. Community users independently confirm everyday use of `ollama run`, `ollama pull` and `ollama rm` for model management. Missing for 10: a full first-party CLI command reference, and documented scripting or machine-readable output options for agent-driven automation.",
     "evidenceIds": [
       "ollama-docs-15",
       "ollama-docs-2",
+      "ollama-comm-5",
       "ollama-comm-3",
-      "ollama-comm-4",
-      "ollama-comm-5"
+      "ollama-comm-4"
     ],
     "support": {
       "relation": "direct",
@@ -14253,12 +14270,12 @@
           "quote": "Launch Claude Code, Codex, and more with one command."
         },
         {
-          "evidenceId": "ollama-comm-3",
-          "quote": "via 'ollama run' with --verbose"
-        },
-        {
           "evidenceId": "ollama-comm-5",
           "quote": "One 'ollama pull' and it's available. Underwhelming? 'ollama rm'."
+        },
+        {
+          "evidenceId": "ollama-comm-3",
+          "quote": "via 'ollama run' with --verbose"
         }
       ]
     }
@@ -14269,7 +14286,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ollama documents a REST API for running and managing models. It publishes an OpenAPI 3.1.0 spec at docs.ollama.com, offers official Python and JS libraries, OpenAI- and Anthropic-compatible endpoints, cloud API-key access, and an explicit stability and deprecation commitment. The 404s at ollama.com OpenAPI paths don't contradict this, since the spec is served on docs.ollama.com. missing for 10: independent hands-on corroboration specifically of driving the API, plus a formal versioning/sunset scheme (the API is not strictly versioned and OpenAI compatibility covers only a subset).",
+    "rationale": "Ollama documents a REST API for running and managing models. It publishes a downloadable OpenAPI 3.1.0 spec for its HTTP API and states a stability and backwards-compatibility commitment, backed by curl examples, Python/JS libraries and OpenAI/Anthropic-compatible endpoints. The 404s on ollama.com OpenAPI paths do not contradict this, since the spec is served from docs.ollama.com. missing for 10: independent hands-on corroboration of programmatic API use, an interactive in-docs API explorer, and a formal versioning/sunset scheme.",
     "evidenceIds": [
       "ollama-gh-4",
       "ollama-openapi-spec-20261105",
@@ -14277,8 +14294,8 @@
       "ollama-docs-9",
       "ollama-docs-19",
       "ollama-docs-12",
-      "ollama-docs-13",
-      "ollama-docs-20"
+      "ollama-docs-20",
+      "ollama-playground-disabled-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -14298,12 +14315,8 @@
           "quote": "the API is expected to be stable and backwards compatible. Deprecations are rare and will be announced in the release notes."
         },
         {
-          "evidenceId": "ollama-docs-20",
-          "quote": "Call cloud models with an API key. No Ollama installation required."
-        },
-        {
           "evidenceId": "ollama-docs-12",
-          "quote": "Connect OpenAI clients to Ollama. Ollama supports a subset of the OpenAI API"
+          "quote": "Ollama supports a subset of the OpenAI API"
         }
       ]
     }
@@ -14314,7 +14327,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama offers a cloud API that uses API keys, so the credential axis applies. However, nothing in the evidence shows keys can be scoped, permission-limited, or issued per agent. A plain API key for cloud models is an adjacent capability, not least-privilege credential issuance.",
+    "rationale": "Ollama offers cloud API access with an API key, so a credential-scoping question fairly applies to it. However, the evidence only shows that a key exists. Nothing documents scoped, least-privilege, or per-agent credentials. A plain API key is an adjacent feature, not the scoped-credential capability this story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14329,14 +14342,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ollama's docs list first-party Python and JavaScript/TypeScript libraries for using Ollama from applications. They are backed by a REST API, a published OpenAPI 3.1 spec, and a stated API stability commitment. Evidence about the SDKs themselves is limited to brief doc mentions. Missing for 10: detailed SDK reference docs (features, versioning, coverage of the API), SDKs beyond Python/JS, and independent or hands-on corroboration of building with the SDKs.",
+    "rationale": "Ollama's own docs list first-party Python and JavaScript/TypeScript libraries for using Ollama from applications, so the core of building against official SDKs is delivered. The evidence is a set of short headline mentions rather than in-depth reference material. Missing for 10: detailed SDK reference docs (method coverage such as streaming and tool calling, plus SDK versioning), SDKs beyond Python and JS/TS, and independent or hands-on corroboration of SDK use.",
     "evidenceIds": [
       "ollama-docs-19",
       "ollama-docs-10",
-      "ollama-docs-11",
-      "ollama-gh-4",
-      "ollama-openapi-spec-20261105",
-      "ollama-api-versioning-20261105"
+      "ollama-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -14364,7 +14374,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is an API-serving model runtime with a cloud offering, so outbound event webhooks are a fair question to ask of it. The evidence pack documents only a request/response REST API, an OpenAPI spec, SDKs, and agent integrations; nothing shows registrable outbound HTTP callbacks. The OpenClaw messaging-app connections (WhatsApp, Slack, Discord) are chat integrations, not webhooks, and the REST API is a developer building block, not an event subscription mechanism.",
+    "rationale": "Ollama is a model-serving runtime with a REST API, so outbound webhook subscriptions are a fair question for this kind of product. Nothing in the evidence documents registrable outbound HTTP callbacks or event subscriptions. The REST API, the OpenAPI spec and the OpenClaw messaging-app integrations (Slack/Discord) do not qualify as webhooks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14379,7 +14389,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ollama's own blog states it is compatible with the Anthropic Messages API, so tools like Claude Code can call the server with open models. The documented Claude Code integration (ollama launch, GitHub README) is consistent with that. Missing for 10: dedicated endpoint reference docs (path, supported fields, streaming/tool-use coverage or limitations), independent hands-on corroboration.",
+    "rationale": "Ollama's own blog states it is compatible with the Anthropic Messages API, which lets Claude Code run against open models. The documented Claude Code integration (`ollama launch`, README) is consistent with that endpoint, though neither item names the endpoint itself. missing for 10: endpoint reference docs (path, supported fields, features like streaming or tool use, and limits), independent hands-on corroboration of calling the messages endpoint directly.",
     "evidenceIds": [
       "ollama-docs-13",
       "ollama-docs-15",
@@ -14404,46 +14414,28 @@
   {
     "productId": "ollama",
     "storyId": "api-interactive-docs",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Ollama documents its REST API with copy-and-run curl request guidance and serves an OpenAPI 3.1.0 spec on docs.ollama.com, so a machine-readable API reference with example requests exists. Nothing in the evidence shows an interactive explorer or in-browser 'try it' console. The 404s on ollama.com OpenAPI paths are only a path difference from docs.ollama.com, not a contradiction. Missing for 10: evidence of an interactive in-browser API explorer or playground, runnable examples executable from the reference itself, and independent or hands-on corroboration of the reference experience.",
-    "evidenceIds": [
-      "ollama-openapi-spec-20261105",
-      "ollama-docs-9",
-      "ollama-gh-4",
-      "ollama-docs-20"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "high",
+    "rationale": "Ollama's docs have an endpoint reference with copyable curl examples and a downloadable OpenAPI 3.1 spec. However, a probe found the Mintlify in-page playground is configured to the 'simple' display, so no 'Try it' runner renders on any endpoint page. No vendor page documents an interactive explorer. Static curl snippets and a spec a user could load into another tool are adjacent building blocks or workarounds, not the interactive, runnable reference the story asks for.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": [
-        {
-          "evidenceId": "ollama-openapi-spec-20261105",
-          "quote": "docs.ollama.com serves a downloadable OpenAPI 3.1.0 document titled \"Ollama API\" whose description reads \"OpenAPI specification for the Ollama HTTP API\""
-        },
-        {
-          "evidenceId": "ollama-docs-9",
-          "quote": "Learn the local and cloud base URLs, then send a request with curl."
-        },
-        {
-          "evidenceId": "ollama-gh-4",
-          "quote": "Ollama has a REST API for running and managing models."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "ollama",
     "storyId": "api-machine-spec",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "First-party docs show docs.ollama.com serves a downloadable OpenAPI 3.1.0 document titled \"Ollama API\" (openapi.yaml), which the docs llms.txt lists under \"OpenAPI Specs\". The probe 404s were on ollama.com paths, a different host, so they do not contradict this. Missing for 10: independent or hands-on confirmation that the spec downloads and is complete, and evidence that it covers the OpenAI/Anthropic-compatible endpoints as well as the native REST API.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "docs.ollama.com serves a downloadable OpenAPI 3.1.0 document titled \"Ollama API\" at /openapi.yaml, and the docs llms.txt lists it under \"OpenAPI Specs\", so the spec is machine-discoverable. The probe 404s are on ollama.com conventional paths, a different host, and do not contradict this. missing for 10: independent or hands-on corroboration of the spec's completeness, and the spec is not served at the conventional ollama.com/openapi.json paths.",
     "evidenceIds": [
       "ollama-openapi-spec-20261105",
-      "ollama-gh-4"
+      "ollama-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -14453,10 +14445,6 @@
         {
           "evidenceId": "ollama-openapi-spec-20261105",
           "quote": "docs.ollama.com serves a downloadable OpenAPI 3.1.0 document titled \"Ollama API\" whose description reads \"OpenAPI specification for the Ollama HTTP API\""
-        },
-        {
-          "evidenceId": "ollama-gh-4",
-          "quote": "Ollama has a REST API for running and managing models."
         }
       ]
     }
@@ -14467,7 +14455,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment separate from production is a fair question for a model-serving platform with a cloud API, so the axis applies. However, the evidence never documents one. Local execution and privacy claims (\"Nothing you run locally ever leaves your machine\") describe data locality, not an isolated test environment or a dry-run mode, so they are adjacent at best.",
+    "rationale": "Ollama is a model runtime with a local server and a cloud API, so a sandbox or test-environment capability is a fair question to ask of it. The evidence documents no sandbox, test mode or isolated environment separate from production data. Local execution and data privacy (\"Nothing you run locally ever leaves your machine\") are an adjacent property, not a sandbox feature, and the docs' interactive API playground is disabled.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14482,7 +14470,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "high",
-    "rationale": "Ollama's own API docs give a stability and deprecation commitment: the API is expected to stay backwards compatible, and deprecations will be announced in the release notes. The same docs state the API isn't strictly versioned, so only the deprecation-policy half of the story is delivered, and only in a lightweight form. A published OpenAPI 3.1.0 spec adds some contract clarity. Missing for 10: formal API versioning (version paths or headers), a defined sunset/deprecation timeline, and independent corroboration that the stability commitment holds in practice.",
+    "rationale": "Ollama's API docs include a Versioning section with a stability and backwards-compatibility commitment, and they say deprecations will be announced in release notes. That is a light deprecation policy. However, the docs say outright that the API 'isn't strictly versioned', so the versioned-API half of the story is not delivered. The OpenAPI 3.1.0 spec documents the API surface but does not add versioning. Missing for 10: actual API versioning (versioned paths or headers), formal deprecation timelines or sunset windows, and independent corroboration that backwards compatibility holds in practice.",
     "evidenceIds": [
       "ollama-api-versioning-20261105",
       "ollama-openapi-spec-20261105"
@@ -14495,10 +14483,6 @@
         {
           "evidenceId": "ollama-api-versioning-20261105",
           "quote": "Ollama's API isn't strictly versioned, but the API is expected to be stable and backwards compatible. Deprecations are rare and will be announced in the release notes."
-        },
-        {
-          "evidenceId": "ollama-openapi-spec-20261105",
-          "quote": "OpenAPI specification for the Ollama HTTP API"
         }
       ]
     }
@@ -14509,7 +14493,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "low",
-    "rationale": "There is no first-party documentation of Metal or ARM optimizations. However, community evidence indicates Ollama moved to a native MLX backend on Apple Silicon. A hands-on M4 Pro benchmark shows strong throughput with optimized quantizations (int4 84.4 tok/s versus 30 tok/s for q4_K_M). An older report of slow MBP performance adds some uncertainty but does not contradict a vendor claim. Missing for 10: first-party docs describing Metal/MLX acceleration and native ARM builds, official performance guidance, and broader independent benchmarks.",
+    "rationale": "Community evidence says Ollama now uses native MLX on Apple Silicon instead of shelling out to llama.cpp. A hands-on M4 Pro benchmark shows 66.5–84.4 tokens/sec with Ollama's nvfp4/int4 variants versus 30.0 for q4_K_M, which suggests real Apple Silicon acceleration. An older report of slow performance on a MacBook Pro tempers this but predates the MLX change. Missing for 10: first-party documentation of Metal/ARM/MLX acceleration, explicit vendor claims about Apple Silicon optimization, and independent confirmation of Metal GPU offload.",
     "evidenceIds": [
       "ollama-comm-1",
       "ollama-comm-3",
@@ -14526,7 +14510,7 @@
         },
         {
           "evidenceId": "ollama-comm-1",
-          "quote": "native mlx should mean better memory handling on apple silicon"
+          "quote": "Ollama was basically shelling out to llama.cpp on mac before, so native mlx should mean better memory handling on apple silicon."
         }
       ]
     }
@@ -14537,7 +14521,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for an LLM runtime with a REST API, for example batch requests or multi-item operations, so the axis applies. However, the evidence pack documents no bulk or batch capability. Running multiple models concurrently and sustaining throughput across several agents are concurrency features, not bulk operations across many items, so they earn no credit.",
+    "rationale": "Bulk operations are a fair question for a model-serving tool with a REST API, so the axis applies. However, the evidence never documents a batch or bulk-operation capability across many items. Claims about running several agents or multiple models concurrently describe concurrency and throughput, which is an adjacent capability rather than bulk operations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14552,7 +14536,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Ollama letting users define event-triggered rules or automations. The pack covers model running, its REST API and SDKs, and launching coding agents. OpenClaw messaging integrations are a separate third-party assistant, and building automations on the API would be a developer building block, so neither earns credit.",
+    "rationale": "Ollama is a model runtime and platform, so event-triggered automation rules are a fair question for it. However, the evidence pack documents no rule engine, triggers, or event-driven actions. The REST API, SDKs, and OpenClaw messaging integration are developer building blocks or third-party tools, not a built-in rules-and-triggers capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14567,7 +14551,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is a model runtime with an app, a CLI, a cloud offering and integrations, so scheduled or recurring workflows are a fair question to ask of it. Nothing in the evidence pack documents any scheduling, cron-like, or recurring-job feature. The REST API, SDKs, 'ollama launch', and the third-party OpenClaw assistant are building blocks or adjacent integrations, not a first-party recurring scheduler.",
+    "rationale": "Scheduling recurring jobs is a fair question for a model platform that runs agents and offers cloud capacity, so the axis applies. Nothing in the evidence shows Ollama providing a scheduler, cron-like triggers, or recurring workflows. The REST API, SDKs, `ollama launch`, and OpenClaw integrations cover one-off requests and agent launching, not recurring scheduling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14582,7 +14566,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is a local and cloud model runtime and API server. It does not host or run user automations, so versioning, reviewing, and rolling back automations falls outside its product category. The evidence about API stability and deprecation concerns the HTTP API itself, not user automations, and does not make this axis applicable.",
+    "rationale": "Ollama is a local and cloud model runtime with an API. It is not an automation or workflow product, so versioning, reviewing and rolling back user automations falls outside its product category. API stability notes and model pull/rm management are about different subjects and do not make this axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14597,13 +14581,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ollama's own docs show it runs open LLMs (e.g. Gemma 4) and lets users switch models. Community reports show a MoE model (qwen3.5:35b-a3b) running via 'ollama run', multimodal working as expected, and new registry or Hugging Face models available with one 'ollama pull'. missing for 10: evidence of embedding-model support, any evidence of the 'hundreds of architectures' breadth, and first-party documentation of MoE and multimodal architecture support.",
+    "rationale": "Ollama clearly runs open LLMs locally, including Gemma 4 and a community-benchmarked qwen3.5:35b-a3b. A user reports multimodal works, and the vendor documents local image generation. The evidence never documents a catalog of hundreds of architectures, MoE support as such, or embedding models. Missing for 10: documented breadth of 'hundreds' of architectures, explicit MoE support documentation, embedding-model support, first-party multimodal documentation.",
     "evidenceIds": [
       "ollama-gh-3",
-      "ollama-docs-3",
       "ollama-comm-3",
       "ollama-comm-18",
-      "ollama-comm-5"
+      "ollama-docs-22",
+      "ollama-comm-5",
+      "ollama-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -14615,16 +14600,16 @@
           "quote": "Run and chat with [Gemma 4](https://ollama.com/library/gemma4):"
         },
         {
-          "evidenceId": "ollama-docs-3",
-          "quote": "Switch models without changing your workflow."
-        },
-        {
           "evidenceId": "ollama-comm-3",
-          "quote": "qwen3.5:35b-a3b-q4_K_M eval rate 30.0"
+          "quote": "qwen3.5:35b-a3b-q4_K_M eval rate 30.0, nvfp4 66.5, int4 84.4 tokens/sec via 'ollama run' with --verbose."
         },
         {
           "evidenceId": "ollama-comm-18",
           "quote": "Multimodal and Markdown support works as expected."
+        },
+        {
+          "evidenceId": "ollama-docs-22",
+          "quote": "Generate images locally with Ollama on macOS."
         },
         {
           "evidenceId": "ollama-comm-5",
@@ -14639,7 +14624,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is an open-source local model runtime, so building it from source is a fair question for this product. However, nothing in the evidence pack documents build-from-source instructions, toolchain requirements or dependency footprint. The GitHub items only cover integrations, model usage and the REST API, and the install evidence is a prebuilt install script.",
+    "rationale": "Building an open-source local model runtime from source is a fair question for Ollama, so the axis applies. The pack never documents source builds, build prerequisites, or the dependency footprint. It only covers the install script, the REST API, and the GitHub repo's integration blurbs, and community notes about Ollama relying on llama.cpp do not describe a build process.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14652,9 +14637,9 @@
     "productId": "ollama",
     "storyId": "built-in-chat-ui",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Community hands-on reports confirm Ollama ships its own desktop app for macOS and Windows that works as a chat GUI, with multimodal and Markdown rendering, so the product itself provides the capability. Limits are reported too: no Linux version and no way to connect to a remote Ollama instance, and the evidence pack has no first-party documentation of the chat interface. Missing for 10: first-party docs describing the GUI chat app, Linux support, remote-instance connection, and detail on chat features such as history and model switching in the GUI.",
+    "rationale": "Community hands-on reports confirm Ollama ships its own desktop chat app for macOS and Windows, with multimodal and Markdown rendering working as expected. However, no first-party docs in the pack describe the GUI, it is unavailable on Linux, and users note it cannot connect to a remote Ollama instance. Missing for 10: first-party documentation of the chat GUI, Linux support, remote-instance connection, and power-user controls in the interface.",
     "evidenceIds": [
       "ollama-comm-16",
       "ollama-comm-18",
@@ -14672,10 +14657,6 @@
         {
           "evidenceId": "ollama-comm-18",
           "quote": "Multimodal and Markdown support works as expected."
-        },
-        {
-          "evidenceId": "ollama-comm-17",
-          "quote": "this app doesn't seem to offer any way to connect to a remote Ollama instance"
         }
       ]
     }
@@ -14683,17 +14664,17 @@
   {
     "productId": "ollama",
     "storyId": "cli-interactive-chat",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Ollama's own GitHub README directs users to \"Run and chat with\" a model, and a community benchmark confirms the terminal command 'ollama run' is used to run models with --verbose output. However, the evidence never explicitly describes an interactive terminal chat session, such as a REPL prompt, multi-turn conversation or in-session commands, so only part of the story is documented. missing for 10: explicit first-party CLI docs showing 'ollama run' opens an interactive multi-turn chat in the terminal, description of in-session controls or commands, independent hands-on corroboration of the interactive chat experience.",
+    "rationale": "The GitHub README directly offers to \"Run and chat with\" a model. Community hands-on use of the `ollama run` CLI command (with --verbose) corroborates that model sessions run from the terminal. Missing for 10: the exact interactive CLI command is not quoted in first-party docs, and in-session features (multi-turn history, slash commands, exit and controls) are undocumented.",
     "evidenceIds": [
       "ollama-gh-3",
       "ollama-comm-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can start an interactive chat session with a model directly from the terminal",
       "citations": [
         {
@@ -14713,7 +14694,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Hands-on community reports show Ollama's own CLI downloading models ('ollama pull'), removing them ('ollama rm') and running them ('ollama run'), and users single out model management as a strength. There is no evidence of searching models from the command line, and the first-party docs in the pack never document these CLI subcommands; the REST API for managing models is a separate interface. missing for 10: CLI model search, first-party CLI documentation of pull/list/rm, other management commands (list, show, copy).",
+    "rationale": "Community hands-on reports confirm that Ollama's own CLI downloads models with 'ollama pull', removes them with 'ollama rm', and runs them with 'ollama run'. That covers downloading and basic management. However, no evidence shows model search from the command line, and the first-party docs in the pack do not document these CLI commands; the REST API for managing models is a separate interface, not the CLI. Missing for 10: CLI model search/discovery, first-party CLI reference docs for pull/list/rm/management commands.",
     "evidenceIds": [
       "ollama-comm-5",
       "ollama-comm-4",
@@ -14731,7 +14712,7 @@
         },
         {
           "evidenceId": "ollama-comm-4",
-          "quote": "combined with simple 'ollama pull model'—very convenient"
+          "quote": "combined with simple 'ollama pull model'"
         },
         {
           "evidenceId": "ollama-comm-3",
@@ -14739,7 +14720,7 @@
         },
         {
           "evidenceId": "ollama-comm-7",
-          "quote": "llama.cpp does almost everything ollama does better except model management"
+          "quote": "llama.cpp does almost everything ollama does better except model management."
         }
       ]
     }
@@ -14750,7 +14731,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents CLI flags or parameters for GPU layer offload or context length when loading a model. The only CLI evidence is generic commands ('ollama run --verbose', 'ollama pull', 'ollama launch'), and one community comment says Ollama hides server configuration behind its own defaults. The axis clearly applies to a local model runner, so the lack of evidence yields none.",
+    "rationale": "Loading models with custom GPU offload and context length is a fair question for a local model runner like Ollama, so the axis applies. However, nothing in the evidence documents CLI options for GPU layer offload or context length. The only CLI evidence covers 'ollama run' with --verbose, 'ollama pull', 'ollama rm' and 'ollama launch', none of which address these settings. A community comment says Ollama hides server configs behind defaults, but it concerns mlock, not offload or context length, so it is not a concrete counter-example.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14765,7 +14746,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Starting and stopping a local model server is a fair question for a local LLM runtime, so the axis applies. However, the evidence never documents a CLI command to start or stop the server. It only shows other CLI commands ('ollama run', 'ollama pull', 'ollama rm', 'ollama launch') and a server at localhost:11434, which are adjacent rather than this capability.",
+    "rationale": "The axis applies: Ollama is a local model server with a CLI. However, no evidence item documents a command to start or stop the server (such as a serve or stop subcommand). The pack shows other CLI commands (ollama run, pull, rm, launch) and a server at localhost:11434, but these are adjacent features, not server start/stop control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14779,12 +14760,13 @@
     "storyId": "client-library-bindings",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Ollama's own docs list a Python library and a JavaScript library for using Ollama from applications, with dedicated pages for Python and for JavaScript/TypeScript. This directly covers the story's named languages. Missing for 10: in-depth evidence of library coverage and usage (API surface, examples), and independent or hands-on corroboration of the client libraries.",
+    "confidence": "high",
+    "rationale": "Ollama's first-party docs explicitly list a Python library and a JavaScript library for calling it from your application, with dedicated pages for Python and for JavaScript/TypeScript, layered on its REST API. Evidence is brief headline-level documentation without depth on library features or independent hands-on corroboration. missing for 10: detailed library documentation (install, API coverage, examples), independent or hands-on corroboration of the client libraries.",
     "evidenceIds": [
       "ollama-docs-19",
       "ollama-docs-10",
-      "ollama-docs-11"
+      "ollama-docs-11",
+      "ollama-gh-4"
     ],
     "support": {
       "relation": "direct",
@@ -14812,13 +14794,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ollama documents using its own Ollama Cloud models alongside local models through the same CLI and API: `ollama launch` works \"with local or cloud models,\" and the docs give both local and cloud base URLs. However, the only cloud provider evidenced is Ollama's own cloud, not third-party providers such as OpenAI or Anthropic. The Claude, ChatGPT and Codex integrations point those tools at Ollama, not the reverse. Missing for 10: connecting third-party cloud AI providers (e.g., OpenAI or Anthropic API keys) inside Ollama, evidence of a unified model picker mixing local and cloud models in the desktop app, and hands-on corroboration of mixed local/cloud use.",
+    "rationale": "Ollama documents running its own Ollama Cloud models alongside local models through the same tooling: `ollama launch` works with local or cloud models, and the API has local and cloud base URLs. The evidence covers only Ollama's first-party cloud, not connecting to third-party providers; its OpenAI and Anthropic API compatibility lets those clients call Ollama, the opposite direction. Missing for 10: connection to third-party cloud AI providers (e.g. OpenAI, Anthropic) from within Ollama, documented unified switching between local and cloud models in one interface, and independent hands-on corroboration.",
     "evidenceIds": [
       "ollama-docs-8",
-      "ollama-docs-9",
       "ollama-docs-15",
-      "ollama-docs-20",
-      "ollama-probe-1"
+      "ollama-docs-9",
+      "ollama-probe-1",
+      "ollama-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -14826,16 +14808,16 @@
       "subject": "As a power-user, I can connect to cloud AI providers alongside local models within the same interface",
       "citations": [
         {
-          "evidenceId": "ollama-docs-15",
-          "quote": "ollama launch is a new command which sets up and runs coding tools like Claude Code, OpenCode, and Codex with local or cloud models."
-        },
-        {
           "evidenceId": "ollama-docs-8",
           "quote": "Run larger models on Ollama's Cloud without the download."
         },
         {
+          "evidenceId": "ollama-docs-15",
+          "quote": "sets up and runs coding tools like Claude Code, OpenCode, and Codex with local or cloud models"
+        },
+        {
           "evidenceId": "ollama-docs-9",
-          "quote": "Learn the local and cloud base URLs, then send a request with curl."
+          "quote": "Learn the local and cloud base URLs"
         },
         {
           "evidenceId": "ollama-probe-1",
@@ -14848,15 +14830,16 @@
     "productId": "ollama",
     "storyId": "cloud-offload-large-models",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Ollama's own docs say you can run larger models on Ollama's Cloud without downloading them. Cloud models are callable with an API key and cloud base URLs, and `ollama launch` works with local or cloud models. This directly matches the story of offloading big models when local hardware can't cope. Missing for 10: detailed documentation of which very large models the cloud tier offers and its limits, any documented guidance on moving from local to cloud when hardware is insufficient, and independent or hands-on community corroboration of the cloud tier.",
+    "rationale": "Ollama's docs state that larger models can run on Ollama's Cloud without being downloaded. Cloud models can be called with an API key and no local install, and the same workflow (`ollama launch`, local and cloud base URLs) covers both local and cloud models, which matches offloading when local hardware falls short. Missing for 10: detailed docs on which large models the cloud tier offers and its usage limits, and independent or hands-on corroboration of the cloud offload experience.",
     "evidenceIds": [
       "ollama-docs-8",
       "ollama-docs-20",
-      "ollama-docs-9",
       "ollama-docs-15",
-      "ollama-probe-1"
+      "ollama-docs-9",
+      "ollama-probe-1",
+      "ollama-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -14873,11 +14856,11 @@
         },
         {
           "evidenceId": "ollama-docs-15",
-          "quote": "sets up and runs coding tools like Claude Code, OpenCode, and Codex with local or cloud models"
+          "quote": "ollama launch is a new command which sets up and runs coding tools like Claude Code, OpenCode, and Codex with local or cloud models."
         },
         {
-          "evidenceId": "ollama-probe-1",
-          "quote": "Ollama is the easiest way to run open AI models locally or in the cloud"
+          "evidenceId": "ollama-docs-9",
+          "quote": "Learn the local and cloud base URLs, then send a request with curl."
         }
       ]
     }
@@ -14885,39 +14868,16 @@
   {
     "productId": "ollama",
     "storyId": "cloud-offload-pricing-caps",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Ollama has a hosted cloud tier for running larger models with an API key, and a pricing page with tier-style feature lines such as concurrency and \"more usage\". The evidence never states actual prices, tier names, rate limits, or usage caps, so a power-user cannot learn the limits from this pack. Missing for 10: explicit pricing tiers and prices, documented rate limits, documented usage caps or quotas, independent corroboration of cloud limits.",
-    "evidenceIds": [
-      "ollama-docs-8",
-      "ollama-docs-20",
-      "ollama-docs-17",
-      "ollama-docs-5",
-      "ollama-docs-4"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ollama does offer a hosted cloud tier: cloud models are reachable with an API key. However, no evidence states any pricing tiers, prices, rate limits or usage caps. The only pricing-page snippet (\"Run multiple models concurrently\") and the vague marketing lines (\"more usage\", \"Dedicated capacity\") do not let a power-user know what limits apply.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a power-user, I know the pricing tiers, rate limits, and usage caps that apply when offloading inference to the vendor's hosted cloud tier",
-      "citations": [
-        {
-          "evidenceId": "ollama-docs-8",
-          "quote": "Run larger models on Ollama's Cloud without the download."
-        },
-        {
-          "evidenceId": "ollama-docs-17",
-          "quote": "Run multiple models concurrently"
-        },
-        {
-          "evidenceId": "ollama-docs-5",
-          "quote": "Frontier capability with more usage."
-        },
-        {
-          "evidenceId": "ollama-docs-20",
-          "quote": "Call cloud models with an API key. No Ollama installation required."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -14926,14 +14886,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ollama documents several first-party ways to serve as the backend for coding agents. It is compatible with the Anthropic Messages API so Claude Code can run on open models, and it supports a subset of the OpenAI API for OpenAI clients. The `ollama launch` command sets up and runs Claude Code, OpenCode and Codex against local or cloud models with no config files. Missing for 10: independent or hands-on corroboration that a coding agent runs well on Ollama, and documentation of which parts of the OpenAI API the 'subset' leaves out.",
+    "rationale": "Ollama documents itself as a backend for coding agents. It offers Anthropic Messages API compatibility so Claude Code runs on open models, an OpenAI-compatible API subset, and an `ollama launch` command that sets up Claude Code, OpenCode and Codex against local or cloud models with no config files. The GitHub README corroborates connections to Claude Code, Codex, Copilot and OpenCode. Missing for 10: independent hands-on corroboration that coding agents work reliably against it, and the OpenAI compatibility covers only a subset of the API.",
     "evidenceIds": [
+      "ollama-docs-1",
+      "ollama-docs-2",
       "ollama-docs-13",
       "ollama-docs-15",
-      "ollama-gh-1",
       "ollama-docs-12",
-      "ollama-docs-1",
-      "ollama-docs-2"
+      "ollama-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -14953,8 +14913,8 @@
           "quote": "connect Ollama to your existing agents or applications such as `Claude Code`, `OpenClaw`, `OpenCode` , `Codex`, `Copilot`,  and more."
         },
         {
-          "evidenceId": "ollama-docs-12",
-          "quote": "Connect OpenAI clients to Ollama. Ollama supports a subset of the OpenAI API"
+          "evidenceId": "ollama-docs-1",
+          "quote": "Ollama lets you use open models with your coding agents so you can spend less while keeping your data private."
         }
       ]
     }
@@ -14965,7 +14925,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cold-start latency is a fair question for a local inference runtime like Ollama, but the evidence pack has no first-party claim about fast startup or a lightweight runtime binary. Community items describe convenient model hot-swapping and per-token throughput, which are not cold-start time. One user report says it \"takes a long while before it starts giving a result,\" which cuts against the story rather than supporting it.",
+    "rationale": "Ollama is a local inference runtime, so cold-start latency is a fair question for it. However, no vendor material claims a lightweight binary or fast startup time. The only on-topic hands-on report (ollama-comm-10) describes the opposite: it 'takes a long while before it starts giving a result.' Because there is no vendor claim to contradict, this is 'none' rather than 'disputed', and the model hot-swapping noted in the community is a different capability that earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14980,7 +14940,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no maximum number of concurrent requests or connections for the local Ollama server, and no point at which throughput degrades. The pricing-page claims about running multiple models concurrently and 'dedicated capacity' describe cloud plan features. They are not a documented local-server concurrency limit, so they earn no credit for this story.",
+    "rationale": "The evidence pack never documents a maximum number of concurrent requests or connections for the local server, nor any point at which throughput degrades. The 'run multiple models concurrently' line is a pricing-page claim, and 'dedicated capacity' describes cloud throughput; neither is a documented local concurrency limit. The benchmark in ollama-comm-3 measures single-request token rates, not concurrency.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14995,7 +14955,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only relevant evidence is a community report that Ollama has shipped ROCm containers since 0.1.27, which suggests first-party container images exist. Nothing in the first-party docs covers container deployment, image tags, GPU passthrough or reproducibility practices. missing for 10: first-party documentation of official container images, usage/configuration instructions, GPU (CUDA/ROCm) container guidance, version-pinning for reproducible deployment, hands-on corroboration of container runs",
+    "rationale": "The only evidence is a single community report that Ollama has shipped ROCm containers since 0.1.27, which suggests a first-party container image exists for running the runtime. Nothing in the pack documents container usage, image names, configuration, GPU passthrough, or reproducible deployment workflows. Missing for 10: first-party Docker/container documentation, official image references, deployment and configuration guidance, broader hands-on corroboration beyond one comment.",
     "evidenceIds": [
       "ollama-comm-9"
     ],
@@ -15017,7 +14977,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Serving throughput via continuous batching and chunked prefill is a fair axis for a local LLM runtime like Ollama, but nothing in the evidence documents either technique. The nearby items, cloud 'dedicated capacity' for throughput and running multiple models concurrently, are related features and do not show continuous batching or chunked prefill.",
+    "rationale": "Serving throughput through continuous batching and chunked prefill is a fair axis for a local LLM server like Ollama, but the pack never mentions either technique. The nearby claims do not qualify: \"run multiple models concurrently\" is a different capability, and \"dedicated capacity\" describes Ollama's cloud tier rather than a batching or prefill mechanism.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15032,7 +14992,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Splitting a model across GPU VRAM and system RAM is a fair question for a local LLM runtime like Ollama, but nothing in the evidence documents partial or layer-wise CPU+GPU offload. The closest items cover other things: 'Run larger models on Ollama's Cloud' is cloud hosting, not local offload, and the ROCm log shows a full fallback to CPU, not a combined CPU+GPU split.",
+    "rationale": "The pack contains no documentation or hands-on report of Ollama splitting a model's layers across GPU VRAM and system RAM so that models larger than available VRAM can run. The nearest items are about something else: running larger models on Ollama's Cloud is remote hosting, not local CPU+GPU offload, and a community log of a full fallback to CPU when ROCm is missing is not combined offload. Neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15047,7 +15007,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is a local inference runtime, so CPU architecture support is a fair axis. The evidence pack only covers platforms and GPUs: macOS, Windows, Linux, Apple Silicon, and AMD ROCm. Nothing documents builds or inference on PowerPC or any other non-x86/ARM CPU architecture.",
+    "rationale": "Ollama is a local inference runtime, so CPU-architecture support is a fair axis. Nothing in the evidence pack mentions PowerPC, RISC-V, s390x or any CPU architecture beyond the platforms implied by the macOS/Linux/Windows install and GPU discussion. With no documented support for non-x86/ARM CPUs, the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15062,7 +15022,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Configuring task-specific custom assistants is a fair question for a local model runner, but nothing in the evidence documents an Ollama feature for defining custom assistants with task-specific configuration. The pack only shows third-party agents and integrations (OpenClaw, Claude Code, Codex via `ollama launch`) and a user's own Discord bot that uses different models per feature. Those are integrations and user-side workarounds, not the product's own capability.",
+    "rationale": "Nothing in the evidence pack documents an Ollama feature for creating custom, task-specific assistants, such as per-model system prompts or persona configuration. The material is adjacent only: Ollama connects to external agents and to OpenClaw, a separate assistant tool, and one community user swaps between different models for different bot features. Third-party integrations and user-side arrangements earn no credit toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15077,7 +15037,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is a local model server with a REST API, so assigning a custom identifier or alias to a loaded model is a fair question for this kind of product. The evidence pack documents a REST API for running and managing models, model hot-swapping, and pull/rm commands. Nothing in it shows a way to give a model a custom name or alias for consistent reference in API calls.",
+    "rationale": "Assigning a custom identifier to a served model is a fair question for a local model server, so the axis applies. Nothing in the evidence pack documents aliasing, copying, renaming, or naming a loaded model for API reference. The REST API, model hotswapping, and concurrent-model mentions are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15092,7 +15052,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is an LLM inference runtime and server, so prefill/decode disaggregation is a fair serving-performance question for it. The evidence pack never mentions separating prefill and decode phases, disaggregated serving, or any large-scale distributed inference architecture. Claims about dedicated cloud capacity and running multiple models concurrently are adjacent throughput features, not this capability.",
+    "rationale": "Ollama is an LLM inference runtime and server, so prefill/decode disaggregation is a fair performance axis for it. However, nothing in the evidence pack documents separating the prefill and decode phases or any disaggregated serving architecture. Running multiple models concurrently and dedicated cloud capacity are different capabilities and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15107,7 +15067,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Multi-GPU distribution is a fair question for a local LLM inference runtime like Ollama, so the axis applies. However, nothing in the evidence pack documents tensor, pipeline, or data parallelism, or splitting a model across GPUs. Running multiple models concurrently and having dedicated cloud capacity are adjacent features, not developer-controlled multi-GPU parallelism.",
+    "rationale": "Multi-GPU distribution is a fair question for a local LLM inference runtime like Ollama, so the axis applies. However, nothing in the evidence pack documents tensor, pipeline, or data parallelism across GPUs. Running multiple models concurrently and cloud dedicated capacity are adjacent features, not multi-GPU parallelism for a single inference workload.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15122,7 +15082,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama runs models locally and says local data never leaves the machine. Its desktop app is noted to support multimodal input and Markdown. However, nothing in the evidence documents uploading documents, embedding or indexing them, or automatic retrieval-augmented generation over a user's files. Offline local inference and API building blocks are adjacent capabilities and do not deliver document RAG themselves.",
+    "rationale": "The evidence shows Ollama runs and chats with models locally, and states that nothing run locally leaves the machine. Nothing in the pack documents ingesting your own documents or automatic retrieval-augmented generation. Local chat and API building blocks are adjacent capabilities and earn no credit toward document RAG.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15137,7 +15097,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama ships a desktop chat app and agent integrations, so an AI document workspace is a plausible axis for it. However, no evidence shows an integrated workspace where an agent drafts and edits documents with automatic saving. The cited material covers model serving, APIs, coding-agent launch commands and chat, none of which is a document-editing workspace.",
+    "rationale": "Ollama ships a desktop chat app and launches coding agents, so an AI-assisted document workspace is a fair question for it. However, the evidence pack never documents an integrated workspace where an agent drafts and edits documents with automatic saving. Agent launching (ollama launch) and VS Code Chat integration are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15152,7 +15112,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only evidence is a single community user report that a new model on Hugging Face can be fetched and made available with one 'ollama pull'. That suggests the product itself pulls models directly from HF. No first-party documentation in the pack describes Hugging Face integration, the syntax, or supported formats. Missing for 10: first-party docs on pulling or running models from Hugging Face, details on supported repos and quantization formats, and independent hands-on corroboration beyond one comment.",
+    "rationale": "The only on-topic evidence is one community user's hands-on report that a new model on Hugging Face can be pulled with a single 'ollama pull'. This points to the product itself pulling HF models, but no first-party documentation in the pack describes Hugging Face integration. Missing for 10: first-party docs on pulling or running models directly from Hugging Face, the supported formats (e.g. GGUF) and repo syntax, and independent corroboration beyond a single comment.",
     "evidenceIds": [
       "ollama-comm-5"
     ],
@@ -15174,7 +15134,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Serving embedding models is a fair question for a local model server like Ollama. However, nothing in the evidence pack mentions embeddings, an embeddings endpoint, or retrieval and search use. The general REST API, the OpenAI-compatibility subset, and the chat and coding-agent material are adjacent features and do not show embedding serving.",
+    "rationale": "Serving embedding models is a fair axis for a local model server like Ollama, but nothing in the evidence pack mentions embeddings, an embeddings endpoint, or retrieval and search use. The generic REST API and the OpenAI-compatible subset are documented without saying embeddings are included, so they cannot be credited for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15189,7 +15149,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Licensing terms are a fair question for a local model runtime, but nothing in the evidence says whether commercial or enterprise use of Ollama needs a paid license or subscription. The pricing-page item ('Run multiple models concurrently') and the cloud-capacity claims describe features and usage tiers, not licensing terms. No license (for example, open-source terms) is named for the community edition.",
+    "rationale": "Licensing terms are a fair question for a local LLM runtime that also has a cloud offering, so the axis applies. The evidence pack never states Ollama's license, whether commercial or enterprise use is permitted free of charge, or whether a paid tier is required. The pricing-page item only lists a cloud feature (\"Run multiple models concurrently\"), which says nothing about commercial-use licensing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15204,7 +15164,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only relevant evidence is a community benchmark of quantized model variants (q4_K_M, int4, nvfp4) run through 'ollama run'. That shows Ollama runs 4-bit integer-quantized models, but nothing documents the full range from very low-bit to 8-bit or memory-footprint savings. missing for 10: first-party docs on supported quantization levels, evidence of very low-bit (2-3 bit) and 8-bit options, documented memory-footprint reduction, ability to choose or create quantizations.",
+    "rationale": "A single community benchmark shows Ollama running 4-bit quantized variants (q4_K_M and int4) with `ollama run`, so the product does serve integer-quantized models. Nothing else in the pack covers quantization, and no first-party docs describe quantization formats or memory savings. missing for 10: first-party documentation of quantization support, evidence of very low-bit (2-3 bit) formats, evidence of 8-bit formats, documented memory-footprint reduction, a way to select or create quantization levels.",
     "evidenceIds": [
       "ollama-comm-3"
     ],
@@ -15215,7 +15175,7 @@
       "citations": [
         {
           "evidenceId": "ollama-comm-3",
-          "quote": "qwen3.5:35b-a3b-q4_K_M eval rate 30.0, nvfp4 66.5, int4 84.4 tokens/sec via 'ollama run' with --verbose"
+          "quote": "qwen3.5:35b-a3b-q4_K_M eval rate 30.0, nvfp4 66.5, int4 84.4 tokens/sec via 'ollama run' with --verbose."
         }
       ]
     }
@@ -15226,7 +15186,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents whether upgrading Ollama keeps previously downloaded quantized model files working, and no community report covers it either way. The only stability commitment found covers the HTTP API's backwards compatibility, not on-disk model files, so it is an adjacent claim and earns no credit here.",
+    "rationale": "Model-file compatibility across runtime upgrades is a fair question for a local model runtime like Ollama, so the axis applies. The pack has no documentation of a model-file or quantization-format compatibility policy across upgrades. The API versioning note only covers HTTP API stability and deprecations, which is a different capability, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15241,7 +15201,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions the GGUF format, importing GGUF files, or a Modelfile/import path for GGUF. Community remarks about pulling models from Hugging Face, a q4_K_M quant tag, and Ollama's llama.cpp backend only imply GGUF compatibility through outside knowledge. None of them is documented support for loading GGUF-packaged models.",
+    "rationale": "Loading GGUF-packaged models is a fair question for a local model runner like Ollama, so the axis applies. However, nothing in the evidence pack mentions GGUF. Community remarks about llama.cpp underpinnings, a q4_K_M quant tag, and pulling models from HF are indirect hints only and do not document the product loading GGUF files.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15255,8 +15215,8 @@
     "storyId": "gpu-fallback-diagnostics",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "A community-posted log excerpt shows Ollama's own output explaining a GPU fallback: it detected an AMD GPU, found no compatible ROCm library, and said it would use the CPU. So the product does emit a reason when acceleration fails. That is a single AMD/ROCm instance from a community post, with no first-party documentation of diagnostics, so the depth and consistency of this output is unproven. Missing for 10: first-party docs on GPU-detection and fallback logging, evidence of diagnostics for NVIDIA/Metal and other failure modes, guidance on where to find or how to surface these messages, and independent corroboration that the output is clear rather than buried in server logs.",
+    "confidence": "medium",
+    "rationale": "A community-posted log excerpt shows Ollama's own server output naming the reason for GPU fallback (an AMD GPU was detected but no compatible ROCm library was found, so it falls back to CPU). That is direct, product-emitted diagnostic text for this story, but it rests on a single hands-on mention covering one vendor path. missing for 10: first-party documentation of GPU-detection and fallback diagnostics, evidence that the output is surfaced prominently rather than buried in server logs, coverage of NVIDIA/CUDA and Apple Metal failure reasons, and independent corroboration beyond one user report.",
     "evidenceIds": [
       "ollama-comm-11"
     ],
@@ -15276,9 +15236,9 @@
     "productId": "ollama",
     "storyId": "headless-server-mode",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Ollama runs as a server exposing a REST API at http://localhost:11434 and installs on Linux via a shell script. Community reports describe running it on Linux for inference without the desktop app (which isn't on Linux) and using shipped ROCm containers, which implies headless server use, but no first-party doc explicitly describes headless or CI operation. missing for 10: explicit first-party documentation of headless/daemon serve mode, documented CI pipeline usage or official container docs, hands-on CI corroboration.",
+    "rationale": "Ollama runs as a local HTTP server: there is a REST API with an OpenAPI spec served at localhost:11434, a shell install script, and community reports of shipped ROCm containers and long-running Linux inference even though the desktop app was not available on Linux. Together these imply headless server operation. However, no first-party doc explicitly describes running without a GUI, a serve or daemon mode, or CI usage. Missing for 10: explicit first-party documentation of headless/daemon operation (e.g. a serve command or systemd service), official container/Docker docs, and documented CI-pipeline usage.",
     "evidenceIds": [
       "ollama-gh-4",
       "ollama-openapi-spec-20261105",
@@ -15297,6 +15257,10 @@
           "quote": "Ollama has a REST API for running and managing models."
         },
         {
+          "evidenceId": "ollama-openapi-spec-20261105",
+          "quote": "server url http://localhost:11434"
+        },
+        {
           "evidenceId": "ollama-docs-14",
           "quote": "curl -fsSL https://ollama.com/install.sh | sh"
         },
@@ -15307,6 +15271,10 @@
         {
           "evidenceId": "ollama-comm-9",
           "quote": "They have shipped ROCm containers since 0.1.27."
+        },
+        {
+          "evidenceId": "ollama-comm-4",
+          "quote": "instead of restarting the server"
         }
       ]
     }
@@ -15317,7 +15285,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is a local and cloud LLM inference runtime, so paged KV-cache memory management is a fair performance axis for it. The evidence pack never documents paged attention or KV-cache paging. The related mentions are only adjacent: cloud 'dedicated capacity' throughput, running multiple models concurrently, and a community remark about better memory handling on Apple Silicon via MLX. None of these establish paged KV-cache management or fragmentation-free concurrency.",
+    "rationale": "Ollama is an LLM inference runtime, so paged KV-cache memory management is a fair axis to judge it on. Nothing in the evidence pack documents paged attention or KV-cache paging. The closest items are adjacent claims: concurrency (\"Run multiple models concurrently\", \"Dedicated capacity\") and a community remark that native MLX should improve memory handling. Neither establishes the capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15332,7 +15300,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama is a local model runner, so on-device speech transcription is a fair axis for it. However, nothing in the evidence pack mentions audio input, speech-to-text models, or real-time dictation. The documented capabilities cover text/chat models, coding-agent integrations, image generation on macOS, and a REST API, none of which is speech transcription.",
+    "rationale": "Ollama runs local AI models, so on-device real-time speech transcription is a fair question for this kind of product. However, the evidence pack contains nothing about audio input, dictation, or speech-to-text models. The mentions of local model execution, multimodal chat, and image generation do not show speech transcription, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15347,7 +15315,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Serving LoRA adapters is a fair question for a local LLM runtime like Ollama, so the axis applies. However, nothing in the evidence pack mentions LoRA adapters, applying adapters to a base model, or serving several adapters efficiently. Running multiple models concurrently and hot-swapping models are different capabilities and do not count toward this story.",
+    "rationale": "The evidence pack never mentions LoRA adapters, adapter loading, or serving multiple adapters on a shared base model. Running multiple models concurrently and hot-swapping models are related but different capabilities and earn no credit. The axis applies to a local LLM serving runtime, so the absence of evidence makes this none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15362,7 +15330,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the pack shows Ollama letting users override low-level engine settings such as mlock or mmap. The only on-topic item is a community report that Ollama hides llama.cpp server configs behind its own 'sane defaults' and won't allow mlock. With no vendor claim to contradict, this is 'none' rather than 'disputed'.",
+    "rationale": "Nothing in the evidence pack documents a way to override low-level engine settings such as mlock or mmap in Ollama. A community user says the opposite: Ollama hides llama.cpp server configs behind its own defaults and won't let you enable mlock. With no vendor claim to contradict, this is 'none' rather than 'disputed'.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15377,7 +15345,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Judging how fast a project ships patches from its public release history is a fair question for an open-source project like Ollama, so the axis applies. The pack has no evidence of release cadence, security advisories, CVE response times or patch turnaround. The only mentions are that deprecations are announced in release notes and a passing reference to version 0.1.27, and neither speaks to how quickly critical bugs or vulnerabilities get fixed.",
+    "rationale": "Patch cadence for critical bugs and security fixes is a fair question for an open-source runtime like Ollama, so the axis applies. However, the evidence pack contains no release history, changelog cadence, security advisories, or turnaround data. The only release-related item is the API versioning note that deprecations are announced in release notes, which concerns deprecation policy, not patch velocity.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15392,7 +15360,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "No first-party evidence documents that Ollama's downloaded model files or caches can be reused by other runtimes without re-downloading or re-converting. Nor does any vendor source explain the storage format to developers. The only on-topic item is a community claim that Ollama's registry format uses hashed filenames that don't work with other tools, which points away from reuse rather than toward it.",
+    "rationale": "Reusing model files and caches across runtimes is a fair question for a local model runtime like Ollama, so the axis applies. The pack has no first-party documentation on the on-disk model format, cache layout, or interoperability with other runtimes. The only relevant item is a community claim (ollama-comm-8) that Ollama's registry format uses hashed filenames that don't work with other tools, which argues against reuse rather than for it.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15407,7 +15375,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Ollama itself provides management of downloaded models: a REST API for managing models, with community users confirming pull/rm workflows and praising its model management. The evidence says nothing about saved prompts or per-model configurations, nor about a single unified place to manage all three. missing for 10: saved prompt management, per-model configuration management, a unified single-place management UI or workflow, first-party docs detailing model management.",
+    "rationale": "Ollama documents a REST API for running and managing models, and users confirm downloaded models are easy to manage with 'ollama pull' and 'ollama rm'. Model management is even singled out as an area where Ollama beats llama.cpp. Nothing in the evidence shows saved-prompt management, per-model configuration, or a single unified place for all three. missing for 10: saved prompts management, per-model configuration management, a unified single interface covering models/prompts/configs, first-party docs detailing model management.",
     "evidenceIds": [
       "ollama-gh-4",
       "ollama-comm-5",
@@ -15439,12 +15407,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Ollama's own materials claim it can run multiple models at once and manage models through its REST API, and a hands-on user explicitly praises 'hotswapping' models without restarting the server. However, no first-party documentation describes the load, unload or switch behavior itself or confirms it happens without a restart, and the concurrency claim comes from a pricing page whose scope (local versus cloud) is unclear. missing for 10: first-party docs on loading/unloading and switching models at runtime without a server restart, documented concurrency limits and memory behavior for local multi-model loading, corroboration beyond a single community report.",
+    "rationale": "Ollama's own REST API runs and manages models, and a hands-on community report confirms you can hotswap models without restarting the server. First-party evidence of multi-model loading is thin: the 'Run multiple models concurrently' claim appears on the pricing page and is not documented as a local-server behavior, and the vendor's own 'switch models' line is agent-workflow marketing. missing for 10: first-party docs describing on-demand model loading/unloading and switching within a running local server, documented limits on concurrently loaded models and memory, corroboration beyond a single community anecdote.",
     "evidenceIds": [
-      "ollama-docs-17",
+      "ollama-comm-4",
       "ollama-gh-4",
-      "ollama-docs-3",
-      "ollama-comm-4"
+      "ollama-docs-17",
+      "ollama-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -15452,16 +15420,20 @@
       "subject": "As a power-user, I can load and switch between multiple models without restarting the server",
       "citations": [
         {
-          "evidenceId": "ollama-docs-17",
-          "quote": "Run multiple models concurrently"
+          "evidenceId": "ollama-comm-4",
+          "quote": "the ability to 'hotswap' models with different utility instead of restarting the server"
         },
         {
           "evidenceId": "ollama-gh-4",
           "quote": "Ollama has a REST API for running and managing models."
         },
         {
-          "evidenceId": "ollama-comm-4",
-          "quote": "the ability to 'hotswap' models with different utility instead of restarting the server"
+          "evidenceId": "ollama-docs-17",
+          "quote": "Run multiple models concurrently"
+        },
+        {
+          "evidenceId": "ollama-docs-3",
+          "quote": "Switch models without changing your workflow."
         }
       ]
     }
@@ -15472,7 +15444,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Recommending a model that fits the user's hardware and task is a fair question for a local model runner like Ollama, so the axis applies. The evidence covers pulling, running, switching and cloud-hosting models, but nothing shows an assistant or tool that recommends a model before download. Community praise for easy 'ollama pull' and 'ollama rm' is a manual try-and-discard workaround, not a recommendation capability.",
+    "rationale": "Recommending a local model that fits the user's hardware and task is a fair question for a local model runner, so the axis applies. Nothing in the pack shows Ollama offering an assistant or tool that suggests models based on hardware or task before download. The evidence only covers pulling, running and switching models, and running cloud models without downloading, none of which is a recommendation capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15487,7 +15459,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "A single community hands-on benchmark shows Ollama loading and running the same model in q4_K_M, nvfp4 and int4 quantizations via 'ollama run', so it does handle some 4-bit formats. There is no first-party documentation of supported quantization formats in the pack. missing for 10: first-party docs on supported quantization formats, evidence of FP8 support, evidence of GPTQ support, evidence of AWQ support, guidance on how to import or load quantized weights.",
+    "rationale": "The only on-topic evidence is a community hands-on benchmark showing Ollama itself running quantized model variants (q4_K_M, nvfp4, int4) via 'ollama run'. That confirms INT4-class quantized loading in the product, but there is no first-party documentation of supported quantization formats. Missing for 10: first-party docs on supported quantization formats, evidence for FP8 loading, evidence for GPTQ loading, evidence for AWQ loading.",
     "evidenceIds": [
       "ollama-comm-3"
     ],
@@ -15498,7 +15470,7 @@
       "citations": [
         {
           "evidenceId": "ollama-comm-3",
-          "quote": "qwen3.5:35b-a3b-q4_K_M eval rate 30.0, nvfp4 66.5, int4 84.4 tokens/sec via 'ollama run' with --verbose"
+          "quote": "qwen3.5:35b-a3b-q4_K_M eval rate 30.0, nvfp4 66.5, int4 84.4 tokens/sec via 'ollama run' with --verbose."
         }
       ]
     }
@@ -15509,7 +15481,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ollama's own homepage nearly restates the story: it promises dedicated capacity so throughput holds when several agents run at once, and its pricing page advertises running multiple models concurrently. That is only a one-line marketing claim, apparently tied to a paid or cloud tier, with no documented mechanism, limits or guarantees. missing for 10: technical documentation of how capacity is reserved and what concurrency or throughput limits apply, clarity on which plans or local versus cloud deployments it covers, independent or hands-on benchmarks of throughput under concurrent sessions.",
+    "rationale": "Ollama's own marketing states directly that it offers dedicated capacity so throughput holds up when several agents run at once, and its pricing page lists running multiple models concurrently. These are only single-line claims. There are no technical docs on how capacity is reserved, which plans or deployment (local vs cloud) it applies to, or any measured concurrent throughput. Missing for 10: technical documentation of the capacity reservation and concurrency mechanism, scope by plan or deployment, and independent or hands-on benchmarks of steady throughput under concurrent load.",
     "evidenceIds": [
       "ollama-docs-4",
       "ollama-docs-17"
@@ -15536,7 +15508,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Ollama can run multiple models concurrently, but nothing documents any control over how context memory is allocated across those instances. Concurrency alone is an adjacent capability, not the allocation control the story asks for. One community comment says Ollama hides server configuration behind its own defaults, which reinforces the lack of evidence.",
+    "rationale": "This is a fair question for a local model runner, so the axis applies. The evidence only shows that Ollama can run multiple models concurrently, which is a pricing-page claim. Nothing documents any control over how context memory is allocated across concurrent instances, and one community comment says Ollama hides server configuration behind its own defaults.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15549,13 +15521,14 @@
     "productId": "ollama",
     "storyId": "multi-vendor-gpu-support",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Only community reports support this story: one user runs Ollama on an AMD RX 6650 via ROCm containers, and another notes native MLX on Apple silicon. A separate hands-on log shows ROCm detection failing and falling back to CPU, and there is no first-party documentation of vendor-specific GPU acceleration. missing for 10: first-party docs on GPU vendor support, any evidence of NVIDIA/CUDA acceleration, documented supported-hardware matrix, reliable AMD ROCm detection, independent benchmarks across vendors.",
+    "rationale": "Only community reports support this story: one user runs Ollama on an AMD RX 6650 and notes ROCm containers shipped since 0.1.27, and another describes native MLX on Apple silicon. A separate report shows ROCm detection failing and falling back to CPU. That is a configuration failure, not a contradiction of a documented claim. missing for 10: first-party documentation of GPU vendor support, any evidence of NVIDIA/CUDA acceleration, documented AMD ROCm compatibility requirements, independent benchmarks across GPU vendors.",
     "evidenceIds": [
       "ollama-comm-9",
+      "ollama-comm-1",
       "ollama-comm-11",
-      "ollama-comm-1"
+      "ollama-comm-3"
     ],
     "support": {
       "relation": "direct",
@@ -15568,7 +15541,7 @@
         },
         {
           "evidenceId": "ollama-comm-1",
-          "quote": "native mlx should mean better memory handling on apple silicon"
+          "quote": "native mlx should mean better memory handling on apple silicon."
         }
       ]
     }
@@ -15576,33 +15549,16 @@
   {
     "productId": "ollama",
     "storyId": "network-accessible-serving",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Ollama runs its own REST API server, and a community user refers to running a 'remote Ollama instance', which implies it can be reached from other machines. However, the documented server URL is http://localhost:11434, and nothing in the evidence shows how to expose it on the local network. Missing for 10: documented configuration for binding to a network interface or LAN address, guidance on accessing it from other devices, any security or authentication guidance for network exposure, and hands-on corroboration of LAN access.",
-    "evidenceIds": [
-      "ollama-gh-4",
-      "ollama-openapi-spec-20261105",
-      "ollama-comm-17"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Ollama runs a local HTTP/REST API server, but the documented server URL is http://localhost:11434. Nothing in the pack documents binding to a network interface or reaching the server from other devices on a LAN. A local-only API server is adjacent to this story, not the story itself. The single community mention of a 'remote Ollama instance' is a complaint about the GUI client, not documentation of network serving.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a power-user, I can serve models over my local network for access from other devices",
-      "citations": [
-        {
-          "evidenceId": "ollama-gh-4",
-          "quote": "Ollama has a REST API for running and managing models."
-        },
-        {
-          "evidenceId": "ollama-openapi-spec-20261105",
-          "quote": "OpenAPI specification for the Ollama HTTP API"
-        },
-        {
-          "evidenceId": "ollama-comm-17",
-          "quote": "connect to a remote Ollama instance"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -15611,7 +15567,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Ollama documents an `ollama launch` command that sets up and runs third-party coding agents (Claude Code, OpenCode, Codex) against local or cloud models with no environment variables or config files. The homepage repeats the one-command launch claim, and the GitHub README lists Claude Code, OpenCode, Codex and Copilot as agents it connects to. missing for 10: in-depth reference docs for `ollama launch` (supported agent list, flags, model selection), independent or hands-on corroboration that the one-command setup works as claimed.",
+    "rationale": "Ollama ships a first-party `ollama launch` command that sets up and runs Claude Code, OpenCode and Codex against local or cloud models with no environment variables or config files. The homepage also advertises launching these agents with one command. missing for 10: independent or hands-on corroboration that `ollama launch` works as claimed, in-depth reference docs listing all supported agents and configuration behavior.",
     "evidenceIds": [
       "ollama-docs-15",
       "ollama-docs-2",
@@ -15644,7 +15600,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ollama has a public GitHub repository, so an open-source contribution path is a fair question for this product. However, the evidence pack contains no contribution guide, pull-request process, contributor recognition, or maintainer path; the GitHub items only describe integrations, models and the REST API. Hosting code on GitHub is a host-platform fact and earns no credit toward a documented contribution-and-recognition process.",
+    "rationale": "Ollama has a public GitHub repository, so an open-source contribution path is a fair question for this product. However, the evidence pack only describes product features from the repo README. Nothing documents a contribution process, contributing guidelines, PR review, or how contributors become recognized collaborators.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15659,11 +15615,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Ollama's docs say OpenAI clients can connect to it and that it supports a subset of the OpenAI API. Its OpenAPI spec places the HTTP API on a local server at http://localhost:11434, so a local OpenAI-compatible endpoint is a first-party capability. However, compatibility is explicitly only a subset of the OpenAI API, and the pack never shows that it works for any loaded model. missing for 10: documentation of which OpenAI endpoints and features are covered, explicit confirmation that every local model is served through the OpenAI-compatible endpoint, documentation of how the server is started, independent or hands-on corroboration.",
+    "rationale": "Ollama runs a local HTTP API server at localhost:11434 that serves its models, and documents that OpenAI clients can connect to it. Its OpenAI compatibility is explicitly limited to \"a subset of the OpenAI API,\" which is a documented limitation on the story's core requirement. missing for 10: details of which OpenAI endpoints and parameters are covered, explicit evidence that the server works with any loaded model, and independent hands-on confirmation of OpenAI-client compatibility.",
     "evidenceIds": [
       "ollama-docs-12",
-      "ollama-gh-4",
       "ollama-openapi-spec-20261105",
+      "ollama-gh-4",
       "ollama-docs-9"
     ],
     "support": {
@@ -15676,12 +15632,12 @@
           "quote": "Connect OpenAI clients to Ollama. Ollama supports a subset of the OpenAI API"
         },
         {
-          "evidenceId": "ollama-gh-4",
-          "quote": "Ollama has a REST API for running and managing models."
+          "evidenceId": "ollama-openapi-spec-20261105",
+          "quote": "server url http://localhost:11434"
         },
         {
-          "evidenceId": "ollama-openapi-spec-20261105",
-          "quote": "with server url http://localhost:11434"
+          "evidenceId": "ollama-gh-4",
+          "quote": "Ollama has a REST API for running and managing models."
         }
       ]
     }
@@ -15692,11 +15648,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ollama documents its own REST API for running and managing models, backed by a published OpenAPI 3.1 spec, Python/JS libraries, and a stated stability commitment. That covers the core model operations a user would otherwise do through the app or CLI. However, nothing in the evidence states or demonstrates that the API matches the UI feature-for-feature, and some UI-surfaced features, such as connecting Apps on macOS, have no documented API equivalent. Missing for 10: an explicit API/UI parity statement, API coverage for app-only features like Apps connections, and independent hands-on confirmation that every UI action is scriptable.",
+    "rationale": "Ollama documents a REST API for running and managing models, backed by a published OpenAPI 3.1 spec and Python/JS libraries, so the core local workflows are exposed programmatically. Nothing in the evidence claims or shows full parity with the desktop app's UI features, such as connecting Claude/ChatGPT Desktop via Apps or image generation. missing for 10: an explicit API/UI parity statement or coverage mapping, API evidence for app-only features (Apps connections, image generation), independent hands-on confirmation of parity.",
     "evidenceIds": [
       "ollama-gh-4",
       "ollama-openapi-spec-20261105",
-      "ollama-api-versioning-20261105",
+      "ollama-docs-20",
       "ollama-docs-19",
       "ollama-docs-16"
     ],
@@ -15714,8 +15670,8 @@
           "quote": "OpenAPI specification for the Ollama HTTP API"
         },
         {
-          "evidenceId": "ollama-docs-19",
-          "quote": "Python library and JavaScript library — use Ollama from your application."
+          "evidenceId": "ollama-docs-20",
+          "quote": "Call cloud models with an API key. No Ollama installation required."
         }
       ]
     }
@@ -15726,7 +15682,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability is a fair question for a local model runner, but the evidence pack documents no export feature that would let a user move models, chats, or settings out in open formats. Data locality claims (prompts not tracked, local data stays on the machine) are adjacent privacy features, not export. A community comment alleges lock-in through a proprietary registry format with hashed filenames, which further undercuts any portability claim.",
+    "rationale": "Data portability is a fair question for a local model runner like Ollama, but the evidence pack documents no export feature, open-format data dump, or migration path for models, chats, or settings. Local data residency (\"Nothing you run locally ever leaves your machine\") is an adjacent privacy claim, not an export capability. A community report even describes lock-in through a proprietary registry format with hashed filenames that other tools can't read.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15739,12 +15695,12 @@
     "productId": "ollama",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence pack includes material from a first-party public GitHub repository (github.com/ollama/ollama), which suggests the source can be read. However, no evidence item states what license it uses or that the license is open. missing for 10: explicit documentation of an open-source license (e.g. MIT/Apache) for the repository, confirmation that the full product source (not just README content) is public, independent corroboration of the licensing.",
+    "rationale": "The evidence pack includes material from Ollama's own GitHub repository (github.com/ollama/ollama), which suggests the source is publicly readable. However, no item states what license that source is released under, so the 'open license' part of the story is unevidenced. Missing for 10: explicit evidence of an open-source license (e.g. MIT/Apache text or a license statement), first-party docs pointing to the source code, and independent corroboration of the licensing terms.",
     "evidenceIds": [
-      "ollama-gh-1",
-      "ollama-gh-4"
+      "ollama-gh-4",
+      "ollama-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -15757,7 +15713,7 @@
         },
         {
           "evidenceId": "ollama-gh-1",
-          "quote": "connect Ollama to your existing agents or applications"
+          "quote": "connect Ollama to your existing agents or applications such as `Claude Code`, `OpenClaw`, `OpenCode` , `Codex`, `Copilot`,  and more."
         }
       ]
     }
@@ -15768,16 +15724,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ollama is built to run open models on your own machine. It ships a one-line Linux install script and a public GitHub repo, and serves its HTTP API at localhost:11434. The vendor states that nothing run locally leaves the machine, and community users confirm running it on their own hardware, including ROCm containers on AMD GPUs. Missing for 10: first-party deployment and server-configuration documentation in the pack (one user reports server configs such as mlock are hidden behind defaults), and the larger Cloud-hosted models are not self-hostable.",
+    "rationale": "Ollama ships a one-line installer and runs its own local server (the OpenAPI spec targets http://localhost:11434), so the core product runs on the user's own hardware with local data handling. Community users independently confirm running it locally and in vendor-shipped ROCm containers. missing for 10: explicit first-party documentation of the open-source license and of production/server self-hosting deployment (containers, remote hosting configuration).",
     "evidenceIds": [
       "ollama-docs-14",
       "ollama-docs-7",
       "ollama-openapi-spec-20261105",
-      "ollama-probe-1",
       "ollama-gh-4",
       "ollama-comm-9",
       "ollama-comm-15",
-      "ollama-comm-13"
+      "ollama-comm-14"
     ],
     "support": {
       "relation": "direct",
@@ -15794,15 +15749,15 @@
         },
         {
           "evidenceId": "ollama-openapi-spec-20261105",
-          "quote": "with server url http://localhost:11434"
-        },
-        {
-          "evidenceId": "ollama-probe-1",
-          "quote": "Ollama is the easiest way to run open AI models locally or in the cloud"
+          "quote": "server url http://localhost:11434"
         },
         {
           "evidenceId": "ollama-comm-9",
           "quote": "They have shipped ROCm containers since 0.1.27."
+        },
+        {
+          "evidenceId": "ollama-comm-15",
+          "quote": "Ollama is definitely the easiest way to run LLMs locally"
         }
       ]
     }
@@ -15813,7 +15768,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only documented install path is a one-line shell script (curl | sh). That is a quick installer but not a standard package manager such as Homebrew, apt, winget, or pip for the runtime. The Python and JavaScript libraries are client libraries, not the runtime, so they do not transfer to this story. No evidence shows Ollama being distributed through a standard package manager.",
+    "rationale": "The only installation evidence is a curl-piped shell script (`curl -fsSL https://ollama.com/install.sh | sh`). That is a vendor install script, not a standard package manager such as Homebrew, apt, winget or pip. The Python and JavaScript libraries are client libraries for apps, not a way to install the runtime, and nothing in the pack documents package-manager distribution of Ollama.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -15828,12 +15783,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Ollama's download page documents a one-line install script (`curl -fsSL https://ollama.com/install.sh | sh`), so installation does not require compiling from source. Community reports add downloadable macOS and Windows apps and shipped ROCm containers. However, the first-party evidence never explicitly states that prebuilt binaries are provided, and native installers and containers are evidenced only by community comments. missing for 10: first-party documentation of prebuilt binaries/packages per OS (macOS/Windows installers, Linux packages), official container image documentation, and a statement of which platforms and architectures are covered.",
+    "rationale": "Ollama's download page documents a one-line install script, and community reports confirm ready-made macOS/Windows apps and shipped ROCm containers. Together these show installation without compiling from source. However, the evidence never explicitly describes the artifacts as prebuilt binaries or lists the supported packages and platforms, so coverage is incomplete. missing for 10: first-party documentation that explicitly describes prebuilt binaries or packages per OS/architecture (e.g. Windows/macOS installers, Linux package or tarball listings, official Docker image docs), and confirmation that the install script fetches precompiled artifacts.",
     "evidenceIds": [
       "ollama-docs-14",
       "ollama-comm-16",
-      "ollama-comm-9",
-      "ollama-comm-18"
+      "ollama-comm-9"
     ],
     "support": {
       "relation": "direct",
@@ -15861,7 +15815,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Prefix caching is a fair performance axis for a local LLM inference runtime like Ollama, so the story applies. However, nothing in the evidence pack mentions prefix caching, KV-cache reuse, or speeding up repeated prompts. The concurrency, throughput and benchmark items are about different capabilities and do not count toward this story.",
+    "rationale": "Prefix or KV-cache reuse is a fair performance question for a local LLM runtime like Ollama, so the axis applies. However, nothing in the evidence pack documents prefix caching, prompt caching, or KV-cache reuse for repeated prompts. The related items are about cloud throughput capacity, running models concurrently, and mlock memory handling, which are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15874,13 +15828,14 @@
     "productId": "ollama",
     "storyId": "privacy-data-residency",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Ollama's own documentation lets users run models locally, where 'nothing you run locally ever leaves your machine', or opt into Ollama's Cloud. That gives a coarse, device-level choice of where data lives (on your own machine versus the vendor cloud). There is no evidence of region selection or data-residency controls for the cloud service. Missing for 10: cloud region/residency selection, documented data-storage location policy for cloud usage, residency guarantees or compliance details, independent corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Ollama lets users choose between running models locally, where it claims nothing leaves the machine, and running larger models on Ollama's Cloud. That gives a coarse, device-level choice of where prompts and data reside, but the evidence shows no region or residency selection for the cloud offering. missing for 10: selectable cloud storage/processing regions, documented data-residency guarantees for cloud usage, independent corroboration of local-only data handling.",
     "evidenceIds": [
       "ollama-docs-7",
       "ollama-docs-8",
-      "ollama-docs-15"
+      "ollama-docs-15",
+      "ollama-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -15908,7 +15863,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ollama states that prompts are never tracked or trained on, and that nothing run locally leaves the machine. That covers the story by default, with no opt-out needed. The evidence is limited to short homepage marketing claims. missing for 10: detailed first-party privacy policy or contractual data-use terms (especially for Ollama Cloud), independent or hands-on corroboration of the no-training claim",
+    "rationale": "Ollama's own site states that prompts are never tracked or trained on, and that nothing run locally ever leaves the user's machine. That is a no-training guarantee by default, which covers the core of this story. The support is a brief homepage marketing claim, not detailed policy documentation, particularly for Ollama's Cloud usage. Missing for 10: formal privacy-policy or terms documentation of the no-training commitment for cloud models, independent or hands-on corroboration.",
     "evidenceIds": [
       "ollama-docs-6",
       "ollama-docs-7",
@@ -15929,7 +15884,7 @@
         },
         {
           "evidenceId": "ollama-docs-1",
-          "quote": "keeping your data private"
+          "quote": "so you can spend less while keeping your data private"
         }
       ]
     }
@@ -15940,10 +15895,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack contains privacy claims: prompts are never tracked or trained on, and local runs never leave the machine. Neither documents a user-facing control for data retention periods or deletion of conversation or prompt data, locally or on Ollama's Cloud. 'ollama rm' removes downloaded models, not user data, so it is an adjacent feature and earns no credit.",
+    "rationale": "The evidence offers only adjacent privacy claims: prompts are not tracked or trained on, and local runs stay on the machine. It documents no retention settings, retention periods, or ways to delete conversation or prompt data, locally or on Ollama Cloud. The community mention of 'ollama rm' covers removing downloaded models, not deleting user data.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can control data retention and deletion",
       "citations": []
@@ -15952,16 +15907,28 @@
   {
     "productId": "ollama",
     "storyId": "privacy-telemetry-optout",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The pack contains only marketing-level privacy claims ('Your prompts are never tracked or trained on', 'Nothing you run locally ever leaves your machine'). These state a no-tracking posture for prompts and local runs. They do not document a telemetry or usage-tracking opt-out control (setting, env var, or flag), nor do they cover usage tracking beyond prompts or the cloud service, so they are adjacent claims rather than the opt-out capability itself.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Ollama's own marketing says prompts are never tracked and that nothing run locally leaves the machine, which implies there is no local telemetry to opt out of. However, no explicit telemetry or usage-tracking opt-out control is documented, and the claim covers prompts rather than usage data in general, including on the cloud offering. Missing for 10: a documented telemetry/usage-tracking opt-out setting, a statement of what usage data cloud usage collects, and independent verification that no telemetry is sent.",
+    "evidenceIds": [
+      "ollama-docs-6",
+      "ollama-docs-7"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "ollama-docs-6",
+          "quote": "Your prompts are never tracked or trained on."
+        },
+        {
+          "evidenceId": "ollama-docs-7",
+          "quote": "Nothing you run locally ever leaves your machine."
+        }
+      ]
     }
   },
   {
@@ -15970,15 +15937,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Ollama's own materials say it runs open models locally and that 'Nothing you run locally ever leaves your machine.' Its API is served at localhost:11434, and community users independently describe it as the easiest way to run LLMs locally. Cloud models are an optional separate mode and do not undermine local-only operation. Missing for 10: detailed first-party documentation of offline/no-telemetry guarantees and of how to make sure requests never route to Ollama Cloud.",
+    "rationale": "Ollama's own docs say local runs never leave the machine and that it keeps data private, and its API is served from localhost:11434. Community hands-on reports, including local benchmarks via 'ollama run', corroborate fully on-device inference; cloud models are an optional separate mode. missing for 10: independent verification that no telemetry or network traffic leaves the device during local inference, and in-depth first-party documentation of offline/air-gapped operation.",
     "evidenceIds": [
       "ollama-docs-7",
+      "ollama-docs-1",
       "ollama-docs-6",
-      "ollama-probe-1",
       "ollama-openapi-spec-20261105",
       "ollama-comm-15",
-      "ollama-comm-14",
-      "ollama-docs-18"
+      "ollama-comm-3",
+      "ollama-comm-14"
     ],
     "support": {
       "relation": "direct",
@@ -15990,20 +15957,20 @@
           "quote": "Nothing you run locally ever leaves your machine."
         },
         {
-          "evidenceId": "ollama-docs-6",
-          "quote": "Your prompts are never tracked or trained on."
+          "evidenceId": "ollama-docs-1",
+          "quote": "Ollama lets you use open models with your coding agents so you can spend less while keeping your data private."
         },
         {
-          "evidenceId": "ollama-probe-1",
-          "quote": "Ollama is the easiest way to run open AI models locally or in the cloud"
+          "evidenceId": "ollama-openapi-spec-20261105",
+          "quote": "with server url http://localhost:11434"
         },
         {
           "evidenceId": "ollama-comm-15",
           "quote": "Ollama is definitely the easiest way to run LLMs locally"
         },
         {
-          "evidenceId": "ollama-docs-18",
-          "quote": "all running on your own device"
+          "evidenceId": "ollama-comm-3",
+          "quote": "User benchmark on M4 Pro 48GB: qwen3.5:35b-a3b-q4_K_M eval rate 30.0, nvfp4 66.5, int4 84.4 tokens/sec via 'ollama run' with --verbose."
         }
       ]
     }
@@ -16014,7 +15981,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speculative decoding is a fair performance question for a local LLM inference runtime like Ollama, so the axis applies. Nothing in the evidence pack documents speculative decoding, draft models, or any similar acceleration technique. The community benchmark covers quantization formats (nvfp4, int4), which is a different technique, and gets no credit here.",
+    "rationale": "Speculative decoding is a fair performance axis for a local LLM inference runtime like Ollama, but nothing in the evidence pack mentions speculative decoding, draft models, or similar techniques. The community benchmark of quantization formats concerns model precision, not speculative decoding, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16029,7 +15996,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents a REST API, an OpenAI-compatible subset, an Anthropic Messages API compatibility layer, and Python/JS libraries. None of these items mentions streaming, incremental token delivery, chunked or NDJSON responses, or a stream parameter. An HTTP API is a building block, not evidence of token streaming, so this applicable axis has no supporting evidence.",
+    "rationale": "The evidence shows Ollama has a REST API, an OpenAPI spec, OpenAI/Anthropic-compatible endpoints, and Python/JavaScript libraries. None of these items mention streaming tokens as they are generated, and a general API or client library does not show incremental token delivery. The serving-API axis clearly applies to Ollama, so the lack of evidence makes this none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16044,7 +16011,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Constraining output to JSON or grammars is a fair question for an LLM serving runtime, so the axis applies. However, nothing in the evidence pack mentions structured outputs, JSON mode, schemas, or grammar-constrained decoding. The REST API, OpenAI-compatibility and OpenAPI spec items describe the API in general terms only and do not document this capability.",
+    "rationale": "Constraining output to JSON or grammars is a fair question for an LLM serving API, so the axis applies. However, nothing in the evidence pack mentions structured outputs, JSON mode, schemas, or grammar-constrained decoding. The REST API, the OpenAI/Anthropic compatibility, and the OpenAPI spec are described only generically, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16059,7 +16026,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions tool or function calling, or reasoning/thinking output parsing. It only shows a REST API, a subset of the OpenAI API, Anthropic Messages API compatibility, and integrations with coding agents. Native tool calling cannot be inferred from that compatibility alone, so this applicable serving-API axis has no direct evidence.",
+    "rationale": "The evidence pack documents a REST API, an OpenAI-compatible subset and Anthropic Messages API compatibility. None of it explicitly mentions tool or function calling, or any reasoning/thinking parser support in requests. Compatibility with coding agents only implies tool use and is not documented support for this story, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16074,7 +16041,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is a hands-on community report that \"Multimodal ... support works as expected\" in Ollama's app. That suggests image-plus-text input works, but the pack has no first-party documentation of vision-language models, image input via the API, or which models are supported. The image-generation blog post covers a different capability (creating images, not understanding them) and earns no credit. Missing for 10: first-party docs on vision-model support, API/CLI image-input documentation, a list of supported VLMs, and corroborated depth of image understanding.",
+    "rationale": "The only on-topic evidence is one hands-on community report that Ollama's app has multimodal support that \"works as expected.\" That points to image-plus-text understanding, but no first-party docs describe vision-language models, image inputs in the API, or supported VLMs. The image-generation blog post is a different capability (generation, not understanding) and is not credited. Missing for 10: first-party documentation of vision model support, API details for sending images alongside prompts, a list of supported vision-language models, and corroborated hands-on detail beyond a single brief mention.",
     "evidenceIds": [
       "ollama-comm-18"
     ],
@@ -16096,7 +16063,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions a Vulkan backend. The only AMD GPU evidence concerns ROCm: shipped ROCm containers, and a log showing Ollama falling back to CPU when no compatible ROCm library is found. That suggests AMD acceleration depends on ROCm, which is the opposite of this story, and is an adjacent capability rather than the one requested.",
+    "rationale": "GPU backend choice is a fair question for a local inference runtime like Ollama, so the axis applies. The evidence only mentions ROCm-based AMD support, including ROCm containers and a ROCm-missing fallback to CPU. Nothing in the pack documents a Vulkan backend or AMD acceleration without ROCm.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16111,7 +16078,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "CPU instruction-set acceleration is a fair question for a local LLM inference runtime like Ollama, so the axis applies. However, nothing in the evidence pack mentions AVX, AVX2, AVX512, AMX or any x86 SIMD optimization. The only CPU-related item describes a fallback to CPU when ROCm is missing, which says nothing about instruction-set use.",
+    "rationale": "Ollama is a local LLM inference runtime, so CPU instruction-set acceleration is a fair axis for it. However, nothing in the evidence pack mentions AVX, AVX2, AVX512, AMX or any CPU-specific optimization. Community notes that Ollama builds on llama.cpp or falls back to CPU are about other things and do not show this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

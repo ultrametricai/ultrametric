@@ -13858,16 +13858,17 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Weave documents an official W&B MCP Server that lets coding agents and chat assistants answer questions about runs, traces, evaluations and artifacts. It also offers a REST Service API with a full OpenAPI spec that includes call query endpoints, and W&B Skills that let agents such as Claude Code read production data and run evaluations. Missing for 10: independent or hands-on corroboration of agents successfully debugging through the MCP server or API.",
+    "rationale": "Weave documents an official W&B MCP Server that lets coding assistants and chat agents answer questions about runs, traces, evaluations and artifacts, and that coding agents like Claude Code use to read live production data and run evaluations. Separately, the Weave Service API provides REST endpoints with a full OpenAPI spec, including /calls/stream_query for programmatic trace queries. The docs-path OpenAPI 404s don't contradict this, because the working spec is served at trace.wandb.ai. Missing for 10: independent or hands-on corroboration of agents actually debugging via the MCP server, and explicit documentation of metric-level query tools beyond traces and evaluations.",
     "evidenceIds": [
       "wandb-weave-docs-44",
       "wandb-weave-docs-56",
       "wandb-weave-docs-20",
+      "wandb-weave-docs-57",
       "wandb-weave-probe-4",
       "wandb-weave-docs-15",
       "wandb-weave-openapi-spec-20261105",
-      "wandb-weave-docs-45",
-      "wandb-weave-docs-57"
+      "wandb-weave-service-api-docs-20261105",
+      "wandb-weave-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -13888,7 +13889,7 @@
         },
         {
           "evidenceId": "wandb-weave-openapi-spec-20261105",
-          "quote": "The Weave trace API host serves a complete machine-readable OpenAPI 3.1.0 document at the well-known path, covering the full service surface (117 paths, including /call/start and /calls/stream_query)."
+          "quote": "covering the full service surface (117 paths, including /call/start and /calls/stream_query)"
         }
       ]
     }
@@ -13899,16 +13900,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Weave's own docs say decorating functions with weave.op produces a nested trace tree, and Threads group traces belonging to a single session or conversation. It also documents sessions, turns, steps, tools and sub-agents as first-class concepts, with automatic tracing for agent SDKs and wrappers (start_conversation, start_turn, start_tool) for custom agent loops. missing for 10: independent or hands-on corroboration of nested agent spans and session grouping.",
+    "rationale": "Weave builds nested trace trees from decorated functions via @weave.op. It groups traces into Threads for a single session or conversation. It treats sessions, turns, steps, tools and sub-agents as first-class concepts, with auto-instrumentation for agent SDKs and start_conversation/start_turn APIs for custom loops. Missing for 10: independent hands-on corroboration of session/thread grouping beyond vendor docs and the vendor README.",
     "evidenceIds": [
       "wandb-weave-gh-2",
       "wandb-weave-docs-5",
       "wandb-weave-docs-18",
-      "wandb-weave-docs-29",
       "wandb-weave-docs-37",
-      "wandb-weave-gh-6",
       "wandb-weave-gh-7",
       "wandb-weave-gh-8",
+      "wandb-weave-gh-6",
       "wandb-weave-docs-48"
     ],
     "support": {
@@ -13945,15 +13945,15 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Weave documents a programmatic Evaluation object built on a Dataset. Its MCP server and Skills let coding agents run evaluations and answer questions about evaluation results, and a REST Service API offers programmatic access. However, no evidence shows an agent itself creating and publishing a dataset end-to-end, and the read-back of eval results is described only at a high level. missing for 10: explicit documentation of agent-driven dataset creation/publishing, concrete API or MCP tool reference for triggering an eval and retrieving its scores, independent or hands-on corroboration of the full agent loop.",
+    "rationale": "Weave documents a programmatic Evaluation object built around a Dataset. Its MCP server and Skills let coding agents run evaluations and answer questions about evaluation results, which covers triggering an eval and reading results back. Agent-driven dataset creation is only implied: the evidence shows datasets as an input to evaluations, not a documented agent workflow for creating and versioning them. missing for 10: explicit documentation of an agent creating and publishing a dataset, an end-to-end agent example chaining dataset creation, eval run, and result readback, independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-6",
       "wandb-weave-docs-20",
       "wandb-weave-docs-44",
       "wandb-weave-docs-45",
       "wandb-weave-docs-57",
-      "wandb-weave-docs-15",
-      "wandb-weave-docs-47"
+      "wandb-weave-docs-31",
+      "wandb-weave-service-api-docs-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -13973,12 +13973,8 @@
           "quote": "your agent can answer questions about your runs, traces, evaluations, and artifacts without copy-paste."
         },
         {
-          "evidenceId": "wandb-weave-docs-45",
-          "quote": "Skills covers both the [W\\&B Models SDK] ... and the [Weave SDK] (traces, evaluations, scorers)."
-        },
-        {
-          "evidenceId": "wandb-weave-docs-15",
-          "quote": "Use the Weave Service API, which provides REST endpoints for programmatic access to Weave functionality."
+          "evidenceId": "wandb-weave-docs-57",
+          "quote": "install Skills so that the agent can work with experiment tracking, tracing, evaluations, and monitoring on its own"
         }
       ]
     }
@@ -13987,9 +13983,9 @@
     "productId": "wandb-weave",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Probes confirm a live llms.txt at docs.wandb.ai/llms.txt and markdown doc pages such as weave.md that point agents to a full documentation index. The official MCP server also gives AI assistants access to W&B documentation, and Skills cover the Weave SDK. Missing for 10: a Weave-specific llms.txt (the served index is CoreWeave-wide), a fix for the broken OpenAPI link listed in llms.txt (it returns 404), and independent hands-on corroboration of agents consuming these docs.",
+    "rationale": "Probes confirm a live llms.txt at docs.wandb.ai and markdown versions of doc pages (weave.md) that point agents to the full documentation index. The official MCP server also gives AI assistants direct access to W&B documentation, and W&B Skills cover the Weave SDK for agents. missing for 10: a Weave-specific llms.txt (the file served is a CoreWeave-wide umbrella index, and one spec link it lists returns 404), independent corroboration of agents using the docs in practice.",
     "evidenceIds": [
       "wandb-weave-probe-1-refresh-953d5b602a27cb22",
       "wandb-weave-probe-2-refresh-168983762e1da5b7",
@@ -14023,11 +14019,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Weave's own built-in and custom signals automatically classify agent interactions and surface failure modes inside the product. That is a thin form of automated insight from user data, and LLM-judge scorers add AI-generated assessments of outputs. The MCP server and coding-agent loops produce insights in external assistants, not inside the product, so they are not credited. Missing for 10: explicit evidence that signals are AI/LLM-generated, in-product AI suggestions or recommendations, a natural-language insight or assistant feature inside the Weave UI, and independent or hands-on corroboration.",
+    "rationale": "Weave's own built-in signals automatically classify agent interactions and surface failure modes inside the product, and LLM-judge scorers produce model-based assessments of outputs. Together these are a thin form of in-product, AI-derived insight. The MCP server and Skills route sends data to external coding agents, which is a user-side arrangement and earns no credit here. missing for 10: explicit evidence that in-product insights are AI/LLM-generated, any in-product suggestions or recommendations, a natural-language insight or assistant feature inside the Weave UI, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-16",
       "wandb-weave-docs-42",
-      "wandb-weave-docs-46",
       "wandb-weave-docs-2"
     ],
     "support": {
@@ -14044,10 +14039,6 @@
           "quote": "out-of-the-box signals to surface failure modes"
         },
         {
-          "evidenceId": "wandb-weave-docs-46",
-          "quote": "Create a custom W\\&B Weave signal to tag agent turns for a behavior you define."
-        },
-        {
           "evidenceId": "wandb-weave-docs-2",
           "quote": "Evaluate your agent’s or application’s responses using LLM judges and custom scorers"
         }
@@ -14060,12 +14051,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Weave's own marketing says signals automatically capture and classify agent interactions in the background, and that alerts can trigger webhook automations. These are product-side automations, but they appear only in thin marketing copy, with no docs on how to configure, schedule, or manage them. The 'automatic iteration loops' are run by external coding agents through MCP and Skills, so they get no credit here. Missing for 10: documented automation setup and configuration, recurring schedules or trigger definitions, run history and management of background jobs, independent or hands-on corroboration.",
+    "rationale": "Weave's marketing site says built-in and custom signals automatically classify agent interactions, and that alerts can trigger webhook automations. That is a product-owned background automation, but it is described only in a single marketing line, with no first-party guide on setting it up. The 'automatic iteration loops' run by Claude Code via MCP are driven by an external coding agent, so they are a user-side arrangement and are not credited. Missing for 10: documented setup and configuration of automations, recurring or scheduled background jobs, trigger and action options beyond alert webhooks, and hands-on or independent corroboration.",
     "evidenceIds": [
-      "wandb-weave-docs-16",
-      "wandb-weave-docs-17",
       "wandb-weave-docs-36",
-      "wandb-weave-docs-46"
+      "wandb-weave-docs-17",
+      "wandb-weave-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -14073,16 +14063,12 @@
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": [
         {
-          "evidenceId": "wandb-weave-docs-16",
-          "quote": "Built-in and custom signals automatically capture and classify agent interactions, so you always know how your agents are behaving."
+          "evidenceId": "wandb-weave-docs-36",
+          "quote": "Built-in and custom signals automatically capture and classify agent interactions, so you always know how your agents are behaving. Alerts route what matters through Slack notifications and trigger webhook automations"
         },
         {
           "evidenceId": "wandb-weave-docs-17",
           "quote": "Alerts route what matters through Slack notifications and trigger webhook automations, turning every production insight into a fast iteration."
-        },
-        {
-          "evidenceId": "wandb-weave-docs-46",
-          "quote": "Create a custom W\\&B Weave signal to tag agent turns for a behavior you define."
         }
       ]
     }
@@ -14093,10 +14079,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An in-product AI assistant is a reasonable thing to ask of an LLM observability platform, so the axis applies. However, the evidence only shows external coding agents (e.g. Claude Code) connecting to Weave through the W&B MCP server and Skills. That is an adjacent integration, not a built-in assistant users can delegate tasks to, and the Playground is a prompt and model testing tool rather than a delegating assistant.",
+    "rationale": "The evidence shows external coding agents such as Claude Code connecting to Weave through the W&B MCP server and Skills. That is an integration point for third-party agents, not an AI assistant built into the product, so it earns no credit. The Playground is a prompt and model testing tool, not a delegable assistant, and nothing documents an in-product AI assistant that users can hand tasks to.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
       "citations": []
@@ -14105,23 +14091,22 @@
   {
     "productId": "wandb-weave",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Weave is driven programmatically, which is a direct headless capability. Its Python/TypeScript SDK runs evaluations in code via `weave.init()` and the `Evaluation` object, and the REST Service API uses API-key bearer auth with a published OpenAPI spec. That makes scripted, non-interactive automation clearly possible, but nothing in the evidence documents CI usage specifically, and the official CLI found is the W&B Models CLI rather than a Weave-specific one. Missing for 10: explicit CI/CD integration docs (e.g. GitHub Actions or CI-gating examples for evaluations), a Weave-specific headless CLI, and independent hands-on corroboration of CI runs.",
+    "rationale": "Weave runs headlessly by design. It is a code-first SDK: `weave.init()` and `@weave.op` handle tracing, and code-defined `Evaluation` objects test against repeatable cases to catch regressions. It also offers a REST Service API with API-key bearer auth and a full OpenAPI spec, so it can be driven from scripts or CI without the UI. missing for 10: explicit CI pipeline documentation (e.g., GitHub Actions examples or failing a build on evaluation regressions), a Weave-specific CLI (the documented CLI is the W&B Models CLI), independent hands-on corroboration of CI usage.",
     "evidenceIds": [
+      "wandb-weave-docs-4",
+      "wandb-weave-docs-31",
+      "wandb-weave-docs-15",
       "wandb-weave-service-api-docs-20261105",
       "wandb-weave-openapi-spec-20261105",
-      "wandb-weave-docs-15",
-      "wandb-weave-docs-6",
-      "wandb-weave-docs-31",
       "wandb-weave-docs-19",
-      "wandb-weave-docs-33",
       "wandb-weave-probe-5"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -14134,11 +14119,11 @@
         },
         {
           "evidenceId": "wandb-weave-docs-31",
-          "quote": "This guide shows you how to set up and run evaluations in Weave so you can measure your LLM application’s performance against repeatable test cases, compare changes over time, and identify regressions."
+          "quote": "measure your LLM application’s performance against repeatable test cases, compare changes over time, and identify regressions"
         },
         {
-          "evidenceId": "wandb-weave-docs-19",
-          "quote": "Measure every improvement to your harnesses and models with confidence with a flexible imperative evaluation API."
+          "evidenceId": "wandb-weave-docs-4",
+          "quote": "When you decorate a function with `@weave.op()` (Python) or wrap it with `weave.op()` (TypeScript), Weave automatically captures its code, inputs, outputs, and execution metadata."
         }
       ]
     }
@@ -14149,7 +14134,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only the server role: the W&B MCP Server lets external coding agents like Claude Code reach Weave data. Nothing shows Weave itself (for example the Playground or evaluations) connecting to third-party MCP servers to use their tools. An observability and evaluation platform with an LLM Playground could plausibly act as an MCP client, so the axis applies and the lack of evidence makes this none.",
+    "rationale": "The evidence shows only the server role: an official W&B MCP Server that lets external coding agents such as Claude Code connect to Weave data. Nothing shows Weave itself, for example its Playground, registering or consuming external MCP servers to use their tools. Since an LLM observability and playground product could plausibly act as an MCP client, the axis applies, and the lack of evidence makes this \"none\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14164,7 +14149,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "W&B ships an official MCP server, documented first-party and in the wandb/wandb-mcp-server GitHub repo. It gives IDEs, coding assistants and chat agents such as Claude Code direct access to Weave traces, evaluations and artifacts, and the site says connected agents can run evaluations and iteration loops. Missing for 10: detailed documentation of the server's tool surface and setup/auth configuration, and independent or hands-on corroboration that agents connect successfully.",
+    "rationale": "W&B documents an official MCP Server that gives an IDE, coding assistant, or chat agent direct access to W&B data, including Weave traces and evaluations. The Weave site says coding agents like Claude Code connect to Weave through it, and a probe confirms the official wandb-mcp-server repo. Missing for 10: independent or hands-on corroboration of agents connecting via the server, and detailed documentation of the Weave-specific tool surface and setup.",
     "evidenceIds": [
       "wandb-weave-docs-44",
       "wandb-weave-docs-56",
@@ -14200,15 +14185,14 @@
     "productId": "wandb-weave",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "W&B ships a first-party MCP server and Skills that let assistants answer natural-language questions about Weave traces, evaluations and runs. Marketing claims coding agents like Claude Code can use them to run evaluations and iteration loops. Natural-language operation therefore works only through an external AI client: no native in-product natural-language command interface is documented, and the operational claims come from marketing pages. missing for 10: native in-app natural-language command interface, documented scope of natural-language actions beyond querying data (e.g. creating or modifying evals, alerts and settings), independent or hands-on corroboration.",
+    "rationale": "W&B ships its own MCP server and Skills so AI assistants can answer natural-language questions about Weave runs, traces, evaluations and artifacts. Marketing also claims coding agents like Claude Code can run evaluations and iteration loops through them. Natural-language operation therefore works only through an external agent client, and the action-taking side rests on marketing claims rather than detailed docs. Missing for 10: a native in-product natural-language command interface, detailed docs on which actions (not just queries) the MCP server can execute, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-56",
       "wandb-weave-docs-44",
       "wandb-weave-docs-20",
       "wandb-weave-docs-57",
-      "wandb-weave-docs-45",
       "wandb-weave-probe-4"
     ],
     "support": {
@@ -14237,7 +14221,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "A probe confirms an official W&B CLI is documented, but it lives under the W&B Models reference (docs.wandb.ai/models/ref/cli). Nothing in the pack shows Weave-specific CLI commands for traces, evaluations or scorers. Weave's agent-facing access is documented through the SDK, REST Service API, MCP server and Skills instead. Missing for 10: evidence the CLI covers Weave functionality, CLI command documentation for Weave workflows, AI-native or agent-oriented CLI usage, independent or hands-on corroboration.",
+    "rationale": "A probe records an official W&B CLI, but its docs sit under the Models reference path (/models/ref/cli). Nothing in the pack shows that CLI exposes Weave functions such as traces, evaluations or scorers, so credit is minimal. Missing for 10: evidence that the CLI covers Weave operations, CLI command documentation for Weave workflows, and independent or hands-on corroboration of agent-friendly CLI use.",
     "evidenceIds": [
       "wandb-weave-probe-5"
     ],
@@ -14257,15 +14241,14 @@
     "productId": "wandb-weave",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Weave documents a public REST Service API at https://trace.wandb.ai with API-key bearer auth. That host serves a complete OpenAPI 3.1.0 spec covering 117 paths, plus a live Swagger UI, a ReDoc view and per-endpoint 'Try it' playgrounds, so the product can be driven programmatically through a documented public API. The spec path listed in the docs llms.txt returns 404, but the working spec at trace.wandb.ai/openapi.json answers, so this is a docs glitch rather than a contradiction. Missing for 10: an API-specific versioning/deprecation policy (no version headers in the spec), independent hands-on corroboration of driving the API, and a consistent docs-hosted spec link.",
+    "rationale": "Weave documents a public REST Service API at https://trace.wandb.ai with API-key bearer auth. The host serves a complete OpenAPI 3.1.0 spec covering 117 paths, plus a live Swagger UI, ReDoc and per-endpoint \"Try it\" consoles. The probe 404s on docs.wandb.ai paths, and the docs-linked spec 404s, but both are wrong-host or broken-link issues rather than a contradiction, since the working spec is served from trace.wandb.ai. Missing for 10: independent hands-on corroboration of driving the product end-to-end through the API, and a consistent spec link in the docs (the docs-listed openapi.json path returns 404).",
     "evidenceIds": [
       "wandb-weave-docs-15",
       "wandb-weave-service-api-docs-20261105",
       "wandb-weave-openapi-spec-20261105",
-      "wandb-weave-swagger-ui-20261105",
-      "wandb-weave-release-policy-20261105"
+      "wandb-weave-swagger-ui-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -14293,7 +14276,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scoped credentials are a fair question for a SaaS observability platform with a REST API and MCP server, so the axis applies. The evidence shows only generic API-key bearer authentication for the Service API. Nothing documents issuing scoped, least-privilege, or agent-specific credentials.",
+    "rationale": "Weave is an observability SaaS with API-key bearer auth, so the question of scoped agent credentials applies. However, the evidence only shows that API keys exist for the Service API. Nothing documents scoped, read-only, project-limited or otherwise least-privilege keys that could be issued to an agent.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14306,16 +14289,17 @@
     "productId": "wandb-weave",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Weave ships official first-party SDKs in Python and TypeScript. The docs describe decorating or wrapping functions with `weave.op` in both languages, and the Weave SDK is named directly. The GitHub repo shows SDK primitives for tracing custom agent loops (`start_conversation`, `start_turn`) and one-line `weave.init()` integration with major agent SDKs. Missing for 10: independent hands-on corroboration of building against the SDKs, and a documented SDK versioning/deprecation policy (the only release policy covers W&B Server).",
+    "rationale": "W&B Weave ships official Python and TypeScript SDKs. The docs and the first-party GitHub repo cover instrumentation with weave.op and weave.init, custom agent APIs (start_conversation, start_turn), Evaluation objects, and Scorer classes, and the vendor names the 'Weave SDK' as a product surface. missing for 10: independent hands-on corroboration of SDK use beyond vendor docs and the repo.",
     "evidenceIds": [
       "wandb-weave-docs-4",
       "wandb-weave-docs-45",
-      "wandb-weave-docs-52",
-      "wandb-weave-gh-1",
       "wandb-weave-gh-6",
-      "wandb-weave-gh-7"
+      "wandb-weave-gh-7",
+      "wandb-weave-docs-52",
+      "wandb-weave-docs-3",
+      "wandb-weave-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -14347,9 +14331,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Weave's own product page says alerts can 'trigger webhook automations', which suggests outbound webhook callbacks driven by Weave signals and alerts. This is only a repeated marketing line; no documentation shows how to register a webhook, which events are available, or what the payload looks like. The Slack notifications mentioned alongside it do not count toward this story. Missing for 10: documented webhook registration (UI or API), a list of subscribable event types, payload schema, delivery and retry and signing details, and hands-on or independent corroboration.",
+    "rationale": "The only evidence is a marketing-page claim that Weave Alerts 'trigger webhook automations'. That suggests outbound webhooks fired on alert events, but there is no documentation of how to register a webhook endpoint, which event types are available, or what the payload looks like. Slack notifications do not count toward this story. Missing for 10: first-party docs on webhook registration and configuration, event catalog and payload schema, delivery/retry/signing semantics, and hands-on or independent corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-17",
+      "wandb-weave-docs-59",
       "wandb-weave-docs-36"
     ],
     "support": {
@@ -14362,8 +14347,8 @@
           "quote": "Alerts route what matters through Slack notifications and trigger webhook automations, turning every production insight into a fast iteration."
         },
         {
-          "evidenceId": "wandb-weave-docs-36",
-          "quote": "Built-in and custom signals automatically capture and classify agent interactions, so you always know how your agents are behaving. Alerts route what matters through Slack notifications and trigger webhook automations"
+          "evidenceId": "wandb-weave-docs-59",
+          "quote": "Alerts route what matters through Slack notifications and trigger webhook automations"
         }
       ]
     }
@@ -14374,7 +14359,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "The Weave trace API hosts a live Swagger UI that loads a complete OpenAPI 3.1.0 spec of 117 paths and runs requests in-page against production, with a ReDoc view as well. The hosted reference pages also add a per-endpoint \"Try it\" playground. The docs-listed spec path returns 404 and only the trace.wandb.ai spec works, which is a minor wrinkle. Missing for 10: independent or hands-on corroboration that the interactive consoles work, evidence of pre-filled example request payloads, a working spec link at the docs-listed path.",
+    "rationale": "Weave's trace API hosts a live Swagger UI that serves as a runnable in-page console against the production API. It is backed by a complete OpenAPI 3.1.0 spec (117 paths), and the hosted endpoint reference pages add a per-endpoint \"Try it\" playground. Together these deliver an interactive API reference with runnable examples. missing for 10: independent hands-on corroboration of the Try-it/Swagger consoles, and a working spec link from the docs site (the docs-listed spec and the candidate paths probed on docs.wandb.ai return 404).",
     "evidenceIds": [
       "wandb-weave-swagger-ui-20261105",
       "wandb-weave-openapi-spec-20261105",
@@ -14388,7 +14373,7 @@
       "citations": [
         {
           "evidenceId": "wandb-weave-swagger-ui-20261105",
-          "quote": "The trace API hosts a live Swagger UI that loads /openapi.json, a runnable in-page console against the production API; a ReDoc view answers at /redoc."
+          "quote": "The trace API hosts a live Swagger UI that loads /openapi.json, a runnable in-page console against the production API"
         },
         {
           "evidenceId": "wandb-weave-swagger-ui-20261105",
@@ -14396,7 +14381,7 @@
         },
         {
           "evidenceId": "wandb-weave-openapi-spec-20261105",
-          "quote": "The Weave trace API host serves a complete machine-readable OpenAPI 3.1.0 document at the well-known path, covering the full service surface (117 paths, including /call/start and /calls/stream_query)."
+          "quote": "The Weave trace API host serves a complete machine-readable OpenAPI 3.1.0 document at the well-known path, covering the full service surface (117 paths"
         }
       ]
     }
@@ -14405,9 +14390,9 @@
     "productId": "wandb-weave",
     "storyId": "api-machine-spec",
     "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "The Weave trace API host serves a complete, downloadable OpenAPI 3.1.0 document at trace.wandb.ai/openapi.json covering 117 paths, with a live Swagger UI and ReDoc view. The vendor's Service API docs name this host as the base URL. The probe 404s are on the docs.wandb.ai host and do not contradict the working spec on the API host. Missing for 10: the spec link listed in the docs llms.txt (/products/wandb/weave/reference/service-api/openapi.json) returns 404, which hurts discoverability, and there is no independent third-party corroboration.",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Weave's trace API host serves a complete, downloadable OpenAPI 3.1.0 document at trace.wandb.ai/openapi.json covering 117 paths, plus Swagger UI and ReDoc views, and the Service API docs name this host as the base URL. The probe 404s were on docs.wandb.ai paths, a different host, so they do not contradict this. Missing for 10: the spec link listed in the docs llms.txt answers 404, so the spec is hard to discover from the docs, and no independent probe confirms the trace.wandb.ai spec directly.",
     "evidenceIds": [
       "wandb-weave-openapi-spec-20261105",
       "wandb-weave-service-api-docs-20261105",
@@ -14424,12 +14409,12 @@
           "quote": "The Weave trace API host serves a complete machine-readable OpenAPI 3.1.0 document at the well-known path, covering the full service surface (117 paths, including /call/start and /calls/stream_query)."
         },
         {
-          "evidenceId": "wandb-weave-swagger-ui-20261105",
-          "quote": "The trace API hosts a live Swagger UI that loads /openapi.json, a runnable in-page console against the production API; a ReDoc view answers at /redoc."
-        },
-        {
           "evidenceId": "wandb-weave-service-api-docs-20261105",
           "quote": "the working spec download is trace.wandb.ai/openapi.json."
+        },
+        {
+          "evidenceId": "wandb-weave-swagger-ui-20261105",
+          "quote": "The trace API hosts a live Swagger UI that loads /openapi.json"
         }
       ]
     }
@@ -14440,7 +14425,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents evaluations on test datasets and a Playground for prompt iteration. Neither is a sandbox environment isolated from production data. The only API console described runs against the production API, and agents are described as reading live production data. No documented sandbox, test-mode or isolated environment exists, so the axis applies but is unevidenced.",
+    "rationale": "Nothing in the evidence documents a sandbox or isolated test environment that keeps testing separate from production data. The Playground and Evaluation datasets are prompt and eval tools, not environment isolation. The Swagger console is described as running against the production API, and the agent and model-testing features explicitly work with live production data and traces.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14452,39 +14437,48 @@
   {
     "productId": "wandb-weave",
     "storyId": "api-versioning-policy",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "W&B documents a release support and end-of-life policy for W&B Server: major releases are supported for 12 months and may include deprecations. That gives some product-level version and deprecation guarantees. However, the same evidence says no versioning or deprecation policy specific to the Weave trace HTTP API is documented, and the OpenAPI spec carries no version headers. Missing for 10: explicit API versioning (versioned paths or headers), a deprecation policy specific to the Weave Service API with notice periods, and independent corroboration.",
-    "evidenceIds": [
-      "wandb-weave-release-policy-20261105",
-      "wandb-weave-openapi-spec-20261105"
-    ],
+    "rationale": "The evidence documents a Weave Service API with REST endpoints and a published OpenAPI 3.1.0 spec. Nothing in the pack shows API versioning (version paths, headers, or stability tiers) or a documented deprecation policy. Having an OpenAPI spec is adjacent to this story but does not deliver it.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": [
-        {
-          "evidenceId": "wandb-weave-release-policy-20261105",
-          "quote": "The W&B release policies page documents release support and end of life"
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "wandb-weave",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no bulk-operation capability for acting on many items at once, such as bulk tagging, deleting, editing, or re-scoring selected calls or traces. Running an Evaluation over a Dataset and the /calls/stream_query endpoint are batch evaluation and bulk querying, which are different features and do not count as bulk operations on items. Generic REST API access is a developer building block, not the capability itself.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only evidenced batch-style capability is Weave's own Evaluation workflow, which runs scoring functions over a whole Dataset of test examples, plus scoring an entire Thread of calls at once. There is no documented general bulk-operation feature for acting on many items together, such as bulk tagging, deleting, editing, or exporting traces. missing for 10: documented bulk edit/delete/tag/export operations on calls or objects, bulk-operation API endpoints, UI multi-select actions, hands-on corroboration.",
+    "evidenceIds": [
+      "wandb-weave-docs-6",
+      "wandb-weave-docs-5",
+      "wandb-weave-docs-21"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wandb-weave-docs-6",
+          "quote": "the core of the workflow is the _`Evaluation` object_, which defines: A `Dataset` or list of dictionaries for test examples. One or more scoring functions."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-5",
+          "quote": "You can use Threads to analyze or score the entire conversation instead of individual Calls."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-21",
+          "quote": "You can test new LLMs and custom models against production traces, assessing their performance for your specific use cases."
+        }
+      ]
     }
   },
   {
@@ -14492,12 +14486,13 @@
     "storyId": "automation-rules-engine",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Weave's own marketing page says custom signals classify agent interactions and that alerts route through Slack and trigger webhook automations. A release note confirms you can define custom signals to tag agent turns. That is a first-party event-to-action capability, but it is described only at a high level, with no in-depth docs on configuring rules, conditions, or actions. Missing for 10: detailed docs on defining trigger rules and conditions, the supported event types and action types beyond Slack and webhooks, setup instructions for alert/automation rules, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Weave's marketing page says signals automatically classify agent interactions and that alerts route results through Slack and trigger webhook automations. Release notes also mention creating custom signals for behaviors you define, which together form a basic event-to-action rule mechanism. Missing for 10: in-depth docs on how to define alert rules and their conditions, which actions are supported beyond Slack and webhooks, how webhook automations are configured, and any independent or hands-on corroboration.",
     "evidenceIds": [
-      "wandb-weave-docs-17",
       "wandb-weave-docs-36",
-      "wandb-weave-docs-46"
+      "wandb-weave-docs-17",
+      "wandb-weave-docs-46",
+      "wandb-weave-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -14509,12 +14504,12 @@
           "quote": "Alerts route what matters through Slack notifications and trigger webhook automations, turning every production insight into a fast iteration."
         },
         {
-          "evidenceId": "wandb-weave-docs-36",
-          "quote": "Built-in and custom signals automatically capture and classify agent interactions, so you always know how your agents are behaving."
-        },
-        {
           "evidenceId": "wandb-weave-docs-46",
           "quote": "Create a custom W\\&B Weave signal to tag agent turns for a behavior you define."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-16",
+          "quote": "Built-in and custom signals automatically capture and classify agent interactions, so you always know how your agents are behaving."
         }
       ]
     }
@@ -14525,7 +14520,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An LLM observability and evaluation platform could plausibly offer scheduled evaluations or recurring workflows, so this axis applies. The evidence shows only event-triggered alerts and webhook automations, plus coding agents that iterate \"continuously\" through the MCP server. Neither is a documented recurring schedule: event-driven triggers and agent loops are not the same as scheduling recurring jobs.",
+    "rationale": "Scheduling recurring evaluations or monitoring jobs is a fair question for an LLM observability and evaluation platform, so the axis applies. The evidence only shows event-driven alerts that trigger webhook automations, plus coding agents iterating 'continuously' through MCP. Neither is a documented recurring-schedule capability, since one-off or event-triggered actions are not a schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14540,7 +14535,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Weave mentions webhook automations triggered by alerts, so this axis applies. However, nothing in the evidence shows those automations can be versioned, reviewed, or rolled back. Weave's versioning of traced functions and ops covers application code, not automations, so it is an adjacent capability and earns no credit here.",
+    "rationale": "Weave documents alert-triggered webhook automations. The evidence never shows that those automations can be versioned, reviewed, or rolled back. Weave's documented versioning covers traced application functions and ops, which is an adjacent capability and does not transfer to managing automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14555,22 +14550,29 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no bulk export of traces or datasets to blob storage or a data warehouse. The Service API REST endpoints, including /calls/stream_query, are only a programmatic query primitive a developer could build an export pipeline on, not the export capability itself. OTel support covers importing traces into Weave, not exporting them out.",
-    "evidenceIds": [],
+    "rationale": "The evidence shows no first-party bulk-export feature that sends traces or datasets to blob storage (such as S3, GCS or Azure) or to a data warehouse (such as BigQuery or Snowflake). The only related evidence is the Weave Service API, which gives programmatic REST access (including /calls/stream_query). That is a developer building block for writing your own export, not the export capability itself, so it earns no credit.",
+    "evidenceIds": [
+      "wandb-weave-docs-15"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can bulk-export traces and datasets to blob storage or my data warehouse",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wandb-weave-docs-15",
+          "quote": "Use the Weave Service API, which provides REST endpoints for programmatic access to Weave functionality."
+        }
+      ]
     }
   },
   {
     "productId": "wandb-weave",
     "storyId": "ci-eval-gating",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Weave documents its own programmatic evaluation framework, an imperative evaluation API with datasets and scorers, framed as measuring repeatable test cases and catching regressions before they reach users. That covers the 'run evals' and pre-deployment intent of the story. However, nothing documents a CI integration or a deployment gate based on eval results. Missing for 10: documented CI integration (e.g. GitHub Actions or a CLI eval runner), pass/fail thresholds or exit codes for gating deployments, and independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Weave documents a programmatic, imperative evaluation API (Evaluation objects with datasets and scorers) that can be run against repeatable test cases. Its marketing claims these evaluations 'catch regressions before they reach users', which points toward pre-deployment checks. However, no evidence describes CI integration, pass/fail thresholds, exit codes, or deployment gating, so the CI/gating half of the story rests only on the API being code-driven. Missing for 10: documented CI integration or CI examples, threshold-based pass/fail or exit-code gating of deployments, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-19",
       "wandb-weave-docs-31",
@@ -14600,34 +14602,16 @@
   {
     "productId": "wandb-weave",
     "storyId": "cost-attribution-metadata",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Weave records token usage and cost for each call and shows it in the trace tree and calls table. It also groups traces into Threads and sessions, so per-call cost can in principle be tied to a session. Nothing in the evidence shows custom metadata or attributes for tagging calls with user or feature identifiers, or aggregating cost by them. Missing for 10: documented custom metadata or attributes on calls, cost aggregation by user, by feature and by session, filtering or grouping cost views by metadata, independent corroboration.",
-    "evidenceIds": [
-      "wandb-weave-docs-27",
-      "wandb-weave-docs-33",
-      "wandb-weave-docs-5",
-      "wandb-weave-docs-29"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence documents automatic per-call token usage and cost tracking, custom model pricing via `add_cost`, and Threads/sessions that group traces. Nothing in the pack shows attaching custom metadata (user IDs, feature tags) to calls, or rolling up cost and usage by user, session, or feature. Per-call costs and session grouping are adjacent features, not the attribution capability this story asks for.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a developer, I can attribute cost and usage to users, sessions, and features via custom metadata",
-      "citations": [
-        {
-          "evidenceId": "wandb-weave-docs-27",
-          "quote": "Weave automatically records token usage and calculates cost for each call. Costs appear in the trace tree and in the calls table in the Weave UI."
-        },
-        {
-          "evidenceId": "wandb-weave-docs-5",
-          "quote": "Threads are collections of Traces related to a single session or conversation."
-        },
-        {
-          "evidenceId": "wandb-weave-docs-29",
-          "quote": "Weave organizes traces into sessions and turns from the ground up."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -14636,10 +14620,10 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Weave's first-party docs describe custom scorers for encoding use-case-specific evaluation criteria. They can be function-based (`@weave.op`-decorated Python functions) or class-based (inheriting from `weave.Scorer`), and they return a dictionary of metric results that plugs into the `Evaluation` object. Missing for 10: independent or hands-on corroboration that custom code scorers work as documented.",
+    "rationale": "Weave's first-party docs describe custom code-based scorers in two forms: function-based scorers (Python functions decorated with @weave.op) and class-based scorers that inherit from weave.Scorer. Scorers return a dictionary of metrics, and the Evaluation object takes one or more scoring functions. Missing for 10: independent or hands-on corroboration of custom scorer authoring, and documentation of how custom metrics are aggregated (e.g. a custom summarize).",
     "evidenceIds": [
-      "wandb-weave-docs-7",
       "wandb-weave-docs-52",
+      "wandb-weave-docs-7",
       "wandb-weave-docs-39",
       "wandb-weave-docs-6",
       "wandb-weave-docs-2"
@@ -14650,12 +14634,12 @@
       "subject": "As an ML engineer, I can write custom code-based scorers and metrics for my evaluations",
       "citations": [
         {
-          "evidenceId": "wandb-weave-docs-7",
-          "quote": "Custom Scorers let you encode evaluation criteria that are specific to your use case, beyond what the built-in Scorers cover."
-        },
-        {
           "evidenceId": "wandb-weave-docs-52",
           "quote": "Function-based Scorers: Python functions decorated with @weave.op. Class-based Scorers: Python classes that inherit from weave.Scorer for more complex evaluations."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-7",
+          "quote": "Custom Scorers let you encode evaluation criteria that are specific to your use case, beyond what the built-in Scorers cover."
         },
         {
           "evidenceId": "wandb-weave-docs-39",
@@ -14674,7 +14658,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows costs appearing in the trace tree and calls table, evaluation comparison visualizations, leaderboards, and vaguely described \"native analytics tools.\" None of this documents a user-buildable custom dashboard spanning latency, error, cost, and eval-score metrics. These are adjacent built-in views, not the story's capability.",
+    "rationale": "The evidence shows that Weave captures cost per call and shows it in the trace tree and calls table. It also offers evaluation comparisons, visualizations, and leaderboards. None of this documents a custom dashboard builder for charting latency, error, cost, and eval-score metrics together. These are adjacent views, not the user-built dashboards the story asks for, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -14686,19 +14670,20 @@
   {
     "productId": "wandb-weave",
     "storyId": "experiment-comparison",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Weave's site says it provides evaluation comparisons and visualizations to catch regressions, and its evaluations guide describes comparing changes over time to identify regressions. Leaderboards that aggregate evaluations add support for comparing prompt or model versions. Missing for 10: detailed docs on the side-by-side comparison view (per-example diffs, metric deltas between runs), and independent or hands-on corroboration.",
+    "rationale": "Weave's own evaluation framework is documented as a way to compare changes over time and identify regressions. The marketing site claims 'evaluation comparisons and visualizations to catch regressions,' and leaderboards can aggregate evaluations. But the evidence has no detailed first-party documentation of a side-by-side eval-run comparison view that diffs prompt or model versions. missing for 10: documented side-by-side comparison UI/workflow for eval runs, per-example diffing between prompt/model versions, independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-19",
       "wandb-weave-docs-31",
       "wandb-weave-gh-4",
-      "wandb-weave-docs-23"
+      "wandb-weave-docs-23",
+      "wandb-weave-docs-6"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ML engineer, I can compare eval runs side by side to catch regressions between prompt or model versions",
       "citations": [
         {
@@ -14723,28 +14708,28 @@
   {
     "productId": "wandb-weave",
     "storyId": "framework-auto-instrumentation",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Weave documents built-in integrations that trace calls once you run weave.init(). Named examples include the OpenAI SDK, Anthropic, Cohere and Mistral, plus the OpenAI Agents SDK, Claude Agent SDK and Google ADK, along with an OTel-compatible SDK for other popular SDKs and harnesses. That covers the core of the story, including one of the three named frameworks. Missing for 10: any evidence of LangChain or Vercel AI SDK integrations, a full integration catalog, and independent hands-on corroboration.",
+    "rationale": "Weave documents automatic, integration-based instrumentation. Supported LLM integrations such as OpenAI, Anthropic, Cohere and Mistral are traced after `weave.init()`, and the GitHub README says `weave.init()` alone is enough for the OpenAI Agents SDK, Claude Agent SDK and Google ADK. That covers the OpenAI SDK part of the story, but nothing in the pack names LangChain or the Vercel AI SDK, and there is no hands-on corroboration. Missing for 10: evidence of LangChain and Vercel AI SDK integrations, a documented list of framework integrations, independent or hands-on confirmation.",
     "evidenceIds": [
-      "wandb-weave-gh-6",
       "wandb-weave-docs-33",
+      "wandb-weave-gh-6",
       "wandb-weave-docs-3",
       "wandb-weave-docs-12"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can instrument my app through existing integrations for frameworks like LangChain, the OpenAI SDK, or the Vercel AI SDK",
       "citations": [
         {
-          "evidenceId": "wandb-weave-gh-6",
-          "quote": "OpenAI Agents SDK, Claude Agent SDK, and Google ADK. `weave.init()` is enough for those SDKs."
-        },
-        {
           "evidenceId": "wandb-weave-docs-33",
           "quote": "When you call weave.init() and use a supported LLM integration such as OpenAI, Anthropic, Cohere, or Mistral, Weave automatically records token usage and calculates cost for each call."
+        },
+        {
+          "evidenceId": "wandb-weave-gh-6",
+          "quote": "OpenAI Agents SDK, Claude Agent SDK, and Google ADK. `weave.init()` is enough for those SDKs."
         },
         {
           "evidenceId": "wandb-weave-docs-3",
@@ -14759,7 +14744,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents human annotation queues or a workflow for routing outputs to human reviewers for labeling. It only offers adjacent capabilities: a generic mention of collecting feedback, automated LLM-judge and custom scorers, and automatic signals that tag agent turns. None of these is a human review-queue feature.",
+    "rationale": "The evidence pack never documents human annotation queues or a way to route outputs to human reviewers for labeling. The only related item is a general claim that Weave can \"collect feedback\" on traces, which is an adjacent feature and not a review queue. Most evaluation evidence covers automated LLM judges and scorers, not human labeling workflows.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14774,7 +14759,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Weave's docs say users can evaluate responses with LLM judges and custom scorers. Custom scorers can be function-based or class-based, and a guide describes scoring agents with an LLM judge, so the core LLM-as-a-judge capability is first-party. The evidence does not show how the judge itself is configured, such as its model, prompt or rubric, and nothing independent corroborates it. missing for 10: explicit documentation of configurable judge model/prompt/rubric settings, independent or hands-on corroboration of LLM-judge scoring.",
+    "rationale": "Weave's own docs say you can evaluate responses 'using LLM judges and custom scorers'. A release note describes agent evaluations 'scored with an LLM judge', and scorers can be written as function-based or class-based (weave.Scorer) evaluators that return metric dictionaries. However, the evidence never shows how an LLM judge itself is configured (judge model choice, prompt/rubric template, scoring parameters), so configurability is only implied through custom scorer classes. Missing for 10: documented configuration options for LLM-judge scorers (model, prompt/rubric, output schema), a concrete built-in LLM-judge scorer reference, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-2",
       "wandb-weave-docs-47",
@@ -14801,8 +14786,8 @@
           "quote": "Class-based Scorers: Python classes that inherit from weave.Scorer for more complex evaluations."
         },
         {
-          "evidenceId": "wandb-weave-docs-7",
-          "quote": "Custom Scorers let you encode evaluation criteria that are specific to your use case, beyond what the built-in Scorers cover."
+          "evidenceId": "wandb-weave-docs-39",
+          "quote": "In Weave, Scorers evaluate AI outputs and return evaluation metrics."
         }
       ]
     }
@@ -14813,7 +14798,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows that Weave tracing captures function code, inputs, outputs and metadata via weave.op. Nothing in the pack documents capturing or rendering images, audio or files as trace payloads. Generic input/output capture is adjacent and does not count as documented multimodal support, so this applicable axis is 'none'.",
+    "rationale": "The evidence shows only generic capture of function inputs, outputs and metadata via weave.op. Nothing in the pack documents capturing or rendering images, audio or files inside traces, so this applicable axis has no supporting evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14826,15 +14811,15 @@
     "productId": "wandb-weave",
     "storyId": "offline-eval-datasets",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Weave clearly documents offline evaluations: an Evaluation object takes a Dataset plus scorers and runs against repeatable test cases with comparisons. Curating datasets from production traces is only implied, by a marketing claim that you can test models against production traces; there is no documented workflow for turning traces into a versioned dataset. Missing for 10: documented trace-to-dataset curation workflow (selecting or filtering production calls into a Dataset), dataset versioning and editing details, independent or hands-on corroboration.",
+    "rationale": "Weave documents offline evaluations built around an `Evaluation` object that takes a `Dataset` plus scorers, and its marketing says you can test models against production traces. No evidence pack item documents the curation step itself: selecting traced calls, or exporting them, into a versioned Dataset. missing for 10: documented trace-to-dataset curation workflow (selecting/adding production calls to a Dataset), detail on how production traces become evaluation datasets, independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-6",
-      "wandb-weave-docs-31",
       "wandb-weave-docs-21",
-      "wandb-weave-docs-19",
-      "wandb-weave-docs-1"
+      "wandb-weave-docs-31",
+      "wandb-weave-docs-1",
+      "wandb-weave-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -14846,12 +14831,12 @@
           "quote": "the core of the workflow is the _`Evaluation` object_, which defines: A `Dataset` or list of dictionaries for test examples. One or more scoring functions."
         },
         {
-          "evidenceId": "wandb-weave-docs-31",
-          "quote": "measure your LLM application’s performance against repeatable test cases, compare changes over time, and identify regressions"
-        },
-        {
           "evidenceId": "wandb-weave-docs-21",
           "quote": "You can test new LLMs and custom models against production traces, assessing their performance for your specific use cases."
+        },
+        {
+          "evidenceId": "wandb-weave-docs-31",
+          "quote": "measure your LLM application’s performance against repeatable test cases, compare changes over time, and identify regressions."
         }
       ]
     }
@@ -14862,12 +14847,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Weave's built-in and custom signals are its own documented feature for automatically classifying live agent interactions, and Guardrails ships pre-built safety and quality scorers, which together approximate continuous online evaluation. The core `Evaluation` workflow, however, is documented only against a Dataset of test examples. missing for 10: explicit docs on attaching scorers/LLM judges to run continuously on incoming production traces (online evaluation configuration, sampling, scheduling), detail on how signals execute, and independent or hands-on corroboration.",
+    "rationale": "Weave's built-in and custom signals automatically capture and classify live agent interactions, and you can define custom signals that tag agent turns. That is a form of continuous scoring on production traffic. However, the evaluation docs center on Dataset-based Evaluation objects, and no documentation shows scorers or LLM judges attached to run continuously on incoming production calls. Missing for 10: explicit docs on running scorers or LLM judges continuously on live traffic (sampling, filters, configuration), and independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-16",
       "wandb-weave-docs-46",
-      "wandb-weave-docs-22",
       "wandb-weave-docs-42",
+      "wandb-weave-docs-21",
       "wandb-weave-docs-6"
     ],
     "support": {
@@ -14884,12 +14869,8 @@
           "quote": "Create a custom W\\&B Weave signal to tag agent turns for a behavior you define."
         },
         {
-          "evidenceId": "wandb-weave-docs-22",
-          "quote": "Weave Guardrails offers pre-built scorers for safety and quality to support responsible AI."
-        },
-        {
           "evidenceId": "wandb-weave-docs-42",
-          "quote": "out-of-the-box signals to surface failure modes"
+          "quote": "Weave provides end-to-end observability to monitor agent behavior, out-of-the-box signals to surface failure modes"
         }
       ]
     }
@@ -14898,17 +14879,16 @@
     "productId": "wandb-weave",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Weave documents a REST Service API at trace.wandb.ai for programmatic access to Weave functionality. Its live OpenAPI 3.1.0 spec covers the full service surface (117 paths, including call start and stream queries), with a Swagger UI, and Python/TypeScript SDKs handle tracing, evaluations, scorers and costs. However, nothing explicitly states that the API matches everything the UI can do. UI features such as the Playground, leaderboards and alert/webhook configuration have no documented API equivalents in the evidence. Missing for 10: explicit UI-to-API parity documentation, API coverage evidence for Playground/leaderboards/alert configuration, a documented API versioning policy, and independent hands-on corroboration.",
+    "rationale": "Weave documents a REST Service API for programmatic access, backed by a machine-readable OpenAPI 3.1.0 spec of 117 paths that is described as covering the full service surface and comes with a live Swagger console. Python/TypeScript SDKs and an official MCP server add further programmatic access to traces, evaluations and scorers. Nothing in the evidence states UI/API parity, and the 404s at the docs-site OpenAPI paths are resolved by the working spec on trace.wandb.ai. missing for 10: an explicit UI-parity statement, evidence that Playground, leaderboards, signals and alert/webhook-automation configuration are API-accessible, and independent hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-15",
       "wandb-weave-openapi-spec-20261105",
       "wandb-weave-service-api-docs-20261105",
       "wandb-weave-swagger-ui-20261105",
-      "wandb-weave-docs-4",
-      "wandb-weave-docs-13",
-      "wandb-weave-release-policy-20261105"
+      "wandb-weave-docs-44",
+      "wandb-weave-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -14921,7 +14901,7 @@
         },
         {
           "evidenceId": "wandb-weave-openapi-spec-20261105",
-          "quote": "The Weave trace API host serves a complete machine-readable OpenAPI 3.1.0 document at the well-known path, covering the full service surface (117 paths, including /call/start and /calls/stream_query)."
+          "quote": "serves a complete machine-readable OpenAPI 3.1.0 document at the well-known path, covering the full service surface (117 paths, including /call/start and /calls/stream_query)"
         },
         {
           "evidenceId": "wandb-weave-swagger-ui-20261105",
@@ -14936,7 +14916,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no data-export or bulk-download feature, and names no open export formats such as CSV, JSON or Parquet. The OTel endpoint only imports traces. The Service API's REST endpoints, including /calls/stream_query, are developer building blocks a user could script an export with, not a documented export capability, so they earn no credit.",
+    "rationale": "Data portability is a fair question for a hosted tracing and evaluation platform, so the axis applies. The evidence shows a REST Service API with a call-query endpoint, an OpenAPI spec, and OTel trace import, but no documented bulk export of all data in open formats. Those are developer building blocks for reading data and ingest-side interoperability, not an export-and-leave capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -14949,13 +14929,13 @@
     "productId": "wandb-weave",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "The evidence pack includes several excerpts from the public GitHub repository github.com/wandb/weave, which suggests the source is publicly readable. However, no item states the license or confirms it is open source, so the 'open license' part of the story is unevidenced. Missing for 10: any documented license (e.g. Apache/MIT) for the repository, explicit confirmation that the full product source (SDK and server/UI) is published, and independent corroboration.",
+    "rationale": "The evidence includes several items sourced from the public GitHub repository github.com/wandb/weave, which shows the product's source is published and readable. No item states the license or confirms it is an open-source license, so the 'open license' half of the story is unverified. missing for 10: explicit open-source license identification (e.g., Apache/MIT), evidence that the repo covers the full product source (including server/UI), independent corroboration",
     "evidenceIds": [
       "wandb-weave-gh-1",
       "wandb-weave-gh-2",
-      "wandb-weave-gh-6"
+      "wandb-weave-gh-7"
     ],
     "support": {
       "relation": "direct",
@@ -14969,6 +14949,10 @@
         {
           "evidenceId": "wandb-weave-gh-2",
           "quote": "Decorate all the functions you want to trace, this will generate a trace tree of the inputs and outputs of all your functions"
+        },
+        {
+          "evidenceId": "wandb-weave-gh-7",
+          "quote": "Custom agents — wrap your own loop with `start_conversation`, `start_turn`, `start_llm`, and `start_tool`."
         }
       ]
     }
@@ -14976,28 +14960,16 @@
   {
     "productId": "wandb-weave",
     "storyId": "openness-self-host",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only self-hosting signal is the W&B release policy, which covers 'W&B Server (Dedicated Cloud/Self-Managed)', plus server release notes that include Weave features. Together these imply a Self-Managed W&B Server deployment that carries Weave. That is a single thin mention, not a documented self-host path for Weave. missing for 10: explicit docs that Weave runs on Self-Managed deployments, installation/deployment instructions (e.g. Docker/Helm), self-hosted configuration and requirements, independent or hands-on corroboration of a self-hosted Weave instance.",
-    "evidenceIds": [
-      "wandb-weave-release-policy-20261105",
-      "wandb-weave-docs-48"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for an LLM observability and evaluation platform, so the axis applies, but the pack has no evidence that Weave's backend can be deployed on user infrastructure. The 'self-hosted models' mentions cover cost tracking for the user's own LLMs, not self-hosting Weave. 'Dedicated Cloud' is a vendor-hosted deployment option, and the GitHub items describe only the tracing SDK, not a deployable server.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can self-host the core product",
-      "citations": [
-        {
-          "evidenceId": "wandb-weave-release-policy-20261105",
-          "quote": "This is the W&B Server (Dedicated Cloud/Self-Managed) release policy"
-        },
-        {
-          "evidenceId": "wandb-weave-docs-48",
-          "quote": "In Weave, calls and agent spans now link to each other in both directions."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -15006,7 +14978,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Weave documents a dedicated endpoint that ingests OTLP-formatted trace data into a project, and an OTel-compatible SDK, so sending traces over OpenTelemetry is directly supported alongside existing OTel pipelines. The evidence does not show Weave exporting or emitting its traces back out over OTLP, so the 'receive' half of the story is unevidenced. missing for 10: documented OTLP export/egress of Weave traces to other backends, details on supported OTLP transports (gRPC vs HTTP) and semantic conventions, independent or hands-on corroboration of the OTLP ingest endpoint",
+    "rationale": "Weave documents a dedicated OTLP ingestion endpoint and an OTel-compatible SDK, so you can send OpenTelemetry trace data into a Weave project alongside an existing OTel pipeline. The pack does not show traces being exported or received back out of Weave in OTLP form; programmatic access is via Weave's own REST Service API. missing for 10: OTLP export/receive of traces out of Weave, ingestion protocol details (HTTP/gRPC, semantic-convention mapping), independent hands-on corroboration",
     "evidenceIds": [
       "wandb-weave-docs-14",
       "wandb-weave-docs-41",
@@ -15043,7 +15015,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Weave automatically captures function inputs, outputs, and metadata in traces. Nothing documents a way to mask, redact, or filter sensitive fields before they are stored. The Guardrails PII-detection scorer is an adjacent feature: it detects or scores PII but is not documented as redacting trace data before storage.",
+    "rationale": "The evidence pack documents no way to mask or redact inputs or outputs before Weave stores them in traces. Tracing docs say only that Weave automatically captures code, inputs, outputs and metadata. The only related item is a Guardrails PII-detection scorer, which classifies content after the fact and does not redact it before storage, so it is an adjacent feature that earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15058,10 +15030,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents choosing a storage region or data residency for Weave. It only mentions in passing that W&B Multi-tenant, Dedicated Cloud and Self-Managed deployments exist, in an API-base-URL note and a release-policy page. Neither describes selecting where data is stored, so this is adjacent context, not documented residency control.",
+    "rationale": "Data residency is a fair question for a hosted observability SaaS like Weave, so the axis applies. However, the evidence pack never documents choosing a storage region or residency. The only nearby item is a passing mention of 'W&B Multi-tenant and Dedicated Cloud' deployment types, which says nothing about selectable regions.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
       "citations": []
@@ -15073,7 +15045,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Weave is a hosted LLM tracing and evaluation service that stores user inputs and outputs, so whether that data can be kept out of AI-model training is a fair privacy question for this kind of product. However, the evidence pack contains no data-usage policy, training opt-out, or no-training commitment. The tracing, cost, and guardrail material (including PII-detection scorers) is about other features and does not address model training on customer data.",
+    "rationale": "Weave is a hosted observability and evaluation service that stores customer traces, inputs and outputs, so a data-training opt-out is a fair question for it. The evidence pack contains no documentation of a policy or setting that keeps customer data out of AI model training. PII-detection scorers and trace capture are adjacent features and do not count.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15088,7 +15060,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for an LLM tracing and observability service, so the axis applies. However, the evidence pack documents only tracing, evaluation, cost tracking, OTel ingestion and a generic REST/OpenAPI surface. Nothing in it describes retention policies, TTLs, or deleting traces or other data.",
+    "rationale": "Data retention and deletion controls are a fair question for an LLM tracing and observability service that stores user traces. However, nothing in the evidence pack documents retention periods, retention settings, or deletion of traces or data. The Service API and OpenAPI items describe general programmatic access, and the only endpoints they name are /call/start and /calls/stream_query, neither of which concerns deletion or retention.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15103,7 +15075,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy-posture question for an LLM observability SDK and platform like W&B Weave, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out. The 'tracking' evidence covers tracing and cost tracking of the user's own application, which is a different feature from the vendor collecting usage data on Weave itself.",
+    "rationale": "Opting out of vendor telemetry is a fair question for an SDK and observability platform like Weave, so the axis applies. However, the evidence pack contains no documentation of any setting, environment variable or policy for disabling usage tracking or telemetry. The OpenTelemetry items describe importing a user's own trace data, which is a different capability and does not count here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15116,12 +15088,12 @@
     "productId": "wandb-weave",
     "storyId": "prompt-playground",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Weave ships a first-party Playground for iterating on LLM prompts. It supports prompt editing, message retrying, comparing different models, OpenAI-compatible custom runtimes and saved model presets, which covers iterating against real models. The evidence never mentions prompt variables or templating, so that part of the story is unproven. Missing for 10: documented prompt variable/template support in the Playground, and independent or hands-on corroboration of the Playground workflow.",
+    "rationale": "Weave ships a first-party Playground for iterating on LLM prompts and responses. The docs cover prompt editing, message retrying, model comparison, custom OpenAI-compatible endpoints and saved model presets, so the 'real models' part is well covered. However, nothing in the evidence covers template variables or variable substitution in the Playground. Missing for 10: documented prompt variables/templating in the Playground, independent or hands-on corroboration.",
     "evidenceIds": [
-      "wandb-weave-docs-9",
       "wandb-weave-docs-40",
+      "wandb-weave-docs-9",
       "wandb-weave-docs-10",
       "wandb-weave-docs-11"
     ],
@@ -15155,13 +15127,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no documented capability for managing versioned prompts as first-party objects or for deploying prompt changes to production without a code release. The Playground supports prompt editing and experimentation, and the generic 'trace, version' line refers to instrumenting application functions; both are adjacent features, not prompt deployment.",
-    "evidenceIds": [],
+    "rationale": "The evidence shows Weave versioning instrumented functions and a Playground for iterating on prompts. Nothing documents a prompt registry or a way to deploy or promote prompt versions to production without shipping code. Function/code versioning and prompt experimentation are adjacent features, not the capability this story asks for.",
+    "evidenceIds": [
+      "wandb-weave-docs-1",
+      "wandb-weave-docs-40"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can version prompts and deploy changes to production without shipping code",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wandb-weave-docs-1",
+          "quote": "trace, version, and collect feedback about your application"
+        },
+        {
+          "evidenceId": "wandb-weave-docs-40",
+          "quote": "The Weave Playground simplifies the process of iterating on LLM prompts and responses"
+        }
+      ]
     }
   },
   {
@@ -15170,12 +15154,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Weave's tracing docs say functions are instrumented with `@weave.op()` in Python or wrapped with `weave.op()` in TypeScript, so both languages are covered by first-party SDKs. The GitHub repo corroborates the `weave.op` tracing approach, but the JS/TS side rests on a single docs line. missing for 10: details on the TS SDK's install, package name and feature parity with Python; independent or hands-on corroboration of JS/TS instrumentation.",
+    "rationale": "Weave's tracing docs explicitly describe first-party instrumentation in both languages: you decorate a function with `@weave.op()` in Python or wrap it with `weave.op()` in TypeScript to capture code, inputs, outputs and metadata. The GitHub repo corroborates the `weave.op` tracing model. TypeScript support, however, rests on a single documentation sentence. Missing for 10: detailed JS/TS SDK documentation (installation, integrations, feature parity with Python), independent or hands-on corroboration of the TypeScript SDK.",
     "evidenceIds": [
       "wandb-weave-docs-4",
       "wandb-weave-docs-30",
-      "wandb-weave-docs-1",
-      "wandb-weave-gh-1"
+      "wandb-weave-gh-1",
+      "wandb-weave-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -15187,8 +15171,8 @@
           "quote": "When you decorate a function with `@weave.op()` (Python) or wrap it with `weave.op()` (TypeScript), Weave automatically captures its code, inputs, outputs, and execution metadata."
         },
         {
-          "evidenceId": "wandb-weave-docs-1",
-          "quote": "Manually instrument your application’s LLM calls and arbitrary functions to trace, version, and collect feedback about your application"
+          "evidenceId": "wandb-weave-gh-1",
+          "quote": "You can trace any function using `weave.op`"
         }
       ]
     }
@@ -15198,8 +15182,8 @@
     "storyId": "threshold-alerting",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "Weave's marketing page says signals classify agent interactions and that \"Alerts route what matters through Slack notifications and trigger webhook automations,\" so Slack-delivered alerting is a first-party capability. Beyond that one marketing line, nothing documents what an alert can be set on or which other channels exist. Cost tracking and evaluations are documented, but no evidence connects them to alert triggers. Missing for 10: documented alert configuration on error-rate thresholds, cost-spike alerts, eval-score-drop alerts, PagerDuty and email notification channels, in-depth first-party alerting docs, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Weave's marketing page says its own alerts route what built-in and custom signals surface through Slack notifications and webhook automations, so a first-party alerting capability with Slack delivery exists. Only marketing copy supports it, with no docs on alert conditions or thresholds. missing for 10: documented alert conditions on error rates, cost spikes, or eval-score drops; PagerDuty and email notification channels; first-party alert configuration docs; independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-17",
       "wandb-weave-docs-36",
@@ -15215,8 +15199,8 @@
           "quote": "Alerts route what matters through Slack notifications and trigger webhook automations, turning every production insight into a fast iteration."
         },
         {
-          "evidenceId": "wandb-weave-docs-16",
-          "quote": "Built-in and custom signals automatically capture and classify agent interactions, so you always know how your agents are behaving."
+          "evidenceId": "wandb-weave-docs-36",
+          "quote": "Built-in and custom signals automatically capture and classify agent interactions, so you always know how your agents are behaving. Alerts route what matters through Slack notifications and trigger webhook automations"
         }
       ]
     }
@@ -15227,7 +15211,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Weave records token usage and calculates cost for each call automatically for supported integrations, with custom pricing for other models. These costs appear in the trace tree and the calls table, so per-request cost visibility is documented. The evidence never shows dashboard views that aggregate cost or tokens by model or over time; it only shows per-call display. Missing for 10: documented dashboards aggregating cost/tokens by model, time-period trend views, independent or hands-on corroboration.",
+    "rationale": "Weave records token usage and calculates cost for each call, using built-in per-model pricing or custom costs, and shows these in the trace tree and calls table. That covers per-request visibility. Nothing in the evidence shows dashboards that aggregate cost or tokens by model or over time periods. Missing for 10: dashboard aggregation of cost and tokens by model, time-period trend views, independent or hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-27",
       "wandb-weave-docs-33",
@@ -15258,22 +15242,23 @@
   {
     "productId": "wandb-weave",
     "storyId": "trace-llm-calls",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "high",
-    "rationale": "Decorating a function with `@weave.op()` captures its inputs, outputs and execution metadata into a trace tree. For supported LLM integrations, Weave automatically records token usage and cost per call and shows them in the trace tree and calls table. missing for 10: latency/duration is never named explicitly (only implied by \"execution metadata\"), independent hands-on corroboration.",
+    "rationale": "Weave documents automatic capture of inputs and outputs for LLM calls via `@weave.op()` and builds trace trees from them. It also automatically records token usage and cost per call for supported integrations (OpenAI, Anthropic, Cohere, Mistral), with custom cost configuration for other models. Latency is never named explicitly; it is only implied by \"execution metadata,\" so the story is not completely covered. missing for 10: explicit documentation of per-call latency/duration capture, automatic token usage for unsupported or self-hosted providers, independent hands-on corroboration.",
     "evidenceIds": [
       "wandb-weave-docs-4",
       "wandb-weave-gh-2",
+      "wandb-weave-gh-3",
       "wandb-weave-gh-1",
       "wandb-weave-docs-27",
       "wandb-weave-docs-33",
       "wandb-weave-docs-12",
-      "wandb-weave-gh-3"
+      "wandb-weave-docs-34"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can capture traces of my LLM calls with inputs, outputs, latency, and token usage",
       "citations": [
         {
@@ -15282,7 +15267,7 @@
         },
         {
           "evidenceId": "wandb-weave-gh-2",
-          "quote": "Decorate all the functions you want to trace, this will generate a trace tree of the inputs and outputs of all your functions"
+          "quote": "this will generate a trace tree of the inputs and outputs of all your functions"
         },
         {
           "evidenceId": "wandb-weave-docs-27",
@@ -15291,6 +15276,10 @@
         {
           "evidenceId": "wandb-weave-docs-33",
           "quote": "When you call weave.init() and use a supported LLM integration such as OpenAI, Anthropic, Cohere, or Mistral, Weave automatically records token usage and calculates cost for each call."
+        },
+        {
+          "evidenceId": "wandb-weave-gh-1",
+          "quote": "You can trace any function using `weave.op` - from api calls to OpenAI, Anthropic, Google AI Studio etc"
         }
       ]
     }

@@ -52,6 +52,11 @@
 #   - wandb-weave api-sandbox: no sandbox or test mode under products/wandb/weave on
 #     docs.coreweave.com (full sitemap scanned; the closest page is the in-UI LLM prompt
 #     Playground, which operates on production project data).
+#   - wandb-weave api-versioning-policy: no versioning or deprecation policy specific to
+#     the trace.wandb.ai HTTP API is documented, and the spec carries no version headers
+#     (service-api reference and release-notes section checked). The W&B Server release
+#     policy covers a different surface (server release operations); it was initially
+#     appended here and removed after the PR #623 review (see REMOVALS).
 #
 # Reachability notes: W&B docs (weave-docs.wandb.ai) now redirect to docs.coreweave.com,
 # and developer.mixpanel.com now redirects to docs.mixpanel.com (Mintlify-hosted; the old
@@ -108,6 +113,15 @@ ITEMS = {
          ['openapi: 3.1.0', 'title: Ollama API',
           'OpenAPI specification for the Ollama HTTP API'],
          'docs.ollama.com serves a downloadable OpenAPI 3.1.0 document titled "Ollama API" whose description reads "OpenAPI specification for the Ollama HTTP API", with server url http://localhost:11434. The docs llms.txt lists it under "## OpenAPI Specs" as "[openapi](/openapi.yaml)".'),
+        # PR #623 review (P1): the api-interactive-docs judge gave partial credit to
+        # copy-and-run curl guidance while its own rationale said no interactive explorer
+        # exists. The pack lacked the counter-signal; this recorded check carries it (the
+        # append-ultrametric-audit-counterchecks precedent). preserve: a scheduled probe
+        # refresh must not clobber a hand-recorded counter-check.
+        ('ollama-playground-disabled-20261105', 'probe',
+         'https://docs.ollama.com/api/chat',
+         ['"playground":{"display":"simple"}'],
+         'PROBE docs playground check (recorded 2026-11-05, rankings-engine/scripts/append-api-quality-gap-evidence-2026-11-05.py): the endpoint reference pages on docs.ollama.com (e.g. /api/chat) configure the Mintlify API playground as "playground":{"display":"simple"} with "examples":{"languages":["curl"]} — copyable curl examples with the interactive in-page runner disabled. No "Try it" control renders on any endpoint page, and no vendor page documents a built-in interactive explorer for the local server.'),
         ('ollama-api-versioning-20261105', 'claimed-docs',
          'https://docs.ollama.com/api/introduction.md',
          ["Ollama's API isn't strictly versioned, but the API is expected to be stable and backwards compatible",
@@ -214,11 +228,13 @@ ITEMS = {
          'https://trace.wandb.ai/docs',
          ['Swagger UI'],
          'The trace API hosts a live Swagger UI that loads /openapi.json, a runnable in-page console against the production API; a ReDoc view answers at /redoc. The hosted endpoint reference pages on docs.coreweave.com additionally render a "Try it" API playground per endpoint (the Mintlify api.playground runtime).'),
-        ('wandb-weave-release-policy-20261105', 'claimed-docs',
-         'https://docs.coreweave.com/release-notes/release-policies.md',
-         ['Release support and end of life policy',
-          'Server release for 12 months from its initial release date'],
-         'The W&B release policies page documents release support and end of life: a major W&B Server release is supported "for 12 months from its initial release date", with major releases produced monthly that "may include new features, enhancements, performance improvements, medium and low severity bug fixes, and deprecations". This is the W&B Server (Dedicated Cloud/Self-Managed) release policy; no versioning or deprecation policy specific to the trace.wandb.ai HTTP API is documented, and the API spec itself carries no version headers.'),
+        # PR #623 review (P1): wandb-weave-release-policy-20261105 (the W&B Server release
+        # policy, docs.coreweave.com/release-notes/release-policies.md) was initially
+        # appended against api-versioning-policy and earned partial credit despite its own
+        # text disclaiming any trace-API versioning or deprecation coverage. It documents a
+        # different surface (server release operations), so it is removed via REMOVALS
+        # below and the cell is re-judged on the remaining pack; the absence is recorded in
+        # the verified-honest list above.
     ],
     ('model-gateways', 'litellm'): [
         ('litellm-api-stability-policy-20261105', 'claimed-docs',
@@ -239,10 +255,14 @@ ITEMS = {
          ['you can use `completion()` with `mock_response` to mock calling the completion endpoint',
           'without calling the LLM APIs'],
          'LiteLLM documents a mock/test mode: "For testing purposes, you can use `completion()` with `mock_response` to mock calling the completion endpoint", returning a synthetic response "without calling the LLM APIs", streaming included. This is a request-level mock mode for saving testing costs, not a hosted sandbox environment; no separate sandbox deployment is documented.'),
+        # PR #623 review (P2): every claim in the excerpt is marker-checked, not only the
+        # pin recommendation, so a changed cadence or compatibility policy fails closed.
         ('litellm-release-cycle-20261105', 'claimed-docs',
          'https://docs.litellm.ai/docs/proxy/release_cycle.md',
-         ['In production, we recommend pinning to the latest stable `1.x.x` release'],
-         'The Release Cycle page documents dev, release-candidate, and stable tiers with semantic versioning: weekly scheduled releases bump the minor component, patch is reserved for hotfixes, and major bumps "break backward compatibility (`1.x.x` -> `2.x.x`)", with the production recommendation to pin "to the latest stable `1.x.x` release". Together with the API Stability Policy this is the documented versioning-and-deprecation contract.'),
+         ['In production, we recommend pinning to the latest stable `1.x.x` release',
+          'weekly scheduled releases bump the **MINOR** component, and **PATCH** is reserved for hotfixes',
+          "'major' bumps: break backward compatibility (`1.x.x` → `2.x.x`)."],
+         'The Release Cycle page documents dev, release-candidate, and stable tiers with semantic versioning: "weekly scheduled releases bump the **MINOR** component, and **PATCH** is reserved for hotfixes", "\'major\' bumps: break backward compatibility (`1.x.x` → `2.x.x`)", with the production recommendation to pin "to the latest stable `1.x.x` release". Together with the API Stability Policy this is the documented versioning-and-deprecation contract.'),
     ],
     ('product-analytics', 'mixpanel'): [
         ('mixpanel-openapi-specs-20261105', 'claimed-docs',
@@ -290,6 +310,15 @@ ITEMS = {
 }
 
 
+# Rows removed after review, (arena, product) -> evidence ids. Removal is the
+# audit-correction path: an explicit dated script, never a refresh.
+REMOVALS = {
+    ('llm-evals-observability', 'wandb-weave'): ['wandb-weave-release-policy-20261105'],
+}
+
+# Hand-recorded counter-check rows that a scheduled refresh must not clobber.
+PRESERVE_IDS = {'ollama-playground-disabled-20261105'}
+
 _fetch_cache: dict = {}
 
 
@@ -315,10 +344,14 @@ def verify(url, markers):
 
 
 def main() -> None:
-    for (arena, pid), items in ITEMS.items():
+    for (arena, pid) in sorted(set(ITEMS) | set(REMOVALS)):
+        items = ITEMS.get((arena, pid), [])
         ef = os.path.join(ROOT, 'open-rankings', arena, 'evidence', f'{pid}.json')
         with open(ef) as f:
             ev = json.load(f)
+        removals = set(REMOVALS.get((arena, pid), []))
+        removed = len([e for e in ev if e['id'] in removals])
+        ev = [e for e in ev if e['id'] not in removals]
         have = {e['id'] for e in ev}
         added = 0
         for iid, tier, url, markers, excerpt in items:
@@ -326,12 +359,15 @@ def main() -> None:
                 print(f'{iid}: already present, skipping')
                 continue
             verify(url, markers)
-            ev.append({'id': iid, 'tier': tier, 'url': url, 'excerpt': excerpt, 'fetchedAt': NOW})
+            row = {'id': iid, 'tier': tier, 'url': url, 'excerpt': excerpt, 'fetchedAt': NOW}
+            if iid in PRESERVE_IDS:
+                row['preserve'] = True
+            ev.append(row)
             added += 1
-        if added:
+        if added or removed:
             with open(ef, 'w') as f:
                 f.write(json.dumps(ev, indent=2, ensure_ascii=False) + '\n')
-        print(f'{arena}/{pid}: +{added} evidence items ({len(ev)} total)')
+        print(f'{arena}/{pid}: +{added} / -{removed} evidence items ({len(ev)} total)')
 
 
 if __name__ == '__main__':
