@@ -1,14 +1,15 @@
 {
-  "hash": "c579359ea41c10e563d559d09b51ebefadcf21fa7f2191b39fa1f3e213cff19c",
+  "hash": "58085196bf5d39e746ea2682bc5ef0132b586eed6ec64c6d49b4a2798dc6c579",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte has a first-party Typing and Deduping doc page stating that each stream maps to exactly one warehouse table with no sub-tables, so this is a product capability aimed directly at query-ready destination tables. The quoted text, however, only covers the one-to-one table mapping. It does not show column typing, deduplication behavior or how raw JSON is avoided. Missing for 10: explicit evidence of typed columns, documented deduplication semantics (e.g., primary-key-based dedup), confirmation that tables are not raw JSON blobs, and independent or hands-on corroboration.",
+    "rationale": "Airbyte has a first-party Typing and Deduping docs page. Its quoted text confirms one-to-one table mapping into the warehouse (\"No more sub-tables\"), which points to structured destination tables rather than raw blobs. However, the quoted spans do not state that columns are typed or that records are deduplicated, and the sync-mode docs do not mention dedup behavior. missing for 10: explicit evidence of typed columns, explicit evidence of deduplication (e.g., a dedup sync mode or primary-key handling), handling of typing errors, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-24",
-      "airbyte-docs-41"
+      "airbyte-docs-41",
+      "airbyte-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -18,6 +19,10 @@
         {
           "evidenceId": "airbyte-docs-24",
           "quote": "One-to-one table mapping: Data in one stream will always be mapped to one table in your data warehouse. No more sub-tables."
+        },
+        {
+          "evidenceId": "airbyte-docs-23",
+          "quote": "A sync mode governs how Airbyte reads from a source and writes to a destination."
         }
       ]
     },

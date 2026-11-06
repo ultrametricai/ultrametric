@@ -1,17 +1,30 @@
 {
-  "hash": "7f995a9e2f396cfebf079c5dde61896788364e8779af5f3b82ce868a55c3c575",
+  "hash": "cf15e0ee9eab84129e1932b9abfee9acb1cc5ac568d8433a1656c8156ccd39b3",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "An auth framework exposing HTTP endpoints could reasonably ship a machine-readable API spec, so this axis applies. However, the probe found every candidate OpenAPI/Swagger path returning 404, and no doc in the pack describes an OpenAPI or equivalent spec. llms.txt and the docs MCP server are documentation resources, not API specs, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Better Auth's own openAPI() plugin generates an OpenAPI 3.1.1 schema covering core and plugin endpoints. The schema is retrievable as JSON via auth.api.generateOpenAPISchema() or the /api/auth/open-api/generate-schema endpoint, and a Scalar reference is also served. However, the vendor labels the plugin early-stage, and the spec exists only on the integrator's own deployment; the vendor-hosted openapi.json paths all returned 404. missing for 10: stable (non-early-stage) status of the OpenAPI plugin, a vendor-hosted downloadable spec, independent or hands-on corroboration that the generated schema is complete and accurate.",
+    "evidenceIds": [
+      "better-auth-openapi-plugin-20261106",
+      "better-auth-scalar-reference-20261106",
+      "better-auth-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "better-auth-openapi-plugin-20261106",
+          "quote": "Better Auth's openAPI() plugin generates an OpenAPI 3.1.1 schema covering core and plugin endpoints, retrievable as JSON via auth.api.generateOpenAPISchema() or the /api/auth/open-api/generate-schema endpoint."
+        },
+        {
+          "evidenceId": "better-auth-openapi-plugin-20261106",
+          "quote": "the vendor marks the plugin \"still in the early stages of development\""
+        }
+      ]
     },
     "productId": "better-auth",
     "storyId": "api-machine-spec"

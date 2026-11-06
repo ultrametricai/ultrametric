@@ -1,12 +1,13 @@
 {
-  "hash": "8f52b3a413a693cd27ba254da69d7bfe9ca695c0da69cf8f4b01869910166868",
+  "hash": "ec1a033f79a0401e50f2d2c1a3b1c9ff2b3f36c86aef75d36c1e1599a75bc98d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Navan documents its own non-interactive API surface: an OAuth 2.0 client-credentials flow (machine-to-machine auth) with retrieval and batch-update endpoints, async job polling and webhooks, so headless scripted automation of its expense data is possible. There is no CLI, CI integration or headless-run guidance, and the MCP server authenticates through an interactive Navan login (SSO or username/password), so it is not built for unattended pipelines. missing for 10: official CLI or headless runner, CI/CD integration docs or examples, non-interactive auth for the MCP server, independent hands-on corroboration of unattended automation.",
+    "rationale": "Navan's own Expense API uses an OAuth 2.0 client-credentials flow, which allows non-interactive machine access, and it is positioned for 'scheduled partner integrations' with batch PATCH updates and async job polling. That supports headless automation of the expense surface. However, access is partner-gated, production is the only base URL, and the MCP server relies on interactive SSO or password login, so it is not headless. missing for 10: CLI or documented CI/pipeline usage, sandbox/test environment for automation runs, headless coverage beyond the expense surface (travel), ungated access, OpenAPI spec, independent hands-on corroboration.",
     "evidenceIds": [
+      "navan-developer-portal-20261106",
       "navan-docs-2",
       "navan-docs-42",
       "navan-docs-23",
@@ -18,8 +19,12 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
+          "evidenceId": "navan-developer-portal-20261106",
+          "quote": "OAuth 2.0 client-credentials REST API for high-volume and scheduled partner integrations"
+        },
+        {
           "evidenceId": "navan-docs-2",
-          "quote": "OAuth 2.0 client-credentials flow, retrieval and update endpoints across the expense surface, custom-field management, receipts, and webhooks."
+          "quote": "OAuth 2.0 client-credentials flow, retrieval and update endpoints across the expense surface"
         },
         {
           "evidenceId": "navan-docs-42",
@@ -27,7 +32,7 @@
         },
         {
           "evidenceId": "navan-docs-23",
-          "quote": "Discover company fields, batch-manage option values, and poll async job status."
+          "quote": "poll async job status"
         }
       ]
     },

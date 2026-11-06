@@ -1632,10 +1632,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Better Auth's own docs show OAuth authorization-server capability: the MCP plugin makes the app act as an OAuth authorization server, and the Device Authorization plugin implements RFC 8628 code issuance. A community comment says it can act as an identity provider and OIDC provider, though some features are enterprise-only. The evidence is scoped to MCP clients and device flows, not a general provider for arbitrary third-party apps. Missing for 10: first-party docs for a general OAuth/OIDC provider (client registration, authorization-code flow, consent, token issuance to arbitrary third-party clients), and hands-on corroboration of a 'Sign in with my app' deployment.",
+    "rationale": "Better Auth's own docs show it can act as an OAuth authorization server: the MCP plugin makes the app an authorization server and protected resource for MCP clients, and the Device Authorization plugin implements RFC 8628 code issuance and approval. Community comments corroborate that it can act as an identity provider and OIDC/SSO provider. However, the documented authorization-server role is scoped to MCP clients and device flows rather than general third-party 'Sign in with my app' clients. Missing for 10: first-party docs for a general OAuth/OIDC provider (client registration, authorization-code flow, consent, token and userinfo endpoints for arbitrary third-party apps), and hands-on corroboration of issuing tokens to external clients.",
     "evidenceIds": [
-      "better-auth-docs-12",
-      "better-auth-docs-17",
+      "better-auth-docs-60",
+      "better-auth-docs-56",
       "better-auth-comm-17-refresh-b877135da8abc65b",
       "better-auth-docs-7"
     ],
@@ -1645,12 +1645,12 @@
       "subject": "As a developer, I can turn my own application into an OAuth provider that issues tokens to third-party clients (\"Sign in with my app\")",
       "citations": [
         {
-          "evidenceId": "better-auth-docs-12",
-          "quote": "The MCP plugin lets your app act as an OAuth authorization server and protected resource for Model Context Protocol clients."
+          "evidenceId": "better-auth-docs-60",
+          "quote": "The **MCP** plugin lets your app act as an OAuth authorization server and protected resource for [Model Context Protocol](https://modelcontextprotocol.io) clients."
         },
         {
-          "evidenceId": "better-auth-docs-17",
-          "quote": "The Device Authorization plugin implements the code issuance and approval flow from the OAuth 2.0 Device Authorization Grant (RFC 8628)"
+          "evidenceId": "better-auth-docs-56",
+          "quote": "The Device Authorization plugin implements the code issuance and approval flow from the OAuth 2.0 Device Authorization Grant"
         },
         {
           "evidenceId": "better-auth-comm-17-refresh-b877135da8abc65b",
@@ -1665,10 +1665,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Better Auth's own security docs say a logged-in user can revoke their own sessions to log out from different devices or browsers, so user-side session revocation is a documented built-in capability. The admin plugin evidence covers banning and impersonation but never admin-side session viewing or revocation, and the 2FA 'trusted devices' feature is a different capability. Missing for 10: documented listing of active sessions and devices, admin ability to view or revoke other users' sessions, an explicit revoke-individually versus revoke-all distinction, and independent hands-on corroboration.",
+    "rationale": "Better Auth's security docs state that logged-in users can revoke their own sessions to log out from other devices or browsers, so user-side per-device session revocation is a documented first-party capability. The admin plugin evidence covers banning, roles and impersonation but never mentions viewing or revoking other users' sessions. missing for 10: documented listing of active sessions/devices with device metadata, admin-side session viewing and revocation, explicit revoke-all-sessions behavior, independent or hands-on corroboration.",
     "evidenceIds": [
       "better-auth-docs-10",
-      "better-auth-docs-47",
+      "better-auth-docs-33",
       "better-auth-docs-15"
     ],
     "support": {
@@ -1681,8 +1681,8 @@
           "quote": "A logged in user can also revoke their own sessions to log out from different devices or browsers."
         },
         {
-          "evidenceId": "better-auth-docs-47",
-          "quote": "The session expires after 7 days by default."
+          "evidenceId": "better-auth-docs-33",
+          "quote": "Sessions, email verification, and password reset included."
         }
       ]
     }
@@ -1693,12 +1693,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms an llms.txt at better-auth.com, and a second probe confirms the docs are served as raw markdown (.md) pages that an agent can ingest directly. First-party AI-resources docs also describe a hosted remote MCP server that gives MCP clients documentation search, examples, and setup help. Missing for 10: independent or community reports of agents actually using these docs, and evidence of a full-content llms-full.txt variant.",
+    "rationale": "A live probe confirms Better Auth serves an llms.txt at its site root and markdown versions of its docs pages (e.g. /docs/introduction.md). The llms.txt also points agents to the right versioned docs. Better Auth additionally documents an AI-resources section with a hosted remote MCP server for documentation search, aimed at agent clients like Cursor and Claude Code. Missing for 10: independent or community corroboration of agents using llms.txt or the docs in practice.",
     "evidenceIds": [
       "better-auth-probe-1",
       "better-auth-probe-2",
       "better-auth-docs-18",
-      "better-auth-docs-59"
+      "better-auth-versioned-docs-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1716,6 +1716,10 @@
         {
           "evidenceId": "better-auth-docs-18",
           "quote": "Better Auth hosts a remote MCP server that exposes documentation search, examples, and setup help to any MCP-capable client (Cursor, Codex, Claude Code, Open Code, and others)."
+        },
+        {
+          "evidenceId": "better-auth-versioned-docs-20261106",
+          "quote": "Use the documentation version that matches the Better Auth version installed in the project."
         }
       ]
     }
@@ -1726,7 +1730,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Better Auth is an authentication framework, and an auth product could plausibly offer AI-generated insights over its user and auth data, so the axis applies. The evidence pack documents no AI insights or suggestions feature. The hosted MCP server covers documentation search and setup help, and the MCP plugin covers OAuth for MCP clients. Neither generates insights from the user's data, so neither counts toward this story.",
+    "rationale": "Asking an auth framework or platform for AI-generated insights on its user and auth data, such as security or usage suggestions, is a fair question, so the axis applies. The evidence shows no in-product AI insights feature. The hosted MCP server only offers documentation search and setup help, and the MCP plugin provides OAuth for MCP clients; neither produces insights from the user's own data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1741,7 +1745,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Better Auth is a TypeScript authentication and authorization framework. Letting users set up autonomous background automations is a workflow or agent-platform capability, outside this product category. The 'Auth for AI agents' and agent-delegation claims cover authenticating agents, not running automations, so they do not make this axis apply.",
+    "rationale": "Better Auth is a self-hosted TypeScript authentication and authorization framework. User-configured autonomous background automations are an automation or agent-platform capability, not an axis buyers compare auth libraries on. Its agent-related features (MCP auth, token exchange, agent delegation) cover authorizing agents, not running automations, and nothing in the evidence shows it ships a background automation or scheduling feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1756,7 +1760,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Auth products of this kind could plausibly ship an in-product AI assistant, so the question applies, but the evidence shows none. The hosted MCP docs server serves external AI clients rather than acting as a built-in assistant. \"Agent delegation\" refers to authorizing AI agents, not delegating tasks to an assistant inside Better Auth. Both are adjacent features and earn no credit.",
+    "rationale": "Better Auth's evidence covers auth primitives, a hosted docs MCP server for external AI clients, and an MCP/agent-delegation plugin that lets apps authorize AI agents. None of this is a built-in AI assistant inside Better Auth that users can delegate tasks to. Serving tools to external agents and authorizing agent access are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1771,12 +1775,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Better Auth is a code-first library with an official CLI (`npx auth init`, CLI-generated migrations) and server-side `auth.api` methods. Its auth config lives in version-controlled code with \"no dashboard clicks\", which suits scripted, headless use. However, nothing documents non-interactive CI runs. One hands-on report says admin scripts and tests were \"very hacky\" because of the request-header-based design, which limits the depth of support. Missing for 10: explicit CI or non-interactive CLI documentation (flags, exit codes, env-based config), documented headless or test-mode usage of server APIs without request headers, and independent corroboration of smooth CI automation.",
+    "rationale": "Better Auth is code-configured: there are no dashboard clicks, auth lives in version control, and it ships an official CLI (`npx auth init`, schema generation and migrations) plus server-side `auth.api` methods, all of which suit scripted, non-interactive use. However, nothing documents CI or headless automation explicitly, and one hands-on report says running admin scripts and tests was 'very hacky' because of its request-header-based design. missing for 10: explicit CI/headless usage docs, documented non-interactive CLI flags for pipelines, corroboration that scripted and test usage works smoothly.",
     "evidenceIds": [
-      "better-auth-probe-5",
-      "better-auth-docs-61",
       "better-auth-docs-45",
-      "better-auth-docs-81",
+      "better-auth-docs-61",
+      "better-auth-probe-5",
+      "better-auth-docs-23",
       "better-auth-comm-13-refresh-0babf706f20ea80e",
       "better-auth-comm-5"
     ],
@@ -1786,20 +1790,20 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "better-auth-probe-5",
-          "quote": "official CLI documented at https://www.better-auth.com/docs/concepts/cli"
-        },
-        {
-          "evidenceId": "better-auth-docs-61",
-          "quote": "`npx auth init`"
-        },
-        {
           "evidenceId": "better-auth-docs-45",
           "quote": "No dashboard clicks. Your auth lives in code version controlled, type-safe, and reviewable in PRs."
         },
         {
-          "evidenceId": "better-auth-docs-81",
-          "quote": "To authenticate a user on the server, you can use the `auth.api` methods."
+          "evidenceId": "better-auth-probe-5",
+          "quote": "official CLI documented at https://www.better-auth.com/docs/concepts/cli"
+        },
+        {
+          "evidenceId": "better-auth-docs-23",
+          "quote": "To authenticate a user on the server, you can use the auth.api methods."
+        },
+        {
+          "evidenceId": "better-auth-comm-13-refresh-0babf706f20ea80e",
+          "quote": "The CLI-generated migration made switching easy."
         }
       ]
     }
@@ -1810,7 +1814,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Better Auth is a TypeScript authentication framework, not an agent or AI assistant, so consuming MCP servers' tools is a category error for this kind of product. The MCP evidence covers the opposite roles: an MCP plugin that makes an app an OAuth authorization server for MCP clients, and a hosted docs MCP server. Neither shows Better Auth acting as an MCP client, so the axis does not flip to applicable.",
+    "rationale": "Better Auth is a TypeScript authentication framework, not an agent that calls tools, so acting as an MCP client is outside its product category. The MCP evidence in the pack covers different roles: an OAuth authorization server for MCP clients, and a vendor-hosted docs MCP server. Neither is client-side tool consumption, so neither makes this axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1822,27 +1826,23 @@
   {
     "productId": "better-auth",
     "storyId": "agentic-mcp-server",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Better Auth's own docs state that it hosts an official remote MCP server, which any MCP-capable client (Cursor, Codex, Claude Code, Open Code) can connect to for documentation search, examples, and setup help. That directly covers connecting an agent via an official MCP server. The separate MCP plugin is an OAuth building block for users' own MCP servers and is not credited here. missing for 10: connection/setup and tool-schema detail for the hosted server, tools beyond docs/setup help (e.g. operating on auth data), independent or hands-on corroboration that the server works.",
+    "rationale": "Better Auth is an auth framework, not an agent, so an official MCP server is a fair axis. Its docs say it hosts a remote MCP server that MCP clients such as Cursor, Codex and Claude Code can connect to. However, that server only exposes documentation search, examples and setup help, and the evidence includes no connection or configuration walkthrough. The MCP plugin is a separate building block for integrators to make their own apps OAuth servers for MCP clients, so it is not credited here. Missing for 10: MCP tools beyond documentation help, documented connection/configuration steps for clients, independent or hands-on corroboration of the hosted server.",
     "evidenceIds": [
-      "better-auth-docs-59",
       "better-auth-docs-18",
+      "better-auth-docs-59",
       "better-auth-docs-43"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
       "citations": [
         {
           "evidenceId": "better-auth-docs-18",
           "quote": "Better Auth hosts a remote MCP server that exposes documentation search, examples, and setup help to any MCP-capable client (Cursor, Codex, Claude Code, Open Code, and others)."
-        },
-        {
-          "evidenceId": "better-auth-docs-43",
-          "quote": "Better Auth hosts a remote MCP server that exposes documentation search, examples, and setup help to any MCP-capable client"
         }
       ]
     }
@@ -1853,7 +1853,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Better Auth is a TypeScript auth framework, and natural-language operation is a fair axis for it, but the evidence only shows adjacent AI features. The hosted MCP server offers documentation search, examples and setup help rather than a way to operate auth instances by natural-language command. The MCP plugin is an OAuth building block for developers' own apps, and llms.txt is AI-readable documentation.",
+    "rationale": "Natural-language operation is a fair question for a developer auth framework, since its ecosystem could ship an agent or assistant that runs it. The evidence does not show one. The hosted remote MCP server only offers documentation search, examples and setup help to AI clients, which is adjacent help rather than operating the product. The MCP plugin makes the integrator's app an OAuth server for MCP clients, a building block, not natural-language control of Better Auth.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1865,20 +1865,20 @@
   {
     "productId": "better-auth",
     "storyId": "agentic-official-cli",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Better Auth ships an official, documented CLI. The docs and homepage show `npx auth init` and device-authorization testing through the CLI, and community users confirm using it to generate tables and migrations. Nothing in the evidence shows the CLI is designed for AI-native or agent-driven use, so the agentic part of the story is unproven. Missing for 10: documented AI- or agent-oriented CLI behavior (non-interactive or scriptable modes, machine-readable output), a full command reference in the evidence, and hands-on corroboration of CLI use in agentic workflows.",
+    "rationale": "Better Auth ships an official CLI: a probe confirms first-party CLI docs, the homepage shows `npx auth init`, and the device-authorization docs refer to \"the Better Auth CLI\". Community users independently report using it to generate database tables and migrations. missing for 10: in-depth evidence of the CLI command set and flags, evidence of AI/agent-oriented features (machine-readable output, non-interactive agent use)",
     "evidenceIds": [
       "better-auth-probe-5",
       "better-auth-docs-61",
       "better-auth-docs-28",
-      "better-auth-comm-13-refresh-0babf706f20ea80e",
-      "better-auth-comm-1"
+      "better-auth-comm-1",
+      "better-auth-comm-13-refresh-a59592789dbf42f9"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can use an official CLI",
       "citations": [
         {
@@ -1894,8 +1894,12 @@
           "quote": "You can test the device authorization flow right now using the Better Auth CLI"
         },
         {
-          "evidenceId": "better-auth-comm-13-refresh-0babf706f20ea80e",
-          "quote": "The CLI-generated migration made switching easy."
+          "evidenceId": "better-auth-comm-1",
+          "quote": "You get all of your auth data in your own db in 1 cli command."
+        },
+        {
+          "evidenceId": "better-auth-comm-13-refresh-a59592789dbf42f9",
+          "quote": "migration was easy using the CLI to generate tables"
         }
       ]
     }
@@ -1906,13 +1910,15 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Better Auth documents its own programmatic API: server-side `auth.api` methods, typed client methods such as `authClient.signUp.email`, JWT/JWKS endpoints, and admin operations, so an agent can drive it in code. But no OpenAPI/Swagger spec was found at any probed path, and a community user reports there is virtually no documentation for building a non-JS client against the underlying HTTP API. missing for 10: published OpenAPI/HTTP API reference, language-agnostic endpoint documentation, independent hands-on corroboration of agent-driven API use.",
+    "rationale": "Better Auth documents a programmatic surface: server-side `auth.api` methods, HTTP endpoints from plugins such as JWT/JWKS and admin operations, and an openAPI() plugin that generates an OpenAPI 3.1.1 schema with a Try-it-out reference. However, that plugin is self-generated per deployment and marked early-stage, probes found no vendor-published spec, and a hands-on user found driving it from admin scripts hacky because of its request-header-based design. Missing for 10: a stable, vendor-published API spec; mature OpenAPI tooling; clean header-free scripting and automation; documentation for non-JS clients.",
     "evidenceIds": [
       "better-auth-docs-23",
-      "better-auth-docs-4",
       "better-auth-docs-7",
       "better-auth-docs-15",
+      "better-auth-openapi-plugin-20261106",
+      "better-auth-scalar-reference-20261106",
       "better-auth-probe-3",
+      "better-auth-comm-5",
       "better-auth-comm-15"
     ],
     "support": {
@@ -1925,16 +1931,16 @@
           "quote": "To authenticate a user on the server, you can use the auth.api methods."
         },
         {
-          "evidenceId": "better-auth-docs-4",
-          "quote": "const { data, error } = await authClient.signUp.email({ email, password, name, image, callbackURL: \"/dashboard\" }"
-        },
-        {
           "evidenceId": "better-auth-docs-7",
           "quote": "The JWT plugin provides endpoints to retrieve a JWT token and a JWKS endpoint to verify the token."
         },
         {
-          "evidenceId": "better-auth-docs-15",
-          "quote": "It allows administrators to perform various operations such as creating users, managing user roles, banning/unbanning users, impersonating users, and more."
+          "evidenceId": "better-auth-openapi-plugin-20261106",
+          "quote": "Better Auth's openAPI() plugin generates an OpenAPI 3.1.1 schema covering core and plugin endpoints, retrievable as JSON via auth.api.generateOpenAPISchema() or the /api/auth/open-api/generate-schema endpoint."
+        },
+        {
+          "evidenceId": "better-auth-scalar-reference-20261106",
+          "quote": "You can test the endpoints by clicking on the `Try it out` button and providing the required parameters."
         }
       ]
     }
@@ -1945,7 +1951,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Better Auth's own API Key plugin lets you create, manage and verify API keys. It documents constraints such as custom expiration, remaining-use counts, refills and built-in rate limiting, plus organization-owned keys. The homepage also claims auth for AI agents with token exchange and agent delegation. However, no evidence shows per-key permission scopes or least-privilege grants for agent credentials; the limits shown are about usage and lifetime, not privilege. missing for 10: documented per-key permission/scope assignment, agent-specific credential issuance docs for delegation/token exchange, independent or hands-on corroboration.",
+    "rationale": "Better Auth's own API Key plugin lets an app create, manage and verify API keys. Those keys can be bounded with expiration times, usage counts, refills, rate limits and organization ownership. The homepage also claims 'agent delegation' and an MCP OAuth authorization-server plugin. However, the evidence never documents permission or scope restrictions on keys or agent-specific least-privilege grants, so only the bounding half of the story is shown. Missing for 10: documented per-key permission/scope assignment, docs detailing agent delegation or token-exchange scoping, independent or hands-on corroboration.",
     "evidenceIds": [
       "better-auth-docs-16",
       "better-auth-docs-42",
@@ -1973,6 +1979,10 @@
         {
           "evidenceId": "better-auth-docs-76",
           "quote": "Auth for AI agents. MCP auth, token exchange, and agent delegation."
+        },
+        {
+          "evidenceId": "better-auth-docs-60",
+          "quote": "The **MCP** plugin lets your app act as an OAuth authorization server and protected resource for [Model Context Protocol](https://modelcontextprotocol.io) clients."
         }
       ]
     }
@@ -1980,22 +1990,21 @@
   {
     "productId": "better-auth",
     "storyId": "agentic-sdks",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Better Auth ships as an official TypeScript package (npm install better-auth). It provides a documented client SDK (authClient methods such as signUp.email) and a server API (auth.api methods), with framework integrations for Next.js, Nuxt, SvelteKit, Astro, Hono and 20+ more, so developers can build directly against first-party SDKs. A hands-on report says the client library is JS-only, with virtually no documentation for writing other-language clients, which limits non-JS platforms. missing for 10: official non-JavaScript SDKs (e.g., iOS/native mobile), documentation for building custom clients, an OpenAPI spec for SDK generation (probe found none).",
+    "rationale": "Better Auth ships as an official TypeScript package (`npm install better-auth`) with a documented server API (`auth.api` methods) and a client SDK (`authClient`, e.g. `signUp.email`) that work across many JS frameworks. Community feedback says the client library is JS-only, with virtually no documentation for writing clients in other languages such as iOS. missing for 10: official SDKs beyond JavaScript/TypeScript (e.g. Swift/mobile or other server languages), documentation for building non-JS clients, independent corroboration of SDK breadth.",
     "evidenceIds": [
       "better-auth-docs-1",
-      "better-auth-docs-4",
-      "better-auth-docs-67",
       "better-auth-docs-23",
-      "better-auth-docs-20",
-      "better-auth-comm-20",
-      "better-auth-probe-3"
+      "better-auth-docs-67",
+      "better-auth-docs-77",
+      "better-auth-docs-77-refresh-96b4033df0e0c261",
+      "better-auth-comm-20"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": [
         {
@@ -2003,16 +2012,20 @@
           "quote": "npm install better-auth"
         },
         {
-          "evidenceId": "better-auth-docs-67",
-          "quote": "To sign up a user you need to call the client method `signUp.email`"
-        },
-        {
           "evidenceId": "better-auth-docs-23",
           "quote": "To authenticate a user on the server, you can use the auth.api methods."
         },
         {
-          "evidenceId": "better-auth-docs-20",
-          "quote": "Next.js, Nuxt, SvelteKit, Astro, Hono, and 20+ more."
+          "evidenceId": "better-auth-docs-67",
+          "quote": "To sign up a user you need to call the client method `signUp.email`"
+        },
+        {
+          "evidenceId": "better-auth-docs-77",
+          "quote": "Works with your stack. Next.js, Nuxt, SvelteKit, Astro, Hono, and 20+ more."
+        },
+        {
+          "evidenceId": "better-auth-docs-77-refresh-96b4033df0e0c261",
+          "quote": "Better Auth is a framework-agnostic, universal authentication and authorization framework for TypeScript."
         }
       ]
     }
@@ -2023,7 +2036,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhook event subscriptions are a fair question for an auth framework, but the evidence pack never documents registrable outbound HTTP callbacks. The homepage activity feed and the signUp callbackURL redirect parameter are a different feature and a redirect, not webhooks, so neither earns credit.",
+    "rationale": "Webhooks for auth events are a fair capability to ask of an authentication framework, so the axis applies. However, nothing in the pack documents registrable outbound HTTP callbacks for events like sign-up, session creation or 2FA changes. The homepage activity-feed mockup and the observability claims are adjacent features, not webhook subscriptions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2035,31 +2048,57 @@
   {
     "productId": "better-auth",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence pack has no interactive API reference and no runnable examples. The docs contain static code snippets, the probes found no OpenAPI or Swagger spec at any candidate path, and the hosted MCP server offers documentation search and examples, which is a different capability. An auth framework could plausibly ship an interactive reference, so the axis applies but is unevidenced.",
-    "evidenceIds": [],
+    "rationale": "Better Auth's own openAPI() plugin serves a Scalar-rendered interactive reference at /api/auth/reference, where users can run endpoints with a \"Try it out\" button. The caveats are real: it only runs on the integrator's own deployment, there is no vendor-hosted console (the vendor OpenAPI paths probed 404), and the plugin is marked early-stage. Missing for 10: a public vendor-hosted interactive reference, a stable non-experimental plugin, and independent hands-on corroboration of the runnable examples.",
+    "evidenceIds": [
+      "better-auth-scalar-reference-20261106",
+      "better-auth-openapi-plugin-20261106",
+      "better-auth-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "better-auth-scalar-reference-20261106",
+          "quote": "You can test the endpoints by clicking on the `Try it out` button and providing the required parameters."
+        },
+        {
+          "evidenceId": "better-auth-openapi-plugin-20261106",
+          "quote": "Better Auth's openAPI() plugin generates an OpenAPI 3.1.1 schema covering core and plugin endpoints"
+        }
+      ]
     }
   },
   {
     "productId": "better-auth",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "An auth framework exposing HTTP endpoints could reasonably ship a machine-readable API spec, so this axis applies. However, the probe found every candidate OpenAPI/Swagger path returning 404, and no doc in the pack describes an OpenAPI or equivalent spec. llms.txt and the docs MCP server are documentation resources, not API specs, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Better Auth's own openAPI() plugin generates an OpenAPI 3.1.1 schema covering core and plugin endpoints. The schema is retrievable as JSON via auth.api.generateOpenAPISchema() or the /api/auth/open-api/generate-schema endpoint, and a Scalar reference is also served. However, the vendor labels the plugin early-stage, and the spec exists only on the integrator's own deployment; the vendor-hosted openapi.json paths all returned 404. missing for 10: stable (non-early-stage) status of the OpenAPI plugin, a vendor-hosted downloadable spec, independent or hands-on corroboration that the generated schema is complete and accurate.",
+    "evidenceIds": [
+      "better-auth-openapi-plugin-20261106",
+      "better-auth-scalar-reference-20261106",
+      "better-auth-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "better-auth-openapi-plugin-20261106",
+          "quote": "Better Auth's openAPI() plugin generates an OpenAPI 3.1.1 schema covering core and plugin endpoints, retrievable as JSON via auth.api.generateOpenAPISchema() or the /api/auth/open-api/generate-schema endpoint."
+        },
+        {
+          "evidenceId": "better-auth-openapi-plugin-20261106",
+          "quote": "the vendor marks the plugin \"still in the early stages of development\""
+        }
+      ]
     }
   },
   {
@@ -2068,7 +2107,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Asking an auth framework for a test or sandbox mode is a fair question, since auth products can ship test environments or test helpers. The evidence pack documents no sandbox, test mode or isolated test environment in Better Auth. Pointing Better Auth at a separate SQLite or Postgres database is a user-side workaround, not a product capability, and earns no credit.",
+    "rationale": "Asking whether an auth framework offers a test mode or sandbox is a fair question, so the axis applies. However, the evidence documents no Better Auth sandbox, test mode, or isolated non-production environment. Pointing the self-hosted library at a separate database is a user-side workaround, and the Scalar 'Try it out' reference runs against the integrator's own live auth instance rather than an isolated sandbox.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2080,16 +2119,29 @@
   {
     "productId": "better-auth",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Better Auth is a TypeScript auth framework, so API versioning and a deprecation policy are fair questions to ask of it. However, the evidence pack contains no documented API versioning scheme and no deprecation policy. The llms.txt probe only hints at version-matched documentation, which is not a deprecation policy.",
-    "evidenceIds": [],
+    "rationale": "Better Auth versions its library through semver-tagged releases, a vendor-hosted changelog with \"Action required\" callouts on breaking changes, minor-version upgrade guides, and documentation versioned per release line (v1.6, v1.7, v1.8 beta). However, the evidence states that no standalone deprecation-window or support-policy document exists, so the deprecation-policy half of the story is not delivered. Missing for 10: a documented deprecation policy with notice windows, a support/LTS policy per release line, and independent corroboration of versioning discipline.",
+    "evidenceIds": [
+      "better-auth-release-changelog-20261106",
+      "better-auth-versioned-docs-20261106",
+      "better-auth-probe-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "better-auth-release-changelog-20261106",
+          "quote": "semver-tagged with \"Action required\" callouts on breaking entries, plus minor-version upgrade guides"
+        },
+        {
+          "evidenceId": "better-auth-versioned-docs-20261106",
+          "quote": "The documentation is versioned per release line (v1.6, v1.7 latest, v1.8 beta), with the directive \"Use the documentation version that matches the Better Auth version installed in the project.\""
+        }
+      ]
     }
   },
   {
@@ -2098,7 +2150,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack has no documentation of an audit-log feature, tamper-evidence, or any streaming or export path to a SIEM. The homepage activity-feed visual (\"Johncreated a session… Mikeenabled 2FA\") is an unexplained marketing mock-up, not a documented capability. The \"Security & observability\" line covers bot detection, IP blocking and email validation, which are adjacent controls rather than audit logging.",
+    "rationale": "Nothing in the evidence documents a Better Auth audit-log capability, tamper-evident storage, or any streaming or export path to a SIEM. The homepage's sample activity feed (\"Johncreated a session\" and similar) is an unexplained marketing visual. The \"Security & observability\" line covers bot detection and IP blocking, not audit logging, so neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2113,7 +2165,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any registrable webhooks, outbound HTTP callbacks, or event-stream subscription for sign-ups, sign-ins, or user changes. The homepage activity-feed mockup (\"created a session\", \"updated profile\") and the 'Security & observability' marketing line describe an activity display, not a subscribable event delivery mechanism, so they earn no credit.",
+    "rationale": "Nothing in the evidence documents registrable outbound webhooks, event streams, or lifecycle hooks for sign-ups, sign-ins, or user changes. The homepage activity feed sample (\"Sarah updated profile\", \"Mike enabled 2FA\") is a marketing illustration of an activity view, not a subscribable callback or stream a programmatic consumer can receive. The axis applies to an auth framework, so the lack of evidence yields \"none\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2128,7 +2180,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for an auth framework, for example bulk-banning users, bulk role changes or mass session revocation. However, the evidence only documents per-item admin operations (creating users, managing roles, banning/unbanning) and a one-off Auth0 migration script. Neither is a documented bulk-operations capability, so the migration script counts only as adjacent support.",
+    "rationale": "Bulk operations are a fair axis for an auth framework, for example batch user bans, role changes or session revocation, but nothing in the evidence documents a bulk or batch capability. The admin plugin describes operations on individual users, and the Auth0 migration script is a one-off import belonging to a different (migration) story, so neither counts here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2143,7 +2195,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation rules are a fair axis for an auth framework, but the evidence pack never documents a hook, action, or rule system that fires actions on auth events. The nearest items are related but different features: per-path rate-limit rules, a default auto sign-in after signup, and an activity feed on the homepage. None of these is a user-defined event-to-action rule.",
+    "rationale": "An auth framework could plausibly ship event hooks or triggers, so this axis applies. The evidence pack never documents user-definable rules that fire actions on events such as sign-up or session creation. The closest items are adjacent: per-path rate-limit rules, the built-in auto sign-in after sign-up, and an activity-feed graphic, and none of these is a user-defined event-to-action rule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2158,7 +2210,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Better Auth is a TypeScript authentication and authorization framework, so scheduling recurring jobs or workflows falls outside its product category. Nothing in the evidence shows it shipping a scheduler. API-key refill systems and session expiry are auth features, not user-schedulable jobs.",
+    "rationale": "Better Auth is a TypeScript authentication and authorization framework. Scheduling recurring user jobs or workflows falls outside that product category, and nothing in the evidence shows it ships a job scheduler. Time-based behaviors such as session expiry, rate-limit windows and API-key refill systems are auth mechanics, not user-schedulable recurring workflows, so they do not make this axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2170,10 +2222,10 @@
   {
     "productId": "better-auth",
     "storyId": "automation-versioned-workflows",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Better Auth is a TypeScript authentication library, and nothing in the evidence shows it ships an automations or workflow feature that could be versioned, reviewed, or rolled back, so this axis is a category error for the product. The homepage line that auth config lives in code and is 'version controlled... and reviewable in PRs' describes the user's own git workflow, not an automation capability, so it earns no credit here.",
+    "rationale": "Better Auth is a self-hosted TypeScript auth framework, and the evidence shows no automation feature (hooks, workflows or actions) with its own versioning, review or rollback. The homepage says auth config lives in code that is 'version controlled... and reviewable in PRs,' but that versioning comes from the user's own source control, not from the product. The release changelog and versioned docs cover the library's own releases, not user automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2188,7 +2240,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Better Auth documents a built-in rate limiter with stricter default rules for sign-in paths (`/sign-in/email` limited to 3 requests per 10 seconds) and configurable IP-header tracking, which directly addresses brute force; a community user corroborates that rate limiting is built in. Bot detection and IP blocking appear only as a one-line homepage claim, and nothing specifically addresses credential stuffing. missing for 10: documented bot-detection/CAPTCHA mechanism, credential-stuffing defenses (e.g. breached-password checks or account lockout), detailed docs on IP blocking, independent hands-on corroboration beyond rate limiting.",
+    "rationale": "Better Auth documents a built-in rate limiter with stricter default rules on auth paths (e.g. /sign-in/email limited to 3 requests per 10 seconds), configurable windows and IP-header handling, and a community user confirms rate limiting is built in. That directly covers brute-force throttling. Bot detection and IP blocking appear only as a one-line homepage claim with no docs or hands-on detail, and nothing specifically addresses credential stuffing. missing for 10: documented bot-detection/CAPTCHA mechanism, credential-stuffing-specific defenses (e.g. breached-password checks, account lockout), first-party docs for IP blocking, independent corroboration of bot protection.",
     "evidenceIds": [
       "better-auth-docs-25",
       "better-auth-docs-57",
@@ -2217,7 +2269,7 @@
         },
         {
           "evidenceId": "better-auth-comm-11",
-          "quote": "things like email verification, password resets, and rate limiting come built-in or as simple plugins"
+          "quote": "things like email verification, password resets, and rate limiting come built-in or as simple plugins instead of having to code them myself."
         }
       ]
     }
@@ -2228,12 +2280,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Better Auth documents an Auth0 migration guide and script that brings over email/password users 'with proper hashing', social accounts, 2FA and organizations, and it supports a custom password hashing function. Because user data lives in the developer's own database, export is possible, but this is an architectural property rather than a documented export tool. Missing for 10: a generic bulk-import tool beyond the Auth0-specific guide, a documented export feature, independent hands-on corroboration of hash import.",
+    "rationale": "Better Auth documents an Auth0 migration guide covering email/password with proper hashing, plus a script that migrates organizations, members and roles. A configurable password hashing function supports carrying over existing hashes. Users also note all auth data lives in their own database, which limits lock-in. missing for 10: a generic, source-agnostic bulk-import tool or API beyond the Auth0 guide, a documented export feature, and independent hands-on corroboration of hash-preserving import.",
     "evidenceIds": [
-      "better-auth-docs-8",
+      "better-auth-docs-41",
       "better-auth-docs-95",
       "better-auth-docs-85",
-      "better-auth-docs-36",
       "better-auth-comm-1"
     ],
     "support": {
@@ -2242,8 +2293,8 @@
       "subject": "As a developer, I can bulk-import existing users — including password hashes — and export them again, so I am never locked in",
       "citations": [
         {
-          "evidenceId": "better-auth-docs-8",
-          "quote": "we'll walk through the steps to migrate a project from Auth0 to Better Auth — including email/password with proper hashing, social/external accounts, two-factor authentication, and more."
+          "evidenceId": "better-auth-docs-41",
+          "quote": "we'll walk through the steps to migrate a project from Auth0 to Better Auth including email/password with proper hashing, social/external accounts, two-factor authentication, and more."
         },
         {
           "evidenceId": "better-auth-docs-95",
@@ -2252,10 +2303,6 @@
         {
           "evidenceId": "better-auth-docs-85",
           "quote": "You can customize the password hashing function by setting the `password` option in the configuration."
-        },
-        {
-          "evidenceId": "better-auth-docs-36",
-          "quote": "Better Auth requires a database to store user data."
         },
         {
           "evidenceId": "better-auth-comm-1",
@@ -2268,14 +2315,15 @@
     "productId": "better-auth",
     "storyId": "deployment-data-control",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Better Auth is an npm-installed TypeScript library that you instantiate inside your own app, and its docs say it 'requires a database to store user data' that you configure (SQLite, PostgreSQL, MySQL and more). Community users independently confirm 'all of your auth data in your own db', 'not tied to any db provider' and 'I own all the data'. Missing for 10: explicit first-party documentation of self-managed deployment and data-residency topology, and a detailed list of supported database adapters beyond 'and more'.",
+    "rationale": "Better Auth is an npm-installed library that you instantiate in your own app. Its docs state it requires a database to store user data and can be configured for SQLite, PostgreSQL, MySQL and more, and it is described as a self-hosted framework. Community users independently confirm that all auth data lives in their own DB with no DB-provider lock-in. Missing for 10: a dedicated first-party guide on deployment topology or data residency (e.g. private/isolated instance hardening).",
     "evidenceIds": [
       "better-auth-docs-1",
       "better-auth-docs-36",
       "better-auth-docs-21",
       "better-auth-docs-90",
+      "better-auth-openapi-plugin-20261106",
       "better-auth-comm-1",
       "better-auth-comm-3",
       "better-auth-comm-13",
@@ -2295,8 +2343,8 @@
           "quote": "npm install better-auth"
         },
         {
-          "evidenceId": "better-auth-docs-21",
-          "quote": "import { betterAuth } from \"better-auth\"; export const auth = betterAuth({ //... });"
+          "evidenceId": "better-auth-openapi-plugin-20261106",
+          "quote": "Better Auth is a self-hosted framework"
         },
         {
           "evidenceId": "better-auth-comm-1",
@@ -2314,13 +2362,13 @@
     "storyId": "device-flow-for-cli-agents",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Better Auth ships a first-party Device Authorization plugin that implements the RFC 8628 OAuth 2.0 Device Authorization Grant and explicitly targets CLI applications; the flow can also be tested through the Better Auth CLI. That lets CLIs sign in through a code-approval flow instead of using pasted long-lived secrets. missing for 10: explicit documentation for headless AI agents (only CLIs and IoT devices are named), details of polling and token issuance in the evidence, independent or hands-on community corroboration of the device flow.",
+    "confidence": "medium",
+    "rationale": "Better Auth ships a first-party Device Authorization plugin that implements the RFC 8628 OAuth 2.0 Device Authorization Grant, explicitly naming CLI applications as a target. The docs also say the flow can be tested right away with the Better Auth CLI. missing for 10: independent or hands-on corroboration of the device flow, explicit coverage of headless AI agents (only CLIs/devices are named), and detail on token lifetimes and polling behavior.",
     "evidenceIds": [
-      "better-auth-docs-17",
       "better-auth-docs-56",
-      "better-auth-docs-28",
-      "better-auth-docs-74"
+      "better-auth-docs-17",
+      "better-auth-docs-74",
+      "better-auth-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -2328,8 +2376,12 @@
       "subject": "As an AI-native user, I can authenticate CLIs and headless agents via the OAuth device authorization flow instead of pasting long-lived secrets",
       "citations": [
         {
-          "evidenceId": "better-auth-docs-17",
-          "quote": "The Device Authorization plugin implements the code issuance and approval flow from the OAuth 2.0 Device Authorization Grant (RFC 8628) for limited-input devices such as smart TVs, CLI applications, IoT devices, and gaming consoles."
+          "evidenceId": "better-auth-docs-56",
+          "quote": "The Device Authorization plugin implements the code issuance and approval flow from the OAuth 2.0 Device Authorization Grant"
+        },
+        {
+          "evidenceId": "better-auth-docs-74",
+          "quote": "for limited-input devices such as smart TVs, CLI applications, IoT devices, and gaming consoles."
         },
         {
           "evidenceId": "better-auth-docs-28",
@@ -2342,13 +2394,12 @@
     "productId": "better-auth",
     "storyId": "edge-middleware-route-protection",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Better Auth documents first-party integration with Next.js, Nuxt, SvelteKit, Astro, Hono and 20+ more frameworks, plus server-side `auth.api` methods for authenticating users. Community users confirm consistent use across frameworks, and one team moved from Next.js to Hono by changing only the router. However, the pack never documents route-protection middleware or session verification at the edge. The JWT/JWKS plugin is only a building block for that and earns no credit. missing for 10: documented route-protection middleware, edge-runtime session verification, per-framework middleware examples, hands-on corroboration of edge protection.",
+    "rationale": "Better Auth's own docs say it works with Next.js, Nuxt, SvelteKit, Astro, Hono and 20+ more frameworks, and that server-side auth uses `auth.api` methods. A user reports moving from Next.js to Hono by changing only the router, which supports first-party framework integrations. Nothing in the evidence shows route-protection middleware or session verification at the edge, so only the framework-SDK part of the story is supported. Missing for 10: documented route-protection middleware (e.g., Next.js middleware helpers), edge-runtime session verification, per-framework integration docs, hands-on corroboration of protected routes.",
     "evidenceIds": [
       "better-auth-docs-77",
       "better-auth-docs-81",
-      "better-auth-comm-19",
       "better-auth-comm-11-refresh-7fa8ca5acd84471d"
     ],
     "support": {
@@ -2365,8 +2416,8 @@
           "quote": "To authenticate a user on the server, you can use the `auth.api` methods."
         },
         {
-          "evidenceId": "better-auth-comm-19",
-          "quote": "The setup is easy and the usage is consistent framework to framework."
+          "evidenceId": "better-auth-comm-11-refresh-7fa8ca5acd84471d",
+          "quote": "They migrated from Next.js to Hono and only had to change the router."
         }
       ]
     }
@@ -2377,7 +2428,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Better Auth's first-party SSO plugin supports OpenID Connect, OAuth2 providers and SAML 2.0, and the homepage markets SSO and SAML 2.0 as enterprise features. A community commenter independently notes SAML/SSO support but says some of those features are enterprise-only. missing for 10: no documented setup guides or examples for Okta, Entra or Google Workspace specifically, no detail on per-tenant IdP configuration or workforce sign-in flows, no hands-on corroboration of SAML in practice, and the enterprise-only tiering is unclear.",
+    "rationale": "Better Auth's first-party SSO plugin explicitly supports OIDC, OAuth2 providers, and SAML 2.0. The homepage markets enterprise SSO/SAML 2.0, and a community commenter independently notes its SAML/SSO capabilities. Okta, Entra, and Google Workspace are illustrative IdPs reachable over these standard protocols, but none is documented by name. missing for 10: provider-specific setup docs for Okta/Entra/Google Workspace, detail on SAML configuration depth (metadata, attribute mapping, IdP- vs SP-initiated flows), hands-on corroboration of workforce SSO deployments, and clarity on which SSO features are enterprise-only.",
     "evidenceIds": [
       "better-auth-docs-55",
       "better-auth-docs-14",
@@ -2410,7 +2461,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only role-based features: organization roles and permissions, admin role management, and an \"access control\" mention. Community comments likewise describe it as RBAC. Nothing documents relationship-based (ReBAC) or policy/attribute-based, resource-level authorization beyond roles, so this adjacent RBAC capability earns no credit for the story.",
+    "rationale": "The evidence documents only role-based controls: the organization plugin lets you assign roles and permissions, the admin plugin manages user roles, and a community comment mentions RBAC. Nothing shows resource-level, relationship-based (ReBAC) or policy-based (ABAC) authorization beyond roles. Role and permission management is an adjacent capability and earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -2422,19 +2473,18 @@
   {
     "productId": "better-auth",
     "storyId": "guided-competitor-migration",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Better Auth maintains an official Auth0 migration guide with a migration script. The guide covers email/password with proper hashing, social accounts, 2FA, and best-effort organization migration. A configurable password hashing function implies existing hashes can be carried over, but the evidence never explicitly states that users avoid password resets. missing for 10: explicit documentation that imported users keep their passwords without a reset, migration guides or tooling for other competing providers (Clerk, Cognito, Firebase, Supabase, etc.), independent or hands-on corroboration of a no-reset migration from a hosted provider.",
+    "rationale": "Better Auth publishes a vendor-maintained Auth0 migration guide covering email/password with proper hashing, social accounts, 2FA, and a best-effort migration script for organizations. It also documents a customizable password hashing function, which implies imported hashes can be verified without forcing resets. Missing for 10: an explicit statement that users keep their existing passwords without a reset, guides for other competing providers (e.g. Clerk, Cognito, Supabase), and independent hands-on corroboration of a provider migration.",
     "evidenceIds": [
-      "better-auth-docs-8",
       "better-auth-docs-41",
       "better-auth-docs-95",
       "better-auth-docs-85"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a founder, I can follow vendor-maintained migration guides or tooling for moving off a competing auth provider without forcing password resets",
       "citations": [
         {
@@ -2458,7 +2508,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Asynchronous human approval is a fair axis for an auth framework that markets 'Auth for AI agents', but no evidence documents CIBA or any per-transaction human-approval step for agents. The Device Authorization plugin (RFC 8628) is a login-time device approval flow, not approval of an agent's sensitive transaction, so it is adjacent and earns no credit. The 'agent delegation' tagline does not describe an approval gate either.",
+    "rationale": "Better Auth is an auth framework, so asynchronous human approval for agent actions is a fair question for it. The pack, however, never documents CIBA or any per-transaction human-confirmation step. The Device Authorization plugin (RFC 8628) is a device-login approval flow, not transaction-level approval. The homepage's 'agent delegation' and 'token exchange' claims are adjacent features and do not describe human approval before an agent completes a sensitive action.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2470,55 +2520,31 @@
   {
     "productId": "better-auth",
     "storyId": "m2m-client-credentials",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Better Auth's own API Key plugin issues and verifies machine credentials, including organization-owned keys, so backend services can authenticate API requests without a human. The MCP plugin also makes the app an OAuth authorization server, and the homepage claims token exchange and agent delegation. However, no evidence documents an OAuth 2.0 client-credentials grant specifically, and the Device Authorization flow requires human approval, so it does not qualify. missing for 10: documented OAuth client_credentials grant (client ID/secret token issuance), service-client registration, hands-on corroboration of M2M auth.",
-    "evidenceIds": [
-      "better-auth-docs-16",
-      "better-auth-docs-42",
-      "better-auth-docs-92",
-      "better-auth-docs-12",
-      "better-auth-docs-76"
-    ],
+    "rationale": "The evidence pack never documents an OAuth client-credentials grant or a way to register machine clients that authenticate without a human. Several nearby features don't qualify. The API Key plugin is a different credential mechanism. The MCP plugin's OAuth authorization server role and the homepage's 'token exchange, and agent delegation' never mention client credentials. The Device Authorization flow explicitly requires a human approval step. These are adjacent features, so they earn no credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can issue machine-to-machine credentials (client-credentials flow) so backend services and agents authenticate without a human in the loop",
-      "citations": [
-        {
-          "evidenceId": "better-auth-docs-16",
-          "quote": "It provides a way to authenticate and authorize API requests by verifying API keys."
-        },
-        {
-          "evidenceId": "better-auth-docs-92",
-          "quote": "Organization-owned API keys in addition to user-owned keys"
-        },
-        {
-          "evidenceId": "better-auth-docs-12",
-          "quote": "The MCP plugin lets your app act as an OAuth authorization server and protected resource for Model Context Protocol clients."
-        },
-        {
-          "evidenceId": "better-auth-docs-76",
-          "quote": "Auth for AI agents. MCP auth, token exchange, and agent delegation."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "better-auth",
     "storyId": "mfa-second-factors",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Better Auth's first-party twoFactor plugin documents TOTP authenticator-app setup (the default method), email/SMS OTP, backup codes for account recovery, enabling/disabling 2FA, and trusted-device management, so the TOTP and backup-code core is delivered directly. Nothing in the evidence shows making MFA mandatory for all users or step-up re-authentication for sensitive actions. Missing for 10: documented policy to require/enforce MFA for users, step-up enforcement for sensitive operations, independent hands-on corroboration of the 2FA flow.",
+    "rationale": "Better Auth's first-party twoFactor plugin documents TOTP authenticator-app setup as the default second factor, alongside email/SMS OTP, backup codes for account recovery, and trusted-device management. The evidence never shows a way to require MFA for all users or roles, or to enforce step-up re-authentication for sensitive actions. missing for 10: documented mandatory-MFA policy enforcement, step-up authentication for sensitive operations, independent or hands-on corroboration of the 2FA flow.",
     "evidenceIds": [
       "better-auth-docs-39",
-      "better-auth-docs-53",
-      "better-auth-docs-24",
       "better-auth-docs-87",
+      "better-auth-docs-53",
       "better-auth-docs-48",
-      "better-auth-docs-69"
+      "better-auth-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -2530,20 +2556,16 @@
           "quote": "totp (default) sets up an authenticator app"
         },
         {
+          "evidenceId": "better-auth-docs-87",
+          "quote": "This plugin offers two main methods to do a second factor verification: OTP (One-Time Password)... TOTP (Time-based One-Time Password)"
+        },
+        {
           "evidenceId": "better-auth-docs-53",
           "quote": "Generating backup codes for account recovery"
         },
         {
-          "evidenceId": "better-auth-docs-24",
-          "quote": "Two-Factor Authentication (2FA) adds an extra security step when users log in."
-        },
-        {
-          "evidenceId": "better-auth-docs-87",
-          "quote": "TOTP (Time-based One-Time Password)"
-        },
-        {
-          "evidenceId": "better-auth-docs-69",
-          "quote": "Managing trusted devices"
+          "evidenceId": "better-auth-docs-48",
+          "quote": "To enable two-factor authentication, call twoFactor.enable."
         }
       ]
     }
@@ -2554,14 +2576,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Better Auth documents built-in OAuth/OIDC handling: social sign-on providers, an SSO plugin supporting OIDC and OAuth2 providers, an MCP plugin that acts as an OAuth authorization server, and the RFC 8628 device grant. A community member also reports it acting as an OIDC provider. However, nothing in the pack explicitly covers authorization code with PKCE or OAuth refresh-token handling; the documented session refresh is a session feature, not OAuth refresh tokens. Missing for 10: explicit documentation of authorization-code-with-PKCE support, OAuth refresh token issuance/rotation, independent hands-on corroboration of those flows.",
+    "rationale": "Better Auth documents built-in OAuth/OIDC capabilities: social OAuth providers, an SSO plugin supporting OIDC and OAuth2 providers, an MCP plugin that acts as an OAuth authorization server, and an RFC 8628 Device Authorization Grant plugin. Community users also report it acting as an OIDC/SSO provider, so developers avoid hand-rolling the protocol. However, none of the evidence names the authorization code + PKCE flow or OAuth refresh-token handling; the session refresh docs cover Better Auth's own sessions, not OAuth tokens. Missing for 10: explicit authorization-code-with-PKCE documentation, OAuth refresh token issuance/rotation documentation, independent hands-on corroboration of these specific flows.",
     "evidenceIds": [
       "better-auth-docs-55",
       "better-auth-docs-5",
       "better-auth-docs-60",
       "better-auth-docs-56",
-      "better-auth-comm-17-refresh-b877135da8abc65b",
-      "better-auth-comm-1-refresh-c74c24c787655f22"
+      "better-auth-comm-17-refresh-b877135da8abc65b"
     ],
     "support": {
       "relation": "direct",
@@ -2583,10 +2604,6 @@
         {
           "evidenceId": "better-auth-docs-56",
           "quote": "The Device Authorization plugin implements the code issuance and approval flow from the OAuth 2.0 Device Authorization Grant"
-        },
-        {
-          "evidenceId": "better-auth-comm-17-refresh-b877135da8abc65b",
-          "quote": "acting as an identity provider and OIDC/SSO provider"
         }
       ]
     }
@@ -2597,15 +2614,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Better Auth is code-first rather than dashboard-driven: its configuration lives in code, server-side `auth.api` methods and client methods cover authentication, and the admin plugin exposes user management operations (create users, manage roles, ban, impersonate). That means the operations are inherently available programmatically, but there is no documented statement of full parity with any UI. Community reports say running admin scripts was hacky because of the request-header design, no published OpenAPI spec was found, and there is no guidance on writing non-JS clients. Missing for 10: an explicit API-vs-UI parity guarantee, a machine-readable API spec (OpenAPI), smooth headless/scripted admin usage, and independent corroboration of complete programmatic coverage.",
+    "rationale": "Better Auth is code-first with no dashboard ('No dashboard clicks'). Its functionality, including admin operations, is exposed through server-side auth.api methods and HTTP endpoints, and the openAPI() plugin generates a schema covering core and plugin endpoints. However, the plugin is self-described as early-stage, no explicit API/UI parity statement exists, and a hands-on report says the request-header-based design made admin scripts and tests hacky. missing for 10: explicit documented parity guarantee, a mature (non-early-stage) OpenAPI surface, frictionless headless/scripted admin use, independent corroboration of full programmatic coverage.",
     "evidenceIds": [
       "better-auth-docs-45",
       "better-auth-docs-81",
+      "better-auth-openapi-plugin-20261106",
       "better-auth-docs-15",
-      "better-auth-docs-67",
-      "better-auth-comm-5",
-      "better-auth-probe-3",
-      "better-auth-comm-20"
+      "better-auth-comm-5"
     ],
     "support": {
       "relation": "direct",
@@ -2621,6 +2636,10 @@
           "quote": "To authenticate a user on the server, you can use the `auth.api` methods."
         },
         {
+          "evidenceId": "better-auth-openapi-plugin-20261106",
+          "quote": "Better Auth's openAPI() plugin generates an OpenAPI 3.1.1 schema covering core and plugin endpoints"
+        },
+        {
           "evidenceId": "better-auth-docs-15",
           "quote": "It allows administrators to perform various operations such as creating users, managing user roles, banning/unbanning users, impersonating users, and more."
         }
@@ -2633,13 +2652,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Better Auth's documented design stores all user and auth data in the developer's own database (SQLite, PostgreSQL, MySQL, and more). Community users confirm they own all the data and that the adapter design makes switching to another provider or library relatively easy, so leaving is possible without vendor lock-in. However, there is no first-party export feature or documented open-format export path; portability comes from the self-hosted database architecture rather than an export capability. missing for 10: a documented export tool or format, an outbound migration/exit guide, and hands-on corroboration of a full exit.",
+    "rationale": "Better Auth stores all auth data in the integrator's own standard database (SQLite, PostgreSQL, MySQL), so the data is already in open, directly accessible formats. Community users confirm they own their data and that the adapter design makes switching libraries relatively easy. There is no first-party export feature or documented exit or export procedure, so portability comes from the self-hosted architecture rather than a dedicated capability. missing for 10: documented first-party data export tooling, a documented migration-out / leave guide, hands-on corroboration of a full exit.",
     "evidenceIds": [
       "better-auth-docs-36",
       "better-auth-comm-1",
       "better-auth-comm-3",
-      "better-auth-comm-17",
-      "better-auth-comm-13"
+      "better-auth-comm-15-refresh-9a34b048f6f31398"
     ],
     "support": {
       "relation": "direct",
@@ -2659,8 +2677,8 @@
           "quote": "It just works and I own all the data."
         },
         {
-          "evidenceId": "better-auth-comm-17",
-          "quote": "the nature of their database adapters makes it relatively easy to switch to another provider/library"
+          "evidenceId": "better-auth-comm-15-refresh-9a34b048f6f31398",
+          "quote": "They noted the database adapter design makes it relatively easy to switch to another provider or library."
         }
       ]
     }
@@ -2671,12 +2689,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Independent community users repeatedly describe Better Auth as open source, and one commenter's judgment of its 'codebase' implies the source is publicly readable. However, no first-party evidence names the license or links the source repository. Another commenter notes some features are enterprise-only, so the whole product may not be openly licensed. Missing for 10: first-party statement of the specific open-source license, documented public source repository, clarity on whether enterprise-only features are also open-licensed.",
+    "rationale": "Independent production users describe Better Auth as open source ('better-auth (open source)', 'the best open-source option'), and it ships as an npm package with releases published from GitHub. However, no first-party evidence names the license or links to a source repository. missing for 10: first-party statement of the specific open license (e.g. MIT), documented public source repository link, vendor confirmation that all features (including enterprise ones) are under that license",
     "evidenceIds": [
       "better-auth-comm-7",
       "better-auth-comm-10",
       "better-auth-comm-9-refresh-8fed755975938566",
-      "better-auth-comm-17-refresh-b877135da8abc65b"
+      "better-auth-release-changelog-20261106",
+      "better-auth-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -2692,8 +2711,8 @@
           "quote": "IMO it's the best open-source option for a TypeScript developer who wants to implement authentication."
         },
         {
-          "evidenceId": "better-auth-comm-9-refresh-8fed755975938566",
-          "quote": "called it the best open-source option for TypeScript developers implementing auth"
+          "evidenceId": "better-auth-release-changelog-20261106",
+          "quote": "Every release shipped to Better Auth, straight from GitHub."
         }
       ]
     }
@@ -2702,18 +2721,19 @@
     "productId": "better-auth",
     "storyId": "openness-self-host",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Better Auth is an npm-installed library that you instantiate in your own app (`betterAuth({...})`) against your own SQLite, PostgreSQL or MySQL database. Community users independently confirm it is open source and that they own all their data in their own DB, so the core product is inherently self-hosted. Missing for 10: no first-party license or deployment/self-hosting documentation in the pack, and community reports that some features are enterprise-only.",
+    "rationale": "Better Auth is installed as an npm library and runs inside the integrator's own app against the integrator's own database (SQLite, PostgreSQL, MySQL and more). The vendor docs call it a self-hosted framework, and community users confirm it is open source and that they own all their auth data. missing for 10: explicit first-party license/self-hosting documentation (open-source status is only community-asserted), and clarity on which enterprise-only features may not be self-hostable.",
     "evidenceIds": [
       "better-auth-docs-1",
-      "better-auth-docs-21",
       "better-auth-docs-36",
-      "better-auth-docs-45",
+      "better-auth-docs-21",
+      "better-auth-openapi-plugin-20261106",
+      "better-auth-scalar-reference-20261106",
       "better-auth-comm-1",
       "better-auth-comm-3",
-      "better-auth-comm-10",
       "better-auth-comm-7",
+      "better-auth-comm-10",
       "better-auth-comm-17-refresh-b877135da8abc65b"
     ],
     "support": {
@@ -2730,12 +2750,12 @@
           "quote": "Better Auth requires a database to store user data. You can easily configure Better Auth to use SQLite, PostgreSQL, or MySQL, and more!"
         },
         {
-          "evidenceId": "better-auth-docs-45",
-          "quote": "Your auth lives in code version controlled, type-safe, and reviewable in PRs."
+          "evidenceId": "better-auth-openapi-plugin-20261106",
+          "quote": "The schema is produced by the integrator's own deployment (Better Auth is a self-hosted framework), not downloaded from the vendor"
         },
         {
           "evidenceId": "better-auth-comm-1",
-          "quote": "You get all of your auth data in your own db in 1 cli command."
+          "quote": "You get all of your auth data in your own db in 1 cli command. You are not tied to any db provider."
         },
         {
           "evidenceId": "better-auth-comm-10",
@@ -2750,14 +2770,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Better Auth documents a first-party SSO plugin supporting OIDC, OAuth2 and SAML 2.0, plus an organization plugin for multi-tenancy, so the core SSO capability exists. The evidence never shows SSO connections scoped to individual organizations, domain verification, or just-in-time user provisioning. A community note that some SSO/SAML features are enterprise-only adds uncertainty. Missing for 10: documented per-organization SSO connection binding, verified-domain routing/ownership checks, just-in-time provisioning of users into orgs, and independent hands-on corroboration.",
+    "rationale": "Better Auth's first-party SSO plugin documents OIDC, OAuth2 and SAML 2.0 connections, and a separate organization plugin provides multi-tenant orgs, so the SSO core of the story exists. The evidence never shows SSO connections being scoped to individual organizations. Missing for 10: documented per-organization SSO connection binding, verified-domain ownership checks, just-in-time user/org-membership provisioning on first SSO login, independent hands-on corroboration.",
     "evidenceIds": [
       "better-auth-docs-55",
       "better-auth-docs-14",
       "better-auth-docs-62",
       "better-auth-docs-13",
-      "better-auth-docs-75",
-      "better-auth-comm-17-refresh-b877135da8abc65b"
+      "better-auth-docs-75"
     ],
     "support": {
       "relation": "direct",
@@ -2785,16 +2804,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Better Auth's first-party organization plugin manages organizations, members, teams, roles and permissions, and the homepage advertises built-in multi-tenancy with invitations. A hands-on community report confirms organizations and multi-tenancy work from the included plugins without special code. missing for 10: detailed documentation of the invitation flow (sending, accepting, expiring invites) beyond a homepage marketing line, and independent corroboration of invitations specifically.",
+    "rationale": "Better Auth ships a first-party organization plugin for managing organization members, teams, roles and permissions. The homepage claims \"Multi-tenancy built in. Teams, roles, invitations, and access control,\" and a hands-on community report says organizations and multi-tenancy worked through included plugins without special code. Missing for 10: detailed documentation of the invitation flow (send/accept/expire mechanics) beyond a homepage tagline, and independent corroboration that invitations specifically work.",
     "evidenceIds": [
       "better-auth-docs-13",
       "better-auth-docs-54",
       "better-auth-docs-75",
       "better-auth-docs-19",
-      "better-auth-docs-92",
-      "better-auth-docs-95",
       "better-auth-comm-3",
-      "better-auth-comm-4-refresh-92f303e908053a39"
+      "better-auth-docs-92"
     ],
     "support": {
       "relation": "direct",
@@ -2810,16 +2827,8 @@
           "quote": "Multi-tenancy built in. Teams, roles, invitations, and access control."
         },
         {
-          "evidenceId": "better-auth-docs-54",
-          "quote": "Assign roles and permissions to streamline project management, team coordination, and partnerships."
-        },
-        {
           "evidenceId": "better-auth-comm-3",
           "quote": "organizations, multi-tenant capabilities, various sign-in options - haven't written special code, all handled by Better Auth's included plugins and defaults."
-        },
-        {
-          "evidenceId": "better-auth-docs-92",
-          "quote": "Organization-owned API keys in addition to user-owned keys"
         }
       ]
     }
@@ -2830,7 +2839,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Better Auth's docs list first-party plugins for magic link, passkey, and email-otp as sign-in extensions. The homepage advertises passkeys and magic links and shows a passkey() plugin in config, and a hands-on community report says the passkey plugin took about 7 lines of server code. The 2FA plugin's email/SMS OTP is a second factor, not passwordless sign-in, so it is not credited here. Missing for 10: in-depth first-party docs for the magic link and email OTP flows (each is only named), independent corroboration of magic link and email OTP, and WebAuthn-specific detail beyond the passkey plugin name.",
+    "rationale": "Better Auth's own docs list passkey, magic link and email-otp as sign-in plugins, and the homepage shows passkey() configured as a plugin. A community user confirms the passkey plugin needed only about 7 lines of server code. missing for 10: dedicated plugin documentation for passkey/WebAuthn, magic link and email OTP flows in the pack, independent hands-on corroboration of magic link and email OTP sign-in.",
     "evidenceIds": [
       "better-auth-docs-84-refresh-ec417d6d71f55b68",
       "better-auth-docs-19",
@@ -2853,7 +2862,7 @@
           "quote": "plugins: [ twoFactor(), passkey(), organization(), ]"
         },
         {
-          "evidenceId": "better-auth-docs-64",
+          "evidenceId": "better-auth-docs-44",
           "quote": "Passkeys, magic links, API keys, JWTs, and more."
         },
         {
@@ -2869,7 +2878,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only programmatic client and server APIs for sign-up, sign-in, and sessions, such as authClient.signUp.email and auth.api methods. These are developer building blocks, not prebuilt customizable UI components or hosted sign-in, sign-up, or profile pages. No item in the pack mentions UI components, hosted pages, or profile-management screens, and prebuilt auth UI is a fair axis for an auth framework, so the verdict is none rather than na.",
+    "rationale": "Prebuilt or hosted auth UI is a fair question for an auth framework, so the axis applies. The evidence shows only programmatic client and server methods (authClient.signUp.email, auth.api) and backend plugins. These are developer building blocks for building sign-in, sign-up and profile screens, not prebuilt customizable UI components or hosted pages. No evidence documents any such UI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2884,7 +2893,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Better Auth is a self-hosted library that stores auth data in a database you configure (SQLite, PostgreSQL, MySQL and more), so data lives wherever you run that database. Community users confirm they own all the data and are not tied to any DB provider. However, nothing in the evidence explicitly addresses region selection or data residency. Missing for 10: explicit documentation of region or residency controls, compliance guidance on residency, any hosted-offering region options, and independent corroboration specific to residency.",
+    "rationale": "Better Auth is a self-hosted framework that stores user data in a database the integrator configures (SQLite, PostgreSQL, MySQL and more). Community users confirm that all auth data lives in their own database with no provider lock-in, so the deployer controls where data resides. However, the product offers no explicit region or residency selection; residency follows from wherever the user deploys their database. Missing for 10: an explicit first-party region/residency control or documentation, and a residency or compliance statement covering any vendor-hosted components.",
     "evidenceIds": [
       "better-auth-docs-36",
       "better-auth-docs-2",
@@ -2918,7 +2927,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Better Auth is a self-hosted TypeScript auth framework. Asking whether user data could be used for AI training is still a fair privacy-posture question for auth products, so the axis applies. The evidence pack has no documented AI-training opt-out, data-use policy, or no-training commitment. Community remarks that users store auth data in their own database describe a deployment arrangement, not a documented no-training control, so they earn no credit here.",
+    "rationale": "Data-use and AI-training privacy posture is a fair question for an authentication product, so the axis applies. However, the evidence contains no Better Auth policy, setting or statement on AI model training or opting out of it. Community remarks that users keep their auth data in their own database are adjacent (self-hosted data ownership), not a documented training opt-out, and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2933,7 +2942,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair axis for an auth framework that stores user data, but the pack documents no user or account deletion, data purge, or retention-policy feature. Configurable session expiry and session revocation control how long logins stay valid, which is an adjacent control rather than data retention. Community remarks that the data lives in your own database describe a user-side arrangement, not a product capability for retention or deletion.",
+    "rationale": "Better Auth is a self-hosted auth framework, so data retention and deletion is a fair axis for it. The pack, however, documents no data-retention policy, user/account deletion, or data-purge capability. Configurable session expiry and session revocation govern login lifetime, not data retention, and community remarks about owning data in your own database describe a user-side arrangement. Both are adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -2948,7 +2957,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a TypeScript auth framework, since libraries and CLIs can ship usage tracking. However, nothing in the evidence pack mentions telemetry, usage tracking, or any documented opt-out mechanism. Community remarks about owning auth data in your own database concern data residency, not telemetry, and earn no credit here.",
+    "rationale": "Telemetry opt-out is a fair question for a self-hosted TypeScript auth framework, since libraries and CLIs can ship usage tracking. However, nothing in the evidence pack mentions telemetry, usage tracking, or any switch to disable them. Community remarks about owning auth data in your own database concern data residency, not telemetry, and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2963,14 +2972,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Better Auth documents defining roles and permissions through its organization and admin plugins and advertises built-in access control. A community user corroborates RBAC support. The evidence does not show how permissions are enforced or that roles are surfaced in session or JWT tokens for authorization checks. missing for 10: documented permission-check/enforcement API, evidence that roles and permissions appear in session tokens or JWT claims, hands-on corroboration of enforcement.",
+    "rationale": "Better Auth documents defining roles and permissions through its organization plugin and managing user roles through its admin plugin, and a community user confirms it offers RBAC. However, the evidence never shows how those permissions are enforced in authorization checks, nor that roles are surfaced in session tokens or JWT claims; the JWT plugin is documented only for issuing and verifying tokens. Missing for 10: documented permission-check enforcement API, evidence that roles/permissions appear in session or JWT tokens, hands-on corroboration of RBAC enforcement.",
     "evidenceIds": [
       "better-auth-docs-54",
       "better-auth-docs-71",
       "better-auth-docs-15",
       "better-auth-docs-75",
-      "better-auth-comm-17-refresh-b877135da8abc65b",
-      "better-auth-docs-7"
+      "better-auth-comm-17-refresh-b877135da8abc65b"
     ],
     "support": {
       "relation": "direct",
@@ -2978,8 +2986,8 @@
       "subject": "As a developer, I can define roles and permissions and have them enforced and surfaced in session tokens for authorization checks",
       "citations": [
         {
-          "evidenceId": "better-auth-docs-71",
-          "quote": "Assign roles and permissions to streamline project management, team coordination, and partnerships."
+          "evidenceId": "better-auth-docs-54",
+          "quote": "Organizations simplifies user access and permissions management. Assign roles and permissions to streamline project management, team coordination, and partnerships."
         },
         {
           "evidenceId": "better-auth-docs-15",
@@ -2988,6 +2996,10 @@
         {
           "evidenceId": "better-auth-docs-75",
           "quote": "Multi-tenancy built in. Teams, roles, invitations, and access control."
+        },
+        {
+          "evidenceId": "better-auth-comm-17-refresh-b877135da8abc65b",
+          "quote": "A commenter said it does far more than next-auth/auth.js: authn/z, acting as an identity provider and OIDC/SSO provider, RBAC, and SAML/SCIM."
         }
       ]
     }
@@ -2996,13 +3008,12 @@
     "productId": "better-auth",
     "storyId": "scim-directory-sync",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Better Auth's homepage claims enterprise SCIM and directory sync, and community commenters independently list SAML/SCIM among its features, noting some are enterprise-only. There is no dedicated SCIM documentation in the pack, so user/group sync mechanics and deprovisioning behavior are unproven. Missing for 10: dedicated SCIM plugin/endpoint docs, documented group provisioning, evidence that IdP deprovisioning revokes sessions/app access, hands-on corroboration, and clarity on which tier includes SCIM.",
+    "rationale": "Better Auth's homepage claims SCIM and directory sync as enterprise features, and a community commenter confirms SAML/SCIM exist but notes some are enterprise-only. The pack has no SCIM plugin documentation and nothing showing that IdP deprovisioning revokes app access. missing for 10: SCIM endpoint/plugin documentation, group sync details, documented deprovisioning-to-session/access revocation behavior, hands-on corroboration, clarity on enterprise-only gating.",
     "evidenceIds": [
       "better-auth-docs-62",
-      "better-auth-comm-17-refresh-b877135da8abc65b",
-      "better-auth-comm-16-refresh-97aff63e09c514cd"
+      "better-auth-comm-17-refresh-b877135da8abc65b"
     ],
     "support": {
       "relation": "direct",
@@ -3015,7 +3026,7 @@
         },
         {
           "evidenceId": "better-auth-comm-17-refresh-b877135da8abc65b",
-          "quote": "acting as an identity provider and OIDC/SSO provider, RBAC, and SAML/SCIM. Some of those features are enterprise-only."
+          "quote": "and SAML/SCIM. Some of those features are enterprise-only."
         }
       ]
     }
@@ -3024,14 +3035,14 @@
     "productId": "better-auth",
     "storyId": "scoped-agent-identities",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Better Auth markets 'Auth for AI agents' with token exchange and agent delegation. Its API Key plugin issues separately managed keys, including organization-owned ones, with custom expiration and rate limits. The MCP plugin also makes an app an OAuth authorization server for agent clients. That gives first-party machine credentials distinct from a human's login, but scoping and revocation for those credentials are not shown. missing for 10: documented per-key/per-agent scoped permissions, documented instant revocation of agent keys or tokens, detail on the agent delegation/token exchange mechanics, independent hands-on corroboration.",
+    "rationale": "Better Auth's homepage claims built-in 'Auth for AI agents' with MCP auth, token exchange, and agent delegation. Its API Key plugin lets you create, manage, and verify keys (including organization-owned keys separate from users) with expirations and rate limits, and the MCP plugin lets an app act as an OAuth authorization server for agents. These give agents credentials distinct from a human's, but the evidence never documents per-key permission scoping or immediate revocation of agent credentials. missing for 10: documented per-agent least-privilege permission scopes on keys/tokens, documented instant revocation of agent credentials, in-depth docs on the agent-delegation feature, independent or hands-on corroboration",
     "evidenceIds": [
       "better-auth-docs-76",
+      "better-auth-docs-16",
       "better-auth-docs-42",
       "better-auth-docs-92",
-      "better-auth-docs-16",
       "better-auth-docs-12"
     ],
     "support": {
@@ -3044,12 +3055,12 @@
           "quote": "Auth for AI agents. MCP auth, token exchange, and agent delegation."
         },
         {
-          "evidenceId": "better-auth-docs-42",
-          "quote": "Create, manage, and verify API keys ... Built-in rate limiting ... Custom expiration times, remaining count, and refill systems"
-        },
-        {
           "evidenceId": "better-auth-docs-92",
           "quote": "Organization-owned API keys in addition to user-owned keys"
+        },
+        {
+          "evidenceId": "better-auth-docs-42",
+          "quote": "Create, manage, and verify API keys ... Built-in rate limiting ... Custom expiration times, remaining count, and refill systems"
         },
         {
           "evidenceId": "better-auth-docs-12",
@@ -3064,12 +3075,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Better Auth's own MCP plugin is documented to make an app an OAuth authorization server and protected resource for MCP clients, which is the core of this story. The homepage also advertises MCP auth for AI agents, and the JWT plugin exposes a JWKS endpoint for token verification. missing for 10: explicit evidence of spec compliance with the MCP authorization spec (e.g. PKCE, dynamic client registration, protected-resource metadata), documented scope issuance and enforcement on tokens, and independent or hands-on corroboration of remote agents connecting.",
+    "rationale": "Better Auth's own MCP plugin lets an app act as an OAuth authorization server and protected resource for MCP clients, which directly addresses putting OAuth in front of an MCP server. The homepage also advertises MCP auth for agents, and the separate JWT plugin offers JWKS-verifiable tokens. However, the evidence never documents scope handling or specific MCP-spec compliance details, and the JWKS verification is not tied to the MCP plugin. missing for 10: documented token scoping for MCP clients, explicit spec-compliance details (e.g. discovery metadata, client registration), evidence that MCP-issued tokens are verifiable via JWKS, independent or hands-on corroboration.",
     "evidenceIds": [
       "better-auth-docs-60",
       "better-auth-docs-12",
       "better-auth-docs-76",
-      "better-auth-docs-7"
+      "better-auth-docs-7",
+      "better-auth-probe-4"
     ],
     "support": {
       "relation": "direct",
@@ -3097,7 +3109,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Better Auth documents configurable session expiry (7-day default, `expiresIn`) and sliding refresh via `updateAge`, including a client-driven refresh flow. Its security docs also let a logged-in user revoke their own sessions on other devices. The evidence does not show immediate server-side or administrator revocation of a specific compromised session, nor how quickly a revoked session is invalidated. missing for 10: documented server-side/admin revocation of a specific compromised session, evidence that revocation takes effect immediately, independent or hands-on corroboration of the session lifecycle.",
+    "rationale": "Better Auth's session-management docs cover configurable expiry (expiresIn, default 7 days) and sliding refresh via updateAge, including a POST-based refresh flow. Revocation is documented only as a logged-in user revoking their own sessions on other devices. Nothing shows an immediate server-side or admin-initiated kill of a specific compromised session, or that revocation takes effect right away. Missing for 10: documented server-side/admin revocation of a specific compromised session, evidence that revocation is immediate (e.g. under cookie or JWT caching), independent hands-on corroboration.",
     "evidenceIds": [
       "better-auth-docs-37",
       "better-auth-docs-47",
@@ -3133,14 +3145,15 @@
     "productId": "better-auth",
     "storyId": "social-login-breadth",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Better Auth's own docs say it supports multiple built-in social providers (Google, GitHub, Apple, Discord, and more), and its SSO plugin adds generic OIDC, OAuth2 and SAML 2.0 providers. A community user confirms using the built-in Google, Apple and GitHub providers, and another reports many sign-in options from included plugins and defaults without writing special code. However, the pack shows no social-provider configuration snippet and never lists the full set of providers, so the 'configuration, not custom code' and 'broad set' parts are only implied. Missing for 10: a documented socialProviders configuration example showing providers enabled purely by config, an enumerated count or list of supported providers beyond 'and more', and independent hands-on confirmation of generic OAuth/OIDC setup via configuration.",
+    "rationale": "Better Auth's docs say it has built-in support for multiple social providers ('Google, GitHub, Apple, Discord, and more'), and its SSO plugin adds generic OIDC and OAuth2 providers. Community users report using the built-in Google, Apple and GitHub OAuth providers without writing special code. However, the evidence does not show the actual provider configuration syntax or a full provider list, so the 'broad set via configuration, not custom code' claim is only partly documented. missing for 10: documented socialProviders configuration example showing config-only setup, enumerated full provider list demonstrating breadth, independent hands-on corroboration of config-only setup for generic OAuth/OIDC providers",
     "evidenceIds": [
       "better-auth-docs-5",
       "better-auth-docs-80",
       "better-auth-docs-52",
       "better-auth-docs-55",
+      "better-auth-comm-1",
       "better-auth-comm-1-refresh-c74c24c787655f22",
       "better-auth-comm-4-refresh-92f303e908053a39"
     ],
@@ -3158,12 +3171,12 @@
           "quote": "This plugin supports OpenID Connect (OIDC), OAuth2 providers, and SAML 2.0."
         },
         {
-          "evidenceId": "better-auth-comm-1-refresh-c74c24c787655f22",
-          "quote": "They use the built-in OAuth providers for Google, Apple and GitHub logins."
+          "evidenceId": "better-auth-comm-1",
+          "quote": "Hundreds of auth features like OAuth providers (google, apple, github)"
         },
         {
           "evidenceId": "better-auth-comm-4-refresh-92f303e908053a39",
-          "quote": "gets all of this from included plugins and defaults, without writing a single line of special code"
+          "quote": "without writing a single line of special code"
         }
       ]
     }
@@ -3174,10 +3187,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is a homepage claim of \"token exchange, and agent delegation\" for AI agents. The MCP plugin lets the app act as an OAuth authorization server for MCP clients, but that issues tokens for your own app rather than vaulting or exchanging tokens for third-party APIs. missing for 10: documentation of a token vault or exchange flow for third-party API tokens, short-lived token issuance, a user-consent flow for delegated access, an agent-side retrieval API, and independent or hands-on corroboration.",
+    "rationale": "Better Auth's homepage claims \"Auth for AI agents. MCP auth, token exchange, and agent delegation,\" which points to a first-party delegated-token capability for agents. That is only a one-line marketing mention with no docs on how agents get user-consented, short-lived tokens for third-party APIs. The MCP plugin makes your app an authorization server for MCP clients, not a vault for outbound third-party tokens, so it earns no credit here. Missing for 10: documented token-vault or exchange flow for third-party provider tokens, user consent and scoping details, short-lived token issuance and refresh semantics, agent tool-call usage docs, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "better-auth-docs-76",
-      "better-auth-docs-60"
+      "better-auth-docs-76"
     ],
     "support": {
       "relation": "direct",
@@ -3187,10 +3199,6 @@
         {
           "evidenceId": "better-auth-docs-76",
           "quote": "Auth for AI agents. MCP auth, token exchange, and agent delegation."
-        },
-        {
-          "evidenceId": "better-auth-docs-60",
-          "quote": "The **MCP** plugin lets your app act as an OAuth authorization server and protected resource for [Model Context Protocol](https://modelcontextprotocol.io) clients."
         }
       ]
     }

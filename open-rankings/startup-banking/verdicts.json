@@ -12253,10 +12253,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document live or round-the-clock customer support for urgent account issues. The Cases API (wise-docs-17) lets users open and respond to support queries through an API, but that is an asynchronous ticketing channel rather than live, anytime support. One user's urgent complaint drew only a promise to investigate and respond within 30 days, which falls short of live help but does not contradict any vendor claim, so the verdict is none rather than disputed.",
+    "rationale": "Customer support is a fair question for a business account product, but nothing in the evidence documents live, always-available support for urgent account issues. The Cases API is an asynchronous partner channel for opening and responding to support queries, not live support at any hour. One community report describes support promising a reply 'within 30 days', which points away from live help.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a founder, I can reach live customer support at any time for urgent account issues",
       "citations": []
@@ -12268,7 +12268,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no first-party integration that automatically syncs transactions or expenses with accounting software. The closest items are adjacent: statement exports in accounting-friendly formats (CAMT.053, MT940, QIF), a card-transaction retrieval API, and webhooks. These are export or developer building blocks rather than an automatic accounting sync, so they earn no credit.",
+    "rationale": "The evidence pack has no first-party accounting-software integration or automatic transaction/expense sync for Wise Business. What it does document is adjacent: balance statements exportable in accounting-friendly formats (CAMT.053, MT940, QIF, CSV), plus webhook and API primitives a developer could use to build a sync. These are manual exports and building blocks, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -12281,14 +12281,13 @@
     "productId": "wise",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "high",
-    "rationale": "A hands-on probe confirms Wise publishes a live llms.txt at docs.wise.com, with an agent-oriented summary of the Wise Platform payments API. API reference pages are also served as raw .md URLs (e.g. /api-reference/3ds.md, /api-reference/card-order.md), which an agent can ingest directly. missing for 10: first-party documentation describing agent/LLM usage of these files, evidence of a fuller llms-full.txt-style corpus, a machine-readable OpenAPI spec (all probed paths 404).",
+    "rationale": "A live probe shows Wise serves an llms.txt at https://docs.wise.com/llms.txt (HTTP 200), and its API reference pages are published as Markdown (.md) endpoints an agent can ingest, so the story is delivered as written. missing for 10: first-party docs explaining agent or llms.txt usage, any llms-full.txt or broader agent-oriented content, a machine-readable OpenAPI spec for the main Platform API (only the legacy webhook spec is listed in llms.txt), and independent hands-on corroboration.",
     "evidenceIds": [
       "wise-probe-1",
-      "wise-docs-13",
-      "wise-docs-14",
-      "wise-probe-2"
+      "wise-webhook-openapi-20261106",
+      "wise-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -12300,8 +12299,8 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://docs.wise.com/llms.txt # Global Payments API: Send & Receive Money"
         },
         {
-          "evidenceId": "wise-docs-13",
-          "quote": "To manage certain aspects of the 3D Secure (3DS) authentication, you will need to integrate with the following APIs."
+          "evidenceId": "wise-webhook-openapi-20261106",
+          "quote": "the docs llms.txt carries exactly this one OpenAPI entry"
         }
       ]
     }
@@ -12312,7 +12311,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business is a payments and business-account product, so AI-generated insights from a user's financial data are a fair capability to ask about. The evidence pack documents payments, cards, statements, webhooks and an llms.txt file, but nothing about in-product AI insights or suggestions. Statement exports and transaction APIs are developer building blocks rather than the capability itself, and the llms.txt file only makes the docs readable by AI tools.",
+    "rationale": "Wise Business is a business-banking and payments product, so in-product AI-generated insights are a fair capability to ask about. The evidence pack shows no AI insights, suggestions or analytics features. It covers only payments, accounts, cards, statements, webhooks and an llms.txt docs file, which serves AI consumers of the documentation rather than in-product insights.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12327,7 +12326,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Wise APIs, webhook subscriptions, batch transfers, bulk settlement and card spend-control rules. These are developer building blocks or adjacent controls. Nothing documents a product feature for setting up automations, such as scheduled or recurring transfers or rule-triggered workflows, that run autonomously in the background.",
+    "rationale": "Background automations are a fair question for a business payments account, but the evidence pack documents no first-party automation feature. There are no scheduled or recurring transfers, no auto-conversion rules, and no workflow triggers. The closest items are webhooks, batch groups and card spend-control rules. Those are developer building blocks or adjacent controls, so they earn no credit toward self-running automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12341,8 +12340,8 @@
     "storyId": "agentic-builtin-assistant",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair question for a business banking SaaS like Wise Business, so the axis applies. The evidence pack never mentions an in-product AI assistant or task delegation. The llms.txt probe only shows docs published for LLM consumption, which is an adjacent building block and not an assistant inside the product.",
+    "confidence": "high",
+    "rationale": "A built-in AI assistant is a fair question for a business banking and payments SaaS product, so the axis applies. Nothing in the evidence pack documents any in-product AI assistant or task delegation. The published llms.txt file is documentation aimed at external LLMs, not a built-in assistant, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12357,13 +12356,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Wise documents a broad direct API for running core business operations without the UI, including making business payments, managing batch groups of up to 1000 transfers, retrieving statements in machine-readable formats, and managing webhook subscriptions. That supports headless, programmatic automation, but nothing in the evidence addresses CI use specifically: no CLI, no non-interactive auth or service-account guidance, and no CI/sandbox automation docs. The OpenAPI spec probe also returned 404. Missing for 10: documented CI/pipeline usage, an official CLI or headless tooling, documentation of non-interactive credentials/tokens for automation, a published OpenAPI spec, and independent hands-on corroboration of automated use.",
+    "rationale": "Wise Business can be driven headlessly through its own API: business payments via API, batch transfers, and webhook subscription management. A dedicated sandbox at api.wise-sandbox.com, plus a Simulation API, lets automated test flows run without touching production. Nothing documents a CLI or a CI-specific workflow, so headless/CI use rests on raw API integration alone. missing for 10: official CLI or headless tooling, documented CI/CD integration guidance (e.g. non-interactive auth for pipelines), a public OpenAPI spec for the main API (probe returned 404), and independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "wise-docs-6",
       "wise-docs-28",
-      "wise-docs-27",
-      "wise-docs-17",
-      "wise-docs-33"
+      "wise-docs-33",
+      "wise-sandbox-environment-20261106",
+      "wise-probe-2"
     ],
     "support": {
       "relation": "direct",
@@ -12379,16 +12378,8 @@
           "quote": "A batch group is a named collection of up to 1000 transfers that can be managed as a single unit."
         },
         {
-          "evidenceId": "wise-docs-27",
-          "quote": "Statements can be retrieved in multiple formats: JSON, CSV, PDF, XLSX, CAMT.053, MT940, or QIF."
-        },
-        {
-          "evidenceId": "wise-docs-17",
-          "quote": "Cases enable you to open, retrieve, and respond to support and operations queries through direct API."
-        },
-        {
-          "evidenceId": "wise-docs-33",
-          "quote": "Manage webhook subscriptions at both the application and profile level. Create, list, retrieve, and delete subscriptions, as well as test your webhook endpoints."
+          "evidenceId": "wise-sandbox-environment-20261106",
+          "quote": "This environment allows developers to make API requests without affecting the production environment"
         }
       ]
     }
@@ -12399,7 +12390,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business is a payments and banking platform with APIs, not an AI agent or host application that would consume tools from MCP servers, so the MCP-client axis is a category error for this product. Nothing in the evidence shows a built-in assistant or agent that could act as an MCP client; the evidence covers only payments, card, and webhook APIs and an llms.txt file.",
+    "rationale": "Wise Business is a payments and business-banking platform with no built-in AI agent or assistant, so plugging in MCP servers as a client to use their tools is a category error for this product type. Nothing in the evidence shows Wise acting as an MCP client or hosting an agent. Its llms.txt and webhook OpenAPI spec are developer-facing resources, not MCP client support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12414,7 +12405,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business is a payments platform with an API, so publishing an official MCP server is a fair axis. Nothing in the evidence mentions an MCP server or endpoint. The llms.txt file and the REST API documentation are adjacent developer resources, not an MCP server an agent can connect to.",
+    "rationale": "Wise Business is a payments platform with a public API, so an official MCP server is a fair question and the axis applies. The evidence pack documents no official MCP server or hosted MCP endpoint. The llms.txt file, the REST APIs and the single webhook OpenAPI spec are adjacent agent-readiness features, not an MCP server, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12429,7 +12420,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business is a payments and banking service, and such a product could plausibly offer natural-language operation, so the axis applies. The evidence only documents REST APIs, embedded flows and an llms.txt file. These are developer building blocks for agents or LLMs, not a first-party way to operate the product with natural-language commands, and no assistant, chat interface or natural-language command feature is shown.",
+    "rationale": "Nothing in the evidence shows a first-party natural-language interface, assistant, or agent for operating Wise Business. The llms.txt file and REST APIs are developer building blocks or documentation aids, not natural-language operation of the product, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12444,7 +12435,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business is a payments platform with an extensive API, so an official CLI is a fair question for this kind of product. The evidence covers REST APIs, webhooks, embedded flows and an llms.txt file, but nothing documents an official command-line tool. API endpoints are developer building blocks, not a CLI, so they earn no credit.",
+    "rationale": "Wise Business is an API-driven payments platform, so an official CLI is a fair question for this kind of product. Nothing in the evidence pack documents a Wise CLI. The REST APIs, sandbox, llms.txt and webhook OpenAPI spec are developer building blocks or adjacent features, not a CLI, and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12459,16 +12450,19 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Wise publishes an extensive public API reference at docs.wise.com. It covers business payments via API, multi-currency accounts, batch transfers, statements, cards, cases and webhook subscriptions, and also serves an llms.txt for AI consumers. Much of the reference is aimed at platform partners, but business payments via API from a Wise account are explicitly documented. missing for 10: a discoverable machine-readable OpenAPI spec (all probed paths returned 404), independent or hands-on corroboration of driving a Wise Business account through the API",
+    "rationale": "Wise documents a broad public API reference covering business payments, multi-currency accounts, statements, batch transfers, cards, disputes, cases and webhooks. A dedicated sandbox, a CalVer versioning and deprecation policy, yearly changelogs and an llms.txt index round it out, so a user can drive the product programmatically. The main Platform API has no downloadable OpenAPI spec (only the legacy webhook API has one, and the probes returned 404), which weakens machine-readability for AI agents. missing for 10: public OpenAPI spec for the main API, independent hands-on corroboration of API use.",
     "evidenceIds": [
       "wise-docs-6",
       "wise-docs-25",
       "wise-docs-27",
       "wise-docs-28",
       "wise-docs-17",
-      "wise-docs-33",
+      "wise-sandbox-environment-20261106",
+      "wise-calver-versioning-20261106",
+      "wise-api-changelogs-20261106",
       "wise-probe-1",
-      "wise-probe-2"
+      "wise-probe-2",
+      "wise-webhook-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -12484,16 +12478,12 @@
           "quote": "Cases enable you to open, retrieve, and respond to support and operations queries through direct API."
         },
         {
-          "evidenceId": "wise-docs-25",
-          "quote": "The Wise multi-currency account (MCA) enables users to hold, convert, and fund transfers (single or batches) with balances in up to 56 currencies."
+          "evidenceId": "wise-sandbox-environment-20261106",
+          "quote": "This environment allows developers to make API requests without affecting the production environment"
         },
         {
-          "evidenceId": "wise-docs-33",
-          "quote": "Manage webhook subscriptions at both the application and profile level. Create, list, retrieve, and delete subscriptions, as well as test your webhook endpoints."
-        },
-        {
-          "evidenceId": "wise-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.wise.com/llms.txt"
+          "evidenceId": "wise-calver-versioning-20261106",
+          "quote": "Wise Platform uses global, calendar-based versioning (CalVer)"
         }
       ]
     }
@@ -12504,7 +12494,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scoped API credentials are a fair question for a payments platform with a public API, so the axis applies. The evidence pack never mentions API token scopes, permission-limited keys, or least-privilege credential issuance. Card spending permissions and MCC spend controls restrict card transactions, not API credentials, so they are an adjacent feature that earns no credit.",
+    "rationale": "Wise Business has a public payments API, so scoped API credentials are a fair question for this product. However, the evidence pack never documents API token scopes, permission levels, or least-privilege credential issuance. The card spending permissions and MCC-based spend controls govern card transactions, not API credentials, so they are an adjacent feature and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12519,7 +12509,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents an extensive REST API surface (cards, transfers, multi-currency accounts, webhooks) and an llms.txt file. None of it mentions official client SDKs or libraries in any language. A raw API reference and llms.txt are developer building blocks, not official SDKs, so they earn no credit; the OpenAPI probe also returned 404 on every path.",
+    "rationale": "The evidence pack documents a broad REST API, a sandbox, an llms.txt, CalVer versioning and a single legacy webhook OpenAPI spec, but none of it mentions any official client SDK or library. The main API has no public OpenAPI spec from which SDKs could be generated. SDKs are a fair axis for a payments API platform, so the lack of evidence is 'none', not 'na'.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12532,12 +12522,15 @@
     "productId": "wise",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Wise documents a first-party Webhook API for subscribing to events at both the application and profile level. It supports creating, listing, retrieving and deleting subscriptions, plus testing webhook endpoints, so the core of the story is delivered. However, the evidence is a single reference-page summary. Missing for 10: a documented catalog of subscribable event types, payload signature verification and retry/delivery details, and independent or hands-on corroboration.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Wise documents a first-party webhook subscription API. Partners can create, list, retrieve and delete subscriptions at both application and profile level and test their endpoints. A downloadable OpenAPI spec for the Webhook Sender API and a sandbox Simulation API for webhook test flows back this up. missing for 10: documented event-type catalog, delivery details such as signature verification and retries, webhooks being covered by the versioning policy, independent or hands-on corroboration",
     "evidenceIds": [
       "wise-docs-33",
-      "wise-docs-37"
+      "wise-docs-37",
+      "wise-webhook-openapi-20261106",
+      "wise-sandbox-environment-20261106",
+      "wise-calver-versioning-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -12547,6 +12540,14 @@
         {
           "evidenceId": "wise-docs-33",
           "quote": "Manage webhook subscriptions at both the application and profile level. Create, list, retrieve, and delete subscriptions, as well as test your webhook endpoints."
+        },
+        {
+          "evidenceId": "wise-webhook-openapi-20261106",
+          "quote": "Wise publishes a downloadable OpenAPI 3.1.0 document (\"## Download OpenAPI description\") for its Webhook Sender API"
+        },
+        {
+          "evidenceId": "wise-sandbox-environment-20261106",
+          "quote": "paired with a Simulation API for driving money-movement and webhook test flows"
         }
       ]
     }
@@ -12557,7 +12558,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Automatic anomaly or policy flagging is a fair axis for a business payments account, but the evidence shows no AI-driven or automatic flagging of anomalous or out-of-policy transactions for review. The closest items are adjacent: spend-control rules that permit or block card transactions by MCC or currency, card transaction retrieval APIs, and webhooks that a developer could use to build such flagging. None of these is the product itself flagging transactions for review.",
+    "rationale": "Automated flagging of anomalous or out-of-policy transactions is a fair question for a business payments product, but the evidence pack never documents AI or automated anomaly detection that surfaces transactions for review. Spend-control rules (MCC/currency) only permit or block card transactions, which is an adjacent control. Transaction retrieval APIs and webhooks are developer building blocks a user could build on, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12572,7 +12573,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business is a business payments account, so AI-assisted bill capture that pre-fills payment details is a fair question for it. The evidence pack documents transfers, batch payments, recipients, cards, statements and webhooks, but nothing about ingesting bills or invoices, AI or OCR extraction, or auto-populating payment drafts for review. Absence of evidence for an applicable capability yields none.",
+    "rationale": "Bill capture with AI extraction is a fair capability for a business payments account, so the axis applies. The evidence pack documents only payment, transfer, card, recipient, statement and webhook APIs. Nothing shows AI or OCR reading incoming bills or invoices and pre-filling payment details for review.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12587,7 +12588,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party AI automation for month-end close, such as AI categorization, reconciliation, or close workflows. Statement exports in accounting formats (CAMT.053, MT940, QIF), webhooks, and an llms.txt docs file are only building blocks a developer could use to construct such automation. They are not the capability itself, so they earn no credit.",
+    "rationale": "The evidence pack contains no documented AI automation for month-end close: no AI reconciliation, categorization, or accounting-sync automation. Statement exports in accounting formats (CAMT.053, MT940, QIF), webhooks, and an llms.txt docs file are developer building blocks or adjacent features, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12601,8 +12602,8 @@
     "storyId": "ai-contract-parsing-procurement",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Procurement intake is a fair axis for a business-account and card-spend product, so the story applies. The evidence pack documents payments, cards, spend controls, statements and webhooks, but says nothing about procurement request forms or AI parsing of vendor contracts. Spend controls based on MCC or currency are an adjacent feature and earn no credit.",
+    "confidence": "high",
+    "rationale": "AI contract parsing feeding procurement request forms is a fair question for a business spend and payments product, so the axis applies. Nothing in the evidence documents AI document parsing, contract ingestion, or procurement request forms. The documented card spend controls (MCC and currency rules) and dispute file uploads are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12617,7 +12618,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business is a business payments and account product, so AI-driven GL coding is a fair accounting-integrations question. The evidence pack shows no AI categorization, no GL code assignment, and no multi-entity close tooling. Statement exports in accounting formats (CAMT.053, MT940, QIF) are adjacent data-export features, not automated GL coding.",
+    "rationale": "AI GL-code assignment is a fair question for a business account and spend product, so the axis applies. The evidence pack contains nothing about AI categorization, GL coding, or multi-entity close automation. Statement exports and card transaction retrieval APIs are only developer building blocks and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12632,7 +12633,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Travel booking with automatic price-drop rebooking is a plausible feature for a business cards and spend product, so the axis applies. However, the evidence never mentions travel booking, fare or hotel rate monitoring, or rebooking. The FX rate lock (wise-docs-8) protects currency exchange rates on transfers, not booked travel prices, so it is a different feature and earns no credit.",
+    "rationale": "Travel-rate monitoring and rebooking is a fair question for a business cards and spend product, so the axis applies. The evidence shows no travel booking, price monitoring, or rebooking capability in Wise Business. The FX rate lock in wise-docs-8 covers currency conversion for transfers, which is an adjacent feature and not travel rate monitoring.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12647,10 +12648,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Wise publishes an extensive API reference at docs.wise.com/api-reference, covering cards, transfers, webhooks and more. Nothing in the pack shows that reference is interactive or offers runnable, try-it examples. The OpenAPI/Swagger spec probes all returned 404, and a static reference is an adjacent feature, not the interactive, runnable one the story asks for.",
+    "rationale": "Wise has an extensive API reference at docs.wise.com/api-reference and a separate sandbox environment, but nothing in the evidence shows the reference is interactive or has runnable 'try it' examples. A static reference plus a separate sandbox is adjacent, not the capability itself. The only published OpenAPI spec covers the legacy webhook API, and the probes for a main spec returned 404.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": []
@@ -12659,46 +12660,87 @@
   {
     "productId": "wise",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Wise publishes extensive API reference pages, including .md variants, and an llms.txt file. Neither is a downloadable OpenAPI or equivalent machine-readable spec, and the probe found that every common OpenAPI/Swagger path returned 404. The axis applies to an API-offering fintech, but nothing in the pack shows a downloadable spec, so the verdict is none rather than na.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "high",
+    "rationale": "Wise publishes a downloadable OpenAPI 3.1.0 document, but only for the legacy Webhook Sender API. The docs state the main Wise Platform API reference has no public spec file, and probes of standard openapi.json and swagger.json paths all returned 404. missing for 10: a machine-readable spec for the main Wise Platform API (accounts, transfers, cards, balances), a spec at a discoverable standard path, and coverage beyond the legacy webhook surface.",
+    "evidenceIds": [
+      "wise-webhook-openapi-20261106",
+      "wise-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wise-webhook-openapi-20261106",
+          "quote": "Wise publishes a downloadable OpenAPI 3.1.0 document (\"## Download OpenAPI description\") for its Webhook Sender API (the legacy webhook subscription surface)."
+        }
+      ]
     }
   },
   {
     "productId": "wise",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "A sandbox environment is a fair question for a payments API platform like Wise, so the axis applies. However, nothing in the evidence pack documents a sandbox or test environment kept separate from production data. The only related item is the ability to 'test your webhook endpoints', which is an adjacent feature and not an isolated sandbox environment.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Wise's first-party docs describe a dedicated sandbox at api.wise-sandbox.com, with an mTLS variant and a sandbox UI. Developers can make API requests there without affecting production, and it is paired with a Simulation API for driving money-movement and webhook test flows. This is true environment isolation, not a dry-run flag. The docs explicitly say sandbox holds only test data and does not support real money transfers. missing for 10: independent or hands-on corroboration that the sandbox works as documented (the evidence is first-party docs only).",
+    "evidenceIds": [
+      "wise-sandbox-environment-20261106",
+      "wise-docs-33"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wise-sandbox-environment-20261106",
+          "quote": "Sandbox is the testing environment that developers can use to build and test the application. This environment allows developers to make API requests without affecting the production environment"
+        },
+        {
+          "evidenceId": "wise-sandbox-environment-20261106",
+          "quote": "does not support real money transfers"
+        },
+        {
+          "evidenceId": "wise-docs-33",
+          "quote": "as well as test your webhook endpoints"
+        }
+      ]
     }
   },
   {
     "productId": "wise",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The evidence pack documents many Wise API surfaces (cards, transfers, webhooks, statements), but nothing about API versioning schemes or a deprecation policy. The community complaints about USD bank account details changing with zero notice concern banking account details, not API deprecation, so they are not relevant here.",
-    "evidenceIds": [],
+    "rationale": "Wise publishes a formal global versioning policy. It uses calendar-based versioning (CalVer) selected in the URL, with quarterly releases and Latest/Active/Preview/Legacy version types. It also includes a dedicated deprecation-and-sunset section and defines breaking versus non-breaking changes, backed by yearly changelogs and a dated Sandbox V1 deprecation. The policy explicitly excludes webhooks and sensitive card details endpoints. missing for 10: versioning/deprecation coverage for webhooks and sensitive card endpoints, independent or hands-on corroboration of how the deprecation policy works in practice.",
+    "evidenceIds": [
+      "wise-calver-versioning-20261106",
+      "wise-api-changelogs-20261106",
+      "wise-sandbox-environment-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wise-calver-versioning-20261106",
+          "quote": "Wise Platform uses global, calendar-based versioning (CalVer)"
+        },
+        {
+          "evidenceId": "wise-calver-versioning-20261106",
+          "quote": "released on a quarterly basis"
+        },
+        {
+          "evidenceId": "wise-api-changelogs-20261106",
+          "quote": "Wise maintains yearly API changelogs (2023/2024/2025) with dated detail pages for specific changes, complementing the CalVer policy."
+        }
+      ]
     }
   },
   {
@@ -12707,7 +12749,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Checking an account application's status during review is a fair onboarding question for a business account provider, but nothing in the pack documents an application-status view or tracker for founders. The Cases API (support queries), webhook subscriptions and claim-account flow are adjacent features and do not show application review status.",
+    "rationale": "Checking a business account application's status during review is a fair question for a business banking product, so the axis applies. However, nothing in the evidence pack documents an application-status tracker, review-progress view, or onboarding status endpoint. Related items, such as the Cases API for support queries and the claim-account flow, are different features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12722,7 +12764,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows multi-currency balances, conversions, statements and webhook subscriptions, but nothing documents automatic top-ups between accounts or low-balance alerts. Webhooks and balance APIs are only building blocks a developer could use to construct such automation, so they earn no credit. The treasury axis applies to a business account product, so this is none rather than na.",
+    "rationale": "Cash-management automation is a fair question for a business account product, but the evidence pack never documents automatic top-ups between balances or low-balance alerts. Multi-currency balances and general webhook subscriptions are adjacent building blocks a developer could use to construct this, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12737,7 +12779,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business issues cards and documents APIs to retrieve card transactions, webhook subscriptions and statement exports. None of the evidence describes automatic receipt capture or expense coding at the moment of card use. Transaction APIs and webhooks are only developer building blocks a user could build on, so they earn no credit for this story.",
+    "rationale": "The evidence documents card issuing, card transaction retrieval APIs, spend controls, webhooks and statement exports. None of it shows receipts being automatically captured or transactions being coded or categorized when a card is used. Transaction retrieval and webhooks are only developer building blocks from which such a feature could be built, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12752,7 +12794,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Automated invoice follow-up is a fair question for a business payments account, so the axis applies. The evidence covers receiving payments, statements and webhook subscriptions, but nothing on invoicing, overdue tracking or automated payment reminders. Webhooks and receiving account details are only adjacent building blocks and earn no credit.",
+    "rationale": "Automated follow-up on overdue invoices is a fair question for a business payments and account product, so the axis applies. However, the evidence covers only receiving payments, account details, statements, webhooks and transfers. Nothing documents invoicing, overdue tracking or automated reminders, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12767,7 +12809,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Wise documents batch groups: named collections of up to 1000 transfers that can be managed as a single unit. It also documents bulk settlement of multiple transfers in one bank transfer, and funding of transfer batches from the multi-currency account or via direct debit. These are genuine first-party bulk operations, but they are documented only for transfers, are capped at 1000 items, and have no hands-on corroboration. missing for 10: bulk operations beyond transfers (e.g., cards, recipients, spend controls), detail on bulk action semantics such as partial failure handling, and independent or hands-on corroboration.",
+    "rationale": "Wise documents first-party bulk capabilities for transfers. Batch groups manage up to 1000 transfers as a single unit, bulk settlement settles many transfers in one bank transfer, and batches can be funded from the multi-currency account or via ACH/EFT direct debit. Bulk support is evidenced only for transfers, so the broader 'many items' story is only partly covered. missing for 10: bulk operations beyond transfers (e.g., bulk recipient creation, bulk card issuance or controls), details on batch error handling and partial-failure behavior, independent or hands-on corroboration of batch workflows.",
     "evidenceIds": [
       "wise-docs-28",
       "wise-docs-29",
@@ -12789,7 +12831,7 @@
         },
         {
           "evidenceId": "wise-docs-25",
-          "quote": "enables users to hold, convert, and fund transfers (single or batches) with balances in up to 56 currencies"
+          "quote": "fund transfers (single or batches)"
         },
         {
           "evidenceId": "wise-docs-23",
@@ -12804,7 +12846,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Wise documents its own rule mechanism, Spend Controls, which automatically permits or blocks card transactions based on merchant category code or currency. That is a narrow event-to-action rule, not a general automation engine. Webhook subscriptions only push events to an external consumer that must build the logic itself, so they are a developer building block and earn no credit. Missing for 10: general-purpose user-defined event→action rules beyond card authorization, configurable actions (e.g., auto-convert, auto-transfer, auto-tag), recurring or scheduled triggers, and any hands-on or independent corroboration.",
+    "rationale": "Wise's own spend-controls API lets users create rules, based on merchant category code or transaction currency, that are applied automatically to card transaction events to permit or block them. That is a narrow, card-only rule capability. Webhook subscriptions are only a developer building block for event notification and are not credited here. missing for 10: a general rules/automation engine for events beyond card authorization (e.g., incoming payments or balance changes triggering transfers or conversions), configurable actions other than allow/deny, documentation of rule depth and limits, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wise-docs-32"
     ],
@@ -12826,7 +12868,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring payments or workflows is a fair question for a business payments platform, so the axis applies. However, the evidence pack documents no scheduled or recurring transfer, job, or workflow capability. Batch groups, bulk settlement at the end of a settlement period, and webhook subscriptions are adjacent one-off or event-driven features, not user-defined recurring schedules.",
+    "rationale": "Scheduling recurring payments or workflows is a fair question for a business payments platform, but nothing in the evidence documents recurring or scheduled transfers or jobs. Batch groups and bulk settlement are grouping and settlement mechanics, not user-defined recurring schedules, and webhooks are event notifications rather than schedulers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12841,7 +12883,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A business payments platform could plausibly offer automation features such as rules or scheduled payments, so this axis applies. However, the evidence pack documents no way to version, review, or roll back automations. Spend-control rules, batch groups and webhook subscriptions are related features, not automation version control.",
+    "rationale": "Wise Business is a payments and API platform, so asking whether it lets users version, review and roll back their automations is a fair question. However, the evidence documents no product feature for versioning, reviewing or rolling back user-defined automations. The CalVer policy and changelogs cover versioning of Wise's own API, and the sandbox is a test environment. Both are adjacent developer building blocks, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12854,13 +12896,12 @@
     "productId": "wise",
     "storyId": "bank-verification-letter",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Wise documents that businesses get global account details for receiving payments in 40+ currencies, which covers viewing account details. The evidence never mentions routing numbers explicitly or a bank verification letter. A community report says USD account details were changed with zero-day notice, which bears on the stability of those details but does not contradict that they can be viewed. Missing for 10: explicit evidence of viewing account/routing numbers in the dashboard, any documented bank verification letter generation, on-demand ('anytime') self-serve access, independent corroboration.",
+    "rationale": "Wise documents that businesses get global account details to receive payments, which implies they can view their account and routing information. Nothing in the evidence documents generating a bank verification letter, and balance statements are a different feature. Missing for 10: any documented bank verification letter generation, explicit documentation of viewing account and routing numbers anytime in the dashboard or API, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wise-docs-9",
-      "wise-docs-3",
-      "wise-comm-3"
+      "wise-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -12884,7 +12925,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Approving bills before paying vendors is a fair question for a business payments account, so the axis applies. The evidence pack documents payments, batch transfers and batch groups, but nothing about uploading bills or invoices or routing them through approvals. Batch payments are an adjacent feature and earn no credit.",
+    "rationale": "Bill upload with an approval workflow is a fair question for a business payments account, so the axis applies. The evidence pack documents only payment execution (business payments via API, batch groups of up to 1000 transfers, bulk settlement), with nothing on uploading bills or approval routing before payment. Batch transfers are an adjacent payment feature, not a bill-approval workflow, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12899,13 +12940,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows card-level spend controls: rules by merchant category code or transaction currency, and channel permissions such as ATM or e-commerce. Neither is a department or program budget with an automatically enforced amount limit, so these count only as adjacent controls. No evidence covers budget creation, departmental grouping or cap enforcement.",
-    "evidenceIds": [],
+    "rationale": "Wise documents card-level spend controls, but no department or program budgets with automatically enforced amount limits. Its controls are MCC/currency rules and transaction-type permissions, which are adjacent controls rather than budget enforcement.",
+    "evidenceIds": [
+      "wise-docs-32",
+      "wise-docs-30"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As a finance-lead, I can set department or program budgets with automatically enforced spend limits",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wise-docs-32",
+          "quote": "Control which card transactions are permitted by creating rules based on merchant category code (MCC) or transaction currency."
+        },
+        {
+          "evidenceId": "wise-docs-30",
+          "quote": "Control spending permissions (e-commerce, ATM, contactless, magnetic stripe, etc.)"
+        }
+      ]
     }
   },
   {
@@ -12914,7 +12967,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Wise's card API documents granular per-card controls: toggling spending permissions (e-commerce, ATM, contactless, magnetic stripe) and creating rules that allow or block transactions by merchant category code or currency. The evidence does not show monetary spend limits per card, and these are Platform APIs for partners' customers rather than a documented finance-lead workflow for assigning controls to employees. Missing for 10: explicit per-card monetary spend limits, an employee-level card management interface for finance leads, independent or hands-on corroboration.",
+    "rationale": "Wise's card APIs document per-card spending permissions (e-commerce, ATM, contactless, magnetic stripe) and spend-control rules based on merchant category code or transaction currency, which covers the granular-controls half of the story. However, the evidence never mentions amount-based spend limits. The controls are also documented as Platform APIs for partners' customers' cards, not as a Wise Business dashboard for assigning cards to employees. Missing for 10: documented per-card monetary spend limits, an employee-level card assignment and management workflow for finance leads, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wise-docs-30",
       "wise-docs-32",
@@ -12932,10 +12985,6 @@
         {
           "evidenceId": "wise-docs-32",
           "quote": "Control which card transactions are permitted by creating rules based on merchant category code (MCC) or transaction currency."
-        },
-        {
-          "evidenceId": "wise-docs-4",
-          "quote": "Issue debit cards worldwide"
         }
       ]
     }
@@ -12944,15 +12993,15 @@
     "productId": "wise",
     "storyId": "consolidate-point-solutions",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Wise's own docs cover banking (multi-currency accounts holding balances in up to 56 currencies, with opt-in passthrough FDIC insurance), spend (debit cards with spending permissions and MCC/currency spend controls), and outbound business payments, including batches of up to 1000 transfers. Bill pay as a dedicated workflow is not evidenced, and no source states that Wise is positioned as a single platform replacing separate spend, bill pay and banking tools. missing for 10: dedicated bill pay workflow (invoice capture, approvals, scheduled bill payments), an explicit consolidated-platform or replacement claim, independent corroboration of founders consolidating onto Wise.",
+    "rationale": "Wise documents the building blocks of a consolidated finance stack in one product. Its multi-currency account holds balances in up to 56 currencies with optional FDIC passthrough insurance (banking). It issues debit cards with MCC- and currency-based spend controls (spend). It supports API business payments and batch groups of up to 1000 transfers, which covers outbound payments. However, there is no documented bill-pay workflow and no explicit positioning as a replacement for multiple point solutions. Missing for 10: documented bill-pay features (invoice intake, approvals, scheduled bill payments), explicit consolidation or all-in-one positioning, and independent hands-on corroboration of replacing other tools.",
     "evidenceIds": [
       "wise-docs-25",
       "wise-docs-11",
       "wise-docs-4",
-      "wise-docs-30",
       "wise-docs-32",
+      "wise-docs-30",
       "wise-docs-6",
       "wise-docs-28"
     ],
@@ -12988,9 +13037,9 @@
     "productId": "wise",
     "storyId": "dedicated-accounting-api",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Wise's own API does not document a dedicated accounting API. The closest first-party capability is the Balance Statement API, which retrieves account statements in accounting-friendly formats (CSV, XLSX, CAMT.053, MT940, QIF). That covers only read access to statement data, not management of accounting records. Missing for 10: a dedicated accounting API (ledger, categorisation, reconciliation or invoice objects), ability to manage or write accounting data, documented accounting-software sync, and independent or hands-on corroboration.",
+    "rationale": "Wise's own Balance Statement API lets developers retrieve account statements in accounting-friendly formats (CSV, XLSX, CAMT.053, MT940, QIF). That covers the 'view accounting data' half of the story through the product's API. Nothing in the pack shows a dedicated accounting API for managing ledgers, categorizing transactions, reconciliation, or syncing with accounting software. Missing for 10: a dedicated accounting API, write/manage operations on accounting data, accounting-software integration docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "wise-docs-27"
     ],
@@ -13012,7 +13061,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Earning yield on balances is a fair question for a business account product like Wise Business, so the axis applies. Nothing in the evidence pack mentions interest, yield or an investment feature on held balances. The multi-currency balance holding and the opt-in passthrough FDIC insurance are adjacent features, not yield.",
+    "rationale": "Earning yield on balances is a fair question for a business account product like Wise Business, so the axis applies. However, nothing in the evidence pack documents interest, yield, or any investment feature on held balances. The multi-currency account only covers holding and converting money, and the opt-in FDIC passthrough insurance is an adjacent deposit-protection feature, not yield.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13025,9 +13074,9 @@
     "productId": "wise",
     "storyId": "embedded-banking-no-license",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Wise's docs say businesses without financial licenses can offer accounts to their customers. They also document creating accounts in 160+ countries, multi-currency accounts in up to 56 currencies, embeddable Wise-hosted flows (iframe/WebView), and letting customers claim accounts created on their behalf. Missing for 10: in-depth documentation of the licensing/regulatory model and partner obligations, and independent or hands-on corroboration that developers have shipped embedded accounts this way.",
+    "rationale": "Wise's platform docs explicitly cover how businesses without financial licenses can offer accounts to their customers. They also document account creation across 160+ countries, multi-currency accounts in up to 56 currencies, Wise-hosted embedded flows that work in an iframe or WebView, and customer claim-account APIs. Missing for 10: detail on the regulatory and KYC responsibility split between partner and Wise, and independent or hands-on corroboration of the embedded-account program.",
     "evidenceIds": [
       "wise-docs-5",
       "wise-docs-1",
@@ -13049,16 +13098,16 @@
           "quote": "Create accounts for 160+ countries"
         },
         {
+          "evidenceId": "wise-docs-25",
+          "quote": "The Wise multi-currency account (MCA) enables users to hold, convert, and fund transfers (single or batches) with balances in up to 56 currencies."
+        },
+        {
           "evidenceId": "wise-docs-26",
           "quote": "Embedded Flows are Wise-hosted flows that partners can open for their users or embed inside their own product with an iframe or mobile WebView."
         },
         {
           "evidenceId": "wise-docs-18",
           "quote": "Allow a customer to take ownership of an account created on their behalf."
-        },
-        {
-          "evidenceId": "wise-docs-25",
-          "quote": "The Wise multi-currency account (MCA) enables users to hold, convert, and fund transfers (single or batches) with balances in up to 56 currencies."
         }
       ]
     }
@@ -13069,7 +13118,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Wise's own docs and site directly claim global payments arrive in under 20 seconds, well inside the story's one-minute bar. A delivery-estimate API also lets users check expected arrival times. The claim is qualified as applying to 'most' transfers, and only vendor sources support it. missing for 10: independent or hands-on corroboration of transfer speed, documentation of which corridors or currencies achieve sub-minute delivery versus slower ones.",
+    "rationale": "Wise's own documentation directly claims global payments are sent in under 20 seconds, with most transfers arriving in that time, which is well within the story's one-minute bar. A delivery-estimate API also lets users see when funds are expected to arrive. The claim is qualified as 'most', with no breakdown of which corridors or currencies qualify. missing for 10: per-corridor or per-currency speed coverage, documentation of when transfers are slower, independent or hands-on corroboration of arrival times.",
     "evidenceIds": [
       "wise-docs-2",
       "wise-docs-7",
@@ -13102,7 +13151,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Business onboarding speed is a fair question for a business banking platform, so the axis applies. However, the evidence never documents how long Wise Business onboarding takes or claims setup within about a week. Claims about creating accounts in 160+ countries and fast payment delivery describe account coverage and transfer speed, not onboarding time.",
+    "rationale": "Onboarding speed is a fair question for a business banking platform like Wise Business, so the axis applies. However, nothing in the pack documents how long business account opening, verification or KYB takes, or any claim of a roughly one-week onboarding. The account-creation items (wise-docs-1, wise-docs-5) describe partners offering accounts via API and say nothing about a founder's onboarding timeline.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13117,13 +13166,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business is a business account product, so automated multi-bank deposit sweeping for expanded FDIC coverage is a fair question to ask of it. The evidence only shows opt-in passthrough FDIC insurance up to $250,000 through a single Program Bank. That is an adjacent feature: nothing documents sweeping deposits across multiple partner banks to raise coverage beyond that limit.",
-    "evidenceIds": [],
+    "rationale": "The pack documents only opt-in passthrough FDIC insurance up to $250,000 through a single Program Bank. That is an adjacent feature, not an automatic sweep of deposits across multiple partner banks to extend coverage. Nothing in the evidence describes multi-bank sweeps or coverage beyond $250,000.",
+    "evidenceIds": [
+      "wise-docs-11"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As a finance-lead, I can have deposits automatically swept across partner banks to maximize FDIC insurance coverage",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wise-docs-11",
+          "quote": "Opt in and get passthrough FDIC insurance up to $250,000 through our Program Bank."
+        }
+      ]
     }
   },
   {
@@ -13132,7 +13188,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Wise's own site states the card lets you \"Pay and withdraw cash worldwide without any hidden fees or markups.\" Its docs confirm debit card issuance and ATM spending permissions, so the core of the story is covered directly. missing for 10: a detailed fee schedule (ATM withdrawal allowances, conversion fees), explicit confirmation that the claim applies to Wise Business company cards, and independent or hands-on corroboration of the no-hidden-fee claim.",
+    "rationale": "Wise states its card lets you pay and withdraw cash worldwide without hidden fees or markups. Its docs also cover issuing debit cards worldwide and controlling ATM and other spending permissions, which together cover the core of the story. The evidence is mostly high-level marketing copy and is not specific to Business cards. Missing for 10: a published fee schedule (ATM withdrawal limits, conversion fees), explicit confirmation that these terms apply to Wise Business company cards, and independent or hands-on corroboration of no hidden foreign fees.",
     "evidenceIds": [
       "wise-docs-10",
       "wise-docs-4",
@@ -13164,25 +13220,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented capability to instantly freeze or block a lost or stolen card, and nothing about ordering a replacement for one. Card-ordering APIs and spending-permission toggles exist, but these are adjacent features for building card programs, not a documented freeze-and-replace flow.",
-    "evidenceIds": [
-      "wise-docs-30",
-      "wise-docs-14"
-    ],
+    "rationale": "The evidence pack documents card issuance via the card-order API and per-channel spending-permission toggles (e-commerce, ATM, contactless). Neither is an instant freeze or block for a lost or stolen card, and nothing describes ordering a replacement card. These are adjacent controls and earn no credit for this story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a finance-lead, I can instantly freeze a lost or stolen card and order a replacement",
-      "citations": [
-        {
-          "evidenceId": "wise-docs-30",
-          "quote": "Control spending permissions (e-commerce, ATM, contactless, magnetic stripe, etc.)"
-        },
-        {
-          "evidenceId": "wise-docs-14",
-          "quote": "With this set of APIs, you will be able to create cards for your customers."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -13191,7 +13235,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Accounting and ERP integration is a fair question for a business payments account, so the axis applies. The evidence pack documents no native ERP connector and no bidirectional sync. Statement exports in accounting formats (CAMT.053, MT940, QIF) and webhook subscriptions are one-way or developer building blocks a team could use to construct a sync, not the capability itself.",
+    "rationale": "Accounting and ERP sync is a fair question for a business payments account, but the pack documents no first-party ERP or accounting connector, and nothing about real-time bidirectional sync. Statement exports (CAMT.053, MT940, QIF, CSV) and webhook or API primitives are building blocks a developer could use to construct an integration. They are not the sync capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13206,7 +13250,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Treasury yield is a fair question for a business account product, so the axis applies. However, the evidence pack documents no high-yield savings sub-account, no interest on balances, and no automated sweep or transfer rules. The closest items are multi-currency balances and opt-in passthrough FDIC insurance, which are adjacent features and do not deliver a yield-bearing cash cushion with automation.",
+    "rationale": "A high-yield savings sub-account with automated transfer rules is a fair question for a business account product, so the axis applies. The evidence covers multi-currency balances ([wise-docs-25]) and opt-in passthrough FDIC insurance ([wise-docs-11]), but nothing about interest or yield, savings sub-accounts, or rule-based automatic transfers. Those items are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13220,8 +13264,8 @@
     "storyId": "instant-virtual-card-issuance",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Wise documents its own APIs for creating cards and attaching spend-control rules by merchant category code (MCC) or currency, plus toggles for channels such as e-commerce. MCC rules could approximately scope a card to a purpose like ad spend. However, the evidence never says the cards are virtual or issued instantly, and it shows no way to lock a card to a single vendor. The documentation also frames card creation as issuing to a partner's customers via API rather than a finance-lead self-serve flow in Wise Business. Missing for 10: explicit virtual card issuance, instant creation, single-merchant/vendor locking, a finance-lead UI workflow for Wise Business, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Wise documents an API to create cards and spend-control rules based on merchant category code or transaction currency, which allows category-level scoping such as ad spend. However, the evidence never says the cards are virtual or issued instantly, and it is framed as a partner API for issuing cards to customers rather than a finance-lead workflow. Missing for 10: explicit virtual card issuance, instant creation, per-vendor (single merchant) scoping, a finance-lead-facing Wise Business UI flow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wise-docs-14",
       "wise-docs-32",
@@ -13254,7 +13298,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Invoicing with built-in payment collection is a fair question for a business account product, so the axis applies. The evidence only covers receiving payments through global account details and multi-currency receipt. Nothing documents creating, branding or sending invoices, so the verdict is none.",
+    "rationale": "Invoicing is a fair question for a business payments account, so the axis applies. The evidence pack only documents receiving payments via global account details in 40+ currencies. It never mentions creating, branding, or sending invoices, or a payment-collection link attached to an invoice, so it does not support this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13269,7 +13313,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Wise states that users can 'Lock in exactly what your recipient will get for up to 24 hours,' which covers locking a rate for a fixed window before the transfer completes. The evidence is a single marketing line, though, with no documentation of how the lock works. missing for 10: detailed docs on rate-lock mechanics (quote creation, expiry, API support), explicit confirmation that this applies to Wise Business accounts, independent or hands-on corroboration.",
+    "rationale": "Wise's own site says users can lock in exactly what the recipient will get for up to 24 hours, which covers a rate guarantee over a fixed window before the transfer completes. The evidence is a single marketing line from the general wise.com page, with no Business-specific or API-level detail. Missing for 10: Business-account-specific documentation of the rate lock, API/quote-expiry documentation for programmatic use, independent or hands-on corroboration.",
     "evidenceIds": [
       "wise-docs-8"
     ],
@@ -13291,13 +13335,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Wise documents a multi-currency account that lets users hold, convert, and fund transfers from balances in up to 56 currencies. It adds global account details for getting paid in other currencies and balance statements in several formats, which covers holding and managing multi-currency balances from one account. Missing for 10: independent or hands-on corroboration of day-to-day multi-currency balance management, and business-profile-specific docs on balance management outside the API.",
+    "rationale": "Wise's first-party docs describe a multi-currency account that lets users hold, convert, and fund transfers from balances in up to 56 currencies, with payments and receipts in 40+ currencies and balance statements available in many formats. This directly delivers holding and managing multi-currency balances from one account. Missing for 10: independent or hands-on corroboration of multi-currency balance management, and in-depth documentation of balance management operations such as opening or closing currency balances.",
     "evidenceIds": [
       "wise-docs-25",
-      "wise-docs-38",
       "wise-docs-12",
-      "wise-docs-9",
-      "wise-docs-27"
+      "wise-docs-27",
+      "wise-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -13313,10 +13356,6 @@
           "quote": "Make payments and get paid in 40+ currencies."
         },
         {
-          "evidenceId": "wise-docs-9",
-          "quote": "Get paid easily in other currencies with global account details."
-        },
-        {
           "evidenceId": "wise-docs-27",
           "quote": "Statements can be retrieved in multiple formats: JSON, CSV, PDF, XLSX, CAMT.053, MT940, or QIF."
         }
@@ -13329,7 +13368,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Wise Business can hold balances in up to 56 currencies and offers opt-in passthrough FDIC insurance, but nothing documents earning interest or yield on those balances. Insurance and multi-currency holding are adjacent features, not interest, so this applicable treasury-yield axis gets no credit.",
+    "rationale": "Earning interest on balances is a fair question for a business account product. The evidence documents only holding and converting balances in up to 56 currencies and opt-in FDIC passthrough insurance. Neither is interest or yield, so the story has no direct support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13344,7 +13383,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies to a business account product, but the evidence pack does not document opening multiple checking sub-accounts or automatically allocating incoming deposits across them. The multi-currency account supports holding balances in up to 56 currencies, which is a related but different feature: per-currency balances, not sub-accounts with deposit allocation rules.",
+    "rationale": "Sub-accounts with automatic allocation of incoming deposits are a fair question for a business banking and payments account, so the axis applies. The pack only documents multi-currency balances (hold and convert in up to 56 currencies). That is an adjacent feature: it shows neither multiple checking sub-accounts within one currency nor any rule-based routing of incoming deposits across them.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13359,7 +13398,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business issues debit cards, so automatic cashback on card spend is a fair question for this product. However, nothing in the evidence pack mentions cashback, rewards, or any automatic crediting on card spend. The card evidence covers issuance, spend controls, disputes, and transaction retrieval only.",
+    "rationale": "Cashback on card spend is a fair question for a business account with debit cards, but the evidence pack never mentions cashback or rewards. The card material covers issuance, spend controls, transactions, disputes and fee-free spending, none of which is cashback.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13374,7 +13413,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents payment sending, batch transfers and card spend controls, but nothing about team roles, approval permissions or one-click approval workflows for designated teammates. Card spending permissions (wise-docs-30, wise-docs-32) are an adjacent card-level control, not payment-approval permissions, so they earn no credit. Approval workflows are a fair axis for a business payments account, so the verdict is none rather than na.",
+    "rationale": "Team approval permissions are a fair axis for a business payments account, but the evidence pack never documents teammate roles, approval permissions or one-click approve-and-send workflows. The only 'permissions' evidence is card spending controls, which is an adjacent feature and does not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13389,18 +13428,16 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Wise documents a broad API surface covering multi-currency accounts and transfers, batches, cards, spend controls, disputes, support cases, statements and webhook management, so much of the product is reachable programmatically. However, no source claims full API/UI parity, and some flows are delivered as Wise-hosted Embedded or Dynamic Flows rather than pure API calls. Missing for 10: an explicit API/UI parity statement, evidence that every UI action (e.g. account administration, Wise Business settings) has an API equivalent, a published OpenAPI spec (probes returned 404), and independent hands-on corroboration.",
+    "rationale": "Wise documents a broad first-party API surface covering many things a user does in the UI: business payments, multi-currency balances and conversion, batch transfers, statements in many formats, card ordering and spend controls, disputes, support cases, recipients and webhooks. Nothing in the evidence claims or shows full UI parity, and some flows are delivered as Wise-hosted Embedded Flows rather than plain API calls. The main platform API also has no public OpenAPI spec. missing for 10: explicit UI/API parity statement or coverage map, evidence that account settings/admin/team management are API-accessible, independent hands-on corroboration of parity, public machine-readable spec for the main API.",
     "evidenceIds": [
       "wise-docs-6",
       "wise-docs-17",
       "wise-docs-24",
       "wise-docs-25",
-      "wise-docs-26",
       "wise-docs-27",
       "wise-docs-30",
-      "wise-docs-32",
-      "wise-docs-33",
-      "wise-probe-2"
+      "wise-docs-26",
+      "wise-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -13420,16 +13457,16 @@
           "quote": "The Wise multi-currency account (MCA) enables users to hold, convert, and fund transfers (single or batches) with balances in up to 56 currencies."
         },
         {
+          "evidenceId": "wise-docs-27",
+          "quote": "Statements can be retrieved in multiple formats: JSON, CSV, PDF, XLSX, CAMT.053, MT940, or QIF."
+        },
+        {
           "evidenceId": "wise-docs-24",
-          "quote": "Raise and manage card transaction disputes, including submission via Dynamic Flow or direct API, file uploads, and dispute lifecycle tracking."
+          "quote": "Raise and manage card transaction disputes, including submission via Dynamic Flow or direct API"
         },
         {
-          "evidenceId": "wise-docs-26",
-          "quote": "Embedded Flows are Wise-hosted flows that partners can open for their users or embed inside their own product with an iframe or mobile WebView."
-        },
-        {
-          "evidenceId": "wise-docs-33",
-          "quote": "Manage webhook subscriptions at both the application and profile level. Create, list, retrieve, and delete subscriptions, as well as test your webhook endpoints."
+          "evidenceId": "wise-docs-30",
+          "quote": "Control spending permissions (e-commerce, ATM, contactless, magnetic stripe, etc.)"
         }
       ]
     }
@@ -13440,10 +13477,9 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Wise documents its own export of balance statements in open and standard formats (JSON, CSV, XLSX, CAMT.053, MT940, QIF), which covers transaction history, a core part of a user's data. There is no evidence of a complete account-wide export or an offboarding path. Missing for 10: a documented full-account data export covering recipients, cards, documents and profile data; any documented account-closure or offboarding flow; independent or hands-on confirmation that exports are complete.",
+    "rationale": "Wise documents that balance statements can be retrieved in several open and standard formats (JSON, CSV, XLSX, CAMT.053, MT940, QIF), so financial transaction data is exportable. Nothing shows a complete account-wide export or a documented exit path. Missing for 10: full-account export covering recipients, cards and profile data; a documented account closure/offboarding process; independent or hands-on corroboration of the export.",
     "evidenceIds": [
-      "wise-docs-27",
-      "wise-docs-16"
+      "wise-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -13453,10 +13489,6 @@
         {
           "evidenceId": "wise-docs-27",
           "quote": "Statements can be retrieved in multiple formats: JSON, CSV, PDF, XLSX, CAMT.053, MT940, or QIF."
-        },
-        {
-          "evidenceId": "wise-docs-16",
-          "quote": "Retrieve information on transactions made on your users' cards."
         }
       ]
     }
@@ -13467,7 +13499,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is published under an open license is a fair question for any software product, including a SaaS payments platform, so the axis applies. Nothing in the evidence pack mentions published source code, a public repository, or an open-source license. The docs cover proprietary APIs and hosted flows, and the llms.txt and OpenAPI probes concern documentation, not source availability.",
+    "rationale": "Whether a product's source is published under an open license is a fair question for a SaaS payments platform, so the axis applies. The evidence pack documents APIs, a sandbox, versioning, changelogs and a single downloadable OpenAPI spec, but none of these is open-licensed product source code. With no evidence of source availability, the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13482,7 +13514,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business is a regulated, hosted money-movement and multi-currency account service, so self-hosting it is a category error rather than a missing feature. Its licensed payment rails, accounts and cards cannot run on a user's own infrastructure, and buyers comparing business payment accounts would not reasonably ask for this. Nothing in the evidence shows a self-hostable distribution; even the Embedded Flows are described as Wise-hosted.",
+    "rationale": "Wise Business is a licensed, Wise-operated payments and multi-currency account service. Its core value is regulated money movement over Wise's own licenses and banking rails, so self-hosting it is a category error for this kind of product. The evidence describes only hosted APIs, a Wise-hosted sandbox and Wise-hosted embedded flows, and nothing suggests a deployable self-hosted edition.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13497,7 +13529,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Wise documents its own debit card issuance: a card-order API to create cards, kiosk-based physical card printing, and per-card spending permissions. However, the evidence frames this as Wise Platform partners issuing cards to their customers, not a business finance lead issuing cards to its employees. Missing for 10: employee card issuance from a Wise Business account, role-based cardholder permissions, credit card support, explicit physical card ordering and delivery for staff, and independent corroboration.",
+    "rationale": "Wise documents debit card issuance through its card-order APIs and physical card printing at kiosks, plus per-card spending permissions. However, this is framed as a platform API for issuing cards to a partner's customers, not as a Wise Business flow for issuing cards to employees, and nothing covers credit cards or role definitions. missing for 10: evidence of issuing cards to employees within a Wise Business account, defined employee roles/permissions tied to cardholders, credit card option, independent or hands-on corroboration.",
     "evidenceIds": [
       "wise-docs-4",
       "wise-docs-14",
@@ -13519,7 +13551,7 @@
         },
         {
           "evidenceId": "wise-docs-31",
-          "quote": "These APIs are designed to allow you to print and encrypt your card directly from a kiosk machine."
+          "quote": "print and encrypt your card directly from a kiosk machine"
         },
         {
           "evidenceId": "wise-docs-30",
@@ -13534,7 +13566,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "AP automation is a fair question for a business payments account, but the evidence pack never mentions invoice capture, purchase-order matching, GL coding, or approval routing. The documented payments API and batch transfers only cover executing payments, which is adjacent to this story rather than the capability itself.",
+    "rationale": "Accounts-payable automation is a fair question for a business payments account, so the axis applies. The evidence covers sending payments, batch transfers and statements, but nothing on invoice capture, purchase-order matching, GL coding or approval routing. Batch payment APIs are only adjacent building blocks for paying vendors, not the requested invoice-to-PO workflow.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13549,7 +13581,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a SaaS payments and business-banking platform, so the axis applies. However, nothing in the evidence pack covers choosing the region where data is stored. The references to accounts in 160+ countries and 40+ currencies concern where customers and payments can be served, not data storage location, so they do not count toward this story.",
+    "rationale": "Data residency is a fair question for a business payments and banking platform, so the axis applies. Nothing in the evidence pack describes choosing a storage region or residency for customer data. Mentions of '160+ countries' and multiple currencies refer to account and payment coverage, not where data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13564,7 +13596,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Wise Business holds customer financial data, so whether that data can be excluded from AI model training is a fair privacy question for this kind of product. The evidence pack covers only payments, cards, accounts, webhooks and community complaints about account changes, with no mention of AI training opt-outs or data-use policies. Absence of evidence for an applicable capability yields none.",
+    "rationale": "An AI-training opt-out is a fair privacy question for any SaaS that holds customer data, including a business payments platform, so the axis applies. Nothing in the evidence pack mentions an AI-training opt-out, data-use controls for model training, or any related privacy setting. The sandbox guidance about not including real data concerns test environments, not model training, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13579,7 +13611,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a business financial platform, so the axis applies. Nothing in the evidence pack documents user-controllable retention periods, data deletion, or account data erasure. The ability to delete webhook subscriptions is an adjacent control, not data retention or deletion.",
+    "rationale": "Data retention and deletion controls are a fair privacy question for a business payments platform, so the axis applies. The evidence pack has nothing on retention periods, data export-and-delete, or account-data erasure controls. Deleting webhook subscriptions is a different feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13594,7 +13626,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a web and app payments service like Wise Business, so the axis applies. However, nothing in the evidence pack mentions telemetry, analytics, cookie or tracking controls, or any opt-out mechanism. The docs cover payments, cards, accounts and webhooks only, so the verdict is none.",
+    "rationale": "Telemetry and usage-tracking opt-out is a fair privacy question for a SaaS financial platform like Wise Business, so the axis applies. Nothing in the evidence pack covers tracking controls, cookie or analytics opt-outs, or data-collection preferences; the items cover payments, cards, webhooks, the sandbox and versioning.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13609,7 +13641,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Receipt capture and auto-matching is a fair question for a business account with cards, but the evidence pack never mentions emailing or uploading receipts, or attaching them to transactions. Retrieving card transactions and uploading files for disputes are adjacent features, not receipt matching.",
+    "rationale": "Receipt capture is a fair question for a business account that issues cards, so the axis applies. However, the evidence pack never mentions receipts, emailing receipts in, or automatically matching them to transactions. The dispute file uploads and card-transaction retrieval in the pack are adjacent features from other stories and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13624,13 +13656,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Wise documents that businesses can get paid in other currencies using global account details and can receive payments in 40+ currencies. Community reports confirm founders use Wise Business USD account details to receive client payments, though one report says those details changed with zero-day notice, which is a reliability caveat rather than a contradiction. Missing for 10: in-depth docs on which currencies come with local account details (vs. the 40+ receivable currencies), and how stable those account details are over time.",
+    "rationale": "Wise's own pages say businesses can \"Get paid easily in other currencies with global account details\" and \"Receive payment in 40+ currencies.\" Community reports confirm users held working USD account details for Wise Business. Those same reports describe the details being changed with zero-day notice, which is an operational caveat rather than evidence the capability doesn't exist. Missing for 10: in-depth first-party docs on which currencies and countries get local account details (the evidence is marketing one-liners), and documented stability or advance notice when account details change.",
     "evidenceIds": [
       "wise-docs-9",
       "wise-docs-3",
       "wise-docs-12",
       "wise-comm-3",
-      "wise-comm-1"
+      "wise-comm-5"
     ],
     "support": {
       "relation": "direct",
@@ -13646,10 +13678,6 @@
           "quote": "Receive payment in 40+ currencies"
         },
         {
-          "evidenceId": "wise-docs-12",
-          "quote": "Make payments and get paid in 40+ currencies."
-        },
-        {
           "evidenceId": "wise-comm-3",
           "quote": "your USD account details for your Wise Business and Personal accounts are changing"
         }
@@ -13662,7 +13690,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents a self-service screen or flow for requesting a transaction limit increase. The card spending permissions (e-commerce, ATM, contactless), MCC/currency spend-control rules, and the generic support Cases API are adjacent controls, not a limit-increase request capability, so they earn no credit.",
+    "rationale": "Nothing in the evidence shows a self-service screen or flow for requesting a transaction limit increase. The pack covers related but different things: card spending-permission toggles, MCC/currency spend rules, and a general Cases API for support queries. None of these is a documented limit-increase request capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13677,7 +13705,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Roles and permissions for team members are a fair question for a business finance account, so the axis applies. The pack has no evidence of user roles, team-member permissions, or location- or department-level access. The card spending permissions and MCC/currency spend controls are adjacent card-level features, not user-role management, so they earn no credit.",
+    "rationale": "User roles and permissions are a fair question for a business finance account, so the axis applies. The evidence pack does not document team-member roles, permission levels, or location or department scoping. The only related items are card-level spending permissions and MCC/currency spend rules, which are adjacent card controls rather than user role management and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13692,7 +13720,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Wise documents business payments from a Wise account and describes its platform as offering domestic and cross-border payment tools. Nothing confirms outbound ACH or wire rails to vendors: the ACH evidence covers direct debit for funding batches, not paying recipients. missing for 10: explicit outbound domestic ACH payment support, domestic wire support, vendor-payment workflow documentation, independent or hands-on corroboration.",
+    "rationale": "Wise documents domestic and cross-border payment tools and business payments from a Wise account, so paying vendors domestically is within its documented capability. However, no evidence names outbound domestic ACH or domestic wire as payout rails. The only ACH reference covers funding batch transfers via direct debit, which is inbound and not credited here. Missing for 10: explicit documentation of outbound ACH payouts, explicit documentation of domestic wire sends, vendor/recipient payment workflow detail, and independent or hands-on corroboration.",
     "evidenceIds": [
       "wise-probe-1",
       "wise-docs-6",
@@ -13705,7 +13733,7 @@
       "citations": [
         {
           "evidenceId": "wise-probe-1",
-          "quote": "Wise Platform offer domestic and cross-border payments tools for technolo"
+          "quote": "Wise Platform offer domestic and cross-border payments tools"
         },
         {
           "evidenceId": "wise-docs-6",
@@ -13724,7 +13752,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Wise documents sending payments globally in 40+ currencies, holding and converting balances in up to 56 currencies to fund transfers, and locking the exact amount the recipient will get for up to 24 hours. It also claims no hidden fees or markups, which addresses fee transparency. Missing for 10: detailed first-party documentation of the fee structure and how fees are disclosed per transfer, and independent or hands-on corroboration of fee transparency on business payments.",
+    "rationale": "Wise documents global payments in 40+ currencies from a multi-currency account that can convert and fund single or batch transfers. Fee transparency is supported by claims of no hidden fees or markups and a rate lock that guarantees exactly what the recipient will get. missing for 10: a detailed documented fee breakdown or fee schedule shown before sending, and independent or hands-on corroboration of fee transparency.",
     "evidenceIds": [
       "wise-docs-2",
       "wise-docs-12",
@@ -13743,20 +13771,20 @@
           "quote": "Make payments and get paid in 40+ currencies."
         },
         {
-          "evidenceId": "wise-docs-2",
-          "quote": "Send payments globally, in under 20 seconds"
-        },
-        {
-          "evidenceId": "wise-docs-10",
-          "quote": "Pay and withdraw cash worldwide without any hidden fees or markups."
+          "evidenceId": "wise-docs-25",
+          "quote": "enables users to hold, convert, and fund transfers (single or batches) with balances in up to 56 currencies"
         },
         {
           "evidenceId": "wise-docs-8",
           "quote": "Lock in exactly what your recipient will get for up to 24 hours."
         },
         {
-          "evidenceId": "wise-docs-25",
-          "quote": "enables users to hold, convert, and fund transfers (single or batches) with balances in up to 56 currencies"
+          "evidenceId": "wise-docs-10",
+          "quote": "Pay and withdraw cash worldwide without any hidden fees or markups."
+        },
+        {
+          "evidenceId": "wise-docs-2",
+          "quote": "Send payments globally, in under 20 seconds"
         }
       ]
     }
@@ -13767,9 +13795,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Wise documents a first-party Delivery Estimate API that returns when funds are expected to arrive in the recipient's bank account, so the core capability of seeing a delivery estimate exists. The evidence does not show the estimate being displayed before the user confirms, or that it applies to ACH or wire rails. It also describes an estimate rather than an exact delivery time. missing for 10: evidence the estimate is shown pre-confirmation in the Business UI/flow, explicit ACH and wire coverage, precision/exactness of the estimate, independent or hands-on corroboration.",
+    "rationale": "Wise documents a Delivery Estimate API that returns when a transfer's funds are expected to arrive in the recipient's bank account. That directly addresses the core of the story. However, the evidence does not show the estimate being presented before the user confirms, does not tie it to ACH or wire rails, and does not show it being exact rather than estimated. missing for 10: evidence that the estimate is shown pre-confirmation in the Wise Business UI, ACH/wire-specific coverage, precision of the estimate, independent or hands-on corroboration.",
     "evidenceIds": [
-      "wise-docs-22"
+      "wise-docs-22",
+      "wise-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -13779,6 +13808,10 @@
         {
           "evidenceId": "wise-docs-22",
           "quote": "Get the estimated delivery time for a transfer, showing when funds are expected to arrive in the recipient's bank account."
+        },
+        {
+          "evidenceId": "wise-docs-19",
+          "quote": "The comparison API can be used to request price and speed information about various money transfer providers."
         }
       ]
     }
@@ -13789,7 +13822,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no universal search bar spanning transactions, vendors and cards, and no search-to-payment shortcut. The closest items are separate API capabilities: card transaction retrieval and looking up Wise profiles by Wisetag, email or phone to add as recipients. These are adjacent building blocks, not the unified search experience the story asks for.",
+    "rationale": "Universal search is a fair question for a business payments product, so the axis applies. However, nothing in the evidence pack documents a universal search bar spanning transactions, vendors and cards, or a way to jump from search results straight into a payment. The card-transaction retrieval API and recipient lookup by identifier are adjacent building blocks, not the product's own universal search, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

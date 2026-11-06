@@ -1,17 +1,29 @@
 {
-  "hash": "7770f2d5dfdb4d3b2b48ad9fc1703aec8d7160faaf471f2d5e1f95069bf871d8",
+  "hash": "474814e177ceab6f47b33d655ce9617e8c2eb7cfe07abef34ab3682676cb4efb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Airbyte documents a programmatic API (\"Use the Airbyte API to programmatically interact with Airbyte\"), but nothing in the evidence shows a downloadable OpenAPI or equivalent spec. The probe found every candidate OpenAPI/Swagger path returned 404. An llms.txt file exists, but that is a docs index, not a machine-readable API spec, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Airbyte's machine-readable OpenAPI spec for its public API is published in the official airbytehq GitHub repo as api.yaml, and the newer Agent API self-serves its own OpenAPI document. However, the ReadMe API reference's OAS download is admin-gated, and every standard docs path for the spec returned 404, so the spec is not downloadable from the documentation site itself. Missing for 10: a self-serve spec download from the official API reference or docs site, a discoverable well-known spec URL, and independent hands-on confirmation that the GitHub spec matches the live API.",
+    "evidenceIds": [
+      "airbyte-openapi-spec-20261106",
+      "airbyte-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "airbyte-openapi-spec-20261106",
+          "quote": "The ReadMe reference's own OAS download is admin-gated, so the GitHub document is the published machine-readable spec; the newer Agent API separately self-serves its own OpenAPI document at its origin."
+        },
+        {
+          "evidenceId": "airbyte-probe-2",
+          "quote": "PROBE openapi: all candidate paths 404"
+        }
+      ]
     },
     "productId": "airbyte",
     "storyId": "api-machine-spec"

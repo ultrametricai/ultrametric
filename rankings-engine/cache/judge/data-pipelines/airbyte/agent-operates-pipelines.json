@@ -1,15 +1,16 @@
 {
-  "hash": "1de4528066b18ab1c507ec3d03c0a3625811bfbc237a0e41099099487c79304e",
+  "hash": "4c5fa1f69a8c31164a8fd544e5b1117a40d29a5cbbebee30bfc79ec136663bcf",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Airbyte documents its own API for programmatically controlling Airbyte, including from orchestrators like Airflow, which implies agents can drive syncs. However, nothing explicitly documents checking job status, retrieving failure logs or errors, or re-triggering a failed sync through the API. The MCP server evidence is about agents accessing data, not operating pipelines, and the Connection Timeline's logs and errors are shown as a UI feature. missing for 10: explicit API/MCP endpoints for sync status, programmatic retrieval of failure logs and errors for diagnosis, documented sync re-trigger call, an MCP server exposing pipeline-ops tools, hands-on corroboration.",
+    "rationale": "Airbyte documents a public API for programmatically controlling Airbyte, including orchestration from tools like Airflow, which implies triggering and monitoring syncs. However, the pack never shows specific job-status, failure-log, or re-trigger endpoints. Failure diagnosis (logs, errors) is documented only in the UI Connection Timeline, and the MCP server evidence covers agents accessing data rather than managing pipelines. Missing for 10: explicit API endpoints for job status and re-running syncs, API or MCP access to failure logs/diagnostics, an MCP server exposing pipeline operations, and hands-on corroboration of an agent doing this loop.",
     "evidenceIds": [
       "airbyte-docs-3",
-      "airbyte-docs-17",
-      "airbyte-docs-57"
+      "airbyte-openapi-spec-20261106",
+      "airbyte-docs-57",
+      "airbyte-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -21,8 +22,12 @@
           "quote": "Use the Airbyte API to programmatically interact with Airbyte. For example, you can control Airbyte in conjunction with orchestration tools like Airflow."
         },
         {
-          "evidenceId": "airbyte-docs-17",
-          "quote": "Most programmatic interactions with Airbyte require an access token."
+          "evidenceId": "airbyte-openapi-spec-20261106",
+          "quote": "Programmatically control Airbyte Cloud, OSS & Enterprise."
+        },
+        {
+          "evidenceId": "airbyte-docs-57",
+          "quote": "You can also view and download logs, find any relevant errors"
         }
       ]
     },

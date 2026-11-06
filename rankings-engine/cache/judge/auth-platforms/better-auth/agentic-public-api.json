@@ -1,17 +1,19 @@
 {
-  "hash": "97d16175644ff4d4f919399049ff29e6991798e058f1f485445e4ad5cc128189",
+  "hash": "3d80c599c6c50ea0f76f5d516cf4a6671be248a4cd1c61fcae68b15180f090a9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Better Auth documents its own programmatic API: server-side `auth.api` methods, typed client methods such as `authClient.signUp.email`, JWT/JWKS endpoints, and admin operations, so an agent can drive it in code. But no OpenAPI/Swagger spec was found at any probed path, and a community user reports there is virtually no documentation for building a non-JS client against the underlying HTTP API. missing for 10: published OpenAPI/HTTP API reference, language-agnostic endpoint documentation, independent hands-on corroboration of agent-driven API use.",
+    "rationale": "Better Auth documents a programmatic surface: server-side `auth.api` methods, HTTP endpoints from plugins such as JWT/JWKS and admin operations, and an openAPI() plugin that generates an OpenAPI 3.1.1 schema with a Try-it-out reference. However, that plugin is self-generated per deployment and marked early-stage, probes found no vendor-published spec, and a hands-on user found driving it from admin scripts hacky because of its request-header-based design. Missing for 10: a stable, vendor-published API spec; mature OpenAPI tooling; clean header-free scripting and automation; documentation for non-JS clients.",
     "evidenceIds": [
       "better-auth-docs-23",
-      "better-auth-docs-4",
       "better-auth-docs-7",
       "better-auth-docs-15",
+      "better-auth-openapi-plugin-20261106",
+      "better-auth-scalar-reference-20261106",
       "better-auth-probe-3",
+      "better-auth-comm-5",
       "better-auth-comm-15"
     ],
     "support": {
@@ -24,16 +26,16 @@
           "quote": "To authenticate a user on the server, you can use the auth.api methods."
         },
         {
-          "evidenceId": "better-auth-docs-4",
-          "quote": "const { data, error } = await authClient.signUp.email({ email, password, name, image, callbackURL: \"/dashboard\" }"
-        },
-        {
           "evidenceId": "better-auth-docs-7",
           "quote": "The JWT plugin provides endpoints to retrieve a JWT token and a JWKS endpoint to verify the token."
         },
         {
-          "evidenceId": "better-auth-docs-15",
-          "quote": "It allows administrators to perform various operations such as creating users, managing user roles, banning/unbanning users, impersonating users, and more."
+          "evidenceId": "better-auth-openapi-plugin-20261106",
+          "quote": "Better Auth's openAPI() plugin generates an OpenAPI 3.1.1 schema covering core and plugin endpoints, retrievable as JSON via auth.api.generateOpenAPISchema() or the /api/auth/open-api/generate-schema endpoint."
+        },
+        {
+          "evidenceId": "better-auth-scalar-reference-20261106",
+          "quote": "You can test the endpoints by clicking on the `Try it out` button and providing the required parameters."
         }
       ]
     },

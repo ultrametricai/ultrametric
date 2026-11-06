@@ -1,18 +1,18 @@
 {
-  "hash": "e42d28d7ce913fef6ab73e2ab8232f119db6fe44ad7d029465cfbaf7cfcb9c93",
+  "hash": "c35bdcaa1fbbd5b2f8065ef27275757858711d8302789b4eee944bf0e3d36a89",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ledgy documents a public API with OAuth 2.0 client_credentials service accounts and named operations (auth, companyCaptable, companyTransactions) that support paging and change-only retrieval. The documented operations only read data, so 'driving' the product (granting, vesting, orders) via API is unevidenced, and probes found no OpenAPI spec or llms.txt. missing for 10: documented write/mutation operations to drive workflows, machine-readable API spec (OpenAPI), independent or hands-on corroboration.",
+    "rationale": "Ledgy documents a public GraphQL API at app.ledgy.com/graphql. It uses OAuth 2.0 client_credentials service-account tokens and has documented operations: auth, companyCaptable, and companyTransactions with paging and delta sync. However, the evidenced operations are read-oriented (retrieving cap table and transaction data), so driving the product's workflows programmatically is not shown, and the reference lacks machine-readable schema artifacts. Missing for 10: documented write operations or mutations for driving workflows, a schema/SDL or OpenAPI download, introspection guidance, a sandbox or test company, a versioning policy, and independent hands-on corroboration.",
     "evidenceIds": [
+      "ledgy-graphql-reference-20261106",
       "ledgy-docs-1",
       "ledgy-docs-18",
-      "ledgy-docs-21",
-      "ledgy-docs-22",
-      "ledgy-docs-30",
       "ledgy-docs-27",
+      "ledgy-docs-21",
+      "ledgy-docs-30",
       "ledgy-probe-2"
     ],
     "support": {
@@ -21,8 +21,12 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "ledgy-docs-1",
-          "quote": "Requests are authenticated with an OAuth 2.0 access token belonging to a service account."
+          "evidenceId": "ledgy-graphql-reference-20261106",
+          "quote": "Ledgy documents a public GraphQL API (\"Ledgy's GraphQL API Reference\", endpoint https://app.ledgy.com/graphql, OAuth 2.0 service-account tokens)"
+        },
+        {
+          "evidenceId": "ledgy-docs-18",
+          "quote": "Exchange the credentials for an access token using the OAuth 2.0 `client_credentials` grant"
         },
         {
           "evidenceId": "ledgy-docs-21",
@@ -31,10 +35,6 @@
         {
           "evidenceId": "ledgy-docs-30",
           "quote": "companyTransactions and companyCaptable can return a company's rows in pages, and only the rows that changed since an earlier request."
-        },
-        {
-          "evidenceId": "ledgy-docs-18",
-          "quote": "Exchange the credentials for an access token using the OAuth 2.0 `client_credentials` grant"
         }
       ]
     },

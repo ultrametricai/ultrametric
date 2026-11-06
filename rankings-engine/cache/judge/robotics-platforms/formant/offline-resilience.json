@@ -1,17 +1,24 @@
 {
-  "hash": "5e24d6e1dae494622368b738b96e451ce71c120a4eb014401396e521f9fea674",
+  "hash": "f432a31195fe33ea5077937ee39abca8d73c76ed6b49be2cd4e835844cdda65c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack never documents the Formant agent buffering telemetry locally during a cloud outage or backfilling it on reconnect. The closest item is a durable cloud-side message queue that delivers requests to the device 'the next time it's online'. That is command delivery to an offline device, not on-device data buffering. Custom data directories, low-bandwidth mode, upload rate limits and adapter auto-restart are adjacent controls and earn no credit.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Formant documents a durable message queue that delivers requests to a device immediately or the next time it comes back online. This is a first-party offline-resilience mechanism that covers part of recovering after connectivity drops. However, it concerns cloud-to-device requests, and nothing in the evidence shows the agent buffering telemetry locally during an outage or backfilling it on reconnect. Missing for 10: explicit local telemetry buffering during cloud outages, documented backfill/upload-on-reconnect behavior, evidence that robots keep operating autonomously while disconnected, and independent or hands-on corroboration of clean recovery.",
+    "evidenceIds": [
+      "formant-docs-52"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an ops lead, my robots keep operating and buffer data locally when cloud connectivity drops, then recover cleanly",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "formant-docs-52",
+          "quote": "A durable message queue is also maintained that can issue requests to your system either immediately or the next time"
+        }
+      ]
     },
     "productId": "formant",
     "storyId": "offline-resilience"

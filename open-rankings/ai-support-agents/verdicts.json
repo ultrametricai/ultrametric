@@ -5602,11 +5602,13 @@
     "productId": "pylon",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe shows Pylon serves an llms.txt at docs.usepylon.com (HTTP 200). It is a structured index linking to markdown versions of the docs pages, such as quickstart.md, which an agent can ingest directly. The docs-md probe hit only a nonexistent path and does not contradict this. Missing for 10: first-party documentation advertising the llms.txt or agent-oriented docs, evidence of a full-content variant (e.g. llms-full.txt), and independent or hands-on corroboration of agent use.",
+    "rationale": "A live probe confirms Pylon serves an llms.txt at docs.usepylon.com (HTTP 200) that indexes markdown pages. Every docs page is also available as a .md mirror, and a plain-JSON OpenAPI spec is published that agents can consume. missing for 10: no evidence of a full-content llms-full.txt or first-party guidance on agent use of the docs; the root docs .md path returns a not-found page.",
     "evidenceIds": [
-      "pylon-probe-1"
+      "pylon-probe-1",
+      "pylon-openapi-spec-20261106",
+      "pylon-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -5616,6 +5618,10 @@
         {
           "evidenceId": "pylon-probe-1",
           "quote": "PROBE llms.txt: HTTP 200 at https://docs.usepylon.com/llms.txt # Pylon"
+        },
+        {
+          "evidenceId": "pylon-openapi-spec-20261106",
+          "quote": "The GitBook docs render every endpoint page from this spec URL and embed the per-endpoint OpenAPI JSON in their markdown mirrors."
         }
       ]
     }
@@ -5624,16 +5630,16 @@
     "productId": "pylon",
     "storyId": "agentic-ai-insights",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Pylon's own docs describe several in-product AI insight features. Ask AI answers questions about your existing data, and AI fields roll up qualitative insights and explain account signals. For suggestions, AI Tasks generates follow-up tasks after calls, and Background and Assist agents prepare investigations and draft replies. Missing for 10: independent or hands-on corroboration of insight quality.",
+    "rationale": "Pylon documents several in-product AI insight features. Ask AI answers questions about your existing data, AI fields roll up qualitative insights into structured fields with explainability, AI Tasks suggest follow-ups after calls, and Background and Assist agents prepare investigations and draft replies. Missing for 10: independent or hands-on corroboration of insight quality, and in-depth documentation on how the insights and suggestions are generated and surfaced beyond short doc snippets.",
     "evidenceIds": [
       "pylon-docs-46",
       "pylon-docs-49",
       "pylon-docs-48",
       "pylon-docs-42",
       "pylon-docs-66",
-      "pylon-docs-41"
+      "pylon-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -5669,7 +5675,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Pylon's own docs describe Background Agents that run asynchronous workflows and prepare investigations on incoming issues before staff arrive. Triggers let users set up complex workflows and automations from templates or from scratch, and AI Reports can be scheduled to run on a recurring basis. Missing for 10: independent or hands-on corroboration, and detailed documentation of how background agents are configured and scheduled (the evidence is short doc snippets).",
+    "rationale": "Pylon documents Background Agents that run asynchronous workflows and prepare investigations on incoming issues before the user arrives. Triggers let users build workflows and automations from templates or from scratch, and AI Reports deliver scheduled summaries, so both event-driven and recurring background automation are covered. Missing for 10: independent or hands-on corroboration, and deeper documentation of how background agents are configured, triggered and governed.",
     "evidenceIds": [
       "pylon-docs-42",
       "pylon-docs-67",
@@ -5706,11 +5712,11 @@
     "storyId": "agentic-builtin-assistant",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Pylon ships several built-in AI assistants that users can hand work to. The Assist Agent can be messaged to investigate issues, draft replies and perform actions. Background Agents run asynchronous work, and issues can be assigned to the AI agent the same way you would assign a teammate. missing for 10: independent or hands-on corroboration that delegated tasks complete reliably.",
+    "confidence": "medium",
+    "rationale": "Pylon ships several built-in AI agents. The Assist Agent is an interactive AI teammate users can message to investigate issues, draft replies and perform actions. Background Agents run asynchronous work, and individual issues can be assigned to the AI agent just as they would be to a teammate. missing for 10: independent or hands-on corroboration of delegation quality and reliability.",
     "evidenceIds": [
-      "pylon-docs-41",
       "pylon-docs-66",
+      "pylon-docs-41",
       "pylon-docs-40",
       "pylon-docs-42",
       "pylon-docs-67",
@@ -5733,10 +5739,6 @@
         {
           "evidenceId": "pylon-docs-42",
           "quote": "Set up agents that do work for you in the background, preparing investigations on incoming issues before you arrive."
-        },
-        {
-          "evidenceId": "pylon-docs-19",
-          "quote": "The issue log allows you to inspect all the issues the AI agent is associated with and inspect the outcomes and steps taken by the AI."
         }
       ]
     }
@@ -5745,14 +5747,15 @@
     "productId": "pylon",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pylon is a hosted SaaS, so headless operation here means driving it without the UI. Its documented REST API lets a programmatic consumer read and act on data, including creating issues, so scripts or pipelines can automate it, and Background Agents run work asynchronously. The evidence shows no CLI, CI integration, or pipeline tooling, and the probe found no published OpenAPI spec. missing for 10: official CLI or CI integration (e.g. GitHub Action), documented CI/headless usage guidance and service-account auth for pipelines, published OpenAPI spec, independent or hands-on corroboration.",
+    "rationale": "Pylon is a SaaS support platform. Headless automation is possible through its own public REST API, which is backed by a published, unauthenticated OpenAPI 3.0.3 spec and supports programmatic issue creation. Registrable webhooks add event-driven automation without the UI. Missing for 10: a CLI or other documented headless runner, CI-pipeline integration guidance or examples, a non-production or sandbox environment (the API runner executes against production only), and independent hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-31",
       "pylon-docs-36",
-      "pylon-docs-67",
-      "pylon-probe-3"
+      "pylon-openapi-spec-20261106",
+      "pylon-docs-63",
+      "pylon-api-test-it-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5768,8 +5771,12 @@
           "quote": "Creating issues programmatically"
         },
         {
-          "evidenceId": "pylon-docs-67",
-          "quote": "Background Agent runs asynchronous workflows so work can happen in the background."
+          "evidenceId": "pylon-openapi-spec-20261106",
+          "quote": "Pylon publishes a complete OpenAPI 3.0.3 document at its API origin"
+        },
+        {
+          "evidenceId": "pylon-docs-63",
+          "quote": "Webhooks are user-defined HTTP callbacks that are triggered by specific events within Pylon."
         }
       ]
     }
@@ -5780,7 +5787,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pylon's Connectors give its agents access to external tools. The connectors doc implies MCP servers are the primary way to attach them, since a Custom API tool is offered only as a fallback 'if a system does not provide an MCP server'. However, MCP client support is only implied, not explicitly documented; the Pylon MCP Server is server-side and is not credited here. Missing for 10: explicit documentation of adding arbitrary or remote MCP servers, supported transports and auth, tool-selection and permission controls, and independent or hands-on corroboration.",
+    "rationale": "Pylon's Connectors give its agents access to external tools. The connectors doc frames Custom API tools as the fallback for when a system does not provide an MCP server, which implies MCP servers can be plugged in as connectors. However, the evidence never explicitly describes adding an MCP server, its configuration, transport or auth, or which agents can use it. The Pylon MCP Server evidence is server-side and is not credited here. Missing for 10: explicit documentation of adding arbitrary or custom MCP servers, configuration and auth details, the supported list or scope of MCP connectors, and hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-21",
       "pylon-docs-56"
@@ -5791,12 +5798,12 @@
       "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
       "citations": [
         {
-          "evidenceId": "pylon-docs-56",
-          "quote": "Connectors give Pylon agents access to external tools so they can search for context, retrieve information, and take action outside Pylon."
-        },
-        {
           "evidenceId": "pylon-docs-21",
           "quote": "If a system does not provide an MCP server, an administrator can define a Custom API tool that agents can use to hit internal or third party API endpoints."
+        },
+        {
+          "evidenceId": "pylon-docs-56",
+          "quote": "Connectors give Pylon agents access to external tools so they can search for context, retrieve information, and take action outside Pylon."
         }
       ]
     }
@@ -5805,14 +5812,14 @@
     "productId": "pylon",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Pylon documents an official Pylon MCP Server that exposes its data to MCP-capable AI tools such as Claude, ChatGPT and Cursor. Those tools authenticate via OAuth and can read and update issues, accounts and contacts, and the bring-your-own-agent docs name Pylon MCP as a way to connect agents. A probe confirms the dedicated MCP docs page exists. Missing for 10: independent or hands-on corroboration, a detailed tool list and setup steps beyond the summary statements.",
+    "rationale": "Pylon is a SaaS support platform, not a coding agent, so the MCP-server axis applies. Its first-party docs describe an official Pylon MCP Server that exposes issues, accounts and contacts to MCP clients like Claude, ChatGPT and Cursor. Access uses OAuth and permits both reads and updates, and a probe confirms the dedicated MCP docs page. missing for 10: independent or hands-on corroboration of the MCP server working in practice.",
     "evidenceIds": [
       "pylon-docs-37",
       "pylon-docs-34",
-      "pylon-docs-16",
-      "pylon-probe-4"
+      "pylon-probe-4",
+      "pylon-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -5828,6 +5835,10 @@
           "quote": "AI tools authenticate with your Pylon account via OAuth and can read and update issues, accounts, and contacts within the data you can see in Pylon."
         },
         {
+          "evidenceId": "pylon-probe-4",
+          "quote": "official MCP server documented at https://docs.usepylon.com/pylon-docs/integrations/pylon-mcp"
+        },
+        {
           "evidenceId": "pylon-docs-16",
           "quote": "Using a combination of Webhooks, API, and/or Pylon MCP, you can connect your agent to ticketing workflows in Pylon."
         }
@@ -5838,15 +5849,16 @@
     "productId": "pylon",
     "storyId": "agentic-nl-commands",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Pylon's own Assist Agent can be messaged to investigate issues, draft replies and perform actions. Ask AI answers natural-language questions about workspace data, and the Slack Agent takes quick actions from Slack, so users can operate the product conversationally. Missing for 10: documentation of which actions natural-language commands can execute and any limits on them, plus independent or hands-on corroboration.",
+    "rationale": "Pylon documents several first-party natural-language interfaces. The Assist Agent can be messaged to investigate issues, draft replies and perform actions. Ask AI is a chat that answers questions about your data, and the Slack Agent takes quick actions from Slack; external AI tools can also read and update issues through the official MCP server. missing for 10: independent or hands-on corroboration, an enumerated scope of which actions can be performed via natural-language commands.",
     "evidenceIds": [
       "pylon-docs-41",
       "pylon-docs-66",
       "pylon-docs-46",
       "pylon-docs-43",
-      "pylon-docs-76"
+      "pylon-docs-76",
+      "pylon-docs-34"
     ],
     "support": {
       "relation": "direct",
@@ -5855,7 +5867,7 @@
       "citations": [
         {
           "evidenceId": "pylon-docs-41",
-          "quote": "Message the Assist Agent to:\n\n* Investigate issues more deeply\n* Draft replies\n* Perform actions"
+          "quote": "Message the Assist Agent to:"
         },
         {
           "evidenceId": "pylon-docs-66",
@@ -5866,8 +5878,8 @@
           "quote": "Ask AI is a general purpose AI chat that can help you and your team answers all the questions you might have about your existing data."
         },
         {
-          "evidenceId": "pylon-docs-76",
-          "quote": "Answer product and customer questions and take action directly from Slack."
+          "evidenceId": "pylon-docs-43",
+          "quote": "Slack Agent brings Pylon's agentic capabilities into Slack so internal teams can answer product and customer questions and take quick actions without leaving Slack."
         }
       ]
     }
@@ -5878,7 +5890,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon is a SaaS support platform, so an official CLI is a fair question to ask, but nothing in the evidence pack documents one. The pack covers a REST API, webhooks, an official MCP server and mobile/JS SDKs; these are adjacent developer surfaces, not a CLI, and earn no credit for this story.",
+    "rationale": "Pylon is a SaaS support platform, so an official CLI is a fair question to ask of it. The evidence pack documents a REST API, an OpenAPI spec, webhooks, an MCP server and an in-docs \"Test it\" runner, but never mentions a Pylon command-line tool. These are developer building blocks and adjacent interfaces, not a CLI, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5891,15 +5903,16 @@
     "productId": "pylon",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "Pylon documents a public developer API for programmatically accessing and acting on its data, including creating issues. The changelog shows new endpoints such as GET /task-statuses, and the bring-your-own-agent docs explicitly point agents at the API to drive ticketing workflows. missing for 10: a published machine-readable OpenAPI spec (all probed paths returned 404), evidence of endpoint reference depth and authentication details, independent hands-on corroboration.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Pylon documents a public API for programmatically accessing and acting on its data, including creating issues. It publishes a complete OpenAPI 3.0.3 spec with 119 paths at api.usepylon.com, renders per-endpoint reference pages with a \"Test it\" runner, and its changelog shows new endpoints such as GET /task-statuses. The probe 404s for OpenAPI files on the docs domain don't contradict this, because the spec is hosted on the API origin. Missing for 10: independent or hands-on corroboration of real-world API usage beyond first-party docs.",
     "evidenceIds": [
       "pylon-docs-31",
       "pylon-docs-36",
       "pylon-docs-4",
-      "pylon-docs-16",
-      "pylon-probe-3"
+      "pylon-openapi-spec-20261106",
+      "pylon-api-test-it-20261106",
+      "pylon-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -5915,12 +5928,12 @@
           "quote": "Creating issues programmatically"
         },
         {
-          "evidenceId": "pylon-docs-4",
-          "quote": "Added a GET /task-statuses API endpoint for enumerating configured task statuses"
+          "evidenceId": "pylon-openapi-spec-20261106",
+          "quote": "Pylon publishes a complete OpenAPI 3.0.3 document at its API origin (info title \"Pylon API.\", 119 paths, US and EU server entries), downloadable as plain JSON with no auth wall."
         },
         {
-          "evidenceId": "pylon-docs-16",
-          "quote": "Using a combination of Webhooks, API, and/or Pylon MCP, you can connect your agent to ticketing workflows in Pylon."
+          "evidenceId": "pylon-docs-4",
+          "quote": "Added a GET /task-statuses API endpoint for enumerating configured task statuses"
         }
       ]
     }
@@ -5931,7 +5944,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon has a public API and an official MCP server. However, the only access-control evidence is that MCP clients authenticate via OAuth and inherit the user's full visible data scope. Nothing documents issuing API keys or tokens with restricted scopes, read-only limits, or per-agent least-privilege permissions, so the OAuth delegation is an adjacent feature, not the story's capability.",
+    "rationale": "The evidence shows Pylon has an API used with a bearer token and an MCP server that authenticates via OAuth and acts \"within the data you can see in Pylon.\" That OAuth access inherits the signed-in user's visibility; it is not a way to issue a separate scoped or least-privilege credential for an agent. Nothing in the pack documents scoped API keys, per-token permissions, or agent-specific credentials, so the related capabilities are adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5946,7 +5959,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Pylon documents official mobile SDKs for iOS, Android and React Native, plus a JavaScript API for the chat widget, so first-party SDKs do exist. They are scoped to embedding and customizing the chat widget, not to building against Pylon's data or agent platform. The REST API, webhooks and MCP server are separate interfaces, not SDKs, and earn no credit here. Missing for 10: general-purpose official API client SDKs (e.g. Python/TypeScript) for issues, accounts and agents; a published OpenAPI spec for SDK generation (probe found none); independent or hands-on corroboration of SDK quality.",
+    "rationale": "Pylon documents official mobile SDKs for iOS, Android and React Native, plus a JavaScript API for its chat widget, so official SDKs exist. Their scope is limited to embedding and customizing the chat widget. Its general platform API is documented only as a REST/OpenAPI surface, with no official client SDK in evidence. The published OpenAPI spec is a building block for generating clients, not an SDK itself. Missing for 10: official server-side/language client SDKs (e.g., Python/TypeScript) for the core Pylon API, SDK reference docs beyond chat-widget embedding, independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-38",
       "pylon-docs-69",
@@ -5958,12 +5971,12 @@
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": [
         {
-          "evidenceId": "pylon-docs-69",
-          "quote": "Pylon's mobile SDKs allow you to embed the chat widget directly in your mobile app, providing users with in-app support without leaving your application."
-        },
-        {
           "evidenceId": "pylon-docs-38",
           "quote": "Embed Pylon's chat widget in your iOS, Android, or React Native application."
+        },
+        {
+          "evidenceId": "pylon-docs-69",
+          "quote": "Pylon's mobile SDKs allow you to embed the chat widget directly in your mobile app, providing users with in-app support without leaving your application."
         },
         {
           "evidenceId": "pylon-docs-28",
@@ -5978,7 +5991,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Pylon has a dedicated first-party webhooks page describing user-defined HTTP callbacks triggered by specific events within Pylon. Its bring-your-own-agent docs explicitly name webhooks as a way to connect an agent to ticketing workflows, so the core story is delivered. Missing for 10: an enumerated event catalog and payload schemas, delivery details (signing/verification, retries), and independent or hands-on corroboration.",
+    "rationale": "Pylon's developer docs describe first-party webhooks as user-defined HTTP callbacks triggered by specific events in Pylon. The bring-your-own-agent docs also name webhooks as a way to connect agents to ticketing workflows, so programmatic event subscription is documented. Missing for 10: the list of subscribable event types, payload schema, signing/verification and retry details, how webhooks are registered, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-63",
       "pylon-docs-32",
@@ -6007,31 +6020,61 @@
   {
     "productId": "pylon",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Pylon documents a programmatic API (developer/api.md, a changelog entry adding GET /task-statuses), but nothing in the evidence shows an interactive API reference or runnable examples. The OpenAPI probe also returned 404 on every candidate path. An existing API does not by itself deliver an interactive, runnable reference, so the axis applies but is unevidenced.",
-    "evidenceIds": [],
+    "rationale": "Pylon's API reference renders GitBook's in-page \"Test it\" runner on each endpoint, driven by a complete, publicly downloadable OpenAPI 3.0.3 spec, so users can explore the reference and run requests from it. The runner needs the caller's own bearer token, and the spec's only servers are the US/EU production APIs, so every example call hits live production data with no sandbox or mock environment. missing for 10: sandbox or mock server for safe runnable examples, try-it access without a production token, independent or hands-on corroboration of the runner experience.",
+    "evidenceIds": [
+      "pylon-api-test-it-20261106",
+      "pylon-openapi-spec-20261106",
+      "pylon-docs-31"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pylon-api-test-it-20261106",
+          "quote": "The API reference renders GitBook's in-page \"Test it\" runner per endpoint, driven by the published spec."
+        },
+        {
+          "evidenceId": "pylon-api-test-it-20261106",
+          "quote": "The runner requires the caller's own bearer token and the spec's only servers are the US/EU production APIs, so requests execute against production."
+        },
+        {
+          "evidenceId": "pylon-openapi-spec-20261106",
+          "quote": "The GitBook docs render every endpoint page from this spec URL and embed the per-endpoint OpenAPI JSON in their markdown mirrors."
+        }
+      ]
     }
   },
   {
     "productId": "pylon",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Pylon documents a REST API and an MCP server, but the evidence never mentions a downloadable OpenAPI or equivalent spec. A probe found every candidate OpenAPI/Swagger path returning 404. The llms.txt index and MCP server are adjacent features, not a machine-readable API spec, so they earn no credit.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Pylon publishes a complete OpenAPI 3.0.3 document at its API origin (api.usepylon.com/openapi.json). It covers 119 paths and is downloadable as plain JSON with no auth wall, and the GitBook API reference is rendered from it. The probe's 404s were only on docs.usepylon.com candidate paths, a different origin, so they do not contradict this. Missing for 10: independent hands-on confirmation of the download at the api.usepylon.com origin.",
+    "evidenceIds": [
+      "pylon-openapi-spec-20261106",
+      "pylon-api-test-it-20261106",
+      "pylon-docs-31"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pylon-openapi-spec-20261106",
+          "quote": "Pylon publishes a complete OpenAPI 3.0.3 document at its API origin (info title \"Pylon API.\", 119 paths, US and EU server entries), downloadable as plain JSON with no auth wall."
+        },
+        {
+          "evidenceId": "pylon-api-test-it-20261106",
+          "quote": "The API reference renders GitBook's in-page \"Test it\" runner per endpoint, driven by the published spec."
+        }
+      ]
     }
   },
   {
@@ -6040,13 +6083,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no sandbox or test environment that isolates work from production data. The closest item is the Support Agent \"Simulate an interaction\" test feature, but that is a dry-run of agent responses, not an isolated sandbox. Assigning the agent to selected issues is an adjacent scoping control, not data isolation.",
-    "evidenceIds": [],
+    "rationale": "Pylon documents no sandbox or isolated test environment separate from production data. The AI-agent 'simulate an interaction' feature is a preview/dry-run of agent behavior, not sandbox data isolation. Assigning agents to selected issues is only a scoping control. The API's 'Test it' runner explicitly executes against the US/EU production servers, as those are the spec's only servers.",
+    "evidenceIds": [
+      "pylon-docs-17",
+      "pylon-api-test-it-20261106"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pylon-docs-17",
+          "quote": "Simulate an interaction with the AI and see how it handles different questions."
+        }
+      ]
     }
   },
   {
@@ -6055,7 +6106,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon documents a public API and a changelog that lists new endpoints such as GET /task-statuses. Nothing in the evidence describes API versioning, version pinning, or a deprecation or sunset policy. Probes found no OpenAPI spec, so the core of this story is unevidenced.",
+    "rationale": "Pylon documents a public API, a published OpenAPI 3.0.3 spec and changelog entries for new endpoints. None of the evidence mentions API versioning (version headers, dated or numbered versions) or a documented deprecation or sunset policy, so this applicable axis is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6070,7 +6121,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a support and ticketing platform, but no evidence documents a bulk-edit or multi-select action across many issues, accounts, or tasks. The API, the MCP server, and triggers are only building blocks or adjacent automation, not a documented bulk-operation capability.",
+    "rationale": "Bulk operations are a fair axis for a support and customer-work platform like Pylon, but the evidence pack never documents selecting many issues, accounts, or tasks and acting on them at once. The available evidence (a general API, per-event triggers, an MCP server that can update issues, single-issue agent assignment) consists of developer building blocks or adjacent automation, not a bulk-operation capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6082,17 +6133,17 @@
   {
     "productId": "pylon",
     "storyId": "automation-rules-engine",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pylon documents a first-party Triggers feature for setting up workflows and automations that execute business processes, created from premade templates or from scratch. This is a product-native rules-and-actions engine, but the evidence is thin on detail. Missing for 10: documented list of trigger events, conditions and available actions, and independent or hands-on corroboration.",
+    "rationale": "Pylon documents a first-party Triggers feature for setting up 'complex workflows and automations', and users can create triggers from premade templates or from scratch, so rule-based automation exists in the product itself. The evidence does not show which events can fire a trigger, what conditions can be set, or which actions can run, so complete coverage of event-driven rules is unproven. Webhooks are outbound event callbacks, an adjacent feature, so they are not credited here. missing for 10: documented catalog of trigger events, condition/rule logic details, list of executable actions (including AI-agent actions), independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-30",
       "pylon-docs-62"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
@@ -6112,10 +6163,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Pylon's own AI Reports feature lets users schedule automated summaries delivered to Slack, so the product does ship some user-configurable recurring scheduling. That scheduling is limited to one job type. Triggers are documented as workflows and automations but not as time-based, and the daily Salesforce scan is a fixed built-in sync, not something the user schedules. Missing for 10: general cron or time-based scheduling of arbitrary workflows or agent runs, evidence that triggers support recurring schedules, configurable frequency details, independent corroboration.",
+    "rationale": "Pylon's own AI Reports feature lets users schedule automated summaries delivered to Slack. That is a genuine user-configurable recurring schedule, but it is limited to report generation. Triggers and Background Agents are documented as event-driven or asynchronous workflows, not time-based schedules, and the daily Salesforce sync is a built-in system behavior rather than a user-defined recurring job. Missing for 10: a general cron-style schedule for arbitrary workflows or agent jobs, documented schedule configuration (intervals, time zones), and independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-47",
-      "pylon-docs-30"
+      "pylon-docs-30",
+      "pylon-docs-67"
     ],
     "support": {
       "relation": "direct",
@@ -6135,7 +6187,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon documents triggers and workflow automations, created from templates or from scratch. Nothing in the evidence shows version history, change review, or rollback for those automations or for agent runbooks. Agent simulation and the issue log are adjacent features: they cover testing and monitoring outcomes, not versioning or reverting automation configurations.",
+    "rationale": "Pylon documents automations (triggers with templates, pylon-docs-30/62) and AI agents with runbooks and skills. It also offers adjacent features: agent simulation testing (pylon-docs-17) and an issue log for inspecting agent outcomes (pylon-docs-19). Nothing in the evidence shows version history, change review, or rollback for triggers, workflows, runbooks, or agent configurations, so the story is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6150,9 +6202,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pylon's Support Agent build docs mention a default persona whose settings can be tuned to get the desired behavior, which is a product-native lever for agent voice. They never explicitly describe tone or brand-voice controls. Runbooks and skills cover scenario and workflow instructions rather than voice, and chat-widget branding is visual only, so none of these add credit. Missing for 10: explicit tone/brand-voice configuration documentation, evidence of consistency across topics, multilingual voice consistency, independent or hands-on corroboration.",
+    "rationale": "Pylon's Support Agent docs say it ships a default persona whose settings can be tuned to get the desired behavior, which is a first-party lever for agent voice. Natural-language runbooks add further steering. However, nothing explicitly says tone or brand voice is configurable, or that it stays consistent across topics and languages. Missing for 10: explicit tone/brand-voice settings documentation, evidence of consistency across topics, multilingual voice consistency, hands-on or independent corroboration.",
     "evidenceIds": [
-      "pylon-docs-57"
+      "pylon-docs-57",
+      "pylon-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -6162,6 +6215,10 @@
         {
           "evidenceId": "pylon-docs-57",
           "quote": "We recommend starting with the default persona, then tuning the settings in order to get the behavior you want."
+        },
+        {
+          "evidenceId": "pylon-docs-15",
+          "quote": "Write instructions in natural language to help your AI Agent handle specific scenarios."
         }
       ]
     }
@@ -6172,7 +6229,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the pack documents handoff or escalation rules for the Support Agent, whether by topic, sentiment, customer tier, or explicit customer request, and nothing shows the agent reliably obeys them. The closest items are adjacent rather than this capability: natural-language runbooks for unspecified scenarios, control over which issues the agent is assigned to, and general workflow triggers. These don't establish configurable handoff conditions, so the verdict is none.",
+    "rationale": "The evidence pack never documents a handoff or escalation capability for the Support Agent. Nothing shows configurable handoff conditions by topic, sentiment, customer tier, or explicit customer request, nor any reliability guarantee. Natural-language runbooks, issue assignment to the agent, and generic triggers are related controls but do not establish the agent handing off to humans under configured rules.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6187,7 +6244,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon documents an issue log for inspecting the AI agent's outcomes and steps, plus a simulation tool for testing questions. Neither describes the platform itself detecting knowledge gaps or conflicting content. Manually reviewing logs or simulations is a user-side workaround, so it earns no credit and the verdict stays at none.",
+    "rationale": "Pylon's docs cover an issue log for inspecting AI agent outcomes, simulation testing, and QA rubrics, but nothing shows the platform surfacing knowledge gaps or flagging conflicting knowledge content behind agent misses. Manually reviewing logs or rubric results is an adjacent workflow, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6202,7 +6259,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pylon's Support Agent works inside the same tracked issues that humans handle. It can 'gather internal context for your team', and the issue log shows the steps the AI took, which implies a human taking over has the conversation and the AI's collected context. No document describes an explicit escalation handoff that packages a summary and collected details. Missing for 10: documented agent-to-human escalation flow, an auto-generated handoff summary at escalation, structured collected-details transfer, evidence the customer is not re-asked, and independent or hands-on corroboration.",
+    "rationale": "Pylon's Support Agent is documented to work on the same tracked issues humans handle, and to \"gather internal context for your team\". The issue log also lets humans inspect the steps the AI took, so a human picking up the issue plausibly sees the conversation and gathered context. None of this is documented as an explicit escalation handoff. Missing for 10: a documented agent-to-human escalation flow, an auto-generated handoff summary at escalation (the only AI summaries cited are for the Salesforce sync), and structured collected-details capture so the customer never repeats themselves, plus any hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-13",
       "pylon-docs-19",
@@ -6235,7 +6292,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pylon's Support Agent can be assigned customer issues, deflect questions using content, and take actions, and the issue log lets teams inspect the outcomes the agent produced. The homepage claims agents help with 'resolving' customer work. However, the docs frame the agent's core value as deflection, and nothing shows a resolution metric distinct from deflection or evidence of end-to-end resolution rates. missing for 10: documented end-to-end autonomous resolution, a resolution metric distinguished from deflection or bounces, reported resolution rates, independent or hands-on corroboration.",
+    "rationale": "Pylon documents its own Support Agent, which can be assigned to customer issues, answer from content, take action, and have its outcomes inspected in an issue log. The homepage also claims agents help with 'resolving' customer work. However, the docs frame the agent's customer-facing role as 'deflect[ing]' questions, and nothing shows end-to-end autonomous resolution or a resolution metric distinct from deflection. Missing for 10: documented autonomous end-to-end resolution, a resolution-rate metric separate from deflection or bounces, evidence of what share of conversations is resolved, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-13",
       "pylon-docs-1",
@@ -6258,6 +6315,10 @@
         {
           "evidenceId": "pylon-docs-19",
           "quote": "The issue log allows you to inspect all the issues the AI agent is associated with and inspect the outcomes and steps taken by the AI."
+        },
+        {
+          "evidenceId": "pylon-docs-40",
+          "quote": "You can also assign an individual issue to your AI agent, the same way you might normally assign an issue to a team member."
         }
       ]
     }
@@ -6266,9 +6327,9 @@
     "productId": "pylon",
     "storyId": "grounded-cited-answers",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Pylon's docs show its AI is grounded in the customer's own content. Support Agents deflect questions using content, training data can be connected to power all AI features, and the knowledge base is integrated with AI. Nothing in the evidence shows answers citing which article or source they drew from. missing for 10: documented source/article citations shown alongside answers, guarantees that every answer is grounded only in your content, independent or hands-on corroboration.",
+    "rationale": "Pylon documents AI grounded in the customer's own content: Support Agents deflect questions using content, training data can be connected to power its AI features, and the knowledge base is \"supercharged with AI.\" Nothing in the pack shows answers citing or linking the article or source they drew from, and nothing says every answer is restricted to the user's content. missing for 10: evidence that answers display source/article citations, evidence that answers are constrained to the user's own content, independent or hands-on corroboration of grounding quality.",
     "evidenceIds": [
       "pylon-docs-13",
       "pylon-docs-59",
@@ -6306,10 +6367,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon's Support Agent is said to deflect questions \"using content,\" and admins can steer it with natural-language runbooks, persona tuning, simulation testing and QA rubrics. None of the evidence documents a guardrail that stops invented policies, prices or promises, or that makes off-knowledge questions get a safe decline. These are adjacent controls (instructions, post-hoc rubric checks, issue assignment), not the guardrail capability itself.",
+    "rationale": "Pylon ships customer-facing AI Support Agents, so a guardrails story is a fair question for it. However, no evidence documents a guardrail that limits answers to the knowledge base or returns a safe decline for off-knowledge questions. The nearby material is all adjacent: deflecting questions \"using content\", natural-language runbooks a user could write guardrail instructions into, persona tuning, simulation testing, post-hoc QA rubrics, and controlling which issues the agent touches. None of these is a documented anti-hallucination or decline behavior.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, guardrails stop the agent from inventing policies, prices, or promises — off-knowledge questions get a safe decline, not a guess",
       "citations": []
@@ -6321,19 +6382,23 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Pylon's own agents clearly run standalone inside Pylon's helpdesk, where they can be assigned to issues. The only documented Salesforce link is a daily one-way push of AI conversation summaries to Salesforce accounts, plus account mapping. Nothing shows the agent embedding in Zendesk, Salesforce Service, or Intercom, or syncing tickets two-way with them. Missing for 10: running inside Zendesk/Intercom/Salesforce helpdesks, bidirectional ticket and context sync with external helpdesks, independent corroboration.",
+    "rationale": "Pylon documents its agents running standalone inside Pylon's own ticketing: issues are tracked across channels and assigned to the AI agent. Its Salesforce integration pushes AI conversation summaries one way onto Salesforce Accounts and maps accounts between the systems, but it does not sync tickets. Nothing in the evidence shows the agent running inside Zendesk, Salesforce Service Cloud or Intercom, or two-way ticket sync with any external helpdesk. missing for 10: agent embedded in Zendesk/Intercom/Salesforce helpdesks, bidirectional ticket sync with external helpdesks, two-way context sync (Salesforce sync is one-way summaries), independent corroboration",
     "evidenceIds": [
-      "pylon-docs-13",
+      "pylon-docs-70",
       "pylon-docs-40",
       "pylon-docs-33",
-      "pylon-docs-55",
-      "pylon-docs-70"
+      "pylon-docs-64",
+      "pylon-docs-55"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As a developer, the agent runs inside my existing helpdesk — Zendesk, Salesforce, Intercom — or standalone, syncing tickets and context both ways",
       "citations": [
+        {
+          "evidenceId": "pylon-docs-70",
+          "quote": "Track customer issues across any channel (Slack Connect, Email, Microsoft Teams, Chat Widget, Forms, ...) and orchestrate agents to investigate and act on your customer issues."
+        },
         {
           "evidenceId": "pylon-docs-40",
           "quote": "You can also assign an individual issue to your AI agent, the same way you might normally assign an issue to a team member."
@@ -6343,8 +6408,8 @@
           "quote": "For every conversation, we use AI to summarize the details, and sync the summary to the relevant Account in Salesforce."
         },
         {
-          "evidenceId": "pylon-docs-55",
-          "quote": "The account mapper now lets you link a CRM account to multiple Pylon accounts"
+          "evidenceId": "pylon-docs-64",
+          "quote": "Accounts are mapped using domain and name matching between Salesforce and Pylon by default."
         }
       ]
     }
@@ -6355,7 +6420,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon documents connecting external knowledge sources as training data and hosting a knowledge base, but nothing in the evidence says those sources re-sync on a schedule or when they change. The product-data sync control and the daily Salesforce summary sync cover different data, and connectors provide live tool access rather than knowledge re-syncing, so none of them count for this story.",
+    "rationale": "Pylon documents connecting external knowledge sources as training data, but nothing in the evidence says those sources re-sync on a schedule or when they change. The evidence that does mention syncing doesn't fit this story. The daily Salesforce scan pushes conversation summaries out to the CRM rather than refreshing agent knowledge. The product-data sync changelog entry concerns account data, not knowledge sources.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6370,12 +6435,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pylon documents connecting external knowledge sources as training data for its AI features, and Support Agents use content to deflect questions. This is a first-party ingestion capability, but the evidence does not say which source types are supported or how ingestion and syncing work. Missing for 10: explicit support for ingesting external help centers and docs sites, past tickets as a knowledge source, internal wiki connectors (e.g. Notion/Confluence), confirmation that ingestion needs no manual re-authoring or that content syncs automatically, and independent corroboration.",
+    "rationale": "Pylon documents a training-data feature for connecting external knowledge sources for its AI to consume, plus a native knowledge base for articles and internal runbooks that Support Agents use to deflect questions. However, the evidence never names specific source types or explains how ingestion syncs content. Missing for 10: explicit ingestion of past tickets as knowledge, named help-center/docs/wiki connectors (e.g., Confluence, Notion), evidence of automatic sync without re-authoring, independent or hands-on corroboration.",
     "evidenceIds": [
-      "pylon-docs-22",
       "pylon-docs-59",
+      "pylon-docs-22",
+      "pylon-docs-60",
       "pylon-docs-13",
-      "pylon-docs-60"
+      "pylon-docs-56"
     ],
     "support": {
       "relation": "direct",
@@ -6383,12 +6449,16 @@
       "subject": "As a support ops lead, the agent ingests my help center, docs, past tickets, and internal wikis as knowledge sources without manual re-authoring",
       "citations": [
         {
+          "evidenceId": "pylon-docs-59",
+          "quote": "Supercharge all of Pylon's AI features by connecting training data for the AI to consume."
+        },
+        {
           "evidenceId": "pylon-docs-22",
           "quote": "Make them even more powerful by connecting any external sources of knowledge you have!"
         },
         {
-          "evidenceId": "pylon-docs-59",
-          "quote": "Supercharge all of Pylon's AI features by connecting training data for the AI to consume."
+          "evidenceId": "pylon-docs-60",
+          "quote": "A dedicated place to host your support content, including question-and-answer style articles, internal runbooks, and more -- all supercharged with AI and tightly integrated with the Pylon platform."
         },
         {
           "evidenceId": "pylon-docs-13",
@@ -6403,12 +6473,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pylon documents Connectors and administrator-defined Custom API tools that let its agents call internal or third-party API endpoints and take action outside Pylon, which covers the core of the agent acting through your APIs. The evidence never mentions refunds, order changes or subscription updates, and says nothing about per-action auth scoping. The MCP OAuth evidence covers outside AI tools reading Pylon data, not Pylon's agent calling your APIs, so it does not apply here. Missing for 10: documented per-action scoped auth or credential configuration for Custom API tools, concrete examples of transactional actions (refunds/orders/subscriptions), approval or guardrail controls on actions, and independent or hands-on corroboration.",
+    "rationale": "Pylon's Connectors docs say an administrator can define Custom API tools that its agents use to hit internal or third-party API endpoints and take action outside Pylon. That is the product's own mechanism for agents to act through your APIs. Nothing documents per-action scoped auth, and nothing shows concrete refund, order or subscription flows. missing for 10: per-action scoped credentials/permissions for custom API tools, documented examples of transactional actions (refunds, order changes, subscription updates), approval/guardrail controls on agent actions, independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-21",
       "pylon-docs-56",
-      "pylon-docs-13",
-      "pylon-docs-41"
+      "pylon-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -6417,7 +6486,7 @@
       "citations": [
         {
           "evidenceId": "pylon-docs-21",
-          "quote": "an administrator can define a Custom API tool that agents can use to hit internal or third party API endpoints."
+          "quote": "an administrator can define a Custom API tool that agents can use to hit internal or third party API endpoints"
         },
         {
           "evidenceId": "pylon-docs-56",
@@ -6436,12 +6505,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pylon's Support Agent can be given runbooks, described as manuals for executing complex procedures. The issue log records the steps the AI takes, which points to multi-step handling rather than one canned answer. Nothing in the evidence shows the agent asking customers clarifying questions, and multi-step troubleshooting is only implied through runbook configuration. Missing for 10: documented clarifying-question behavior, explicit multi-turn troubleshooting flow docs, independent or hands-on corroboration.",
+    "rationale": "Pylon's Support Agent can be given runbooks, described as 'manuals to execute complex procedures', and the issue log records the 'steps taken by the AI'. That supports multi-step, scenario-specific handling rather than a single canned reply. Nothing in the evidence says the agent asks customers clarifying questions, and multi-step troubleshooting depth is only claimed in docs. missing for 10: documented clarifying-question behavior, explicit multi-turn troubleshooting docs, independent or hands-on corroboration of resolution quality.",
     "evidenceIds": [
       "pylon-docs-73",
       "pylon-docs-15",
+      "pylon-docs-13",
       "pylon-docs-19",
-      "pylon-docs-13"
+      "pylon-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -6459,6 +6529,10 @@
         {
           "evidenceId": "pylon-docs-19",
           "quote": "inspect the outcomes and steps taken by the AI"
+        },
+        {
+          "evidenceId": "pylon-docs-13",
+          "quote": "Support Agents can deflect customer questions using content, gather internal context for your team, and take action."
         }
       ]
     }
@@ -6469,7 +6543,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon documents an AI Support Agent that deflects customer questions using knowledge-base content, but nothing in the evidence mentions multilingual replies, language detection, or translating answers from an English-only knowledge base. Multilingual support is a fair question for a support platform with an AI agent, so the verdict is none rather than na.",
+    "rationale": "Pylon documents a Support Agent that deflects questions using knowledge-base content, but nothing in the evidence mentions multilingual responses, language detection, or answering in other languages from English-only content. Multilingual support is a fair axis for a support platform, so the lack of evidence makes this none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6484,7 +6558,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pylon documents omnichannel issue tracking across Slack Connect, Email, Microsoft Teams, the Chat Widget and Forms, plus in-app support via mobile SDKs. Its Support Agent can be assigned to issues, which implies one agent working across those channels. However, the evidence never mentions WhatsApp or social channels, and never explicitly states that one agent answers customers natively on every channel. Missing for 10: WhatsApp support, social media channel support, explicit documentation that a single agent responds across all channels, independent corroboration.",
+    "rationale": "Pylon documents an omnichannel issue inbox covering Slack Connect, email, Microsoft Teams, the chat widget and forms, plus in-app chat through mobile SDKs. Its Support Agent can be assigned to issues, but the evidence never explicitly ties that one agent to every channel, and WhatsApp and social channels are not mentioned anywhere. Missing for 10: WhatsApp support, social-media channel support, explicit documentation that a single AI agent answers across all channels, independent corroboration.",
     "evidenceIds": [
       "pylon-docs-70",
       "pylon-docs-24",
@@ -6492,7 +6566,8 @@
       "pylon-docs-26",
       "pylon-docs-52",
       "pylon-docs-69",
-      "pylon-docs-40"
+      "pylon-docs-40",
+      "pylon-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -6528,7 +6603,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pylon documents AI Issue QA rubrics that apply at the agent and issue level, so AI agent conversations can be scored against guidelines. It also has an issue log for inspecting the AI agent's outcomes and steps, on a page framed as 'monitor and iterate'. That covers scoring and review, but the docs show neither ongoing sampling, nor automatic flagging of failures, nor a documented loop that turns QA findings into agent fixes such as runbook updates. Missing for 10: ongoing/scheduled sampling of AI conversations, explicit failure flagging, a documented review-to-fix feedback loop into the agent, independent or hands-on corroboration.",
+    "rationale": "Pylon documents AI Issue QA rubrics that can be applied to issues and enforced \"on the agent and issue level\". Its Monitor & Iterate issue log lets reviewers inspect the outcomes and steps the AI agent took, and runbooks and skills give a place to put fixes. However, the docs never show that rubric scoring targets AI-agent conversations specifically, or that it runs as ongoing sampled scoring. Missing for 10: explicit scoring of AI-agent conversations with sampling, automatic flagging of failed conversations, a documented review loop that turns QA findings into agent fixes, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-74",
       "pylon-docs-45",
@@ -6551,6 +6626,10 @@
         {
           "evidenceId": "pylon-docs-19",
           "quote": "The issue log allows you to inspect all the issues the AI agent is associated with and inspect the outcomes and steps taken by the AI."
+        },
+        {
+          "evidenceId": "pylon-docs-15",
+          "quote": "Write instructions in natural language to help your AI Agent handle specific scenarios."
         }
       ]
     }
@@ -6559,15 +6638,16 @@
     "productId": "pylon",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pylon documents a first-party API to \"programmatically access and take action on data,\" including creating issues, plus an incrementally growing endpoint set (e.g. a new GET /task-statuses) and an MCP server that reads and updates issues, accounts and contacts. Nothing documents that the API covers everything the UI can do, and no OpenAPI spec was found to verify coverage. Missing for 10: an explicit API/UI parity claim, a published endpoint reference or OpenAPI spec showing coverage of UI features (triggers, knowledge base, analytics, agent configuration, custom fields), and independent corroboration.",
+    "rationale": "Pylon documents a first-party API to 'programmatically access and take action on data' and publishes a 119-path OpenAPI 3.0.3 spec, so broad programmatic coverage exists. Nothing documents that the API matches the UI feature-for-feature, and the changelog shows endpoints like GET /task-statuses only now being added, which suggests parity is incomplete. The MCP server is limited to reading and updating issues, accounts, and contacts. Missing for 10: an explicit API/UI parity statement, evidence of API coverage for configuration surfaces (triggers, agents, dashboards, knowledge base, field and settings management), and independent or hands-on corroboration of parity.",
     "evidenceIds": [
       "pylon-docs-31",
+      "pylon-openapi-spec-20261106",
       "pylon-docs-36",
       "pylon-docs-4",
       "pylon-docs-34",
-      "pylon-probe-3"
+      "pylon-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -6579,8 +6659,8 @@
           "quote": "Pylon's API can be used to programmatically access and take action on data within Pylon."
         },
         {
-          "evidenceId": "pylon-docs-36",
-          "quote": "Creating issues programmatically"
+          "evidenceId": "pylon-openapi-spec-20261106",
+          "quote": "Pylon publishes a complete OpenAPI 3.0.3 document at its API origin (info title \"Pylon API.\", 119 paths, US and EU server entries)"
         },
         {
           "evidenceId": "pylon-docs-4",
@@ -6599,10 +6679,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export is a fair question for a SaaS support platform, so the axis applies. However, the evidence pack documents no bulk data export, no open-format download such as CSV or JSON dumps, and no offboarding or data-portability feature. The general API (pylon-docs-31) and MCP read access (pylon-docs-34) are developer building blocks that could be used to build an export, not the export capability itself, so they earn no credit.",
+    "rationale": "Data export is a fair question for a SaaS support platform, but the evidence pack documents no first-party bulk export, export file formats, or offboarding and migration path. The general API (pylon-docs-31) and the MCP server (pylon-docs-37) for reading data are only developer building blocks a user could use to build their own export, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -6614,7 +6694,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon is a SaaS customer-support platform, and such a product could plausibly publish its source under an open license, so the axis applies. Nothing in the evidence pack mentions a public source repository or an open-source license. The docs, MCP server, API and webhooks are product access features, not source availability.",
+    "rationale": "Pylon is a SaaS customer-support platform, and whether its source is available under an open license is a fair openness question for that kind of product. Nothing in the evidence pack mentions a source repository, an open-source license, or source-available code. The published OpenAPI spec and the official MCP server are an API contract and an integration, not product source, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6629,7 +6709,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a B2B support platform, so the axis applies. Nothing in the evidence shows a self-hosted, on-prem, or open-source deployment of Pylon; every item describes a vendor-hosted SaaS. 'Bring your own agent', the API, webhooks and the MCP server are integration points, not self-hosting of the core product.",
+    "rationale": "Pylon is documented as a hosted SaaS customer-support platform, and a self-hosted deployment is a fair question for this kind of product, so the axis applies. Nothing in the evidence describes a self-hosted, on-prem or customer-deployed option. The US/EU API server entries are vendor-hosted production regions, not self-hosting, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6642,9 +6722,9 @@
     "productId": "pylon",
     "storyId": "personalized-account-answers",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Pylon's own agents can pull context beyond help articles. Connectors let agents \"retrieve information\" from external tools, admins can define Custom API tools that hit internal endpoints, and the Assist Agent works from account context already in Pylon. The docs never explicitly show customer-facing answers grounded in a specific customer's plan, order status or account history. missing for 10: explicit documentation that Support Agent replies are personalized with per-customer live data (plan, order status, history), concrete examples of the product-data sync feeding agent answers, and independent or hands-on corroboration.",
+    "rationale": "Pylon documents agents that gather internal context and use connectors or admin-defined Custom API tools to retrieve information from internal or third-party systems. Assist Agent also works with the account and issue context already in Pylon, so answers can draw on live customer data beyond help articles. However, the docs never show customer-facing answers personalized with plan, order status or account history. Pulling external live data also requires an admin to configure connectors or API tools. missing for 10: explicit documentation of customer-facing answers grounded in per-customer plan/order/account-history data, concrete examples of live order or plan lookups, independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-13",
       "pylon-docs-56",
@@ -6658,6 +6738,10 @@
       "subject": "As a support leader, answers use the customer's live data — plan, order status, account history — not just generic help articles",
       "citations": [
         {
+          "evidenceId": "pylon-docs-13",
+          "quote": "Support Agents can deflect customer questions using content, gather internal context for your team, and take action."
+        },
+        {
           "evidenceId": "pylon-docs-56",
           "quote": "Connectors give Pylon agents access to external tools so they can search for context, retrieve information, and take action outside Pylon."
         },
@@ -6668,10 +6752,6 @@
         {
           "evidenceId": "pylon-docs-66",
           "quote": "Assist Agent is an interactive AI teammate that helps your team investigate questions, draft replies, and take action with the context already available in Pylon."
-        },
-        {
-          "evidenceId": "pylon-docs-13",
-          "quote": "Support Agents can deflect customer questions using content, gather internal context for your team, and take action."
         }
       ]
     }
@@ -6680,9 +6760,9 @@
     "productId": "pylon",
     "storyId": "pre-launch-simulation",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Pylon has a dedicated 'Test' page for its Support Agent that lets operators simulate interactions with the AI before deployment. Deployment can also be limited to specific assigned issues, so real-customer exposure is controlled. The story's 'or' is met through simulated conversations, but the evidence is a single short line. Missing for 10: replay or batch testing against historical tickets, detail on test scenarios and scoring, and independent or hands-on corroboration.",
+    "rationale": "Pylon's Support Agent docs include a dedicated Test page that lets you simulate interactions with the AI and see how it handles different questions before deployment. That directly delivers the simulated-conversation path of the story. Deployment is also opt-in per issue, so you control which customer issues the agent touches. Missing for 10: documented replay or backtesting against historical tickets, detail on the simulation tooling (batch scenarios, pass/fail evaluation), and independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-17",
       "pylon-docs-18"
@@ -6706,16 +6786,28 @@
   {
     "productId": "pylon",
     "storyId": "privacy-data-residency",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data residency and region selection is a fair question for a SaaS customer-support platform like Pylon, so the axis applies. However, the evidence pack documents only compliance certifications (SOC 2 Type II, ISO 27001) and Vanta-managed compliance. Nothing shows customers can choose a storage region or residency, and certifications are an adjacent control, not region choice.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Pylon's own published OpenAPI spec lists separate US and EU production API servers, which points to regional (US/EU) deployments of the product. Nothing documents data residency as a customer choice or says where data is actually stored. missing for 10: explicit data-residency documentation, how a customer selects a US or EU region, a statement of where data is stored at rest, any additional regions, independent corroboration",
+    "evidenceIds": [
+      "pylon-openapi-spec-20261106",
+      "pylon-api-test-it-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pylon-openapi-spec-20261106",
+          "quote": "US and EU server entries"
+        },
+        {
+          "evidenceId": "pylon-api-test-it-20261106",
+          "quote": "the spec's only servers are the US/EU production APIs"
+        }
+      ]
     }
   },
   {
@@ -6724,7 +6816,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon is a SaaS platform with extensive AI features, so a no-training or opt-out data policy is a fair axis. However, the evidence pack has no statement that customer data is excluded from model training, nor any opt-out control. The 'training data' docs describe connecting knowledge sources for Pylon's AI to consume, not training-use protections. The SOC 2 and ISO 27001 certifications are adjacent security posture and do not address model training.",
+    "rationale": "Pylon is an AI-heavy SaaS platform, so a training opt-out or no-training commitment is a fair question to ask of it. The evidence pack contains no such opt-out, control, or policy. The 'training data' docs describe customers connecting their own knowledge sources for Pylon's AI to consume, not excluding their data from model training. The SOC 2 / ISO 27001 certifications are adjacent security posture and do not address model training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6739,7 +6831,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon is a SaaS customer-support platform, so data retention and deletion controls are a fair axis. The evidence pack documents no retention policies, deletion controls, or data purge features. SOC 2 and ISO 27001 certifications and generic API data access are adjacent and do not show user-controllable retention or deletion.",
+    "rationale": "Data retention and deletion controls are a fair question for a customer-support SaaS platform like Pylon, so the axis applies. The evidence pack documents no retention policies, deletion workflows, or data purge controls. The SOC 2 / ISO 27001 certifications and the generic API data access are adjacent and do not show user-controlled retention or deletion.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6754,7 +6846,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon is a SaaS support platform, so a telemetry or usage-tracking opt-out is a fair question to ask. The evidence pack documents no such setting or control. The SOC 2 and ISO 27001 compliance claims are a related privacy topic but do not provide an opt-out.",
+    "rationale": "Telemetry and usage-tracking opt-out is a fair privacy question for a SaaS support platform like Pylon, so the axis applies. The evidence pack contains no documented setting or control for opting out of telemetry or usage tracking. The SOC 2 and ISO 27001 certifications and the Vanta-managed compliance are adjacent security posture, not an opt-out capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6769,7 +6861,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pylon's Runbooks let admins give the Support Agent natural-language manuals for specific scenarios and complex procedures, and Skills provide reusable instructions so agents handle specific workflows consistently. That covers encoding SOPs per issue type. Nothing shows deterministic, explicitly branched execution: the instructions are natural-language guidance interpreted by the AI, and Triggers are a separate automation feature, not agent SOPs. Missing for 10: deterministic branching logic within agent procedures, documented step-by-step execution guarantees, issue-type routing to specific runbooks, independent or hands-on corroboration.",
+    "rationale": "Pylon's own Runbooks let teams write natural-language procedures for specific scenarios that the agent executes, and Skills add reusable instructions for handling workflows consistently. That covers encoding SOPs per issue type. Nothing shows deterministic branching: runbooks are natural-language instructions the AI interprets, with no documented explicit step or condition structure. Missing for 10: documented deterministic branching or conditional logic within runbooks, evidence of strict step-by-step enforcement, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-15",
       "pylon-docs-73",
@@ -6799,9 +6891,9 @@
     "productId": "pylon",
     "storyId": "resolution-analytics",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Pylon documents its own default analytics dashboards with 'common support metrics' that can be filtered by many attributes, so the core dashboard capability exists. The evidence never names the specific metrics in the story. missing for 10: explicit evidence of resolution-rate, CSAT, AI-to-human handoff-rate and cost-per-resolution metrics, exec-ready reporting/export, and independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Pylon documents its own default analytics dashboards with \"common support metrics\" that can be filtered by many attributes, so the core dashboard capability exists. The evidence never names any of the four metrics in the story. missing for 10: explicit evidence of resolution rate, CSAT, AI-to-human handoff rate, and cost-per-resolution metrics, exec-ready reporting, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-29",
       "pylon-docs-61"
@@ -6824,10 +6916,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pylon documents its own control over which issues the AI agent touches: the agent works only on issues assigned to it, which gives \"full control of which customer issues your AI agent interacts with.\" There is no documented way to mark topics such as legal threats, cancellations or security as human-only so the agent is automatically blocked from them. Scoping is per-assignment, and natural-language runbooks are only soft guidance, not a hard guardrail. Missing for 10: topic- or category-based human-only exclusion rules, guaranteed enforcement that the agent never responds on flagged topics, automatic handoff to humans when such topics are detected, and independent or hands-on corroboration.",
+    "rationale": "Pylon documents that the support agent only handles issues it is assigned to, giving admins 'full control of which customer issues your AI agent interacts with'. That is a product-level way to keep certain issues away from the agent. But nothing documents marking topics such as legal threats, cancellations or security as human-only, auto-detecting those topics, or a hard guarantee that the agent hands off mid-conversation; natural-language runbooks are guidance, not an enforced block. Missing for 10: topic-based human-only/escalation rules, automatic topic detection that blocks the agent, enforced handoff guarantees, independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-18",
-      "pylon-docs-40"
+      "pylon-docs-40",
+      "pylon-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -6841,6 +6934,10 @@
         {
           "evidenceId": "pylon-docs-40",
           "quote": "You can also assign an individual issue to your AI agent, the same way you might normally assign an issue to a team member."
+        },
+        {
+          "evidenceId": "pylon-docs-15",
+          "quote": "Write instructions in natural language to help your AI Agent handle specific scenarios."
         }
       ]
     }
@@ -6850,11 +6947,13 @@
     "storyId": "supervised-draft-mode",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Pylon's Assist Agent is documented as an interactive AI teammate that drafts replies for the human team. That is a copilot-style pattern where a human sits between the draft and the customer. However, nothing documents a supervised launch mode or approval gate for the customer-facing Support Agent; issue assignment (scope control) and simulation testing are related but different controls. Missing for 10: an explicit draft-for-approval mode for the Support Agent, documented approve/edit/send workflow guaranteeing nothing reaches customers unreviewed, hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Pylon's Assist Agent is documented as an interactive AI teammate that drafts replies for the team. That implies a human-in-the-loop drafting workflow, but the docs never describe a supervised launch mode or an approval gate on the customer-facing Support Agent. Issue assignment controls which issues the agent touches, and simulation is a pre-deployment dry run rather than supervised live operation. Missing for 10: a documented supervised/draft-only mode for the Support Agent, an explicit approval queue or gate before messages reach customers, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pylon-docs-66",
-      "pylon-docs-41"
+      "pylon-docs-41",
+      "pylon-docs-18",
+      "pylon-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -6878,7 +6977,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Topic clustering and emerging-issue detection are a fair axis for a support platform, but the evidence pack never documents either capability. The closest items are adjacent features: default analytics dashboards with common support metrics, scheduled AI Reports summaries to Slack, Ask AI chat, and AI account fields. None of these cluster conversations by topic or proactively flag emerging product issues before ticket volume spikes, so none earns credit for this story.",
+    "rationale": "The evidence shows default analytics dashboards with common support metrics, scheduled AI Reports summarizing data to Slack, Ask AI chat, and AI fields that roll up account signals. None of these documents topic clustering of conversations or early detection of emerging product issues, so they are adjacent features rather than this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6893,7 +6992,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pricing model is a fair question for a support platform with AI agents, so the axis applies. Nothing in the evidence pack covers Pylon's pricing, per-resolution billing, published rates, or spending caps and controls. Agent assignment controls (pylon-docs-18) govern which issues the agent touches, not cost, so they are an adjacent feature and earn no credit.",
+    "rationale": "Published, outcome-based pricing is a fair question to ask of a support platform with AI agents. However, nothing in the evidence pack documents Pylon's pricing model, any per-resolution charge, or caps and spend controls. The agent-control items (assigning which issues the AI handles) are operational scoping, not pricing controls, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6908,7 +7007,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pylon is a support platform with AI support agents, so a voice or phone agent is a fair axis. Its documented channels are Slack Connect, Email, Microsoft Teams, Chat Widget and Forms, with no phone or voice channel for the agent. The only call-related item is AI task generation after a customer call, which is an adjacent feature and not a speech-in, speech-out agent.",
+    "rationale": "Voice handling is a fair question for a support platform with AI agents, so the axis applies. The evidence documents Slack, email, Teams, chat widget and forms channels, but nothing shows the Support Agent answering phone calls with speech in and speech out. The post-call task generation feature is an adjacent capability, not the agent handling calls.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

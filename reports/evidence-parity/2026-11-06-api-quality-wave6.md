@@ -46,9 +46,20 @@ Wave-6 specifics:
   walls were hit.
 
 Scoped re-judges run under the ratified v6 rubric, then `derive` per touched arena and
-the dependent generators; the pre-audit over every upward flip (review-fix re-rolls
-included) runs before any push. Engine output is accepted as-is; honest negatives ship,
-and checked-absent cells that publish as engine partials on adjacent evidence are
-recorded with both readings.
+the dependent generators. Engine output is accepted as-is; honest negatives ship: ledgy's
+api-quality row is all-none (the GraphQL context row grounds the absences), canny keeps
+three nones around its staging-workspace partial, navan keeps three nones around its
+versioning partial, and the meilisearch counter-check held interactive-docs at none. One
+checked-absent cell publishes as an engine partial on adjacent evidence (fivetran
+api-interactive-docs, partial q3 on the Postman-collection affordance — the jira class)
+and carries both readings. Honest dips ship (ledgy 10.2 → 9.3, navan 17.7 → 17.2).
+
+## Pre-audit (before the first push)
+
+86 up-moves vs merge-base, 40 verdict-level (26 target cells, 14 side-effect flips),
+re-read against the v6 on-axis bar. Zero artifact-backed corrections — the counter-check
+and scoped-excerpt discipline held every targeted cell. Three conceded-thin partials
+stand with their limits inside the published rationales (named in the ledger `preAudit`);
+all other verdict-level ups rest on on-axis evidence.
 
 Row-level output: `2026-11-06-api-quality-wave6.json`.

@@ -62,7 +62,10 @@ describe('compareRivalsFor', () => {
     expect(rows[0].battleSlug).toBeNull()
     expect(rows[0].record).toBeNull()
     // 1 above + 3 below (edge-fill: only one product ranks above #2), in rank order.
-    expect(rows.slice(1).map((r) => r.productId)).toEqual(['ramp', 'airwallex', 'gusto', 'brex'])
+    // Re-pinned 2026-11-06: the api-quality backlog wave 6 re-judged wise on new evidence
+    // (reports/evidence-parity/2026-11-06-api-quality-wave6.json), moving it #7 -> #4 and
+    // displacing gusto/brex one rank down.
+    expect(rows.slice(1).map((r) => r.productId)).toEqual(['ramp', 'airwallex', 'wise', 'gusto'])
     expect(rows.slice(1).map((r) => r.rank)).toEqual([1, 3, 4, 5])
     expect(rows.slice(1).every((r) => !r.isSelf)).toBe(true)
   })

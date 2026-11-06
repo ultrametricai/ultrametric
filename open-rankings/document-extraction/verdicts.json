@@ -5,7 +5,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datalab clearly lets you evaluate on your own data before committing: a free monthly allowance is 'enough to run a full proof of concept on your own documents', and Forge needs no API key. Published benchmarks are evidenced only indirectly, through community references to Marker's own benchmark and GitHub comparison chart; one user suspects an error in that chart's speed figures. Missing for 10: first-party benchmark documentation in the pack, evidence that the benchmarks are reproducible (published datasets, scripts or methodology), and independent corroboration of the accuracy numbers.",
+    "rationale": "Datalab documents a no-credit-card free monthly allowance \"enough to run a full proof of concept on your own documents\" and a no-key Forge upload, so you can run your own evals before committing. A published Marker benchmark appears only indirectly, through community references to the vendor's own benchmark and GitHub comparison chart; no first-party benchmark docs, methodology or reproduction steps are in the pack. Missing for 10: first-party published accuracy benchmark documentation, evidence the benchmarks are reproducible (scripts/datasets), and independent corroboration of the benchmark results.",
     "evidenceIds": [
       "datalab-docs-10",
       "datalab-docs-9",
@@ -36,14 +36,13 @@
     "productId": "datalab",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe returned HTTP 200 for https://documentation.datalab.to/llms.txt, which serves a structured Datalab Documentation index linking to .md pages. Several docs pages are also published as raw .md files (webhooks.md, cli.md, pipelines.md, API reference .md), which gives agents machine-readable, agent-oriented docs. Missing for 10: no evidence of an llms-full.txt or explicit agent-usage guidance, and no independent or hands-on corroboration of agents consuming these docs.",
+    "rationale": "A live probe confirms Datalab serves an llms.txt at documentation.datalab.to/llms.txt (HTTP 200) that indexes the docs. The docs also state that llms.txt advertises the OpenAPI spec under an \"## OpenAPI Specs\" heading, and reference pages have markdown mirrors (.md URLs), so an agent can be pointed at agent-oriented docs directly. Missing for 10: independent or community reports of agents actually consuming these docs, and any llms-full.txt or agent-specific usage guidance.",
     "evidenceIds": [
       "datalab-probe-1",
-      "datalab-docs-35",
-      "datalab-docs-38",
-      "datalab-docs-48"
+      "datalab-openapi-spec-20261106",
+      "datalab-docs-35"
     ],
     "support": {
       "relation": "direct",
@@ -55,8 +54,8 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://documentation.datalab.to/llms.txt # Datalab Documentation"
         },
         {
-          "evidenceId": "datalab-docs-38",
-          "quote": "Pipelines chain processors (convert, extract, segment, custom) into reusable, versioned configurations."
+          "evidenceId": "datalab-openapi-spec-20261106",
+          "quote": "advertised in the docs llms.txt under an \"## OpenAPI Specs\" heading, with markdown mirrors of every reference page"
         }
       ]
     }
@@ -67,7 +66,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Datalab documents an endpoint that suggests extraction schemas for a given file, which is a narrow form of AI-generated suggestions derived from the user's own document. It also documents running published agent processors on a document. The rest of the product is document conversion and extraction, not insight generation. Missing for 10: any documented AI insights or analysis of document content, suggestions surfaced in the Forge UI rather than only via API, detail on what agent processors produce, and hands-on or independent corroboration.",
+    "rationale": "Datalab's own API can generate suggested extraction schemas from a user's file, which is a narrow AI-generated suggestion drawn from the user's data. It also documents running a published agent processor on a document, but the evidence doesn't say what that agent outputs. Most of the story is unevidenced: there is no documented insight generation, analysis, or recommendations about the content. missing for 10: AI-generated insights or summaries about document content, an in-product (UI) suggestion experience, documentation of what agent processors produce, independent or hands-on corroboration.",
     "evidenceIds": [
       "datalab-docs-41",
       "datalab-docs-40"
@@ -94,7 +93,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows reusable, versioned pipelines that can be deployed to production, plus webhooks that fire when async jobs complete. But every run is still started by an API call. Nothing documents schedules, recurring runs, or event triggers that would let automations run autonomously in the background. These are developer building blocks for constructing automation, not the capability itself.",
+    "rationale": "Datalab documents pipelines, which are reusable, versioned processor chains deployed to production, along with async jobs that send webhook notifications on completion. Every run is still started by an explicit API call. There is no evidence of scheduled, recurring, or event-triggered automations that run on their own in the background. These are building blocks a developer could orchestrate externally, not the autonomous-automation capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -109,7 +108,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no built-in, in-product AI assistant that users can hand tasks to. Forge is a playground for uploading documents and previewing results. The 'agent processor' endpoint runs a published processor on a document through the API, and schema generation is a single AI helper; both are adjacent features or developer building blocks, not a delegable assistant inside the product.",
+    "rationale": "The evidence shows no built-in, in-product AI assistant that users can delegate tasks to. The closest items are an API endpoint for running a published \"agent processor\" on a document and an endpoint that generates candidate extraction schemas. Both are document-processing primitives invoked through the API, not an assistant inside the product, so they are adjacent and earn no credit. The Forge playground is only a UI for previewing processing results.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -124,14 +123,15 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Datalab ships its own non-interactive surfaces suited to headless automation: a documented CLI (`datalab convert document.pdf --format html`), a Python SDK, REST endpoints with an API-key health check, and webhooks that remove the need for polling. However, nothing in the evidence documents CI usage specifically, so the CI half of the story is only implied by these programmatic interfaces. missing for 10: explicit CI/CD integration docs or examples (e.g., GitHub Actions or env-var auth guidance for pipelines), CLI exit-code/non-interactive behavior documentation, independent hands-on corroboration of headless/CI use.",
+    "rationale": "Datalab can be run headlessly through its own official CLI (`datalab convert document.pdf --format html`), a Python SDK and a REST API. Webhooks remove the need for polling, and a health-check endpoint supports scripted pipelines. These are first-party automation surfaces, but no evidence documents CI usage specifically. missing for 10: CI-specific documentation (e.g., CI pipeline examples, non-interactive auth/env-var guidance for CI runners, exit-code behavior), independent hands-on corroboration of headless/CI automation.",
     "evidenceIds": [
       "datalab-docs-14",
       "datalab-docs-48",
+      "datalab-probe-3",
       "datalab-docs-2",
-      "datalab-docs-43",
       "datalab-docs-8",
-      "datalab-probe-3"
+      "datalab-docs-43",
+      "datalab-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -151,12 +151,12 @@
           "quote": "The Datalab Python SDK provides a simple interface for document conversion, pipelines, structured extraction, form filling, and file management."
         },
         {
-          "evidenceId": "datalab-docs-43",
-          "quote": "This endpoint is used to check the health of the API, given an API key."
-        },
-        {
           "evidenceId": "datalab-docs-8",
           "quote": "Webhooks provide real-time notifications when your document processing jobs complete, eliminating the need for continuous polling."
+        },
+        {
+          "evidenceId": "datalab-docs-43",
+          "quote": "This endpoint is used to check the health of the API, given an API key."
         }
       ]
     }
@@ -167,7 +167,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datalab ships agent processors (run-document-agent), so letting those agents use tools from MCP servers is a fair question for this product. However, nothing in the evidence documents connecting or registering external MCP servers. The llms.txt file, CLI, SDK and webhooks are unrelated capabilities and earn no credit.",
+    "rationale": "Datalab is a document-intelligence API. Its documented 'agent processor' feature (datalab-docs-40) makes an MCP-client capability a plausible ask, so the axis applies. However, nothing in the evidence shows the product can connect to external MCP servers or use their tools; the docs cover conversion, extraction, pipelines, webhooks, the SDK and the CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -182,7 +182,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datalab is a document-intelligence API platform, so publishing an official MCP server is a fair question and the axis applies. The evidence pack never mentions an MCP server or MCP endpoint. The adjacent items (an llms.txt file, a Python SDK, a CLI and REST APIs) are developer building blocks or other features, not an MCP server, and earn no credit.",
+    "rationale": "Datalab is a document-intelligence API platform, so publishing an official MCP server is a fair question for it. The evidence pack never mentions an MCP server or endpoint. The SDK, CLI, llms.txt, OpenAPI spec and 'agent processor' endpoint are adjacent building blocks or different features, not an MCP server an agent can connect to.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -197,7 +197,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Datalab is driven by API calls, SDK methods, CLI flags, JSON schemas, and a Forge upload UI. Nothing documents operating the product through natural-language commands. The 'agent processor' and schema-generation endpoints run pre-published processors or auto-suggest schemas; neither is a natural-language command interface for operating the product.",
+    "rationale": "Natural-language operation is a fair axis for a document-intelligence platform, but no evidence shows Datalab accepting natural-language commands to drive it. Its documented interfaces are the SDK, a flag-based CLI, REST endpoints driven by JSON schemas, and the Forge upload UI. Published agent processors and auto-generated extraction schemas are related features, not natural-language control of the product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -210,9 +210,9 @@
     "productId": "datalab",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Datalab documents an official CLI, the `datalab` command, under its SDK docs, with concrete conversion commands that set the output format and processing mode, and a probe confirms the CLI documentation page exists. The documented scope covers document conversion only, and only first-party sources support it. Missing for 10: evidence that the CLI covers extraction, segmentation, pipelines and form filling; agent-oriented features such as machine-readable output or non-interactive auth; independent hands-on corroboration.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Datalab documents its own first-party CLI with concrete commands (`datalab convert ... --format html`, `--mode accurate`), and a probe confirms the official CLI docs page exists, so the story's core is delivered directly. The documentation shows the CLI only for conversion, and nothing independent confirms how it behaves in agent workflows. Missing for 10: no independent or hands-on corroboration of CLI use, no evidenced CLI coverage beyond conversion (e.g., extract, segment, pipelines), and no documented agent-oriented features such as machine-readable output modes or non-interactive auth.",
     "evidenceIds": [
       "datalab-docs-14",
       "datalab-docs-48",
@@ -242,22 +242,20 @@
     "productId": "datalab",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Datalab publishes a documented API reference. It covers convert, extract structured data, segment, create document, run document agent, schema generation and an API health endpoint, plus a Python SDK and per-request webhook parameters. Together these let a user drive the product programmatically. missing for 10: a machine-readable OpenAPI spec (all probed OpenAPI paths returned 404), independent or hands-on corroboration of the hosted API.",
+    "rationale": "Datalab publishes a public REST API reference with endpoints for convert, extract, segment, agent processors, schema generation and health checks. It also serves an OpenAPI 3.1.0 spec from its main domain, offers an interactive per-endpoint playground, and backs this with a published version policy, a Python SDK and a CLI. The probe 404s were on the docs domain only, while the spec is documented at www.datalab.to/openapi.json, so this is not a contradiction. Missing for 10: independent or hands-on corroboration of driving the hosted API end-to-end (community evidence covers only the open-source Marker library).",
     "evidenceIds": [
-      "datalab-docs-51",
       "datalab-docs-31",
       "datalab-docs-32",
       "datalab-docs-33",
-      "datalab-docs-16",
       "datalab-docs-40",
-      "datalab-docs-41",
       "datalab-docs-43",
-      "datalab-docs-2",
-      "datalab-docs-24",
-      "datalab-probe-1",
-      "datalab-probe-2"
+      "datalab-openapi-spec-20261106",
+      "datalab-api-playground-20261106",
+      "datalab-version-policies-20261106",
+      "datalab-docs-51",
+      "datalab-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -265,24 +263,24 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "datalab-docs-51",
-          "quote": "Datalab provides document intelligence APIs to convert PDFs, spreadsheets, and images into structured, machine-readable outputs."
-        },
-        {
           "evidenceId": "datalab-docs-31",
           "quote": "Convert a PDF, image, or document to markdown, HTML, JSON, or chunks."
-        },
-        {
-          "evidenceId": "datalab-docs-16",
-          "quote": "Provide a file for end-to-end processing, or a checkpoint_id from a previous /convert call to skip re-parsing."
         },
         {
           "evidenceId": "datalab-docs-40",
           "quote": "Run a published agent processor on a document. Address it with processor=<id>, optionally pinned to a version as <id>@<version>"
         },
         {
-          "evidenceId": "datalab-docs-43",
-          "quote": "This endpoint is used to check the health of the API, given an API key."
+          "evidenceId": "datalab-openapi-spec-20261106",
+          "quote": "Datalab serves its OpenAPI 3.1.0 document (info title \"Datalab API\") from its main domain"
+        },
+        {
+          "evidenceId": "datalab-version-policies-20261106",
+          "quote": "we will not introduce breaking changes for top-level versions"
+        },
+        {
+          "evidenceId": "datalab-docs-51",
+          "quote": "Datalab provides document intelligence APIs to convert PDFs, spreadsheets, and images into structured, machine-readable outputs."
         }
       ]
     }
@@ -293,7 +291,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datalab is an API service, so issuing scoped, least-privilege credentials for an agent is a fair question to ask of it. The evidence only shows that API keys exist and that account security covers TOTP two-factor authentication and team-wide 2FA enforcement. Nothing documents scoped, restricted or per-agent API keys, and 2FA is a related account control, not credential scoping.",
+    "rationale": "Datalab is an API service, so issuing scoped or least-privilege credentials for an agent is a fair question for it. The evidence only mentions using an API key, account two-factor authentication and enterprise SSO. Nothing documents per-key scopes, permission restrictions, or issuing separate limited keys for an agent.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -306,16 +304,17 @@
     "productId": "datalab",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Datalab documents an official Python SDK covering document conversion, pipelines, structured extraction, form filling, and file management, with dedicated SDK doc pages and a companion CLI, so the core of building against an official SDK is delivered. missing for 10: evidence of official SDKs in languages beyond Python, independent or hands-on corroboration of the SDK's quality.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Datalab documents an official Python SDK covering conversion, pipelines, structured extraction, form filling, and file management, with dedicated SDK sub-pages and a bundled CLI. A version policy also extends backwards-compatibility guarantees to the SDK. missing for 10: evidence of official SDKs beyond Python (e.g. TypeScript/JS), independent or hands-on corroboration of the SDK.",
     "evidenceIds": [
       "datalab-docs-2",
       "datalab-docs-22",
       "datalab-docs-36",
       "datalab-docs-37",
       "datalab-docs-38",
-      "datalab-docs-14"
+      "datalab-docs-14",
+      "datalab-version-policies-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -333,6 +332,10 @@
         {
           "evidenceId": "datalab-docs-36",
           "quote": "Fill PDF and image forms with structured field data using the Datalab SDK."
+        },
+        {
+          "evidenceId": "datalab-version-policies-20261106",
+          "quote": "we will not introduce breaking changes for top-level versions"
         }
       ]
     }
@@ -340,10 +343,10 @@
   {
     "productId": "datalab",
     "storyId": "agentic-webhooks",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Datalab documents its own registrable outbound HTTP webhooks. You configure a default webhook URL, can override it per request with a webhook_url parameter, and receive real-time notifications when processing jobs complete instead of polling. The only documented event is job completion, and there is no evidence of an event catalog, per-event subscription, signature verification, or retry semantics. Missing for 10: multiple subscribable event types, payload signing/verification docs, delivery retry guarantees, independent or hands-on corroboration.",
+    "rationale": "Datalab documents a webhooks feature. You configure a default webhook URL to get real-time notifications when document-processing jobs complete, replacing polling, and you can override that URL per request with the webhook_url parameter. Programmatic consumers can register and receive these HTTP callbacks. Missing for 10: any documented event type beyond job completion, payload, signing and retry details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "datalab-docs-8",
       "datalab-docs-34",
@@ -352,7 +355,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
       "citations": [
         {
@@ -373,31 +376,59 @@
   {
     "productId": "datalab",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Datalab documents a per-endpoint API reference (convert-document, extract-structured-data, segment-document, and others), but nothing in the evidence shows that reference is interactive or offers runnable 'try it' examples. Forge is a document-upload playground, an adjacent feature rather than an interactive API reference. The OpenAPI probe returned 404 on every candidate path, so no spec-driven explorer is evidenced either.",
-    "evidenceIds": [],
+    "rationale": "Datalab's Mintlify-based API reference runs an interactive playground with a per-endpoint \"Try it\" runner that calls the live API with the user's key. It is backed by reference pages for convert, extract, segment, agent and health endpoints and an OpenAPI 3.1.0 spec. The 404s on the docs domain do not contradict this, because the spec is served from the main domain. Missing for 10: hands-on or independent confirmation that the runner works, and documented copy-paste code samples per language alongside the runner.",
+    "evidenceIds": [
+      "datalab-api-playground-20261106",
+      "datalab-openapi-spec-20261106",
+      "datalab-docs-31",
+      "datalab-docs-32",
+      "datalab-docs-40"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "datalab-api-playground-20261106",
+          "quote": "The Mintlify API reference runs the interactive playground (\"playground\":{\"display\":\"interactive\"}) with a \"Try it\" runner per endpoint."
+        },
+        {
+          "evidenceId": "datalab-api-playground-20261106",
+          "quote": "The playground is client-rendered and targets the live API with the user's key."
+        },
+        {
+          "evidenceId": "datalab-openapi-spec-20261106",
+          "quote": "Datalab serves its OpenAPI 3.1.0 document (info title \"Datalab API\") from its main domain"
+        }
+      ]
     }
   },
   {
     "productId": "datalab",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "The pack shows API reference pages, available as .md, and an llms.txt index, but neither is a downloadable machine-readable API spec such as OpenAPI. A probe found that every candidate OpenAPI and Swagger path returned 404, and no vendor doc mentions an OpenAPI file. The axis applies to an API product, so the verdict is none rather than na.",
-    "evidenceIds": [],
+    "rationale": "Datalab documents an OpenAPI 3.1.0 document titled \"Datalab API\" at www.datalab.to/openapi.json, advertised in its llms.txt under an \"OpenAPI Specs\" heading, which delivers a downloadable machine-readable spec. The probe's 404s covered only documentation-subdomain paths, not the main-domain URL, so they do not contradict this. Missing for 10: independent or hands-on confirmation that the main-domain spec URL resolves and is complete.",
+    "evidenceIds": [
+      "datalab-openapi-spec-20261106",
+      "datalab-probe-1",
+      "datalab-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "datalab-openapi-spec-20261106",
+          "quote": "Datalab serves its OpenAPI 3.1.0 document (info title \"Datalab API\") from its main domain, advertised in the docs llms.txt under an \"## OpenAPI Specs\" heading"
+        }
+      ]
     }
   },
   {
@@ -406,7 +437,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no sandbox or test environment that is isolated from production data. The Forge playground (try uploads without an API key), the free monthly allowance, and pipeline versioning with \"deploy to production\" are adjacent try-before-you-buy or deployment features, not a documented sandbox. On-prem deployment is a hosting option, not a test environment.",
+    "rationale": "The evidence documents no sandbox or test-mode environment isolated from production. Forge and the free allowance are try-before-you-buy conveniences, and the API reference playground explicitly targets the live API with the user's key. Versioned pipelines that 'deploy to production' are an adjacent feature, not a separate sandbox, so none of this earns credit for the story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -418,16 +449,33 @@
   {
     "productId": "datalab",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows API-level versioning, such as versioned endpoints or version headers, or a documented deprecation policy. What is documented are adjacent features: versioned pipeline configurations, version-pinned agent processors, and a changelog. None of these is API versioning or a deprecation commitment.",
-    "evidenceIds": [],
+    "rationale": "Datalab publishes a dedicated Version Policies page. It promises no breaking changes within top-level API versions and preserves existing input and output parameters across API, SDK, and on-prem container versions, with a linked changelog; agent processors can also be pinned as <id>@<version>. The evidence does not show an explicit deprecation policy with timelines or sunset notice, model-output changes are exempt, and version pinning is enterprise-only. missing for 10: an explicit documented deprecation/sunset timeline and notice process, version pinning outside enterprise plans, stability guarantees for model output, and independent corroboration.",
+    "evidenceIds": [
+      "datalab-version-policies-20261106",
+      "datalab-docs-40",
+      "datalab-docs-15"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "datalab-version-policies-20261106",
+          "quote": "we will not introduce breaking changes for top-level versions"
+        },
+        {
+          "evidenceId": "datalab-version-policies-20261106",
+          "quote": "For any given API version, we will preserve: Existing input parameters, Existing output parameters"
+        },
+        {
+          "evidenceId": "datalab-docs-40",
+          "quote": "optionally pinned to a version as <id>@<version>"
+        }
+      ]
     }
   },
   {
@@ -436,13 +484,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Datalab documents webhooks that notify you when document processing jobs complete, which implies an async job model. A default webhook URL can be overridden per request with the webhook_url parameter, which fits a non-blocking pipeline. Status polling is only implied by the docs saying webhooks eliminate 'the need for continuous polling'. missing for 10: an explicitly documented async job-submission flow with a request/job ID, a documented status-polling endpoint, webhook payload/retry/signing details, and independent hands-on corroboration.",
+    "rationale": "Datalab documents completion webhooks for document processing jobs, configurable by default or per request via a `webhook_url` parameter. The docs also frame webhooks as an alternative to 'continuous polling', which implies an async job model with status polling, but that polling flow is never documented directly. missing for 10: explicit documentation of async job submission and a status-polling endpoint (request_id/check URL), webhook payload and retry details, and independent hands-on corroboration.",
     "evidenceIds": [
       "datalab-docs-8",
-      "datalab-docs-34",
       "datalab-docs-24",
-      "datalab-docs-35",
-      "datalab-docs-26"
+      "datalab-docs-34",
+      "datalab-docs-35"
     ],
     "support": {
       "relation": "direct",
@@ -454,12 +501,12 @@
           "quote": "Webhooks provide real-time notifications when your document processing jobs complete, eliminating the need for continuous polling."
         },
         {
-          "evidenceId": "datalab-docs-34",
-          "quote": "Configure webhooks to receive real-time notifications when Datalab jobs complete."
-        },
-        {
           "evidenceId": "datalab-docs-24",
           "quote": "You can override the default webhook URL for specific API requests by including the webhook_url parameter"
+        },
+        {
+          "evidenceId": "datalab-docs-34",
+          "quote": "Configure webhooks to receive real-time notifications when Datalab jobs complete."
         }
       ]
     }
@@ -470,7 +517,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents per-document operations only: convert, extract, segment, form filling, and single-file CLI conversion. Nothing shows a batch endpoint, a multi-file CLI mode, or bulk processing across many items. Pipelines chain processors on a document, and file storage allows reuse across calls. Both are adjacent building blocks, not a bulk-operation capability, so this applicable axis earns no credit.",
+    "rationale": "The evidence pack has no documented batch or bulk operation, such as a multi-file endpoint, directory-level CLI conversion, or bulk job submission. The CLI examples convert a single file, Pipelines chain processors on a document rather than across many items, and file storage only supports reuse across separate calls. Bulk operations are a fair axis for a document-processing API, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -485,25 +532,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datalab documents webhooks that notify an endpoint when a processing job completes, and pipelines that chain processors into reusable configurations. Neither is a user-definable rule system where events automatically trigger actions: webhooks are outbound completion notifications, and pipelines are invoked configurations, not event-driven automations. These are adjacent features, so no credit is given.",
-    "evidenceIds": [
-      "datalab-docs-8",
-      "datalab-docs-38"
-    ],
+    "rationale": "Datalab documents webhooks that notify when processing jobs complete, and pipelines that chain processors into reusable configurations. Neither is a user-defined rule system that automatically triggers actions on events. Webhooks are an outbound notification building block that a developer would need to wire into their own automation, and pipelines are invoked configurations rather than event-driven rules.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
-      "citations": [
-        {
-          "evidenceId": "datalab-docs-8",
-          "quote": "Webhooks provide real-time notifications when your document processing jobs complete, eliminating the need for continuous polling."
-        },
-        {
-          "evidenceId": "datalab-docs-38",
-          "quote": "Pipelines chain processors (convert, extract, segment, custom) into reusable, versioned configurations."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -512,7 +547,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datalab documents pipelines (versioned, reusable processor chains deployable to production), webhooks for job completion, a CLI, and an SDK. None of the evidence describes a scheduler, cron triggers, or any recurring-run capability. Pipelines and webhooks are triggered per request or one-off, so they are adjacent features and not recurring scheduling.",
+    "rationale": "Datalab documents reusable, versioned Pipelines, a CLI, and webhooks for job completion. None of this evidence shows a way to schedule jobs to run on a recurring basis (cron, timers, or triggers). Pipelines and on-demand API calls are one-off executions, not a recurring schedule, and users would need external schedulers, which earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -527,7 +562,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datalab's own Pipelines feature chains processors into versioned, reusable configurations, and published agent processors can be pinned to a specific version (<id>@<version>), so versioning is documented. Pinning to an older version implies a way back, but no explicit review or rollback workflow is described. Missing for 10: documented review/diff of pipeline versions, an explicit rollback mechanism, depth on version management, independent or hands-on corroboration.",
+    "rationale": "Datalab's own Pipelines feature stores automations as \"reusable, versioned configurations.\" Published agent processors can be pinned to a specific version (<id>@<version>), which suggests a way to run an earlier version. The docs do not describe a review flow or an explicit rollback or restore action, and the API Version Policies page covers Datalab's own API stability rather than user automations, so it is not credited. Missing for 10: a documented review/diff workflow for pipeline changes, an explicit rollback/restore mechanism, detail on version history management, and independent or hands-on corroboration.",
     "evidenceIds": [
       "datalab-docs-38",
       "datalab-docs-21",
@@ -559,7 +594,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datalab documents a concrete rate limit (400 req/min on the Team plan), per-document limits with page_range segmenting, and async webhook completion notifications that suit batch workloads. It also steers 'extremely high volume' users to Enterprise on-prem. However, there is no documented batch API, throughput SLA, or pages-per-minute guarantee, so predictable throughput at millions-of-pages scale is unproven. Missing for 10: documented batch submission endpoint, throughput/latency guarantees, rate limits across all tiers, independent evidence of sustained high-volume runs.",
+    "rationale": "Datalab documents rate limits (400 req/min on the Team plan), publishes per-document limits with page_range segmentation, and offers webhooks for async job completion. It steers \"extremely high volume\" users toward paid on-prem deployment rather than the hosted API. missing for 10: a documented bulk/batch submission endpoint, published throughput or latency (SLA) figures for predictable throughput, and evidence of million-page batch runs on the hosted API.",
     "evidenceIds": [
       "datalab-supp-2",
       "datalab-docs-30",
@@ -596,11 +631,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datalab's docs say structured extraction returns fields 'with citations back to source bounding boxes for auditability', so the product itself provides per-field source provenance. That claim is a single homepage line, though, and it covers only bounding boxes. missing for 10: explicit per-field page number, source-text snippet in the output, API response schema docs showing the citation format, independent or hands-on corroboration.",
+    "rationale": "Datalab's own docs say structured extraction returns fields \"with citations back to source bounding boxes for auditability.\" That is first-party provenance for extracted fields, which supports the core of the story. However, the evidence is a single overview-level line, and it does not show page numbers or source snippets per field. missing for 10: documented per-field page number, per-field source snippet text, a response-schema or API-reference showing the citation structure, independent or hands-on corroboration.",
     "evidenceIds": [
       "datalab-docs-18",
-      "datalab-docs-3",
-      "datalab-docs-32"
+      "datalab-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -624,7 +658,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Datalab documents its own Document Segmentation capability. It splits multi-document PDFs into logical sections using a schema and returns page ranges per segment. Pipelines can chain segment with convert/extract, so one upload can be split automatically. However, the docs do not show segments being labeled by document type, or extraction producing separate results for each sub-document. missing for 10: explicit document-type classification output, documented per-document extraction results after splitting, hands-on or independent corroboration of segmentation accuracy.",
+    "rationale": "Datalab documents a Document Segmentation capability that splits multi-document PDFs into logical sections using a schema and returns page ranges per segment. Pipelines can chain segment with extract, and checkpoints let /segment and /extract reuse one parse, so a single upload can feed several steps. However, the docs do not show that segments are explicitly classified by document type, or that per-document extraction results come back automatically from one call. Missing for 10: explicit document-type classification per segment, documented automatic per-segment extraction output from a single upload, independent or hands-on corroboration.",
     "evidenceIds": [
       "datalab-docs-5",
       "datalab-docs-20",
@@ -662,13 +696,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datalab's conversion docs claim Marker \"handles complex layouts, tables, math, and images.\" Hands-on reports are mixed: one user found it did 'a reasonable job' but intermingled columns in tricky cases, another said tables and text boxes were messed up, and a third said it did a great job on code and config text. Missing for 10: documented handling of headers, footers and footnotes; any documented reading-order guarantees for multi-column layouts; independent evidence of correct ordering on complex real-world PDFs.",
+    "rationale": "Datalab's own docs say the conversion API (Marker) parses PDFs into Markdown, HTML, or JSON and 'handles complex layouts, tables, math, and images'. Hands-on community reports are mixed: one user found it does a 'reasonable job' but intermingled columns in tricky cases, and another found tables and text boxes messed up on an RPG rulebook. Those reports concern the open-source Marker and are not clear enough failures to make the claim disputed. Missing for 10: explicit documentation of header/footer/footnote handling and reading-order guarantees, multi-column-specific accuracy evidence, and independent corroboration of clean ordering on complex layouts.",
     "evidenceIds": [
       "datalab-docs-52",
+      "datalab-docs-17",
       "datalab-docs-31",
-      "datalab-comm-1",
       "datalab-comm-2",
-      "datalab-comm-3"
+      "datalab-comm-3",
+      "datalab-comm-1"
     ],
     "support": {
       "relation": "direct",
@@ -682,6 +717,10 @@
         {
           "evidenceId": "datalab-docs-31",
           "quote": "Convert a PDF, image, or document to markdown, HTML, JSON, or chunks."
+        },
+        {
+          "evidenceId": "datalab-docs-17",
+          "quote": "Parse PDFs, Word docs, and spreadsheets into Markdown, HTML, or JSON"
         }
       ]
     }
@@ -692,7 +731,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datalab documents schema-based structured extraction with citations back to source bounding boxes for auditability. That is an adjacent traceability feature. Nothing in the pack shows per-field confidence scores, calibration, or a human-in-the-loop review path for low-confidence fields, so the axis applies but is unevidenced.",
+    "rationale": "Datalab documents schema-based structured extraction with citations back to source bounding boxes for auditability. Nothing in the evidence shows per-field confidence scores, calibration, or a human-in-the-loop review path that routes low-confidence fields to reviewers. Bounding-box citations are an adjacent auditability feature, not confidence scoring or review routing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -706,8 +745,8 @@
     "storyId": "document-data-compliance",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Datalab's pricing page lists a BAA/DPA on the Team plan, which is a HIPAA-relevant option. Enterprise on-prem or air-gapped deployment is aimed at teams that require data privacy or work in highly regulated environments, which partially addresses the compliance need. The evidence never mentions zero-retention handling of uploaded documents or SOC 2, and docs describe file storage for reuse rather than retention guarantees. Missing for 10: documented zero-data-retention policy for uploads, SOC 2 attestation, explicit HIPAA compliance documentation beyond a BAA line item, independent corroboration.",
+    "confidence": "low",
+    "rationale": "Datalab's pricing page lists \"BAA / DPA\" as included on the Team plan, which gives a HIPAA-oriented contractual option. Enterprise customers can also run the models on their own (air-gapped) infrastructure for regulated environments. The pack does not document zero-retention handling of uploaded documents or a SOC 2 attestation, so only a thin slice of the story is evidenced. Missing for 10: documented zero-retention or data-deletion policy for uploads, SOC 2 report or attestation, explicit HIPAA compliance documentation beyond a pricing-page BAA line, independent corroboration.",
     "evidenceIds": [
       "datalab-supp-2",
       "datalab-supp-1",
@@ -739,7 +778,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Datalab's own conversion docs say Marker \"handles complex layouts, tables, math, and images,\" which is only a glancing claim that figures are processed during parsing. Nothing shows how figures or charts are extracted, described, or located. The bounding-box citations in datalab-docs-18 cover structured field extraction, a different capability, so they are not credited here. Missing for 10: documented figure/chart image crops, VLM-generated figure descriptions, per-figure page and bounding-box positions in the output, and any hands-on corroboration.",
+    "rationale": "Datalab's conversion docs say Marker \"handles complex layouts, tables, math, and images,\" so image handling during parsing is a documented capability, but only as a single thin mention. The bounding-box citations in the evidence cover structured-extraction fields, not figures, so they do not show figure positions traceable to the source page. Missing for 10: documented figure/chart image crops, VLM-generated figure descriptions or summaries, per-figure page and bounding-box positions in the output, and independent or hands-on corroboration.",
     "evidenceIds": [
       "datalab-docs-52"
     ],
@@ -761,11 +800,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Datalab's single /convert endpoint takes \"a PDF, image, or document\". Its docs name PDFs, Word docs, spreadsheets and images, and the Marker engine behind the API is documented on GitHub as converting PPTX, DOCX, XLSX, HTML and EPUB as well. That covers most of the mix through one call, but email formats are never mentioned, and PPTX/HTML support is shown only for the open-source library, not the hosted API docs. Missing for 10: email (EML/MSG) support, explicit API-level documentation of PPTX and HTML input, an enumerated supported-formats list for the API, and hands-on corroboration of mixed-format handling.",
+    "rationale": "Datalab exposes a single convert endpoint for \"a PDF, image, or document\". Its docs name PDFs, Word documents, spreadsheets and images, and its Marker engine on GitHub also lists PPTX, HTML and EPUB, so most of the mix runs through one API without per-format plumbing. Email is never mentioned, and PPTX/HTML support is evidenced only in the open-source Marker repo, not the hosted API docs. missing for 10: email (EML/MSG) support, hosted-API documentation of PPTX and HTML inputs, independent hands-on corroboration of mixed-format handling",
     "evidenceIds": [
       "datalab-docs-31",
-      "datalab-docs-17",
       "datalab-docs-52",
+      "datalab-docs-17",
       "datalab-gh-1",
       "datalab-docs-51"
     ],
@@ -779,16 +818,16 @@
           "quote": "Convert a PDF, image, or document to markdown, HTML, JSON, or chunks."
         },
         {
-          "evidenceId": "datalab-docs-17",
-          "quote": "Parse PDFs, Word docs, and spreadsheets into Markdown, HTML, or JSON"
+          "evidenceId": "datalab-docs-52",
+          "quote": "Convert PDFs, Word documents, spreadsheets, and images to machine-readable formats."
         },
         {
           "evidenceId": "datalab-gh-1",
           "quote": "Converts PDF, image, PPTX, DOCX, XLSX, HTML, EPUB files in all languages"
         },
         {
-          "evidenceId": "datalab-docs-52",
-          "quote": "Convert PDFs, Word documents, spreadsheets, and images to machine-readable formats."
+          "evidenceId": "datalab-docs-17",
+          "quote": "Parse PDFs, Word docs, and spreadsheets into Markdown, HTML, or JSON"
         }
       ]
     }
@@ -799,7 +838,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions handwriting recognition or per-field confidence scores for uncertain extractions. Structured extraction with bounding-box citations and Track Changes extraction of comments from scans are related features, but neither covers recognizing handwritten fields or flagging low-confidence results. This is a fair question for a document OCR product, so the verdict is none rather than na.",
+    "rationale": "Datalab documents general document conversion, schema-based field extraction with bounding-box citations, and redline/comment extraction from scans. None of the evidence mentions handwriting recognition or confidence flags for uncertain extractions. Bounding-box citations and track-changes extraction are adjacent features, not handwritten-field recognition with uncertainty scoring.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -814,9 +853,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Datalab documents that size limits exist and offers a page_range parameter so oversized documents can be processed in segments. That is a product-native path for large inputs, but it means the user must split and orchestrate thousand-page or multi-gigabyte jobs themselves rather than having them processed reliably end-to-end. missing for 10: the actual page/file-size limits, native handling of thousand-page or multi-GB files in a single job, documented timeout behavior or guarantees, explicit protection against silent truncation, and independent or hands-on corroboration at large scale.",
+    "rationale": "Datalab documents explicit processing limits and tells users to split larger documents with the page_range parameter, so the product's own answer to oversized files is manual chunking rather than native handling. Async completion webhooks reduce polling, but nothing shows thousand-page or multi-gigabyte files completing reliably. missing for 10: native handling of thousand-page and multi-gigabyte files without manual segmentation, the actual page and file-size limits, documented timeout behavior, guarantees against silent truncation, independent or hands-on corroboration on very large files.",
     "evidenceIds": [
-      "datalab-docs-30"
+      "datalab-docs-30",
+      "datalab-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -826,6 +866,10 @@
         {
           "evidenceId": "datalab-docs-30",
           "quote": "For documents exceeding these limits, use the page_range parameter to process in segments"
+        },
+        {
+          "evidenceId": "datalab-docs-8",
+          "quote": "Webhooks provide real-time notifications when your document processing jobs complete, eliminating the need for continuous polling."
         }
       ]
     }
@@ -836,14 +880,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Datalab documents conversion of PDFs and other documents into Markdown, JSON, HTML, or chunks, which suits LLM and RAG ingestion. Nothing in the evidence shows it strips repeated headers, footers, or other page furniture. Community hands-on reports also describe intermingled columns and garbled tables in tricky layouts. Missing for 10: documented removal of headers, footers and page furniture; documented LLM-oriented cleanliness of output; independent corroboration of clean output on complex layouts.",
+    "rationale": "Datalab documents converting PDFs and other documents into Markdown, JSON, or chunks as machine-readable output, which covers the core of the story: clean structured output suitable for LLM pipelines. Nothing in the evidence shows that repeated headers, footers, page numbers or other page furniture are removed. Community reports of intermingled columns and messed-up tables concern layout accuracy rather than noise stripping, so they do not create a dispute. Missing for 10: documented removal of headers/footers/page furniture, explicit LLM-oriented output design docs, independent corroboration of output cleanliness.",
     "evidenceIds": [
       "datalab-docs-31",
       "datalab-docs-22",
       "datalab-docs-51",
-      "datalab-docs-52",
-      "datalab-comm-2",
-      "datalab-comm-3"
+      "datalab-docs-52"
     ],
     "support": {
       "relation": "direct",
@@ -871,7 +913,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a CLI processing-mode flag (`--mode accurate`) and webhooks for job completion, which implies async job handling. Nothing documents a fast synchronous mode that returns results in seconds, and no per-mode latency figures are published. Forge's \"see results instantly\" describes the in-app playground UI, not a synchronous API mode, so it is an adjacent feature and earns no credit.",
+    "rationale": "The evidence shows processing modes exist (the CLI's `--mode accurate`) and that async jobs report completion via webhooks. Nothing documents a fast synchronous API mode that returns results in seconds, and no per-mode latency figures are published. Forge's 'see results instantly' describes the UI playground, not a synchronous API mode, so it is an adjacent feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -886,7 +928,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Marker's GitHub README says it converts documents \"in all languages\", which is a first-party multilingual claim. Nothing in the pack addresses CJK or right-to-left scripts, or shows fidelity matching English. missing for 10: explicit CJK support documentation, right-to-left script handling, multilingual accuracy benchmarks showing parity with English, independent or hands-on corroboration on non-English documents.",
+    "rationale": "The only on-topic evidence is the Marker GitHub claim that it converts files \"in all languages\". That is a first-party statement of multilingual parsing, but it gives no detail on CJK or right-to-left scripts and no evidence of fidelity parity with English. Missing for 10: explicit CJK support documentation, right-to-left script handling (bidi ordering, layout), multilingual accuracy benchmarks showing parity with English, independent or hands-on corroboration on non-English documents.",
     "evidenceIds": [
       "datalab-gh-1"
     ],
@@ -908,21 +950,20 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Datalab's API and SDK cover the core processing features also offered in the Forge UI: conversion, structured extraction, segmentation, form filling, track-changes DOCX creation, pipelines, file management, agent processors and schema generation. However, nothing documents full UI parity, and account controls such as two-factor authentication are described only as dashboard actions; the OpenAPI spec probe also returned 404. missing for 10: an explicit API/UI parity statement, API coverage of account, team and security settings (e.g. 2FA, team policies), a published machine-readable OpenAPI spec, and independent corroboration of parity.",
+    "rationale": "Datalab's API and SDK cover the document capabilities shown in the UI: conversion, structured extraction, segmentation, form filling, track changes, pipelines, file management and agent processors. A published OpenAPI 3.1 spec backs this up. But no documentation claims API–UI parity, and account functions such as enabling 2FA are documented only through the dashboard. missing for 10: explicit API/UI parity statement, API coverage of account/team/security settings (e.g., 2FA, team policies), independent or hands-on corroboration of parity.",
     "evidenceIds": [
       "datalab-docs-2",
       "datalab-docs-31",
       "datalab-docs-32",
       "datalab-docs-33",
-      "datalab-docs-47",
       "datalab-docs-39",
-      "datalab-docs-38",
-      "datalab-docs-37",
       "datalab-docs-40",
-      "datalab-docs-41",
+      "datalab-docs-47",
+      "datalab-docs-37",
+      "datalab-docs-38",
       "datalab-docs-15",
       "datalab-docs-11",
-      "datalab-probe-2"
+      "datalab-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -934,24 +975,20 @@
           "quote": "The Datalab Python SDK provides a simple interface for document conversion, pipelines, structured extraction, form filling, and file management."
         },
         {
-          "evidenceId": "datalab-docs-33",
-          "quote": "Segment a document into sections using a schema. Returns page ranges for each identified segment."
-        },
-        {
-          "evidenceId": "datalab-docs-47",
-          "quote": "The form filling API lets you programmatically fill forms in PDFs and images."
-        },
-        {
           "evidenceId": "datalab-docs-39",
           "quote": "Create a DOCX document from markdown with track changes support."
+        },
+        {
+          "evidenceId": "datalab-docs-33",
+          "quote": "Segment a document into sections using a schema. Returns page ranges for each identified segment."
         },
         {
           "evidenceId": "datalab-docs-40",
           "quote": "Run a published agent processor on a document."
         },
         {
-          "evidenceId": "datalab-docs-41",
-          "quote": "For a given file, generate potential extraction schemas."
+          "evidenceId": "datalab-openapi-spec-20261106",
+          "quote": "Datalab serves its OpenAPI 3.1.0 document (info title \"Datalab API\") from its main domain"
         }
       ]
     }
@@ -962,7 +999,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Datalab returns its conversion results as Markdown, HTML, or JSON, and that it stores files. That is the product's core processing output, not a documented way to export all account data (stored files, pipeline configurations, checkpoints, history) before leaving. Open-source models and on-prem deployment are adjacent exit options, not a data-export capability, so no credit applies.",
+    "rationale": "The evidence shows Datalab returns per-request conversion outputs in open formats (Markdown, HTML, JSON) and keeps its core models open source. Neither is a documented account-level export of all user data: stored files, pipelines, extraction schemas, or job history. Per-call outputs and self-hostable open-source models are adjacent features, not a 'take all your data and leave' capability.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -977,11 +1014,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datalab's own docs say its core engines Chandra, Marker, and Surya \"remain free open source,\" and Marker has a public GitHub repo under datalab-to that community users have run directly. The hosted platform itself (API, pipelines, Forge, on-prem containers) is presented as a paid, Enterprise-gated product with no source availability shown. Missing for 10: a named license (e.g., which OSI license and any commercial-use restrictions), evidence that the hosted platform/SDK source is open, and independent confirmation of licensing terms.",
+    "rationale": "Datalab's docs state that its core engines (Chandra, Marker, Surya) 'remain free open source', and Marker has a public GitHub repository, so some of the product's source is readable. However, the hosted platform (pipelines, form filling, track changes, on-prem containers) is shown only as a paid or enterprise offering, and no specific license is named. missing for 10: named license terms (e.g., OSI license identification), evidence that the platform/API source beyond the core libraries is open, independent corroboration of the licensing.",
     "evidenceIds": [
       "datalab-supp-1",
-      "datalab-gh-1",
-      "datalab-comm-1"
+      "datalab-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -1005,7 +1041,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Datalab documents first-party on-prem deployment: a container, a Helm chart for Kubernetes that has received version updates, and an air-gapped Enterprise option. However, running its models on your own infrastructure requires an Enterprise contract, and only the underlying Marker, Chandra and Surya projects are free open source. missing for 10: self-hosting without an Enterprise contract, documentation that platform features such as pipelines, extraction and webhooks are included in the on-prem build, independent or hands-on corroboration of an on-prem deployment.",
+    "rationale": "Datalab documents an on-prem container with a Helm chart for Kubernetes, including a lightweight surya-us container type, so its models can run on customer-controlled infrastructure. That route requires an Enterprise contract. The free self-hostable path is the open-source Marker, Chandra and Surya engines, not the full platform (pipelines, form filling, webhooks). missing for 10: self-hosting without an Enterprise contract, documentation that the on-prem deployment covers the full platform feature set, independent or hands-on corroboration of an on-prem deployment.",
     "evidenceIds": [
       "datalab-docs-13",
       "datalab-docs-27",
@@ -1029,8 +1065,8 @@
           "quote": "A Helm chart is available for deploying the container on Kubernetes clusters."
         },
         {
-          "evidenceId": "datalab-docs-50",
-          "quote": "On-premises Helm chart updated to v1.2.0 with refreshed container images."
+          "evidenceId": "datalab-docs-28",
+          "quote": "New surya-us on-premises container type — a lightweight Chandra-compatible container"
         },
         {
           "evidenceId": "datalab-supp-1",
@@ -1045,7 +1081,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Datalab documents an in-app web playground, Forge at /app/playground, where you can upload a document and see results instantly before writing code, with no API key required. The changelog also shows Track Changes extraction previewable in the Playground. However, the docs do not explicitly show schema-based structured extraction (as distinct from parsing) running in the playground, and there is no hands-on corroboration. Missing for 10: explicit evidence that structured extract results can be previewed in Forge, documentation of drag-and-drop upload, independent or hands-on corroboration of the playground experience.",
+    "rationale": "Datalab's docs say you can upload a document to its web playground, Forge (/app/playground), and see results instantly before writing code, with no API key required. The changelog also confirms you can preview Track Changes extraction results in the Playground UI. However, the evidence does not explicitly show schema-based structured extraction or drag-and-drop upload in the playground, so coverage is partial. missing for 10: explicit evidence of structured/schema extraction results in Forge, drag-and-drop upload documentation, independent or hands-on corroboration of the playground experience",
     "evidenceIds": [
       "datalab-docs-9",
       "datalab-docs-23",
@@ -1078,7 +1114,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Datalab's hosted API shows no region or residency selector. Data location can only be controlled through its Enterprise on-prem option, which runs its models on customer-controlled (including air-gapped) infrastructure and is deployable via a Helm chart. That is a first-party route to residency, but it is gated behind an Enterprise contract and self-hosting. Missing for 10: region selection for the hosted cloud service, documented data-residency or storage-location guarantees for hosted file storage, and independent corroboration.",
+    "rationale": "Datalab documents no region or residency selector for its hosted API. Its own Enterprise on-prem offering lets customers run its models on infrastructure they control, with a container, a Helm chart and air-gapped deployment, which gives data-location control but only through a self-hosted Enterprise contract. Missing for 10: hosted-cloud region/residency selection, documentation of where hosted data is stored, and availability below the Enterprise tier.",
     "evidenceIds": [
       "datalab-docs-13",
       "datalab-supp-1",
@@ -1093,10 +1129,6 @@
         {
           "evidenceId": "datalab-docs-13",
           "quote": "Customers can run our models on infrastructure they control with an Enterprise contract."
-        },
-        {
-          "evidenceId": "datalab-supp-1",
-          "quote": "Require data privacy/operate in highly-regulated environments"
         },
         {
           "evidenceId": "datalab-supp-2",
@@ -1115,10 +1147,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence states whether customer documents are used to train Datalab's models, and no training opt-out or no-training policy is documented. The Enterprise on-prem/air-gapped deployment and the Team-plan BAA/DPA are general data-privacy options. Neither is a documented control that keeps data out of model training, so they earn no credit for this story.",
+    "rationale": "The evidence pack has no Datalab statement, policy, or setting about whether customer documents are used to train models, and no opt-out control. The nearest items are adjacent: a paid on-prem/air-gapped Enterprise deployment aimed at data-privacy needs, and a BAA/DPA on the Team plan. Neither documents a no-training commitment or opt-out.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
       "citations": []
@@ -1130,7 +1162,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no retention settings, retention periods, or delete endpoints for uploaded files, results, or checkpoints. File storage (docs-37) and saved checkpoints (docs-29) show that data is kept, but not that users can control or delete it. On-prem deployment and BAA/DPA offerings are adjacent privacy measures, not user-facing retention or deletion controls.",
+    "rationale": "The evidence pack has no documented retention period, auto-deletion, or user-triggered deletion of uploaded files, checkpoints, or results. File storage (docs-37) and checkpoint saving (docs-29) show that data is retained, but nothing shows a control over how long it is kept or how to delete it. On-prem deployment and the BAA/DPA on the Team plan are adjacent privacy options, not product retention or deletion controls.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1145,7 +1177,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry and usage-tracking opt-out is a fair question for a SaaS document API with an SDK and CLI, but nothing in the evidence documents a telemetry setting, opt-out flag, or usage-tracking control. On-prem and air-gapped Enterprise deployment and BAA/DPA terms are adjacent privacy features, not a documented telemetry opt-out, so they earn no credit.",
+    "rationale": "Datalab is a document-processing SaaS with an SDK, a CLI and on-prem containers, so a telemetry opt-out is a fair question for it. The evidence pack never mentions telemetry, usage tracking or any opt-out setting. Air-gapped on-prem deployment and BAA/DPA terms are related privacy features, not a user-facing opt-out control, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1158,9 +1190,9 @@
     "productId": "datalab",
     "storyId": "rag-ready-chunking",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Datalab's convert API and SDK document a first-party \"chunks\" output format alongside Markdown, HTML and JSON, so pre-chunked output is a real product capability. The evidence never describes how chunks are bounded, what metadata they carry, or whether they are sized for embedding. The separate segmentation endpoint only returns page ranges for logical sections, which is a different feature from RAG chunking. Missing for 10: documentation of semantic chunk boundaries, per-chunk metadata, embedding-ready sizing, and any independent or hands-on corroboration of chunk quality.",
+    "rationale": "Datalab's own convert API and SDK list \"chunks\" as an output format alongside Markdown, HTML, and JSON, so pre-chunked output is a first-party capability. The evidence gives no detail on how chunks are cut, what metadata they carry, or whether they are sized for embedding. The segment endpoint only returns page ranges for logical sections, which is document splitting rather than RAG chunking, so it earns no credit. missing for 10: documentation of semantic chunk boundaries, per-chunk metadata (e.g. headings, page, bbox), embedding-ready sizing controls, independent or hands-on corroboration of chunk quality",
     "evidenceIds": [
       "datalab-docs-22",
       "datalab-docs-31",
@@ -1186,13 +1218,13 @@
     "productId": "datalab",
     "storyId": "reading-order-hierarchy",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Datalab documents conversion into structured Markdown/HTML/JSON and says Marker 'handles complex layouts', which implies layout-aware parsing, but no evidence explicitly describes preserving headings, section hierarchy, or reading order. A hands-on user found output 'reasonable' but with columns intermingled in tricky cases, so reading-order fidelity is unproven. Document Segmentation only returns page ranges for multi-document splits, which is a different capability and earns no credit here. Missing for 10: explicit docs on heading/section hierarchy in output, a documented reading-order guarantee, a JSON block-tree/hierarchy schema, and independent corroboration of structure preservation on multi-column layouts.",
+    "rationale": "Datalab documents converting documents into structured, machine-readable Markdown, HTML, or JSON, and says Marker 'handles complex layouts,' which implies some structure preservation. It never explicitly documents heading hierarchy, section nesting, or reading-order guarantees. One hands-on report says Marker 'intermingled some columns in tricky cases,' a concrete reading-order flaw in edge layouts rather than a contradiction of an explicit claim. Missing for 10: explicit documentation of heading/section hierarchy in output, a documented reading-order capability, JSON block-structure details, and independent corroboration that structure survives on complex multi-column documents.",
     "evidenceIds": [
       "datalab-docs-52",
       "datalab-docs-17",
-      "datalab-docs-31",
+      "datalab-docs-51",
       "datalab-comm-2"
     ],
     "support": {
@@ -1205,12 +1237,12 @@
           "quote": "Marker handles complex layouts, tables, math, and images."
         },
         {
-          "evidenceId": "datalab-docs-17",
-          "quote": "Parse PDFs, Word docs, and spreadsheets into Markdown, HTML, or JSON"
+          "evidenceId": "datalab-docs-51",
+          "quote": "Datalab provides document intelligence APIs to convert PDFs, spreadsheets, and images into structured, machine-readable outputs."
         },
         {
-          "evidenceId": "datalab-docs-31",
-          "quote": "Convert a PDF, image, or document to markdown, HTML, JSON, or chunks."
+          "evidenceId": "datalab-docs-17",
+          "quote": "Parse PDFs, Word docs, and spreadsheets into Markdown, HTML, or JSON"
         }
       ]
     }
@@ -1221,12 +1253,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Datalab documents converting images and scans into Markdown, HTML or JSON, and its open-source Marker handles images in all languages, so it has a direct OCR capability for scanned and photographed documents. Nothing in the evidence addresses accuracy on hard inputs. Missing for 10: documented handling of skewed or rotated pages, stamps, and low-quality or noisy scans; accuracy benchmarks on scanned or photographed documents; independent hands-on corroboration on degraded scans.",
+    "rationale": "Datalab documents its own conversion of images and scanned PDFs into machine-readable text, and mentions processing scans for redline extraction, so the core OCR capability for scanned and photographed documents exists. Nothing in the pack shows accuracy on skewed pages, stamps or low-quality scans, and no hands-on report covers scanned input. Missing for 10: documented handling of skewed or rotated pages, stamp and seal robustness, low-quality or photographed scan accuracy, independent benchmarks or hands-on corroboration on scanned documents.",
     "evidenceIds": [
       "datalab-docs-31",
       "datalab-docs-6",
-      "datalab-gh-1",
-      "datalab-docs-1"
+      "datalab-docs-51",
+      "datalab-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -1242,6 +1274,10 @@
           "quote": "Extract redlines and comments from Word documents, PDFs, and scans"
         },
         {
+          "evidenceId": "datalab-docs-51",
+          "quote": "Datalab provides document intelligence APIs to convert PDFs, spreadsheets, and images into structured, machine-readable outputs."
+        },
+        {
           "evidenceId": "datalab-gh-1",
           "quote": "Converts PDF, image, PPTX, DOCX, XLSX, HTML, EPUB files in all languages"
         }
@@ -1251,20 +1287,21 @@
   {
     "productId": "datalab",
     "storyId": "schema-driven-extraction",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Datalab documents an extract-structured-data endpoint: you provide a JSON schema and Marker parses the document and fills in that schema with extracted values. It adds citations back to source bounding boxes and can reuse checkpoints to skip re-parsing. missing for 10: explicit documentation that returned fields are validated against the schema, independent or hands-on corroboration of extraction quality.",
+    "rationale": "Datalab documents a dedicated extraction endpoint: you supply a JSON schema and Marker fills it with values extracted from the document. It adds source-bounding-box citations, checkpoint reuse, and schema generation. However, no evidence shows the returned fields are validated against the schema, and no hands-on reports corroborate it. missing for 10: documented validation/conformance guarantees of output against the supplied schema, independent or hands-on corroboration of extraction quality.",
     "evidenceIds": [
       "datalab-docs-3",
       "datalab-docs-32",
       "datalab-docs-16",
       "datalab-docs-18",
-      "datalab-docs-41"
+      "datalab-docs-41",
+      "datalab-docs-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I supply a JSON schema and get back validated structured fields extracted from the document",
       "citations": [
         {
@@ -1278,10 +1315,6 @@
         {
           "evidenceId": "datalab-docs-18",
           "quote": "Extract specific fields with citations back to source bounding boxes for auditability"
-        },
-        {
-          "evidenceId": "datalab-docs-16",
-          "quote": "Provide a file for end-to-end processing, or a checkpoint_id from a previous /convert call to skip re-parsing."
         }
       ]
     }
@@ -1292,7 +1325,7 @@
     "verdict": "disputed",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Datalab's docs claim Marker \"handles complex layouts, tables\" and outputs Markdown/HTML. A hands-on community report concretely contradicts this: on an RPG rulebook, many tables came out messed up, and the user had to fall back to ChatGPT for irregular tables. missing for 10: documented support for merged cells, nested headers and multi-page table spans, and independent corroboration that complex tables are preserved faithfully.",
+    "rationale": "Datalab's docs claim Marker \"handles complex layouts, tables\" and outputs Markdown/HTML, but a hands-on community report says many tables in an RPG rulebook came out \"messed up\", and the user had to fall back to ChatGPT for irregular tables. That is a concrete contradiction of the table-handling claim. missing for 10: documented handling of merged cells, documented handling of nested headers, documented handling of tables spanning multiple pages, independent evidence of faithful complex-table output.",
     "evidenceIds": [
       "datalab-docs-52",
       "datalab-docs-31",
@@ -1320,14 +1353,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datalab documents JSON output and schema-driven structured extraction: you supply a JSON schema and Marker fills it with extracted values, and Marker is said to handle tables. That gives a documented route to typed JSON, but no evidence shows tables specifically becoming typed rows ready for database loading, and hands-on reports describe tables and columns coming out garbled. Missing for 10: documented table-to-row/typed-column output, type validation or coercion guarantees, and independent evidence that extracted tables load without manual cleanup.",
+    "rationale": "Datalab documents JSON output from conversion and schema-driven structured extraction that fills a user-provided JSON schema, which can yield typed, loadable records. Marker is said to handle tables, but nothing documents a table-to-typed-rows path. A hands-on report found many tables 'messed up' on an irregular document, so loading without manual cleanup is not assured. Missing for 10: explicit documentation of table extraction into typed row/JSON records, type coercion or validation guarantees, and independent confirmation of clean table output on complex layouts.",
     "evidenceIds": [
       "datalab-docs-3",
       "datalab-docs-32",
-      "datalab-docs-52",
       "datalab-docs-31",
-      "datalab-comm-3",
-      "datalab-comm-2"
+      "datalab-docs-52",
+      "datalab-comm-3"
     ],
     "support": {
       "relation": "direct",
@@ -1339,12 +1371,12 @@
           "quote": "Extract specific fields from documents by providing a JSON schema. Marker parses the document and fills in your schema with extracted values."
         },
         {
-          "evidenceId": "datalab-docs-52",
-          "quote": "Marker handles complex layouts, tables, math, and images."
-        },
-        {
           "evidenceId": "datalab-docs-31",
           "quote": "Convert a PDF, image, or document to markdown, HTML, JSON, or chunks."
+        },
+        {
+          "evidenceId": "datalab-docs-52",
+          "quote": "Marker handles complex layouts, tables, math, and images."
         }
       ]
     }
@@ -1355,13 +1387,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Datalab documents an official Python SDK that covers conversion, pipelines, structured extraction, form filling, and file management, so much of the parse and extract surface is reachable from Python. Nothing in the evidence shows a TypeScript SDK, typed interfaces, SDK-level job or polling handling, or documented defaults, and the API includes endpoints not shown in the SDK. missing for 10: official TypeScript SDK, evidence of typed SDK interfaces, SDK coverage of jobs/status and of other endpoints such as segmentation, agents, and schema generation, documented sensible defaults, independent hands-on corroboration.",
+    "rationale": "Datalab documents an official Python SDK covering conversion (parse), structured extraction, pipelines, form filling and file management, plus a CLI and SDK versioning guarantees. Nothing in the evidence shows a TypeScript SDK, typed interfaces, job management through the SDK, or documented defaults. Missing for 10: an official TypeScript SDK, evidence of typed SDK interfaces, SDK coverage of jobs/polling/webhooks and segmentation, documented sensible defaults, independent hands-on corroboration.",
     "evidenceIds": [
       "datalab-docs-2",
       "datalab-docs-22",
       "datalab-docs-36",
       "datalab-docs-37",
-      "datalab-docs-38"
+      "datalab-docs-38",
+      "datalab-version-policies-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1389,14 +1422,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Datalab's docs say customers can run its models on infrastructure they control. Delivery is a container with a Helm chart for Kubernetes and an air-gapped Enterprise option, and the open-source Marker, Surya and Chandra stack can also be self-hosted for free. The managed on-prem path requires an Enterprise contract, and evidence is first-party only. Missing for 10: independent or hands-on corroboration of self-hosted deployments; documentation of feature parity (pipelines, extraction, segmentation) between on-prem and the hosted API.",
+    "rationale": "Datalab documents an on-prem offering that runs its models on customer-controlled infrastructure, including air-gapped deployment, a downloadable container, and a maintained Helm chart for Kubernetes. Its core engines (Marker, Surya, Chandra) are also free open source. This covers both the own-VPC and fully self-hosted paths, but the managed on-prem stack requires an Enterprise contract. Missing for 10: independent or hands-on corroboration of self-hosted deployments, and detailed docs on VPC networking, egress, and licensing beyond the overview and Helm/container pages.",
     "evidenceIds": [
       "datalab-docs-13",
       "datalab-supp-1",
       "datalab-supp-2",
       "datalab-docs-27",
       "datalab-docs-28",
-      "datalab-docs-50"
+      "datalab-docs-50",
+      "datalab-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -1416,12 +1450,12 @@
           "quote": "Enterprise adds running on your own infrastructure (air-gapped) with SSO."
         },
         {
-          "evidenceId": "datalab-supp-1",
-          "quote": "Require data privacy/operate in highly-regulated environments"
-        },
-        {
           "evidenceId": "datalab-docs-28",
           "quote": "New surya-us on-premises container type — a lightweight Chandra-compatible container"
+        },
+        {
+          "evidenceId": "datalab-docs-50",
+          "quote": "On-premises Helm chart updated to v1.2.0 with refreshed container images."
         }
       ]
     }
