@@ -1,17 +1,37 @@
 {
-  "hash": "d978e9babef2df32fc0164ed9711c011a652c77f69c1543192ae310ce06405f3",
+  "hash": "37dcbeed3c96d3995bc4fe80b92a1638779d1ab5300133487b1f10e42879905c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Running a SaaS invoicing product headlessly through an API or CLI is a fair question, so the axis applies. The evidence pack has no documented API, CLI, SDK or CI usage. The in-app scheduled and recurring invoices are adjacent automation features, not headless operation. The probe only shows 404s for the API docs markdown and OpenAPI paths.",
-    "evidenceIds": [],
+    "rationale": "Zoho Invoice documents a REST API that covers everything the web client does. It uses OAuth 2.0 with a permanent refresh token, which allows unattended, non-interactive automation scripts to run against it headlessly. Beyond that the evidence is thin: rate limits apply (100 requests per minute per organization), and there is no CLI, no CI-specific guidance, and probes found no OpenAPI spec. Missing for 10: an official CLI or headless runner, documented CI/pipeline integration, a published OpenAPI spec, and independent hands-on corroboration of CI usage.",
+    "evidenceIds": [
+      "zoho-invoice-docs-37",
+      "zoho-invoice-docs-40",
+      "zoho-invoice-docs-41",
+      "zoho-invoice-docs-38",
+      "zoho-invoice-docs-42",
+      "zoho-invoice-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zoho-invoice-docs-37",
+          "quote": "The Zoho Invoice API allows you to perform all the operations that you do with our web client."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-41",
+          "quote": "The `refresh_token` is permanent and will be used to regenerate new `access_token`, if the current access token is expired."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-40",
+          "quote": "Zoho REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls."
+        }
+      ]
     },
     "productId": "zoho-invoice",
     "storyId": "agentic-headless"

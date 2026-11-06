@@ -9938,31 +9938,72 @@
   {
     "productId": "zoho-invoice",
     "storyId": "agent-manages-subscriptions",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Agent access to billing is a fair axis for an invoicing product. The evidence pack documents a programmatic surface only indirectly: the probes found no OpenAPI spec and a 404 on a markdown variant of an API introduction page. Credit notes, recurring invoices and stored-card charging are described only as app features, with no API or scoped-token documentation for agents to create subscriptions, apply credits or change plans.",
-    "evidenceIds": [],
+    "rationale": "Zoho Invoice documents a REST API that can perform all web-client operations, authorized via OAuth 2.0. Its web features include applying credit notes to invoices and creating recurring invoices, so an agent could apply credits and manage recurring billing programmatically. However, the evidence shows no subscription or plan objects to create or change, and OAuth scopes are never explicitly documented. Missing for 10: native subscription creation and plan-change endpoints, documented scoped OAuth permissions for agent access, an OpenAPI spec (probe returned 404), and hands-on corroboration of agent operation.",
+    "evidenceIds": [
+      "zoho-invoice-docs-37",
+      "zoho-invoice-docs-40",
+      "zoho-invoice-docs-29",
+      "zoho-invoice-docs-16"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, an agent can operate my billing — create a subscription, apply a credit, change a plan — through a programmatic surface with scoped permissions",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zoho-invoice-docs-37",
+          "quote": "The Zoho Invoice API allows you to perform all the operations that you do with our web client."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-40",
+          "quote": "Zoho REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-29",
+          "quote": "Create a credit note and apply it to an invoice."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-16",
+          "quote": "Create recurring invoices for transactions that occur at regular intervals"
+        }
+      ]
     }
   },
   {
     "productId": "zoho-invoice",
     "storyId": "agent-reads-billing-state",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Agent access to billing state is a fair axis for an invoicing platform, but the evidence pack documents no API, MCP server, or agent-queryable interface. The API docs markdown probe returned 404, no OpenAPI spec was found, and the only llms.txt is a generic Zoho-wide overview. In-app reports and integrations with Zoho Analytics/CRM are adjacent UI features, not direct agent querying.",
-    "evidenceIds": [],
+    "rationale": "Zoho Invoice documents a REST API that it says supports every operation available in the web client, with OAuth 2.0 auth, so an agent could query invoices, customers and receivables directly. There is no agent-native interface, though: no MCP server or machine-readable OpenAPI spec was found, and specific metrics like MRR or upcoming renewals are not documented as queryable. missing for 10: official MCP server or agent tooling, published OpenAPI spec, documented endpoints for MRR, delinquency and renewal queries, hands-on corroboration of an agent answering billing questions.",
+    "evidenceIds": [
+      "zoho-invoice-docs-37",
+      "zoho-invoice-docs-40",
+      "zoho-invoice-docs-38",
+      "zoho-invoice-docs-36",
+      "zoho-invoice-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, an agent can answer questions about my billing state — MRR, delinquent accounts, upcoming renewals, a customer's invoices — by querying the platform directly",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zoho-invoice-docs-37",
+          "quote": "The Zoho Invoice API allows you to perform all the operations that you do with our web client."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-40",
+          "quote": "Zoho REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-36",
+          "quote": "Unlock insights on sales, receivables, expenses & more."
+        }
+      ]
     }
   },
   {
@@ -9971,7 +10012,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "A probe found an llms.txt at zoho.com (HTTP 200), so an agent can be pointed at a vendor-published llms.txt. It is a suite-level Zoho file, though, and nothing shows it covers Zoho Invoice specifically. The markdown version of the Invoice API docs returned 404, and every OpenAPI path probed returned 404. Missing for 10: an Invoice-specific llms.txt or evidence that the Zoho file covers Invoice, markdown or agent-oriented Invoice API docs, a machine-readable OpenAPI spec, and independent corroboration of agent use.",
+    "rationale": "A probe confirms an llms.txt file at the vendor's own domain (zoho.com/llms.txt), so an agent has an agent-oriented entry point. That file appears to be a suite-level Zoho overview, and nothing shows it covers Zoho Invoice or its API docs. The Markdown version of the Invoice API docs returned 404, and no OpenAPI spec was found at any candidate path. missing for 10: Invoice-specific llms.txt or llms-full.txt content, Markdown or agent-readable versions of the Invoice API docs, a machine-readable OpenAPI spec, and independent corroboration of agent usability.",
     "evidenceIds": [
       "zoho-invoice-probe-1",
       "zoho-invoice-probe-2",
@@ -9982,6 +10023,10 @@
       "coverage": "partial",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
+        {
+          "evidenceId": "zoho-invoice-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://www.zoho.com/llms.txt # Zoho"
+        },
         {
           "evidenceId": "zoho-invoice-probe-1",
           "quote": "Zoho offers a suite of online productivity and collaboration applications."
@@ -9995,7 +10040,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An invoicing SaaS could plausibly ship AI-generated insights, so the axis applies, but the evidence pack never mentions AI, ML, or assistant features. The only related item describes user-run customizable reports for payment-pattern insights, which is an adjacent, non-AI reporting feature and earns no credit.",
+    "rationale": "The evidence pack never mentions AI-generated insights or suggestions. The 'insights' references (docs-32, docs-36) describe conventional customizable reports, which is an adjacent feature and not AI-driven analysis. An AI insights feature is a fair axis for an invoicing SaaS, so the absence of evidence yields 'none' rather than 'na'.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10010,7 +10055,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zoho Invoice documents several of its own background automations. It can automate payment reminders, auto-send scheduled invoices, generate recurring invoices at regular intervals, auto-charge stored cards and auto-convert accepted quotes into invoices. These are fixed, built-in invoicing automations rather than a general automation or workflow builder, and the evidence shows no AI or agentic triggers or custom rule configuration. missing for 10: user-defined automation or workflow rules with custom triggers and actions, any AI or agent-driven automation, depth documentation on configuring these automations, independent or hands-on corroboration.",
+    "rationale": "Zoho Invoice documents several of its own background automations: automated payment reminders, invoices scheduled to send on a chosen date, recurring invoices at regular intervals, automatic quote-to-invoice conversion, and automatic card charging for recurring transactions. These are fixed, invoicing-specific automations rather than a general automation builder, so the 'set up automations' part of the story is only partly met. Missing for 10: a user-configurable workflow or automation-rule builder (custom triggers and actions), any AI or agent-driven autonomous behavior, and independent or hands-on corroboration.",
     "evidenceIds": [
       "zoho-invoice-docs-1",
       "zoho-invoice-docs-15",
@@ -10052,7 +10097,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a reasonable thing to ask of a SaaS invoicing product, so the axis applies. However, nothing in the evidence pack mentions an AI assistant or any way to delegate tasks to one. Scheduled sends, recurring invoices and quote-to-invoice conversion are rule-based automation, not an AI assistant, so they earn no credit.",
+    "rationale": "The evidence pack documents invoicing, rule-based automation such as scheduled and recurring invoices, and a REST API, but no built-in AI assistant users can delegate tasks to. Rule-based automation and API access are adjacent features or building blocks and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10064,16 +10109,36 @@
   {
     "productId": "zoho-invoice",
     "storyId": "agentic-headless",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Running a SaaS invoicing product headlessly through an API or CLI is a fair question, so the axis applies. The evidence pack has no documented API, CLI, SDK or CI usage. The in-app scheduled and recurring invoices are adjacent automation features, not headless operation. The probe only shows 404s for the API docs markdown and OpenAPI paths.",
-    "evidenceIds": [],
+    "rationale": "Zoho Invoice documents a REST API that covers everything the web client does. It uses OAuth 2.0 with a permanent refresh token, which allows unattended, non-interactive automation scripts to run against it headlessly. Beyond that the evidence is thin: rate limits apply (100 requests per minute per organization), and there is no CLI, no CI-specific guidance, and probes found no OpenAPI spec. Missing for 10: an official CLI or headless runner, documented CI/pipeline integration, a published OpenAPI spec, and independent hands-on corroboration of CI usage.",
+    "evidenceIds": [
+      "zoho-invoice-docs-37",
+      "zoho-invoice-docs-40",
+      "zoho-invoice-docs-41",
+      "zoho-invoice-docs-38",
+      "zoho-invoice-docs-42",
+      "zoho-invoice-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zoho-invoice-docs-37",
+          "quote": "The Zoho Invoice API allows you to perform all the operations that you do with our web client."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-41",
+          "quote": "The `refresh_token` is permanent and will be used to regenerate new `access_token`, if the current access token is expired."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-40",
+          "quote": "Zoho REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls."
+        }
+      ]
     }
   },
   {
@@ -10082,7 +10147,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice is an invoicing and billing SaaS, not an AI agent or AI host. Plugging in MCP servers so the product itself consumes their tools is an MCP-client role that falls outside this product category. Nothing in the evidence shows an in-product AI assistant or agent that could act as an MCP client, so the axis does not apply.",
+    "rationale": "Zoho Invoice is invoicing and billing SaaS, not an AI agent or AI host application, so acting as an MCP client that consumes other servers' tools is outside its product role. Nothing in the evidence shows an embedded agent or MCP client capability that would make this axis apply; the REST API, OAuth and Zoho integrations are unrelated.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10097,7 +10162,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice is a SaaS invoicing product, so an official MCP server is a fair capability to ask about. Nothing in the evidence pack mentions an MCP server or agent-connection endpoint. The probes found only a generic company llms.txt and returned 404s for markdown docs and OpenAPI specs, so the verdict is none.",
+    "rationale": "Zoho Invoice is a SaaS invoicing service, so an official MCP server is a fair question for this kind of product, but nothing in the evidence pack mentions one. The REST API with OAuth is a developer building block that could be used to construct an agent integration, not an official MCP server, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10112,7 +10177,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Natural-language operation is a fair axis for an invoicing SaaS, but the evidence pack has no AI assistant, chat interface, or natural-language command feature for Zoho Invoice. The documented features are templates, payments, reminders and recurring invoices, all operated conventionally. The zoho.com llms.txt file is documentation aimed at LLMs, not a way to run the product with natural-language commands, so it earns no credit.",
+    "rationale": "An invoicing SaaS could plausibly ship a natural-language assistant, so the axis applies. However, the evidence pack documents no natural-language command interface, chat assistant, or AI agent for Zoho Invoice. The REST API, Postman collection and Zoho-wide llms.txt are developer building blocks or adjacent features, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10127,7 +10192,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice is a SaaS invoicing product, and a product of this kind could plausibly ship an official CLI, so the axis applies. Nothing in the evidence pack mentions a command-line tool. The probes find only a generic llms.txt and 404s for the markdown docs and OpenAPI paths, none of which is a CLI.",
+    "rationale": "An official CLI is a fair question for a SaaS invoicing product, but the evidence shows no Zoho Invoice CLI. The pack documents only a REST API with OAuth and a Postman collection. Those are developer building blocks and a third-party REST client, not an official CLI, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10139,31 +10204,68 @@
   {
     "productId": "zoho-invoice",
     "storyId": "agentic-public-api",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents a public API for Zoho Invoice. The probes found no OpenAPI spec at any candidate path, and the markdown variant of the API intro page returned 404. The mention of integrations with other Zoho apps is an adjacent feature, not a documented API a user can drive.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Zoho Invoice publishes a documented v3 REST API. It claims parity with the web client, uses OAuth 2.0 with permanent refresh tokens, documents rate limits (100 requests/min per organization), and offers a downloadable Postman collection, so an AI-native user can drive the product programmatically. Missing for 10: independent or hands-on corroboration of API coverage, and a machine-readable OpenAPI spec (the probed OpenAPI paths returned 404).",
+    "evidenceIds": [
+      "zoho-invoice-docs-37",
+      "zoho-invoice-docs-38",
+      "zoho-invoice-docs-40",
+      "zoho-invoice-docs-41",
+      "zoho-invoice-docs-42",
+      "zoho-invoice-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zoho-invoice-docs-37",
+          "quote": "The Zoho Invoice API allows you to perform all the operations that you do with our web client."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-40",
+          "quote": "Zoho REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-38",
+          "quote": "You can make 100 requests per minute per organization."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-42",
+          "quote": "You can download our API collection and give it a swing."
+        }
+      ]
     }
   },
   {
     "productId": "zoho-invoice",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Issuing scoped API credentials is a fair question for a SaaS invoicing product, so the axis applies. The evidence pack never documents API credentials, OAuth scopes, or least-privilege tokens. The only security mention is two-factor authentication for user login, an adjacent control, and the API docs probe returned 404.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Zoho Invoice documents OAuth 2.0 for authorizing and authenticating API calls, so it does issue its own API credentials that an agent could use. Nothing in the evidence shows scoping or least-privilege controls, and the permanent refresh token cuts against short-lived, tightly bounded agent access. Missing for 10: documented OAuth scopes or per-module/read-only permission limits, a way to issue agent-specific credentials, credential expiry or revocation controls, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoho-invoice-docs-40",
+      "zoho-invoice-docs-41",
+      "zoho-invoice-docs-37"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zoho-invoice-docs-40",
+          "quote": "Zoho REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-41",
+          "quote": "The `refresh_token` is permanent and will be used to regenerate new `access_token`, if the current access token is expired."
+        }
+      ]
     }
   },
   {
@@ -10172,7 +10274,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice is a SaaS product, so official SDKs are a fair axis to ask about. Nothing in the evidence pack mentions an official SDK or client library. The probes found only a 404 at an API v3 docs path and no OpenAPI spec, and the native integrations with Zoho CRM and Books are adjacent features, not SDKs.",
+    "rationale": "The evidence documents a REST API with OAuth 2.0 and a downloadable Postman collection, but nothing names an official client SDK or library for any language. A raw REST API and a Postman collection are adjacent developer building blocks, not official SDKs, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10187,7 +10289,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for an invoicing SaaS, but nothing in the evidence pack documents registrable outbound HTTP callbacks for events. The only related items are adjacent: integrations with other Zoho apps, automated reminders and scheduled sending, and probes showing no OpenAPI spec and a 404 on the API docs page.",
+    "rationale": "Webhooks are a fair axis for an invoicing SaaS, so the story applies. The evidence documents a REST API with OAuth and rate limits, plus automated reminders and Zoho app integrations, but nothing describes registrable outbound HTTP callbacks for events. The API and integrations are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10199,31 +10301,57 @@
   {
     "productId": "zoho-invoice",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "An interactive API reference is a fair question for an invoicing SaaS, but the evidence pack never documents one with runnable examples or a try-it console. The probes found only a 404 for the API docs markdown path and 404s for every OpenAPI/Swagger candidate path; the marketing pages say nothing about an API explorer.",
-    "evidenceIds": [],
+    "rationale": "Zoho documents a v3 REST API reference and provides a first-party Postman collection so users can try the API, which gives runnable examples. Running them requires downloading the collection into a third-party REST client rather than using the docs page itself, and the probe found no OpenAPI spec at the tested paths. missing for 10: in-browser interactive 'try it' console in the API reference, runnable examples embedded in the docs, published OpenAPI/Swagger spec, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoho-invoice-docs-42",
+      "zoho-invoice-docs-37",
+      "zoho-invoice-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zoho-invoice-docs-42",
+          "quote": "To try out our API, you can use the Postman, a REST client. You can download our API collection and give it a swing."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-37",
+          "quote": "The Zoho Invoice API allows you to perform all the operations that you do with our web client."
+        }
+      ]
     }
   },
   {
     "productId": "zoho-invoice",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Zoho Invoice is a SaaS invoicing product, so a downloadable machine-readable API spec is a fair question. The evidence shows no such spec: every probed OpenAPI/Swagger path returned 404, and the API docs Markdown path also returned 404. The only machine-readable artifact found is a generic company-wide llms.txt, which is not an API spec.",
-    "evidenceIds": [],
+    "rationale": "Zoho Invoice's own API docs offer a downloadable Postman API collection. That collection is a machine-readable description of the REST API, a rough equivalent of an OpenAPI spec. A probe of standard OpenAPI/Swagger paths returned 404 everywhere, so no OpenAPI document was found. missing for 10: a published OpenAPI/Swagger spec file, evidence of the Postman collection's completeness and schema detail, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "zoho-invoice-docs-42",
+      "zoho-invoice-docs-37",
+      "zoho-invoice-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zoho-invoice-docs-42",
+          "quote": "You can download our API collection and give it a swing."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-37",
+          "quote": "The Zoho Invoice API allows you to perform all the operations that you do with our web client."
+        }
+      ]
     }
   },
   {
@@ -10232,7 +10360,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for an invoicing SaaS with an API, but nothing in the evidence documents a sandbox, test mode, or isolated non-production environment. Being able to have two organizations under one account is at most a user-side workaround, not a sandbox capability.",
+    "rationale": "A sandbox or test environment is a fair question for an invoicing SaaS with a public API, but the evidence pack never documents one. Support for up to two organizations per account and a Postman collection for trying the API are adjacent features or user workarounds, not an isolated sandbox that keeps tests away from production data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10244,16 +10372,28 @@
   {
     "productId": "zoho-invoice",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "API versioning and deprecation policy is a fair question for a SaaS invoicing product, but the evidence pack contains no documentation of a versioned API or any deprecation policy. The only hint is a probe URL containing '/api/v3/', and that URL returned HTTP 404, so it is not affirmative evidence. The OpenAPI probes also all returned 404.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The Zoho Invoice API docs are served under a versioned path (/api/v3/), so the API is versioned, but versioning is shown only by the URL. Nothing in the pack documents a deprecation policy, sunset timelines, or version-change guarantees. missing for 10: a documented deprecation policy, explicit versioning documentation (version lifecycle, supported versions, changelog), and independent corroboration.",
+    "evidenceIds": [
+      "zoho-invoice-docs-37",
+      "zoho-invoice-docs-40"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zoho-invoice-docs-37",
+          "quote": "The Zoho Invoice API allows you to perform all the operations that you do with our web client."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-40",
+          "quote": "Zoho REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls."
+        }
+      ]
     }
   },
   {
@@ -10262,7 +10402,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for an invoicing SaaS, but the evidence pack never documents acting on many invoices, customers or items at once. Recurring invoices, scheduled sending and one-click expense conversion are automation features, not bulk operations, and earn no credit here.",
+    "rationale": "Nothing in the evidence documents bulk actions, such as bulk-sending, bulk-updating, or bulk-deleting many invoices or records at once, in the UI or via bulk API endpoints. Recurring invoices and scheduled sending automate repeated one-item creation on a schedule, which is not a bulk operation across many items. The statement that the API can do everything the web client does is a developer building block with no bulk capability documented, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10277,7 +10417,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Zoho Invoice documents built-in event-triggered automations: accepting a quote can automatically convert it to an invoice and send it, and payment reminders can be automated. There is no evidence of a general user-defined rule or workflow engine with custom triggers, conditions and actions. Scheduled and recurring invoices are time-based, not event-based, so they do not count toward this story. Missing for 10: user-definable workflow rules with custom triggers/conditions, configurable action types (e.g., field updates, webhooks, custom functions), documentation of rule configuration depth, independent or hands-on corroboration.",
+    "rationale": "Zoho Invoice documents a few built-in automations. Accepting a quote can automatically convert it to an invoice and send it, and payment reminders can be automated. These are fixed event-driven behaviors, not a documented engine where users define their own trigger→action rules. Scheduled and recurring invoices are time-based, not event-triggered, so they do not count toward this story. Missing for 10: a user-definable workflow rules engine (custom triggers, conditions and actions), configuration docs for reminder rules, and independent or hands-on corroboration.",
     "evidenceIds": [
       "zoho-invoice-docs-20",
       "zoho-invoice-docs-1"
@@ -10304,12 +10444,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zoho Invoice has its own recurring automation: recurring invoices generated at regular intervals, automatic charges for recurring transactions, and automated payment reminders. This is limited to invoicing tasks, not general-purpose recurring jobs or workflows. Scheduling an invoice for a chosen date is a one-off action, not a recurring schedule, so it adds little here. missing for 10: general-purpose recurring job/workflow scheduling beyond invoices, documentation of schedule configuration (intervals, triggers, API control), independent or hands-on corroboration.",
+    "rationale": "Zoho Invoice's own documentation describes recurring invoices that generate at regular intervals, automatic charging for recurring transactions, and automated payment reminders, so it ships recurring scheduled jobs for invoicing tasks. It does not document general scheduling of arbitrary jobs or workflows. Scheduled sending of an invoice on a chosen date (docs-15) is a one-off action, not a recurring schedule, so it adds little here. Missing for 10: general-purpose recurring workflow or job scheduling beyond invoices and reminders, schedule configuration details (intervals, cron-like control, API-driven scheduling), and independent or hands-on corroboration.",
     "evidenceIds": [
       "zoho-invoice-docs-16",
       "zoho-invoice-docs-26",
-      "zoho-invoice-docs-1",
-      "zoho-invoice-docs-15"
+      "zoho-invoice-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -10337,7 +10476,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice documents automations such as payment reminders, scheduled invoice sending, recurring invoices and quote-to-invoice conversion, so the axis applies. However, nothing in the evidence shows versioning, review/approval of changes, or rollback for those automation rules. The approval mentioned for quotes is customer quote acceptance, an adjacent feature rather than review of automations.",
+    "rationale": "Zoho Invoice does ship automations, such as payment reminders, recurring invoices, scheduled sending and quote-to-invoice conversion, so this axis applies. However, nothing in the evidence describes versioning, review history, diffing or rollback of those automation configurations. Being able to create automations is a different capability from managing their versions, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10352,10 +10491,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Zoho Invoice documents recurring invoices at regular intervals, which is a recurring schedule, and separately lets you schedule an invoice to send on a chosen date, which is a one-off action. Together these give basic cycle and date control, but nothing in the evidence addresses billing anchors as such. missing for 10: calendar vs anniversary billing anchor selection, alignment or co-terming across a customer's multiple subscriptions, explicit control over recurring invoice generation dates or anchor days, proration on anchor changes, independent corroboration.",
+    "rationale": "Zoho Invoice documents recurring invoices at regular intervals and scheduling invoices to send on a chosen date. That gives basic control over billing cycles and custom invoice dates, but nothing covers anchor semantics. missing for 10: calendar vs anniversary billing choice, alignment of billing dates across a customer's multiple subscriptions, proration or anchor-reset controls, in-depth docs, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "zoho-invoice-docs-16",
-      "zoho-invoice-docs-15"
+      "zoho-invoice-docs-15",
+      "zoho-invoice-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -10364,7 +10503,7 @@
       "citations": [
         {
           "evidenceId": "zoho-invoice-docs-16",
-          "quote": "Create recurring invoices for transactions that occur at regular intervals, so you don't have to create them individually every time."
+          "quote": "Create recurring invoices for transactions that occur at regular intervals"
         },
         {
           "evidenceId": "zoho-invoice-docs-15",
@@ -10377,9 +10516,9 @@
     "productId": "zoho-invoice",
     "storyId": "compliant-invoice-generation",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zoho Invoice documents tax-compliant invoices, credit notes applied to invoices, customizable payment receipts, custom fields, and automatic delivery through scheduled and recurring invoices. Sequential numbering and memos are not evidenced, and automatic delivery is only shown for invoices. missing for 10: sequential numbering evidence, memo/notes field evidence, automatic delivery of credit notes and receipts, independent or hands-on corroboration.",
+    "rationale": "Zoho Invoice documents tax-compliant invoices, credit notes, customizable payment receipts, custom fields, and invoices sent automatically on a scheduled date or on a recurring basis. Sequential numbering and memos are not evidenced, and automatic delivery is shown only for invoices, not for credit notes or receipts. Missing for 10: sequential/gapless numbering, memo/notes fields, automatic delivery of credit notes and receipts, independent corroboration.",
     "evidenceIds": [
       "zoho-invoice-docs-1",
       "zoho-invoice-docs-29",
@@ -10412,10 +10551,6 @@
         {
           "evidenceId": "zoho-invoice-docs-15",
           "quote": "Zoho Invoice lets you schedule your invoices to be automatically sent to your customers on the date you choose."
-        },
-        {
-          "evidenceId": "zoho-invoice-docs-16",
-          "quote": "Create recurring invoices for transactions that occur at regular intervals"
         }
       ]
     }
@@ -10425,8 +10560,8 @@
     "storyId": "dunning-comms-automation",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Zoho Invoice documents its own automated payment reminders, which is the core of a dunning sequence. The pack gives no detail on configuring reminder sequences, and branded templates are documented for invoices rather than reminder emails. missing for 10: configurable multi-step dunning sequence details, branded reminder email templates, in-app banners, grace periods, final-state rules (cancel vs unpaid), independent corroboration.",
+    "confidence": "low",
+    "rationale": "Zoho Invoice documents only that it can \"automate payment reminders\", which covers the core of automated dunning emails. No evidence shows configurable multi-step sequences, branded reminder emails (branding is documented for invoice templates only), in-app banners, grace periods, or final-state rules such as cancel vs unpaid. Missing for 10: configurable multi-step dunning sequences, branded reminder email templates, in-app/portal banners, grace-period settings, final-state cancel vs unpaid rules, independent corroboration.",
     "evidenceIds": [
       "zoho-invoice-docs-1"
     ],
@@ -10448,10 +10583,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Exporting billing data and porting stored payment methods is a fair question for an invoicing and billing product, so the axis applies. The pack shows Zoho Invoice stores customer card details and can save individual invoices as PDFs, but nothing documents a bulk data export of invoices, subscriptions, or usage records, or any way to migrate stored payment methods to another provider. Per-invoice PDF saving is an adjacent feature, not a portability export.",
+    "rationale": "The evidence pack documents no data-export or offboarding feature: no bulk export of invoices, subscriptions or usage records, and no way to port stored card or payment-method data to another provider. Saving individual invoices as PDF and a general-purpose API that mirrors web-client operations are only adjacent building blocks, not a documented portability capability. Storing customer cards for recurring charges is documented, but nothing shows those cards can be moved out.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a finance lead, I can export every subscription, invoice, and usage record — and port stored payment methods out to another provider — if I choose to leave",
       "citations": []
@@ -10463,7 +10598,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Zoho Invoice documents a first-party integration with Zoho Books, which is a general ledger. That gives it a plausible but thinly evidenced path for syncing invoices and payments to an accounting system. The evidence is a single line and does not say what syncs, how, or whether it covers recognition entries. Missing for 10: documented sync of invoices, payments and revenue-recognition entries; integrations with QuickBooks, Xero or NetSuite; sync behavior and mapping details; independent or hands-on corroboration.",
+    "rationale": "The only evidence is a single pricing-page line saying Zoho Invoice integrates with Zoho Books, a general-ledger accounting product. That counts as a thin first-party GL integration, but nothing documents what syncs (invoices, payments, recognition entries) or whether QuickBooks, Xero or NetSuite are supported. The general-purpose REST API is only a developer building block and earns no credit. missing for 10: documented sync of invoices and payments to the GL, revenue-recognition entry sync, QuickBooks/Xero/NetSuite connectors, sync depth/frequency details, independent corroboration.",
     "evidenceIds": [
       "zoho-invoice-docs-10"
     ],
@@ -10485,7 +10620,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice is an invoicing and billing product, so configurable pricing models are a fair axis to judge it on. The evidence pack documents only recurring invoices, credit notes and billable-expense conversion. Nothing shows tiered, volume, graduated, per-unit or hybrid subscription-plus-usage pricing, nor commitments or overage. Credit notes are an adjacent feature, not usage credits.",
+    "rationale": "Zoho Invoice is an invoicing product, so the pricing-model axis applies. The evidence only shows recurring invoices, credit notes applied to invoices, and billable expenses or mileage. Nothing documents tiered, volume, graduated, per-unit, or hybrid subscription-plus-usage pricing, nor prepaid credits, commitments, or overage handling; recurring invoices and credit notes are adjacent features, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10500,7 +10635,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice is a billing product with recurring invoices and stored-card auto-charging, so a subscription-lifecycle webhook story is a fair question for it. However, the evidence pack documents no registrable outbound webhooks or events for renewal, upgrade, payment failure, or cancellation. The CRM and Books integrations and the payment reminders are adjacent features, not programmatic event delivery.",
+    "rationale": "Subscription-lifecycle webhooks are a fair question for an invoicing product that offers recurring invoices and stored-card auto-charging, so the axis applies. However, the evidence pack documents no registrable webhooks or events for renewal, upgrade, payment failure or cancellation. The REST API and recurring-invoice features are building blocks, not outbound event callbacks, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10515,7 +10650,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not mention multi-currency invoicing, per-currency price lists, exchange rates, or home-currency consolidated reporting. Related items such as 10+ language support, worldwide payment gateways and generic payment-pattern reports are adjacent features and do not show this capability. The axis clearly applies to an invoicing product, so the lack of evidence yields none.",
+    "rationale": "Multi-currency billing is a fair question for an invoicing product, so the axis applies. However, nothing in the evidence pack covers foreign-currency invoicing, per-currency price lists, exchange rates, or home-currency consolidated reporting. Support for 10+ languages, worldwide payment gateways, and general payment-pattern reports are adjacent features and do not deliver this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10527,16 +10662,35 @@
   {
     "productId": "zoho-invoice",
     "storyId": "openness-api-parity",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents Zoho Invoice's API coverage, let alone parity with the UI's features (invoices, quotes, recurring billing, payments, reports, etc.). Probe-2 only shows that a Markdown version of an API v3 introduction path returned 404. The OpenAPI probes also failed, and the integrations claims (CRM, Books) are adjacent features that do not establish API parity.",
-    "evidenceIds": [],
+    "rationale": "Zoho's own API documentation explicitly claims parity: the Invoice API lets you perform all the operations you can do in the web client. It is backed by OAuth 2.0 auth, multi-organization support and a downloadable Postman collection. The only evidence of parity is that vendor statement; probes found no machine-readable OpenAPI spec, and the 100 requests/minute limit constrains bulk use. Missing for 10: independent or hands-on verification of UI-to-API parity, endpoint-level evidence for features like templates and reports, a published OpenAPI spec.",
+    "evidenceIds": [
+      "zoho-invoice-docs-37",
+      "zoho-invoice-docs-40",
+      "zoho-invoice-docs-42",
+      "zoho-invoice-docs-38",
+      "zoho-invoice-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zoho-invoice-docs-37",
+          "quote": "The Zoho Invoice API allows you to perform all the operations that you do with our web client."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-40",
+          "quote": "Zoho REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls."
+        },
+        {
+          "evidenceId": "zoho-invoice-docs-42",
+          "quote": "You can download our API collection and give it a swing."
+        }
+      ]
     }
   },
   {
@@ -10545,7 +10699,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a bulk data export, an open-format download (CSV, JSON, XML), or an account-exit path for Zoho Invoice. Saving individual invoices as PDF and running reports are adjacent document features, not a full data export. The API probes returned 404s and show no export capability.",
+    "rationale": "The evidence pack documents no bulk data export, backup, or account-exit feature in open formats such as CSV, JSON, or XML. Saving individual invoices as PDF is a per-document delivery feature, not a full data export. The API that mirrors web-client operations is a developer building block a user could use to build their own export, not a first-party export capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10560,7 +10714,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether invoicing software publishes its source under an open license is a fair question for this product category, since open-source invoicing tools exist. Nothing in the evidence pack shows Zoho Invoice's source is available under any open license. The pack covers only hosted SaaS features, an llms.txt file, and failed OpenAPI and markdown-docs probes, none of which concern source availability.",
+    "rationale": "Open-source availability is a fair question for invoicing software, so the axis applies. Nothing in the evidence shows Zoho Invoice's source is published under an open license. The pack documents only a hosted SaaS product and a proprietary REST API, which does not count as source access.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10575,7 +10729,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for invoicing software, since some invoicing products ship self-hostable editions, so the axis applies. Nothing in the evidence pack documents a self-hosted or on-premises deployment of Zoho Invoice. The materials only describe a cloud account you set up online and use across devices.",
+    "rationale": "Self-hosting is a fair question for invoicing software, but the evidence pack shows Zoho Invoice only as a cloud SaaS with web, device and API access. Nothing documents a self-hosted, on-premise or downloadable deployment of the core product, so the axis applies and support is absent.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10590,7 +10744,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice stores customer cards to charge recurring transactions automatically, so card lifecycle management is a fair question for it. The evidence shows no network account updater, no backup payment methods, and no hosted update-payment page. Card storage and the transaction-viewing customer portal are adjacent features, not self-updating cards.",
+    "rationale": "Zoho Invoice can store customer cards to auto-charge recurring transactions and offers a customer portal. However, nothing in the pack documents a network account updater, backup or fallback payment methods, or a hosted page where customers update an expiring or replaced card. Card storage and the portal are adjacent features, not this capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10605,7 +10759,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Entitlements are a fair question for a billing and invoicing product, so the axis applies. However, the evidence pack only covers invoicing, payments, recurring invoices and templates. Nothing documents features or limits modeled as plan entitlements, or a runtime API/SDK to check a customer's entitlements.",
+    "rationale": "Zoho Invoice is billing and invoicing software, so modeling plan entitlements and checking them at runtime is a fair question to ask of it. The evidence pack documents a general REST API that mirrors web-client operations, plus recurring invoices and stored cards, but nothing about entitlements, feature limits attached to plans, or a runtime entitlement-check endpoint or SDK. A generic API is a developer building block, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10620,7 +10774,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a data region or residency is a fair question for a cloud invoicing SaaS, so the axis applies. However, nothing in the evidence pack mentions selecting a storage region, data center location, or residency controls. The security claims (PCI-DSS compliance, SSL encryption, two-factor authentication) are adjacent controls and do not address where data is stored.",
+    "rationale": "Choosing a data storage region is a fair question for a cloud invoicing SaaS, so the axis applies. The evidence pack never mentions data centers, region selection, or residency controls. The security claims (PCI-DSS, SSL, 2FA) are adjacent controls and do not establish where data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10635,7 +10789,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice is a SaaS app that handles customer financial data, so an AI-training opt-out is a fair privacy question for it. The evidence pack only covers invoicing features and general security (PCI-DSS, SSL, 2FA). Nothing documents a policy or control that keeps user data out of AI model training.",
+    "rationale": "Zoho Invoice is a SaaS product that holds customer business data, so whether that data can be kept out of AI training is a fair privacy question. Nothing in the evidence pack addresses AI training use, opt-out controls, or a data-usage policy. The security claims (PCI-DSS compliance, SSL encryption, two-factor authentication) cover a related but different subject and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10650,7 +10804,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a SaaS invoicing product, but the evidence pack never mentions retention settings, data deletion, account or organization purge, or export-then-delete workflows. The only privacy-adjacent item covers security features (PCI-DSS, SSL encryption, two-factor authentication), which is a different capability from retention control.",
+    "rationale": "Data retention and deletion controls are a fair question for a SaaS invoicing product that stores customer and payment data, so the axis applies. The evidence pack has nothing on retention periods, account or data deletion, or purge controls. The security claims (PCI-DSS, SSL, 2FA) and the general API parity statement are adjacent and do not show this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10665,7 +10819,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry or usage tracking is a fair privacy question for a SaaS invoicing product, so the axis applies. The evidence pack never mentions a telemetry, analytics, or tracking opt-out. The security claims (PCI-DSS, SSL, 2FA) are a different capability and earn no credit.",
+    "rationale": "Opting out of telemetry or usage tracking is a fair privacy-posture question for a SaaS invoicing product, so the axis applies. The evidence pack never mentions telemetry, analytics opt-out, or tracking controls. The security claims (PCI-DSS, SSL, 2FA) are an adjacent feature, not a telemetry opt-out, and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10680,7 +10834,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Proration is a fair question for an invoicing and recurring-billing product, so the axis applies. The evidence documents only recurring invoices and manually created credit notes. Nothing shows mid-cycle upgrade or downgrade proration, partial-period calculation, or documented proration math, so credit notes are an adjacent feature at most.",
+    "rationale": "Zoho Invoice documents recurring invoices and manually created credit notes. Neither is proration: the pack has no evidence of mid-cycle upgrade or downgrade handling, partial-period calculation, or documented proration math. Proration is a fair axis for a billing and invoicing product, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10695,7 +10849,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Usage metering is a fair question for a billing and invoicing product, so the axis applies. The evidence covers invoices, recurring invoices, a customer portal for past transactions, statements and reports, but nothing on current-cycle usage metering, real-time accrued cost, or usage thresholds and alerts. The customer portal and transaction statements are adjacent features showing billed history, not live usage, so they earn no credit.",
+    "rationale": "Usage metering with real-time accrued-cost visibility and threshold alerts is a fair question for an invoicing and billing product, so the axis applies. However, the evidence only covers invoicing, recurring invoices, a customer portal of past transactions, statements and payment reports. None of these provide current-cycle usage tracking, accrued-cost views, or pre-invoice threshold alerts.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10710,7 +10864,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Revenue recognition is a fair question for a billing and invoicing product, so the axis applies. However, the evidence pack documents no ASC 606 / IFRS 15 recognition, deferred revenue schedules, or recognition reports. The only nearby items are customer payment-pattern reports and an integration with Zoho Books, which are adjacent features or other products and earn no credit.",
+    "rationale": "Revenue recognition is a fair question for an invoicing and billing product, but the evidence pack never mentions ASC 606/IFRS 15, deferred revenue schedules, or recognition reports. The documented reports cover payment patterns, sales, receivables and expenses, and the Zoho Books integration belongs to a separate product, so neither counts toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10725,10 +10879,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice has a customer portal and recurring invoices, which makes this subscription-lifecycle question fair to ask. But the evidence describes the portal only as giving clients access to their transactions. Nothing shows customers upgrading, downgrading, or cancelling plans themselves through a hosted portal or embeddable components, so the portal and recurring billing are adjacent features, not the capability.",
+    "rationale": "Zoho Invoice documents a customer portal for viewing transactions and supports recurring invoices. Nothing in the evidence shows customers can upgrade, downgrade, or cancel a subscription themselves through that portal or through embeddable components. The portal is an adjacent feature, not self-service subscription lifecycle management.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a founder, my customers can upgrade, downgrade, or cancel themselves through a hosted portal or embeddable components, without a support ticket",
       "citations": []
@@ -10740,7 +10894,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice documents automatic card charging for recurring transactions and automated payment reminders. Neither is an automatic retry of failed payments on an optimized cadence, and nothing in the evidence covers retry logic, smart scheduling, or measured churn recovery. Since dunning applies to a recurring-billing invoicing product, the lack of evidence makes this none, not na.",
+    "rationale": "Automatic retry of failed payments is a fair question for invoicing and billing software, so the axis applies. The evidence only shows automated payment reminders and stored-card auto-charging for recurring transactions. Neither documents retrying failed charges on an ML- or schedule-optimized cadence, or measuring recovered involuntary churn.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10755,7 +10909,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Subscription analytics is a fair question for a billing and invoicing product, so the axis applies. The evidence only shows generic reports on customer payment patterns and an integration with Zoho Analytics, which is the bolted-on BI approach the story rejects. Nothing in the pack shows native MRR, churn, cohort retention or LTV metrics.",
+    "rationale": "Zoho Invoice documents only general reports on payment patterns, sales, receivables and expenses. Nothing in the evidence shows MRR, churn, cohort retention or LTV metrics computed natively from billing data. The Zoho Analytics integration is the kind of bolted-on BI the story rules out, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10770,10 +10924,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies, because subscription billing is a fair question for an invoicing and payments product. However, the evidence pack documents no API for creating, updating, pausing, or cancelling subscriptions. The only related evidence is dashboard-level recurring invoices and stored cards, which are adjacent features rather than a documented lifecycle API, and the API docs and OpenAPI probes returned 404.",
+    "rationale": "The evidence pack documents no subscription API endpoints for create, update, pause, or cancel. It offers only recurring invoices (docs-16) and a general claim that the API covers all web-client operations (docs-37). Recurring invoices are an adjacent feature, not a documented subscription lifecycle. Combining them with a generic API-parity claim does not show pause or cancel operations exist.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can create, update, pause, and cancel subscriptions through a documented API — the full lifecycle without touching a dashboard",
       "citations": []
@@ -10785,7 +10939,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice handles recurring invoices and stored cards, so a subscription-migration story fairly applies. However, the evidence pack documents no import from spreadsheets or competing platforms and no PCI-compliant card-data transfer. The general PCI-DSS compliance claim and card storage for recurring charges are adjacent features, not a migration capability.",
+    "rationale": "Migration fits an invoicing product that supports recurring invoices and stored cards, so the axis applies. However, the evidence pack documents no spreadsheet or competitor import, no subscription migration tooling, and no PCI-compliant card-data transfer. A general API, PCI-DSS compliance and card storage are only building blocks or adjacent features, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10800,7 +10954,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only relevant evidence is a single first-party marketing claim that Zoho Invoice lets you send tax-compliant invoices. That implies some native tax handling, but nothing shows how sales tax, VAT, or GST are calculated, configured, or kept correct. Missing for 10: documented per-invoice tax calculation, sales tax/VAT/GST rate configuration, tax registration handling, any tax-engine integration, and independent or hands-on corroboration.",
+    "rationale": "The only relevant evidence is Zoho Invoice's own marketing claim that it sends \"tax-compliant invoices\". That points to native tax handling on invoices, but nothing shows how sales tax, VAT or GST is calculated, or how registrations and rates are configured. missing for 10: documented sales tax/VAT/GST calculation, tax rate configuration, tax registration management, multi-jurisdiction coverage, any first-class tax integration, independent or hands-on corroboration.",
     "evidenceIds": [
       "zoho-invoice-docs-1"
     ],
@@ -10822,7 +10976,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Zoho Invoice is an invoicing and billing product, so subscription trials and promotions are a fair axis to judge. The evidence documents only recurring invoices and stored-card auto-charging, which are adjacent features. Nothing in the pack covers free trials, coupons, promotion codes, automatic trial-to-paid conversion, or trial-end notifications.",
+    "rationale": "Subscription-lifecycle features are a fair question for an invoicing and billing product, so the axis applies. The evidence only shows recurring invoices and stored-card auto-charging, which are adjacent features. Nothing documents free trials, coupons, promotion codes, trial-to-paid conversion, or trial-end notifications.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10837,7 +10991,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Usage metering is a fair question for an invoicing and billing product, so the axis applies. The evidence pack documents only invoicing, recurring invoices, time logging and billable expenses, which are adjacent features. Nothing shows a usage-event ingestion API, idempotency keys or backdated event support.",
+    "rationale": "Usage metering is a fair question for an invoicing and billing product, so the axis applies. The evidence covers invoices, recurring invoices, time logging, expenses and a general REST API limited to 100 requests per minute. It shows no usage-event ingestion endpoint, metering pipeline, idempotency keys or backdated event support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10852,7 +11006,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Plan pricing changes are a fair question for an invoicing and recurring-billing product, so the axis applies. The evidence only covers recurring invoices and stored-card charging. Nothing documents versioned plans, grandfathering existing customers at old prices, or bulk tools for moving cohorts to new prices.",
+    "rationale": "Zoho Invoice is an invoicing and billing product with recurring invoices, so subscription price management is a fair question to ask of it. However, the evidence shows no versioned plans, no grandfathering of existing subscribers, and no bulk tools for migrating cohorts to new prices. Recurring invoices and stored-card auto-charging are adjacent features, not plan versioning or migration.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
