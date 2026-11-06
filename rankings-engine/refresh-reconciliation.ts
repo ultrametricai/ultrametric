@@ -15,8 +15,8 @@ const identifier = /^[a-z0-9][a-z0-9_-]*$/
 const sha = /^[a-f0-9]{40}$/
 const Cache = z.object({ hash: z.string(), keyVersion: z.string(), verdict: VerdictSchema })
 const Ledger = z.object({
-  version: z.literal(1), arena: z.string(), identity: z.string(),
-  retained: z.array(z.object({ cell: z.string(), origin: z.string().regex(sha) }).strict()),
+  version: z.literal(2), arena: z.string(), identity: z.string(),
+  retained: z.array(z.object({ cell: z.string(), origin: z.string().regex(sha), decisionBaseline: z.string().regex(sha) }).strict()),
 }).strict()
 type Snapshot = {
   products: z.infer<typeof ProductSchema>[], stories: z.infer<typeof StorySchema>[],
@@ -148,8 +148,9 @@ export function reconcileRefresh({ arena, baseline, root = process.cwd() }: { ar
   const unsupported = new Set(unsupportedFlips(before.rows, current.rows, before.packs, current.packs).map(key))
   const retained: z.infer<typeof Ledger>['retained'] = []
   const origins = new Map<string, Snapshot>()
-  // Flatten retention provenance to an actual published model-backed ancestor. This
-  // avoids trusting a chain of sidecar assertions or rewriting a raw cache as a decision.
+  // The model origin proves the retained judgment; the decision baseline proves
+  // which evidence was already known when the raw proposal was rejected. These can
+  // differ after repeated refreshes. Both must resolve to verified Git ancestors.
   const originFor = (row: Verdict): string => {
     if (validCache(before, row)) return baseline
     const ledger = Ledger.parse(read(baseline, ledgerPath))
@@ -157,15 +158,23 @@ export function reconcileRefresh({ arena, baseline, root = process.cwd() }: { ar
         || new Set(ledger.retained.map(item => item.cell)).size !== ledger.retained.length) throw new Error('Retained baseline identity mismatch')
     const entry = ledger.retained.find(item => item.cell === key(row))
     if (!entry || entry.origin === baseline) throw new Error('Missing retained baseline origin')
-    git('merge-base', '--is-ancestor', entry.origin, baseline)
+    if (entry.decisionBaseline === baseline) throw new Error('Decision baseline must be a proper ancestor')
+    git('merge-base', '--is-ancestor', entry.decisionBaseline, baseline)
+    git('merge-base', '--is-ancestor', entry.origin, entry.decisionBaseline)
     let source = origins.get(entry.origin)
     if (!source) { source = load(entry.origin); origins.set(entry.origin, source) }
+    let comparison = origins.get(entry.decisionBaseline)
+    if (!comparison) { comparison = load(entry.decisionBaseline); origins.set(entry.decisionBaseline, comparison) }
+    const previous = comparison.rows.find(item => key(item) === key(row))
     const original = source.rows.find(item => key(item) === key(row))
     const raw = Cache.parse(before.caches[key(row)]).verdict
     if (!equal(source.products, before.products) || !equal(source.stories, before.stories)
-        || !equal(original, row) || !validCache(source, row) || !validCache(before, raw)
-        || !supportIntact(row, source.packs[row.productId], before.packs[row.productId])
-        || !unsupportedFlips([row], [raw], source.packs, before.packs).length) {
+        || !equal(comparison.products, before.products) || !equal(comparison.stories, before.stories)
+        || !equal(previous, row) || !equal(original, row) || !validCache(source, row) || !validCache(before, raw)
+        || !supportIntact(row, source.packs[row.productId], comparison.packs[row.productId])
+        || !supportIntact(row, comparison.packs[row.productId], before.packs[row.productId])
+        || validateVerdictRules(raw, before.packs[row.productId], before.stories.find(item => item.id === row.storyId))
+        || !unsupportedFlips([row], [raw], comparison.packs, before.packs).length) {
       throw new Error('Retained baseline origin does not prove this decision')
     }
     return entry.origin
@@ -182,7 +191,7 @@ export function reconcileRefresh({ arena, baseline, root = process.cwd() }: { ar
       const invalidOld = validateVerdictRules(old, current.packs[row.productId], story)
       if (invalidOld) throw new Error(`Prior verdict is invalid under current story/rubric: ${invalidOld}`)
       const origin = originFor(old)
-      retained.push({ cell, origin }); report.retained.push(cell)
+      retained.push({ cell, origin, decisionBaseline: baseline }); report.retained.push(cell)
       return old
     } catch (error) {
       report.blocked.push({ cell, reason: error instanceof Error ? error.message : String(error) })
@@ -197,7 +206,7 @@ export function reconcileRefresh({ arena, baseline, root = process.cwd() }: { ar
     report.blocked.push({ cell: `${arena}/*`, reason: String(error) })
   }
   if (report.blocked.length) throw new ReconciliationError(report)
-  const ledger: z.infer<typeof Ledger> = { version: 1, arena, identity: identity({ ...current, rows }), retained }
+  const ledger: z.infer<typeof Ledger> = { version: 2, arena, identity: identity({ ...current, rows }), retained }
   // All cells are planned and validated before either canonical output is touched.
   // A crash between writes leaves an identity mismatch, which fails closed next run.
   const write = (file: string, value: unknown) => {

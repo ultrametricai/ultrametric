@@ -40,7 +40,7 @@ describe('scheduled refresh reconciliation', { timeout: 60000 }, () => {
     expect(f.run().retained).toEqual(['vendor:story'])
     expect(f.read(`${f.dir}/verdicts.json`)).toEqual([old])
     expect(fs.readFileSync(path.join(f.root, f.cache), 'utf8')).toBe(raw)
-    expect(f.read(f.ledger).retained).toEqual([{ cell: 'vendor:story', origin: f.baseline }])
+    expect(f.read(f.ledger).retained).toEqual([{ cell: 'vendor:story', origin: f.baseline, decisionBaseline: f.baseline }])
   })
   it('reassembles raw cache proposals on repeat runs and verifies retained baselines across commits', () => {
     const f = fixture(); const pack = [evidence, { ...evidence, id: 'other', url: 'https://example.invalid/other' }]
@@ -149,6 +149,62 @@ describe('scheduled refresh reconciliation', { timeout: 60000 }, () => {
     expect(f.read(`${f.dir}/verdicts.json`)).toEqual([proposal])
     expect(fs.readFileSync(destination, 'utf8')).toBe('sentinel')
     if (kind !== 'ledger-target') expect(fs.existsSync(path.join(f.root, f.ledger))).toBe(false)
+  })
+
+  it('replays three committed refreshes against each decision baseline as proposals change known citations', () => {
+    const f = fixture(); const b = { ...evidence, id: 'b', url: 'https://example.invalid/b', excerpt: 'Install dependencies using B.' }
+    const pack = [evidence, b]
+    f.save(proposal, pack); f.run(); const first = f.commit()
+    const citingB = { ...proposal, quality: 8, evidenceIds: ['b'], support: { ...proposal.support!, citations: [{ evidenceId: 'b', quote: b.excerpt }] } }
+    f.save(citingB, pack); expect(f.run(first).retained).toEqual(['vendor:story']); const second = f.commit()
+    const raw = fs.readFileSync(path.join(f.root, f.cache), 'utf8')
+    f.save(citingB, pack); expect(f.run(second).retained).toEqual(['vendor:story']); const third = f.commit()
+    expect(f.read(f.ledger).retained).toEqual([{ cell: 'vendor:story', origin: f.baseline, decisionBaseline: second }])
+    expect(f.read(`${f.dir}/verdicts.json`)).toEqual([old])
+    expect(fs.readFileSync(path.join(f.root, f.cache), 'utf8')).toBe(raw)
+    f.save(citingB, pack); expect(f.run(third).retained).toEqual(['vendor:story'])
+  })
+
+  it.each(['missing', 'malformed', 'unknown', 'nonancestor', 'wrong-evidence', 'wrong-row', 'wrong-catalog', 'lost-support'])('rejects %s decision baselines without canonical writes', kind => {
+    const f = fixture(); const b = { ...evidence, id: 'b', url: 'https://example.invalid/b' }
+    const pack = [evidence, b]
+    f.save(proposal, pack); f.run(); const first = f.commit()
+    const citingB = { ...proposal, quality: 8, evidenceIds: ['b'], support: { ...proposal.support!, citations: [{ evidenceId: 'b', quote: b.excerpt }] } }
+    let forged = f.baseline
+    if (['nonancestor', 'wrong-row', 'wrong-catalog', 'lost-support'].includes(kind)) {
+      if (kind === 'wrong-row') f.write(`${f.dir}/verdicts.json`, [{ ...old, quality: 4 }])
+      else if (kind === 'wrong-catalog') f.write(`${f.dir}/stories.json`, [{ ...story, title: 'Wrong story' }])
+      else if (kind === 'lost-support') f.write(`${f.dir}/evidence/vendor.json`, [b])
+      else f.write('branch-only.json', {})
+      forged = f.commit()
+      // The forged ancestor is in history, but the actual decision inputs are restored.
+      // For the divergent-branch case it must not even be an ancestor of the ledger.
+      if (kind === 'nonancestor') f.git('reset', '--hard', first)
+      else f.git('checkout', first, '--', f.dir, f.cache, f.ledger)
+    }
+    f.save(citingB, pack); f.run(first)
+    const ledger = f.read(f.ledger)
+    if (kind === 'missing') delete ledger.retained[0].decisionBaseline
+    else ledger.retained[0].decisionBaseline = kind === 'malformed' ? 'HEAD' : kind === 'unknown' ? '0'.repeat(40) : forged
+    f.write(f.ledger, ledger); const baseline = f.commit(); f.save({ ...citingB, quality: 9 }, pack)
+    const before = fs.readFileSync(path.join(f.root, `${f.dir}/verdicts.json`), 'utf8')
+    expect(() => f.run(baseline)).toThrow(ReconciliationError)
+    expect(fs.readFileSync(path.join(f.root, `${f.dir}/verdicts.json`), 'utf8')).toBe(before)
+    expect(f.read(f.ledger)).toEqual(ledger)
+  })
+
+  it('rejects a decision baseline that names the retained baseline itself', () => {
+    const f = fixture(); f.save(proposal); f.run(); const retained = f.commit()
+    const ledger = f.read(f.ledger); ledger.retained[0].decisionBaseline = retained
+    f.write(f.ledger, ledger); f.git('add', '.')
+    // Git objects cannot naturally name their own SHA. A local replacement object
+    // simulates this malformed history without mocking the provenance verifier.
+    const tree = f.git('write-tree')
+    const replacement = f.git('commit-tree', tree, '-p', f.baseline, '-m', 'self-referencing fixture')
+    f.git('replace', retained, replacement); f.git('reset', '--hard', retained)
+    f.save({ ...proposal, quality: 8 })
+    expect(() => f.run(retained)).toThrow('Decision baseline must be a proper ancestor')
+    expect(f.read(`${f.dir}/verdicts.json`)).toEqual([{ ...proposal, quality: 8 }])
   })
 
 })

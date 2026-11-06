@@ -128,7 +128,10 @@ still pass through. Deliberate scoring migrations remain separate from this prod
 Raw judge caches remain raw model output. Retained canonical decisions are recorded in
 `rankings-engine/cache/refresh-retention/<arena>/decisions.json`, bound to the complete
 current inputs and an ancestor model-backed decision. Repeat runs reverify that origin;
-the sidecar alone never authorizes retaining a grade. The final committed-diff stability
+each entry separately records the decision baseline used to reject the raw proposal.
+That proper-ancestor snapshot determines which sources were already known at the time,
+so a later run does not mistake a previously introduced source for new evidence. Both
+proofs are rechecked; the sidecar alone never authorizes retaining a grade. The final committed-diff stability
 guard still runs before any remote publication.
 
 Product-scoped manual judging stops before model calls if it would overwrite an untouched
