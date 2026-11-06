@@ -174,6 +174,40 @@ describe('changed-source identities and scoped judging', () => {
   })
 })
 describe('trusted-main Git boundary', () => {
+  it.each(['candidate', 'main'])('blocks retained decisions from %s before repair writes or paid reviewer audits', async source => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'um-retained-repair-'))
+    const previous = process.cwd()
+    const git = (...args: string[]) => execFileSync('git', args, { cwd: dir, encoding: 'utf8', stdio: 'pipe' }).trim()
+    const write = (file: string, value: unknown) => {
+      const target = path.join(dir, file); fs.mkdirSync(path.dirname(target), { recursive: true })
+      fs.writeFileSync(target, JSON.stringify(value, null, 2) + '\n')
+    }
+    const fake = vi.mocked(llmJson); fake.mockReset()
+    try {
+      git('init', '-b', 'main'); git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.invalid')
+      const rows = [old, { ...old, productId: 'other' }]
+      write('open-rankings/fixture/verdicts.json', rows)
+      write('open-rankings/fixture/evidence/vendor.json', [evidence('old')])
+      write('rankings-engine/cache/judge/fixture/vendor/story.json', { verdict: source === 'main' ? { ...old, quality: 8 } : old })
+      if (source === 'main') write('rankings-engine/cache/refresh-retention/fixture/decisions.json', { retained: ['vendor:story'] })
+      git('add', '.'); git('commit', '-qm', 'trusted'); const main = git('rev-parse', 'HEAD')
+      if (source === 'candidate') {
+        write('rankings-engine/cache/judge/fixture/vendor/story.json', { verdict: { ...old, quality: 8 } })
+        write('rankings-engine/cache/refresh-retention/fixture/decisions.json', { retained: ['vendor:story'] })
+      } else write('open-rankings/fixture/evidence/vendor.json', [evidence('old'), evidence('new')])
+      git('add', '.'); git('commit', '-qm', 'proposed'); const head = git('rev-parse', 'HEAD')
+      git('checkout', '--detach', main)
+      const line = JSON.stringify(rows, null, 2).split('\n').findIndex(text => text.includes('"other"')) + 1
+      process.chdir(dir)
+      await expect(repair({ head, main, arena: 'fixture', keyed: true, findings: [{
+        id: 'other-finding', path: 'open-rankings/fixture/verdicts.json', commit: head, line,
+        body: 'Check this other product capability',
+      }] })).rejects.toThrow('fixture/vendor:story: retained producer decision needs human review')
+      expect(fake).not.toHaveBeenCalled()
+      expect(git('status', '--porcelain')).toBe('')
+    } finally { process.chdir(previous); fs.rmSync(dir, { recursive: true, force: true }) }
+  })
+
   for (const kind of ['code', 'symlink', 'unsupported-finding', 'slo-conflict']) it(`rejects ${kind} changes before executing PR code or writing repairs`, async () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'um-repair-guard-'))
     const previous = process.cwd()

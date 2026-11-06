@@ -117,6 +117,32 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 ## Repair and recheck
 
+The scheduled story producer pins its starting main commit. After judging, before claims
+and derivation, `reconcile-refresh.ts` applies the existing stability policy to proposed
+grades. An unsupported flip retains the complete baseline row only when its citations
+still support it under the current rubric and its origin is proven by a matching model
+cache in Git history. Changed support, missing provenance, incompatible catalogs or stale
+rubrics stop the run for review. Legitimate new-source changes and verified downgrades
+still pass through. Deliberate scoring migrations remain separate from this producer path.
+
+Raw judge caches remain raw model output. Retained canonical decisions are recorded in
+`rankings-engine/cache/refresh-retention/<arena>/decisions.json`, bound to the complete
+current inputs and an ancestor model-backed decision. Repeat runs reverify that origin;
+the sidecar alone never authorizes retaining a grade. The final committed-diff stability
+guard still runs before any remote publication.
+
+Product-scoped manual judging stops before model calls if it would overwrite an untouched
+retained decision with raw cache output. Explicit whole-category rejudges and isolated
+previews keep their existing behavior. Automated PR repair also stops before writes or
+reviewer audits when the effective merged candidate contains retained decisions that differ
+from raw caches; those cases need human review until repair supports retention provenance.
+Deliberate migration and adjudication scripts are not retention-aware.
+
+Failed keyed runs save bounded, allowlisted baseline and candidate JSON, raw judge caches
+and the reconciliation report as `story-refresh-diagnostics-<run>-<attempt>`. These short-lived
+artifacts exclude crawl bodies and environment files. They are for offline diagnosis only,
+not the canonical `internal-refresh-*` receipts accepted by the merge controller.
+
 The recovery controller dispatches `refresh-repair.yml` for failing generated story-runner
 PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
 wakes recovery. Drafts and PRs whose auto-merge opt-in was removed are skipped. Recovery

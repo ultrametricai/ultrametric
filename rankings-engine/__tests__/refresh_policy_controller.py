@@ -70,6 +70,21 @@ class ProvenanceTests(unittest.TestCase):
     def test_late_generator_failure_does_not_invalidate_its_published_scan(self):
         self.proof(kind='vendor-radar',mutate=lambda d:d['run'].update(conclusion='failure'))
 
+    def test_diagnostics_never_count_as_publication_receipts(self):
+        def change(d):
+            d['artifacts']['artifacts'][0]['name'] = 'story-refresh-diagnostics-123-1'
+        with self.assertRaises(policy.MissingProvenance):
+            self.proof(mutate=change)
+
+    def test_retention_sidecar_is_story_runner_only_and_path_bounded(self):
+        path = 'rankings-engine/cache/refresh-retention/fixture/decisions.json'
+        self.assertTrue(policy.allowed_path('story-runner', path))
+        for kind in ['vendor-radar', 'vendor-radar-bringup']:
+            self.assertFalse(policy.allowed_path(kind, path))
+        for invalid in [path.replace('decisions', 'other'), path.replace('fixture/', '../'),
+                        path.replace('fixture/', 'fixture/nested/'), path + '.bak']:
+            self.assertFalse(policy.allowed_path('story-runner', invalid))
+
     def test_only_explicit_continuation_workflows_can_attest_new_heads(self):
         for path in ['refresh-repair.yml','refresh-automerge.yml']:
             def change(d):
