@@ -156,6 +156,14 @@ ITEMS = {
          'Requesty maintains a long dated changelog covering API-affecting changes (request-size limits with new error semantics, new management-endpoint parameters) including explicit field deprecations with migration paths ("`monthly_limit` is deprecated and will soon be migrated to `monthly_budget`"). The API is /v1 path-versioned; no standalone versioning policy or back-compat window is stated.'),
     ],
     ('package-managers', 'homebrew'): [
+        # Pre-audit correction: the side-effect re-roll credited openness-open-license on
+        # off-axis quotes (analytics, a formula path) because the pack carried no license
+        # row; this grounds the cell in the repository's own license statement.
+        ('homebrew-license-20261106', 'github',
+         'https://raw.githubusercontent.com/Homebrew/brew/HEAD/README.md',
+         ['Code is under the [BSD 2-clause "Simplified" License](LICENSE.txt).',
+          'Documentation is under the [Creative Commons Attribution license]'],
+         'The Homebrew/brew repository README states the licensing: "Code is under the BSD 2-clause \'Simplified\' License. Documentation is under the Creative Commons Attribution license."'),
         ('homebrew-json-api-20261106', 'claimed-docs',
          'https://formulae.brew.sh/docs/api/',
          ['Homebrew Formulae JSON API Documentation'],

@@ -7,11 +7,12 @@ instruction: it is Ultrametric's own product with two human-adjudicated cells aw
 maintainer ruling, and its repair lands after that ruling as its own disclosed,
 bias-audited PR.
 
-`rankings-engine/scripts/append-api-quality-gap-evidence-2026-11-06-wave7.py` appends 36
+`rankings-engine/scripts/append-api-quality-gap-evidence-2026-11-06-wave7.py` appends 37
 live-verified rows (fail-closed; five markers re-derived against live wording: a curly
 apostrophe, an HTML-entity apostrophe, a markdown-link split, a code-tag span, and
-compact-JSON spacing) backing 33 appended cells (glama, appwrite, and unit each carry a
-second row under one story); 15 cells stay absent after checking.
+compact-JSON spacing) backing 33 appended api-quality cells (glama, appwrite, and unit
+each carry a second row under one story) plus one pre-audit correction row (the homebrew
+license statement); 15 cells stay absent after checking.
 
 | product | arena | flagged cells | evidence rows appended | checked, still absent |
 |---------|-------|--------------:|-----------------------:|---------------------:|
@@ -20,7 +21,7 @@ second row under one story); 15 cells stay absent after checking.
 | dynadot | domain-registrars | 4 | 2 | 2 |
 | glama | mcp-infrastructure | 4 | 5 | 0 |
 | requesty | model-gateways | 4 | 3 | 1 |
-| homebrew | package-managers | 4 | 1 | 3 |
+| homebrew | package-managers | 4 | 1 (+1 pre-audit) | 3 |
 | google-workspace | sso-identity | 4 | 3 | 1 |
 | microsoft-entra | sso-identity | 4 | 4 | 0 |
 | floot | vibe-coding | 4 | 1 | 3 |
@@ -57,4 +58,24 @@ Wave-7 specifics:
 
 Scoped re-judges run under the ratified v6 rubric (sso-identity judged category-wide for
 its two touched products), then `derive` per touched arena and the dependent generators.
-Engine output is accepted as-is; honest negatives ship.
+Engine output is accepted as-is; honest negatives ship: floot's api-quality row is
+all-none (the MCP manifest row grounds the absences), homebrew keeps three nones around
+its data-API spec none, lever keeps two nones around its sandbox and versioning partials,
+and dynadot keeps its spec none. Two checked-absent cells publish as engine partials on
+adjacent evidence and carry both readings (dynadot api-interactive-docs partial q4 on the
+sandbox row's parallel per-command examples; unit api-interactive-docs partial q4 on the
+vendor-documented Postman trying path, the fivetran/jira class).
+
+## Pre-audit (before the first push)
+
+64 verdict-level up-moves vs merge-base b9083e5edc (32 target cells, 32 side-effect
+flips), re-read against the v6 on-axis bar; review-fix re-rolls included. One
+artifact-backed correction: homebrew openness-open-license had gone none to partial q3 on
+off-axis quotes (analytics, a formula path) because the pack carried no license row.
+Appending the Homebrew/brew README license statement (homebrew-license-20261106) and
+re-judging grounds the cell, which now publishes full q9 on the verbatim BSD-2-clause
+quote. Eight thin partials are conceded and documented in the ledger JSON; the
+full-verdict ups are grounded in dedicated environments, live spec downloads, and
+vendor-hosted runners with their scope caveats carried in the cited excerpts. One
+side-effect flip to disputed ships as judged (open-webui knowledge-base-rag, conflicting
+community rows), and honest downs ship.

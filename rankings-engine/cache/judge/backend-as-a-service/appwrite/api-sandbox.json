@@ -1,17 +1,34 @@
 {
-  "hash": "1206657780ce9fb0f6471c6a5050be1a13a44b117f55b6ac9fa6c604a8f33bb9",
+  "hash": "3a525efd4dc6aa5aeec14df16c1968ca9b1cb80ce4feb4df9239c709781e8e09",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence shows no documented sandbox, test, or staging environment feature that isolates test activity from production data. Running a separate self-hosted Docker instance, developing functions locally, and Sites branch preview links come closest, but these are user-side arrangements or adjacent features (frontend previews, per-function container isolation), not a data sandbox.",
-    "evidenceIds": [],
+    "rationale": "Appwrite Cloud documents project environments such as `staging`, each with its own resources and users, selected per request via the X-Appwrite-Environment header. That lets testing run in a separate environment without touching production data. Self-hosting a full local containerized instance is a second documented test path, and a community user noted the containerized setup eases testing. missing for 10: environments live inside the production project rather than as a dedicated sandbox tenancy, no documentation on seeding or cloning test data, no hands-on corroboration of environment isolation, and environment support is documented for Cloud only.",
+    "evidenceIds": [
+      "appwrite-environments-20261106",
+      "appwrite-docs-14",
+      "appwrite-comm-13"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "appwrite-environments-20261106",
+          "quote": "On Appwrite Cloud, a project can have environments, such as `staging`, each with its own resources and users"
+        },
+        {
+          "evidenceId": "appwrite-environments-20261106",
+          "quote": "The client sends the environment's ID in the `X-Appwrite-Environment` header with every request"
+        },
+        {
+          "evidenceId": "appwrite-docs-14",
+          "quote": "You can install and run Appwrite on any operating system that can run a Docker CLI."
+        }
+      ]
     },
     "productId": "appwrite",
     "storyId": "api-sandbox"

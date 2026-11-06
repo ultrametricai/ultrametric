@@ -1,41 +1,39 @@
 {
-  "hash": "0a20b05d0e045ce66023344f163d1944628aabc96ede62790815ed0028530f8e",
+  "hash": "c691e18c6e871861313ffda3595da1cbbe762d86d987ace4d9711d4987f4181e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Requesty's core product is a documented, OpenAI-compatible public API. The docs cover the base URL, Chat Completions, Messages, Images endpoints, and prompt_id references, and llms.txt plus markdown docs make it agent-readable. The evidence does not show the product's configuration and management surface (keys, policies, guardrails, analytics) being drivable through a documented API, and no OpenAPI spec was found. missing for 10: documented management/admin API for configuring policies, keys, and analytics; a published OpenAPI/Swagger spec (probes 404); independent hands-on corroboration.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Requesty is itself an OpenAI-compatible API, with documented base URLs and SDK drop-in usage. It publishes an OpenAPI 3.0.3 spec covering both the inference router and a management API (api-v2), with an interactive per-endpoint playground, generated code samples, and a dated changelog with deprecation migration paths. The probe's 404s were at different candidate paths than the advertised api-reference/openapi.json, so they do not contradict the spec's existence. Missing for 10: independent hands-on corroboration of driving the management API end-to-end, and a stated versioning or back-compat policy.",
     "evidenceIds": [
+      "requesty-openapi-spec-20261106",
+      "requesty-api-playground-20261106",
+      "requesty-changelog-20261106",
       "requesty-docs-1",
       "requesty-docs-2",
-      "requesty-docs-29",
-      "requesty-docs-30",
-      "requesty-docs-34",
-      "requesty-probe-1",
-      "requesty-probe-2",
-      "requesty-probe-3"
+      "requesty-probe-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "requesty-openapi-spec-20261106",
+          "quote": "Requesty publishes an OpenAPI 3.0.3 document (info title \"Requesty API\") covering both the OpenAI/Anthropic-compatible inference router and the management API"
+        },
+        {
+          "evidenceId": "requesty-api-playground-20261106",
+          "quote": "The Mintlify API reference runs the default interactive playground with a \"Try it\" runner per endpoint"
+        },
         {
           "evidenceId": "requesty-docs-2",
           "quote": "base_url=\"https://router.requesty.ai/v1\""
         },
         {
-          "evidenceId": "requesty-docs-29",
-          "quote": "the dedicated Images API (/v1/images/generations and /v1/images/edits) for standard image workflows"
-        },
-        {
-          "evidenceId": "requesty-docs-34",
-          "quote": "reference prompts in any API request with a single prompt_id"
-        },
-        {
-          "evidenceId": "requesty-probe-1",
-          "quote": "Requesty is a unified LLM gateway and OpenAI-compatible API for 300+ AI models"
+          "evidenceId": "requesty-changelog-20261106",
+          "quote": "Requesty maintains a long dated changelog covering API-affecting changes"
         }
       ]
     },

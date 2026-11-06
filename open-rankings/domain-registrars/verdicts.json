@@ -1035,7 +1035,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Dynadot's security page documents two-factor authentication, account lock, and optional Registry Lock, so the 2FA part of account defensibility is covered by a single first-party mention. Nothing in the evidence shows scoped or least-privilege API credentials or IP allowlisting on API access, which is most of the story. Missing for 10: scoped/permissioned API keys, IP allowlisting for API access, detail on 2FA methods (TOTP or hardware keys), independent corroboration.",
+    "rationale": "Dynadot's own security page documents two-factor authentication, account lock and optional Registry Lock, which covers the 2FA element of a defensible registrar account. Nothing in the pack documents scoped or least-privilege API credentials, or IP allowlisting on API access; separate sandbox keys are environment isolation, not permission scoping. Missing for 10: scoped/permissioned API keys, IP allowlisting for API access, details on 2FA methods (e.g. TOTP or hardware keys), independent corroboration.",
     "evidenceIds": [
       "dynadot-docs-29"
     ],
@@ -1056,11 +1056,12 @@
     "storyId": "agentic-agent-docs",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "A live probe found an llms.txt file served at https://www.dynadot.com/llms.txt (HTTP 200) with a structured Dynadot summary, so an agent can be pointed at it directly. Dynadot also publishes a dedicated MCP page describing assistant-driven domain management. missing for 10: evidence of the depth and completeness of the llms.txt content beyond its header (e.g., links to API/action reference), machine-readable API specs (all OpenAPI paths returned 404), independent or hands-on corroboration of agents using the docs.",
+    "confidence": "medium",
+    "rationale": "A probe confirms Dynadot publishes an llms.txt at https://www.dynadot.com/llms.txt (HTTP 200) that describes the registrar, so an agent can be pointed at it directly. Dynadot also documents an official MCP page aimed at AI-assistant use. missing for 10: evidence of the llms.txt's full contents and depth (only its opening lines were captured), a machine-readable OpenAPI spec (all candidate paths returned 404), independent or hands-on corroboration of agents using these docs.",
     "evidenceIds": [
       "dynadot-probe-1",
-      "dynadot-docs-5"
+      "dynadot-probe-2",
+      "dynadot-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -1072,7 +1073,7 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://www.dynadot.com/llms.txt # Dynadot"
         },
         {
-          "evidenceId": "dynadot-docs-5",
+          "evidenceId": "dynadot-docs-19",
           "quote": "Dynadot MCP is an easier way to manage your domains, just by talking to an AI assistant."
         }
       ]
@@ -1081,16 +1082,28 @@
   {
     "productId": "dynadot",
     "storyId": "agentic-ai-insights",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence shows no in-product AI that analyzes a user's own account or portfolio data to produce insights or suggestions. AI Domain Search only generates name suggestions from a typed keyword, which is an adjacent search feature. The MCP server lets an external AI assistant read account info, so the AI runs outside the product rather than inside it.",
-    "evidenceIds": [],
+    "rationale": "Dynadot ships an in-product AI Domain Search that generates domain name and TLD suggestions from a keyword or phrase the user enters. That is genuine AI-generated suggestion inside the product, but it works from typed input, not from the user's account or portfolio data. The MCP server only lets an external AI assistant manage domains, so it does not count as in-product insight. Missing for 10: AI insights drawn from the user's own account or portfolio data (e.g., renewal, DNS or portfolio recommendations), in-product analytics or insight surfaces, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "dynadot-docs-27",
+      "dynadot-docs-28"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "dynadot-docs-27",
+          "quote": "Dynadot AI Domain Search generates domain name suggestions from your keyword or phrase, including suggested domain names and suggested TLDs"
+        },
+        {
+          "evidenceId": "dynadot-docs-28",
+          "quote": "Get brandable domain ideas and check availability instantly across top TLDs."
+        }
+      ]
     }
   },
   {
@@ -1099,10 +1112,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no product-native way to set up user-defined automations that run on a schedule or trigger in the background. The API and the MCP server are developer building blocks or interactive chat-driven actions. Watchlist monitoring and backorder requests are adjacent, single-purpose features, not configurable recurring automations.",
+    "rationale": "The evidence pack documents no product-native automations, schedules, or background agents that run on their own. The API's 120+ actions and the MCP server are building blocks or user-triggered tools, not autonomous automations. The WHOIS Watchlist and API-placed backorders are adjacent features, not configurable background automations.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": []
@@ -1114,40 +1127,28 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no AI assistant built into Dynadot's own interface to which users can delegate tasks. Dynadot MCP is a server that lets an external AI assistant manage domains through the Model Context Protocol, so the assistant is not part of the product. AI Domain Search is a name-suggestion feature, not a task-delegating assistant, so both are adjacent capabilities.",
-    "evidenceIds": [
-      "dynadot-docs-5",
-      "dynadot-docs-27"
-    ],
+    "rationale": "Asking whether a domain registrar ships a built-in AI assistant is a fair question, so the axis applies. The evidence shows only an MCP server, which lets the user's own external AI assistant manage domains, and an AI Domain Search tool that suggests domain names. Neither is a built-in assistant you can delegate tasks to inside Dynadot, so both are adjacent capabilities that earn no credit.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
-      "citations": [
-        {
-          "evidenceId": "dynadot-docs-5",
-          "quote": "Dynadot MCP is an easier way to manage your domains, just by talking to an AI assistant.It uses the Model Context Protocol (MCP)"
-        },
-        {
-          "evidenceId": "dynadot-docs-27",
-          "quote": "Dynadot AI Domain Search generates domain name suggestions from your keyword or phrase"
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "dynadot",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Dynadot documents its own API with more than 120 actions for programmatic domain, DNS, order and account management, including bulk changes, so the product can be driven without its UI. There is no evidence of a CLI, CI integration guidance, or non-interactive auth/token setup, and no OpenAPI spec was found (all probed paths returned 404), so CI use is only implied. Missing for 10: official CLI or headless runner, CI/pipeline documentation, API key/auth docs for unattended use, machine-readable API spec, hands-on corroboration.",
+    "rationale": "Dynadot's own API supports headless automation. It covers more than 120 actions for programmatic management of domains, DNS, orders and bulk changes. A dedicated API Sandbox with separate keys lets integrations be tested without touching the live account, which suits automated test pipelines. The RESTful API is labelled Beta, though, with no guaranteed backward compatibility, and some commands are unavailable in the sandbox. Missing for 10: documented CLI or CI-specific guidance (e.g., pipeline examples, non-interactive auth/secret handling), a stable non-beta API contract, full sandbox command coverage, and independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "dynadot-docs-1",
       "dynadot-docs-2",
       "dynadot-docs-25",
-      "dynadot-docs-24",
-      "dynadot-probe-2"
+      "dynadot-api-sandbox-20261106",
+      "dynadot-api-versioning-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1160,11 +1161,15 @@
         },
         {
           "evidenceId": "dynadot-docs-25",
-          "quote": "Build your account by registering, transferring, and renewing domains through commands. You can even delete and push domains through our API."
+          "quote": "Build your account by registering, transferring, and renewing domains through commands."
         },
         {
-          "evidenceId": "dynadot-docs-2",
-          "quote": "If you're looking to make large bulk adjustments to your account or domains, our API makes the process quick, efficient, and accurate."
+          "evidenceId": "dynadot-api-sandbox-20261106",
+          "quote": "The Dynadot API Sandbox environment allows you to safely test your API integrations without affecting your live account or real funds"
+        },
+        {
+          "evidenceId": "dynadot-api-versioning-20261106",
+          "quote": "Beta Notice: This API documentation is Beta. Endpoints, fields, error codes, and behaviors may change without notice and backward compatibility is not guaranteed."
         }
       ]
     }
@@ -1174,8 +1179,8 @@
     "storyId": "agentic-mcp-client",
     "verdict": "na",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Dynadot is a domain registrar, not an AI agent or assistant, so acting as an MCP client that consumes other servers' tools is a category error for this product type. The evidence shows only that Dynadot publishes its own MCP server for AI assistants to connect to. That is the server role and does not make this client-side axis applicable.",
+    "confidence": "medium",
+    "rationale": "Dynadot is a domain registrar, not an AI agent or assistant host, so acting as an MCP client that loads external MCP servers' tools is outside its product category. The evidence describes Dynadot's own MCP server, which AI assistants connect to (\"just by talking to an AI assistant\"). That is the server role and does not show Dynadot consuming other MCP servers, so it cannot be credited for this client-side story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1187,10 +1192,10 @@
   {
     "productId": "dynadot",
     "storyId": "agentic-mcp-server",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Dynadot documents a first-party MCP server at its own /domain/mcp page. The server lets an AI assistant check domain availability, register domains, view account info, and review nameservers and DNS records, and a probe confirms the official page exists. The evidence lists capabilities but gives little detail on how an agent actually connects. Missing for 10: documented connection/setup and authentication steps, a full tool list (e.g., DNS write/edit operations, renewals, transfers), and independent or hands-on corroboration of the MCP server working.",
+    "rationale": "Dynadot documents a first-party MCP server ('Dynadot MCP') built on the Model Context Protocol, and a probe confirms it at dynadot.com/domain/mcp. Its documented tools cover availability checks, registration, account and domain viewing, and nameserver/DNS review. The evidence does not show how an agent actually connects, so the connection half of the story is only implied. Missing for 10: documented connection details (endpoint/transport, client configuration, authentication/API-key setup), coverage beyond the four listed read/register actions, and independent or hands-on corroboration that agents connect successfully.",
     "evidenceIds": [
       "dynadot-docs-5",
       "dynadot-docs-6",
@@ -1199,7 +1204,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
       "citations": [
         {
@@ -1223,12 +1228,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Dynadot ships a first-party MCP server it markets as a way to manage domains just by talking to an AI assistant. The documented actions are a narrow set: availability checks, registration, viewing domains and account info, and reviewing nameservers and DNS. Natural-language operation also depends on an external AI assistant acting as the MCP client. Missing for 10: natural-language coverage of the broader 120+ API actions (DNS edits, transfers, renewals, aftermarket), in-depth setup and usage docs for the MCP, and independent or hands-on corroboration that it works.",
+    "rationale": "Dynadot ships an official MCP server that lets users manage domains by talking to an AI assistant. It covers checking availability, registering domains, viewing domains and account info, and reviewing nameservers and DNS records. Its AI Domain Search also takes a keyword or phrase. The documented natural-language operations are a narrow subset of the product, so this is partial rather than full. Missing for 10: documented natural-language coverage of DNS edits, transfers, renewals, aftermarket and account settings; any hands-on or independent corroboration of the MCP experience.",
     "evidenceIds": [
-      "dynadot-docs-5",
       "dynadot-docs-19",
+      "dynadot-docs-5",
       "dynadot-docs-6",
-      "dynadot-probe-3"
+      "dynadot-probe-3",
+      "dynadot-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -1244,8 +1250,8 @@
           "quote": "Check a domain name availability\n*   Register domains for you\n*   View your domains and account info\n*   Review nameservers and DNS records"
         },
         {
-          "evidenceId": "dynadot-probe-3",
-          "quote": "official MCP server documented at https://www.dynadot.com/domain/mcp"
+          "evidenceId": "dynadot-docs-27",
+          "quote": "Dynadot AI Domain Search generates domain name suggestions from your keyword or phrase"
         }
       ]
     }
@@ -1256,7 +1262,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a domain registrar with a programmatic platform, so the axis applies. The evidence documents an HTTP API with 120+ actions and an official MCP server, but no official command-line tool. The API's \"commands\" wording describes API requests, not a CLI, and the API and MCP server are adjacent capabilities that earn no credit for this story.",
+    "rationale": "An official CLI is a fair question for a domain registrar, so the axis applies, but the pack documents only a REST API (with 'commands' meaning API calls), an API sandbox and an MCP server. None of these is an official command-line tool. Adjacent API and MCP evidence earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1270,14 +1276,15 @@
     "storyId": "agentic-public-api",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Dynadot's own pages document a public API with more than 120 actions. It covers domains, account settings, DNS, orders, registration, transfer, renewal, deletion, push, aftermarket bidding and backorders, and reseller accounts, so an AI-native user can drive the core product programmatically. missing for 10: a machine-readable OpenAPI/Swagger spec (all probed paths returned 404), quoted endpoint-level reference and authentication docs in the pack, and independent or hands-on corroboration of the API working as described.",
+    "confidence": "high",
+    "rationale": "Dynadot documents a public API with 120+ actions covering domains, DNS, orders, account settings, aftermarket and reseller functions. Its RESTful v2 reference is versioned with a changelog and backed by a dedicated sandbox with separate keys, so an AI-native user can drive the product programmatically. missing for 10: a machine-readable OpenAPI/Swagger spec (all probed paths return 404), stable non-beta status (the REST docs warn behaviors may change without notice), and independent hands-on corroboration of API use.",
     "evidenceIds": [
       "dynadot-docs-1",
       "dynadot-docs-25",
       "dynadot-docs-4",
       "dynadot-docs-18",
-      "dynadot-docs-24",
+      "dynadot-api-versioning-20261106",
+      "dynadot-api-sandbox-20261106",
       "dynadot-probe-2"
     ],
     "support": {
@@ -1294,12 +1301,12 @@
           "quote": "Build your account by registering, transferring, and renewing domains through commands. You can even delete and push domains through our API."
         },
         {
-          "evidenceId": "dynadot-docs-4",
-          "quote": "Use our API to engage with our aftermarket - place backorder requests, discover new auction listings, place bids, and more."
+          "evidenceId": "dynadot-api-versioning-20261106",
+          "quote": "The current version of the API is v2.0.0"
         },
         {
-          "evidenceId": "dynadot-docs-18",
-          "quote": "Our API functions extend to our reseller program, allowing you to manage domains under your Dynadot reseller account efficiently."
+          "evidenceId": "dynadot-api-sandbox-20261106",
+          "quote": "The Dynadot API Sandbox environment allows you to safely test your API integrations without affecting your live account or real funds"
         }
       ]
     }
@@ -1310,7 +1317,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dynadot documents an API with more than 120 actions and an official MCP server, so a scoped-credentials axis applies to it. However, nothing in the evidence describes API keys with limited permissions, per-action scopes, read-only keys, or other least-privilege credential issuance. Account lock, 2FA and Registry Lock are account-security controls, not scoped agent credentials, so they earn no credit.",
+    "rationale": "Dynadot documents an API with more than 120 actions, an MCP server and separate sandbox keys. Nothing in the evidence shows it can issue API credentials limited to specific actions, domains or permissions for an agent. Separate sandbox keys isolate a test environment rather than scoping access, so they are an adjacent feature and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1325,7 +1332,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dynadot documents a programmatic API with more than 120 actions and an official MCP server, but nothing in the evidence mentions official SDKs or client libraries for any language. A raw API, an MCP server and a WHMCS integration are adjacent to this story and do not count as official SDKs.",
+    "rationale": "The evidence documents a REST API with more than 120 actions, an API sandbox, versioning, and an MCP server, but no official SDKs or client libraries in any language. A raw HTTP API is a developer building block, not the SDK this story asks for, and an MCP server is a separate capability. Official SDKs are a fair thing to expect from a registrar platform, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1340,7 +1347,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair question for a domain registrar with a 120+ action API, but nothing in the evidence documents registrable outbound HTTP callbacks. The WHOIS Watchlist, which monitors expiry or status changes, is an adjacent monitoring feature and not a programmatic webhook subscription.",
+    "rationale": "Dynadot documents a broad API with 120+ actions, an MCP server and an API sandbox, but nothing in the evidence describes registrable outbound HTTP callbacks for events. The WHOIS Watchlist that monitors expiry or status changes is an adjacent monitoring feature, not a webhook a programmatic consumer can receive.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1352,16 +1359,29 @@
   {
     "productId": "dynadot",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Dynadot documents an API with more than 120 actions, but nothing in the evidence describes an interactive API reference or runnable examples. The OpenAPI/Swagger probes all returned 404. An API's existence and an MCP server are adjacent capabilities and do not deliver an explorable, runnable reference.",
-    "evidenceIds": [],
+    "rationale": "Dynadot's API document page has per-command examples and a dedicated API Sandbox on its own host, so a user can run those examples against a safe, pre-funded test account. There is no evidence of an interactive in-browser 'try it' explorer, and OpenAPI/Swagger specs that would power one all return 404. Missing for 10: interactive in-page API explorer, evidence that examples are executable directly from the reference, a machine-readable OpenAPI spec, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "dynadot-api-sandbox-20261106",
+      "dynadot-probe-2",
+      "dynadot-docs-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "dynadot-api-sandbox-20261106",
+          "quote": "The Dynadot API Sandbox environment allows you to safely test your API integrations without affecting your live account or real funds"
+        },
+        {
+          "evidenceId": "dynadot-api-sandbox-20261106",
+          "quote": "The sandbox also covers the legacy v3 API with parallel per-command examples."
+        }
+      ]
     }
   },
   {
@@ -1370,7 +1390,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dynadot documents an API with more than 120 actions, but nothing in the evidence shows a downloadable machine-readable spec, and probes of common OpenAPI/Swagger paths all returned 404. The llms.txt file and the MCP server are different capabilities and do not count as an API spec.",
+    "rationale": "Dynadot documents a large API with more than 120 actions, a RESTful v2 reference, a sandbox, and an MCP server, but nothing in the evidence shows a downloadable OpenAPI or equivalent machine-readable spec. The probe of the standard OpenAPI/Swagger paths returned 404 on every candidate. The llms.txt file and the MCP server are adjacent features, not an API specification.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1382,31 +1402,58 @@
   {
     "productId": "dynadot",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Dynadot documents an API with more than 120 actions and an official MCP server, so a sandbox or test environment is a fair question for this product. Nothing in the evidence describes a sandbox, test mode, or test API key that keeps work away from production data. Grace deletion for domain tasting is a related feature that operates on real registrations, so it is not a sandbox and earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Dynadot documents a dedicated API Sandbox for testing integrations without affecting the live account or real funds. It runs on its own host (api-sandbox.dynadot.com) with separate sandbox keys and a pre-funded test balance, and it also covers the legacy v3 API. missing for 10: full command parity (the vendor says some commands are unavailable or behave differently in the sandbox), any evidence that the MCP server can target the sandbox, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "dynadot-api-sandbox-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "dynadot-api-sandbox-20261106",
+          "quote": "The Dynadot API Sandbox environment allows you to safely test your API integrations without affecting your live account or real funds"
+        },
+        {
+          "evidenceId": "dynadot-api-sandbox-20261106",
+          "quote": "pre-funded with a balance of 10,000 in all supported currencies for testing purposes"
+        }
+      ]
     }
   },
   {
     "productId": "dynadot",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Dynadot documents an API with more than 120 actions and an MCP server, so this axis applies to it. Nothing in the evidence mentions API versioning, version identifiers, or a deprecation policy, and the OpenAPI probes all returned 404. The general API docs show the API exists but not that it is versioned or governed by a deprecation policy.",
-    "evidenceIds": [],
+    "rationale": "Dynadot's own RESTful API docs describe URL-based major versioning (v2.0.0) under SemVer, a backward-compatibility commitment, and a changelog that records deprecations. The deprecation policy is vague, though, and the same page says the API is Beta and backward compatibility is not guaranteed. Missing for 10: a concrete deprecation timeline or notice period, a stable non-Beta compatibility guarantee, a documented sunset process for the legacy v3 API, and independent corroboration.",
+    "evidenceIds": [
+      "dynadot-api-versioning-20261106",
+      "dynadot-api-sandbox-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "dynadot-api-versioning-20261106",
+          "quote": "The current version of the API is v2.0.0"
+        },
+        {
+          "evidenceId": "dynadot-api-versioning-20261106",
+          "quote": "we will maintain backward compatibility for older versions for a period of time"
+        },
+        {
+          "evidenceId": "dynadot-api-versioning-20261106",
+          "quote": "updates, bug fixes, deprecations, and enhancements introduced in each version"
+        }
+      ]
     }
   },
   {
@@ -1415,7 +1462,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pricing transparency is a fair question for a domain registrar, so the axis applies. Nothing in the evidence pack makes an at-cost or near-wholesale claim, shows a registry fee breakdown, or publishes a low-margin guarantee. The reseller program's control over the prices shown to customers is a related but different feature and earns no credit here.",
+    "rationale": "Wholesale or at-cost pricing transparency is a fair axis for a domain registrar, but nothing in the evidence pack covers Dynadot's pricing margins, registry fee breakdowns, or a low-margin guarantee. The reseller-pricing flexibility and transfer-perk claims are about adjacent features, not at-cost pricing. With no qualifying evidence the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1430,12 +1477,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Dynadot documents its own bulk capabilities. These include bulk search with one-click add-to-cart for all available results, bulk transfer of domains all at once, folder-wide domain adjustments, and an API marketed for large bulk adjustments. The documentation is marketing-level, though, and does not show batch endpoints, limits, or bulk actions through the MCP/AI assistant path. Missing for 10: documented batch API endpoints and limits for bulk renew/DNS/settings changes, evidence that MCP supports multi-item operations, and independent or hands-on corroboration of bulk workflows.",
+    "rationale": "Dynadot documents its own bulk capabilities: the API is pitched for 'large bulk adjustments' to accounts and domains, smart folders allow folder-wide domain changes, bulk search adds all available names to the cart in one click, and bulk transfer moves domains 'all at once'. The evidence stays at the marketing level, and the MCP tool list covers only single-item actions, so an AI-native bulk workflow is implied rather than fully documented. missing for 10: documented batch/multi-item API endpoints with semantics such as limits, partial-failure handling and async job status, bulk actions exposed through the MCP server, and independent or hands-on corroboration of bulk operations.",
     "evidenceIds": [
       "dynadot-docs-2",
       "dynadot-docs-3",
       "dynadot-docs-7",
-      "dynadot-docs-9"
+      "dynadot-docs-9",
+      "dynadot-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -1448,7 +1496,7 @@
         },
         {
           "evidenceId": "dynadot-docs-3",
-          "quote": "make folder-wide domain name adjustments to help you stay organized."
+          "quote": "Setup new domain smart folders and make folder-wide domain name adjustments to help you stay organized."
         },
         {
           "evidenceId": "dynadot-docs-7",
@@ -1467,7 +1515,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation rules are a fair question for a domain registrar, but the evidence documents no rules engine, triggers, or automatic actions on events. The API and MCP are developer building blocks for manual or scripted actions. The Watchlist only monitors expiry and status changes; it does not run actions.",
+    "rationale": "The evidence pack documents no rule or trigger engine that runs actions automatically when events occur. The Watchlist only monitors expiry and status changes, which is adjacent alerting rather than event-triggered actions. The 120+ action API and the conversational MCP server are developer building blocks or on-demand tools, not user-defined automation rules.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1482,7 +1530,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a domain-management platform, but the evidence shows no product-native scheduler or recurring workflow feature. The API, MCP server, bulk tools and backorder requests are one-off actions or developer building blocks, and Watchlist monitoring is an adjacent alert feature, not user-defined recurring jobs.",
+    "rationale": "Scheduling recurring jobs is a fair question for a domain-management platform, but the evidence never documents a way to schedule recurring jobs or workflows. The API with 120+ actions and bulk operations is a developer building block that users would have to schedule themselves. The Watchlist monitors expiry or status changes, which is an adjacent feature, not a user-defined recurring schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1497,7 +1545,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dynadot documents an API with more than 120 actions and an official MCP server for managing domains. Nothing in the evidence shows versioning, review, or rollback of automations. Grace deletion lets you return a newly registered domain, which is an unrelated feature and not a rollback of automation logic.",
+    "rationale": "Dynadot documents an API, an MCP server and an API sandbox, but nothing that lets users version, review, or roll back their own automations. The API's SemVer and change log cover Dynadot's API releases, not user automations. The sandbox is a pre-release test environment rather than revision history or rollback, and grace deletion returns a domain rather than reverting an automation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1512,14 +1560,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dynadot documents an official MCP server that agents can use to 'Check a domain name availability', alongside a general API with 120+ actions. However, the API evidence never names an availability-check or search endpoint, and no rate limits are documented. The OpenAPI probes all returned 404. missing for 10: an explicitly documented availability/search API endpoint, published rate limits, a machine-readable API spec, independent or hands-on corroboration.",
+    "rationale": "Dynadot's official MCP server explicitly lists \"Check a domain name availability\" as a capability an AI agent can call. Dynadot also documents a 120+ action API with a sandbox, but the evidence never names a REST search or availability command and says nothing about rate limits. missing for 10: an explicitly documented availability/search API endpoint, documented rate limits or throttling, independent or hands-on corroboration.",
     "evidenceIds": [
       "dynadot-docs-6",
       "dynadot-docs-26",
-      "dynadot-docs-5",
-      "dynadot-docs-1",
       "dynadot-probe-3",
-      "dynadot-probe-2"
+      "dynadot-docs-1",
+      "dynadot-api-sandbox-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1531,12 +1578,12 @@
           "quote": "Check a domain name availability"
         },
         {
-          "evidenceId": "dynadot-docs-5",
-          "quote": "Dynadot MCP is an easier way to manage your domains, just by talking to an AI assistant."
+          "evidenceId": "dynadot-probe-3",
+          "quote": "official MCP server documented at https://www.dynadot.com/domain/mcp"
         },
         {
           "evidenceId": "dynadot-docs-1",
-          "quote": "Our API supports more than 120 actions"
+          "quote": "The Dynadot API lets you programmatically manage domains, account settings, DNS, orders, and other account activities. Our API supports more than 120 actions"
         }
       ]
     }
@@ -1547,7 +1594,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dynadot's docs cover fast availability checks: the suggestion tool checks availability instantly and bulk search shows results in seconds. Its AI search suggests alternate domain names and TLDs across 600+ extensions. Nothing in the pack addresses the 'honest' part of the story, a commitment not to front-run or squat on searched names. Missing for 10: any documented anti-front-running or no-squat policy on searched names, and independent or hands-on corroboration of search speed and suggestion quality.",
+    "rationale": "Dynadot's docs claim instant availability checks, including bulk search results 'in seconds', and an AI search that suggests alternate names and TLDs across 600+ extensions, which covers the speed and suggestion parts of the story. Nothing in the evidence addresses the 'honest' part: no policy or guarantee against front-running or squatting on searched names. missing for 10: documented no-front-running/search-privacy commitment, independent or hands-on corroboration of search speed and suggestion quality.",
     "evidenceIds": [
       "dynadot-docs-28",
       "dynadot-docs-27",
@@ -1584,7 +1631,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Dynadot documents dedicated bulk search, where you paste a list and add all available names to the cart in one click. It also documents bulk transfer of many domains at once, folder-wide domain adjustments via smart folders, and an API pitched for large bulk adjustments, including register, transfer and renew commands. Bulk renewal and bulk nameserver changes are only implied through the API and folder-wide adjustments, never explicitly documented as bulk features. missing for 10: explicit bulk renewal and bulk nameserver-change documentation, independent or hands-on corroboration of bulk operations at scale.",
+    "rationale": "Dynadot documents a dedicated bulk search that lets users add all available results to the cart in one click. It also documents bulk transfer of domains 'all at once', folder-wide domain adjustments, and an API pitched for 'large bulk adjustments' that covers registering, transferring and renewing. Bulk renewal and bulk nameserver changes are not explicitly documented as bulk features, and the generic API and folder claims only imply them. missing for 10: explicit bulk renewal, explicit bulk nameserver changes, details on batch limits, independent or hands-on corroboration.",
     "evidenceIds": [
       "dynadot-docs-7",
       "dynadot-docs-9",
@@ -1626,11 +1673,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Dynadot's own API page says the API can \"programmatically manage domains, account settings, DNS,\" so DNS automation is a documented first-party capability. The evidence never shows record-level create, update, or delete operations, and the MCP server only claims to \"Review nameservers and DNS records.\" Missing for 10: documented per-record create/update/delete endpoints, TXT-record handling for ACME challenges, a published API reference or OpenAPI spec (all OpenAPI probes returned 404), and hands-on corroboration.",
+    "rationale": "Dynadot's own API docs say the API can programmatically manage DNS, and a versioned REST API with a sandbox is documented, so the core capability exists. The pack never shows specific create/update/delete record operations or ACME TXT-challenge use, and the MCP only covers reviewing DNS records. Missing for 10: explicit documented DNS record create/update/delete endpoints, record-level granularity (TXT for ACME), ACME/certbot integration evidence, independent hands-on corroboration, and a stable non-beta API (docs carry a beta notice).",
     "evidenceIds": [
       "dynadot-docs-1",
-      "dynadot-docs-6",
-      "dynadot-probe-2"
+      "dynadot-api-versioning-20261106",
+      "dynadot-api-sandbox-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1642,8 +1689,8 @@
           "quote": "The Dynadot API lets you programmatically manage domains, account settings, DNS, orders, and other account activities."
         },
         {
-          "evidenceId": "dynadot-docs-6",
-          "quote": "Review nameservers and DNS records"
+          "evidenceId": "dynadot-api-versioning-20261106",
+          "quote": "The current version of the API is v2.0.0"
         }
       ]
     }
@@ -1654,12 +1701,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Dynadot's own docs say it offers DNS and that its API can programmatically manage DNS, so DNS hosting exists as a first-party capability. Nothing in the evidence covers the specifics of the story: which record types are supported, minimum TTLs, or what the web management UI is like. Missing for 10: documented list of supported record types, low-TTL support, evidence of a developer-friendly DNS management UI, independent or hands-on corroboration.",
+    "rationale": "Dynadot's own docs say DNS is part of its offering and can be managed programmatically through its API, with DNS records reviewable through its MCP server. That confirms first-party DNS management exists, but nothing in the pack describes how deep it goes. missing for 10: list of supported record types, TTL limits or low-TTL support, any description of the DNS management UI, confirmation that DNS hosting is included free with the domain, independent or hands-on corroboration.",
     "evidenceIds": [
       "dynadot-docs-1",
       "dynadot-probe-1",
-      "dynadot-docs-6",
-      "dynadot-docs-13"
+      "dynadot-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -1672,7 +1718,7 @@
         },
         {
           "evidenceId": "dynadot-probe-1",
-          "quote": "Dynadot is an ICANN-accredited domain registrar offering domain registration, aftermarket services, DNS"
+          "quote": "Dynadot is an ICANN-accredited domain registrar offering domain registration, aftermarket services, DNS, ema"
         },
         {
           "evidenceId": "dynadot-docs-6",
@@ -1687,7 +1733,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "DNSSEC is a fair question for an ICANN-accredited registrar, but nothing in the evidence mentions DNSSEC signing or DS record submission. The API docs cover DNS management only generally. The security page lists privacy, account lock, 2FA and Registry Lock, which are related controls, not DNSSEC.",
+    "rationale": "DNSSEC is a fair axis for a domain registrar, but nothing in the evidence pack mentions DNSSEC signing or DS record submission to the registry. The security page lists privacy, account lock, 2FA and Registry Lock, which are adjacent controls and not DNSSEC. The API docs describe general DNS management with no DNSSEC endpoint.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1702,7 +1748,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Dynadot documents free custom email on your own domain. It also offers SSL certificates (DV, 256-bit), but the evidence never says SSL is free or bundled, so the zero-cost launch path is only half shown. missing for 10: explicit email forwarding documentation, evidence that SSL is free or bundled with the domain, independent corroboration.",
+    "rationale": "Dynadot documents free custom email on your own domain (Dynadot Email), so the email half is covered, though forwarding is not explicitly named. It also sells DV SSL certificates, but nothing in the evidence says SSL is free or bundled, so the 'costs nothing extra' path is only half supported. Missing for 10: explicit email-forwarding documentation, evidence that SSL is free/bundled with the domain, independent or hands-on corroboration.",
     "evidenceIds": [
       "dynadot-docs-16",
       "dynadot-docs-31",
@@ -1719,7 +1765,7 @@
         },
         {
           "evidenceId": "dynadot-docs-31",
-          "quote": "Secure your site with trusted 256-bit encryption. Get fast DV (Domain Validation), approval"
+          "quote": "Secure your site with trusted 256-bit encryption. Get fast DV (Domain Validation), approval, and protect your website users with 99.9 % browser support."
         }
       ]
     }
@@ -1730,7 +1776,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Dynadot's own security and transfer pages say it offers free domain privacy that hides name, email, and phone in public WHOIS, so the free, no-upsell part is documented. Nothing in the evidence shows privacy is enabled by default, and address redaction is not mentioned. Missing for 10: evidence privacy is on by default at registration, explicit address redaction, independent or hands-on corroboration.",
+    "rationale": "Dynadot's own docs state it offers free domain privacy that hides name, email, and phone in public WHOIS, including on transferred domains, so the free, no-upsell part is covered. Nothing in the pack shows privacy is enabled by default, and address redaction is not stated explicitly. Missing for 10: evidence that privacy is on by default, explicit address redaction, independent or hands-on corroboration.",
     "evidenceIds": [
       "dynadot-docs-29",
       "dynadot-docs-17",
@@ -1744,7 +1790,7 @@
       "citations": [
         {
           "evidenceId": "dynadot-docs-29",
-          "quote": "Dynadot offers free domain privacy, account lock, two-factor authentication, and optional Registry Lock"
+          "quote": "Dynadot offers free domain privacy, account lock, two-factor authentication, and optional Registry Lock to keep your online assets safe."
         },
         {
           "evidenceId": "dynadot-docs-23",
@@ -1763,7 +1809,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Connecting a domain to a host is a fair question for a registrar, so the axis applies. The evidence only shows general DNS management through the API, MCP review of nameservers and DNS records, and WHMCS reseller integration. None of it documents DNS templates or one-click connect flows for major hosts or platforms, and API-based DNS editing is only a developer building block.",
+    "rationale": "Connecting a domain to a host or platform is a fair axis for a registrar, but nothing in the evidence documents DNS templates, presets, or one-click connect for major hosts. The closest items describe general DNS management through the API and MCP and reseller DNS adjustments. These are adjacent building blocks, not a guided connect flow.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1776,16 +1822,16 @@
     "productId": "dynadot",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Dynadot documents a broad API of more than 120 actions covering domains, account settings, DNS, orders, folders, aftermarket bidding and backorders, reseller management, and delete/push operations. There is no explicit claim of full UI parity, and several UI features have no documented API coverage: SSL, email, WHOIS watchlist, and grace deletion. Missing for 10: an explicit API/UI parity statement, documented API coverage for SSL/email/watchlist/grace-deletion, a published API reference or OpenAPI spec (probe found none), and independent hands-on corroboration.",
+    "rationale": "Dynadot documents a broad API of more than 120 actions. It covers domains, account settings, DNS, orders, registration, transfer, renewal, deletion, push, folders, aftermarket backorders and bids, and reseller management, so much of the UI surface is scriptable. However, nothing in the evidence states that the API matches everything the UI can do, and several UI features have no evidenced API equivalent. Missing for 10: an explicit UI–API parity statement; API coverage for UI features like SSL, email, watchlist, grace deletion and security settings; independent or hands-on confirmation of parity.",
     "evidenceIds": [
       "dynadot-docs-1",
-      "dynadot-docs-4",
-      "dynadot-docs-18",
-      "dynadot-docs-24",
       "dynadot-docs-25",
-      "dynadot-probe-2"
+      "dynadot-docs-4",
+      "dynadot-docs-3",
+      "dynadot-docs-18",
+      "dynadot-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -1798,7 +1844,7 @@
         },
         {
           "evidenceId": "dynadot-docs-25",
-          "quote": "You can even delete and push domains through our API."
+          "quote": "Build your account by registering, transferring, and renewing domains through commands. You can even delete and push domains through our API."
         },
         {
           "evidenceId": "dynadot-docs-4",
@@ -1817,7 +1863,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability is a fair question for a domain registrar, but the evidence documents no first-party export of account data in open formats and no outbound transfer or offboarding flow. The transfer pages cover only moving domains into Dynadot. The general-purpose API is a developer building block, not an export capability, so it earns no credit.",
+    "rationale": "Data export and portability is a fair axis for a domain registrar, but the evidence never documents exporting account, domain or DNS data in open formats, nor transferring domains out to leave. The general API and MCP read actions ('view your domains and account info') are only building blocks a developer could use to construct an export, and the only transfer evidence covers moving domains in to Dynadot.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1832,7 +1878,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-sourcing code is a fair question for a SaaS registrar, since such products can publish source or open-source tooling such as SDKs or an MCP server. Nothing in the evidence shows any Dynadot source code, public repository or open license. The API, MCP and llms.txt evidence describes access interfaces, not readable source under an open license.",
+    "rationale": "Whether a product's source is published under an open license is a fair question for any software service, including a domain registrar, so the axis applies. Nothing in the evidence pack shows Dynadot publishing source code or an open license: the docs cover a proprietary API, an MCP service, a sandbox and versioning, and none of these is open-source code.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1847,7 +1893,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dynadot is an ICANN-accredited domain registrar. Its core product is the accredited relationship with domain registries, which cannot be self-hosted, so asking to self-host it is a category error for this product type. The WHMCS reseller integration and the API/MCP are hosted-service access points, not a self-hostable deployment of the core product, and nothing in the evidence shows a self-hosting option.",
+    "rationale": "Dynadot is an ICANN-accredited domain registrar, and its core product (domain registration through registry relationships) is inherently a hosted, accredited service, so self-hosting it is a category error rather than a missing feature. The evidence describes the API, MCP server, reseller/WHMCS integrations and an API sandbox, but none of these is a self-hostable deployment of the product. Nothing in the pack shows a self-hosted edition that would make the axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1860,9 +1906,9 @@
     "productId": "dynadot",
     "storyId": "premium-aftermarket",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Dynadot documents its own aftermarket, which can be used via its API to place backorders, discover auction listings and place bids. Its llms.txt also lists aftermarket services. That gives a first-party path for taken names, but no evidence shows premium pricing in search results. missing for 10: premium pricing displayed in domain search, a broker service for taken names, in-depth marketplace documentation beyond API mentions, independent or hands-on corroboration.",
+    "rationale": "Dynadot documents its own aftermarket, reachable through its API for backorders, auction discovery and bidding, and its llms.txt lists aftermarket services. That gives a path to taken or expiring names. Nothing in the evidence shows premium pricing in search results, a buy-now marketplace for listed names, or a broker service. Missing for 10: premium pricing shown in search, a documented buy-now marketplace or broker service for registered names, hands-on corroboration of the aftermarket flow.",
     "evidenceIds": [
       "dynadot-docs-4",
       "dynadot-probe-1"
@@ -1889,7 +1935,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dynadot documents an API with more than 120 actions for registering, transferring, renewing and managing domains, plus an MCP server for availability checks. No evidence shows an API endpoint or feed that returns current registration, renewal or transfer prices per TLD. Reseller price-setting flexibility is a related feature, not a machine-readable price list, so the axis applies but is unevidenced.",
+    "rationale": "The evidence documents a broad Dynadot API covering registration, transfer, renewal, aftermarket and reseller management. Nothing in the pack shows an endpoint or feed that returns current registration, renewal or transfer prices per TLD. The reseller line about setting customer-facing prices is an adjacent control, not a machine-readable price list, and no OpenAPI spec was found.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1904,7 +1950,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for an online registrar and email provider that holds account, contact, and email data, so the axis applies. Nothing in the evidence pack documents choosing a storage region or residency. WHOIS privacy, account locks, and SSL are related privacy controls, not region selection, so they earn no credit.",
+    "rationale": "Dynadot is a domain registrar and SaaS account platform that holds customer data, so letting users choose a storage region is a fair question for it. The evidence pack never mentions data residency, storage regions, or region selection. WHOIS privacy, SSL, and account security are adjacent privacy features and do not deliver residency choice.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1919,7 +1965,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Dynadot is a SaaS registrar that holds customer data and ships AI features (AI Domain Search, MCP), so an AI-training opt-out is a fair question to ask. The evidence pack has no policy or control for excluding user data from AI model training. WHOIS privacy and the security features are adjacent privacy controls, not an AI-training opt-out, so they earn no credit.",
+    "rationale": "Dynadot is a domain registrar that ships AI features (AI Domain Search, an MCP server), so a buyer could fairly ask whether customer data is kept out of AI model training. The evidence pack has no AI-training opt-out, data-usage policy or training exclusion of any kind. WHOIS privacy and account security are adjacent privacy controls and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1934,10 +1980,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a registrar that holds customer and WHOIS contact data, but the evidence never documents retention settings, account-data deletion, or data-export/erasure controls. The closest items are adjacent and earn no credit: API domain deletion and grace deletions remove domain registrations rather than personal data, and WHOIS privacy hides contact details from public view rather than controlling how long they are kept or whether they are deleted.",
+    "rationale": "Data retention and deletion controls are a fair privacy question for a registrar SaaS, so the axis applies. However, the evidence pack documents no account or personal-data retention settings, data deletion requests, or retention policies. Domain grace deletions and API domain deletion concern removing domain registrations, not user data, and WHOIS privacy hides contact details rather than controlling retention, so these are adjacent features that earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can control data retention and deletion",
       "citations": []
@@ -1949,7 +1995,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry or usage tracking is a fair question for a SaaS registrar that also ships an API and MCP server, so the axis applies. The pack never mentions a telemetry, analytics, or usage-tracking opt-out for the site, the API or the MCP server. The privacy evidence covers WHOIS contact hiding, which is a different control and earns no credit.",
+    "rationale": "Telemetry and usage-tracking opt-out is a fair privacy question for a SaaS registrar with an API and MCP server, so the axis applies. The evidence pack documents no such control, so the verdict is none. WHOIS privacy (hiding contact details in public WHOIS) is a different, adjacent privacy feature and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1964,7 +2010,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no published per-TLD price list showing separate registration, renewal and transfer prices, and nothing on renewal versus first-year pricing. The reseller page only says resellers can set their own registration, transfer and renewal prices. The transfer page mentions a 1-year renewal included with a transfer. Neither is a public price list, so the story is unevidenced.",
+    "rationale": "Pricing transparency is a fair question for a domain registrar, but the evidence pack never mentions a published per-TLD price list with separate registration, renewal, and transfer prices, or any statement about teaser versus renewal pricing. The transfer page's 'free privacy, 1-year renewal' and the reseller page's freedom to set customer prices are adjacent features, not a published price list.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1979,12 +2025,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dynadot's first-party API page says domains can be registered through API commands and that the API manages DNS, orders and account settings across more than 120 actions. That covers the purchase step of a scripted registration. The pack does not document contact handling or nameserver setting as specific API calls, and no OpenAPI spec was found. Missing for 10: documented API calls for setting registrant contacts, documented API calls for setting nameservers at registration, a published API reference/OpenAPI spec, and independent or hands-on confirmation of an end-to-end scripted registration.",
+    "rationale": "Dynadot's own API documentation states that domains can be registered through API commands. The API exposes 120+ actions covering domains, DNS and orders, and comes with a documented sandbox for testing deploy scripts. However, the pack shows no specific documented calls for creating or attaching registrant contacts, or for setting nameservers during or after registration. The nameserver mention comes from the MCP page, not the API. The RESTful API is also labeled Beta and may change without notice. Missing for 10: documented contact create/assign calls, documented API nameserver set calls, evidence of a single end-to-end registration flow, independent or hands-on corroboration.",
     "evidenceIds": [
       "dynadot-docs-25",
       "dynadot-docs-1",
-      "dynadot-docs-24",
-      "dynadot-probe-2"
+      "dynadot-api-sandbox-20261106",
+      "dynadot-api-versioning-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1998,6 +2044,10 @@
         {
           "evidenceId": "dynadot-docs-1",
           "quote": "The Dynadot API lets you programmatically manage domains, account settings, DNS, orders, and other account activities. Our API supports more than 120 actions"
+        },
+        {
+          "evidenceId": "dynadot-api-sandbox-20261106",
+          "quote": "The Dynadot API Sandbox environment allows you to safely test your API integrations without affecting your live account or real funds"
         }
       ]
     }
@@ -2008,10 +2058,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document per-domain auto-renew controls, expiry or renewal reminder notices for owned domains, or post-expiry grace and redemption windows. The nearby evidence covers other things: one-off renewal via API commands, a WHOIS Watchlist for monitoring expiry, and add-grace 'grace deletion' for domain tasting, which is not a lapse or redemption window.",
+    "rationale": "The evidence pack has nothing on per-domain auto-renew controls, renewal or expiry reminder notices, or post-expiry grace and redemption windows. The nearby evidence is adjacent only: a WHOIS Watchlist to \"monitor expiry or status changes\" (no notifications to the admin are documented), API renewal commands (one-off manual renewals, not an auto-renew setting), and grace deletions for domain tasting (returning a new registration, not recovering a lapsed one).",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an IT admin, renewals never surprise me — auto-renew controls per domain, expiry notices, and documented grace/redemption windows if something lapses",
       "citations": []
@@ -2020,16 +2070,32 @@
   {
     "productId": "dynadot",
     "storyId": "sandbox-test-keys",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence documents an extensive Dynadot API with more than 120 actions, including registering domains. Nothing describes self-serve API key issuance or a sandbox or test environment where registrations cost no real money. Grace deletion for domain tasting is a related refund feature on live registrations, not an isolated test environment, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Dynadot documents a dedicated API Sandbox on its own host with separate sandbox keys and a pre-funded test balance, so integrations, including registrations, can be tested without real money. The vendor notes that some commands are unavailable or behave differently in the sandbox, and nothing explicitly documents how a developer gets API credentials self-serve. missing for 10: documented self-serve API credential/key provisioning flow, full command parity in the sandbox, independent or hands-on corroboration of sandbox registrations.",
+    "evidenceIds": [
+      "dynadot-api-sandbox-20261106",
+      "dynadot-docs-25"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can get API credentials self-serve and test safely — a sandbox or test environment where registrations don't cost real money",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "dynadot-api-sandbox-20261106",
+          "quote": "The Dynadot API Sandbox environment allows you to safely test your API integrations without affecting your live account or real funds"
+        },
+        {
+          "evidenceId": "dynadot-api-sandbox-20261106",
+          "quote": "pre-funded with a balance of 10,000 in all supported currencies for testing purposes"
+        },
+        {
+          "evidenceId": "dynadot-docs-25",
+          "quote": "Build your account by registering, transferring, and renewing domains through commands."
+        }
+      ]
     }
   },
   {
@@ -2038,11 +2104,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dynadot's own docs say it offers search and registration across more than 600 domain extensions, plus IDN search and multi-TLD bulk search, which covers the breadth half of the story. Nothing in the pack shows per-TLD documentation of special requirements for restricted or country-code TLDs. Missing for 10: per-TLD documentation of restricted/ccTLD registration requirements, independent or hands-on corroboration of TLD coverage.",
+    "rationale": "Dynadot's own docs claim search and registration across over 600 domain extensions, plus IDN search, which covers the 'hundreds of extensions' half of the story. Nothing in the pack documents per-TLD special requirements such as restricted-TLD eligibility or country-code rules. Missing for 10: per-TLD documentation of restricted/ccTLD requirements, explicit evidence of ccTLD and restricted-TLD coverage, independent corroboration of the 600+ extension catalog.",
     "evidenceIds": [
       "dynadot-docs-21",
-      "dynadot-docs-33",
-      "dynadot-docs-7"
+      "dynadot-docs-33"
     ],
     "support": {
       "relation": "direct",
@@ -2056,10 +2121,6 @@
         {
           "evidenceId": "dynadot-docs-33",
           "quote": "Search available Internationalized Domain Names (IDNs) and register today."
-        },
-        {
-          "evidenceId": "dynadot-docs-7",
-          "quote": "Paste a list of names, pick your TLDs, and see what is available in seconds."
         }
       ]
     }
@@ -2070,7 +2131,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Dynadot documents its own transfer-in capability: a transfer landing page that mentions a 1-year renewal included with transfer, bulk transfer, and API-driven transfers. The evidence never describes the EPP/auth-code steps, transfer status tracking, the transfer price, or whether remaining registration time is preserved beyond the implied 1-year addition. The WHOIS Watchlist is a separate monitoring feature, not transfer tracking, so it earns no credit. missing for 10: documented EPP/auth-code flow, transfer status tracking, stated transfer cost, explicit handling of remaining registration time, independent corroboration.",
+    "rationale": "Dynadot has first-party transfer-in pages, including bulk transfer and API transfer commands. The transfer page says transfers include a \"1-year renewal\", which hints at what happens to registration time, but none of the cited material documents the auth/EPP code flow, transfer status tracking, or the transfer price. Missing for 10: documented EPP/auth-code steps, transfer status tracking, explicit transfer cost, explicit statement that remaining registration time is preserved, independent corroboration.",
     "evidenceIds": [
       "dynadot-docs-8",
       "dynadot-docs-9",
@@ -2102,7 +2163,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Dynadot's security page documents an optional Registry Lock, which covers the 'domains that must never move' half of the story. It also mentions an account lock, but nothing shows a domain-level transfer lock applied by default. missing for 10: evidence of a default-on registrar transfer lock (clientTransferProhibited) on domains, details on how Registry Lock works (eligible TLDs, unlock verification), independent or hands-on corroboration.",
+    "rationale": "Dynadot's security page documents an \"optional Registry Lock\" for domains that must never move, plus an \"account lock\". However, nothing shows a domain-level transfer lock applied by default, and account lock is not clearly the same thing as a registrar transfer lock. missing for 10: evidence of a transfer lock enabled by default on domains, detail on how Registry Lock works (eligible TLDs, unlock procedure), independent or hands-on corroboration.",
     "evidenceIds": [
       "dynadot-docs-29"
     ],

@@ -1,17 +1,35 @@
 {
-  "hash": "24d53fd81595d143958852d88eee2775e9573ffeac2b2a4ac47431307e869e6c",
+  "hash": "005c1149063b80a98596dbda48f95468e6e9d6938c36de779ec95603c364fbeb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows per-key monthly spend caps, service accounts, and MCP server registration. None of it says these can be provisioned programmatically through an admin or management API; they may only be dashboard features. The OpenAPI probe returned 404 on every candidate path, and no admin endpoints for creating keys, gateways, or budgets are documented.",
-    "evidenceIds": [],
+    "rationale": "Requesty publishes an OpenAPI spec that covers a management API on api-v2.requesty.ai, and its changelog cites management-endpoint parameters, including the move from `monthly_limit` to `monthly_budget`. Together with documented per-key and per-service-account spend caps, this points to programmatic budget management, but specific endpoints for creating keys or gateways are not shown. Missing for 10: explicit documented endpoints for creating and revoking API keys, programmatic gateway or service-account provisioning, endpoint-level budget docs, and hands-on corroboration.",
+    "evidenceIds": [
+      "requesty-openapi-spec-20261106",
+      "requesty-changelog-20261106",
+      "requesty-docs-18",
+      "requesty-docs-19"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can provision gateways, keys, and budgets programmatically through an admin API",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "requesty-openapi-spec-20261106",
+          "quote": "covering both the OpenAI/Anthropic-compatible inference router and the management API"
+        },
+        {
+          "evidenceId": "requesty-changelog-20261106",
+          "quote": "`monthly_limit` is deprecated and will soon be migrated to `monthly_budget`"
+        },
+        {
+          "evidenceId": "requesty-docs-18",
+          "quote": "Each API key or service account can have its own monthly spend cap."
+        }
+      ]
     },
     "productId": "requesty",
     "storyId": "provision-via-api"

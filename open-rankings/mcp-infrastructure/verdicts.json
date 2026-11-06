@@ -1289,7 +1289,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama's evidence covers an MCP registry, hosting, a gateway and an inspector, with pre-filled config blocks only for client apps (Cursor, Claude Desktop, Claude Code, VS Code). Nothing documents adapters or integration guides for agent frameworks or SDKs such as Vercel AI SDK, LangChain, CrewAI, or the OpenAI or Anthropic SDKs. A gateway URL that generic MCP clients could reach is a building block, not a documented framework adapter, so the axis applies but is unevidenced.",
+    "rationale": "The evidence shows pre-filled MCP config blocks only for desktop and IDE clients (Cursor, Claude Desktop, Claude Code, VS Code), plus a REST directory API with generic cURL, JavaScript, Python and PHP samples. Neither is a documented adapter for Vercel AI SDK, LangChain, CrewAI, or the OpenAI or Anthropic SDKs. A standard MCP Gateway endpoint is at most a building block a developer could wire up themselves, not a documented framework integration.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1301,23 +1301,32 @@
   {
     "productId": "glama",
     "storyId": "agentic-agent-docs",
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "A live probe confirms Glama publishes an llms.txt (HTTP 200) that describes its MCP server directory, so an agent has a first-party entry point. Beyond that file, agent-oriented docs are thin: the markdown docs variant (mcp.md) returns 404 and no OpenAPI spec exists at any probed path. missing for 10: markdown/agent-readable versions of the docs pages, a machine-readable API spec, evidence of how deep or complete the llms.txt content is, and independent hands-on corroboration of agents using it successfully.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A live probe confirms Glama serves an llms.txt at https://glama.ai/llms.txt (HTTP 200) that describes the directory. Per the vendor's docs, that llms.txt also advertises an OpenAPI spec \"for generating a client\", and an RFC 9727 API catalog at /.well-known/api-catalog links the spec and the hosted reference into a machine-discoverable chain. Missing for 10: markdown versions of doc pages (mcp.md returns 404), and independent hands-on corroboration that agents use these docs successfully; one user reports their agent couldn't find a quality-score retest answer in the docs.",
     "evidenceIds": [
       "glama-probe-1",
-      "glama-probe-2",
-      "glama-probe-3"
+      "glama-openapi-spec-20261106",
+      "glama-api-catalog-20261106",
+      "glama-probe-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
           "evidenceId": "glama-probe-1",
           "quote": "PROBE llms.txt: HTTP 200 at https://glama.ai/llms.txt # Glama"
+        },
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "advertised from its llms.txt \"for generating a client\" and discoverable through an RFC 9727 API catalog at /.well-known/api-catalog"
+        },
+        {
+          "evidenceId": "glama-api-catalog-20261106",
+          "quote": "completing a fully machine-discoverable chain from the well-known path"
         }
       ]
     }
@@ -1327,10 +1336,11 @@
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Glama Chat lets users upload their own documents and get AI-generated answers with exact page references, so the product itself provides AI responses grounded in user data. That is user-initiated Q&A, not proactive insights or suggestions derived from the user's data (e.g., gateway logs or usage), and it rests on a single thin marketing line. Missing for 10: proactive AI insights or suggestions over account and usage data, documentation of analysis depth beyond document Q&A, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Glama Chat lets users upload their own documents and get AI-generated answers grounded in them with page references, which is a first-party way to get AI output from the user's data. There is no evidence of proactive insights or suggestions drawn from the user's product data, such as gateway logs, usage, or server metrics. Missing for 10: proactive AI-generated insights or suggestions, AI analysis of in-product data (logs/usage/servers), depth documentation, independent corroboration.",
     "evidenceIds": [
-      "glama-docs-18"
+      "glama-docs-18",
+      "glama-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -1340,6 +1350,10 @@
         {
           "evidenceId": "glama-docs-18",
           "quote": "Upload any PDF, Word doc, or text file. Get instant answers with exact page references."
+        },
+        {
+          "evidenceId": "glama-docs-22",
+          "quote": "Search across documents and chats. Save and tag important conversations."
         }
       ]
     }
@@ -1350,7 +1364,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Glama's pricing page claims users can \"Automate workflows using schedules or webhooks,\" which is a first-party claim of recurring, background automation. That is the only mention: there are no docs on how to set up workflows, what they can do, or how they run unattended. missing for 10: dedicated documentation of workflow/automation setup, details on schedule configuration and background execution behavior, scope of what automations can trigger (e.g., MCP tools/agents), and independent or hands-on corroboration.",
+    "rationale": "Glama's pricing page directly claims that users can 'Automate workflows using schedules or webhooks,' which matches the story's recurring, autonomous background execution. That single line is the only evidence: no docs describe how automations are built, triggered, monitored or run, and there is no hands-on corroboration. Missing for 10: dedicated documentation of how to create and configure automations, details on schedule and trigger options, evidence of background execution and monitoring or logs, independent or hands-on corroboration.",
     "evidenceIds": [
       "glama-docs-10"
     ],
@@ -1372,12 +1386,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Glama ships its own chat assistant at glama.ai/chat. It gives access to leading models, answers questions about uploaded documents with page references, and turns text descriptions into diagrams, so users can hand some tasks to a built-in AI. A pricing-page line also mentions automating workflows with schedules or webhooks, but it is not tied to the assistant. There is no evidence that the assistant can take agentic actions inside Glama itself, such as deploying, configuring or testing MCP servers. Missing for 10: documented agentic task delegation where the assistant acts on Glama resources, detail on how assistant-driven automations work, and independent hands-on corroboration.",
+    "rationale": "Glama ships a built-in chat product that gives access to leading models. Users can hand it concrete tasks such as answering questions over uploaded documents or turning text into diagrams, so a first-party in-product assistant exists. However, nothing shows that assistant carrying out agentic, multi-step work or acting on the user's Glama resources (servers, gateway, hosting). missing for 10: evidence of agentic task execution beyond chat responses, assistant acting on in-product resources, independent or hands-on corroboration of the chat assistant.",
     "evidenceIds": [
       "glama-docs-23",
       "glama-docs-18",
       "glama-docs-19",
-      "glama-docs-10"
+      "glama-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -1395,10 +1409,6 @@
         {
           "evidenceId": "glama-docs-19",
           "quote": "Transform text descriptions into professional diagrams."
-        },
-        {
-          "evidenceId": "glama-docs-10",
-          "quote": "Automate workflows using schedules or webhooks."
         }
       ]
     }
@@ -1407,13 +1417,15 @@
     "productId": "glama",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Glama's pricing page documents its own automation feature (\"Automate workflows using schedules or webhooks\"), and the Gateway lets agents make MCP calls programmatically without a UI. Both are forms of non-interactive operation. However, the evidence never shows Glama being invoked from a CI pipeline or run headlessly via a CLI or documented API, and the OpenAPI probe returned 404 on every candidate path. Missing for 10: a documented CLI or headless mode, CI integration docs or examples, a published API spec for scripting, and independent hands-on corroboration of CI usage.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Glama publishes a machine-discoverable OpenAPI 3.0.3 REST API with /v1 endpoints for servers, connectors, instances and usage. It authenticates with bearer keys and has cURL/Python samples, so automation can drive it without a UI, and the pricing page claims schedule- or webhook-driven workflows. There is no documented CLI, CI integration guide or headless runner, the Gateway has no REST spec, and one user found API-triggered rebuilds blocked by an undocumented credit requirement. Missing for 10: an official CLI or CI integration (e.g. GitHub Actions) docs, headless coverage of Gateway and hosting operations, and independent corroboration of reliable CI-driven automation.",
     "evidenceIds": [
+      "glama-openapi-spec-20261106",
+      "glama-api-try-it-20261106",
+      "glama-api-catalog-20261106",
       "glama-docs-10",
-      "glama-docs-4",
-      "glama-probe-3"
+      "glama-comm-2"
     ],
     "support": {
       "relation": "direct",
@@ -1421,12 +1433,16 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "glama-docs-10",
-          "quote": "Automate workflows using schedules or webhooks."
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "Glama publishes an OpenAPI 3.0.3 document for its MCP directory API (info title \"Glama MCP API\", /v1 paths for servers, connectors, instances, usage)"
         },
         {
-          "evidenceId": "glama-docs-4",
-          "quote": "Every MCP call from your agents flows through Glama"
+          "evidenceId": "glama-api-try-it-20261106",
+          "quote": "alongside cURL/JavaScript/Python/PHP samples and full schemas"
+        },
+        {
+          "evidenceId": "glama-docs-10",
+          "quote": "Automate workflows using schedules or webhooks."
         }
       ]
     }
@@ -1437,12 +1453,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Glama's own browser-based MCP Inspector connects to any MCP server, including local ones exposed through mcp-proxy, and exercises its tools, resources and prompts. That is a first-party MCP-client capability. However, there is no evidence that Glama's AI product (Glama Chat) lets a model plug in MCP servers and call their tools during conversations; the gateway and hosting features proxy other agents' calls rather than letting Glama use the tools itself. Missing for 10: documented MCP-client support in Glama Chat for model-driven tool use, configuration docs for adding servers to the chat assistant, and independent or hands-on corroboration.",
+    "rationale": "Glama's hosted MCP Inspector connects to any remote MCP server (Streamable HTTP/SSE, with OAuth/bearer auth) and runs its tools interactively, so the product does consume MCP servers. That use is manual testing, not an AI inside Glama calling the tools on the user's behalf. The Gateway and hosting proxy servers for external agents, and nothing shows Glama Chat consuming MCP tools. Missing for 10: evidence that Glama Chat or another Glama AI surface can attach MCP servers and call their tools agentically; persistent per-user server configuration in that surface; independent hands-on corroboration.",
     "evidenceIds": [
+      "glama-mcp-inspector-20261106",
       "glama-docs-12",
-      "glama-docs-7",
-      "glama-docs-24",
-      "glama-docs-11"
+      "glama-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -1450,16 +1465,16 @@
       "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
       "citations": [
         {
+          "evidenceId": "glama-mcp-inspector-20261106",
+          "quote": "Glama's hosted inspector connects to remote Streamable HTTP and SSE endpoints so you can inspect available capabilities and test requests interactively"
+        },
+        {
           "evidenceId": "glama-docs-12",
           "quote": "Test any MCP server from your browser. Supports every Model Context Protocol feature, including tools, resources, prompts, tasks, elicitation, sampling, and OAuth 2.1."
         },
         {
           "evidenceId": "glama-docs-7",
           "quote": "Test your local MCP servers with the inspector by exposing them via a public tunnel using mcp-proxy."
-        },
-        {
-          "evidenceId": "glama-docs-11",
-          "quote": "Search, compare, and connect to thousands of MCP servers"
         }
       ]
     }
@@ -1467,16 +1482,34 @@
   {
     "productId": "glama",
     "storyId": "agentic-mcp-server",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Glama is an MCP registry, hosting and gateway platform, so an official first-party MCP server is a fair axis for it. The evidence shows Glama hosting and proxying third-party MCP servers through its Gateway, plus copy-paste client configs. That is related-but-different infrastructure, and nothing documents an official Glama MCP server that exposes Glama's own capabilities (e.g., registry search) to agents.",
-    "evidenceIds": [],
+    "rationale": "Glama runs first-party MCP endpoints that agents connect to directly. Deploying a registry server puts Glama's Gateway in front of it, and the endpoint you get is a Glama-hosted, logged, access-controlled MCP URL. However, the evidence shows no official Glama MCP server that exposes Glama's own capabilities, such as directory search, which the OpenAPI evidence says is REST-only. missing for 10: an official first-party MCP server for Glama's own directory/API functionality, setup docs for connecting an agent to it, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "glama-docs-4",
+      "glama-docs-15",
+      "glama-docs-28",
+      "glama-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "glama-docs-4",
+          "quote": "Every MCP call from your agents flows through Glama"
+        },
+        {
+          "evidenceId": "glama-docs-15",
+          "quote": "No proxy setup, no manual wiring – the endpoint you get is the Gateway."
+        },
+        {
+          "evidenceId": "glama-docs-28",
+          "quote": "Every call through this URL is logged, access-controlled, and credential-managed"
+        }
+      ]
     }
   },
   {
@@ -1485,10 +1518,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Glama's own platform (registry search, hosting deployment, gateway access control) being operated through natural-language commands. Glama Chat is a multi-model chat interface where users converse with LLMs, for example turning text into diagrams. That is an adjacent feature, not natural-language control of the product itself. The MCP inspector and config blocks let external agents connect to MCP servers, which is also adjacent.",
+    "rationale": "The evidence shows Glama Chat as a multi-model chat interface for asking AI models questions, such as turning text into diagrams or querying uploaded documents. Nothing shows natural-language commands that operate Glama's own functions, like searching the registry, deploying servers or configuring the Gateway. Chatting with third-party models is an adjacent feature, not NL control of the product, and Glama's directory API exposes no first-party natural-language or agent interface.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": []
@@ -1500,7 +1533,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama is an MCP registry, hosting and gateway platform, so an official CLI is a fair question for it. The evidence pack documents only browser, web and config-paste workflows and never describes an official Glama CLI. The mention of tunneling local servers via mcp-proxy does not establish a first-party Glama CLI, so it earns no credit.",
+    "rationale": "The evidence pack shows no official Glama CLI. Glama offers a browser inspector, a REST API with an OpenAPI spec \"for generating a client\", and config blocks to paste into MCP clients. The spec and the cURL samples are developer building blocks, not a shipped CLI. The mention of tunneling local servers \"using mcp-proxy\" does not establish an official Glama command-line tool for users.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1513,13 +1546,16 @@
     "productId": "glama",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Glama's /mcp/reference page describes programmatic access: searching the curated server catalog, inspecting capabilities and keeping your own directory synchronized. A community user also mentions making \"API attempts\", which suggests some public API exists, but its scope and documentation depth are unclear and OpenAPI probes all returned 404. missing for 10: a machine-readable API spec (OpenAPI), documented endpoints and authentication, API coverage of hosting, gateway and chat actions, and hands-on corroboration of driving the product via the API.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Glama publishes a documented OpenAPI 3.0.3 REST API (/v1 servers, connectors, instances, usage). It is discoverable via llms.txt and an RFC 9727 API catalog, and its hosted reference has Try-it panels, multi-language samples, and machine-readable deprecation flags, so an AI-native user can drive the directory and instance surface programmatically. The documented spec covers only that directory API: the Gateway has no REST spec and the chat product has no API evidence, so not the whole product is drivable. Missing for 10: a documented API covering the Gateway and chat surfaces, a versioning/changelog policy (changelog returns 404), documentation of undocumented prerequisites such as the credit requirement that blocked API-triggered rebuilds, and independent hands-on corroboration of API use.",
     "evidenceIds": [
-      "glama-docs-6",
-      "glama-comm-2",
-      "glama-probe-3"
+      "glama-openapi-spec-20261106",
+      "glama-api-catalog-20261106",
+      "glama-api-try-it-20261106",
+      "glama-endpoint-deprecation-20261106",
+      "glama-probe-1",
+      "glama-comm-2"
     ],
     "support": {
       "relation": "direct",
@@ -1527,8 +1563,24 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "glama-docs-6",
-          "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities, and keep your own directory synchronized."
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "Glama publishes an OpenAPI 3.0.3 document for its MCP directory API"
+        },
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "the Gateway is an MCP-protocol proxy without a separate REST spec"
+        },
+        {
+          "evidenceId": "glama-api-catalog-20261106",
+          "quote": "completing a fully machine-discoverable chain from the well-known path"
+        },
+        {
+          "evidenceId": "glama-api-try-it-20261106",
+          "quote": "alongside cURL/JavaScript/Python/PHP samples and full schemas"
+        },
+        {
+          "evidenceId": "glama-endpoint-deprecation-20261106",
+          "quote": "Versioning is practiced and machine-readable"
         }
       ]
     }
@@ -1539,10 +1591,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Glama's gateway offers per-tool enable/disable controls and states that calls are 'credential-managed'. Neither of these documents issuing scoped or least-privilege API credentials (keys or tokens) to an agent. Per-tool toggles are an adjacent access control, not a scoped-credential capability, so they earn no credit toward this story.",
+    "rationale": "The evidence shows Gateway access control and per-tool enable/disable on hosted servers, plus a bearer key for the directory API. Nothing documents issuing API credentials whose scope or privileges can be limited for an agent. Per-tool toggles and Gateway credential management are adjacent controls, not scoped credential issuance, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": []
@@ -1554,10 +1606,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama is an MCP registry, hosting, and gateway platform, so an official SDK is a fair question for it. The evidence pack never mentions any official client SDK or library. The mcp-proxy tunneling tool, the connector JSON schema, and copy-paste config blocks are adjacent tooling, not SDKs, and the OpenAPI probes all returned 404.",
+    "rationale": "Glama is an API-bearing platform, so an official SDK is a fair ask, but the evidence shows no official SDK package for any language. It shows only an OpenAPI 3.0.3 spec advertised \"for generating a client\" and per-endpoint cURL/JavaScript/Python/PHP request samples. Those are developer building blocks for constructing a client, not a vendor-shipped SDK, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": []
@@ -1569,7 +1621,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only webhook mention is a pricing-page line, \"Automate workflows using schedules or webhooks,\" which describes webhooks as triggers for workflow automation. It does not document registrable outbound HTTP callbacks that a consumer can subscribe to for Glama events. No event types, endpoint registration, payloads, or webhook API are evidenced, and probes found no OpenAPI spec. That makes this adjacent workflow-trigger support, not delivery of event-subscription webhooks.",
+    "rationale": "The only mention is a pricing-page line, \"Automate workflows using schedules or webhooks.\" It pairs webhooks with schedules, which reads as webhooks used to trigger workflows, not as registrable outbound HTTP callbacks that notify a consumer of Glama events. The OpenAPI directory API and the rest of the evidence document no webhook subscription, event types or callback registration, so this is an adjacent feature rather than the story's capability.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1581,31 +1633,61 @@
   {
     "productId": "glama",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Glama has an API reference page for searching its catalog and syncing directories, but nothing shows that reference is interactive or has runnable examples, and no OpenAPI or Swagger spec was found. The browser MCP Inspector tests third-party MCP servers. It is an adjacent feature, not an interactive reference for Glama's own API.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Glama's hosted API reference has a per-endpoint \"Try it\" panel that sends real requests from the browser. It sits alongside cURL, JavaScript, Python and PHP samples and full schemas, and is backed by a published OpenAPI 3.0.3 spec that the RFC 9727 API catalog links as the service-doc. The probe 404s were at other candidate paths and do not contradict the spec at /api/mcp/openapi.json. Missing for 10: independent or hands-on corroboration of the runner, and a sandbox or test-key mode (the runner hits the production API with a real bearer key).",
+    "evidenceIds": [
+      "glama-api-try-it-20261106",
+      "glama-openapi-spec-20261106",
+      "glama-api-catalog-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "glama-api-try-it-20261106",
+          "quote": "The vendor-hosted API reference carries a per-endpoint \"Try it\" panel (\"Requests are sent directly from this browser. Credentials are never stored.\") alongside cURL/JavaScript/Python/PHP samples and full schemas."
+        },
+        {
+          "evidenceId": "glama-api-catalog-20261106",
+          "quote": "The RFC 9727 API catalog (application/linkset+json) links the machine spec (service-desc) and the hosted reference (service-doc)"
+        },
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "Glama publishes an OpenAPI 3.0.3 document for its MCP directory API"
+        }
+      ]
     }
   },
   {
     "productId": "glama",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Glama is a platform with an API, so an OpenAPI or equivalent spec is a fair thing to ask for, but the evidence shows none: every probed OpenAPI/Swagger path returned 404. The connector.json schema describes a connector config file, not the API, and llms.txt is a directory summary rather than an API spec, so neither counts toward this story.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Glama publishes a downloadable OpenAPI 3.0.3 document for its MCP directory API at /api/mcp/openapi.json. It is advertised in llms.txt for client generation and discoverable through an RFC 9727 API catalog whose service-desc points at the spec. The probe 404s were on different generic paths, so they do not contradict this. Missing for 10: spec coverage of the Gateway (MCP-protocol proxy with no REST spec), independent or hands-on confirmation of the spec download.",
+    "evidenceIds": [
+      "glama-openapi-spec-20261106",
+      "glama-api-catalog-20261106",
+      "glama-endpoint-deprecation-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "Glama publishes an OpenAPI 3.0.3 document for its MCP directory API"
+        },
+        {
+          "evidenceId": "glama-api-catalog-20261106",
+          "quote": "The RFC 9727 API catalog (application/linkset+json) links the machine spec (service-desc) and the hosted reference (service-doc)"
+        }
+      ]
     }
   },
   {
@@ -1614,10 +1696,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama documents a browser-based MCP Inspector for testing servers, including local ones exposed through a tunnel. It also documents private-by-default hosting and per-tool access control. None of these is a sandbox environment isolated from production data: the inspector calls whatever server you point it at, and access controls only restrict live calls. So the evidence is adjacent at best, and no isolated test or sandbox mode is documented.",
+    "rationale": "Glama's hosted MCP Inspector lets users test arbitrary MCP servers from the browser, but that is an adjacent testing tool, not an isolated sandbox. The evidence states it is not an isolated sandbox of Glama's own API and that no test keys or isolation framing exist. The API reference's \"Try it\" panel runs against the production API with a real bearer key, so there is no documented way to test without touching production data.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
       "citations": []
@@ -1626,16 +1708,28 @@
   {
     "productId": "glama",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Glama is an MCP registry, hosting and gateway platform, so versioned APIs with a deprecation policy are a fair question to ask of it. Nothing in the evidence pack documents API versioning or any deprecation policy, and probes for an OpenAPI spec at the standard paths all returned 404. The 'stable' ownership token in the connector schema is a different feature and does not address API versioning.",
-    "evidenceIds": [],
+    "rationale": "Glama's directory API is versioned under /v1 paths, and deprecation is marked in machine-readable form: a deprecation banner names the replacement endpoint, and the OpenAPI document carries a matching \"deprecated\": true flag. However, there is no standalone versioning or deprecation policy page (no sunset timelines or notice periods), and /changelog returns 404, so only per-endpoint deprecation practice is evidenced. Missing for 10: a documented deprecation/versioning policy with timelines, a changelog, versioning coverage for the Gateway, and independent corroboration.",
+    "evidenceIds": [
+      "glama-endpoint-deprecation-20261106",
+      "glama-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "glama-endpoint-deprecation-20261106",
+          "quote": "This endpoint is deprecated. Please use GET /v1/servers/:namespace/:slug instead."
+        },
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "/v1 paths for servers, connectors, instances, usage"
+        }
+      ]
     }
   },
   {
@@ -1644,7 +1738,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for an MCP registry, hosting, gateway and chat platform like Glama, so the axis applies. Nothing in the evidence documents selecting or acting on many servers, tools, chats or other items in one operation. Per-tool enable/disable, directory synchronization and schedule/webhook automation are adjacent features or belong to other stories, so they earn no credit here.",
+    "rationale": "Bulk operations are a fair axis for an MCP directory, hosting, and gateway platform with a REST API, so the story applies. However, nothing in the evidence documents batch or bulk endpoints, or multi-select actions across many servers, connectors, or instances. Related features such as per-tool toggles, directory synchronization, and schedule/webhook automation are different capabilities and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1659,7 +1753,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Glama's pricing page claims workflows can be automated using webhooks, which are event triggers, or schedules. This is a single marketing line with no documentation of how rules are defined, what events are supported, or what actions can run. Schedules are recurring time-based runs, not event-driven rules, so only the webhook part maps to this story. Missing for 10: documented rule/trigger definition, a catalog of supported event types and actions, conditional logic, workflow docs, and hands-on or independent corroboration.",
+    "rationale": "Glama's pricing page has a single claim that users can \"Automate workflows using schedules or webhooks.\" Webhook-triggered workflows suggest event-driven automation, but nothing documents how rules are defined, which events exist, or what actions can be triggered. Schedules are time-based recurrence rather than event triggers, so they don't count toward this story, and per-tool access control is a different feature. Missing for 10: documentation of rule or trigger definition, a catalog of supported events and actions, workflow configuration details, and hands-on or independent corroboration.",
     "evidenceIds": [
       "glama-docs-10"
     ],
@@ -1681,7 +1775,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Glama's pricing page directly claims the product can \"Automate workflows using schedules or webhooks,\" which is a first-party scheduling capability. That is the only mention, and nothing documents how schedules are created, whether they recur (cron-style or intervals), or what jobs they can run. missing for 10: dedicated documentation of scheduled workflows, explicit evidence of recurring (not one-off) schedules, configuration details such as cron or interval syntax, run history or monitoring, and independent or hands-on corroboration.",
+    "rationale": "Glama's pricing page claims you can 'Automate workflows using schedules or webhooks', which is a first-party claim of scheduled workflow automation. Nothing else in the pack documents how schedules are set up, how often they can repeat, or what kinds of jobs they can run. missing for 10: documentation of how schedules are configured, explicit confirmation of recurring cadence (cron or intervals), detail on which jobs or workflows can be scheduled, an API or agent-accessible way to manage schedules, and independent or hands-on corroboration.",
     "evidenceIds": [
       "glama-docs-10"
     ],
@@ -1703,7 +1797,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama documents automations via schedules or webhooks (glama-docs-10), so this axis applies. However, nothing in the evidence shows version history, review or approval steps, or rollback for those automations. Building MCP server images from a GitHub repo and community mentions of uploading new MCP versions concern server hosting, not automations, and still show no rollback, so they earn no credit.",
+    "rationale": "Glama documents automating workflows with schedules or webhooks, so the axis applies. However, nothing in the pack shows that users can version, review, or roll back those automations. The /v1 API path versioning and the deprecation flags concern Glama's own directory API, and GitHub-based image builds concern hosted MCP servers; neither is versioning or rollback of user automations, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1716,14 +1810,14 @@
     "productId": "glama",
     "storyId": "browser-inspector-playground",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "Glama documents a browser-based MCP Inspector that can test any MCP server, with no login required. It explicitly supports tools along with resources, prompts, sampling and OAuth 2.1, and can reach local servers through an mcp-proxy tunnel, so it covers exercising tools before integration. Missing for 10: independent or hands-on corroboration that the inspector works as claimed, and in-depth docs on the tool-invocation workflow beyond landing-page statements.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Glama documents a hosted, no-login browser MCP Inspector. It connects to remote Streamable HTTP and SSE endpoints, supports tools and other MCP features with OAuth, bearer, or custom-header auth, executes tools interactively with a JSON-RPC protocol log, and can reach local servers through an mcp-proxy tunnel. That covers exercising a server's tools before integrating it. Missing for 10: independent or hands-on corroboration of the inspector's tool execution (all evidence is vendor documentation).",
     "evidenceIds": [
-      "glama-docs-1",
       "glama-docs-12",
       "glama-docs-24",
-      "glama-docs-7"
+      "glama-docs-7",
+      "glama-mcp-inspector-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1733,6 +1827,10 @@
         {
           "evidenceId": "glama-docs-12",
           "quote": "Test any MCP server from your browser. Supports every Model Context Protocol feature, including tools, resources, prompts, tasks, elicitation, sampling, and OAuth 2.1."
+        },
+        {
+          "evidenceId": "glama-mcp-inspector-20261106",
+          "quote": "Glama's hosted inspector connects to remote Streamable HTTP and SSE endpoints so you can inspect available capabilities and test requests interactively"
         },
         {
           "evidenceId": "glama-docs-24",
@@ -1751,7 +1849,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Glama's own gateway docs say every MCP call through the gateway URL is logged and that you \"know exactly what your AI is doing,\" so first-party tool-call logging exists. The evidence never describes what the logs contain or how they are accessed, so audit and replay depth is unproven. Missing for 10: documentation of log contents (tool arguments and responses, timestamps, agent identity), a log viewer or export/API, replay capability, and independent or hands-on corroboration.",
+    "rationale": "Glama's Gateway documentation states that every MCP call through the gateway URL is logged, and it markets this as letting you know exactly what your agents are doing. That is first-party support for a tool-call log. The evidence never describes what the log records, how to view or export it, or whether it is detailed enough to audit or replay an agent's actions. The Inspector's JSON-RPC protocol log is a testing tool, not a gateway audit trail, so it earns no credit here. Missing for 10: documented log contents (arguments, responses, identity, timestamps), a log viewing/search/export interface, replay capability, retention details, independent corroboration.",
     "evidenceIds": [
       "glama-docs-28",
       "glama-docs-4",
@@ -1769,10 +1867,6 @@
         {
           "evidenceId": "glama-docs-4",
           "quote": "Every MCP call from your agents flows through Glama – so you know exactly what your AI is doing"
-        },
-        {
-          "evidenceId": "glama-docs-15",
-          "quote": "Deploy any server from the registry to Glama and we automatically put the Gateway in front of it."
         }
       ]
     }
@@ -1783,7 +1877,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Glama's pricing page has one thin first-party mention that workflows can be triggered by webhooks. That suggests some event-driven automation instead of polling. Nothing documents how an agent subscribes to events from connected downstream apps or MCP servers, so this is minimal, glancing support. Missing for 10: documented trigger/event subscription for connected apps, webhook registration and payload docs, a link between triggers and agents or hosted MCP servers, and independent or hands-on corroboration.",
+    "rationale": "The only relevant evidence is a single line on Glama's pricing page saying workflows can be automated with schedules or webhooks. That suggests some webhook-triggered automation, but nothing shows the agent subscribing to events from connected downstream apps or connectors. missing for 10: documentation of event subscriptions or triggers tied to connected downstream apps and connectors, webhook registration and payload details, event types per connector, delivery guarantees, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "glama-docs-10"
     ],
@@ -1803,11 +1897,12 @@
     "productId": "glama",
     "storyId": "free-tier-start",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "The only first-party evidence of no-cost use is the browser MCP Inspector, documented as usable with \"No login required.\" That lets a developer test and prototype tool connections without paying, but no documented free plan or limits appear. A community report adds that a credit card was required, without documentation, for rebuild/release on hosted servers, which limits how far free prototyping goes. Missing for 10: an explicitly documented free tier with stated limits, free hosting/gateway usage for prototyping, independent confirmation of a meaningful free allowance.",
+    "rationale": "The only free path the evidence shows is Glama's hosted MCP Inspector, which needs no login and lets you test tools against any remote MCP server, which covers browser-based prototyping of tool connections. No free tier or plan limits are documented, and a community report says a credit card was needed for hosted rebuild/release, which suggests hosting and Gateway use may not be free. missing for 10: documented free-tier plan and quotas, free hosted deployment and Gateway usage for prototyping, independent confirmation of what is usable without payment.",
     "evidenceIds": [
       "glama-docs-24",
+      "glama-mcp-inspector-20261106",
       "glama-docs-12",
       "glama-comm-2"
     ],
@@ -1821,8 +1916,8 @@
           "quote": "Inspect any MCP server directly from your browser. No login required."
         },
         {
-          "evidenceId": "glama-docs-12",
-          "quote": "Test any MCP server from your browser. Supports every Model Context Protocol feature, including tools, resources, prompts, tasks, elicitation, sampling, and OAuth 2.1."
+          "evidenceId": "glama-mcp-inspector-20261106",
+          "quote": "Glama's hosted inspector connects to remote Streamable HTTP and SSE endpoints so you can inspect available capabilities and test requests interactively"
         },
         {
           "evidenceId": "glama-comm-2",
@@ -1834,16 +1929,33 @@
   {
     "productId": "glama",
     "storyId": "generate-server-from-openapi",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Glama documents hosting for MCP servers you have already built: it builds from a GitHub repo, Dockerfile, npm or PyPI package and puts its Gateway in front with no manual proxy wiring. Nothing in the evidence shows it converting an OpenAPI definition, or non-MCP custom code, into an MCP server without the developer writing the protocol layer. Hosting pre-built MCP servers is an adjacent capability and earns no credit for this story.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Glama documents hosting for your own code: it builds an image from a connected GitHub repo or from a Dockerfile, npm package or PyPI module, and puts its Gateway in front of the resulting endpoint with \"no manual wiring\". That covers the hosted half of the story. Nothing shows OpenAPI-to-MCP conversion, or that non-MCP custom code is wrapped without implementing the protocol yourself. missing for 10: OpenAPI/API-definition-to-MCP generation, evidence that custom code needs no MCP protocol implementation, independent hands-on corroboration of the hosting flow.",
+    "evidenceIds": [
+      "glama-docs-2",
+      "glama-docs-3",
+      "glama-docs-15"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can turn an existing API definition (OpenAPI) or custom code into a hosted MCP server without writing protocol plumbing",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "glama-docs-2",
+          "quote": "Connect a GitHub repository and Glama builds the image straight from source."
+        },
+        {
+          "evidenceId": "glama-docs-3",
+          "quote": "Ship a Dockerfile, an npm package, or a PyPI module. Configure Node or Python versions, build steps, and CMD arguments – or let Glama infer them."
+        },
+        {
+          "evidenceId": "glama-docs-15",
+          "quote": "No proxy setup, no manual wiring – the endpoint you get is the Gateway."
+        }
+      ]
     }
   },
   {
@@ -1852,13 +1964,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Glama's own pages and its llms.txt describe a catalog of tens of thousands of MCP servers and remote connectors that developers can search, compare and connect to. Any registry server can be deployed onto Glama with the Gateway placed in front of it, so these integrations are reachable through the platform itself. Missing for 10: evidence naming which specific third-party apps or APIs are covered and how well, and independent hands-on confirmation that catalog entries reliably work as hosted integrations.",
+    "rationale": "Glama's own docs say developers can \"search, compare, and connect to thousands of MCP servers.\" Its llms.txt probe reports 91,626 MCP servers and 23,749 remote connectors, and any registry server can be deployed behind the Glama Gateway, so the catalog is reachable through the platform rather than just listed. A community comment about the \"sea of existing ones\" independently backs up the catalog's size. missing for 10: no evidence of which specific third-party apps or APIs are covered, and no evidence on how reliable or well-maintained catalog entries are when connected through the hosted gateway.",
     "evidenceIds": [
       "glama-docs-11",
       "glama-probe-1",
       "glama-docs-6",
       "glama-docs-15",
-      "glama-docs-13"
+      "glama-docs-14",
+      "glama-comm-4"
     ],
     "support": {
       "relation": "direct",
@@ -1874,12 +1987,12 @@
           "quote": "A directory of 91,626 Model Context Protocol servers and 23,749 remote connectors"
         },
         {
-          "evidenceId": "glama-docs-6",
-          "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities"
-        },
-        {
           "evidenceId": "glama-docs-15",
           "quote": "Deploy any server from the registry to Glama and we automatically put the Gateway in front of it."
+        },
+        {
+          "evidenceId": "glama-docs-6",
+          "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities"
         }
       ]
     }
@@ -1890,7 +2003,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Glama documents bridging a local MCP server into its browser inspector by exposing it through a public tunnel with mcp-proxy, so the platform can reach it without deploying. The managed Gateway features (logging, access control, credential management) are documented only for servers deployed to Glama, not for tunneled local servers. Missing for 10: evidence that a tunneled local server becomes a persistent managed remote connection with Gateway controls, documentation of the bridging workflow beyond the inspector testing use case, and independent or hands-on corroboration.",
+    "rationale": "Glama documents bridging a local MCP server into its hosted inspector by exposing it through a public tunnel with mcp-proxy, so a local server can be reached from the platform without deploying it. That bridge is framed only as inspector testing. The managed connection with logging, access control and credential management is documented only for servers deployed to Glama, where the Gateway is put in front of them. Missing for 10: evidence that a tunneled local server becomes a persistent managed remote connection behind the Gateway, confirmation that mcp-proxy is first-party, setup docs, and independent corroboration.",
     "evidenceIds": [
       "glama-docs-7",
       "glama-docs-15"
@@ -1917,7 +2030,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Glama's Gateway says every call through its URL is \"credential-managed\", so the platform does handle credentials for downstream MCP servers, but that single line is all the evidence offers. The Inspector's OAuth 2.1 support is for testing servers in the browser, not for running and storing OAuth flows on a developer's behalf. missing for 10: documented platform-run OAuth flows for downstream tools, encrypted credential vault, automatic token refresh, in-depth docs, independent or hands-on corroboration.",
+    "rationale": "Glama's Gateway states that every call through it is 'credential-managed', which is a thin first-party sign that the platform handles credentials for downstream MCP tools. The inspector's OAuth 2.1 support is for interactively testing servers, not for vaulting credentials, so it is not credited here. missing for 10: documentation that the platform runs OAuth flows on the developer's behalf, encrypted credential vaulting, automatic token refresh, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "glama-docs-28"
     ],
@@ -1939,13 +2052,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Glama's own docs say a developer can deploy any registry server to Glama and receive a hosted Gateway endpoint with no proxy setup or manual wiring. Calls through that URL are logged, access-controlled and credential-managed, and server pages provide pre-filled config blocks for MCP clients such as Cursor and Claude Desktop. The catalog also lists ready-made remote connectors. Missing for 10: independent or hands-on corroboration of connecting a client to a hosted Glama URL, and documentation of the endpoint's transport and auth details.",
+    "rationale": "Glama documents deploying any registry server onto its own hosting with the Gateway placed in front automatically. The resulting endpoint URL is the Gateway, so a client reaches the server's tools through a logged, access-controlled URL with no proxy setup or user-side infrastructure. Server pages also supply pre-filled client config blocks for Cursor, Claude Desktop, Claude Code and VS Code. Missing for 10: independent or hands-on corroboration of connecting a client to a Glama-hosted URL, and explicit docs on the hosted endpoint's transport and auth for clients.",
     "evidenceIds": [
       "glama-docs-15",
       "glama-docs-28",
+      "glama-docs-2",
       "glama-docs-13",
       "glama-docs-6",
-      "glama-docs-2",
       "glama-docs-5"
     ],
     "support": {
@@ -1966,8 +2079,8 @@
           "quote": "each server page shows the exact JSON block to paste, pre-filled for Cursor, Claude Desktop, Claude Code, and VS Code"
         },
         {
-          "evidenceId": "glama-docs-6",
-          "quote": "Search Glama's curated catalog of open-source servers and remote connectors"
+          "evidenceId": "glama-docs-2",
+          "quote": "Connect a GitHub repository and Glama builds the image straight from source."
         }
       ]
     }
@@ -1975,16 +2088,34 @@
   {
     "productId": "glama",
     "storyId": "openness-api-parity",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence never documents a general API that matches UI functionality across hosting, gateway, inspector or chat. The only hints are a reference page about searching the catalog and syncing a directory, which never explicitly mentions an API, and a community mention of 'API attempts' to trigger a resync. The OpenAPI probe returned 404 on every candidate path. None of this shows parity between the API and the UI.",
-    "evidenceIds": [],
+    "rationale": "Glama publishes a discoverable OpenAPI 3.0.3 spec for its MCP directory API, with /v1 paths for servers, connectors, instances and usage, plus a hosted reference with Try-it panels. That is real programmatic coverage, but the spec is scoped to the directory, and the Gateway is described as an MCP-protocol proxy with no separate REST spec. Nothing shows UI features like chat, the claim panel, hosting build configuration or per-tool access control are reachable via API. Missing for 10: documented API parity for chat, hosting/build configuration, gateway access-control and claim-panel actions; an explicit UI-to-API parity statement; independent confirmation of breadth.",
+    "evidenceIds": [
+      "glama-openapi-spec-20261106",
+      "glama-api-catalog-20261106",
+      "glama-api-try-it-20261106",
+      "glama-docs-6"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "Glama publishes an OpenAPI 3.0.3 document for its MCP directory API"
+        },
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "/v1 paths for servers, connectors, instances, usage"
+        },
+        {
+          "evidenceId": "glama-docs-6",
+          "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities, and keep your own directory synchronized."
+        }
+      ]
     }
   },
   {
@@ -1993,7 +2124,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export and portability is a fair question for a SaaS chat and MCP-hosting platform like Glama, but nothing in the evidence documents exporting chats, documents, logs or account data in open formats. The pre-filled JSON config blocks only let users connect registry servers to other clients, and building from a user's GitHub source is an adjacent feature, not a data-export capability.",
+    "rationale": "Glama is a SaaS platform (chat, MCP hosting, gateway, directory), so a data-export-and-leave story applies to it. The evidence pack documents no export feature for chats, documents, hosted-server configuration or gateway logs. The OpenAPI directory API, the 'keep your own directory synchronized' claim and the pasteable config blocks are developer building blocks or adjacent features, not a documented full-data export in open formats.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2008,7 +2139,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-sourcing its own code is a fair question for a SaaS MCP platform like Glama, so the axis applies. However, the evidence only covers third-party open-source servers in its catalog and building images from users' own GitHub repos. Nothing shows Glama's own source is published under an open license.",
+    "rationale": "Glama is a SaaS MCP directory, gateway and hosting platform, and could plausibly open-source its code, so the axis applies. Nothing in the pack shows Glama's own source published under an open license. The open-source mentions refer to third-party MCP servers in its catalog, and the OpenAPI license block covers attribution for data use, not source code.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2023,7 +2154,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a SaaS platform like Glama's registry, gateway, and chat, so the axis applies. The evidence only describes Glama-managed hosting, where Glama builds and runs MCP servers on its own infrastructure and fronts them with its Gateway. Tunneling local MCP servers to the browser inspector via mcp-proxy is an adjacent feature and does not mean Glama itself can be self-hosted; no documentation shows a self-hostable distribution, deployment guide, or open-source release of the core product.",
+    "rationale": "Self-hosting is a fair question for a SaaS MCP directory, gateway, and hosting platform, so the axis applies. However, every piece of evidence describes Glama-hosted services: the hosted inspector, deploying servers \"to Glama\", and a Gateway that every MCP call \"flows through\". Nothing documents a way to run Glama's own core product on user infrastructure. Using mcp-proxy to tunnel local MCP servers to Glama's inspector is an adjacent feature, not self-hosting Glama.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2038,7 +2169,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama is an MCP gateway and hosting platform, so per-end-user credential isolation is a fair question for it. The evidence shows only generic gateway credential management ('credential-managed') and per-tool access control, which are adjacent features. Nothing documents separate connected accounts or scoped tokens per end user of a customer's product. The account-bound ownership token is for verifying server ownership, a different capability.",
+    "rationale": "Glama is an MCP gateway and hosting platform, so per-end-user credential isolation is a fair question to ask of it. The pack, however, only shows generic gateway credential management and per-tool enable/disable controls. Nothing documents separate connected accounts or scoped tokens per end user of a customer's product, so these adjacent controls earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2053,7 +2184,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama hosts MCP servers, runs a gateway, and stores chat data, so data region or residency choice is a fair question for this kind of product. Nothing in the evidence pack mentions choosing a storage region or residency location. The 'private by default' and per-tool access control items are adjacent privacy features, not residency controls.",
+    "rationale": "Glama is a SaaS platform for MCP hosting, gateway and chat, so letting users choose a data storage region is a fair question for it. Nothing in the evidence pack mentions region selection, data residency, or storage location. The hosting, gateway logging and privacy-by-default listing claims are adjacent features and do not deliver residency choice.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2068,7 +2199,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama offers a multi-model chat and an MCP gateway that handle user data, so a training opt-out is a fair question for this product. The evidence pack has no documentation of a no-training policy or an opt-out control. 'Private by default' refers to MCP server listing visibility, not AI training use, so it earns no credit.",
+    "rationale": "Glama offers multi-model chat, document upload and an MCP gateway, so a training-data opt-out is a fair question for it. The evidence pack has no documentation of a training opt-out, a no-training guarantee, or a data-retention policy for AI models. The 'Private by default' claim covers listing visibility for hosted MCP servers, which is an adjacent control and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2083,7 +2214,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama is a hosted MCP gateway, registry and chat platform that logs calls and stores conversations and documents, so data retention and deletion controls are a fair axis for it. The evidence pack documents no retention settings, deletion controls or data-lifecycle options. The adjacent items (private-by-default listings, saving and tagging conversations, gateway call logging) cover visibility and storage, not user control over retention or deletion.",
+    "rationale": "Glama is a SaaS platform (chat, MCP gateway, hosting) that handles user conversations, documents and call logs, so user-controlled data retention and deletion is a fair axis. The pack has no evidence of retention settings, deletion controls or data-expiry policies. The nearby items are adjacent only: gateway call logging, private-by-default listing visibility, saving and tagging chats, and the client-side Try-it panel not storing credentials.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2098,7 +2229,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a SaaS MCP registry, gateway and chat platform, but the evidence pack never documents any way to disable telemetry or usage tracking. The gateway docs instead say every call is logged. The 'private by default' setting controls server listing visibility, not tracking, so it is adjacent and earns no credit.",
+    "rationale": "Telemetry opt-out is a fair privacy question for a SaaS platform like Glama, so the axis applies. The evidence pack does not document any setting to disable telemetry or usage tracking. The nearest items do not qualify: 'private by default' covers server listing visibility, and the Gateway logging every call is the opposite of opting out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2113,14 +2244,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Glama documents publishing your own server. You connect a GitHub repo or ship a Dockerfile, npm or PyPI package, Glama builds it, and you flip it from private to a public listing. Ownership is verified via a claim token, and registry pages give others pre-filled install configs. Community developers confirm uploading their own MCPs and releasing new versions, though one hit an undocumented credit-card requirement for rebuilds and releases. missing for 10: a documented end-to-end submission/listing workflow, documentation of billing prerequisites for rebuild/release, and evidence of discoverability or promotion support for newly listed servers.",
+    "rationale": "Glama documents building a developer's own server from a GitHub repo, Dockerfile, npm or PyPI package, and switching it from private to a public listing. Registry server pages ship pre-filled install configs for major clients, ownership can be claimed and verified, and community developers confirm they upload and revise their MCPs on Glama. Missing for 10: documentation of the publish/release flow (a community report says an undocumented credit requirement blocked rebuild and release), and evidence that newly listed servers get effective discovery (a developer reports getting lost among existing servers).",
     "evidenceIds": [
       "glama-docs-2",
       "glama-docs-3",
       "glama-docs-8",
       "glama-docs-16",
-      "glama-docs-14",
       "glama-docs-13",
+      "glama-docs-14",
+      "glama-docs-11",
       "glama-comm-1",
       "glama-comm-2",
       "glama-comm-4"
@@ -2135,20 +2267,16 @@
           "quote": "Connect a GitHub repository and Glama builds the image straight from source."
         },
         {
-          "evidenceId": "glama-docs-3",
-          "quote": "Ship a Dockerfile, an npm package, or a PyPI module."
-        },
-        {
           "evidenceId": "glama-docs-8",
           "quote": "Private by default – flip to public listing when ready."
         },
         {
-          "evidenceId": "glama-docs-16",
-          "quote": "Stable, account-bound ownership token copied from the Glama claim panel. Keep it published to retain verified ownership."
-        },
-        {
           "evidenceId": "glama-docs-14",
           "quote": "Every server on the Glama registry ships with a pre-filled config block for both clients – copy it, paste it, done."
+        },
+        {
+          "evidenceId": "glama-docs-16",
+          "quote": "Stable, account-bound ownership token copied from the Glama claim panel. Keep it published to retain verified ownership."
         },
         {
           "evidenceId": "glama-comm-1",
@@ -2163,7 +2291,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama documents hosting and deployment through connecting a GitHub repository and configuring builds, plus copy-paste config blocks for installing servers into clients. Nothing in the evidence describes an official CLI that authenticates, builds, pushes, or installs servers. The mcp-proxy mention is a tunnel for testing local servers in the inspector, not a publish-and-deploy CLI, so it earns no credit.",
+    "rationale": "Glama documents web-driven hosting, where it builds a server from a connected GitHub repo, and copy-paste config blocks for installing servers into clients. Nothing in the evidence shows an official CLI that authenticates, builds or stages, pushes, or installs servers into agents. The OpenAPI directory API and the mcp-proxy tunnel are adjacent building blocks, not a publish-and-deploy CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2178,14 +2306,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Glama's directory says every server is scanned and scored, and the product supports comparing servers. Community users confirm a TDQS quality score with letter grades. Docs also mention verified ownership via a claim token, which acts as a verification signal. Missing for 10: documented usage or popularity counts; health or liveness checks; first-party docs explaining how the score is computed or how it appears on listing pages; a documented verification badge; and reliable score re-testing, since two users report retests stalling for days because of an undocumented credit-card requirement.",
+    "rationale": "Glama's directory says every server is \"scanned, scored,\" and lets developers \"search, compare\" servers. Community users confirm a TDQS quality score with letter grades, and the connector schema documents a verified-ownership mechanism. However, first-party documentation of how scores work and how they appear for comparison is thin, and one user reports score retests stalling for days because of an undocumented billing requirement. missing for 10: documented usage counts, documented health/liveness checks, first-party explanation of the scoring methodology and badge display, reliable score refresh.",
     "evidenceIds": [
       "glama-probe-1",
       "glama-docs-11",
       "glama-docs-16",
       "glama-comm-1",
-      "glama-comm-2",
-      "glama-comm-3"
+      "glama-comm-2"
     ],
     "support": {
       "relation": "direct",
@@ -2194,7 +2321,7 @@
       "citations": [
         {
           "evidenceId": "glama-probe-1",
-          "quote": "every one scanned, scored"
+          "quote": "A directory of 91,626 Model Context Protocol servers and 23,749 remote connectors, every one scanned, scored,"
         },
         {
           "evidenceId": "glama-docs-11",
@@ -2206,11 +2333,7 @@
         },
         {
           "evidenceId": "glama-comm-1",
-          "quote": "I love the TDQS system. I've personally revised my MCPs to improve the quality of the score"
-        },
-        {
-          "evidenceId": "glama-comm-2",
-          "quote": "score jumped to A"
+          "quote": "I've personally revised my MCPs to improve the quality of the score"
         }
       ]
     }
@@ -2218,27 +2341,33 @@
   {
     "productId": "glama",
     "storyId": "registry-programmatic-api",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Glama's reference page describes searching its curated catalog of servers and connectors, inspecting their capabilities, and keeping a directory synchronized, which suggests a documented programmatic registry API. An llms.txt index of the directory also exists. However, the evidence never shows endpoints, auth, or query parameters, and every probed OpenAPI/Swagger path returned 404. missing for 10: concrete endpoint/schema documentation, machine-readable OpenAPI spec, tool-level discovery detail, hands-on corroboration of agent queries.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Glama publishes a documented OpenAPI 3.0.3 \"Glama MCP API\" with /v1 paths for servers and connectors. It is advertised from llms.txt and an RFC 9727 API catalog, and backed by a hosted reference (e.g. list-mcp-servers) with code samples, so an agent can search the catalog and inspect server capabilities programmatically. The 404s on generic OpenAPI paths only show the spec lives at a different path, not that the API is missing. Missing for 10: explicit evidence of a tool-level listing endpoint (tool discovery is only implied by \"inspect their capabilities\"), and independent hands-on corroboration of agents querying the directory API.",
     "evidenceIds": [
+      "glama-openapi-spec-20261106",
+      "glama-api-catalog-20261106",
+      "glama-api-try-it-20261106",
       "glama-docs-6",
-      "glama-probe-1",
-      "glama-probe-3"
+      "glama-probe-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI agent, I can query the platform's registry or catalog through a documented API to discover servers and tools programmatically",
       "citations": [
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "Glama publishes an OpenAPI 3.0.3 document for its MCP directory API (info title \"Glama MCP API\", /v1 paths for servers, connectors, instances, usage)"
+        },
         {
           "evidenceId": "glama-docs-6",
           "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities, and keep your own directory synchronized."
         },
         {
-          "evidenceId": "glama-probe-1",
-          "quote": "A directory of 91,626 Model Context Protocol servers and 23,749 remote connectors"
+          "evidenceId": "glama-api-catalog-20261106",
+          "quote": "The RFC 9727 API catalog (application/linkset+json) links the machine spec (service-desc) and the hosted reference (service-doc), completing a fully machine-discoverable chain from the well-known path."
         }
       ]
     }
@@ -2249,7 +2378,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama is an MCP registry and gateway, so runtime tool discovery through meta-tools is a fair axis for it. However, the evidence never documents meta-tools that let an agent search for and load tools on demand. Catalog search for users, per-tool enable/disable, and the Gateway proxy are adjacent features that do not deliver dynamic in-context tool loading.",
+    "rationale": "This axis applies to Glama, an MCP directory, hosting and gateway platform. Nothing in the evidence shows the Gateway exposing meta-tools that let an agent search for and load tools at runtime instead of receiving full tool definitions. The REST directory search API, the gateway's per-tool enable/disable controls and the browser inspector are adjacent developer building blocks or controls, not runtime meta-tool discovery for agents.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2264,7 +2393,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Glama's own llms.txt says every listed server is \"scanned, scored,\" which is a first-party claim that it inspects listings. Nothing in the pack says what the scan looks for, or that it targets malicious or vulnerable behavior. The browser Inspector is a user-driven testing tool and the community-discussed quality score concerns listing quality, so neither is security vetting. Missing for 10: documentation of malware or vulnerability scanning criteria, how scan results are surfaced or block risky servers before agent use, and independent or hands-on corroboration of security scanning.",
+    "rationale": "Glama's llms.txt says every listed server is \"scanned, scored,\" which is a first-party claim of platform-side inspection of the directory. The text is truncated and never says the scanning targets malicious or vulnerable behavior. The community-discussed quality score and the manual browser Inspector are about description quality and interactive testing, not security vetting. Missing for 10: documentation of what the scan checks (malware or vulnerability detection), how results are surfaced or gate agent use, and independent corroboration of security scanning.",
     "evidenceIds": [
       "glama-probe-1"
     ],
@@ -2286,14 +2415,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Glama documents a catalog where developers can search, compare, and \"inspect their capabilities\" for listed servers. Each server page shows a pre-filled connection config, and the browser inspector exercises tools, resources, and prompts. However, the evidence never explicitly says server pages expose per-tool input schemas, transport type, or hosting attributes before connecting, and the inspector is a live-test tool rather than static pre-connection metadata. Missing for 10: explicit documentation of per-tool input schemas on listing pages, displayed transport type, displayed hosting/deployment attributes, independent hands-on corroboration of the listing-page detail.",
+    "rationale": "Glama documents that developers can search its catalog and \"inspect their capabilities,\" and its hosted no-login Inspector shows a server's available capabilities over Streamable HTTP or SSE. However, the Inspector does this by connecting to the endpoint, so it is not pre-connection catalog metadata. Per-server pages are documented only as showing pre-filled config blocks. Missing for 10: explicit evidence that listings expose per-tool input schemas, transport type, and hosting attributes before connecting, plus independent or hands-on corroboration.",
     "evidenceIds": [
       "glama-docs-6",
-      "glama-docs-11",
+      "glama-mcp-inspector-20261106",
       "glama-docs-12",
-      "glama-docs-13",
-      "glama-docs-24",
-      "glama-probe-1"
+      "glama-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -2302,23 +2429,15 @@
       "citations": [
         {
           "evidenceId": "glama-docs-6",
-          "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities, and keep your own directory synchronized."
+          "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities"
         },
         {
-          "evidenceId": "glama-docs-11",
-          "quote": "Search, compare, and connect to thousands of MCP servers"
-        },
-        {
-          "evidenceId": "glama-docs-12",
-          "quote": "Supports every Model Context Protocol feature, including tools, resources, prompts, tasks, elicitation, sampling, and OAuth 2.1."
+          "evidenceId": "glama-mcp-inspector-20261106",
+          "quote": "Glama's hosted inspector connects to remote Streamable HTTP and SSE endpoints so you can inspect available capabilities and test requests interactively"
         },
         {
           "evidenceId": "glama-docs-13",
           "quote": "each server page shows the exact JSON block to paste, pre-filled for Cursor, Claude Desktop, Claude Code, and VS Code"
-        },
-        {
-          "evidenceId": "glama-docs-24",
-          "quote": "Inspect any MCP server directly from your browser. No login required."
         }
       ]
     }
@@ -2327,15 +2446,17 @@
     "productId": "glama",
     "storyId": "server-registry-search",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Glama's docs say developers can search, compare, and inspect the capabilities of thousands of MCP servers in a curated catalog, and a probe of llms.txt confirms a directory of 91,626 servers and 23,749 remote connectors. The browser inspector also lets developers test a server before wiring it into an agent. Missing for 10: documentation of capability-based filtering or facets in search, and independent hands-on reports on search quality (one community comment notes it is easy to get lost in the large catalog).",
+    "rationale": "Glama runs a large MCP directory: its llms.txt lists 91,626 servers and 23,749 remote connectors. The docs describe searching, comparing and inspecting server capabilities, both through the site and through a documented OpenAPI directory API (list-servers endpoints). The hosted inspector lets a developer test a server's capabilities before connecting it to an agent. One community comment says it is easy to get lost in the large catalog, which is a usability concern rather than a contradiction. Missing for 10: independent hands-on corroboration of capability-based search and filtering quality.",
     "evidenceIds": [
       "glama-docs-11",
       "glama-docs-6",
       "glama-probe-1",
-      "glama-docs-12",
-      "glama-docs-24"
+      "glama-openapi-spec-20261106",
+      "glama-api-try-it-20261106",
+      "glama-mcp-inspector-20261106",
+      "glama-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -2348,15 +2469,15 @@
         },
         {
           "evidenceId": "glama-docs-6",
-          "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities"
+          "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities, and keep your own directory synchronized."
         },
         {
           "evidenceId": "glama-probe-1",
-          "quote": "A directory of 91,626 Model Context Protocol servers and 23,749 remote connectors"
+          "quote": "A directory of 91,626 Model Context Protocol servers and 23,749 remote connectors, every one scanned, scored,"
         },
         {
-          "evidenceId": "glama-docs-24",
-          "quote": "Inspect any MCP server directly from your browser. No login required."
+          "evidenceId": "glama-mcp-inspector-20261106",
+          "quote": "Glama's hosted inspector connects to remote Streamable HTTP and SSE endpoints so you can inspect available capabilities and test requests interactively"
         }
       ]
     }
@@ -2367,7 +2488,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Glama documents per-tool access control on hosted servers (\"enable or disable individual tools\"). It also says gateway calls are access-controlled, with marketing that you decide what agents are allowed to do. This covers the individual-tool half of the story. There is no documented server-level allowlist, and no detail on how access policies are scoped per agent. missing for 10: explicit server allowlist/denylist for agents, per-agent or per-key policy scoping, detailed docs on gateway access-control configuration, independent or hands-on corroboration.",
+    "rationale": "Glama documents its own per-tool access control on hosted servers ('enable or disable individual tools'). Its Gateway is described as access-controlled, with every MCP call flowing through it so 'you decide what it's allowed to do'. All of this rests on one-line marketing claims. Server-level allowlisting is implied rather than documented, and nothing explains how policies are configured or applied per agent. missing for 10: an explicit server-level allowlist capability, detailed docs on configuring access policies per agent or key, and independent or hands-on corroboration.",
     "evidenceIds": [
       "glama-docs-5",
       "glama-docs-4",
@@ -2400,7 +2521,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no per-tool-call or per-connection pricing and no documented rate limits. The only pricing-page snippet describes workflow automation (schedules or webhooks), not prices. A community report that a credit card and credits were required but undocumented suggests the pricing is not transparent.",
+    "rationale": "Nothing in the evidence documents Glama's pricing per tool call or per connection, and nothing documents rate limits. The only pricing-page item describes workflow automation features, not prices. A community report says credits and a credit card were needed for rebuilds without this being documented, which points away from pricing transparency rather than toward it.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2415,11 +2536,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Glama's Gateway logs every MCP call routed through it and says this lets you 'know exactly what your AI is doing', which is a first-party foundation for call-level visibility on hosted and gateway-fronted servers. The evidence shows no analytics view that aggregates that data. missing for 10: documented usage dashboards or aggregated call-volume metrics, per-user breakdowns, error-rate reporting, cost attribution, org-level analytics for published servers, independent or hands-on corroboration.",
+    "rationale": "Glama's Gateway gives some first-party visibility into MCP usage: every call through it is logged, and the directory API spec lists /v1 'usage' paths. Nothing in the pack shows an analytics view that breaks usage down by call volume, user, error or cost for servers an org consumes or publishes. missing for 10: documented usage analytics dashboard or reports, call-volume metrics, per-user breakdowns, error-rate reporting, cost attribution, coverage of published servers, independent corroboration.",
     "evidenceIds": [
-      "glama-docs-4",
       "glama-docs-28",
-      "glama-docs-15"
+      "glama-docs-4",
+      "glama-docs-15",
+      "glama-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -2427,16 +2549,16 @@
       "subject": "As a platform-engineer, I can see usage analytics for the servers and tools my org consumes or publishes — call volumes, users, errors, and cost",
       "citations": [
         {
-          "evidenceId": "glama-docs-4",
-          "quote": "Every MCP call from your agents flows through Glama – so you know exactly what your AI is doing"
-        },
-        {
           "evidenceId": "glama-docs-28",
           "quote": "Every call through this URL is logged, access-controlled, and credential-managed"
         },
         {
-          "evidenceId": "glama-docs-15",
-          "quote": "Deploy any server from the registry to Glama and we automatically put the Gateway in front of it."
+          "evidenceId": "glama-docs-4",
+          "quote": "Every MCP call from your agents flows through Glama – so you know exactly what your AI is doing"
+        },
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "/v1 paths for servers, connectors, instances, usage"
         }
       ]
     }
@@ -2447,7 +2569,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Glama is an MCP gateway and hosting platform, so a white-labeled authorization flow is a fair question for it. The evidence only shows that gateway calls are 'credential-managed' and that the inspector can test OAuth 2.1. Neither is about custom branding of the auth flow or bringing your own OAuth app credentials, so both count only as adjacent features.",
+    "rationale": "Glama is an MCP gateway and hosting platform that manages credentials, so white-labeling an authorization flow is a fair question for this kind of product. The evidence only says the Gateway is \"credential-managed\" and that the Inspector supports OAuth 2.1 for testing third-party servers. Neither documents custom branding of the auth flow or using your own OAuth app credentials, so this is adjacent material only.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

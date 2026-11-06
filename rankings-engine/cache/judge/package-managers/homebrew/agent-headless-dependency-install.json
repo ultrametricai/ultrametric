@@ -1,21 +1,20 @@
 {
-  "hash": "cd01a83c40e39fbe6649c7a32f2d5246137c9a523fcbb1f094deafbba10b5dad",
+  "hash": "17d84134f1d2debc14e4ec5ec92fe735e445d7e180c8a80022b575afb7eb5035",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Homebrew documents project dependencies in a Brewfile, installed with one command, usable in scripts and CI such as GitHub Actions. The `brew bundle check || brew bundle install` pattern shows exit status can drive scripted control flow, and NONINTERACTIVE=1 and `--yes` support unattended runs. Missing for 10: explicit documentation of exit-code semantics and failure/error output for install and upgrade, documented non-interactive updating of Brewfile dependencies, and independent hands-on corroboration of agent/CI reliability.",
+    "rationale": "Homebrew documents project dependency encoding via a Brewfile and `brew bundle install`, which installs to a declared state from one command and works in CI such as GitHub Actions. Exit-code-driven scripting is implied by `brew bundle check || brew bundle install`, and non-interactive use is shown by `NONINTERACTIVE=1` for the installer and `install --yes` in admin scripts. However, exit-code semantics and error reporting are not explicitly documented. Missing for 10: documented exit codes for install/upgrade failures, clear machine-readable error output, explicit non-interactive guarantees for `brew bundle`/`brew upgrade` dependency updates, and independent hands-on corroboration of agent/CI reliability.",
     "evidenceIds": [
       "homebrew-docs-1",
-      "homebrew-docs-30",
+      "homebrew-docs-64",
       "homebrew-docs-65",
       "homebrew-docs-14",
       "homebrew-docs-67",
       "homebrew-docs-68",
       "homebrew-docs-35",
       "homebrew-docs-51",
-      "homebrew-docs-50",
       "homebrew-docs-46"
     ],
     "support": {
@@ -32,16 +31,16 @@
           "quote": "one command can set up project dependencies across these environments and in continuous-integration services such as GitHub Actions."
         },
         {
+          "evidenceId": "homebrew-docs-64",
+          "quote": "Rather than specifying the `brew` commands you wish to run, you can specify the state you wish to reach."
+        },
+        {
           "evidenceId": "homebrew-docs-35",
           "quote": "prepend `NONINTERACTIVE=1` to the installation command"
         },
         {
           "evidenceId": "homebrew-docs-51",
           "quote": "Use this from administrative scripts when the desktop user manages Homebrew, for example `brew as-console-user install --yes` formula."
-        },
-        {
-          "evidenceId": "homebrew-docs-30",
-          "quote": "this will take instructions from the Brewfile to run brew install ruby and install Ruby if needed"
         }
       ]
     },

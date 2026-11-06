@@ -1,20 +1,16 @@
 {
-  "hash": "8648d6f2e36420da42f48c4524e8017ad071366097bb92a82b4ec823831c123c",
+  "hash": "bcee3dc98882c6af6e5edcf794c012ed6c871f1d5ff56337e985b48af5947f5c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Homebrew has no separate GUI. Its official CLI is the primary interface, and it is documented as scriptable for automation: non-interactive installs, `--yes`, use in administrative scripts and scheduled jobs, and declarative `brew bundle` workflows for CI. The only HTTP API documented is a read-only JSON listing of formula and cask metadata, and probes found no OpenAPI spec. Missing for 10: a documented programmatic API with parity to every CLI operation (the JSON API covers metadata only), a machine-readable API spec, and independent corroboration of automation parity.",
+    "rationale": "Homebrew documents its own unauthenticated JSON API over package metadata (formula, cask, per-package and analytics endpoints) that mirrors `brew info --json` output. However, it is a read-only data API: install, upgrade, tap and bundle actions are only available through the CLI, so API parity with the main interface is not achieved. Probes also found no OpenAPI spec. Missing for 10: API coverage of mutating operations (install/upgrade/uninstall/tap), any documented parity guarantee, a formal API description (OpenAPI), versioned endpoints.",
     "evidenceIds": [
+      "homebrew-json-api-20261106",
       "homebrew-docs-70",
       "homebrew-probe-2",
-      "homebrew-probe-3",
-      "homebrew-docs-50",
-      "homebrew-docs-51",
-      "homebrew-docs-35",
-      "homebrew-docs-65",
-      "homebrew-docs-68"
+      "homebrew-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -26,16 +22,8 @@
           "quote": "List the `brew info --json` output for all current Homebrew/homebrew-core formulae or Homebrew/homebrew-cask casks."
         },
         {
-          "evidenceId": "homebrew-docs-50",
-          "quote": "Use this in administrative scripts and scheduled jobs to manage an existing installation, including when no user is logged in."
-        },
-        {
-          "evidenceId": "homebrew-docs-35",
-          "quote": "prepend `NONINTERACTIVE=1` to the installation command"
-        },
-        {
-          "evidenceId": "homebrew-docs-68",
-          "quote": "one command can set up project dependencies across these environments and in continuous-integration services such as GitHub Actions."
+          "evidenceId": "homebrew-json-api-20261106",
+          "quote": "It is a machine-readable data API; no formal API-description artifact (OpenAPI or equivalent) exists"
         }
       ]
     },

@@ -1,17 +1,30 @@
 {
-  "hash": "42965324727eb51bb15e6ae45625921dfed3d178b028aea91795b1204b6366ae",
+  "hash": "a016f7d5e04507c4dfdf60ea914b3a2a97b953bc73e5504454880916cee35bd5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Glama is a platform with an API, so an OpenAPI or equivalent spec is a fair thing to ask for, but the evidence shows none: every probed OpenAPI/Swagger path returned 404. The connector.json schema describes a connector config file, not the API, and llms.txt is a directory summary rather than an API spec, so neither counts toward this story.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Glama publishes a downloadable OpenAPI 3.0.3 document for its MCP directory API at /api/mcp/openapi.json. It is advertised in llms.txt for client generation and discoverable through an RFC 9727 API catalog whose service-desc points at the spec. The probe 404s were on different generic paths, so they do not contradict this. Missing for 10: spec coverage of the Gateway (MCP-protocol proxy with no REST spec), independent or hands-on confirmation of the spec download.",
+    "evidenceIds": [
+      "glama-openapi-spec-20261106",
+      "glama-api-catalog-20261106",
+      "glama-endpoint-deprecation-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "Glama publishes an OpenAPI 3.0.3 document for its MCP directory API"
+        },
+        {
+          "evidenceId": "glama-api-catalog-20261106",
+          "quote": "The RFC 9727 API catalog (application/linkset+json) links the machine spec (service-desc) and the hosted reference (service-doc)"
+        }
+      ]
     },
     "productId": "glama",
     "storyId": "api-machine-spec"

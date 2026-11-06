@@ -1,17 +1,29 @@
 {
-  "hash": "42d81a1e9ae1aa22092860302b2e34fbc0a4d81c4396bcce1d45527829647a9a",
+  "hash": "f267c64c9478eb658ced1e57177fff618afe2e3c582ac6f5033a1b2d8a88b320",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Glama is an MCP registry, hosting and gateway platform, so versioned APIs with a deprecation policy are a fair question to ask of it. Nothing in the evidence pack documents API versioning or any deprecation policy, and probes for an OpenAPI spec at the standard paths all returned 404. The 'stable' ownership token in the connector schema is a different feature and does not address API versioning.",
-    "evidenceIds": [],
+    "rationale": "Glama's directory API is versioned under /v1 paths, and deprecation is marked in machine-readable form: a deprecation banner names the replacement endpoint, and the OpenAPI document carries a matching \"deprecated\": true flag. However, there is no standalone versioning or deprecation policy page (no sunset timelines or notice periods), and /changelog returns 404, so only per-endpoint deprecation practice is evidenced. Missing for 10: a documented deprecation/versioning policy with timelines, a changelog, versioning coverage for the Gateway, and independent corroboration.",
+    "evidenceIds": [
+      "glama-endpoint-deprecation-20261106",
+      "glama-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "glama-endpoint-deprecation-20261106",
+          "quote": "This endpoint is deprecated. Please use GET /v1/servers/:namespace/:slug instead."
+        },
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "/v1 paths for servers, connectors, instances, usage"
+        }
+      ]
     },
     "productId": "glama",
     "storyId": "api-versioning-policy"

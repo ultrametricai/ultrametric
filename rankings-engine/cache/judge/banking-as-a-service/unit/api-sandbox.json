@@ -1,17 +1,33 @@
 {
-  "hash": "c191756fc790851d280e72b1a3726be0e86b8ed4e8f169cd5612d469b93526d1",
+  "hash": "f9a54f3769dbe121050c64ac30e5da3ff6d2fded16c9eb70833da4d6cbca171d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Unit is a banking API platform, so a sandbox or test environment is a fair question to ask of it. However, no item in the evidence pack mentions a sandbox, test mode, or non-production environment. The API, dashboard and webhook references describe production capabilities only, and none of them shows isolation from production data.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Unit documents a dedicated Sandbox environment on its own base URL (api.s.unit.sh). It is described as a full replica of production in which all standard endpoints behave the same, plus simulation endpoints for payment clearing, wire receipt, card settlement and statements, so integrations can be tested end-to-end before going live. The vendor's Postman collection also defaults to the Sandbox, giving a ready-made way to try requests without touching production. Missing for 10: independent or hands-on corroboration of sandbox behavior, and an explicit statement that sandbox data is isolated from production.",
+    "evidenceIds": [
+      "unit-sandbox-20261106",
+      "unit-openapi-link-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Unit's Sandbox environment is a full replica of the production environment — all standard API endpoints work exactly the same way. Use it to build and test your integration end-to-end before going live."
+        },
+        {
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Sandbox exposes a set of simulation-specific endpoints"
+        },
+        {
+          "evidenceId": "unit-openapi-link-20261106",
+          "quote": "Initially set to the Unit Sandbox environment"
+        }
+      ]
     },
     "productId": "unit",
     "storyId": "api-sandbox"

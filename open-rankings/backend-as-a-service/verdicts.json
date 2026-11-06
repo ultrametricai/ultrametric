@@ -2,16 +2,33 @@
   {
     "productId": "appwrite",
     "storyId": "agent-branch-migrations",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Appwrite's database schema is the subject here, and the pack shows no database branching or isolated preview environment where an agent can test schema changes before production. The branch previews in Sites cover frontend deployments only, and the MCP server and headless CLI are general building blocks rather than this capability. Docker self-hosting and cloud/self-hosted migration are user-side workarounds and earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Appwrite Cloud documents per-project environments such as `staging`, each with its own resources and users, selected per request. Its hosted MCP server and headless CLI let agents operate on a project, which together approximate an isolated pre-production target for schema work. The Sites branch previews cover frontends only and are not credited for schema isolation. missing for 10: documented database/schema branching or ephemeral preview databases, an agent-driven workflow for testing schema changes in an environment, promotion or diffing of schema changes from staging to production, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "appwrite-environments-20261106",
+      "appwrite-docs-56",
+      "appwrite-docs-67"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an ai-native user, I can let an agent create and test schema changes in an isolated branch or preview environment before production",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "appwrite-environments-20261106",
+          "quote": "On Appwrite Cloud, a project can have environments, such as `staging`, each with its own resources and users"
+        },
+        {
+          "evidenceId": "appwrite-docs-56",
+          "quote": "Using the MCP server, you can use applications such as Claude Code, Codex, Cursor, Claude Desktop, and others to operate on your Appwrite project"
+        },
+        {
+          "evidenceId": "appwrite-docs-67",
+          "quote": "The Appwrite CLI can be used in a non-interactive and headless manner. This is especially useful when you want to automate tasks on a continuous integration server."
+        }
+      ]
     }
   },
   {
@@ -20,13 +37,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Appwrite's official CLI documents a non-interactive, headless mode for automation on CI servers. It can create and manage projects, resources and functions, and its project config can be split into JSON resource files via `includes`, so the core of scripted backend provisioning is there. However, the evidence never says the CLI defines database schema (tables, columns), configures auth methods, or sets permission policies, and auth providers are described as enabled from the Console. Missing for 10: explicit CLI schema/table creation, CLI configuration of auth providers and settings, CLI-managed permissions/policies, hands-on corroboration of an agent-driven end-to-end headless setup.",
+    "rationale": "Appwrite's official CLI runs headlessly for automation. It can create and manage projects and resources, and other operations available through the API. It also uses a JSON config with top-level resource arrays, which suggests a scriptable provisioning path. However, the evidence never explicitly shows the CLI defining table schemas, configuring auth methods, or setting permissions, and auth providers are described as enabled from the Console. Missing for 10: explicit CLI docs for creating database schema, configuring auth settings, and defining permissions/policies, plus hands-on corroboration of an agent provisioning a full backend via script.",
     "evidenceIds": [
-      "appwrite-docs-42",
-      "appwrite-docs-67",
       "appwrite-docs-12",
+      "appwrite-docs-42",
       "appwrite-docs-13",
-      "appwrite-docs-52"
+      "appwrite-docs-52",
+      "appwrite-docs-22",
+      "appwrite-docs-55"
     ],
     "support": {
       "relation": "direct",
@@ -52,17 +70,18 @@
     "productId": "appwrite",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 10,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Appwrite serves a live llms.txt at its root, verified by a probe returning HTTP 200 with agent-targeted content. It also serves docs.md, which points to a full nested documentation llms.txt, and every docs page is available as raw Markdown by appending .md. Agent-oriented Skills Markdown files, a Copy page button, and an MCP server that exposes the docs round this out, so first-party documentation is backed by independent hands-on verification.",
+    "rationale": "A probe confirmed a live llms.txt at appwrite.io/llms.txt written for coding agents and a docs.md index pointing to a nested documentation llms.txt. First-party docs add raw Markdown for every page via a .md suffix, a Copy page button, open-source agent Skills files, and an MCP server that gives LLMs access to the docs. missing for 10: independent or community hands-on reports of agents consuming these docs effectively.",
     "evidenceIds": [
       "appwrite-probe-1",
       "appwrite-probe-2",
       "appwrite-docs-40",
       "appwrite-docs-58",
       "appwrite-docs-39",
-      "appwrite-docs-31",
-      "appwrite-docs-11"
+      "appwrite-docs-57",
+      "appwrite-docs-11",
+      "appwrite-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -71,7 +90,7 @@
       "citations": [
         {
           "evidenceId": "appwrite-probe-1",
-          "quote": "Use Appwrite when a coding agent is writing an app that needs auth, databases, storage, functions, or host"
+          "quote": "PROBE llms.txt: HTTP 200 at https://appwrite.io/llms.txt # Appwrite"
         },
         {
           "evidenceId": "appwrite-probe-2",
@@ -86,8 +105,8 @@
           "quote": "Skills are open-source Markdown files that give AI agents deep knowledge of Appwrite SDKs and services."
         },
         {
-          "evidenceId": "appwrite-docs-58",
-          "quote": "Every page in the Appwrite documentation includes a **Copy page** button that copies the entire page content as Markdown to your clipboard."
+          "evidenceId": "appwrite-docs-11",
+          "quote": "Appwrite offers a Model Context Protocol (MCP) server that allows LLMs to directly interact with Appwrite's API and docs."
         }
       ]
     }
@@ -98,7 +117,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only developer building blocks for AI: Functions-based AI app building, VectorsDB embeddings and similarity search, and image-labeling use cases. It also shows an MCP server and skills that let external agents operate on a project. None of this documents the product itself producing AI-generated insights or suggestions from a user's data inside the Appwrite console, so the axis applies but is unevidenced.",
+    "rationale": "The evidence shows AI building blocks: VectorsDB for embeddings, image-labeling capabilities for AI-powered apps built on Functions, and an MCP server that lets external agents operate on a project. None of it documents in-product AI-generated insights or suggestions about the user's own data, so these are adjacent developer primitives or external-agent tooling and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -111,14 +130,15 @@
     "productId": "appwrite",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Appwrite Functions provide first-party background automation: functions can be triggered by server events, webhooks and scheduled executions, and the product page advertises cron jobs and event handlers running in isolated runtimes. That covers recurring, unattended execution, not just one-off actions. The AI-native angle is thin, though: nothing shows agent-driven or AI-orchestrated automations that run on their own. Missing for 10: documented AI/agent-driven autonomous automation workflows, depth on schedule configuration and monitoring of background runs, independent or hands-on corroboration.",
+    "rationale": "Appwrite Functions provide first-party background automation. They can be triggered by server events and scheduled executions, run as cron jobs and event handlers in isolated runtimes, and the docs also mention scheduled messaging. However, the evidence covers only developer-written trigger and cron code, not AI-native or agent-driven autonomous automations, and there is no independent or hands-on corroboration. missing for 10: AI- or agent-driven autonomous automation (as opposed to hand-coded cron and event functions), documentation of background run management and monitoring, independent hands-on corroboration",
     "evidenceIds": [
       "appwrite-docs-9",
       "appwrite-docs-64",
+      "appwrite-docs-74",
       "appwrite-docs-28",
-      "appwrite-docs-74"
+      "appwrite-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -134,8 +154,8 @@
           "quote": "Run API endpoints, webhooks, cron jobs, and event handlers in secure isolated runtimes that scale with demand."
         },
         {
-          "evidenceId": "appwrite-docs-28",
-          "quote": "Respond to server events in realtime."
+          "evidenceId": "appwrite-docs-27",
+          "quote": "Send and schedule email, SMS, and push notifications."
         }
       ]
     }
@@ -146,7 +166,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no built-in AI assistant inside Appwrite's Console or product that a user can hand tasks to. What is documented is an MCP server, skills files, and Markdown docs that let external agents such as Claude Code, Codex or Cursor operate on an Appwrite project. That is integration with third-party agents, not an in-product assistant, so it earns no credit. A built-in assistant is a plausible feature for a backend platform, so the axis applies and the verdict is none rather than na.",
+    "rationale": "A built-in AI assistant in a backend platform's console is a fair axis, so this story applies to Appwrite. The evidence only shows ways for external agents to operate on Appwrite: an MCP server for Claude Code, Codex, and Cursor, Skills files, plugins, and llms.txt. It also mentions AI building blocks such as vector search and image labeling. None of this is a first-party assistant inside the product that users can delegate tasks to, so these adjacent capabilities earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -160,15 +180,14 @@
     "storyId": "agentic-headless",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Appwrite's official CLI has a documented non-interactive, headless mode that runs without saving configuration or sessions, and the docs explicitly say it is meant for automating tasks on CI servers. The CLI covers project and resource management and function deployment, and it can target self-hosted instances via the --endpoint flag. missing for 10: CI-specific examples or integrations (e.g. GitHub Actions) and independent or hands-on corroboration of headless CI use.",
+    "confidence": "high",
+    "rationale": "Appwrite's own docs say its CLI can run non-interactively and headlessly, without saving configuration or sessions, specifically to automate tasks on a CI server. The CLI covers project management, resource management and function deployment, and supports self-hosted endpoints via --endpoint. Missing for 10: details on how CI credentials or API keys are configured, and independent or hands-on reports of CI use.",
     "evidenceIds": [
       "appwrite-docs-42",
       "appwrite-docs-67",
       "appwrite-docs-12",
       "appwrite-docs-22",
-      "appwrite-docs-52",
-      "appwrite-probe-4"
+      "appwrite-docs-52"
     ],
     "support": {
       "relation": "direct",
@@ -193,10 +212,10 @@
   {
     "productId": "appwrite",
     "storyId": "agentic-mcp-client",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only Appwrite acting as an MCP server that external clients such as Claude Code, Codex and Cursor connect to. Nothing shows Appwrite itself consuming third-party MCP servers or using their tools. A platform like this could plausibly ship an in-product assistant that acts as an MCP client, so the axis applies, but the server-role evidence belongs to a different story and earns no credit here.",
+    "rationale": "Appwrite is a backend-as-a-service platform, not an AI agent or assistant that consumes tools, so plugging MCP servers into it as a client is the wrong product role. The evidence shows only that Appwrite publishes its own MCP server for external agents such as Claude Code and Cursor, which is the separate server-side story and cannot be credited here. Nothing shows Appwrite itself acting as an MCP client.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -211,7 +230,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Appwrite documents an official MCP server that lets LLMs work directly with its API and docs. The docs name Claude Code, Codex, Cursor and Claude Desktop as supported agents, and the Claude Code/Codex plugins bundle a hosted MCP server that connects after one OAuth sign-in. missing for 10: independent or hands-on community corroboration of the MCP server working in practice.",
+    "rationale": "Appwrite documents an official MCP server that lets LLMs interact directly with its API and docs. It names supported clients (Claude Code, Codex, Cursor, Claude Desktop) for operating on an Appwrite project, and a hosted MCP server is bundled into its Claude Code and Codex plugins with one OAuth sign-in. Missing for 10: independent or hands-on corroboration that agents connect and operate reliably through the MCP server.",
     "evidenceIds": [
       "appwrite-docs-11",
       "appwrite-docs-38",
@@ -235,6 +254,10 @@
         {
           "evidenceId": "appwrite-docs-69",
           "quote": "The Appwrite plugins for Claude Code and Codex now include the hosted Appwrite MCP server, so your agent can work with your Appwrite project after one OAuth sign-in."
+        },
+        {
+          "evidenceId": "appwrite-probe-3",
+          "quote": "official MCP server documented at https://appwrite.io/docs/tooling/ai/mcp-servers"
         }
       ]
     }
@@ -242,19 +265,20 @@
   {
     "productId": "appwrite",
     "storyId": "agentic-nl-commands",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Appwrite ships a first-party MCP server, including a hosted version bundled in Claude Code and Codex plugins, so LLM clients can operate on an Appwrite project through natural-language requests. However, this only works through an external AI client; the evidence shows no built-in natural-language console or assistant, and no hands-on reports confirm how well it works. missing for 10: native natural-language interface inside the product, independent or hands-on corroboration of NL-driven operation, documented scope and limits of what the MCP tools can do.",
+    "rationale": "Appwrite ships an official MCP server, including a hosted version bundled in Claude Code and Codex plugins behind one OAuth sign-in. The docs say it lets AI tools such as Claude Code, Codex, Cursor and Claude Desktop operate on an Appwrite project, so users can manage their backend through natural-language prompts in those agents. Missing for 10: a native natural-language interface inside Appwrite's own console, documented scope or limits of which operations work through natural language, and independent or hands-on corroboration.",
     "evidenceIds": [
       "appwrite-docs-11",
+      "appwrite-docs-38",
       "appwrite-docs-56",
       "appwrite-docs-69",
       "appwrite-probe-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
@@ -278,7 +302,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Appwrite documents an official CLI for performing server-side tasks from the terminal. It covers managing projects, resources and Functions, and its non-interactive, headless mode suits automation and agent-driven workflows; it also generates type-safe SDKs and type definitions from the database schema. missing for 10: independent or hands-on corroboration of CLI use, explicit agent-oriented CLI features (e.g. machine-readable output documented for AI agents).",
+    "rationale": "Appwrite documents an official CLI that runs server-side tasks from the terminal: managing projects, resources (rows, files, users) and deploying Functions. It also supports non-interactive, headless use for automation and generates type-safe SDKs and types from the database schema, all of which suit agent-driven workflows. Missing for 10: independent or hands-on corroboration of the CLI, and explicit agent-oriented CLI features such as documented machine-readable (JSON) output.",
     "evidenceIds": [
       "appwrite-docs-52",
       "appwrite-docs-12",
@@ -286,7 +310,8 @@
       "appwrite-docs-41",
       "appwrite-docs-55",
       "appwrite-docs-22",
-      "appwrite-probe-4"
+      "appwrite-probe-4",
+      "appwrite-docs-38"
     ],
     "support": {
       "relation": "direct",
@@ -316,15 +341,18 @@
     "productId": "appwrite",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 9,
+    "quality": 10,
     "confidence": "high",
-    "rationale": "Appwrite documents public REST and GraphQL APIs alongside many SDKs. Its CLI and MCP server sit on top of the same API, and they cover projects, rows, files, users and functions, so agents can drive the whole product programmatically. missing for 10: independent hands-on corroboration of agent-driven API use, documented API-key/auth details for headless programmatic access in the evidence pack.",
+    "rationale": "Appwrite documents public REST and GraphQL APIs that can be used directly or through SDKs. It publishes official OpenAPI 3.x and Swagger 2.0 specifications in the appwrite/specs repository and npm package, and provides an API explorer that executes real requests against the user's project. AI-native access is corroborated by an official MCP server that lets agents operate on Appwrite's API, a headless CLI for automation, llms.txt, and Markdown docs, with probes confirming llms.txt and Markdown docs are live.",
     "evidenceIds": [
       "appwrite-docs-70",
-      "appwrite-docs-10",
-      "appwrite-docs-12",
+      "appwrite-specs-repo-20261106",
+      "appwrite-api-explorer-20261106",
+      "appwrite-response-format-20261106",
       "appwrite-docs-11",
-      "appwrite-docs-42"
+      "appwrite-docs-42",
+      "appwrite-probe-1",
+      "appwrite-docs-40"
     ],
     "support": {
       "relation": "direct",
@@ -336,16 +364,16 @@
           "quote": "You can use one of our many SDKs or integrate directly through the REST API or GraphQL API."
         },
         {
-          "evidenceId": "appwrite-docs-10",
-          "quote": "It provides APIs to upload, download, delete, and list files, with many added utilities."
-        },
-        {
-          "evidenceId": "appwrite-docs-12",
-          "quote": "This includes creating and managing projects, managing resources (rows, files, users), creating and deploying Appwrite Functions, and other operations available through Appwrite's API."
+          "evidenceId": "appwrite-specs-repo-20261106",
+          "quote": "Appwrite's official API specifications in Swagger 2.0 and OpenAPI 3.x formats"
         },
         {
           "evidenceId": "appwrite-docs-11",
           "quote": "Appwrite offers a Model Context Protocol (MCP) server that allows LLMs to directly interact with Appwrite's API and docs."
+        },
+        {
+          "evidenceId": "appwrite-api-explorer-20261106",
+          "quote": "a vendor-built client-side API explorer that loads the OpenAPI document, builds request forms, and executes real requests"
         }
       ]
     }
@@ -356,7 +384,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Issuing scoped API credentials is a fair question for a backend-as-a-service, so the axis applies. However, nothing in the evidence pack documents API keys with configurable scopes or least-privilege credentials for agents. The closest items are adjacent and earn no credit: JWT delegation acts on behalf of a user and is not scoped API credentials, the MCP plugin uses an OAuth sign-in, and the headless CLI mode is not a credential-scoping feature.",
+    "rationale": "The evidence pack never documents scoped or least-privilege API keys for agents. The only nearby items are user JWT delegation, a passing mention that the API explorer can run requests with API keys, and an MCP plugin that signs in via OAuth. None of these describe issuing credentials restricted to specific scopes or permissions, so they are adjacent features that earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -368,21 +396,22 @@
   {
     "productId": "appwrite",
     "storyId": "agentic-sdks",
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "Appwrite's own docs say developers can build with 'one of our many SDKs', and it also offers a CLI `generate` command that produces a type-safe SDK tailored to the project's schema. Messaging and Functions docs refer to SDK methods, and agent skills and the MCP server carry SDK-specific context. The pack never lists which languages or platforms the SDKs cover, how deep their API coverage goes, or how they are versioned, so the story is only partly evidenced. missing for 10: enumeration of official SDK languages/platforms, SDK reference documentation depth, independent or hands-on corroboration of building against the SDKs.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Appwrite's own docs say developers can \"use one of our many SDKs\" alongside REST and GraphQL. The CLI's generate command produces a type-safe SDK tailored to the project's schema, and the official specs repo ships SDK code examples for all supported versions. Agent skills and the docs also target SDK-accurate code, which suits an AI-native workflow. Missing for 10: an explicit list of supported SDK languages and versions in the evidence, and independent or hands-on corroboration of SDK quality.",
     "evidenceIds": [
       "appwrite-docs-70",
       "appwrite-docs-41",
-      "appwrite-docs-49",
-      "appwrite-docs-9",
+      "appwrite-specs-repo-20261106",
       "appwrite-docs-39",
-      "appwrite-docs-38"
+      "appwrite-docs-31",
+      "appwrite-docs-49",
+      "appwrite-environments-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": [
         {
@@ -394,12 +423,16 @@
           "quote": "The generate command creates a type-safe SDK tailored to your project."
         },
         {
-          "evidenceId": "appwrite-docs-49",
-          "quote": "Send on every channel from one Messaging service and SDK."
+          "evidenceId": "appwrite-specs-repo-20261106",
+          "quote": "This repository contains the official Appwrite API specifications and SDK code examples for all supported versions"
         },
         {
           "evidenceId": "appwrite-docs-39",
           "quote": "Skills are open-source Markdown files that give AI agents deep knowledge of Appwrite SDKs and services."
+        },
+        {
+          "evidenceId": "appwrite-docs-31",
+          "quote": "Teach agents your backend so they make SDK-accurate calls."
         }
       ]
     }
@@ -410,7 +443,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents registrable outbound HTTP callbacks that Appwrite sends to a consumer's endpoint when events occur. The webhook mentions describe Functions being triggered by, or acting as handlers for, incoming webhooks and server events. That is an adjacent building block for event handling, not outbound webhook subscriptions. Realtime event responses likewise do not qualify.",
+    "rationale": "The evidence shows only that Appwrite Functions can be triggered by server events and can act as webhook handlers. That is inbound triggering and a developer building block, not documented, registrable outbound HTTP webhooks that a consumer subscribes to for events. No evidence in the pack describes registering a webhook URL to receive Appwrite event callbacks.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -425,7 +458,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers Appwrite's AI tooling for external agents: an MCP server, skills files, docs as Markdown, and Claude Code/Codex plugins. Nothing documents an AI assistant built into the Appwrite Console that writes queries, debugs errors, or explains the backend. Connecting outside assistants through MCP is an adjacent capability, not the in-dashboard assistant this story asks for.",
+    "rationale": "The evidence pack documents only external AI tooling: an MCP server for Claude Code, Codex, and Cursor, agent skills, docs-as-markdown, and llms.txt. Nothing shows an AI assistant built into the Appwrite Console that writes queries, debugs errors, or explains the backend. Those external-agent integrations are adjacent features, not the in-dashboard assistant the story asks for, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -437,61 +470,124 @@
   {
     "productId": "appwrite",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The evidence shows Appwrite has API references for its SDKs, REST and GraphQL APIs, docs available as Markdown, and quick starts. Nothing documents an interactive API explorer or runnable, try-it-in-browser examples. The axis applies to a BaaS platform, but the specific capability is unevidenced.",
-    "evidenceIds": [],
+    "rationale": "Appwrite's API reference pages have an 'Open in explorer' console. It loads the OpenAPI document, builds request forms, and executes real requests against the user's own project, with cURL export. The official specs repo also ships SDK code examples, so the reference is both interactive and example-backed. Missing for 10: independent or hands-on corroboration of the explorer; evidence that the SDK code examples themselves are directly runnable in-page, rather than only the request forms.",
+    "evidenceIds": [
+      "appwrite-api-explorer-20261106",
+      "appwrite-specs-repo-20261106",
+      "appwrite-docs-70"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "appwrite-api-explorer-20261106",
+          "quote": "a vendor-built client-side API explorer that loads the OpenAPI document, builds request forms, and executes real requests (guest mode, user-JWT impersonation, or API keys) with cURL export"
+        },
+        {
+          "evidenceId": "appwrite-specs-repo-20261106",
+          "quote": "This repository contains the official Appwrite API specifications and SDK code examples for all supported versions"
+        }
+      ]
     }
   },
   {
     "productId": "appwrite",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack does not mention any downloadable OpenAPI, Swagger, or equivalent machine-readable API specification for Appwrite. The related evidence covers other things: REST/GraphQL APIs, llms.txt, docs as Markdown, Skills and an MCP server. These are adjacent AI-facing features, not a published API spec, so they earn no credit here.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Appwrite publishes official machine-readable API specs in Swagger 2.0 and OpenAPI 3.x in the appwrite/specs repo. Per-version JSON files are downloadable live and also ship as an npm package. The API reference pages offer a per-service \"OpenAPI spec\" download that feeds a vendor-built explorer. Missing for 10: independent or hands-on community corroboration of the spec's completeness and accuracy.",
+    "evidenceIds": [
+      "appwrite-specs-repo-20261106",
+      "appwrite-api-explorer-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "appwrite-specs-repo-20261106",
+          "quote": "Appwrite's official API specifications in Swagger 2.0 and OpenAPI 3.x formats"
+        },
+        {
+          "evidenceId": "appwrite-specs-repo-20261106",
+          "quote": "specs/latest/open-api3-latest.json downloads live, and the specs also ship as the @appwrite.io/specs npm package"
+        },
+        {
+          "evidenceId": "appwrite-api-explorer-20261106",
+          "quote": "Appwrite's API reference pages carry a per-service \"OpenAPI spec\" download"
+        }
+      ]
     }
   },
   {
     "productId": "appwrite",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence shows no documented sandbox, test, or staging environment feature that isolates test activity from production data. Running a separate self-hosted Docker instance, developing functions locally, and Sites branch preview links come closest, but these are user-side arrangements or adjacent features (frontend previews, per-function container isolation), not a data sandbox.",
-    "evidenceIds": [],
+    "rationale": "Appwrite Cloud documents project environments such as `staging`, each with its own resources and users, selected per request via the X-Appwrite-Environment header. That lets testing run in a separate environment without touching production data. Self-hosting a full local containerized instance is a second documented test path, and a community user noted the containerized setup eases testing. missing for 10: environments live inside the production project rather than as a dedicated sandbox tenancy, no documentation on seeding or cloning test data, no hands-on corroboration of environment isolation, and environment support is documented for Cloud only.",
+    "evidenceIds": [
+      "appwrite-environments-20261106",
+      "appwrite-docs-14",
+      "appwrite-comm-13"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "appwrite-environments-20261106",
+          "quote": "On Appwrite Cloud, a project can have environments, such as `staging`, each with its own resources and users"
+        },
+        {
+          "evidenceId": "appwrite-environments-20261106",
+          "quote": "The client sends the environment's ID in the `X-Appwrite-Environment` header with every request"
+        },
+        {
+          "evidenceId": "appwrite-docs-14",
+          "quote": "You can install and run Appwrite on any operating system that can run a Docker CLI."
+        }
+      ]
     }
   },
   {
     "productId": "appwrite",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Versioned APIs with a deprecation policy are a fair question for a backend-as-a-service like Appwrite, so the axis applies. The evidence only shows that Appwrite offers REST and GraphQL APIs and keeps a changelog. Nothing documents API versioning or a deprecation policy, so the verdict is none.",
-    "evidenceIds": [],
+    "rationale": "Appwrite documents real API versioning: the X-Appwrite-Response-Format header returns backward-compatible responses for a given version, and official OpenAPI/Swagger specs are published for every supported version. It also publishes a release policy with quarterly minor releases and two support phases (bug fixes plus security, then security-only), which works as a version lifecycle. However, no explicit deprecation policy for API endpoints or fields is shown, such as notice periods or sunset headers. Missing for 10: an explicit endpoint/field deprecation policy with notice timelines, sunset signaling in API responses, and independent corroboration.",
+    "evidenceIds": [
+      "appwrite-response-format-20261106",
+      "appwrite-specs-repo-20261106",
+      "appwrite-release-policy-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "appwrite-response-format-20261106",
+          "quote": "Version number used for backward compatibility. The response will be formatted to be compatible with the provided version number."
+        },
+        {
+          "evidenceId": "appwrite-specs-repo-20261106",
+          "quote": "This repository contains the official Appwrite API specifications and SDK code examples for all supported versions"
+        },
+        {
+          "evidenceId": "appwrite-release-policy-20261106",
+          "quote": "Extended security support: \"Receives only security updates\""
+        }
+      ]
     }
   },
   {
@@ -500,7 +596,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Appwrite's first-party auth docs say email/password login takes \"just a few lines of code\" and that you can enable 30+ OAuth providers (GitHub, Google, Apple and others) from the Console. Its docs also list many SDKs and framework quick starts, which supports the \"in minutes\" claim. Missing for 10: independent or hands-on corroboration of setup speed, and SDK-specific detail showing how the OAuth sign-in call is made.",
+    "rationale": "Appwrite's first-party docs say email/password login takes \"just a few lines of code\" with Argon2 hashing, and that 30+ social OAuth providers (GitHub, Google, Apple, etc.) can be enabled from the Console. Its many SDKs and framework quick starts support the \"in minutes\" developer framing. Missing for 10: independent or hands-on corroboration of setup speed, and SDK-level detail showing the OAuth sign-in call flow (the OAuth evidence is Console- and marketing-level).",
     "evidenceIds": [
       "appwrite-docs-29",
       "appwrite-docs-1",
@@ -537,13 +633,11 @@
     "productId": "appwrite",
     "storyId": "auth-mfa-sso",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Appwrite's auth docs say it supports implementing MFA, and it offers 30+ OAuth social providers such as GitHub, Google and Apple. Nothing in the evidence shows enterprise SSO via SAML or generic OIDC, or a way to enforce MFA as mandatory. Missing for 10: enterprise SAML/OIDC SSO support, a documented way to require (not just offer) MFA for all users, and independent or hands-on corroboration.",
+    "rationale": "Appwrite's auth docs mention implementing MFA, so half the story has a thin first-party basis. Nothing in the pack shows enterprise SSO via SAML or OIDC; the 30+ social OAuth providers are consumer logins, not enterprise SSO. Missing for 10: enterprise SAML/OIDC SSO, a documented way to enforce (require) MFA for all users, in-depth MFA docs, independent corroboration.",
     "evidenceIds": [
-      "appwrite-docs-4",
-      "appwrite-docs-1",
-      "appwrite-docs-45"
+      "appwrite-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -553,14 +647,6 @@
         {
           "evidenceId": "appwrite-docs-4",
           "quote": "Implementing MFA to add extra layers of security to your app."
-        },
-        {
-          "evidenceId": "appwrite-docs-1",
-          "quote": "Authenticate users with existing accounts from GitHub, Google, Facebook, and 30+ other providers."
-        },
-        {
-          "evidenceId": "appwrite-docs-45",
-          "quote": "Enable 30+ social providers from the Console Social providers tab."
         }
       ]
     }
@@ -571,7 +657,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Appwrite's managed PostgreSQL docs state that the database comes with backups and PITR, so the product does document this capability. The evidence is a single repeated marketing line scoped to the dedicated PostgreSQL offering. It does not say whether backups are automated, how they are scheduled or retained, or whether they cover TablesDB, storage or self-hosted deployments. Missing for 10: confirmation that backups are automated and on a recurring schedule, retention and recovery-window details, coverage beyond managed PostgreSQL (TablesDB, storage, self-hosted), in-depth docs, and independent or hands-on corroboration.",
+    "rationale": "Appwrite's managed PostgreSQL database docs state that you get backups and PITR. However, this is a single marketing-level line scoped to the dedicated PostgreSQL offering. Nothing documents automation, schedules, retention, or restore workflows, or covers backups for TablesDB, Storage, or other data. Missing for 10: explicit automated backup scheduling and retention docs, a documented PITR restore procedure, backup coverage beyond the PostgreSQL offering, and independent or hands-on corroboration.",
     "evidenceIds": [
       "appwrite-docs-59",
       "appwrite-docs-46"
@@ -598,7 +684,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a backend-as-a-service, but the evidence pack never documents a bulk or batch API for creating, updating, or deleting many rows, files, or users at once. The CLI and MCP server docs only mention generic resource management, and one-click migrations and messaging topics are adjacent features rather than bulk operations on items.",
+    "rationale": "Bulk operations are a fair axis for a backend-as-a-service, but the evidence pack never documents bulk or batch operations across many items. The CLI and MCP server are described only as 'managing resources (rows, files, users)', which is per-resource management, not a bulk capability. The CLI's `includes` field only splits configuration files, an adjacent feature that earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -613,7 +699,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Appwrite Functions can be triggered automatically by server events, webhooks, and schedules, so Appwrite documents its own event-driven automation. The evidence does not show a declarative rule layer: no documented event-filter or condition configuration, and actions must be written as function code. Missing for 10: documented declarative or conditional rule definition (event filters, conditions) without custom code, details on how event subscriptions are configured, and independent or hands-on corroboration of event-triggered automation.",
+    "rationale": "Appwrite Functions can be triggered by server events, webhooks and scheduled executions, and run event handlers in isolated runtimes. That is a direct first-party mechanism for automatic actions on events. The evidence shows event-triggered code, but not a declarative rule layer with conditions or filters. It also lacks depth on which events are available and on independent validation. missing for 10: documented rule/condition definition (filtering which events fire which actions), event catalog and configuration detail, no-code rule authoring, independent or hands-on corroboration.",
     "evidenceIds": [
       "appwrite-docs-9",
       "appwrite-docs-64",
@@ -642,17 +728,17 @@
   {
     "productId": "appwrite",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Appwrite Functions document scheduled executions and cron jobs as a first-party trigger type, so recurring jobs are directly supported. The evidence is only brief marketing and overview lines, and nothing covers multi-step workflow orchestration. Messaging scheduling (docs-27) reads as one-off scheduled sends, not a recurring schedule, so it does not count here. Missing for 10: detailed docs on cron expression syntax and schedule configuration, recurring multi-step workflow orchestration, agent/MCP-driven schedule management evidence, independent or hands-on corroboration.",
+    "rationale": "Appwrite Functions document scheduled executions and cron jobs, which covers recurring scheduled jobs rather than one-off actions. Message scheduling ([appwrite-docs-27]) is a one-off send, so it is not counted toward this story. Missing for 10: detailed docs on cron syntax and schedule management, multi-step workflow orchestration, agent/CLI/MCP-driven schedule creation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "appwrite-docs-9",
       "appwrite-docs-64"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
       "citations": [
         {
@@ -672,7 +758,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Appwrite Functions are its automation primitive, triggered by events, webhooks, and schedules. The docs say functions can deploy automatically from source control, which gives Git-based versioning of automation code. Nothing in the pack documents review or approval for function deployments, and nothing documents rolling back to a prior deployment; the branch preview links apply to Sites, not Functions. Missing for 10: documented review/approval flow for function deployments, documented rollback to previous function deployments, independent or hands-on corroboration.",
+    "rationale": "Appwrite Functions, its automation surface, can deploy automatically from source control, which implies versioning through git commits. The pack documents no review step or rollback for function deployments. Sites branch previews cover a different product and do not transfer to automations. Missing for 10: documented deployment version history for functions, a review/approval step before activating automations, explicit rollback to a prior deployment, and independent corroboration.",
     "evidenceIds": [
       "appwrite-docs-74",
       "appwrite-docs-9"
@@ -684,7 +770,7 @@
       "citations": [
         {
           "evidenceId": "appwrite-docs-74",
-          "quote": "deploying automatically from source control"
+          "quote": "deploying automatically from source control... Each function will have its own URL, execute in its own isolated container"
         },
         {
           "evidenceId": "appwrite-docs-9",
@@ -696,17 +782,17 @@
   {
     "productId": "appwrite",
     "storyId": "db-event-triggers",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Appwrite's own Functions docs say functions can be triggered by server events and describe running event handlers in isolated runtimes, which is the core of this story. Missing for 10: explicit documentation naming database and auth events as trigger sources, details on configuring event subscriptions, and independent or hands-on corroboration.",
+    "rationale": "Appwrite's docs say Functions can be triggered by \"server events\" and run \"event handlers\", so event-driven function execution is a first-party capability. However, the evidence never says these server events include database or auth events specifically. missing for 10: explicit documentation that database row/collection and auth/user events trigger functions, examples of event names or subscription configuration, independent or hands-on corroboration.",
     "evidenceIds": [
       "appwrite-docs-9",
       "appwrite-docs-64"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can run functions automatically in response to database or auth events",
       "citations": [
         {
@@ -723,32 +809,32 @@
   {
     "productId": "appwrite",
     "storyId": "direct-db-connection",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Appwrite documents a dedicated, native PostgreSQL database that developers connect to directly with standard clients and ORMs (psql, Prisma, Drizzle), with connection pooling included. The 2022-era community remarks that Appwrite wasn't Postgres-based predate this offering and don't contradict it. missing for 10: explicit documentation of the connection-string format and credentials, independent or hands-on corroboration of direct ORM connectivity.",
+    "rationale": "Appwrite's docs describe a dedicated, native managed PostgreSQL database that you connect to directly with standard clients and ORMs such as psql, Prisma, and Drizzle, so the core of the story is first-party. This is a separate dedicated-engine option, not the default managed TablesDB API, and the evidence never documents a connection string or how credentials are issued. missing for 10: explicit connection-string documentation (format, credentials, network access), confirmation that direct access covers the default managed databases rather than only the dedicated PostgreSQL option, independent or hands-on corroboration of connecting with ORMs.",
     "evidenceIds": [
-      "appwrite-docs-8",
-      "appwrite-docs-23",
+      "appwrite-docs-59",
       "appwrite-docs-46",
-      "appwrite-docs-59"
+      "appwrite-docs-8",
+      "appwrite-docs-23"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can connect to the underlying database with standard clients and ORMs via a connection string",
       "citations": [
-        {
-          "evidenceId": "appwrite-docs-8",
-          "quote": "A dedicated, native PostgreSQL database you connect to directly."
-        },
         {
           "evidenceId": "appwrite-docs-59",
           "quote": "Host a managed PostgreSQL database on Appwrite. Connect with psql, Prisma, or Drizzle, install pgvector, and get backups, replicas, pooling, and PITR."
         },
         {
+          "evidenceId": "appwrite-docs-8",
+          "quote": "A dedicated, native PostgreSQL database you connect to directly."
+        },
+        {
           "evidenceId": "appwrite-docs-23",
-          "quote": "dedicated native engines you connect to directly"
+          "quote": "Choose the database that fits your use case, from managed APIs with permissions and realtime to dedicated native engines you connect to directly."
         }
       ]
     }
@@ -759,12 +845,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Appwrite Storage documents APIs to upload, download, delete and list files, and serves assets through the Appwrite CDN with bucket-level compression and encryption. Image transformations from the preview endpoint add depth. However, nothing in the pack documents file-level or bucket-level access rules or permissions for storage; the permissions mention refers to databases. missing for 10: documented storage access rules/permissions, independent or hands-on corroboration of CDN delivery.",
+    "rationale": "Appwrite Storage documents APIs to upload, download, delete and list files, and says assets are served through the Appwrite CDN, with bucket-level compression and encryption and an image preview endpoint. However, nothing in the pack documents per-file or per-bucket access rules or permissions for storage. Missing for 10: documented storage access rules or permissions, detail on CDN caching and delivery behavior, and independent or hands-on corroboration.",
     "evidenceIds": [
       "appwrite-docs-10",
       "appwrite-docs-75",
-      "appwrite-docs-47",
-      "appwrite-docs-63"
+      "appwrite-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -792,7 +877,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions full-text search for Appwrite's databases. The closest items are adjacent features: typed columns with generic indexes (TablesDB), vector similarity search over embeddings (VectorsDB), and a dedicated PostgreSQL database with pgvector. None of these is documented full-text search, so the axis applies but has no evidence of delivery.",
+    "rationale": "Full-text search is a fair axis for a backend-as-a-service database, but the evidence pack never documents a full-text search capability. Generic indexes, vector similarity search over embeddings, and a dedicated PostgreSQL engine are adjacent features, not documented built-in full-text search, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -805,9 +890,9 @@
     "productId": "appwrite",
     "storyId": "image-transformations",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "Appwrite Storage documents a preview endpoint that resizes, crops, converts format, sets quality, adds borders and rotates images from a single upload. It also offers smart crop focus via gravity=auto and serves files through the Appwrite CDN, so no self-run image pipeline is needed. missing for 10: independent or hands-on corroboration of the preview endpoint, in-depth reference docs on transformation parameters, caching and limits.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Appwrite Storage has a first-party preview endpoint that resizes, crops, converts format, sets quality, adds borders and rotates from a single upload. It also offers face- and saliency-aware cropping via gravity=auto, and assets are served through Appwrite CDN, so developers need no image pipeline of their own. missing for 10: independent or hands-on corroboration of the image transformation endpoint.",
     "evidenceIds": [
       "appwrite-docs-47",
       "appwrite-docs-62",
@@ -837,16 +922,17 @@
     "productId": "appwrite",
     "storyId": "local-stack-emulator",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Appwrite can be installed and run on any OS with a Docker CLI, which lets a developer run the full backend stack on a local machine. The CLI can target a self-hosted endpoint, functions are marketed as 'develop locally, deploy when ready', and a community user praises the containerized setup for offline development and testing. However, the docs frame this as self-hosting for production rather than a dedicated local emulator or local-dev workflow, and promoting a local setup to Cloud is only implied through migrations and the CLI's endpoint flag. missing for 10: dedicated emulator or local-dev CLI command (e.g. a local start command), first-party documentation of an end-to-end local-to-deploy workflow covering all services, hands-on corroboration beyond a single community comment.",
+    "rationale": "Appwrite's own Docker-based self-hosting runs the full Appwrite stack on any machine with a Docker CLI. The docs name a self-hosted full local instance as a test path, Functions advertise 'Develop locally, deploy when ready', and the CLI can target a self-hosted endpoint. A community user also praised the containerized setup for offline development and testing. However, the local route is the general self-hosting install, not a purpose-built local emulator or CLI dev workflow, so only part of the story is documented. missing for 10: a dedicated local emulator or CLI 'start local stack' command, documented local-to-cloud promotion workflow, hands-on corroboration of full-stack local development parity.",
     "evidenceIds": [
       "appwrite-docs-14",
       "appwrite-docs-68",
       "appwrite-docs-48",
       "appwrite-docs-22",
-      "appwrite-docs-43",
-      "appwrite-comm-13"
+      "appwrite-environments-20261106",
+      "appwrite-comm-13",
+      "appwrite-docs-43"
     ],
     "support": {
       "relation": "direct",
@@ -866,10 +952,6 @@
           "quote": "Add the --endpoint flag if you're using a self-hosted instance of Appwrite."
         },
         {
-          "evidenceId": "appwrite-docs-43",
-          "quote": "You can also migrate between Appwrite Cloud and self-hosted."
-        },
-        {
           "evidenceId": "appwrite-comm-13",
           "quote": "They liked that Appwrite provides a containerized setup, which should make distributed development and testing easier."
         }
@@ -879,22 +961,22 @@
   {
     "productId": "appwrite",
     "storyId": "managed-database-queries",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Appwrite's docs say databases run on a shared pool Appwrite manages, or on dedicated compute provisioned per project. They describe managed database APIs with permissions and realtime, and say developers can use its many SDKs or the REST/GraphQL APIs, with the CLI able to generate a type-safe SDK from the database schema. The specific split between client SDK and server SDK reads/writes is implied rather than explicitly documented. missing for 10: explicit documentation of row read/write through both client and server SDKs, independent hands-on corroboration of SDK database access",
+    "rationale": "Appwrite documents provisioning managed databases, either on a shared pool or on dedicated compute, including managed PostgreSQL. It also documents TablesDB with typed rows, a CLI that manages rows, generated type-safe SDKs, and many SDKs alongside the REST and GraphQL APIs. However, the evidence never explicitly shows reading and writing database rows from both a client SDK and a server SDK, so coverage of the full story is incomplete. missing for 10: explicit documentation of client-SDK and server-SDK database read/write calls, and independent hands-on corroboration of the provision-then-read/write flow.",
     "evidenceIds": [
       "appwrite-docs-36",
       "appwrite-docs-23",
+      "appwrite-docs-59",
       "appwrite-docs-71",
       "appwrite-docs-70",
       "appwrite-docs-41",
-      "appwrite-docs-53",
       "appwrite-docs-12"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can provision a managed database and read/write it from client and server SDKs",
       "citations": [
         {
@@ -911,7 +993,11 @@
         },
         {
           "evidenceId": "appwrite-docs-41",
-          "quote": "The generate command creates a type-safe SDK tailored to your project. It detects your project's language and generates typed helpers based on your database schema."
+          "quote": "It detects your project's language and generates typed helpers based on your database schema."
+        },
+        {
+          "evidenceId": "appwrite-docs-12",
+          "quote": "managing resources (rows, files, users)"
         }
       ]
     }
@@ -922,7 +1008,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Appwrite is a backend-as-a-service with databases and realtime, so offline-first client sync is a fair question for it. However, nothing in the evidence documents local client caching or automatic write sync on reconnect. The realtime and database docs cover live events and data storage, not offline persistence or conflict-resolved sync. The community remark about an 'offline development story' concerns local dev environments, not offline-capable clients.",
+    "rationale": "Offline-first sync is a fair question for a backend-as-a-service with databases and realtime, so the axis applies. However, nothing in the evidence documents a local client cache, offline write queue, or automatic sync on reconnect. Realtime event subscriptions and a containerized local dev setup are adjacent features, not offline client sync.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -935,16 +1021,16 @@
     "productId": "appwrite",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Appwrite documents broad programmatic access. It offers REST and GraphQL APIs plus SDKs, and its CLI covers creating and managing projects, resources (rows, files, users) and Functions. An official MCP server lets agents operate on a project. However, no evidence states that the API matches the Console feature-for-feature, and some setup (social providers, messaging topics) is described only as Console-tab actions. Missing for 10: an explicit claim or verification that the API matches the Console for every operation, API evidence for Console-described settings such as auth providers and messaging topics, and independent hands-on corroboration.",
+    "rationale": "Appwrite documents a broad REST and GraphQL API with SDKs, published OpenAPI specs, and a CLI and MCP server that manage projects, rows, files, users and functions through that API. This shows extensive programmatic coverage, but nothing explicitly confirms UI/API parity, and several features are described only as Console actions (enabling social providers, creating messaging topics). Missing for 10: an explicit statement or demonstration that every Console capability is exposed via the API, API equivalents for Console-described settings like auth providers and messaging topics, and independent hands-on corroboration of parity.",
     "evidenceIds": [
       "appwrite-docs-70",
       "appwrite-docs-12",
+      "appwrite-specs-repo-20261106",
       "appwrite-docs-56",
-      "appwrite-docs-42",
-      "appwrite-docs-45",
-      "appwrite-docs-50"
+      "appwrite-api-explorer-20261106",
+      "appwrite-docs-42"
     ],
     "support": {
       "relation": "direct",
@@ -960,12 +1046,12 @@
           "quote": "This includes creating and managing projects, managing resources (rows, files, users), creating and deploying Appwrite Functions, and other operations available through Appwrite's API."
         },
         {
-          "evidenceId": "appwrite-docs-56",
-          "quote": "Using the MCP server, you can use applications such as Claude Code, Codex, Cursor, Claude Desktop, and others to operate on your Appwrite project"
+          "evidenceId": "appwrite-specs-repo-20261106",
+          "quote": "Appwrite's official API specifications in Swagger 2.0 and OpenAPI 3.x formats"
         },
         {
-          "evidenceId": "appwrite-docs-42",
-          "quote": "The Appwrite CLI can be used in a non-interactive and headless manner, without saving configuration or sessions."
+          "evidenceId": "appwrite-docs-56",
+          "quote": "Using the MCP server, you can use applications such as Claude Code, Codex, Cursor, Claude Desktop, and others to operate on your Appwrite project"
         }
       ]
     }
@@ -976,7 +1062,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Appwrite documents first-party ways to move data out of its managed cloud: one-click migration from Appwrite Cloud to a self-hosted instance, a dedicated native PostgreSQL database reachable directly with psql, and file download APIs. However, no documented bulk export of all project data (users, rows, files) in open formats like CSV or JSON was found. missing for 10: documented full-account export in open formats, coverage of auth/user data export, independent hands-on corroboration of leaving the platform.",
+    "rationale": "Appwrite documents its own one-click migration between Appwrite Cloud and self-hosted, and a native PostgreSQL option you connect to directly with psql. Storage also offers download and list APIs, so data can be taken out and run on your own infrastructure. However, no documented bulk 'export all data' feature or open-format export (e.g. CSV/JSON dumps covering databases, users and files) appears in the evidence. Missing for 10: a documented full-account export in open formats, coverage of auth/user data export, and independent hands-on corroboration of a complete exit path.",
     "evidenceIds": [
       "appwrite-docs-43",
       "appwrite-docs-8",
@@ -998,12 +1084,12 @@
           "quote": "A dedicated, native PostgreSQL database you connect to directly."
         },
         {
-          "evidenceId": "appwrite-docs-46",
-          "quote": "Connect with psql, Prisma, or Drizzle, install pgvector, and get backups, replicas, pooling, and PITR."
+          "evidenceId": "appwrite-docs-10",
+          "quote": "It provides APIs to upload, download, delete, and list files"
         },
         {
-          "evidenceId": "appwrite-docs-10",
-          "quote": "It provides APIs to upload, download, delete, and list files, with many added utilities."
+          "evidenceId": "appwrite-docs-14",
+          "quote": "Appwrite was designed from the ground up with self-hosting in mind."
         }
       ]
     }
@@ -1014,11 +1100,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Appwrite has a public GitHub repository (github.com/appwrite/appwrite), and community members describe it as open source, for example as an 'open-source alternative to Vercel'. Its self-hosting docs fit a source-available product, but no first-party evidence names the license. Missing for 10: first-party statement of the open-source license (e.g. BSD/MIT), explicit documentation that the full server source is published under it, hands-on confirmation of reading or building from source.",
+    "rationale": "Appwrite has a public GitHub repository (github.com/appwrite/appwrite), and a community member calls it 'an open-source alternative to Vercel', which points to readable source. The pack, however, never names the license, and no first-party doc states the source is openly licensed. The open-source Skills files and the API specs repo are separate artifacts, not the product's own source, so they do not count here. Missing for 10: an explicit first-party statement of an open license (e.g. the license name or file), and documentation that the full product source is available to read.",
     "evidenceIds": [
       "appwrite-gh-1",
-      "appwrite-comm-17",
-      "appwrite-comm-16"
+      "appwrite-comm-17"
     ],
     "support": {
       "relation": "direct",
@@ -1026,16 +1111,12 @@
       "subject": "As an AI-native user, I can read the product's source under an open license",
       "citations": [
         {
-          "evidenceId": "appwrite-comm-17",
-          "quote": "the product itself looks worthwhile as an open-source alternative to Vercel"
-        },
-        {
-          "evidenceId": "appwrite-comm-16",
-          "quote": "good open-source options are wanted"
-        },
-        {
           "evidenceId": "appwrite-gh-1",
           "quote": "Integrated hosting platform to deploy and scale web applications with support for custom domains, SSR, and seamless backend integration."
+        },
+        {
+          "evidenceId": "appwrite-comm-17",
+          "quote": "the product itself looks worthwhile as an open-source alternative to Vercel"
         }
       ]
     }
@@ -1046,7 +1127,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Appwrite's own docs say it was designed for self-hosting and runs on any OS with a Docker CLI or on Kubernetes via an official Helm chart, with one-click marketplace installs and migration between Cloud and self-hosted. Independent community users confirm they easily self-installed it and praised the self-hosting and production guides. Missing for 10: explicit evidence that the self-hosted edition has feature parity with Cloud, and scaling documentation for self-hosted deployments (one user reported they could not find any).",
+    "rationale": "Appwrite's first-party docs say it was \"designed from the ground up with self-hosting in mind\". It can run on any OS with a Docker CLI, on Kubernetes via an official Helm chart, or through one-click marketplace installs, and you can migrate between Cloud and self-hosted. Community users independently report self-installing it easily and praise the self-hosting and production guides. Missing for 10: documentation on scaling a self-hosted instance (a user reported finding none) and explicit evidence that self-hosted has feature parity with Cloud.",
     "evidenceIds": [
       "appwrite-docs-14",
       "appwrite-docs-68",
@@ -1054,8 +1135,9 @@
       "appwrite-docs-43",
       "appwrite-docs-24",
       "appwrite-comm-1",
+      "appwrite-comm-6",
       "appwrite-comm-8",
-      "appwrite-comm-6"
+      "appwrite-comm-10"
     ],
     "support": {
       "relation": "direct",
@@ -1087,13 +1169,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Appwrite's own self-hosting docs claim \"Full control over data location\": you can run it on any Docker-capable OS or your own Kubernetes cluster, and migrate between Appwrite Cloud and self-hosted. That lets a user decide where data lives. Nothing in the pack shows choosing a region or residency option inside the managed Cloud offering, so residency control comes only through running your own infrastructure. Missing for 10: documented Cloud region/residency selection, a list of available regions, and independent corroboration of residency controls.",
+    "rationale": "Appwrite's self-hosting docs state it gives \"Full control over data location\". You can run it on any Docker host or your own Kubernetes cluster, and migrate between Cloud and self-hosted, so you can decide where your data lives. However, this residency control comes from running your own infrastructure; nothing in the pack shows region or residency selection on the managed Appwrite Cloud service. Missing for 10: documented region/residency choice on Appwrite Cloud, a list of available regions, and independent or hands-on corroboration of data-residency controls.",
     "evidenceIds": [
       "appwrite-docs-24",
-      "appwrite-docs-14",
       "appwrite-docs-68",
-      "appwrite-docs-43",
-      "appwrite-docs-34"
+      "appwrite-docs-14",
+      "appwrite-docs-43"
     ],
     "support": {
       "relation": "direct",
@@ -1121,7 +1202,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A cloud backend platform could fairly state or offer controls over whether customer data is used for AI model training, so the axis applies. The evidence pack has no such policy, opt-out, or contractual commitment. Self-hosting and data-location control (appwrite-docs-24) and compliance badges (SOC-2, HIPAA) are adjacent privacy features, not a documented training opt-out, so they earn no credit.",
+    "rationale": "Nothing in the evidence pack addresses whether Appwrite uses customer data to train AI models, and no documented opt-out or no-training policy appears. Self-hosting with \"full control over data location\" and SOC-2/HIPAA compliance are adjacent privacy controls, not a training-data guarantee, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1136,11 +1217,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Appwrite documents its own deletion capabilities: a storage API to delete files, CLI management of rows, files and users, and bucket-level stripping of location, device and capture-time metadata from uploaded images. Nothing in the evidence shows configurable retention controls such as TTLs, auto-expiry, log or backup retention windows, or account-erasure workflows. Missing for 10: configurable retention policies, automatic expiry/purge of data, documented user/account erasure and backup retention controls, independent corroboration.",
+    "rationale": "Appwrite documents its own deletion capabilities: Storage APIs to delete files, CLI and MCP management of rows, files and users, and bucket-level stripping of location, device and capture-time metadata from uploaded images. Self-hosting gives control over data location, but nothing in the evidence describes configurable retention periods, automatic expiry, or account and data purge workflows. missing for 10: configurable retention policies/TTLs, documented end-to-end user-data deletion (account erasure, backup purge), log/telemetry retention controls, independent corroboration",
     "evidenceIds": [
       "appwrite-docs-10",
       "appwrite-docs-12",
-      "appwrite-docs-63"
+      "appwrite-docs-63",
+      "appwrite-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -1158,6 +1240,10 @@
         {
           "evidenceId": "appwrite-docs-63",
           "quote": "Storage buckets can now remove location, device, and capture time metadata from uploaded images."
+        },
+        {
+          "evidenceId": "appwrite-docs-24",
+          "quote": "Full control over data location"
         }
       ]
     }
@@ -1168,7 +1254,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a self-hostable backend platform, but nothing in the evidence documents a way to disable telemetry or usage tracking. Self-hosting with 'full control over data location' and stripping image metadata are adjacent privacy features, not a telemetry opt-out control.",
+    "rationale": "Telemetry opt-out is a fair question for a self-hostable backend platform, but nothing in the evidence documents a telemetry or usage-tracking setting or opt-out mechanism. Self-hosting with 'full control over data location' and image-metadata stripping are adjacent privacy features, not a telemetry opt-out, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1183,11 +1269,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Appwrite's Auth docs explicitly claim it can track which signed-in users are active and broadcast online, typing, and viewing status in realtime. That covers both presence and ephemeral state between connected clients, backed by its realtime offering. The support rests on a single summary-level line, though. Missing for 10: in-depth documentation of the presence/ephemeral API (channels, payloads, limits), independent or hands-on corroboration.",
+    "rationale": "Appwrite's Auth docs claim a first-party presence capability: tracking which signed-in users are active and broadcasting online, typing, and viewing status in realtime. That covers both presence tracking and ephemeral client-to-client state, on top of the documented realtime event layer. missing for 10: in-depth docs on the presence API and its ephemeral-state semantics (channels, TTL/expiry, custom payloads), and independent or hands-on corroboration that it works as described.",
     "evidenceIds": [
       "appwrite-docs-5",
-      "appwrite-docs-28",
-      "appwrite-docs-23"
+      "appwrite-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -1211,7 +1296,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Appwrite's docs say its managed database APIs come \"with permissions and realtime\" and that apps can \"respond to server events in realtime\", so live updates are a first-party capability. The pack never documents the subscription mechanism itself: no channels, no client SDK subscribe call, and no database-change event payloads. A community comment refers to a WebSocket connection pool but notes there is no scaling documentation. Missing for 10: explicit docs on subscribing to row or collection change events from client SDKs, details of the realtime channel/subscription API, and hands-on or independent corroboration that UI updates arrive without polling.",
+    "rationale": "Appwrite's own docs say its managed databases come 'with permissions and realtime' and that apps can 'respond to server events in realtime', and a community comment refers to its WebSocket connection pool. So the product does ship a realtime capability. The evidence never shows the client-side subscribe workflow or confirms that UI updates on data changes without polling. Missing for 10: documented client SDK subscription API (channels/events for row changes), payload/event semantics, hands-on or independent corroboration of live UI updates.",
     "evidenceIds": [
       "appwrite-docs-23",
       "appwrite-docs-28",
@@ -1244,12 +1329,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Appwrite documents TablesDB with typed columns, rows, relationships and indexes, plus a dedicated native PostgreSQL database that developers query directly with psql, Prisma or Drizzle. That supports relational modelling and direct SQL access, but the pack never explicitly documents joins, constraints or transactions. Missing for 10: explicit documentation of join queries, constraint enforcement (foreign keys/unique), transaction support, and independent hands-on corroboration.",
+    "rationale": "Appwrite's TablesDB is documented as relational, with typed columns, rows, relationships and indexes, and Appwrite also hosts a dedicated native PostgreSQL database that developers connect to directly with psql, Prisma or Drizzle. That supports the relational core of the story, but joins, constraints and transactions are never named explicitly. Missing for 10: explicit documentation of join queries, constraint enforcement (foreign keys/unique), transaction support, and hands-on corroboration.",
     "evidenceIds": [
       "appwrite-docs-71",
       "appwrite-docs-6",
       "appwrite-docs-8",
-      "appwrite-docs-59"
+      "appwrite-docs-59",
+      "appwrite-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -1277,7 +1363,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Appwrite's database docs say its managed database APIs come \"with permissions,\" which is a first-party access-control capability for data. The pack never documents how these permissions work or whether they can restrict rows per user. missing for 10: documentation of per-user or per-row permission rules, examples of configuring row-level access, details of how permissions are enforced, independent or hands-on corroboration.",
+    "rationale": "The only on-topic evidence is a single glancing first-party mention that Appwrite's managed database APIs come 'with permissions'. That suggests access control on data, but nothing documents per-user or row-level rules, how they are defined, or how they are enforced. JWT delegation and the native PostgreSQL engine are adjacent and earn no credit here. Missing for 10: documentation of per-user/row-level permission rules, how permissions are configured on tables/rows/files, enforcement semantics, and independent or hands-on corroboration.",
     "evidenceIds": [
       "appwrite-docs-23"
     ],
@@ -1299,7 +1385,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Appwrite's docs say Functions can be triggered by HTTP requests and SDK methods. Each function runs in its own isolated container with its own URL, scales with demand, deploys from source control or the CLI, and supports 13+ runtimes, so developers don't manage servers. missing for 10: independent hands-on corroboration of serverless deployment and scaling behavior.",
+    "rationale": "Appwrite's first-party Functions docs say functions can be triggered by HTTP requests and SDK methods. Each function runs in its own isolated container with its own URL, in managed runtimes that scale with demand, and can be deployed from source control or the CLI. missing for 10: independent hands-on corroboration of HTTP/SDK invocation and serverless operation (one community comment notes a lack of scaling documentation for cloud functions).",
     "evidenceIds": [
       "appwrite-docs-9",
       "appwrite-docs-64",
@@ -1337,11 +1423,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Appwrite's own CLI documents two commands for this story: a `types` command that generates type definitions from the database schema, and a `generate` command that builds a type-safe SDK with typed helpers based on the schema and the detected project language. This is first-party, direct support for automatic typed client code generation. Missing for 10: independent or hands-on corroboration that the commands work, and documentation detail on which languages are supported and how generated types stay in sync with schema changes (for example, via CI regeneration).",
+    "rationale": "Appwrite's official CLI documents a `types` command that generates type definitions from the database schema, and a `generate` command that produces a type-safe SDK with typed helpers based on that schema. This is first-party, direct support for the story, though the documentation in the pack is brief. Missing for 10: detail on which languages and targets are supported and how output is configured, and independent or hands-on corroboration that the generation works as claimed.",
     "evidenceIds": [
       "appwrite-docs-55",
       "appwrite-docs-41",
-      "appwrite-docs-42"
+      "appwrite-probe-4"
     ],
     "support": {
       "relation": "direct",
@@ -1365,7 +1451,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Appwrite's docs name a dedicated VectorsDB product to \"store embeddings and run similarity search to power AI features.\" They also say the managed PostgreSQL offering lets you install pgvector, so both parts of the story are first-party capabilities. The evidence is limited to short product-page lines. Missing for 10: detailed docs on the vector API, index types and distance metrics, query and filtering options, and any independent or hands-on corroboration.",
+    "rationale": "Appwrite's database docs list VectorsDB as a first-party product to \"Store embeddings and run similarity search to power AI features,\" which covers both parts of the story. Its managed PostgreSQL option also supports installing pgvector. missing for 10: in-depth documentation of the vector API (index types, distance metrics, query syntax, dimension limits), independent or hands-on corroboration that VectorsDB similarity search works in practice.",
     "evidenceIds": [
       "appwrite-docs-72",
       "appwrite-docs-7",
@@ -1382,6 +1468,10 @@
           "quote": "VectorsDB: Store embeddings and run similarity search to power AI features."
         },
         {
+          "evidenceId": "appwrite-docs-7",
+          "quote": "Store embeddings and run similarity search to power AI features."
+        },
+        {
           "evidenceId": "appwrite-docs-59",
           "quote": "Host a managed PostgreSQL database on Appwrite. Connect with psql, Prisma, or Drizzle, install pgvector, and get backups, replicas, pooling, and PITR."
         }
@@ -1391,34 +1481,16 @@
   {
     "productId": "appwrite",
     "storyId": "versioned-migrations",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Appwrite's official CLI manages project resources from a JSON config that can be split into separate files with the `includes` field. That config can be kept in version control, and the docs say the CLI runs non-interactively on CI servers. The evidence never says schema (tables, columns, indexes) changes are pushed as ordered, versioned migrations, so only a thin declarative-config path is evidenced. The 'One-Click migrations' feature moves data between platforms and is not schema versioning. Missing for 10: explicit documentation that database schema lives in the CLI config and is applied/pushed via the CLI, ordered or versioned migration files, rollback/diff semantics, and hands-on or independent corroboration of CI-driven schema deploys.",
-    "evidenceIds": [
-      "appwrite-docs-13",
-      "appwrite-docs-42",
-      "appwrite-docs-12",
-      "appwrite-docs-55"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The pack shows a CLI that manages projects and resources (rows, files, users, Functions), a config split into JSON files via `includes`, headless CI usage, and type generation from the database schema. None of it documents applying schema changes as versioned migrations. The 'One-Click migrations' item covers moving data from Firebase, Supabase, or NHost, or between Cloud and self-hosted, which is a different capability. With no first-party evidence of migration files or schema push/apply via CLI or CI, the axis applies but is unevidenced.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a developer, I can manage schema changes as version-controlled migrations applied via the CLI or CI",
-      "citations": [
-        {
-          "evidenceId": "appwrite-docs-13",
-          "quote": "you can split top-level resource arrays into separate JSON files with the `includes` field."
-        },
-        {
-          "evidenceId": "appwrite-docs-42",
-          "quote": "This is especially useful when you want to automate tasks on a continuous integration server."
-        },
-        {
-          "evidenceId": "appwrite-docs-12",
-          "quote": "This includes creating and managing projects, managing resources (rows, files, users)"
-        }
-      ]
+      "citations": []
     }
   },
   {

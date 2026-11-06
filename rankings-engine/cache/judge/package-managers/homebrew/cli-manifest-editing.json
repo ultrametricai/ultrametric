@@ -1,16 +1,17 @@
 {
-  "hash": "ea781db4f6ab1d8d6468dac2692521c9047c61ebefbc78e88755c17ce33f1e39",
+  "hash": "83c2a0ab70445e7839153e567c7890a5ec209ba04835538c194cb256d57b02d4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "medium",
-    "rationale": "Homebrew uses a project Brewfile as a dependency manifest, and `brew bundle dump` is a documented CLI command that writes the Brewfile from installed state. An agent can therefore install, uninstall or upgrade packages and regenerate the manifest without hand-editing it. However, the pack documents no per-dependency add/remove/upgrade commands that edit the Brewfile directly, and no lockfile at all. missing for 10: dedicated CLI add/remove/upgrade commands that rewrite the Brewfile, lockfile generation and updating, safety guarantees for the rewrite, independent corroboration",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Homebrew treats the Brewfile as a project dependency manifest. `brew bundle dump` is a first-party command that writes the Brewfile from installed state, so an agent could install, uninstall or upgrade with brew commands and then regenerate the manifest instead of hand-editing it. That is a two-step snapshot workflow, not per-dependency manifest-rewriting commands, and no lockfile handling is evidenced. Missing for 10: documented add/remove commands that edit the Brewfile directly, a lockfile written safely by the CLI, upgrade flows that update the manifest, and independent hands-on corroboration.",
     "evidenceIds": [
       "homebrew-docs-1",
       "homebrew-docs-2",
       "homebrew-docs-64",
-      "homebrew-docs-69"
+      "homebrew-docs-69",
+      "homebrew-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -24,6 +25,10 @@
         {
           "evidenceId": "homebrew-docs-1",
           "quote": "Adding a `Brewfile` to a project's repository (like you might a `package.json`, `Gemfile` or `requirements.txt`) is a nicer way of encoding project dependencies for developer environments."
+        },
+        {
+          "evidenceId": "homebrew-docs-64",
+          "quote": "Rather than specifying the `brew` commands you wish to run, you can specify the state you wish to reach."
         }
       ]
     },
