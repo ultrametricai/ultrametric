@@ -1,20 +1,40 @@
 {
-  "hash": "8d748adf7f86d2fbf52eb7c14ebf46e6a0b2ca47a99fe8836b20f33a07fea68f",
+  "hash": "d929fa9f5e8cdd86173f70c83ad5971b01a3c766146c9fc60f75cf3b696313dd",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Grafana documents connecting AI agents through a hosted Cloud MCP Server or a self-managed open-source MCP Server (grafana-docs-7, grafana-probe-4), and a probe found a published OpenAPI spec (grafana-probe-3). The platform is documented to query metrics, logs, and traces across data sources (grafana-docs-9, grafana-docs-15, grafana-docs-4), so an external agent has documented programmatic paths to debug production. missing for 10: explicit documentation that the MCP or API tools cover querying all three signals (PromQL, LogQL, and trace search), and independent or hands-on corroboration of agents debugging via these interfaces.",
+    "rationale": "Grafana documents connecting AI agents through a hosted Cloud MCP Server or a self-managed open source MCP Server, and a probe confirms an official MCP server repo and an OpenAPI spec. Grafana itself is documented to query metrics, logs, and traces. However, the evidence never says these agent-facing APIs actually expose metric, log, and trace queries for production debugging, so coverage is partial. Missing for 10: explicit documentation that the MCP server or API supports querying metrics (PromQL), logs (LogQL), and traces (Tempo); hands-on or independent corroboration of an agent debugging production through these APIs.",
     "evidenceIds": [
       "grafana-docs-7",
       "grafana-probe-4",
       "grafana-probe-3",
-      "grafana-docs-9",
-      "grafana-docs-15",
-      "grafana-docs-4",
-      "grafana-docs-27"
+      "grafana-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an external agent query metrics, logs, and traces through documented APIs to debug production",
+      "citations": [
+        {
+          "evidenceId": "grafana-docs-7",
+          "quote": "Connect AI agents to Grafana through the fully hosted Cloud MCP Server or the self-managed open source MCP Server."
+        },
+        {
+          "evidenceId": "grafana-probe-4",
+          "quote": "official MCP server documented at https://github.com/grafana/mcp-grafana"
+        },
+        {
+          "evidenceId": "grafana-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://grafana.com/api/openapi.json — contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "grafana-docs-9",
+          "quote": "enables you to query, visualize, alert on, and explore your metrics, logs, and traces wherever they're stored"
+        }
+      ]
+    },
     "productId": "grafana",
     "storyId": "agent-queries-telemetry"
   }

@@ -1,21 +1,42 @@
 {
-  "hash": "262824609e7feea8ac5fde59a8afed277a82e70fa2b07030a4913fc994811f6f",
+  "hash": "84e0d5fb40b4e38bb09becd28bf6c3621b86cedb8aaf2d93dba83d4f7cd06856",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "chroma",
-    "storyId": "api-sandbox",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Chroma offers two documented ways to test in isolation from production. The CLI and the OSS server let you run Chroma locally or self-hosted. Chroma Cloud's copy-on-write collection forking is pitched for dataset versioning and A/B testing, so you can experiment on a fork while the original stays untouched, and a community user independently confirms the forking works. Missing for 10: no explicit sandbox or staging-environment documentation, no separate test-mode credentials or projects, and no hands-on evidence that writes to a fork never affect the source collection.",
+    "rationale": "Chroma offers copy-on-write collection forking for dataset versioning and A/B testing, which gives an isolated copy to test against while original data stays shared and unchanged. Its CLI can also run a local server, separate from Cloud production DBs. These are Chroma's own features, but the docs never frame them as a sandbox or test environment, and they do not explicitly state that writes to a fork cannot affect the source. missing for 10: explicit sandbox/staging environment documentation, documented isolation guarantees for fork writes versus production, hands-on corroboration of safe testing workflows.",
     "evidenceIds": [
-      "chroma-docs-5",
-      "chroma-docs-14",
-      "chroma-docs-9",
       "chroma-docs-8",
-      "chroma-docs-18",
       "chroma-docs-26",
+      "chroma-docs-18",
+      "chroma-docs-14",
       "chroma-comm-1"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "chroma-docs-8",
+          "quote": "Dataset versioning, A/B testing, and roll-outs"
+        },
+        {
+          "evidenceId": "chroma-docs-26",
+          "quote": "Forks are copy-on-write. You only pay for incremental storage written after the fork; unchanged data remains shared."
+        },
+        {
+          "evidenceId": "chroma-docs-14",
+          "quote": "The Chroma CLI lets you run a Chroma server locally on your machine"
+        },
+        {
+          "evidenceId": "chroma-comm-1",
+          "quote": "copy-on-write forking of indexes"
+        }
+      ]
+    },
+    "productId": "chroma",
+    "storyId": "api-sandbox"
   }
 }

@@ -1,20 +1,46 @@
 {
-  "hash": "8d920d553f995476f23386c9481e61e694b45461b5a31c3ae939087ad5b46de4",
+  "hash": "68a0a9bad1e1d59b130b735b97a49cfae2cdd8969bc6d206631b2e9d67f806e8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Clerk documents machine credentials for agents: API keys for programmatic callers and M2M tokens for agent-to-agent calls, metered as a platform feature. Scoping comes from OAuth scoped access, custom OAuth scopes for MCP clients, and gating individual agent tool calls against the caller's permissions and scopes, all backed by custom roles and fine-grained permissions. missing for 10: explicit docs showing per-key or per-M2M-token scope/permission restriction, credential expiry and revocation details, independent or hands-on corroboration.",
+    "rationale": "Clerk documents its own machine credentials for agents: API keys for programmatic callers and M2M tokens for calls between agents. It also offers OAuth scoped access with custom scopes for MCP clients, and can gate agent tool calls against the caller's permissions and scopes. However, the evidence never shows per-key scope or permission restriction on the API keys or M2M tokens themselves, so least-privilege issuance is only implied by combining these features. missing for 10: documented per-credential scope/permission assignment on API keys and M2M tokens, expiry and rotation details, independent or hands-on corroboration.",
     "evidenceIds": [
-      "clerk-docs-43",
       "clerk-docs-11",
-      "clerk-supp-m2m-pricing",
-      "clerk-docs-44",
-      "clerk-docs-55",
+      "clerk-docs-58",
+      "clerk-docs-10",
       "clerk-docs-16",
-      "clerk-docs-4"
+      "clerk-docs-55",
+      "clerk-supp-m2m-pricing"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "clerk-docs-11",
+          "quote": "API keys authenticate programmatic callers; M2M tokens authenticate calls between your agents."
+        },
+        {
+          "evidenceId": "clerk-docs-58",
+          "quote": "An API key authenticates a known programmatic caller"
+        },
+        {
+          "evidenceId": "clerk-docs-10",
+          "quote": "lets third-party applications request limited access to specific parts of a user's data through Clerk's API"
+        },
+        {
+          "evidenceId": "clerk-docs-16",
+          "quote": "Gate individual eve tool calls against the caller's Clerk permissions and scopes"
+        },
+        {
+          "evidenceId": "clerk-docs-55",
+          "quote": "Custom OAuth scopes: Give MCP clients precise"
+        }
+      ]
+    },
     "productId": "clerk",
     "storyId": "agentic-scoped-keys"
   }

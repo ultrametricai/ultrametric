@@ -1,23 +1,43 @@
 {
-  "hash": "ade169f9c8c53405e623a83c0461d407dcbee89278574288da0d3e949a782d94",
+  "hash": "fc0e32989582e9749a66c0b1937a4abfe9aa552b0ed302a7b4701fee1b7f314c",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "moss",
-    "storyId": "openness-self-host",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Moss's query runtime can run on-device, in the browser via WASM, or at the edge, with unlimited local queries and local indexing during sessions (moss-docs-4, moss-docs-5, moss-docs-8, moss-docs-16, moss-gh-1). However, the evidence shows the product is still tied to Moss's cloud: indexes are hydrated from and synced to the cloud, management goes through a hosted `/v1/manage` API with project keys, and disk caching only serves a snapshot of cloud data (moss-docs-6, moss-docs-10, moss-docs-24, moss-docs-25). So this is local execution, not true self-hosting. Missing for 10: a documented self-hosted server or control-plane deployment, the ability to operate fully without the Moss cloud, an explicit open-source license or self-hosting guide, and independent confirmation of self-hosted use.",
+    "confidence": "low",
+    "rationale": "Moss documents its own runtime running locally: in the browser, on-device, or at the edge. Real-time sessions can index and query locally, and the GitHub repo includes a WASM build. However, indexes are hydrated from and synced to the Moss cloud, and the load path falls back to a snapshot only when the cloud is unreachable, so the managed backend appears required rather than self-hostable. Missing for 10: documented self-hosting of the full backend/control plane without the Moss cloud, deployment/ops guidance for self-hosted servers, and independent confirmation of fully offline or self-hosted operation.",
     "evidenceIds": [
       "moss-docs-4",
       "moss-docs-5",
       "moss-docs-6",
-      "moss-docs-8",
-      "moss-docs-10",
-      "moss-docs-16",
-      "moss-docs-24",
       "moss-docs-25",
-      "moss-gh-1"
-    ]
+      "moss-gh-1",
+      "moss-docs-26"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can self-host the core product",
+      "citations": [
+        {
+          "evidenceId": "moss-docs-4",
+          "quote": "It runs in the browser, on-device, or in the cloud - wherever your agent lives"
+        },
+        {
+          "evidenceId": "moss-docs-5",
+          "quote": "index and query locally during a conversation, then sync to the cloud"
+        },
+        {
+          "evidenceId": "moss-docs-6",
+          "quote": "Hydrate from the cloud and stay fresh with zero-downtime hot-swaps."
+        },
+        {
+          "evidenceId": "moss-gh-1",
+          "quote": "a WebAssembly build that runs in the browser"
+        }
+      ]
+    },
+    "productId": "moss",
+    "storyId": "openness-self-host"
   }
 }

@@ -1,17 +1,40 @@
 {
-  "hash": "7adde6ea5d68182b8d2800a34f27d6ac9bfce8a086c9115d94a279df484a9a61",
+  "hash": "15e6330771fe739d6fdb556bc2aa41e9afbbce85894a170021fcbcc963e0577f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "GitLab documents its own credential mechanisms: personal access tokens and OAuth 2.0 bearer credentials for the API. Duo Agent Platform activity is attributed to a dedicated service account (composite identity), which gives agents a distinct identity. However, nothing in the pack shows these credentials can be limited by scope, permission level, resource or expiry for least-privilege agent use. Missing for 10: documented token scopes or permission restriction, per-agent least-privilege credential issuance, token expiry or rotation controls, independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "GitLab documents personal access tokens as its API credential, used for HTTP Bearer authentication against the REST API. It also documents a composite-identity model where agent activity runs under a dedicated service account, which is product-native agent credentialing. However, the pack never shows that these credentials can be scoped or restricted to least privilege; tool Allow/Ask/Deny policies are a separate control and earn no credit here. Missing for 10: documented token scopes or role/permission restriction for agent credentials, expiry and rotation controls, a way to issue a token specifically for an agent, and independent or hands-on corroboration.",
     "evidenceIds": [
       "gitlab-docs-5",
       "gitlab-docs-17",
       "gitlab-docs-22",
       "gitlab-docs-62"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "gitlab-docs-5",
+          "quote": "Personal access tokens"
+        },
+        {
+          "evidenceId": "gitlab-docs-17",
+          "quote": "GitLab supports authentication with HTTP Bearer or OAuth 2.0 credentials."
+        },
+        {
+          "evidenceId": "gitlab-docs-22",
+          "quote": "For `http`, enter your [personal access token](/user/profile/personal_access_tokens/)."
+        },
+        {
+          "evidenceId": "gitlab-docs-62",
+          "quote": "All agent activities are clearly attributed to a service account, making it easy to identify automated actions in audit logs and commit histories."
+        }
+      ]
+    },
     "productId": "gitlab",
     "storyId": "agentic-scoped-keys"
   }

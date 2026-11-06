@@ -1,21 +1,36 @@
 {
-  "hash": "cf135b3b7f7a0ba1e07868f92b8d27ce74105acfe6898a66d21f4acc92155a49",
+  "hash": "823961a80a1c1a5b09e2b01ec16b63769c64c3e7e562c663a99acb0b2ee44c50",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
-    "confidence": "medium",
-    "rationale": "Grafana has substantial programmatic surface area. A probe found an OpenAPI spec at grafana.com/api/openapi.json, and the as-code docs say dashboards, data sources and other configurations can be defined in code and deployed through CI/CD. The docs also describe terminal tooling for authentication and administrative tasks, file-based provisioning, and an official MCP server for agents. However, nothing in the evidence claims or shows that the API covers everything the UI can do, and features like alerting, SLOs and incident response are described only in UI terms. Missing for 10: an explicit statement or demonstration of API/UI feature parity, API coverage evidence for alerting, SLO, on-call and incident features, and independent hands-on corroboration of API completeness.",
+    "confidence": "low",
+    "rationale": "Grafana has a published OpenAPI spec (probe) and documented programmatic surfaces: dashboards, data sources and other configuration can be defined in code, and a CLI handles administrative tasks for CI/CD. Nothing in the evidence shows that every UI action has an API equivalent. missing for 10: documented UI-to-API parity statement, evidence that the API covers alerting/SLO/incident/on-call management, endpoint-level API reference docs, independent hands-on corroboration of API completeness.",
     "evidenceIds": [
       "grafana-probe-3",
       "grafana-docs-3",
-      "grafana-docs-16",
       "grafana-docs-26",
-      "grafana-docs-2",
-      "grafana-docs-7",
-      "grafana-probe-4",
-      "grafana-probe-5"
+      "grafana-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "grafana-probe-3",
+          "quote": "HTTP 200 at https://grafana.com/api/openapi.json — contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "grafana-docs-3",
+          "quote": "This approach lets you define dashboards, data sources, and other configurations in code, enabling version control, automated testing, and reliable deployments through CI/CD pipelines."
+        },
+        {
+          "evidenceId": "grafana-docs-26",
+          "quote": "You can authenticate, manage multiple environments, and perform administrative tasks from the terminal."
+        }
+      ]
+    },
     "productId": "grafana",
     "storyId": "openness-api-parity"
   }

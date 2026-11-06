@@ -1,22 +1,47 @@
 {
-  "hash": "c14bf30387fc7f89bfa6fed6b06b65f78ee93d2333b04ab4eb8202484a78121c",
+  "hash": "398afa686d35441190f1cfd953de44f3d8a2fdad14273235f0ea792bb35a84a9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Keycloak documents role-based authorization plus fine-grained Authorization Services, including role-based policies, resources, the Protection API, and UMA-based policy evaluation. Roles and permissions can be managed centrally via the admin console, the Admin CLI, or the REST API, and token introspection lets services validate access tokens. missing for 10: explicit documentation that role/permission claims are embedded in access/ID tokens (only implied by OIDC support), concrete enforcement examples in client apps, independent or hands-on corroboration of RBAC token claims.",
+    "rationale": "Keycloak's own docs cover defining roles and permissions: role-based authorization, role-based policies, fine-grained authorization services managed from the admin console, and roles administered via kcadm/Admin REST. Policies are evaluated through UMA permission tickets and the authorization services, and tokens can be validated through introspection. However, no evidence explicitly shows role or permission claims being embedded in issued access/ID tokens for app-side checks. missing for 10: explicit documentation of role/permission claims surfaced in session tokens (e.g., realm/client role claims or RPT contents), independent hands-on corroboration of enforcement.",
     "evidenceIds": [
       "keycloak-docs-49",
-      "keycloak-docs-61",
       "keycloak-docs-70",
-      "kc-supp-authz-services",
       "keycloak-docs-24",
-      "keycloak-docs-72",
+      "keycloak-docs-30",
+      "kc-supp-authz-services",
       "kc-supp-kcadm",
-      "keycloak-docs-52",
-      "keycloak-docs-30"
+      "keycloak-docs-52"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can define roles and permissions and have them enforced and surfaced in session tokens for authorization checks",
+      "citations": [
+        {
+          "evidenceId": "keycloak-docs-49",
+          "quote": "If role based authorization doesn't cover your needs, Keycloak provides fine-grained authorization services as well. This allows you to manage permissions for all your services from the Keycloak admin console and gives you the power to define exactly the policies you need."
+        },
+        {
+          "evidenceId": "keycloak-docs-70",
+          "quote": "Role-based policy"
+        },
+        {
+          "evidenceId": "kc-supp-authz-services",
+          "quote": "with policies evaluated via UMA permission tickets and client-credentials-obtained PATs"
+        },
+        {
+          "evidenceId": "kc-supp-kcadm",
+          "quote": "enabling scripted administration of realms, users, roles, and clients"
+        },
+        {
+          "evidenceId": "keycloak-docs-52",
+          "quote": "you can use it to validate an access or refresh token"
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "rbac-roles-in-tokens"
   }

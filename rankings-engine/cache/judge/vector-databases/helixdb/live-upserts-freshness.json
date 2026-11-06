@@ -1,18 +1,36 @@
 {
-  "hash": "23c33b2a637896bf2cde50b66803ab1cea6bc9b84ee198d17d132da8f2355084",
+  "hash": "58ae5d78acf38267f06c3393a93296da6eee0cf02dcc0c228033e4e1f49e0174",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "helixdb",
-    "storyId": "live-upserts-freshness",
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "HelixDB documents ACID transactions spanning graph, vector, and text data in one transaction, and durable BM25 text indexes in the same engine with no separate stores to synchronize. Together these imply that committed writes are consistently reflected in search, but the evidence never describes upsert or delete operations, index refresh latency, or explicit freshness semantics. Missing for 10: documented upsert/delete APIs, explicit index freshness/visibility timing (e.g. whether ANN index updates are immediate), consistency behavior under continuous writes, independent or hands-on corroboration.",
+    "rationale": "HelixDB documents ACID transactions spanning graph, vector, and text data in one engine. That implies writes are transactionally consistent with the vector and BM25 indexes, with no external sync step. However, the pack never explicitly documents upsert or delete operations, and it says nothing concrete about index freshness after writes. missing for 10: explicit upsert/delete operation docs, documented read-after-write visibility or freshness latency for vector/text indexes, behavior under continuous high-rate mutation, independent or hands-on corroboration.",
     "evidenceIds": [
       "helixdb-docs-9",
-      "helixdb-docs-4",
       "helixdb-docs-14",
-      "helixdb-docs-3"
-    ]
+      "helixdb-docs-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can upsert and delete records continuously and have changes reflected in search results quickly, with documented freshness/consistency behavior",
+      "citations": [
+        {
+          "evidenceId": "helixdb-docs-9",
+          "quote": "ACID transactions across graph, vector, and text data in a single transaction."
+        },
+        {
+          "evidenceId": "helixdb-docs-14",
+          "quote": "without synchronizing separate graph, vector, and text stores"
+        },
+        {
+          "evidenceId": "helixdb-docs-4",
+          "quote": "Text indexes provide durable BM25 search over string properties on nodes or edges."
+        }
+      ]
+    },
+    "productId": "helixdb",
+    "storyId": "live-upserts-freshness"
   }
 }

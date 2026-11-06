@@ -1,18 +1,40 @@
 {
-  "hash": "33d729b3ca6b31c24a53da2ed7efac426e70d193983e576e20d354be8d8a53c3",
+  "hash": "0e23f77025623d9882030a396c1f637be2f4a516baa71c6a65eb6aa1f54fd436",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datalab documents a 400 req/min rate limit on the Team plan and a limits page that advises using page_range for oversized documents. Webhooks support async job completion without polling, and on-prem Enterprise deployments are explicitly aimed at 'extremely high volume' workloads. Missing for 10: a documented batch/bulk submission API for millions of pages, published throughput or latency guarantees (predictable pages/sec or SLA), full per-plan rate-limit details beyond the Team tier, and independent or hands-on corroboration of large-scale performance.",
+    "rationale": "Datalab documents a concrete rate limit (400 req/min on the Team plan), per-document limits with page_range segmenting, and async webhook completion notifications that suit batch workloads. It also steers 'extremely high volume' users to Enterprise on-prem. However, there is no documented batch API, throughput SLA, or pages-per-minute guarantee, so predictable throughput at millions-of-pages scale is unproven. Missing for 10: documented batch submission endpoint, throughput/latency guarantees, rate limits across all tiers, independent evidence of sustained high-volume runs.",
     "evidenceIds": [
       "datalab-supp-2",
       "datalab-docs-30",
       "datalab-docs-8",
-      "datalab-supp-1",
-      "datalab-docs-44"
+      "datalab-supp-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I push high-volume batches — millions of pages — with documented rate limits and predictable throughput",
+      "citations": [
+        {
+          "evidenceId": "datalab-supp-2",
+          "quote": "alongside 400 req/min rate limits"
+        },
+        {
+          "evidenceId": "datalab-docs-30",
+          "quote": "For documents exceeding these limits, use the page_range parameter to process in segments"
+        },
+        {
+          "evidenceId": "datalab-docs-8",
+          "quote": "Webhooks provide real-time notifications when your document processing jobs complete, eliminating the need for continuous polling."
+        },
+        {
+          "evidenceId": "datalab-supp-1",
+          "quote": "Extremely high volume"
+        }
+      ]
+    },
     "productId": "datalab",
     "storyId": "batch-throughput"
   }

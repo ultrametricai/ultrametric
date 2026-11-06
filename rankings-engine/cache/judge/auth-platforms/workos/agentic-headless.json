@@ -1,19 +1,41 @@
 {
-  "hash": "e0ee8e1a200b1f12c3245195f09269be8c1dbc96dfdcd38afbad46101763eca9",
+  "hash": "52d250d1f1758e19078e05d79aac6dcdacb79a59e4bd87ed9af5ed0bce5809e1",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "WorkOS is API-first, so it can be driven headlessly. Evidence shows an official Node SDK with automatic retry and backoff, a published OpenAPI spec, configuration of roles and permissions via API rather than only the Dashboard, and a WorkOS CLI migrations tool for exporting Auth0 data. Together these support scripted, non-interactive automation, but nothing shows CI usage explicitly. Missing for 10: CI-specific documentation or examples (e.g. API-key handling in pipelines), a general-purpose management CLI beyond migrations, and independent hands-on corroboration of headless or CI use.",
+    "rationale": "WorkOS is API-first, so it can be driven without a UI. It documents official SDKs with automatic retries and async clients, a published OpenAPI spec, API-based role configuration, and a WorkOS CLI migrations tool. However, nothing explicitly documents headless or CI pipeline use. The CLI Auth device flow is a building block for customers' own CLIs, not a way to run WorkOS itself in automation, so it is not credited. Missing for 10: explicit CI/headless automation docs, a general-purpose WorkOS CLI beyond migrations, documented non-interactive auth for pipelines, independent or hands-on corroboration of CI use.",
     "evidenceIds": [
-      "workos-gh-1",
+      "workos-docs-37",
       "workos-gh-4",
+      "workos-docs-53",
       "workos-probe-3",
-      "workos-docs-40",
-      "workos-supp-rbac-jwt",
-      "workos-docs-37"
+      "workos-docs-40"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "workos-docs-37",
+          "quote": "The fastest way to export Auth0 data is with the WorkOS CLI migrations tool"
+        },
+        {
+          "evidenceId": "workos-gh-4",
+          "quote": "The SDK automatically retries requests that fail with a transient error — a network error, a request timeout (408), a rate limit (429), or a server error (500, 502, 503, 504) — using exponential backoff with jitter."
+        },
+        {
+          "evidenceId": "workos-docs-53",
+          "quote": "Every HTTP API method has an identical async counterpart on `AsyncWorkOSClient`."
+        },
+        {
+          "evidenceId": "workos-docs-40",
+          "quote": "Configure roles, permissions, and organization-scoped roles directly in the WorkOS Dashboard or using the API"
+        }
+      ]
+    },
     "productId": "workos",
     "storyId": "agentic-headless"
   }

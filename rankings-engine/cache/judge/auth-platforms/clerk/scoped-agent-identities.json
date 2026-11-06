@@ -1,19 +1,41 @@
 {
-  "hash": "d35cf04734db863b19bc916aaad9da0b9f3216f397c0bbbe86877bd269d82d3d",
+  "hash": "4ba07e8f7bda1c4fa6222bc34dc6b8b1ef4ee02e982f3c60fd33c9678d7ea4b9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Clerk documents API keys for programmatic callers and M2M tokens that authenticate calls between agents, as a metered machine-authentication feature. This gives agents their own credentials instead of a human's. It also documents gating individual tool calls against the caller's Clerk permissions and scopes, plus custom OAuth scopes for MCP clients. However, the evidence never shows how M2M tokens or API keys are narrowly scoped per agent, and revocation is documented only for human user sessions. Missing for 10: documented instant revocation of machine tokens/API keys, explicit per-machine-identity least-privilege scoping docs, independent or hands-on corroboration.",
+    "rationale": "Clerk documents first-party machine authentication: API keys for programmatic callers and M2M tokens for calls between agents, metered as a platform feature. It also documents gating individual agent tool calls against the caller's permissions and scopes, so a per-agent machine identity with scoped access exists, but how narrowly each agent's credential can be scoped is only implied. Missing for 10: explicit documentation of per-agent least-privilege scoping on API keys/M2M tokens, documented instant revocation of machine credentials (only human session revocation is shown), and independent or hands-on corroboration.",
     "evidenceIds": [
-      "clerk-docs-11",
       "clerk-docs-43",
-      "clerk-supp-m2m-pricing",
+      "clerk-docs-58",
       "clerk-docs-16",
-      "clerk-docs-55",
-      "clerk-docs-10"
+      "clerk-supp-m2m-pricing",
+      "clerk-docs-55"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can give each agent its own least-privilege machine identity with narrowly scoped permissions and instant revocation, instead of sharing a human's credentials",
+      "citations": [
+        {
+          "evidenceId": "clerk-docs-43",
+          "quote": "authenticate calls between your agents"
+        },
+        {
+          "evidenceId": "clerk-docs-58",
+          "quote": "An API key authenticates a known programmatic caller — a script, a cron job, a partner's backend — as a Clerk user or org."
+        },
+        {
+          "evidenceId": "clerk-docs-16",
+          "quote": "Gate individual eve tool calls against the caller's Clerk permissions and scopes"
+        },
+        {
+          "evidenceId": "clerk-supp-m2m-pricing",
+          "quote": "machine authentication (API keys and machine-to-machine tokens) is a metered platform feature across plans"
+        }
+      ]
+    },
     "productId": "clerk",
     "storyId": "scoped-agent-identities"
   }

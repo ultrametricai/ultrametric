@@ -1,19 +1,35 @@
 {
-  "hash": "a62e13edd34320e9d4d7a25534858fd8939abb1a0632a7fee182939ae5375ed0",
+  "hash": "06db5adaf65dcd45ec4a870cee3df1c1b98c73c7db9e900bca69de1d4d42b2e2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Honeycomb ingests traces, logs, and metrics via OpenTelemetry (honeycomb-docs-1, honeycomb-docs-31). It stores traces and logs as structured events that are auto-indexed and queryable together, with relational span fields (honeycomb-docs-52, honeycomb-docs-17). That implies correlation is possible through queries, and the demo mentions correlating app and Kubernetes errors (honeycomb-docs-54). However, no evidence documents a one-click jump from a span to its related logs and metrics. One community user still debugs across Honeycomb traces, separate log storage, and Prometheus metrics, and says no single tool ties these together (honeycomb-comm-2). Missing for 10: a documented span-to-logs/metrics navigation workflow, evidence of metrics correlated to trace context, and independent hands-on corroboration of end-to-end request debugging across all three signals.",
+    "rationale": "Honeycomb ingests traces, logs, and metrics and stores traces and logs as structured events that can be queried together. Its demo advertises correlating app and Kubernetes errors, which points to its own correlation capability. However, no evidence documents a direct jump from a trace span to its correlated logs and metrics. Missing for 10: documented span-to-log navigation, span-to-metrics correlation, end-to-end request debugging workflow docs, independent hands-on corroboration.",
     "evidenceIds": [
-      "honeycomb-docs-1",
-      "honeycomb-docs-31",
       "honeycomb-docs-52",
-      "honeycomb-docs-17",
       "honeycomb-docs-54",
-      "honeycomb-comm-2"
+      "honeycomb-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can jump from a trace span to its correlated logs and metrics to debug a request end to end",
+      "citations": [
+        {
+          "evidenceId": "honeycomb-docs-52",
+          "quote": "traces and logs are stored as structured events... indexed automatically on every field at ingest, and queryable without a predefined schema."
+        },
+        {
+          "evidenceId": "honeycomb-docs-54",
+          "quote": "correlate app and Kubernetes errors"
+        },
+        {
+          "evidenceId": "honeycomb-docs-1",
+          "quote": "send traces, logs, and metrics to Honeycomb"
+        }
+      ]
+    },
     "productId": "honeycomb",
     "storyId": "trace-log-correlation"
   }

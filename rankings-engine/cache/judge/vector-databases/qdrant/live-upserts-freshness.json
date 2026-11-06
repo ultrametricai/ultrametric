@@ -1,17 +1,31 @@
 {
-  "hash": "8e9a1c4d8ac762b2e3b03c5387ac356bbf54896a331083bfd75897608bad7e9a",
+  "hash": "85b52a97becb88234eb786cfd8933324b21e8dc2434a8bc33d3429328adcfe08",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "qdrant",
-    "storyId": "live-upserts-freshness",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Qdrant is described as a service to store, search, and manage points (qdrant-gh-5). A production user reports tens of millions of items with lots of daily inserts and deletions that behave predictably (qdrant-comm-1), though another user wishes updating points were easier (qdrant-comm-3). The pack has no documentation of upsert/delete APIs, indexing latency, or freshness and consistency guarantees, so only the core continuous-mutation workflow is evidenced. Missing for 10: first-party docs on upsert/delete operations, documented write-to-search visibility latency, documented consistency/ordering semantics (e.g. wait/write-consistency options), independent freshness benchmarks.",
+    "rationale": "Qdrant's own GitHub description says it stores, searches, and manages points, and one production user reports handling many daily inserts and deletions predictably. That supports the core of continuous upserts and deletes. Nothing in the pack documents how quickly changes appear in search results or how freshness and consistency behave. Missing for 10: documented upsert/delete API semantics, documented freshness/indexing latency, documented write consistency or ordering guarantees, and hands-on evidence that changes show up in search quickly.",
     "evidenceIds": [
       "qdrant-gh-5",
-      "qdrant-comm-1",
-      "qdrant-comm-3"
-    ]
+      "qdrant-comm-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can upsert and delete records continuously and have changes reflected in search results quickly, with documented freshness/consistency behavior",
+      "citations": [
+        {
+          "evidenceId": "qdrant-gh-5",
+          "quote": "It provides a production-ready service with a convenient API to store, search, and manage points—vectors with an additional payload."
+        },
+        {
+          "evidenceId": "qdrant-comm-1",
+          "quote": "We've been using Qdrant for over a year with 10s of millions of items, lots of daily inserts/deletions. A couple of gotchas but generally predictable and scalable"
+        }
+      ]
+    },
+    "productId": "qdrant",
+    "storyId": "live-upserts-freshness"
   }
 }

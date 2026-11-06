@@ -1,19 +1,36 @@
 {
-  "hash": "eda51d1e99fffb39c99bafd79afed0e1a63a7885901316f2140f3a82c622e382",
+  "hash": "f103c6cb0c36c2c38ad7e42f3de392ae85695811d0274592d7b738aaadeca4e8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Tailscale documents a mesh overlay network that connects devices across clouds and on-prem without port forwarding or public IPs (docs-5, docs-33). Users report SSH-ing straight into home and remote boxes (comm-1, comm-13). However, Tailscale is itself a VPN overlay, and a hands-on report notes NAT traversal sometimes falls back to DERP relays, which limits speed (comm-11). New connections also depend on reaching Tailscale's control ports (comm-15), so the 'no relay, no VPN' framing is only partly met. Missing for 10: first-party documentation of direct peer-to-peer connection paths, guaranteed relay-free connectivity, and operation without a VPN layer or control-plane dependency.",
+    "rationale": "Tailscale documents a mesh overlay network that connects devices to servers without port forwarding or public IPs, and community reports confirm SSH-from-anywhere access. However, it is itself a WireGuard-based overlay VPN, and hands-on evidence says NAT traversal sometimes falls back to DERP relays, so connections are not guaranteed to be relay-free. Missing for 10: first-party documentation of direct peer-to-peer connection behavior, any guarantee of no relay fallback, and operation without a VPN overlay.",
     "evidenceIds": [
       "tailscale-docs-5",
       "tailscale-docs-33",
-      "tailscale-comm-1",
-      "tailscale-comm-13",
       "tailscale-comm-11",
-      "tailscale-comm-15"
+      "tailscale-comm-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power-user, I can connect directly to my servers without relying on a cloud relay, proxy, or VPN",
+      "citations": [
+        {
+          "evidenceId": "tailscale-docs-5",
+          "quote": "Across clouds or on-prem, Tailscale’s mesh overlay network connects it all."
+        },
+        {
+          "evidenceId": "tailscale-docs-33",
+          "quote": "Connect devices on your private tailnet without port forwarding or public IPs."
+        },
+        {
+          "evidenceId": "tailscale-comm-13",
+          "quote": "MagicDNS hostnames let them browse http://laptop:8000 or SSH from anywhere."
+        }
+      ]
+    },
     "productId": "tailscale",
     "storyId": "direct-p2p-connection"
   }

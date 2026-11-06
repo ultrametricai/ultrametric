@@ -1,16 +1,30 @@
 {
-  "hash": "0668b3552b8f774c7824e57517e3e465087133df9df159b93f9ae20982e118c4",
+  "hash": "e7d101237e4c0539b632eb0339093e25fb4f7b8d5e0ea39b95a64114bb47b0db",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Clerk's changelog announces Admin Logs, an audit trail of Dashboard admin actions across the workspace. Its webhooks can push user lifecycle events (e.g. user created/updated) to an external endpoint, which a team could relay to a SIEM themselves. That covers only a thin slice of the story: missing for 10: a documented audit log of authentication activity (sign-ins, MFA, failures), tamper-evidence or integrity guarantees, native SIEM streaming or export for the audit logs, and in-depth docs or independent corroboration of Admin Logs.",
+    "rationale": "Clerk's changelog documents Admin Logs, an audit trail of admin actions in the Dashboard, and a now-public GET /v1/logs endpoint for pulling Application Logs events programmatically, so a basic pull-based export path exists. One community user reported being unable to trace who changed a console setting, but this may predate the Admin Logs launch and is only a single report. Missing for 10: tamper-evidence or integrity guarantees for logs, native SIEM streaming or log-drain integrations, clear coverage of authentication events in the audit trail, in-depth first-party docs beyond changelog entries, and independent corroboration.",
     "evidenceIds": [
       "clerk-docs-54",
-      "clerk-docs-5",
-      "clerk-docs-38"
+      "clerk-docs-71-refresh-08d38bba0dbe72b1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can capture tamper-evident audit logs of authentication and admin activity and stream or export them to my SIEM",
+      "citations": [
+        {
+          "evidenceId": "clerk-docs-54",
+          "quote": "Audit Dashboard activity with Admin Logs: An audit trail of admin actions across your workspace"
+        },
+        {
+          "evidenceId": "clerk-docs-71-refresh-08d38bba0dbe72b1",
+          "quote": "The GET /v1/logs endpoint is now public, so you can look up Application Logs events from your own code or an AI agent."
+        }
+      ]
+    },
     "productId": "clerk",
     "storyId": "audit-logs-export"
   }

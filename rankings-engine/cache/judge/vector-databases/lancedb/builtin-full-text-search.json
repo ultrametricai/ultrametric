@@ -1,19 +1,37 @@
 {
-  "hash": "e0b6b541c4a7dfd662cf786ef9fcaab0b10a6f78d772a21445326d7e6ba4dfca",
+  "hash": "c7f23cb76ea26be24a764a01b38ea5ecf81666a5a6761e0bc63d6c7a674a01a2",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "lancedb",
-    "storyId": "builtin-full-text-search",
     "verdict": "full",
     "quality": 9,
-    "confidence": "medium",
-    "rationale": "LanceDB's first-party docs describe built-in BM25 keyword full-text search provided natively via Lance. Developers create an FTS index directly on a table column (`create_fts_index`), keep it current through reindexing, and can combine it with vector search for hybrid queries, so no external search engine is needed. Missing for 10: independent or hands-on corroboration of FTS quality and behavior.",
+    "confidence": "high",
+    "rationale": "LanceDB's own docs state that it provides native BM25 keyword full-text search via Lance. They also show building an FTS index directly on a table column (create_fts_index), with incremental reindexing of FTS indexes, so no separate search engine is needed. Missing for 10: independent or hands-on corroboration of FTS quality and behavior, and deeper documentation detail in the evidence (tokenizers, phrase queries).",
     "evidenceIds": [
-      "lancedb-docs-2",
       "lancedb-docs-40",
+      "lancedb-docs-2",
       "lancedb-docs-25",
-      "lancedb-docs-23",
-      "lancedb-docs-3"
-    ]
+      "lancedb-docs-23"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can run keyword/full-text search over documents inside the database without bolting on a separate search engine",
+      "citations": [
+        {
+          "evidenceId": "lancedb-docs-40",
+          "quote": "LanceDB provides support for Full-Text Search via Lance, allowing you to incorporate keyword-based search (based on BM25) in your retrieval solutions."
+        },
+        {
+          "evidenceId": "lancedb-docs-25",
+          "quote": "tbl.create_fts_index(\"text\", replace=True)"
+        },
+        {
+          "evidenceId": "lancedb-docs-23",
+          "quote": "Reindexing is the process of updating the index to account for new data -- this applies to either a full-text search (FTS) index or a vector index."
+        }
+      ]
+    },
+    "productId": "lancedb",
+    "storyId": "builtin-full-text-search"
   }
 }

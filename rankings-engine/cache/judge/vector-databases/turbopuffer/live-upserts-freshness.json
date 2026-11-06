@@ -1,19 +1,42 @@
 {
-  "hash": "485137566bf2b3f9e2620b2da5a5313f1cfc45e4a6168d3b32649210bbf43315",
+  "hash": "16e6d32c01c6f80baa20a715bcbc18bee3f545e5a75d921927979d5cf9a7e975",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "turbopuffer",
-    "storyId": "live-upserts-freshness",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "turbopuffer documents column-based upserts, conditional upserts/patches/deletes, and delete-by-filter. It states that vectors are incrementally indexed in an SPFresh index so writes appear in search results immediately. Namespace metadata also exposes the count of write-ahead-log rows not yet indexed, a documented signal of index freshness. missing for 10: an explicit documented consistency model (e.g. strong vs eventual read options and their tradeoffs), quantified write-to-query latency figures, and independent or hands-on corroboration of freshness under continuous writes.",
+    "rationale": "turbopuffer documents upserts, deletes and delete-by-filter, and states that writes appear in search results immediately through incremental SPFresh indexing. Namespace metadata also exposes the count of write-ahead-log rows not yet indexed, which gives some visibility into freshness. Missing for 10: an explicit consistency-model description (e.g., strong vs eventual read semantics) and independent or hands-on corroboration of write-to-query freshness.",
     "evidenceIds": [
       "turbopuffer-docs-13",
       "turbopuffer-docs-21",
       "turbopuffer-docs-22",
       "turbopuffer-docs-24",
       "turbopuffer-docs-25"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can upsert and delete records continuously and have changes reflected in search results quickly, with documented freshness/consistency behavior",
+      "citations": [
+        {
+          "evidenceId": "turbopuffer-docs-13",
+          "quote": "Vectors are incrementally indexed in an SPFresh vector index for performant search. Writes appear in search results immediately."
+        },
+        {
+          "evidenceId": "turbopuffer-docs-21",
+          "quote": "Conditional writes: upsert, patch, or delete a document only if a condition."
+        },
+        {
+          "evidenceId": "turbopuffer-docs-22",
+          "quote": "Delete by filter: deletes documents that match a filter."
+        },
+        {
+          "evidenceId": "turbopuffer-docs-25",
+          "quote": "The number of rows in the write-ahead log that have not yet been indexed."
+        }
+      ]
+    },
+    "productId": "turbopuffer",
+    "storyId": "live-upserts-freshness"
   }
 }

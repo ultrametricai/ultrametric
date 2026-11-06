@@ -1,22 +1,51 @@
 {
-  "hash": "be63f081c96ccd7986c5f900a628f1be5920b3326ec94a22ebdc7508012d35a6",
+  "hash": "81b3c2efa1fe861b164cad26a1c649cd042c4c0ac63c902aea364ebcc6f69b38",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "helixdb",
-    "storyId": "api-sandbox",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "HelixDB documents a generated local `dev` instance you can start and stop (docs-1, docs-15). `helix chef` scaffolds a local instance with seeded example data without any Cloud login (docs-17, gh-1), and an embedded in-memory mode is also offered (docs-2). The same queries and HTTP contract work locally and on Cloud (docs-16, docs-23), and scoped read-only keys per environment add a further guardrail (docs-11). Missing for 10: a documented Cloud-side staging or branching environment, a way to clone or snapshot production data into a sandbox, and independent hands-on corroboration.",
+    "rationale": "HelixDB documents its own local `dev` instance, an in-memory embedded mode, and a `helix chef` bootstrapper that seeds example data, all using the same queries as Cloud. That lets users test against an environment separate from production. However, it never describes a dedicated sandbox, staging, or branch environment, and never explicitly guarantees isolation from production data. Missing for 10: an explicit sandbox/staging environment feature, documented isolation from production data, a way to clone or branch production safely for tests, and hands-on corroboration.",
     "evidenceIds": [
-      "helixdb-docs-1",
       "helixdb-docs-15",
-      "helixdb-docs-17",
       "helixdb-gh-1",
       "helixdb-docs-2",
       "helixdb-docs-16",
-      "helixdb-docs-23",
+      "helixdb-docs-17",
       "helixdb-docs-11"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "helixdb-docs-15",
+          "quote": "start the generated `dev` instance"
+        },
+        {
+          "evidenceId": "helixdb-gh-1",
+          "quote": "starts a local instance, seeds some example data"
+        },
+        {
+          "evidenceId": "helixdb-docs-2",
+          "quote": "run the same engine and queries in process with memory, disk, or object storage"
+        },
+        {
+          "evidenceId": "helixdb-docs-16",
+          "quote": "All deployment options use the same queries and SDK tooling."
+        },
+        {
+          "evidenceId": "helixdb-docs-17",
+          "quote": "`helix chef` can automate local scaffolding and agent setup without any Cloud login."
+        },
+        {
+          "evidenceId": "helixdb-docs-11",
+          "quote": "least-privilege credentials per service or environment"
+        }
+      ]
+    },
+    "productId": "helixdb",
+    "storyId": "api-sandbox"
   }
 }

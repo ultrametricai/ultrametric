@@ -1,19 +1,41 @@
 {
-  "hash": "3f815a80967f70b72f16f27f4e32756992c8592167a089995d1e481f4a64e305",
+  "hash": "29832cced43358a1c1bee1d6e85017babf99e4d5ec6646a5fe57bcfe90c58fee",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Keycloak documents server-side session control. Administrators can manage user sessions [keycloak-docs-21] and users can manage their own sessions [keycloak-docs-48]. A token revocation endpoint covers both access and refresh tokens [keycloak-docs-53], introspection checks whether a token is still active [keycloak-docs-52], and single sign-out logs a user out of all applications [keycloak-docs-15]. missing for 10: explicit documentation of configurable session/token expiry timeouts, explicit detail of the refresh-token flow, documented admin-initiated kill of a specific session, and independent hands-on corroboration of immediate revocation.",
+    "rationale": "Keycloak documents a token revocation endpoint covering both refresh and access tokens, an introspection endpoint that returns a token's active state, admin-side session management, and single sign-out, which together cover server-side revocation of a compromised session. Session expiry and timeout configuration are never documented in the pack, and refresh is only implied by the existence of refresh tokens. Missing for 10: documented session idle/max expiry configuration, an explicit refresh-token flow and rotation, admin API details for killing a specific session, and independent hands-on corroboration.",
     "evidenceIds": [
       "keycloak-docs-53",
       "keycloak-docs-52",
-      "keycloak-docs-40",
       "keycloak-docs-21",
       "keycloak-docs-48",
       "keycloak-docs-15"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can manage session lifecycle — expiry, refresh, and immediate server-side revocation of a compromised session",
+      "citations": [
+        {
+          "evidenceId": "keycloak-docs-53",
+          "quote": "The token revocation endpoint is used to revoke tokens. Both refresh tokens and access tokens are supported by this endpoint."
+        },
+        {
+          "evidenceId": "keycloak-docs-52",
+          "quote": "The introspection endpoint is used to retrieve the active state of a token. In other words, you can use it to validate an access or refresh token."
+        },
+        {
+          "evidenceId": "keycloak-docs-21",
+          "quote": "They can also manage users, including permissions and sessions."
+        },
+        {
+          "evidenceId": "keycloak-docs-15",
+          "quote": "Keycloak provides single-sign out, which means users only have to logout once to be logged-out of all applications that use Keycloak."
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "session-lifecycle-revocation"
   }

@@ -1,16 +1,27 @@
 {
-  "hash": "b4720d8a21753a38a8af215462f96885347da93e89273a74c0204466effb721e",
+  "hash": "085b7e3e0ab8e95e9d3541f4b22ccf828c4b8a2ef21820d1068a2f1d522e6b83",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "milvus",
-    "storyId": "integrated-embedding-generation",
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Milvus's full-text search accepts raw text and automatically converts it into sparse embeddings at ingest and query time, so the database itself generates embeddings without a separate pipeline. That covers only built-in sparse (BM25-style) vectors. Nothing in the evidence shows configurable model providers or server-side dense embedding generation. Missing for 10: configured model-provider integration (e.g. OpenAI or other embedding APIs), built-in dense embedding generation at ingest and query, independent or hands-on corroboration.",
+    "rationale": "Milvus documents built-in server-side conversion of raw text into sparse embeddings for full-text search, so it generates vectors from text without a separate pipeline for that sparse case. Nothing in the evidence shows dense embeddings produced from configured model providers at ingest or query time, and the GitHub search example passes client-supplied query vectors. Missing for 10: documented built-in or configured model-provider integration for dense embeddings, explicit coverage of both ingest-time and query-time generation for model-based embeddings, independent or hands-on corroboration.",
     "evidenceIds": [
       "milvus-docs-2",
       "milvus-docs-11"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ml-engineer, I can have the database generate embeddings at ingest and query time using built-in or configured model providers, instead of running a separate embedding pipeline",
+      "citations": [
+        {
+          "evidenceId": "milvus-docs-2",
+          "quote": "it simplifies vector searches by accepting raw text input, automatically converting your text data into sparse embeddings without the need to manually generate vector embeddings"
+        }
+      ]
+    },
+    "productId": "milvus",
+    "storyId": "integrated-embedding-generation"
   }
 }

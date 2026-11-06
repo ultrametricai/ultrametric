@@ -1,18 +1,31 @@
 {
-  "hash": "d1402fae199e42b48971b2ad6ed1cc9623d9f2bc26a82303693673b6b9f26bcd",
+  "hash": "a1eeabdc80f49b63145db3a8e7665b3d0f688b714c548b211ee9673f98bd6ef8",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "fastmail",
-    "storyId": "agentic-webhooks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "The JMAP protocol that Fastmail's API is built on offers event subscription through EventSource push (one connection covering all mailboxes) and WebPush, which delivers change notifications without a permanent connection. That approximates webhook-style subscriptions, but these are protocol-level claims from jmap.io, not Fastmail-specific documentation of webhook endpoints. Missing for 10: Fastmail-specific confirmation that WebPush/push subscriptions are supported on its API, conventional configurable webhook endpoints with event-type filtering, delivery/retry/signing details, and independent or hands-on corroboration.",
+    "rationale": "The JMAP documentation describes server-initiated change notifications. WebPush is offered as push with 'no permanent connection required', which implies outbound delivery to a subscriber endpoint, while EventSource is a client-held stream rather than a webhook. The evidence is thin and comes from the protocol site, not Fastmail-specific docs, so it is unclear how a programmatic consumer would register and receive callbacks. Missing for 10: explicit documentation of registering an arbitrary HTTP callback URL, event types and payload format, confirmation that Fastmail's own service supports WebPush subscriptions, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fastmail-docs-3",
-      "fastmail-docs-19",
-      "fastmail-docs-40",
-      "fastmail-docs-23"
-    ]
+      "fastmail-docs-47"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "fastmail-docs-47",
+          "quote": "Or use WebPush for mobile-compatible push, no permanent connection required."
+        },
+        {
+          "evidenceId": "fastmail-docs-3",
+          "quote": "Get instant push via EventSource — one connection, all mailboxes."
+        }
+      ]
+    },
+    "productId": "fastmail",
+    "storyId": "agentic-webhooks"
   }
 }

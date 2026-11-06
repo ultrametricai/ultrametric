@@ -1,21 +1,38 @@
 {
-  "hash": "861bc059a46a8850fd261a6e3189743885c69159c4cf717df93e3ef7114eb859",
+  "hash": "7b673927227d7d674c48b19508bb82fd4092c96e00d13d5cedc53f1f2f87a594",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "pinecone",
-    "storyId": "builtin-full-text-search",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Pinecone's docs say a single index can serve full-text search (BM25 token matching with Lucene query syntax over schema text fields, no model required) alongside dense and sparse vector search. Results are ranked via `score_by: text` or `query_string`, so no separate search engine is needed. missing for 10: independent hands-on corroboration of the BM25/Lucene full-text feature (community mentions of keyword+vector search are older and vague), and documentation detail on tokenization/analyzers and language support.",
+    "rationale": "Pinecone's first-party docs describe native full-text search inside the index: BM25 token matching with Lucene query syntax over schema text fields, needing no model. The same index can also serve semantic and sparse-vector search, selected via score_by. A community comment mentions the combined keyword+vector search, but only in general terms. missing for 10: independent hands-on corroboration of full-text/BM25 quality and depth, and documentation of limits such as tokenization or language support.",
     "evidenceIds": [
       "pinecone-docs-7",
       "pinecone-docs-18",
       "pinecone-docs-8",
-      "pinecone-docs-31",
-      "pinecone-docs-9",
       "pinecone-docs-27",
       "pinecone-comm-1"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can run keyword/full-text search over documents inside the database without bolting on a separate search engine",
+      "citations": [
+        {
+          "evidenceId": "pinecone-docs-18",
+          "quote": "Full-text search is BM25 token matching with Lucene query syntax over text fields in your schema... No model required"
+        },
+        {
+          "evidenceId": "pinecone-docs-7",
+          "quote": "A single index can serve full-text search (BM25 with Lucene queries), semantic search, and sparse-vector search together, often covering what previously required two indexes."
+        },
+        {
+          "evidenceId": "pinecone-docs-8",
+          "quote": "When you search, you rank results via `score_by`: `text` (BM25), `query_string` (Lucene), `dense_vector`, or `sparse_vector`."
+        }
+      ]
+    },
+    "productId": "pinecone",
+    "storyId": "builtin-full-text-search"
   }
 }

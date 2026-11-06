@@ -1,18 +1,36 @@
 {
-  "hash": "3d34739a1998e8d405b8f9adea8d569c9ece67f3d8dfdc3fd1bfc1c58711a1e0",
+  "hash": "eb563cdc1338669c204f19d07b503866ae74e061a6e24b3a4d6fc26e686f52a9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Bitwarden documents a Public API for organization management (members, collections, groups, event logs, policies) and a personal API key for automated workflows. The official CLI's documented `bw serve` mode exposes the full vault as a local RESTful Vault Management API, and a runtime probe confirmed the CLI installs and runs. Missing for 10: the hosted Public API covers org administration only, not vault items; vault access depends on running a local `bw serve` process; no machine-readable OpenAPI spec was found at the probed paths.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Bitwarden documents a Public API, but it is scoped to organization administration (members, collections, groups, event logs, policies). Vault items are reachable programmatically only through the CLI's local `bw serve` RESTful Vault Management API, authenticated with a personal API key. Because the hosted public API covers only part of the product, this is direct support with partial coverage rather than full delivery. missing for 10: a hosted public API covering vault items for individual users (the Public API is organization-admin only and vault access requires running a local CLI server), a discoverable OpenAPI spec (all probed openapi/swagger paths returned 404), and independent hands-on corroboration of driving the API end-to-end.",
     "evidenceIds": [
       "bitwarden-docs-8",
-      "bitwarden-docs-9",
-      "bitwarden-docs-7",
       "bitwarden-probe-rt-1",
+      "bitwarden-docs-9",
       "bitwarden-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "bitwarden-docs-8",
+          "quote": "The Bitwarden Public API provides organizations a suite of tools for managing members, collections, groups, event logs, and policies."
+        },
+        {
+          "evidenceId": "bitwarden-probe-rt-1",
+          "quote": "the CLI whose documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items."
+        },
+        {
+          "evidenceId": "bitwarden-docs-9",
+          "quote": "Using the personal API key for CLI authentication is suitable for automated workflows"
+        }
+      ]
+    },
     "productId": "bitwarden",
     "storyId": "agentic-public-api"
   }

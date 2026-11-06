@@ -1,18 +1,40 @@
 {
-  "hash": "468da90d0f22c81f86cbcc6d70cb8f8b890fc66e2c3d959ce0b4adf9cfd2e498",
+  "hash": "021bb5563ac9997ec51a1ce50983798b24cd9a946fa99c17f5324345ce610d78",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The Orama JS docs show documents being inserted incrementally into an existing database instance via `insert`/`insertMultiple`, with no rebuild step. The Cloud docs say each data source can be updated, deleted from, or added to without affecting other data sources, which implies incremental changes rather than a full reindex. Missing for 10: explicit update and delete APIs in the open-source library, any statement that changes become searchable in near real time (latency/visibility guarantees), and independent or hands-on corroboration.",
+    "rationale": "Orama documents incremental document insertion, including batched insertMultiple, in the JS library. In Orama Cloud, data sources are segregated so you can update, delete, or add data without affecting other sources, which points to incremental changes rather than full rebuilds. Missing for 10: explicit per-document update/delete APIs in the evidence, any stated near-real-time visibility or indexing latency, and independent or hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-2",
-      "orama-docs-16",
       "orama-docs-39",
       "orama-docs-48",
       "orama-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, document adds, updates, and deletes become searchable in near real time without a full reindex",
+      "citations": [
+        {
+          "evidenceId": "orama-docs-48",
+          "quote": "Every data source is segregated from the others, so you can update, delete, or add new data without affecting the data in the other data sources."
+        },
+        {
+          "evidenceId": "orama-docs-2",
+          "quote": "insertion in Orama is quick and intuitive"
+        },
+        {
+          "evidenceId": "orama-docs-39",
+          "quote": "If you have a lot of records, we suggest using the insertMultiple function... You can pass a third, optional, parameter to change the batch size (default: 1000)."
+        },
+        {
+          "evidenceId": "orama-docs-22",
+          "quote": "you can put data that will be updated frequently in a single data source (let's call it `docs`), and put data that follows a different update schedule in another data source"
+        }
+      ]
+    },
     "productId": "orama",
     "storyId": "realtime-index-updates"
   }

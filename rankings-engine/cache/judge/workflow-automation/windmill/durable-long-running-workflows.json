@@ -1,15 +1,25 @@
 {
-  "hash": "48e77679a2c4c6103d7cb52a280a3de1c313af933c4b1159ae1566f3e2534082",
+  "hash": "44af396736af550b031735a2e15df0395ddc4a722f31887de367ba7d78ecd1f8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Windmill's workflows-as-code docs say the engine handles checkpointing and fault tolerance, and flow steps can be retried with a delay and a maximum number of attempts. Together these suggest some durable execution. Nothing in the pack shows workflows that suspend or wait for days, or that state survives worker or platform restarts. Missing for 10: documented long-duration suspend/sleep/wait (e.g. approval steps), explicit state persistence across worker/platform restarts, independent or hands-on corroboration of durability.",
+    "confidence": "medium",
+    "rationale": "Windmill's own docs say its workflows-as-code engine handles checkpointing and fault tolerance, which is the core mechanism for durable state across failures. Nothing in the evidence shows workflows waiting or suspending for days, or explicitly surviving worker or platform restarts. Step retries (docs-13) are an adjacent error-handling feature and add no credit here. missing for 10: documented long waits/suspend (sleep for days, approvals), explicit state persistence across worker/platform restarts, independent or hands-on corroboration of durability.",
     "evidenceIds": [
-      "windmill-docs-5",
-      "windmill-docs-13"
+      "windmill-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run long-lived workflows that wait for days and survive worker or platform restarts without losing state",
+      "citations": [
+        {
+          "evidenceId": "windmill-docs-5",
+          "quote": "Windmill handles checkpointing, parallelism, and fault tolerance."
+        }
+      ]
+    },
     "productId": "windmill",
     "storyId": "durable-long-running-workflows"
   }

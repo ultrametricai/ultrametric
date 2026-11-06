@@ -1,18 +1,32 @@
 {
-  "hash": "3a649f92571db85b83e4d451e7b78c163a66a441fb430cedaba1c1e3a77c97d9",
+  "hash": "aa5d2da35b3c918146fd4021d952136eedd7284b200e3aaff71805253ac5a18d",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "pinecone",
-    "storyId": "multi-tenant-isolation",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pinecone has a dedicated multitenancy guide that prescribes a serverless index with one namespace per tenant, which covers the core of the story's isolation pattern. Metadata filtering offers a secondary way to scope queries within shared data. Missing for 10: documented per-index namespace/tenant limits, evidence on the per-tenant cost of the namespace approach, and independent or hands-on corroboration at many-tenant scale.",
+    "rationale": "Pinecone documents a first-party multitenancy pattern: one namespace per tenant in a serverless index. That directly covers the isolation mechanism the story asks for. The evidence pack does not show documented limits (for example, maximum namespaces per index or per-tenant quotas), and nothing shows the approach is cheap at scale. Missing for 10: documented namespace/tenant limits, cost or scale evidence for many tenants, independent or hands-on corroboration of namespace isolation.",
     "evidenceIds": [
       "pinecone-docs-11",
       "pinecone-docs-19",
-      "pinecone-docs-33",
-      "pinecone-docs-10"
-    ]
+      "pinecone-docs-33"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can isolate many tenants cheaply using namespaces, partitions, or per-tenant collections with documented limits",
+      "citations": [
+        {
+          "evidenceId": "pinecone-docs-11",
+          "quote": "Implement multitenancy in Pinecone using a **serverless index with one namespace per tenant**."
+        },
+        {
+          "evidenceId": "pinecone-docs-33",
+          "quote": "This page shows you how to implement multitenancy in Pinecone using a serverless index with one namespace per tenant."
+        }
+      ]
+    },
+    "productId": "pinecone",
+    "storyId": "multi-tenant-isolation"
   }
 }

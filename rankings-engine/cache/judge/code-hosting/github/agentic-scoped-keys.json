@@ -1,17 +1,32 @@
 {
-  "hash": "27e0de4b343e1ab00f30d59f59827bc11dffce9ee7873f0db8a0baa7e58c81ff",
+  "hash": "f9fb789611ae68af5467e5e613bc2adc3cbd1856846a1e9bc0be5506d3814030",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "GitHub documents fine-grained personal access tokens. You grant each token a specific set of permissions that limit which resources it can reach through the API, which delivers scoped, least-privilege credentials an agent can use. The `X-Accepted-GitHub-Permissions` response header also tells you the minimum permissions each endpoint needs, which helps keep tokens narrow. Missing for 10: evidence of per-repository scoping, token expiration or revocation controls, agent-specific credential guidance (e.g., GitHub App or installation tokens for agents), and independent or hands-on corroboration.",
+    "rationale": "GitHub's own docs show that fine-grained personal access tokens are created with a chosen set of permissions that define which resources the token can reach via the API. The X-Accepted-GitHub-Permissions response header tells you which permissions an endpoint requires, which supports least-privilege scoping. The evidence does not tie these tokens to agent use or detail how far scoping goes, so coverage is partial. missing for 10: documentation of agent-specific credential issuance (e.g., credentials for Copilot or MCP agents), evidence of per-repository/resource scoping, expiration and revocation controls, and independent or hands-on corroboration.",
     "evidenceIds": [
       "github-docs-19",
-      "github-docs-21",
       "github-docs-42",
-      "github-docs-18"
+      "github-docs-18",
+      "github-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "github-docs-19",
+          "quote": "When you create a fine-grained personal access token, you grant it a set of permissions. Permissions define what resources the token can access via the API."
+        },
+        {
+          "evidenceId": "github-docs-18",
+          "quote": "The header will tell you what permissions are required in order to access the endpoint."
+        }
+      ]
+    },
     "productId": "github",
     "storyId": "agentic-scoped-keys"
   }

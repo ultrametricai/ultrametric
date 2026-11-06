@@ -1,17 +1,36 @@
 {
-  "hash": "5423e1186b6813975717e69384fae37724d256e474353c17bc829652628d8a58",
+  "hash": "e4e9f68f73486891aad87dc1dffff582975327ecce40727cbc1ef186d093703e",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "lancedb",
-    "storyId": "metadata-filtered-search",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LanceDB documents filtering vector search on metadata fields via `where(...)` conditions. Its pre-filtering mode applies the condition before the vector search, so only matching rows are considered, which directly addresses the recall concern. A community comment also notes predicate pushdown for filters. missing for 10: evidence on filtered-search latency (e.g., scalar indexes on metadata columns or benchmarks), detail on supported filter expression syntax, and independent hands-on corroboration that recall holds under selective filters.",
+    "rationale": "LanceDB documents filtering query results on metadata fields and pre-filtering, where the `where(...)` condition runs before vector search so only matching rows are considered. That design protects recall. A community comment corroborates predicate pushdown for filtering. The latency half of the story is not documented. missing for 10: evidence of latency behaviour under filters (scalar/metadata indexes, benchmarks), documented recall guarantees with ANN indexes plus filters, examples of complex structured filter conditions on vector search.",
     "evidenceIds": [
       "lancedb-docs-5",
       "lancedb-docs-41",
       "lancedb-comm-2"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can filter vector search by structured metadata conditions without wrecking recall or latency",
+      "citations": [
+        {
+          "evidenceId": "lancedb-docs-5",
+          "quote": "LanceDB supports filtering features of query results based on metadata fields."
+        },
+        {
+          "evidenceId": "lancedb-docs-41",
+          "quote": "Pre-filtering means LanceDB applies the metadata `where(...)` condition before running vector search, so the search only considers rows that already match the filter."
+        },
+        {
+          "evidenceId": "lancedb-comm-2",
+          "quote": "They do predicate pushdown for filtering too."
+        }
+      ]
+    },
+    "productId": "lancedb",
+    "storyId": "metadata-filtered-search"
   }
 }

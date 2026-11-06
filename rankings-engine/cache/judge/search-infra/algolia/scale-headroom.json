@@ -1,18 +1,36 @@
 {
-  "hash": "73ffa0e38bda66e9219fc62e0783b575a50466138dd67ce278f4eabeab7fae01",
+  "hash": "ecbe5cf8050ce9664fb16778ed6aaa8b5de4ed5ab8d3fd90d1cd7f5f1a803083",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "As a hosted service, Algolia documents HA mechanics at the client level: a 99.999% uptime SLA, a retry strategy that falls back across server URLs, and an optional Distributed Search Network that routes requests to the nearest servers. There is no documented scaling path for clustering, sharding, or growing an index to hundreds of millions of records. The largest independent report covers about 1.5M records, and another user notes that sort replicas multiply record counts against plan limits. Missing for 10: documented clustering/sharding guidance, scale limits or a growth path to hundreds of millions of documents, server-side replication and HA architecture docs, and independent evidence at that scale.",
+    "rationale": "Algolia's docs cover some high-availability mechanics: a retry strategy across fallback server URLs, a 99.999% uptime SLA, and an optional Distributed Search Network that routes requests to the nearest servers. Nothing in the pack documents clustering, data replication for availability, or a path to hundreds of millions of documents. The largest community-reported deployment is about 1.5M records. Missing for 10: documented clustering/sharding model, replication-for-HA documentation, an evidenced scaling path to hundreds of millions of documents, independent large-scale corroboration.",
     "evidenceIds": [
-      "algolia-docs-40",
       "algolia-docs-44",
+      "algolia-docs-40",
       "algolia-docs-64",
-      "algolia-comm-18",
-      "algolia-comm-19"
+      "algolia-comm-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, documented scaling paths — clustering, replication, high availability — carry me from prototype to hundreds of millions of documents",
+      "citations": [
+        {
+          "evidenceId": "algolia-docs-44",
+          "quote": "To guarantee high availability, implement a retry strategy for all API requests using the URLs of your servers as fallbacks"
+        },
+        {
+          "evidenceId": "algolia-docs-40",
+          "quote": "SLA (99.999% uptime SLA)"
+        },
+        {
+          "evidenceId": "algolia-docs-64",
+          "quote": "If your subscription includes a Distributed Search Network, this ensures that requests are sent to servers closest to users."
+        }
+      ]
+    },
     "productId": "algolia",
     "storyId": "scale-headroom"
   }

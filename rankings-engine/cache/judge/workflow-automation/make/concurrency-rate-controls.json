@@ -1,16 +1,31 @@
 {
-  "hash": "e2a16e43c287c17693abc491b026c4b8b5a6a6ee7b41c6fd4f57e2dc210cb85f",
+  "hash": "9161ea9833c2f18c9aa8155a0be0a5c3e2aea94c1e1ce811acba65dfc1f03b14",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Make documents queuing incoming webhook requests and processing the whole queue on a schedule instead of immediately. This defers and batches executions, which can help respect downstream limits, but it is not explicit throttling. Missing for 10: configurable rate or concurrency limits, sequential-processing controls, documented handling of downstream 429/rate-limit errors, and independent or hands-on corroboration.",
+    "rationale": "Make's own webhook docs say incoming requests can be held in a queue and processed on a schedule instead of running immediately. That is a first-party way to defer and batch executions, which can ease pressure on downstream systems. However, nothing documents explicit throttling, concurrency caps or rate-limit-aware execution control. Missing for 10: explicit execution throttling or rate-limit settings, concurrency limits, queue controls beyond webhook scheduling, and independent or hands-on corroboration.",
     "evidenceIds": [
       "make-docs-6",
-      "make-docs-16",
-      "make-docs-21"
+      "make-docs-21",
+      "make-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can throttle or queue workflow executions to respect downstream rate limits",
+      "citations": [
+        {
+          "evidenceId": "make-docs-6",
+          "quote": "If you don't want to run your immediately after a webhook receives data, you can schedule your to process all webhook requests periodically"
+        },
+        {
+          "evidenceId": "make-docs-21",
+          "quote": "the whole queue is then processed every time your schedule criteria are met"
+        }
+      ]
+    },
     "productId": "make",
     "storyId": "concurrency-rate-controls"
   }

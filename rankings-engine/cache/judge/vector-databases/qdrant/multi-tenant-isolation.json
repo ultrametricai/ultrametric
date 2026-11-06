@@ -1,19 +1,32 @@
 {
-  "hash": "cc7cd1c84478a5a2689c584299dcf30592871af5482a7bfe872ffde81db28ae8",
+  "hash": "ffc4b0a1f402349f2ab715243aa8438de0571937b7e35b5683c465d3fa6af44c",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "qdrant",
-    "storyId": "multi-tenant-isolation",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Qdrant's multi-tenancy guide documents keeping all tenants in one collection with three isolation approaches, including partition by payload, which it calls efficient for many small, similarly-sized tenants. Granular API keys with per-collection read/write scoping add access isolation, and the official agent skills explicitly cover tenant isolation. Missing for 10: documented numeric limits on tenant or collection counts, details of the other two isolation approaches, and independent hands-on corroboration of multi-tenant scale.",
+    "rationale": "Qdrant's own multitenancy guide documents keeping all tenants in a single collection and isolating them with one of three approaches, including partition by payload. That approach is described as efficient for a large number of small, similarly-sized tenants, which covers the cheap, many-tenant isolation part of the story. The pack does not show documented limits such as maximum tenants or collections, or per-tenant quotas, and the other two approaches are not detailed. Missing for 10: documented tenant/collection count limits, details of the other two isolation approaches, independent hands-on corroboration of multi-tenant scale.",
     "evidenceIds": [
       "qdrant-docs-4",
       "qdrant-docs-12",
-      "qdrant-docs-19",
-      "qdrant-docs-22",
-      "qdrant-gh-2"
-    ]
+      "qdrant-docs-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can isolate many tenants cheaply using namespaces, partitions, or per-tenant collections with documented limits",
+      "citations": [
+        {
+          "evidenceId": "qdrant-docs-4",
+          "quote": "keep all tenants in a single collection and use one of these three approaches to isolate them"
+        },
+        {
+          "evidenceId": "qdrant-docs-12",
+          "quote": "Partition by payload filters points by a payload field that identifies the tenant. This is efficient for a large number of small, similarly-sized tenants."
+        }
+      ]
+    },
+    "productId": "qdrant",
+    "storyId": "multi-tenant-isolation"
   }
 }

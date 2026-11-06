@@ -1,26 +1,53 @@
 {
-  "hash": "16f6bd140d8fbfeaf7781ebe6419cf0abd281974eee1cdaeae0e73d64a5b0c00",
+  "hash": "5a51b3089f4fd9dca953c35f437e4a0e34acef0a0239f8053c7304d90a240fb2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Keycloak can be started non-interactively from a container image, with the bootstrap admin set via environment variables [keycloak-docs-2, keycloak-docs-45]. It can be administered by script through the kcadm.sh Admin CLI and the Admin REST API [kc-supp-kcadm, keycloak-docs-6], seeded via JSON realm import/export and operator-driven realm import and declarative clients [keycloak-docs-10, keycloak-docs-76, keycloak-docs-43], and gated in pipelines using health endpoints and client-credentials service accounts [keycloak-docs-17, kc-supp-client-credentials]. Hands-on reports describe friction with infrastructure-as-code: configuration lives in the database, the API is hard to keep idempotent, and slow warm-up makes it ill-suited to ephemeral runs [keycloak-comm-3, keycloak-comm-13, keycloak-comm-19]. Missing for 10: a documented CI-specific workflow guide, idempotent declarative config-as-code outside the operator, a published OpenAPI spec at the probed paths [keycloak-probe-3], and independent corroboration of smooth CI use.",
+    "rationale": "Keycloak documents headless, scriptable operation. It boots from a container with env-var bootstrap credentials, ships the kcadm.sh Admin CLI and an Admin REST API for scripted administration, supports JSON realm import/export (including operator-automated realm import), and exposes health endpoints for readiness checks. Community users report real automation friction: inconsistent admin API payloads make idempotency hard, and config stored in the database resists infrastructure-as-code. missing for 10: first-party CI/pipeline guidance, idempotent declarative config without third-party tools, a published OpenAPI spec (probes returned 404).",
     "evidenceIds": [
       "keycloak-docs-2",
-      "keycloak-docs-45",
+      "keycloak-docs-27",
       "kc-supp-kcadm",
       "keycloak-docs-6",
       "keycloak-docs-10",
       "keycloak-docs-76",
       "keycloak-docs-43",
       "keycloak-docs-17",
-      "kc-supp-client-credentials",
-      "keycloak-comm-3",
-      "keycloak-comm-13",
-      "keycloak-comm-19",
+      "keycloak-docs-45",
+      "keycloak-comm-13-refresh-d02c2141cad5303e",
+      "keycloak-comm-17-refresh-9b95d892e98065c6",
+      "keycloak-comm-3-refresh-e731fadbd90f74c3",
       "keycloak-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "kc-supp-kcadm",
+          "quote": "packages the Admin CLI server distribution with the execution scripts in the bin directory. The Linux script is called kcadm.sh"
+        },
+        {
+          "evidenceId": "keycloak-docs-2",
+          "quote": "docker run -p 127.0.0.1:8080:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:26.7.3 start-dev"
+        },
+        {
+          "evidenceId": "keycloak-docs-76",
+          "quote": "Automate a realm import using the operator."
+        },
+        {
+          "evidenceId": "keycloak-docs-10",
+          "quote": "Import and export realms as JSON files."
+        },
+        {
+          "evidenceId": "keycloak-docs-17",
+          "quote": "Check if an instance has finished its start up and is ready to serve requests by calling its health REST endpoints."
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "agentic-headless"
   }

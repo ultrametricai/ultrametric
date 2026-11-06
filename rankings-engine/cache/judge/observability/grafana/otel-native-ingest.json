@@ -1,17 +1,35 @@
 {
-  "hash": "082fd5affd22887154126db3226d44ef3fa05140d66a9fea5b1e60f0013d1924",
+  "hash": "0234bd8657c10412ec8df6c7feff22cd5d94281c17986e83139a71c768efe338",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Grafana has a dedicated OpenTelemetry docs section for collecting metrics, logs, traces, and profiles without vendor lock-in (grafana-docs-38). Tempo accepts OpenTelemetry tracing protocols (grafana-docs-37), and Mimir stores OpenTelemetry metrics (grafana-docs-53). However, nothing in the pack explicitly documents sending OTLP directly to an endpoint, and log ingestion is described as going through Grafana Alloy (grafana-docs-57). missing for 10: explicit documentation of direct OTLP ingestion endpoints across all signals, OTLP log ingestion without Alloy, independent or hands-on corroboration of OTLP usage.",
+    "rationale": "Grafana's own docs show OpenTelemetry support across its stack: Tempo accepts OpenTelemetry alongside Jaeger and Zipkin, Mimir stores OpenTelemetry metrics, and a dedicated OpenTelemetry docs page covers collecting metrics, logs, traces and profiles. However, no item explicitly documents sending telemetry directly to an OTLP endpoint, and log ingestion evidence points to Grafana Alloy rather than direct OTLP. Missing for 10: explicit documentation of direct OTLP ingestion endpoints (gRPC/HTTP) and authentication, OTLP coverage for logs, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "grafana-docs-38",
       "grafana-docs-37",
-      "grafana-docs-53",
-      "grafana-docs-57"
+      "grafana-docs-38",
+      "grafana-docs-53"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can send telemetry directly over OTLP with first-class OpenTelemetry support",
+      "citations": [
+        {
+          "evidenceId": "grafana-docs-37",
+          "quote": "You can use Tempo with open source tracing protocols, including Jaeger, Zipkin, or OpenTelemetry."
+        },
+        {
+          "evidenceId": "grafana-docs-53",
+          "quote": "provides horizontally scalable, highly available, multi-tenant, long-term storage for Prometheus and OpenTelemetry metrics."
+        },
+        {
+          "evidenceId": "grafana-docs-38",
+          "quote": "It helps you collect metrics, logs, traces, and profiles from your applications while protecting you from vendor lock-in and ensuring data portability"
+        }
+      ]
+    },
     "productId": "grafana",
     "storyId": "otel-native-ingest"
   }

@@ -1,19 +1,37 @@
 {
-  "hash": "8255c7d16419cfe32f027e3b25089211db5bbb4aa06890454b10982312954e22",
+  "hash": "9b58637bc689a28754442b92289db14c3729ae8204c67acc03bce5c8fde7879f",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "weaviate",
-    "storyId": "hybrid-dense-sparse-search",
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Weaviate's docs describe hybrid search that runs vector and BM25 keyword search in parallel and fuses their scores into one ranking [docs-1, docs-14]. They offer two fusion strategies, relativeScoreFusion and rankedFusion [docs-2]. Community threads discussing the two fusion algorithms and a hybrid retriever confirm the feature exists, though one user found the fusion math unclear [comm-4]. Missing for 10: hands-on independent corroboration of fusion behavior, and documented detail on tuning the vector/keyword weighting.",
+    "rationale": "Weaviate's first-party docs describe hybrid search that combines vector search with BM25 keyword search. Both searches run in parallel, and their scores are merged by one of two documented fusion strategies, relativeScoreFusion and rankedFusion. Community discussion of the two fusion algorithms confirms they exist, though one user found the docs unclear on how they compute final order. Missing for 10: independent hands-on corroboration of hybrid query quality, and evidence for learned sparse vectors beyond BM25.",
     "evidenceIds": [
       "weaviate-docs-1",
       "weaviate-docs-2",
       "weaviate-docs-14",
-      "weaviate-docs-22",
       "weaviate-comm-4"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can combine dense vector search with keyword or sparse (BM25-style) signals in one hybrid query with fusion ranking",
+      "citations": [
+        {
+          "evidenceId": "weaviate-docs-1",
+          "quote": "Hybrid search combines vector search and keyword search (BM25) to leverage the strengths of both approaches."
+        },
+        {
+          "evidenceId": "weaviate-docs-2",
+          "quote": "Weaviate supports two strategies (`relativeScoreFusion` and `rankedFusion`) for combining vector and keyword search scores"
+        },
+        {
+          "evidenceId": "weaviate-docs-14",
+          "quote": "A hybrid search runs both search types in parallel and combines their scores to produce a final ranking of results."
+        }
+      ]
+    },
+    "productId": "weaviate",
+    "storyId": "hybrid-dense-sparse-search"
   }
 }

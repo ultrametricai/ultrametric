@@ -1,17 +1,36 @@
 {
-  "hash": "f39549c0a04cbc9f95e72f18a180707b793bd000b9fb4766da80e7873ec59c2b",
+  "hash": "c6f53a806689bc359a3d4cf65df75eb4a6bbcd627c656c2957fd1149bd1f87ed",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "algolia",
-    "storyId": "realtime-index-updates",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "The Search API is documented as letting you manage indices and records, and Algolia searches a copy of your data that you send to it. This implies record-level writes rather than full reindexes, but the evidence never explicitly describes add, update, or delete operations or how quickly changes become searchable. Missing for 10: explicit documentation of incremental add/partial-update/delete record operations, any near-real-time indexing latency claim, and independent or hands-on corroboration of update propagation speed.",
+    "rationale": "Algolia's own Search API is documented to manage indices and records, which implies record-level writes rather than full reindexes. A community user describes keeping Firebase data synced through a single cloud function, which suggests incremental updates work in practice. However, the evidence never names add, update, or delete operations or says how quickly changes become searchable. Missing for 10: explicit documentation of per-record add/partial-update/delete operations, any stated indexing latency or near-real-time guarantee, and independent confirmation of how fast changes appear in search.",
     "evidenceIds": [
       "algolia-docs-4",
       "algolia-docs-54",
-      "algolia-docs-48"
-    ]
+      "algolia-comm-16"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, document adds, updates, and deletes become searchable in near real time without a full reindex",
+      "citations": [
+        {
+          "evidenceId": "algolia-docs-4",
+          "quote": "The Algolia Search API lets you search, configure, and manage your indices and records"
+        },
+        {
+          "evidenceId": "algolia-docs-54",
+          "quote": "After you’ve structured your data into records, choose how to send them to Algolia."
+        },
+        {
+          "evidenceId": "algolia-comm-16",
+          "quote": "Linking the two took a single Firebase cloud function after importing data with a simple node script."
+        }
+      ]
+    },
+    "productId": "algolia",
+    "storyId": "realtime-index-updates"
   }
 }

@@ -1,17 +1,36 @@
 {
-  "hash": "038db411dd00a02a1e50f699aba4c28867ac5381b898c9b489680617301e58da",
+  "hash": "daeffefb1a0cbbf7e6f19a6565f62bb305bab5016c49f0b60128af3461f0dd42",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Hands-on testers describe the OCR API as \"super fast and synchronous\" and \"super fast\" (comm-3, comm-1). The docs list a separate /v1/batch mode (docs-37), so there is a sync vs. batch split, and the API worked when large documents were split into chunks (comm-2). However, no first-party documentation states latency for either mode, and the speed claims are anecdotal. Missing for 10: documented latency figures per mode (sync vs batch), first-party description of the synchronous mode's response-time guarantees, and documented page/size limits for interactive use.",
+    "rationale": "Hands-on testers describe Mistral OCR as 'super fast and synchronous', and the docs list a separate batch endpoint, so a synchronous mode exists alongside an async one. However, no first-party documentation states seconds-level response times or latency figures per mode, and one tester hit a timeout submitting 900 pages at once. Missing for 10: first-party documented latency per mode (sync vs batch), documented response-time guarantees for interactive use, documented size limits for the synchronous path.",
     "evidenceIds": [
       "mistral-document-ai-comm-3",
       "mistral-document-ai-comm-1",
       "mistral-document-ai-docs-37",
       "mistral-document-ai-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, a fast synchronous mode returns results in seconds for interactive apps, with latency documented per mode",
+      "citations": [
+        {
+          "evidenceId": "mistral-document-ai-comm-3",
+          "quote": "found Mistral OCR super fast and synchronous"
+        },
+        {
+          "evidenceId": "mistral-document-ai-comm-1",
+          "quote": "Super fast and significantly more accurate than google, Claude and others."
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-37",
+          "quote": "Batching /v1/batch"
+        }
+      ]
+    },
     "productId": "mistral-document-ai",
     "storyId": "low-latency-sync-mode"
   }

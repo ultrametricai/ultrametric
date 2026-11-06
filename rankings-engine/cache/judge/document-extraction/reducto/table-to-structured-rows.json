@@ -1,20 +1,41 @@
 {
-  "hash": "f78c904994192c76426e5d21da627a1660605d81f71021c5d2aa20c835dca4c3",
+  "hash": "2c083f81e814f25315b0bb1ab92c0dd14f923187e0386ee736a3b23c136209d6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Parse returns tables inside structured JSON in several selectable formats that control how merged cells and headers are represented. Extract returns values matching a user-defined schema, and schema keywords such as `pattern` guarantee output constraints, which together give typed, schema-conformant JSON. However, the evidence never explicitly shows table rows mapped to typed record arrays, and it lacks corroboration that the output loads cleanly without cleanup. missing for 10: explicit docs or examples of table-to-typed-row extraction (e.g., array-of-objects schemas over tables), details of the table output formats, independent or hands-on evidence that output loads into a database without manual cleanup.",
+    "rationale": "Reducto's Parse endpoint returns tables as structured JSON in several selectable table formats. Extract returns values matching a user-defined schema, and schema keywords like `pattern` guarantee output conformance, so typed JSON suitable for loading is documented. The evidence never shows extracted tables mapped into typed row arrays, and nothing corroborates that the output loads without cleanup; one user reports Reducto struggled with long documents. missing for 10: explicit documentation of table-to-typed-row output (column typing, header normalization, merged-cell handling into rows), evidence that results load into a database without manual cleanup, and independent hands-on corroboration of table extraction accuracy.",
     "evidenceIds": [
       "reducto-docs-1",
-      "reducto-docs-14",
       "reducto-docs-37",
-      "reducto-docs-2",
       "reducto-docs-50",
       "reducto-docs-51",
       "reducto-docs-47"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I turn extracted tables into typed rows/JSON I can load into a database without manual cleanup",
+      "citations": [
+        {
+          "evidenceId": "reducto-docs-1",
+          "quote": "It converts documents into structured JSON with text, tables, figures, layout, and formatting"
+        },
+        {
+          "evidenceId": "reducto-docs-37",
+          "quote": "Reducto extracts tables from documents and can return them in several formats. The format you choose affects how merged cells, headers, and structure are represented."
+        },
+        {
+          "evidenceId": "reducto-docs-50",
+          "quote": "You define a schema describing the data you need, and Reducto returns values matching that schema"
+        },
+        {
+          "evidenceId": "reducto-docs-51",
+          "quote": "For example, `\"pattern\": \"^[A-Z]{2}-\\\\d{4}$\"` on a string guarantees the output matches."
+        }
+      ]
+    },
     "productId": "reducto",
     "storyId": "table-to-structured-rows"
   }

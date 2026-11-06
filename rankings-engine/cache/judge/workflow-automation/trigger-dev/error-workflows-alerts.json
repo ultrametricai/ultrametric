@@ -1,18 +1,40 @@
 {
-  "hash": "78e1511c429433c70afaf2cd622764accdebb8d6ce401235c6afc06c9c89946d",
+  "hash": "6be17e54dca3f2497857085f58a0adbfc4a1884bfe8820cd69075502d5819a2d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The failure-notification half is documented: Trigger.dev sends alerts by email, Slack and webhooks when tasks fail, and the dashboard lets you filter errored runs. Error handling is mostly shown through retry configuration, globally or per task with exponential backoff, plus plain async/await code; there is no evidence of a dedicated error-workflow or failure-handler path. Missing for 10: documented dedicated error-handling hooks or error workflows (e.g. on-failure handlers), in-depth alerting docs beyond a product-page claim, and independent corroboration of the alerts.",
+    "rationale": "Trigger.dev documents failure alerts by email, Slack and webhooks when tasks fail, plus configurable automatic retries with exponential backoff at the config and per-task level, and dashboard filtering of errored runs. However, the evidence never shows a dedicated error-handling path or error workflow (for example, a failure handler that runs custom logic when a run fails). Retries are a related control, not an error workflow. Missing for 10: documented dedicated error-handler or error-workflow capability, in-depth alert configuration docs, independent corroboration of failure alerts.",
     "evidenceIds": [
       "trigger-dev-docs-39",
-      "trigger-dev-docs-43",
       "trigger-dev-docs-5",
       "trigger-dev-docs-28",
-      "trigger-dev-docs-34"
+      "trigger-dev-docs-43"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops user, I can define dedicated error-handling paths or error workflows and get notified when a run fails",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-39",
+          "quote": "Receive alerts via email, Slack notification and webhooks when your tasks fail."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-5",
+          "quote": "In your trigger.config file you can set the default retrying behavior for all tasks. On each task you can set the retrying behavior."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-28",
+          "quote": "This task will retry 10 times with exponential backoff."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-43",
+          "quote": "Quickly identify queued, errored or waiting tasks and debug them using the run inspector."
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "error-workflows-alerts"
   }

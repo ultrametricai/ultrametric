@@ -1,16 +1,27 @@
 {
-  "hash": "0e74c4cc73d50743432565c2ede76271af4ddd52fb9839e91a131d03b5733d62",
+  "hash": "bddbda8761211859873f7d5f8a00d31127756f8d6e6e921a56ad3603e77c0ab4",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "sentry",
-    "storyId": "vendor-neutral-instrumentation",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Sentry's docs say it can ingest OpenTelemetry traces and logs over OTLP endpoints, either directly from an OTel SDK or through the OpenTelemetry Collector. That means code instrumented once with OTel can point at Sentry, or be re-routed elsewhere, without re-instrumenting. Missing for 10: OTLP ingestion of metrics and errors is not evidenced, there is no documentation on feature parity between OTel data and Sentry's native SDK, and there is no independent or hands-on corroboration of backend switching.",
+    "rationale": "Sentry documents native OTLP ingestion of OpenTelemetry traces and logs, either straight from an OTel SDK or through the OpenTelemetry Collector. An SRE can therefore instrument once with the open standard and point that telemetry at Sentry or elsewhere. Coverage is limited to traces and logs, and the docs don't show whether Sentry features work fully on OTel-only data versus its own SDKs. Missing for 10: OTLP metrics ingestion, documented feature parity for OTel-instrumented apps versus the Sentry SDK, and independent or hands-on corroboration of switching backends without re-instrumenting.",
     "evidenceIds": [
       "sentry-docs-25",
       "sentry-docs-8"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an SRE, I can instrument once with open standards and switch backends without re-instrumenting my code",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-25",
+          "quote": "Sentry can ingest OpenTelemetry traces and logs via OTLP endpoints, either directly from an OTel SDK or through a pipeline tool like the OpenTelemetry Collector."
+        }
+      ]
+    },
+    "productId": "sentry",
+    "storyId": "vendor-neutral-instrumentation"
   }
 }

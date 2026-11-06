@@ -1,17 +1,32 @@
 {
-  "hash": "f15d739729d3e94b6a262fa943d7345a9c818c55b9f1de16c94c7706af47e6fa",
+  "hash": "e58cb3174ea97b511b8850a3f248dd6781a054d9e327802b4b81b1cc6e03b639",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "milvus",
-    "storyId": "metadata-filtered-search",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Milvus documents filtered search where metadata filtering runs before the ANN search, narrowing the search scope to matching entities, so recall is preserved within the filtered set [milvus-docs-4, milvus-docs-13]. Metadata filtering is listed as a shared feature across Lite, Standalone and Distributed [milvus-docs-17]. missing for 10: evidence on latency or recall behavior under selective or high-cardinality filters, details of the filter expression syntax and scalar indexing, and independent or hands-on corroboration of filtered-search performance.",
+    "rationale": "Milvus documents filtered search: metadata filtering runs before the ANN search, narrowing the scope to matching entities, and metadata filtering is listed as a feature shared across deployments. The evidence never shows filtered queries keeping recall and latency, which is the second half of the story; the general performance claim versus FAISS is not about filtering. Missing for 10: evidence that recall and latency hold under restrictive filters, details on filter expressions and scalar indexing, independent or hands-on benchmarks of filtered search.",
     "evidenceIds": [
-      "milvus-docs-4",
       "milvus-docs-13",
+      "milvus-docs-4",
       "milvus-docs-17"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can filter vector search by structured metadata conditions without wrecking recall or latency",
+      "citations": [
+        {
+          "evidenceId": "milvus-docs-13",
+          "quote": "You can include filtering conditions in a search request so that Milvus conducts metadata filtering before conducting ANN searches, reducing the search scope from the whole collection to only the entities matching the specified filtering conditions."
+        },
+        {
+          "evidenceId": "milvus-docs-17",
+          "quote": "covers most of the features such as vector data persistence and management, vector CRUD operations, sparse and dense vector search, metadata filtering, multi-vector and hybrid_search."
+        }
+      ]
+    },
+    "productId": "milvus",
+    "storyId": "metadata-filtered-search"
   }
 }

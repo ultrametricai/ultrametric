@@ -1,21 +1,37 @@
 {
-  "hash": "1f26cc7ec83f418abcd48093f359a42db7365033aa59efe40a0e4a10a7542939",
+  "hash": "142e4c011f39b3358d7ad1d382895f38eb26fdd637ce49739ed6661dda565c72",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Temporal is Workflows-as-Code, not a no-code engine (temporal-docs-11), so an agent can't create or edit a workflow definition through an API call; definitions change through code and Worker deployments with Versioning (temporal-docs-13, temporal-docs-29). What an agent can do programmatically is start and manage executions via the Temporal Client (temporal-docs-32), create Schedules that start workflows (temporal-docs-15), and drive operations through the official CLI (temporal-docs-3, temporal-gh-1). Missing for 10: API-level creation/update of workflow definitions, a documented public REST/OpenAPI surface (OpenAPI probes returned 404), and agent-specific or hands-on evidence of this workflow.",
+    "rationale": "Temporal's own Client API lets a program start Workflow Executions, send Signals and Queries, and retrieve results, which covers 'activate'. Worker Versioning lets updated workflow code be rolled out programmatically. However, Temporal is explicitly Workflows-as-Code, so workflow definitions are written and deployed as code on Workers rather than created or updated as resources through a public API, and no OpenAPI spec was found. missing for 10: API-level creation of workflow definitions, API-level updating of definitions independent of code deployment, a documented public REST/OpenAPI surface, hands-on evidence of an agent driving this end to end.",
     "evidenceIds": [
-      "temporal-docs-11",
       "temporal-docs-32",
-      "temporal-docs-15",
       "temporal-docs-13",
-      "temporal-docs-29",
-      "temporal-docs-3",
-      "temporal-gh-1",
+      "temporal-docs-11",
+      "temporal-docs-15",
       "temporal-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent create, update, and activate a workflow programmatically through the public API",
+      "citations": [
+        {
+          "evidenceId": "temporal-docs-32",
+          "quote": "enabling you to start Workflow Executions, send Signals and Queries, and retrieve results"
+        },
+        {
+          "evidenceId": "temporal-docs-13",
+          "quote": "The Worker Versioning feature allows you to tag your Workers and programmatically roll them out in versioned deployments"
+        },
+        {
+          "evidenceId": "temporal-docs-15",
+          "quote": "A Schedule contains instructions for starting a Workflow Execution at specific times."
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "agent-creates-workflow-via-api"
   }

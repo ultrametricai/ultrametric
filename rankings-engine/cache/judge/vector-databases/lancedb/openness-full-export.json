@@ -1,21 +1,42 @@
 {
-  "hash": "82fa815c53c695cd317e52f95dc0fb9a38e3aa2628c035347f0f5a4f6d07894e",
+  "hash": "477ad5f5bf54d677afd74bb4f11ed5ee964db5e6f30f75cba88961aea797e919",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "lancedb",
-    "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "LanceDB is Apache-2.0 open source, stores data in the Lance format on user-controlled storage (local disk or any S3-compatible object store), and uses Arrow schemas, so data is not locked into a proprietary service. Lance datasets can also be read elsewhere, such as from the Hugging Face Hub, and query results come back as arrays or Pydantic objects. However, the pack has no documented bulk-export path to other open formats (e.g. Parquet, CSV, JSON) and no migration-off guidance. missing for 10: documented full-table export to standard formats like Parquet/CSV, explicit migration/exit documentation, independent hands-on corroboration of data portability.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "LanceDB's own architecture suggests limited lock-in: the code is Apache-2.0, tables live on storage you control (local disk or any S3-compatible object store), schemas are Arrow-typed, and Lance datasets can be scanned straight from the Hugging Face Hub. However, no documented export or bulk-migration path to open interchange formats appears in the evidence. Missing for 10: documented export or migration tooling (e.g., to Parquet/CSV/Arrow files), explicit documentation that the Lance format is open and readable by other tools, and hands-on corroboration of leaving with full data.",
     "evidenceIds": [
       "lancedb-github-license-1",
       "lancedb-docs-12",
       "lancedb-docs-27",
       "lancedb-docs-42",
-      "lancedb-docs-45",
-      "lancedb-docs-19",
-      "lancedb-docs-31"
-    ]
+      "lancedb-docs-45"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can export all of my data in open formats and leave",
+      "citations": [
+        {
+          "evidenceId": "lancedb-github-license-1",
+          "quote": "GitHub reports the lancedb/lancedb repo license as Apache-2.0 (SPDX Apache-2.0)."
+        },
+        {
+          "evidenceId": "lancedb-docs-27",
+          "quote": "That design makes it flexible enough to run across local NVMe, EBS, EFS, and any object store that exposes an S3-compatible API."
+        },
+        {
+          "evidenceId": "lancedb-docs-42",
+          "quote": "LanceDB can directly scan Lance datasets hosted on the Hugging Face Hub with `hf://` URIs."
+        },
+        {
+          "evidenceId": "lancedb-docs-45",
+          "quote": "new arrow.Field(\"image\", new arrow.Binary())"
+        }
+      ]
+    },
+    "productId": "lancedb",
+    "storyId": "openness-full-export"
   }
 }

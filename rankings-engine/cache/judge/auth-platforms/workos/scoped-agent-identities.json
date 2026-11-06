@@ -1,19 +1,35 @@
 {
-  "hash": "37b7154ef90acc64b53d0ee59ed70c23e907d7d09cf207e1fefdf4dfd56e7445",
+  "hash": "d6d1dc4a9dd03459f187f6b618585dd8c14bfd8b4ff0b3257791e0fc01bec759",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "WorkOS documents M2M applications that issue programmatic API credentials separate from human users, and AuthKit acts as a spec-compatible OAuth authorization server for MCP access. Its RBAC supports custom roles and permissions, which suggests a path to per-agent non-human identities with scoped access. However, nothing ties scoped permissions or revocation to these machine credentials, and the evidence never describes agents as first-class identities. Missing for 10: explicit per-agent identity model, documented per-credential scope/least-privilege controls for M2M clients, instant revocation of agent credentials, independent or hands-on corroboration.",
+    "rationale": "WorkOS documents first-party M2M applications that issue API access credentials for programmatic, non-human access. AuthKit is also a spec-compatible OAuth authorization server for securing MCP servers, so agents could receive their own machine credentials rather than borrowing a human's. However, nothing ties RBAC permissions to these machine identities, describes per-agent least-privilege scoping, or covers revocation. Its own MCP server explicitly acts with the same data access as the human. Missing for 10: documented per-agent machine identities, narrowly scoped permissions or OAuth scopes for M2M clients, an instant credential revocation mechanism, and hands-on or independent corroboration.",
     "evidenceIds": [
       "workos-docs-32",
-      "workos-docs-27",
       "workos-docs-8",
-      "workos-docs-31",
-      "workos-docs-22",
-      "workos-docs-40"
+      "workos-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can give each agent its own least-privilege machine identity with narrowly scoped permissions and instant revocation, instead of sharing a human's credentials",
+      "citations": [
+        {
+          "evidenceId": "workos-docs-32",
+          "quote": "M2M applications are commonly used to provide API access credentials to customers or partners, allowing them to programmatically access your APIs"
+        },
+        {
+          "evidenceId": "workos-docs-8",
+          "quote": "WorkOS and AuthKit can provide a secure way to manage access to your MCP server with minimal effort."
+        },
+        {
+          "evidenceId": "workos-docs-27",
+          "quote": "AuthKit, which is a spec-compatible OAuth authorization server."
+        }
+      ]
+    },
     "productId": "workos",
     "storyId": "scoped-agent-identities"
   }

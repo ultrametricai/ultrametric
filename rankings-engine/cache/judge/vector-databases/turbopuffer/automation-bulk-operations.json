@@ -1,21 +1,42 @@
 {
-  "hash": "629a1a68d9e7ed2843225b06610619e54cae1a4fd9391a3e9359b5d990ff43ec",
+  "hash": "0af5047dda0d98325c4c2f834758c2857172add653d3d7165803be1a8852e01c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "turbopuffer's own docs describe bulk operations over many documents: patch-by-filter and delete-by-filter (docs-22), column-based batch upserts (docs-24), and conditional upsert, patch, or delete (docs-21). Server-side namespace copy and branching (docs-23, docs-33) can run in the background with the `Prefer: respond-async` header (docs-34) and be monitored (docs-11). Multi-queries let one request carry several queries (docs-20). Missing for 10: no independent or hands-on corroboration of bulk operations at scale, and no documented batch-size or throughput limits for bulk writes.",
+    "rationale": "turbopuffer's own write API documents bulk operations across many documents. Patch-by-filter and delete-by-filter act on every document matching a filter, column-based upserts write many rows in one request, and long-running server-side copies can run in the background with async handling. missing for 10: documented batch-size limits or throughput for bulk writes, independent or hands-on corroboration of bulk-operation behavior.",
     "evidenceIds": [
       "turbopuffer-docs-22",
       "turbopuffer-docs-24",
       "turbopuffer-docs-21",
-      "turbopuffer-docs-20",
-      "turbopuffer-docs-23",
       "turbopuffer-docs-33",
       "turbopuffer-docs-34",
       "turbopuffer-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "turbopuffer-docs-22",
+          "quote": "Patch by filter: patches documents that match a filter. Delete by filter: deletes documents that match a filter."
+        },
+        {
+          "evidenceId": "turbopuffer-docs-24",
+          "quote": "Upserts documents in a column-based format. This field is an object, where each key is the name of a column"
+        },
+        {
+          "evidenceId": "turbopuffer-docs-33",
+          "quote": "Copies are performed entirely server-side... Copies work across regions and across cloud providers (e.g., AWS to GCP)."
+        },
+        {
+          "evidenceId": "turbopuffer-docs-34",
+          "quote": "Send the `Prefer: respond-async` header to allow the server to start the operation in the background."
+        }
+      ]
+    },
     "productId": "turbopuffer",
     "storyId": "automation-bulk-operations"
   }

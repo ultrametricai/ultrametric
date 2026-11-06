@@ -1,17 +1,30 @@
 {
-  "hash": "8e86a11c2bd22f8f8f805af5adc09301f9ceb1ce0deda2e2b3943ac11884c34e",
+  "hash": "aeca7803c02538f81f149a3f51335d284ee4a35e6ba590a75cea434720611b43",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Keycloak's first-party docs describe a built-in OAuth device authorization grant for clients that lack a suitable browser, and expose a dedicated device endpoint (/realms/{realm}/protocol/openid-connect/auth/device) that issues device and user codes. This directly lets CLIs and headless agents authenticate without long-lived secrets. Token revocation and introspection endpoints support managing the issued short-lived tokens. Missing for 10: detailed docs on configuring device-flow clients (polling interval, code expiry, verification URI UX), and independent or hands-on corroboration of device-flow use with CLIs or agents.",
+    "confidence": "high",
+    "rationale": "Keycloak's Server Administration Guide documents the OAuth device authorization grant for clients that have limited input or lack a browser. The OIDC layers reference documents a dedicated /auth/device endpoint that issues device and user codes, which lets CLIs and headless agents sign in without embedding long-lived secrets. missing for 10: independent or hands-on corroboration of device-flow use with CLIs or agents, and documentation of the token polling and user-approval steps in the pack.",
     "evidenceIds": [
       "kc-supp-device-grant",
-      "keycloak-docs-1",
-      "keycloak-docs-53",
-      "keycloak-docs-52"
+      "keycloak-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can authenticate CLIs and headless agents via the OAuth device authorization flow instead of pasting long-lived secrets",
+      "citations": [
+        {
+          "evidenceId": "kc-supp-device-grant",
+          "quote": "This is used by clients running on internet-connected devices that have limited input capabilities or lack a suitable browser."
+        },
+        {
+          "evidenceId": "kc-supp-device-grant",
+          "quote": "/realms/{realm-name}/protocol/openid-connect/auth/device ... used to obtain a device code and a user code."
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "device-flow-for-cli-agents"
   }

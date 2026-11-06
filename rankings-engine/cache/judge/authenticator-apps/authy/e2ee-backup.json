@@ -1,15 +1,30 @@
 {
-  "hash": "78782ec6e9d60536a56a8bc2ae47ac7b51882b3019810e0e5c4e4aedec1bc6f8",
+  "hash": "45c3bbb97c975304e7c7c70826a053ea48c1b08b3c2791b36011386fef989891",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Authy's features page says backups are encrypted and decrypted only on devices using a password only the user knows, which implies a user-held key. A community member also notes the codes can't be accessed without that password. However, nothing in the pack documents the encryption design (algorithms, key derivation, threat model), which is half of the story. missing for 10: published encryption design or whitepaper, explicit statement that the vendor never holds the key or derived key material, independent verification of the E2E claim.",
+    "rationale": "Authy's own feature page says backups are encrypted and decrypted only on the user's devices with a password only the user knows, which describes client-side encryption under a user-held key. Community comments add some support by noting that a separate password is required to access codes. However, nothing in the pack documents the actual encryption design (algorithms, key derivation, threat model), so half the story is unevidenced. Missing for 10: published encryption design documentation (cipher, KDF, key handling), independent audit or hands-on verification that the vendor never holds the key.",
     "evidenceIds": [
       "authy-docs-5",
       "authy-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, backups are end-to-end encrypted with a key the vendor never holds, and the encryption design is documented",
+      "citations": [
+        {
+          "evidenceId": "authy-docs-5",
+          "quote": "We encrypt your data, and only decrypt on the devices using a password only you know."
+        },
+        {
+          "evidenceId": "authy-comm-6",
+          "quote": "in Authy you also set a password which without you cannot access the codes"
+        }
+      ]
+    },
     "productId": "authy",
     "storyId": "e2ee-backup"
   }

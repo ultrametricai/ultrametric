@@ -1,17 +1,36 @@
 {
-  "hash": "9fee8f2f42412de759d4cb5c0f25d60e9043601b018d80b2d7713ed9065be965",
+  "hash": "ab5564d9704f19c40a069bbd7d0e31a28846a74ba95dff20eb2b78a35b15d4d2",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "moss",
-    "storyId": "access-control-rbac",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Moss documents project-level API keys that can be created, listed, deleted and rotated via the CLI, plus a pattern for keeping the projectKey out of browser or untrusted clients. Nothing in the pack shows role-based access or per-index/per-collection permission scoping, so only the API-key part of the story is covered. Missing for 10: roles/RBAC, per-index (collection) permissions, scoped or read-only keys, independent corroboration.",
+    "rationale": "Moss documents its own API key management: keys can be created, listed and deleted from the CLI, rotated with overlap, and a pattern is given for browser or untrusted clients so the projectKey is never shipped in client code. Nothing shows roles or per-index (per-collection) permissions, so the granular part of the story is unevidenced. Missing for 10: role-based access control, per-index/per-collection permission scoping, scoped or read-only keys, independent corroboration.",
     "evidenceIds": [
       "moss-docs-20",
       "moss-docs-21",
       "moss-docs-15"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can enforce granular access control (API keys, roles, per-collection permissions) on database operations",
+      "citations": [
+        {
+          "evidenceId": "moss-docs-21",
+          "quote": "You can also manage keys from the terminal with the Moss CLI: `moss login`, then `moss keys create`, `list` or `delete`."
+        },
+        {
+          "evidenceId": "moss-docs-20",
+          "quote": "Rotate with overlap. Create a new key, move your clients to it, then delete the old one."
+        },
+        {
+          "evidenceId": "moss-docs-15",
+          "quote": "Use this pattern from browser or untrusted clients where the `projectKey` must never be embedded in shipped code."
+        }
+      ]
+    },
+    "productId": "moss",
+    "storyId": "access-control-rbac"
   }
 }

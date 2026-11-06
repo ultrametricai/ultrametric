@@ -1,18 +1,35 @@
 {
-  "hash": "47a7d6227ca9e05f5ebe7ca4ead8f11544491d2d48d0436d1f3ef450fd7ddb0b",
+  "hash": "3bc4f7910d0f86190ceeaeaa7715ebc13b7076e87742cc55acf57c1952d2980b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Grafana's OpenTelemetry docs say its approach collects metrics, logs, traces, and profiles while \"protecting you from vendor lock-in and ensuring data portability.\" Its backends accept open standards: Tempo takes OpenTelemetry, Jaeger, and Zipkin, and Mimir stores Prometheus and OpenTelemetry metrics. Grafana also queries data \"wherever it's stored\" through many data source plugins, which supports instrumenting once and keeping a choice of backends. Missing for 10: an explicit documented walkthrough of switching backends without re-instrumenting, explicit OTel-native log ingestion evidence for Loki, and independent or hands-on corroboration of portability.",
+    "rationale": "Grafana's OpenTelemetry docs say it collects metrics, logs, traces and profiles while protecting against vendor lock-in and ensuring data portability. Its backends also accept open protocols: Tempo takes OpenTelemetry, Jaeger and Zipkin traces, and Mimir stores Prometheus and OpenTelemetry metrics. However, nothing documents or demonstrates actually switching backends without re-instrumenting. Missing for 10: explicit documentation of the backend-switching workflow, and independent or hands-on corroboration that portability works in practice.",
     "evidenceIds": [
       "grafana-docs-38",
       "grafana-docs-37",
-      "grafana-docs-53",
-      "grafana-docs-9",
-      "grafana-docs-47"
+      "grafana-docs-53"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an SRE, I can instrument once with open standards and switch backends without re-instrumenting my code",
+      "citations": [
+        {
+          "evidenceId": "grafana-docs-38",
+          "quote": "It helps you collect metrics, logs, traces, and profiles from your applications while protecting you from vendor lock-in and ensuring data portability"
+        },
+        {
+          "evidenceId": "grafana-docs-37",
+          "quote": "You can use Tempo with open source tracing protocols, including Jaeger, Zipkin, or OpenTelemetry."
+        },
+        {
+          "evidenceId": "grafana-docs-53",
+          "quote": "provides horizontally scalable, highly available, multi-tenant, long-term storage for Prometheus and OpenTelemetry metrics."
+        }
+      ]
+    },
     "productId": "grafana",
     "storyId": "vendor-neutral-instrumentation"
   }

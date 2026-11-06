@@ -1,22 +1,42 @@
 {
-  "hash": "5926d8370b93648a99a11ebab804d69be25be0c1d9f8762ec59648968c3890ea",
+  "hash": "12a4f846c3278e239b8a76301b81323b2789b1271bf872b95d1674e7bcf9142e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "GitCafe documents a REST API with an OpenAPI 3.1 description, personal access tokens for scripts and tools, idempotent request IDs, and a CLI whose `cafe api` reaches any REST endpoint and which manages repositories, pull requests, stacks and issues. Webhooks and an MCP server add further programmatic access, so a broad API surface clearly exists. However, no document states that the API matches the UI, and the probe could not locate the OpenAPI spec at common paths; this is a discoverability gap, not a contradiction. Missing for 10: an explicit API/UI parity statement, a reachable published OpenAPI spec to verify coverage (e.g. rulesets, CI views, stack land/restack, sync settings), and independent corroboration.",
+    "rationale": "GitCafe documents a first-party REST API with an OpenAPI 3.1 description, personal access tokens, idempotent `requestId` retries and 409 conflict protection. Its CLI can send authenticated requests to any REST endpoint and manages repositories, pull requests, stacks, issues and more. However, nothing states that the API matches everything the UI can do, and the probed OpenAPI paths returned 404, which leaves the spec's location and coverage unverified rather than contradicted. missing for 10: an explicit API/UI parity claim, an endpoint inventory covering UI-only features (rulesets, stack land/restack, sync setup, CI tab), a reachable OpenAPI spec, independent hands-on corroboration.",
     "evidenceIds": [
       "gitcafe-docs-13",
       "gitcafe-docs-14",
       "gitcafe-docs-15",
       "gitcafe-docs-22",
-      "gitcafe-docs-10",
-      "gitcafe-docs-12",
-      "gitcafe-docs-16",
-      "gitcafe-docs-23",
-      "gitcafe-probe-3"
+      "gitcafe-docs-43",
+      "gitcafe-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "gitcafe-docs-13",
+          "quote": "`cafe api <path>` sends an authenticated request to any REST API endpoint."
+        },
+        {
+          "evidenceId": "gitcafe-docs-14",
+          "quote": "The same description is available as OpenAPI 3.1 JSON for code generators"
+        },
+        {
+          "evidenceId": "gitcafe-docs-22",
+          "quote": "A personal access token lets scripts, CI jobs and tools use the REST API or Git over HTTPS as you, with only the permissions you grant."
+        },
+        {
+          "evidenceId": "gitcafe-docs-10",
+          "quote": "manages repositories, pull requests, stacks, issues and more from the terminal."
+        }
+      ]
+    },
     "productId": "gitcafe",
     "storyId": "openness-api-parity"
   }

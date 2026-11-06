@@ -1,21 +1,42 @@
 {
-  "hash": "9a15fbe121873039287c1dbeb8ff104e0082f50a680a753026db734078842723",
+  "hash": "4b401075a8b857e9d5f5928428584618a4f5f8bb251fb3520dd651741af0da60",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The op CLI integrates with the local desktop app and can be scripted to list and read vault items (e.g. `op item list --vault Private`), so an agent can query it without screen-scraping. Connect Servers add a private REST API over vaults, and the SDKs and service accounts allow programmatic secret access. The Environments MCP server, however, deliberately does not return secrets to the agent. Missing for 10: explicit evidence of fetching one-time codes programmatically, a documented local agent-facing endpoint (as opposed to a CLI or a self-hosted Connect deployment), and independent hands-on corroboration of agents querying the vault.",
+    "rationale": "1Password ships its own programmatic surfaces for vault access. The op CLI integrates with the local desktop app and can list vault items, Connect Servers expose items via a private REST API, and the SDKs read secrets programmatically. An agent can therefore query secrets without screen-scraping. However, the evidence does not show agent retrieval of one-time codes, Connect is aimed at company infrastructure rather than a local desktop endpoint, and the official Environments MCP server explicitly does not return secrets to the agent. missing for 10: documented agent retrieval of TOTP/one-time codes via a programmatic surface, a local agent-facing endpoint (e.g. MCP) that actually returns vault secrets, independent or hands-on corroboration of agent use.",
     "evidenceIds": [
       "1password-docs-1",
       "1password-docs-2",
       "1password-docs-4",
-      "1password-docs-5",
       "1password-docs-7",
-      "1password-docs-26",
       "1password-probe-rt-1",
       "1password-probe-rt-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can expose the vault through a local programmatic endpoint an agent can query for codes and secrets without screen-scraping the app",
+      "citations": [
+        {
+          "evidenceId": "1password-docs-1",
+          "quote": "integrate it with your 1Password app and sign in with Touch ID, Windows Hello, or another system authentication option"
+        },
+        {
+          "evidenceId": "1password-docs-2",
+          "quote": "op item list --vault Private"
+        },
+        {
+          "evidenceId": "1password-docs-4",
+          "quote": "1Password Connect Servers allow you to securely access your 1Password items and vaults in your company's apps and cloud infrastructure using a private REST API."
+        },
+        {
+          "evidenceId": "1password-docs-7",
+          "quote": "Load secrets into your code with secret references or read environment variables from 1Password Environments."
+        }
+      ]
+    },
     "productId": "1password",
     "storyId": "agent-local-endpoint"
   }

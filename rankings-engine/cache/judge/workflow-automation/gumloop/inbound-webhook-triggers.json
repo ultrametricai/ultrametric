@@ -1,18 +1,36 @@
 {
-  "hash": "5b6f2826e11aeee284e88e198f468f08230e592ce82849d98bcf77bdaa7255c3",
+  "hash": "18abbb9264f77823b91f0852e1d84b03da4225236a0db1fdead8214a2b478eb7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Gumloop's docs say a webhook trigger gives an agent its own unique URL. Any HTTP POST to that URL, from Stripe, GitHub, a cron job or an internal script, runs the agent, and fires when another app sends data, with no API key or SDK needed. This covers exposing a URL that starts a run from external requests. Missing for 10: detailed documentation of how the incoming payload is parsed or mapped into the run, details on securing or verifying the webhook, and independent or hands-on corroboration.",
+    "rationale": "Gumloop's docs describe a webhook trigger that gives an agent its own unique URL. Any external caller that can send an HTTP POST (Stripe, GitHub, scripts) starts an agent run, and no API key or SDK is needed. The data sent to the URL is described as firing the trigger, so the core of inbound webhook-triggered runs is covered. Missing for 10: detail on how the payload is parsed and mapped into the run, webhook authentication or signature verification, and independent or hands-on corroboration.",
     "evidenceIds": [
       "gumloop-docs-10",
       "gumloop-docs-3",
-      "gumloop-docs-16",
       "gumloop-docs-30",
-      "gumloop-docs-35"
+      "gumloop-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can expose a custom webhook URL that receives external HTTP requests and starts a workflow run with the payload",
+      "citations": [
+        {
+          "evidenceId": "gumloop-docs-10",
+          "quote": "A webhook trigger gives an agent its own URL. Anything that can send an HTTP POST — Stripe, GitHub, a cron job, an internal script — runs the agent by calling it."
+        },
+        {
+          "evidenceId": "gumloop-docs-3",
+          "quote": "a webhook trigger to fire when another app sends data to a unique URL."
+        },
+        {
+          "evidenceId": "gumloop-docs-30",
+          "quote": "Webhooks, covered next, let an outside service run an agent by calling a URL — no API key, SDK, or polling loop needed."
+        }
+      ]
+    },
     "productId": "gumloop",
     "storyId": "inbound-webhook-triggers"
   }

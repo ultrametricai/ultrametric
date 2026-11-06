@@ -1,25 +1,44 @@
 {
-  "hash": "ddc65bf1e78b91728ebfc9862cc347ca3c2f2347ad2393e88b348b6cca6d3e5e",
+  "hash": "ec64499c9a751ea369913c67c213ee395eafa8fbba7cfe3bb50e62935761e714",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence documents a path from a local Docker quickstart prototype to Elastic Cloud Serverless, which autoscales, manages clusters, and separates search and index tiers for independent scaling. Self-managed deployments are acknowledged to involve clusters, nodes, and data tiers, and community users report running multi-node clusters via the ECK operator or StatefulSets with cluster-health gating. However, nothing in the pack documents replication or replica configuration, high-availability guarantees, or scale at hundreds of millions of documents, and a cited Jepsen analysis found document loss during network partitions on an older version. Missing for 10: documented replication/replica and shard scaling guidance, explicit HA/failover documentation, evidence of scale to hundreds of millions of documents, and current independent corroboration of resiliency.",
+    "rationale": "Elastic documents a managed scaling path: Serverless projects autoscale with usage, and search and index tiers scale independently. The serverless docs also imply that self-managed deployments involve managing clusters, nodes and data tiers, and community users report running multi-node clusters via the ECK operator or StatefulSets. However, the pack has no first-party documentation of replication or high availability for self-managed clusters, and a community-cited Jepsen analysis of an older version reports lost documents during network partitions, which tempers confidence. Missing for 10: documented replica/shard replication and HA configuration, self-managed cluster scaling guidance, and evidence of operation at hundreds of millions of documents.",
     "evidenceIds": [
-      "elastic-docs-5",
-      "elastic-docs-17",
-      "elastic-docs-13",
       "elastic-docs-21",
       "elastic-docs-26",
       "elastic-docs-27",
       "elastic-docs-33",
       "elastic-docs-46",
-      "elastic-docs-48",
       "elastic-comm-8",
       "elastic-comm-9",
       "elastic-comm-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, documented scaling paths — clustering, replication, high availability — carry me from prototype to hundreds of millions of documents",
+      "citations": [
+        {
+          "evidenceId": "elastic-docs-21",
+          "quote": "instead of managing clusters, nodes, data tiers, and scaling, you create serverless projects that are fully managed and automatically scaled by Elastic"
+        },
+        {
+          "evidenceId": "elastic-docs-27",
+          "quote": "Separating search and index tiers enables workloads to be scaled independently and reliably, with optimized hardware for each use case."
+        },
+        {
+          "evidenceId": "elastic-docs-46",
+          "quote": "Serverless scales to your actual usage in real time, so you don't size resources for peak load."
+        },
+        {
+          "evidenceId": "elastic-docs-26",
+          "quote": "Autoscaled: To meet your performance requirements, the system automatically adjusts to your workloads."
+        }
+      ]
+    },
     "productId": "elastic",
     "storyId": "scale-headroom"
   }

@@ -1,20 +1,42 @@
 {
-  "hash": "d69eefc2faedad3b213f81620175dfcb640046417c1309ab45493fc11438a407",
+  "hash": "81affb673811a85124f517d9b628dfc2168f3336253f3fdfc79e4a0371ba44ae",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The docs show tables pulled into pandas DataFrames with source-page provenance (docs-15), schema-driven JSON extraction (docs-13, docs-14, docs-42), and table row extraction for repeating entities (docs-34), which together cover typed, load-ready rows. One early hands-on user found table numbers did not come out in tabular form (comm-6), but that is an interface-confusion report rather than a concrete refutation of the documented DataFrame and schema outputs. Missing for 10: independent hands-on confirmation that the typed table output needs no manual cleanup, and documented paths for loading into or mapping to database schemas and types.",
+    "rationale": "LlamaParse documents its own path from tables to structured output: Extract returns JSON matching a user-defined schema, table row extraction handles repeating entities, and Parse examples pull every table into pandas DataFrames with page provenance. That covers the core of turning tables into typed rows or JSON. There is no evidence that the output loads into a database without manual cleanup, and one hands-on user found table numbers were not returned in tabular form, which lowers confidence. missing for 10: evidence that output is cleanly typed and database-load-ready without post-processing, any database loader or sink for extracted rows, independent hands-on confirmation of schema-conformant table-row accuracy.",
     "evidenceIds": [
-      "llamaparse-docs-15",
-      "llamaparse-docs-34",
-      "llamaparse-docs-13",
-      "llamaparse-docs-14",
       "llamaparse-docs-42",
+      "llamaparse-docs-13",
+      "llamaparse-docs-34",
+      "llamaparse-docs-15",
       "llamaparse-docs-2",
       "llamaparse-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I turn extracted tables into typed rows/JSON I can load into a database without manual cleanup",
+      "citations": [
+        {
+          "evidenceId": "llamaparse-docs-42",
+          "quote": "Extract returns JSON in your schema"
+        },
+        {
+          "evidenceId": "llamaparse-docs-34",
+          "quote": "Extract repeating entities from documents using table row extraction"
+        },
+        {
+          "evidenceId": "llamaparse-docs-15",
+          "quote": "pull every table out into pandas DataFrames with source-page provenance"
+        },
+        {
+          "evidenceId": "llamaparse-docs-2",
+          "quote": "turns PDFs, scans, tables, and charts into clean markdown, text, or JSON"
+        }
+      ]
+    },
     "productId": "llamaparse",
     "storyId": "table-to-structured-rows"
   }

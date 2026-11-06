@@ -1,17 +1,35 @@
 {
-  "hash": "b6a73ef1e47233ec37e85d4a317ca5b98ec7174d84d8c35620e176130c0ef5aa",
+  "hash": "b36ca47a42decbb4a36890122b502cc7154addf3cbf2b913d87eb329a91dadef",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Orama documents a bulk-insert path: `insertMultiple` is recommended for large record sets, avoids blocking the event loop, and has a configurable batch size (default 1000). Orama Cloud data sources can also be updated independently. However, the evidence never shows async task or job tracking that reports when indexing completes, and nothing demonstrates throughput at millions of documents. missing for 10: async indexing task/status tracking, evidence of million-document-scale import performance, Cloud bulk-ingestion API docs, independent benchmarks or hands-on corroboration.",
+    "rationale": "Orama documents its own bulk-insert API, `insertMultiple`, with a configurable batch size (default 1000), recommended for large record sets because it avoids blocking the event loop. However, nothing shows async task tracking or indexing-completion status, and there is no evidence of throughput at million-document scale. Missing for 10: async task/job tracking to know when indexing completes, evidence of import speed at millions of documents, independent or hands-on corroboration.",
     "evidenceIds": [
-      "orama-docs-16",
-      "orama-docs-24",
       "orama-docs-39",
-      "orama-docs-48"
+      "orama-docs-16",
+      "orama-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can bulk-import millions of documents quickly, with async task tracking to know when indexing completes",
+      "citations": [
+        {
+          "evidenceId": "orama-docs-39",
+          "quote": "You can pass a third, optional, parameter to change the batch size (default: 1000)."
+        },
+        {
+          "evidenceId": "orama-docs-16",
+          "quote": "Inserting a large number of documents in a loop could potentially block the event loop. Instead `insertMultiple` handles this case better."
+        },
+        {
+          "evidenceId": "orama-docs-24",
+          "quote": "If you have a lot of records, we suggest using the `insertMultiple` function"
+        }
+      ]
+    },
     "productId": "orama",
     "storyId": "fast-bulk-indexing"
   }

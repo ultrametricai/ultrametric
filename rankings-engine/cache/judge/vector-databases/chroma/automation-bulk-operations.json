@@ -1,19 +1,31 @@
 {
-  "hash": "5a8c2e86c827c537b2f7ab40e5e1af704b57648996438dd6a5e8201551d84930",
+  "hash": "ecb82da065724b0190d35ab568cbe2ec95d5f8e4639ed6bbad68ec9f4bea3cae",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "chroma",
-    "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Chroma's docs show batch-style read operations: querying a collection with a list of query texts at once, and `.get`/`.query` combining `where_document` and metadata filters to act on many matching items. Copy-on-write forking duplicates an entire collection in one request. However, nothing in the pack documents bulk writes such as batch add, upsert, update or delete-by-filter, so bulk operation is only shown on the read side. Missing for 10: documented batch add/upsert/update/delete across many items, delete-by-filter, bulk operations via the CLI or MCP server, and independent hands-on corroboration of bulk workflows.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Chroma's docs show batched reads: a single query call takes a list of query texts, and .get/.query can filter across many items at once with metadata and document filters. Nothing in the pack documents bulk writes, updates or deletes across many items, so support is thin and limited to retrieval. Missing for 10: documented bulk add/upsert/update/delete operations, batch size limits or performance guidance, filter-based bulk mutation, independent or hands-on corroboration of bulk workflows.",
     "evidenceIds": [
       "chroma-docs-2",
-      "chroma-docs-4",
-      "chroma-docs-13",
-      "chroma-docs-26",
-      "chroma-comm-1"
-    ]
+      "chroma-docs-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "chroma-docs-2",
+          "quote": "You can query the collection with a list of query texts, and Chroma will return the n most similar results."
+        },
+        {
+          "evidenceId": "chroma-docs-4",
+          "quote": ".get and .query can handle where_document search combined with metadata filtering"
+        }
+      ]
+    },
+    "productId": "chroma",
+    "storyId": "automation-bulk-operations"
   }
 }

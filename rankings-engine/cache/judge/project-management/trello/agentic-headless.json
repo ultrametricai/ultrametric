@@ -1,19 +1,40 @@
 {
-  "hash": "b939bd2b6d4af063a7e51827d517ba00bf8283d561028dba390c15a3de5ce6f0",
+  "hash": "e25cd7164b316e957bc5ea9a78568eb692e0485b099a4ea1a909771cef5be074",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Trello documents its own REST API, which can be driven headlessly from scripts or CI. The docs cover generating an API key, obtaining a user token via the 1/authorize route or OAuth1.0, configurable token scope and expiry, and Batch, Search and Webhooks endpoints. However, there is no evidence of a CLI, CI-specific guidance, or a machine-readable OpenAPI spec (probes for one returned 404), so headless use means hand-rolling API calls. Missing for 10: an official CLI or CI integration, CI/headless automation docs, an OpenAPI spec, and independent corroboration of headless/CI use.",
+    "rationale": "Trello documents its own REST API, authenticated with an API key and a user token, plus batch and webhook endpoints, so it can be driven programmatically without the UI. Token length and scope are configurable, which suggests non-interactive scripted use is possible. Nothing in the pack describes CI usage, a CLI, or a dedicated headless or service-account mode, and the token flow relies on a delegated user authorization step. Missing for 10: an official CLI or headless runner, documented CI/CD integration guidance, service-account or non-interactive auth for pipelines, and independent hands-on corroboration of CI automation.",
     "evidenceIds": [
       "trello-docs-17",
-      "trello-docs-18",
       "trello-docs-19",
       "trello-docs-20",
-      "trello-docs-21",
-      "trello-probe-3"
+      "trello-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "trello-docs-17",
+          "quote": "navigate to the Trello Auth tab and select the option Generate a new API Key."
+        },
+        {
+          "evidenceId": "trello-docs-19",
+          "quote": "The length of access and scope of permissions are all configurable via query params"
+        },
+        {
+          "evidenceId": "trello-docs-20",
+          "quote": "There are two ways to authorize a client and receive a User Token."
+        },
+        {
+          "evidenceId": "trello-docs-21",
+          "quote": "Batch ... Search ... Webhooks"
+        }
+      ]
+    },
     "productId": "trello",
     "storyId": "agentic-headless"
   }

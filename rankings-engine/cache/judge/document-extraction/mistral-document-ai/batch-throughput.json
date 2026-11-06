@@ -1,17 +1,31 @@
 {
-  "hash": "e174eac504ce9932b784b88e43b2260cfa14b3e2d6ee5d4c27eb1610f2306a5e",
+  "hash": "f84028031001e36f72a10c4d62e049fdd3b071e0ca50ca68ee2f43e8b02ee21b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "The OCR model page lists a Batching /v1/batch endpoint, and a community tester mentions batched pricing, so an async bulk path exists. However, the pack has no documented rate limits or throughput guarantees. One hands-on report says a 900-page synchronous API submission timed out and had to be split into chunks. Missing for 10: documented rate limits/quotas, throughput or SLA figures for million-page workloads, detailed batch-job docs (job sizes, retries, completion times), independent evidence of high-volume batch runs.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The OCR 4.1 model page lists a batching endpoint (/v1/batch), and a community tester mentions batched pricing, so Mistral has a first-party bulk path. However, nothing documents rate limits, throughput, or million-page scale, and one user reports a 900-page synchronous API call timed out and had to be split into chunks. missing for 10: documented rate limits/quotas, throughput or latency guarantees for batch jobs, batch job docs (size limits, completion windows), independent evidence of million-page batch runs.",
     "evidenceIds": [
       "mistral-document-ai-docs-37",
       "mistral-document-ai-comm-1",
-      "mistral-document-ai-comm-2",
-      "mistral-document-ai-docs-42"
+      "mistral-document-ai-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I push high-volume batches — millions of pages — with documented rate limits and predictable throughput",
+      "citations": [
+        {
+          "evidenceId": "mistral-document-ai-docs-37",
+          "quote": "Batching /v1/batch"
+        },
+        {
+          "evidenceId": "mistral-document-ai-comm-1",
+          "quote": "was confused about what 'batched' pricing ($1/1000 pages, or 2k pages batched) actually means"
+        }
+      ]
+    },
     "productId": "mistral-document-ai",
     "storyId": "batch-throughput"
   }

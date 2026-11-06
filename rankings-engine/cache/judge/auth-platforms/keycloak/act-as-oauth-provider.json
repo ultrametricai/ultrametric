@@ -1,25 +1,45 @@
 {
-  "hash": "51e3b9e937e5992eabfe1f7e6f738f8a2e32cc26fcf0a320b33dfb5d6cfb6cb3",
+  "hash": "4200b6ebe5c510ef8136372cfb2b10cad1ed75d2ab4c96993fb08a83c61a79c9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Keycloak is a standards-based OAuth 2.0/OpenID Connect authorization server. You register clients, including through a dynamic client registration endpoint, and it exposes a well-known discovery endpoint plus introspection and revocation endpoints. It supports client-credentials and device grants, and themes let the login carry your app's branding. Together these let a developer stand up a \"Sign in with my app\" provider that issues tokens to third-party clients. The main caveat is that Keycloak runs as a separate server in front of your app, not inside it; your existing user store can be connected through a custom user-federation provider. Missing for 10: evidence of a third-party consent/authorization screen and per-client scope consent, and independent hands-on corroboration of exposing Keycloak to external third-party developers.",
+    "rationale": "Keycloak is itself a standards-based OAuth 2.0/OIDC provider. It exposes discovery, token introspection, revocation, device-grant and client-credentials endpoints, and supports dynamic client registration, so a developer can register third-party clients and issue them tokens under their own realm. It does this as a separate server, though, rather than by turning the developer's own application into the provider, and the third-party-facing parts of the flow are thin in the evidence. missing for 10: evidence of embedding the provider in the developer's own app rather than running a standalone server, third-party consent-screen and branded \"Sign in with my app\" documentation, independent hands-on corroboration of third-party client onboarding.",
     "evidenceIds": [
       "keycloak-docs-1",
-      "keycloak-docs-3",
-      "keycloak-docs-4",
       "keycloak-docs-23",
       "keycloak-docs-39",
+      "keycloak-docs-74",
       "keycloak-docs-52",
       "keycloak-docs-53",
-      "keycloak-docs-50",
       "kc-supp-client-credentials",
       "kc-supp-device-grant",
-      "keycloak-docs-7",
-      "keycloak-docs-47"
+      "keycloak-docs-50"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can turn my own application into an OAuth provider that issues tokens to third-party clients (\"Sign in with my app\")",
+      "citations": [
+        {
+          "evidenceId": "keycloak-docs-1",
+          "quote": "Keycloak is based on standard protocols and provides support for OpenID Connect, OAuth 2.0, and SAML."
+        },
+        {
+          "evidenceId": "keycloak-docs-39",
+          "quote": "The dynamic client registration endpoint is used to dynamically register clients."
+        },
+        {
+          "evidenceId": "keycloak-docs-23",
+          "quote": "Keycloak exposes a set of endpoints that applications and services can use to authenticate and authorize their users."
+        },
+        {
+          "evidenceId": "keycloak-docs-53",
+          "quote": "The token revocation endpoint is used to revoke tokens. Both refresh tokens and access tokens are supported by this endpoint."
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "act-as-oauth-provider"
   }
