@@ -1,24 +1,48 @@
 {
-  "hash": "d55366bb08854df6c822b1bd802680c528dc4d75462d84c81dace40b197b98a6",
+  "hash": "caf85d6bbd6bfd9217afacc638e63430b762ada62322a57ef89e85ed84a55fca",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "helixdb",
-    "storyId": "managed-cloud-offering",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Helix Cloud is a documented managed offering with its own gateway, limits, security and multi-tenancy docs, and a community post confirms it as a paid hosted plan. Provisioning is scriptable through the official CLI: `helix auth login`, workspace/project/database/cluster listing with JSON output, and `helix database create --project --name --slug --plan`. The Cloud MCP endpoint also exposes customer administration tools. Missing for 10: a documented provisioning REST API or IaC/Terraform support beyond the CLI, programmatic API token creation (tokens are dashboard-managed), and independent hands-on corroboration of cloud provisioning.",
+    "rationale": "Helix Cloud is a hosted service with a cloud gateway, MCP administration endpoint, limits and security docs. The official CLI documents programmatic database creation with `helix database create --project --name --slug --plan` and lists clusters and databases. However, the evidence never describes the managed-operations scope (backups, scaling, upgrades), and API tokens are managed through the dashboard rather than programmatically. Missing for 10: explicit documentation of fully managed operations (backups/scaling/HA), a documented provisioning REST API or SDK beyond the CLI, programmatic credential provisioning, independent or hands-on corroboration of cloud provisioning.",
     "evidenceIds": [
       "helixdb-docs-28",
-      "helixdb-docs-18",
       "helixdb-docs-27",
-      "helixdb-docs-24",
+      "helixdb-docs-18",
       "helixdb-docs-23",
+      "helixdb-docs-24",
       "helixdb-docs-25",
-      "helixdb-docs-13",
-      "helixdb-docs-16",
-      "helixdb-comm-8",
-      "helixdb-probe-4"
-    ]
+      "helixdb-docs-16"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can use a fully managed cloud version of the database with programmatic provisioning",
+      "citations": [
+        {
+          "evidenceId": "helixdb-docs-28",
+          "quote": "helix database create --project <id> --name <name> --slug <slug> --plan <plan>"
+        },
+        {
+          "evidenceId": "helixdb-docs-27",
+          "quote": "helix cluster list [--project-id <id> | --workspace-id <id>] [--format human|json]"
+        },
+        {
+          "evidenceId": "helixdb-docs-23",
+          "quote": "The same contract is available from a local server and a Helix Cloud gateway."
+        },
+        {
+          "evidenceId": "helixdb-docs-24",
+          "quote": "Query, observability, and customer administration tools share this endpoint."
+        },
+        {
+          "evidenceId": "helixdb-docs-25",
+          "quote": "Tokens are managed through the Helix dashboard."
+        }
+      ]
+    },
+    "productId": "helixdb",
+    "storyId": "managed-cloud-offering"
   }
 }

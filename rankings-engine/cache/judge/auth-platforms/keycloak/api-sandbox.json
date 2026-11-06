@@ -1,20 +1,38 @@
 {
-  "hash": "d5ef5307df0042c8fcd673afc82a779388f74e77a606615accb78f76a58ed718",
+  "hash": "1fd987218bb527263238e2d886b52c5ea3da760a3ec34264d62929074e3afce7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Keycloak has no named sandbox feature, but its docs give the pieces to build one. You can start a throwaway local dev instance with a single `docker run ... start-dev` command, use realms as isolated tenants, and import or export realms as JSON to seed test environments. A community user notes that configuration lives in the database and that there is 'no easy supported way to test some changes before production', so promoting tested changes takes real extra work. Missing for 10: a first-party sandbox or test-mode environment, a documented dev-to-prod promotion workflow, test or synthetic data tooling, and independent hands-on corroboration of sandbox use.",
+    "rationale": "Keycloak ships its own development mode (`start-dev`), which runs a throwaway local instance in Docker, and its realms act as isolated tenants. Realms can be exported and imported as JSON, so a test environment can be seeded separately from production. This is real sandbox isolation through separate instances or realms, not a dry-run mode. However, there is no dedicated hosted sandbox or test-mode feature, and community users report no supported way to test config changes and promote them to production. missing for 10: dedicated sandbox/test-mode feature, first-party test-to-production promotion workflow, independent corroboration of sandbox use for agent testing.",
     "evidenceIds": [
       "keycloak-docs-2",
       "keycloak-docs-27",
       "keycloak-docs-20",
       "keycloak-docs-10",
-      "keycloak-docs-76",
       "keycloak-docs-59",
-      "keycloak-comm-19"
+      "keycloak-comm-17-refresh-9b95d892e98065c6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "keycloak-docs-2",
+          "quote": "docker run -p 127.0.0.1:8080:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:26.7.3 start-dev"
+        },
+        {
+          "evidenceId": "keycloak-docs-20",
+          "quote": "Each realm allows an administrator to create isolated groups of applications and users."
+        },
+        {
+          "evidenceId": "keycloak-docs-10",
+          "quote": "Import and export realms as JSON files."
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "api-sandbox"
   }

@@ -1,22 +1,45 @@
 {
-  "hash": "cedfdb812be22349856d95818595423a4372bccd202af25b018fe9e70e13e749",
+  "hash": "f632cb2b137a0dbff2819722b7f4bd5495722ebc10f32472f0833b0705cbec0b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Keycloak documents an Administration REST API that covers realms, users, roles and clients, and the kcadm.sh Admin CLI scripts the same operations. Machine access is backed by client-credentials service accounts, built-in per-realm SCIM endpoints, a Protection API and documented OIDC endpoints with a well-known discovery document. A community user who drives the API from Ansible confirms it works but calls it inconsistent and hard to keep idempotent, and probes found no OpenAPI spec at the common website paths. missing for 10: a published machine-readable OpenAPI spec at a discoverable URL, independent evidence that the API behaves consistently and idempotently for automation.",
+    "rationale": "Keycloak documents an Administration REST API, and its Admin CLI (kcadm.sh) runs the same realm, user, role and client operations over that API. It also documents standard OIDC endpoints (well-known discovery, client registration, introspection, revocation), a SCIM API and an authorization Protection API, so an AI-native user can drive the product programmatically. A hands-on community report says some Admin API GETs return incomplete payloads and some POSTs don't persist, which makes idempotent automation hard; that is a quality caveat, not a contradiction. Missing for 10: a discoverable machine-readable OpenAPI spec (probed paths returned 404) and independent corroboration that the Admin API behaves consistently.",
     "evidenceIds": [
       "keycloak-docs-6",
+      "keycloak-docs-83",
       "kc-supp-kcadm",
-      "kc-supp-client-credentials",
-      "kc-supp-scim",
-      "keycloak-docs-72",
       "keycloak-docs-74",
       "keycloak-docs-39",
-      "keycloak-comm-13",
+      "kc-supp-scim",
+      "keycloak-docs-72",
+      "keycloak-comm-13-refresh-673fd2eaf5b3ec2d",
       "keycloak-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "keycloak-docs-83",
+          "quote": "Administration REST API Documentation for the Adminstration RESTful API"
+        },
+        {
+          "evidenceId": "kc-supp-kcadm",
+          "quote": "the same operations are available over the Admin REST API"
+        },
+        {
+          "evidenceId": "keycloak-docs-74",
+          "quote": "It lists endpoints and other configuration options relevant to the OpenID Connect implementation in Keycloak."
+        },
+        {
+          "evidenceId": "keycloak-docs-39",
+          "quote": "The dynamic client registration endpoint is used to dynamically register clients."
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "agentic-public-api"
   }

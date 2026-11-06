@@ -1,18 +1,37 @@
 {
-  "hash": "603cacaa119eb75b95fbb3808856b6154a43a401b5875992ce4f94ed13456716",
+  "hash": "55688cdd3c6cab41677621bc36428d4d4d0511f15c4da6ed0ea4581b98e5e607",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "lancedb",
-    "storyId": "live-upserts-freshness",
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The docs show row deletion via `table.delete(...)` and describe reindexing so FTS and vector indexes reflect new data, using a manually triggered incremental `optimize()`. Table versioning gives snapshot semantics. However, the evidence never shows an upsert/merge operation or documents read freshness/consistency guarantees, and the need to trigger `optimize()` manually suggests index freshness is not automatic. Missing for 10: documented upsert/merge-insert API, explicit freshness/consistency behavior (e.g., read consistency intervals, whether unindexed rows are searchable), evidence that changes appear in search quickly without manual reindex, independent hands-on corroboration.",
+    "rationale": "The docs show record deletion via `table.delete(...)`. They also document reindexing, including incremental indexing of updated data via `optimize()`, so the product has its own mutation and index-refresh path. However, the pack never shows an upsert/merge operation and never documents how quickly writes become visible in search or what consistency guarantees readers get. missing for 10: documented upsert/merge-insert, documented freshness/read-consistency semantics, evidence of continuous-write visibility latency, independent or hands-on corroboration.",
     "evidenceIds": [
       "lancedb-docs-33",
       "lancedb-docs-8",
       "lancedb-docs-23",
       "lancedb-docs-7"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can upsert and delete records continuously and have changes reflected in search results quickly, with documented freshness/consistency behavior",
+      "citations": [
+        {
+          "evidenceId": "lancedb-docs-33",
+          "quote": "table.delete(\"role = 'Traitor Knight'\").await.unwrap();"
+        },
+        {
+          "evidenceId": "lancedb-docs-8",
+          "quote": "You can manually trigger an incremental indexing operation on updated data using the `optimize()` method on a table."
+        },
+        {
+          "evidenceId": "lancedb-docs-23",
+          "quote": "Reindexing is the process of updating the index to account for new data -- this applies to either a full-text search (FTS) index or a vector index."
+        }
+      ]
+    },
+    "productId": "lancedb",
+    "storyId": "live-upserts-freshness"
   }
 }

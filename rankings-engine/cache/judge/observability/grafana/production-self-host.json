@@ -1,23 +1,49 @@
 {
-  "hash": "88b060e850f3e1c66ad3648b650deee1a6c54fc430830859cc3fe0f7c0679238",
+  "hash": "b60687010f567faeb334d6ef18033d901d2c0ff2d58da831f82fb48a2c28373d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The core self-hosted stack is evidenced. Grafana is open source on GitHub. Mimir is documented as horizontally scalable, highly available, multi-tenant storage with a monolithic mode. Loki's architecture (label-only indexing, chunks in S3/GCS or the local filesystem) and its migrate/upgrade guidance are documented, and Tempo supports open tracing protocols. Community reports note real friction: the stack has grown into many services, and upgrading from Grafana 7 left 'legacy alerts'. Missing for 10: documented upgrade paths for Grafana, Mimir and Tempo (only Loki's is evidenced), end-to-end production architecture docs for the whole stack, self-hosted equivalents of Cloud-documented features such as SLO and incident/on-call, and independent hands-on reports of running the full stack in production.",
+    "rationale": "Grafana's own docs show the core stack can be self-hosted. Mimir is described as horizontally scalable and highly available, with a single-binary monolithic mode. Loki documents object-store or local-filesystem storage, an indexing design, and a path to migrate and upgrade, and Tempo works with open tracing protocols. Production architecture and upgrade guidance, however, are only evidenced for Loki and Mimir, and a community user reports that upgrading from Grafana 7 left 'legacy alerts' and that the stack has grown into many services to run. Missing for 10: documented production architecture and upgrade path for Grafana itself and Tempo; evidence that SLO, OnCall and incident features (documented only under Grafana Cloud) can be self-hosted; independent hands-on reports of self-hosted production deployments.",
     "evidenceIds": [
       "grafana-docs-22",
+      "grafana-docs-29",
       "grafana-docs-53",
       "grafana-docs-54",
       "grafana-docs-55",
       "grafana-docs-35",
-      "grafana-docs-29",
       "grafana-docs-37",
-      "grafana-docs-9",
-      "grafana-gh-1",
+      "grafana-probe-2",
       "grafana-comm-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an SRE, I can run the full observability stack self-hosted in production with documented architecture and upgrade path",
+      "citations": [
+        {
+          "evidenceId": "grafana-docs-22",
+          "quote": "migrate from previous deployments, and upgrade your Loki environment"
+        },
+        {
+          "evidenceId": "grafana-docs-53",
+          "quote": "provides horizontally scalable, highly available, multi-tenant, long-term storage for Prometheus and OpenTelemetry metrics."
+        },
+        {
+          "evidenceId": "grafana-docs-54",
+          "quote": "Use the monolithic mode to get up and running with just one binary and no added dependencies."
+        },
+        {
+          "evidenceId": "grafana-docs-55",
+          "quote": "Log data itself is then compressed and stored in chunks in object stores such as Amazon Simple Storage Service (S3) or Google Cloud Storage (GCS), or even locally on the filesystem."
+        },
+        {
+          "evidenceId": "grafana-docs-37",
+          "quote": "You can use Tempo with open source tracing protocols, including Jaeger, Zipkin, or OpenTelemetry."
+        }
+      ]
+    },
     "productId": "grafana",
     "storyId": "production-self-host"
   }

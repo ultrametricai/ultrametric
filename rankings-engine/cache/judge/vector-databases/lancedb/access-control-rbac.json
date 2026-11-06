@@ -1,16 +1,31 @@
 {
-  "hash": "53e3e87f67a3ad19ab3efa3ab3e3e115d8ea244f28ef8f587422d658cc4151de",
+  "hash": "0df6effe871815529d58b91c435a12f75156b07a9e57d338be1ca29dcaa5ebb5",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "lancedb",
-    "storyId": "access-control-rbac",
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "LanceDB Enterprise documents client authentication to remote `db://` tables using API keys, described as a long-lived shared secret that works in every SDK, or OAuth 2.0. The pack shows no evidence of roles, RBAC, or per-table/per-collection permissions, so authentication is covered but granular authorization is not. Missing for 10: role-based access control, per-table/collection permission scoping, scoped or least-privilege API keys, any authorization docs beyond authentication, and independent corroboration.",
+    "rationale": "LanceDB Enterprise documents client authentication to remote `db://` tables using API keys and OAuth 2.0, which covers the API-key part of the story. Nothing in the pack shows role-based authorization or per-table/per-collection permissions on database operations, and the API keys are described as long-lived shared secrets. Missing for 10: role-based access control, per-table/collection permission scoping, operation-level (read/write) authorization, independent corroboration.",
     "evidenceIds": [
       "lancedb-docs-11",
       "lancedb-docs-26"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can enforce granular access control (API keys, roles, per-collection permissions) on database operations",
+      "citations": [
+        {
+          "evidenceId": "lancedb-docs-11",
+          "quote": "LanceDB Enterprise supports two ways for clients to authenticate against a `db://` remote table: **API keys** ... **OAuth 2.0**"
+        },
+        {
+          "evidenceId": "lancedb-docs-26",
+          "quote": "API keys — a long-lived shared secret passed as `api_key` on connect. Works in every SDK."
+        }
+      ]
+    },
+    "productId": "lancedb",
+    "storyId": "access-control-rbac"
   }
 }

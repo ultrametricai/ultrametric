@@ -1,19 +1,32 @@
 {
-  "hash": "66797dc6d3b8bb6000163729ba108dd624caaef2098052cf76fe199dbd88c0f5",
+  "hash": "3023187dc4383bee5ef1e44e12cb9d96e4aac5730f2c729bb6b6862a34ebf37f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "NRQL is a SQL-like language for ad-hoc querying of New Relic data, and the logs UI lets you filter on specific attributes. Together these imply you can slice arbitrary fields without defining indexes first. However, nothing in the evidence explicitly claims grouping or faceting on high-cardinality fields such as user or request IDs. One hands-on report describes metric-name explosions from unique URLs that ended with metric creation being locked, which suggests limits on high-cardinality handling. Missing for 10: explicit documentation of group-by/facet on high-cardinality attributes, a statement that no pre-aggregation or indexing is needed, and independent corroboration that high-cardinality queries work at scale.",
+    "rationale": "New Relic documents NRQL, a SQL-like query language over its data, and a logs UI that can filter by text or other attributes. That is direct but thin support for ad-hoc filtering. Nothing in the pack addresses grouping by high-cardinality fields, or whether querying works without pre-aggregation or indexes. One community report describes metric-name explosions from high-traffic unique URLs, which suggests cardinality limits on the metrics side. missing for 10: explicit group-by/facet documentation, documented support for high-cardinality attributes like user or request IDs, confirmation that no pre-aggregation or indexing is required, independent hands-on corroboration.",
     "evidenceIds": [
       "new-relic-docs-32",
-      "new-relic-docs-3",
-      "new-relic-docs-47",
       "new-relic-docs-37",
-      "new-relic-comm-16",
-      "new-relic-comm-10"
+      "new-relic-docs-3",
+      "new-relic-comm-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can group and filter by high-cardinality fields (user id, request id) without pre-aggregating or defining indexes first",
+      "citations": [
+        {
+          "evidenceId": "new-relic-docs-32",
+          "quote": "New Relic Query Language (NRQL) is a SQL-like language for querying your New Relic data."
+        },
+        {
+          "evidenceId": "new-relic-docs-37",
+          "quote": "From the main logs UI page, you can see all your logs and then filter down to logs with specific text, or other attributes."
+        }
+      ]
+    },
     "productId": "new-relic",
     "storyId": "high-cardinality-analysis"
   }

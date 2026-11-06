@@ -1,20 +1,42 @@
 {
-  "hash": "29351661669bebbf8f22fb18f2405ac0c1cb618babe89ff251c771f891b859f5",
+  "hash": "ebc7d05476e0d65ba818c474e463fe7c9abb9b8e3c124d3fb227915211555f3f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Honeycomb's docs say it natively ingests OpenTelemetry over OTLP (gRPC, HTTP/protobuf, HTTP/JSON). They also state that apps already instrumented with OpenTelemetry can send OTLP data directly, so standard OTel instrumentation works without code changes. Honeycomb also steers users off its proprietary Beelines and other legacy instrumentation onto OTel SDKs, which supports the instrument-once, portable-backend model. Missing for 10: explicit documentation of backend-neutral routing or switching away (e.g., Collector-based fan-out to multiple backends), and independent or hands-on corroboration of migrating between backends without re-instrumenting.",
+    "rationale": "Honeycomb takes OpenTelemetry data natively over OTLP (gRPC, HTTP/protobuf, HTTP/JSON). It also documents that apps already instrumented with OpenTelemetry can send OTLP directly, so you can switch to Honeycomb without re-instrumenting. Separate docs guide migrating proprietary instrumentation and Beelines to OTel SDKs. missing for 10: explicit documentation of moving telemetry out of Honeycomb to another backend (or fanning out to several) without code changes, and independent or hands-on corroboration of backend portability.",
     "evidenceIds": [
       "honeycomb-docs-1",
       "honeycomb-docs-2",
       "honeycomb-docs-15",
       "honeycomb-docs-30",
-      "honeycomb-docs-31",
       "honeycomb-docs-46",
       "honeycomb-docs-47"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an SRE, I can instrument once with open standards and switch backends without re-instrumenting my code",
+      "citations": [
+        {
+          "evidenceId": "honeycomb-docs-15",
+          "quote": "If your application is already instrumented with OpenTelemetry, you can send OpenTelemetry Protocol (OTLP) data directly to Honeycomb."
+        },
+        {
+          "evidenceId": "honeycomb-docs-2",
+          "quote": "Honeycomb supports receiving telemetry data via OpenTelemetry’s native protocol, OTLP, over gRPC, HTTP/protobuf, and HTTP/JSON."
+        },
+        {
+          "evidenceId": "honeycomb-docs-1",
+          "quote": "Instrument your applications with OpenTelemetry, the open-source standard for collecting telemetry, and send traces, logs, and metrics to Honeycomb."
+        },
+        {
+          "evidenceId": "honeycomb-docs-46",
+          "quote": "otel-migration: How to migrate proprietary or legacy instrumentation to OpenTelemetry."
+        }
+      ]
+    },
     "productId": "honeycomb",
     "storyId": "vendor-neutral-instrumentation"
   }

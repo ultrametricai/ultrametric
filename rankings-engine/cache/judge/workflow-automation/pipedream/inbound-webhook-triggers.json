@@ -1,18 +1,36 @@
 {
-  "hash": "0c11141c0168222849fda303ef8097eea558a73aab7423c7f466879f99652de1",
+  "hash": "1667e6873d98a3a6afcac41107ef3617a522666673ffb8b0036bfab40096e951",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipedream's trigger docs list HTTP / Webhook as a first-class trigger type alongside Schedule, Email and RSS. Selecting a test event and sending its data into the workflow shows that trigger event payloads flow into runs. A community thread independently confirms HTTP triggers exist, noting limits of a 100kb max body, 10 req/s and 10s execution, which are real constraints on payload handling. Missing for 10: explicit documentation of the generated unique webhook URL, details on how request body/headers/query are exposed to workflow steps, and custom response handling.",
+    "rationale": "Pipedream's docs list an HTTP / Webhook trigger as a first-party workflow trigger type. A community thread confirms HTTP triggers run with execution limits (100kb max body size, 10 req/s, 10s per execution). The evidence never shows the trigger creating a custom endpoint URL, or the incoming request payload reaching the workflow run, so the story is only partly evidenced. missing for 10: documentation of a generated or custom webhook URL, documentation of how the HTTP request payload/body/headers are passed into the workflow run, in-depth first-party docs on the HTTP trigger, hands-on corroboration of end-to-end webhook-triggered runs.",
     "evidenceIds": [
-      "pipedream-docs-12",
       "pipedream-docs-25",
-      "pipedream-docs-36",
+      "pipedream-docs-12",
       "pipedream-docs-13",
       "pipedream-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can expose a custom webhook URL that receives external HTTP requests and starts a workflow run with the payload",
+      "citations": [
+        {
+          "evidenceId": "pipedream-docs-25",
+          "quote": "Today, we support the following triggers: ... HTTP / Webhook ... Schedule ... Email ... RSS"
+        },
+        {
+          "evidenceId": "pipedream-docs-13",
+          "quote": "Then you can select a specific test event and manually trigger your workflow with that event data by clicking Send Test Event."
+        },
+        {
+          "evidenceId": "pipedream-comm-2",
+          "quote": "100kb max body-size, rate-limit at 10 req/s, 10s per execution for HTTP triggers"
+        }
+      ]
+    },
     "productId": "pipedream",
     "storyId": "inbound-webhook-triggers"
   }

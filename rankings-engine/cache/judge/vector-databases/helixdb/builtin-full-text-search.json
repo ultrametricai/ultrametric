@@ -1,20 +1,42 @@
 {
-  "hash": "e45fe32bb85d94df16a414e89d6284e59b2b6d41777c61d8c585b277f4aca050",
+  "hash": "501878dd1943b1c61d69c4d897a1f0fecf2bda70f00af8738f6552b3fe54f6c8",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "helixdb",
-    "storyId": "builtin-full-text-search",
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "First-party docs describe durable BM25 text indexes over string properties on nodes and edges. They also describe full-text search living in the same engine as graph and vector data, with ACID transactions spanning text data, so no separate store needs to be synchronized. The llms.txt probe corroborates that BM25 full-text search is built in. Missing for 10: independent or hands-on corroboration of text search quality, and documentation detail on tokenization/analyzers, phrase or fuzzy queries, and hybrid scoring.",
+    "rationale": "HelixDB's own docs describe durable BM25 text indexes over string properties on nodes and edges. They also say graph, vector, and text retrieval live in one engine without synchronizing a separate text store, and a probe of llms.txt confirms built-in BM25 full-text search. missing for 10: in-depth documentation of query syntax and text-search features (tokenization, phrase/fuzzy matching, analyzers), and independent or hands-on corroboration that keyword search works well in practice.",
     "evidenceIds": [
       "helixdb-docs-4",
       "helixdb-docs-14",
-      "helixdb-docs-9",
       "helixdb-docs-30",
       "helixdb-probe-1",
-      "helixdb-docs-10"
-    ]
+      "helixdb-docs-9"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can run keyword/full-text search over documents inside the database without bolting on a separate search engine",
+      "citations": [
+        {
+          "evidenceId": "helixdb-docs-4",
+          "quote": "Text indexes provide durable BM25 search over string properties on nodes or edges."
+        },
+        {
+          "evidenceId": "helixdb-docs-14",
+          "quote": "Keeping these retrieval models in one database lets an application work with connected entities, semantically similar content, and exact terms without synchronizing separate graph, vector, and text stores."
+        },
+        {
+          "evidenceId": "helixdb-docs-30",
+          "quote": "Knowledge graphs, vectors, temporal & full-text search in one engine"
+        },
+        {
+          "evidenceId": "helixdb-probe-1",
+          "quote": "HelixDB combines a property graph, approximate vector search, and BM25 full-text search behind one operatio"
+        }
+      ]
+    },
+    "productId": "helixdb",
+    "storyId": "builtin-full-text-search"
   }
 }

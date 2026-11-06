@@ -1,17 +1,36 @@
 {
-  "hash": "fb4ae9ed1e3f527722b566f74088bc9771d3a07b252a52f674417e565004b950",
+  "hash": "6a1280c798e1307914fa1a28e489901055a9c9701b08226f7db1b2e55c74a251",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "moss",
-    "storyId": "agentic-scoped-keys",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Moss documents API key lifecycle management: creating, listing and deleting keys via the CLI, plus rotation with overlap. It also describes a separate pattern for browser and untrusted clients so the projectKey is never embedded, which hints at a narrower credential path. However, no evidence shows keys can be scoped to specific indexes, actions or read-only access. Missing for 10: explicit per-key scopes/permissions (e.g., read-only or per-index), documented short-lived agent tokens, independent corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Moss documents its own key management: keys can be created, listed, deleted and rotated with overlap through the CLI. It also documents a separate pattern for browser or untrusted clients so the full projectKey is never embedded, which hints at a reduced-privilege credential path. However, the evidence never shows permission scopes, per-index or read-only restrictions, or explicitly agent-scoped tokens. Missing for 10: documented scope/permission model for keys, read-only or per-index restriction, explicit agent-specific least-privilege credential issuance, independent corroboration.",
     "evidenceIds": [
-      "moss-docs-20",
       "moss-docs-21",
+      "moss-docs-20",
       "moss-docs-15"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "moss-docs-21",
+          "quote": "You can also manage keys from the terminal with the Moss CLI: `moss login`, then `moss keys create`, `list` or `delete`."
+        },
+        {
+          "evidenceId": "moss-docs-20",
+          "quote": "Rotate with overlap. Create a new key, move your clients to it, then delete the old one."
+        },
+        {
+          "evidenceId": "moss-docs-15",
+          "quote": "Use this pattern from browser or untrusted clients where the `projectKey` must never be embedded in shipped code."
+        }
+      ]
+    },
+    "productId": "moss",
+    "storyId": "agentic-scoped-keys"
   }
 }

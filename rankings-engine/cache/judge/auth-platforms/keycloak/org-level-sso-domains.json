@@ -1,18 +1,36 @@
 {
-  "hash": "c724db22a5294fe3b355e6b1c558e753347c4e56c57356b9cf8e14a5d00ae05f",
+  "hash": "ed00d02abd32a79ba667aee9fc5eaad7dc01feedc4ad4013c57cde7d4bfcb794",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Keycloak documents an Organizations feature within a realm, realms as isolated tenants, and identity brokering to external OIDC/SAML IdPs configured per realm in the admin console. Together these give each customer its own SSO connection, and a community report confirms production multi-tenant SSO use. However, the evidence never shows an IdP being linked to an organization, and the shown organization settings list only a name. Missing for 10: evidence of domain verification for organizations, explicit just-in-time user provisioning on first brokered login, and documentation tying an identity provider to a specific organization.",
+    "rationale": "Keycloak documents an Organizations feature within a realm and treats realms as isolated tenants. Its identity brokering can authenticate users against external OIDC or SAML 2.0 providers configured in the admin console, which gives the basis for per-customer SSO. However, the evidence never shows an identity provider being bound to a specific organization, domain verification, or explicit just-in-time user creation on first broker login. Missing for 10: documented per-organization IdP linking, verified-domain configuration and routing, explicit JIT provisioning behavior, and independent hands-on corroboration of org-scoped SSO.",
     "evidenceIds": [
       "kc-supp-orgs",
       "keycloak-docs-20",
       "keycloak-docs-46",
-      "kc-supp-social-brokering",
-      "keycloak-comm-10"
+      "kc-supp-social-brokering"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can give each customer organization its own SSO connection with verified domains and just-in-time provisioning",
+      "citations": [
+        {
+          "evidenceId": "kc-supp-orgs",
+          "quote": "In the Organizations section, you can manage all the organizations in your realm."
+        },
+        {
+          "evidenceId": "keycloak-docs-20",
+          "quote": "A realm in Keycloak is equivalent to a tenant. Each realm allows an administrator to create isolated groups of applications and users."
+        },
+        {
+          "evidenceId": "keycloak-docs-46",
+          "quote": "Keycloak can also authenticate users with existing OpenID Connect or SAML 2.0 Identity Providers. Again, this is just a matter of configuring the Identity Provider through the admin console."
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "org-level-sso-domains"
   }

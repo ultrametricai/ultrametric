@@ -1,21 +1,42 @@
 {
-  "hash": "4ce408be4c91b6b9ba7b74186607f72c4b60cdca9d79cbffe0393441226c01f8",
+  "hash": "3a1cc6d8fe750469031dedb2bca826f8df41bef5c824a0abab06f82df94d2b5f",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "weaviate",
-    "storyId": "builtin-full-text-search",
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "First-party docs show BM25 keyword search built into Weaviate, running in parallel with vector search inside hybrid queries [weaviate-docs-1, weaviate-docs-14]. Weaviate also stores its own inverted indexes [weaviate-probe-1] and supports keyword-based search natively [weaviate-docs-22, weaviate-docs-26]. A community user contrasts this favorably with running a separate Elasticsearch cluster [weaviate-comm-1]. missing for 10: explicit docs for standalone (non-hybrid) BM25 queries, full-text configuration details (tokenization, phrase/fuzzy matching), independent hands-on evaluation of keyword search quality.",
+    "rationale": "Weaviate's own docs describe built-in BM25 keyword search alongside vector search, and the llms.txt probe confirms it stores inverted indexes natively. Full-text search therefore runs inside the database rather than in a separate search engine. missing for 10: explicit documentation of standalone BM25/keyword-only queries (evidence centers on hybrid), tokenization/analyzer configuration details, independent hands-on corroboration of keyword search quality",
     "evidenceIds": [
       "weaviate-docs-1",
       "weaviate-docs-14",
       "weaviate-docs-22",
       "weaviate-docs-26",
-      "weaviate-probe-1",
-      "weaviate-comm-1",
-      "weaviate-docs-2"
-    ]
+      "weaviate-probe-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can run keyword/full-text search over documents inside the database without bolting on a separate search engine",
+      "citations": [
+        {
+          "evidenceId": "weaviate-docs-1",
+          "quote": "Hybrid search combines vector search and keyword search (BM25) to leverage the strengths of both approaches."
+        },
+        {
+          "evidenceId": "weaviate-docs-22",
+          "quote": "By indexing data with vectors, Weaviate supports searches based on both semantic similarity and keywords."
+        },
+        {
+          "evidenceId": "weaviate-probe-1",
+          "quote": "Weaviate is an open-source vector database (Go) that stores objects, vectors, and inverted indexes"
+        },
+        {
+          "evidenceId": "weaviate-docs-14",
+          "quote": "A hybrid search runs both search types in parallel and combines their scores to produce a final ranking of results."
+        }
+      ]
+    },
+    "productId": "weaviate",
+    "storyId": "builtin-full-text-search"
   }
 }

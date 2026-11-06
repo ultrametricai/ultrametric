@@ -1,20 +1,41 @@
 {
-  "hash": "9f5d0c89b05ff43aa006df8d3f549591ecf735d3a635aaf0a1bf79f77488430a",
+  "hash": "e04898f930eb98bf00cdfabfbd5b733b6d22c9f513652ab9b5cc8bb9468049bc",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Keycloak is self-hosted: it runs from a container image or via the Kubernetes/OpenShift Operator, and you point it at your own production database such as PostgreSQL. That puts data location entirely in the operator's hands, and community users confirm running it themselves as self-hosted IAM. Missing for 10: explicit first-party documentation on data residency or region controls, guidance on multi-region or regional data placement, and independent corroboration that addresses residency specifically.",
+    "rationale": "Keycloak is self-hosted. Its docs cover running it from a container or via the Kubernetes Operator, switching to a production database such as PostgreSQL, and federating users from existing LDAP/AD or custom stores, so the operator decides where identity data lives. There is no documented region or residency selector; residency follows from where the operator deploys Keycloak and its database. Missing for 10: an explicit data-residency or region configuration feature, residency-specific documentation, and independent corroboration of residency control.",
     "evidenceIds": [
-      "keycloak-docs-2",
+      "keycloak-docs-59",
       "keycloak-docs-45",
       "keycloak-docs-54",
-      "keycloak-docs-75",
-      "keycloak-docs-59",
-      "keycloak-comm-1",
-      "keycloak-comm-11"
+      "kc-supp-federation",
+      "keycloak-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": [
+        {
+          "evidenceId": "keycloak-docs-59",
+          "quote": "Switch to a production ready database such as PostgreSQL."
+        },
+        {
+          "evidenceId": "keycloak-docs-45",
+          "quote": "Run Keycloak from a container image."
+        },
+        {
+          "evidenceId": "kc-supp-federation",
+          "quote": "Keycloak has built-in support to connect to existing LDAP or Active Directory servers. You can also implement your own provider if you have users in other stores, such as a relational database."
+        },
+        {
+          "evidenceId": "keycloak-comm-1",
+          "quote": "not a bad choice as a self-hosted IAM solution"
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "privacy-data-residency"
   }

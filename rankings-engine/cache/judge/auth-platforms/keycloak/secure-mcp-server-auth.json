@@ -1,22 +1,47 @@
 {
-  "hash": "419e15f5066e8f47d8d2aae6734900c4569919a940e400b5a3a7788a3f8a03c1",
+  "hash": "e7d9577e6ff42ddd458b17975fabed2c1c01aac04ea4f037ee577126033a4295",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Keycloak is a standards-based OAuth 2.0/OIDC authorization server. Its docs cover the main building blocks an MCP auth layer needs: discovery via the well-known endpoint, dynamic client registration, client-credentials and device grants for agents, token introspection and revocation for verifying tokens, and fine-grained authorization for scoping. Nothing in the evidence ties these to the MCP authorization spec, so fronting an MCP server is a do-it-yourself integration rather than a documented flow. Missing for 10: MCP-specific guidance or integration docs, evidence of PKCE/resource-indicator (audience-bound token) support, protected-resource metadata support, and independent hands-on corroboration of use with MCP servers.",
+    "rationale": "Keycloak is itself a standards-based OAuth 2.0/OIDC authorization server. Its docs cover a discovery (well-known) endpoint, dynamic client registration, token introspection for verifying tokens, revocation, client credentials and fine-grained authorization, which is the core of putting an OAuth flow in front of an MCP server. Nothing in the evidence documents MCP-specific use or compliance with the MCP authorization spec, so the 'spec-compliant for MCP' part rests on general OAuth support only. Missing for 10: MCP-specific documentation or guide, evidence of PKCE / resource indicators / protected-resource metadata support, explicit token scope configuration, independent hands-on corroboration with remote agents.",
     "evidenceIds": [
       "keycloak-docs-1",
-      "keycloak-docs-4",
       "keycloak-docs-74",
       "keycloak-docs-39",
       "keycloak-docs-52",
       "keycloak-docs-53",
       "kc-supp-client-credentials",
-      "kc-supp-device-grant",
       "kc-supp-authz-services"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can put a spec-compliant OAuth authorization flow in front of my MCP server so remote agents connect with scoped, verifiable tokens",
+      "citations": [
+        {
+          "evidenceId": "keycloak-docs-1",
+          "quote": "Keycloak is based on standard protocols and provides support for OpenID Connect, OAuth 2.0, and SAML."
+        },
+        {
+          "evidenceId": "keycloak-docs-39",
+          "quote": "The dynamic client registration endpoint is used to dynamically register clients."
+        },
+        {
+          "evidenceId": "keycloak-docs-52",
+          "quote": "The introspection endpoint is used to retrieve the active state of a token. In other words, you can use it to validate an access or refresh token."
+        },
+        {
+          "evidenceId": "keycloak-docs-74",
+          "quote": "It lists endpoints and other configuration options relevant to the OpenID Connect implementation in Keycloak."
+        },
+        {
+          "evidenceId": "kc-supp-client-credentials",
+          "quote": "Client Credentials are used when clients (applications and services) want to obtain access on behalf of themselves rather than on behalf of a user."
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "secure-mcp-server-auth"
   }

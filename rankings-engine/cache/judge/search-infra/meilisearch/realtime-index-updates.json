@@ -1,21 +1,39 @@
 {
-  "hash": "03e0829ed9b4e1019a3642a3b22ad4fc4d7b94807cb33321106018b51b30fb01",
+  "hash": "6732ed91d6f8efe4327679f17680054d6b66f94e324e475624942f16ee37b6b3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "The docs show documents can be added to an existing index, and first-party sync integrations (Meilisync database sync, Rails ActiveRecord auto-sync, Firebase sync) imply incremental updates without a full reindex. However, no evidence explicitly documents update/delete semantics or near-real-time visibility. Community reports are mixed: one production user saw indexing of 50k constantly changing records fall behind for hours, while others report large indexing-speed gains and that batch indexing fixed earlier throughput problems. Missing for 10: explicit docs on incremental update/delete operations, documented latency until changes become searchable, and consistent hands-on evidence of near-real-time freshness under high change rates.",
+    "rationale": "Meilisearch documents adding documents to an existing index. Its first-party sync integrations (Meilisync, the Rails ActiveRecord auto-sync) imply incremental change propagation rather than full rebuilds. However, no evidence explicitly documents update or delete semantics or near-real-time visibility. One community production report says indexing of 50k constantly changing records fell behind for hours. Another says early indexing couldn't keep up until batch indexing fixed it. Missing for 10: explicit documentation of incremental update/delete operations, stated indexing latency or near-real-time guarantees, and independent corroboration under high-churn workloads.",
     "evidenceIds": [
       "meilisearch-docs-2",
       "meilisearch-docs-71",
       "meilisearch-docs-85",
-      "meilisearch-docs-86",
       "meilisearch-docs-87",
       "meilisearch-comm-9",
       "meilisearch-comm-16",
       "meilisearch-comm-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, document adds, updates, and deletes become searchable in near real time without a full reindex",
+      "citations": [
+        {
+          "evidenceId": "meilisearch-docs-2",
+          "quote": "creating a project and an index, adding documents to it, and performing your first search"
+        },
+        {
+          "evidenceId": "meilisearch-docs-71",
+          "quote": "Sync databases with Meilisearch automatically."
+        },
+        {
+          "evidenceId": "meilisearch-docs-85",
+          "quote": "ActiveRecord sync. Auto-sync models with Meilisearch."
+        }
+      ]
+    },
     "productId": "meilisearch",
     "storyId": "realtime-index-updates"
   }

@@ -1,19 +1,35 @@
 {
-  "hash": "681c6e5f8c81bc6ea6ab09be5bc520fdba47162fa98f50563e0a880a0368b82e",
+  "hash": "2ce88bd4ad429ddd150e747da3bcd670031667e0b291179e96f4915e7e1f501a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Clerk's docs describe short-lived JWT session tokens for backend authentication, which implies expiry and refresh. Its site claims Clerk 'manages the full session lifecycle' with active device monitoring and session revocation, including per-device sign-out in the profile UI. However, the evidence is mostly marketing-level. It never documents a developer-facing server-side revocation API, and with short-lived JWTs, revocation may only take effect when the token expires. A community report of failing token refreshes is a reliability anecdote, not proof the capability is absent, so it lowers confidence rather than creating a dispute. Missing for 10: documented Backend API for programmatic session revocation, evidence that revocation is immediate rather than bounded by JWT lifetime, configurable session lifetime/expiry settings, detailed refresh mechanics, independent hands-on corroboration.",
+    "rationale": "Clerk's own materials say it manages the full session lifecycle, including session revocation and per-device sign-out. The docs describe short-lived JWT session tokens, which implies expiry and refresh. However, there is no documentation of configurable session expiry, of the refresh mechanism, or of a Backend API call that immediately revokes a compromised session server-side; revocation is shown only as a marketing claim and a profile-UI sign-out. Missing for 10: documented configurable session expiry/lifetime settings, documented token refresh behavior, a programmatic server-side revocation endpoint with immediacy guarantees, and independent corroboration of revocation working.",
     "evidenceIds": [
       "clerk-supp-session-devices",
       "clerk-docs-6",
-      "clerk-docs-22",
-      "clerk-docs-32",
-      "clerk-docs-53",
-      "clerk-comm-1"
+      "clerk-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can manage session lifecycle — expiry, refresh, and immediate server-side revocation of a compromised session",
+      "citations": [
+        {
+          "evidenceId": "clerk-supp-session-devices",
+          "quote": "Clerk manages the full session lifecycle, including critical security functionality like active device monitoring and session revocation"
+        },
+        {
+          "evidenceId": "clerk-docs-6",
+          "quote": "Clerk generates a short-lived session token that you can use to authenticate requests to your backend."
+        },
+        {
+          "evidenceId": "clerk-docs-22",
+          "quote": "When a user is authenticated in your application, Clerk generates a short-lived session token that you can use to authenticate requests to your backend."
+        }
+      ]
+    },
     "productId": "clerk",
     "storyId": "session-lifecycle-revocation"
   }

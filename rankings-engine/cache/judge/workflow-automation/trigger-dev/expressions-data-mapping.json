@@ -1,16 +1,35 @@
 {
-  "hash": "4b558ad24f9a01f6da7861c2bcbd3c421ef6ae35724b024714d1c8c67b3313fb",
+  "hash": "cbdaec41cba937b3758b0a617f852c078e41ab049d5d94d905bfe8c5399c4bc0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Trigger.dev tasks are plain async TypeScript functions with no workflow DSL (trigger-dev-docs-34), and `triggerAndWait()` returns result data that the next step can use (trigger-dev-docs-16). Data mapping and transformation between steps is therefore done by writing ordinary code, which a user who switched from n8n describes as working in the IDE (trigger-dev-comm-1). For an ops user this means developer effort rather than a built-in mapping tool. Missing for 10: any expression or formula language or visual data-mapping UI, and docs specifically on transforming data between steps.",
+    "rationale": "Trigger.dev passes data between steps in code: `triggerAndWait()` returns result data to continue with, and tasks are plain async/await functions, so mapping and transformation are done in TypeScript. There is no dedicated expression or formula layer, and nothing aimed at non-developer ops users. Missing for 10: a visual or expression-based data-mapping UI, formula support, and docs or examples focused on transforming data between steps.",
     "evidenceIds": [
-      "trigger-dev-docs-34",
       "trigger-dev-docs-16",
-      "trigger-dev-comm-1"
+      "trigger-dev-docs-34",
+      "trigger-dev-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops user, I can map and transform data between steps with expressions, functions, or formulas",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-16",
+          "quote": "yourTask.triggerAndWait() Triggers a task and then waits until it's complete. You get the result data to continue with."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-34",
+          "quote": "Tasks are plain async/await functions with no workflow DSL, no determinism rules, and no execution time limit."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-2",
+          "quote": "const handle = await helloWorld.trigger({ message: \"Hello world!\" });"
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "expressions-data-mapping"
   }

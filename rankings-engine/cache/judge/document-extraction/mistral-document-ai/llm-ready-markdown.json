@@ -1,11 +1,11 @@
 {
-  "hash": "49094a3ee169c2506b82379d7b02a90f5eb870b47a1d974935d7940dd8be3b0d",
+  "hash": "56449031c459e3d216465e4170a191a2d62f62d9e7e2354adede1816e67e1b24",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Mistral OCR returns markdown, with tables available as markdown or html. Annotations add structured JSON, and blocks carry structural labels in reading order. The `extract_header` and `extract_footer` parameters move page furniture into separate `header` and `footer` fields, and Mistral positions the output as citation-ready input for RAG. A tester confirmed it handles PDF-to-markdown well, though another hit a case where a whole page came back as a single image with no text extracted. Missing for 10: explicit documentation that headers and footers are removed from the main markdown body, de-duplication of repeated headers across pages, handling of other page furniture such as page numbers or watermarks, and independent corroboration of clean, noise-free output at scale.",
+    "rationale": "Mistral OCR produces LLM-ready output: markdown tables, structured JSON annotations, and labeled blocks in reading order, positioned as citation-ready RAG input. A community tester confirms strong PDF-to-markdown conversion. Header and footer content is routed into separate `header`/`footer` fields, but the docs never state that this furniture is removed from the main markdown body, and no broader denoising of repeated page elements is documented. One hands-on report also saw a whole page returned as an image instead of text. Missing for 10: explicit documentation that headers/footers and repeated page furniture are stripped from the main body text, independent verification of clean noise-free output across documents, and a documented markdown output spec for the full page.",
     "evidenceIds": [
       "mistral-document-ai-docs-16",
       "mistral-document-ai-docs-17",
@@ -15,6 +15,33 @@
       "mistral-document-ai-comm-1",
       "mistral-document-ai-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I get clean markdown/JSON designed for LLM consumption, with noise like repeated headers and page furniture stripped",
+      "citations": [
+        {
+          "evidenceId": "mistral-document-ai-docs-17",
+          "quote": "When you use them, the response includes header and footer content in the `header` and `footer` fields."
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-16",
+          "quote": "Table formatting supports `null`, `markdown`, and `html` values through the `table_format` parameter."
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-33",
+          "quote": "the annotations functionality, which allows you to extract information in a structured json-format that you provide."
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-40",
+          "quote": "Its structured output supplies citation-ready inputs to the toolkit's ingestion, retrieval, and evaluation workflow for RAG and enterprise search."
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-18",
+          "quote": "each page contains a `blocks` array with paragraph-level bounding boxes, structural block labels, and extracted content in reading order."
+        }
+      ]
+    },
     "productId": "mistral-document-ai",
     "storyId": "llm-ready-markdown"
   }

@@ -1,22 +1,43 @@
 {
-  "hash": "e2334a9a639ad253a94b7de3a6f12a075b9393eadc16e3659c35221082ff949d",
+  "hash": "fff4fa5f4a36214485b37c7b298732f938065b820c3bec582c9bd675c60b56e9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Keycloak documents the client credentials grant for clients acting on their own behalf, backed by service accounts, so each agent can be registered as its own client, including via dynamic client registration or kcadm/Admin REST scripting. Permissions can be narrowed with roles and fine-grained resource-level authorization policies, and a token revocation endpoint revokes both access and refresh tokens, with introspection to check token state. missing for 10: agent-specific guidance or examples, explicit documentation of per-client scope restriction for service accounts, documented behavior showing revocation takes effect instantly for already-issued JWT access tokens, and independent hands-on corroboration.",
+    "rationale": "Keycloak documents client-credentials service accounts that let each client (for example, an agent) get access \"on behalf of themselves rather than on behalf of a user\". It also documents fine-grained, resource-level authorization policies for narrow permissions and a token revocation endpoint covering both access and refresh tokens. Dynamic client registration and the Admin CLI and REST API support creating one identity per agent programmatically. Missing for 10: agent-specific guidance, documentation that revocation is instant for already-issued self-contained access tokens (not just via introspection), explicit docs on scoping service-account roles, and independent hands-on corroboration.",
     "evidenceIds": [
       "kc-supp-client-credentials",
       "kc-supp-authz-services",
-      "keycloak-docs-12",
-      "keycloak-docs-49",
-      "keycloak-docs-70",
       "keycloak-docs-53",
-      "keycloak-docs-52",
+      "keycloak-docs-49",
       "keycloak-docs-39",
-      "kc-supp-kcadm"
+      "kc-supp-kcadm",
+      "keycloak-docs-52"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can give each agent its own least-privilege machine identity with narrowly scoped permissions and instant revocation, instead of sharing a human's credentials",
+      "citations": [
+        {
+          "evidenceId": "kc-supp-client-credentials",
+          "quote": "Client Credentials are used when clients (applications and services) want to obtain access on behalf of themselves rather than on behalf of a user."
+        },
+        {
+          "evidenceId": "keycloak-docs-49",
+          "quote": "Keycloak provides fine-grained authorization services as well. This allows you to manage permissions for all your services from the Keycloak admin console and gives you the power to define exactly the policies you need."
+        },
+        {
+          "evidenceId": "keycloak-docs-53",
+          "quote": "The token revocation endpoint is used to revoke tokens. Both refresh tokens and access tokens are supported by this endpoint."
+        },
+        {
+          "evidenceId": "keycloak-docs-39",
+          "quote": "The dynamic client registration endpoint is used to dynamically register clients."
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "scoped-agent-identities"
   }

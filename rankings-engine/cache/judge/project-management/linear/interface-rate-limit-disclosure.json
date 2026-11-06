@@ -1,14 +1,29 @@
 {
-  "hash": "1d243eba2b28bfd0366024b38dac40bf9a820ae14963fe7658a5fa4a60918301",
+  "hash": "f3dfb10ebdf925624551ce946f81a0e2b5e7fc2dfdc026271999d15da70a07bf",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "high",
-    "rationale": "Linear's official 'Rate limiting' docs publish exact limits per authentication type: 2,500 requests/hour per user for API keys, 5,000 for OAuth apps, and 600 per IP when unauthenticated. They also document leaky-bucket refill, query complexity limits, and X-RateLimit response headers, so a builder can plan automation at scale before starting. Missing for 10: explicit documentation of concurrency caps (simultaneous request limits), independent or hands-on corroboration of the published limits.",
+    "rationale": "Linear publishes a dedicated rate-limiting doc. It gives exact per-auth request limits (API key 2,500/hr per user, OAuth app 5,000/hr, unauthenticated 600/IP), leaky-bucket refill, complexity limits, and rate-limit response headers. This is the core of the story, but the evidence never mentions any concurrency cap. Missing for 10: documented concurrency/parallel-request caps, independent or hands-on corroboration of the published limits.",
     "evidenceIds": [
       "linear-supp-rate-limits"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I know the documented API rate limits and concurrency caps before building automation at scale",
+      "citations": [
+        {
+          "evidenceId": "linear-supp-rate-limits",
+          "quote": "API key — 2,500 requests per User per 1 hour; OAuth App — 5,000 per User; Unauthenticated — 600 per IP Address"
+        },
+        {
+          "evidenceId": "linear-supp-rate-limits",
+          "quote": "X-RateLimit-Requests-Limit — The maximum number of API requests you're permitted to make per hour."
+        }
+      ]
+    },
     "productId": "linear",
     "storyId": "interface-rate-limit-disclosure"
   }

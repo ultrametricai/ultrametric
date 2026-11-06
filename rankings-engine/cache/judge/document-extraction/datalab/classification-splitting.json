@@ -1,19 +1,41 @@
 {
-  "hash": "f796112d82ed9991077a7c844c2012d58c6af4d1c392b4cfe68e41f22305c2bf",
+  "hash": "77577842662a1430febd2f02febcbf996d7671cf047b03d03ce8fb256a0edd24",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Datalab documents a Document Segmentation capability that splits multi-document PDFs into separate logical sections. Its /segment endpoint takes a schema, which acts as the classification step, and returns page ranges for each identified segment. Pipelines can chain convert, extract and segment, and checkpoints let /segment and /extract reuse a single parse, so one upload can feed downstream processing. Missing for 10: explicit documentation that each segment automatically gets its own per-document extraction output (only page ranges are evidenced), detail on how classification labels are assigned, and independent or hands-on corroboration of segmentation quality.",
+    "rationale": "Datalab documents its own Document Segmentation capability. It splits multi-document PDFs into logical sections using a schema and returns page ranges per segment. Pipelines can chain segment with convert/extract, so one upload can be split automatically. However, the docs do not show segments being labeled by document type, or extraction producing separate results for each sub-document. missing for 10: explicit document-type classification output, documented per-document extraction results after splitting, hands-on or independent corroboration of segmentation accuracy.",
     "evidenceIds": [
       "datalab-docs-5",
       "datalab-docs-20",
       "datalab-docs-33",
       "datalab-docs-38",
-      "datalab-docs-29",
-      "datalab-docs-46"
+      "datalab-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, multi-document packets are classified and split automatically — one upload, per-document results",
+      "citations": [
+        {
+          "evidenceId": "datalab-docs-20",
+          "quote": "Split multi-document PDFs into separate logical sections"
+        },
+        {
+          "evidenceId": "datalab-docs-33",
+          "quote": "Segment a document into sections using a schema. Returns page ranges for each identified segment."
+        },
+        {
+          "evidenceId": "datalab-docs-38",
+          "quote": "Pipelines chain processors (convert, extract, segment, custom) into reusable, versioned configurations."
+        },
+        {
+          "evidenceId": "datalab-docs-29",
+          "quote": "Use save_checkpoint=true to save parsed state for later /extract or /segment calls."
+        }
+      ]
+    },
     "productId": "datalab",
     "storyId": "classification-splitting"
   }

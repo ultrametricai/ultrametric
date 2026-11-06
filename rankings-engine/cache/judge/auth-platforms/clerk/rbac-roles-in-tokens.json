@@ -1,20 +1,43 @@
 {
-  "hash": "e8c2685aa401bddac1f6f34e1c917c16e2646c7d8f30c47f4ce4e70cf7b4bef4",
+  "hash": "212dce0537b738b248496c85053a281f42fe7076b32c2c35214bef4493b8a638",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Clerk documents default admin/member Roles plus custom Roles and fine-grained Permissions (clerk-docs-4, clerk-docs-46). It provides the Organization context, including memberships, Roles and the Active Organization, in each session (clerk-docs-24, clerk-docs-34), and its session token is a JWT carrying user and session information (clerk-docs-6). Enforcement is shown for gating eve tool calls against the caller's permissions (clerk-docs-16), though a community user notes roles are tied to Organizations rather than stored on the user (clerk-comm-3). Missing for 10: explicit documentation that role/permission claims appear in the session JWT, documented general-purpose authorization-check helpers, user-level (non-Organization) roles, and independent hands-on corroboration.",
+    "rationale": "Clerk documents default admin/member Roles plus custom Roles and fine-grained Permissions. It also says each session carries the Organization context (memberships, Roles, Active Organization), and eve tool calls can be gated against the caller's Clerk permissions. However, Roles and Permissions are scoped to Organizations, and a community user reports there is no user-level or global role without falling back to metadata. The docs also never explicitly state that roles and permissions appear as claims in the session JWT, or how backend enforcement works outside eve. Missing for 10: explicit documentation of role/permission claims in the session token, general documented enforcement helpers for authorization checks, and user-level (non-organization) roles.",
     "evidenceIds": [
-      "clerk-docs-4",
       "clerk-docs-46",
+      "clerk-docs-3",
       "clerk-docs-24",
-      "clerk-docs-34",
       "clerk-docs-6",
+      "clerk-docs-34",
       "clerk-docs-16",
-      "clerk-comm-3"
+      "clerk-comm-5-refresh-fb645fab91c5ee42"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can define roles and permissions and have them enforced and surfaced in session tokens for authorization checks",
+      "citations": [
+        {
+          "evidenceId": "clerk-docs-46",
+          "quote": "You can also create custom Roles and fine-grained Permissions that fit your application's specific features and team setup."
+        },
+        {
+          "evidenceId": "clerk-docs-24",
+          "quote": "Clerk provides the Organization context (memberships, Roles, and the Active Organization) in each session."
+        },
+        {
+          "evidenceId": "clerk-docs-6",
+          "quote": "This token is a JSON Web Token (JWT) that contains information about the user and their session."
+        },
+        {
+          "evidenceId": "clerk-docs-16",
+          "quote": "Gate individual eve tool calls against the caller's Clerk permissions and scopes"
+        }
+      ]
+    },
     "productId": "clerk",
     "storyId": "rbac-roles-in-tokens"
   }

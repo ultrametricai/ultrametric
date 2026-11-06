@@ -1,19 +1,41 @@
 {
-  "hash": "6e1c8c8403782432c71054cc3d9ec249b61d4ed961e5e47c9c6d5597c44eba4a",
+  "hash": "68145bb2cc97eb7dffeddb93e87204c11af8ef8c6f7e2b78106a619a7b3ef472",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Keycloak documents importing and exporting realms as JSON files, automating realm import via the operator, and scripted user management through the Admin CLI, Admin REST API and SCIM endpoints, so bulk user movement in and out is plausible. A custom user-storage provider can also front existing user stores such as a relational database. The evidence never states that realm exports include users or that password hashes can be imported or exported, which is the core of the lock-in concern. Missing for 10: explicit documentation that users and their password hashes are included in import/export, details on supported hash algorithms, and hands-on corroboration of a migration round-trip.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Keycloak documents its own import and export of realms as JSON files, including automated realm import via the operator. Realms contain users, which implies a bulk user path, and one community user reports moving from Auth0 was fairly easy. However, the evidence never says user records or password hashes are carried in these imports or exports. Missing for 10: explicit documentation that realm import/export includes users, import of existing password hashes (and from which hash formats), user-level export, and hands-on corroboration of a hash-preserving migration.",
     "evidenceIds": [
       "keycloak-docs-10",
       "keycloak-docs-76",
-      "kc-supp-kcadm",
-      "kc-supp-scim",
-      "keycloak-docs-6",
-      "keycloak-docs-47"
+      "keycloak-docs-20",
+      "keycloak-comm-3-refresh-e731fadbd90f74c3",
+      "keycloak-comm-6-refresh-3c7b2025a16cd6c5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can bulk-import existing users — including password hashes — and export them again, so I am never locked in",
+      "citations": [
+        {
+          "evidenceId": "keycloak-docs-10",
+          "quote": "Import and export realms as JSON files."
+        },
+        {
+          "evidenceId": "keycloak-docs-76",
+          "quote": "Automate a realm import using the operator."
+        },
+        {
+          "evidenceId": "keycloak-docs-20",
+          "quote": "Each realm allows an administrator to create isolated groups of applications and users."
+        },
+        {
+          "evidenceId": "keycloak-comm-6-refresh-3c7b2025a16cd6c5",
+          "quote": "Moving from Auth0 was fairly easy."
+        }
+      ]
+    },
     "productId": "keycloak",
     "storyId": "bulk-user-import-export"
   }

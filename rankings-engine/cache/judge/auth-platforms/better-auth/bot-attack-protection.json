@@ -1,18 +1,43 @@
 {
-  "hash": "e87673ac77d78b7ce4fab3aa94eb54ff8be9ef008a7422400b0cbacffe256af1",
+  "hash": "5f1ee6ab4c2b33d5126e955bf1225577ec1af62b7d5dbd2454b90837e949e131",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Better Auth documents a built-in, configurable rate limiter meant to prevent abuse, with a stricter default rule on `/sign-in/email` (3 requests per 10 seconds). This directly addresses brute-force attempts on the login flow, and a community user confirms rate limiting comes built in. The pack shows nothing specific to bots or credential stuffing beyond generic rate limiting. missing for 10: bot/CAPTCHA protection, credential-stuffing defenses (e.g. breached-password checks, account lockout), independent hands-on validation of the rate limiter's effectiveness.",
+    "rationale": "Better Auth documents a built-in rate limiter with stricter default rules for sign-in paths (`/sign-in/email` limited to 3 requests per 10 seconds) and configurable IP-header tracking, which directly addresses brute force; a community user corroborates that rate limiting is built in. Bot detection and IP blocking appear only as a one-line homepage claim, and nothing specifically addresses credential stuffing. missing for 10: documented bot-detection/CAPTCHA mechanism, credential-stuffing defenses (e.g. breached-password checks or account lockout), detailed docs on IP blocking, independent hands-on corroboration beyond rate limiting.",
     "evidenceIds": [
       "better-auth-docs-25",
+      "better-auth-docs-57",
       "better-auth-docs-11",
       "better-auth-docs-38",
-      "better-auth-docs-57",
+      "better-auth-docs-86",
+      "better-auth-docs-96",
       "better-auth-comm-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can rely on built-in protection against bots, credential stuffing, and brute-force attacks on the auth flows",
+      "citations": [
+        {
+          "evidenceId": "better-auth-docs-25",
+          "quote": "Better Auth includes a built-in rate limiter to help manage traffic and prevent abuse."
+        },
+        {
+          "evidenceId": "better-auth-docs-57",
+          "quote": "`/sign-in/email`: Is limited to 3 requests within 10 seconds."
+        },
+        {
+          "evidenceId": "better-auth-docs-96",
+          "quote": "Security & observability. Bot detection, IP blocking, and email validation."
+        },
+        {
+          "evidenceId": "better-auth-comm-11",
+          "quote": "things like email verification, password resets, and rate limiting come built-in or as simple plugins"
+        }
+      ]
+    },
     "productId": "better-auth",
     "storyId": "bot-attack-protection"
   }

@@ -1,21 +1,45 @@
 {
-  "hash": "d117c7e31371e6533efa39ba5f825f69582be9013812e750300fc3c3467c6da9",
+  "hash": "cd4eae1a8dacfbf24ffc80797c4b634616c8508974038523609c396353b65305",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The documented Auth0 migration guide covers bringing users over 'including email/password with proper hashing,' plus social accounts and 2FA. Because Better Auth stores all auth data in your own database (SQLite/Postgres/MySQL), export is just direct database access, and community users confirm owning the data and being able to switch providers easily. However, there is no evidence of a generic bulk-import tool or API, or of a dedicated export feature; import is shown only through a provider-specific migration guide. Missing for 10: a generic bulk-import API/CLI for arbitrary sources and hash formats, a first-party export tool, and hands-on corroboration of large-scale imports with hashes.",
+    "rationale": "Better Auth documents an Auth0 migration guide and script that brings over email/password users 'with proper hashing', social accounts, 2FA and organizations, and it supports a custom password hashing function. Because user data lives in the developer's own database, export is possible, but this is an architectural property rather than a documented export tool. Missing for 10: a generic bulk-import tool beyond the Auth0-specific guide, a documented export feature, independent hands-on corroboration of hash import.",
     "evidenceIds": [
       "better-auth-docs-8",
-      "better-auth-docs-41",
+      "better-auth-docs-95",
+      "better-auth-docs-85",
       "better-auth-docs-36",
-      "better-auth-docs-70",
-      "better-auth-comm-1",
-      "better-auth-comm-3",
-      "better-auth-comm-13",
-      "better-auth-comm-17"
+      "better-auth-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can bulk-import existing users — including password hashes — and export them again, so I am never locked in",
+      "citations": [
+        {
+          "evidenceId": "better-auth-docs-8",
+          "quote": "we'll walk through the steps to migrate a project from Auth0 to Better Auth — including email/password with proper hashing, social/external accounts, two-factor authentication, and more."
+        },
+        {
+          "evidenceId": "better-auth-docs-95",
+          "quote": "the script will also attempt a best-effort migration of Auth0 Organizations, their members, and per-member roles."
+        },
+        {
+          "evidenceId": "better-auth-docs-85",
+          "quote": "You can customize the password hashing function by setting the `password` option in the configuration."
+        },
+        {
+          "evidenceId": "better-auth-docs-36",
+          "quote": "Better Auth requires a database to store user data."
+        },
+        {
+          "evidenceId": "better-auth-comm-1",
+          "quote": "You get all of your auth data in your own db in 1 cli command. You are not tied to any db provider."
+        }
+      ]
+    },
     "productId": "better-auth",
     "storyId": "bulk-user-import-export"
   }

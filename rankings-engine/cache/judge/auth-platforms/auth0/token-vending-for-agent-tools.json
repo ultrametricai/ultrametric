@@ -1,20 +1,42 @@
 {
-  "hash": "6f1f35740b6d4cb70028d727399b626dc025c86694ee1cad29ab5c769a76deb2",
+  "hash": "fd77d1f2d82588cd3a5bd4b70b59790cec9fbd4731cd708dd9a5bd58abb5e5e5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Auth0's Token Vault is documented as obtaining, storing and refreshing third-party API tokens for Google, Slack and GitHub, among 30+ integrations. This lets agents call third-party APIs without handling credentials directly, alongside OAuth-based delegated access on the user's behalf and CIBA approval for sensitive operations. missing for 10: explicit documentation of the user-consent and token-exchange mechanics and of short token lifetimes, plus independent or hands-on corroboration that Token Vault works as claimed.",
+    "rationale": "Auth0's Token Vault is a first-party feature that obtains, stores and refreshes access and refresh tokens. Agents use it to call third-party APIs such as Google, Slack and GitHub (30+ integrations) without handling credentials directly, which covers the core of this story. However, the evidence never explicitly documents the user-consent step, short token lifetimes, or the token-exchange mechanics, and nothing independent corroborates it. Delegated on-behalf-of access is documented only for first-party APIs. missing for 10: explicit documentation of the user-consent flow for third-party connections, evidence that issued tokens are short-lived and scoped, token-exchange protocol details, independent or hands-on corroboration.",
     "evidenceIds": [
       "auth0-docs-17",
       "auth0-docs-30",
-      "auth0-docs-59",
       "auth0-docs-89",
-      "auth0-docs-16",
-      "auth0-docs-78",
-      "auth0-docs-18"
+      "auth0-docs-59",
+      "auth0-docs-109",
+      "auth0-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent obtain short-lived, user-consented tokens for third-party APIs (token vault/exchange) so tool calls run under the user's delegated authority",
+      "citations": [
+        {
+          "evidenceId": "auth0-docs-30",
+          "quote": "Auth0's Token Vault manages obtaining, storing, and refreshing API tokens, allowing your agents to interact with third-party APIs without handling sensitive credentials or API keys directly."
+        },
+        {
+          "evidenceId": "auth0-docs-17",
+          "quote": "Securely connect AI agents to external tools and services like Google, Slack, or GitHub."
+        },
+        {
+          "evidenceId": "auth0-docs-89",
+          "quote": "Token Vault integrates your apps and AI agents with third-party tools. It handles access and refresh tokens automatically, so you don’t have to."
+        },
+        {
+          "evidenceId": "auth0-docs-59",
+          "quote": "Empower agents to search your Gmail inbox, create a GitHub pull request, build a Spotify playlist, or leverage one of our 30+ integrations to do even more."
+        }
+      ]
+    },
     "productId": "auth0",
     "storyId": "token-vending-for-agent-tools"
   }

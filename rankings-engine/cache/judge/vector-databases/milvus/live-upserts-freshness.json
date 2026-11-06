@@ -1,17 +1,31 @@
 {
-  "hash": "9d93fb849f23aeffe43b441bfe2ba8f935b3ec4b3c7f7943ac8804dee89940ff",
+  "hash": "d06ebf652427483cdeaadc8975b8ef19aceae0236b9fc8b05f6340c6606f653d",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "milvus",
-    "storyId": "live-upserts-freshness",
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Milvus docs claim support for 'vector CRUD operations' [milvus-docs-17]. A community report describes newly inserted vectors being searched by brute force until a segment is indexed, which suggests new data becomes searchable quickly [milvus-comm-3, milvus-comm-2]. However, that same old thread says deletion was not yet supported and that index rebuilds were sometimes needed. Because it predates the current docs, it signals caveats rather than a concrete dispute. Missing for 10: explicit upsert documentation, documented delete semantics, documented consistency levels or freshness guarantees, and current hands-on evidence of update/delete visibility latency.",
+    "rationale": "Milvus documents vector CRUD operations as a shared API feature. A community reader notes that newly inserted vectors are searched by brute force until indexed, which implies new data is visible before indexing. However, the pack has no documented upsert API, no documented consistency levels or freshness guarantees, and only an outdated community note that deletion was not yet supported. missing for 10: explicit upsert/delete API documentation, documented consistency/freshness semantics (e.g. consistency levels, visibility latency), hands-on corroboration of quick reflection of deletes in search results.",
     "evidenceIds": [
       "milvus-docs-17",
-      "milvus-comm-2",
       "milvus-comm-3"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can upsert and delete records continuously and have changes reflected in search results quickly, with documented freshness/consistency behavior",
+      "citations": [
+        {
+          "evidenceId": "milvus-docs-17",
+          "quote": "covers most of the features such as vector data persistence and management, vector CRUD operations"
+        },
+        {
+          "evidenceId": "milvus-comm-3",
+          "quote": "newly inserted vectors seem to be queried using brute force until indexed"
+        }
+      ]
+    },
+    "productId": "milvus",
+    "storyId": "live-upserts-freshness"
   }
 }

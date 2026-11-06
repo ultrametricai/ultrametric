@@ -1,19 +1,41 @@
 {
-  "hash": "e42c1c4655526c4105e6a39ffd22c39f451a8ac248b85b504c44a02c392054c6",
+  "hash": "dca6a32f81499b656494e40fc1cf56fef0d6320979a036cea9cac6af6c38206b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Bitwarden documents its CLI as a fully-featured tool for managing the vault. The CLI supports personal-API-key auth for automated workflows, and its `bw serve` mode exposes a local Vault Management REST API. An official MCP server also completed a live handshake, so documented programmatic surfaces for agent vault management clearly exist. missing for 10: explicit evidence of create/edit item commands or endpoints, documented programmatic seeding of TOTP secrets on items, and hands-on confirmation of write operations through the MCP server or `bw serve`.",
+    "rationale": "Bitwarden documents its own programmatic vault surfaces: a CLI described as 'fully-featured' for 'accessing and managing your vault', a `bw serve` local REST Vault Management API, personal API keys for automated workflows, and an official MCP server that completed a live handshake. However, the evidence only shows querying TOTP codes and items; it never explicitly documents creating or editing items or seeding TOTP secrets programmatically. missing for 10: explicit documentation of item create/edit operations via CLI/REST/MCP, programmatic TOTP-secret seeding, evidence of which MCP tools are write-capable, hands-on corroboration of agent-driven writes",
     "evidenceIds": [
       "bitwarden-docs-7",
-      "bitwarden-docs-9",
       "bitwarden-probe-rt-1",
+      "bitwarden-docs-9",
       "bitwarden-probe-rt-2",
-      "bitwarden-probe-3",
-      "bitwarden-probe-4"
+      "bitwarden-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can create and update vault entries — seeding new TOTP secrets, storing credentials — through documented programmatic surfaces",
+      "citations": [
+        {
+          "evidenceId": "bitwarden-docs-7",
+          "quote": "The Bitwarden command-line interface (CLI) is a powerful, fully-featured tool for accessing and managing your vault."
+        },
+        {
+          "evidenceId": "bitwarden-probe-rt-1",
+          "quote": "exposes the whole vault as a local RESTful API (Vault Management API)"
+        },
+        {
+          "evidenceId": "bitwarden-docs-9",
+          "quote": "Using the personal API key for CLI authentication is suitable for automated workflows"
+        },
+        {
+          "evidenceId": "bitwarden-probe-rt-2",
+          "quote": "Bitwarden's OFFICIAL MCP server completed a FULL keyless stdio initialize handshake"
+        }
+      ]
+    },
     "productId": "bitwarden",
     "storyId": "agent-vault-provisioning"
   }

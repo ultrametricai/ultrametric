@@ -1,19 +1,41 @@
 {
-  "hash": "417abc182027417b847fb13394faa41faf099974aa969c06def34d265b245b2b",
+  "hash": "3bb788ba397194beed36b0c36a6264c3895399fc3b00f065f3a2575f6f8c05d4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Zapier lets you create an MCP server, generate a connection token for a specific agent client (zapier-docs-28), and curate that server's tool list (zapier-docs-30). It markets \"managed auth and permissions you control\" with account-level restrictions and workspace controls (zapier-docs-25, zapier-docs-15), and the SDK supports client-credentials auth (zapier-docs-26). Together this gives a per-agent credential bounded to chosen tools, but the evidence never documents explicit scopes or least-privilege permissions on the tokens themselves. missing for 10: documented per-token scope/permission granularity, token expiry/rotation/revocation controls, independent or hands-on corroboration of least-privilege enforcement.",
+    "rationale": "Zapier documents issuing an agent credential: you create an MCP server and generate a connection token for the client. It also claims 'managed auth and permissions you control' and account-level restrictions, and each server carries its own tool list. That implies per-agent scoping, but the evidence never states that a token is limited to specific actions or apps. missing for 10: explicit documentation of token scope granularity (per-tool/per-app least privilege), token revocation/rotation/expiry, per-agent scoped API keys for the SDK, and independent or hands-on corroboration.",
     "evidenceIds": [
       "zapier-docs-28",
-      "zapier-docs-30",
       "zapier-docs-25",
       "zapier-docs-15",
-      "zapier-docs-26",
-      "zapier-docs-33"
+      "zapier-docs-30",
+      "zapier-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "zapier-docs-28",
+          "quote": "Connect any MCP client to Zapier MCP by creating a server and generating a connection token, then adding it as a Bearer header or query parameter."
+        },
+        {
+          "evidenceId": "zapier-docs-25",
+          "quote": "all with managed auth and permissions you control"
+        },
+        {
+          "evidenceId": "zapier-docs-15",
+          "quote": "Account-level restrictions, managed connections, and workspace controls apply to all of them."
+        },
+        {
+          "evidenceId": "zapier-docs-30",
+          "quote": "A tool bundle is a shareable link to the list of tools on your MCP server."
+        }
+      ]
+    },
     "productId": "zapier",
     "storyId": "agentic-scoped-keys"
   }

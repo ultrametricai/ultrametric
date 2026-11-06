@@ -1,18 +1,36 @@
 {
-  "hash": "b264853f34d5096694ae3f65696b57992aa08007a958810bbf4ebdc6a7ff6bcc",
+  "hash": "cc8a078d7ef015c4443b05d242bdc59336c9006fadef39997458ed9cad3ad081",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "With `include_blocks`, Document AI returns per-page output in which each page has a blocks array of paragraph-level segments. Each block carries structural labels, bounding boxes and reading order, alongside separate header/footer fields and block-level confidence scores. This gives usable semantic boundaries and metadata, and Mistral positions the structured output as citation-ready input for RAG ingestion. However, there is no evidence of true RAG chunking: no chunk sizing, no merging of blocks into retrieval-sized segments, and no embedding-ready output. Missing for 10: explicit chunking with size/overlap control, embedding-ready segment output, section-hierarchy metadata per chunk, independent hands-on corroboration of block output for RAG.",
+    "rationale": "With `include_blocks` enabled, Mistral Document AI returns a per-page blocks array with paragraph-level bounding boxes, structural block labels and content in reading order. That gives semantic segmentation plus metadata such as bboxes, labels, block-level confidence scores, and header/footer fields. The OCR 4 announcement also positions this structured output as citation-ready input for RAG ingestion. However, these are layout blocks rather than documented RAG chunks: there is no evidence of chunk sizing, merging or overlap controls, and no embedding-ready segments. Missing for 10: explicit RAG chunking with size/overlap controls, embedding-ready output or direct embedding integration, and independent hands-on corroboration of block-based chunking quality.",
     "evidenceIds": [
-      "mistral-document-ai-docs-4",
-      "mistral-document-ai-docs-17",
+      "mistral-document-ai-docs-18",
       "mistral-document-ai-docs-19",
-      "mistral-document-ai-docs-40",
-      "mistral-document-ai-docs-2"
+      "mistral-document-ai-docs-17",
+      "mistral-document-ai-docs-40"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, output comes pre-chunked for RAG — semantic boundaries, metadata, embedding-ready segments — not a wall of text",
+      "citations": [
+        {
+          "evidenceId": "mistral-document-ai-docs-18",
+          "quote": "When enabled, each page contains a `blocks` array with paragraph-level bounding boxes, structural block labels, and extracted content in reading order."
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-19",
+          "quote": "Confidence scores are available for extracted content at page, block, or word granularity"
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-40",
+          "quote": "Its structured output supplies citation-ready inputs to the toolkit's ingestion, retrieval, and evaluation workflow for RAG and enterprise search."
+        }
+      ]
+    },
     "productId": "mistral-document-ai",
     "storyId": "rag-ready-chunking"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "d761456cefcb006799498c6432ea320c4cd7894b31782b570c76f8ee47f0c27d",
+  "hash": "22b2e4a27a7de055da7804e91778c1e14302193b27446d0802818052315fa48e",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "qdrant",
-    "storyId": "builtin-full-text-search",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Qdrant documents sparse vectors for \"precise word matching\" that can be fused with dense results via RRF/DBSF inside the database, so keyword-style retrieval is possible without a separate search engine. However, this works through sparse embeddings the developer must configure and generate, not a documented native full-text index. missing for 10: an evidenced native full-text/keyword index or text-match filter, BM25-style scoring docs, and hands-on corroboration of keyword search quality.",
+    "rationale": "Qdrant's docs describe in-database keyword-style matching through sparse vectors, which give 'precise word matching'. These can be fused with dense results via rrf/dbsf hybrid queries, so no separate search engine is needed. However, the evidence shows no native full-text index or text-match filter, and the sparse vectors must be supplied as embeddings rather than raw documents being searched directly. missing for 10: documented native full-text/BM25 indexing over raw text, tokenizer/analyzer configuration, independent hands-on corroboration of keyword search quality.",
     "evidenceIds": [
       "qdrant-docs-17",
       "qdrant-docs-2",
       "qdrant-docs-9"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run keyword/full-text search over documents inside the database without bolting on a separate search engine",
+      "citations": [
+        {
+          "evidenceId": "qdrant-docs-17",
+          "quote": "in text search, it is often useful to combine dense and sparse vectors to get the best of both worlds: semantic understanding from dense vectors and precise word matching from sparse vectors"
+        },
+        {
+          "evidenceId": "qdrant-docs-2",
+          "quote": "Qdrant has a few ways of fusing the results from different queries: `rrf` and `dbsf`"
+        },
+        {
+          "evidenceId": "qdrant-docs-9",
+          "quote": "Configure dense, sparse, and multi-vector embeddings."
+        }
+      ]
+    },
+    "productId": "qdrant",
+    "storyId": "builtin-full-text-search"
   }
 }

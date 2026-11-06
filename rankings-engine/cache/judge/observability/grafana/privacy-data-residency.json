@@ -1,17 +1,30 @@
 {
-  "hash": "c38a8bb9d1fd60601ad1284ad5cb2a16533067ba04c5ffb4675de4ce1c619de6",
+  "hash": "01837e84bf1fcf8fb57a7c867c891634875b03598c15e6ac6bb0ed39f47aa0cf",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Grafana's self-managed stack lets users decide where data physically lives: Loki stores log chunks in S3, GCS, or a local filesystem, and runs locally as a single binary. Mimir can also be self-run in monolithic mode, and Grafana queries data sources wherever they're stored. There is no evidence of region or residency selection for the hosted Grafana Cloud offering, so control over location comes mainly from self-hosting. Missing for 10: documented Grafana Cloud region/data-residency selection, explicit residency or compliance documentation, independent corroboration.",
+    "rationale": "Grafana's own Loki docs say self-managed deployments can store log chunks in S3, GCS, or the local filesystem, so users control where that data lives. However, nothing in the evidence shows a region or data-residency choice for Grafana Cloud or a formal residency commitment. Phrases like \"wherever they're stored\" describe querying external data sources, not choosing a storage location. Missing for 10: Grafana Cloud region selection, documented data-residency guarantees, storage-location controls for metrics and traces, independent corroboration.",
     "evidenceIds": [
       "grafana-docs-55",
-      "grafana-docs-29",
-      "grafana-docs-54",
-      "grafana-docs-9"
+      "grafana-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": [
+        {
+          "evidenceId": "grafana-docs-55",
+          "quote": "Log data itself is then compressed and stored in chunks in object stores such as Amazon Simple Storage Service (S3) or Google Cloud Storage (GCS), or even locally on the filesystem."
+        },
+        {
+          "evidenceId": "grafana-docs-29",
+          "quote": "run Loki in monolithic (single-binary) mode with a local filesystem backend"
+        }
+      ]
+    },
     "productId": "grafana",
     "storyId": "privacy-data-residency"
   }

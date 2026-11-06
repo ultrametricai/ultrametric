@@ -1,17 +1,35 @@
 {
-  "hash": "6a41b525da963a754f14364f12a650f1525012e65fde6db57afd20f6d9087677",
+  "hash": "296f38785e1d55638123bfb5418fa3312bcad826546281f96c3b7d7245b57fae",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill documents optional Error and Recovery Handlers for failed scheduled executions [windmill-docs-18]. It also documents step-level retries on error [windmill-docs-13], an error-handling page where runs can be retagged as failures via `wm_failure` [windmill-docs-19], and fault tolerance in workflows-as-code [windmill-docs-5]. That covers handler-style error workflows, but the evidence only shows them tied to schedules and never describes how failure notifications are delivered. missing for 10: evidence of a dedicated error-handler path within flows (not just schedules), explicit failure notification channels (e.g. Slack/email alerts), independent or hands-on corroboration.",
+    "rationale": "Windmill documents optional Error and Recovery Handlers on schedules to deal with failed scheduled executions. Its error-handling docs also let a run be retagged as a failure via `wm_failure`, and steps can be retried on error. That is a real, product-native error-workflow capability, but the evidence only covers scheduled runs, and failure notification is not documented as such. Missing for 10: flow-level error-handler paths for non-scheduled runs, explicit failure notification channels, independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-18",
-      "windmill-docs-13",
       "windmill-docs-19",
-      "windmill-docs-5"
+      "windmill-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops user, I can define dedicated error-handling paths or error workflows and get notified when a run fails",
+      "citations": [
+        {
+          "evidenceId": "windmill-docs-18",
+          "quote": "optional Error and Recovery Handlers to deal with failed scheduled executions"
+        },
+        {
+          "evidenceId": "windmill-docs-19",
+          "quote": "A script or flow can return a top-level `wm_failure` field (string) to retag the run as a failure even though the runtime did not raise an error."
+        },
+        {
+          "evidenceId": "windmill-docs-13",
+          "quote": "If defined, upon error this step will be retried with a delay and a maximum number of attempts as defined below."
+        }
+      ]
+    },
     "productId": "windmill",
     "storyId": "error-workflows-alerts"
   }

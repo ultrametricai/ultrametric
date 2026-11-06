@@ -1,21 +1,43 @@
 {
-  "hash": "7362be0533353cc10eb607fe91f7f5a8ebe22d5df62433e3039ccab420b4dc90",
+  "hash": "ddd215ce430f86354ac74201dc47ce9658977bbec2ddf50b9c9409575ea1109f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The docs describe Trigger.dev as a platform for durable, long-running tasks with no execution timeout. Waitpoint tokens and triggerAndWait pause runs until they are resumed, and approval waits keep the run alive. The durable chat tasks are documented as surviving deploys and crashes. Missing for 10: explicit documentation of multi-day waits (e.g. duration-based waits), a general description of how state is checkpointed and restored across worker or platform restarts for ordinary tasks (the restart-survival claim appears only for AI chat), and independent hands-on corroboration; the one community comment touching this topic is an older wish for wait/resume rather than a report on the current feature.",
+    "rationale": "Trigger.dev documents durable, long-running tasks with no execution timeout, and waitpoint tokens that pause runs until completed. Survival across deploys and crashes is stated explicitly only for chat.agent tasks. The community wish for wait/resume comes from an older thread and does not concretely contradict the current docs. missing for 10: explicit documentation of multi-day waits, general (non-chat) state persistence across worker/platform restarts, independent hands-on corroboration.",
     "evidenceIds": [
-      "trigger-dev-probe-1",
       "trigger-dev-docs-14",
-      "trigger-dev-gh-1",
       "trigger-dev-docs-34",
       "trigger-dev-docs-40",
-      "trigger-dev-docs-16",
       "trigger-dev-docs-25",
-      "trigger-dev-docs-20"
+      "trigger-dev-docs-20",
+      "trigger-dev-probe-1",
+      "trigger-dev-gh-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run long-lived workflows that wait for days and survive worker or platform restarts without losing state",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-40",
+          "quote": "Waitpoint tokens pause task runs until you complete the token."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-20",
+          "quote": "Durable multi-turn AI chats — one Trigger.dev task per conversation, surviving refreshes, deploys, and crashes."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-34",
+          "quote": "Tasks are plain async/await functions with no workflow DSL, no determinism rules, and no execution time limit."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-25",
+          "quote": "pauses for human approval; the run stays alive"
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "durable-long-running-workflows"
   }

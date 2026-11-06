@@ -1,22 +1,42 @@
 {
-  "hash": "8e101fc1b941603900e628fe7e21aa369bd4912edfac51be241f15e518375d72",
+  "hash": "8c74ec98a21d0e1fe1297391f91cc104199d5ce1956817f8af8bfcb2f19af5a6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Reducto documents the plumbing for large inputs: presigned-URL uploads of up to 5GB bypass the 100MB limit, and async job endpoints return a job ID immediately. Svix webhooks retry with exponential backoff, and a settings group controls timeouts. However, nothing documents reliable processing of thousand-page documents or guarantees against truncation, and one hands-on user with 300+ page financial documents said Reducto 'did struggle with long documents.' That report is too vague to establish a concrete contradiction. Missing for 10: documented page-count limits and behavior for very long documents, explicit no-truncation or partial-result signaling, and independent corroboration of reliable multi-GB or thousand-page processing.",
+    "rationale": "Reducto documents a presigned-URL upload path for files up to 5GB, an async job endpoint that returns a job ID immediately, configurable timeouts in parse settings, and \"No Page Limits\" on its plans. Those cover the multi-gigabyte and timeout parts of the story. Nothing documents reliable handling of thousand-page documents or any guard against silent truncation, and one user reported Reducto \"did struggle with long documents\" at 300+ pages, which is too vague to dispute the claims but lowers confidence. Missing for 10: explicit thousand-page processing guarantees or benchmarks, truncation detection or completeness guarantees, independent hands-on corroboration of large-file reliability.",
     "evidenceIds": [
       "reducto-docs-16",
       "reducto-docs-33",
-      "reducto-docs-58",
       "reducto-docs-36",
-      "reducto-docs-9",
-      "reducto-docs-10",
       "reducto-docs-49",
       "reducto-docs-60",
       "reducto-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, thousand-page documents and multi-gigabyte files process reliably without timeouts or silent truncation",
+      "citations": [
+        {
+          "evidenceId": "reducto-docs-16",
+          "quote": "Files over 100MB? Use the presigned URL method which supports files up to 5GB."
+        },
+        {
+          "evidenceId": "reducto-docs-36",
+          "quote": "client.parse.run_job() ... POST /parse_async ... Job ID (returns immediately)"
+        },
+        {
+          "evidenceId": "reducto-docs-49",
+          "quote": "The `settings` config group controls how documents are processed, including timeouts"
+        },
+        {
+          "evidenceId": "reducto-docs-60",
+          "quote": "No Page Limits"
+        }
+      ]
+    },
     "productId": "reducto",
     "storyId": "large-document-handling"
   }

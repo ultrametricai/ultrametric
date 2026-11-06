@@ -1,20 +1,43 @@
 {
-  "hash": "7d6859eadc291f47783153f88d7d749c10e6236b50f7539b63c7b12e17d2e8bd",
+  "hash": "2c88928ae56cf1bebb339a7d94404cd0bd4d22bd9aebdb8a6a9ca970d28dc206",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "lancedb",
-    "storyId": "integrated-embedding-generation",
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LanceDB documents an embedding API with a registry, embedding functions and schemas across SDKs. OpenAI is registered by default, and OpenCLIP and VoyageAI provider integrations are documented, along with custom EmbeddingFunction implementations. The OpenCLIP example searches directly with a raw query image, which shows query-time embedding inside the database. Missing for 10: an explicit quoted statement that embeddings are generated automatically at ingest, a broader list of providers, and independent or hands-on confirmation.",
+    "rationale": "LanceDB documents an embedding API with a registry of embedding functions and schemas. OpenAI is registered in that registry by default, and OpenCLIP and VoyageAI integrations are also documented. Custom embedding functions are supported, and a raw query image can be passed straight to search, which shows query-time embedding is handled by the database rather than a separate pipeline. Missing for 10: an explicit verbatim statement that embeddings are computed automatically on insert/ingest, and independent or hands-on corroboration.",
     "evidenceIds": [
       "lancedb-docs-13",
-      "lancedb-docs-24",
       "lancedb-docs-30",
+      "lancedb-docs-24",
       "lancedb-docs-31",
       "lancedb-docs-32",
       "lancedb-docs-29"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an ml-engineer, I can have the database generate embeddings at ingest and query time using built-in or configured model providers, instead of running a separate embedding pipeline",
+      "citations": [
+        {
+          "evidenceId": "lancedb-docs-13",
+          "quote": "Use the embedding API in LanceDB -- registry, functions, schemas, and multi-language SDK support."
+        },
+        {
+          "evidenceId": "lancedb-docs-30",
+          "quote": "LanceDB registers the OpenAI embeddings function in the registry by default, as `openai`."
+        },
+        {
+          "evidenceId": "lancedb-docs-24",
+          "quote": "impl EmbeddingFunction for MyTextEmbedder"
+        },
+        {
+          "evidenceId": "lancedb-docs-31",
+          "quote": "actual = table.search(query_image).limit(1).to_pydantic(Images)[0]"
+        }
+      ]
+    },
+    "productId": "lancedb",
+    "storyId": "integrated-embedding-generation"
   }
 }

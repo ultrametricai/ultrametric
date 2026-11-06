@@ -1,20 +1,38 @@
 {
-  "hash": "b1471e627ff8132cdfc870fba420ab511cb377619b3c16783e62bd2f23aaa9f4",
+  "hash": "8a6a1fdac7f29f380e22d58f3942cc6a8780ca8238f3f717938ac0956b7823b3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "a-Shell's own Apple Shortcuts actions give programmatic control: `Execute Command` runs arbitrary command lists, and `Put File`/`Get File` move files in and out. Since the UI is itself a command line where even settings are commands (`config`), much of the app is reachable this way, and the docs claim 'full control of the Shell.' However, this is a local Shortcuts automation surface rather than a documented API, and parity is unverified: interactive steps like `pickFolder` and window handling aren't shown to work via Shortcuts, and the extension mode 'won't always work.' Missing for 10: a documented general-purpose API (no OpenAPI spec or llms.txt found), explicit UI/API parity documentation, proof that interactive and window operations are scriptable, and independent hands-on corroboration.",
+    "rationale": "a-Shell has no web API: the OpenAPI and llms.txt probes return 404. It does ship its own Apple Shortcuts actions, which the docs say give \"full control of the Shell\". `Execute Command` runs arbitrary command lists and `Put File`/`Get File` move files, and since the UI is itself a command line (config, newWindow, pickFolder and so on are commands), most UI functions are reachable programmatically. Missing for 10: a documented general-purpose API (HTTP or otherwise) beyond Shortcuts, an explicit statement that every UI-only interaction (e.g. GUI pickers) can be driven programmatically, reliable in-extension execution (the docs warn it \"won't always work\"), and independent corroboration.",
     "evidenceIds": [
       "a-shell-gh-4",
       "a-shell-gh-13",
       "a-shell-gh-33",
       "a-shell-gh-34",
       "a-shell-gh-35",
-      "a-shell-gh-2",
       "a-shell-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "a-shell-gh-4",
+          "quote": "a-Shell is compatible with Apple Shortcuts, giving users full control of the Shell."
+        },
+        {
+          "evidenceId": "a-shell-gh-33",
+          "quote": "`Execute Command`, which takes a list of commands and executes them in order."
+        },
+        {
+          "evidenceId": "a-shell-gh-34",
+          "quote": "`Put File` and `Get File` are used to transfer files to and from a-Shell."
+        }
+      ]
+    },
     "productId": "a-shell",
     "storyId": "openness-api-parity"
   }

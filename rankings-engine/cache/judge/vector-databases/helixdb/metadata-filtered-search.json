@@ -1,17 +1,32 @@
 {
-  "hash": "11e5ccd3d65725a5779edd7bafdb0b7e9be55ecf670098671d5964bb4e855e45",
+  "hash": "9458adb15ca4463781db4a59ec6b198b39bdc634ca80638d0495c38e76da9311",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "helixdb",
-    "storyId": "metadata-filtered-search",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "HelixDB documents filtering an exact candidate set before vector ranking, and supports search and filtering on both nodes and edges. This suggests filtered vector search keeps its results within the filter rather than dropping matches through post-filtering. The evidence is thin, short claimed-docs snippets with no detail on how property filters are expressed and nothing on how latency or recall behave under selective filters. Missing for 10: documentation of metadata/property filter syntax combined with vector search, recall/latency benchmarks under filtering, and independent hands-on corroboration.",
+    "rationale": "HelixDB's own docs say queries can traverse and filter an exact candidate set before vector ranking, and that filtering works on both nodes and edges, so filtered vector search is a native capability. Filtering an exact candidate set implies recall is preserved, but nothing documents the latency impact of filtered vector queries. Missing for 10: documentation of supported structured metadata filter operators/conditions, latency or performance evidence for filtered vector search, explicit recall guarantees or benchmarks, independent or hands-on corroboration.",
     "evidenceIds": [
       "helixdb-docs-5",
       "helixdb-docs-10",
       "helixdb-docs-3"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can filter vector search by structured metadata conditions without wrecking recall or latency",
+      "citations": [
+        {
+          "evidenceId": "helixdb-docs-5",
+          "quote": "traverse and filter an exact candidate set before vector ranking, so results cannot escape graph or permission boundaries."
+        },
+        {
+          "evidenceId": "helixdb-docs-10",
+          "quote": "Search and filtering on both nodes and edges, not just nodes."
+        }
+      ]
+    },
+    "productId": "helixdb",
+    "storyId": "metadata-filtered-search"
   }
 }

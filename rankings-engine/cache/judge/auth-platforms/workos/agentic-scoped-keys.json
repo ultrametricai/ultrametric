@@ -1,19 +1,36 @@
 {
-  "hash": "d0406f8bdd46d775d900afa99d8ac4f11aadee935e078073a7156a03e319f999",
+  "hash": "a756c33a2d61ca516628bcbcbffad9e61ebe3964909c4227ba86f9ae9ac427f1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "WorkOS documents M2M applications for issuing programmatic API access credentials (workos-docs-32), and AuthKit acts as a spec-compatible OAuth authorization server for securing MCP servers (workos-docs-27, workos-docs-8). Combined with RBAC roles and permissions enforced through session JWTs (workos-docs-3, workos-supp-rbac-jwt), this gives a plausible path to least-privilege agent access. However, the evidence never explicitly shows per-credential scopes for agents, and WorkOS's own MCP server lets an agent change the same dashboard data the user can (workos-docs-44), which suggests broad rather than least-privilege access for its own workspace. Missing for 10: explicit documentation of scoping M2M or OAuth tokens to specific permissions, agent-specific least-privilege credential guidance, scoped access for WorkOS's own MCP or API keys, and independent or hands-on corroboration.",
+    "rationale": "WorkOS documents M2M applications that issue API access credentials for programmatic clients, and AuthKit acts as a spec-compatible OAuth authorization server for securing MCP access. So credential issuance for an agent is a native capability. However, nothing in the evidence shows those credentials can be narrowed to specific scopes or permissions, and the WorkOS MCP server gives an agent the same dashboard access as the user rather than least-privilege access. Missing for 10: documented per-credential scopes/permission restriction for M2M or agent tokens, least-privilege controls on the WorkOS MCP server's access, and independent or hands-on corroboration.",
     "evidenceIds": [
       "workos-docs-32",
-      "workos-docs-27",
       "workos-docs-8",
-      "workos-docs-3",
-      "workos-supp-rbac-jwt",
-      "workos-docs-44"
+      "workos-docs-27",
+      "workos-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "workos-docs-32",
+          "quote": "M2M applications are commonly used to provide API access credentials to customers or partners, allowing them to programmatically access your APIs"
+        },
+        {
+          "evidenceId": "workos-docs-8",
+          "quote": "WorkOS and AuthKit can provide a secure way to manage access to your MCP server with minimal effort."
+        },
+        {
+          "evidenceId": "workos-docs-27",
+          "quote": "AuthKit, which is a spec-compatible OAuth authorization server."
+        }
+      ]
+    },
     "productId": "workos",
     "storyId": "agentic-scoped-keys"
   }

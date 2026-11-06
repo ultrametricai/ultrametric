@@ -1,18 +1,41 @@
 {
-  "hash": "4e5c022959e4b3afccf41af7c6771e828484ea7107ae1835e8b478000522cd29",
+  "hash": "3e045aedf5df3384d8c5f1b19e7ad3b3f09dd3bebcd4930328bfeb34b8e01dbc",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "milvus",
-    "storyId": "hybrid-dense-sparse-search",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Milvus documents full-text search that turns raw text into sparse embeddings, plus multi-vector search that runs several ANN searches at once. Its Lite docs list sparse and dense vector search and `hybrid_search` as shared API features, and a community comment cites hybrid search and sparse vectors as Milvus strengths. Missing for 10: explicit evidence of the fusion/reranking strategy (e.g. RRF or weighted scoring), explicit confirmation that the sparse signal is BM25, and hands-on corroboration of a combined dense+sparse hybrid query.",
+    "rationale": "Milvus documents hybrid_search alongside sparse and dense vector search. It also runs several ANN searches across multiple vector fields at once, and full-text search turns raw text into sparse embeddings. Community feedback confirms hybrid and sparse-vector support. However, nothing in the pack describes how results are fused or reranked. Missing for 10: explicit documentation of fusion ranking (e.g., RRF or weighted rerankers), explicit BM25 naming, and hands-on corroboration of combined dense plus sparse hybrid queries.",
     "evidenceIds": [
-      "milvus-docs-2",
-      "milvus-docs-3",
       "milvus-docs-17",
+      "milvus-docs-12",
+      "milvus-docs-11",
       "milvus-comm-10"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can combine dense vector search with keyword or sparse (BM25-style) signals in one hybrid query with fusion ranking",
+      "citations": [
+        {
+          "evidenceId": "milvus-docs-17",
+          "quote": "sparse and dense vector search, metadata filtering, multi-vector and hybrid_search"
+        },
+        {
+          "evidenceId": "milvus-docs-12",
+          "quote": "Milvus supports this by allowing search on multiple vector fields, conducting several Approximate Nearest Neighbor (ANN) searches simultaneously."
+        },
+        {
+          "evidenceId": "milvus-docs-11",
+          "quote": "automatically converting your text data into sparse embeddings without the need to manually generate vector embeddings"
+        },
+        {
+          "evidenceId": "milvus-comm-10",
+          "quote": "if you want hybrid search, different IVF variants, disk-based search, horizontal scaling, SIMD, or sparse vectors, Milvus is great"
+        }
+      ]
+    },
+    "productId": "milvus",
+    "storyId": "hybrid-dense-sparse-search"
   }
 }

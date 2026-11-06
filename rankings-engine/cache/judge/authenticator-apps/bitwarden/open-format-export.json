@@ -1,19 +1,26 @@
 {
-  "hash": "2965cf0b812625256101564b41f24e2dea5f50ea65f101ac73ea3b662a59656a",
+  "hash": "8b3590a0896487a0ccb47bd11f6826b149c6142f0f9f8eb9c36f3722708672d2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Bitwarden documents vault export of logins and notes [docs-5] and has a dedicated Authenticator import-export page, though the quoted text covers only imports from Google, LastPass and 2FAS [docs-3, docs-14]. The CLI is fully featured, a hands-on report shows `bw list` dumping vault items including TOTP data in plaintext [docs-7, comm-13], and `bw serve` exposes the whole vault over a local REST API [probe-rt-1]. That points to a scriptable way out, but the evidence never confirms that TOTP secrets themselves are exported, or in what open format. missing for 10: explicit documentation that exports include TOTP seeds, a named open/readable export format (e.g. JSON/CSV/otpauth URIs) for the Authenticator app, evidence of exporting to a non-Bitwarden app (the export doc frames transfer as 'to a new Bitwarden vault'), independent corroboration of a successful migration out.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Bitwarden documents its own vault export of logins and notes for backup or transfer. However, the evidence never states that TOTP secrets are included, what format the export uses, or that it targets non-Bitwarden apps; the stated purpose is transfer to a new Bitwarden vault. The authenticator import/export page excerpts only describe imports, and the CLI evidence shows current TOTP codes (not secrets). Missing for 10: explicit confirmation that TOTP seeds are exported, a documented open/readable export format (e.g., JSON/CSV/otpauth URIs), documented migration to other authenticator apps, and independent hands-on corroboration.",
     "evidenceIds": [
       "bitwarden-docs-5",
-      "bitwarden-docs-3",
-      "bitwarden-docs-14",
-      "bitwarden-docs-7",
-      "bitwarden-comm-13",
-      "bitwarden-probe-rt-1"
+      "bitwarden-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power user, I can export all my TOTP secrets in an open, readable format and leave for another app whenever I choose — no lock-in",
+      "citations": [
+        {
+          "evidenceId": "bitwarden-docs-5",
+          "quote": "Export your vault data, including logins and notes, to back up important information or transfer to a new Bitwarden vault."
+        }
+      ]
+    },
     "productId": "bitwarden",
     "storyId": "open-format-export"
   }

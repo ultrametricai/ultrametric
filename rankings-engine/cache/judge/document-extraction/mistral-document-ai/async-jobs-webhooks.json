@@ -1,16 +1,27 @@
 {
-  "hash": "f35d3a2f881e6dc8676960658a32fe6a2870e70aa27e6af48cc89f6c96110c8c",
+  "hash": "31f0ebcbe6d5b883d1de0fe30e510e80cbf3f023865c09a67a4888f57ce14172",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "The only async path in the evidence is that the OCR model supports the batch endpoint (/v1/batch), which implies offloaded jobs, but no doc describes job status polling for it. Community testers describe the standard OCR API as synchronous, and one hit a timeout on a 900-page document and had to split it into chunks, so long parses can block or fail without a workaround. Missing for 10: documented async job submission for single long parses, explicit status-polling docs, completion webhooks/callbacks, and hands-on corroboration of non-blocking large-document processing.",
+    "confidence": "low",
+    "rationale": "The OCR 4.1 model page lists support for the /v1/batch endpoint, which suggests an asynchronous batch path for OCR. However, nothing describes per-job status polling or completion webhooks. Community reports describe the standard OCR call as synchronous, and one user hit a timeout on 900 pages and had to chunk manually, so the core OCR call can block. Missing for 10: documented async job submission for long parses, a job status polling endpoint, registrable completion webhooks, and hands-on corroboration of non-blocking batch OCR.",
     "evidenceIds": [
       "mistral-document-ai-docs-37",
       "mistral-document-ai-comm-2",
       "mistral-document-ai-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, long parses run as async jobs with status polling and completion webhooks, so my pipeline never blocks",
+      "citations": [
+        {
+          "evidenceId": "mistral-document-ai-docs-37",
+          "quote": "Batching /v1/batch"
+        }
+      ]
+    },
     "productId": "mistral-document-ai",
     "storyId": "async-jobs-webhooks"
   }

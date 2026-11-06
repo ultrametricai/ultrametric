@@ -1,20 +1,41 @@
 {
-  "hash": "46d5507ad0dfd8bc95d8b5f7e1ed80394a356f5d7b23efddb9de90da8dab220a",
+  "hash": "c2cc6c8339c5e77d8cb9e108ec7f60a77955ff97d863df5013f7c6332c9f6f91",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Reducto documents an async parse endpoint: `client.parse.run_job()` calls `POST /parse_async` and returns a job ID immediately. Completion notifications come through Svix webhooks with cryptographic signing, automatic retries with exponential backoff, and a delivery dashboard in Studio. A batch queue with a 20% discount further supports non-blocking pipelines. Missing for 10: an explicitly documented job-status polling endpoint (the returned job ID only implies one), and independent or hands-on corroboration of the async and webhook flow.",
+    "rationale": "Reducto documents an async parse endpoint (`run_job()` / POST /parse_async) that returns a job ID immediately. It also documents Svix webhooks with cryptographic signing, retries with exponential backoff, and a delivery dashboard, which covers the non-blocking submit and the callback parts of the story. missing for 10: explicit documentation of a job-status polling endpoint, explicit confirmation that webhooks fire on parse-job completion, and independent hands-on corroboration.",
     "evidenceIds": [
-      "reducto-docs-9",
       "reducto-docs-36",
       "reducto-docs-55",
-      "reducto-docs-10",
+      "reducto-docs-9",
       "reducto-docs-39",
-      "reducto-docs-28",
-      "reducto-docs-25"
+      "reducto-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, long parses run as async jobs with status polling and completion webhooks, so my pipeline never blocks",
+      "citations": [
+        {
+          "evidenceId": "reducto-docs-55",
+          "quote": "`client.parse.run_job()` `POST /parse_async` Job ID (returns immediately)"
+        },
+        {
+          "evidenceId": "reducto-docs-9",
+          "quote": "`run_job()` Calls async endpoint, returns job ID"
+        },
+        {
+          "evidenceId": "reducto-docs-39",
+          "quote": "Svix webhooks provide cryptographic request signing, automatic retries with exponential backoff, and a delivery dashboard for debugging. Use Svix for production applications."
+        },
+        {
+          "evidenceId": "reducto-docs-28",
+          "quote": "In Reducto Studio, go to Webhooks in the sidebar. This opens your Svix dashboard directly."
+        }
+      ]
+    },
     "productId": "reducto",
     "storyId": "async-jobs-webhooks"
   }

@@ -1,20 +1,37 @@
 {
-  "hash": "120c0f5c2cc5fd2b28290cf11ae4720c357a44aa818e07e4b06ce720ab723499",
+  "hash": "c899e8c0f915260c5dbd86b2cd8b655332d590c6d89c76fa260dd4248638ccb3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The OCR processor outputs tables only as markdown or HTML via `table_format`, not as typed rows. Getting database-ready JSON depends on the separate annotations feature, which extracts information into a user-supplied JSON format (`document_annotation`) and can convert charts to tables, so a table-to-schema workflow is plausible but not documented as such. Community users report that a small share of extracted forms still need human review, and one tester saw a whole page returned as a single image. missing for 10: native typed row/cell JSON output for tables, documented table-to-schema extraction with type enforcement, and hands-on evidence of clean database-loadable table output without manual cleanup.",
+    "rationale": "Mistral's own annotations feature returns document content as structured JSON in a user-provided format. Native table output, however, is only markdown or HTML via table_format, so turning tables into typed, database-ready rows means either defining a custom document_annotation schema or parsing the markdown/HTML yourself. Missing for 10: a documented table-to-typed-rows/JSON output mode, explicit docs applying annotation schemas to tables, type coercion guarantees, and hands-on evidence that tables load without cleanup.",
     "evidenceIds": [
       "mistral-document-ai-docs-2",
       "mistral-document-ai-docs-33",
       "mistral-document-ai-docs-21",
       "mistral-document-ai-docs-35",
-      "mistral-document-ai-docs-41",
-      "mistral-document-ai-comm-7",
-      "mistral-document-ai-comm-3"
+      "mistral-document-ai-docs-41"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a data engineer, I turn extracted tables into typed rows/JSON I can load into a database without manual cleanup",
+      "citations": [
+        {
+          "evidenceId": "mistral-document-ai-docs-33",
+          "quote": "the annotations functionality, which allows you to extract information in a structured json-format that you provide."
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-2",
+          "quote": "Table formatting supports null, markdown, and html values through the table_format parameter."
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-21",
+          "quote": "`document_annotation`: returns the annotation of the entire document based on the provided document annotation format."
+        }
+      ]
+    },
     "productId": "mistral-document-ai",
     "storyId": "table-to-structured-rows"
   }

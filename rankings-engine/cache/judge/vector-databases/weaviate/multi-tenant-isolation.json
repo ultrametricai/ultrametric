@@ -1,17 +1,32 @@
 {
-  "hash": "03d5a27433ba09a84ddd08bf5dca31e1f227586e6dac01bce1bef21a1341edad",
+  "hash": "7989566f3467b3fe6b70eabb6d419312a300333a3d23ef3d025c396954071abd",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "weaviate",
-    "storyId": "multi-tenant-isolation",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Weaviate documents native multi-tenancy in which each tenant is stored on a separate shard, data is not visible across tenants, and tenants can be created automatically via `autoTenantCreation`. That covers the isolation mechanism well. The story's \"cheaply\" and \"documented limits\" elements are not evidenced at all. Missing for 10: documented tenant-count limits per collection or node, evidence of cost-efficient tenant storage (e.g. offloading or deactivating inactive tenants), and independent or hands-on corroboration of multi-tenant scale.",
+    "rationale": "Weaviate's own docs describe native multi-tenancy in which each tenant gets a separate shard, data is isolated between tenants, and tenants can be auto-created. That covers the core isolation part of the story. Nothing in the evidence shows how cheaply tenants scale or what the tenant limits are. Missing for 10: documented tenant-count or scale limits, evidence of low per-tenant cost at high tenant counts (e.g. inactive-tenant offloading), independent or hands-on corroboration.",
     "evidenceIds": [
       "weaviate-docs-7",
       "weaviate-docs-8",
       "weaviate-docs-16"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can isolate many tenants cheaply using namespaces, partitions, or per-tenant collections with documented limits",
+      "citations": [
+        {
+          "evidenceId": "weaviate-docs-7",
+          "quote": "Multi-tenancy provides data isolation. Each tenant is stored on a separate shard. Data stored in one tenant is not visible to another tenant."
+        },
+        {
+          "evidenceId": "weaviate-docs-16",
+          "quote": "To change this behavior so Weaviate creates a new tenant, set `autoTenantCreation` to `true`"
+        }
+      ]
+    },
+    "productId": "weaviate",
+    "storyId": "multi-tenant-isolation"
   }
 }

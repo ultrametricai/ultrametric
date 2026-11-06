@@ -1,17 +1,41 @@
 {
-  "hash": "4965b9e1ba7fd5d0b35cc8aa2d4a590d18e4b9eb565d72c2ebd7e9ed66c9396a",
+  "hash": "ea8e928a4e609eb28bcddae71f70db514364129349843f3aecd648056ace6deb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The session-management docs show configurable expiry (`expiresIn`, 7 days by default) and sliding refresh via `updateAge`, which extends expiration whenever a session is used. The security docs state that logged-in users can revoke their own sessions on other devices or browsers. Revocation is less well evidenced than expiry and refresh, and there is no independent corroboration. Missing for 10: explicit documentation that revocation takes effect immediately server-side, an admin or server API to revoke another user's compromised session, and independent or hands-on corroboration of session lifecycle behavior.",
+    "rationale": "Better Auth documents configurable session expiry (7-day default, `expiresIn`) and sliding refresh via `updateAge`, including a client-driven refresh flow. Its security docs also let a logged-in user revoke their own sessions on other devices. The evidence does not show immediate server-side or administrator revocation of a specific compromised session, nor how quickly a revoked session is invalidated. missing for 10: documented server-side/admin revocation of a specific compromised session, evidence that revocation takes effect immediately, independent or hands-on corroboration of the session lifecycle.",
     "evidenceIds": [
       "better-auth-docs-37",
       "better-auth-docs-47",
-      "better-auth-docs-10",
-      "better-auth-docs-33"
+      "better-auth-docs-82",
+      "better-auth-docs-83",
+      "better-auth-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can manage session lifecycle — expiry, refresh, and immediate server-side revocation of a compromised session",
+      "citations": [
+        {
+          "evidenceId": "better-auth-docs-47",
+          "quote": "The session expires after 7 days by default. But whenever the session is used and the updateAge is reached, the session expiration is updated"
+        },
+        {
+          "evidenceId": "better-auth-docs-82",
+          "quote": "You can change both the `expiresIn` and `updateAge` values by passing the `session` object to the `auth` configuration."
+        },
+        {
+          "evidenceId": "better-auth-docs-83",
+          "quote": "The client automatically calls POST to perform the refresh."
+        },
+        {
+          "evidenceId": "better-auth-docs-10",
+          "quote": "A logged in user can also revoke their own sessions to log out from different devices or browsers."
+        }
+      ]
+    },
     "productId": "better-auth",
     "storyId": "session-lifecycle-revocation"
   }

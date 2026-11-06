@@ -1,20 +1,45 @@
 {
-  "hash": "09cefae475f052d5b98eb11b9c39b624d24fb019e72e5d5f94e305fb31915f2e",
+  "hash": "32ee0f32feb70b16db5ae652895e8fd2b9c34b10550df625fe641822d18fcd62",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Docs say bbox_annotation annotates the figures and charts the OCR model extracts, including user-requested descriptions or captions and chart-to-table conversion. Per-page blocks carry bounding boxes and structural labels, giving page-traceable positions. Community testers confirm embedded images are extracted and returned with coordinates. Missing for 10: first-party docs explicitly describing the returned image-crop payload and its coordinate schema, and independent hands-on corroboration of VLM figure summaries.",
+    "rationale": "Mistral Document AI's documented bbox_annotation feature annotates the bounding boxes the OCR model extracts for charts and figures, including user-requested descriptions or captions and chart-to-table conversion. Each page also returns a blocks array with bounding boxes and structural labels. A hands-on tester saw extracted image references returned with coordinates, and another user confirmed embedded images can be extracted, which supports image crops traceable to their position. Missing for 10: explicit first-party documentation of the image-crop output format and coordinate schema, and independent evaluation of figure-caption/VLM summary quality.",
     "evidenceIds": [
       "mistral-document-ai-docs-25",
-      "mistral-document-ai-docs-34",
       "mistral-document-ai-docs-35",
-      "mistral-document-ai-docs-7",
       "mistral-document-ai-docs-18",
       "mistral-document-ai-comm-3",
       "mistral-document-ai-comm-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an ML engineer, figures and charts are extracted or described (VLM summaries, image crops) with positions traceable back to the source page",
+      "citations": [
+        {
+          "evidenceId": "mistral-document-ai-docs-25",
+          "quote": "bbox_annotation: gives you the annotation of the bboxes extracted by the OCR model (charts/ figures etc) based on user requirement and provided bbox/image annotation format. The user may ask to describe/caption the figure for instance."
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-35",
+          "quote": "Conversion of charts to tables, extraction of fine print from figures, or definition of custom image types"
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-18",
+          "quote": "When enabled, each page contains a `blocks` array with paragraph-level bounding boxes, structural block labels, and extracted content in reading order."
+        },
+        {
+          "evidenceId": "mistral-document-ai-comm-3",
+          "quote": "It returned `![img-0.jpeg](img-0.jpeg)` with coordinates for a single image covering the whole page"
+        },
+        {
+          "evidenceId": "mistral-document-ai-comm-5",
+          "quote": "can extract embedded images from the text"
+        }
+      ]
+    },
     "productId": "mistral-document-ai",
     "storyId": "figure-chart-handling"
   }

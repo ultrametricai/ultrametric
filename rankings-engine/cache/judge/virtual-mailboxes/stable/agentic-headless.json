@@ -1,24 +1,51 @@
 {
-  "hash": "428779e403eefcac6fdbf690fd19c05b3339f031e9b04c3e0fbb0b9bd23824df",
+  "hash": "b9a189506475da647ad6d367ed0a01843c5b99f54757b9d43f7bbd9654e276e7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stable can be driven headlessly through its own REST API, authenticated with dashboard-issued API keys sent in the x-api-key header. The API supports searching and retrieving MailItems, creating Locations and onboarding them programmatically, and managing Companies, with webhooks and polling for status changes. However, the documented API surface is self-described as limited, and there is no CLI, SDK, CI-specific guidance or published OpenAPI spec (the probe returned 404). Many mail actions (scan, ship, shred, deposit) appear only as dashboard features. Missing for 10: CLI or SDK for scripted/CI use, API coverage of core mail actions, CI/automation documentation, OpenAPI spec, independent hands-on corroboration.",
+    "rationale": "Stable has its own REST API with dashboard-issued API keys sent in the x-api-key header, so scripts can run it without the UI. That allows unattended automation such as searching and retrieving MailItems, creating and onboarding Locations programmatically, and polling for status changes. However, the documented API scope is limited, and nothing addresses CI or headless operation specifically. missing for 10: an official CLI or CI integration guidance, a published OpenAPI spec (the probe found all candidate paths returned 404), API coverage beyond MailItems and Locations/Companies, and independent or hands-on corroboration of automated use.",
     "evidenceIds": [
       "stable-docs-44",
-      "stable-docs-3",
       "stable-docs-30",
-      "stable-docs-4",
-      "stable-docs-46",
-      "stable-docs-47",
-      "stable-docs-51",
+      "stable-docs-3",
+      "stable-docs-32",
       "stable-docs-49",
-      "stable-docs-52",
       "stable-docs-60",
       "stable-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "stable-docs-44",
+          "quote": "Currently the API supports searching for and retrieving **MailItems**, as well as creating new **Locations** and onboarding them via the USPS Form 1583."
+        },
+        {
+          "evidenceId": "stable-docs-30",
+          "quote": "Authentication to the Stable API is performed via the x-api-key header."
+        },
+        {
+          "evidenceId": "stable-docs-3",
+          "quote": "You can create and manage your own API keys directly in the dashboard under Settings > API keys"
+        },
+        {
+          "evidenceId": "stable-docs-32",
+          "quote": "Submit USPS Form 1583 information programmatically"
+        },
+        {
+          "evidenceId": "stable-docs-49",
+          "quote": "You can poll `GET /v1/locations/{id}` to detect the transition."
+        },
+        {
+          "evidenceId": "stable-docs-60",
+          "quote": "Automate manual workflows and data extraction with our API, webhooks, and native integrations."
+        }
+      ]
+    },
     "productId": "stable",
     "storyId": "agentic-headless"
   }

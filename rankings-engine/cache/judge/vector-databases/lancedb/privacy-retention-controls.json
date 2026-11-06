@@ -1,18 +1,31 @@
 {
-  "hash": "1bda97b64eef4b67a4c69aa378d43bb6389bbbb89ea7ee0efb4e183ea1273ff8",
+  "hash": "80b9caa513c5b05473362b2563d79322e48a5551ae2c4233c568c2f28fc1bdf1",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "lancedb",
-    "storyId": "privacy-retention-controls",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LanceDB documents row-level deletion with predicate filters (`table.delete(\"role = 'Traitor Knight'\")`). Data lives on storage the user chooses (local NVMe, EBS, EFS, S3-compatible), and Enterprise claims GDPR compliance. However, tables are versioned with snapshots and time travel, and nothing in the evidence shows how to expire old versions or guarantee that deleted data is purged from history. missing for 10: retention policies/TTL, old-version cleanup or compaction to permanently remove deleted data, documentation of deletion semantics across versions, independent corroboration.",
+    "rationale": "LanceDB's own table API documents row deletion by SQL predicate (`table.delete(\"role = 'Traitor Knight'\")`), so the deletion half of the story is covered. Retention control is not evidenced: the versioning docs describe snapshots and audit trails but nothing on pruning old versions, TTL policies, or guaranteeing deleted rows are purged from history. Missing for 10: documented retention policies or TTL, version cleanup or compaction to purge deleted data from snapshots, and independent or hands-on corroboration.",
     "evidenceIds": [
       "lancedb-docs-33",
-      "lancedb-docs-7",
-      "lancedb-docs-12",
-      "lancedb-docs-16"
-    ]
+      "lancedb-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": [
+        {
+          "evidenceId": "lancedb-docs-33",
+          "quote": "table.delete(\"role = 'Traitor Knight'\").await.unwrap();"
+        },
+        {
+          "evidenceId": "lancedb-docs-7",
+          "quote": "Includes version control, data snapshots, and audit trails."
+        }
+      ]
+    },
+    "productId": "lancedb",
+    "storyId": "privacy-retention-controls"
   }
 }

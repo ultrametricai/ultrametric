@@ -1,19 +1,40 @@
 {
-  "hash": "79a7a0a0b9042d18ecc8fe97b1df870b040c725f264d077bc533cddd9f58fad9",
+  "hash": "349c59dd61c209388ccf80c51087f1a653c857486cdc96349b7993cdf6506a4c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Parse returns structured JSON with typed elements (text, tables, figures, layout, formatting), each tagged with type and page position, and handles multi-column layouts. Variable chunking splits at semantic boundaries such as section headers, and output is positioned as LLM-ready JSON or Markdown, so downstream models receive structure rather than flat text. Missing for 10: explicit documentation of reading-order guarantees and nested heading/section hierarchy in the output schema, and independent or hands-on corroboration of structure preservation.",
+    "rationale": "Reducto's Parse returns structured JSON with layout, where each element is typed and positioned. It handles multi-column text, and variable chunking splits at semantic boundaries such as section headers, which implies some heading and section awareness. However, the evidence never explicitly documents a heading/section hierarchy or a reading-order guarantee in the output. Missing for 10: explicit documentation of a hierarchical heading/section tree in parse output, an explicit reading-order guarantee, and independent hands-on corroboration of structure preservation.",
     "evidenceIds": [
-      "reducto-docs-29",
+      "reducto-docs-1",
       "reducto-docs-47",
       "reducto-docs-35",
-      "reducto-docs-41",
-      "reducto-docs-43",
-      "reducto-docs-48"
+      "reducto-docs-41"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ML engineer, parsed output preserves document hierarchy — headings, sections, reading order — so downstream LLMs see structure, not soup",
+      "citations": [
+        {
+          "evidenceId": "reducto-docs-1",
+          "quote": "It converts documents into structured JSON with text, tables, figures, layout, and formatting"
+        },
+        {
+          "evidenceId": "reducto-docs-47",
+          "quote": "Each element includes its type, page position, and confidence score. Parse handles multi-column text, nested tables, forms with handwriting, rotated pages"
+        },
+        {
+          "evidenceId": "reducto-docs-35",
+          "quote": "Variable chunking splits at semantic boundaries like section headers, tables, and figures, keeping related content together"
+        },
+        {
+          "evidenceId": "reducto-docs-41",
+          "quote": "You will parse a document and get back structured JSON ready for LLMs"
+        }
+      ]
+    },
     "productId": "reducto",
     "storyId": "reading-order-hierarchy"
   }

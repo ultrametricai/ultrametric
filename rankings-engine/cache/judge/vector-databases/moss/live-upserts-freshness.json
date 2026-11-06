@@ -1,19 +1,42 @@
 {
-  "hash": "00b66fabfe51d2f69c8d749ffec7324f788308d44684464d132731a014715f43",
+  "hash": "903362c821226f9c9338cd0d78da52cd2b89954abb958118c828cc5ed3f7c0f7",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "moss",
-    "storyId": "live-upserts-freshness",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Moss documents upserting additional documents and deleting documents or indexes later (moss-docs-22). It also describes freshness mechanisms: local indexing during real-time sessions that later syncs to the cloud (moss-docs-5), staying fresh via zero-downtime hot-swaps (moss-docs-6), disk caches that reload when cloud data changes (moss-docs-24), and serving a stale snapshot when the cloud is unreachable (moss-docs-25). However, the evidence never states how quickly upserts and deletes become visible in search, nor what consistency model applies between local and cloud copies. Missing for 10: documented update-to-search visibility latency, an explicit consistency model for continuous upserts and deletes, and independent or hands-on corroboration of freshness under continuous writes.",
+    "rationale": "Moss documents upserting and deleting documents in an index, and real-time sessions that index and query locally before syncing to the cloud. It also claims indexes \"stay fresh\" via zero-downtime hot-swaps, with snapshot fallback when the cloud is unreachable. However, the evidence never states how quickly upserts or deletes appear in search results, nor gives a consistency model. missing for 10: documented propagation latency or freshness guarantees for upserts and deletes, an explicit consistency model (read-after-write, eventual), behavior under continuous high-rate writes, and independent or hands-on corroboration.",
     "evidenceIds": [
       "moss-docs-22",
       "moss-docs-5",
       "moss-docs-6",
       "moss-docs-24",
       "moss-docs-25"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can upsert and delete records continuously and have changes reflected in search results quickly, with documented freshness/consistency behavior",
+      "citations": [
+        {
+          "evidenceId": "moss-docs-22",
+          "quote": "Upsert more docs later ... Fetch specific docs ... Delete docs or the index when done"
+        },
+        {
+          "evidenceId": "moss-docs-5",
+          "quote": "index and query locally during a conversation, then sync to the cloud"
+        },
+        {
+          "evidenceId": "moss-docs-6",
+          "quote": "Hydrate from the cloud and stay fresh with zero-downtime hot-swaps."
+        },
+        {
+          "evidenceId": "moss-docs-25",
+          "quote": "If the cloud is unreachable or answers with a temporary error, such as a 429 or 503, the load serves the snapshot instead of failing."
+        }
+      ]
+    },
+    "productId": "moss",
+    "storyId": "live-upserts-freshness"
   }
 }

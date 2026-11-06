@@ -1,17 +1,32 @@
 {
-  "hash": "b8d5cf8884f997828453d6fe98c22893105166e23f6215aaaeb62a79d7788e1d",
+  "hash": "db5a8717c741cb152a25f4ea981c663debb8e7b3db46dbb816c696dda9699415",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "milvus",
-    "storyId": "multi-tenant-isolation",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Milvus documents four multi-tenancy strategies, each trading off scalability, data isolation, and flexibility, which covers the namespace, partition, and per-collection options in the story. RBAC scoped to collection, database, and instance levels backs up tenant isolation. Missing for 10: the specific strategies (database/collection/partition/partition-key) are not detailed in the evidence, no documented per-tenant or collection/partition count limits, no evidence on cost efficiency at high tenant counts, and no independent or hands-on corroboration.",
+    "rationale": "Milvus's own reference docs say it supports four multi-tenancy strategies that trade off scalability, data isolation and flexibility, so tenant isolation is a first-party capability. RBAC scoped at the collection, database and instance levels backs up the isolation boundaries. However, the evidence does not name the strategies (partitions, per-tenant collections or databases), does not show they are cheap at scale, and states no tenant-count or resource limits. Missing for 10: explicit naming of the partition, collection and database strategies; documented per-strategy tenant limits; evidence of cost-efficiency at high tenant counts; independent or hands-on corroboration.",
     "evidenceIds": [
-      "milvus-docs-5",
       "milvus-docs-14",
-      "milvus-docs-6"
-    ]
+      "milvus-docs-5",
+      "milvus-docs-15"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can isolate many tenants cheaply using namespaces, partitions, or per-tenant collections with documented limits",
+      "citations": [
+        {
+          "evidenceId": "milvus-docs-14",
+          "quote": "Milvus supports four multi-tenancy strategies, each offering a different trade-off between scalability, data isolation, and flexibility."
+        },
+        {
+          "evidenceId": "milvus-docs-15",
+          "quote": "With RBAC, you can finely control the operations users can perform at the collection, database, and instance levels, enhancing data security."
+        }
+      ]
+    },
+    "productId": "milvus",
+    "storyId": "multi-tenant-isolation"
   }
 }

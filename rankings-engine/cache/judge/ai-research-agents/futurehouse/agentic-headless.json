@@ -1,11 +1,11 @@
 {
-  "hash": "db901375f3815a4720b6ab5cae2bb081a5f5c2b2046eecac9bf89a419b272d96",
+  "hash": "095141ed66e7c24406373488c81b3bee089d8c3012ac9287dea5531f3d287aa7",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The product ships its own Python client (edison-client) with API-token authentication. It can submit tasks programmatically via create_task/acreate_task, block on completion with run_tasks_until_done, and batch-submit jobs to query later. That is a documented headless automation path with no UI required. missing for 10: explicit CI/pipeline guidance (e.g., env-var auth, CI examples), a CLI or published OpenAPI spec (probe found none), independent or hands-on corroboration of unattended use.",
+    "rationale": "FutureHouse/Edison ships a pip-installable Python client authenticated by API tokens. Its documented methods (create_task, get_task, run_tasks_until_done, async variants, batch submit-then-poll) let tasks be submitted and retrieved programmatically without the web UI, which covers the headless core of the story. However, nothing documents CI usage, a CLI, or non-interactive pipeline patterns, and the probe found no public OpenAPI spec. missing for 10: explicit CI/pipeline integration docs or examples, a headless CLI, a published OpenAPI spec, independent hands-on corroboration of automated use.",
     "evidenceIds": [
       "futurehouse-docs-1",
       "futurehouse-docs-2",
@@ -13,10 +13,36 @@
       "futurehouse-docs-12",
       "futurehouse-docs-27",
       "futurehouse-docs-32",
-      "futurehouse-docs-40",
       "futurehouse-docs-41",
-      "futurehouse-docs-35"
+      "futurehouse-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "futurehouse-docs-1",
+          "quote": "uv pip install edison-client"
+        },
+        {
+          "evidenceId": "futurehouse-docs-2",
+          "quote": "Authentication is done by providing an API key, which can be obtained directly from your profile page in the Edison platform"
+        },
+        {
+          "evidenceId": "futurehouse-docs-12",
+          "quote": "task_response = client.run_tasks_until_done(task_data)"
+        },
+        {
+          "evidenceId": "futurehouse-docs-27",
+          "quote": "Sometimes you may want to submit many jobs, while querying results at a later time. The platform API supports this"
+        },
+        {
+          "evidenceId": "futurehouse-docs-32",
+          "quote": "you can submit tasks to the platform by calling the `create_task` method, which receives a `TaskRequest` (or a dictionary with `kwargs`) and returns the task id."
+        }
+      ]
+    },
     "productId": "futurehouse",
     "storyId": "agentic-headless"
   }

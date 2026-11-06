@@ -1,20 +1,32 @@
 {
-  "hash": "e8c41de52e3cc80d4f5878f0c3a5a7bd1afa234466202f04cac6075688d7ca5b",
+  "hash": "e936cd5dba88ed19df6748660aa20a0311f6437b82ff089b328b3c8eef95fc13",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The OCR processor can return a per-page blocks array with paragraph-level bounding boxes, block labels and extracted content, plus page/block/word confidence scores. Users could build page + bbox + snippet citations from those blocks. However, the structured-extraction path (document_annotation into a user-defined JSON schema) returns document-level annotations, with no documented per-field link back to page, box or source span. An early community tester also reported no text bounding boxes, though that likely predates include_blocks. Missing for 10: per-field provenance on structured extraction outputs (page, bbox, source snippet attached to each extracted field), word/span-level grounding of extracted values, and hands-on corroboration that block bboxes are reliable.",
+    "rationale": "Mistral's OCR can return, per page, a `blocks` array with paragraph-level bounding boxes, block labels and extracted content in reading order. Mistral also markets its structured output as 'citation-ready', so page, bbox and snippet provenance exist at the OCR block level. However, the structured-extraction feature (document_annotation) is documented only as an annotation of the whole document, with no per-field page, bbox or source-span linkage, and one community tester reported no text-level bounding boxes. missing for 10: per-extracted-field provenance linking annotation fields to page/bbox/snippet, word-level bounding boxes, hands-on corroboration of block provenance.",
     "evidenceIds": [
-      "mistral-document-ai-docs-18",
-      "mistral-document-ai-docs-19",
-      "mistral-document-ai-docs-21",
-      "mistral-document-ai-docs-33",
-      "mistral-document-ai-docs-20",
+      "mistral-document-ai-docs-4",
       "mistral-document-ai-docs-40",
+      "mistral-document-ai-docs-21",
       "mistral-document-ai-comm-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, every extracted field carries provenance — page number, bounding box, source snippet — so agents can cite and humans can verify",
+      "citations": [
+        {
+          "evidenceId": "mistral-document-ai-docs-4",
+          "quote": "When enabled, each page contains a blocks array with paragraph-level bounding boxes, structural block labels, and extracted content in reading order."
+        },
+        {
+          "evidenceId": "mistral-document-ai-docs-40",
+          "quote": "Its structured output supplies citation-ready inputs to the toolkit's ingestion, retrieval, and evaluation workflow for RAG and enterprise search."
+        }
+      ]
+    },
     "productId": "mistral-document-ai",
     "storyId": "citations-provenance"
   }

@@ -1,20 +1,41 @@
 {
-  "hash": "08dcb2b299e5ab1ad2caeab9344bd5b12d1f3ab90a6a3eac3d23c92ff4f4e69e",
+  "hash": "ca461b853c2e12949bc3b0193f3dc311c3143af10d0673942df04a27690cfd6a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Temporal's docs say applications resume exactly where they left off after crashes or infrastructure outages. If a worker process crashes, another process rebuilds the execution state and resumes it, and workflows can run for any length of time. A community user confirms workflows are durable and resumable on other machines. One user reported a workflow left stuck 'In Progress' when a worker was judged dead, but its state was not lost, so this is a caveat rather than a contradiction. Missing for 10: explicit documentation of durable timers or sleeping for days, and clean independent corroboration of multi-day waits surviving platform restarts.",
+    "rationale": "Temporal's docs say that when a worker process crashes, the service hands the work to another process, which rebuilds the execution state and resumes where it stopped. They also say applications survive crashes and infrastructure outages, and that workflows can run for 'any length of time'. Community users confirm workflows are durable and resumable on other machines. Missing for 10: explicit documentation of durable timers or sleep primitives for waits measured in days.",
     "evidenceIds": [
-      "temporal-docs-1",
-      "temporal-docs-28",
       "temporal-docs-40",
+      "temporal-docs-1",
       "temporal-docs-19",
-      "temporal-docs-9",
       "temporal-comm-1",
-      "temporal-comm-4"
+      "temporal-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can run long-lived workflows that wait for days and survive worker or platform restarts without losing state",
+      "citations": [
+        {
+          "evidenceId": "temporal-docs-40",
+          "quote": "If the process running it crashes, the Temporal Service hands the work to another process, which rebuilds the state of the execution and resumes at the point where it stopped"
+        },
+        {
+          "evidenceId": "temporal-docs-1",
+          "quote": "guaranteeing that applications resume exactly where they left off after crashes, network failures, or infrastructure outages"
+        },
+        {
+          "evidenceId": "temporal-docs-19",
+          "quote": "Orchestrate your workflows, AI apps, and agents across any models, tools, systems, and length of time."
+        },
+        {
+          "evidenceId": "temporal-comm-1",
+          "quote": "Temporal workflows must be deterministic and durable which means they are guaranteed to run and are resumable on other machines."
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "durable-long-running-workflows"
   }

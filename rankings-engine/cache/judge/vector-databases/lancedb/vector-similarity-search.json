@@ -1,22 +1,43 @@
 {
-  "hash": "db88b05c7a049fd509372d840af4b29837f7be12d2c3557fd6094eb9b9f1f18f",
+  "hash": "70e00811d11db4435efc262b4bc89c3577af8921f838c6760a2f5d164daff3f0",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "lancedb",
-    "storyId": "vector-similarity-search",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LanceDB documents top-k vector search, building vector indexes with PQ, RaBitQ and SQ quantization, and an option to force an exhaustive flat scan for exact results. That option implies the default indexed path is approximate. Results expose `_distance` and support distance-range thresholds, and binary vectors use hamming distance. Configurable metrics are only partly shown: hamming is the only metric named, and no snippet shows choosing a metric per index or query. Missing for 10: explicit documentation of selectable metrics (e.g., L2/cosine/dot) and how to set them, ANN recall/latency tuning details, and independent or hands-on corroboration of ANN search quality.",
+    "rationale": "LanceDB documents top-k vector search backed by vector indexes with PQ/RQ/SQ quantization. It also offers an option to force an exhaustive flat scan for exact results, which implies the default indexed search is approximate. On metrics, the evidence only shows hamming distance for binary vectors and distance-range thresholding, not an explicit way to choose between metrics. Missing for 10: explicit documentation of selectable distance metrics (e.g., L2/cosine/dot) at index or query time, and independent hands-on corroboration of ANN recall and performance.",
     "evidenceIds": [
       "lancedb-docs-1",
       "lancedb-docs-10",
       "lancedb-docs-22",
       "lancedb-docs-36",
       "lancedb-docs-38",
-      "lancedb-docs-21",
-      "lancedb-docs-19",
-      "lancedb-docs-9"
-    ]
+      "lancedb-docs-21"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run approximate nearest-neighbor similarity search over embeddings with configurable distance metrics",
+      "citations": [
+        {
+          "evidenceId": "lancedb-docs-1",
+          "quote": "A plain vector search returns the top-k closest rows."
+        },
+        {
+          "evidenceId": "lancedb-docs-38",
+          "quote": "Force an exhaustive (flat) scan for exact, ground-truth results."
+        },
+        {
+          "evidenceId": "lancedb-docs-22",
+          "quote": "LanceDB provides $3$ distinct quantization techniques: Product Quantization (PQ), RaBitQ Quantization (RQ), and Scalar Quantization (SQ)."
+        },
+        {
+          "evidenceId": "lancedb-docs-36",
+          "quote": "Binary vectors use `hamming` distance over the packed uint8 bytes."
+        }
+      ]
+    },
+    "productId": "lancedb",
+    "storyId": "vector-similarity-search"
   }
 }

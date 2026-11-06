@@ -1,19 +1,37 @@
 {
-  "hash": "1bd1121cdb9edc1d6de9ca13a3426da7b6264e854e1a7c563d4e6c5e9ebc873d",
+  "hash": "9ad896306147e2a1713facf6d3f5e446a1b3eb70269fa70d7604d8d418e668c6",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "helixdb",
-    "storyId": "multi-tenant-isolation",
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Helix Cloud has a multi-tenancy guide that describes three isolation levels, but its approach is row-level isolation implemented at the application layer rather than native namespaces, partitions, or per-tenant collections. Tenants can also be split into separate databases via `helix database create`, which is a heavier per-tenant unit. The limits page covers rate, burst and query budgets, not tenant counts or per-tenant isolation limits. Missing for 10: native namespace/partition/per-tenant collection primitives, documented limits on tenant counts or sizes, evidence on the cost or efficiency of many tenants, and independent corroboration.",
+    "rationale": "HelixDB has a documented multi-tenancy guide that discusses three isolation levels. Helix Cloud's own approach is row-level isolation, with the tenancy model implemented at the application layer rather than through native namespaces, partitions, or per-tenant collections. Separate databases can be created per project, but nothing shows this is cheap at many-tenant scale, and the documented limits cover only rate, burst and query budgets. Missing for 10: native namespace/partition/collection primitives, documented tenant-count or per-tenant capacity limits, evidence of cheap isolation at scale, and independent corroboration.",
     "evidenceIds": [
       "helixdb-docs-7",
       "helixdb-docs-26",
-      "helixdb-docs-28",
       "helixdb-docs-13",
-      "helixdb-docs-5"
-    ]
+      "helixdb-docs-28"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can isolate many tenants cheaply using namespaces, partitions, or per-tenant collections with documented limits",
+      "citations": [
+        {
+          "evidenceId": "helixdb-docs-7",
+          "quote": "Helix Cloud focuses on row-level isolation, which lets you implement any tenancy model at the application layer without structural constraints on the database."
+        },
+        {
+          "evidenceId": "helixdb-docs-26",
+          "quote": "Multi-tenant architectures generally fall into one of three isolation levels."
+        },
+        {
+          "evidenceId": "helixdb-docs-13",
+          "quote": "Database-specific overrides can change the sustained rate, burst capacity, and query attempt budget."
+        }
+      ]
+    },
+    "productId": "helixdb",
+    "storyId": "multi-tenant-isolation"
   }
 }

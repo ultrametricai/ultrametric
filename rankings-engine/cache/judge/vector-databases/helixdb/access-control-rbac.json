@@ -1,18 +1,37 @@
 {
-  "hash": "a8d630189feb256e736ca0e6bc34bb1690b52ad2a47d635ef617789a0248f0a1",
+  "hash": "de7a4ab8a467d98459243150ac68b030190575eec6c0a29b82e9bd03c51fa6b9",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "helixdb",
-    "storyId": "access-control-rbac",
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Helix Cloud documents role-based access control and scoped API keys (read-only, read-write, or operation-restricted) issued as dashboard-managed Bearer tokens. Granular permission scopes such as database.query.read gate operations. However, tenancy isolation is left to row-level handling at the application layer, and no per-collection or per-label permissions are documented. Missing for 10: per-collection/per-resource permission enforcement, evidence of access control in self-hosted/local mode, detailed role definitions, independent or hands-on corroboration.",
+    "rationale": "Helix Cloud documents role-based access control and scoped API keys (read-only, read-write, or operation-restricted) on Bearer-authenticated requests, with permission scopes such as database.query.read on MCP tools. Per-collection or per-resource permissions are not documented, and tenancy isolation is described as row-level and left to the application layer. Missing for 10: per-collection permissions, depth of role definitions, evidence that these controls apply to self-hosted/local instances, independent corroboration.",
     "evidenceIds": [
       "helixdb-docs-11",
       "helixdb-docs-25",
       "helixdb-docs-8",
       "helixdb-docs-7"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can enforce granular access control (API keys, roles, per-collection permissions) on database operations",
+      "citations": [
+        {
+          "evidenceId": "helixdb-docs-11",
+          "quote": "Role-based access control. Scoped API keys with read-only, read-write, or operation-restricted permissions for least-privilege credentials per service or environment."
+        },
+        {
+          "evidenceId": "helixdb-docs-25",
+          "quote": "All API requests to Helix Cloud are authenticated with a Bearer token. Tokens are managed through the Helix dashboard."
+        },
+        {
+          "evidenceId": "helixdb-docs-8",
+          "quote": "helix_execute_read_query: execute exact v3 request_type: \"read\" JSON; requires database.query.read."
+        }
+      ]
+    },
+    "productId": "helixdb",
+    "storyId": "access-control-rbac"
   }
 }

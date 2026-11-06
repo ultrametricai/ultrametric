@@ -1,19 +1,41 @@
 {
-  "hash": "ebae85d786e830a358569b05034329aa07b533112358b9002ada6175d7ddb2e4",
+  "hash": "57b95ff9e98070a9bd8dd951cfe2f2c6697af97afef57e9e3994d54b372cc2f2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "2FAS Auth generates TOTP codes on iOS and Android (2fas-docs-37) and describes itself as local-first by design with no public API (2fas-probe-1, 2fas-probe-rt-1). It is free with no tiers and no telemetry (2fas-probe-rt-2), and cloud sync is an opt-in you choose to enable (2fas-docs-23). The companion browser extension needs no login (2fas-docs-27), though it relies on pairing with the phone. missing for 10: an explicit statement that 2FAS Auth codes generate with no network connection, an explicit no-account/no-registration statement for 2FAS Auth itself (the 'no registration' claim in 2fas-docs-28 covers 2FAS Pass), and independent or hands-on confirmation of offline operation.",
+    "rationale": "2FAS Auth generates TOTP codes on the device. The evidence points toward local, account-free use: sync is opt-in to the user's own iCloud or Google Drive, the browser extension needs no login, and the probe describes the product as local-first with no API endpoint for token generation. However, no 2FAS Auth doc explicitly says codes work offline or that the mobile app needs no registration; the 'no registration' claim covers 2FAS Pass only. Missing for 10: explicit first-party statement that Auth codes generate with no network, explicit statement that the Auth app needs no account, independent or hands-on corroboration of offline use.",
     "evidenceIds": [
       "2fas-docs-37",
-      "2fas-probe-1",
-      "2fas-probe-rt-1",
-      "2fas-probe-rt-2",
       "2fas-docs-23",
-      "2fas-docs-27"
+      "2fas-docs-27",
+      "2fas-probe-rt-1",
+      "2fas-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power user, codes generate fully offline — no network, no vendor account required just to see my TOTP codes",
+      "citations": [
+        {
+          "evidenceId": "2fas-docs-37",
+          "quote": "Generate TOTP, HOTP and Steam Guard codes on iOS, Android and via browser extensions."
+        },
+        {
+          "evidenceId": "2fas-docs-23",
+          "quote": "You can enable secure data syncing with your personal iCloud or Google Drive"
+        },
+        {
+          "evidenceId": "2fas-docs-27",
+          "quote": "the browser extension does not require nor need any login or password."
+        },
+        {
+          "evidenceId": "2fas-probe-rt-1",
+          "quote": "local-first by design, no agent-callable endpoint for token generation"
+        }
+      ]
+    },
     "productId": "2fas",
     "storyId": "offline-code-generation"
   }

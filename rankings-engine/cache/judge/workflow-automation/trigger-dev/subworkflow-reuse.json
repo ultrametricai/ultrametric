@@ -1,17 +1,36 @@
 {
-  "hash": "0aed428b7621d37f3ab6ac2189a574fbd9ea49fa5e3ec252b1c36aa11b2f4d85",
+  "hash": "6dea7833bb84af534d0a22bab3d48660cd8b324aac0cf020946c3376c756db9f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Trigger.dev tasks are plain async functions that can be triggered from elsewhere in code. `triggerAndWait()` runs another task and returns its result data to continue with, which effectively makes tasks reusable sub-workflows that other workflows call. Missing for 10: explicit documentation of parent/child task composition (e.g. calling triggerAndWait from inside another task), any visual or module-library composition, and independent hands-on corroboration of sub-task reuse.",
+    "rationale": "Trigger.dev tasks are plain async functions that can be triggered from elsewhere in code. `triggerAndWait()` triggers another task, waits for it to complete and returns its result, which lets one task act as a reusable sub-workflow called by another. missing for 10: explicit documentation that `triggerAndWait` is called from inside a parent task (parent/child run semantics), detail on batch or fan-out composition, independent or hands-on corroboration.",
     "evidenceIds": [
       "trigger-dev-docs-16",
       "trigger-dev-docs-15",
-      "trigger-dev-docs-2",
-      "trigger-dev-docs-34"
+      "trigger-dev-docs-34",
+      "trigger-dev-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can compose reusable sub-workflows or modules that other workflows call",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-16",
+          "quote": "yourTask.triggerAndWait() Triggers a task and then waits until it's complete. You get the result data to continue with."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-15",
+          "quote": "Here's how to trigger a single run from elsewhere in your code"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-34",
+          "quote": "Tasks are plain async/await functions with no workflow DSL, no determinism rules, and no execution time limit."
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "subworkflow-reuse"
   }

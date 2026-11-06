@@ -1,20 +1,47 @@
 {
-  "hash": "f22bba0a679723907920ca12f3d6b3f8e47aaeae2044d0d29ba8e8af7788b86d",
+  "hash": "0dc9e862cf95a81e4b1a45bea168063b7b8ebeceb3342bd44a24d79e15c1b28f",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "pinecone",
-    "storyId": "hybrid-dense-sparse-search",
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Pinecone documents a single index that serves BM25 full-text, dense, and sparse-vector search, with ranking chosen via score_by, and a hybrid search guide that 'combines a keyword signal with a semantic signal so a single query benefits from both.' However, the documented mechanisms are either a text-match filter applied to a dense search or fusing separate searches with reciprocal rank fusion, so true single-query fusion ranking is not clearly shown. A community user also notes the combined keyword+vector search. Missing for 10: evidence that dense and BM25/sparse are fused in one query server-side rather than via separate searches, details on fusion weighting or configuration, and hands-on corroboration of hybrid ranking quality.",
+    "rationale": "Pinecone documents hybrid search combining keyword (BM25) and semantic signals over a single index. Fusion ranking, however, is described as fusing separate searches with reciprocal rank fusion, and `score_by` ranks by one signal per search. That makes it two approaches (a text-match filter on a dense search, or RRF across multiple searches) rather than a clearly single fused query. A community user corroborates the combined keyword+vector search. missing for 10: documented single-request server-side fusion of dense and sparse/BM25 scores, clarity on whether RRF runs server-side or client-side, hands-on corroboration of fusion ranking quality.",
     "evidenceIds": [
+      "pinecone-docs-27",
+      "pinecone-docs-9",
       "pinecone-docs-7",
       "pinecone-docs-8",
-      "pinecone-docs-9",
       "pinecone-docs-18",
-      "pinecone-docs-27",
       "pinecone-comm-1"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can combine dense vector search with keyword or sparse (BM25-style) signals in one hybrid query with fusion ranking",
+      "citations": [
+        {
+          "evidenceId": "pinecone-docs-27",
+          "quote": "Combine keyword and semantic retrieval in Pinecone with a text-match filter on a dense search, or by fusing separate searches with reciprocal rank fusion."
+        },
+        {
+          "evidenceId": "pinecone-docs-9",
+          "quote": "Hybrid search combines a keyword signal with a semantic signal so a single query benefits from both."
+        },
+        {
+          "evidenceId": "pinecone-docs-7",
+          "quote": "A single index can serve full-text search (BM25 with Lucene queries), semantic search, and sparse-vector search together"
+        },
+        {
+          "evidenceId": "pinecone-docs-8",
+          "quote": "When you search, you rank results via `score_by`: `text` (BM25), `query_string` (Lucene), `dense_vector`, or `sparse_vector`."
+        },
+        {
+          "evidenceId": "pinecone-comm-1",
+          "quote": "there is more than meets the eye with the combined keyword+vector search and handling of filtering"
+        }
+      ]
+    },
+    "productId": "pinecone",
+    "storyId": "hybrid-dense-sparse-search"
   }
 }

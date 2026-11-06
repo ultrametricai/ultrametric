@@ -1,19 +1,42 @@
 {
-  "hash": "8c71f34eaf4bb809c0cf21810b0b1964a76707dfe645f21b38ff544d469b6b00",
+  "hash": "00748ef86e09fbd1e65553b8b4194927c9e0f122391e2614e28dc67d563be1de",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms https://consensus.app/llms.txt returns HTTP 200 with a structured product summary. Consensus also publishes llms-full.txt and a machine-readable /.well-known/pricing.md, with agent-oriented guidance such as the MCP vs REST parameter names (exclude_preprints vs excludePreprints) for agent workflows. Missing for 10: per-page markdown doc variants (the .md probe returned 404) and independent corroboration of agents using these files.",
+    "rationale": "A live probe confirms Consensus serves an llms.txt at https://consensus.app/llms.txt (HTTP 200). It also publishes llms-full.txt and a machine-readable /.well-known/pricing.md. These files carry agent-oriented content, such as MCP versus REST parameter guidance, that an agent can be pointed at directly. Missing for 10: per-page markdown versions of the docs (the probe of a .md doc page returned 404), and no independent corroboration of agents actually consuming these files.",
     "evidenceIds": [
       "consensus-probe-1",
-      "consensus-probe-2",
       "consensus-docs-35",
       "consensus-docs-36",
       "consensus-docs-29",
-      "consensus-docs-17"
+      "consensus-docs-17",
+      "consensus-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "consensus-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://consensus.app/llms.txt"
+        },
+        {
+          "evidenceId": "consensus-docs-35",
+          "quote": "Power agent workflows that need citable scientific sources via the REST API or MCP server"
+        },
+        {
+          "evidenceId": "consensus-docs-36",
+          "quote": "pass `exclude_preprints=true` (MCP) or `excludePreprints=true` (REST API) to filter to peer-reviewed papers only."
+        },
+        {
+          "evidenceId": "consensus-docs-29",
+          "quote": "API and agent ready: a REST API and an MCP server expose the same retrieval and synthesis surface that powers the web app"
+        }
+      ]
+    },
     "productId": "consensus",
     "storyId": "agentic-agent-docs"
   }

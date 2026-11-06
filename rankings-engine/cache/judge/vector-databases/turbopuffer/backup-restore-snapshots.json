@@ -1,17 +1,36 @@
 {
-  "hash": "ac2720f40a7228d63b24105d4a3388f5fe9c8586d193d2787e321d9bd5cf4dd6",
+  "hash": "7ea67beedc1726e18fe050099d35856d7545c3427d30bd3d018a6c5772d91ee3",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "turbopuffer",
-    "storyId": "backup-restore-snapshots",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "turbopuffer documents its own backup mechanism: server-side namespace copies (`copy_from_namespace`) that work across regions and cloud providers. It also offers copy-on-write branching of a namespace, which works like a snapshot, and lets you monitor long-running copies. However, restore is only implied (copying back from a backup namespace), and nothing describes managed snapshot or restore primitives. missing for 10: explicit restore workflow documentation, scheduled or automated snapshots, point-in-time recovery or retention controls, independent or hands-on corroboration.",
+    "rationale": "turbopuffer's own backups documentation describes server-side namespace copies that work across regions and cloud providers, and it also offers instant copy-on-write branching of a namespace. Together these act as snapshot-like backups, but the pack never documents an explicit restore workflow or named snapshot management. Missing for 10: an explicit restore-from-backup procedure, snapshot listing/retention/scheduling semantics, and independent or hands-on corroboration.",
     "evidenceIds": [
       "turbopuffer-docs-33",
       "turbopuffer-docs-23",
       "turbopuffer-docs-11"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can back up collections with snapshots and restore them",
+      "citations": [
+        {
+          "evidenceId": "turbopuffer-docs-33",
+          "quote": "Copies work across regions and across cloud providers (e.g., AWS to GCP)."
+        },
+        {
+          "evidenceId": "turbopuffer-docs-23",
+          "quote": "Branch from namespace: instantly creates a copy-on-write clone of a namespace."
+        },
+        {
+          "evidenceId": "turbopuffer-docs-11",
+          "quote": "Monitor a long-running `copy_from_namespace`"
+        }
+      ]
+    },
+    "productId": "turbopuffer",
+    "storyId": "backup-restore-snapshots"
   }
 }

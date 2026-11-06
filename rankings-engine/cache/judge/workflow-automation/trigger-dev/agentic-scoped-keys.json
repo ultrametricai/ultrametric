@@ -1,16 +1,30 @@
 {
-  "hash": "3dc6f2881ae2800a0d8f0f274be6563006d1b177bf95153ebd30233a9533f1e9",
+  "hash": "ab408589472f0906b25c9bcb5d9fedf8c77d0b19ecf276f9dd8b6c06af34dd40",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Trigger.dev's management API authenticates with named secret keys tied to a specific project environment, or with personal access tokens, and clients can target separate projects, environments, or preview branches. That gives coarse environment-level scoping an agent could be given. Nothing shows fine-grained least-privilege credentials, so this is only partial. Missing for 10: per-key permission scopes (e.g. trigger-only or read-only), agent-specific or short-lived token issuance, documented least-privilege guidance for MCP or agent use, and independent corroboration.",
+    "rationale": "Trigger.dev documents its own named API keys, each tied to a specific environment in a project, plus personal access tokens. This gives some project/environment-level scoping of the credentials an agent could use. The evidence does not show permission-level restrictions, read-only or action-limited keys, or agent-specific credential issuance. Missing for 10: fine-grained permission scopes, least-privilege role or action restrictions, agent-specific token issuance, expiry/revocation controls, independent corroboration.",
     "evidenceIds": [
       "trigger-dev-docs-24",
-      "trigger-dev-docs-23",
-      "trigger-dev-docs-33"
+      "trigger-dev-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-24",
+          "quote": "using a named API key associated with a specific environment in a project (`secretKey`), or using a personal access token"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-23",
+          "quote": "If a single process needs to talk to more than one Trigger.dev project, environment, or preview branch, use `new TriggerClient({...})` for each target"
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "agentic-scoped-keys"
   }

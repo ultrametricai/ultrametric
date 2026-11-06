@@ -1,21 +1,42 @@
 {
-  "hash": "a4fdb75a9ef21b13f92b0e44e8165277582751025afbe0cf8322db0cd6ba4dde",
+  "hash": "81ac588422454158cac8f17ff2fe98c12e368e572b44f631e4d1d1f4665b41d6",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "qdrant",
-    "storyId": "agentic-headless",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Qdrant is an API-driven service that starts headlessly with a single documented `docker run` command, so automation can drive it entirely through client libraries. Community users note an in-memory, sqlite-like mode that makes POCs easy, plus small portable binaries, and Qdrant Edge runs in-process with no background services. Together these suit scripted and CI use. Missing for 10: explicit first-party CI documentation (e.g. GitHub Actions/service-container recipes, test fixtures), and independent hands-on reports of using it in CI pipelines.",
+    "rationale": "Qdrant runs as a headless API service: the docs give a one-line Docker launch and describe a production-ready service with a programmatic API and client libraries. A community user cites an in-memory mode for easy POCs, which suits ephemeral automation. However, no evidence explicitly documents CI usage such as service containers, test fixtures or pipeline recipes, so the CI half of the story is only implied. missing for 10: explicit first-party CI/automation documentation or examples, independent hands-on reports of running Qdrant in CI pipelines",
     "evidenceIds": [
       "qdrant-docs-1",
-      "qdrant-docs-11",
       "qdrant-gh-5",
-      "qdrant-gh-3",
-      "qdrant-docs-10",
+      "qdrant-gh-1",
       "qdrant-comm-4",
-      "qdrant-comm-9"
-    ]
+      "qdrant-docs-10"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "qdrant-docs-1",
+          "quote": "docker run -p 6333:6333 -p 6334:6334 \\\n    -v \"$(pwd)/qdrant_storage:/qdrant/storage:z\" \\\n    qdrant/qdrant"
+        },
+        {
+          "evidenceId": "qdrant-gh-5",
+          "quote": "It provides a production-ready service with a convenient API to store, search, and manage points—vectors with an additional payload."
+        },
+        {
+          "evidenceId": "qdrant-comm-4",
+          "quote": "it allows an 'in-memory' version similar to sqlite"
+        },
+        {
+          "evidenceId": "qdrant-docs-10",
+          "quote": "Qdrant Edge is a lightweight, embedded vector search engine for in-process retrieval — no background services, minimal memory footprint, and no network required."
+        }
+      ]
+    },
+    "productId": "qdrant",
+    "storyId": "agentic-headless"
   }
 }

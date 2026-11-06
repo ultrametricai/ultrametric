@@ -1,20 +1,46 @@
 {
-  "hash": "e118439b1116d60ab61e37f6aaa40d70907c05dd669d43c96f1eef52c39aa42a",
+  "hash": "347f68e8f4b364f9f5c45d863356e3513f6bf7d9e17ceff6ba53048be315095e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Backups go to the user's own iCloud or Google Drive, and the 2FAS Pass vault file there is described as encrypted. Decryption Kit recovery and password-based encryption imply a user-held key, and source-available code lets experts verify the security features. However, encryption of 2FAS Auth backups is optional (\"can be encrypted with your password\"), and no encryption design document appears in the evidence. Missing for 10: a published encryption design (algorithms, key derivation, key handling), an explicit statement that the vendor never holds the key, encryption that is on by default for Auth backups, and independent audit or hands-on corroboration.",
+    "rationale": "2FAS stores backups in the user's own iCloud or Google Drive. 2FAS Auth backups can be encrypted with the user's password, though this is optional and only encouraged, and the 2FAS Pass vault file is encrypted and recoverable via a Decryption Kit, which implies the key stays with the user. However, no encryption design (algorithms, key derivation, threat model) is documented beyond pointers to source-available code. Missing for 10: documented encryption design and KDF details, explicit statement that the vendor never holds keys, encryption on by default for 2FAS Auth backups, and independent corroboration.",
     "evidenceIds": [
       "2fas-docs-9",
       "2fas-docs-18",
       "2fas-docs-23",
-      "2fas-docs-17",
-      "2fas-docs-31",
       "2fas-docs-5",
+      "2fas-docs-31",
       "2fas-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, backups are end-to-end encrypted with a key the vendor never holds, and the encryption design is documented",
+      "citations": [
+        {
+          "evidenceId": "2fas-docs-9",
+          "quote": "data can be encrypted with your password, so we encourage you to do that."
+        },
+        {
+          "evidenceId": "2fas-docs-18",
+          "quote": "If you have enabled sync with iCloud (on iOS) or Google Drive (on Android), your encrypted 2FAS Pass Vault file is right there."
+        },
+        {
+          "evidenceId": "2fas-docs-5",
+          "quote": "You can store it in your own cloud or keep it as an encrypted file on an external drive."
+        },
+        {
+          "evidenceId": "2fas-docs-31",
+          "quote": "Vault recovery with Decryption Kit"
+        },
+        {
+          "evidenceId": "2fas-docs-21",
+          "quote": "Source-available code ensures that every security feature we use can be verified by independent security experts."
+        }
+      ]
+    },
     "productId": "2fas",
     "storyId": "e2ee-backup"
   }

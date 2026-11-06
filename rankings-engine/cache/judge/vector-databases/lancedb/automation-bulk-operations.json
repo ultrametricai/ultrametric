@@ -1,19 +1,41 @@
 {
-  "hash": "0d28dfd2c3aea44b29d690cd6b08e39ea00661d200f28b7420ed54327be97b85",
+  "hash": "96271e677acd4c8cb82a5ac8cbae3bc9cd240accb515ec31552c97bb28006b33",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "lancedb",
-    "storyId": "automation-bulk-operations",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LanceDB documents several set-based operations that act on many rows in one call. Predicate-based deletes like `table.delete(\"role = 'Traitor Knight'\")` remove every matching row. SQL-expression column transforms compute a new column across the whole table. Multiple query vectors can be searched in one call, and branches support backfills and index rebuilds without disturbing production reads. missing for 10: explicit evidence of bulk update/upsert (merge-insert) and batch ingestion semantics, documentation depth beyond snippets, independent or hands-on corroboration of bulk workflows.",
+    "rationale": "LanceDB documents several set-based operations that act on many rows at once. These are predicate-based deletes (table.delete with a SQL filter), adding a computed column across all rows via SQL expressions, and multi-vector search in a single call. The evidence is mostly code snippets, though, and coverage of other bulk operations is not shown. missing for 10: documented bulk update/upsert and bulk insert, prose docs describing batch semantics and limits, independent or hands-on corroboration.",
     "evidenceIds": [
       "lancedb-docs-33",
       "lancedb-docs-34",
       "lancedb-docs-37",
-      "lancedb-docs-6",
       "lancedb-docs-8"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "lancedb-docs-33",
+          "quote": "table.delete(\"role = 'Traitor Knight'\").await.unwrap();"
+        },
+        {
+          "evidenceId": "lancedb-docs-34",
+          "quote": "NewColumnTransform::SqlExpressions(vec![("
+        },
+        {
+          "evidenceId": "lancedb-docs-37",
+          "quote": "Search multiple query vectors in one call."
+        },
+        {
+          "evidenceId": "lancedb-docs-8",
+          "quote": "You can manually trigger an incremental indexing operation on updated data using the `optimize()` method on a table."
+        }
+      ]
+    },
+    "productId": "lancedb",
+    "storyId": "automation-bulk-operations"
   }
 }

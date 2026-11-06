@@ -1,23 +1,43 @@
 {
-  "hash": "df6e652403c61bfe9a53c8a7a1acd6f72c071cc4a91967fd9dd2b5f35ee601ee",
+  "hash": "689bfceda7497928322482f31afdb489da220ab0076ab10eefb8bd7d86bda724",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "moss",
-    "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Moss exposes a broad programmatic surface: a multiplexed `/v1/manage` API with action strings, including `createWebSource`, plus SDKs for creating, upserting, fetching and deleting indexes and documents. Key create/list/delete runs from the CLI, and an MCP server and AI SDK tools let agents create indexes and manage documents. That suggests most core dashboard operations are reachable without the UI, but nothing explicitly documents UI/API parity, and the probe found no published OpenAPI spec. Missing for 10: explicit documentation of UI/API parity, a machine-readable OpenAPI spec, evidence that project/account/billing/team management is available via API, and independent hands-on corroboration.",
+    "rationale": "Moss documents a broad programmatic surface. A single `/v1/manage` endpoint multiplexes all API actions, covering index creation, web-source crawling and document upsert/fetch/delete, and key management is also scriptable from the CLI. Nothing states that every UI or dashboard capability has an API equivalent, and the OpenAPI probe found no published spec. missing for 10: explicit UI-to-API parity statement, programmatic coverage of dashboard features such as key and billing management via the HTTP API, machine-readable OpenAPI spec, independent corroboration.",
     "evidenceIds": [
       "moss-docs-10",
       "moss-docs-9",
       "moss-docs-22",
       "moss-docs-21",
-      "moss-docs-11",
       "moss-docs-14",
-      "moss-probe-2",
-      "moss-probe-3",
-      "moss-probe-4"
-    ]
+      "moss-probe-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "moss-docs-10",
+          "quote": "All API actions are multiplexed through the `/v1/manage` endpoint. Provide an `action` string plus the required fields for that operation."
+        },
+        {
+          "evidenceId": "moss-docs-9",
+          "quote": "`createWebSource` Crawl a website into an index; an index holds up to 20 web sources."
+        },
+        {
+          "evidenceId": "moss-docs-22",
+          "quote": "Upsert more docs later ... Fetch specific docs ... Delete docs or the index when done"
+        },
+        {
+          "evidenceId": "moss-docs-21",
+          "quote": "You can also manage keys from the terminal with the Moss CLI: `moss login`, then `moss keys create`, `list` or `delete`."
+        }
+      ]
+    },
+    "productId": "moss",
+    "storyId": "openness-api-parity"
   }
 }

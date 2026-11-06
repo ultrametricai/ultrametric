@@ -1,21 +1,49 @@
 {
-  "hash": "75224656e246e48c71db148e7909b21c97388e6617e2e57614df7c9cfea498a8",
+  "hash": "627440a58a9f40c2fc23e4314aae0822e255c94794c8ab4b44c7bf9859a157e0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Tailscale documents running headlessly in automation in several ways: connecting GitHub-hosted runners through ephemeral, authenticated connections; ephemeral nodes built for containers and CI/CD; Docker containers and Kubernetes sidecars; cloud-init first-boot installs; and an official CLI. A community user also confirms routing a GitHub Actions worker through Tailscale successfully. One user reports that API keys expire after 60 days and need manual login to renew, which adds friction for long-running automation. Missing for 10: detailed evidence on non-interactive authentication (auth keys or OAuth clients) for CI, in-depth documentation rather than one-line summaries, and a solution to the API-key expiry friction.",
+    "rationale": "Tailscale documents its own CI and headless use. It connects GitHub-hosted runners through ephemeral, authenticated connections, offers ephemeral nodes for containers and CI/CD, and runs in Docker, as a Kubernetes sidecar and via cloud-init on first boot, with an official CLI. A community user also confirms routing a GitHub Actions worker through a tailnet exit node. One user reports that API keys expire after 60 days and need a manual login to renew, which is a limitation for long-running unattended automation but does not contradict the capability. Missing for 10: detailed evidence on unattended auth-key or OAuth provisioning for CI, a fix for the 60-day API key expiry, and evidence beyond one-line doc summaries.",
     "evidenceIds": [
       "tailscale-docs-15",
       "tailscale-docs-39",
       "tailscale-docs-11",
       "tailscale-docs-17",
       "tailscale-docs-37",
+      "tailscale-docs-12",
       "tailscale-probe-3",
       "tailscale-comm-9",
       "tailscale-comm-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "tailscale-docs-15",
+          "quote": "Connect GitHub-hosted runners to private infrastructure without public exposure using Tailscale's ephemeral, authenticated connections."
+        },
+        {
+          "evidenceId": "tailscale-docs-39",
+          "quote": "Use ephemeral nodes in Tailscale for managing short-lived devices like containers and CI/CD systems."
+        },
+        {
+          "evidenceId": "tailscale-docs-37",
+          "quote": "Install Tailscale automatically on the first boot of a machine with cloud-init."
+        },
+        {
+          "evidenceId": "tailscale-docs-11",
+          "quote": "Explore how to use Tailscale inside Docker containers."
+        },
+        {
+          "evidenceId": "tailscale-comm-9",
+          "quote": "The user ran an exit node on an Apple TV at home and routed the Actions worker through it. 'Worked great!'"
+        }
+      ]
+    },
     "productId": "tailscale",
     "storyId": "agentic-headless"
   }

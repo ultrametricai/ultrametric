@@ -1,20 +1,43 @@
 {
-  "hash": "b37ee02b7423a336c9caa5076c024c55086bee39367d138bd902a454b929e284",
+  "hash": "f11fe6a6cef9b6be899dbfc16c8c416ce577b62cb16e6805cb6425209abc8f5f",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "gmail",
-    "storyId": "agentic-scoped-keys",
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Gmail's API documents OAuth 2.0 scopes and tells developers to pick the narrowest one, including non-sensitive and read-only scopes. OAuth also covers IMAP/SMTP access, so an agent can be given a least-privilege grant. However, the credential is an OAuth app grant set up through a developer flow, not a user-issued agent token, and community reports note scopes can't be limited to a specific label and that Google restricts third-party OAuth apps. Missing for 10: a user-facing way to mint agent-specific credentials, label- or folder-level scoping, documented revocation and audit of agent grants, and hands-on corroboration of the issuance flow.",
+    "rationale": "The Gmail API uses OAuth 2.0 with granular scopes, and Google's docs tell developers to request the narrowest scope possible, including non-sensitive and read-only ones, so an agent's credential can be limited to specific features. However, scoping stops at the feature level: a community user notes that apps cannot be restricted to a specific label or folder. Nothing in the evidence describes agent-specific credential issuance or management. Missing for 10: per-label or per-mailbox-subset scoping, documented agent-oriented credential issuance, revocation and expiry controls, independent hands-on corroboration.",
     "evidenceIds": [
-      "gmail-docs-4",
-      "gmail-docs-29",
       "gmail-docs-42",
+      "gmail-docs-29",
+      "gmail-docs-4",
+      "gmail-docs-17",
       "gmail-docs-43",
-      "gmail-comm-7",
-      "gmail-comm-9"
-    ]
+      "gmail-comm-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "gmail-docs-42",
+          "quote": "Whenever possible, use non-sensitive scopes to narrow access to only the specific features needed by an app."
+        },
+        {
+          "evidenceId": "gmail-docs-43",
+          "quote": "The Gmail IMAP, POP, and SMTP servers support authorization with the industry-standard OAuth 2.0 protocol."
+        },
+        {
+          "evidenceId": "gmail-docs-17",
+          "quote": "Read-only mail extraction, indexing, and backup"
+        },
+        {
+          "evidenceId": "gmail-comm-7",
+          "quote": "Gmail API auth scopes already allow read-only access, but one user wants to restrict apps to a specific label or subfolder for better security without forwarding mail."
+        }
+      ]
+    },
+    "productId": "gmail",
+    "storyId": "agentic-scoped-keys"
   }
 }
