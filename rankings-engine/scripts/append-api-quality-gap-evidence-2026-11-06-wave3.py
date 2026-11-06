@@ -318,6 +318,20 @@ UPDATES: dict = {}
 # Hand-recorded counter-check rows that a scheduled refresh must not clobber.
 PRESERVE_IDS = {'retell-spec-unpublished-20261106'}
 
+# Fail-closed probe negatives (the #502 convention, applied after the PR #630 review):
+# every URL an excerpt asserts is absent must answer exactly 404 on each run; any other
+# status exits inconclusive and nothing is written. Checked whether the row is being
+# appended or is already present, so a later spec publication fails the script instead of
+# leaving a stale absence claim in the pack.
+NEGATIVE_CHECKS = {
+    'retell-spec-unpublished-20261106': [
+        'https://docs.retellai.com/openapi.json',
+        'https://docs.retellai.com/api-references/openapi.json',
+        'https://docs.retellai.com/openapi-final.json',
+        'https://api.retellai.com/openapi.json',
+    ],
+}
+
 _fetch_cache: dict = {}
 
 
@@ -342,6 +356,15 @@ def verify(url, markers):
             raise SystemExit(f'{url} no longer contains {marker!r}; the page changed - re-derive the excerpt')
 
 
+def verify_absent(urls):
+    for url in urls:
+        status, _ = fetch(url)
+        if status != 404:
+            raise SystemExit(
+                f'{url} answered {status}, not 404; the asserted absence no longer holds - '
+                'inconclusive, nothing written. Re-derive the counter-check.')
+
+
 def main() -> None:
     for (arena, pid) in sorted(set(ITEMS) | set(REMOVALS) | set(UPDATES)):
         items = ITEMS.get((arena, pid), [])
@@ -354,6 +377,8 @@ def main() -> None:
         have = {e['id'] for e in ev}
         added = 0
         for iid, tier, url, markers, excerpt in items:
+            if iid in NEGATIVE_CHECKS:
+                verify_absent(NEGATIVE_CHECKS[iid])
             if iid in have:
                 print(f'{iid}: already present, skipping')
                 continue
