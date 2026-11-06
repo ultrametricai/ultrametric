@@ -1,16 +1,16 @@
 {
-  "hash": "95cc575451166990e7b35d664b03352410295523cde3eed268f19c051aed089b",
+  "hash": "9c638b151cf1967344163c7c67e96bdb3e83044430648a8c87f3b47292ba6a02",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Maritime runs each agent in its own cloud micro-VM, with secrets injected only into that agent's VM, and gives end users per-user Linux desktops. AI-driven code therefore executes on Maritime's infrastructure rather than the developer's. However, the docs never present this as a sandbox for untrusted code and make no isolation or security guarantees. missing for 10: an explicit sandboxed code-execution API for untrusted/AI-generated code, documented isolation guarantees (network and resource limits, escape protection), ephemeral run-and-discard execution, and independent or hands-on corroboration.",
+    "rationale": "Maritime runs each agent, including coding agents like Claude Code and Codex, in its own cloud micro-VM. Secrets are injected only into that agent's VM, and scoped keys limit blast radius. That keeps agent-run code off the developer's own infrastructure, but the evidence never presents this as a sandbox for untrusted code. missing for 10: an explicit untrusted-code sandbox or code-execution API, documented isolation guarantees (network egress limits, tenant isolation, resource caps), and independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-37",
       "maritime-docs-33",
       "maritime-docs-5",
-      "maritime-docs-50"
+      "maritime-docs-44"
     ],
     "support": {
       "relation": "direct",
@@ -23,11 +23,15 @@
         },
         {
           "evidenceId": "maritime-docs-33",
-          "quote": "injected only into that agent's VM"
+          "quote": "stored encrypted at rest, injected only into that agent's VM, and always masked in the UI"
         },
         {
           "evidenceId": "maritime-docs-5",
           "quote": "A persistent Linux desktop (XFCE, Chromium, LibreOffice) for each of _your_ end users, driven by _your_ model."
+        },
+        {
+          "evidenceId": "maritime-docs-44",
+          "quote": "a key whose only scope is `computers` is refused on every other Maritime endpoint"
         }
       ]
     },

@@ -1,27 +1,28 @@
 {
-  "hash": "626830c007e1fab33823c307d87a223e3968c53d461b1154d849a0911405f9af",
+  "hash": "ee11326a268a495b9917b8512e46e6731d56d07b5a954ee158d7d8512345d0b4",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Rive serves its documentation as agent-friendly markdown: the .md docs page returned HTTP 200 and opens with a 'Documentation Index' that points agents to https://rive.app/docs/llms.txt. However, the root https://rive.app/llms.txt returns 404, and the docs-level llms.txt is only referenced, never fetched or verified. Missing for 10: a verified, reachable llms.txt (the root path 404s and the docs path is unconfirmed), first-party documentation describing the agent-oriented docs offering, and independent or hands-on corroboration that an agent can consume these docs.",
+    "rationale": "Rive serves its docs pages as Markdown (introduction.md returns HTTP 200) with a header directing agents to a complete documentation index at https://rive.app/docs/llms.txt, and a separate probe confirms that docs llms.txt exists and was read (it lists an OpenAPI document). The root https://rive.app/llms.txt returns 404, so an agent must be pointed at the /docs/ path. Missing for 10: a root-level llms.txt, direct confirmation of the /docs/llms.txt contents and coverage, evidence of an llms-full.txt or other agent-specific guidance, and independent or hands-on corroboration of agents using these docs.",
     "evidenceIds": [
       "rive-probe-2",
+      "rive-sample-spec-decoy-20261106",
       "rive-probe-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
           "evidenceId": "rive-probe-2",
-          "quote": "HTTP 200 at https://rive.app/docs/getting-started/introduction.md"
+          "quote": "Fetch the complete documentation index at: https://rive.app/docs/llms.txt"
         },
         {
-          "evidenceId": "rive-probe-2",
-          "quote": "Fetch the complete documentation index at: https://rive.app/docs/llms.txt"
+          "evidenceId": "rive-sample-spec-decoy-20261106",
+          "quote": "the docs llms.txt lists an OpenAPI document"
         }
       ]
     },

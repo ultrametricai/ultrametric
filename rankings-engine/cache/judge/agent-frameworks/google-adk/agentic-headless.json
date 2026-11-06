@@ -1,24 +1,23 @@
 {
-  "hash": "d82e55dc78c858093e237c08d81b54fca676d422321e23a57c1d49af3f8000d9",
+  "hash": "9e1c1229d3c43ad26208df44c65f37267018ddb5a6f5c7bfec1f62dd732425b2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "ADK ships its own CLI with non-UI commands: `adk run` executes an agent from a path, `adk eval` runs evalsets from the command line, and `adk deploy docker`/`cloud_run` package agents as containers, which supports scripted, headless automation. However, no evidence explicitly documents CI pipeline usage or non-interactive/headless execution modes, so CI suitability is implied rather than shown. missing for 10: explicit CI/CD integration docs (e.g., GitHub Actions or pipeline examples), documented non-interactive flags or exit-code behavior for `adk run`/`adk eval`, independent hands-on corroboration of CI usage.",
+    "rationale": "ADK ships its own CLI for running agents outside any UI. `adk run` executes an agent from the terminal, `adk eval` runs evalsets against an agent, and `adk api_server` exposes agents over REST \"for programmatic testing\". Together these cover headless, scriptable automation. Missing for 10: explicit CI pipeline guidance (e.g. GitHub Actions examples, exit-code/non-interactive flags for `adk run`), and independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "google-adk-gh-5",
       "google-adk-gh-12",
       "google-adk-gh-13",
       "google-adk-gh-18",
+      "google-adk-local-testing-20261106",
       "google-adk-gh-19",
-      "google-adk-gh-20",
-      "google-adk-docs-24",
-      "google-adk-gh-17"
+      "google-adk-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -30,12 +29,12 @@
           "quote": "adk eval \\\n    samples_for_testing/hello_world \\\n    samples_for_testing/hello_world/hello_world_eval_set_001.evalset.json"
         },
         {
-          "evidenceId": "google-adk-gh-20",
-          "quote": "adk deploy cloud_run --with_ui <agent-folder>"
+          "evidenceId": "google-adk-local-testing-20261106",
+          "quote": "Use the API server in ADK to expose your agents through a REST API for programmatic testing"
         },
         {
-          "evidenceId": "google-adk-docs-24",
-          "quote": "You can manually package your Agent into a container image and then run it in any environment that supports container images."
+          "evidenceId": "google-adk-gh-19",
+          "quote": "adk deploy docker --with_ui <agent-folder>"
         }
       ]
     },

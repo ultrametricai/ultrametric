@@ -6678,13 +6678,11 @@
     "storyId": "agent-pr-analysis",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Working Copy ships its own on-device Repository Agent, an AI assistant that can browse, search, read and modify repository files from the phone, so AI-driven code suggestions are plausible within the app. However, nothing documents the agent analyzing pull requests or producing review-style improvement suggestions. The other AI feature only suggests commit messages from staged diffs. missing for 10: documented AI analysis of pull requests, explicit code-review or improvement-suggestion workflow, hands-on or independent corroboration of agent quality.",
+    "confidence": "medium",
+    "rationale": "Working Copy ships its own AI Repository Agent on iOS that can browse, search, read and modify files in a repository, so an agent can review code and change it from the phone. Nothing in the evidence ties the agent to pull requests: no PR diff analysis or review-comment suggestions are documented, and the AI commit-message feature is a different capability. Missing for 10: documented agent analysis of pull requests or PR diffs, explicit code-improvement suggestion or review output, independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-29",
-      "working-copy-docs-64",
-      "working-copy-docs-19",
-      "working-copy-docs-5"
+      "working-copy-docs-64"
     ],
     "support": {
       "relation": "direct",
@@ -6708,7 +6706,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Any product with public documentation could publish an llms.txt or agent-oriented docs, so this axis applies to Working Copy. Direct probes found no such docs: llms.txt and markdown versions of the manual both returned 404. The in-app Repository Agent is a separate feature and does not provide agent-consumable documentation.",
+    "rationale": "Publishing llms.txt or agent-oriented docs is a fair question for any product with public documentation, so the axis applies. Probes found no llms.txt (HTTP 404) and no markdown docs variant (HTTP 404). The URL-scheme docs are prose-only with no machine-readable schema, so there is no evidence of agent-oriented documentation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6723,7 +6721,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Working Copy ships its own AI features. It suggests commit messages by sending staged diffs to OpenAI, and its Repository Agent is a conversational assistant that can browse, search, read and modify repository files. These are AI-generated suggestions drawn from the user's repository data, but the docs only show narrow commit-message suggestions and an agent framed around taking actions, not surfacing insights. Missing for 10: documented insight or analysis output (e.g. summaries or findings about repository content), suggestions beyond commit messages, and independent or hands-on corroboration of output quality.",
+    "rationale": "Working Copy ships its own in-app AI features that work on the user's repository data. It suggests commit messages generated from staged diffs, and its Repository Agent is a conversational assistant that can browse, search and read repository files. Neither is documented as producing analytical insights about the data; the suggestions are limited to commit messages. Missing for 10: documented insight or analysis output beyond commit-message suggestions, details on Repository Agent's analytical capabilities, independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-5",
       "working-copy-docs-37",
@@ -6736,12 +6734,8 @@
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": [
         {
-          "evidenceId": "working-copy-docs-37",
-          "quote": "includes the ability to suggest messages using artificial intelligence"
-        },
-        {
           "evidenceId": "working-copy-docs-5",
-          "quote": "These AI suggestions require sending staged differences to OpenAI"
+          "quote": "includes the ability to suggest messages using artificial intelligence. These AI suggestions require sending staged differences to OpenAI"
         },
         {
           "evidenceId": "working-copy-docs-29",
@@ -6749,7 +6743,7 @@
         },
         {
           "evidenceId": "working-copy-docs-64",
-          "quote": "Code Agent & commit suggestions."
+          "quote": "Code Agent & commit suggestions. Respects your data with opt-in."
         }
       ]
     }
@@ -6760,7 +6754,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Working Copy documents its own background automation: Auto-Sync commits, pulls and pushes whenever changes are detected, and Background Sync keeps this running while you use other apps, though it pauses after long periods without changes. That automation is a single fixed sync behavior rather than user-configurable autonomous workflows. Its Shortcuts and x-callback-url hooks expose actions, but any triggers or schedules would come from the host platform. The Repository Agent is conversational, not background. Missing for 10: user-definable autonomous automations beyond sync, a first-party recurring schedule or trigger system, background agent execution, and independent corroboration of reliable background operation.",
+    "rationale": "Working Copy's own Auto-Sync feature commits, pulls and pushes automatically whenever changes are detected, and Background Sync keeps this running while other apps are in use, though it uses location and extra battery and pauses after long periods without changes. Beyond that, automation runs through its Shortcuts actions and x-callback-url scheme, which are triggered actions rather than autonomous background jobs. Any recurring scheduling would come from the iOS Shortcuts host platform, which earns no credit here. Missing for 10: user-definable autonomous automations beyond the fixed sync behavior, recurring schedule support, background execution that does not pause, and independent hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-33",
       "working-copy-docs-34",
@@ -6793,7 +6787,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Working Copy's manual documents a built-in Repository Agent, a conversational AI assistant that can browse, search, read and modify files, and commit, pull and push. The homepage separately advertises a 'Code Agent' alongside AI commit-message suggestions. Missing for 10: in-depth documentation of the agent (model choice, review or approval of changes, limits), independent or hands-on corroboration that delegation works as described.",
+    "rationale": "Working Copy's own docs describe Repository Agent, a built-in conversational AI assistant that can browse files, search content, read and modify files, commit, pull and push. That is direct delegation of repository tasks inside the app, and it is reinforced by the 'Code Agent' homepage mention and AI commit-message suggestions. Missing for 10: in-depth documentation of agent scope, approval or review controls and model/provider details, plus independent or hands-on corroboration of the agent working as described.",
     "evidenceIds": [
       "working-copy-docs-29",
       "working-copy-docs-64",
@@ -6826,7 +6820,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is an iOS Git client, so asking about headless or CI automation is fair, but nothing in the evidence shows it can run headlessly or inside a CI pipeline. The closest documented features are Shortcuts and x-callback-url automation and Auto-Sync or Background Sync. These are on-device automation features of the interactive app, not a headless or CI execution mode, so they are only adjacent and earn no credit.",
+    "rationale": "Working Copy is an interactive iOS Git client. Its documented automation runs on-device through Shortcuts and x-callback-url deep links, with Auto-Sync and Background Sync tied to the app running. There is no evidence of a headless mode, CLI, or way to run it in a CI pipeline, so these related automation features do not deliver this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -6841,7 +6835,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy ships an AI Repository Agent, so being an MCP client is a fair question for this product. However, nothing in the evidence shows it can connect to or plug in MCP servers. Shortcuts and x-callback-url automation are adjacent features, not MCP client support.",
+    "rationale": "Working Copy ships an AI Repository Agent, so connecting it to MCP servers is a fair question, but nothing in the evidence shows it can connect to or use MCP servers. Its automation surfaces are Shortcuts and x-callback-url, which are not MCP client support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6856,7 +6850,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is an iOS Git client, and a tool like this could plausibly publish an official MCP server for agents to reach its repositories, so the axis applies. The pack documents a built-in Repository Agent, Shortcuts, x-callback-url and a WebDAV server, but none of these is an MCP server. Probes for agent-facing artifacts (llms.txt, OpenAPI) all returned 404, and nothing shows an official MCP server.",
+    "rationale": "Working Copy is an iOS Git client, not primarily a coding agent, so shipping an official MCP server is a fair question and the axis applies. The evidence shows no MCP server: its automation surfaces are x-callback-url, Shortcuts and a WebDAV server, which are adjacent integration points and do not count as MCP. Probes for llms.txt and OpenAPI also returned 404.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6868,17 +6862,17 @@
   {
     "productId": "working-copy",
     "storyId": "agentic-nl-commands",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Working Copy documents a first-party Repository Agent, a conversational AI assistant that can browse files, search content, read and modify files, commit, pull and push from natural-language requests. The evidence covers only that subset of operations, the feature is opt-in, and there is no independent or hands-on confirmation. missing for 10: evidence that natural language covers the wider product surface (branching, merging, cloning, conflict resolution, configuration), and independent or hands-on corroboration of how well the agent works.",
+    "rationale": "Working Copy's own manual documents a Repository Agent, an AI assistant operated through conversation, that can browse, search, read and modify files and also commit, pull and push. The homepage lists a Code Agent as an opt-in feature. That covers natural-language operation of the product's core git workflow. Missing for 10: independent or hands-on corroboration that the agent works as described, and in-depth documentation of its scope and limits (which operations it cannot do, and how it handles branches, merges and conflicts).",
     "evidenceIds": [
       "working-copy-docs-29",
       "working-copy-docs-64"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
@@ -6898,7 +6892,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a developer-facing Git client, so an official CLI is a fair question to ask of it. The evidence pack documents no CLI. The automation surfaces it does document are Shortcuts, x-callback-url, the built-in WebDAV server and the in-app Repository Agent, which are different capabilities and earn no credit here. The SSH commands mentioned run on remote servers to list repositories, not as a Working Copy CLI.",
+    "rationale": "Working Copy is an iOS Git client. Git clients can plausibly ship a companion CLI, so the axis applies. The evidence shows only Shortcuts actions, an x-callback-url deep-link scheme, a WebDAV server and an in-app Repository Agent. These are adjacent automation surfaces, not an official command-line interface, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6911,12 +6905,13 @@
     "productId": "working-copy",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Working Copy documents its own automation surfaces: Shortcuts actions and an x-callback-url scheme that let external tools drive the app programmatically. The evidence only names these interfaces without detailing endpoints or commands, and probes found no OpenAPI spec or llms.txt. missing for 10: a documented reference of x-callback-url/Shortcuts actions and parameters, a network-accessible public API (REST/OpenAPI), independent hands-on corroboration of programmatic control.",
+    "rationale": "Working Copy has its own documented programmatic surface: an x-callback-url scheme with command deep links gated by an app-generated secret key, plus Shortcuts actions. It is iOS deep-link automation documented only in prose, not a conventional public API, and probes found no OpenAPI spec or llms.txt. missing for 10: machine-readable schema/OpenAPI, network-accessible API (REST/HTTP), interactive reference, test mode, versioning/deprecation policy, independent hands-on corroboration of agent-driven use",
     "evidenceIds": [
-      "working-copy-docs-28",
+      "working-copy-url-schemes-20261106",
       "working-copy-docs-63",
+      "working-copy-docs-28",
       "working-copy-probe-3"
     ],
     "support": {
@@ -6924,6 +6919,10 @@
       "coverage": "partial",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "working-copy-url-schemes-20261106",
+          "quote": "Commands that change data or read content out of Working Copy are protected by a secret key"
+        },
         {
           "evidenceId": "working-copy-docs-63",
           "quote": "Use Shortcuts and x-callback-url for automation."
@@ -6941,10 +6940,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy has automation surfaces (Shortcuts, x-callback-url, WebDAV) and a built-in Repository Agent, so issuing scoped credentials to an agent is a fair question for this product. The evidence never shows the product issuing scoped or least-privilege credentials for an agent. Secure Enclave SSH keys and the AWS IAM policy setup are user identity and host-provider arrangements, not agent-scoped credentials the product issues.",
+    "rationale": "Working Copy's automation surface (x-callback-url) has only a single app-generated secret key gating data-changing and content-reading commands. There is no evidence of issuing multiple credentials, scoping them to specific repositories or actions, or creating least-privilege tokens for an agent. The single secret is an adjacent access control, not scoped credential issuance.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": []
@@ -6956,7 +6955,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy documents automation through Shortcuts and x-callback-url, but these are automation hooks, not official SDKs that developers build against. No evidence of any SDK, client library, or OpenAPI spec exists; probes for openapi.json and llms.txt returned 404.",
+    "rationale": "Working Copy exposes an automation surface through Shortcuts and a prose-documented x-callback-url scheme. That is an adjacent integration mechanism, not an official SDK. Nothing in the evidence shows a first-party client library or package to build against, and the probes found no OpenAPI spec or llms.txt.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6971,7 +6970,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy documents automation through the Shortcuts app and x-callback-url, plus a built-in WebDAV server. None of these are registrable outbound HTTP webhook callbacks that a programmatic consumer could subscribe to. Event subscription is a fair automation question for a git client, but the evidence pack shows no webhook capability.",
+    "rationale": "Working Copy's documented automation surface is Shortcuts and its x-callback-url deep-link scheme. Neither provides registrable outbound HTTP webhook callbacks that a programmatic consumer could subscribe to for events. x-callback-url is an inter-app deep-link mechanism and only an adjacent feature, so it earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6985,11 +6984,11 @@
     "storyId": "ai-commit-message-generation",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Working Copy's manual documents a button beside the commit message field that can suggest messages using AI. Those suggestions are generated by sending the staged differences to OpenAI, which matches the story directly, and the homepage lists commit suggestions as an opt-in feature. missing for 10: independent or hands-on corroboration of suggestion quality, deeper documentation of the feature (configuration, model choice, how suggestions are presented or edited).",
+    "confidence": "high",
+    "rationale": "Working Copy's manual says the button beside the commit message field can suggest messages using AI, generated by sending staged differences to OpenAI. That is exactly the story: AI suggestions based on staged changes. The homepage lists commit suggestions as opt-in. missing for 10: independent or hands-on corroboration of suggestion quality, deeper documentation of how suggestions are generated or configured.",
     "evidenceIds": [
-      "working-copy-docs-37",
       "working-copy-docs-5",
+      "working-copy-docs-37",
       "working-copy-docs-64"
     ],
     "support": {
@@ -6998,12 +6997,12 @@
       "subject": "As an ai-native user, I can get AI-generated commit message suggestions based on my staged changes",
       "citations": [
         {
-          "evidenceId": "working-copy-docs-37",
-          "quote": "The small button at the left of the commit message field shows a list of previous messages and includes the ability to suggest messages using artificial intelligence."
+          "evidenceId": "working-copy-docs-5",
+          "quote": "includes the ability to suggest messages using artificial intelligence. These AI suggestions require sending staged differences to OpenAI"
         },
         {
-          "evidenceId": "working-copy-docs-5",
-          "quote": "These AI suggestions require sending staged differences to OpenAI"
+          "evidenceId": "working-copy-docs-37",
+          "quote": "The small button at the left of the commit message field shows a list of previous messages and includes the ability to suggest messages using artificial intelligence."
         },
         {
           "evidenceId": "working-copy-docs-64",
@@ -7018,7 +7017,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Working Copy's first-party manual describes a Repository Agent, an AI assistant used through conversation that can browse files, search content, read and modify files, commit, pull and push. That covers every element of the story, and the homepage separately lists a 'Code Agent' feature. missing for 10: in-depth documentation of the agent's workflow and limits (model, permissions, confirmation before push), and independent or hands-on corroboration of the agent in use.",
+    "rationale": "Working Copy's first-party manual describes a built-in Repository Agent that users direct through conversation to browse files, search content, read and modify files, commit, pull and push. That maps one-to-one onto every element of the story, and the homepage also advertises a Code Agent. missing for 10: in-depth documentation of agent behavior and limits (model, permissions, review of changes before commit/push), independent or hands-on corroboration of the agent workflow.",
     "evidenceIds": [
       "working-copy-docs-29",
       "working-copy-docs-64"
@@ -7034,7 +7033,7 @@
         },
         {
           "evidenceId": "working-copy-docs-64",
-          "quote": "Code Agent & commit suggestions."
+          "quote": "Code Agent & commit suggestions. Respects your data with opt-in."
         }
       ]
     }
@@ -7044,8 +7043,8 @@
     "storyId": "amend-undo-commits",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Working Copy's manual documents both halves of the story. An Amend toggle in the commit dialog changes the latest commit, and swiping left undoes unpushed commits while leaving their changes in the working directory. Hunk-level staging then lets you recommit those changes as separate, split commits, and long-press history edits (edit message, squash, delete) add further fix-up options. Missing for 10: independent or hands-on corroboration of the amend/undo/split workflow.",
+    "confidence": "medium",
+    "rationale": "Working Copy's manual documents both halves of the story: an Amend toggle in the commit dialog for changing the latest commit, and a swipe-to-Undo for unpushed commits that leaves their changes in the working directory. Hunk-level staging then lets you recommit those changes as separate, split commits, and Edit Message, Squash and Delete Commit extend history editing. missing for 10: independent or hands-on corroboration of the amend/undo/split workflow.",
     "evidenceIds": [
       "working-copy-docs-16",
       "working-copy-docs-15",
@@ -7071,7 +7070,7 @@
         },
         {
           "evidenceId": "working-copy-docs-17",
-          "quote": "Edit Message to change a commit message... or Squash a commit with its child."
+          "quote": "Long tapping commits you can Delete Commit to rewrite the branch without the work contributed by this single commit, Edit Message to change a commit message... or Squash a commit with its child."
         }
       ]
     }
@@ -7081,8 +7080,8 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Working Copy exposes automation surfaces (Shortcuts, x-callback-url), so an interactive API reference is a fair question for this product. However, the evidence shows no interactive API reference or runnable examples, and probes for OpenAPI/Swagger specs all returned 404. The automation and JavaScript-console features are adjacent capabilities and earn no credit here.",
+    "confidence": "high",
+    "rationale": "Working Copy has a documented automation surface (an x-callback-url scheme), so an interactive API reference is a fair question for it. However, its own URL-scheme documentation is prose with inline iOS deep-link examples and explicitly states there is \"no interactive reference.\" Probes for OpenAPI or Swagger specs all returned 404, so nothing shows an explorable API reference with runnable examples.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7096,8 +7095,8 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Working Copy exposes programmatic surfaces (Shortcuts, x-callback-url, a WebDAV server), so a machine-readable spec for them is a fair question. However, no OpenAPI or equivalent spec is documented, and probes of common OpenAPI/Swagger paths all returned 404.",
+    "confidence": "high",
+    "rationale": "Working Copy does have an automation surface, its x-callback-url scheme, so a machine-readable API spec is a fair question for this product. However, its own documentation says the scheme is written as prose with \"no machine-readable schema\", and probes of every common OpenAPI path returned 404. The axis applies but is not delivered.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7112,7 +7111,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a git client with an AI Repository Agent that can modify files, commit and push, so asking whether agent actions can be tested in an isolated sandbox is a fair question. The evidence documents no sandbox or test environment, and no dry-run mode either. Offline local clones, separate commit and push steps, and undoing unpushed commits are ordinary git workflow features, not a product-provided sandbox isolated from production data.",
+    "rationale": "Working Copy has an automation surface (an x-callback-url scheme) and a Repository Agent, so a sandbox or test environment is a fair question to ask. However, its own URL-scheme documentation explicitly states there is \"no test mode\", and nothing in the pack describes a sandbox environment isolated from production data. Local commits that are not yet pushed are an adjacent git workflow, not a product-provided sandbox, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7126,8 +7125,8 @@
     "storyId": "api-versioning-policy",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Working Copy exposes automation surfaces through Shortcuts and x-callback-url, so asking about API versioning is a fair question for this product. However, nothing in the evidence documents versioned APIs or a deprecation policy. The probes also found no OpenAPI spec at any candidate path.",
+    "confidence": "high",
+    "rationale": "Working Copy exposes an automation API surface (x-callback-url scheme and Shortcuts), so the axis applies. The URL-scheme documentation explicitly states there is no versioning or deprecation statement for the scheme, and probes found no OpenAPI spec. No evidence shows versioned APIs or a documented deprecation policy.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7142,7 +7141,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Working Copy ships its own conversational Repository Agent that can read and modify files, commit, pull and push. That covers the AI-agent-makes-changes core, but nothing documents assigning an issue to it or having it open a ready-to-review pull request; the workflow is interactive chat, not delegated issue-to-PR. missing for 10: issue assignment to the agent, agent-created pull requests, asynchronous/delegated execution, independent or hands-on corroboration.",
+    "rationale": "Working Copy ships its own Repository Agent, a conversational AI assistant that can read and modify files, commit, pull and push, which covers the coding-agent core of the story. Nothing documents assigning an issue to that agent or having it produce a pull request; the agent is driven by chat, not by an issue-to-PR handoff. Missing for 10: issue assignment to the agent, automatic pull-request creation by the agent, an asynchronous ready-to-review PR workflow, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-29",
       "working-copy-docs-64"
@@ -7169,7 +7168,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Working Copy documents its own bulk operations: fetching all repositories and merging every updated repository with a single tap, and a Resolve tool that settles conflicts across many files at once. These are limited to specific actions, and there is no evidence of general multi-select or bulk commit/push across repositories. Missing for 10: general-purpose bulk/multi-select operations across arbitrary items, bulk commit/push across repositories, independent or hands-on corroboration.",
+    "rationale": "Working Copy documents its own bulk actions: fetching all repositories and merging every updated repository with a single tap, plus a Resolve tool that handles conflicts in many files at once. These are limited to specific git operations rather than a general bulk-operation capability. missing for 10: general-purpose bulk actions (multi-select commit, delete, tag or push across many items), documented bulk or batch support in the automation surface (x-callback-url, Shortcuts, Repository Agent), independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-51",
       "working-copy-docs-7"
@@ -7196,10 +7195,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Working Copy's own Auto-Sync feature automatically commits, pulls and pushes whenever changes are detected, with optional Background Sync. That is a built-in event-triggered action, but it is a single fixed behavior rather than user-defined rules. Shortcuts and x-callback-url integration is host-platform or building-block plumbing, so it earns no credit here. Missing for 10: user-definable rule/trigger configuration, a choice of event types and actions, conditional logic, and independent corroboration.",
+    "rationale": "Working Copy's own Auto-Sync feature commits, pulls and pushes automatically whenever it detects changes, and Background Sync extends this while other apps are in use. That is a built-in event-triggered action, but it is a fixed toggle rather than user-defined rules. Shortcuts integration and x-callback-url are a host-platform capability and developer building blocks, so they earn no credit here. Missing for 10: user-definable trigger/condition/action rules, choice of event types beyond file changes, configurable actions beyond fixed sync, and independent corroboration.",
     "evidenceIds": [
-      "working-copy-docs-33",
-      "working-copy-docs-34"
+      "working-copy-docs-52",
+      "working-copy-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -7207,12 +7206,12 @@
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
-          "evidenceId": "working-copy-docs-33",
-          "quote": "_Auto-Sync_ does all of this for you, committing, pulling and pushing whenever changes are detected."
+          "evidenceId": "working-copy-docs-52",
+          "quote": "Auto-Sync does all of this for you, committing, pulling and pushing whenever changes are detected."
         },
         {
-          "evidenceId": "working-copy-docs-34",
-          "quote": "Turn on _Background Sync_ to keep syncing while you use other apps"
+          "evidenceId": "working-copy-docs-53",
+          "quote": "Turn on Background Sync to keep syncing while you use other apps"
         }
       ]
     }
@@ -7223,7 +7222,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a Git client with automation features, but the evidence documents no time-based or recurring scheduler. Auto-Sync and Background Sync run when changes are detected, not on a recurring schedule. Shortcuts and x-callback-url support is integration with the host platform, and the evidence never says Working Copy itself can schedule anything.",
+    "rationale": "Working Copy's own automation is event-driven, not scheduled: Auto-Sync commits, pulls and pushes \"whenever changes are detected,\" and Background Sync only keeps that syncing going while other apps are in use. Shortcuts and x-callback-url are a host-platform and integration surface, and no evidence shows the product itself letting a user define recurring time-based jobs or workflows. A change-triggered action is not a recurring schedule, so this support is adjacent only.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7238,7 +7237,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a git client with strong commit, diff, checkout and undo features, and it supports automation through Shortcuts and x-callback-url. But no evidence shows it versions, reviews or rolls back the automations themselves. Storing exported automation files in a repo would be a user-side workaround, and the Shortcuts app is a host-platform feature, so neither earns credit.",
+    "rationale": "Working Copy's automation surface is Shortcuts and the x-callback-url scheme, and nothing documents versioning, reviewing or rolling back those automations. The URL-scheme doc states there is no versioning for the scheme. Its strong git versioning, diff and undo features cover repository files generally; keeping automation files in a repo would be a user-side workaround, not a product capability for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7253,7 +7252,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Working Copy's manual says SSH keys used for remote connections can live on the Secure Enclave, protected by Face ID or Touch ID. That directly provides biometric protection of remote credentials. Missing for 10: any detail on the biometric prompt flow or setup, whether HTTPS or token credentials can also be biometric-gated, and independent or hands-on corroboration.",
+    "rationale": "Working Copy's own manual says SSH keys can be stored on the Secure Enclave and protected by Face ID or Touch ID, so SSH remote connections are guarded by biometrics. The documentation is a single sentence and covers SSH keys only. missing for 10: in-depth docs on the biometric prompt flow and setup, evidence for HTTPS credentials or tokens, independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-36",
       "working-copy-docs-8",
@@ -7281,7 +7280,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is an iOS Git client. It uses SSH only as a transport for Git and for listing repositories, and nothing in the evidence shows interactive terminal sessions. Grouping terminal sessions and broadcasting commands to them is a terminal-emulator capability, so this axis is a category error for this kind of product.",
+    "rationale": "Working Copy is an iOS Git client. Its SSH support covers Git transport and SSH keys, plus SSH commands for listing repositories on self-hosted servers. It is not a terminal or SSH session client, so grouping terminal sessions and broadcasting commands to them falls outside its product category, and nothing in the evidence shows it ships interactive terminal sessions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7296,7 +7295,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Working Copy's manual documents search across filenames, symbols, line numbers and text content. It applies fuzzy matching to filenames and symbols, and supports regular-expression search when the pattern is wrapped in slashes, but regex only works in the file scope and filters are never explicitly described. missing for 10: documented search filters or scope options beyond the passing 'file scope' mention, regex search beyond the file scope, fuzzy matching for text content, independent or hands-on corroboration.",
+    "rationale": "Working Copy's manual documents search that matches filenames, symbols, line numbers and text content, with fuzzy matching for filenames and symbols. It also supports regular expressions wrapped in slashes, but only within the file scope. Filters are only implied by the mention of a 'file scope', and there is no hands-on corroboration. Missing for 10: explicit filter documentation, regex beyond the single-file scope, fuzzy matching for text content, independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-61",
       "working-copy-docs-62",
@@ -7324,7 +7323,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Working Copy ships a first-party conversational Repository Agent that can browse files, search content and read repositories, which covers getting natural-language insights into repositories. Nothing shows the agent working with pull requests. missing for 10: agent-driven pull request insight or creation, depth of repository analysis or insights beyond browsing and search, independent or hands-on corroboration of the agent.",
+    "rationale": "Working Copy's own Repository Agent is a conversational AI assistant that can browse, search and read repository files, which covers the 'insights into repositories' half of the story. Nothing shows the agent opening pull requests: the only creation evidence is an ambiguous 'creating these' line that is not tied to the agent. missing for 10: documented agent-driven pull-request opening, explicit repository insight/summary capabilities, independent or hands-on corroboration of the agent.",
     "evidenceIds": [
       "working-copy-docs-29",
       "working-copy-docs-64"
@@ -7340,7 +7339,7 @@
         },
         {
           "evidenceId": "working-copy-docs-64",
-          "quote": "Code Agent & commit suggestions. Respects your data with opt-in."
+          "quote": "Code Agent & commit suggestions."
         }
       ]
     }
@@ -7349,13 +7348,13 @@
     "productId": "working-copy",
     "storyId": "credential-vault-storage",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Working Copy documents its own secure credential storage: an in-app Identity holds an imported or generated private key, and SSH keys can live in the Secure Enclave behind Face ID or Touch ID. The docs do not explicitly say that one stored credential is reused across multiple hosts or repositories. Automatic public-key registration with GitHub and BitBucket hints at this but does not confirm it. Missing for 10: explicit documentation of one credential referenced across multiple hosts, coverage of non-SSH credentials (https tokens/passwords) in the vault, independent or hands-on corroboration.",
+    "rationale": "Working Copy lets you attach a private key to an Identity and keep SSH keys in the Secure Enclave behind Face ID or Touch ID, which is a first-party secure credential store. The docs also say the public key can be auto-registered with GitHub or BitBucket, implying one key serves several hosts. They never explicitly describe a central vault whose credentials are stored once and referenced per host, and they do not cover HTTPS passwords or tokens. missing for 10: explicit documentation of one credential reused across multiple hosts, vault coverage for HTTPS tokens/passwords, independent or hands-on corroboration.",
     "evidenceIds": [
-      "working-copy-docs-20",
-      "working-copy-docs-36",
       "working-copy-docs-8",
+      "working-copy-docs-36",
+      "working-copy-docs-20",
       "working-copy-docs-55"
     ],
     "support": {
@@ -7364,12 +7363,12 @@
       "subject": "As a developer, I can store credentials once in a secure vault and reference them from multiple hosts",
       "citations": [
         {
-          "evidenceId": "working-copy-docs-20",
-          "quote": "You attach a private key to your Identity which can be imported or generated inside the app."
-        },
-        {
           "evidenceId": "working-copy-docs-36",
           "quote": "For extra security SSH keys can reside on the Secure Enclave protected by Face ID or Touch ID."
+        },
+        {
+          "evidenceId": "working-copy-docs-20",
+          "quote": "You attach a private key to your Identity which can be imported or generated inside the app."
         },
         {
           "evidenceId": "working-copy-docs-55",
@@ -7384,11 +7383,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Working Copy documents its own 'Link external directory' feature. It lets a repository be backed by a folder or Document Package picked through the Files app, which covers other apps' storage. It also documents dragging files in from other apps, and other apps can reach its repositories through the document picker. missing for 10: independent or hands-on corroboration of linked external directories, documentation of how far this works across different apps' sandboxes and file providers.",
+    "rationale": "Working Copy documents that when adding repositories you can 'Link external directory' and pick a folder or Document Package through the Files app, which gives it direct access to repositories in other apps' storage. It also accepts files dragged in from the Files app or other apps, and a directory without a top-level .git subdirectory becomes a new repository, so you can version and work with that content. Missing for 10: independent or hands-on corroboration that linked external directories work reliably, and documentation of how linked directories stay in sync with the source app and what limitations apply.",
     "evidenceIds": [
       "working-copy-docs-26",
       "working-copy-docs-25",
-      "working-copy-docs-24"
+      "working-copy-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -7404,8 +7403,8 @@
           "quote": "Drag files from your emails, the Files app or any other supporting app to add to your repositories."
         },
         {
-          "evidenceId": "working-copy-docs-24",
-          "quote": "All repositories in Working Copy can be accessed in the Files app and 3rd party applications using the document picker or file browser components."
+          "evidenceId": "working-copy-docs-31",
+          "quote": "If the directory does not contain a .git subdirectory at top-level, Working Copy assumes you want a new repository with all these files added."
         }
       ]
     }
@@ -7416,7 +7415,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a git client, and git clients can plausibly ship a built-in terminal, so this axis applies. However, the evidence never mentions a terminal or terminal appearance settings. The font choice and CSS color picker it documents belong to the file editor, an adjacent feature that earns no credit for terminal font, color and cursor customization or persistence.",
+    "rationale": "Working Copy is a developer tool (a git client with an editor), so a built-in terminal is a fair question to ask. However, the evidence never mentions a terminal or any terminal font, color or cursor settings, or how such settings would persist. The only related item is editor font selection (docs-59), which is a different feature and earns no credit for this terminal story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7431,12 +7430,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Working Copy connects to your own servers over ssh, https, git and http using any repository URL you provide. It also documents configuring a plain Linux server, BSD server or Synology NAS as a hosting provider via SSH commands, and supports private GitHub Enterprise, GitLab and Gitea instances. That is a direct client-to-server connection to user-owned infrastructure. Missing for 10: an explicit statement that no cloud relay or proxy is involved, and independent hands-on corroboration of direct self-hosted server connections.",
+    "rationale": "Working Copy connects straight to a user-supplied repository URL over ssh, git, https or http. Its docs describe setting up a regular Linux server, BSD server or Synology NAS as a hosting provider using SSH commands, and it supports self-hosted GitHub Enterprise, GitLab and Gitea. Missing for 10: no explicit statement that traffic never passes through a vendor relay or proxy, no guidance on reaching servers on private networks without a VPN, no independent or hands-on corroboration of direct self-hosted connections.",
     "evidenceIds": [
       "working-copy-docs-47",
       "working-copy-docs-56",
       "working-copy-docs-9",
-      "working-copy-docs-20"
+      "working-copy-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -7464,7 +7463,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Working Copy is an iOS Git client. Routing all of a device's internet traffic through an exit node is a VPN/network-connectivity capability outside its product category. Nothing in the evidence shows it ships any traffic-routing or exit-node feature: the WebDAV server and External URL preview are file-transfer and preview features, not network routing.",
+    "rationale": "Working Copy is an iOS Git client and code editor, so routing all internet traffic through an exit node is a VPN/network-connectivity capability outside its product category. The evidence covers only Git protocols, a WebDAV server and preview URLs, none of which is traffic routing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7479,7 +7478,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a mobile Git client that manages SSH keys, so scp/sftp file transfer to remote hosts is a fair question for it. However, the evidence only shows SSH used as a Git transport, SSH commands for listing repositories on servers, and a built-in WebDAV server for moving files in and out. None of these is scp or sftp transfer, so they are adjacent features and earn no credit.",
+    "rationale": "Working Copy is a Git client that manages SSH keys, so scp/sftp transfer is a fair question for it. However, the evidence only shows SSH used as a Git transport, SSH commands for listing repositories, and a built-in WebDAV server for moving files. None of these is scp or sftp file transfer to remote hosts, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7494,13 +7493,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The manual says repositories are cloned by pressing + and providing a URL, and that Working Copy supports https, ssh, git, and http protocols. SSH key identities can be imported or generated in the app, and offline-available clones are a headline feature. missing for 10: independent hands-on corroboration of cloning over each protocol (SSH and git:// in particular).",
+    "rationale": "The first-party manual documents cloning from a URL and lists HTTPS, SSH, Git and HTTP as supported protocols. SSH key generation and import are also documented, and hosting-provider integrations make picking a repository to clone simple. missing for 10: independent or hands-on corroboration of cloning over each protocol (the community evidence only mentions pull and push).",
     "evidenceIds": [
       "working-copy-docs-47",
       "working-copy-docs-30",
       "working-copy-docs-44",
+      "working-copy-docs-48",
       "working-copy-docs-20",
-      "working-copy-docs-48"
+      "working-copy-comm-1"
     ],
     "support": {
       "relation": "direct",
@@ -7528,10 +7528,9 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Working Copy's manual documents a first-party Commit Graph, reachable from the Repository screen, for exploring changes across branches. This directly matches the story, though the documentation is only one brief line. Missing for 10: detail on graph rendering and depth (e.g., whether all branches and remotes appear, merge visualization, filtering), and independent or hands-on corroboration.",
+    "rationale": "Working Copy's manual documents a built-in Commit Graph, reached from the Repository screen, for exploring repository changes across branches, which matches the story directly. The evidence is a single brief first-party mention, with no detail on how the graph renders or behaves and no hands-on confirmation. Missing for 10: detailed documentation of the graph's visualization (merges, branch lanes, filtering, scale on large histories) and independent or hands-on corroboration.",
     "evidenceIds": [
-      "working-copy-docs-18",
-      "working-copy-docs-14"
+      "working-copy-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -7551,7 +7550,7 @@
     "verdict": "full",
     "quality": 10,
     "confidence": "high",
-    "rationale": "Working Copy is an iOS git client with richly documented on-device commit and push. The docs cover committing from the Status tab, staging individual hunks, amend, separate offline commit and later push, and Auto-Sync that commits, pulls and pushes. SSH, HTTPS and Secure Enclave keys cover authentication. A community user independently confirms they pull, edit and push from the iOS app while commuting.",
+    "rationale": "Working Copy is an iOS Git client whose manual documents committing from the Status tab, with hunk-level staging, amend, AI-suggested messages and signing. Commit and push are distinct actions, so you can commit offline and push later. Auto-Sync commits and pushes automatically, SSH and HTTPS remotes are supported, and a community user confirms editing and pushing from the iOS app while commuting.",
     "evidenceIds": [
       "working-copy-docs-4",
       "working-copy-docs-50",
@@ -7569,7 +7568,7 @@
       "citations": [
         {
           "evidenceId": "working-copy-docs-4",
-          "quote": "you can commit them to the repository with a button on the Status tab."
+          "quote": "you can commit them to the repository with a button on the Status tab"
         },
         {
           "evidenceId": "working-copy-docs-50",
@@ -7581,7 +7580,7 @@
         },
         {
           "evidenceId": "working-copy-comm-1",
-          "quote": "uses the iOS app to pull, edit and push while commuting."
+          "quote": "uses the iOS app to pull, edit and push while commuting"
         }
       ]
     }
@@ -7590,9 +7589,9 @@
     "productId": "working-copy",
     "storyId": "git-commit-signing",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Working Copy's own marketing page says it supports signing commits, so the product itself has the capability. That is the only mention, and nothing says which key type (GPG or SSH) is used for signing or how verification works. The SSH identity and Secure Enclave key docs cover authentication keys, not commit signing, so they earn no credit here. Missing for 10: documentation of GPG or SSH signing key types, setup steps, verification display on hosting providers, independent or hands-on corroboration.",
+    "rationale": "Working Copy's own site says it supports commit signing, but this is a single marketing line that names no signing key type (GPG or SSH), setup flow, or verification behavior. The SSH key and Identity private-key docs describe authentication keys, not signing, so they cannot be credited here. Missing for 10: documentation of GPG and/or SSH key signing, how signing keys are configured, verified-signature display on hosts, and independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-45"
     ],
@@ -7614,7 +7613,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Working Copy's manual documents long-tap commit actions to Delete Commit, Edit Message, and Squash a commit with its child, plus Undo for unpushed commits and Amend for the latest commit. That covers most of interactive history rewriting, but nothing documents reordering commits, and editing is shown only for commit messages, not commit contents in the middle of history. missing for 10: commit reordering, editing contents of arbitrary past commits, independent/hands-on corroboration.",
+    "rationale": "Working Copy's manual documents in-app history rewriting from the commit list: long-tap a commit to Delete Commit, Edit Message, or Squash a commit with its child. Undo of unpushed commits and Amend of the latest commit add further rewriting. Reordering commits is never documented, and 'edit' covers only commit messages, not commit contents mid-history. missing for 10: commit reordering, editing the contents of past commits, independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-17",
       "working-copy-docs-15",
@@ -7646,7 +7645,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Working Copy's manual documents a dedicated Resolve tool that \"lets you resolve conflicts for many files at once\", which matches the story directly. Only a single first-party sentence supports it, with no detail on how the tool works. missing for 10: detail on the Resolve tool's workflow (e.g. choosing ours/theirs, reviewing hunks), and independent or hands-on corroboration.",
+    "rationale": "Working Copy's manual documents a dedicated Resolve tool that resolves conflicts across many files at once, which is the core of this story. The claim rests on a single thin first-party mention. missing for 10: detail on how the Resolve tool works (e.g. choosing ours/theirs per file or per hunk, the conflict-editing interface), independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-7"
     ],
@@ -7668,11 +7667,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "low",
-    "rationale": "The manual states 'Working Copy supports creating these for BitBucket, GitHub and GitLab.' This plausibly refers to pull requests created from the device on hosted platforms, but the excerpt never names its antecedent. Related items show hosting-provider integration (listing repos, Connect with GitHub/BitBucket, GitHub Enterprise/GitLab/Gitea instances), which supports the platform side but is not itself PR creation. missing for 10: explicit documentation naming pull-request creation, details of the PR workflow (title, description, base/compare branch selection), independent or hands-on corroboration.",
+    "rationale": "The manual says Working Copy 'supports creating these for BitBucket, GitHub and GitLab', which fits the story, but the excerpt cuts off the antecedent of 'these', so it does not explicitly name pull requests. Hosting-provider integration (docs-48, docs-9) makes the PR reading plausible, but the capability is only implied, not clearly stated. Missing for 10: an explicit statement that pull requests are what can be created, a description of the PR creation workflow (choosing branches, title and description), clarity on self-hosted instance support for PRs, and hands-on or independent corroboration.",
     "evidenceIds": [
       "working-copy-docs-19",
-      "working-copy-docs-9",
-      "working-copy-docs-48"
+      "working-copy-docs-48",
+      "working-copy-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -7682,6 +7681,10 @@
         {
           "evidenceId": "working-copy-docs-19",
           "quote": "Working Copy supports creating these for BitBucket, GitHub and GitLab."
+        },
+        {
+          "evidenceId": "working-copy-docs-48",
+          "quote": "There is special support for GitHub, BitBucket, GitLab and other hosting providers to list your available repositories"
         }
       ]
     }
@@ -7692,7 +7695,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a mobile Git client, so reviewing pull requests on a phone is a fair question for it. The evidence never documents listing, viewing, commenting on, or approving pull requests. Diff viewing, image comparison and hunk staging are adjacent features for local changes, and docs-19 mentions creating unspecified \"these\" for hosting providers without naming PR review.",
+    "rationale": "Nothing in the evidence documents reviewing pull requests in Working Copy: no listing of open PRs, viewing PR diffs, commenting, approving or requesting changes. The app does offer on-device diff viewing, hunk staging and a commit graph, and docs-19 mentions 'creating these' for BitBucket/GitHub/GitLab with an unclear referent. These are adjacent git features or PR creation, not PR review, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7707,7 +7710,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The Working Copy manual says users can stash and unstash from the repository context menu, so the product itself delivers the core of the story. The evidence is a single thin first-party mention with no further detail. Missing for 10: documentation of stash depth (multiple stash entries, naming, partial or untracked-file stashing, conflict handling on unstash), independent or hands-on corroboration.",
+    "rationale": "Working Copy's manual states that users can Stash and Unstash from the repository context menu, which directly matches clearing and restoring working-directory changes. The evidence is a single brief first-party mention. Missing for 10: detailed documentation of stash behavior (multiple stashes, stash list or naming, untracked files, conflict handling on unstash), independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-22"
     ],
@@ -7729,7 +7732,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Working Copy's own manual has a section on Git submodules, which signals first-party submodule handling. The only excerpt available just defines what submodules are, so the specific clone, update and manage operations go undocumented in the evidence. Missing for 10: documented submodule cloning (e.g. recursive clone), updating or syncing submodules to new commits, adding or removing submodules, and any hands-on or independent corroboration.",
+    "rationale": "Working Copy's own manual has a section on Git submodules, so the product appears to handle them. The only evidence is a one-line generic definition of what submodules are, with no description of how the app clones, updates or manages them. missing for 10: documented submodule clone/init workflow, documented submodule update/sync to tracked commits, documented management actions (add/remove/change URL or branch), independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-23"
     ],
@@ -7751,7 +7754,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Syncing saved hosts and connection settings across devices is a fair question for a Git client like Working Copy. The evidence never documents syncing hosting-provider configurations, identities or connection settings between devices. The Auto-Sync and Background Sync features commit, pull and push repository content, which is an adjacent capability, and the pro-purchase migration moved data between app versions, not across devices.",
+    "rationale": "Syncing saved hosts and connection settings across devices is a fair question for a Git client, but the evidence pack never documents syncing hosting-provider configs, identities, or connection settings between devices. Auto-Sync and Background Sync handle committing, pulling and pushing repository content, which is a different capability. The community report of moving data during an app migration is a one-time move, not ongoing cross-device sync.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7766,7 +7769,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents syntax highlighting and a JavaScript Console that surfaces errors in repository scripts. Neither is a terminal-based editor or an in-app syntax/lint checker run on files. The axis fairly applies to a mobile git client with editing, but nothing in the evidence shows the capability.",
+    "rationale": "The evidence shows Working Copy has a built-in code view with syntax highlighting, SSH for git transport, and a JavaScript Console for runtime errors in previews. Nothing documents a terminal-based editor (such as vim or nano in a shell) or running syntax or lint checkers inside the app. The JS console and syntax highlighting are adjacent features, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7781,7 +7784,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a developer-facing git client, so a built-in local shell is a fair question to ask, but the evidence pack never documents a terminal or local UNIX command execution (ls, grep, cat, tar, curl). The related items do not count: regex search, Shortcuts automation, JavaScript console logging, and server-side SSH listing commands are different features, not a local command shell.",
+    "rationale": "Working Copy is a developer-facing git client, so an in-app local shell is a fair question to ask of it. However, the evidence never documents running local UNIX commands such as ls, grep, cat, tar or curl inside the app. Regex file search, a JavaScript console for previews, and SSH commands used for listing repositories on remote servers are adjacent features, not a local command shell.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7796,7 +7799,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a mobile developer tool, so managing remote coding-agent tasks from a phone is a fair question for it. However, the evidence only documents an in-app conversational Repository Agent that edits, commits and pushes. Nothing shows dispatching, monitoring or tracking cloud-based agent tasks. The in-app agent is an adjacent feature and does not count for this story.",
+    "rationale": "Working Copy is an iOS Git client with an in-app conversational Repository Agent, so managing agent work from a phone is a fair question for it. However, nothing in the evidence shows it launching, monitoring or tracking cloud-hosted coding agent tasks. The in-app agent works through conversation on local repositories, which is an adjacent feature rather than cloud task management.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7811,7 +7814,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Working Copy is an iOS Git client, so brokering secure infrastructure access to resources such as Kubernetes clusters is outside its product category. Its SSH keys and SSH-based repository listing on Linux servers serve Git remote access only. Nothing in the evidence shows it ships an infrastructure-access or Kubernetes capability that would make this axis apply.",
+    "rationale": "Working Copy is an iOS Git client. Secure infrastructure access to resources such as Kubernetes clusters belongs to a different product category (access proxies and zero-trust networking). Its SSH keys and Secure Enclave support only authenticate Git remotes, so they do not make this axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7826,7 +7829,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a mobile Git client, and an integrated terminal is a reasonable thing to ask of such a developer tool, so the axis applies. The evidence pack never mentions terminal sessions, let alone multiple sessions with their own context, appearance and history. Its SSH references cover Git transport, keys and server-side repository listing, and iPad multi-window covers the repository status sheet, not terminals.",
+    "rationale": "Working Copy is a Git client, and Git clients can plausibly ship embedded terminals, so this axis applies. The evidence pack documents SSH only as a Git transport (protocols, SSH keys, SSH commands for listing repositories on self-hosted servers). Nothing shows interactive terminal sessions, let alone multiple sessions with separate context, appearance and history.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7841,10 +7844,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy ships a conversational Repository Agent that performs Git and file actions directly. Nothing in the evidence shows it turning plain-language requests into shell commands, so the agent is an adjacent feature, not this capability. Natural-language command generation is a fair axis for an AI-enabled developer tool, so the verdict is none rather than na.",
+    "rationale": "Working Copy is a developer tool with an AI Repository Agent, so turning plain language into commands is a fair question to ask of it. But the evidence only shows the agent performing repository actions directly (browse, edit, commit, pull, push) through conversation. Nothing shows it generating shell commands, and the pack documents no terminal or shell surface where such commands could run.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an ai-native user, I can describe what I want in plain language and have the tool generate the corresponding shell command",
       "citations": []
@@ -7856,8 +7859,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Working Copy documents its own automation surface through Shortcuts actions and x-callback-url, so it does offer programmatic control. Nothing in the evidence shows that this surface matches the UI: there is no action catalog and no parity statement, and many UI-driven features (hunk staging, conflict Resolve tool, commit rewriting, annotate) are described only as tap/swipe gestures. Probes found no OpenAPI spec. Missing for 10: documented coverage of UI operations through the automation API, an explicit parity guarantee, a reference listing all actions or URL commands, and independent corroboration.",
+    "rationale": "Working Copy has its own programmatic surface: a documented x-callback-url scheme protected by a secret key, plus Shortcuts actions. Nothing in the evidence shows this surface matches the UI, and it is documented only as prose with deep-link examples, with no schema, versioning or test mode; the OpenAPI probes returned 404. Missing for 10: evidence of UI-to-API parity (e.g. hunk staging, conflict resolution, commit rewriting, tags, stash via the API), a machine-readable API reference, versioning/deprecation policy, and independent corroboration.",
     "evidenceIds": [
+      "working-copy-url-schemes-20261106",
       "working-copy-docs-28",
       "working-copy-docs-63",
       "working-copy-probe-3"
@@ -7867,6 +7871,10 @@
       "coverage": "partial",
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
+        {
+          "evidenceId": "working-copy-url-schemes-20261106",
+          "quote": "Commands that change data or read content out of Working Copy are protected by a secret key"
+        },
         {
           "evidenceId": "working-copy-docs-28",
           "quote": "Working Copy supports automation through the Shortcuts app where files and other data can flow between actions."
@@ -7884,7 +7892,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Working Copy keeps your data as standard Git repositories, which is an open format. You can get those repositories out through Files app access, the built-in WebDAV server, and pushing to any Git remote over https, ssh, git or http. The evidence does not describe a dedicated 'export everything' function, and says nothing about exporting app-level data such as identities, private keys or settings. missing for 10: documented bulk export of all app data including keys/identities/settings, explicit leave/off-boarding guidance, independent corroboration of full data portability",
+    "rationale": "Working Copy keeps your data as standard Git repositories, an open format. The app itself exposes them for export through the Files app and a built-in WebDAV server, and it can push them to any Git remote over standard protocols. However, nothing documents a complete 'export everything' path covering identities, keys, or settings, and no one reports actually leaving the app. Missing for 10: documented bulk export of all app data including identities/keys/configuration, explicit portability or exit documentation, independent corroboration of migrating away.",
     "evidenceIds": [
       "working-copy-docs-24",
       "working-copy-docs-27",
@@ -7917,7 +7925,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether an app's source is published under an open license is a fair question for any software product, so the axis applies. Nothing in the evidence pack says Working Copy's source is published or licensed openly. The community items describe in-app purchases and a pro tier, and the manual covers only the app's features.",
+    "rationale": "Whether a git client app publishes its own source under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence pack says Working Copy's source is public or open-licensed; the docs cover app features, and the community items about in-app purchases say nothing about source availability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7932,7 +7940,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a native iOS/iPadOS Git client that runs on the user's own device, so self-hosting a server deployment of the core product does not apply to this kind of product. Its documented support for private GitHub Enterprise, GitLab and Gitea instances, and for Linux, BSD or Synology servers acting as hosts, concerns connecting to self-hosted Git servers. That is a different capability and does not make this axis applicable.",
+    "rationale": "Working Copy is a native iOS/iPadOS Git client installed on the user's own device, so self-hosting the core product does not apply to this kind of product. Its support for private GitHub Enterprise, GitLab and Gitea instances, Linux/NAS hosts, and its built-in WebDAV server concerns connecting to self-hosted Git servers. Those are adjacent features, not self-hosting of Working Copy itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7947,10 +7955,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a local-first iOS Git client, and its optional AI features send staged diffs to OpenAI, so where data goes is a fair privacy question for this product. The evidence documents no product-level region or residency selection for any data it processes or stores. Its support for self-hosted Git servers and Files-app directories is an adjacent choice of remote or location, not data-residency control, so it earns no credit.",
+    "rationale": "Working Copy is a local iOS Git client. Its documentation covers cloning to the device, linking Files-app directories, and connecting to self-hosted or private Git servers. That is a user's choice of Git remote, an adjacent feature rather than a documented data-region or residency control. Nothing in the evidence describes choosing a storage region, including for the AI features that send staged diffs to OpenAI.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
       "citations": []
@@ -7962,7 +7970,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Working Copy's AI features are opt-in: the site says it \"Respects your data with opt-in.\" Its docs say AI commit suggestions require sending staged diffs to OpenAI, so not opting in keeps repository data out of AI services. Nothing in the evidence addresses model training or what OpenAI may do with diffs once a user opts in. Missing for 10: an explicit no-training policy or guarantee, documentation of training terms with OpenAI for opted-in data, a dedicated training opt-out control, and independent corroboration.",
+    "rationale": "Working Copy's AI features (Code Agent and commit-message suggestions) are opt-in, so a user can keep repository data from going to an AI provider at all; the docs note that suggestions send staged diffs to OpenAI. Nothing in the pack addresses whether data that is sent may be used for model training. Missing for 10: an explicit statement or setting on AI training use, OpenAI data-retention and training terms for the diffs sent, and independent corroboration.",
     "evidenceIds": [
       "working-copy-docs-64",
       "working-copy-docs-5"
@@ -7989,7 +7997,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only that AI commit suggestions send staged diffs to OpenAI and are opt-in. Opt-in consent is an adjacent control, not a documented way to set retention periods or delete data sent to AI or the vendor. 'Delete Commit' is git history editing, not privacy data deletion, so nothing documents retention or deletion controls.",
+    "rationale": "Working Copy has AI features, so a data-retention and deletion control is a fair question for it. The pack only shows that AI features are opt-in and that suggestions send staged diffs to OpenAI. Nothing documents retention periods or deleting data sent to or held by the AI features. Opt-in consent is a related but different control, and git operations like Delete Commit rewrite repository history rather than govern data retention.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8004,10 +8012,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any telemetry, analytics, or usage-tracking opt-out for Working Copy. The only privacy controls shown are an opt-in for AI features that send staged diffs to OpenAI. That is a related but different control and earns no credit toward a telemetry and usage-tracking opt-out.",
+    "rationale": "Telemetry opt-out is a fair question for an iOS Git client, but the pack never mentions telemetry, analytics or usage tracking, or any setting to disable them. The only privacy-related evidence says the AI features (Code Agent, commit suggestions) are opt-in and send staged diffs to OpenAI. That is an adjacent control over AI data sharing, not an opt-out from telemetry or usage tracking, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
       "citations": []
@@ -8019,7 +8027,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is an iOS Git client covering clone, commit, push, diff, SSH keys and previews. It is not a Python runtime or terminal environment, so installing Python packages with pip is outside its product category. Nothing in the evidence shows it bundles Python or pip; its only scripting mention is a JavaScript console for repository scripts, which is a different capability.",
+    "rationale": "Working Copy is an iOS Git client covering cloning, committing, SSH keys, previews and automation. It is not a Python runtime or terminal environment, so installing pip packages on the device is outside its product category. Nothing in the evidence shows it ships a Python interpreter or pip; the only scripting mentioned is a JavaScript console for repository scripts, which does not make this axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8031,24 +8039,24 @@
   {
     "productId": "working-copy",
     "storyId": "rendered-file-live-preview",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Working Copy's manual documents previewing HTML and document files. It also says the preview reloads automatically when the file or any local asset it depends on changes, restoring scroll and zoom, and that the preview can be opened from other devices via External URL. missing for 10: explicit documentation of Markdown rendering (only 'html and document files' is named), independent or hands-on corroboration of live reload.",
+    "rationale": "Working Copy's own docs describe previewing HTML and document files, with the preview reloading automatically when the file or any local asset it depends on changes. They also document a JavaScript console and External URL previewing from other devices, so HTML preview with live reload is clearly covered. Markdown rendering is never named explicitly (only the generic \"document files\"), which leaves part of the story unevidenced. Missing for 10: explicit documentation of Markdown rendering, clarity on which \"other\" rendered file types are supported, and independent or hands-on corroboration of the live-reload preview.",
     "evidenceIds": [
       "working-copy-docs-3",
       "working-copy-docs-13",
-      "working-copy-docs-39",
-      "working-copy-docs-38"
+      "working-copy-docs-38",
+      "working-copy-docs-39"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can preview Markdown, HTML, and other rendered files with live reload",
       "citations": [
         {
           "evidenceId": "working-copy-docs-3",
-          "quote": "File content is shown with syntax highlighting for sourcecode and a preview of html and document files."
+          "quote": "a preview of html and document files"
         },
         {
           "evidenceId": "working-copy-docs-13",
@@ -8057,6 +8065,10 @@
         {
           "evidenceId": "working-copy-docs-39",
           "quote": "You can also preview from other devices or computers by enabling _External URL_."
+        },
+        {
+          "evidenceId": "working-copy-docs-38",
+          "quote": "Enable the JavaScript Console to check for errors, warnings and log statements"
         }
       ]
     }
@@ -8065,9 +8077,9 @@
     "productId": "working-copy",
     "storyId": "secure-enclave-ssh-keys",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Working Copy's manual says SSH keys can live on the Secure Enclave, which is hardware-backed, and are protected by Face ID or Touch ID. That covers every element of the story, and the manual also notes keys can be generated inside the app. Missing for 10: in-depth documentation of the Secure Enclave key setup and its limits (e.g., supported key types), and independent or hands-on corroboration.",
+    "rationale": "Working Copy's own manual says SSH keys can reside on the Secure Enclave, protected by Face ID or Touch ID. That matches every element of the story: hardware-backed storage, a secure enclave, and biometric protection. Keys can also be generated inside the app. missing for 10: independent or hands-on corroboration, and deeper documentation of the enclave key workflow (e.g. supported key types, import vs. generate on enclave).",
     "evidenceIds": [
       "working-copy-docs-36",
       "working-copy-docs-8",
@@ -8083,10 +8095,6 @@
           "quote": "For extra security SSH keys can reside on the Secure Enclave protected by Face ID or Touch ID."
         },
         {
-          "evidenceId": "working-copy-docs-8",
-          "quote": "SSH keys can reside on the Secure Enclave protected by Face ID or Touch ID."
-        },
-        {
           "evidenceId": "working-copy-docs-20",
           "quote": "You attach a private key to your Identity which can be imported or generated inside the app."
         }
@@ -8096,10 +8104,10 @@
   {
     "productId": "working-copy",
     "storyId": "session-persistence-mosh",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is an iOS Git client. Its SSH support covers Git transport and key management, not interactive terminal sessions, so keeping a terminal session alive across network changes and device sleep is outside its product category. Background Sync keeps Git syncing running while other apps are in use, which is a different feature and does not make this axis apply.",
+    "rationale": "Working Copy is an iOS Git client, and a developer tool like this could plausibly ship a terminal or SSH session feature, so the axis applies. The evidence documents SSH only as a Git transport and for listing repositories on servers, plus Background Sync for Git syncing. Nothing shows an interactive terminal session, let alone one that survives network changes or device sleep.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8114,13 +8122,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Working Copy documents SSH as a Git transport. Private keys can be imported or generated in the app, can live on the Secure Enclave, and can be used to reach regular Linux/BSD/NAS servers via SSH commands. However, the evidence never names the supported key algorithms, and the SSH use shown is Git-oriented rather than general server sessions. missing for 10: explicit documentation of Ed25519, ECDSA and RSA key support, evidence of general-purpose SSH connections to remote servers beyond Git operations, independent or hands-on corroboration.",
+    "rationale": "Working Copy documents SSH as a Git transport. Private keys can be imported or generated in-app, can live on the Secure Enclave, and SSH commands can list repositories on Linux, BSD or Synology servers. So it connects to remote servers over SSH with key authentication, but only for Git operations, and the docs never name supported key algorithms. missing for 10: explicit Ed25519/ECDSA/RSA key-type support, general (non-Git) SSH or terminal sessions to remote servers, independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-30",
-      "working-copy-docs-36",
       "working-copy-docs-20",
-      "working-copy-docs-56",
-      "working-copy-docs-55"
+      "working-copy-docs-36",
+      "working-copy-docs-56"
     ],
     "support": {
       "relation": "direct",
@@ -8132,12 +8139,12 @@
           "quote": "Working Copy supports https, ssh, git, and http protocols."
         },
         {
-          "evidenceId": "working-copy-docs-36",
-          "quote": "For extra security SSH keys can reside on the Secure Enclave protected by Face ID or Touch ID."
-        },
-        {
           "evidenceId": "working-copy-docs-20",
           "quote": "You attach a private key to your Identity which can be imported or generated inside the app."
+        },
+        {
+          "evidenceId": "working-copy-docs-36",
+          "quote": "For extra security SSH keys can reside on the Secure Enclave protected by Face ID or Touch ID."
         },
         {
           "evidenceId": "working-copy-docs-56",
@@ -8150,14 +8157,15 @@
     "productId": "working-copy",
     "storyId": "ssh-key-generation",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Working Copy's own docs say a private key can be generated inside the app and attached to an Identity, optionally kept on the Secure Enclave behind Face ID or Touch ID. The key authenticates Git over SSH, including to self-configured Linux, BSD and Synology servers, but the evidence only covers Git access, not general password-less server login. missing for 10: documented export or installation of the public key onto arbitrary servers (auto-registration is documented only for GitHub/BitBucket), evidence of password-less access beyond Git operations, and independent or hands-on corroboration.",
+    "rationale": "Working Copy's own docs say a private key can be generated inside the app and attached to an Identity. They also say keys can live on the Secure Enclave, the app clones over ssh, and it can use a regular Linux/BSD server or Synology NAS as a host via SSH commands. That supports key-based login to self-hosted git servers. Automatic public-key registration is documented only for GitHub and BitBucket, and the evidence does not show how the public key is installed on your own servers or used beyond git, so the password-less server-access part is only partly covered. missing for 10: documented export or installation of the public key on arbitrary servers, supported key types/algorithms, evidence of password-less access beyond git hosting, independent or hands-on corroboration.",
     "evidenceIds": [
       "working-copy-docs-20",
       "working-copy-docs-36",
       "working-copy-docs-55",
-      "working-copy-docs-56"
+      "working-copy-docs-56",
+      "working-copy-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -8174,7 +8182,7 @@
         },
         {
           "evidenceId": "working-copy-docs-55",
-          "quote": "your public key will automatically be registered with BitBucket or GitHub."
+          "quote": "If you tap \"Connect with BitBucket\" or \"Connect with GitHub\" your public key will automatically be registered with BitBucket or GitHub."
         },
         {
           "evidenceId": "working-copy-docs-56",
@@ -8186,13 +8194,13 @@
   {
     "productId": "working-copy",
     "storyId": "ssh-quick-connect",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Working Copy is a Git client that uses SSH for remotes, so a saved-SSH-host story is a fair question for it. However, the evidence only covers stored SSH identities and keys, plus SSH-backed hosting providers used for listing and cloning repositories. It never documents saving a host and opening a terminal or SSH session to it with one tap. Those Git-remote credential features are adjacent, not the capability itself.",
+    "rationale": "Working Copy is an iOS Git client, not a terminal or SSH session client, so connecting to a saved host the way a terminal does is outside its product type. Its SSH key identities (docs-20, docs-36) and SSH-based hosting-provider setup (docs-56) are used for Git transport and for listing repositories. They are not interactive host connections.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a power-user, I can connect to a saved host with one tap without re-entering credentials",
       "citations": []
@@ -8204,7 +8212,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Working Copy is an iOS Git client. Subnet routing to reach remote devices as if on their local network is a VPN/network-connectivity capability, outside this product's category. Nothing in the evidence shows it ships such networking: the WebDAV server and External URL preview are file-sharing and preview features, not subnet routers.",
+    "rationale": "Working Copy is an iOS Git client. Subnet routing to reach remote network devices is a VPN or mesh-networking capability outside its product category. Nothing in the evidence shows it ships any network-routing feature; its WebDAV server and External URL preview are unrelated file-sharing and preview features.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

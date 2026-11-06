@@ -120,6 +120,16 @@ ITEMS = {
          'Bolna publishes dated monthly changelogs covering features and API updates (December 2024 through the current month). A versioning-and-support policy page exists but is scoped to the CLI\'s beta semantic-versioning plans; REST deprecations are documented ad hoc through migration guides (e.g. the legacy post-call extraction removal), with no stated commitment window for the API.'),
     ],
     ('billing-subscriptions', 'orb'): [
+        # Pre-audit correction (before the first push): three agentic cells re-rolled to
+        # partials by inferring an MCP server from a row quoted only for its test-mode
+        # line. The MCP server page itself is the fetchable artifact; appended properly so
+        # those cells rest on its text.
+        ('orb-mcp-server-20261106', 'claimed-docs',
+         'https://docs.withorb.com/api-reference/mcp-server.md',
+         ['The Orb MCP server is a hosted [Model Context Protocol](https://modelcontextprotocol.io) server.',
+          'It exposes 100+ Orb API operations as tools',
+          'Each scope covers one area of Orb, such as customers and credits, subscriptions, invoices, plans or prices, and can be set to **none**, **read** or **write**.'],
+         'Orb runs a hosted first-party MCP server (https://mcp.withorb.com/mcp, Streamable HTTP, bearer-key auth): "It exposes 100+ Orb API operations as tools, covering customers, subscriptions, plans and prices, billable metrics, invoices, credits, alerts, licenses, event search and price evaluation", so "You can ask an agent to look into a customer\'s bill, check why usage isn\'t showing up, model a price change, or make a subscription change". The server acts with the connected key\'s permissions, and keys are scope-controlled per area: "Each scope covers one area of Orb... and can be set to **none**, **read** or **write**", with out-of-scope tool calls failing with a permissions error.'),
         ('orb-openapi-spec-20261106', 'claimed-docs',
          'https://docs.withorb.com/api-reference/orb-openapi.json',
          ['"openapi": "3.1.0"',

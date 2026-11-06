@@ -1,11 +1,11 @@
 {
-  "hash": "fde7ba68b3e8e0b17417e8b338ba09c48c9269b5be2a028959a52a53bf59e98a",
+  "hash": "42945d87b655497a2a9cbeda4c51d2887c77cadca7d7693ecf0cfcddcbbae9c8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe documents webhooks that push real-time data to your endpoint when events happen. The subscription docs say webhook events can be used to monitor and handle transitions between subscription statuses, which covers the core of the story. Community comments also note merchants rely on their own webhooks for lifecycle notices. Missing for 10: explicit enumeration of renewal, upgrade, payment-failure and cancellation event types; documented delivery reliability (retries, signatures, idempotency); hands-on corroboration.",
+    "rationale": "Stripe's own docs show that webhooks push real-time data when account events happen, and that webhook events can monitor and handle subscription status transitions. A Stripe PM also notes merchants can rely on their own webhooks in place of Stripe emails. The pack does not name the specific events the story lists, nor show they all emit events, and it says nothing about delivery reliability. missing for 10: explicit documentation of renewal/upgrade/payment-failure/cancellation event types, reliability guarantees (retries, signing, ordering/idempotency), independent hands-on corroboration",
     "evidenceIds": [
       "stripe-billing-docs-16",
       "stripe-billing-docs-30",
@@ -13,20 +13,16 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, every subscription state change — renewal, upgrade, payment failure, cancellation — emits a webhook or event my systems can act on reliably",
       "citations": [
-        {
-          "evidenceId": "stripe-billing-docs-16",
-          "quote": "Stripe pushes real-time data to it when events happen in your Stripe account."
-        },
         {
           "evidenceId": "stripe-billing-docs-30",
           "quote": "You can use webhook events to monitor and handle transitions between statuses."
         },
         {
-          "evidenceId": "stripe-billing-comm-7",
-          "quote": "so merchants can use their own webhooks instead"
+          "evidenceId": "stripe-billing-docs-16",
+          "quote": "Stripe pushes real-time data to it when events happen in your Stripe account."
         }
       ]
     },

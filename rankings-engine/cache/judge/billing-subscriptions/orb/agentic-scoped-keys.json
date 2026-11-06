@@ -1,17 +1,30 @@
 {
-  "hash": "4883c3df9fbb31ee1c7e36234a29ff62e5ce8eef29431e8bdb2e934556af9f61",
+  "hash": "f195f5256f99204c70d48dd02b2cbc189abee46b5ea64be61a7c60a170f1a902",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Orb is an API-driven billing platform, so scoped or least-privilege API credentials are a fair question to ask of it. The evidence pack covers the API's idempotency, pagination, SDKs and webhooks, but never mentions API key creation, permission scopes, or restricted credentials for agents.",
-    "evidenceIds": [],
+    "rationale": "Orb's first-party MCP server docs say API keys are scope-controlled per area, with each scope set to none, read or write. The server acts with the connected key's permissions, and out-of-scope tool calls fail with a permissions error, so an agent can get a least-privilege credential. Test-mode keys add isolation from live billing data. Missing for 10: independent or hands-on corroboration of scope enforcement, a dedicated API-key permissions reference (scoping is described only on the MCP page), and evidence on key expiry or rotation.",
+    "evidenceIds": [
+      "orb-mcp-server-20261106",
+      "orb-test-mode-isolation-20261106",
+      "orb-test-mode-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "orb-mcp-server-20261106",
+          "quote": "Each scope covers one area of Orb... and can be set to **none**, **read** or **write**"
+        },
+        {
+          "evidenceId": "orb-test-mode-isolation-20261106",
+          "quote": "To try things out without touching live billing data, create the key in **test mode**."
+        }
+      ]
     },
     "productId": "orb",
     "storyId": "agentic-scoped-keys"

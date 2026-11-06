@@ -46,8 +46,19 @@ Wave-4 specifics:
   puzzle-api.readme.io, linked from puzzle.io/llms.txt); no bot walls were hit.
 
 Scoped re-judges run under the ratified v6 rubric, then `derive` per touched arena and
-the dependent generators. Engine output is accepted as-is; honest negatives ship, and
-checked-absent cells that publish as engine partials on adjacent evidence are recorded
-with both readings.
+the dependent generators. Engine output is accepted as-is; honest negatives ship (buzz,
+spline, and working-copy publish all-none api-quality rows, and the three counter-checks
+held their cells at none). No checked-absent cell publishes above none in this wave.
+
+## Pre-audit (before the first push)
+
+76 up-moves vs merge-base, 46 verdict-level (22 target cells, 24 side-effect flips),
+re-read against the v6 on-axis bar. One artifact-backed correction: three orb agentic
+cells had re-rolled to partials by inferring a first-party MCP server from a row quoted
+only for its test-mode sentence, so the MCP server page itself (hosted server, 100+ API
+operations as tools, per-area none/read/write key scopes) is appended and orb re-judged
+on the grounded text. Four conceded-thin partials stand with their limits inside the
+published rationales; honest dips ship as judged (buzz 26 → 22.6, rive 19.5 → 18.4,
+spline 20.2 → 19.8, poke 17.7 → 16.3). Cell detail in the ledger's `preAudit` section.
 
 Row-level output: `2026-11-06-api-quality-wave4.json`.
