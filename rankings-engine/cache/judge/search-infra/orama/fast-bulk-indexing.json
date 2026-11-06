@@ -1,11 +1,11 @@
 {
-  "hash": "b36ca47a42decbb4a36890122b502cc7154addf3cbf2b913d87eb329a91dadef",
+  "hash": "134e855f129ddb7d238d957e0c644466c19f29b447173b90b03b24efa8ad1e6f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Orama documents its own bulk-insert API, `insertMultiple`, with a configurable batch size (default 1000), recommended for large record sets because it avoids blocking the event loop. However, nothing shows async task tracking or indexing-completion status, and there is no evidence of throughput at million-document scale. Missing for 10: async task/job tracking to know when indexing completes, evidence of import speed at millions of documents, independent or hands-on corroboration.",
+    "rationale": "Orama's docs recommend `insertMultiple` for large record sets. It inserts in configurable batches (default 1000) and avoids blocking the event loop, so bulk import is a documented first-party capability. Nothing in the evidence shows throughput at millions-of-documents scale, and there is no async task or job tracking to signal when indexing completes. missing for 10: async indexing task/job status tracking or completion notification, evidence of import performance at millions-of-documents scale, a documented Cloud bulk-ingestion API (the REST APIs are private), independent or hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-39",
       "orama-docs-16",
@@ -18,15 +18,11 @@
       "citations": [
         {
           "evidenceId": "orama-docs-39",
-          "quote": "You can pass a third, optional, parameter to change the batch size (default: 1000)."
+          "quote": "If you have a lot of records, we suggest using the insertMultiple function... You can pass a third, optional, parameter to change the batch size (default: 1000)."
         },
         {
           "evidenceId": "orama-docs-16",
           "quote": "Inserting a large number of documents in a loop could potentially block the event loop. Instead `insertMultiple` handles this case better."
-        },
-        {
-          "evidenceId": "orama-docs-24",
-          "quote": "If you have a lot of records, we suggest using the `insertMultiple` function"
         }
       ]
     },

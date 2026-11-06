@@ -1,13 +1,14 @@
 {
-  "hash": "021bb5563ac9997ec51a1ce50983798b24cd9a946fa99c17f5324345ce610d78",
+  "hash": "aa40075b4b42d10b997f8f04d0af7517a0649874736a1f615cca3f0be89471d0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Orama documents incremental document insertion, including batched insertMultiple, in the JS library. In Orama Cloud, data sources are segregated so you can update, delete, or add data without affecting other sources, which points to incremental changes rather than full rebuilds. Missing for 10: explicit per-document update/delete APIs in the evidence, any stated near-real-time visibility or indexing latency, and independent or hands-on corroboration.",
+    "rationale": "Orama documents its own incremental insertion APIs (`insert`, `insertMultiple` with batching) for the JS library. Orama Cloud data sources are segregated, so you can update, delete, or add data in one source without affecting the others, which avoids a project-wide rebuild. However, the evidence never states that updates and deletes at the document level become searchable in near real time, or that no reindex of the affected data source is needed. Missing for 10: documented single-document update/remove APIs, explicit near-real-time visibility or latency guarantees, a statement that changes apply without reindexing the affected data source, and independent or hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-2",
+      "orama-docs-16",
       "orama-docs-39",
       "orama-docs-48",
       "orama-docs-22"
@@ -28,10 +29,6 @@
         {
           "evidenceId": "orama-docs-39",
           "quote": "If you have a lot of records, we suggest using the insertMultiple function... You can pass a third, optional, parameter to change the batch size (default: 1000)."
-        },
-        {
-          "evidenceId": "orama-docs-22",
-          "quote": "you can put data that will be updated frequently in a single data source (let's call it `docs`), and put data that follows a different update schedule in another data source"
         }
       ]
     },

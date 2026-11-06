@@ -8638,8 +8638,8 @@
     "storyId": "agent-consumes-mcp-tools",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Retell's first-party docs state that a single- or multi-prompt agent can connect to a remote MCP server and call that server's tools during a live voice or chat conversation. That is exactly the story of one integration granting a whole toolset mid-call. Retell's own MCP server (for building agents from Cursor or Claude) is a separate server-side role and is not credited here. Missing for 10: detail on configuration (auth, tool filtering, multiple servers, conversation-flow agent support) and independent or hands-on corroboration.",
+    "confidence": "high",
+    "rationale": "Retell's own docs say a single- or multi-prompt agent can connect to a remote MCP server and call that server's tools during a live voice or chat conversation. That directly delivers MCP servers as tool sources used mid-call. Retell's separate MCP server for building agents from Cursor or Claude is a different capability and is not credited here. Missing for 10: detail on configuration, auth and tool selection or filtering for the connected server; whether node-based conversation-flow agents are supported (only single and multi-prompt agents are named); independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-6",
       "retell-docs-23",
@@ -8665,18 +8665,16 @@
     "productId": "retell",
     "storyId": "agent-provisions-voice-agent",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Retell ships an official MCP server that explicitly creates, updates and publishes agents, a CLI that manages agents and phone numbers, and Node/Python SDKs claiming full voice endpoint coverage. Agent creation and number management are documented, but attaching a number to an agent and placing an outbound call programmatically are not explicitly evidenced. The quick-start does these steps in the dashboard. missing for 10: explicit API/CLI/MCP docs for binding a number to an agent and placing an outbound call, an end-to-end headless provisioning walkthrough, hands-on corroboration.",
+    "rationale": "Retell documents its own programmatic surfaces for most of this flow: an MCP server for building agents, a CLI that manages agents and phone numbers, SDKs claiming full endpoint coverage, and an API endpoint for creating outbound phone calls. However, the step of attaching a number to an agent is only documented as a dashboard action, so the full chain without the dashboard is not shown. missing for 10: explicit API/CLI/MCP documentation for buying, importing, or assigning a number to an agent; evidence that calls can be placed via MCP or CLI; independent or hands-on corroboration of a complete headless run.",
     "evidenceIds": [
-      "retell-docs-4",
       "retell-docs-47",
-      "retell-docs-22",
       "retell-docs-3",
       "retell-docs-2",
-      "retell-docs-21",
-      "retell-probe-3",
-      "retell-probe-4"
+      "retell-docs-22",
+      "retell-api-playground-20261106",
+      "retell-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -8696,6 +8694,10 @@
           "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
         },
         {
+          "evidenceId": "retell-api-playground-20261106",
+          "quote": "\"Create a new outbound phone call\" (POST /v2/create-phone-call)"
+        },
+        {
           "evidenceId": "retell-docs-22",
           "quote": "Retell supports the Model Context Protocol (MCP) so you can build Retell AI voice agents directly from MCP-capable clients (Cursor, Claude Desktop, Claude Code, Codex-style tools, and more)."
         }
@@ -8708,11 +8710,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe confirms Retell serves an llms.txt at docs.retellai.com that describes its voice-agent docs for LLM consumption. Its documentation pages are also published as raw markdown (.md) URLs, which agents can ingest directly. Missing for 10: first-party documentation explaining the llms.txt/agent-docs offering (e.g. an llms-full.txt variant), independent or hands-on corroboration of agents using it.",
+    "rationale": "A live probe found a valid llms.txt at docs.retellai.com/llms.txt (HTTP 200, with a Retell AI docs summary), and the docs pages are served as raw .md files, which is the agent-oriented format this story asks for. The evidence shows these surfaces exist but says little about their depth. Missing for 10: llms.txt content beyond the header, any llms-full.txt or first-party guidance on pointing agents at the docs, and independent hands-on corroboration of an agent consuming them.",
     "evidenceIds": [
       "retell-probe-1",
       "retell-docs-1",
-      "retell-docs-4"
+      "retell-spec-unpublished-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8736,12 +8738,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Retell's in-product AI assistant, Conductor, investigates calls and chats, compares failures to find agent improvements, and explains AI QA trends and low scores. AI QA itself automatically scores calls to surface quality trends and issues, so AI-generated insights and suggestions from the user's own data are documented first-party. Missing for 10: independent or hands-on corroboration of Conductor's insight quality, and deeper documentation of what suggestion outputs look like beyond brief feature summaries.",
+    "rationale": "Retell's Conductor is an in-product AI assistant that investigates calls and chats, compares failures to find agent improvements, and explains AI QA trends. AI QA itself automatically scores calls on hallucination, sentiment and tool usage to surface quality trends and issues. Together these directly deliver AI-generated insights and suggestions from the user's own call data inside the product. Missing for 10: independent or hands-on corroboration of insight quality, and detailed docs on how suggestions are generated and presented beyond page summaries.",
     "evidenceIds": [
       "retell-docs-53",
       "retell-docs-57",
       "retell-docs-59",
       "retell-docs-14",
+      "retell-docs-19",
       "retell-docs-58"
     ],
     "support": {
@@ -8773,13 +8776,14 @@
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Retell's own features run unattended once configured. Deployed voice agents assigned to a phone number handle calls on their own. AI QA automatically evaluates a sampled set of calls against rules the user configures. Per-agent retention policies automatically delete data after a set period. However, the evidence shows no general-purpose automation builder, scheduled or recurring jobs, or event-triggered workflows, and Conductor explicitly proposes changes for human review rather than acting autonomously. missing for 10: general user-defined background automation/workflow builder, recurring scheduled tasks or campaigns, autonomous (non-review-gated) agentic actions, independent corroboration.",
+    "confidence": "medium",
+    "rationale": "Retell documents some self-running, user-configured behaviour. Deployed agents answer calls on their own and can take real actions through function calls. AI QA automatically evaluates sampled calls against rules you configure, and per-agent retention automatically deletes data after a set period. There is no general-purpose automation builder, scheduler or recurring background job runner, and Conductor only proposes changes for you to review before applying. Missing for 10: general user-defined background automations or workflows, scheduled/recurring triggers (e.g. scheduled outbound campaigns), autonomous agent-driven background tasks beyond live calls, and independent corroboration.",
     "evidenceIds": [
       "retell-docs-43",
       "retell-docs-27",
+      "retell-docs-5",
       "retell-docs-32",
-      "retell-docs-1"
+      "retell-docs-54"
     ],
     "support": {
       "relation": "direct",
@@ -8795,8 +8799,8 @@
           "quote": "After the retention period expires, call and chat data associated with that agent is automatically and permanently deleted."
         },
         {
-          "evidenceId": "retell-docs-32",
-          "quote": "Assign your agent to the number in the configuration settings"
+          "evidenceId": "retell-docs-5",
+          "quote": "Function calling lets Retell single or multi-prompt agents take real actions — transfer calls, end calls, book appointments, send SMS, and call external APIs."
         }
       ]
     }
@@ -8807,7 +8811,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Retell ships Conductor, a built-in AI assistant that takes plain-language requests. It can draft agents, edit prompts and flows, run simulation tests, investigate calls and chats, build analytics dashboards, and inspect knowledge bases, AI QA results and contacts, proposing changes for the user to review before applying them. This is well covered across many first-party doc pages. Missing for 10: independent or hands-on corroboration of Conductor's task delegation.",
+    "rationale": "Retell ships Conductor, a built-in AI assistant that takes plain-language requests to draft agents, edit prompts and flows, run simulation tests, investigate calls, inspect knowledge bases and QA results, and build analytics dashboards, with proposed changes reviewed before they are applied. missing for 10: independent or hands-on corroboration of Conductor's delegation quality.",
     "evidenceIds": [
       "retell-docs-53",
       "retell-docs-54",
@@ -8816,8 +8820,7 @@
       "retell-docs-57",
       "retell-docs-58",
       "retell-docs-56",
-      "retell-docs-59",
-      "retell-docs-60"
+      "retell-docs-59"
     ],
     "support": {
       "relation": "direct",
@@ -8847,13 +8850,15 @@
     "productId": "retell",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell ships an official CLI for managing agents, phone numbers and knowledge bases from the terminal, plus Node.js and Python SDKs with API key auth. Together these support scripted, non-dashboard automation, but nothing documents CI pipelines or truly headless runs explicitly. Conductor's simulation tests run inside the product's assistant, not in CI, so they earn no credit here. missing for 10: explicit headless/CI usage documentation, non-interactive CLI auth via environment variables or tokens, CI pipeline examples (e.g. automated agent tests or deploys), independent hands-on corroboration.",
+    "rationale": "Retell ships its own headless control surfaces: an official CLI for managing agents, phone numbers and knowledge bases from the terminal, and official Node.js/Python SDKs with API-key auth and structured errors. Together these allow scripted, non-dashboard automation. Nothing documents CI use specifically, such as non-interactive CLI auth, pipeline examples, or CI-runnable batch tests, so the CI half of the story is only implied. Missing for 10: documented CI/pipeline integration (e.g. GitHub Actions examples), non-interactive CLI auth and exit-code behavior, headless batch-test execution from CI, independent hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-3",
       "retell-docs-21",
       "retell-docs-2",
+      "retell-docs-33",
+      "retell-docs-46",
       "retell-probe-4"
     ],
     "support": {
@@ -8866,12 +8871,12 @@
           "quote": "Install the Retell CLI to manage agents, phone numbers, knowledge bases, and other Retell resources from your terminal with simple commands."
         },
         {
-          "evidenceId": "retell-docs-21",
-          "quote": "The Retell CLI lets you manage Retell resources from your terminal."
+          "evidenceId": "retell-docs-2",
+          "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
         },
         {
-          "evidenceId": "retell-docs-2",
-          "quote": "Official Retell SDKs for Node.js and Python. Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
+          "evidenceId": "retell-docs-21",
+          "quote": "The Retell CLI lets you manage Retell resources from your terminal."
         }
       ]
     }
@@ -8879,10 +8884,10 @@
   {
     "productId": "retell",
     "storyId": "agentic-mcp-client",
-    "verdict": "partial",
-    "quality": 7,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Retell's own docs say a single- or multi-prompt agent can connect to a remote MCP server and call that server's tools during a live voice or chat conversation, which is the core of this story. The evidence documents this only for remote servers and only for single/multi-prompt agents, with no detail on configuration, auth or transport, tool selection, or other agent types such as node-based flows. Retell's own MCP server (used from Cursor or Claude) is the server role and is not credited here. missing for 10: documented support beyond remote servers and single/multi-prompt agents, configuration/auth/tool-filtering details, independent or hands-on corroboration",
+    "rationale": "Retell's first-party docs say a single- or multi-prompt agent can connect to a remote MCP server and call that server's tools during a live voice or chat conversation, which is the core of this story. The separate Retell MCP server for Cursor and Claude is the server role and is not credited here. missing for 10: configuration and authentication details for the MCP connection, support for local (non-remote) MCP servers or for conversation-flow agents, and independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-6",
       "retell-docs-23",
@@ -8890,16 +8895,16 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
       "citations": [
         {
-          "evidenceId": "retell-docs-23",
-          "quote": "Connect your single- or multi-prompt agent to a remote Model Context Protocol (MCP) server, and the agent can call that server's tools during a live call."
-        },
-        {
           "evidenceId": "retell-docs-6",
           "quote": "Connect a Retell single- or multi-prompt agent to a remote MCP server so it can call the server's tools during a live voice or chat conversation."
+        },
+        {
+          "evidenceId": "retell-docs-23",
+          "quote": "Connect your single- or multi-prompt agent to a remote Model Context Protocol (MCP) server, and the agent can call that server's tools during a live call."
         }
       ]
     }
@@ -8910,10 +8915,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Retell documents an official MCP server that lets MCP-capable clients such as Cursor, Claude Desktop and Claude Code build and manage voice agents through Retell APIs. The docs list agent tools for create, update, publish, list and fetch versions, and a probe confirms the dedicated docs page exists. The separate docs on Retell agents calling remote MCP servers are client-side and were not credited. Missing for 10: independent or hands-on corroboration of the server working, and documented setup or auth details and the full tool inventory beyond agent operations.",
+    "rationale": "Retell documents an official MCP server that lets MCP-capable clients such as Cursor, Claude Desktop and Claude Code build and manage voice agents through Retell APIs. It exposes agent tools to create, update, publish, list and fetch versions, and a probe confirms the dedicated docs page. The agent-side MCP connection docs (docs-6/23) describe client behavior and are not credited here. Missing for 10: independent or hands-on corroboration, evidenced setup and auth details (transport, API-key configuration), and documented tool coverage beyond agent management.",
     "evidenceIds": [
       "retell-docs-4",
       "retell-docs-22",
+      "retell-docs-34",
       "retell-docs-47",
       "retell-probe-3"
     ],
@@ -8947,18 +8953,19 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Retell ships Conductor, a first-party AI assistant: you ask in plain language and it builds and refines agents, investigates calls and chats, builds analytics dashboards, inspects knowledge bases, AI QA results and contacts, and runs simulation tests, proposing changes for review before applying them. Its official MCP server also lets MCP clients like Claude manage agents conversationally. missing for 10: independent or hands-on corroboration of Conductor, evidence that deployment tasks like phone-number assignment can be done through natural language",
+    "rationale": "Retell's own Conductor assistant lets users operate the product in plain language across many surfaces. It can build and refine agents, investigate call and chat history, build analytics dashboards, inspect AI QA, knowledge bases and contacts, and run simulation tests, with proposed changes reviewed before applying. An official MCP server also lets MCP clients such as Claude and Cursor manage agents conversationally. missing for 10: independent or hands-on corroboration of Conductor's natural-language operation, and evidence of how reliably it handles complex or multi-step commands.",
     "evidenceIds": [
       "retell-docs-53",
       "retell-docs-54",
+      "retell-docs-30",
       "retell-docs-55",
       "retell-docs-57",
       "retell-docs-58",
-      "retell-docs-30",
-      "retell-docs-56",
       "retell-docs-59",
+      "retell-docs-56",
       "retell-docs-60",
-      "retell-docs-22"
+      "retell-docs-22",
+      "retell-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -8980,6 +8987,10 @@
         {
           "evidenceId": "retell-docs-58",
           "quote": "Ask Conductor to build an analytics dashboard or improve one you already use. Describe what you want to measure, then review its proposed changes before applying them."
+        },
+        {
+          "evidenceId": "retell-docs-22",
+          "quote": "Retell supports the Model Context Protocol (MCP) so you can build Retell AI voice agents directly from MCP-capable clients (Cursor, Claude Desktop, Claude Code, Codex-style tools, and more)."
         }
       ]
     }
@@ -8990,7 +9001,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Retell documents an official CLI for managing agents, phone numbers, knowledge bases and other resources from the terminal, and a probe confirms a dedicated CLI docs page exists. The evidence is limited to summary-level descriptions. missing for 10: detailed command reference or install specifics, documented AI-native/agent-oriented CLI features (e.g., machine-readable output, non-interactive auth), independent hands-on corroboration.",
+    "rationale": "Retell documents an official CLI for managing agents, phone numbers, knowledge bases and other resources from the terminal, and a probe confirms the CLI docs page exists. Command-level depth, agent- or scripting-oriented features, and any independent hands-on use are not evidenced. missing for 10: detailed command reference and auth/output-format documentation (e.g. JSON/scriptable output for AI workflows), independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-3",
       "retell-docs-21",
@@ -9022,15 +9033,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Retell documents a public API. It has an API reference section (for example the clone-voice endpoint) and official Node.js and Python SDKs with API key auth and full voice and chat endpoint coverage, and its MCP server and CLI also manage resources via Retell APIs. missing for 10: a machine-readable OpenAPI spec (all probed paths returned 404), broader API reference evidence beyond a single endpoint page, independent hands-on corroboration of API usage.",
+    "rationale": "Retell documents a versioned public REST API (for example POST /v2/create-phone-call) with an interactive \"Try it\" reference, official Node.js and Python SDKs claiming full voice and chat endpoint coverage, and a dated deprecation-notices page tracking API breaking changes. missing for 10: a publicly served OpenAPI spec (the internal \"openapi-final\" document returns 404 at every probed URL), independent or hands-on corroboration of API use.",
     "evidenceIds": [
       "retell-docs-2",
       "retell-docs-33",
       "retell-docs-46",
-      "retell-docs-8",
-      "retell-docs-28",
-      "retell-docs-4",
-      "retell-docs-47",
+      "retell-api-playground-20261106",
+      "retell-deprecation-notices-20261106",
+      "retell-spec-unpublished-20261106",
       "retell-probe-2"
     ],
     "support": {
@@ -9043,20 +9053,12 @@
           "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
         },
         {
-          "evidenceId": "retell-docs-8",
-          "quote": "Clone a voice from audio files"
+          "evidenceId": "retell-api-playground-20261106",
+          "quote": "The Mintlify-hosted API reference runs the interactive playground (\"playground\":{\"display\":\"interactive\"}) with a \"Try it\" runner per endpoint, e.g. \"Create a new outbound phone call\" (POST /v2/create-phone-call)"
         },
         {
-          "evidenceId": "retell-docs-28",
-          "quote": "Audio files to use for voice cloning. Up to 25 files allowed."
-        },
-        {
-          "evidenceId": "retell-docs-4",
-          "quote": "build and manage voice agents from MCP-capable clients like Cursor, Claude Desktop, and Claude Code via Retell APIs"
-        },
-        {
-          "evidenceId": "retell-docs-47",
-          "quote": "Agents: create, update, publish, list, and fetch agent versions."
+          "evidenceId": "retell-deprecation-notices-20261106",
+          "quote": "Retell publishes a dated deprecation-notices page tracking \"Retell API, SDK, and billing deprecations and breaking changes\""
         }
       ]
     }
@@ -9067,7 +9069,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence only says Retell's SDKs use API key auth. Nothing in the pack shows keys can be scoped, permission-limited, or issued per agent with least privilege. Credential scoping is a fair question for an API-driven SaaS platform, so the axis applies and the absence of evidence yields none.",
+    "rationale": "Retell's SDKs, CLI and MCP server authenticate with API keys, but nothing in the evidence shows keys can be scoped to specific resources or permissions, or issued per agent with least privilege. For a SaaS API platform this axis applies, so the absence of evidence is \"none\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9082,11 +9084,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Retell documents official Node.js and Python SDKs. They are typed clients with API key auth, structured errors, full TypeScript support, and claimed full coverage of the voice and chat endpoints. That clearly delivers the ability to build against official SDKs. Missing for 10: independent or hands-on corroboration of SDK quality and coverage, and SDKs for languages beyond Node.js and Python.",
+    "rationale": "Retell documents official, typed SDKs for Node.js and Python with API-key auth, structured errors, full TypeScript autocomplete, and full voice and chat endpoint coverage. The API reference shows per-language SDK examples, and SDK breaking changes are tracked on a dated deprecation-notices page. Missing for 10: independent or hands-on corroboration of SDK quality, and official SDKs beyond Node.js and Python.",
     "evidenceIds": [
       "retell-docs-2",
       "retell-docs-33",
-      "retell-docs-46"
+      "retell-docs-46",
+      "retell-api-playground-20261106",
+      "retell-deprecation-notices-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9111,10 +9115,10 @@
   {
     "productId": "retell",
     "storyId": "agentic-webhooks",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Retell's first-party docs describe webhooks that push real-time account events (call_started, call_ended, call_analyzed) to your own server, so integrations can react without polling. This is a genuine outbound HTTP callback that a programmatic consumer can receive. missing for 10: documented steps for registering a webhook URL and filtering events, signature verification and retry/delivery-guarantee details, independent or hands-on corroboration.",
+    "rationale": "Retell's own docs describe first-party webhooks that push call_started, call_ended and call_analyzed events to your server in real time, so a program can react without polling. The pack does not document how a consumer registers or subscribes an endpoint, or how deliveries are signed and retried, so coverage is partial rather than complete. missing for 10: documented endpoint registration/subscription mechanism (account vs per-agent URL configuration), event-type filtering, signature verification and retry/delivery guarantees, independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-12",
       "retell-docs-24",
@@ -9122,7 +9126,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
       "citations": [
         {
@@ -9145,8 +9149,8 @@
     "storyId": "ai-assisted-agent-authoring",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Retell's built-in AI assistant, Conductor, drafts a whole agent from a plain-English description. It also edits prompts, settings and conversation flows on request, proposing changes for review before they apply, and it can run simulation tests that play scenarios against the agent. Missing for 10: explicit documentation that Conductor generates reusable test cases from a description (the docs only say it runs simulation scenarios), and any independent or hands-on corroboration.",
+    "confidence": "high",
+    "rationale": "Retell's built-in AI assistant, Conductor, drafts an agent from a plain-English description and edits prompts, settings and conversation flows on request, with changes proposed for review before applying. It can also run simulation tests that play scenarios against the agent. missing for 10: explicit documentation that Conductor generates reusable graded test cases from a description (evidence only shows it running simulation scenarios), and independent or hands-on corroboration of Conductor's authoring quality.",
     "evidenceIds": [
       "retell-docs-30",
       "retell-docs-53",
@@ -9183,7 +9187,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Retell's AI QA automatically evaluates calls against configured rules and metrics. It scores hallucination, knowledge base accuracy, latency, sentiment and tool usage, and built-in call success scoring covers resolution outcomes. Conductor can then examine low-scoring calls and compare failures. Missing for 10: independent or hands-on corroboration, evaluation of all calls rather than a sampled set, and explicit documentation of resolution analysis beyond call-success scoring.",
+    "rationale": "Retell's AI QA automatically evaluates a sampled set of calls against configured rules and metrics, scoring hallucination, knowledge-base accuracy, latency, sentiment and tool usage. Built-in call-success scoring covers resolution, and Conductor examines failures and the calls behind low scores. missing for 10: independent or hands-on corroboration, explicit documentation of resolution analysis beyond call-success scoring, and coverage of all calls rather than a sampled set.",
     "evidenceIds": [
       "retell-docs-14",
       "retell-docs-43",
@@ -9206,7 +9210,7 @@
         },
         {
           "evidenceId": "retell-docs-19",
-          "quote": "Built-in call success and sentiment scoring"
+          "quote": "Built-in call success and sentiment scoring, plus custom fields synced to your CRM."
         },
         {
           "evidenceId": "retell-docs-59",
@@ -9214,7 +9218,7 @@
         },
         {
           "evidenceId": "retell-docs-57",
-          "quote": "compare failures to find agent improvements"
+          "quote": "Filter conversations, inspect transcripts and tool calls, and compare failures to find agent improvements."
         }
       ]
     }
@@ -9222,16 +9226,28 @@
   {
     "productId": "retell",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The evidence shows Retell has API reference pages, such as the clone-voice endpoint page that documents its parameters. Nothing shows that the reference is interactive or offers runnable examples, such as a try-it console or live request execution. The OpenAPI spec probe also returned 404 on every candidate path, so a static reference page is an adjacent feature, not the capability this story asks for.",
-    "evidenceIds": [],
+    "rationale": "Retell's Mintlify-hosted API reference runs an interactive playground with a \"Try it\" runner per endpoint, for example POST /v2/create-phone-call, plus per-language SDK examples. That directly delivers an explorable reference with runnable examples. missing for 10: independent or hands-on corroboration that the Try-it runner works across endpoints, and broader first-party documentation beyond the single example endpoint.",
+    "evidenceIds": [
+      "retell-api-playground-20261106",
+      "retell-docs-8"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "retell-api-playground-20261106",
+          "quote": "The Mintlify-hosted API reference runs the interactive playground (\"playground\":{\"display\":\"interactive\"}) with a \"Try it\" runner per endpoint"
+        },
+        {
+          "evidenceId": "retell-api-playground-20261106",
+          "quote": "alongside per-language SDK examples"
+        }
+      ]
     }
   },
   {
@@ -9239,8 +9255,8 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence contains no downloadable OpenAPI or equivalent machine-readable API spec. A probe found every common OpenAPI/Swagger path returned 404. The llms.txt file, the typed SDKs and the human-readable API reference pages are adjacent artifacts, not a machine-readable API spec, so they earn no credit.",
+    "confidence": "high",
+    "rationale": "Retell's API reference is generated from an internal OpenAPI document (\"openapi-final\"), but probes found it is not served at any public URL. Every candidate spec path returns 404, llms.txt lists no spec, and the SDKs ship no spec file. The interactive playground, typed SDKs, CLI and MCP server are adjacent features, not a downloadable machine-readable spec.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9254,29 +9270,53 @@
     "storyId": "api-sandbox",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows no isolated sandbox environment, test mode, or separate workspace that keeps testing apart from production data. Conductor's simulation tests (\"check changes without making real phone calls\") and the dashboard's free web-call Test button are simulation and dry-run style testing against your agent. They are an adjacent capability, not documented sandbox isolation of production data.",
-    "evidenceIds": [],
+    "confidence": "high",
+    "rationale": "Retell documents test surfaces: LLM Playground, simulation and batch tests, web-call testing, and draft/staging agent version tags. Its own docs state these run inside the same production workspace and API key space, with no isolated environment or separate test data store, and staging tags are 'not a separate sandbox environment.' Simulation is dry-run testing, not sandbox isolation from production data, so it is an adjacent feature and earns no credit.",
+    "evidenceIds": [
+      "retell-test-surfaces-20261106",
+      "retell-staging-tags-20261106",
+      "retell-docs-55"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "retell-docs-55",
+          "quote": "Conductor can run simulation tests that play out a scenario against your agent and show how it responds. This lets you check changes without making real phone calls."
+        },
+        {
+          "evidenceId": "retell-staging-tags-20261106",
+          "quote": "Each agent starts with `prod` and `staging` tags"
+        }
+      ]
     }
   },
   {
     "productId": "retell",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no documentation of API versioning (such as versioned endpoints or version headers) and no published deprecation policy. The only versioning mentioned is agent versions managed via the MCP server, which versions agent configurations rather than the API itself. That is an adjacent feature and earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Retell's API is path-versioned (/v2). It publishes a dated deprecation-notices page covering API, SDK, and billing breaking changes, with RSS, workspace notification recipients, migration deadlines, and impacted endpoints. However, no forward-looking minimum-notice commitment is stated as policy, so this is a notices log rather than a formal deprecation policy. Missing for 10: a stated deprecation policy with a guaranteed minimum notice period, explicit version-support lifecycle docs, independent corroboration.",
+    "evidenceIds": [
+      "retell-deprecation-notices-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "retell-deprecation-notices-20261106",
+          "quote": "Retell publishes a dated deprecation-notices page tracking \"Retell API, SDK, and billing deprecations and breaking changes\" with RSS subscription, configurable workspace notification recipients, migration deadlines and impacted endpoints"
+        },
+        {
+          "evidenceId": "retell-deprecation-notices-20261106",
+          "quote": "The API is path-versioned (/v2)"
+        }
+      ]
     }
   },
   {
@@ -9285,7 +9325,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a voice-agent platform, for example batch calls or bulk edits to agents and numbers. The evidence pack documents no such capability. The CLI, SDKs and MCP server manage resources individually. Per-agent automatic data retention, AI QA sampling of calls and uploading up to 25 voice-clone audio files are adjacent features, not bulk operations across many items.",
+    "rationale": "The pack documents no product-level bulk operations, such as batch-creating, updating, deleting or launching actions across many agents, calls or contacts at once. The adjacent evidence does not qualify for this story. Batch testing of graded test cases is a testing feature, per-agent data retention is an automatic deletion policy, and the 25-file voice-clone upload and Conductor's conversation filtering are not bulk operations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9300,7 +9340,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party rules engine where a user defines event-to-action rules that run automatically. Webhooks (call_started, call_ended, call_analyzed) only push events to your own server, so any rule logic must be built by the developer. That makes them a building block, not the capability itself. Function calling is invoked by the agent's model mid-conversation, and per-agent data retention is a fixed deletion policy; both are adjacent features, not user-defined event-triggered automation.",
+    "rationale": "The evidence pack documents no first-party rules engine where a user defines event-to-action rules. Webhooks (call_started, call_ended, call_analyzed) only push events to the user's own server, so the user would have to build the rule logic themselves. That makes them a developer building block. Function calling is LLM-driven tool use during calls, and data retention and AI QA are fixed automatic behaviors, not user-defined event rules, so all three are adjacent features that earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -9315,7 +9355,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs, such as recurring outbound call campaigns or workflows, is a fair question for a voice-agent platform. However, no evidence shows Retell offers recurring schedules. Webhooks are event-driven, data-retention auto-deletion is an adjacent compliance setting, and function calling acts only within a live call. None of these is a user-defined recurring schedule.",
+    "rationale": "Scheduling recurring jobs, such as campaigns or periodic call workflows, is a fair question for a voice-agent platform, so the axis applies. The pack documents no recurring scheduler, cron, or scheduled workflow feature. Automatic data-retention deletion and AI QA sampling are adjacent automatic behaviors, not user-defined recurring schedules, and one-off outbound call creation does not count as a recurring schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9328,10 +9368,11 @@
     "productId": "retell",
     "storyId": "automation-versioned-workflows",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell's MCP server documents agent versions: agents can be published and their versions listed and fetched. Conductor proposes edits to prompts, settings, and flows that you review before applying them, which covers versioning and review. missing for 10: any documented rollback or restore-to-previous-version capability, version diffing or history UI docs, and independent or hands-on corroboration.",
+    "rationale": "Retell documents agent versioning: new versions start as editable drafts, and `prod` and `staging` tags point at specific versions. Agent versions can be created, published, listed and fetched via MCP, and Conductor proposes edits for review before they are applied. Rollback is only implied by re-pointing a tag such as prod at an earlier version (e.g. V2 while V3 is tested), and is never documented as an explicit operation. Missing for 10: an explicit documented rollback/revert workflow, version diff or change-history review, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "retell-staging-tags-20261106",
       "retell-docs-47",
       "retell-docs-54",
       "retell-docs-53"
@@ -9342,16 +9383,20 @@
       "subject": "As an AI-native user, I can version, review, and roll back my automations",
       "citations": [
         {
+          "evidenceId": "retell-staging-tags-20261106",
+          "quote": "Each agent starts with `prod` and `staging` tags"
+        },
+        {
+          "evidenceId": "retell-staging-tags-20261106",
+          "quote": "A new version starts as a draft, which you can edit and test"
+        },
+        {
           "evidenceId": "retell-docs-47",
           "quote": "Agents: create, update, publish, list, and fetch agent versions."
         },
         {
           "evidenceId": "retell-docs-54",
           "quote": "It proposes edits for you to review before applying them."
-        },
-        {
-          "evidenceId": "retell-docs-53",
-          "quote": "review proposed changes before applying them"
         }
       ]
     }
@@ -9362,7 +9407,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Barge-in handling is a fair question for a voice-agent platform, but nothing in the evidence pack documents interruption handling. There is no mention of stopping speech, updating context, or recovering the turn when a caller cuts in. The transcription-mode endpointing settings and the generic 'call handling' claim are adjacent latency and turn-detection controls, not barge-in support.",
+    "rationale": "Barge-in handling is a fair question for a voice-agent platform like Retell, but the evidence pack never documents interruption handling: stopping speech, updating context, or recovering the turn. The transcription-mode and endpointing settings tune latency against accuracy for speech recognition; that is an adjacent turn-detection control, not barge-in handling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9377,10 +9422,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents batch outbound call campaigns or scheduling. The only related material is account-level concurrency: a reserved inbound concurrency setting that caps outbound calls, a default quota of 20 concurrent calls, and outbound IVR digit pressing. These are adjacent controls, not a campaign feature with scheduling and throughput settings, so they earn no credit.",
+    "rationale": "The evidence pack documents only single outbound calls via POST /v2/create-phone-call and account-level concurrency quotas, including reserved inbound concurrency that caps outbound traffic. Neither shows a batch outbound campaign feature with scheduling or per-campaign throughput controls. The 'batch testing' mention is about test simulations, not call campaigns, and the single-call API and concurrency caps are only building blocks or adjacent controls.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a founder, I can run batch outbound call campaigns with scheduling and throughput controls",
       "citations": []
@@ -9390,17 +9435,17 @@
     "productId": "retell",
     "storyId": "build-phone-agent-fast",
     "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Retell's official quick-start promises a first phone agent in 15 minutes. It walks through account creation, template or Conductor-generated prompt, a free dashboard test call, phone number deployment and a live call. Voice and LLM selection are part of basic agent settings, and free trial credits remove the need for a payment method. Missing for 10: independent hands-on corroboration of the time-to-first-live-call, and more detailed documentation of the phone-number purchase step.",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Retell's official quick start promises a first phone agent in 15 minutes. It covers creating an account, picking or generating an agent from a prompt, choosing a voice in basic settings, testing via a free web call, assigning the agent to a phone number and making a call, with $10 of free trial credits. That covers prompt, voice, phone number and a live call well within an hour. Missing for 10: independent or hands-on corroboration of the setup-time claim, and detail on acquiring the phone number (purchase step and cost) beyond assigning the agent to it.",
     "evidenceIds": [
       "retell-docs-1",
-      "retell-docs-20",
       "retell-docs-30",
-      "retell-docs-32",
       "retell-docs-61",
-      "retell-docs-26",
-      "retell-docs-45"
+      "retell-docs-20",
+      "retell-docs-32",
+      "retell-docs-45",
+      "retell-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -9412,16 +9457,16 @@
           "quote": "Build your first Retell AI phone agent in 15 minutes: create an account, pick a template, test in the dashboard, deploy to a phone number, and make a call."
         },
         {
+          "evidenceId": "retell-docs-30",
+          "quote": "click **Generate from prompt** (marked Suggested) to let [Conductor](/conductor/create-agent) draft an agent from a plain-English description of your use case"
+        },
+        {
           "evidenceId": "retell-docs-61",
           "quote": "Three settings decide how your agent sounds and behaves before you write a word of prompt: the language model, the voice, and who speaks first."
         },
         {
           "evidenceId": "retell-docs-32",
           "quote": "Assign your agent to the number in the configuration settings"
-        },
-        {
-          "evidenceId": "retell-docs-26",
-          "quote": "Define your whole agent with one prompt."
         },
         {
           "evidenceId": "retell-docs-45",
@@ -9436,12 +9481,13 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Retell ships a built-in Analytics dashboard that charts call and chat metrics such as success rate, latency, cost and concurrency, with filters and breakdowns. It also has built-in call success and sentiment scoring, and AI QA surfaces sentiment trends, so a founder gets dashboards without building them. Missing for 10: call duration metrics are not explicitly documented in the dashboard, outcome breakdowns beyond success rate are not shown, sentiment is not confirmed as a dashboard chart, and there is no independent or hands-on corroboration.",
+    "rationale": "Retell ships a built-in Analytics dashboard that charts call and chat data, including success rate, latency, cost and concurrency, with filters and breakdowns. It also has built-in call success and sentiment scoring and AI QA sentiment trends, so a founder does not need to build their own dashboards. However, call durations are never explicitly shown as a dashboard metric, and outcome and sentiment reporting is only implied rather than documented as a dashboard chart. missing for 10: explicit call-duration metrics in dashboards, documented outcome and sentiment charts within the analytics dashboard, independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-13",
       "retell-docs-42",
       "retell-docs-19",
-      "retell-docs-14"
+      "retell-docs-14",
+      "retell-docs-58"
     ],
     "support": {
       "relation": "direct",
@@ -9473,7 +9519,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell documents a first-party Transfer Call tool that routes a live call to a human using cold (blind), warm, and agentic warm transfer modes, and function calling explicitly includes transferring calls. The pack does not explicitly document passing context, such as a summary, SIP headers, or metadata, to the human on transfer; the SIP-header evidence belongs to the separate End Call tool. Missing for 10: documented context or summary handoff to the receiving human, detailed transfer configuration docs, and independent hands-on corroboration.",
+    "rationale": "Retell documents a first-party Transfer Call tool that routes live calls to a human with cold (blind), warm, and agentic warm transfer modes, and function calling lists transfer as a built-in action. The pack never explicitly documents passing context (summary, metadata, or headers) to the receiving human; SIP header passing appears only for the End Call tool. Missing for 10: explicit documentation of context handoff during transfer, configuration depth for warm-transfer briefing, and independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-63",
       "retell-docs-5"
@@ -9500,7 +9546,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Retell documents its concurrency model: Pay-As-You-Go workspaces get a default quota of 20 concurrent calls, and a reserved inbound concurrency setting caps outbound calls at the limit minus the reserved amount. The analytics dashboard also tracks concurrency. However, nothing in the evidence shows how to raise the limit beyond 20, or whether scaling to many simultaneous calls is self-serve rather than a request to the vendor. missing for 10: documented self-serve concurrency increase or auto-scaling path, limits for non-PAYG tiers, independent evidence of high-concurrency operation.",
+    "rationale": "Retell has a dedicated concurrency page that documents a default quota of 20 concurrent calls for Pay-As-You-Go workspaces and a reserved inbound concurrency setting that caps outbound calls. The analytics dashboard also tracks concurrency. However, nothing in the pack shows how to raise the quota self-serve, so scaling to many simultaneous calls without asking for capacity is unproven. Missing for 10: a documented self-serve or automatic way to raise the concurrency limit beyond the default, documented upper scale limits, and independent or hands-on corroboration of high-concurrency operation.",
     "evidenceIds": [
       "retell-docs-51",
       "retell-docs-41",
@@ -9521,10 +9567,6 @@
           "quote": "When `reserved_inbound_concurrency` is configured, outbound calls can use at most your concurrency limit minus the reserved amount."
         },
         {
-          "evidenceId": "retell-docs-11",
-          "quote": "Reserved inbound concurrency protects inbound calls from being crowded out by outbound traffic."
-        },
-        {
           "evidenceId": "retell-docs-13",
           "quote": "track call and chat metrics like success rate, latency, cost, and concurrency"
         }
@@ -9535,9 +9577,9 @@
     "productId": "retell",
     "storyId": "consent-recording-controls",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Retell documents per-agent data retention that automatically and permanently deletes call and chat data, including transcripts, recordings, and logs, after a set period for compliance. This covers the retention half of the story. The pack has no evidence of per-call recording on/off controls or of consent or disclosure features. Missing for 10: per-call recording toggle or opt-out controls, recording-consent or disclosure announcement capability, per-call (rather than per-agent) retention granularity, independent corroboration.",
+    "rationale": "Retell documents configurable per-agent data retention that automatically and permanently deletes transcripts, recordings, and logs after a set period for compliance. That covers the retention half of the story. The evidence never mentions per-call recording on/off controls, consent prompts, or disclosure features, so the recording-consent half is unevidenced. Retention is also set per agent rather than per call. Missing for 10: per-call recording controls, consent/disclosure announcement capability, per-call retention granularity, independent corroboration.",
     "evidenceIds": [
       "retell-docs-15",
       "retell-docs-27",
@@ -9549,12 +9591,12 @@
       "subject": "As a founder, I can meet call-recording consent and disclosure obligations with per-call recording controls and configurable data retention",
       "citations": [
         {
-          "evidenceId": "retell-docs-27",
-          "quote": "Retell allows you to configure a data retention period per agent. After the retention period expires, call and chat data associated with that agent is automatically and permanently deleted."
-        },
-        {
           "evidenceId": "retell-docs-15",
           "quote": "Configure per-agent data retention to automatically delete call and chat data — transcripts, recordings, and logs — after a set period for compliance."
+        },
+        {
+          "evidenceId": "retell-docs-27",
+          "quote": "After the retention period expires, call and chat data associated with that agent is automatically and permanently deleted."
         }
       ]
     }
@@ -9565,7 +9607,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Retell's docs cover cloning a brand-specific voice and attaching it to agents: there is a clone-voice API that accepts up to 25 audio files, and an \"Add custom voice\" option in the agent voice selector. However, nothing in the pack documents a consent or speaker-verification process, which is an explicit part of the story. Missing for 10: a documented consent/verification process for cloned voices, and independent or hands-on corroboration of clone quality.",
+    "rationale": "Retell documents its own voice cloning: you can train or import a clone for a brand-specific sound, add it from the agent's voice selector, or call a clone-voice API that accepts up to 25 audio files. Nothing in the evidence describes a consent process for cloning someone's voice, which is an explicit part of the story. Missing for 10: documented consent/verification process for voice cloning, independent or hands-on corroboration of clone quality.",
     "evidenceIds": [
       "retell-docs-7",
       "retell-docs-8",
@@ -9596,9 +9638,9 @@
     "productId": "retell",
     "storyId": "documented-latency-numbers",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Retell documents latency tuning guidance for transcription mode: you can optimize for speed using interim results with low endpointing, or for accuracy with higher endpointing. Its analytics dashboard and AI QA also measure latency. However, the pack contains no published end-to-end voice latency numbers or benchmarks backing speed claims, and the tuning guidance covers only the transcription stage. Missing for 10: documented end-to-end latency figures or benchmarks, tuning guidance beyond transcription (LLM, TTS, network/telephony), independent latency corroboration.",
+    "rationale": "Retell documents one latency-tuning lever: transcription mode, which trades latency against accuracy through interim results and endpointing settings. It also measures latency in its analytics dashboard and AI QA scoring. The pack contains no published end-to-end voice latency figures (e.g., ms response times) and no broader tuning guide covering LLM, TTS, telephony or turn-taking, so the speed claims are only thinly backed. Missing for 10: published end-to-end latency benchmarks or numbers, holistic latency tuning guidance beyond transcription mode, independent latency measurements.",
     "evidenceIds": [
       "retell-docs-9",
       "retell-docs-39",
@@ -9612,12 +9654,12 @@
       "subject": "As a platform-engineer, I can see documented end-to-end voice latency numbers or tuning guidance backing the platform's speed claims",
       "citations": [
         {
-          "evidenceId": "retell-docs-48",
-          "quote": "optimize for speed: uses the latest interim results with a low endpointing setting... optimize for accuracy: uses the results with a higher endpointing setting"
-        },
-        {
           "evidenceId": "retell-docs-39",
           "quote": "Real time transcription is often a trade off between latency and accuracy."
+        },
+        {
+          "evidenceId": "retell-docs-48",
+          "quote": "optimize for speed: uses the latest interim results with a low endpointing setting... optimize for accuracy: uses the results with a higher endpointing setting"
         },
         {
           "evidenceId": "retell-docs-13",
@@ -9632,7 +9674,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Retell documents a Press Digit tool that lets single- and multi-prompt agents press keypad digits to navigate DTMF IVR menus during outbound calls. That covers the DTMF and IVR parts of the story. Nothing in the evidence pack covers voicemail detection or leaving a voicemail. missing for 10: voicemail detection, leaving voicemail messages, DTMF/IVR support beyond outbound calls, independent or hands-on corroboration of IVR navigation",
+    "rationale": "Retell documents a first-party Press Digit tool that lets single- and multi-prompt agents send DTMF keypad digits to navigate IVR menus on outbound calls. That covers the DTMF and IVR half of the story. Nothing in the evidence pack documents voicemail detection or leaving a voicemail. Missing for 10: voicemail detection, leaving voicemail messages, depth on DTMF configuration, independent or hands-on corroboration of IVR navigation.",
     "evidenceIds": [
       "retell-docs-65"
     ],
@@ -9654,7 +9696,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of dynamic variables or of passing per-caller context into a call at creation time. The closest items are custom functions that call your API mid-call and Conductor's contact inspection. Both are adjacent features, not call-time variable injection.",
+    "rationale": "Nothing in the evidence pack documents dynamic variables, prompt templating, or passing per-caller context into a conversation at call time. The nearby evidence covers other capabilities and does not transfer to this story: mid-call custom functions, Conductor's contact-field inspection, and the create-phone-call endpoint, which is described without any variable parameters.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9669,7 +9711,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions HIPAA/BAA support, SOC 2 attestation, or data-residency options. The only compliance-related evidence is per-agent data retention with automatic deletion, which is an adjacent control and does not earn credit for this story. Compliance certifications are a fair question for a hosted voice-AI platform, so the axis applies and the absence of evidence yields none.",
+    "rationale": "Compliance certifications and data residency are a fair question for a hosted voice-AI platform, but the evidence pack never mentions HIPAA, a BAA, SOC 2, or data-residency options. The only related item is per-agent data retention with automatic deletion, which is an adjacent control rather than the requested certifications or residency choice, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9681,10 +9723,10 @@
   {
     "productId": "retell",
     "storyId": "knowledge-base-grounding",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Retell's docs describe a built-in knowledge base: you can crawl a website or upload documents for the agent to retrieve from. The CLI manages knowledge bases, Conductor inspects their sources and indexing status, and AI QA scores knowledge-base accuracy. However, the evidence is mostly one-line overview mentions, with no dedicated knowledge-base documentation showing how retrieval grounds answers. missing for 10: a dedicated knowledge-base/RAG doc covering supported file types, chunking, and retrieval configuration; detail on how grounding works at answer time; independent or hands-on corroboration that answers come from uploaded content.",
+    "rationale": "Retell documents a built-in knowledge base: agents ship with one, and you can crawl a website or upload documents for the agent to retrieve from. Knowledge bases are also managed via the CLI and inspected by Conductor, including indexing status, and AI QA scores knowledge base accuracy. Evidence is limited to short overview statements, so missing for 10: a dedicated knowledge-base doc covering supported file types, chunking/retrieval configuration and API endpoints, plus independent or hands-on corroboration that answers are grounded in uploaded content.",
     "evidenceIds": [
       "retell-docs-17",
       "retell-docs-18",
@@ -9694,7 +9736,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can ground the agent on my documents with a built-in knowledge base or RAG so it answers from my content",
       "citations": [
         {
@@ -9722,12 +9764,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Retell documents its own monitoring: an analytics dashboard tracking success rate, latency, cost and concurrency, plus AI QA that scores a sampled set of calls on hallucination, latency and tool usage to surface quality issues. Nothing in the evidence documents alerting on agent misbehavior or error-rate spikes. Webhooks (call_started/call_ended/call_analyzed) are only building blocks for a user-built alert pipeline, so they earn no credit. Missing for 10: native threshold-based alerting or notifications, real-time live-call monitoring (dashboard is charted over time), error-rate spike detection, independent corroboration.",
+    "rationale": "Retell documents its own production-monitoring features. The Analytics dashboard tracks success rate, latency, cost and concurrency. AI QA scores sampled calls for hallucination, latency and tool usage to surface quality issues. Real-time call_started, call_ended and call_analyzed webhooks report call activity as it happens. However, nothing documents threshold-based alerting when agents misbehave or error rates spike; users would have to build that themselves on top of the webhooks. Missing for 10: native alerting/notification rules on error-rate or QA-score thresholds, an explicit live in-progress call monitoring view, and independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-13",
       "retell-docs-42",
       "retell-docs-14",
       "retell-docs-43",
+      "retell-docs-52",
+      "retell-docs-12",
       "retell-docs-57"
     ],
     "support": {
@@ -9744,12 +9788,12 @@
           "quote": "AI QA scores Retell calls on hallucination, knowledge base accuracy, latency, sentiment, and tool usage to surface quality trends and issues."
         },
         {
-          "evidenceId": "retell-docs-43",
-          "quote": "AI QA automatically evaluates a sampled set of your calls against rules and metrics you configure."
+          "evidenceId": "retell-docs-52",
+          "quote": "call_started, call_ended, and call_analyzed events delivered to your server so you can react to call activity without polling."
         },
         {
-          "evidenceId": "retell-docs-42",
-          "quote": "The Analytics dashboard charts your call and chat data so you can see how your agents are performing over time."
+          "evidenceId": "retell-docs-12",
+          "quote": "Webhooks allow your application to receive real-time notifications about events that occur in your Retell AI account."
         }
       ]
     }
@@ -9758,9 +9802,9 @@
     "productId": "retell",
     "storyId": "mid-call-tool-calling",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell documents calling external APIs mid-call. It supports custom functions with configurable URL, method, headers, parameters and responses, plus tool calls to remote MCP servers during live calls. Nothing in the pack shows how latency or silence is handled while a function runs, such as filler speech or speak-during-execution. Missing for 10: documented dead-air mitigation during tool execution, independent or hands-on corroboration of mid-call function calls speaking results smoothly.",
+    "rationale": "Retell documents custom functions that call your API mid-call, with configurable URL, method, headers, parameters and responses. Function calling can call external APIs, and agents can call remote MCP server tools during a live call. Nothing in the evidence covers how the agent avoids dead air while a tool runs, so that part of the story is unproven. Missing for 10: documented filler speech or latency handling during tool execution, evidence of how tool results are spoken back, and independent hands-on corroboration of smooth mid-call tool use.",
     "evidenceIds": [
       "retell-docs-66",
       "retell-docs-5",
@@ -9793,7 +9837,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents multilingual conversations, language detection, or mid-call language switching. The voice, transcription-mode and basic-settings docs never mention languages. The only related item is a community quote in which the founder calls multilingual support a roadmap item, which shows the capability was not shipped at the time.",
+    "rationale": "Multilingual conversations and mid-call language switching are a fair question for a voice-agent platform, so the axis applies. However, no documentation item in the pack mentions language settings, language detection, or language switching. The only related item is a community quote where the founder calls multilingual support 'in our roadmap', which is not evidence of a shipped capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9808,7 +9852,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Noise suppression is a fair axis for a voice-agent platform, but the evidence pack never mentions noise cancellation, denoising, or audio filtering. The transcription-mode setting (speed vs. accuracy, endpointing) is an adjacent control, not noise suppression.",
+    "rationale": "Retell is a voice-agent platform, so noise suppression and audio filtering are a fair axis, but the evidence pack never documents a noise-cancellation, background-noise, or audio-filtering setting. The closest item is transcription mode (interim vs. context-aware results, endpointing). That is a latency/accuracy trade-off, which is adjacent to this story and does not count as noise suppression.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9823,14 +9867,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Retell has a broad programmatic surface. Its official SDKs claim full voice and chat endpoint coverage, the CLI manages agents, phone numbers and knowledge bases, the MCP server covers agent lifecycle operations, and some UI actions like voice cloning have API references. However, no document claims API–UI parity, and several dashboard features have no evidenced API equivalent: Conductor, analytics dashboards, AI QA configuration and data-retention settings. The OpenAPI probe also returned 404 on every candidate path. Missing for 10: an explicit API/UI parity statement, API coverage for analytics dashboards, AI QA, Conductor and retention settings, a published OpenAPI spec, and independent hands-on corroboration.",
+    "rationale": "Retell documents a broad programmatic surface: SDKs claiming full voice and chat endpoint coverage, a CLI for agents, phone numbers and knowledge bases, an MCP server for agent create/update/publish, and API endpoints that mirror dashboard actions such as voice cloning. However, no source states that the API matches the UI, and several UI features have no documented API equivalent. The OpenAPI spec is also not publicly served. missing for 10: an explicit API/UI parity statement, documented API equivalents for Conductor, analytics dashboards and AI QA configuration, a publicly published OpenAPI spec, and independent or hands-on corroboration of parity.",
     "evidenceIds": [
       "retell-docs-2",
       "retell-docs-3",
-      "retell-docs-4",
       "retell-docs-47",
       "retell-docs-8",
-      "retell-probe-2"
+      "retell-docs-37",
+      "retell-api-playground-20261106",
+      "retell-spec-unpublished-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9839,11 +9884,11 @@
       "citations": [
         {
           "evidenceId": "retell-docs-2",
-          "quote": "full voice and chat endpoint coverage"
+          "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
         },
         {
           "evidenceId": "retell-docs-3",
-          "quote": "manage agents, phone numbers, knowledge bases, and other Retell resources from your terminal"
+          "quote": "manage agents, phone numbers, knowledge bases, and other Retell resources from your terminal with simple commands"
         },
         {
           "evidenceId": "retell-docs-47",
@@ -9862,7 +9907,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no data-export feature and no open export formats for calls, transcripts, recordings, agents or knowledge bases. Data-retention auto-deletion, webhooks and SDK/API access are adjacent controls or developer building blocks rather than a bulk export capability, so they earn no credit.",
+    "rationale": "Data export is a fair question for a SaaS voice-agent platform, so the axis applies. The pack documents no bulk or full-account export of agents, transcripts, recordings or knowledge bases in open formats. What it does show is adjacent: per-agent data-retention deletion, SDK, CLI and MCP list/fetch operations, and call-event webhooks. These are developer building blocks or a different feature, not an export-and-leave capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9877,7 +9922,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a voice-agent platform publishes its source under an open license is a fair openness question, so the axis applies. Nothing in the evidence shows Retell AI's source is available under any license: the docs cover a hosted platform, SDKs, a CLI and an MCP server, with no mention of source code or licensing. A community thread treats open-source projects as alternatives to Retell, which suggests Retell itself is not open source.",
+    "rationale": "Retell AI is a hosted voice-agent SaaS, and whether its source is open is a fair question for this kind of product, so the axis applies. Nothing in the evidence shows the platform's source published under an open license. The SDKs, CLI and MCP server are documented as official tools, but no repository or license is cited for them, and they do not stand in for the product's source.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9892,7 +9937,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a voice-agent platform, but the evidence shows Retell only as a hosted, account-based service with pay-as-you-go pricing. Bring-your-own SIP telephony and connecting to remote MCP servers are adjacent integrations, not self-hosting the core product. No documentation of on-prem or self-hosted deployment exists in the pack.",
+    "rationale": "Self-hosting is a fair question for a voice-AI platform, but the evidence pack never documents a self-hosted or on-prem deployment of Retell. Every item describes the hosted Retell workspace, accessed through the dashboard, API, SDKs, CLI, or MCP. Bring-your-own telephony via SIP trunking is an adjacent integration feature, not self-hosting of the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9905,18 +9950,17 @@
     "productId": "retell",
     "storyId": "phone-number-provisioning",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell's own CLI manages phone numbers, numbers can be imported via SIP trunking, the SDKs claim full voice endpoint coverage, and the concurrency docs confirm the platform handles both inbound and outbound calls. However, no specific API endpoint is documented for buying or provisioning numbers or for placing outbound calls programmatically, and number deployment is shown mainly through the dashboard. Missing for 10: documented phone-number provisioning API endpoint, documented create-outbound-call API, explicit API-driven inbound call routing, hands-on corroboration.",
+    "rationale": "Retell documents an outbound-call API endpoint (POST /v2/create-phone-call). Phone numbers can be managed via the official CLI or imported from Twilio, Telnyx or Vonage. Inbound handling is implied by assigning agents to numbers and by reserved inbound concurrency. missing for 10: an explicitly documented API endpoint for buying or provisioning numbers, documented API configuration of inbound call routing, independent hands-on corroboration.",
     "evidenceIds": [
+      "retell-api-playground-20261106",
       "retell-docs-3",
-      "retell-docs-2",
       "retell-docs-10",
       "retell-docs-49",
       "retell-docs-11",
-      "retell-docs-41",
-      "retell-docs-65",
-      "retell-docs-1"
+      "retell-docs-32",
+      "retell-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -9924,20 +9968,20 @@
       "subject": "As a developer, I can provision phone numbers and run both inbound and outbound calls through the platform's API",
       "citations": [
         {
-          "evidenceId": "retell-docs-3",
-          "quote": "Install the Retell CLI to manage agents, phone numbers, knowledge bases, and other Retell resources from your terminal with simple commands."
+          "evidenceId": "retell-api-playground-20261106",
+          "quote": "\"Create a new outbound phone call\" (POST /v2/create-phone-call)"
         },
         {
-          "evidenceId": "retell-docs-2",
-          "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
+          "evidenceId": "retell-docs-3",
+          "quote": "Install the Retell CLI to manage agents, phone numbers, knowledge bases, and other Retell resources from your terminal with simple commands."
         },
         {
           "evidenceId": "retell-docs-49",
           "quote": "You set up a SIP trunk, configure your number to point to it, and import that number to Retell."
         },
         {
-          "evidenceId": "retell-docs-41",
-          "quote": "When `reserved_inbound_concurrency` is configured, outbound calls can use at most your concurrency limit minus the reserved amount."
+          "evidenceId": "retell-docs-11",
+          "quote": "Reserved inbound concurrency protects inbound calls from being crowded out by outbound traffic."
         }
       ]
     }
@@ -9948,7 +9992,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a hosted voice-agent SaaS like Retell, so the axis applies. The pack never documents choosing a storage region or residency. Per-agent data retention controls how long data is kept, not where it is stored, so it is an adjacent control and earns no credit.",
+    "rationale": "Data residency and region selection is a fair question for a hosted voice-agent SaaS, but the evidence pack has nothing on choosing a storage region or residency. The only related material is per-agent data retention and automatic deletion, which is an adjacent control and does not let users choose where data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9963,7 +10007,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Retell AI is an AI voice-agent platform, so a training opt-out is a fair question to ask of it. The evidence pack contains no documented policy or setting that excludes customer data from model training. The per-agent data retention and auto-deletion feature is an adjacent control: it limits how long data is stored, not whether it is used for training, so it earns no credit.",
+    "rationale": "Preventing customer data from being used for model training is a fair privacy question for a voice-AI SaaS platform, so the axis applies. However, the evidence pack contains no training opt-out, no no-training commitment, and no data-use policy. The per-agent data retention feature (automatic deletion of call and chat data) is an adjacent control, not a training-use prevention capability, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9976,9 +10020,9 @@
     "productId": "retell",
     "storyId": "privacy-retention-controls",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell documents its own per-agent data retention period. After the period expires, call and chat data (transcripts, recordings, logs) is automatically and permanently deleted, which directly covers retention control and scheduled deletion. The evidence does not show on-demand deletion of specific records or an account, nor API or CLI control of retention, so the deletion half of the story is only partly covered. Missing for 10: documented on-demand or manual deletion of individual calls, chats or account data; API or programmatic control of retention settings; independent or hands-on corroboration of the retention feature.",
+    "rationale": "Retell documents per-agent data retention periods: call and chat data, including transcripts, recordings, and logs, is automatically and permanently deleted when the period expires. That covers configurable retention well. The deletion side is only documented as time-based auto-expiry, with no evidence of user-initiated, on-demand deletion of specific records. missing for 10: on-demand/manual deletion of individual calls or chats (via API or dashboard), account- or workspace-level deletion controls, details on which retention periods can be set, and independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-15",
       "retell-docs-27",
@@ -10006,7 +10050,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Retell AI is a SaaS voice-agent platform with a CLI and SDKs, so a telemetry or usage-tracking opt-out is a fair question to ask. The evidence pack documents no such control. The per-agent data retention setting is a different feature: it automatically deletes call and chat data, and does not let users opt out of telemetry or usage tracking.",
+    "rationale": "Telemetry opt-out is a fair question for a SaaS platform that ships a CLI, SDKs and a dashboard, but the evidence pack never documents any telemetry or usage-tracking opt-out. Per-agent data retention, which auto-deletes call and chat data, is an adjacent privacy control rather than a way to opt out of tracking, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10021,7 +10065,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Retell documents real-time transcription with a configurable mode: 'optimize for speed' uses interim results with low endpointing, and 'optimize for accuracy' uses higher endpointing. That gives developers some control over the accuracy/latency trade-off. However, the evidence shows no choice of STT provider, STT model selection, or key-term boosting; the agent language-model setting is for the LLM, not transcription. missing for 10: STT provider selection, transcription model/language model control, custom keyword/key-term boosting, independent accuracy corroboration",
+    "rationale": "Retell documents its own real-time transcription mode setting. Developers can trade latency for accuracy, choosing interim results with low endpointing for speed or higher-endpointing, context-aware results for accuracy. That is a direct transcription-accuracy control, but the evidence never shows selecting the STT provider, choosing a transcription language model, or adding key-term/keyword boosting; the agent LLM setting is a different feature. Missing for 10: STT provider selection, transcription model choice, custom vocabulary/key-term boosting, independent evidence of transcription accuracy.",
     "evidenceIds": [
       "retell-docs-9",
       "retell-docs-39",
@@ -10038,7 +10082,7 @@
         },
         {
           "evidenceId": "retell-docs-48",
-          "quote": "optimize for speed: uses the latest interim results with a low endpointing setting... optimize for accuracy: uses the results with a higher endpointing setting"
+          "quote": "optimize for accuracy: uses the results with a higher endpointing setting"
         }
       ]
     }
@@ -10049,12 +10093,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Retell stores call transcripts and recordings, and it offers programmatic access through SDKs with 'full voice and chat endpoint coverage' and through call_ended and call_analyzed webhooks delivered to your server. However, no evidence explicitly shows an API or webhook payload that returns the recording file or full transcript for each call. missing for 10: a documented get-call or list-calls endpoint returning recording URLs and transcripts, confirmation that webhook payloads include transcript and recording data, and independent or hands-on corroboration.",
+    "rationale": "Retell's docs show that it stores per-call transcripts and recordings (the data-retention docs name both). Its webhooks push call_ended and call_analyzed events to your server, and its SDKs claim full voice endpoint coverage, so programmatic call-data access is documented. No item explicitly documents an API endpoint or webhook payload that returns the recording file or full transcript for every call. Missing for 10: an explicit get-call or list-calls API returning recording URLs and transcripts, documented webhook payload contents including transcript and recording, and independent or hands-on corroboration of retrieval.",
     "evidenceIds": [
-      "retell-docs-52",
-      "retell-docs-2",
       "retell-docs-15",
-      "retell-docs-12"
+      "retell-docs-52",
+      "retell-docs-24",
+      "retell-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -10062,16 +10106,20 @@
       "subject": "As a platform-engineer, I can retrieve full call recordings and transcripts programmatically for every call",
       "citations": [
         {
+          "evidenceId": "retell-docs-15",
+          "quote": "automatically delete call and chat data — transcripts, recordings, and logs"
+        },
+        {
           "evidenceId": "retell-docs-52",
           "quote": "call_started, call_ended, and call_analyzed events delivered to your server so you can react to call activity without polling"
         },
         {
-          "evidenceId": "retell-docs-2",
-          "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
+          "evidenceId": "retell-docs-24",
+          "quote": "webhooks push data to your application as events happen"
         },
         {
-          "evidenceId": "retell-docs-15",
-          "quote": "automatically delete call and chat data — transcripts, recordings, and logs — after a set period for compliance"
+          "evidenceId": "retell-docs-2",
+          "quote": "full voice and chat endpoint coverage"
         }
       ]
     }
@@ -10082,7 +10130,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting a voice agent runtime is a fair question for a voice-agent platform, but the evidence pack contains no documentation of open-source code or self-hosted deployment for Retell. Retell is described only as a hosted, pay-as-you-go platform. Bring-your-own telephony via SIP trunking is an adjacent feature, not self-hosting of the runtime. A community remark that Retell uses LiveKit concerns Retell's underlying media stack, not a Retell open-source release.",
+    "rationale": "Self-hosting an open-source runtime is a fair question for a voice-agent platform, so the axis applies. The evidence pack only describes Retell as a hosted, pay-as-you-go service reached through its dashboard, APIs, SDKs, CLI and MCP server, with no open-source runtime or self-hosted deployment documented. Bring-your-own telephony via SIP trunking connects your carrier to the hosted service and does not count as self-hosting the agent runtime.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10097,46 +10145,48 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only related evidence is Retell's transcription-mode endpointing setting: a low or higher endpointing value traded against latency. That is a tunable silence threshold, which is an adjacent control rather than the model-based end-of-turn detection the story asks for. Missing for 10: any documented model-based or semantic turn-detection capability, configuration for handling slow speakers beyond endpointing thresholds, and hands-on corroboration that the agent avoids talking over users.",
-    "evidenceIds": [
-      "retell-docs-48"
-    ],
+    "rationale": "Model-based turn-taking is a fair question for a voice-agent platform, but the evidence pack never documents a semantic or model-based end-of-turn detector. The closest item is the transcription-mode doc, which only offers a lower or higher 'endpointing setting' to trade speed against accuracy. That is an adjacent silence-threshold control, not model-based end-of-turn detection.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can use model-based end-of-turn detection beyond simple VAD silence timeouts so the agent doesn't talk over slow speakers",
-      "citations": [
-        {
-          "evidenceId": "retell-docs-48",
-          "quote": "optimize for accuracy: uses the results with a higher endpointing setting"
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "retell",
     "storyId": "simulated-agent-testing",
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "Retell's own Conductor can run simulation tests that play a scenario against an agent so changes can be checked without real phone calls. The dashboard Test button also starts a free web call that needs no phone number. AI QA, however, scores calls after they happen and sampled live traffic, so it is not a pre-deployment eval harness; simulation is documented only through one thin Conductor mention. Missing for 10: documented batch or regression test suites with pass/fail eval criteria, programmatic (API/SDK/CLI) simulation runs, details on scenario/persona configuration, and independent or hands-on corroboration of the simulation feature.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Retell documents several pre-production test surfaces: an LLM Playground with tool-call inspection, simulation and batch testing with graded test cases, free browser web-call testing that needs no phone number, and Conductor-run simulation tests that check changes without real phone calls. Draft and staging version tags let you test a new version while production stays on another. Missing for 10: no independent or hands-on corroboration of the simulation/eval features, and testing runs in the production workspace at production rates rather than an isolated sandbox.",
     "evidenceIds": [
+      "retell-test-surfaces-20261106",
       "retell-docs-55",
       "retell-docs-20",
-      "retell-docs-31"
+      "retell-staging-tags-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can test agents with simulated conversations or evals before putting them on real phone calls",
       "citations": [
+        {
+          "evidenceId": "retell-test-surfaces-20261106",
+          "quote": "an LLM Playground with tool-call inspection, simulation/batch testing with graded test cases, browser web-call testing without a phone number, and phone-call testing"
+        },
         {
           "evidenceId": "retell-docs-55",
           "quote": "Conductor can run simulation tests that play out a scenario against your agent and show how it responds. This lets you check changes without making real phone calls."
         },
         {
           "evidenceId": "retell-docs-20",
-          "quote": "Click the \"Test\" button to start a web call with your agent... This step is free and doesn't need a phone number or payment method."
+          "quote": "This step is free and doesn't need a phone number or payment method."
+        },
+        {
+          "evidenceId": "retell-staging-tags-20261106",
+          "quote": "A new version starts as a draft, which you can edit and test"
         }
       ]
     }
@@ -10145,9 +10195,9 @@
     "productId": "retell",
     "storyId": "sip-trunk-byoc",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Retell's first-party custom-telephony guide documents both paths in the story: elastic SIP trunking to your own provider, and importing numbers from Twilio, Telnyx and Vonage. It also describes the setup flow (set up a SIP trunk, point the number at it, import it to Retell), and imported numbers work with features like Send SMS. missing for 10: independent or hands-on corroboration of BYO carrier/PBX SIP trunking in practice.",
+    "rationale": "Retell's custom-telephony docs describe integrating with your own telephony provider through elastic SIP trunking, or by importing numbers from Twilio, Telnyx and Vonage. The setup flow is documented: set up a SIP trunk, point the number at it, and import it into Retell. Imported numbers are also used by other features such as Send SMS, so you are not locked to bundled telephony. Missing for 10: independent or hands-on corroboration, and detailed evidence on PBX-specific configuration (authentication, inbound/outbound routing details).",
     "evidenceIds": [
       "retell-docs-10",
       "retell-docs-40",
@@ -10180,12 +10230,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell documents its own post-call analysis: built-in call success and sentiment scoring plus custom fields. It also documents a call_analyzed webhook event delivered to your server after the call, which covers delivery of outcomes via webhook. However, structured extraction of entities and dispositions rests on a single thin line about custom fields, and no evidence ties the extracted fields to the webhook or API payload. Missing for 10: documented schema for custom extraction fields (entities, dispositions), explicit confirmation that call_analyzed payloads or the API return those fields, API retrieval of analysis results, independent or hands-on corroboration.",
+    "rationale": "Retell documents built-in post-call analysis: call success and sentiment scoring, plus custom fields synced to a CRM. It also offers a call_analyzed webhook event pushed to your server after the call, which covers the delivery path for structured post-call data. However, the evidence does not show how extraction schemas are defined or what the payload contains. missing for 10: documentation of configurable extraction schemas for entities and dispositions, call_analyzed payload contents, API retrieval of the analysis fields, independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-19",
       "retell-docs-52",
-      "retell-docs-12",
-      "retell-docs-24"
+      "retell-docs-24",
+      "retell-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -10198,11 +10248,11 @@
         },
         {
           "evidenceId": "retell-docs-52",
-          "quote": "call_started, call_ended, and call_analyzed events delivered to your server so you can react to call activity without polling"
+          "quote": "call_started, call_ended, and call_analyzed events delivered to your server so you can react to call activity without polling."
         },
         {
           "evidenceId": "retell-docs-24",
-          "quote": "webhooks push data to your application as events happen"
+          "quote": "webhooks push data to your application as events happen, making your integrations more efficient and responsive."
         }
       ]
     }
@@ -10213,14 +10263,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell's pricing page documents usage-based, pay-as-you-go pricing with no contract and a calculator that shows an approximate monthly cost, so a founder can estimate spend before committing. However, no first-party evidence states the actual per-minute rates or offers a per-call cost estimate; the only concrete rate (17¢/min) comes from a community commenter, and the founder notes that costs vary by voice provider. missing for 10: first-party published per-minute rate breakdown (LLM/voice/telephony components), an explicit per-call cost estimate rather than a monthly approximation, independent corroboration of current rates.",
+    "rationale": "Retell's pricing page advertises pay-as-you-go usage pricing starting at $0 and includes a calculator that shows an approximate monthly cost from adjustable parameters. New accounts also get $10 in free trial credits with no payment method, so a founder can try it before committing. A community commenter cites a per-minute rate of 17¢/min, and the founder notes costs vary by voice provider, but the first-party evidence quotes no actual per-minute rates and no per-call estimator. Missing for 10: first-party published per-minute rate figures, an explicit per-call cost estimate (the calculator is framed as monthly), and a documented breakdown of component costs (LLM/TTS/telephony).",
     "evidenceIds": [
       "retell-docs-16",
-      "retell-docs-29",
       "retell-docs-50",
+      "retell-docs-29",
       "retell-docs-45",
-      "retell-comm-10",
-      "retell-comm-13"
+      "retell-comm-13",
+      "retell-comm-10"
     ],
     "support": {
       "relation": "direct",
@@ -10236,12 +10286,12 @@
           "quote": "Adjust key parameters to see an approximate monthly cost for your Retell AI voice agents."
         },
         {
-          "evidenceId": "retell-docs-50",
-          "quote": "Most voice AI platforms require annual contracts before you write a single line of code. Retell starts at $0, pay only for what you use."
-        },
-        {
           "evidenceId": "retell-docs-45",
           "quote": "New accounts start with \\$10 in free trial credits, no payment method required."
+        },
+        {
+          "evidenceId": "retell-comm-13",
+          "quote": "A commenter noted per-minute pricing (17¢/min) could be exploited"
         }
       ]
     }
@@ -10252,7 +10302,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell's docs describe drag-and-drop, node-based conversation flows as one of its agent types, and a Transfer Call tool routes calls to a human with cold, warm and agentic warm modes. Conductor can also edit a conversation flow in plain language. The visual builder itself is documented only in a single line, and branching logic, state handling and in-flow handoff nodes are implied by \"node-based\" rather than spelled out. missing for 10: explicit documentation of branching or conditional edges in the flow builder, state or node semantics, handoff nodes within flows, independent or hands-on corroboration of the visual builder.",
+    "rationale": "Retell's docs describe a drag-and-drop, node-based flow builder as one of its two agent types, and Conductor can edit conversation flows in plain language. Call handoffs to humans are documented through the Transfer Call tool, but that tool is described for single- and multi-prompt agents rather than shown inside the visual flow builder. Branching conditions and state transitions within the visual builder are only implied by the 'node-based' wording, not explicitly documented. Missing for 10: explicit documentation of branching/conditional edges and state handling in the visual builder, evidence that handoffs are configurable as flow nodes, and independent or hands-on corroboration of the no-code builder.",
     "evidenceIds": [
       "retell-docs-25",
       "retell-docs-17",
@@ -10278,7 +10328,7 @@
         },
         {
           "evidenceId": "retell-docs-63",
-          "quote": "route calls to a human, with cold, warm, and agentic warm transfer modes"
+          "quote": "Add the Transfer Call tool to a Retell single or multi-prompt agent to route calls to a human, with cold, warm, and agentic warm transfer modes."
         }
       ]
     }
@@ -10287,14 +10337,13 @@
     "productId": "retell",
     "storyId": "voice-library-choice",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell's own docs show a voice selector where developers can search and add ElevenLabs community voices, import voice clones, or train clones via the API. A founder comment says OpenAI TTS, Deepgram, and ElevenLabs are available at different prices, which suggests multiple TTS providers, but no first-party doc describes choosing among or plugging in providers. missing for 10: first-party documentation of multi-provider TTS selection or plug-in, documentation of the size of the built-in voice library, independent hands-on corroboration of voice breadth.",
+    "rationale": "Retell documents a voice selector with an \"Add custom voice\" option for searching ElevenLabs community voices, plus importing or training voice clones. Multi-provider TTS is evidenced only by a founder comment naming OpenAI TTS, Deepgram and ElevenLabs, not by first-party docs. missing for 10: first-party documentation of the supported TTS providers and how to switch between them, evidence of the size or breadth of the built-in voice library, independent hands-on corroboration of provider choice.",
     "evidenceIds": [
       "retell-docs-7",
       "retell-docs-38",
       "retell-docs-37",
-      "retell-docs-28",
       "retell-docs-61",
       "retell-comm-10"
     ],
@@ -10305,15 +10354,11 @@
       "citations": [
         {
           "evidenceId": "retell-docs-7",
-          "quote": "Add custom voices to your Retell agent — search ElevenLabs community voices, import a voice clone, or train a clone for a unique brand-specific sound."
+          "quote": "search ElevenLabs community voices, import a voice clone, or train a clone for a unique brand-specific sound"
         },
         {
           "evidenceId": "retell-docs-38",
           "quote": "In the voice selector, you can click \"Add custom voice\" to search and add publicly available community voices."
-        },
-        {
-          "evidenceId": "retell-docs-28",
-          "quote": "Audio files to use for voice cloning. Up to 25 files allowed."
         },
         {
           "evidenceId": "retell-comm-10",
