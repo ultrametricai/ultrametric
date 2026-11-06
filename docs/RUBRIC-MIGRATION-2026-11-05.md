@@ -82,8 +82,8 @@ against `2026-11-04-v6-preview.json`.
 | 5 | agent-frameworks, agent-skills, ai-search-apis, ai-video, compliance-automation, data-warehouses, design-tools, identity-verification, marketplace-payments, mobile-payments, notes-knowledge, startup-law-firms | 4,774 | merged (PR #618) |
 | 6 | ai-memory, billing-subscriptions, cloud-storage, compliance-screening, durable-workflows, ecommerce-platforms, email-apis, fp-a, gpus, payments, self-hosted-assistants, stablecoin-payments, voice-agents | 4,941 | merged (PR #619) |
 | 7 | agent-sandboxes, banking-as-a-service, banking-data-apis, llm-evals-observability, meeting-ai, product-feedback, screen-sharing, security-keys, security-scanners, serverless-databases, software-factory, tax-automation | 4,778 | merged (PR #620) |
-| 8 | ai-research-agents, auth-platforms, authenticator-apps, code-hosting, document-extraction, email, mobile-dev, observability, project-management, search-infra, vector-databases, virtual-mailboxes, workflow-automation | 4,911 | this PR |
-| 9 | accounting, agentic-commerce, ai-code-review, api-platforms, backend-as-a-service, business-phone, feature-flags, file-converters, package-managers, processors, product-analytics, startup-immigration, team-chat | 4,913 | queued |
+| 8 | ai-research-agents, auth-platforms, authenticator-apps, code-hosting, document-extraction, email, mobile-dev, observability, project-management, search-infra, vector-databases, virtual-mailboxes, workflow-automation | 4,911 | merged (PR #621) |
+| 9 | accounting, agentic-commerce, ai-code-review, api-platforms, backend-as-a-service, business-phone, feature-flags, file-converters, package-managers, processors, product-analytics, startup-immigration, team-chat | 4,913 | this PR |
 
 Later waves may be re-chunked as evidence packs grow; each wave PR states its final arena
 list. Arenas with affiliated or own-vendor rows (product-feedback, software-factory,
@@ -476,3 +476,74 @@ temporal #7 → #5 and n8n #6 → #8 in workflow-automation.
 
 Spend: about $63 batched plus correction rounds (workflow-automation needed nine resume
 runs). Wave total about $77; cumulative about $614.
+
+## Wave 9 (2026-11-06)
+
+4,913 cells re-judged across the thirteen arenas (feature-flags'
+flagsmith:openfeature-compatibility was already v6-current from a contest re-judge and
+skipped cleanly). 816 verdict flips: 708 down, 18 up, 90 lateral relabels, plus 509
+quality-only moves (net -172). Fleet transition profile:
+
+`full→partial` 428 · `partial→none` 280 · `na→none` 44 · `none→na` 35 ·
+`partial→full` 9 · `none→partial` 9 · `partial→na` 6 · `full→na` 4 · `na→partial` 1
+
+| arena | cells | flips | down / up / lateral | quality-only (net) |
+|---|---|---|---|---|
+| accounting | 583 | 135 | 131 / 1 / 3 | 62 (-35) |
+| agentic-commerce | 504 | 64 | 61 / 1 / 2 | 50 (-20) |
+| ai-code-review | 318 | 51 | 51 / 0 / 0 | 35 (-20) |
+| api-platforms | 285 | 53 | 47 / 2 / 4 | 30 (-15) |
+| backend-as-a-service | 204 | 46 | 45 / 0 / 1 | 34 (-7) |
+| business-phone | 385 | 26 | 25 / 1 / 0 | 38 (-25) |
+| feature-flags | 270 | 87 | 82 / 4 / 1 | 50 (+10) |
+| file-converters | 416 | 58 | 46 / 0 / 12 | 31 (-11) |
+| package-managers | 324 | 84 | 58 / 5 / 21 | 45 (+12) |
+| processors | 352 | 35 | 26 / 0 / 9 | 21 (-7) |
+| product-analytics | 424 | 59 | 55 / 3 / 1 | 36 (-10) |
+| startup-immigration | 594 | 92 | 55 / 1 / 36 | 37 (-23) |
+| team-chat | 255 | 26 | 26 / 0 / 0 | 40 (-21) |
+
+No owner, affiliated, or self-submitted rows in this wave. Notable rank moves, all
+pure-rubric: intel-core-ultra-9-285k #6 → #1 in processors (amd-ryzen-ai-max-plus-395
+#1 → #3), coinbase-x402 #4 → #8 in agentic-commerce, xero #4 → #3 over quickbooks in
+accounting, pandoc #6 → #4 in file-converters, google-analytics #3 → #5 in
+product-analytics; startup-immigration shuffles mostly inside its zero-score band, with
+36 lateral none-to-na relabels.
+
+Spend: about $63 batched plus correction rounds. Wave total about $75; cumulative about
+$689.
+
+## Migration closeout
+
+All nine waves are published. Fleet totals across the waves, computed per arena against
+each wave's pre-merge baseline:
+
+| metric | value |
+|---|---|
+| arenas migrated | 104 (every arena except registered-agents, already v6 via PR #564) |
+| cells re-judged | 43,737 |
+| verdict flips | 7,986 (7,285 down, 268 up, 433 lateral relabels) |
+| quality-only moves | 4,884 (net -2,667) |
+| spend | about $689 (batch transport plus interactive correction rounds) |
+
+The preview projected roughly 6,800 flips at least 96% downward from two pilot arenas;
+the fleet came in at 7,986 flips, 91% downward counting lateral relabels against the
+denominator (94% of directional flips are demotions). Every judge cache in the corpus is
+v6-current: the inventory scanner reports 0 stale cells of 44,147. Two cells were already
+v6-current before their wave from contest re-judges and were skipped rather than re-paid:
+terminals/wezterm:automation-rules-engine and
+feature-flags/flagsmith:openfeature-compatibility. registered-agents (408 cells) kept its
+PR #564 v6 verdicts.
+
+Queued follow-ups, each a maintainer call:
+
+1. **v6 noise re-measurement**: a ~100-cell re-roll sample under v6, then rebuild
+   `uncertainty.json` and every score-intervals file (the 2026-09-30 precedent's §5.5
+   treatment, about $9 interactive). Until it lands, interval bands describe pre-v6 judge
+   noise around v6 point scores, as disclosed above.
+2. **The two above-v6 foreloop adjudication cells** (product-feedback
+   agentic-nl-commands partial q4 and agentic-public-api partial q5, preserved over fresh
+   none q0 per the worklist): re-adjudicate or reaffirm.
+3. **Worklist history**: reapply-protected-adjudications.ts overwrites freshJudgeSaid
+   per wave; the 09-30 values live in git history. Optional: per-wave history in the
+   file.
