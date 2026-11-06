@@ -226,6 +226,15 @@ ITEMS = {
          'Working Copy\'s automation surface is its x-callback-url scheme, documented as prose with inline example deep links (working-copy://x-callback-url/<command>/...). Write and read commands are gated by an app-generated secret: "Commands that change data or read content out of Working Copy are protected by a secret key". There is no machine-readable schema, no interactive reference (the examples are iOS deep links), no test mode, and no versioning or deprecation statement for the scheme.'),
     ],
     ('accounting', 'puzzle'): [
+        # PR #632 review round 2 (P1 ar-aging-customer-balances): the fix-round re-roll
+        # had credited receivables foundations from adjacent tools; the AR aging report
+        # and per-customer balances are vendor-documented and appended so the cell rests
+        # on that text.
+        ('puzzle-ar-aging-20261106', 'claimed-docs',
+         'https://help.puzzle.io/en/articles/17631957-ai-for-accounts-receivable-in-puzzle.md',
+         ["it shows what's overdue by customer",
+          'ask Claude, ChatGPT or another AI assistant through the Puzzle MCP'],
+         'Puzzle documents an AR aging report with per-customer balances: "it shows what\'s overdue by customer, finds the payments that most likely pay your open invoices, and flags the receivables that need attention before you close the month. You can work in the app, run AI tasks, or ask Claude, ChatGPT or another AI assistant through the Puzzle MCP." Under Revenue → AR aging, "Each customer\'s unpaid invoices are grouped into Current, 1-30, 31-60, 61-90 and 91+ days" with unapplied payments; the FAQ adds the report "includes all of your outstanding invoices" wherever created.'),
         # PR #632 review (P1 agent-answers-affordability): the re-judged full cited
         # conversational MCP access plus runway metrics while its rationale noted the
         # missing tool coverage and affordability flow. Both are documented; appended so

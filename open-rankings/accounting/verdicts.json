@@ -9128,7 +9128,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack has no documentation of inviting an external accountant or bookkeeper as a user, and nothing on role-based or scoped permissions. The nearest items are adjacent: an accountant-facing page about migrating clients' data, multi-company management under one login, and AI that gathers 'what your accountant needs'. None of these shows a founder granting role-scoped access to review and adjust the books.",
+    "rationale": "The evidence pack does not document inviting an external accountant or bookkeeper, or assigning role-scoped permissions for reviewing and adjusting the books. The accountant-facing pages cover QuickBooks migration and reporting. Multi-company management under one login is an adjacent capability, not role-scoped collaborator access.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9143,10 +9143,10 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Puzzle's first-party MCP server connects Claude, ChatGPT or another AI assistant directly to the live ledger. It exposes trial balance, cash activity, transactions, bills, payroll and spending metrics. The runway/forecast doc says affordability-style questions (burn, cash-out month, cash-flow forecast) can be answered by asking an AI assistant through the MCP against live books. Missing for 10: an explicit documented example of a specific 'can we afford X' purchase scenario (only runway/burn framing is shown), and independent or hands-on corroboration of agent answer quality.",
+    "rationale": "Puzzle's official MCP connects Claude or other AI assistants to live ledger tools (trial balance, cash activity, transactions, metrics). Its runway documentation says affordability-style questions are projected 'from your live books' and can be asked through the Puzzle MCP. missing for 10: explicit documentation of hypothetical 'what if we spend X' scenario answers, independent or hands-on corroboration of answer quality.",
     "evidenceIds": [
-      "puzzle-runway-forecast-20261106",
       "puzzle-mcp-tools-20261106",
+      "puzzle-runway-forecast-20261106",
       "puzzle-docs-22",
       "puzzle-docs-9"
     ],
@@ -9157,7 +9157,7 @@
       "citations": [
         {
           "evidenceId": "puzzle-runway-forecast-20261106",
-          "quote": "Puzzle projects your cash from your live books: how long your cash lasts at your current burn, the month you'd run out, when to start raising, and a week-by-week cash flow forecast built from your open invoices, bills and payroll."
+          "quote": "Puzzle projects your cash from your live books: how long your cash lasts at your current burn, the month you'd run out, when to start raising"
         },
         {
           "evidenceId": "puzzle-runway-forecast-20261106",
@@ -9166,6 +9166,10 @@
         {
           "evidenceId": "puzzle-docs-22",
           "quote": "Puzzle's MCP (Model Context Protocol) integration lets you connect your Puzzle account directly to Claude, giving you instant access to your financial data through natural conversation — no exports, no copy-pasting."
+        },
+        {
+          "evidenceId": "puzzle-mcp-tools-20261106",
+          "quote": "Once connected, open a new conversation and start exploring your financials."
         }
       ]
     }
@@ -9176,7 +9180,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Puzzle's AI Close uses AI agents to review transactions and surface discrepancies during month-end close, which covers the core of an agent flagging issues before the close. The MCP server also exposes transactions and spending metrics, so an external agent can query the ledger. missing for 10: explicit duplicate-transaction detection, spend-anomaly flagging (beyond generic 'discrepancies'), continuous or scheduled ledger monitoring rather than a close-time run, and independent hands-on corroboration.",
+    "rationale": "Puzzle's AI Close documents AI agents that review transactions and surface discrepancies during the month-end process. That is first-party, agent-driven flagging before the close. The MCP integration also exposes transactions and spending metrics to an external agent. However, nothing documents duplicate-transaction detection or spend-anomaly detection specifically, nor continuous monitoring as opposed to running a close workflow. Missing for 10: explicit duplicate-transaction detection, spend-anomaly flagging, ongoing/scheduled monitoring rather than a one-off close run, hands-on or independent corroboration.",
     "evidenceIds": [
       "puzzle-docs-24",
       "puzzle-docs-39",
@@ -9193,7 +9197,7 @@
         },
         {
           "evidenceId": "puzzle-mcp-tools-20261106",
-          "quote": "Show me my top vendors by spend."
+          "quote": "revenue/expense/spending metrics and ledger accounts, connected at https://app.puzzle.io/mcp"
         }
       ]
     }
@@ -9204,11 +9208,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Puzzle's MCP server lists journal entries among its tools, and a write-access mode (Beta) lets an agent make changes, confirming each change with the user before making it. That is only inline confirmation, not a draft-then-queue workflow for an accountant. The REST API's journal-entry write endpoints are not shown in the evidence. missing for 10: documented API/MCP endpoint for creating journal entries, a draft/unposted journal entry state, an accountant review/approval queue, non-beta write access, independent corroboration.",
+    "rationale": "Puzzle's MCP exposes journal entries among its ledger tools, and its Beta write access lets an assistant make changes after confirming each one with the user. That gives a first-party, agent-driven write path with a human approval gate. Nothing shows journal entries being created through the REST API, or drafts sitting in a review queue for a separate accountant to approve later; the confirmation is inline with the user.\n\nMissing for 10: documented REST API endpoint for creating journal entries, explicit confirmation that MCP write access covers journal entry creation, a draft/pending journal entry state, an accountant-facing review queue or approval workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "puzzle-mcp-tools-20261106",
-      "puzzle-docs-17",
-      "puzzle-openapi-spec-20261106"
+      "puzzle-docs-22",
+      "puzzle-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -9218,6 +9222,10 @@
         {
           "evidenceId": "puzzle-mcp-tools-20261106",
           "quote": "With write access turned on (Beta), your assistant can also make changes... It confirms each change with you before making it."
+        },
+        {
+          "evidenceId": "puzzle-mcp-tools-20261106",
+          "quote": "tools covering trial balance, cash activity, transactions, journal entries, chart of accounts"
         },
         {
           "evidenceId": "puzzle-docs-17",
@@ -9232,12 +9240,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Puzzle's first-party AI Close feature is described as using AI agents to reconcile accounts, review transactions, and surface discrepancies during month-end close. Separate docs say automated work like matching invoices to payments is reviewed by the user before anything is final, which covers matching, exception flagging, and human review at a headline level. missing for 10: detailed documentation of the AI Close end-to-end workflow (how matching and exception handling actually run, what close package is produced for review), independent or hands-on corroboration.",
+    "rationale": "Puzzle's AI Close is documented as using AI agents to reconcile accounts, review transactions, and surface discrepancies during month-end close. Separate docs describe matching invoices to payments and flagging receivables before close, with the user reviewing before anything is final. missing for 10: in-depth documentation of the end-to-end AI Close workflow (bank transaction matching steps, exception handling, close sign-off package), independent or hands-on corroboration that agents complete a full month close.",
     "evidenceIds": [
       "puzzle-docs-24",
-      "puzzle-docs-5",
+      "puzzle-docs-39",
       "puzzle-docs-17",
-      "puzzle-docs-19"
+      "puzzle-ar-aging-20261106",
+      "puzzle-docs-29",
+      "puzzle-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -9253,8 +9263,8 @@
           "quote": "matching invoices to payments, pulling together what your accountant needs — described once, done automatically, reviewed by you before anything's final."
         },
         {
-          "evidenceId": "puzzle-docs-5",
-          "quote": "Month-End close with AI Close"
+          "evidenceId": "puzzle-ar-aging-20261106",
+          "quote": "finds the payments that most likely pay your open invoices, and flags the receivables that need attention before you close the month"
         }
       ]
     }
@@ -9265,11 +9275,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A probe confirms a live llms.txt at help.puzzle.io (HTTP 200) indexing the help center. A puzzle.io llms.txt also links the ReadMe developer reference, and a machine-readable OpenAPI 3.0.3 spec downloads unauthenticated. Individual help articles are served as .md files, giving agents clean, agent-oriented docs to consume. Missing for 10: first-party docs presenting llms.txt as an agent entry point, a directly verified OpenAPI link (the spec isn't prose-linked and the probe of help-domain paths 404'd), and independent hands-on reports of agents using these docs.",
+    "rationale": "A probe confirms a live llms.txt at help.puzzle.io (HTTP 200) with a structured, markdown-linked index of help articles, and those articles are served as .md files. Separate evidence says puzzle.io's own llms.txt links to the ReadMe developer reference, which is synced from a machine-readable OpenAPI spec, so an agent can be pointed at agent-oriented docs directly. Missing for 10: no llms-full.txt or documented docs-wide markdown endpoint (the /en/.md probe returned 404), the OpenAPI spec is not prose-linked from the docs, and there is no independent hands-on corroboration of agents consuming these docs.",
     "evidenceIds": [
       "puzzle-probe-1",
       "puzzle-openapi-spec-20261106",
-      "puzzle-docs-22"
+      "puzzle-docs-22",
+      "puzzle-probe-2"
     ],
     "support": {
       "relation": "direct",
@@ -9278,11 +9289,11 @@
       "citations": [
         {
           "evidenceId": "puzzle-probe-1",
-          "quote": "HTTP 200 at https://help.puzzle.io/llms.txt # Puzzle Help Center"
+          "quote": "PROBE llms.txt: HTTP 200 at https://help.puzzle.io/llms.txt"
         },
         {
           "evidenceId": "puzzle-openapi-spec-20261106",
-          "quote": "Puzzle publishes a machine-readable OpenAPI 3.0.3 document (info title \"Puzzle Api\", server https://app.puzzle.io/rest/v0) on its app domain"
+          "quote": "it is the sync source for the vendor's ReadMe-hosted developer reference (puzzle-api.readme.io, linked from puzzle.io's llms.txt)"
         }
       ]
     }
@@ -9293,19 +9304,24 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Puzzle documents several in-product AI features that produce insights and suggestions from the user's own ledger. AI Close uses agents to review transactions and surface discrepancies. An \"ask AI\" button suggests transaction categorizations. Accounting AI runs prompts on the general ledger, and cash runway forecasts run as an AI task alongside the Dashboard. The MCP route to Claude is extra but sits outside the product. missing for 10: independent or hands-on corroboration that the in-product insights are useful, and in-depth docs for the in-product plain-English Q&A (only a marketing line).",
+    "rationale": "Puzzle documents several in-app AI features that turn ledger data into insights and suggestions: plain-English questions about the business, AI Close agents that surface discrepancies, in-app 'ask AI' categorization help, runway forecasts run as AI tasks, and AR AI tasks that flag receivables needing attention. Much of the conversational insight is delivered through the external MCP and Claude rather than inside the product, which is not credited here. Missing for 10: independent or hands-on corroboration of the quality of the in-app insights, and detailed first-party docs on the in-app plain-English Q&A (the strongest evidence for it is a marketing page).",
     "evidenceIds": [
+      "puzzle-docs-9",
       "puzzle-docs-24",
       "puzzle-docs-25",
-      "puzzle-docs-30",
-      "puzzle-docs-9",
-      "puzzle-runway-forecast-20261106"
+      "puzzle-runway-forecast-20261106",
+      "puzzle-ar-aging-20261106",
+      "puzzle-docs-30"
     ],
     "support": {
       "relation": "direct",
       "coverage": "complete",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": [
+        {
+          "evidenceId": "puzzle-docs-9",
+          "quote": "Ask anything about your business, instantly, in plain English."
+        },
         {
           "evidenceId": "puzzle-docs-24",
           "quote": "AI Close helps you automate and accelerate your month-end process using AI agents to reconcile accounts, review transactions, and surface discrepancies."
@@ -9315,16 +9331,12 @@
           "quote": "A user can click on a button and “ask AI” for help in categorizing a transaction —without context switching between tools."
         },
         {
-          "evidenceId": "puzzle-docs-30",
-          "quote": "Accounting AI runs prompts on top of your general ledger. The output reflects your existing accounts and categories."
-        },
-        {
-          "evidenceId": "puzzle-docs-9",
-          "quote": "Ask anything about your business, instantly, in plain English."
-        },
-        {
           "evidenceId": "puzzle-runway-forecast-20261106",
-          "quote": "You can see runway on the Dashboard, run a forecast as an AI task, or ask Claude, ChatGPT or another AI assistant through the Puzzle MCP."
+          "quote": "You can see runway on the Dashboard, run a forecast as an AI task"
+        },
+        {
+          "evidenceId": "puzzle-ar-aging-20261106",
+          "quote": "flags the receivables that need attention before you close the month. You can work in the app, run AI tasks"
         }
       ]
     }
@@ -9335,11 +9347,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Puzzle's marketing says busywork tasks are 'described once, done automatically,' and it documents custom categorization rules and AI Close agents that reconcile and review transactions, so user-defined automation exists. The evidence does not show how these run in the background: there is no documented scheduler, trigger model, or recurring unattended runs, and outputs are reviewed by the user before they are final. Missing for 10: documented recurring schedules or event triggers, evidence of fully unattended background execution, in-depth setup docs beyond titles, independent or hands-on corroboration.",
+    "rationale": "Puzzle's own marketing says busywork can be \"described once, done automatically,\" its custom categorization rules point to user-defined automation, and AI Close uses agents to reconcile and review transactions. However, nothing documents recurring schedules, triggers, or truly unattended background runs, and outputs are reviewed by the user before anything is final. missing for 10: documented scheduling or trigger configuration for recurring automations, evidence that automations run unattended in the background, details on how custom rules execute, independent or hands-on corroboration",
     "evidenceIds": [
       "puzzle-docs-17",
-      "puzzle-docs-6",
       "puzzle-docs-24",
+      "puzzle-docs-6",
       "puzzle-docs-18"
     ],
     "support": {
@@ -9352,12 +9364,12 @@
           "quote": "described once, done automatically, reviewed by you before anything's final."
         },
         {
-          "evidenceId": "puzzle-docs-6",
-          "quote": "Creating custom rules"
-        },
-        {
           "evidenceId": "puzzle-docs-24",
           "quote": "AI Close helps you automate and accelerate your month-end process using AI agents to reconcile accounts, review transactions, and surface discrepancies."
+        },
+        {
+          "evidenceId": "puzzle-docs-6",
+          "quote": "Creating custom rules"
         }
       ]
     }
@@ -9366,16 +9378,16 @@
     "productId": "puzzle",
     "storyId": "agentic-builtin-assistant",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Puzzle documents several built-in AI features that take on delegated work. These include AI Close agents that reconcile accounts and review transactions, an in-app \"ask AI\" button for categorization, Accounting AI prompts run against the general ledger, AI tasks such as cash forecasting, and busywork that is \"described once, done automatically, reviewed by you.\" The MCP connection to Claude is an external assistant and is not credited here. Missing for 10: detailed docs on the in-product assistant's task scope and delegation workflow, and independent or hands-on corroboration of these AI features.",
+    "rationale": "Puzzle's own docs describe a built-in AI you can delegate work to. AI Close uses AI agents to reconcile accounts, review transactions and surface discrepancies. Users can hand off busywork that is \"described once, done automatically, reviewed by you,\" and can run forecasts and AR work as in-app AI tasks, alongside \"ask AI\" categorization and Accounting AI prompts on the ledger. The external MCP connection to Claude is not counted as the built-in assistant. missing for 10: independent or hands-on corroboration of in-app AI task delegation, and in-depth documentation of the AI-task workflow (which task types are supported, setup, limits).",
     "evidenceIds": [
       "puzzle-docs-24",
-      "puzzle-docs-25",
-      "puzzle-docs-30",
       "puzzle-docs-17",
       "puzzle-runway-forecast-20261106",
-      "puzzle-docs-9"
+      "puzzle-ar-aging-20261106",
+      "puzzle-docs-25",
+      "puzzle-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -9387,20 +9399,24 @@
           "quote": "AI Close helps you automate and accelerate your month-end process using AI agents to reconcile accounts, review transactions, and surface discrepancies."
         },
         {
-          "evidenceId": "puzzle-docs-25",
-          "quote": "A user can click on a button and “ask AI” for help in categorizing a transaction —without context switching between tools."
-        },
-        {
-          "evidenceId": "puzzle-docs-30",
-          "quote": "Accounting AI runs prompts on top of your general ledger."
-        },
-        {
           "evidenceId": "puzzle-docs-17",
           "quote": "Hand off the busywork. Finding software subscriptions, matching invoices to payments, pulling together what your accountant needs — described once, done automatically, reviewed by you before anything's final."
         },
         {
           "evidenceId": "puzzle-runway-forecast-20261106",
           "quote": "You can see runway on the Dashboard, run a forecast as an AI task"
+        },
+        {
+          "evidenceId": "puzzle-ar-aging-20261106",
+          "quote": "You can work in the app, run AI tasks"
+        },
+        {
+          "evidenceId": "puzzle-docs-25",
+          "quote": "A user can click on a button and “ask AI” for help in categorizing a transaction —without context switching between tools."
+        },
+        {
+          "evidenceId": "puzzle-docs-30",
+          "quote": "Accounting AI runs prompts on top of your general ledger."
         }
       ]
     }
@@ -9409,14 +9425,14 @@
     "productId": "puzzle",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Puzzle documents its own REST API (OpenAPI 3.0.3 spec, versioned /rest/v0 base path) and a separate sandbox server, so the product can be driven programmatically without the UI. The sandbox is a real isolated environment, not a dry-run mode, which suits automated testing. However, access is request-gated, sandbox credentials are issued manually, and nothing documents a CLI, headless runner, or CI integration. missing for 10: CLI or documented headless/CI execution mode, self-serve credentials for automation, CI-specific guidance or examples, independent corroboration of automated usage.",
+    "rationale": "Puzzle documents a REST API (OpenAPI 3.0.3 spec at /rest/v0) and a separate sandbox server, so its ledger can be driven programmatically without the UI. However, API access is gated by request, sandbox credentials are issued manually, the API was built for platform-to-platform integrations, and nothing addresses CI pipelines. Missing for 10: a CLI or documented headless/CI workflow, self-serve credentials suitable for automation, CI-oriented docs or examples, and independent hands-on corroboration.",
     "evidenceIds": [
-      "puzzle-docs-42",
       "puzzle-openapi-spec-20261106",
       "puzzle-sandbox-server-20261106",
-      "puzzle-api-tryit-20261106"
+      "puzzle-api-tryit-20261106",
+      "puzzle-docs-42"
     ],
     "support": {
       "relation": "direct",
@@ -9424,20 +9440,20 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "puzzle-docs-42",
-          "quote": "Our API was originally architected for deep platform-to-platform integrations."
-        },
-        {
           "evidenceId": "puzzle-openapi-spec-20261106",
           "quote": "Puzzle publishes a machine-readable OpenAPI 3.0.3 document"
         },
         {
           "evidenceId": "puzzle-sandbox-server-20261106",
-          "quote": "Sandbox Server: https://staging.southparkdata.com / Production Server: https://api.puzzle.io"
+          "quote": "Request your sandbox credentials by emailing us at"
         },
         {
           "evidenceId": "puzzle-api-tryit-20261106",
           "quote": "API access is request-gated (api@puzzle.io) per the getting-started page."
+        },
+        {
+          "evidenceId": "puzzle-docs-42",
+          "quote": "Our API was originally architected for deep platform-to-platform integrations."
         }
       ]
     }
@@ -9448,7 +9464,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Puzzle documents only an MCP server (https://app.puzzle.io/mcp) that external assistants such as Claude connect to. That is the opposite direction from this story and earns no credit here. Puzzle does ship built-in AI agents (AI Close, Accounting AI), so letting users plug external MCP servers into it is a fair question, but nothing in the pack shows it can act as an MCP client and consume tools from user-supplied servers.",
+    "rationale": "The axis applies because Puzzle ships its own in-product AI features (Accounting AI, AI Close agents), and such features could plausibly consume external MCP servers. However, the evidence only shows Puzzle acting as an MCP server that Claude, ChatGPT or other assistants connect to. That is the opposite role and earns no credit for this client-side story, and nothing documents plugging third-party MCP servers into Puzzle.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9463,12 +9479,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Puzzle documents an official MCP server hosted at https://app.puzzle.io/mcp, with a setup guide for connecting Claude. The guide lists the exposed ledger tools, including trial balance, transactions, journal entries, invoices and bills. Beta write access confirms each change with the user, and a separate article says ChatGPT and other assistants can connect through the Puzzle MCP. missing for 10: independent or hands-on corroboration of the MCP connection, and write access is still Beta.",
+    "rationale": "Puzzle documents an official MCP server at https://app.puzzle.io/mcp, with a setup guide for connecting Claude and other assistants, a broad set of ledger tools, and beta write access that confirms each change with the user. Other Puzzle help articles also point users to querying runway and AR aging through the Puzzle MCP. Missing for 10: independent or hands-on corroboration of the MCP connection, and write access is still labeled Beta.",
     "evidenceIds": [
       "puzzle-docs-22",
+      "puzzle-docs-2",
       "puzzle-mcp-tools-20261106",
       "puzzle-runway-forecast-20261106",
-      "puzzle-docs-2"
+      "puzzle-ar-aging-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9481,7 +9498,7 @@
         },
         {
           "evidenceId": "puzzle-mcp-tools-20261106",
-          "quote": "connected at https://app.puzzle.io/mcp"
+          "quote": "Once connected, open a new conversation and start exploring your financials."
         },
         {
           "evidenceId": "puzzle-runway-forecast-20261106",
@@ -9493,21 +9510,22 @@
   {
     "productId": "puzzle",
     "storyId": "agentic-nl-commands",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Puzzle documents plain-English operation in several places. You can ask questions about your business in plain English, and Accounting AI runs prompts on top of the general ledger. Its MCP connects your account to Claude for natural conversation across ledger tools, and in Beta it can make write changes, confirming each with you first. missing for 10: write/command operation via natural language is still Beta, no independent or hands-on corroboration of natural-language control in practice.",
+    "rationale": "Puzzle documents its own natural-language interfaces: in-app plain-English questions, AI tasks that are described once and then run automatically, and Accounting AI prompts over the ledger. Its first-party MCP server lets Claude or ChatGPT query financials conversationally. However, operating the product through natural-language actions (write access) is only in Beta with per-change confirmation, so read-heavy querying is better evidenced than full command-driven operation. missing for 10: generally available natural-language write and operation coverage across the product, and independent or hands-on corroboration of these natural-language workflows.",
     "evidenceIds": [
       "puzzle-docs-9",
-      "puzzle-docs-22",
-      "puzzle-mcp-tools-20261106",
-      "puzzle-docs-30",
       "puzzle-docs-17",
-      "puzzle-runway-forecast-20261106"
+      "puzzle-docs-22",
+      "puzzle-docs-30",
+      "puzzle-mcp-tools-20261106",
+      "puzzle-runway-forecast-20261106",
+      "puzzle-ar-aging-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
@@ -9515,20 +9533,24 @@
           "quote": "Ask anything about your business, instantly, in plain English."
         },
         {
-          "evidenceId": "puzzle-docs-22",
-          "quote": "Puzzle's MCP (Model Context Protocol) integration lets you connect your Puzzle account directly to Claude, giving you instant access to your financial data through natural conversation"
+          "evidenceId": "puzzle-docs-17",
+          "quote": "described once, done automatically, reviewed by you before anything's final."
         },
         {
-          "evidenceId": "puzzle-mcp-tools-20261106",
-          "quote": "With write access turned on (Beta), your assistant can also make changes... It confirms each change with you before making it."
+          "evidenceId": "puzzle-docs-22",
+          "quote": "giving you instant access to your financial data through natural conversation — no exports, no copy-pasting."
         },
         {
           "evidenceId": "puzzle-docs-30",
           "quote": "Accounting AI runs prompts on top of your general ledger."
         },
         {
-          "evidenceId": "puzzle-docs-17",
-          "quote": "described once, done automatically, reviewed by you before anything's final."
+          "evidenceId": "puzzle-mcp-tools-20261106",
+          "quote": "With write access turned on (Beta), your assistant can also make changes... It confirms each change with you before making it."
+        },
+        {
+          "evidenceId": "puzzle-runway-forecast-20261106",
+          "quote": "run a forecast as an AI task, or ask Claude, ChatGPT or another AI assistant through the Puzzle MCP."
         }
       ]
     }
@@ -9539,7 +9561,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Puzzle is an accounting SaaS that documents a REST API, an OpenAPI spec, a ReadMe Try-It console and a hosted MCP server, but nothing in the evidence describes an official command-line tool. The API and MCP are adjacent building blocks and different features, not a CLI, so the applicable axis lacks evidence.",
+    "rationale": "Puzzle is an accounting SaaS, and such a product could plausibly ship an official CLI, so the axis applies. The evidence documents a REST API, an OpenAPI spec, a ReadMe 'Try It!' console and an MCP server, but none of these is an official command-line tool. Those are adjacent developer and agent surfaces and earn no credit for a CLI story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9554,7 +9576,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Puzzle documents a real public API: a machine-readable OpenAPI 3.0.3 spec at app.puzzle.io/rest/v0, a ReadMe-hosted reference with a per-endpoint Try It console, and a separate sandbox server. However, access is request-gated by email, sandbox credentials are provisioned manually, the API is v0 and \"under development,\" and the vendor says it was built for platform-to-platform integrations, so it is unclear whether an individual user can drive their own account through it. Missing for 10: self-serve API access and credentials, evidence the API serves individual end users rather than embedding platforms, a changelog or deprecation policy, and independent or hands-on corroboration.",
+    "rationale": "Puzzle documents a real REST API: an OpenAPI 3.0.3 spec, a ReadMe-hosted reference with per-endpoint Try It consoles, a separate sandbox server and a URL-versioned v0 with a stability statement. However, access is request-gated by email, sandbox credentials are provisioned manually, and the vendor says the API was originally architected for platform-to-platform embedded integrations rather than end-user self-serve driving. Missing for 10: self-serve API key access for individual users, a formal deprecation/changelog policy, a prose-linked spec, and independent hands-on corroboration of driving the product through the API.",
     "evidenceIds": [
       "puzzle-openapi-spec-20261106",
       "puzzle-api-tryit-20261106",
@@ -9578,7 +9600,11 @@
         },
         {
           "evidenceId": "puzzle-sandbox-server-20261106",
-          "quote": "Request your sandbox credentials by emailing us at"
+          "quote": "Puzzle documents a sandbox separate from production"
+        },
+        {
+          "evidenceId": "puzzle-api-stability-20261106",
+          "quote": "The API is URL-versioned (base path /rest/v0)"
         },
         {
           "evidenceId": "puzzle-docs-42",
@@ -9593,7 +9619,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document issuing scoped or least-privilege API credentials for an agent. API credentials (client id/secret, connection key) are provisioned manually by email, with no mention of scopes or permission levels. The MCP \"write access turned on (Beta)\" toggle is an adjacent read/write control on the assistant connection, not a way to issue scoped credentials, so it earns no credit.",
+    "rationale": "Puzzle has an API and an MCP server, so scoped agent credentials is a fair question for this product. The evidence does not show that users can issue scoped or least-privilege credentials. API credentials (client id/secret, connection key) are provisioned manually by email with no documented scopes. The MCP 'write access turned on (Beta)' toggle is a related on/off access control, not the issuance of scoped API credentials.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -9608,7 +9634,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a REST API (/rest/v0), a published OpenAPI 3.0.3 spec, a ReadMe reference whose \"Try It!\" console generates language snippets, a sandbox, and an MCP server. None of these is an official SDK: the spec and auto-generated snippets are building blocks a developer could use to make a client, not vendor-shipped, installable SDK libraries. The axis applies to an API-offering SaaS product, but nothing in the evidence shows an official SDK.",
+    "rationale": "The evidence documents a REST API, a published OpenAPI 3.0.3 spec, a ReadMe reference with per-endpoint generated language snippets, a sandbox, and an MCP server. None of it shows an official, vendor-published SDK or client library. Generated request snippets and an OpenAPI spec are developer building blocks that could be used to build a client, not official SDKs, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9623,7 +9649,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Puzzle is an accounting SaaS with a documented REST API, so a buyer could fairly ask whether it offers webhooks and the axis applies. The evidence covers the API, an OpenAPI spec, a sandbox and an MCP server, but none of it documents registrable outbound HTTP callbacks or event subscriptions. The request-based API and MCP tools are a different capability and earn no credit here.",
+    "rationale": "Puzzle is an API-backed accounting platform, so subscribing to events via webhooks is a fair question for it. The evidence documents a REST API (OpenAPI spec, sandbox, Try It console) and an MCP server, but nothing about registrable outbound HTTP callbacks or event subscriptions. A request/response API and an MCP server are adjacent capabilities and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9638,7 +9664,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents an accounts payable aging report or point-in-time vendor balances. The closest items are MCP tools that expose bills and vendors data, a 'top vendors by spend' example, and a cash forecast built from open bills. These are adjacent data access and forecasting features, not an AP aging or as-of vendor balance view, so they earn no credit for this story.",
+    "rationale": "The pack documents an AR aging report by customer, but nothing documents an accounts payable aging report or point-in-time vendor balances. The AR aging evidence covers receivables, a different story, and does not transfer. The MCP tool list mentions bills and vendors, but it is a data-access surface rather than a documented AP aging or vendor-balance view, so it is only adjacent.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -9650,10 +9676,10 @@
   {
     "productId": "puzzle",
     "storyId": "api-interactive-docs",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Puzzle's ReadMe-hosted API reference has a live per-endpoint \"Try It!\" console with generated language snippets, synced from a published OpenAPI 3.0.3 spec, so the interactive, runnable reference exists. Running requests needs credentials, API access is request-gated via email, and sandbox credentials are provisioned manually rather than self-serve. Missing for 10: self-serve credentials for running examples, independent or hands-on corroboration that the Try It console works end-to-end.",
+    "rationale": "Puzzle's ReadMe-hosted API reference includes a live \"Try It!\" console on each endpoint and generated language snippets, synced from a published OpenAPI 3.0.3 spec, so an interactive reference with runnable examples does exist. However, actually running requests needs the caller's own credentials, and both API access and sandbox credentials are granted only by emailing api@puzzle.io, so a user cannot explore runnable examples self-serve. missing for 10: self-serve or unauthenticated execution of examples, instant sandbox credentials, independent or hands-on corroboration that the console works.",
     "evidenceIds": [
       "puzzle-api-tryit-20261106",
       "puzzle-openapi-spec-20261106",
@@ -9661,16 +9687,20 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": [
         {
           "evidenceId": "puzzle-api-tryit-20261106",
-          "quote": "The ReadMe-hosted API reference ships the live \"Try It!\" console per endpoint (\"Click Try It! to start a request and see the response here!\") with generated language snippets."
+          "quote": "The ReadMe-hosted API reference ships the live \"Try It!\" console per endpoint"
+        },
+        {
+          "evidenceId": "puzzle-api-tryit-20261106",
+          "quote": "Executing requests needs the caller's own credentials; API access is request-gated (api@puzzle.io) per the getting-started page."
         },
         {
           "evidenceId": "puzzle-openapi-spec-20261106",
-          "quote": "it is the sync source for the vendor's ReadMe-hosted developer reference (puzzle-api.readme.io, linked from puzzle.io's llms.txt)"
+          "quote": "Puzzle publishes a machine-readable OpenAPI 3.0.3 document"
         },
         {
           "evidenceId": "puzzle-sandbox-server-20261106",
@@ -9682,17 +9712,18 @@
   {
     "productId": "puzzle",
     "storyId": "api-machine-spec",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Puzzle publishes a machine-readable OpenAPI 3.0.3 document at app.puzzle.io/rest/v0/openapi.yaml that downloads unauthenticated, so the core capability exists. Discoverability is weak: the spec URL is not linked from any docs page, the ReadMe download button is admin-gated, and probes of the help domain's standard OpenAPI paths returned 404. Those probes checked a different domain, so they do not contradict the vendor's claim. Missing for 10: a documented or prose-linked public download path, a working self-serve download button on the developer reference, and independent or hands-on confirmation that the spec downloads.",
+    "rationale": "Puzzle publishes a machine-readable OpenAPI 3.0.3 document at app.puzzle.io/rest/v0/openapi.yaml that downloads without authentication and feeds its ReadMe API reference. The probe 404s were against help.puzzle.io paths, so they do not contradict the app-domain spec. Missing for 10: discoverability (the spec URL is not linked from any docs page and the ReadMe download button is admin-gated), and independent or hands-on corroboration of the spec's completeness.",
     "evidenceIds": [
       "puzzle-openapi-spec-20261106",
-      "puzzle-probe-3"
+      "puzzle-api-tryit-20261106",
+      "puzzle-api-stability-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
       "citations": [
         {
@@ -9701,7 +9732,7 @@
         },
         {
           "evidenceId": "puzzle-openapi-spec-20261106",
-          "quote": "the document itself downloads unauthenticated"
+          "quote": "the document itself downloads unauthenticated."
         }
       ]
     }
@@ -9712,7 +9743,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Puzzle's API getting-started docs describe a sandbox server (staging.southparkdata.com) that is separate from the production server (api.puzzle.io), with dedicated test credentials. That lets developers test without touching production data. Credentials are issued manually by email, not self-serve, and the sandbox runs on a non-puzzle.io staging domain. Missing for 10: self-serve sandbox provisioning, documentation of sandbox data seeding/reset behavior, a sandbox mode for the MCP/agent surface, and independent hands-on corroboration.",
+    "rationale": "Puzzle's API docs describe a dedicated sandbox server separate from the production server, with test-prefixed client credentials, so integrators can test without touching production data. Access is manual: sandbox credentials must be requested by email and are not self-serve. missing for 10: self-serve sandbox provisioning, in-depth sandbox documentation (data seeding, reset, parity with production), a sandbox or test mode for the MCP agent surface, independent or hands-on corroboration.",
     "evidenceIds": [
       "puzzle-sandbox-server-20261106",
       "puzzle-api-tryit-20261106"
@@ -9739,7 +9770,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Puzzle's API is URL-versioned (base path /rest/v0, per the OpenAPI document), and the vendor states that documented, released endpoints will remain stable and that it will work with users on any changes. That is only an informal stability pledge: the API is self-described as under development at v0, and the vendor states no formal deprecation policy exists. Missing for 10: a formal published deprecation policy, deprecation timelines or notice periods, a changelog, a stable (non-v0) version, and independent corroboration.",
+    "rationale": "Puzzle's API is URL-versioned (/rest/v0, confirmed in the published OpenAPI spec). The vendor's only stability commitment is informal: documented endpoints 'will remain stable for the indefinite future' and it will 'work with you' on changes. That is a vague assurance rather than a documented deprecation policy, and the v0 version marks the API as still under development. Missing for 10: a formal deprecation policy with notice periods or timelines, a changelog, a stable non-v0 version, and independent corroboration of versioning practice.",
     "evidenceIds": [
       "puzzle-api-stability-20261106",
       "puzzle-openapi-spec-20261106"
@@ -9763,31 +9794,26 @@
   {
     "productId": "puzzle",
     "storyId": "ar-aging-customer-balances",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Puzzle documents native invoicing and tracks open invoices, which feed its cash-flow forecast. Its MCP surface also exposes invoices and customers, so a basic receivables foundation exists within the product. However, nothing documents an AR aging report or a per-customer balance view. Missing for 10: documented AR aging report (buckets such as 30/60/90 days), per-customer outstanding balance view, AR subledger or report documentation, and independent or hands-on corroboration.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Puzzle's own help docs describe an AR aging report under Revenue → AR aging. It groups each customer's unpaid invoices into Current, 1-30, 31-60, 61-90 and 91+ day buckets, shows what's overdue by customer and tracks unapplied payments. Per-customer receivables are also exposed through MCP customer and invoice tools. missing for 10: independent or hands-on corroboration of the AR aging report.",
     "evidenceIds": [
-      "puzzle-runway-forecast-20261106",
-      "puzzle-mcp-tools-20261106",
-      "puzzle-docs-40"
+      "puzzle-ar-aging-20261106",
+      "puzzle-mcp-tools-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an accountant, I can track accounts receivable with aging reports and per-customer balances",
       "citations": [
         {
-          "evidenceId": "puzzle-runway-forecast-20261106",
-          "quote": "a week-by-week cash flow forecast built from your open invoices, bills and payroll"
+          "evidenceId": "puzzle-ar-aging-20261106",
+          "quote": "Each customer's unpaid invoices are grouped into Current, 1-30, 31-60, 61-90 and 91+ days"
         },
         {
-          "evidenceId": "puzzle-mcp-tools-20261106",
-          "quote": "invoices, bills, vendors, customers"
-        },
-        {
-          "evidenceId": "puzzle-docs-40",
-          "quote": "Puzzle's invoice editor lets you build a professional, branded invoice"
+          "evidenceId": "puzzle-ar-aging-20261106",
+          "quote": "it shows what's overdue by customer, finds the payments that most likely pay your open invoices, and flags the receivables that need attention before you close the month."
         }
       ]
     }
@@ -9798,12 +9824,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Puzzle documents automatic categorization of imported transactions (up to 98% auto-categorization, 98% for Brex-connected transactions) and an \"ask AI\" button for categorization suggestions, so the core suggestion capability exists. Nothing in the evidence shows the system learning from a user's corrections; custom rules are a manual configuration, not learning. Missing for 10: documented learning from user corrections, detail on how suggestions are presented and accepted, independent or hands-on corroboration.",
+    "rationale": "Puzzle's own docs claim automatic categorization of imported transactions (up to 98% when Brex is connected) and an in-context \"ask AI\" button for categorization help, so the suggestion half of the story is covered. Nothing in the evidence shows the categorizer learning from user corrections; custom rules exist but are user-authored, which is an adjacent control and not adaptive learning. Missing for 10: documented learning from user corrections, detail on how suggestions are presented and reviewed, independent or hands-on corroboration of categorization accuracy.",
     "evidenceIds": [
-      "puzzle-docs-18",
       "puzzle-docs-15",
-      "puzzle-docs-25",
-      "puzzle-docs-6"
+      "puzzle-docs-18",
+      "puzzle-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -9811,16 +9836,12 @@
       "subject": "As a founder, I can get automatic categorization suggestions for imported transactions that learn from my corrections",
       "citations": [
         {
-          "evidenceId": "puzzle-docs-18",
-          "quote": "auto-categorization"
-        },
-        {
           "evidenceId": "puzzle-docs-15",
           "quote": "98% transactions categorized When you connect Brex with Puzzle"
         },
         {
           "evidenceId": "puzzle-docs-25",
-          "quote": "A user can click on a button and “ask AI” for help in categorizing a transaction"
+          "quote": "A user can click on a button and “ask AI” for help in categorizing a transaction —without context switching between tools."
         }
       ]
     }
@@ -9831,12 +9852,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Puzzle documents its own bulk operations: batch categorization of transactions, CSV batch import of manual journal entries, and bulk add or edit of the Chart of Accounts via CSV upload. Coverage is still incomplete for an AI-native user. Batch categorization is evidenced only by an article title, and the MCP write path (Beta) confirms each change individually, so there is no evidence of bulk actions through the agent or API. Missing for 10: documented bulk operations via API or MCP, detail on batch categorization scope and limits, bulk edit or delete across other item types (invoices, bills, transactions), and independent or hands-on corroboration.",
+    "rationale": "Puzzle documents its own bulk operations: CSV batch upload of manual journal entries, CSV bulk add or edit of the Chart of Accounts, and a 'Batch Categorize Transactions' help article (title only). These are limited to specific item types and are UI/CSV-driven. Nothing shows bulk actions through the API or the MCP agent, which confirms each write change individually. missing for 10: bulk operations via the API or MCP for AI-native workflows, documented detail on batch categorization beyond its title, bulk edit or delete across other item types (invoices, bills, transactions), and independent or hands-on corroboration.",
     "evidenceIds": [
-      "puzzle-docs-7",
       "puzzle-docs-43",
       "puzzle-docs-46",
-      "puzzle-docs-6",
+      "puzzle-docs-7",
       "puzzle-mcp-tools-20261106"
     ],
     "support": {
@@ -9865,7 +9885,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Puzzle documents its own 'custom rules' feature within transaction categorization, and describes busywork tasks that are 'described once, done automatically.' This suggests user-defined rules that act automatically. However, the evidence is a bare article title plus marketing copy, with no detail on triggers, event types or the range of actions. missing for 10: documented event triggers (e.g., new transaction arrival), actions beyond categorization, rule configuration detail, independent or hands-on corroboration.",
+    "rationale": "Puzzle's help center has a 'Creating custom rules' article in its transaction-categorization collection, and the startup page says tasks are 'described once, done automatically'. Together these suggest user-defined automation, but the pack only shows that article's title and gives no detail on triggers, conditions, or actions. Missing for 10: documentation of what events trigger rules (e.g. new transaction imported), what actions rules can perform beyond categorization, rule configuration details, and any hands-on or independent corroboration.",
     "evidenceIds": [
       "puzzle-docs-6",
       "puzzle-docs-17"
@@ -9881,7 +9901,7 @@
         },
         {
           "evidenceId": "puzzle-docs-17",
-          "quote": "described once, done automatically, reviewed by you before anything's final."
+          "quote": "described once, done automatically, reviewed by you before anything's final"
         }
       ]
     }
@@ -9892,7 +9912,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for an AI-driven accounting platform, but the pack documents no user-configurable recurring schedule. The closest items describe automation ('described once, done automatically'), month-end AI Close agents, custom categorization rules, and running a forecast as a one-off AI task. None of these documents a time-based recurring job or workflow the user can schedule.",
+    "rationale": "Scheduling jobs is a fair question for an accounting SaaS with AI tasks, so the axis applies. However, the evidence shows only on-demand actions: running a forecast or AR analysis 'as an AI task', AI Close agents, MCP queries, and categorization rules. Marketing copy says busywork is 'described once, done automatically', but nothing documents a user-configurable recurring schedule (cron, cadence, or timed trigger) for jobs or workflows, and one-off AI tasks do not count as recurring scheduling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9907,7 +9927,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Puzzle offers automations such as custom categorization rules and AI tasks, so this axis applies. However, the evidence does not document versioning, version review, or rollback of those automations. The closest items are adjacent and earn no credit: review of automation outputs before they are final, MCP write-access confirmations, and reversing journal entries when a manual entry is edited. None of these is version history or rollback for the automations themselves.",
+    "rationale": "Puzzle documents automations such as custom categorization rules, AI Close agents and AI tasks, so this axis applies. However, no evidence shows that the automations themselves can be versioned, have their definitions reviewed, or be rolled back. Reviewing outputs before they are final, MCP write confirmations, and reversing edits to manual journal entries are adjacent behaviors applied to individual results or transactions, not version control or rollback for automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9920,12 +9940,13 @@
     "productId": "puzzle",
     "storyId": "bank-feeds-auto-import",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Puzzle documents connecting card and finance platforms such as Brex and Ramp, and auto-categorizes the transactions that come in, which partly covers connecting credit-card accounts for automated transaction flow. The evidence never names direct bank-account feeds or a daily automatic import schedule. The reconciliation article only shows that bank and card accounts can be reconciled, not how their transactions get imported. Missing for 10: explicit bank-account connection/feeds, documented automatic daily import cadence, a list of supported banks and card issuers, independent or hands-on corroboration.",
+    "rationale": "Puzzle's own integrations page says you can connect Brex and Ramp, which are card and spend platforms, and its help docs cover reconciling bank and credit-card accounts against bank statements. That implies connected bank and card accounts exist, but nothing documents a general bank feed or automatic daily transaction import. Missing for 10: documented bank-account connection (e.g., a bank-feed aggregator or supported-bank list), explicit automatic daily or recurring transaction sync, broad credit-card connectivity beyond named partners, independent or hands-on corroboration.",
     "evidenceIds": [
       "puzzle-docs-15",
       "puzzle-docs-14",
+      "puzzle-docs-29",
       "puzzle-docs-19"
     ],
     "support": {
@@ -9942,8 +9963,8 @@
           "quote": "2x faster to close books When you connect Ramp with Puzzle"
         },
         {
-          "evidenceId": "puzzle-docs-19",
-          "quote": "Puzzle customers who fully onboard and connect supported integrations can reduce the time required to complete their monthly close by 50% or more"
+          "evidenceId": "puzzle-docs-29",
+          "quote": "performing a reconciliation is the best way to ensure every single transaction is accounted for and matches your bank statement exactly"
         }
       ]
     }
@@ -9954,10 +9975,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Puzzle documents its own bank and credit card reconciliation so every transaction matches the bank statement. AI Close uses agents to reconcile accounts, review transactions and surface discrepancies, which covers the core of the story. However, no evidence shows a review view that separates matched, unmatched and duplicate transactions per account. Missing for 10: documented matched/unmatched categorization, duplicate-transaction detection, a per-account review workflow, independent or hands-on corroboration.",
+    "rationale": "Puzzle documents bank and credit card reconciliation against the bank statement, and AI Close uses agents to reconcile accounts, review transactions and surface discrepancies. None of the evidence describes how matched, unmatched or duplicate transactions are categorized or presented for review. Missing for 10: explicit matched/unmatched transaction views, duplicate-transaction detection, per-account reconciliation workflow detail, independent or hands-on corroboration.",
     "evidenceIds": [
       "puzzle-docs-29",
-      "puzzle-docs-24"
+      "puzzle-docs-24",
+      "puzzle-docs-39"
     ],
     "support": {
       "relation": "direct",
@@ -9981,12 +10003,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Puzzle documents first-party integrations with Stripe (payments) and with Ramp and Brex (spend and banking-style accounts). These connected sources feed reconciliation and auto-categorization. Payroll data shows up in the ledger (forecasts and MCP tools reference payroll), but no payroll-system integration or direct bank-feed connection is explicitly documented. Missing for 10: an explicit payroll-provider integration, documented direct bank-feed connections, details on automatic sync behavior, and independent corroboration.",
+    "rationale": "Puzzle documents first-party connections for payments (Stripe, with automated revenue recognition) and for spend and banking-style accounts (Brex, Ramp), and it reconciles bank and card accounts against the ledger. Payroll appears only as data the ledger and forecasts use; no payroll-system integration is named. Missing for 10: a documented payroll integration, an explicit list of supported bank-feed connections, details on automatic sync behavior, and independent or hands-on corroboration.",
     "evidenceIds": [
       "puzzle-docs-13",
       "puzzle-docs-14",
       "puzzle-docs-15",
+      "puzzle-docs-8",
       "puzzle-docs-19",
+      "puzzle-docs-29",
       "puzzle-runway-forecast-20261106"
     ],
     "support": {
@@ -10008,7 +10032,7 @@
         },
         {
           "evidenceId": "puzzle-docs-19",
-          "quote": "Puzzle customers who fully onboard and connect supported integrations"
+          "quote": "Puzzle customers who fully onboard and connect supported integrations can reduce the time required to complete their monthly close by 50% or more"
         }
       ]
     }
@@ -10019,7 +10043,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only that bills and vendors exist as ledger data exposed through MCP tools, and that cash forecasts draw on open bills. Nothing documents capturing vendor bills, routing them for approval, or scheduling payments in one workflow, so these mentions are adjacent at best and earn no credit.",
+    "rationale": "The evidence shows bills and vendors only as ledger data: the MCP tools can read them, and the cash forecast draws on open bills. Nothing documents a bill-capture workflow, approval routing, or payment scheduling, so the core accounts-payable workflow in this story is unevidenced. The generic PDF/CSV import via Accounting AI is not documented as bill capture and does not transfer to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10034,7 +10058,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Puzzle documents adding and editing the chart of accounts in bulk via CSV upload from Company Settings, and it supports classifications with unlimited Groups for Classes, which covers the class/tag dimension. Nothing in the pack shows how account types are set or whether sub-account hierarchies are supported. Missing for 10: explicit account-type configuration, sub-account/parent-child hierarchy, in-app (non-CSV) COA editing details, independent or hands-on corroboration.",
+    "rationale": "Puzzle's own docs show you can bulk add or edit the Chart of Accounts by CSV upload from Company Settings, and a Classifications FAQ shows a class dimension with unlimited Groups. Neither source documents configuring account types or creating sub-account hierarchies. missing for 10: documented account-type configuration, sub-account/parent-child hierarchy support, in-app (non-CSV) COA editing details, tag dimensions beyond classes, independent or hands-on corroboration.",
     "evidenceIds": [
       "puzzle-docs-46",
       "puzzle-docs-36"
@@ -10061,26 +10085,34 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An audit trail is a fair axis for accounting/ledger software, but the evidence pack never documents an audit log recording who changed what and when across the ledger. The closest item is that editing a manual journal entry creates a reversing entry plus a new one. That is an adjacent history-preserving behavior, not a user-attributed, ledger-wide change log, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "The evidence pack documents no audit log or change history that records which user changed which ledger record and when, either per entity or across the whole ledger. The only related behavior is that editing a manual journal entry automatically posts a voiding (reversing) entry and a new entry. That preserves accounting history for one entry type, but it is an adjacent feature, not a who-changed-what-and-when audit trail.",
+    "evidenceIds": [
+      "puzzle-docs-31"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an accountant, I can see a complete audit trail of who changed what and when across the entire ledger",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "puzzle-docs-31",
+          "quote": "Puzzle automatically creates a voiding (reversing) journal entry for the original and posts a new entry reflecting your changes."
+        }
+      ]
     }
   },
   {
     "productId": "puzzle",
     "storyId": "create-send-invoices",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Puzzle's own docs cover building branded invoices in a live-preview editor and sending them by email from Puzzle, so the create-and-send part of the story is delivered. Nothing in the pack shows online payment options or tracking of when an invoice is viewed or paid; the only related mention is that open invoices feed the cash forecast. Missing for 10: online payment options on invoices (pay links or card/ACH), viewed-status tracking, paid-status notifications, and independent or hands-on corroboration.",
+    "rationale": "Puzzle documents an invoice editor with live preview and branding, and invoices can be emailed from Puzzle. Its AR aging report tracks unpaid invoices and matches likely payments, which partly covers seeing when invoices are paid. There is no evidence of online payment options on invoices or of tracking when an invoice is viewed. Missing for 10: online payment options (pay-by-card/ACH link) on invoices, invoice viewed/opened tracking, explicit per-invoice paid-status notifications, independent hands-on corroboration.",
     "evidenceIds": [
       "puzzle-docs-40",
       "puzzle-docs-28",
-      "puzzle-docs-47"
+      "puzzle-docs-47",
+      "puzzle-ar-aging-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -10092,12 +10124,12 @@
           "quote": "Puzzle's invoice editor lets you build a professional, branded invoice and see exactly how it will look as you go!"
         },
         {
-          "evidenceId": "puzzle-docs-28",
-          "quote": "The editor opens in a split view: the form on the left, a live preview on the right that updates as you type — so you always know what your customer will see."
-        },
-        {
           "evidenceId": "puzzle-docs-47",
           "quote": "applies everywhere your invoice appears — the live preview, downloaded PDFs, and emails sent from Puzzle."
+        },
+        {
+          "evidenceId": "puzzle-ar-aging-20261106",
+          "quote": "it shows what's overdue by customer, finds the payments that most likely pay your open invoices, and flags the receivables that need attention before you close the month."
         }
       ]
     }
@@ -10108,10 +10140,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Puzzle supports classes: \"a user can create an unlimited number of Groups for Classes\". It also offers one-click financial reports and exports of statements on a cash or accrual basis. However, no evidence documents building custom reports that are filtered or grouped by class, location, or tag, so class setup alone does not deliver this reporting story.",
+    "rationale": "The pack shows that Puzzle supports class groupings (\"unlimited number of Groups for Classes\") and offers one-click financial reports and statement exports. Nothing documents a custom report builder, or reports filtered or grouped by class, location, or tag. Class setup is an adjacent classification feature, not the reporting capability the story asks for, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an accountant, I can build custom reports filtered and grouped by class, location, or tag dimensions",
       "citations": []
@@ -10121,9 +10153,9 @@
     "productId": "puzzle",
     "storyId": "financial-statements-generation",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Puzzle documents exporting financial statements on cash or accrual basis in Excel, CSV and PDF, and advertises one-click real-time financial reports. Its MCP lets users ask for an income statement for a period such as \"this quarter,\" and bank reconciliation supports report accuracy. However, the evidence never names a balance sheet or cash-flow statement, and never shows arbitrary period selection; the cash flow forecast is a different capability. Missing for 10: explicit balance sheet and statement-of-cash-flows documentation, documented any-period/custom date-range selection, independent or hands-on corroboration of statement accuracy.",
+    "rationale": "Puzzle documents exporting financial statements on a cash or accrual basis in Excel, CSV and PDF, and one-click real-time reports. Its MCP guide shows asking for an income statement \"this quarter\", and reconciliation is presented as the basis for confidence in the reports. However, the evidence never names the balance sheet or cash-flow statement specifically, and never documents choosing an arbitrary reporting period. missing for 10: explicit balance sheet and cash-flow statement documentation, documented custom/any-period date selection, independent or hands-on corroboration of statement accuracy.",
     "evidenceIds": [
       "puzzle-docs-26",
       "puzzle-docs-16",
@@ -10145,8 +10177,12 @@
           "quote": "Get real-time financial reports with one click"
         },
         {
+          "evidenceId": "puzzle-mcp-tools-20261106",
+          "quote": "Try asking things like 'What does my income statement look like this quarter?'"
+        },
+        {
           "evidenceId": "puzzle-docs-29",
-          "quote": "performing a reconciliation is the best way to ensure every single transaction is accounted for and matches your bank statement exactly—giving you 100% confidence in your financial reports."
+          "quote": "giving you 100% confidence in your financial reports."
         }
       ]
     }
@@ -10157,13 +10193,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Puzzle has its own documented REST API, published as an OpenAPI 3.0.3 spec with a ReadMe reference that includes a balances endpoint, and its MCP surface exposes trial balance, journal entries and ledger accounts. However, full general ledger export in CSV/Excel is documented only as a UI export, and API access is request-gated. missing for 10: explicitly documented REST endpoints for full general ledger and trial balance pulls, documented open-format (CSV/JSON) output via the API, self-serve API access, independent or hands-on corroboration.",
+    "rationale": "Puzzle documents a REST API with a published OpenAPI 3.0.3 spec and a ReadMe reference that includes a balances endpoint. Its MCP integration exposes trial balance, journal entries, transactions and ledger account tools, so ledger data is reachable programmatically in structured form. However, no documented REST endpoint is evidenced for pulling the full general ledger, and API access is request-gated. The full-GL CSV/Excel export is an in-app export, not an API feature. Missing for 10: an explicitly documented REST endpoint for the full general ledger and trial balance, documented open-format (e.g. CSV) output via the API, self-serve API access, and independent hands-on corroboration.",
     "evidenceIds": [
       "puzzle-openapi-spec-20261106",
       "puzzle-api-tryit-20261106",
       "puzzle-mcp-tools-20261106",
-      "puzzle-docs-45",
-      "puzzle-docs-42"
+      "puzzle-docs-42",
+      "puzzle-sandbox-server-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -10172,15 +10208,11 @@
       "citations": [
         {
           "evidenceId": "puzzle-openapi-spec-20261106",
-          "quote": "Puzzle publishes a machine-readable OpenAPI 3.0.3 document (info title \"Puzzle Api\", server https://app.puzzle.io/rest/v0)"
+          "quote": "Puzzle publishes a machine-readable OpenAPI 3.0.3 document (info title \"Puzzle Api\", server https://app.puzzle.io/rest/v0) on its app domain"
         },
         {
           "evidenceId": "puzzle-mcp-tools-20261106",
-          "quote": "tools covering trial balance, cash activity, transactions, journal entries, chart of accounts, invoices, bills, vendors, customers, payroll, revenue/expense/spending metrics and ledger accounts"
-        },
-        {
-          "evidenceId": "puzzle-docs-45",
-          "quote": "you can export a full general ledger and financial statements on either cash or accrual basis in excel, csv, and pdf formats."
+          "quote": "tools covering trial balance, cash activity, transactions, journal entries, chart of accounts"
         },
         {
           "evidenceId": "puzzle-docs-42",
@@ -10195,7 +10227,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Period locking is a fair question for accounting software, but the evidence pack never documents locking closed periods or requiring an explicit reopening. The AI Close docs cover automating reconciliation and review, and edits to manual journal entries create reversing entries; both are adjacent behaviors, not a period lock.",
+    "rationale": "Period locking is a fair question for accounting software, so the axis applies. The evidence covers AI Close month-end automation, reconciliation, and automatic reversing entries when a manual journal entry is edited, but it never documents locking a closed period or requiring an explicit reopening. Reversing entries are an adjacent audit-trail behavior, not a period lock.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10210,10 +10242,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Puzzle documents manual journal entries as a first-party feature. Entries can be added one by one or bulk-imported via a CSV template, and edits post automatic reversing (voiding) entries, so the core posting workflow clearly exists. However, no evidence describes debit/credit balance enforcement or memo/supporting-note fields on entries. Missing for 10: documented balanced debit/credit validation, documented memo/attachment fields on journal entries, independent or hands-on corroboration.",
+    "rationale": "Puzzle's own help docs show that manual journal entries can be posted one by one or in bulk through a CSV import template. Editing a posted entry automatically creates a reversing entry and posts a corrected one. The evidence never mentions debit/credit balance validation or memo fields, so those parts of the story are unproven. Missing for 10: documented enforcement of balanced debits and credits, documented memo/supporting-note fields on entries, independent or hands-on corroboration.",
     "evidenceIds": [
       "puzzle-docs-43",
-      "puzzle-docs-31"
+      "puzzle-docs-31",
+      "puzzle-docs-35"
     ],
     "support": {
       "relation": "direct",
@@ -10237,7 +10270,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Puzzle markets a free migration from QuickBooks that it says avoids losing client data, and it documents CSV bulk import of manual journal entries and of the chart of accounts, which could carry history over from other systems. The evidence is mostly marketing taglines plus import templates. Nothing shows what transaction-level detail survives the migration. Missing for 10: documented migration process and scope (which fields, attachments and history levels are preserved), support for source systems other than QuickBooks beyond generic CSV journal import, independent or hands-on corroboration of lossless migration.",
+    "rationale": "Puzzle markets a free QuickBooks migration that claims no data loss. It also documents bulk CSV import of manual journal entries and the chart of accounts, which offers a path for books from other systems. The evidence is marketing taglines only: there is no help article on how migration works or which transaction-level fields carry over. Missing for 10: documented migration mechanics showing preserved transaction detail (memos, vendors, attachments, classes), migration sources beyond QuickBooks, and independent or hands-on corroboration of a lossless migration.",
     "evidenceIds": [
       "puzzle-docs-3",
       "puzzle-docs-4",
@@ -10259,7 +10292,7 @@
         },
         {
           "evidenceId": "puzzle-docs-43",
-          "quote": "you can upload a batch of entries all at once using Puzzle's CSV import template."
+          "quote": "you can upload a batch of entries all at once using Puzzle's CSV import template"
         },
         {
           "evidenceId": "puzzle-docs-46",
@@ -10274,12 +10307,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Puzzle ships its own month-end close feature, AI Close, which uses AI agents to reconcile accounts, review transactions and surface discrepancies, and it documents bank and credit-card reconciliation. Nothing in the evidence describes a close checklist, tracking of accrual tasks, or reviewer sign-offs. missing for 10: a documented close checklist with task status tracking, accrual-entry tracking within the close, review/approval sign-off workflow, independent or hands-on corroboration.",
+    "rationale": "Puzzle documents a dedicated month-end close feature (AI Close) that uses AI agents to reconcile accounts and review transactions, plus a bank and credit-card reconciliation workflow, so the core close process exists. Nothing in the evidence shows a checklist structure, task tracking, accrual close steps, or reviewer sign-offs. missing for 10: a documented close checklist with per-task status tracking, accrual tasks within the close, review/sign-off approvals, and independent or hands-on corroboration.",
     "evidenceIds": [
       "puzzle-docs-24",
       "puzzle-docs-5",
-      "puzzle-docs-29",
-      "puzzle-docs-19"
+      "puzzle-docs-29"
     ],
     "support": {
       "relation": "direct",
@@ -10301,9 +10333,9 @@
     "productId": "puzzle",
     "storyId": "multi-entity-consolidation",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Puzzle's own docs say it supports managing multiple companies (entities) under one login, which covers the multi-entity management half of the story. Consolidated financials appear only through a separate Joiin integration for multi-entity reporting, not as a native consolidation feature. missing for 10: native consolidated financial statements across entities, documentation of intercompany eliminations and consolidation workflow, independent or hands-on corroboration.",
+    "rationale": "Puzzle documents managing multiple companies (entities) under one login. Consolidated multi-entity reporting appears only through a third-party Joiin integration, not as Puzzle's own capability, so consolidation itself gets no credit. missing for 10: native consolidated financial statements across entities, intercompany eliminations, detailed multi-entity management docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "puzzle-docs-38",
       "puzzle-docs-44",
@@ -10331,13 +10363,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Puzzle has its own REST API, with a published OpenAPI 3.0.3 spec at /rest/v0, and an MCP endpoint whose tools cover transactions, journal entries, chart of accounts, invoices, bills, vendors, customers, payroll and metrics, with write access in Beta. However, the vendor says the API is \"currently under development\" and was \"originally architected for deep platform-to-platform integrations,\" so UI parity is not established. Missing for 10: any documented claim or mapping of full API/UI parity, GA (non-Beta) write coverage via MCP, self-serve API access rather than request-gated credentials, and independent hands-on corroboration of breadth.",
+    "rationale": "Puzzle ships a versioned REST API (/rest/v0) with a published OpenAPI spec and an MCP server covering a broad ledger surface (transactions, journal entries, chart of accounts, invoices, bills, vendors, customers, payroll), with write access in beta. Nothing documents parity with the UI: the vendor says the API is still under development with endpoints being added, it was built for platform-to-platform integrations, and access is request-gated. missing for 10: a documented UI-to-API parity commitment or coverage map, evidence that UI workflows (invoice editor, reconciliation, AI Close, custom rules, settings) are available via API, general-availability write access instead of beta, and independent hands-on corroboration.",
     "evidenceIds": [
       "puzzle-openapi-spec-20261106",
       "puzzle-api-stability-20261106",
       "puzzle-docs-42",
       "puzzle-mcp-tools-20261106",
-      "puzzle-sandbox-server-20261106"
+      "puzzle-api-tryit-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -10369,11 +10401,10 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Puzzle's own help center documents exporting a full general ledger and financial statements, on cash or accrual basis, in Excel, CSV and PDF, so the core ledger can leave in open formats. Nothing shows export of everything else, such as invoices, bills, customer and vendor records, attachments, rules or settings, or a one-shot full-account archive for offboarding. The MCP and API give programmatic read access, but they are not documented as an export or exit path. Missing for 10: documented export of non-ledger records (invoices, contacts, documents, rules), a complete account archive or offboarding workflow, and independent or hands-on confirmation of export completeness.",
+    "rationale": "Puzzle's own help article on data export says users can export a full general ledger and financial statements, on cash or accrual basis, in Excel, CSV and PDF. That covers the core accounting record in open formats, but the documentation does not show that *all* data can be exported in bulk to support leaving. Missing for 10: documented export of invoices, attachments/receipts, rules, customers/vendors and other non-ledger data; an account-wide bulk export or offboarding process; independent or hands-on corroboration.",
     "evidenceIds": [
       "puzzle-docs-45",
-      "puzzle-docs-26",
-      "puzzle-docs-37"
+      "puzzle-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -10393,7 +10424,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Puzzle is a hosted accounting SaaS. An open-source license is a fair question for this kind of product, so the axis applies. Nothing in the evidence shows its source code is published under an open license. The unauthenticated OpenAPI spec and the public API reference document interfaces, not source code, so they earn no credit.",
+    "rationale": "Open-source availability is a fair question for a SaaS accounting product, but nothing in the evidence shows Puzzle publishing its source code or naming an open license. The published OpenAPI spec, the API docs and the MCP server are interfaces, not readable product source under an open license, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10408,7 +10439,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an accounting SaaS, so the axis applies. The evidence only shows vendor-hosted services: the app, the API at api.puzzle.io, the MCP endpoint at app.puzzle.io/mcp, and a vendor-run staging sandbox. Data export and the API are adjacent features and do not show any deployable or self-hostable distribution of the core product.",
+    "rationale": "Puzzle is SaaS accounting software, and self-hosting is a fair question for this kind of product, so the axis applies. Nothing in the evidence documents a self-hosted, on-prem, or downloadable deployment of the core product. Every documented surface (app, REST API, MCP endpoint, sandbox) is vendor-hosted, and data export does not count as self-hosting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10423,7 +10454,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a data storage region is a fair question for a cloud accounting SaaS like Puzzle, so the axis applies. Nothing in the evidence pack mentions region selection, data residency, or storage location. Export, multi-entity management and sandbox-server evidence are adjacent features, not residency controls.",
+    "rationale": "Puzzle is a cloud accounting SaaS, so letting users choose a data storage region or residency is a fair axis for it. Nothing in the evidence pack mentions region selection, data residency, or storage location. The data-export and multi-entity features are adjacent capabilities and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10438,7 +10469,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Puzzle is an AI-powered accounting SaaS, so a training opt-out is a fair question to ask of it. Nothing in the evidence pack mentions model-training policies, data-use opt-outs, or a no-training commitment. The pack covers AI features, MCP access, exports and API sandboxes, none of which addresses whether customer data trains AI models.",
+    "rationale": "Puzzle is an AI-powered accounting product, so a buyer could fairly ask whether it offers a training opt-out or a no-training data commitment; the axis applies. However, nothing in the evidence pack covers AI model training, data-use policies or opt-out controls. The MCP write-access confirmation and data-export features are adjacent capabilities and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10453,7 +10484,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Puzzle is an accounting SaaS that holds financial data, so data retention and deletion controls are a fair question. The evidence pack documents no retention settings, deletion requests, or account/data purge capability. Data export and voiding journal entries are adjacent features and do not count as retention or deletion control.",
+    "rationale": "Data retention and deletion controls are a fair privacy question for an accounting SaaS, but the evidence pack never documents retention settings, account or data deletion, or purge controls. The closest items are data export and the automatic voiding of edited journal entries, which are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10468,7 +10499,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS accounting product like Puzzle, so the axis applies. However, nothing in the evidence pack mentions telemetry, analytics, usage tracking, or any opt-out control. The cited material covers accounting features, data export, the API and MCP, none of which addresses the story.",
+    "rationale": "Opting out of telemetry or usage tracking is a fair privacy question for a SaaS accounting product, so the axis applies. The evidence pack covers MCP, API, exports, AI features and UI settings such as dark mode, but nothing about telemetry, analytics or usage-tracking controls. That leaves no product capability to credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10483,7 +10514,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Puzzle documents a one-off invoice editor with branding and emailed invoices. Nothing in the evidence shows recurring invoice schedules or automatic payment reminders for overdue customers. Creating a single invoice is an adjacent feature, not the recurring-schedule or automated-dunning capability the story asks for.",
+    "rationale": "Puzzle documents one-off invoice creation with branded emails and an AR aging report that shows overdue balances by customer. There is no evidence of recurring invoice schedules or automatic payment reminders to overdue customers. AR aging only flags receivables and sends no reminders, so it is adjacent rather than the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
