@@ -1,17 +1,38 @@
 {
-  "hash": "12fa63e538d14998b29fdd1e95f049f5dbec24f49e88cf28d465a01f8a0a9fbd",
+  "hash": "1cb226aecec878851c54fc3bdcbf902ec1c2557467e6d10c229119dc30e27444",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Zep is an API-based SaaS memory service, so API versioning and a deprecation policy are fair questions to ask of it. Nothing in the evidence pack documents an API versioning scheme or a deprecation policy. The only hint is a 'v3' segment in a docs URL (zep-docs-43), and that page's content is about migrating from Mem0, not about API versioning or deprecation.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Zep's API is path-versioned (/api/v4 in the OpenAPI servers block) and its docs switch between v2, v3 and v4. It publishes dated deprecation waves that list removed methods with their replacements, plus a method-by-method v3-to-v4 migration map for Python, TypeScript and Go. Missing for 10: a standing deprecation policy stating guaranteed notice periods or support windows (the evidence shows individual dated waves, not a general policy), and independent or hands-on confirmation of how version transitions are handled.",
+    "evidenceIds": [
+      "zep-deprecation-wave-20261106",
+      "zep-migration-map-20261106",
+      "zep-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "zep-deprecation-wave-20261106",
+          "quote": "This page covers four deprecation categories that take effect in February 2026"
+        },
+        {
+          "evidenceId": "zep-deprecation-wave-20261106",
+          "quote": "The API is path-versioned (/api/v4 in the spec servers block) and the docs are version-switchable (v2/v3/v4)."
+        },
+        {
+          "evidenceId": "zep-migration-map-20261106",
+          "quote": "A method-by-method map from the Zep v3 SDK to v4, plus the behavior changes that need more than a rename"
+        },
+        {
+          "evidenceId": "zep-openapi-spec-20261106",
+          "quote": "servers https://api.getzep.com/api/v4"
+        }
+      ]
     },
     "productId": "zep",
     "storyId": "api-versioning-policy"

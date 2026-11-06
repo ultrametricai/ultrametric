@@ -1,17 +1,24 @@
 {
-  "hash": "5497a333cf8b664877fc5d6213ae3a8c66737cd82404090d59658c51d78060e9",
+  "hash": "42a22376f400983472511d73a275eecc9fa0e57fc67e2059b95af1e0aa7720c6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Pipecat ships a hosted platform (Pipecat Cloud) and a CLI with a `cloud` deploy command, so issuing scoped, least-privilege API credentials is a fair question for this product. However, nothing in the evidence pack documents API keys, token scopes, or permission controls for agents, so the verdict is none rather than na.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Pipecat Cloud's OpenAPI document separates a public API key, limited to starting agent sessions and proxying requests to them, from the private API that manages agents, secrets, builds and organization settings. That is a coarse, two-tier form of restricted credential the product provides itself. There is no evidence of issuing keys with custom scopes, keys tied to a specific agent, or fine-grained least-privilege permissions. Missing for 10: custom or fine-grained key scopes, per-agent credential issuance, a documented key-management workflow (create, rotate, revoke), and independent corroboration.",
+    "evidenceIds": [
+      "pipecat-cloud-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pipecat-cloud-openapi-20261106",
+          "quote": "The public API (/v1/public, authenticated with a public API key) starts agent sessions and proxies requests to them. The private API (/v1...) manages agents, secrets, builds, regions, and organization settings."
+        }
+      ]
     },
     "productId": "pipecat",
     "storyId": "agentic-scoped-keys"

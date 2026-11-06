@@ -1,17 +1,17 @@
 {
-  "hash": "5b51addde4764ac2ac695fbdaca557f0a4b59443a7d998b90dc5cde5f5d7c331",
+  "hash": "4e50efe8eb87e9d7e848fef1ee0f863f43cf409b25b5bb02047e5e4de6b25719",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Pipecat's own CLI lets a coding agent scaffold a voice agent project (writing AGENTS.md and CLAUDE.md) and deploy it to Pipecat Cloud. A bot can also be run against a Twilio transport from the command line. However, the evidence shows no API, CLI, or MCP step that provisions or attaches a phone number, and none that places an outbound call. Telephony is documented only as the carrier calling your webhook for inbound calls, and the context-hub MCP server is a documentation index, not a provisioning tool. missing for 10: programmatic phone-number provisioning or attachment, an outbound call-placement API/CLI, MCP tools for provisioning, and hands-on end-to-end corroboration.",
+    "rationale": "Pipecat Cloud has a documented REST API that manages agents, including POST /agents to create an agent, and an API that starts agent sessions. The official CLI also offers a cloud deploy command, so the agent-creation step can be done without the dashboard. Telephony, however, works by the carrier (Twilio, Telnyx, etc.) calling the user's webhook, and no Pipecat API, CLI, or MCP path is documented for buying or attaching a phone number or placing an outbound PSTN call. The MCP server (context-hub) is a docs index, not a provisioning tool. missing for 10: programmatic phone-number provisioning/attachment, a documented outbound call-placement API, MCP-based provisioning tools, hands-on corroboration of an end-to-end headless flow",
     "evidenceIds": [
-      "pipecat-docs-16",
+      "pipecat-cloud-openapi-20261106",
+      "pipecat-api-tryit-20261106",
       "pipecat-probe-rt-1",
-      "pipecat-docs-40",
       "pipecat-docs-23",
-      "pipecat-docs-34"
+      "pipecat-docs-38"
     ],
     "support": {
       "relation": "direct",
@@ -19,16 +19,20 @@
       "subject": "As an AI-native user, my coding agent can provision a complete voice agent end to end — create the agent, attach a number, and place a call — through the API, CLI, or MCP without touching the dashboard",
       "citations": [
         {
-          "evidenceId": "pipecat-docs-16",
-          "quote": "Install the Pipecat CLI and scaffold the quickstart project (also writes AGENTS.md + CLAUDE.md)"
+          "evidenceId": "pipecat-cloud-openapi-20261106",
+          "quote": "The private API (/v1...) manages agents, secrets, builds, regions, and organization settings."
+        },
+        {
+          "evidenceId": "pipecat-api-tryit-20261106",
+          "quote": "\"Create an Agent\" (POST /agents, https://api.pipecat.daily.co/v1/agents) with generated cURL examples"
         },
         {
           "evidenceId": "pipecat-probe-rt-1",
           "quote": "cloud (deploy to Pipecat Cloud)"
         },
         {
-          "evidenceId": "pipecat-docs-40",
-          "quote": "python bot.py -t twilio -x your-name.ngrok.io"
+          "evidenceId": "pipecat-docs-23",
+          "quote": "the carrier (Twilio, Telnyx, Plivo, Exotel, or your SIP provider) is calling your webhook to tell you there's an inbound call"
         }
       ]
     },

@@ -1,17 +1,34 @@
 {
-  "hash": "20f4ab10957e6c1d9ee1df317793676ced99aed370e11d9c78964695b5f76bf0",
+  "hash": "75bde5c89409bbd9089be5eaadc22dd7c5be1094a533c6fd67fb264ecdc61dc0",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Choosing a data storage region is a fair question for a SaaS automation platform like Make, so the axis applies. The evidence pack never mentions regions, residency, or data location choices. Data stores (make-docs-29) and on-prem agents (make-docs-39) are related features, not region or residency selection, so they earn no credit.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows Make runs distinct regional production zones (eu1, eu2, us1, us2), and API URLs are scoped per zone. This implies data is hosted in specific EU or US regions, but nothing documents that a user can choose a zone or that data stays within it. missing for 10: documentation that users can select a region or zone at signup or per organization, an explicit data-residency guarantee or policy, details on migrating between regions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "make-api-test-runner-20261106",
+      "make-openapi-spec-20261106",
+      "make-api-structure-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "make-api-test-runner-20261106",
+          "quote": "whitelisted for Make's production zones eu1/eu2/us1/us2.make.com/api/v2"
+        },
+        {
+          "evidenceId": "make-openapi-spec-20261106",
+          "quote": "servers eu1.make.com/api/v2 and the other production zones"
+        },
+        {
+          "evidenceId": "make-api-structure-20261106",
+          "quote": "https://{zone_url}/api/{api_version}/{api_endpoint}"
+        }
+      ]
     },
     "productId": "make",
     "storyId": "privacy-data-residency"

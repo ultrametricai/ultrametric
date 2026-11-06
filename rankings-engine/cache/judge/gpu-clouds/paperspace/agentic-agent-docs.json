@@ -1,15 +1,16 @@
 {
-  "hash": "68026d3ecc32cdde3ff7a438e324c795332f5df6ed3c9fc405001a224a8c14a0",
+  "hash": "58f1cded0afbb611a2d75cbc67ab21253d576102e7614dd7f07610a684a04eff",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace's official docs are hosted on docs.digitalocean.com, and a probe confirms an llms.txt file there (HTTP 200) that an agent can be pointed at. However, it is a DigitalOcean-wide index, and the evidence does not show it covers Paperspace pages; the per-page markdown variant of the Paperspace docs returned 404. Missing for 10: confirmation that llms.txt indexes Paperspace content, agent-readable markdown versions of the Paperspace docs, and hands-on or independent corroboration of agents consuming them.",
+    "rationale": "Paperspace's docs live on docs.digitalocean.com, which serves an llms.txt (HTTP 200). The Paperspace API reference is available as a markdown (.md) page, and a machine-readable OpenAPI 3.0.3 spec is served at api.paperspace.com/v1/openapi.json, so an agent has some agent-consumable entry points. However, the llms.txt is DigitalOcean-wide with no shown Paperspace-specific coverage, and the Paperspace product-page .md variant returns 404. Missing for 10: evidence that llms.txt indexes Paperspace content, consistent markdown variants across Paperspace product docs, independent or hands-on corroboration of agent use.",
     "evidenceIds": [
       "paperspace-probe-1",
       "paperspace-probe-2",
-      "paperspace-docs-24"
+      "paperspace-api-reference-20261106",
+      "paperspace-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -21,8 +22,12 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://docs.digitalocean.com/llms.txt # DigitalOcean Documentation"
         },
         {
-          "evidenceId": "paperspace-probe-2",
-          "quote": "PROBE docs-md: HTTP 404 at https://docs.digitalocean.com/products/paperspace/.md"
+          "evidenceId": "paperspace-api-reference-20261106",
+          "quote": "Programmatically manage Paperspace resources using conventional HTTP requests"
+        },
+        {
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The production API domain serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json"
         }
       ]
     },

@@ -1,17 +1,16 @@
 {
-  "hash": "8cbb0bd9c2a433c1042513ca0dd77b3aa8d2db2b212c338f60954fd54f9b6db3",
+  "hash": "730748a79adfc95ed83e8637969e2109219db91e59e987a373fdf18db7459154",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fastmail documents API tokens and an API documentation page. The JMAP evidence shows bearer-token auth and plain HTTP POST calls to query, fetch and send, which together allow non-interactive, headless scripting. A community user also reports automated transactional sending via an SMTP-only app password. Most of the detailed evidence describes the JMAP protocol rather than Fastmail's own docs, and the Fastmail pages are cited by title only. missing for 10: Fastmail-specific documentation of token scopes and headless/CI usage, an official CLI or CI integration guide, and independent hands-on reports of CI automation.",
+    "rationale": "Fastmail documents a programmatic JMAP API with a session endpoint at api.fastmail.com, API-token and Bearer auth, and batched HTTP method calls. That allows non-interactive, scripted use without the web UI. A community user also reports running automated transactional sending via an SMTP-only app password. However, nothing documents CI usage or ships a first-party CLI or headless runner, so automation means writing your own JMAP client. Missing for 10: official CLI/headless tool, CI-specific docs or examples, independent hands-on corroboration of API-driven automation, machine-readable OpenAPI spec (probes 404).",
     "evidenceIds": [
-      "fastmail-docs-5",
-      "fastmail-docs-40",
+      "fastmail-jmap-session-20261106",
       "fastmail-docs-2",
       "fastmail-docs-38",
-      "fastmail-docs-1",
+      "fastmail-docs-5",
       "fastmail-comm-8-refresh-69236ad6de4a7c0c"
     ],
     "support": {
@@ -20,16 +19,12 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "fastmail-docs-5",
-          "quote": "API tokens"
-        },
-        {
-          "evidenceId": "fastmail-docs-40",
-          "quote": "API Documentation"
+          "evidenceId": "fastmail-jmap-session-20261106",
+          "quote": "The JMAP session resource can be found at https://api.fastmail.com/jmap/session"
         },
         {
           "evidenceId": "fastmail-docs-2",
-          "quote": "Standard OAuth 2.0 or Bearer tokens."
+          "quote": "Standard OAuth 2.0 or Bearer tokens. No custom auth protocol to implement."
         },
         {
           "evidenceId": "fastmail-docs-38",

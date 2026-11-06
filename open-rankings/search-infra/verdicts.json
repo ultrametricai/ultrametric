@@ -4190,11 +4190,12 @@
   {
     "productId": "orama",
     "storyId": "agent-creates-index",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Orama's own JavaScript API lets a coding agent work end to end in code: create a database with an indexing schema, add documents with insert/insertMultiple, and run full-text, vector, or hybrid searches, with no dashboard involved. Orama Cloud also offers SDKs and an auto-configured MCP server, but its MCP is documented only for interacting with data, and the server URL is copied manually. missing for 10: evidence that Cloud projects, data sources, and indexes can be created via API, CLI, or MCP rather than the dashboard; a published OpenAPI spec (probe 404s); independent hands-on corroboration of agent-driven end-to-end use.",
+    "rationale": "The open-source Orama JS library lets an agent do the whole lifecycle in code: create a database with a schema, insert documents (including `insertMultiple` batches), and run full-text, vector or hybrid search. Orama Cloud is weaker for agents: its per-project MCP server is documented only for interacting with existing data, and the Cloud REST APIs are private, so creating indexes and loading documents headlessly in Cloud rests only on SDK mentions. missing for 10: documented index creation and document ingestion via MCP, public Cloud REST/OpenAPI reference, an official CLI, and evidence that Cloud project and data-source setup needs no dashboard.",
     "evidenceIds": [
+      "orama-docs-15",
       "orama-docs-37",
       "orama-docs-24",
       "orama-docs-39",
@@ -4202,16 +4203,17 @@
       "orama-docs-20",
       "orama-docs-46",
       "orama-docs-21",
+      "orama-rest-apis-private-20261106",
       "orama-probe-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, my coding agent can create an index, add documents, and run queries end to end — through the API, CLI, or MCP without touching a dashboard",
       "citations": [
         {
-          "evidenceId": "orama-docs-37",
-          "quote": "We can create a new instance (from now on database) with an indexing schema. The schema represents the searchable properties of the document to be inserted."
+          "evidenceId": "orama-docs-15",
+          "quote": "We can create a new instance (from now on database) with an **indexing `schema`**."
         },
         {
           "evidenceId": "orama-docs-24",
@@ -4219,11 +4221,15 @@
         },
         {
           "evidenceId": "orama-docs-5",
-          "quote": "Hybrid search is an Orama feature that allows you to perform full-text and vector search in one unique query, combining the results to get the best of both worlds."
+          "quote": "Hybrid search is an Orama feature that allows you to perform full-text and vector search in one unique query"
         },
         {
           "evidenceId": "orama-docs-20",
           "quote": "Every Orama Cloud project comes with an MCP server that is automatically configured to interact with your project's data."
+        },
+        {
+          "evidenceId": "orama-docs-21",
+          "quote": "Orama Cloud officially supports the following SDKs: - JavaScript/TypeScript - Python - Rust"
         }
       ]
     }
@@ -4234,11 +4240,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Orama Cloud documents a first-party MCP server that every project gets, auto-configured to interact with project data and connectable to MCP-capable AI assistants such as ChatGPT and Cursor, so agents can use the indexes as a tool. The evidence only says the server lets agents 'interact with your data' and never specifies which tools it exposes, and the open-source library shows no MCP surface. Missing for 10: documented query tool definitions, analytics tools over MCP, index/data-source management operations via MCP, independent or hands-on corroboration.",
+    "rationale": "Orama Cloud documents a first-party MCP server that ships with every project. It is auto-configured to interact with the project's data and connects via a URL to MCP-capable assistants such as ChatGPT and Cursor, which covers the core of exposing search to agents. The docs never list the tools the server exposes, so only query-style data interaction is implied. missing for 10: documented analytics tools, documented index-management operations (create/insert/delete) via MCP, an enumerated tool list, independent or hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-20",
       "orama-docs-46",
-      "orama-docs-9",
+      "orama-docs-30",
       "orama-probe-3"
     ],
     "support": {
@@ -4255,8 +4261,8 @@
           "quote": "By copying the MCP Server URL, you can easily connect your Orama Cloud project to various AI assistants that support the MCP protocol."
         },
         {
-          "evidenceId": "orama-docs-9",
-          "quote": "you'll be able to interact with your data from different AI interfaces, including ChatGPT, Cursor, and many other"
+          "evidenceId": "orama-docs-30",
+          "quote": "you'll be able to interact with your data from different AI interfaces, including ChatGPT, Cursor, and many other."
         }
       ]
     }
@@ -4267,7 +4273,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A hands-on probe got HTTP 200 at docs.orama.com/llms.txt, which returns a structured index of doc pages. Orama also serves an llms-full.txt (docs.orama.com/llms-full.txt) containing full documentation content, so an agent can be pointed directly at either file. Missing for 10: first-party documentation describing the llms.txt/llms-full.txt files and how to use them with agents.",
+    "rationale": "A hands-on probe confirms Orama publishes a live llms.txt at docs.orama.com, indexing the docs including Cloud and the MCP Server page. Several evidence items are drawn from a published llms-full.txt corpus at docs.orama.com/llms-full.txt, so agents can be pointed at both an index and a full-text agent-oriented doc dump. Missing for 10: first-party guidance explaining how to use llms.txt or llms-full.txt with agents.",
     "evidenceIds": [
       "orama-probe-1",
       "orama-docs-11",
@@ -4299,11 +4305,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Orama ships its own AI answer engine (AnswerSession, ChatGPT-like experiences) that turns questions about indexed data into answers with sources, and Orama Cloud projects are built for RAG over your data sources. That gives AI-generated output from your data, but it is a developer-embedded Q&A feature rather than proactive insights or suggestions surfaced inside the product. Missing for 10: proactive insight or suggestion generation, an in-product (dashboard) surface for analyzing your own data, independent or hands-on corroboration.",
+    "rationale": "Orama ships its own AI answer engine (AnswerSession), which generates ChatGPT-like answers grounded in the indexed data, with sources, and supports RAG over a project's data sources. That is AI-generated output from your data, but it is reactive question-answering rather than proactive insights or suggestions. missing for 10: proactive AI-generated insights or suggestions surfaced from the data, an in-product dashboard or analytics view for those insights, independent or hands-on corroboration.",
     "evidenceIds": [
-      "orama-docs-13",
       "orama-docs-18",
-      "orama-docs-35",
+      "orama-docs-13",
       "orama-docs-31",
       "orama-docs-44"
     ],
@@ -4313,12 +4318,12 @@
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": [
         {
-          "evidenceId": "orama-docs-13",
-          "quote": "turns a question into a straight answer with the sources behind it"
-        },
-        {
           "evidenceId": "orama-docs-18",
           "quote": "AnswerSession** that allows you to perform ChatGPT-like experiences on your website."
+        },
+        {
+          "evidenceId": "orama-docs-13",
+          "quote": "turns a question into a straight answer with the sources behind it"
         },
         {
           "evidenceId": "orama-docs-31",
@@ -4333,7 +4338,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Orama is a search, vector and answer-engine platform with a cloud service, so background automations are a plausible axis. However, nothing in the evidence documents scheduled, triggered or autonomous background jobs. The only nearby item describes a JavaScript runtime for building agents and custom business logic, which is a developer building block rather than a shipped automation capability. The mention of data sources with different update schedules describes how a user organizes data, not automation the product runs.",
+    "rationale": "Background automation is a fair question for an AI search platform, but the evidence documents no scheduled, recurring, or autonomously triggered automations. The JavaScript runtime \"to build agents and custom business logic\" is a developer building block, not a background-automation feature. The mention of data sources following different \"update schedule[s]\" describes how users organise their data, not a product-run scheduler.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4348,7 +4353,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no built-in assistant inside Orama to which a user can delegate tasks. AnswerSession is an API developers use to build ChatGPT-like experiences on their own websites, the JavaScript runtime is for building agents, and the MCP server lets external assistants such as ChatGPT or Cursor reach project data. These are developer building blocks or client-side integrations, not an in-product assistant that takes on the user's tasks.",
+    "rationale": "The evidence shows no built-in AI assistant inside Orama to which a user can delegate tasks. AnswerSession is a developer building block for adding ChatGPT-like Q&A to the developer's own website. The MCP server lets external assistants (ChatGPT, Cursor) query project data. The JS runtime is described as a way 'to build agents', which is again a primitive. None of these is an in-product assistant that performs tasks for the user.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4361,18 +4366,24 @@
     "productId": "orama",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Orama is a programmatic search library with official JS/TS, Python and Rust SDKs, and it can be imported into runtimes such as Deno. That implies it can run without a UI in scripts. However, no evidence explicitly covers headless/CI usage, a CLI, or automation workflows. Missing for 10: an explicit headless/CI mode or guidance, a CLI for automation, CI pipeline examples, and independent hands-on corroboration.",
+    "rationale": "Orama is an open-source search library with official JavaScript/TypeScript, Python and Rust SDKs for Orama Cloud, and it can run in runtimes such as Deno, so it can be driven programmatically without a UI. The pack never documents headless or CI automation itself, and the Cloud REST APIs are still private. missing for 10: explicit headless/CI usage docs, a CLI for pipeline automation, public REST APIs/OpenAPI spec, independent or hands-on corroboration of CI usage.",
     "evidenceIds": [
+      "orama-docs-12",
       "orama-docs-21",
-      "orama-gh-6"
+      "orama-gh-6",
+      "orama-rest-apis-private-20261106"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
+        {
+          "evidenceId": "orama-docs-12",
+          "quote": "The open-source search library. Add fast, relevant search to your own application at no cost."
+        },
         {
           "evidenceId": "orama-docs-21",
           "quote": "Orama Cloud officially supports the following SDKs: - JavaScript/TypeScript - Python - Rust"
@@ -4390,7 +4401,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Orama Cloud offers an agent runtime and an answer engine, so consuming external MCP servers is a fair question for this kind of product. However, the evidence only documents Orama's own MCP server, which exposes project data to assistants like ChatGPT and Cursor. That is the server role and does not show Orama acting as an MCP client that plugs in other servers' tools.",
+    "rationale": "Orama ships an answer engine and an agent-building runtime, so consuming external MCP servers is a fair question for this product. The evidence, however, only documents Orama acting as an MCP server, exposing project data to assistants like ChatGPT and Cursor. Nothing shows Orama connecting to third-party MCP servers or using their tools. The server-side capability and the generic JavaScript agent runtime are a different role and a developer building block, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4404,12 +4415,12 @@
     "storyId": "agentic-mcp-server",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Orama Cloud documents a first-party MCP server: every project ships one, automatically configured for that project's data, and users connect AI assistants such as ChatGPT and Cursor by copying the MCP Server URL. A probe also confirms the official MCP server documentation page. Missing for 10: details of the exposed MCP tools and authentication, independent or hands-on corroboration, and availability beyond Orama Cloud (the open-source library is not shown to ship one).",
+    "confidence": "medium",
+    "rationale": "Orama's first-party docs state that every Orama Cloud project ships with an automatically configured MCP server. Users copy its URL to connect ChatGPT, Cursor and other MCP-capable assistants, and a probe confirms the official MCP docs page exists. missing for 10: documentation of the exposed MCP tools and auth model, MCP support for the open-source library (only Cloud is covered), independent or hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-20",
       "orama-docs-46",
-      "orama-docs-30",
+      "orama-docs-9",
       "orama-probe-3"
     ],
     "support": {
@@ -4426,8 +4437,8 @@
           "quote": "By copying the MCP Server URL, you can easily connect your Orama Cloud project to various AI assistants that support the MCP protocol."
         },
         {
-          "evidenceId": "orama-docs-30",
-          "quote": "you'll be able to interact with your data from different AI interfaces, including ChatGPT, Cursor, and many other."
+          "evidenceId": "orama-docs-9",
+          "quote": "you'll be able to interact with your data from different AI interfaces, including ChatGPT, Cursor, and many other"
         },
         {
           "evidenceId": "orama-probe-3",
@@ -4440,15 +4451,15 @@
     "productId": "orama",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Orama Cloud ships an auto-configured MCP server, so users can interact with their project's data in natural language from AI assistants such as ChatGPT and Cursor. It also offers AI-powered NLP search and AnswerSession chat experiences. The documented scope is natural-language querying of data, not operating or administering the product (configuration, data-source management, deployments) through natural-language commands. missing for 10: documented natural-language control of product operations beyond data querying, a list of what the MCP server's tools can do, independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Orama Cloud ships its own MCP server that lets users interact with project data in natural language from AI interfaces such as ChatGPT and Cursor. It also offers AI-powered NLP search and an AnswerSession question-answering feature. These cover natural-language querying of data, not natural-language operation of the product (managing schemas, data sources or project configuration). missing for 10: documented natural-language commands for administering or configuring the product, evidence of which operations the MCP server exposes beyond data interaction, independent or hands-on corroboration.",
     "evidenceIds": [
+      "orama-docs-9",
       "orama-docs-20",
-      "orama-docs-30",
       "orama-docs-46",
       "orama-docs-26",
-      "orama-docs-28"
+      "orama-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -4456,20 +4467,16 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
+          "evidenceId": "orama-docs-9",
+          "quote": "you'll be able to interact with your data from different AI interfaces, including ChatGPT, Cursor, and many other"
+        },
+        {
           "evidenceId": "orama-docs-20",
           "quote": "Every Orama Cloud project comes with an MCP server that is automatically configured to interact with your project's data."
         },
         {
-          "evidenceId": "orama-docs-30",
-          "quote": "you'll be able to interact with your data from different AI interfaces, including ChatGPT, Cursor, and many other."
-        },
-        {
           "evidenceId": "orama-docs-26",
           "quote": "AI-powered NLP search"
-        },
-        {
-          "evidenceId": "orama-docs-28",
-          "quote": "we introduced a new feature called **AnswerSession** that allows you to perform ChatGPT-like experiences on your website."
         }
       ]
     }
@@ -4480,7 +4487,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents an official Orama CLI. The pack covers official SDKs (JS/TS, Python, Rust), a hosted MCP server and a JavaScript runtime, but none of these is a command-line tool, so they earn no credit for this story. A search library and cloud platform could plausibly ship a CLI, so the axis applies and the verdict is none rather than na.",
+    "rationale": "An official CLI is a fair question for a search library and cloud platform like Orama, so the axis applies. The evidence documents only SDKs (JS/TS, Python, Rust), a hosted MCP server and private REST APIs, and none of these is a CLI. No evidence shows an official command-line tool.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4493,15 +4500,15 @@
     "productId": "orama",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Orama documents a programmatic API: the open-source library exposes create, insert, insertMultiple and search with facets, vector and hybrid modes, and Orama Cloud officially ships JavaScript/TypeScript, Python and Rust SDKs whose APIs mirror the open-source ones. However, no public HTTP/REST API reference appears in the evidence, and a probe found no OpenAPI or Swagger spec at any candidate path, so the extent of the remote API surface is unproven. missing for 10: a documented Cloud REST/HTTP API reference, a machine-readable OpenAPI spec, independent or hands-on corroboration of driving the product end-to-end via the API.",
+    "rationale": "Orama documents a programmatic surface: the open-source JS library API (create, insert/insertMultiple, faceted search) and official Cloud SDKs for JavaScript/TypeScript, Python and Rust. However, its own docs say the Cloud REST APIs are private and limited to authorized users, and no OpenAPI spec was found. missing for 10: a publicly accessible REST API, a published OpenAPI/interactive reference, versioning policy, independent hands-on corroboration.",
     "evidenceIds": [
-      "orama-docs-15",
-      "orama-docs-24",
-      "orama-docs-41",
       "orama-docs-21",
-      "orama-docs-45",
+      "orama-docs-15",
+      "orama-docs-39",
+      "orama-docs-34",
+      "orama-rest-apis-private-20261106",
       "orama-probe-2"
     ],
     "support": {
@@ -4510,24 +4517,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "orama-docs-15",
-          "quote": "We can create a new instance (from now on database) with an **indexing `schema`**."
-        },
-        {
-          "evidenceId": "orama-docs-24",
-          "quote": "If you have a lot of records, we suggest using the `insertMultiple` function"
-        },
-        {
-          "evidenceId": "orama-docs-41",
-          "quote": "To do so, we need to specify the facets property in the search configuration"
-        },
-        {
           "evidenceId": "orama-docs-21",
           "quote": "Orama Cloud officially supports the following SDKs: - JavaScript/TypeScript - Python - Rust"
         },
         {
-          "evidenceId": "orama-docs-45",
-          "quote": "The APIs are designed to be as close as possible to the Orama Cloud APIs, so you can easily migrate your projects from Orama Cloud to Orama Open Source and vice-versa."
+          "evidenceId": "orama-docs-39",
+          "quote": "If you have a lot of records, we suggest using the insertMultiple function... You can pass a third, optional, parameter to change the batch size (default: 1000)."
+        },
+        {
+          "evidenceId": "orama-docs-34",
+          "quote": "the Orama Faceted Search API is the perfect solution for adding faceted search functionality to your project"
+        },
+        {
+          "evidenceId": "orama-docs-15",
+          "quote": "We can create a new instance (from now on database) with an **indexing `schema`**."
         }
       ]
     }
@@ -4538,7 +4541,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Orama Cloud is a SaaS search platform with an MCP server, so issuing scoped API keys to agents is a fair question. The evidence pack never documents scoped, read-only or least-privilege credentials. The Secure Proxy, which hides the OpenAI key on the client side, is a different feature and earns no credit. The auto-configured MCP server is also described without any credential scoping.",
+    "rationale": "Scoped API credentials are a fair question for a managed search/RAG platform like Orama Cloud, but the evidence pack never documents issuing scoped, read-only, or least-privilege keys for an agent. The Secure Proxy, which hides the OpenAI key on the client, and the per-project MCP server are related features, not credential scoping. The REST APIs are also described as private, with no published reference.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4551,15 +4554,15 @@
     "productId": "orama",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Orama's docs state that Orama Cloud officially supports JavaScript/TypeScript, Python and Rust SDKs. The open-source Orama JS library is itself a first-party SDK, with documented APIs such as create, insert, insertMultiple and AnswerSession, and it can be imported in browsers and Deno. missing for 10: detailed documentation for the Python and Rust SDKs in the evidence, independent or hands-on corroboration of SDK quality.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Orama's docs name official SDKs for JavaScript/TypeScript, Python and Rust for Orama Cloud, and the REST API page steers users to those SDKs. The open-source Orama JS library is documented in depth and ships for browser, CDN and Deno use. missing for 10: in-depth documentation evidence for the Python and Rust SDKs beyond a listing, independent or hands-on corroboration of SDK quality.",
     "evidenceIds": [
       "orama-docs-21",
+      "orama-rest-apis-private-20261106",
+      "orama-gh-6",
       "orama-docs-15",
-      "orama-docs-39",
-      "orama-docs-45",
-      "orama-gh-6"
+      "orama-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -4571,16 +4574,12 @@
           "quote": "Orama Cloud officially supports the following SDKs: - JavaScript/TypeScript - Python - Rust"
         },
         {
-          "evidenceId": "orama-docs-39",
-          "quote": "If you have a lot of records, we suggest using the insertMultiple function"
-        },
-        {
-          "evidenceId": "orama-docs-45",
-          "quote": "The APIs are designed to be as close as possible to the Orama Cloud APIs, so you can easily migrate your projects from Orama Cloud to Orama Open Source and vice-versa."
-        },
-        {
           "evidenceId": "orama-gh-6",
-          "quote": "With Deno, you can just use the same CDN URL or use npm specifiers"
+          "quote": "Or import it directly in a browser module... With Deno, you can just use the same CDN URL or use npm specifiers"
+        },
+        {
+          "evidenceId": "orama-docs-24",
+          "quote": "If you have a lot of records, we suggest using the `insertMultiple` function"
         }
       ]
     }
@@ -4591,7 +4590,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a search platform with a managed cloud offering, but the evidence pack never documents registrable outbound HTTP callbacks. The only event-like mention is AnswerSession's client-side onStateChange callback, which is an in-process UI hook and not a webhook.",
+    "rationale": "Orama Cloud is a managed search SaaS, so webhooks are a fair axis to ask about. The evidence pack documents no registrable outbound HTTP callbacks. The only event mechanism shown is AnswerSession's in-process onStateChange callback, which is a client-side hook for updating a UI, not a webhook subscription a programmatic consumer can receive.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4605,8 +4604,8 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "An interactive API reference is a fair axis for a search library and cloud service, so the story applies. However, nothing in the evidence shows an interactive API explorer or runnable examples. The OpenAPI/Swagger probe returned 404 on every candidate path, and the llms.txt file and MCP server are adjacent features, not an interactive reference.",
+    "confidence": "high",
+    "rationale": "Orama's docs say the Cloud REST APIs are private and that no OpenAPI document, interactive reference or sandbox is published. Probes for OpenAPI/Swagger paths all returned 404, so there is no evidence of an interactive API reference with runnable examples. The axis applies to a search/database product with public APIs, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4620,8 +4619,8 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Orama Cloud exposes APIs and SDKs, so a downloadable API spec is a fair question, but the evidence shows no OpenAPI or equivalent spec: probes of all common OpenAPI/Swagger paths returned 404. The llms.txt file and the MCP server are different capabilities and earn no credit for this story.",
+    "confidence": "high",
+    "rationale": "Orama is a search/vector database with Cloud REST APIs and SDKs, so a downloadable API spec is a fair question for this product. However, all probed OpenAPI/Swagger paths return 404, and Orama's own docs say the REST APIs are private, with no OpenAPI document published. The llms.txt file is an LLM-oriented docs index, not a machine-readable API spec, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4636,7 +4635,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Orama is a search platform, so a sandbox or test environment is a fair question to ask of it. The evidence pack documents no sandbox, staging, or test-mode environment. Segregated data sources and the ability to migrate between Orama Cloud and the open-source library are adjacent features or user-side workarounds, not a documented sandbox isolated from production data, so they earn no credit.",
+    "rationale": "Orama Cloud is a managed search/RAG service, so a test sandbox is a fair question for it. The evidence pack documents no sandbox or staging environment, and Orama's own docs note that no sandbox is published for the private REST surface. Segregated data sources and the open-source library migration path are adjacent features or user-side workarounds, not a documented sandbox isolated from production data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4651,7 +4650,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented API versioning scheme and no deprecation policy for Orama or Orama Cloud. Mentions of library releases (\"Since version 1.2.0\", \"With Orama 3.0\") only date when features arrived and are not a versioned-API or deprecation commitment. The OpenAPI probe also returned 404 on every candidate path.",
+    "rationale": "Versioning and deprecation policy is a fair axis for a search library and cloud service like Orama, but the evidence documents neither. The docs mention library release milestones (e.g. vector search since 1.2.0, AnswerSession in 3.0), not versioned APIs. The Cloud REST APIs are described as private, with no versioning or deprecation policy published. Library release notes are adjacent and do not count as a documented API versioning and deprecation policy.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4666,7 +4665,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Orama is a search engine, so query suggestions and autocomplete are a fair axis, but nothing in the evidence pack documents autocomplete, query suggestions, or a suggestions index built from search traffic. Typo tolerance, facets and hybrid search are related search features, not suggestion capabilities, so they earn no credit.",
+    "rationale": "Orama is a search engine, so query suggestions and autocomplete are a fair axis for it. However, the evidence pack documents no autocomplete, query-suggestion, or suggestions-index feature, and nothing about using search traffic or analytics to drive suggestions. Typo tolerance, facets and hybrid search are adjacent features and do not deliver this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4681,7 +4680,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Orama documents its own bulk insert, `insertMultiple`, recommended for large record sets and offering a configurable batch size (default 1000), so bulk insertion across many items is directly supported. The pack shows no equivalent bulk update or bulk delete, and no bulk operations exposed through the Cloud API or MCP server for AI-native use. Missing for 10: documented bulk update/delete operations, bulk operations via Cloud API/MCP, independent or hands-on corroboration.",
+    "rationale": "Orama JS documents a first-party bulk insert, `insertMultiple`, recommended for large record sets and offering a configurable batch size (default 1000). The pack only evidences bulk insertion, so bulk update, delete or other mass operations across many items are unproven. Missing for 10: documented bulk update/delete (e.g. multi-remove or multi-update), bulk operations in the Cloud/MCP surface, and independent or hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-16",
       "orama-docs-24",
@@ -4693,16 +4692,12 @@
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": [
         {
+          "evidenceId": "orama-docs-39",
+          "quote": "If you have a lot of records, we suggest using the insertMultiple function... You can pass a third, optional, parameter to change the batch size (default: 1000)."
+        },
+        {
           "evidenceId": "orama-docs-16",
           "quote": "Inserting a large number of documents in a loop could potentially block the event loop. Instead `insertMultiple` handles this case better."
-        },
-        {
-          "evidenceId": "orama-docs-39",
-          "quote": "You can pass a third, optional, parameter to change the batch size (default: 1000)."
-        },
-        {
-          "evidenceId": "orama-docs-24",
-          "quote": "If you have a lot of records, we suggest using the `insertMultiple` function"
         }
       ]
     }
@@ -4713,7 +4708,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation rules are a fair question for a search and AI platform like Orama, so the axis applies. The pack contains no documented feature for defining rules that fire actions on events. Pinning Rules is a merchandising control over search results, while the AnswerSession onStateChange callback and the JavaScript runtime for custom logic are developer building blocks, not a rule-based automation capability.",
+    "rationale": "Nothing in the evidence shows Orama offering user-defined rules that fire actions automatically when events occur. Pinning Rules are search-result merchandising rules, not event triggers. The AnswerSession onStateChange callback and the JavaScript runtime for custom business logic are developer building blocks, not a rule-based automation feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4728,7 +4723,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Orama is a search and RAG platform, and a buyer could fairly ask whether it can schedule recurring jobs such as periodic data-source syncs, so the axis applies. The pack never documents a scheduler, cron, or recurring workflow feature. The mention of data that \"follows a different update schedule\" describes how users organise data sources, not a product scheduling capability, and the JavaScript runtime for agents is only a building block.",
+    "rationale": "Orama Cloud is a managed search and RAG platform with a JavaScript runtime for agents, so scheduled or recurring jobs, such as periodic data-source syncs, are a fair axis for it. The evidence pack documents no scheduler, cron, or recurring-workflow feature. The mention of data that 'follows a different update schedule' only advises how to split data sources, not product-provided scheduling. The agent JavaScript runtime is at most a developer building block and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4743,7 +4738,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Orama Cloud documents a JavaScript runtime for building agents and custom business logic, so an automation-lifecycle question applies to this product. However, nothing in the evidence shows versioning, review, or rollback of those automations. Segregated data-source updates are about data, not automation versions, so they do not count here.",
+    "rationale": "Orama Cloud documents a JavaScript runtime for building agents and custom business logic, so versioning and rolling back automations is a fair question for this product. However, nothing in the evidence pack shows versioning, review workflows, or rollback for those automations. Data-source segregation for updates is a related but different feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4758,7 +4753,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Orama ships built-in embedding generation in two documented forms. The open-source plugin-embeddings generates embeddings automatically at insert and search time, and Orama Cloud automatically embeds data with local models, with the embedding model chosen per collection. Developers therefore don't need their own embedding pipeline. Missing for 10: independent or hands-on corroboration, and documented detail on which embedding models are available.",
+    "rationale": "Orama ships its own embedding capability in both its offerings. The OSS embeddings plugin generates vectors at insert and search time. Orama Cloud generates text embeddings automatically with local models and lets you pick the embedding model per collection, so no self-run pipeline is needed. Missing for 10: independent or hands-on corroboration, and detailed documentation of the available models and the plugin's configuration options.",
     "evidenceIds": [
       "orama-docs-7",
       "orama-docs-42",
@@ -4775,16 +4770,16 @@
           "quote": "This plugin generates embeddings for your documents at insert and search time, allowing you to perform vector and hybrid searches on your documents."
         },
         {
-          "evidenceId": "orama-docs-42",
-          "quote": "The plugin will automatically convert this text to vector for you"
-        },
-        {
           "evidenceId": "orama-docs-47",
           "quote": "Orama Cloud generates text embeddings automatically for your data using local, high-quality models."
         },
         {
           "evidenceId": "orama-docs-49",
           "quote": "When you create a collection, you can choose its language (English, Spanish, etc.), and the embedding model you want to use."
+        },
+        {
+          "evidenceId": "orama-docs-42",
+          "quote": "The plugin will automatically convert this text to vector for you"
         }
       ]
     }
@@ -4795,7 +4790,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents only programmatic ingestion: insert/insertMultiple in Orama JS, and Orama Cloud 'data sources' as logical groupings of documents. No item mentions an official web crawler or prebuilt connectors that pull content in automatically, so the founder would still need to build their own indexing pipeline. Ingestion tooling is a fair axis for a search engine, so absence of evidence yields 'none' rather than 'na'.",
+    "rationale": "The evidence pack documents no official web crawler or prebuilt data connectors. Orama Cloud's 'data sources' are only described as segregated document sets that can be updated independently. Ingestion is shown only through SDK and API calls such as insert and insertMultiple, which means writing your own pipeline, and the Cloud REST APIs are described as private.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4810,11 +4805,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Orama's GitHub feature list includes 'Pinning Rules (Merchandising)' and 'Fields Boosting', which are its own controls for shaping result order beyond plain textual matching. However, these are only bare feature-list mentions. Nothing shows ranking driven by business signals such as popularity, recency or margin. missing for 10: documented custom ranking or score functions using numeric business signals (popularity, recency, margin), detailed docs on how pinning rules and boosting work, hands-on or independent corroboration.",
+    "rationale": "Orama's GitHub feature list includes Pinning Rules (Merchandising), which lets a developer apply a custom ranking rule on top of relevance; the same list also shows Fields Boosting, though that only weights text fields. Neither item has documentation detail, and nothing shows ranking by popularity, recency, margin or other numeric business signals. Missing for 10: documented scoring or ranking on business-signal fields (popularity, recency, margin), custom ranking-function or score-modifier documentation, depth on how pinning rules work, independent or hands-on corroboration.",
     "evidenceIds": [
-      "orama-gh-7",
       "orama-gh-4",
-      "orama-gh-2"
+      "orama-gh-7"
     ],
     "support": {
       "relation": "direct",
@@ -4822,12 +4816,12 @@
       "subject": "As a developer, I can shape relevance with custom ranking rules and business signals (popularity, recency, margin) beyond textual matching",
       "citations": [
         {
-          "evidenceId": "orama-gh-7",
-          "quote": "Pinning Rules (Merchandising) ... Fields Boosting"
-        },
-        {
           "evidenceId": "orama-gh-4",
           "quote": "Pinning Rules (Merchandising)"
+        },
+        {
+          "evidenceId": "orama-gh-7",
+          "quote": "Pinning Rules (Merchandising) ... Fields Boosting"
         }
       ]
     }
@@ -4835,10 +4829,10 @@
   {
     "productId": "orama",
     "storyId": "faceted-navigation",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Orama's documented Faceted Search API generates facets at search time when you set a facets property in the search configuration, so facets come back with the same query. The docs name filtering by category, price range, and other attributes, which matches the story's categories, ranges, and attributes. Missing for 10: explicit documentation of per-facet result counts, detail on how range facets are configured, and independent or hands-on corroboration.",
+    "rationale": "Orama's docs describe a Faceted Search API that generates facets at search time when you set a `facets` property in the search configuration, so facets come back from the same query. The docs explicitly name category, price range and other attributes as filter dimensions. The evidence never states that facets return per-value live counts, and range facets get only a passing mention. Missing for 10: explicit documentation of per-value facet counts, detail on range facet configuration, independent or hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-3",
       "orama-docs-41",
@@ -4848,7 +4842,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can build faceted navigation — filters with live counts across categories, ranges, and attributes — from a single query",
       "citations": [
         {
@@ -4872,7 +4866,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Orama documents its own bulk-insert API, `insertMultiple`, with a configurable batch size (default 1000), recommended for large record sets because it avoids blocking the event loop. However, nothing shows async task tracking or indexing-completion status, and there is no evidence of throughput at million-document scale. Missing for 10: async task/job tracking to know when indexing completes, evidence of import speed at millions of documents, independent or hands-on corroboration.",
+    "rationale": "Orama's docs recommend `insertMultiple` for large record sets. It inserts in configurable batches (default 1000) and avoids blocking the event loop, so bulk import is a documented first-party capability. Nothing in the evidence shows throughput at millions-of-documents scale, and there is no async task or job tracking to signal when indexing completes. missing for 10: async indexing task/job status tracking or completion notification, evidence of import performance at millions-of-documents scale, a documented Cloud bulk-ingestion API (the REST APIs are private), independent or hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-39",
       "orama-docs-16",
@@ -4885,15 +4879,11 @@
       "citations": [
         {
           "evidenceId": "orama-docs-39",
-          "quote": "You can pass a third, optional, parameter to change the batch size (default: 1000)."
+          "quote": "If you have a lot of records, we suggest using the insertMultiple function... You can pass a third, optional, parameter to change the batch size (default: 1000)."
         },
         {
           "evidenceId": "orama-docs-16",
           "quote": "Inserting a large number of documents in a loop could potentially block the event loop. Instead `insertMultiple` handles this case better."
-        },
-        {
-          "evidenceId": "orama-docs-24",
-          "quote": "If you have a lot of records, we suggest using the `insertMultiple` function"
         }
       ]
     }
@@ -4904,9 +4894,10 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "First-party docs cover creating a database with an indexing schema, describe insertion as \"quick and intuitive\" (with `insertMultiple` for bulk loads), and the GitHub README lists full-text search and simple browser/Deno imports. That supports the create-insert-search flow, but nothing shows a quickstart that reaches a first search within minutes. missing for 10: a documented end-to-end quickstart with a first-search example, evidence of time-to-first-search in minutes, independent or hands-on corroboration of the onboarding speed.",
+    "rationale": "Orama's docs cover the core steps of the story: creating a database instance with an indexing schema, inserting documents (described as quick and intuitive, with `insertMultiple` for larger sets), and running full-text search, with simple install via npm, a browser CDN import, or Deno. The pack does not show a dedicated quickstart, a basic search call, or any hands-on evidence that a first search takes only minutes. missing for 10: an evidenced end-to-end quickstart guide, a documented basic search() example, independent or hands-on corroboration of time-to-first-search.",
     "evidenceIds": [
       "orama-docs-37",
+      "orama-docs-15",
       "orama-docs-2",
       "orama-docs-24",
       "orama-gh-2",
@@ -4942,11 +4933,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Orama documents itself as an open-source library for adding 'fast, relevant search' that can be imported directly in a browser module, and it lists full-text search with typo tolerance. Together these offer thin, indirect support for instant client-side search, but nothing in the pack shows as-you-type or keystroke-level search. Missing for 10: any documented prefix or as-you-type search behavior, any concrete millisecond latency claims or benchmarks, and any independent or hands-on corroboration of per-keystroke response times.",
+    "rationale": "Orama's own materials describe it as a search library that adds 'fast, relevant search' and can be imported directly in a browser module, so in-app client-side search is supported. Nothing documents millisecond latency or as-you-type, per-keystroke updating. missing for 10: documented millisecond-level latency figures or benchmarks, explicit as-you-type/search-on-keystroke guidance or examples, independent or hands-on latency corroboration.",
     "evidenceIds": [
       "orama-docs-12",
-      "orama-gh-6",
-      "orama-gh-2"
+      "orama-gh-6"
     ],
     "support": {
       "relation": "direct",
@@ -4960,10 +4950,6 @@
         {
           "evidenceId": "orama-gh-6",
           "quote": "Or import it directly in a browser module"
-        },
-        {
-          "evidenceId": "orama-gh-2",
-          "quote": "Full-Text search"
         }
       ]
     }
@@ -4974,7 +4960,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Orama is a search engine, so per-user scoped or tenant search tokens are a fair axis. The pack never documents scoped, tenant, or secured API keys that enforce per-user document restrictions. Search filters, facets, and segregated data sources are adjacent features a developer might use to build tenant isolation; they are not token-enforced scoping. The Secure Proxy only hides the OpenAI API key and does nothing to restrict which documents a user can search.",
+    "rationale": "Per-user search isolation is a fair question for a search engine, so the axis applies. However, the evidence shows no scoped, tenant, or secured API tokens that restrict an end user's searches. Search filters and data-source segregation are adjacent building blocks, not token-based tenant scoping, and the Secure Proxy only hides the OpenAI key.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4987,15 +4973,14 @@
     "productId": "orama",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Orama documents programmatic access: official Orama Cloud SDKs for JavaScript/TypeScript, Python and Rust, an open-source JS library that is API-driven by design, and an auto-configured MCP server per Cloud project. Nothing in the pack shows that every dashboard/UI action (project and data-source management, collection settings, embedding-model choice) is exposed via API, and the OpenAPI probe found no published spec. missing for 10: an explicit API/UI parity statement, documented management APIs for projects, data sources and collections, a published OpenAPI spec, independent corroboration.",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Orama Cloud has official JS/TS, Python and Rust SDKs, but its own docs say the Cloud REST APIs are private and limited to authorized users. Probes found no OpenAPI spec, and nothing shows the programmatic surface matches the dashboard/UI. missing for 10: public REST API, published OpenAPI/API reference, documented UI-to-API parity (project, data source and collection management via API), independent corroboration.",
     "evidenceIds": [
       "orama-docs-21",
-      "orama-docs-19",
-      "orama-docs-20",
-      "orama-docs-15",
-      "orama-probe-2"
+      "orama-rest-apis-private-20261106",
+      "orama-probe-2",
+      "orama-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -5007,12 +4992,8 @@
           "quote": "Orama Cloud officially supports the following SDKs: - JavaScript/TypeScript - Python - Rust"
         },
         {
-          "evidenceId": "orama-docs-19",
-          "quote": "The APIs are designed to be as close as possible to the **Orama Cloud** APIs, so you can easily migrate your projects from **Orama Cloud** to **Orama Open Source** and vice-versa."
-        },
-        {
-          "evidenceId": "orama-docs-20",
-          "quote": "Every Orama Cloud project comes with an MCP server that is automatically configured to interact with your project's data."
+          "evidenceId": "orama-docs-45",
+          "quote": "The APIs are designed to be as close as possible to the Orama Cloud APIs, so you can easily migrate your projects from Orama Cloud to Orama Open Source and vice-versa."
         }
       ]
     }
@@ -5023,7 +5004,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export applies to a search engine and vector database like Orama, but the evidence pack documents no export, dump, or persistence feature and no open data format. The closest items are API compatibility for migrating between Orama Cloud and Orama Open Source, on-prem deployment, and the open-source license. These are adjacent openness traits, not a documented way to export all data and leave.",
+    "rationale": "Data export is a fair question for a search/vector database. The pack documents no export or bulk-download feature and no open export format. The closest items are adjacent: API compatibility that eases migrating between Orama Cloud and Orama Open Source, an open-source library, and on-prem deployment. None of these is a documented capability to export all of a user's data and leave.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5038,11 +5019,10 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Orama's pricing page calls Orama JS \"The open-source search library,\" the docs refer to \"Orama Open Source\" as a distinct offering, and the library's code is in a public GitHub repository (github.com/oramasearch/orama). That makes the source readable. However, no evidence names the license or confirms its terms, and the openness applies only to the JS library, not to Orama Cloud or the on-prem context server. Missing for 10: an explicitly named OSI open-source license (e.g. a LICENSE file or license statement), confirmation of which components (Cloud, context server, runtime) are open versus proprietary, and independent corroboration of the license terms.",
+    "rationale": "Orama's pricing page calls Orama JS 'The open-source search library', and the docs refer to an 'Orama Open Source' edition. A public GitHub repository (github.com/oramasearch/orama) is cited, so the core library's source appears readable. The evidence never names the specific license, and nothing shows the Cloud product (context server, MCP server, REST APIs) is source-available, so complete coverage is not shown. missing for 10: explicit license name/terms (e.g., an OSI license file citation), evidence on whether Cloud/on-prem components are open source, independent corroboration of the licensing.",
     "evidenceIds": [
       "orama-docs-12",
       "orama-docs-29",
-      "orama-docs-45",
       "orama-gh-1"
     ],
     "support": {
@@ -5057,6 +5037,10 @@
         {
           "evidenceId": "orama-docs-29",
           "quote": "so you can easily migrate your projects from **Orama Cloud** to **Orama Open Source** and vice-versa"
+        },
+        {
+          "evidenceId": "orama-gh-1",
+          "quote": "Stemming and tokenization in 30 languages"
         }
       ]
     }
@@ -5065,15 +5049,15 @@
     "productId": "orama",
     "storyId": "openness-self-host",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Orama ships an open-source search library that you embed and run in your own application, including browser and Deno. Orama Cloud also offers on-premise deployment of its context server on your own infrastructure, and the docs describe API parity for migrating between Cloud and Open Source. missing for 10: an explicit open-source license statement, a documented self-hosting/on-prem deployment guide (on-prem appears to be a vendor-run engagement), and independent or hands-on corroboration of self-hosted operation.",
+    "rationale": "Orama's core search engine is an open-source library that you embed and run in your own application, in the browser, or under Deno, at no cost. The managed Orama Cloud context server also has documented on-premise deployment on your own infrastructure. The docs state that Cloud and Open Source APIs are aligned, so projects can move between the two. Missing for 10: detailed self-hosting and on-prem deployment documentation for the Cloud context server, explicit license terms, independent hands-on corroboration of self-hosted operation.",
     "evidenceIds": [
       "orama-docs-12",
+      "orama-gh-6",
       "orama-docs-8",
       "orama-docs-51",
-      "orama-docs-19",
-      "orama-gh-6"
+      "orama-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -5090,15 +5074,11 @@
         },
         {
           "evidenceId": "orama-docs-51",
-          "quote": "It runs in your cloud, on-prem, or dedicated, and our forward-deployed engineers run it with your team."
+          "quote": "It runs in your cloud, on-prem, or dedicated"
         },
         {
           "evidenceId": "orama-docs-19",
           "quote": "so you can easily migrate your projects from **Orama Cloud** to **Orama Open Source** and vice-versa."
-        },
-        {
-          "evidenceId": "orama-gh-6",
-          "quote": "Or import it directly in a browser module... With Deno, you can just use the same CDN URL or use npm specifiers"
         }
       ]
     }
@@ -5109,7 +5089,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Orama's pricing page offers the open-source library \"at no cost,\" so self-hosted use has no license fee and no per-request charge as records or queries grow. The pack shows nothing about Orama Cloud's pricing structure, usage tiers, overage rules or caps, and the only other pricing-page item describes an enterprise assessment, not usage pricing. missing for 10: documented Cloud pricing tiers and how they scale with records and query volume, explicit statements on overages or per-request charges, spend caps or predictability guarantees, and independent or hands-on corroboration of cost behavior at scale.",
+    "rationale": "Orama's pricing page says the open-source search library can be added to your own application at no cost. That implies no per-request charges when you self-host the library. However, nothing in the evidence documents Orama Cloud's pricing model, how cost scales with record count or query volume, or whether metered thresholds or overage cliffs exist. Missing for 10: documented Cloud pricing tiers, explicit record and query limits or overage terms, a statement of flat or non-per-request pricing at scale, and independent corroboration.",
     "evidenceIds": [
       "orama-docs-12"
     ],
@@ -5131,7 +5111,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Orama documents deployment options that let customers control where their data lives: on-premise Orama Cloud on their own infrastructure, or running it in the customer's cloud, on-prem, or dedicated. However, there is no evidence of region selection or data-residency guarantees for the managed cloud service. Missing for 10: explicit region/residency selection for managed Orama Cloud, documented residency guarantees or compliance details, independent corroboration.",
+    "rationale": "Orama documents its own deployment options that control where data lives: on-premise support for Orama Cloud on your own infrastructure, plus running in your cloud, on-prem, or dedicated. This gives residency control through placement. There is no evidence of choosing a region in the managed cloud or of any data-residency guarantees. missing for 10: region selection for managed Orama Cloud, documented data-residency/region commitments, independent or hands-on corroboration of on-prem deployment.",
     "evidenceIds": [
       "orama-docs-8",
       "orama-docs-51"
@@ -5158,7 +5138,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Orama is a search and RAG platform with AI features, so a data-training privacy posture is a fair question to ask. The evidence pack has no documented policy, opt-out, or guarantee that customer data is excluded from AI model training. On-prem deployment, self-hosted open-source use, and locally generated embeddings are related deployment and data-locality controls, not a training opt-out, so they earn no credit.",
+    "rationale": "The evidence pack has no Orama policy, setting, or contractual commitment saying customer data is excluded from AI model training. On-prem deployment, the self-hostable open-source library, and local embedding models are adjacent data-locality features, not a documented training opt-out or no-training guarantee, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5172,10 +5152,11 @@
     "storyId": "privacy-retention-controls",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Orama Cloud's docs say users can delete data within segregated data sources. That is a direct but thin deletion capability. The pack has no documented retention policies, TTLs, purge guarantees, or retention controls for AI/answer-session data. Missing for 10: configurable retention periods or TTLs, documented deletion guarantees and purge semantics, controls over retention of query and AI-session data, independent corroboration.",
+    "confidence": "low",
+    "rationale": "Orama Cloud's docs say data sources are segregated so users can update, delete, or add data independently, which documents user-controlled deletion. The on-prem option lets data live on the customer's own infrastructure, though that concerns deployment location rather than retention control. Nothing describes retention periods, automatic expiry/TTL, purge guarantees, or how deletion propagates to embeddings, backups, or AI answer logs. Missing for 10: retention policy configuration, TTL/auto-expiry, documented deletion guarantees for derived embeddings and backups, independent corroboration.",
     "evidenceIds": [
-      "orama-docs-48"
+      "orama-docs-48",
+      "orama-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -5185,6 +5166,10 @@
         {
           "evidenceId": "orama-docs-48",
           "quote": "Every data source is segregated from the others, so you can update, delete, or add new data without affecting the data in the other data sources."
+        },
+        {
+          "evidenceId": "orama-docs-8",
+          "quote": "We offer on-premise support for Orama Cloud, allowing you to deploy the context server on your own infrastructure."
         }
       ]
     }
@@ -5195,7 +5180,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a search library and cloud service like Orama, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, or any opt-out control. On-prem deployment and local embedding models are adjacent privacy features, not a telemetry opt-out, so they earn no credit.",
+    "rationale": "Orama is a search library and cloud service, so being able to opt out of telemetry is a fair question for it. Nothing in the evidence pack mentions telemetry, usage tracking, or an opt-out control. On-premise deployment (orama-docs-8) is a separate deployment feature, not a telemetry opt-out, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5208,16 +5193,17 @@
     "productId": "orama",
     "storyId": "rag-conversational-search",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Orama documents its own AnswerSession API for ChatGPT-like conversational answers over Orama data, with state-change events. It also documents vector and hybrid retrieval, and Cloud projects defined as data sources for RAG. However, AnswerSession depends on the Orama Cloud Secure Proxy to reach OpenAI, the probe found no published OpenAPI reference, and nothing independent confirms answer quality or source attribution. missing for 10: a standalone documented retrieval/answer REST API reference (OpenAPI probes all 404), answer generation that does not depend on the Cloud Secure Proxy, detailed documentation of source citation in answers, and independent or hands-on corroboration.",
+    "rationale": "Orama documents its own answer API, AnswerSession, which delivers ChatGPT-like conversational answers over your indexes in Orama JS, with an onStateChange hook for reactive UIs. Projects are described as data-source sets for RAG, and the docs describe answers that come with sources. However, the answer flow depends on Orama Cloud's Secure Proxy to OpenAI, and the Cloud REST APIs are private, with no OpenAPI or reference published. Missing for 10: a public, documented Cloud REST retrieval/answer API reference, documented answer parameters and citation behavior, and independent hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-18",
-      "orama-docs-19",
+      "orama-docs-35",
       "orama-docs-44",
-      "orama-docs-5",
       "orama-docs-36",
       "orama-docs-13",
+      "orama-docs-45",
+      "orama-rest-apis-private-20261106",
       "orama-probe-2"
     ],
     "support": {
@@ -5226,20 +5212,16 @@
       "subject": "As a developer, I can power RAG and conversational answers on top of my indexes with documented retrieval or answer APIs",
       "citations": [
         {
+          "evidenceId": "orama-docs-35",
+          "quote": "With Orama 3.0, we introduced a new feature called AnswerSession that allows you to perform ChatGPT-like experiences on your website."
+        },
+        {
           "evidenceId": "orama-docs-18",
-          "quote": "AnswerSession** that allows you to perform ChatGPT-like experiences on your website. It uses a free feature from Orama Cloud called **Secure Proxy** to proxy your queries to the OpenAI API"
+          "quote": "It uses a free feature from Orama Cloud called **Secure Proxy** to proxy your queries to the OpenAI API"
         },
         {
           "evidenceId": "orama-docs-36",
           "quote": "A project is a set of data sources that you want to use for RAG, search, or any other method of retrieval."
-        },
-        {
-          "evidenceId": "orama-docs-5",
-          "quote": "Hybrid search is an Orama feature that allows you to perform full-text and vector search in one unique query"
-        },
-        {
-          "evidenceId": "orama-docs-44",
-          "quote": "The onStateChange: console.log event will log the state of the session, allowing you to reactively update your UI based on the current state of the session."
         },
         {
           "evidenceId": "orama-docs-13",
@@ -5252,11 +5234,12 @@
     "productId": "orama",
     "storyId": "realtime-index-updates",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Orama documents incremental document insertion, including batched insertMultiple, in the JS library. In Orama Cloud, data sources are segregated so you can update, delete, or add data without affecting other sources, which points to incremental changes rather than full rebuilds. Missing for 10: explicit per-document update/delete APIs in the evidence, any stated near-real-time visibility or indexing latency, and independent or hands-on corroboration.",
+    "rationale": "Orama documents its own incremental insertion APIs (`insert`, `insertMultiple` with batching) for the JS library. Orama Cloud data sources are segregated, so you can update, delete, or add data in one source without affecting the others, which avoids a project-wide rebuild. However, the evidence never states that updates and deletes at the document level become searchable in near real time, or that no reindex of the affected data source is needed. Missing for 10: documented single-document update/remove APIs, explicit near-real-time visibility or latency guarantees, a statement that changes apply without reindexing the affected data source, and independent or hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-2",
+      "orama-docs-16",
       "orama-docs-39",
       "orama-docs-48",
       "orama-docs-22"
@@ -5277,10 +5260,6 @@
         {
           "evidenceId": "orama-docs-39",
           "quote": "If you have a lot of records, we suggest using the insertMultiple function... You can pass a third, optional, parameter to change the batch size (default: 1000)."
-        },
-        {
-          "evidenceId": "orama-docs-22",
-          "quote": "you can put data that will be updated frequently in a single data source (let's call it `docs`), and put data that follows a different update schedule in another data source"
         }
       ]
     }
@@ -5291,7 +5270,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ranking inspection is a fair axis for a search engine like Orama. The evidence pack covers full-text, vector and hybrid search, facets, fields boosting and pinning rules. Nothing documents per-result relevance scores, score breakdowns or an explain feature that would show why a result ranked where it did. Boosting and pinning are tuning controls, not inspection, so they earn no credit.",
+    "rationale": "Orama is a search engine, so inspecting ranking scores or explanations is a fair question for it. The evidence pack covers full-text, vector and hybrid search, facets, fields boosting and pinning rules, but never documents returned relevance scores or any score-explanation or debug output. Boosting and pinning are tuning controls, not ways to inspect why a result ranked where it did, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5306,10 +5285,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document clustering, replication, high availability, or any tested path to hundreds of millions of documents. The only nearby items are a one-line \"Run Orama at scale. Managed.\" tagline, on-prem deployment of Orama Cloud, and `insertMultiple` batching. These are adjacent deployment and ingestion features, not documented scaling paths.",
+    "rationale": "Scaling and high availability are a fair axis for a search engine, but the evidence pack documents no clustering, replication, sharding, or high-availability mechanism, and no path to hundreds of millions of documents. The only related items are adjacent: a marketing tagline that Orama Cloud lets you 'Run Orama at scale. Managed.', on-prem deployment of Orama Cloud, and `insertMultiple` batching to avoid blocking the event loop. None of these is a documented scaling architecture.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a platform-engineer, documented scaling paths — clustering, replication, high availability — carry me from prototype to hundreds of millions of documents",
       "citations": []
@@ -5319,12 +5298,13 @@
     "productId": "orama",
     "storyId": "sdk-breadth",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Orama Cloud's docs list official SDKs for JavaScript/TypeScript, Python and Rust, and the open-source JS library runs in browsers and Deno, so a few major languages are covered. The story's named languages PHP, Ruby and Go are not listed, and nothing shows how current the SDKs are kept. Missing for 10: official PHP, Ruby and Go SDKs, evidence the SDKs are kept current or in version parity, framework-specific integrations, independent corroboration.",
+    "rationale": "Orama's docs list official Cloud SDKs for JavaScript/TypeScript, Python, and Rust, and the JS library runs in browsers and Deno. That covers only part of the requested language spread. The REST APIs are private, and users are directed to these SDKs, which makes the narrow SDK set more limiting. Missing for 10: PHP, Ruby and Go SDKs, framework-specific integrations, and any evidence of SDKs being kept current (release cadence or version parity).",
     "evidenceIds": [
       "orama-docs-21",
-      "orama-gh-6"
+      "orama-gh-6",
+      "orama-rest-apis-private-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5348,7 +5328,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Built-in search analytics is a fair question for a search engine or search service like Orama. However, nothing in the evidence pack documents query analytics, no-result query tracking, or click-through reporting. The pack covers search features (full-text, vector, hybrid, facets, merchandising), Cloud data sources, and an MCP server, none of which deliver this story.",
+    "rationale": "Search analytics (top queries, no-result queries, click-through) is a fair axis for a search engine, so it applies. However, nothing in the evidence pack documents any analytics dashboard, query logging, zero-result reporting, or click tracking in Orama or Orama Cloud. The pack covers search modes, facets, the answer engine, the MCP server and data sources only.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5363,7 +5343,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents Orama's search engine capabilities, including the facets API, the AnswerSession API and SDKs. It never mentions official UI component libraries for a search box, results, facets or pagination. The facets API and AnswerSession state callbacks are backend building blocks a developer would use to build the UI, not prebuilt UI components, so they earn no credit.",
+    "rationale": "Official UI component libraries are a fair question for a search engine like Orama, so the axis applies. However, the evidence pack documents no official UI components for a search box, results, facets or pagination. What it does show is backend search APIs, such as the faceted search API and AnswerSession state callbacks a developer could use to build their own UI, and those are developer building blocks rather than the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5378,12 +5358,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Orama documents on-premise deployment of Orama Cloud's context server on your own infrastructure, and says it runs in your cloud, on-prem, or dedicated. Separately, it ships an open-source library whose APIs are 'as close as possible' to Cloud. However, nothing confirms the self-hosted deployment matches the hosted product feature-for-feature, and the OSS AnswerSession still relies on Orama Cloud's Secure Proxy. missing for 10: documented feature parity between on-prem and hosted Cloud, self-hosting deployment/operations docs, independent or hands-on corroboration of on-prem deployments.",
+    "rationale": "Orama documents on-premise support for Orama Cloud, letting you deploy the context server on your own infrastructure, and offers an open-source library whose APIs are designed to stay close to Cloud's. Parity with the hosted product is not shown: the open-source AnswerSession depends on Orama Cloud's Secure Proxy, and on-prem appears to be an engineer-assisted engagement rather than a documented self-serve deployment. Missing for 10: documented feature parity between self-hosted and hosted (e.g. MCP server, managed embeddings), self-serve deployment and operations docs, independent or hands-on corroboration of a self-hosted deployment.",
     "evidenceIds": [
       "orama-docs-8",
       "orama-docs-51",
       "orama-docs-19",
-      "orama-docs-18"
+      "orama-docs-18",
+      "orama-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -5410,12 +5391,11 @@
     "storyId": "synonyms-curation",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Orama's GitHub feature list names \"Pinning Rules (Merchandising)\", which covers the pin part of query-specific result curation. \"Fields Boosting\" appears to be field-level weighting, not boosting specific hits for specific queries. Both are bare feature-list mentions with no documentation of how they work. Missing for 10: synonym definition, hiding/excluding specific hits per query, per-query hit boosting, in-depth docs on pinning rules, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "The Orama GitHub README lists \"Pinning Rules (Merchandising)\", which covers the pin part of per-query curation, but only as a bare feature-list entry with no detail on how rules are defined or matched to queries. \"Fields Boosting\" is field-level weighting, not boosting specific hits for specific queries, so it does not count toward this story. missing for 10: synonym definition, hiding/excluding specific hits per query, per-query hit boosting, documentation of how pinning rules work, independent or hands-on corroboration.",
     "evidenceIds": [
-      "orama-gh-4",
       "orama-gh-2",
-      "orama-gh-7"
+      "orama-gh-4"
     ],
     "support": {
       "relation": "direct",
@@ -5427,8 +5407,8 @@
           "quote": "Pinning Rules (Merchandising)"
         },
         {
-          "evidenceId": "orama-gh-7",
-          "quote": "Pinning Rules (Merchandising) ... Fields Boosting"
+          "evidenceId": "orama-gh-2",
+          "quote": "Pinning Rules (Merchandising)"
         }
       ]
     }
@@ -5439,7 +5419,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pricing page evidence shows only that the open-source library is free and that there is an assessment-led enterprise engagement. Nothing documents published per-unit rates (per search, per record, or per node) that would let a founder predict the cost of the managed service before committing.",
+    "rationale": "Pricing is a fair axis for a hosted search product. Orama's pricing page only says the open-source library is free and describes an enterprise-style assessment engagement. It publishes no per-search, per-record, or per-node rates for Orama Cloud that a founder could use to forecast cost.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5454,7 +5434,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Orama's GitHub README lists \"Typo Tolerance\" (and \"Exact Match\") as a built-in feature, so the product itself ships fuzzy matching. The evidence is only a bare feature-list mention, with nothing showing default behavior or any configuration. missing for 10: documentation that typo tolerance is on by default, tunable rules for when and how fuzzy matching applies (edit distance, prefix or term-length thresholds, per-field control), and independent or hands-on corroboration.",
+    "rationale": "Orama's GitHub README lists \"Typo Tolerance\" (and \"Exact Match\") as a first-party feature, so fuzzy matching is a documented capability. The evidence is only a bare feature-list mention, with nothing on how it behaves by default or how to configure it. Missing for 10: confirmation that typo tolerance is on out of the box, documented tunable rules (tolerance/edit distance, per-field or term-length thresholds, prefix vs. fuzzy behavior), in-depth docs, and hands-on corroboration.",
     "evidenceIds": [
       "orama-gh-2",
       "orama-gh-3",
@@ -5482,7 +5462,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Orama's docs say hybrid search combines full-text and vector search in one query and merges the results. Hybrid search is listed in both the open-source library and Orama Cloud, and the embeddings plugin generates vectors for hybrid queries. Missing for 10: independent or hands-on corroboration, and documented detail on how results are fused or weighted (e.g., tunable weights or a rank-fusion method).",
+    "rationale": "Orama's docs say hybrid search performs full-text and vector search in one query and combines the results, which is exactly this story. The GitHub README and the Cloud docs both list hybrid search, and the embeddings plugin generates vectors at insert and search time to support it. Missing for 10: documentation of the fusion or weighting method and any tuning controls, and independent hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-5",
       "orama-gh-2",

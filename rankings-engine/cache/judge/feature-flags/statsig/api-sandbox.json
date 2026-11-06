@@ -1,17 +1,28 @@
 {
-  "hash": "5c10eda05970eb2853fe4376dd3a9398ea0382fe205b5be492a4a7d696d0ad76",
+  "hash": "ec7ce783d936fa7224b66d4467706302ed5f1c840d98dac821bb828cc502300b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Statsig plausibly could offer an isolated test environment, but the evidence pack never documents one: no dev/staging environments, test API keys, or a sandbox project separated from production data. The related items describe different things. Target apps scope configs to applications within a single project, overrides force specific users into variants for QA, and offline AI evals grade outputs on a fixed test set; none of these is an isolated sandbox environment, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Statsig documents its own environment-tier isolation. SDKs evaluate gates and experiments differently in development or staging using environment-specific SDK keys, and development, staging and production data are kept separate, so testing outside production is a first-party capability. The evidence states this isolation is by tier and key within the same project, not a separate sandbox account. No sandboxed target is documented for the Console API, CLI or MCP server that agents would drive. Per-user overrides for QA are adjacent and not credited. Missing for 10: a fully isolated sandbox project or account, a sandbox mode for Console API/MCP/CLI agent actions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "statsig-environments-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "statsig-environments-20261106",
+          "quote": "evaluate feature gates, dynamic configs, and experiments differently in non-production environments like development or staging"
+        },
+        {
+          "evidenceId": "statsig-environments-20261106",
+          "quote": "Isolation is by environment tier and key, not a separate sandbox account."
+        }
+      ]
     },
     "productId": "statsig",
     "storyId": "api-sandbox"
