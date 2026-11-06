@@ -1,28 +1,33 @@
 {
-  "hash": "db80bcbbdb2751ebb4d4e71751f1d7c5bb2399be785100cb4232109b45167ff8",
+  "hash": "a50c08495e5cf8e53487dd556214127b2a7bec67b0a45308313b11f31e16ac4f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "AnythingLLM has a first-party docs page titled \"API Access & Keys\", and release notes reference a server /api/ping endpoint, so the product itself exposes a documented API. The evidence is only a page title, though, with no detail on endpoints, coverage of product functions, or auth flow. Probes found no machine-readable OpenAPI spec on the docs domain. Missing for 10: endpoint-level documentation showing the API can drive core features (workspaces, chats, documents, agents), a published OpenAPI/Swagger spec, and independent or hands-on corroboration of programmatic use.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "AnythingLLM documents a full developer API for managing, updating, embedding and chatting with workspaces. It publishes an OpenAPI 3.0.0 spec with 67 /v1 paths in its official repository and serves interactive Swagger docs on each instance at /api/docs, with API-key auth. The 404s from the docs-site OpenAPI probe only show the spec is not hosted on the docs domain; they do not contradict the repo-published spec. missing for 10: independent or hands-on corroboration of driving the product via the API, a vendor-hosted API or docs endpoint (the API is per-instance only), and a published API deprecation or backwards-compatibility policy.",
     "evidenceIds": [
+      "anythingllm-api-docs-20261106",
+      "anythingllm-openapi-20261106",
       "anythingllm-docs-11",
-      "anythingllm-docs-28",
-      "anythingllm-probe-2"
+      "anythingllm-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "anythingllm-docs-11",
-          "quote": "API Access & Keys"
+          "evidenceId": "anythingllm-api-docs-20261106",
+          "quote": "AnythingLLM supports a full developer API that you can use to manage, update, embed, and even chat with your workspaces"
         },
         {
-          "evidenceId": "anythingllm-docs-28",
-          "quote": "fix: point k8s probes at the server's /api/ping"
+          "evidenceId": "anythingllm-openapi-20261106",
+          "quote": "API endpoints that enable programmatic reading, writing, and updating of your AnythingLLM instance. UI supplied by Swagger.io."
+        },
+        {
+          "evidenceId": "anythingllm-api-docs-20261106",
+          "quote": "You can find the API documentation for available endpoints on your instance at /api/docs"
         }
       ]
     },

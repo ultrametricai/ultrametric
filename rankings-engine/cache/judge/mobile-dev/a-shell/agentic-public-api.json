@@ -1,17 +1,16 @@
 {
-  "hash": "fc743021a8683fbe8f0626276065b75495e5625d9af10be43d8cb41b5696ba2f",
+  "hash": "76eb963baf315b9d032df0cd9ab6b432f72cdf45382fc3b3fd50946e2e01e06e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "a-Shell's main programmatic interface is its own set of documented Apple Shortcuts actions: `Execute Command` runs a list of commands in order, and `Put File`/`Get File` move files in and out, so Shortcuts can drive the shell. This is not a general public API: there is no HTTP/REST, SDK or OpenAPI spec (the probes for llms.txt and OpenAPI returned 404), and the docs warn that forcing a shortcut to run in App or in Extension 'won't always work'. missing for 10: a documented general-purpose public API (REST/SDK/OpenAPI), API reference docs beyond the Shortcuts action descriptions, independent corroboration of agent-driven use.",
+    "rationale": "a-Shell documents its own programmatic surfaces: Apple Shortcuts actions (Execute Command, Put File, Get File) and an optional built-in HTTPS relay whose POST /run endpoint accepts a command line with an X-Token header. Both are local-only, the relay is off by default and meant for trusted networks, and the endpoint is described only in README prose. Probes for OpenAPI and llms.txt returned 404. missing for 10: formal API reference or OpenAPI spec, remote/cloud API, API versioning and changelog, isolated test environment.",
     "evidenceIds": [
-      "a-shell-gh-4",
-      "a-shell-gh-13",
+      "a-shell-relay-20261106",
       "a-shell-gh-33",
       "a-shell-gh-34",
-      "a-shell-gh-35",
+      "a-shell-gh-4",
       "a-shell-probe-2"
     ],
     "support": {
@@ -20,12 +19,12 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "a-shell-gh-4",
-          "quote": "a-Shell is compatible with Apple Shortcuts, giving users full control of the Shell."
+          "evidenceId": "a-shell-relay-20261106",
+          "quote": "POST /run takes a UTF-8 command line as its body and requires Content-Length and X-Token"
         },
         {
           "evidenceId": "a-shell-gh-33",
-          "quote": "`Execute Command`, which takes a list of commands and executes them in order. The input can also be a file or a text node"
+          "quote": "`Execute Command`, which takes a list of commands and executes them in order."
         },
         {
           "evidenceId": "a-shell-gh-34",

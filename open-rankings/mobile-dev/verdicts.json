@@ -5,7 +5,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, and running AI coding agents from a mobile terminal is a fair question for this kind of product, so the axis applies. However, the evidence pack never mentions an AI agent, pull-request analysis, or code-improvement suggestions. Bundled Python with pip, Vim with vim-lsp/ALE syntax checkers, and Shortcuts integration are only developer building blocks or adjacent features, so they earn no credit.",
+    "rationale": "Running an AI agent from a mobile terminal is a fair question for this kind of product, so the axis applies. However, the evidence never mentions an AI agent, pull-request integration, or code-review suggestions. Pure-Python pip installs, built-in languages and the Shortcuts or relay automation are only developer building blocks a user could assemble themselves, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -20,7 +20,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Any product with public documentation could publish llms.txt or agent-oriented docs, so the axis applies to a-Shell. The probe found no llms.txt (HTTP 404 at holzschu.github.io/llms.txt), and none of the docs or GitHub material mentions agent-oriented documentation.",
+    "rationale": "Any product with public documentation could publish an llms.txt or agent-oriented docs, so this axis applies to a-Shell. The probe found no llms.txt (HTTP 404 at holzschu.github.io/llms.txt), and the docs and README are written for human users, with nothing aimed at agents. Absence of evidence for an applicable capability yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -35,7 +35,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, and terminals can plausibly ship built-in AI assistance, so this axis applies. The evidence pack documents no AI-generated insights or suggestions. Bundled Python, pip and Vim linting are developer building blocks or adjacent features, not this capability, so they earn no credit.",
+    "rationale": "An AI-insights feature is a fair question for a terminal app, so the axis applies. However, nothing in the evidence shows a-Shell offering any built-in AI analysis, insights or suggestions about user data. Bundled Python with pip, Vim with syntax checkers, and Shortcuts automation are developer building blocks or adjacent features, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -49,13 +49,13 @@
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "a-Shell ships its own Apple Shortcuts actions, such as `Execute Command`, `Put File` and `Get File`, and they can be forced to run \"in Extension\" rather than in the app. That lets scripted command sequences run without the user driving the terminal. However, these are one-off actions invoked from Shortcuts. a-Shell documents no recurring schedule, trigger system or background daemon of its own, and the docs warn that extension mode \"won't always work.\" Missing for 10: a native scheduler or recurring triggers, documented background execution guarantees, any agent-style autonomous automation, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "a-Shell ships its own Apple Shortcuts actions (Execute Command, Put File, Get File) for building scripted file-processing automations, and these can run \"in Extension\" rather than in the app, though with the caveat that this \"won't always work.\" There is no first-party scheduler or trigger-action rules surface: the relay evidence says \"no trigger-action rules surface exists,\" and `.profile` runs only when a window opens. Recurring or autonomous triggering would have to come from the host platform, which earns no credit here. Missing for 10: a native scheduling/recurring trigger mechanism, documented reliable background execution, trigger-action rules, and independent hands-on corroboration.",
     "evidenceIds": [
       "a-shell-gh-4",
       "a-shell-gh-33",
       "a-shell-gh-35",
-      "a-shell-gh-34"
+      "a-shell-relay-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -83,7 +83,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "a-Shell is a Unix-like terminal app for iOS. Terminal apps can plausibly ship a built-in AI assistant, so the axis applies, but nothing in the evidence pack mentions any AI assistant or task delegation. The documented features cover shell commands, programming languages, Vim, package installation, Shortcuts integration and appearance configuration, none of which is an AI assistant.",
+    "rationale": "A built-in AI assistant is a fair question for a terminal app, so the axis applies. Nothing in the evidence shows a-Shell ships one. Its documented surfaces are Unix commands, programming languages, Apple Shortcuts actions, an optional relay server and a `.profile` startup script, none of which is an AI assistant.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -96,14 +96,15 @@
     "productId": "a-shell",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "a-Shell provides its own Apple Shortcuts actions. `Execute Command` runs a list of commands or a file, and `Put File`/`Get File` move data in and out, so the shell can be scripted without typing at the prompt. Shortcuts can also be forced to run \"in Extension\" rather than in the app, which approximates headless execution, though the docs warn this won't always work. missing for 10: a documented headless mode with no UI, CI/server-side runner integration, and independent or hands-on corroboration of unattended automation.",
+    "rationale": "a-Shell offers its own non-interactive automation surfaces. Apple Shortcuts actions (Execute Command, Put File, Get File) run commands programmatically, optionally \"in Extension\", though the docs warn this won't always work. An optional built-in relay HTTPS server also accepts POST /run command lines. It is still an iOS app with no CI runner, headless binary or test environment, so CI-style automation is only approximated. Missing for 10: CI/pipeline integration, a true headless/CLI mode outside the iOS app, reliable documented background execution, independent hands-on corroboration.",
     "evidenceIds": [
       "a-shell-gh-4",
       "a-shell-gh-33",
       "a-shell-gh-34",
-      "a-shell-gh-35"
+      "a-shell-gh-35",
+      "a-shell-relay-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -111,16 +112,20 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "a-shell-gh-4",
-          "quote": "You can write complex Shortcuts to download, process and release files using a-Shell commands."
-        },
-        {
           "evidenceId": "a-shell-gh-33",
           "quote": "`Execute Command`, which takes a list of commands and executes them in order. The input can also be a file or a text node"
         },
         {
           "evidenceId": "a-shell-gh-35",
           "quote": "You can force a specific shortcut to run \"in App\" or \"in Extension\", with the warning that it won't always work."
+        },
+        {
+          "evidenceId": "a-shell-relay-20261106",
+          "quote": "POST /run takes a UTF-8 command line as its body and requires Content-Length and X-Token"
+        },
+        {
+          "evidenceId": "a-shell-gh-4",
+          "quote": "You can write complex Shortcuts to download, process and release files using a-Shell commands."
         }
       ]
     }
@@ -131,7 +136,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Terminal apps can plausibly ship AI features that consume MCP servers, so this axis applies to a-Shell. The evidence pack never mentions MCP, AI agents or any tool-calling client capability. Shortcuts integration, pip and pkg installs are general extensibility, not MCP-client support, so they earn no credit.",
+    "rationale": "Being an MCP client is a fair axis for a terminal app, since some terminals ship AI agents that consume MCP tools, but nothing in the evidence shows a-Shell can connect to or use MCP servers. Its documented programmatic surfaces are Apple Shortcuts actions, an optional local HTTPS relay, and a `.profile` startup script, none of which is an MCP client.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -146,7 +151,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is an iOS terminal app, not an agent itself, so offering an official MCP server is a fair question for this kind of product. The evidence pack contains no mention of an MCP server. Its Apple Shortcuts integration is an adjacent automation feature, not an MCP endpoint, and the probes found no llms.txt or OpenAPI spec.",
+    "rationale": "a-Shell is an iOS terminal app, not an agent, so shipping an official MCP server is a fair question and the axis applies. The evidence shows no MCP server. Its only programmatic surfaces are Apple Shortcuts actions and an optional HTTPS relay that accepts POST /run commands, which are adjacent automation hooks rather than an MCP server an agent could connect to.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -161,7 +166,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal operated through typed shell commands. Nothing in the evidence shows it accepting or interpreting natural-language commands. Apple Shortcuts integration and VoiceOver are host-platform automation and accessibility features, not natural-language operation of the product itself.",
+    "rationale": "Natural-language operation is a fair question for a terminal app, since terminals can ship AI or natural-language command layers. The evidence shows a-Shell accepts only Unix-style shell commands. The nearby features don't count: Apple Shortcuts runs literal command lists, and VoiceOver only reads typed commands and output aloud, so neither interprets natural language.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -174,16 +179,15 @@
     "productId": "a-shell",
     "storyId": "agentic-official-cli",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "a-Shell's primary interface is its own official command line, a Unix-like terminal on iOS with first-party commands such as `config`, `pickFolder`, `pkg` and `help -l`. It can also be driven non-interactively through the Apple Shortcuts `Execute Command` action. However, nothing in the evidence shows the CLI is designed for or documented around AI-native or agent workflows, and the llms.txt probe returned 404, so coverage is partial. Missing for 10: AI/agent-oriented CLI usage or documentation, machine-readable agent docs (llms.txt 404), a CLI callable from a desktop or remote environment, and independent hands-on corroboration.",
+    "rationale": "a-Shell is itself an official, first-party Unix-like command line on iOS. It ships its own commands (`config`, `pickFolder`, `pkg install`, `help -l`), and an off-by-default relay server can accept command lines over HTTPS, so the core of an official CLI is directly delivered. The AI-native part of the story is unevidenced: the CLI only runs inside the iOS app, the relay is meant for trusted networks, the llms.txt probe returned 404, and no agent-oriented or machine-readable output mode is documented. missing for 10: machine-readable/structured output for agents, AI- or agent-specific CLI workflows, a CLI usable outside the iOS app sandbox, versioned CLI reference/changelog, independent hands-on corroboration.",
     "evidenceIds": [
       "a-shell-gh-17",
-      "a-shell-gh-20",
       "a-shell-gh-6",
       "a-shell-gh-27",
-      "a-shell-gh-33",
-      "a-shell-gh-4",
+      "a-shell-gh-22",
+      "a-shell-relay-20261106",
       "a-shell-probe-1"
     ],
     "support": {
@@ -204,12 +208,8 @@
           "quote": "You install them on your iPad using the `pkg` command: `pkg install zip`."
         },
         {
-          "evidenceId": "a-shell-gh-33",
-          "quote": "`Execute Command`, which takes a list of commands and executes them in order."
-        },
-        {
-          "evidenceId": "a-shell-gh-4",
-          "quote": "a-Shell is compatible with Apple Shortcuts, giving users full control of the Shell."
+          "evidenceId": "a-shell-relay-20261106",
+          "quote": "POST /run takes a UTF-8 command line as its body and requires Content-Length and X-Token"
         }
       ]
     }
@@ -218,15 +218,14 @@
     "productId": "a-shell",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "a-Shell's main programmatic interface is its own set of documented Apple Shortcuts actions: `Execute Command` runs a list of commands in order, and `Put File`/`Get File` move files in and out, so Shortcuts can drive the shell. This is not a general public API: there is no HTTP/REST, SDK or OpenAPI spec (the probes for llms.txt and OpenAPI returned 404), and the docs warn that forcing a shortcut to run in App or in Extension 'won't always work'. missing for 10: a documented general-purpose public API (REST/SDK/OpenAPI), API reference docs beyond the Shortcuts action descriptions, independent corroboration of agent-driven use.",
+    "rationale": "a-Shell documents its own programmatic surfaces: Apple Shortcuts actions (Execute Command, Put File, Get File) and an optional built-in HTTPS relay whose POST /run endpoint accepts a command line with an X-Token header. Both are local-only, the relay is off by default and meant for trusted networks, and the endpoint is described only in README prose. Probes for OpenAPI and llms.txt returned 404. missing for 10: formal API reference or OpenAPI spec, remote/cloud API, API versioning and changelog, isolated test environment.",
     "evidenceIds": [
-      "a-shell-gh-4",
-      "a-shell-gh-13",
+      "a-shell-relay-20261106",
       "a-shell-gh-33",
       "a-shell-gh-34",
-      "a-shell-gh-35",
+      "a-shell-gh-4",
       "a-shell-probe-2"
     ],
     "support": {
@@ -235,12 +234,12 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "a-shell-gh-4",
-          "quote": "a-Shell is compatible with Apple Shortcuts, giving users full control of the Shell."
+          "evidenceId": "a-shell-relay-20261106",
+          "quote": "POST /run takes a UTF-8 command line as its body and requires Content-Length and X-Token"
         },
         {
           "evidenceId": "a-shell-gh-33",
-          "quote": "`Execute Command`, which takes a list of commands and executes them in order. The input can also be a file or a text node"
+          "quote": "`Execute Command`, which takes a list of commands and executes them in order."
         },
         {
           "evidenceId": "a-shell-gh-34",
@@ -252,10 +251,10 @@
   {
     "productId": "a-shell",
     "storyId": "agentic-scoped-keys",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a local, open-source Unix-like terminal app for iOS. It has no hosted service, account system, or API whose credentials could be issued or scoped, so least-privilege API credentials are a category error for this kind of product. Nothing in the evidence shows it ships such a capability; the directory access via pickFolder is an iOS sandbox file-access feature, not credential issuance.",
+    "rationale": "a-Shell has an optional relay HTTPS server that authenticates POST /run with an X-Token, so credential issuance is a fair question here. However, nothing in the evidence shows scoped, per-agent or least-privilege tokens. The README notes that in-app commands share the app's sandbox and can read its credential files, with no isolation between commands.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -268,13 +267,12 @@
     "productId": "a-shell",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "a-Shell documents its own first-party WASI-sdk. Developers can cross-compile programs against it on a computer and run the resulting WebAssembly in a-Shell, alongside on-device clang targeting WASI. However, the evidence is a single thin mention: there are no SDK docs, no language client libraries for driving a-Shell programmatically, and probes found no llms.txt or OpenAPI. missing for 10: SDK reference documentation, official client SDKs for programmatic or agent control of a-Shell, versioning/support details, independent corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The project's only official SDK is its own WASI-sdk, which cross-compiles programs into WebAssembly commands that run inside a-Shell. There are no official client SDKs for its programmatic surfaces: the relay endpoint is described only in README prose, and there is no cloud API. Missing for 10: official client SDKs or libraries for the relay or Shortcuts automation surfaces, SDK documentation and reference, versioning or changelog, and independent corroboration of SDK use.",
     "evidenceIds": [
       "a-shell-gh-16",
-      "a-shell-gh-25",
-      "a-shell-docs-1"
+      "a-shell-relay-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -284,10 +282,6 @@
         {
           "evidenceId": "a-shell-gh-16",
           "quote": "You can also cross-compile programs on your main computer using our specific WASI-sdk, and transfer the WebAssembly file to your iPad or iPhone."
-        },
-        {
-          "evidenceId": "a-shell-docs-1",
-          "quote": "clang/clang++ compiles your C/C++ files to webAssembly with wasi included."
         }
       ]
     }
@@ -298,7 +292,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack shows no registrable outbound HTTP callbacks or event subscriptions for a-Shell. Apple Shortcuts compatibility (Execute Command, Put/Get File) is an adjacent automation feature, not webhooks, and earns no credit. The API probes found no OpenAPI or llms.txt surface.",
+    "rationale": "The evidence shows no registrable outbound HTTP callbacks that a consumer could subscribe to. a-Shell's programmatic surfaces are Apple Shortcuts actions, an optional inbound relay HTTPS server (POST /run), and the `.profile` startup script. These are inbound or local automation hooks, not webhook event subscriptions. The source explicitly notes that no trigger-action rules surface exists.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -312,8 +306,8 @@
     "storyId": "ai-commit-message-generation",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, and AI-assisted git workflows are a fair axis for a developer terminal. However, the evidence pack never mentions git, staged changes, or any AI-generated commit message feature. The documented features cover languages, packages, Vim, Shortcuts, file access and appearance, and none of them address this story.",
+    "confidence": "high",
+    "rationale": "a-Shell is a local iOS Unix-like terminal, and AI-assisted git workflows are a plausible capability for a terminal, so the axis applies. Nothing in the evidence documents git integration, AI features, or commit-message generation from staged changes. Bundled languages, pip and pkg are developer building blocks, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -327,8 +321,8 @@
     "storyId": "ai-repository-agent-actions",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "a-Shell is an iOS Unix-like terminal, and a terminal could plausibly ship a conversational AI agent, so this axis applies. The evidence documents only shell commands, Vim, programming languages, pkg installs and Apple Shortcuts automation. It contains nothing about an AI agent, conversational control, or git operations such as commit, pull and push.",
+    "confidence": "medium",
+    "rationale": "a-Shell is a local iOS Unix-like terminal, and a terminal could plausibly ship a conversational agent, so the axis applies. The evidence pack documents no built-in AI agent, no conversational interface, and no git commit/pull/push workflow. The Shortcuts actions and the optional relay server that runs submitted command lines are only building blocks an external agent could use, not the product's own capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -343,7 +337,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, so a buyer could reasonably ask whether it supports git history editing, and the axis applies. However, the evidence pack never mentions git, commit amending, or resetting unpushed commits. The listed commands cover compilers, Python, Lua, TeX, Vim and pkg-installable tools such as zip and ffmpeg, but not git.",
+    "rationale": "Git amend and commit-undo are a fair question for a Unix-like terminal, so the axis applies. However, nothing in the evidence pack mentions git, commits, amend, or reset. Listed commands and packages cover languages, Vim, TeX, zip and ffmpeg, but no git tooling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -357,9 +351,12 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "a-Shell is a developer-facing terminal with a scriptable Shortcuts interface, so an interactive API reference is a fair question for it. The evidence shows no interactive reference with runnable examples: the OpenAPI and llms.txt probes both returned 404. The `help -l` command only lists installed commands, which is an adjacent feature and earns no credit.",
-    "evidenceIds": [],
+    "confidence": "high",
+    "rationale": "a-Shell does have programmatic surfaces (Shortcuts actions and an optional relay HTTPS server with POST /run), so an API reference is a fair question to ask of it. However, the evidence says the relay endpoint is described only in README prose and that there is no interactive reference, and the OpenAPI probes all returned 404. The in-app `help` command only lists available shell commands, which is an adjacent feature and not an interactive API reference with runnable examples.",
+    "evidenceIds": [
+      "a-shell-relay-20261106",
+      "a-shell-probe-2"
+    ],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -372,8 +369,8 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "a-Shell is a local iOS terminal app, but it does expose a programmatic interface through Apple Shortcuts actions, so a machine-readable spec is a fair question. The evidence documents no OpenAPI or equivalent spec, and probes of the standard OpenAPI/Swagger paths all returned 404.",
+    "confidence": "high",
+    "rationale": "a-Shell has an HTTP surface, an optional built-in relay server with POST /run, so a machine-readable spec is a fair question here. The evidence states there is no OpenAPI document: the relay endpoint is described only in README prose. Probes for openapi.json, swagger.json and .well-known paths all returned 404.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -388,7 +385,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandboxed test environment is a fair question for a terminal and dev environment, so the axis applies. However, the evidence never documents a sandbox or test mode that isolates experiments from real data. The iOS app sandbox mentions describe the host platform's file isolation. Per-window contexts and WebAssembly execution are adjacent features, not a documented sandbox capability.",
+    "rationale": "a-Shell is a local iOS terminal with programmatic surfaces (Shortcuts actions and an optional relay server), so asking whether it offers an isolated test environment is fair. The evidence says there is \"no test environment\" and that in-app commands share the app's sandbox and can read its credential files. The iOS per-app sandbox and `pickFolder` access are host-platform features, not a product-provided test environment, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -402,8 +399,8 @@
     "storyId": "api-versioning-policy",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "a-Shell exposes programmatic surfaces, namely its Apple Shortcuts actions and command set, so stability guarantees are a fair question. However, the evidence never mentions API versioning or a deprecation policy. The probes found no OpenAPI spec or llms.txt either.",
+    "confidence": "high",
+    "rationale": "a-Shell has programmatic surfaces: Apple Shortcuts actions and an optional built-in relay HTTPS server with POST /run. API versioning and deprecation policy are therefore a fair question for this product. The evidence states there is no API versioning or changelog, the relay endpoint is described only in README prose, and the OpenAPI probes all returned 404, so nothing shows versioned APIs or a documented deprecation policy.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -418,7 +415,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal on iOS, a developer tool where an AI coding-agent workflow is a plausible axis. The evidence shows only local shell, language runtimes, Vim, package installs and Apple Shortcuts automation. Nothing shows issue assignment to an AI agent or automatic pull-request creation.",
+    "rationale": "a-Shell is a local iOS Unix-like terminal, and developer tools of this kind could plausibly ship an AI coding agent, so the axis applies. The evidence pack does not show any AI agent, any issue-assignment flow, or any pull-request generation. Its only programmatic surfaces are local Shortcuts actions, an optional relay server, and the user-scripted `.profile` startup file, none of which delivers this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -433,13 +430,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal with built-in scripting languages, file-manipulation commands such as move and compress, and a Shortcuts `Execute Command` action that runs a list of commands in order. That gives first-party batch execution over files, but the evidence never explicitly documents operating on many items at once. Missing for 10: explicit documentation of bulk or multi-item operations (e.g., globbing, batch file processing), examples of applying one action across many items, and hands-on corroboration.",
+    "rationale": "As a Unix-like terminal, a-Shell documents file operations such as moving, compressing and uncompressing files, and its Shortcuts `Execute Command` action runs a list of commands in order. That gives scriptable batch processing, but the evidence never explicitly describes operating on many items at once. Missing for 10: explicit documentation of multi-item operations (wildcards/globbing, loops over many files), bulk-operation examples, and independent hands-on corroboration.",
     "evidenceIds": [
       "a-shell-gh-33",
       "a-shell-docs-6",
       "a-shell-gh-4",
-      "a-shell-gh-17",
-      "a-shell-docs-4"
+      "a-shell-gh-17"
     ],
     "support": {
       "relation": "direct",
@@ -448,7 +444,7 @@
       "citations": [
         {
           "evidenceId": "a-shell-gh-33",
-          "quote": "`Execute Command`, which takes a list of commands and executes them in order. The input can also be a file or a text node"
+          "quote": "`Execute Command`, which takes a list of commands and executes them in order."
         },
         {
           "evidenceId": "a-shell-docs-6",
@@ -467,10 +463,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no rule engine in a-Shell for triggering actions on events. The `.profile` file runs only when a new window opens, which is a fixed startup hook rather than user-defined event rules. The Apple Shortcuts integration exposes commands to Shortcuts, so any event-based automation would come from the host platform, not from a-Shell itself.",
+    "rationale": "a-Shell has no documented rules or trigger-action system for running actions automatically on events. The relay README summary states plainly that \"no trigger-action rules surface exists.\" The `.profile` startup script is a single fixed customization hook that runs when a window opens, which is an adjacent feature rather than user-defined event rules. Event triggers through Apple Shortcuts would be a host-platform capability, which earns no credit here.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": []
@@ -482,7 +478,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a Unix-like terminal app, but the evidence documents no cron, timer or recurring-schedule capability in a-Shell itself. Apple Shortcuts compatibility and the `Execute Command` action allow one-off command execution driven by the host platform. Running `.profile` when a new window opens is a startup hook, not a recurring schedule.",
+    "rationale": "Recurring job scheduling is a fair question for a terminal app, but the evidence documents no cron, scheduler, or recurring-trigger feature in a-Shell. The `.profile` script runs only once when a window opens, and the relay notes no trigger-action rules surface exists. Apple Shortcuts compatibility allows one-off command execution; any recurring schedule would come from the host platform, not a-Shell itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -497,7 +493,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell supports automation through Apple Shortcuts actions and scripts such as `.profile`, so this axis applies. The evidence pack never documents any first-party way to version, review or roll back those automations: no git, no history of script or shortcut revisions, no diff or restore feature. Keeping script files and managing them by hand would be a user-side workaround and earns no credit.",
+    "rationale": "a-Shell has automation surfaces: Apple Shortcuts actions, the .profile startup script and an optional relay server. Nothing in the evidence shows any first-party way to version, review history of, or roll back those automations. The relay README describes only a user-supplied .profile hook, with no versioning or changelog mechanism, so the applicable axis is unsupported.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -512,7 +508,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is an iOS Unix-like terminal, so biometric protection of remote connections is a fair axis for it. The evidence pack never mentions Face ID, Touch ID, fingerprint authentication, or biometric-gated SSH keys. The items cover languages, appearance, Shortcuts, pickFolder and packages, none of which address this story.",
+    "rationale": "Biometric protection of remote connections is a fair question for an iOS terminal app, but the evidence pack never mentions Face ID, Touch ID, fingerprint authentication, or biometric gating of SSH keys or remote sessions. The only security-related material covers the relay server's X-Token and the shared app sandbox, which is not biometric authentication.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -527,7 +523,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a terminal app, so grouping sessions and broadcasting commands is a fair axis. The evidence only shows independent windows (`newWindow`, each with its own context and history). The one cross-window feature is `config --theme -g`, which applies a theme to every open window; that is an appearance setting, not command broadcast, so it earns no credit.",
+    "rationale": "a-Shell is a terminal app and supports multiple independent windows, so this axis applies. The evidence documents no way to group sessions or broadcast a command to several of them. The `config --theme ... -g` flag only pushes appearance settings to every open window, which is an adjacent control rather than command broadcast.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -542,7 +538,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "a-Shell is a Unix-like terminal, and the docs show it ships `grep`, a regex-capable text search and filter command, though only in the context of filtering the command list. It also bundles Vim for navigating files. There is no explicit evidence of searching code content, and nothing at all on fuzzy matching. Missing for 10: fuzzy matching/finder tool, documented regex code search across files (e.g., grep -r/ripgrep), search filters by file type or path, and hands-on corroboration.",
+    "rationale": "a-Shell is a Unix-like terminal that ships `grep` (shown filtering text in a pipe) and an included Vim editor, so it offers basic in-terminal text filtering over files. The evidence never documents searching code content, regex patterns, or fuzzy matching. missing for 10: fuzzy matching (no fzf or equivalent documented), documented regular-expression code search, filters for code navigation (e.g. by file type or path), any hands-on corroboration of code search workflows.",
     "evidenceIds": [
       "a-shell-gh-6",
       "a-shell-gh-28",
@@ -555,12 +551,12 @@
       "subject": "As a developer, I can search and navigate code content using fuzzy matching, filters, and regular expressions",
       "citations": [
         {
-          "evidenceId": "a-shell-gh-6",
+          "evidenceId": "a-shell-gh-28",
           "quote": "`help -l | grep command` will tell you if your favorite command is already installed."
         },
         {
           "evidenceId": "a-shell-docs-3",
-          "quote": "a-Shell comes with Vim included. You can edit your files"
+          "quote": "a-Shell comes with Vim included. You can edit your files and even run syntax checkers using e.g. vim-lsp or ALE."
         },
         {
           "evidenceId": "a-shell-gh-17",
@@ -574,8 +570,8 @@
     "storyId": "conversational-repo-agent",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS. Terminals can plausibly ship a built-in AI agent, so the axis applies, but the evidence pack never mentions a natural-language AI agent or any repository or pull-request insight feature. Installing pure-Python packages via pip is only a user-side building block and earns no credit.",
+    "confidence": "high",
+    "rationale": "a-Shell is a local iOS Unix-like terminal, and terminals can plausibly ship a built-in AI agent, so this axis applies. The evidence covers shell commands, programming languages, Shortcuts and a local relay server, but nothing about a natural-language AI agent or repository and pull-request insights. Absence of evidence for an applicable capability yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -590,7 +586,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A credential vault shared across multiple hosts is a fair question for a terminal/shell app, so the axis applies. Nothing in the evidence describes a secure vault, keychain integration, or reusable credentials. The `.profile` environment-variable mechanism is a user-side workaround, not a secure vault, so it earns no credit.",
+    "rationale": "Secure credential storage is a fair question for a terminal app, so the axis applies. The evidence pack documents no secure vault and no way to reference stored credentials across multiple hosts. The only related mention says in-app commands \"can read its credential files\" and that file permissions do not isolate them, which is the opposite of a vault. Setting custom environment variables in `.profile` is a user-side workaround and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -602,20 +598,20 @@
   {
     "productId": "a-shell",
     "storyId": "cross-app-file-access",
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "a-Shell's own `pickFolder` command opens directories inside other apps' sandboxes. Users can then work on those files, for example running Python or TeX there, and the folders are bookmarked for later return. Nothing in the pack shows repository-specific workflows, such as git operations on repos stored in another app's sandbox. missing for 10: evidence of working with repositories (e.g., git clone/commit/push) in other apps' sandboxes, independent or hands-on corroboration of pickFolder behavior and its limits.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "a-Shell's own `pickFolder` command uses iOS file sharing to open directories inside other apps' sandboxes. Once a folder is selected, the user can do pretty much anything there, including running TeX or Python, and every picked directory is bookmarked so it can be revisited without picking it again. Missing for 10: no independent or hands-on corroboration, and no specific evidence about working with repositories (e.g., git) in those folders.",
     "evidenceIds": [
       "a-shell-gh-5",
+      "a-shell-docs-5",
       "a-shell-gh-31",
       "a-shell-gh-24",
-      "a-shell-docs-5",
       "a-shell-gh-12"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can access and work with files and repositories from other apps' sandboxes on my device",
       "citations": [
         {
@@ -623,12 +619,12 @@
           "quote": "a-Shell uses iOS 13 ability to access directories in other Apps sandbox. Type `pickFolder` to access a directory inside another App."
         },
         {
-          "evidenceId": "a-shell-gh-31",
-          "quote": "Once you have selected a directory, you can do pretty much anything you want here"
-        },
-        {
           "evidenceId": "a-shell-docs-5",
           "quote": "You can open directories in other app sandbox with pickFolder and run TeX or Python there."
+        },
+        {
+          "evidenceId": "a-shell-gh-31",
+          "quote": "Once you have selected a directory, you can do pretty much anything you want here"
         },
         {
           "evidenceId": "a-shell-gh-24",
@@ -643,14 +639,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "a-Shell's own `config` command changes the font, font size, background and text colors, and cursor color and shape. `config -p` makes the settings permanent for all future windows, and `config --theme ... -g` saves a theme in Settings. Custom fonts and theme files in Windows Terminal JSON format are also supported. Missing for 10: independent or hands-on corroboration beyond the README documentation.",
+    "rationale": "a-Shell's own `config` command changes the font, font size, background color, text color, and cursor color and shape. `config -p` makes the current window's settings permanent for all future windows, and themes and custom fonts are also documented. Evidence comes only from the first-party README. Missing for 10: independent or hands-on corroboration of the customization and persistence behavior.",
     "evidenceIds": [
       "a-shell-gh-2",
       "a-shell-gh-21",
       "a-shell-gh-11",
       "a-shell-gh-22",
       "a-shell-gh-39",
-      "a-shell-gh-40",
       "a-shell-gh-41",
       "a-shell-gh-42"
     ],
@@ -661,7 +656,7 @@
       "citations": [
         {
           "evidenceId": "a-shell-gh-2",
-          "quote": "It lets you change the font, the font size, the background color, the text color and the cursor color and shape."
+          "quote": "You can change the appearance of a-Shell using `config`. It lets you change the font, the font size, the background color, the text color and the cursor color and shape."
         },
         {
           "evidenceId": "a-shell-gh-11",
@@ -669,7 +664,7 @@
         },
         {
           "evidenceId": "a-shell-gh-39",
-          "quote": "Add `-g` to update every open window and save the theme in Settings"
+          "quote": "Select a theme with `config --theme dracula`. Add `-g` to update every open window and save the theme in Settings"
         },
         {
           "evidenceId": "a-shell-gh-41",
@@ -684,7 +679,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Direct server connections, such as SSH, are a fair question for a Unix-like terminal app, so the axis applies. The evidence only lists network lookup utilities (nslookup, whois), which are adjacent tools and do not connect you to your own servers. Nothing documents SSH, SFTP or any other direct connection capability.",
+    "rationale": "A terminal app could plausibly ship direct server connections such as SSH, so this axis applies. The evidence pack never documents an SSH client or any other way to connect outbound to a user's servers. The listed ios_system commands are only lookup tools (nslookup, whois), and the built-in 'relay' is an inbound HTTPS server for running commands in the app, not a way to reach remote servers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -699,7 +694,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "a-Shell is a Unix-like terminal app for iOS. Routing all device internet traffic through an exit node is a VPN or mesh-networking capability, which is outside what a local terminal emulator does. The pack only shows network utilities such as nslookup and whois, nothing about exit nodes or VPN routing, so the axis does not apply.",
+    "rationale": "a-Shell is a local Unix-like terminal for iOS. Routing all device internet traffic through an exit node is a VPN/mesh-networking capability outside this product category, and nothing in the evidence shows a-Shell ships any such feature. Its networking mentions (nslookup, whois, a local relay server) do not route device traffic.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -714,7 +709,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal, so scp/sftp transfer is a fair question for it. However, the evidence pack never mentions scp, sftp, ssh, or key configuration. The Shortcuts 'Put File'/'Get File' actions move files into and out of a-Shell on the device, not to or from remote hosts, so they are an adjacent feature and earn no credit.",
+    "rationale": "Remote file transfer is a fair question for an iOS Unix-like terminal, but nothing in the evidence pack mentions scp, sftp, ssh or SSH key configuration. The Shortcuts 'Put File'/'Get File' actions move files to and from the app locally, not to remote hosts, so they are an adjacent feature and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -729,7 +724,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cloning Git repositories is a fair question for a Unix-like terminal app on iOS, so the axis applies. However, nothing in the evidence pack mentions git, cloning, or support for HTTPS, SSH or the Git protocol. The listed commands (nslookup, whois, python3, lua, pdflatex, zip, ffmpeg) and the pkg install mechanism do not establish a git client.",
+    "rationale": "Git cloning is a fair question for a Unix-like terminal, so the axis applies. Nothing in the evidence pack mentions git, lg2, or cloning repositories over HTTPS, SSH, or the Git protocol. The listed ios_system commands and pkg packages (zip, unzip, xz, ffmpeg, nslookup, whois, python3, lua) do not include any Git client.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -744,7 +739,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, so shipping git tooling such as a commit-graph view is a fair question for this kind of product. However, nothing in the evidence pack mentions git, commit history or branch graph visualization. The documented features (languages, pkg-installed commands like zip and ffmpeg, Vim, Shortcuts, appearance config) do not cover this story.",
+    "rationale": "A terminal app could plausibly ship git tooling such as `git log --graph`, so this axis applies. However, nothing in the evidence pack mentions git, commit history, or branch graph visualization. The listed commands (ios_system, pkg packages such as zip and ffmpeg, Python, Lua, C, TeX) do not include any git capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -759,7 +754,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, so committing and pushing code from the device is a fair question for this product. However, nothing in the evidence pack mentions git, commit, or push. The listed commands (python3, lua, clang, pdflatex, pkg-installed zip/ffmpeg) do not include version control, so there is no evidence the product delivers this story.",
+    "rationale": "Committing and pushing from the device is a fair question for an iOS Unix-like terminal, so the axis applies. However, nothing in the evidence pack mentions git, a git-compatible command, or any commit/push workflow. The documented commands cover compilers, Python, Vim, TeX and pkg-installed tools such as zip and ffmpeg.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -774,7 +769,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, so git commit signing is a fair question for this kind of product. However, the evidence pack never mentions git, GPG, SSH keys or commit signing. The only package and command mentions cover zip, ffmpeg, Python, Lua, TeX and similar tools, so there is no evidence the product delivers this story.",
+    "rationale": "a-Shell is a Unix-like terminal on iOS, so asking whether it can sign git commits is a fair question for this kind of product. However, the evidence pack never mentions git, GPG, SSH keys, or commit signing, so there is no documented support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -789,7 +784,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, so shipping git with interactive rebase is a fair capability to ask about. However, nothing in the evidence pack mentions git, rebase, or any commit-history editing. Vim and the pkg command are adjacent tools and do not show this capability.",
+    "rationale": "a-Shell is a Unix-like terminal for iOS that bundles many command-line tools, so whether it supports git history rewriting is a fair question to ask. However, nothing in the evidence pack mentions git, rebase, squashing, or any commit-history editing. The listed tools are vim, Python, Lua, JS, C/C++, TeX and pkg-installed commands like zip and ffmpeg.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -804,7 +799,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, so shipping git tooling with a merge-conflict resolver is a fair question for this kind of product. The evidence pack never mentions git, merge conflicts, or a dedicated multi-file merge tool. The bundled Vim editor is a general-purpose editor, not a conflict-resolution tool, and earns no credit.",
+    "rationale": "a-Shell is a Unix-like terminal for iOS, so a git merge-conflict tool is a fair question for this kind of product. The evidence never mentions git, merge conflicts, or a merge tool. The bundled Vim editor is a general-purpose editor, not a dedicated multi-file conflict-resolution tool, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -819,7 +814,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, so creating pull requests on hosted Git platforms from the device is a fair question for it. The evidence pack never mentions git, a GitHub/GitLab CLI, or any pull-request workflow. Generic package installation via pkg and pip is only a building block, not documented support for this story.",
+    "rationale": "a-Shell is a Unix-like terminal for iOS, so Git workflows are a fair question for it. However, the evidence pack never mentions git, a hosted-platform CLI, or any way to create pull requests. General extensibility through pkg or pip install is at most a user-side workaround and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -834,7 +829,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iPhone and iPad, so reviewing pull requests on the go is a fair question for it. The evidence covers languages, Vim, packages, Shortcuts and file access, but never mentions git, pull requests or any code-review workflow. Vim editing and pickFolder file access are adjacent features, not PR review.",
+    "rationale": "a-Shell is a developer terminal for iPhone and iPad, so reviewing pull requests on the go is a fair question for it. However, the evidence never mentions git, a GitHub/GitLab client, or any pull-request viewing, diffing or commenting. Vim editing and the general Unix commands are adjacent tooling, not a PR-review capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -849,7 +844,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Git stash and unstash is a fair axis for a Unix-like terminal app, since such a terminal could bundle git, so the verdict is not 'na'. The evidence pack never mentions git, stash, or any version-control commands, only languages, pkg-installed WebAssembly commands, and file and folder access. With no documented capability, the verdict is 'none'.",
+    "rationale": "a-Shell is a Unix-like terminal, so offering git commands such as stash/unstash is a fair question for this kind of product. However, nothing in the evidence pack mentions git or any stash capability. The listed commands cover languages, pkg-installed tools, file operations and config, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -864,7 +859,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, so Git submodule management is a fair question for this kind of product. However, nothing in the evidence pack mentions git, cloning, or submodules. The listed commands and packages (pkg, pip, clang, vim, ios_system commands) do not include git.",
+    "rationale": "a-Shell is a Unix-like terminal for iOS, so Git submodule management is a fair question to ask of it. However, nothing in the evidence pack mentions git, cloning, or submodules. The listed commands (ios_system tools, pkg-installed WebAssembly commands, Python, Lua, clang) never include git, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -879,7 +874,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Syncing saved hosts and connection settings is a fair question for a terminal app like a-Shell, so the axis applies. The evidence only shows local persistence: `config -p` makes settings permanent for future windows, and directories can be bookmarked. Nothing documents saved SSH hosts or syncing settings across devices.",
+    "rationale": "Syncing saved hosts and connection settings is a fair question for a terminal app, so the axis applies. The evidence shows only local persistence: `config -p` makes settings permanent for future windows, `bookmark` saves directories, and `.profile` runs at window startup. The relay summary states there is no cloud API, and nothing in the pack documents cross-device sync or saved SSH hosts.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -894,7 +889,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "a-Shell's own documentation says it ships with Vim and that users can edit files and run syntax checkers via vim-lsp or ALE inside the app, which covers both halves of the story. Other docs confirm users can edit their programs and run them in the app. missing for 10: documentation of how vim-lsp/ALE are installed and which linters or language servers actually run on iOS, independent or hands-on corroboration.",
+    "rationale": "First-party docs say Vim ships with a-Shell and that users can edit files and run syntax checkers through Vim plugins such as vim-lsp or ALE, which covers both halves of the story inside the app. Separate docs confirm editing programs and running them in-app, but syntax checking rests on a single sentence. Missing for 10: detail on whether vim-lsp/ALE are bundled or user-installed, which linters/language servers actually work, and independent hands-on corroboration.",
     "evidenceIds": [
       "a-shell-docs-3",
       "a-shell-docs-4",
@@ -919,10 +914,10 @@
   {
     "productId": "a-shell",
     "storyId": "local-unix-commands",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "a-Shell is documented as a Unix-like terminal on iOS that bundles the ios_system command set and runs commands locally in the app. grep is shown in documented usage, and file operations such as creating directories, moving, compressing and uncompressing files are described. missing for 10: explicit documentation naming ls, cat, tar and curl as included commands, independent or hands-on corroboration.",
+    "rationale": "a-Shell documents itself as a local Unix-like terminal on iOS that includes the ios_system command set. `help -l | grep` shows grep is available, and the docs describe file operations such as creating directories, moving files and compressing/uncompressing them. However, most of the specific commands the story names are never explicitly evidenced. Missing for 10: explicit documentation that ls, cat, tar and curl ship and work, and independent or hands-on corroboration of running these commands in the app.",
     "evidenceIds": [
       "a-shell-gh-17",
       "a-shell-gh-20",
@@ -932,7 +927,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can run local UNIX commands like ls, grep, cat, tar, and curl directly in the app",
       "citations": [
         {
@@ -941,7 +936,7 @@
         },
         {
           "evidenceId": "a-shell-gh-20",
-          "quote": "It uses ios_system for command interpretation, and includes all commands from the ios_system ecosystem"
+          "quote": "It uses ios_system for command interpretation, and includes all commands from the ios_system ecosystem (nslookup, whois, python3, lua, pdflatex, lualatex...)"
         },
         {
           "evidenceId": "a-shell-gh-6",
@@ -949,7 +944,7 @@
         },
         {
           "evidenceId": "a-shell-docs-6",
-          "quote": "Create directories, move files, compress them, uncompress them, edit them"
+          "quote": "Create directories, move files, compress them, uncompress them, edit them, run python, lua or Tex on your files, move them to other apps."
         }
       ]
     }
@@ -960,7 +955,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a local Unix-like terminal for iOS. A mobile developer tool could plausibly offer cloud coding-agent task management, so the axis applies. Nothing in the evidence shows any capability to launch, monitor or track cloud-based coding agent tasks. Its features cover local compilation, Python and Lua execution, file access and Shortcuts automation, none of which is agent task management.",
+    "rationale": "a-Shell is a local iOS Unix-like terminal, and a mobile developer tool could plausibly offer cloud agent task management, so the axis applies. However, the evidence documents no cloud coding agents and no task management or tracking. The relay summary states its only programmatic surfaces are local (Shortcuts and an optional local relay server) and that there is no cloud API.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -975,7 +970,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, so remote infrastructure access is a fair question for this kind of product. However, the evidence only shows local tools: compilers, Python/Lua, file access via pickFolder, Shortcuts, and network lookup utilities like nslookup and whois. Nothing documents secure remote access (SSH, tunneling, identity-based access) or Kubernetes cluster connectivity such as kubectl.",
+    "rationale": "Remote and secure access is a fair question for a terminal app like a-Shell, so the axis applies. However, the evidence only documents local capabilities: languages, file access via pickFolder, Shortcuts, network lookup tools like nslookup and whois, and a relay server meant for trusted networks. Nothing shows secure infrastructure access, SSH/tunneling, or Kubernetes cluster access.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -990,12 +985,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "a-Shell's own README states that each window has its own context, appearance, command history and current directory. `newWindow` opens additional windows, and `config` customizes appearance per window, with optional persistence. Missing for 10: independent or hands-on corroboration of multi-window behavior, and detail on how history is isolated or persisted across sessions.",
+    "rationale": "First-party README states that each window has its own context, appearance, command history and current directory. `newWindow` opens additional windows, and `config` can set per-window appearance, with `-p`/`-g` options to persist settings or apply them to every window. missing for 10: independent/hands-on corroboration of multi-window behavior.",
     "evidenceIds": [
       "a-shell-gh-1",
       "a-shell-gh-8",
       "a-shell-gh-21",
       "a-shell-gh-11",
+      "a-shell-gh-39",
       "a-shell-gh-18"
     ],
     "support": {
@@ -1023,8 +1019,8 @@
     "storyId": "nl-to-shell-command",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Turning plain-language requests into shell commands is a fair question for a terminal app, so the axis applies. Nothing in the evidence shows a-Shell doing it: the docs cover a Unix-like terminal, `help -l` command listing, package installation, Shortcuts integration and appearance configuration, but no AI command generation.",
+    "confidence": "medium",
+    "rationale": "Natural-language-to-command generation is a fair axis for a terminal app, so it applies here. The evidence pack documents only a conventional Unix-like shell: built-in commands, `help -l`, the `pkg` installer, Shortcuts integration and a relay server. Nothing in it shows a feature that turns plain-language descriptions into shell commands.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1039,13 +1035,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "a-Shell has no web API: the OpenAPI and llms.txt probes return 404. It does ship its own Apple Shortcuts actions, which the docs say give \"full control of the Shell\". `Execute Command` runs arbitrary command lists and `Put File`/`Get File` move files, and since the UI is itself a command line (config, newWindow, pickFolder and so on are commands), most UI functions are reachable programmatically. Missing for 10: a documented general-purpose API (HTTP or otherwise) beyond Shortcuts, an explicit statement that every UI-only interaction (e.g. GUI pickers) can be driven programmatically, reliable in-extension execution (the docs warn it \"won't always work\"), and independent corroboration.",
+    "rationale": "a-Shell ships its own programmatic surfaces: Apple Shortcuts actions (Execute Command, Put File, Get File) and an optional built-in HTTPS relay whose POST /run accepts any command line. Because nearly all UI functionality is itself exposed as shell commands (including config), much of the UI is reachable programmatically. However, parity with the UI is never documented, the relay is off by default and meant for trusted networks, and Shortcuts runs are noted as not always working. Some features are inherently interactive pickers (pickFolder, the font picker). missing for 10: documented UI/API parity, a formal API spec or OpenAPI, programmatic equivalents for picker-based UI actions (pickFolder, font picker), API versioning/changelog, independent corroboration.",
     "evidenceIds": [
+      "a-shell-relay-20261106",
       "a-shell-gh-4",
-      "a-shell-gh-13",
       "a-shell-gh-33",
       "a-shell-gh-34",
       "a-shell-gh-35",
+      "a-shell-gh-2",
       "a-shell-probe-2"
     ],
     "support": {
@@ -1062,8 +1059,12 @@
           "quote": "`Execute Command`, which takes a list of commands and executes them in order."
         },
         {
-          "evidenceId": "a-shell-gh-34",
-          "quote": "`Put File` and `Get File` are used to transfer files to and from a-Shell."
+          "evidenceId": "a-shell-relay-20261106",
+          "quote": "POST /run takes a UTF-8 command line as its body and requires Content-Length and X-Token"
+        },
+        {
+          "evidenceId": "a-shell-gh-35",
+          "quote": "You can force a specific shortcut to run \"in App\" or \"in Extension\", with the warning that it won't always work."
         }
       ]
     }
@@ -1074,13 +1075,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "a-Shell keeps user data as ordinary files. It documents its own ways to get them out: the `Get File` Shortcuts action, moving or compressing files to send to other apps, and a plain-JSON theme config. It is also fully open source. There is no documented single 'export everything' feature covering all app data, such as settings and command history, so this is only partial. Missing for 10: a documented complete-data export (history, settings, bookmarks), an explicit statement of export formats, and hands-on corroboration of leaving with all data intact.",
+    "rationale": "a-Shell has its own documented ways to move files out of the app. You can move files to other apps, use the Get File Shortcuts action, and compress files with zip. User files stay in their native formats, and theme config is plain JSON in the Windows Terminal scheme format. Missing for 10: a documented one-step export of all app data (command history, settings, bookmarks), an explicit guarantee that everything is exportable in open formats, and independent hands-on corroboration of a complete exit.",
     "evidenceIds": [
-      "a-shell-gh-34",
       "a-shell-docs-6",
+      "a-shell-gh-34",
       "a-shell-docs-5",
-      "a-shell-gh-40",
-      "a-shell-docs-7"
+      "a-shell-gh-36",
+      "a-shell-gh-40"
     ],
     "support": {
       "relation": "direct",
@@ -1088,20 +1089,20 @@
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": [
         {
-          "evidenceId": "a-shell-gh-34",
-          "quote": "`Put File` and `Get File` are used to transfer files to and from a-Shell."
-        },
-        {
           "evidenceId": "a-shell-docs-6",
           "quote": "Create directories, move files, compress them, uncompress them, edit them, run python, lua or Tex on your files, move them to other apps."
         },
         {
-          "evidenceId": "a-shell-gh-40",
-          "quote": "Edit the JSON file in Files or a text editor. It uses the Windows Terminal color scheme format"
+          "evidenceId": "a-shell-gh-34",
+          "quote": "`Put File` and `Get File` are used to transfer files to and from a-Shell."
         },
         {
-          "evidenceId": "a-shell-docs-7",
-          "quote": "a-Shell is entirely OpenSource, and released under the FreeBSD license."
+          "evidenceId": "a-shell-docs-5",
+          "quote": "You can send the result in a third app."
+        },
+        {
+          "evidenceId": "a-shell-gh-40",
+          "quote": "Edit the JSON file in Files or a text editor. It uses the Windows Terminal color scheme format"
         }
       ]
     }
@@ -1112,10 +1113,11 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The official docs state a-Shell is entirely open source under the FreeBSD license, and its source is hosted in a public GitHub repository (holzschu/a-shell), so a user can read it under an open license. Missing for 10: independent corroboration of the license terms (e.g. a LICENSE file excerpt from the repo) rather than only the project site's claim.",
+    "rationale": "a-Shell's own site says it is entirely open source under the FreeBSD license. Several evidence items come from its public GitHub repository (holzschu/a-shell), which shows the source is readable. missing for 10: independent or hands-on confirmation of the license file in the repository itself.",
     "evidenceIds": [
       "a-shell-docs-7",
-      "a-shell-gh-17"
+      "a-shell-gh-17",
+      "a-shell-gh-20"
     ],
     "support": {
       "relation": "direct",
@@ -1139,10 +1141,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "a-Shell is a local terminal app for iOS, and its docs state it is entirely open source under the FreeBSD license, so a user can run and control the core product themselves with no vendor-hosted service involved. The evidence does not document building from source, deploying your own builds, or any self-hosting procedure, so the openness is proven but the self-host workflow is not. Missing for 10: documented build-from-source or self-deployment instructions, and independent or hands-on corroboration of a user running their own build.",
+    "rationale": "a-Shell is fully open source under the FreeBSD license and runs entirely locally on the user's iOS device with no cloud dependency, so the core product is effectively under the user's control. Even its optional relay HTTPS server runs inside the app. However, the evidence does not document how to build or deploy the product yourself, and it ships via the App Store. missing for 10: documented build-from-source/self-deployment instructions, independent hands-on corroboration of self-built installs.",
     "evidenceIds": [
       "a-shell-docs-7",
-      "a-shell-gh-17"
+      "a-shell-gh-17",
+      "a-shell-relay-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1156,6 +1159,10 @@
         {
           "evidenceId": "a-shell-gh-17",
           "quote": "The goal in this project is to provide a simple Unix-like terminal on iOS."
+        },
+        {
+          "evidenceId": "a-shell-relay-20261106",
+          "quote": "a-Shell is a local iOS terminal whose only programmatic surfaces are local"
         }
       ]
     }
@@ -1166,7 +1173,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is an on-device, open-source Unix-like terminal for iOS with no hosted service. Choosing a cloud storage region or data residency is a hosted-service axis that does not apply to this kind of local app. The pickFolder feature lets users pick local directories inside other apps' sandboxes, but that is a different control, not region or residency selection.",
+    "rationale": "a-Shell is a local, on-device iOS terminal with no cloud API or hosted storage, so choosing a storage region or residency is a category error for this kind of product. pickFolder lets users pick local directories in other apps, but that is local file access, not region or residency selection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1181,7 +1188,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A data-use and AI-training privacy question is fair to ask of any app that handles user files, so the axis applies. However, the evidence pack contains no privacy policy, data-collection statement, or AI-training opt-out for a-Shell. Being open source under the FreeBSD license is an adjacent fact and does not document how user data is handled.",
+    "rationale": "Data-use and AI-training controls are a fair privacy question for a terminal app, since some terminals ship AI features with training opt-outs. However, the evidence pack contains no documented AI-training opt-out, data-use policy, or statement about model training. The app being local and open source is adjacent context, not a documented control for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1196,13 +1203,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair question for a local terminal app, since it stores files, command history and bookmarks, so the axis applies. However, the evidence documents no retention or deletion controls. The only nearby item is using `.profile` to clean up temporary files, which is a user-scripted workaround and earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Data retention and deletion is a fair privacy question for any app, including a local iOS terminal, so the axis applies. The evidence documents no product-level retention or deletion controls, such as clearing command history or wiping app data. The only related item is the user-scripted `.profile` startup hook, which the docs say could be used to clean up temporary files. That is a user-side workaround, not a product capability, so it earns no credit.",
+    "evidenceIds": [
+      "a-shell-gh-23"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can control data retention and deletion",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "a-shell-gh-23",
+          "quote": "You can use this mechanism to customize further, e.g. have custom environment variables or cleanup temporary files."
+        }
+      ]
     }
   },
   {
@@ -1211,7 +1225,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for an iOS terminal app, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics, or any opt-out control. Being open source under the FreeBSD license is adjacent and does not show an opt-out mechanism.",
+    "rationale": "Telemetry and usage-tracking controls are a fair privacy question for any app, including a local iOS terminal, so the axis applies. Nothing in the evidence pack mentions telemetry, analytics, tracking, or any setting to opt out of them. Being open source under a FreeBSD license is not a documented opt-out control and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1224,13 +1238,12 @@
     "productId": "a-shell",
     "storyId": "python-package-install",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Both the official site and the GitHub README state that `pip install packagename` works on-device in a-Shell for pure-Python packages, which matches the story's scope exactly. Python itself ships with the app. missing for 10: independent or hands-on corroboration of pip installs working, and deeper documentation of pip behavior (install location, dependency handling, upgrade/uninstall).",
+    "rationale": "a-Shell's own docs and README say users can run `pip install packagename` on the device to add pure-Python packages, which matches the story exactly, including its pure-Python scope. Missing for 10: independent or hands-on corroboration that pip installs succeed in practice.",
     "evidenceIds": [
       "a-shell-gh-26",
-      "a-shell-docs-2",
-      "a-shell-gh-14"
+      "a-shell-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -1244,10 +1257,6 @@
         {
           "evidenceId": "a-shell-docs-2",
           "quote": "Use 'pip install' to add more Python packages (if they are pure Python)."
-        },
-        {
-          "evidenceId": "a-shell-gh-14",
-          "quote": "a-Shell has several programming languages installed: Python, Lua, JS, C, C++ and TeX."
         }
       ]
     }
@@ -1258,7 +1267,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Previewing rendered files is a fair question for a developer terminal and editing environment like a-Shell, so the axis applies. However, no evidence mentions rendering or previewing Markdown or HTML, or any live-reload capability. The evidence covers only Vim editing, languages, TeX, appearance config and file access.",
+    "rationale": "Previewing rendered files is a fair question for an iOS terminal and developer environment, so the axis applies. The evidence pack documents Vim editing, language runtimes, TeX, pickFolder and appearance settings. Nothing in it shows rendering Markdown or HTML previews, or any live-reload behavior.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1273,7 +1282,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is an iOS Unix-like terminal, so storing SSH keys in a hardware-backed, biometric-protected secure enclave is a fair question for it. The evidence pack never mentions SSH keys, the Secure Enclave, Keychain or biometric protection. Its 'sandbox' references describe iOS file access to other apps' directories, not key storage, so they earn no credit.",
+    "rationale": "Storing SSH keys in a biometric-protected secure enclave is a fair question for an iOS terminal, so the axis applies. The evidence pack never mentions SSH key management, Secure Enclave, Keychain or Face ID/Touch ID protection. The only related note is that in-app commands share the sandbox and can read its credential files, which describes file-based storage, not hardware-backed protection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1288,7 +1297,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a terminal app for iOS, so keeping a session alive across network changes and device sleep is a fair question for it. Nothing in the evidence pack covers session persistence, mosh-style roaming, background execution or reconnect behavior. The items on per-window context, .profile and config persistence describe settings and startup customization, not keeping a live session running.",
+    "rationale": "Session persistence is a fair question for a terminal app, so the axis applies. However, the evidence pack never mentions keeping sessions alive across network changes or device sleep: no mosh, tmux-style detach/reattach, background execution, or reconnection. Per-window context, history, and the `.profile` startup script are adjacent features, not session persistence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1303,7 +1312,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "SSH connectivity is a fair question for a Unix-like terminal app on iOS, so the axis applies. Nothing in the evidence pack mentions ssh, remote server connections, or Ed25519/ECDSA/RSA key support. The listed ios_system commands (nslookup, whois, python3, lua, pdflatex) do not include ssh.",
+    "rationale": "SSH with Ed25519, ECDSA, or RSA keys is a fair capability to ask of a Unix-like terminal app, so the axis applies. However, nothing in the evidence pack mentions ssh, key types or remote server connections. The listed ios_system commands (nslookup, whois, python3, lua, pdflatex) do not include SSH, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1318,7 +1327,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal for iOS, so generating SSH key pairs is a fair question for this kind of product. However, nothing in the evidence pack mentions ssh-keygen, SSH, or key management. The listed bundled commands (nslookup, whois, python3, lua, pdflatex) and the pkg-installable packages (zip, unzip, xz, ffmpeg) do not include SSH tooling.",
+    "rationale": "Generating SSH keys is a fair question for an iOS Unix-like terminal, so the axis applies. However, nothing in the evidence pack mentions ssh-keygen, SSH key pair generation, or password-less server access. The listed ios_system commands (nslookup, whois, python3, lua, pdflatex) and pkg packages (zip, unzip, xz, ffmpeg) include no SSH tooling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1333,7 +1342,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "a-Shell is a Unix-like terminal app for iOS, so saved-host SSH connections are a fair question for it. The evidence pack never mentions SSH, saved hosts or stored credentials. The `bookmark`/`jump` features save directories rather than remote hosts, and Apple Shortcuts integration is only a building block, so neither earns credit.",
+    "rationale": "Saved-host, one-tap SSH connection is a fair question for an iOS terminal app, so the axis applies. However, the evidence pack never documents SSH host profiles or stored credentials. The only nearby features are directory bookmarks (`bookmark`/`jump`), toolbar configuration and the `.profile` startup script, which are adjacent features or user-side workarounds and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1348,7 +1357,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "a-Shell is a local Unix-like terminal for iOS that runs shells, languages and commands. Subnet routing is a VPN or mesh-networking capability outside this product's category. The pack shows only network utilities such as nslookup and whois, not any routing or VPN feature, so the story's axis does not apply.",
+    "rationale": "a-Shell is a local Unix-like terminal for iOS, not a VPN or mesh-networking product, so subnet routing is the wrong axis for this kind of product. Nothing in the evidence shows it ships such a feature: the network-related items (nslookup/whois commands and an optional local relay HTTPS server) are not subnet routers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

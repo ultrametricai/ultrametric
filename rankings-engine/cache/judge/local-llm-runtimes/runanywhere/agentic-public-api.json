@@ -1,34 +1,34 @@
 {
-  "hash": "270bf73569a92276e58519acd11ed193ce6949eec1752510f96df393b2fc1866",
+  "hash": "28c2d80d7c5633ea45f2ccfe97a260ff673a2f1be86f05be5c2346063bac287b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents a public, OpenAI-compatible hosted endpoint that official OpenAI clients can drive by setting `base_url`. It also documents programmatic SDK APIs for generation, streaming, tool calling and structured output. However, the probe found no machine-readable OpenAPI/Swagger spec, and the hosted API documentation shown is thin. Account functions such as identity and usage appear only through the `wally` CLI, not through a documented API. Missing for 10: published OpenAPI/reference spec for the hosted API, documented API coverage of account/usage operations, independent or hands-on corroboration of driving the product via the API.",
+    "rationale": "RunAnywhere documents a public, versioned hosted inference API (https://inference.runanywhere.ai/v1). It publishes a downloadable OpenAPI 3.1.0 spec, the endpoint is OpenAI-compatible so official OpenAI clients work, and the API reference includes a Try-it playground; the on-device SDKs also expose documented programmatic APIs. The probe's 404s were at different candidate paths, so they do not contradict the published spec at /api-reference/openapi.json. Missing for 10: an isolated test/sandbox environment or test keys, a deprecation policy or changelog, and independent hands-on corroboration of the API.",
     "evidenceIds": [
+      "runanywhere-openapi-20261106",
       "runanywhere-docs-4",
-      "runanywhere-docs-8",
-      "runanywhere-docs-1",
-      "runanywhere-docs-11",
-      "runanywhere-probe-2"
+      "runanywhere-tryit-20261106",
+      "runanywhere-contract-20261106",
+      "runanywhere-docs-8"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "runanywhere-openapi-20261106",
+          "quote": "RunAnywhere publishes a downloadable OpenAPI 3.1.0 document for its hosted inference API (\"RunAnywhere Wally Public Inference API\", server https://inference.runanywhere.ai/v1)"
+        },
         {
           "evidenceId": "runanywhere-docs-4",
           "quote": "The endpoint is OpenAI-compatible, so the official OpenAI clients work by pointing `base_url` at it."
         },
         {
-          "evidenceId": "runanywhere-docs-1",
-          "quote": "Register a tool and the function that runs it. The SDK owns the call-and-execute loop and detects the format the model expects."
-        },
-        {
-          "evidenceId": "runanywhere-docs-8",
-          "quote": "for try await event in try await RunAnywhere.llm.generateStream(prompt: \"Write a haiku\")"
+          "evidenceId": "runanywhere-tryit-20261106",
+          "quote": "The Mintlify API reference runs the \"Try it\" playground on the endpoint pages, generated from the OpenAPI document."
         }
       ]
     },

@@ -103,6 +103,14 @@ ITEMS = {
          'https://api.earthclassmail.com/v2/mcp_catalog.json',
          ['"schemaVersion": "1.0"'],
          'A machine-readable MCP tool catalog is served live at the API origin under /v2/.'),
+        # Pre-audit grounding: the research pass found the catalog JSON but missed the
+        # documented MCP server itself; this row carries the vendor's own text.
+        ('earth-class-mail-mcp-server-20261106', 'claimed-docs',
+         'https://reference.earthclassmail.com/_llms_txt/v2/mcp.md',
+         ['Connect your AI assistant to Virtual Mail and manage your virtual mailbox just',
+          'Instead of logging in and clicking',
+          'find the letter from the IRS and'],
+         'Virtual Mail documents an official MCP server with natural-language operation: "Connect your AI assistant to Virtual Mail and manage your virtual mailbox just by asking - find mail, organize your inbox, scan or shred items, and more - directly from Claude, Cursor, and other MCP-compatible apps." "Instead of logging in and clicking through the app, you just ask", e.g. "find the letter from the IRS and tell me what it says", and it can "take real actions on your behalf: scan or shred a piece of mail, apply tags or move it to a different folder", scoped to "your own Virtual Mail account and permissions". A full per-tool reference is published alongside.'),
         ('earth-class-mail-api-scope-20261106', 'claimed-docs',
          'https://reference.earthclassmail.com/_llms_txt/v1/rest-api.md',
          ['Your API key is tied to your user account, so it can reach every mailbox you have access to.',
@@ -269,8 +277,19 @@ ITEMS = {
 # Rows removed after review, (arena, product) -> evidence ids (none at wave start).
 REMOVALS: dict = {}
 
-# Excerpt updates (verify-then-replace; none at wave start).
-UPDATES: dict = {}
+# Excerpt updates (verify-then-replace, ef4d42d8 precedent). Pre-audit correction: the
+# a-shell re-roll credited automation-rules-engine on the .profile startup hook alone;
+# the context row now scopes that mechanism explicitly (the fellow-webhooks class).
+UPDATES = {
+    ('mobile-dev', 'a-shell'): [
+        ('a-shell-relay-20261106',
+         'https://raw.githubusercontent.com/holzschu/a-shell/master/README.md',
+         ['## Run commands remotely with relay',
+          'a-Shell is compatible with Apple Shortcuts, giving users full control of the Shell.',
+          'a-Shell executes the file `.profile` if it exists'],
+         'a-Shell is a local iOS terminal whose only programmatic surfaces are local: Apple Shortcuts actions ("a-Shell is compatible with Apple Shortcuts, giving users full control of the Shell." - Execute Command, Put File, Get File) and an optional built-in relay server ("relay is an optional HTTPS server built into the app. It is off by default."; "POST /run takes a UTF-8 command line as its body and requires Content-Length and X-Token"; "relay is intended for trusted networks"). There is no cloud API, no OpenAPI document (the relay endpoint is specified in README prose), no interactive reference, no test environment ("In-app commands share the app\'s sandbox and can read its credential files; file permissions do not isolate commands from one another."), and no API versioning or changelog (the app ships via the App Store; the only GitHub release is a 2022 precompiled-cpython drop; a-shell.app does not resolve). The only in-app automation hook is the `.profile` startup script ("When opening a new window, a-Shell executes the file `.profile` if it exists" - a customization mechanism where the user supplies all logic); no trigger-action rules surface exists.'),
+    ],
+}
 
 # Hand-recorded counter-check/context rows a scheduled refresh must not clobber.
 PRESERVE_IDS: set = {

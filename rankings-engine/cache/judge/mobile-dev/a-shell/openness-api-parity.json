@@ -1,17 +1,18 @@
 {
-  "hash": "8a6a1fdac7f29f380e22d58f3942cc6a8780ca8238f3f717938ac0956b7823b3",
+  "hash": "6ea7b83e0854f0233799a62d3aab5ee2bb9648575b4b9c42187e3d3fbe468f81",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "a-Shell has no web API: the OpenAPI and llms.txt probes return 404. It does ship its own Apple Shortcuts actions, which the docs say give \"full control of the Shell\". `Execute Command` runs arbitrary command lists and `Put File`/`Get File` move files, and since the UI is itself a command line (config, newWindow, pickFolder and so on are commands), most UI functions are reachable programmatically. Missing for 10: a documented general-purpose API (HTTP or otherwise) beyond Shortcuts, an explicit statement that every UI-only interaction (e.g. GUI pickers) can be driven programmatically, reliable in-extension execution (the docs warn it \"won't always work\"), and independent corroboration.",
+    "rationale": "a-Shell ships its own programmatic surfaces: Apple Shortcuts actions (Execute Command, Put File, Get File) and an optional built-in HTTPS relay whose POST /run accepts any command line. Because nearly all UI functionality is itself exposed as shell commands (including config), much of the UI is reachable programmatically. However, parity with the UI is never documented, the relay is off by default and meant for trusted networks, and Shortcuts runs are noted as not always working. Some features are inherently interactive pickers (pickFolder, the font picker). missing for 10: documented UI/API parity, a formal API spec or OpenAPI, programmatic equivalents for picker-based UI actions (pickFolder, font picker), API versioning/changelog, independent corroboration.",
     "evidenceIds": [
+      "a-shell-relay-20261106",
       "a-shell-gh-4",
-      "a-shell-gh-13",
       "a-shell-gh-33",
       "a-shell-gh-34",
       "a-shell-gh-35",
+      "a-shell-gh-2",
       "a-shell-probe-2"
     ],
     "support": {
@@ -28,8 +29,12 @@
           "quote": "`Execute Command`, which takes a list of commands and executes them in order."
         },
         {
-          "evidenceId": "a-shell-gh-34",
-          "quote": "`Put File` and `Get File` are used to transfer files to and from a-Shell."
+          "evidenceId": "a-shell-relay-20261106",
+          "quote": "POST /run takes a UTF-8 command line as its body and requires Content-Length and X-Token"
+        },
+        {
+          "evidenceId": "a-shell-gh-35",
+          "quote": "You can force a specific shortcut to run \"in App\" or \"in Extension\", with the warning that it won't always work."
         }
       ]
     },

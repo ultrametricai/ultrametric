@@ -1,20 +1,22 @@
 {
-  "hash": "0f7496e9b1834a54eb682618c3fe11bffae5667e379488ac4f139705feaf2d40",
+  "hash": "a3c1248e67c60df50fa834d72972d36f26b29fec00292b8f05d5f77b90f13ec8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The IRS does document its own machine-to-machine channels: Modernized e-File is an XML system-to-system transmission rail, and IRIS has an Application-to-Application intake. Both can run headless, but only behind credentialed enrollment: Authorized e-file Provider approval takes up to 45 days and may require fingerprinting, and IRIS A2A needs a Transmitter Control Code. Taxpayer-facing services (EIN assistant, Online Account, signed forms) sit behind a time-windowed, session-limited UI and an ID.me biometric liveness wall, and probes found no public API and a 403 for keyless agents. Missing for 10: a public self-serve API or CLI, headless access to Online Account, EIN, or signed-form flows, published API specs or OpenAPI, and any documented CI/automation guidance.",
+    "rationale": "The IRS runs its own machine-to-machine channels that can be automated headlessly: MeF is a system-to-system XML e-file channel, IRIS has an Application to Application intake, and the ATS test environment is separate from Production, which suits CI-style validation. All of these are credential-gated, though: provider enrollment can take up to 45 days and may require fingerprinting, IRIS A2A needs a Transmitter Control Code, schemas and WSDLs are only available to registered users, and ATS opens only in seasonal windows. Taxpayer-facing flows such as the EIN assistant, Online Account and the online 83(b) form require ID.me biometric liveness checks or return 403 to agents. Missing for 10: a public, self-serve API or CLI for headless use, always-available CI test access without the enrollment wait, automatable flows for EIN, 83(b) and account services, and public machine-readable interface definitions (OpenAPI or downloadable schemas).",
     "evidenceIds": [
       "irs-supp-5",
-      "irs-supp-6",
       "irs-supp-8",
+      "irs-ats-20261106",
+      "irs-mef-status-20261106",
+      "irs-mef-schemas-20261106",
+      "irs-supp-6",
       "irs-supp-9",
       "irs-supp-12",
-      "irs-supp-3",
-      "irs-probe-3",
-      "irs-probe-5"
+      "irs-probe-5",
+      "irs-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -27,7 +29,19 @@
         },
         {
           "evidenceId": "irs-supp-8",
-          "quote": "receives information through two intake channels: IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)"
+          "quote": "IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)"
+        },
+        {
+          "evidenceId": "irs-mef-status-20261106",
+          "quote": "Transmitters, software developers, and state agencies are encouraged to review their implementations and complete any necessary changes in ATS prior to the Production deployment to avoid service disruptions."
+        },
+        {
+          "evidenceId": "irs-supp-6",
+          "quote": "it can take up to 45 days from the date of submission for the IRS to approve your e-file application"
+        },
+        {
+          "evidenceId": "irs-supp-12",
+          "quote": "Online Account (OLA) is required to complete mobile friendly forms that require signatures"
         }
       ]
     },

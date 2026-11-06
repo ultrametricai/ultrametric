@@ -1,17 +1,16 @@
 {
-  "hash": "46eba6b7cbe9d98c8a56a885967e0532c382b148e243dc99754f539a830d2e73",
+  "hash": "1fc74875eaa7ecf0113c1baaeae947b3e626e5833d4726b60e59f7fffa28c9bc",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents vendor-specific acceleration on Apple and Qualcomm silicon: the MetalRT engine uses Metal 3.1 GPU features on M3 and later, inference runs on the Hexagon NPU on Snapdragon, and the NeuRT pipeline validates kernels against the silicon they run on. Nothing in the evidence shows NVIDIA or AMD GPU support, and MetalRT is limited to M3 or later, with M1/M2 falling back to llama.cpp. Missing for 10: NVIDIA (CUDA) kernel support, AMD (ROCm) kernel support, broader GPU-vendor coverage beyond Apple Metal and Qualcomm Hexagon, independent benchmarks across vendors.",
+    "rationale": "The evidence shows vendor-specific acceleration only for Apple silicon (MetalRT, which uses Metal 3.1 GPU features and requires M3 or later) and Qualcomm Hexagon NPUs. There is also a general claim of a kernel pipeline that validates kernels against the target silicon. Nothing documents NVIDIA or AMD GPU support, so the multi-vendor GPU core of the story is mostly unevidenced. Missing for 10: NVIDIA (CUDA) GPU kernels, AMD (ROCm) GPU kernels, documented GPU vendor coverage matrix, and Apple M1/M2 GPU acceleration (currently falls back to llama.cpp).",
     "evidenceIds": [
-      "runanywhere-docs-17",
-      "runanywhere-docs-33",
       "runanywhere-comm-13",
+      "runanywhere-docs-33",
       "runanywhere-gh-1",
-      "runanywhere-docs-34"
+      "runanywhere-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -19,16 +18,16 @@
       "subject": "As a power-user, I can run models on NVIDIA, AMD, or other GPU vendors using vendor-specific acceleration kernels",
       "citations": [
         {
-          "evidenceId": "runanywhere-docs-17",
-          "quote": "On Snapdragon hardware it runs on the Hexagon NPU."
+          "evidenceId": "runanywhere-comm-13",
+          "quote": "MetalRT uses Metal 3.1 GPU features available on M3, M3 Pro, M3 Max, M4, and later chips."
         },
         {
           "evidenceId": "runanywhere-docs-33",
           "quote": "An agentic kernel pipeline generates, compiles, and **validates every kernel against the silicon it runs on**."
         },
         {
-          "evidenceId": "runanywhere-comm-13",
-          "quote": "MetalRT uses Metal 3.1 GPU features available on M3, M3 Pro, M3 Max, M4, and later chips."
+          "evidenceId": "runanywhere-gh-1",
+          "quote": "Accelerated by whatever silicon the device has."
         }
       ]
     },

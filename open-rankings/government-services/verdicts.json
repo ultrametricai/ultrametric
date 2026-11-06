@@ -27166,7 +27166,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "The IRS publishes extensive public web documentation, so whether it offers agent-oriented docs is a fair question. The evidence shows nothing of the kind: probes found no llms.txt (404) and no markdown versions of doc pages (404), and the pack contains no first-party agent-oriented documentation.",
+    "rationale": "Agent-oriented docs are a fair question for a public service with a large documentation site, so the axis applies. Direct probes found no llms.txt (HTTP 404) and no markdown versions of doc pages (HTTP 404), and the MeF developer material is registration-gated PDF publications rather than agent-oriented docs.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27181,7 +27181,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The IRS's online services, including Online Account, Business Tax Account and the Tax Withholding Estimator, hold or process user tax data, so in-product AI-generated insights is a fair question for this kind of service. Nothing in the evidence pack documents any AI-generated insights or suggestions. The Withholding Estimator is only a calculator, and the probes show no AI-facing surfaces (llms.txt and OpenAPI paths return 404).",
+    "rationale": "The IRS offers online tax services such as accounts, transcripts and the Tax Withholding Estimator, so AI-generated insights from a user's data are a fair question for this kind of product. Nothing in the evidence documents any AI-generated insight or suggestion feature. The Withholding Estimator is a deterministic calculator, not an AI feature, and the probes show no AI-facing surfaces.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27196,7 +27196,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduled or background actions are a fair question for an online tax-filing and payment service, so the axis applies. The evidence pack documents no user-configurable automations that run autonomously. MeF and IRIS A2A are credentialed machine-to-machine transmission channels, which are developer building blocks rather than an automation feature. The EFTPS and Direct Pay entries are bare titles with no evidence of scheduling or recurring runs, and the EIN assistant is an interactive session that times out after 15 minutes.",
+    "rationale": "The axis applies: the IRS runs online services and machine channels where scheduled or background automation is conceivable. However, the evidence documents no user-configurable automations that run autonomously. MeF and IRIS A2A are credentialed system-to-system transmission rails, which are developer building blocks rather than product automations. EFTPS and Payment Plan appear only as titles, with no documented scheduling or recurring-execution capability, and the online flows (ID.me biometric sign-in, 15-minute session expiry) require a person to be present.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27211,7 +27211,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair question for an online government service portal, so the axis applies. The evidence pack documents no AI assistant that accepts delegated tasks. The \"EIN online assistant\" is a timed, session-based form wizard with business hours and a 15-minute inactivity expiry, not an AI agent, and the probes found no AI-facing surfaces.",
+    "rationale": "A government tax-services portal could plausibly offer a built-in AI assistant, so this axis applies. However, nothing in the evidence documents an AI assistant that users can delegate tasks to. The \"EIN online assistant\" is a guided online application form with session limits and operating hours, not an AI agent, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27226,16 +27226,18 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The IRS does document its own machine-to-machine channels: Modernized e-File is an XML system-to-system transmission rail, and IRIS has an Application-to-Application intake. Both can run headless, but only behind credentialed enrollment: Authorized e-file Provider approval takes up to 45 days and may require fingerprinting, and IRIS A2A needs a Transmitter Control Code. Taxpayer-facing services (EIN assistant, Online Account, signed forms) sit behind a time-windowed, session-limited UI and an ID.me biometric liveness wall, and probes found no public API and a 403 for keyless agents. Missing for 10: a public self-serve API or CLI, headless access to Online Account, EIN, or signed-form flows, published API specs or OpenAPI, and any documented CI/automation guidance.",
+    "rationale": "The IRS runs its own machine-to-machine channels that can be automated headlessly: MeF is a system-to-system XML e-file channel, IRIS has an Application to Application intake, and the ATS test environment is separate from Production, which suits CI-style validation. All of these are credential-gated, though: provider enrollment can take up to 45 days and may require fingerprinting, IRIS A2A needs a Transmitter Control Code, schemas and WSDLs are only available to registered users, and ATS opens only in seasonal windows. Taxpayer-facing flows such as the EIN assistant, Online Account and the online 83(b) form require ID.me biometric liveness checks or return 403 to agents. Missing for 10: a public, self-serve API or CLI for headless use, always-available CI test access without the enrollment wait, automatable flows for EIN, 83(b) and account services, and public machine-readable interface definitions (OpenAPI or downloadable schemas).",
     "evidenceIds": [
       "irs-supp-5",
-      "irs-supp-6",
       "irs-supp-8",
+      "irs-ats-20261106",
+      "irs-mef-status-20261106",
+      "irs-mef-schemas-20261106",
+      "irs-supp-6",
       "irs-supp-9",
       "irs-supp-12",
-      "irs-supp-3",
-      "irs-probe-3",
-      "irs-probe-5"
+      "irs-probe-5",
+      "irs-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -27248,7 +27250,19 @@
         },
         {
           "evidenceId": "irs-supp-8",
-          "quote": "receives information through two intake channels: IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)"
+          "quote": "IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)"
+        },
+        {
+          "evidenceId": "irs-mef-status-20261106",
+          "quote": "Transmitters, software developers, and state agencies are encouraged to review their implementations and complete any necessary changes in ATS prior to the Production deployment to avoid service disruptions."
+        },
+        {
+          "evidenceId": "irs-supp-6",
+          "quote": "it can take up to 45 days from the date of submission for the IRS to approve your e-file application"
+        },
+        {
+          "evidenceId": "irs-supp-12",
+          "quote": "Online Account (OLA) is required to complete mobile friendly forms that require signatures"
         }
       ]
     }
@@ -27259,7 +27273,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "The IRS is a government tax-filing and payments service, not an AI agent or assistant host, so acting as an MCP client that consumes other servers' tools is a category error for this kind of product. Nothing in the evidence shows it ships any such capability. Its machine channels (MeF XML, IRIS A2A) are credentialed filing intakes, not MCP tool consumption.",
+    "rationale": "The IRS is a government tax-filing and payments service, not an AI agent or host application that could consume tools from MCP servers. Acting as an MCP client is a category error for this kind of product. Nothing in the evidence shows any agent or assistant surface that could act as an MCP client; the documented machine channels (MeF XML transmission, IRIS A2A) are credentialed intake rails, not tool-consuming agents.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27274,7 +27288,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "The IRS is a government service rather than an agent, so publishing an official MCP server is a fair question and the axis applies. The evidence pack contains no MCP server at all. Probes found no llms.txt, no markdown docs and no OpenAPI spec, and the only machine channels (MeF XML, IRIS A2A) are credentialed e-file rails, not MCP.",
+    "rationale": "The IRS is a government service, not an agent, so publishing an official MCP server is a fair question and the axis applies. Nothing in the evidence pack documents an MCP server. The only machine channels shown are the credential-gated MeF XML/SOAP and IRIS A2A rails, and probes for llms.txt and OpenAPI all returned 404. These are not MCP servers and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27289,7 +27303,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Operating the product through natural-language commands is a fair question for a government digital-service provider that runs online tools and portals. Nothing in the evidence shows the IRS offering a conversational or natural-language interface. The documented channels are form-based web assistants, XML-based MeF and IRIS A2A machine rails, and paper, mail or fax paths, none of which takes natural-language commands.",
+    "rationale": "Natural-language operation is a fair question for an online government service portal, but nothing in the evidence shows the IRS offers a natural-language command interface. Its documented channels are web forms gated by ID.me sign-in, registration-gated XML/SOAP machine channels (MeF, IRIS A2A), and paper or fax rails. None of these accepts natural-language commands, and the probes found no llms.txt or OpenAPI surface.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27304,7 +27318,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a government digital-services provider, but the evidence pack never mentions any IRS command-line tool. The only machine channels documented are credentialed system-to-system rails: MeF XML transmission for authorized e-file providers and IRIS A2A gated by a Transmitter Control Code. These are adjacent integration paths, not a CLI. Probes for llms.txt, markdown docs and OpenAPI specs all returned 404.",
+    "rationale": "The IRS runs machine-facing filing rails, so asking whether it ships an official CLI is a fair question. The evidence shows no CLI. The channels it documents are credential-gated system-to-system interfaces: MeF XML transmission, IRIS A2A, and a SOAP A2A toolkit provided on email request. These are developer building blocks, not an official command-line tool, and the probes found no public developer or API surface at all.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27317,13 +27331,16 @@
     "productId": "irs",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The IRS documents its own machine-to-machine channels: Modernized e-File, an XML system-to-system transmission rail, and IRIS Application to Application (A2A) intake for information returns. Both are credentialed rails, not public APIs. MeF requires Authorized e-file Provider enrollment (up to 45 days, possibly fingerprinting), A2A is gated by a Transmitter Control Code, and probes found no OpenAPI spec or llms.txt. Missing for 10: openly accessible public API, published API reference/OpenAPI spec, coverage beyond filing (EIN, accounts, payments), self-serve developer credentials.",
+    "rationale": "The IRS documents real machine-to-machine channels: MeF, an XML system-to-system e-file channel with versioned schemas, the Publication 4164 developer guide and the ATS test environment, plus the IRIS A2A intake for information returns. These channels are credentialed rather than public: access requires e-file provider enrollment (up to 45 days, possible fingerprinting) or a Transmitter Control Code, and schemas and WSDLs are registration-gated, with no OpenAPI and no developer.irs.gov. Missing for 10: openly accessible public API, publicly downloadable machine-readable interface definitions, an interactive API reference, a public deprecation policy, and API coverage of core services such as EIN, payments and account access.",
     "evidenceIds": [
       "irs-supp-5",
-      "irs-supp-8",
       "irs-supp-6",
+      "irs-supp-8",
+      "irs-ats-20261106",
+      "irs-mef-status-20261106",
+      "irs-mef-schemas-20261106",
       "irs-probe-3"
     ],
     "support": {
@@ -27337,11 +27354,15 @@
         },
         {
           "evidenceId": "irs-supp-8",
-          "quote": "IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)"
+          "quote": "receives information through two intake channels: IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)"
         },
         {
-          "evidenceId": "irs-supp-6",
-          "quote": "it can take up to 45 days from the date of submission for the IRS to approve your e-file application"
+          "evidenceId": "irs-mef-schemas-20261106",
+          "quote": "Federal returns must conform to valid schema versions."
+        },
+        {
+          "evidenceId": "irs-ats-20261106",
+          "quote": "The IRS documents a dedicated test environment for its Modernized e-File system"
         }
       ]
     }
@@ -27352,7 +27373,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Issuing scoped credentials is a fair question for a service with machine channels like MeF and IRIS A2A, so the axis applies. The evidence shows no user-issuable, least-privilege API credential for an agent. The Transmitter Control Code and e-file provider enrollment are institutional gates, not scoped agent keys. Third-party designee authorization is a paper delegation, not an API credential. Online account access requires personal ID.me biometric verification.",
+    "rationale": "The IRS runs credentialed machine channels: MeF requires Authorized e-file Provider enrollment, and IRIS A2A is gated by a Transmitter Control Code. Neither lets a user issue scoped or least-privilege API credentials for an agent. The third-party designee rail is a human delegation with signed authorization, not an agent credential, so it is adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27367,13 +27388,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies because the IRS operates machine-facing channels (MeF XML transmission and IRIS A2A) that a buyer could reasonably expect to come with official client SDKs. Nothing in the evidence shows an official SDK. Those channels are credentialed system-to-system rails, which are adjacent building blocks rather than SDKs, and probes found no OpenAPI spec or llms.txt.",
-    "evidenceIds": [],
+    "rationale": "The SDK axis fairly applies, since the IRS runs machine channels (MeF XML transmission and IRIS A2A). However, the evidence shows no official SDK or client library. The closest item is a SOAP A2A toolkit of WSDLs and schema packages, distributed through a registration-gated portal or by email request. These are interface definitions, developer building blocks rather than an official SDK, so they earn no credit.",
+    "evidenceIds": [
+      "irs-mef-schemas-20261106"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can build against official SDKs",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "irs-mef-schemas-20261106",
+          "quote": "the SOAP A2A toolkit (containing the WSDLs) is provided on email request"
+        }
+      ]
     }
   },
   {
@@ -27382,7 +27410,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The IRS runs machine channels (MeF XML transmission for authorized e-file providers, and IRIS Application to Application), so event subscriptions are a fair question for this service. However, nothing in the evidence documents registrable outbound HTTP callbacks or any event subscription mechanism. Probes also found no OpenAPI spec or llms.txt, so the axis applies but the capability is unevidenced.",
+    "rationale": "The IRS has machine channels (MeF system-to-system XML transmission and IRIS A2A intake), so event subscription is a fair question, but nothing in the evidence shows registrable outbound HTTP callbacks. The probes found no OpenAPI or developer API surface, and the A2A channels are inbound submission rails, not event subscriptions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27396,8 +27424,8 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "The IRS runs machine channels (MeF's XML system-to-system rail and the IRIS A2A intake), so an API reference is a fair question here. However, nothing in the evidence shows an interactive API reference or runnable examples. All OpenAPI/Swagger probes returned 404, and the documented machine channels are credentialed rails rather than an explorable public reference.",
+    "confidence": "high",
+    "rationale": "The IRS runs machine interfaces (MeF XML/SOAP A2A, IRIS A2A), so asking for an interactive API reference is a fair question. The evidence shows its developer surface is PDF publications with registration-gated schemas and no interactive reference. All OpenAPI/Swagger probe paths return 404, and developer.irs.gov does not resolve. The ATS test environment is an enrollment-gated testing system, not an explorable reference with runnable examples, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27409,70 +27437,111 @@
   {
     "productId": "irs",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Government online services can publish machine-readable API specs, so this axis applies. The pack shows no downloadable spec: every OpenAPI and Swagger path probed returned 404. MeF's XML format and IRIS's credential-gated A2A channel are machine channels, but nothing documents a downloadable OpenAPI or equivalent schema for either.",
-    "evidenceIds": [],
+    "rationale": "The IRS does publish machine-readable interface definitions for Modernized e-File: per-tax-year XML schema packages and business rules, plus a SOAP A2A toolkit containing WSDLs. These are an equivalent to OpenAPI, but distribution is gated behind the registered-user/e-Services portal, and the toolkit is sent on email request. Probes of every standard OpenAPI/Swagger path return 404. missing for 10: a publicly downloadable spec without enrollment, an OpenAPI or other modern REST spec, an interactive API reference, and a public developer portal (developer.irs.gov and api.irs.gov do not resolve).",
+    "evidenceIds": [
+      "irs-mef-schemas-20261106",
+      "irs-probe-3",
+      "irs-supp-5"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "irs-mef-schemas-20261106",
+          "quote": "Schemas and business rules are now available through the registered user portal and your e-services mailbox"
+        },
+        {
+          "evidenceId": "irs-supp-5",
+          "quote": "MeF uses the widely accepted Extensible Markup Language (XML) format."
+        }
+      ]
     }
   },
   {
     "productId": "irs",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The IRS runs machine filing channels, MeF and IRIS A2A, so a test or sandbox environment is a fair question here. However, no evidence item documents a sandbox, test environment or assurance-testing rail that keeps tests away from production data. The cited items cover only credentialed production intake, enrollment and identity-proofing requirements.",
-    "evidenceIds": [],
+    "rationale": "The IRS documents the Assurance Testing System (ATS), a dedicated test environment for Modernized e-File. It is explicitly distinguished from Production, with its own test scenarios, publications and separate SSL certificate bundles, so this is genuine environment isolation rather than a dry-run. However, access requires e-file provider enrollment and e-Services sign-in, and ATS opens only in dated seasonal windows, which limits on-demand testing for an AI-native user. Missing for 10: self-serve or on-demand sandbox access without enrollment gating, year-round availability, sandbox coverage beyond MeF (e.g. IRIS A2A or online account services), independent or hands-on corroboration.",
+    "evidenceIds": [
+      "irs-ats-20261106",
+      "irs-mef-status-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "irs-ats-20261106",
+          "quote": "The IRS documents a dedicated test environment for its Modernized e-File system: the Assurance Testing System (ATS)"
+        },
+        {
+          "evidenceId": "irs-mef-status-20261106",
+          "quote": "Transmitters, software developers, and state agencies are encouraged to review their implementations and complete any necessary changes in ATS prior to the Production deployment to avoid service disruptions."
+        }
+      ]
     }
   },
   {
     "productId": "irs",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The IRS does run machine channels, MeF XML e-file and the IRIS A2A intake, so the question of versioned APIs applies. However, nothing in the evidence documents API versioning or a deprecation policy, and the OpenAPI probes all returned 404. Evidence of a credentialed machine channel is adjacent and does not show versioning or deprecation commitments.",
-    "evidenceIds": [],
+    "rationale": "The IRS's own Modernized e-File machine interfaces are versioned through per-tax-year XML schema packages, business-rule releases and a versioned developer guide (Pub 4164). Changes are staged in the Assurance Testing System ahead of Production, with advance notice for implementers. However, the evidence explicitly finds no public deprecation-policy document, and version lifecycle detail sits behind the registration-gated e-Services portal. missing for 10: a published deprecation/sunset policy, publicly accessible version lifecycle documentation, public schema/WSDL distribution, independent corroboration.",
+    "evidenceIds": [
+      "irs-mef-schemas-20261106",
+      "irs-mef-status-20261106",
+      "irs-supp-5"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "irs-mef-schemas-20261106",
+          "quote": "Federal returns must conform to valid schema versions."
+        },
+        {
+          "evidenceId": "irs-mef-schemas-20261106",
+          "quote": "Schemas and business rules are now available through the registered user portal and your e-services mailbox"
+        },
+        {
+          "evidenceId": "irs-mef-status-20261106",
+          "quote": "Transmitters, software developers, and state agencies are encouraged to review their implementations and complete any necessary changes in ATS prior to the Production deployment to avoid service disruptions."
+        }
+      ]
     }
   },
   {
     "productId": "irs",
     "storyId": "auth-requirements-stated",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The IRS publishes several gating requirements on its pre-start pages: ID.me identity proofing with selfie/biometric data for Online Account sign-in, the Online Account requirement for signed mobile-friendly forms such as the 83(b) Form 15620, e-file provider enrollment with fingerprinting and a 45-day approval clock, a Transmitter Control Code for IRIS A2A, and the EIN assistant's session, daily, and hours limits. These requirements are scattered across separate pages for each filing rail. Nothing shows a single, exact, complete statement of every account, credential, and proofing step before a founder starts. missing for 10: a consolidated per-filing-path list of required steps, detail on exactly what ID.me proofing asks for and on how to obtain the Transmitter Control Code, and independent or hands-on confirmation that no gates appear mid-flow.",
+    "rationale": "The IRS's own pages state the walls in front of each filing path before the user begins. Online account sign-in requires ID.me with selfie, video and biometric verification, and signed mobile-friendly forms such as the 83(b) Form 15620 require an Online Account. The EIN assistant publishes its hours, its 15-minute no-save session and its one-EIN-per-day limit. E-file provider enrollment publishes its fingerprinting step and its up-to-45-day approval clock. Missing for 10: a single consolidated pre-flight list of requirements per filing path, first-party detail of the exact ID.me proofing steps and documents, and independent or hands-on corroboration that no undisclosed walls appear mid-flow.",
     "evidenceIds": [
       "irs-supp-9",
       "irs-supp-10",
       "irs-supp-12",
-      "irs-supp-6",
-      "irs-supp-7",
-      "irs-supp-8",
       "irs-supp-1",
       "irs-supp-2",
       "irs-supp-3",
-      "irs-supp-13"
+      "irs-supp-6",
+      "irs-supp-7",
+      "irs-ats-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a founder, the service publishes exactly which account, credential, and identity-proofing steps stand between me and filing — stated before I start, not discovered mid-flow",
       "citations": [
         {
@@ -27484,16 +27553,12 @@
           "quote": "Online Account (OLA) is required to complete mobile friendly forms that require signatures"
         },
         {
-          "evidenceId": "irs-supp-6",
-          "quote": "it can take up to 45 days from the date of submission for the IRS to approve your e-file application"
-        },
-        {
-          "evidenceId": "irs-supp-7",
-          "quote": "need to be fingerprinted using the IRS authorized vendor"
-        },
-        {
           "evidenceId": "irs-supp-3",
           "quote": "It expires after 15 minutes of inactivity, and you'll need to start over."
+        },
+        {
+          "evidenceId": "irs-supp-6",
+          "quote": "it can take up to 45 days from the date of submission for the IRS to approve your e-file application"
         },
         {
           "evidenceId": "irs-supp-2",
@@ -27508,11 +27573,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The IRS documents two machine-to-machine filing channels: IRIS Application to Application (A2A) intake for information returns, and MeF XML system-to-system transmission. These suggest programmatic submission of many returns, but both are gated behind credentialing (a Transmitter Control Code, or authorized e-file provider status with up to 45-day approval and fingerprinting). The EIN assistant explicitly allows only 1 EIN per responsible party per day, so not every service supports bulk work. Missing for 10: explicit documentation of batch/bulk submission semantics (multiple items per transmission), bulk operations beyond information returns and e-file, open access without provider enrollment, and independent or hands-on corroboration.",
+    "rationale": "The IRS documents its own machine-to-machine filing rails: MeF, a system-to-system XML channel, and the IRIS Application to Application intake for information returns. These are the closest thing to bulk processing, but the evidence never states that many items can be handled in one operation. Both rails are gated behind e-file provider enrollment or a Transmitter Control Code, and the EIN assistant is explicitly limited to 1 EIN per responsible party per day. Missing for 10: explicit documentation of batch or multi-item submission, any bulk operations for account-level actions (payments, forms, EINs), ungated agent access, and hands-on corroboration.",
     "evidenceIds": [
-      "irs-supp-8",
       "irs-supp-5",
-      "irs-supp-6",
+      "irs-supp-8",
       "irs-supp-2"
     ],
     "support": {
@@ -27526,7 +27590,7 @@
         },
         {
           "evidenceId": "irs-supp-5",
-          "quote": "MeF uses the widely accepted Extensible Markup Language (XML) format."
+          "quote": "Modernized e-File is a system-to-system machine channel"
         }
       ]
     }
@@ -27537,7 +27601,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation is a fair question for an online government filing and payment service, so the axis applies. Nothing in the evidence shows any user-definable rules that fire actions on events. The machine channels cited (MeF XML transmission and IRIS A2A intake) are credentialed submission rails, not event-driven rule automation, and probes found no API surface.",
+    "rationale": "Event-triggered automation is a fair question for an online tax-services platform, but nothing in the evidence shows the IRS letting users define rules that fire actions on events. MeF 'business rules' are IRS-side validation rules for submitted returns, not user-defined triggers. The A2A and MeF channels are credentialed submission rails, not event-driven automation, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27552,7 +27616,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no capability for a user to schedule recurring jobs or workflows on IRS services. The items cover one-off filings (EIN assistant, MeF, IRIS A2A), ID.me sign-in walls, and payment pages listed by title only (Direct Pay, EFTPS, Payment Plan), with no documented recurring-schedule feature. Recurring scheduling of payments or filings is a plausible capability for tax-service rails, so the axis applies, and the absence of evidence makes this 'none' rather than 'na'.",
+    "rationale": "Scheduling recurring automated operations, such as recurring payments or filings, is a fair question for an online tax-services platform, so the axis applies. The pack lists only the titles of EFTPS and Payment Plan pages, with no documented ability to schedule recurring jobs or workflows. The MeF/IRIS machine channels are one-off transmission rails with no scheduling evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27567,7 +27631,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The IRS is a government tax-filing and payment service, not a platform where users build automations, so versioning, reviewing, and rolling back user-defined automations is outside its product category. The evidence describes filing channels such as MeF, IRIS A2A, and the EIN assistant, but no user-authored automation objects, version history, or rollback, so nothing makes the axis applicable.",
+    "rationale": "The IRS is a government tax-filing and payment service, not a platform that hosts user-defined automations. A story about versioning, reviewing, and rolling back the user's own automations is a category error for this kind of product, and nothing in the evidence shows it ships such a capability. The MeF per-tax-year schema versioning and the ATS test environment describe the IRS's own interface versions and pre-production testing, not user automation history or rollback, so they do not make the axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27582,7 +27646,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A government tax agency could plausibly publish bulk public-data extracts or statistics, so the axis applies. The evidence pack contains no such capability: it covers EIN applications, e-file rails (MeF, IRIS A2A), payments, account sign-in and probes, but nothing on downloadable datasets, registry extracts or statistics files.",
+    "rationale": "Publishing bulk public datasets or extracts is a fair question for a government tax agency, so the axis applies. The evidence pack covers only filing rails, payments, identity proofing and the registration-gated MeF schemas, which are interface definitions rather than public data. Nothing in the pack documents downloadable public datasets, registry extracts or statistics, so with no evidence for an applicable capability the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27597,7 +27661,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Probes show irs.gov serves a content robots.txt that agents can consult (for example, /dmaf is not disallowed). However, the application host running the EIN online assistant returned HTTP 503 for robots.txt and has no stable published file, so an agent cannot learn the rules for the transactional surface before fetching. missing for 10: a stable robots.txt on the app host (sa.www4.irs.gov), direct retrieval evidence of the irs.gov robots.txt contents, and any agent-specific guidance for the transactional flows.",
+    "rationale": "Probe evidence implies irs.gov serves a content robots.txt: one probe checked a path against it, and another notes it does not govern the app host. However, the application host that runs the EIN online assistant returned HTTP 503 for robots.txt and has no stable published file, so an agent cannot learn the rules before fetching the transactional surfaces. Missing for 10: a stable robots.txt on the sa.www4.irs.gov application host, a direct fetch of the irs.gov robots.txt showing its contents, and any first-party documentation of crawl or agent policy.",
     "evidenceIds": [
       "irs-probe-4",
       "irs-probe-5"
@@ -27613,7 +27677,7 @@
         },
         {
           "evidenceId": "irs-probe-4",
-          "quote": "the EIN online assistant runs on an application host with no stable published robots.txt; the irs.gov content robots.txt does not govern it."
+          "quote": "the irs.gov content robots.txt does not govern it"
         }
       ]
     }
@@ -27624,7 +27688,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "The published sign-in path for IRS online services requires identity proofing through ID.me, which the IRS's own page describes as collecting selfie, video and biometric data. That is a biometric liveness check, the opposite of the credential-MFA path this story asks for. No pure credential-MFA sign-in route is documented, and the third-party designee rail for EINs is a delegation channel, not a sign-in path.",
+    "rationale": "The IRS's published online-account sign-in requires identity proofing through ID.me. The IRS's own page cites selfie, video and biometric data, which is a liveness check rather than credential MFA an authorized human can complete remotely. Signed online forms such as Form 15620 also sit behind that same Online Account wall. The pack documents no alternative credential-MFA-only sign-in path, so this applicable axis is not delivered.",
     "evidenceIds": [
       "irs-supp-9",
       "irs-supp-10",
@@ -27643,7 +27707,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Published filing deadlines and penalty/interest schedules are a fair question for a tax authority, so the axis applies. However, nothing in the evidence pack documents filing due dates, failure-to-file or failure-to-pay penalty rates, or interest rates. The pack covers only adjacent figures: EIN assistant operating hours, e-file provider approval time, and payment rails. None of these are filing deadlines or penalty schedules.",
+    "rationale": "Publishing filing deadlines and penalty and interest schedules is a fair question for a tax authority, so the axis applies. The pack has no evidence of either: it covers EIN tool hours and limits, e-file enrollment timelines, ATS windows and payment rails. None of these are filing deadlines or penalty/interest rates with exact figures.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27658,7 +27722,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows a published third-party designee path for EIN applications that requires signed authorization from the responsible party, and a credentialed Authorized e-file Provider role. It also indicates that signatures on mobile-friendly forms such as Form 15620 stay with the taxpayer through Online Account and ID.me biometric sign-in. This is fragmentary, not a consolidated published rulebook of what a third party may and may not do. Missing for 10: general authorization forms (e.g., a power-of-attorney or information-authorization form), an explicit scope of designee permissions and prohibitions, a consolidated roles taxonomy, and independent corroboration.",
+    "rationale": "The IRS publishes a sanctioned third-party designee role for EIN applications, which requires signed authorization from the responsible party. It also states that signed mobile-friendly forms (e.g., the 83(b) Form 15620) require the taxpayer's own Online Account, behind ID.me biometric verification, so those signatures stay personal. Separately, it documents the credentialed Authorized e-file Provider role. Missing for 10: a consolidated published statement of what third parties may and may not do (e.g., power-of-attorney or tax-information authorization forms and their scopes), named authorization forms beyond the EIN designee note, and independent corroboration.",
     "evidenceIds": [
       "irs-supp-13",
       "irs-supp-12",
@@ -27681,10 +27745,6 @@
         {
           "evidenceId": "irs-supp-9",
           "quote": "You'll need an account with ID.me to sign in to access your tax information and use services on IRS.gov."
-        },
-        {
-          "evidenceId": "irs-supp-6",
-          "quote": "it can take up to 45 days from the date of submission for the IRS to approve your e-file application"
         }
       ]
     }
@@ -27692,19 +27752,18 @@
   {
     "productId": "irs",
     "storyId": "fallback-rail-documented",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "high",
-    "rationale": "The IRS publishes an exact paper and fax fallback for EIN applications: Form SS-4 mailed to a specific Cincinnati address or faxed to 855-641-6935. That route covers the times the online assistant is closed, limited to one EIN per day, or timed out. For the 83(b) election it also documents a written statement or Form 15620 filed by mail. Missing for 10: an exact 83(b) mailing address in the evidence (it only says the Service Center where you file your return), and independent or hands-on confirmation that the paper and fax routes work.",
+    "rationale": "The IRS publishes an exact paper/fax fallback for the EIN task: Form SS-4 mailed or faxed to a named Cincinnati address and a specific fax number. It also documents a paper rail for the 83(b) election via a written statement or Form 15620. However, that 83(b) rail only says 'the Internal Revenue Service Center where you file your return' rather than an exact address, so exact coordinates are not shown across the founder's tasks. missing for 10: exact mailing address for the 83(b)/Form 15620 paper rail, published fallback coordinates for other online flows (e.g., payments, account services), independent or hands-on confirmation that the fax/mail rails work.",
     "evidenceIds": [
       "irs-supp-4",
       "irs-supp-11",
-      "irs-supp-1",
       "irs-docs-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a founder, a paper, fax, or mail fallback rail is published with the exact addresses, numbers, and forms, so the task can still be completed when the online flow is unavailable",
       "citations": [
         {
@@ -27714,10 +27773,6 @@
         {
           "evidenceId": "irs-supp-11",
           "quote": "You can make the choice by filing a written statement, or Form 15620, Section 83(b) Election, with the Internal Revenue Service Center where you file your return."
-        },
-        {
-          "evidenceId": "irs-supp-1",
-          "quote": "This tool is available during the following times (Eastern Time): Mon–Fri: 6:00 a.m. – 1:00 a.m. (next day); Sat: 6:00 a.m. – 9:00 p.m.; Sun: 6:00 p.m. – 12:00 a.m."
         }
       ]
     }
@@ -27728,7 +27783,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies: a tax authority can document a non-resident path for tasks like getting an EIN. However, nothing in the evidence pack describes non-resident eligibility, acceptable foreign identifiers, or extra steps for foreign applicants. The SS-4 mail/fax coordinates cover only applicants in the 50 states or DC, and the third-party designee channel is not specific to non-residents.",
+    "rationale": "Non-resident guidance is a fair question for a tax authority that issues EINs, so the axis applies. However, nothing in the pack documents a non-resident path: no eligibility rules, no accepted foreign identifiers, and no extra steps for foreign applicants. The SS-4 mail/fax coordinates are stated only for applicants in the 50 states or DC, and the third-party designee rail is not framed as a non-resident path.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27740,16 +27795,34 @@
   {
     "productId": "irs",
     "storyId": "forms-and-instructions-downloadable",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack never documents that IRS forms or their instructions can be downloaded from irs.gov without an account. It mentions paper filing of Form SS-4 and Form 15620 and a Pub 525 update page, but none of these items state that the forms or instructions are publicly downloadable. The only access statements cover online completion of signed mobile-friendly forms, which requires an Online Account, and that is a different capability.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "IRS publishes forms-and-publications content at public irs.gov pages, such as the Pub 525 update on Form 15620. It also documents paper rails for Form SS-4 and Form 15620, which implies the forms are publicly obtainable. The account (ID.me/OLA) requirement is scoped only to online mobile-friendly forms that require signatures. However, no evidence explicitly states that form PDFs and instructions can be downloaded without an account. Missing for 10: explicit documentation of anonymous form/instruction downloads, a forms-library or PDF download page in evidence, hands-on probe confirming downloads work without sign-in.",
+    "evidenceIds": [
+      "irs-docs-8",
+      "irs-supp-11",
+      "irs-supp-4",
+      "irs-supp-12"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a founder, the forms themselves and their instructions are downloadable from the service's site without an account",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "irs-supp-11",
+          "quote": "You can make the choice by filing a written statement, or Form 15620, Section 83(b) Election, with the Internal Revenue Service Center where you file your return."
+        },
+        {
+          "evidenceId": "irs-supp-12",
+          "quote": "Online Account (OLA) is required to complete mobile friendly forms that require signatures"
+        },
+        {
+          "evidenceId": "irs-supp-4",
+          "quote": "Internal Revenue Service, Attn: EIN Operation, Cincinnati, OH 45999, Fax: 855-641-6935"
+        }
+      ]
     }
   },
   {
@@ -27757,12 +27830,12 @@
     "storyId": "keyless-entry-path",
     "verdict": "partial",
     "quality": 5,
-    "confidence": "low",
-    "rationale": "The EIN online assistant, the founder's core online flow, is documented as a single session that cannot be saved and must be restarted after 15 minutes of inactivity. It is limited per responsible party rather than per login, which implies a keyless, session-only entry separate from the ID.me-gated Online Account that signed forms like Form 15620 require. However, no published page in the pack explicitly states that no account is needed. Missing for 10: an explicit published statement that the EIN assistant (or another core flow such as Direct Pay) requires no account, documentation of the file-number or identifier entry fields, and independent or hands-on confirmation of keyless entry.",
+    "confidence": "medium",
+    "rationale": "The IRS publishes the EIN online assistant, a founder's core online flow, as a single-session tool with operating hours. It expires after 15 minutes of inactivity with no save, which implies session-based entry without a pre-created account. However, no cited page explicitly states that no account is needed. Other online rails, such as signed mobile-friendly forms including the 83(b) Form 15620, do require an ID.me-verified Online Account. Missing for 10: an explicit published statement that the EIN assistant needs no account or login, a documented keyless or file-number entry step, and hands-on confirmation of account-free entry.",
     "evidenceIds": [
+      "irs-supp-1",
       "irs-supp-3",
       "irs-supp-2",
-      "irs-supp-1",
       "irs-supp-12"
     ],
     "support": {
@@ -27775,6 +27848,10 @@
           "quote": "It expires after 15 minutes of inactivity, and you'll need to start over."
         },
         {
+          "evidenceId": "irs-supp-1",
+          "quote": "This tool is available during the following times (Eastern Time): Mon–Fri: 6:00 a.m. – 1:00 a.m. (next day)"
+        },
+        {
           "evidenceId": "irs-supp-2",
           "quote": "You can apply for only 1 EIN per responsible party per day."
         }
@@ -27784,24 +27861,20 @@
   {
     "productId": "irs",
     "storyId": "keyless-page-reachability",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The pipeline retrieved verbatim body text from many irs.gov guidance pages: the EIN page, the SS-4 filing addresses, the MeF overview, the e-file provider enrollment page, IRIS, the Pub 525 update and mobile-friendly forms. That shows the public reading surface served real HTML content to a keyless agent, not a JS-only shell or CAPTCHA. The only denials observed were the 403 on the /dmaf signed-form entry and the 503 on the app-host robots.txt; both are transactional or app hosts, not guidance pages, and the 404s on llms.txt and .md were normal server responses rather than bot walls. Missing for 10: an explicit HTTP-200 probe record of a guidance page under the identified UA, independent corroboration across repeated or bulk fetches, and confirmation that no rate-based bot challenge appears at scale.",
+    "rationale": "Many irs.gov guidance pages (EIN, SS-4, MeF, IRIS, Pub 525 update) appear in the pack with verbatim quoted content, which suggests the public reading surface returns readable static content. Probes of nonexistent irs.gov paths got ordinary 404s with a standard pipeline user agent rather than a challenge page. The only 403 observed was on an authenticated form-submission flow (/dmaf), and the 503 was on an application host, so neither concerns the guidance surface. Missing for 10: an explicit probe showing HTTP 200 on a guidance page with the standard user agent, confirmation that no CAPTCHA or bot challenge is served, and confirmation the pages render without JS.",
     "evidenceIds": [
-      "irs-docs-1",
-      "irs-docs-2",
-      "irs-docs-3",
-      "irs-docs-8",
       "irs-supp-1",
-      "irs-supp-4",
-      "irs-supp-5",
       "irs-supp-11",
+      "irs-probe-1",
+      "irs-probe-2",
       "irs-probe-5"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native founder, the service's published guidance pages are reachable by a keyless agent with a standard identified user agent — no bot wall, JS-only shell, or CAPTCHA in front of the public reading surface",
       "citations": [
         {
@@ -27809,16 +27882,12 @@
           "quote": "This tool is available during the following times (Eastern Time): Mon–Fri: 6:00 a.m. – 1:00 a.m. (next day)"
         },
         {
-          "evidenceId": "irs-supp-4",
-          "quote": "Internal Revenue Service, Attn: EIN Operation, Cincinnati, OH 45999, Fax: 855-641-6935"
-        },
-        {
           "evidenceId": "irs-supp-11",
           "quote": "You can make the choice by filing a written statement, or Form 15620, Section 83(b) Election, with the Internal Revenue Service Center where you file your return."
         },
         {
-          "evidenceId": "irs-supp-5",
-          "quote": "MeF uses the widely accepted Extensible Markup Language (XML) format."
+          "evidenceId": "irs-probe-1",
+          "quote": "PROBE llms.txt: HTTP 404 at https://www.irs.gov/llms.txt"
         }
       ]
     }
@@ -27827,12 +27896,12 @@
     "productId": "irs",
     "storyId": "machine-readable-spec",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The IRS documents an XML-based system-to-system machine channel (MeF) and an IRIS A2A intake, which implies a structured XML specification. The pack never shows that XML schemas, an OpenAPI spec, or a data dictionary are actually published, and probes of OpenAPI paths all returned 404. missing for 10: evidence of published MeF/IRIS XML schemas (XSDs) or business rules, a data dictionary, any OpenAPI spec, and independent corroboration of schema availability.",
+    "quality": 5,
+    "confidence": "high",
+    "rationale": "The IRS maintains versioned, per-tax-year XML schema packages, business rules, and SOAP A2A WSDLs for its Modernized e-File machine channel, so a machine-readable specification does exist. Distribution is gated: schemas come only through the registered-user portal or e-Services mailbox, the WSDL toolkit is sent on email request, and no OpenAPI spec is published (all candidate paths return 404). missing for 10: public, unauthenticated download of the XML schemas/WSDLs, a public OpenAPI or data-dictionary artifact, a public version/deprecation policy, and a published schema for the IRIS A2A channel.",
     "evidenceIds": [
+      "irs-mef-schemas-20261106",
       "irs-supp-5",
-      "irs-supp-8",
       "irs-probe-3"
     ],
     "support": {
@@ -27841,12 +27910,16 @@
       "subject": "As a developer, a machine-readable specification for the service's machine channel is published — an OpenAPI spec, XML schemas, or a data dictionary",
       "citations": [
         {
-          "evidenceId": "irs-supp-5",
-          "quote": "MeF uses the widely accepted Extensible Markup Language (XML) format."
+          "evidenceId": "irs-mef-schemas-20261106",
+          "quote": "Schemas and business rules are now available through the registered user portal and your e-services mailbox"
         },
         {
-          "evidenceId": "irs-supp-8",
-          "quote": "IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)"
+          "evidenceId": "irs-mef-schemas-20261106",
+          "quote": "Federal returns must conform to valid schema versions."
+        },
+        {
+          "evidenceId": "irs-supp-5",
+          "quote": "MeF uses the widely accepted Extensible Markup Language (XML) format."
         }
       ]
     }
@@ -27854,23 +27927,23 @@
   {
     "productId": "irs",
     "storyId": "online-transaction-end-to-end",
-    "verdict": "partial",
-    "quality": 7,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "high",
-    "rationale": "The IRS's own pages document online rails for a founder's core transactions: the EIN online assistant, Direct Pay and EFTPS payments, IRIS e-filing of information returns, and mobile-friendly signed forms such as Form 15620. Each rail carries published limits: the EIN tool keeps set operating hours, sessions expire after 15 minutes of inactivity with no save, only one EIN per responsible party per day, and signed online forms require an ID.me-gated Online Account. missing for 10: round-the-clock availability of the EIN rail, save/resume for online sessions, and independent hands-on corroboration that the flows complete end to end.",
+    "rationale": "The IRS's own pages document online completion of a founder's core transactions: the EIN online assistant for applying, Direct Pay and EFTPS for paying, the IRIS Taxpayer Portal for e-filing information returns, and mobile-friendly signed forms (including the Form 15620 83(b) election) through Online Account. Missing for 10: the EIN tool only runs during published hours with a 15-minute inactivity timeout and a one-EIN-per-day limit, online signed forms require ID.me identity proofing, the payment pages are documented only thinly, and there is no independent or hands-on confirmation of a completed transaction.",
     "evidenceIds": [
       "irs-docs-1",
       "irs-supp-1",
-      "irs-supp-2",
       "irs-supp-3",
       "irs-docs-10",
       "irs-docs-12",
       "irs-supp-8",
-      "irs-supp-12"
+      "irs-supp-12",
+      "irs-supp-9"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a founder, the core transaction this service exists for (form, register, apply, file, or pay) can be completed online, per the service's own published pages",
       "citations": [
         {
@@ -27879,19 +27952,19 @@
         },
         {
           "evidenceId": "irs-supp-1",
-          "quote": "This tool is available during the following times (Eastern Time): Mon–Fri: 6:00 a.m. – 1:00 a.m. (next day); Sat: 6:00 a.m. – 9:00 p.m.; Sun: 6:00 p.m. – 12:00 a.m."
-        },
-        {
-          "evidenceId": "irs-supp-3",
-          "quote": "It expires after 15 minutes of inactivity, and you'll need to start over."
+          "quote": "This tool is available during the following times (Eastern Time)"
         },
         {
           "evidenceId": "irs-docs-10",
           "quote": "Bank Account (Direct Pay)"
         },
         {
+          "evidenceId": "irs-docs-12",
+          "quote": "Electronic Federal Tax Payment System (EFTPS)"
+        },
+        {
           "evidenceId": "irs-supp-8",
-          "quote": "receives information through two intake channels: IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)"
+          "quote": "IRIS Taxpayer Portal/UI"
         },
         {
           "evidenceId": "irs-supp-12",
@@ -27904,17 +27977,15 @@
     "productId": "irs",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 2,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The IRS runs its own machine channels for a narrow slice of its services: Modernized e-File for XML return transmission and IRIS Application to Application (A2A) for information returns. Both sit behind credentialing (authorized e-file provider enrollment and a Transmitter Control Code). The other UI flows in the pack (EIN online assistant, Online Account behind ID.me biometric sign-in, online signed forms like Form 15620) show no API, and probes found no OpenAPI spec. Missing for 10: API equivalents for EIN application, online account, payments, transcripts, IP PIN and signed mobile-friendly forms; a public, documented general-purpose API; a non-biometric programmatic auth path.",
+    "rationale": "The IRS documents machine channels for a subset of functions. IRIS offers an Application-to-Application (A2A) intake alongside its Taxpayer Portal/UI for information returns, and MeF provides XML system-to-system e-filing, but both are credential-gated. Many UI functions have no documented API equivalent: the EIN online assistant, Online Account signed forms such as the 83(b) election behind ID.me liveness, and payments. Probes found no public OpenAPI spec. Missing for 10: API parity for EIN application, Online Account/signed forms, payments, transcripts and IP PIN; a public, ungated API reference.",
     "evidenceIds": [
-      "irs-supp-5",
       "irs-supp-8",
-      "irs-supp-6",
-      "irs-supp-9",
+      "irs-supp-5",
+      "irs-mef-schemas-20261106",
       "irs-supp-12",
-      "irs-probe-3",
-      "irs-probe-5"
+      "irs-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -27923,15 +27994,11 @@
       "citations": [
         {
           "evidenceId": "irs-supp-8",
-          "quote": "IRIS \"receives information through two intake channels: IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)\""
+          "quote": "receives information through two intake channels: IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)"
         },
         {
           "evidenceId": "irs-supp-5",
           "quote": "MeF uses the widely accepted Extensible Markup Language (XML) format."
-        },
-        {
-          "evidenceId": "irs-supp-12",
-          "quote": "Online Account (OLA) is required to complete mobile friendly forms that require signatures"
         }
       ]
     }
@@ -27939,10 +28006,10 @@
   {
     "productId": "irs",
     "storyId": "openness-full-export",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Exporting your own records is a fair question for an online account service like the IRS portal, so the axis applies. The evidence pack only lists a bare 'Tax record (transcript)' title, with nothing documenting bulk export of all account data or any open format. The MeF XML evidence covers inbound filing by credentialed providers, not user data export, so it does not transfer to this story.",
+    "rationale": "The story asks about exporting data to switch away from a vendor, but the IRS is a mandatory government tax authority that a taxpayer cannot 'leave'. That makes the exit axis a category error for this kind of product. The only related item is a bare 'Tax record (transcript)' page title, which documents no bulk export, no open formats and no exit path, so the verdict would be 'none' even if the axis applied.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27957,7 +28024,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a service's software is open source is a fair question for a government digital-services provider, so the axis applies. Nothing in the evidence pack mentions a public source repository or an open license for any IRS system (EIN assistant, MeF, IRIS, Online Account), so the verdict is none.",
+    "rationale": "Publishing source code under an open license is a fair question for a government digital service, so the axis applies. Nothing in the evidence shows any IRS source code being published under any license. The closest material, the MeF schemas and WSDLs, are interface definitions rather than source, and even those are registration-gated and not publicly downloadable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27972,7 +28039,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The IRS is a government tax authority whose filing, payment and account services are sovereign channels, not licensable software, so self-hosting the core product is a category error for this kind of product. Nothing in the evidence shows any self-hostable or open-source distribution that would make the axis apply.",
+    "rationale": "The IRS is a sovereign government tax authority whose filing rails (MeF, IRIS, the EIN assistant) are inherently authority-operated. Self-hosting the 'core product' is a category error for this kind of entity, not an unmet capability. Nothing in the evidence shows any self-hostable distribution; the ATS test environment is IRS-hosted and registration-gated, so it does not make the axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -27985,9 +28052,9 @@
     "productId": "irs",
     "storyId": "operating-window-published",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "The IRS's EIN online assistant page publishes all three constraints up front: an Eastern Time operating window by day, a limit of one EIN per responsible party per day, and a 15-minute inactivity timeout with no save. Missing for 10: independent or hands-on corroboration that these published limits match actual behavior, and equivalent up-front publication of hours, limits and timeouts for other online flows such as IRIS and mobile-friendly forms.",
+    "rationale": "The IRS EIN online assistant page publishes all three constraints on the page where the application starts. It lists exact Eastern Time operating hours by day, a limit of one EIN per responsible party per day, and a 15-minute inactivity timeout with no save. Missing for 10: independent or hands-on confirmation that these notices appear before the flow begins, and evidence that other online flows (e.g., IRIS, Online Account forms) publish similar limits.",
     "evidenceIds": [
       "irs-supp-1",
       "irs-supp-2",
@@ -28019,7 +28086,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The IRS publishes its own task pages in plain, second-person language for founder tasks. The EIN online application page explains limits and session behavior conversationally. The Pub 525 update tells filers in plain words how to make an 83(b) election, though it still points to Form 15620 and a service center. The evidence does not show these pages are structured step-by-step walkthroughs, and nothing independent confirms a non-lawyer can follow them end to end. Missing for 10: explicit step-by-step task walkthroughs, plain-language coverage beyond fragments of the EIN and 83(b) pages, independent or hands-on corroboration of readability.",
+    "rationale": "The IRS publishes task-oriented, plain-language pages for founder tasks. The EIN application page gives second-person instructions on limits and session behavior, and the Pub 525 update explains in plain words how to make an 83(b) election, so it goes beyond bare statute text. However, the evidence shows only fragments of guidance rather than a documented end-to-end walkthrough. Missing for 10: evidence of full step-by-step explainers for founder tasks (e.g., a sequenced EIN or 83(b) walkthrough), broader coverage of other founder tasks, and independent or hands-on corroboration that a non-lawyer can follow it.",
     "evidenceIds": [
       "irs-docs-1",
       "irs-supp-2",
@@ -28053,7 +28120,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The IRS is the US federal tax authority, not a commercial data host. Taxpayer records are inherently held by that sovereign agency, so letting a user pick a storage region or residency is a category error for this kind of product. Nothing in the evidence pack suggests otherwise: the items cover EIN, e-file, IRIS, ID.me sign-in and payment rails, and none mention storage location.",
+    "rationale": "The IRS is a national tax authority, not a configurable data-hosting product. Letting a taxpayer choose the storage region or residency of their federal tax records is a category error for this kind of service. Nothing in the evidence shows any such capability that would make the axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -28068,7 +28135,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The IRS's online services collect and hold sensitive user data, so a policy or control against using that data for AI training is a fair privacy-posture question. The evidence pack contains no such policy or opt-out control. The only data-handling note is the automatic deletion of ID.me selfie, video and biometric data, which is an adjacent retention practice, not an AI-training control.",
+    "rationale": "The IRS runs online services that hold user data, so a policy or control on using that data for AI training is a fair privacy question to ask. The evidence pack contains no AI-training opt-out, policy, or control. The ID.me note that biometric data is automatically deleted is a related data-retention practice, not a training opt-out, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -28083,7 +28150,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair privacy question for a service that holds taxpayer accounts, so the axis applies. However, the evidence shows no user-facing control over retention or deletion. The only related item is a fixed policy that ID.me biometric data is automatically deleted, which is not user control.",
+    "rationale": "Data retention and deletion is a fair privacy question for an online government service that holds user data, so the axis applies. The pack documents no user-facing control over retention or deletion. The only related item says ID.me selfie, video and biometric data are deleted automatically, which is a fixed policy of the identity-proofing step and not a control the user operates, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -28098,7 +28165,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether IRS online services let users opt out of telemetry, analytics, or usage tracking is a fair privacy question for a government web service. The evidence pack documents no such control. The ID.me note that biometric data is automatically deleted concerns identity-verification data retention, not a telemetry or usage-tracking opt-out, so it earns no credit.",
+    "rationale": "Telemetry and usage-tracking opt-out is a fair privacy question for any online service, including IRS.gov and its online account tools, so the axis applies. Nothing in the evidence pack documents an analytics, cookie or usage-tracking opt-out. The ID.me note that biometric data is automatically deleted concerns identity-verification data retention, which is an adjacent behavior and not a user-controlled telemetry opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -28113,7 +28180,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "The IRS publishes its own processing clock for one transaction type: e-file provider enrollment approval can take up to 45 days. But this is a static maximum, not a current or live processing time, and no processing times appear in the evidence for founder transactions such as EIN applications by mail or fax, or 83(b) elections. Missing for 10: current or live processing-time figures, processing times for EIN (SS-4 mail/fax) and Form 15620/83(b) filings, and coverage across transaction types.",
+    "rationale": "The IRS publishes a processing clock for one transaction type: e-file provider application approval can take up to 45 days. That is a static upper bound, not a current or live processing time, and the evidence shows no published processing times for founder-core transactions such as mailed or faxed SS-4 EIN applications or 83(b) elections. Missing for 10: current or regularly updated processing-time figures, coverage of founder transactions (EIN by mail/fax, Form 15620/83(b)), and independent corroboration.",
     "evidenceIds": [
       "irs-supp-6"
     ],
@@ -28134,8 +28201,8 @@
     "storyId": "public-data-api",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "The pack shows no public data API. MeF is described as a credentialed XML transmission rail that is \"not a public API\", and IRIS A2A is a filing intake channel gated by a Transmitter Control Code, with no published endpoints or stated API rate limits. Probes for OpenAPI or Swagger specs all returned 404, and the EIN assistant's '1 EIN per day' limit is a web-tool limit, not an API rate limit.",
+    "confidence": "high",
+    "rationale": "The evidence shows no public data API. MeF and IRIS A2A are credentialed filing channels: they require e-file provider enrollment or a Transmitter Control Code, and the schemas and WSDLs are distributed only through a registered portal or by email request. The OpenAPI probes return 404, and developer.irs.gov and api.irs.gov do not resolve. The only stated limit (one EIN per responsible party per day) applies to a web form, not to API rate limits, so none of the three story elements (public endpoints, a key-issuance path, rate limits) is documented for a public API.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -28150,7 +28217,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any public-page tool for checking the status of a filing, application, or case. The Business Tax Account and Tax record (transcript) items appear only as bare titles, with no description of status lookup. The documented online account access sits behind ID.me identity proofing rather than on public pages.",
+    "rationale": "The pack has no evidence of a public IRS page where a founder can check the status of a filing, application, or case. The MeF status page covers system deployment status for transmitters, not an individual filing. The Business Tax Account and transcript items are bare titles with no status-lookup content, and online account access sits behind ID.me sign-in rather than public pages.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -28164,14 +28231,13 @@
     "storyId": "sanctioned-intermediary-rail",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "IRS documents several sanctioned intermediary rails through which a provider can act for a company. A third-party designee can apply for an EIN with signed authorization from the responsible party. Authorized IRS e-file Providers have a published enrollment path (up to 45-day approval, fingerprinting for non-credentialed principals) to transmit via MeF, and IRIS A2A intake is gated by a Transmitter Control Code. Missing for 10: no independent or hands-on corroboration that the designee or provider rails work as described, and no evidence of a representative/power-of-attorney rail or of how far designee authority extends beyond EIN application.",
+    "confidence": "medium",
+    "rationale": "The IRS documents two sanctioned third-party rails through which a provider can act for a company. For EIN applications, a third-party designee may apply with signed authorization from the responsible party. For e-filing, providers can enroll as Authorized IRS e-file Providers, with a published approval timeline and suitability steps such as fingerprinting. Missing for 10: any documented general representative or power-of-attorney rail for account-level actions beyond EIN applications and e-filing, and independent or hands-on corroboration of how the designee flow works in practice.",
     "evidenceIds": [
       "irs-supp-13",
       "irs-supp-5",
       "irs-supp-6",
-      "irs-supp-7",
-      "irs-supp-8"
+      "irs-supp-7"
     ],
     "support": {
       "relation": "direct",
@@ -28189,10 +28255,6 @@
         {
           "evidenceId": "irs-supp-6",
           "quote": "it can take up to 45 days from the date of submission for the IRS to approve your e-file application"
-        },
-        {
-          "evidenceId": "irs-supp-8",
-          "quote": "the A2A channel is gated by a Transmitter Control Code"
         }
       ]
     }
@@ -28200,30 +28262,46 @@
   {
     "productId": "irs",
     "storyId": "sandbox-available",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies because the IRS documents machine channels: MeF XML system-to-system transmission and the IRIS Application to Application (A2A) intake. However, nothing in the evidence pack documents a public sandbox, test environment, or assurance-testing path for exercising either rail end to end before production. The pack documents only credential gating (e-file provider enrollment, Transmitter Control Code), and probes found no published API specs.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "high",
+    "rationale": "The IRS documents a dedicated test environment for its MeF machine channel, the Assurance Testing System (ATS). It has per-form test scenarios, known-issues tables, ATS-specific guidelines (Pub 1436), test packages (Pub 5078) and separate ATS vs Production certificates, and developers are told to validate in ATS before Production. It is not public, though: access requires e-file provider enrollment and e-Services sign-in, it opens only in dated seasonal windows, and the schemas and WSDLs are registration-gated. missing for 10: publicly accessible sandbox without enrollment or credentialing, year-round availability, publicly downloadable interface definitions for testing, independent or hands-on corroboration of end-to-end testing.",
+    "evidenceIds": [
+      "irs-ats-20261106",
+      "irs-mef-status-20261106",
+      "irs-mef-schemas-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, a public sandbox or test environment for the service's machine channel is documented — I can exercise the rail end to end before touching production",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "irs-ats-20261106",
+          "quote": "The IRS documents a dedicated test environment for its Modernized e-File system: the Assurance Testing System (ATS)"
+        },
+        {
+          "evidenceId": "irs-mef-status-20261106",
+          "quote": "Transmitters, software developers, and state agencies are encouraged to review their implementations and complete any necessary changes in ATS prior to the Production deployment to avoid service disruptions."
+        }
+      ]
     }
   },
   {
     "productId": "irs",
     "storyId": "software-transmitter-channel",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "The IRS documents Modernized e-File as an XML system-to-system transmission channel open to Authorized IRS e-file Providers. It also publishes the provider enrollment path, including an approval window of up to 45 days and a fingerprinting requirement for some principals. IRIS separately offers an Application to Application (A2A) intake channel gated by a Transmitter Control Code. Missing for 10: a documented application path for the IRIS A2A Transmitter Control Code, and independent or hands-on corroboration of the enrollment process.",
+    "rationale": "The IRS documents Modernized e-File (MeF) as an XML system-to-system rail and IRIS Application to Application (A2A) as a machine intake for information returns gated by a Transmitter Control Code. It also publishes the Authorized e-File Provider enrollment path, including approval of up to 45 days and fingerprinting, plus an Assurance Testing System for transmitters. missing for 10: independent or hands-on corroboration of enrollment and transmission, and publicly downloadable interface definitions (schemas and WSDLs are registration-gated).",
     "evidenceIds": [
       "irs-supp-5",
       "irs-supp-6",
       "irs-supp-7",
-      "irs-supp-8"
+      "irs-supp-8",
+      "irs-ats-20261106",
+      "irs-mef-status-20261106",
+      "irs-mef-schemas-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -28235,12 +28313,16 @@
           "quote": "MeF uses the widely accepted Extensible Markup Language (XML) format."
         },
         {
+          "evidenceId": "irs-supp-8",
+          "quote": "IRIS \"receives information through two intake channels: IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)\""
+        },
+        {
           "evidenceId": "irs-supp-6",
           "quote": "it can take up to 45 days from the date of submission for the IRS to approve your e-file application"
         },
         {
-          "evidenceId": "irs-supp-8",
-          "quote": "receives information through two intake channels: IRIS Taxpayer Portal/UI and IRIS Application to Application (A2A)"
+          "evidenceId": "irs-mef-status-20261106",
+          "quote": "Transmitters, software developers, and state agencies are encouraged to review their implementations and complete any necessary changes in ATS prior to the Production deployment to avoid service disruptions."
         }
       ]
     }
@@ -28251,7 +28333,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a filing service publishes its exact fee amounts is a fair question for a government filing authority like the IRS. However, nothing in the evidence pack states any fee amount, or that a filing such as the EIN application, SS-4, or Form 15620 is free. The payment pages (Direct Pay, EFTPS, installment agreements) cover paying taxes, not published statutory fees for a transaction, so they do not support this story.",
+    "rationale": "Publishing fee amounts is a fair question for a government filing service, so the axis applies. However, no item in the evidence pack states any fee amount, or that a fee is zero, for the EIN, the 83(b) election, e-file enrollment or any other transaction. The pack covers hours, limits, addresses, sign-in requirements and enrollment timelines, but not fees.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

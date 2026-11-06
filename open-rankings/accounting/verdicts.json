@@ -7170,7 +7170,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Inviting an external accountant with role-scoped access is a fair question for accounting software, but the evidence pack never documents user invitations, accountant access or role-based permissions. The only scoping evidence covers API token scopes for developers, which is an adjacent building block and not the collaboration capability the story asks for.",
+    "rationale": "The axis applies to accounting software, but the evidence pack never documents inviting an external accountant or bookkeeper, or assigning role-scoped user permissions. Scoped personal API tokens and OAuth are developer authentication controls, not collaborator invitations, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7185,11 +7185,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Moneybird documents its own MCP server that connects AI chat clients (Claude, ChatGPT, Gemini) to the same REST API, so an agent can pull live administration data. The evidence does not show which ledger or financial data the agent can reach: only contacts endpoints are documented, and nothing covers balances, ledger accounts, cash position or reporting that an affordability answer would need. Missing for 10: documented ledger/balance/report endpoints exposed via MCP or API, evidence of financial-question answering grounded in live ledger data, independent or hands-on corroboration.",
+    "rationale": "Moneybird documents a first-party MCP channel on the same REST API, so an AI chat client such as Claude or ChatGPT can query live account data. That covers the core mechanism of an agent pulling data through the API. However, the pack never shows ledger, balance or financial-report data being exposed, or an agent answering affordability questions from it. Missing for 10: evidence of ledger/balance/report endpoints exposed via MCP or API, documentation of MCP tool scope, hands-on corroboration of grounded financial Q&A.",
     "evidenceIds": [
       "moneybird-docs-12",
       "moneybird-docs-13",
-      "moneybird-docs-8"
+      "moneybird-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7213,7 +7213,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird documents agent connectivity: an official MCP server for AI clients, a REST API and webhooks. These are building blocks an agent could use to read data. Nothing in the pack shows ledger monitoring, spend-anomaly flagging, or duplicate-transaction detection. The only duplicate-detection evidence covers contacts, not transactions, so it is an adjacent feature and earns no credit.",
+    "rationale": "Moneybird documents an MCP server, CLI, API and webhooks that let an agent reach the administration, but these are building blocks; nothing documents ledger monitoring, spend-anomaly flagging, or duplicate-transaction detection. The only duplicate feature covers possible duplicate contacts, which is a different capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7228,7 +7228,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is accounting software, so drafting and posting journal entries through the API is a fair question to ask of it. The evidence shows a general REST API, MCP and CLI channels, plus contact endpoints, but nothing documents a journal-entry endpoint or a draft/review queue for an accountant. Generic API access does not cover this specific capability.",
+    "rationale": "Moneybird documents a REST API, an MCP server, scoped tokens and sandboxes, but nothing in the evidence shows a journal-entry endpoint or a draft or review-queue state that an accountant could approve. The API, MCP and contacts evidence covers adjacent channels and other resources, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7243,10 +7243,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird documents an MCP server, CLI and REST API that let AI clients connect, but nothing in the evidence covers bank-transaction matching, flagging reconciliation exceptions, or preparing a month-end close for human review. Generic agent connectivity is only a developer building block, not the reconciliation capability itself.",
+    "rationale": "Moneybird is accounting software, so agent-driven month-end reconciliation applies to it. The pack documents an MCP channel for AI clients, but it contains no evidence of agent-run transaction matching, exception flagging, or close preparation for human review. An MCP connection to the API is only a building block for this story, not the reconciliation capability itself.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an ai-native user, I can have an agent reconcile a month end-to-end, matching transactions, flagging exceptions, and preparing the close for human review",
       "citations": []
@@ -7258,11 +7258,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Moneybird publishes llms.txt files on both its marketing site and its developer site. The developer one was probed live (HTTP 200) and is titled \"Documentation files for Large Language Models\"; the marketing one points agents to MCP, CLI, API and webhook docs. missing for 10: per-page markdown doc versions (the .md probe returned 404), independent hands-on corroboration of agents using these files.",
+    "rationale": "A live probe returned HTTP 200 for developer.moneybird.com/llms.txt, described as documentation files for large language models, and the marketing site also serves an llms.txt that indexes the MCP, CLI, API and webhook docs. Markdown doc pages such as introduction.md and a downloadable OpenAPI 3.1 spec give agents further machine-readable sources. Missing for 10: no evidence of an llms-full.txt or full-content bundle, and markdown variants are not uniformly available (the root .md probe returned 404).",
     "evidenceIds": [
       "moneybird-probe-1",
       "moneybird-docs-12",
       "moneybird-docs-13",
+      "moneybird-sandbox-20261106",
+      "moneybird-openapi-20261106",
       "moneybird-probe-2"
     ],
     "support": {
@@ -7279,8 +7281,8 @@
           "quote": "Three channels on the same REST API: MCP for an AI chat, the CLI for the terminal, the API for your own software."
         },
         {
-          "evidenceId": "moneybird-docs-13",
-          "quote": "[Model Context Protocol (MCP)](https://developer.moneybird.com/tools/mcp): connect to Claude, ChatGPT, Gemini or any MCP client."
+          "evidenceId": "moneybird-openapi-20261106",
+          "quote": "Moneybird publishes a downloadable OpenAPI 3.1 document in its vendor GitHub organization"
         }
       ]
     }
@@ -7291,7 +7293,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no AI-generated insights or suggestions inside Moneybird. The MCP server, CLI and API let users connect external AI clients such as Claude or ChatGPT to their data, which is an adjacent channel rather than in-product AI insights. The duplicate-contact endpoint is not described as AI-driven.",
+    "rationale": "The evidence shows no AI-generated insights or suggestions inside Moneybird itself. Its AI channel is an MCP server that lets external AI chats (Claude, ChatGPT, Gemini) reach the API, which is an adjacent integration rather than in-product insight. Duplicate-contact detection is a rule-based API feature with no evidence of AI. Accounting SaaS could plausibly ship in-product AI insights, so the axis applies and the verdict is none, not na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7306,10 +7308,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party way to set up general automations that run on their own in the background. Webhooks and the API are developer building blocks for an external system to react to. MCP is for interactive AI chat. Recurring subscription billing is one specific adjacent feature, not user-configurable background automation.",
+    "rationale": "Accounting SaaS can plausibly offer user-configured background automations, so the axis applies, but the evidence shows no such feature. Webhooks, the API, the CLI and MCP are developer building blocks or interactive channels. Subscription recurring billing is a specific billing feature, not a general autonomous-automation capability, so none of these earn credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": []
@@ -7321,10 +7323,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents an MCP server that lets external AI clients (Claude, ChatGPT, Gemini) connect to Moneybird, plus a CLI and an API. Nothing shows a built-in AI assistant inside the Moneybird product that users can delegate tasks to. Connecting outside AI chats is an adjacent capability and earns no credit for an in-product assistant.",
+    "rationale": "A built-in AI assistant is a fair question for accounting SaaS like Moneybird, so the axis applies. The evidence only shows an MCP server that lets external AI chats (Claude, ChatGPT, Gemini) connect to the API. That is an adjacent integration channel, not an assistant built into the product, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
       "citations": []
@@ -7334,14 +7336,15 @@
     "productId": "moneybird",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Moneybird documents a terminal CLI and a REST API for your own software. It also offers personal API tokens with selectable scopes, which allow non-interactive, headless authentication suitable for automation. Running it in CI is only implied: the CLI gets a single passing mention, and there are no CI-specific setup docs or hands-on corroboration. Missing for 10: documented CLI usage/flags for non-interactive runs, CI pipeline guidance or examples, independent corroboration of headless/CI use.",
+    "rationale": "Moneybird supports non-interactive automation: a REST API, a CLI for the terminal on the same API, personal API tokens with selectable scopes that avoid an interactive OAuth flow, and self-serve sandbox administrations for testing integrations. However, the CLI appears only as a one-line mention, and nothing describes running in CI specifically. missing for 10: CLI documentation (install, flags, non-interactive or env-var auth), explicit CI/headless usage guidance, independent or hands-on corroboration of CLI automation.",
     "evidenceIds": [
       "moneybird-docs-12",
       "moneybird-docs-1",
       "moneybird-docs-2",
-      "moneybird-docs-7"
+      "moneybird-sandbox-20261106",
+      "moneybird-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -7359,6 +7362,10 @@
         {
           "evidenceId": "moneybird-docs-2",
           "quote": "For a personal API token, you can use the checkboxes to select the scopes you need."
+        },
+        {
+          "evidenceId": "moneybird-sandbox-20261106",
+          "quote": "We offer special sandbox administrations to test your API integration."
         }
       ]
     }
@@ -7366,10 +7373,10 @@
   {
     "productId": "moneybird",
     "storyId": "agentic-mcp-client",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Moneybird exposing its own API as an MCP server that external clients like Claude or ChatGPT connect to. That is the server role, and it does not transfer to this client-side story. Nothing in the pack shows Moneybird letting users plug in external MCP servers so the product can use their tools.",
+    "rationale": "Moneybird is accounting and invoicing SaaS, not an AI agent or chat host. Consuming third-party MCP servers is the MCP-client role, which falls outside this product's category, and nothing in the pack shows an embedded assistant that could act as a client. The evidence only shows Moneybird exposing its own MCP server to external clients such as Claude, ChatGPT and Gemini. That is the server role, which cannot be credited to this client-side story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7384,10 +7391,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Moneybird's own llms.txt documents a first-party MCP channel on its REST API that connects to Claude, ChatGPT, Gemini or any MCP client, and links a dedicated developer docs page (tools/mcp). That is a direct, official MCP server offering. missing for 10: detailed documentation of the MCP server's tools, scopes and auth setup in the evidence, independent or hands-on corroboration that agents connect successfully.",
+    "rationale": "Moneybird's own llms.txt lists an official Model Context Protocol channel on its REST API, linked to a first-party developer page, that connects to Claude, ChatGPT, Gemini or any MCP client. The evidence comes only from a summary index, though, so the server's depth is unproven. Missing for 10: MCP setup and auth documentation, a list of exposed tools/scopes, and independent or hands-on corroboration of the MCP server working.",
     "evidenceIds": [
-      "moneybird-docs-13",
-      "moneybird-docs-12"
+      "moneybird-docs-12",
+      "moneybird-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -7411,7 +7418,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Moneybird's own llms.txt describes an official MCP channel \"for an AI chat\" that connects to Claude, ChatGPT, Gemini or any MCP client, so users can operate it in natural language through an external AI client. The only evidence is two brief llms.txt lines, with no detail on which operations work or any hands-on proof. Missing for 10: documentation of which actions (invoicing, contacts, bookkeeping) are exposed via MCP, a native in-product natural-language interface, and independent or hands-on corroboration.",
+    "rationale": "Moneybird documents a first-party MCP channel so users can operate the product through natural-language chat in Claude, ChatGPT, Gemini or any MCP client. The language understanding itself comes from that external client, not from Moneybird, and the evidence is only brief llms.txt mentions with no hands-on corroboration. Missing for 10: a native in-product natural-language interface, documentation of which operations the MCP exposes, and independent or hands-on verification that natural-language commands work end to end.",
     "evidenceIds": [
       "moneybird-docs-12",
       "moneybird-docs-13"
@@ -7438,7 +7445,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Moneybird's own llms.txt names an official CLI as one of three channels on its REST API ('the CLI for the terminal'). That is the product's own claim, but it is a single thin mention with no CLI documentation in the pack. Missing for 10: CLI installation and command reference docs, details on auth and AI or agent workflow usage, and independent or hands-on corroboration that the CLI exists and works.",
+    "rationale": "Moneybird's own llms.txt names a first-party CLI as one of three channels on its REST API, so an official CLI is claimed. Beyond that single line there is no documentation of the CLI's installation, commands, authentication flow, or agent-oriented features, and no hands-on corroboration. Missing for 10: CLI documentation (install, command reference, auth), evidence of AI-native or agent workflows in the CLI, independent or hands-on verification.",
     "evidenceIds": [
       "moneybird-docs-12"
     ],
@@ -7458,18 +7465,20 @@
     "productId": "moneybird",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Moneybird has a documented public REST API on developer.moneybird.com. The docs cover OAuth 2.0 and personal API tokens with selectable scopes, token refresh and revocation, and resource endpoints such as contacts for reading, creating and updating data. The API is positioned as the base for its MCP server and CLI, and an LLM-oriented llms.txt is served. Missing for 10: a published machine-readable OpenAPI spec (all probed paths returned 404), independent or hands-on corroboration of API usage.",
+    "rationale": "Moneybird documents a versioned public REST API (v2) with OAuth 2.0 and scoped personal API tokens, per-resource endpoints such as contacts, and a reference generated from a downloadable OpenAPI 3.1 spec. Self-serve sandboxes, a dated changelog, and an llms.txt for AI consumption round it out. The OpenAPI probe 404s only show the spec is not at those guessed paths; the spec is published on GitHub. Missing for 10: independent or hands-on corroboration of driving the API end-to-end, and a runnable try-it console (the examples are static curl).",
     "evidenceIds": [
       "moneybird-docs-1",
       "moneybird-docs-2",
-      "moneybird-docs-4",
-      "moneybird-docs-5",
       "moneybird-docs-8",
       "moneybird-docs-12",
-      "moneybird-probe-1",
-      "moneybird-probe-3"
+      "moneybird-openapi-20261106",
+      "moneybird-reference-20261106",
+      "moneybird-sandbox-20261106",
+      "moneybird-versioning-20261106",
+      "moneybird-changelog-20261106",
+      "moneybird-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -7481,16 +7490,20 @@
           "quote": "Use the following endpoints to get information about contacts, create new contacts or update existing contacts."
         },
         {
+          "evidenceId": "moneybird-docs-2",
+          "quote": "For a personal API token, you can use the checkboxes to select the scopes you need."
+        },
+        {
           "evidenceId": "moneybird-docs-12",
           "quote": "Three channels on the same REST API: MCP for an AI chat, the CLI for the terminal, the API for your own software."
         },
         {
-          "evidenceId": "moneybird-docs-1",
-          "quote": "Alternatively, you can create a personal API token that simplifies the setup, at a cost of security."
+          "evidenceId": "moneybird-versioning-20261106",
+          "quote": "By pointing to a specific version, we can make sure you always can expect equal behaviour from our API."
         },
         {
-          "evidenceId": "moneybird-docs-2",
-          "quote": "For a personal API token, you can use the checkboxes to select the scopes you need."
+          "evidenceId": "moneybird-sandbox-20261106",
+          "quote": "We offer special sandbox administrations to test your API integration."
         }
       ]
     }
@@ -7498,19 +7511,19 @@
   {
     "productId": "moneybird",
     "storyId": "agentic-scoped-keys",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Moneybird lets users create a personal API token and choose its scopes with checkboxes. It also supports OAuth with a token revocation endpoint, so credentials issued to an agent can be limited and revoked. The docs describe personal tokens as coming 'at a cost of security', and the actual scope list and its granularity are not shown. Missing for 10: the documented list of scopes and how fine-grained they are (e.g., read-only or per-resource), agent-specific credential guidance, and independent hands-on corroboration.",
+    "rationale": "Moneybird's own docs say a personal API token can be scoped via checkboxes, and OAuth tokens can be revoked through an RFC 7009 endpoint, so an agent can be given a scoped credential that can be ended. However, the docs warn that personal tokens come 'at a cost of security,' and the evidence never shows how fine-grained the scopes are or any agent-specific least-privilege controls. missing for 10: the list and granularity of available scopes, read-only versus write separation, per-administration restriction, token expiry or rotation for personal tokens, agent-specific credential guidance, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "moneybird-docs-2",
       "moneybird-docs-1",
+      "moneybird-docs-2",
       "moneybird-docs-5",
       "moneybird-docs-6"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": [
         {
@@ -7519,7 +7532,7 @@
         },
         {
           "evidenceId": "moneybird-docs-1",
-          "quote": "you can create a personal API token that simplifies the setup"
+          "quote": "Alternatively, you can create a personal API token that simplifies the setup, at a cost of security."
         },
         {
           "evidenceId": "moneybird-docs-5",
@@ -7534,7 +7547,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a REST API, OAuth and personal-token authentication, an MCP server, a CLI and webhooks, but nothing shows Moneybird publishes official language SDKs or client libraries. The REST API, CLI and MCP are adjacent channels, not SDKs, and the OpenAPI probe returned 404, so there is no spec-based client generation path either.",
+    "rationale": "The evidence documents a REST API, an official OpenAPI 3.1 spec on GitHub, an MCP server and a CLI. None of these is an official SDK or client library. The OpenAPI spec is only a developer building block from which a client could be generated, and the CLI and MCP are separate channels, so neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7549,7 +7562,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Moneybird's own llms.txt links a first-party Webhooks getting-started guide in its developer docs that lets you 'get notified when something changes', so the product itself offers webhooks. The pack contains only this single one-line mention, so the depth of the capability is unproven. missing for 10: documented webhook registration endpoint or flow, list of subscribable event types, payload and signature details, independent or hands-on corroboration.",
+    "rationale": "Moneybird's own llms.txt lists first-party Webhooks with a dedicated getting-started guide, and describes them as a way to 'get notified when something changes'. That confirms the product ships a webhook capability, but the evidence is a single one-line mention. It does not show how subscriptions are registered or which events are available. Missing for 10: documented webhook registration (API or UI), list of subscribable event types, payload/delivery details (retries, signing), independent or hands-on corroboration.",
     "evidenceIds": [
       "moneybird-docs-14"
     ],
@@ -7571,7 +7584,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is accounting software, so accounts payable aging and point-in-time vendor balances are a fair question for it. However, the evidence pack contains no documentation of AP aging reports, vendor balance views, or as-of-date reporting. The contacts API, authentication, and invoicing material cited is adjacent and does not show this capability.",
+    "rationale": "Moneybird is accounting software, so AP aging and vendor balances are a fair question. The evidence pack only covers authentication, the contacts API, invoicing, payments, sandboxes and API versioning. Nothing documents purchase-invoice aging reports or point-in-time vendor balances, and contact lookup is not a balance or aging capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7583,61 +7596,120 @@
   {
     "productId": "moneybird",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Moneybird publishes a static API reference that describes endpoints, such as the contacts endpoints, but nothing in the evidence shows an interactive explorer or runnable examples (try-it consoles, live request execution). The probe also found no OpenAPI or Swagger spec at the candidate paths, so there is no machine-readable basis for one.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "high",
+    "rationale": "Moneybird's developer reference is generated from its OpenAPI document and has interactive elements: per-resource operation pages, a schema browser, request-body schema toggles, copyable examples, and a downloadable OpenAPI 3.1 spec. The docs state plainly that there is no runnable try-it console and that the examples are static curl snippets, so the 'runnable examples' half of the story is not delivered. Missing for 10: an in-browser runnable/try-it console, executable examples wired to a live or sandbox account, independent hands-on corroboration of the reference UX.",
+    "evidenceIds": [
+      "moneybird-reference-20261106",
+      "moneybird-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "moneybird-reference-20261106",
+          "quote": "The developer reference is generated from the OpenAPI document (per-resource operation pages, a schema browser, request-body schema toggles, and copyable examples)."
+        },
+        {
+          "evidenceId": "moneybird-openapi-20261106",
+          "quote": "linked from the reference pages via a \"Download OpenAPI Specification\" control"
+        }
+      ]
     }
   },
   {
     "productId": "moneybird",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Moneybird has a public REST API, so a downloadable machine-readable spec is a fair question, but the probe found every candidate OpenAPI/Swagger path returning 404. The docs cover endpoints, MCP, a CLI and an llms.txt file, but none of them is a downloadable OpenAPI or equivalent spec. llms.txt is LLM-oriented documentation, an adjacent feature that earns no credit here.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Moneybird publishes a downloadable OpenAPI 3.1 document in its official GitHub organization. The reference pages link to it via a \"Download OpenAPI Specification\" control, and the reference and changelog are both generated from the spec. The probe's 404s on conventional developer-site paths reflect discoverability, not absence, so they do not dispute the GitHub-hosted spec. Missing for 10: the spec is not served at a conventional well-known path (e.g., /openapi.json) on the developer domain.",
+    "evidenceIds": [
+      "moneybird-openapi-20261106",
+      "moneybird-reference-20261106",
+      "moneybird-changelog-20261106",
+      "moneybird-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "moneybird-openapi-20261106",
+          "quote": "Moneybird publishes a downloadable OpenAPI 3.1 document in its vendor GitHub organization"
+        },
+        {
+          "evidenceId": "moneybird-openapi-20261106",
+          "quote": "linked from the reference pages via a \"Download OpenAPI Specification\" control"
+        },
+        {
+          "evidenceId": "moneybird-reference-20261106",
+          "quote": "The developer reference is generated from the OpenAPI document"
+        }
+      ]
     }
   },
   {
     "productId": "moneybird",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair axis for an accounting SaaS with a public API, but the evidence pack never mentions one. It covers authentication, the contacts API, MCP, CLI and webhooks only. The 60-day free trial is a sales trial account, not an isolated sandbox separate from production data, so it earns no credit.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Moneybird's docs describe self-serve sandbox administrations, separate from paid production accounts, built for testing API integrations with full feature access and watermarked invoices. This is true sandbox isolation, not a dry-run mode. Missing for 10: independent or hands-on corroboration, explicit documentation that the MCP/CLI agent channels can target sandbox administrations, and details on resetting or seeding sandbox data.",
+    "evidenceIds": [
+      "moneybird-sandbox-20261106",
+      "moneybird-docs-12"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "moneybird-sandbox-20261106",
+          "quote": "We offer special sandbox administrations to test your API integration. These administrations grant full access to all our features without the need to subscribe to our services."
+        },
+        {
+          "evidenceId": "moneybird-sandbox-20261106",
+          "quote": "Sandbox accounts have limitations for production use: for example, invoices have watermarks."
+        }
+      ]
     }
   },
   {
     "productId": "moneybird",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Moneybird offers a REST API, so API versioning and deprecation policy are a fair question to ask. However, nothing in the evidence pack mentions API version identifiers, versioning scheme, deprecation timelines or a sunset policy. The pack covers only authentication, contacts endpoints and the llms.txt listings.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "high",
+    "rationale": "Moneybird documents a path-versioned API (v2) with a commitment to equal behaviour per version, plus a dated changelog that diffs spec versions going back to 2014. That covers the versioning half of the story. The evidence explicitly says there is no standalone deprecation-policy document, so the deprecation-policy half is not delivered. Missing for 10: a documented deprecation policy (notice periods, sunset timelines, deprecation signaling) and independent corroboration of version-stability behaviour.",
+    "evidenceIds": [
+      "moneybird-versioning-20261106",
+      "moneybird-changelog-20261106",
+      "moneybird-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "moneybird-versioning-20261106",
+          "quote": "By pointing to a specific version, we can make sure you always can expect equal behaviour from our API."
+        },
+        {
+          "evidenceId": "moneybird-changelog-20261106",
+          "quote": "Moneybird maintains a dated, spec-diff API changelog (entries from 2014 through the present; each entry diffs two dated spec versions with per-endpoint changes"
+        },
+        {
+          "evidenceId": "moneybird-openapi-20261106",
+          "quote": "The spec carries dated versions (v2-<date>-<hash>) matching the published API changelog."
+        }
+      ]
     }
   },
   {
@@ -7646,7 +7718,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Accounts-receivable tracking is a fair axis for accounting software like Moneybird. The evidence covers invoice creation, payment terms and contact-information endpoints, but nothing documents aging reports or per-customer outstanding balances. Contact lookups and invoicing features are adjacent and earn no credit.",
+    "rationale": "Accounts-receivable tracking is a fair question for accounting and invoicing software like Moneybird, so the axis applies. However, the evidence only covers invoice creation, payment terms, payment options and the contacts API. Nothing in the pack documents aging reports, outstanding balances per customer, or any receivables view.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7661,7 +7733,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is accounting software, so automatic categorization of imported bank transactions is a fair question for it. The evidence pack covers authentication, contacts, MCP, webhooks, invoicing, payments and time tracking. Nothing in it mentions transaction categorization suggestions or learning from user corrections.",
+    "rationale": "Automatic categorization of imported transactions is a fair question for accounting software like Moneybird. However, the evidence pack contains nothing about transaction categorization suggestions or learning from user corrections. The items cover authentication, contacts, MCP, webhooks, invoicing and sandboxes, none of which bear on this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7676,7 +7748,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for an accounting SaaS with an API, MCP server and CLI, so the axis applies. However, the evidence shows only single-item contact create, update and lookup endpoints and list filters such as 'created after'. No batch or bulk endpoint, and no multi-item action in the API, MCP, CLI or UI, is documented.",
+    "rationale": "Bulk operations are a fair axis for an accounting SaaS with an API, MCP and CLI, but nothing in the evidence documents batch or bulk endpoints or multi-item actions. The contacts docs describe only single-item get, create and update, plus list filtering and duplicate detection, which are adjacent features and not bulk operations. The MCP, CLI and API channels are building blocks a user could script loops with, not a bulk capability of the product itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7691,10 +7763,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any user-definable rules engine or workflow automation in which events trigger actions inside Moneybird. Webhooks ('get notified when something changes') and the API, CLI and MCP channels are developer building blocks that a user could build automation on top of. They are not the rule-based automation capability itself, so they earn no credit for this story.",
+    "rationale": "The evidence pack does not document any in-product rule engine where a user defines event-triggered actions. Webhooks only notify an external consumer, a developer building block from which such rules could be built, and recurring subscription billing is a schedule rather than an event-triggered rule. Neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": []
@@ -7706,7 +7778,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack shows no Moneybird capability for scheduling general recurring jobs or workflows. The only recurring element is subscription billing (\"recurring billing for SaaS\"), which is a domain-specific invoicing feature, not user-defined scheduled workflows. Webhooks, MCP and the CLI are event-driven or on-demand channels, not recurring schedules.",
+    "rationale": "Scheduling recurring jobs or workflows is a fair question for a SaaS accounting platform, so the axis applies. The only recurring-related evidence is subscription recurring billing (moneybird-docs-15), which is a billing feature, not a general job or workflow scheduler. Nothing in the pack documents scheduled automations, cron-style triggers, or recurring workflow execution through the MCP server, CLI, or API.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7721,7 +7793,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird exposes an API, CLI, MCP server and webhooks, so automation versioning is a fair question for this product. However, no evidence shows any versioning, review, or rollback of automations. Webhooks and API access are adjacent building blocks and earn no credit toward automation lifecycle management.",
+    "rationale": "Versioning, reviewing and rolling back user automations is a fair question for an accounting SaaS with API, CLI, MCP and webhook channels, so the axis applies. The pack only shows API path versioning and a dated API changelog. Those cover Moneybird's own API surface, not version history, review or rollback of a user's automations, so they are adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7736,7 +7808,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bank and credit-card feeds are a fair axis for accounting software like Moneybird, but nothing in the evidence pack mentions connecting bank or card accounts or importing transactions daily. The payment items (iDEAL, credit card, direct debit) describe how customers pay invoices, which is an adjacent feature, not a bank feed.",
+    "rationale": "Bank feeds are a fair question for accounting software like Moneybird, so the axis applies. However, nothing in the evidence pack covers connecting bank or credit-card accounts or importing transactions automatically each day. The pack only covers the API, authentication, contacts, invoicing and customer payment options (iDEAL, credit card), and accepting card payments from customers is a different capability from importing bank or card transactions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7751,7 +7823,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bank reconciliation is a fair axis for accounting software like Moneybird, but the evidence pack never documents reconciling bank accounts against the ledger or surfacing matched, unmatched or duplicate transactions. The only duplicate detection cited covers contacts, not bank transactions, so it is an adjacent feature and earns no credit.",
+    "rationale": "Moneybird is accounting software, so bank reconciliation is a fair question to ask of it. However, the evidence pack contains nothing about reconciling bank accounts against the ledger or about surfacing matched, unmatched or duplicate bank transactions. The only duplicate-detection evidence covers contacts, a different capability that does not transfer to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7766,10 +7838,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents bank feeds, payment-processor sync, or payroll integrations that post activity into the ledger automatically. Customer payment options (iDEAL, credit card, direct debit) are a payment-collection feature, and the REST API, webhooks, MCP and CLI are developer building blocks, so neither earns credit for this story.",
+    "rationale": "The evidence pack has no documented bank-feed connection, payment-processor sync or payroll integration that flows activity into the ledger automatically. The customer payment options (iDEAL, direct debit, payment page) cover collecting payments, not syncing external systems into the books. The REST API, webhooks and MCP are developer building blocks, not the integration itself.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a founder, I can connect my banking, payments, and payroll systems so their activity flows into the ledger automatically",
       "citations": []
@@ -7781,7 +7853,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is accounting software, so a bills/AP workflow is a fair question to ask of it. The evidence pack, however, only covers sales-side features: creating invoices, customer payment options, quotes and subscriptions. Nothing in it documents capturing vendor bills, routing them for approval, or scheduling outgoing payments.",
+    "rationale": "Moneybird is accounting software, so an accounts-payable workflow is a fair question to ask of it. However, the evidence pack documents only receivables-side features (sales invoices, quotes, customer payment options such as iDEAL and direct debit, subscriptions). Nothing in the pack covers capturing vendor bills, routing them for approval, or scheduling outgoing payments.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7796,7 +7868,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is an accounting product, so customizing a chart of accounts is a fair question to ask of it. However, nothing in the evidence pack covers ledger accounts, account types, sub-accounts, or class/tag dimensions. The items cover authentication, contacts, invoicing, payments, MCP, and webhooks, none of which bear on chart-of-accounts customization.",
+    "rationale": "Moneybird is accounting software, so customizing the chart of accounts is a fair question for it. However, the evidence pack covers only authentication, contacts, MCP/CLI/webhooks, invoicing, sandboxes and API versioning. Nothing documents ledger accounts, account types, sub-accounts, or class/tag dimensions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7811,7 +7883,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An audit trail of who changed what and when is a fair question for accounting software, so the axis applies. The evidence pack documents no audit log, change history or user-attributed edit tracking. Webhooks that notify on changes and timestamp filters on contacts are adjacent features, not a ledger-wide audit trail.",
+    "rationale": "An audit trail of who changed what and when is a fair question for accounting software, so the axis applies. The pack has no evidence of an audit log, change history, or user-attributed edit tracking across the ledger. Webhooks ('get notified when something changes') and created-after filters on contacts are adjacent features, not an audit trail.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7826,11 +7898,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Moneybird's own docs show that invoices can be created on desktop or mobile, and that customers can pay online via iDEAL, QR code, direct debit, credit card or mobile payments. Nothing in the evidence shows explicit sending or tracking of when an invoice is viewed or paid; the generic webhook line is too vague to count. Missing for 10: explicit invoice sending (email or link delivery), invoice viewed/opened tracking, payment-status visibility, and independent or hands-on corroboration.",
+    "rationale": "Moneybird's own docs show invoice creation on desktop and mobile, plus online payment options for customers such as iDEAL, QR code, direct debit and credit card. The evidence does not explicitly document sending invoices, and says nothing about seeing when an invoice is viewed or paid. Missing for 10: explicit invoice-sending documentation, viewed/opened tracking, paid-status tracking, independent or hands-on corroboration.",
     "evidenceIds": [
       "moneybird-docs-18",
       "moneybird-docs-21",
-      "moneybird-docs-24"
+      "moneybird-docs-24",
+      "moneybird-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -7858,7 +7931,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is accounting software, so custom reports filtered and grouped by class, location, or tag dimensions is a fair axis. The evidence pack never mentions custom reporting or dimensional tagging. The only filtering shown is contact queries by creation date, which is an adjacent API filter, not a reporting capability.",
+    "rationale": "Custom reporting by class, location, or tag dimensions is a fair question for accounting software like Moneybird, so the axis applies. The evidence pack covers authentication, contacts endpoints, invoicing, and API tooling. Nothing in it documents custom reports or dimensional filtering or grouping.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7873,7 +7946,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Financial statement reporting is a fair question for accounting software like Moneybird, so the axis applies. However, the evidence pack covers only authentication, contacts, invoicing, payments, time tracking, tax submission and developer channels. Nothing documents generating a P&L, balance sheet or cash-flow statement for an arbitrary period.",
+    "rationale": "Moneybird is accounting software, so generating financial statements is a fair question for it. However, nothing in the evidence pack documents a P&L, balance sheet, or cash-flow report for an arbitrary period. The evidence covers authentication, contacts, invoicing, payments, tax-authority submission, MCP/CLI/API channels and sandboxes, none of which is about financial-statement reporting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7888,7 +7961,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird has a documented REST API with OAuth, personal tokens and contacts endpoints, plus MCP, CLI and webhooks. Nothing in the pack shows an endpoint or export for the general ledger, ledger entries, or the trial balance, in open formats or otherwise. This is a fair question for accounting software, so the absence of evidence means none, not na.",
+    "rationale": "The evidence shows a documented REST API with an OpenAPI 3.1 spec, but none of the cited material mentions general ledger, ledger-account, journal-entry or trial-balance endpoints or exports. The documented resources (contacts, webhooks, subscriptions) are adjacent and do not show this capability, so the applicable axis is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7903,7 +7976,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is accounting software, so locking closed periods is a fair question to ask of it. However, nothing in the evidence pack mentions period closing, locking or reopening. The cited items cover authentication, contacts, MCP/CLI, webhooks, invoicing and tax submission, none of which concern period locks.",
+    "rationale": "Period locking is a fair question for accounting software like Moneybird, so the axis applies. However, nothing in the evidence pack mentions closing, locking or reopening accounting periods. The items cover authentication, contacts, MCP, CLI, webhooks, sandboxes, versioning and invoicing features, none of which relate to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7918,7 +7991,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Manual journal entries are a fair question for accounting software like Moneybird, so the axis applies. However, the evidence pack covers only authentication, contacts, invoicing, payments, MCP, CLI and webhooks. Nothing in it documents posting manual journal entries with balanced debits and credits or memos.",
+    "rationale": "Moneybird is accounting software, so posting manual journal entries is a fair axis for it. However, nothing in the evidence pack mentions journal entries, balanced debit/credit postings, or memos on ledger entries. The cited material covers authentication, contacts, invoicing, webhooks, sandboxes and API versioning only.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7933,7 +8006,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Migrating historical books is a fair question for accounting software like Moneybird, but the evidence pack never mentions an import or migration tool, or a way to bring in historical transactions from another system. The REST API endpoints for creating contacts are only developer building blocks for constructing a migration, not a documented migration capability, so they earn no credit.",
+    "rationale": "Migrating historical books is a fair question for accounting software, so the axis applies. The pack contains no documented import or migration tool for historical books or transaction detail from another accounting system. The REST API endpoints for creating contacts are developer building blocks a migration could be built on, not the migration capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7948,7 +8021,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is accounting software, so a month-end close checklist is a fair question for it. The evidence covers authentication, contacts, invoicing, payments, MCP, webhooks and tax submission, but nothing on a close checklist that tracks reconciliations, accruals or review sign-offs.",
+    "rationale": "Moneybird is accounting software, so a month-end close checklist is a fair axis for it. Nothing in the evidence pack documents a close checklist, reconciliation tracking, accrual tracking, or review sign-offs. The cited material covers API authentication, contacts, invoicing, payments, webhooks, sandboxes and versioning, none of which addresses this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7963,7 +8036,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is accounting software, so managing multiple legal entities and consolidating financials is a fair question to ask of it. The evidence pack never documents multi-entity management or consolidated reporting. The only related mention is a single \"administration\" scope for contact duplicates, which does not show handling several entities or consolidating across them.",
+    "rationale": "Managing multiple legal entities and consolidating financials is a fair question for accounting software like Moneybird, so the axis applies. The evidence covers authentication, contacts, invoicing, sandboxes and API versioning, but nothing documents managing multiple entities or producing consolidated financials across them. References to a single 'administration' do not show multi-entity management or consolidation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7976,14 +8049,15 @@
     "productId": "moneybird",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Moneybird documents a REST API that the MCP server and CLI also run on. It covers contacts (create, update, get, duplicates, filtering) and subscription management, so meaningful UI functionality is exposed programmatically. There is no documented claim or proof of full UI parity. UI features like hour tracking, quotes, tax submission and payment pages are not shown as API endpoints, and no OpenAPI spec was found to confirm coverage. Missing for 10: explicit API–UI parity statement, documented endpoints for UI features like quotes, time tracking and tax filing, a machine-readable OpenAPI spec, and independent corroboration of coverage.",
+    "rationale": "Moneybird documents a broad REST API, published as an OpenAPI 3.1 spec, covering resources such as contacts and subscription billing. The same REST API also backs its MCP server and CLI, which points to substantial programmatic coverage. However, no evidence states that the API matches the UI feature-for-feature, and UI capabilities such as tax submission, hour tracking and payment pages are not shown to be exposed via the API. missing for 10: an explicit API/UI parity commitment, evidence that UI-only features (tax filing, time tracking, payment pages, settings) are available through the API, and independent corroboration of coverage breadth.",
     "evidenceIds": [
+      "moneybird-openapi-20261106",
       "moneybird-docs-8",
       "moneybird-docs-12",
       "moneybird-docs-15",
-      "moneybird-probe-3"
+      "moneybird-reference-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7991,16 +8065,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "moneybird-docs-8",
-          "quote": "Use the following endpoints to get information about contacts, create new contacts or update existing contacts."
+          "evidenceId": "moneybird-openapi-20261106",
+          "quote": "The Moneybird API allows you to interact with a Moneybird account in a RESTful manner."
         },
         {
           "evidenceId": "moneybird-docs-12",
           "quote": "Three channels on the same REST API: MCP for an AI chat, the CLI for the terminal, the API for your own software."
         },
         {
-          "evidenceId": "moneybird-docs-15",
-          "quote": "[Managing subscriptions](https://developer.moneybird.com/integration/managing-subscriptions): recurring billing for SaaS."
+          "evidenceId": "moneybird-docs-8",
+          "quote": "Use the following endpoints to get information about contacts, create new contacts or update existing contacts."
         }
       ]
     }
@@ -8011,7 +8085,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents a REST API, CLI and MCP channels with per-resource read endpoints such as contacts, but no export feature for all data in open formats. Per-endpoint API access is only a developer building block from which an export could be constructed. It is not the export-and-leave capability itself, so it earns no credit.",
+    "rationale": "Data export and portability is a fair question for SaaS accounting software, so the axis applies. The pack documents a REST API, an OpenAPI spec and per-resource read endpoints such as contacts, but these are developer building blocks for building an extraction yourself. Nothing in the pack shows a first-party export of all data in open formats (CSV, XML/XBRL, full-account archive) or an account-exit flow.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -8026,7 +8100,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a SaaS accounting product publishes its source under an open license is a fair question, so the axis applies. Nothing in the evidence pack mentions source code availability, a public repository, or an open-source license. The evidence covers only APIs, MCP, the CLI, webhooks and product features.",
+    "rationale": "Moneybird is a hosted accounting SaaS. Whether its source is available under an open license is a fair openness question for this kind of product, but nothing in the evidence shows the product source is published or licensed openly. The only GitHub artifact is the OpenAPI specification (moneybird/openapi), which describes the API rather than the product's source code, and no license is stated for it.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8041,7 +8115,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a SaaS accounting product like Moneybird, so the axis applies. The evidence only describes the hosted service: the cloud REST API, OAuth, MCP, CLI, webhooks and a free trial. Nothing shows a self-hostable or on-premises distribution of the core product.",
+    "rationale": "Self-hosting is a fair question for an accounting/invoicing SaaS, so the axis applies. The evidence pack never documents a self-hostable distribution, installer, or source release of the core product. Everything described, including the REST API at moneybird.com/api/v2, the MCP, the CLI and the sandbox administrations, runs on Moneybird's hosted service. A published OpenAPI spec is an API-description building block, not a self-hosted product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8056,7 +8130,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is a SaaS accounting product, so letting users choose a data storage region is a fair question to ask. Nothing in the evidence pack mentions data regions, residency options or storage location; it covers only authentication, API endpoints, MCP/CLI channels and invoicing features.",
+    "rationale": "Moneybird is a SaaS bookkeeping and invoicing service, so letting users choose where their data is stored is a fair question for this kind of product. Nothing in the evidence pack mentions data region, residency, hosting location or any storage-location choice. The pack covers authentication, API endpoints, MCP, webhooks, sandboxes, versioning and product features, none of which is about this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8071,7 +8145,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is an accounting SaaS that handles customer data, so an AI-training opt-out is a fair question to ask of it. The evidence pack only covers authentication, API endpoints, an MCP channel and product features. Nothing documents an AI training policy or an opt-out control.",
+    "rationale": "Moneybird is an accounting SaaS that handles customer data, and it exposes MCP and AI-chat channels, so an AI-training opt-out is a fair question for this product. Nothing in the evidence pack addresses whether customer data is used for AI model training or offers any opt-out control or policy. The authentication, API, sandbox and MCP materials do not cover this subject.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8086,7 +8160,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for an accounting SaaS like Moneybird, so the axis applies. The pack only documents OAuth token revocation, which ends an app's access but does not delete data, and contact endpoints for reading, creating and updating, with no delete or retention option. Nothing shows retention settings or data deletion.",
+    "rationale": "Data retention and deletion controls are a fair question for an accounting SaaS like Moneybird, so the axis applies. The evidence pack documents no retention settings, data-deletion endpoints or account-deletion capability. The contacts API is described only as get, create and update. OAuth token revocation ends an application's access, which is an adjacent control and not data retention or deletion.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8101,7 +8175,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moneybird is an accounting SaaS that ships a CLI and an MCP server, so opting out of telemetry and usage tracking is a fair question for it. The evidence pack has no mention of telemetry, analytics, usage tracking, or any opt-out control. Token revocation and scoped API tokens are access controls, not telemetry opt-outs, so they earn no credit.",
+    "rationale": "Opting out of telemetry or usage tracking is a fair privacy question for a SaaS accounting product, so the axis applies. Nothing in the evidence pack covers telemetry, analytics, cookie consent or tracking opt-out controls. The items only address authentication, API reference, MCP/CLI channels, sandboxes, versioning and invoicing features.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8116,7 +8190,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Moneybird documents recurring billing through its subscriptions feature (\"Managing subscriptions: recurring billing for SaaS\"), which covers the recurring-invoice half of the story. Nothing in the evidence shows automatic payment reminders or dunning for overdue customers, and \"takes care of the rest\" is too vague to count. Missing for 10: documented automatic overdue payment reminders, detail on recurring invoice schedule configuration, independent or hands-on corroboration.",
+    "rationale": "Moneybird documents recurring billing through subscriptions (\"Managing subscriptions: recurring billing for SaaS\") and sells subscriptions via a payment page, which covers the recurring-invoice half of the story. Nothing in the pack shows automatic payment reminders for overdue customers; configurable payment terms are a related setting, not a reminder feature. missing for 10: documented automatic payment reminders/dunning for overdue invoices, detail on configuring recurring invoice schedules, independent or hands-on corroboration.",
     "evidenceIds": [
       "moneybird-docs-15",
       "moneybird-docs-22"

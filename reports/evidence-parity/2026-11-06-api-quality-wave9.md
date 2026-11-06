@@ -5,17 +5,17 @@ main (61 gap rows; waves 1-8 = PRs #623, #627, #630, #632, #634, #639, #641, #64
 the scan signature fix in #636). iterm2 stays deferred (wave-2 ledger) and foreloop stays
 excluded pending the maintainer ruling (wave-7 ledger).
 
-`rankings-engine/scripts/append-api-quality-gap-evidence-2026-11-06-wave9.py` appends 38
-live-verified rows fail-closed (all markers verified on the first run), backing 28
-appended cells; 20 cells stay absent after checking. Eight fail-closed negative checks
-replay the asserted dead or gated URLs, including two 401 status-set checks (#502
-convention), and the two virtualpostmail context rows are preserved against refresh
-clobbering.
+`rankings-engine/scripts/append-api-quality-gap-evidence-2026-11-06-wave9.py` appends 39
+live-verified rows fail-closed (38 at wave start, all markers verified on the first run,
+plus the pre-audit MCP-server row), backing 28 appended cells; 20 cells stay absent after
+checking. Eight fail-closed negative checks replay the asserted dead or gated URLs,
+including two 401 status-set checks (#502 convention), and the two virtualpostmail
+context rows are preserved against refresh clobbering.
 
 | product | arena | flagged cells | evidence rows appended | checked, still absent |
 |---------|-------|--------------:|-----------------------:|---------------------:|
 | signifyd | fraud-prevention | 4 | 4 | 0 |
-| earth-class-mail | virtual-mailboxes | 4 | 3 | 3 |
+| earth-class-mail | virtual-mailboxes | 4 | 4 | 3 |
 | virtualpostmail | virtual-mailboxes | 4 | 2 | 4 |
 | raygun | error-tracking | 4 | 4 | 1 |
 | galileo | llm-evals-observability | 4 | 3 | 1 |
@@ -59,4 +59,20 @@ Wave-9 specifics:
 
 Scoped re-judges run under the ratified v6 rubric (virtual-mailboxes judged
 category-wide), then `derive` per touched arena and the dependent generators. Engine
-output is accepted as-is; honest negatives ship.
+output is accepted as-is; honest negatives ship. Two checked-absent cells publish as
+engine partials on adjacent evidence and carry both readings (irs api-machine-spec q3 on
+the gated schemas, scrapingbee api-interactive-docs q4 on the login-walled builder — the
+dynadot/jira class).
+
+## Pre-audit (before the first push)
+
+60 verdict-level up-moves vs merge-base 13ef5d37e8 (31 target cells, 29 side-effect
+flips), re-read against the v6 on-axis bar; the fix re-rolls were audited on top. Two
+inputs-only corrections caught before push: earth-class-mail's agentic-nl-commands and
+agentic-mcp-server had been credited on the MCP tool-catalog JSON alone (the PR #643
+transferred-credit class) — the research pass had missed the vendor's documented MCP
+server, so the appended server row quotes it verbatim ("manage your virtual mailbox just
+by asking") and both cells now publish as fulls on direct vendor text; and a-shell's
+automation-rules-engine had gone to partial on the .profile startup hook alone (the
+fellow-webhooks building-block class) — the scoped context row settles it at none.
+Eleven thin partials conceded and documented in the ledger JSON; honest downs ship.
