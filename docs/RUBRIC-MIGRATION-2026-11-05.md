@@ -359,8 +359,11 @@ lateral relabels, plus 627 quality-only moves (net -423). Fleet transition profi
 | stablecoin-payments | 318 | 65 | 63 / 1 / 1 | 31 (-21) |
 | voice-agents | 549 | 146 | 145 / 1 / 0 | 64 (-34) |
 
-No owner, affiliated, or self-submitted rows in this wave, so no favorable-flip audit
-applies. Notable rank moves, all pure-rubric: gpus re-ordered hard (amd-rx-9070-xt
+Disclosed-row audit (convention item 5): ai-memory includes honcho, a disclosed vendor
+self-submission (issue #480). Its v6 re-judge produced zero favorable moves and 10
+unfavorable ones, and its #4 to #3 rise is purely relative: the rows above it fell
+harder. No other owner, affiliated, or self-submitted rows sit in this wave. Notable
+rank moves, all pure-rubric: gpus re-ordered hard (amd-rx-9070-xt
 #1 → #5, amd-mi355x #2 → #1, nvidia-b200 #7 → #3), letta #2 → #1 over mem0 in ai-memory,
 complyadvantage #2 → #1 over flagright in compliance-screening, shopify #3 → #2 over
 medusa in ecommerce-platforms, revenuecat #3 → #5 in billing-subscriptions.
