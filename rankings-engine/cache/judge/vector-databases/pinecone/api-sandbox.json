@@ -1,17 +1,31 @@
 {
-  "hash": "e947f46fc3ee91629a4384ee8bce1055d180780334f26e1a12c86e99e78f88ef",
+  "hash": "3c180c876b5e913aeba25ad884dfc4ded8bd4907ff2a74ed1f7a123af1ea0e6d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for a managed vector database, but the evidence pack documents no dedicated sandbox, test project, or non-production environment mode. The closest items are adjacent features that do not count toward this story: backups that can 'copy indexes, or experiment with configurations', namespace-per-tenant multitenancy, and the free tier. None of these is a documented sandbox that isolates testing from production data.",
-    "evidenceIds": [],
+    "rationale": "Pinecone documents a testing path that avoids production: a local mock built from its public OpenAPI specs for unit tests and CI, with stateful tests directed to a separate project in the account. Index backups can also copy indexes to experiment with configurations. The caveats are significant: the mock checks request and response shapes only, with no write-then-read or real search, and depends on the third-party Prism tool. The Pinecone Local emulator has reached end of life, and the docs playground has no interactive runner. Missing for 10: a first-party stateful sandbox or emulator, a dedicated sandbox environment mode beyond a separate project, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "pinecone-mock-the-api-20261106",
+      "pinecone-data-plane-spec-20261106",
+      "pinecone-docs-12",
+      "pinecone-playground-disabled-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pinecone-mock-the-api-20261106",
+          "quote": "Use it in unit tests and CI to confirm that your code builds valid requests and handles responses and errors, without a Pinecone account or calls to Pinecone."
+        },
+        {
+          "evidenceId": "pinecone-docs-12",
+          "quote": "Create backups of serverless indexes to protect data, copy indexes, or experiment with configurations using the Pinecone SDK, API, or console."
+        }
+      ]
     },
     "productId": "pinecone",
     "storyId": "api-sandbox"

@@ -1,17 +1,18 @@
 {
-  "hash": "ed526bac91d9ff1df5d1a35a00d134aab4a28e78ef380b6f7e716fc09d6bb3ae",
+  "hash": "9a4cd860eb5d39d96ea40d06f1a856bab540da481004b884b980b75a38cd773d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep automatically ingests raw chat messages into the user's Context Graph via thread.add_messages. Its Graphiti engine performs entity and edge extraction and fact invalidation, tracking how facts change over time, and Zep incrementally updates thread summaries. Together these cover autonomous fact extraction and consolidation from raw conversation. The evidence does not explicitly show that this consolidation runs in the background or that Zep judges which facts are salient enough to keep. missing for 10: explicit documentation of asynchronous/background consolidation, explicit salience filtering (deciding what is worth remembering), independent hands-on corroboration of extraction quality.",
+    "rationale": "Zep automatically ingests chat messages into a user-level Context Graph, and Graphiti documents entity and edge extraction, fact invalidation and tracking how facts change over time. Thread summaries are generated and incrementally updated by Zep, which shows some consolidation. However, the docs never say the system judges salience (what is worth remembering) or that consolidation runs asynchronously in the background. Missing for 10: explicit documentation of salience-based selection of facts, explicit background/asynchronous consolidation, and independent hands-on corroboration of extraction quality.",
     "evidenceIds": [
-      "zep-docs-48",
       "zep-docs-20",
+      "zep-docs-48",
       "zep-docs-52",
+      "zep-gh-1",
       "zep-docs-8",
-      "zep-gh-1"
+      "zep-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -19,20 +20,20 @@
       "subject": "As an AI-native user, the memory layer decides for itself what is worth remembering — extracting salient facts from raw conversation and consolidating them in the background",
       "citations": [
         {
-          "evidenceId": "zep-docs-48",
-          "quote": "Chat messages are added to threads using thread.add_messages, which adds the messages to the thread history and ingests them into the user's Context Graph."
+          "evidenceId": "zep-docs-20",
+          "quote": "Chat messages are added to threads using `thread.add_messages`, which both adds those messages to the thread history and ingests those messages into the user-level knowledge graph."
         },
         {
           "evidenceId": "zep-docs-52",
-          "quote": "entity and edge extraction, the bi-temporal model, fact invalidation, and hybrid retrieval"
+          "quote": "entity and edge extraction, the bi-temporal model, fact invalidation, and hybrid retrieval."
+        },
+        {
+          "evidenceId": "zep-gh-1",
+          "quote": "Graphiti's context graphs track how facts change over time, maintain provenance to source data, and support both prescribed and learned ontology"
         },
         {
           "evidenceId": "zep-docs-8",
           "quote": "A thread summary is a natural-language summary of the messages in a single thread, generated and incrementally updated by Zep."
-        },
-        {
-          "evidenceId": "zep-gh-1",
-          "quote": "Graphiti's context graphs track how facts change over time, maintain provenance to source data"
         }
       ]
     },

@@ -4037,16 +4037,17 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents creating machines through the API or CLI and managing resources programmatically through a REST API and the pspace CLI, authenticated with team-scoped API keys, so the provisioning core is first-party. The rest of the lifecycle is thin: there is no evidence of programmatic monitoring or explicit API/CLI teardown, auto-shutdown only stops idle machines, high-end GPUs such as H100 need approval, and no OpenAPI spec was found. Missing for 10: documented API/CLI monitoring of GPU machine status/metrics, explicit programmatic delete/destroy, an end-to-end agent-run workload example, an MCP server, a machine-readable API spec, and hands-on corroboration of headless operation.",
+    "rationale": "Paperspace documents creating machines through its API and CLI, and it publishes a 61-path OpenAPI spec, a generated REST reference, team-scoped API keys and an official pspace CLI. That covers the provisioning leg of the lifecycle. The pack does not explicitly document the monitoring, workload-execution or teardown/delete steps, and high-end GPUs such as H100 need a human approval request before use. missing for 10: explicit API/CLI docs for monitoring machine state and deleting/tearing down machines, documented programmatic workload execution, approval-free GPU access, any MCP server, independent hands-on corroboration of an end-to-end agent run.",
     "evidenceIds": [
       "paperspace-docs-1",
       "paperspace-docs-23",
+      "paperspace-openapi-spec-20261106",
+      "paperspace-api-reference-20261106",
       "paperspace-docs-30",
       "paperspace-probe-4",
       "paperspace-docs-6",
       "paperspace-docs-17",
-      "paperspace-docs-5",
-      "paperspace-probe-3"
+      "paperspace-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -4066,8 +4067,8 @@
           "quote": "Programmatically manage resources using the Paperspace Command Line Interface."
         },
         {
-          "evidenceId": "paperspace-docs-6",
-          "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI)."
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The production API domain serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json"
         }
       ]
     }
@@ -4078,11 +4079,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace's official docs are hosted on docs.digitalocean.com, and a probe confirms an llms.txt file there (HTTP 200) that an agent can be pointed at. However, it is a DigitalOcean-wide index, and the evidence does not show it covers Paperspace pages; the per-page markdown variant of the Paperspace docs returned 404. Missing for 10: confirmation that llms.txt indexes Paperspace content, agent-readable markdown versions of the Paperspace docs, and hands-on or independent corroboration of agents consuming them.",
+    "rationale": "Paperspace's docs live on docs.digitalocean.com, which serves an llms.txt (HTTP 200). The Paperspace API reference is available as a markdown (.md) page, and a machine-readable OpenAPI 3.0.3 spec is served at api.paperspace.com/v1/openapi.json, so an agent has some agent-consumable entry points. However, the llms.txt is DigitalOcean-wide with no shown Paperspace-specific coverage, and the Paperspace product-page .md variant returns 404. Missing for 10: evidence that llms.txt indexes Paperspace content, consistent markdown variants across Paperspace product docs, independent or hands-on corroboration of agent use.",
     "evidenceIds": [
       "paperspace-probe-1",
       "paperspace-probe-2",
-      "paperspace-docs-24"
+      "paperspace-api-reference-20261106",
+      "paperspace-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4094,8 +4096,12 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://docs.digitalocean.com/llms.txt # DigitalOcean Documentation"
         },
         {
-          "evidenceId": "paperspace-probe-2",
-          "quote": "PROBE docs-md: HTTP 404 at https://docs.digitalocean.com/products/paperspace/.md"
+          "evidenceId": "paperspace-api-reference-20261106",
+          "quote": "Programmatically manage Paperspace resources using conventional HTTP requests"
+        },
+        {
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The production API domain serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json"
         }
       ]
     }
@@ -4106,7 +4112,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace is a GPU cloud and ML platform, so a built-in AI assistant offering insights or suggestions is a fair question for it. The evidence pack documents no such feature. It shows only compute, notebooks, deployments and workflows, which are building blocks users could use to build their own AI tooling, not a native capability that turns their data into AI-generated insights.",
+    "rationale": "An ML/GPU cloud platform could plausibly ship an in-product AI assistant that surfaces insights from user data, so this axis applies. The evidence pack documents no such feature. Notebooks, Deployments and Workflows are compute primitives that a user could use to build their own analysis, which are developer building blocks rather than built-in AI-generated insights or suggestions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4121,7 +4127,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Paperspace documents Workflows, its own feature for automating machine learning tasks as pipelines on GPU instances, which is a first-party automation capability. The evidence is a single overview sentence, though, and says nothing about schedules, triggers or unattended background running; auto-shutdown is only an adjacent idle control. Missing for 10: documented recurring schedules or event triggers, evidence that workflows run unattended in the background, in-depth workflow docs, and independent or hands-on corroboration.",
+    "rationale": "Paperspace documents Workflows, which 'automate machine learning tasks' as GPU-backed pipelines defined in code. That is a first-party automation capability, but the evidence never shows recurring schedules, event triggers, or unattended background operation. Auto-shutdown is only an adjacent inactivity control, and API/CLI access is a developer building block, so neither earns credit here. missing for 10: documented scheduling or triggers for Workflows, evidence of autonomous background execution without user intervention, depth of Workflows docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "paperspace-docs-9"
     ],
@@ -4143,7 +4149,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair axis for a GPU cloud and ML platform, but nothing in the evidence describes one inside the Paperspace console, Notebooks, or Workflows. The pack covers machines, notebooks, deployments, workflows, the API, and the CLI, none of which is an in-product assistant that takes delegated tasks.",
+    "rationale": "A GPU cloud platform could plausibly ship a built-in AI assistant, so the axis applies. However, the evidence pack documents only machines, notebooks, deployments, workflows, the API and the CLI. Nothing shows an in-product AI assistant that users can delegate tasks to.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4158,14 +4164,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Paperspace documents headless, programmatic control through its own CLI, a REST API, a JavaScript SDK and team-scoped API keys. Workflows also automate ML pipelines in code, so the product can be driven without the console. However, nothing in the evidence documents running it inside CI systems: no CI integration, no non-interactive auth guidance, and no OpenAPI spec (the probe returned 404). missing for 10: explicit CI/CD integration docs or examples (e.g., CI pipeline usage), non-interactive CI auth guidance, published OpenAPI spec, independent hands-on corroboration of headless/CI automation.",
+    "rationale": "Paperspace documents its own CLI, a REST API with a machine-readable OpenAPI spec, a JavaScript SDK, and team-scoped API keys. Together these let users create and manage machines and resources programmatically without the console, which covers headless automation. Workflows are also described as automating ML pipelines in code. However, the evidence never explicitly documents CI usage or non-interactive auth flows. Missing for 10: explicit CI/CD integration docs (e.g. GitHub Actions or pipeline examples), documented non-interactive CLI authentication via API key in CI, and independent hands-on corroboration of headless/CI usage.",
     "evidenceIds": [
       "paperspace-docs-1",
       "paperspace-docs-6",
-      "paperspace-docs-9",
       "paperspace-docs-23",
       "paperspace-docs-30",
-      "paperspace-docs-40",
+      "paperspace-docs-9",
+      "paperspace-openapi-spec-20261106",
       "paperspace-probe-4"
     ],
     "support": {
@@ -4178,16 +4184,12 @@
           "quote": "You can create a Linux machine using the Paperspace console, Paperspace API, or Paperspace CLI."
         },
         {
-          "evidenceId": "paperspace-docs-30",
-          "quote": "Programmatically manage resources using the Paperspace Command Line Interface."
-        },
-        {
-          "evidenceId": "paperspace-docs-23",
-          "quote": "Programmatically manage Paperspace resources using conventional HTTP requests."
-        },
-        {
           "evidenceId": "paperspace-docs-6",
           "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI)."
+        },
+        {
+          "evidenceId": "paperspace-docs-30",
+          "quote": "Programmatically manage resources using the Paperspace Command Line Interface."
         },
         {
           "evidenceId": "paperspace-docs-9",
@@ -4202,7 +4204,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace is GPU cloud infrastructure (VMs, notebooks, deployments, workflows), not an agent or AI assistant that consumes tools, so acting as an MCP client is outside its product role. Nothing in the evidence shows a built-in agent or assistant that could connect to MCP servers, so the axis does not flip to applicable.",
+    "rationale": "Paperspace is GPU cloud infrastructure: VMs, Jupyter notebooks, container deployments and ML workflows. It is not a tool-using agent or assistant, so plugging MCP servers into it as a client is a category mismatch for this product type. Nothing in the evidence shows a built-in agent or MCP client mode that would make the axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4217,7 +4219,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace is a GPU cloud platform, not an agent, so publishing an official MCP server is a plausible capability and the axis applies. The evidence pack documents only a REST API, a JavaScript SDK and a CLI, which are developer building blocks rather than an MCP server. No evidence of an official MCP server exists.",
+    "rationale": "Paperspace is a GPU cloud platform, not an agent, so publishing an official MCP server is a fair question to ask. The evidence documents only a REST API, an OpenAPI spec, a CLI, a JavaScript SDK and an llms.txt file. None of it mentions an official MCP server, and those developer building blocks earn no credit toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4232,7 +4234,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace documents a console, a REST API, a JavaScript SDK and a CLI for managing resources. None of the evidence shows a natural-language command interface or assistant for operating the product. The CLI and API are conventional programmatic interfaces, and the DigitalOcean llms.txt is a docs index for LLMs, not a way to operate Paperspace by natural language.",
+    "rationale": "Natural-language operation is a fair question for a GPU cloud platform, so the axis applies. The evidence only documents a console, a REST API, an OpenAPI spec, an SDK and a conventional CLI. None of these is a first-party natural-language command interface, and machine-readable docs such as llms.txt or the OpenAPI spec are developer building blocks, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4246,13 +4248,13 @@
     "storyId": "agentic-official-cli",
     "verdict": "full",
     "quality": 7,
-    "confidence": "medium",
-    "rationale": "Paperspace documents an official command-line tool, pspace, with a dedicated reference page and install docs. The docs say it can 'programmatically manage resources', including creating machines, and API keys authenticate it. Coverage is shallow: the evidence shows the CLI exists but gives little detail on its commands. missing for 10: detailed command coverage, agent-friendly features such as structured/JSON output or non-interactive auth, independent or hands-on corroboration of CLI usage.",
+    "confidence": "high",
+    "rationale": "Paperspace documents an official CLI (pspace) for programmatically managing resources, including creating machines, and its API keys also authenticate the Gradient CLI. missing for 10: in-depth command reference or agent-friendly features (e.g. structured/JSON output, non-interactive auth) in evidence, independent or hands-on corroboration of CLI use.",
     "evidenceIds": [
       "paperspace-docs-30",
       "paperspace-docs-24",
-      "paperspace-docs-1",
       "paperspace-probe-4",
+      "paperspace-docs-1",
       "paperspace-docs-6"
     ],
     "support": {
@@ -4283,15 +4285,15 @@
     "productId": "paperspace",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "First-party docs state that Paperspace resources can be managed programmatically over HTTP through a Core RESTful API. Team-scoped API keys authenticate that API, and machine creation is documented as available through it. A probe found no machine-readable OpenAPI spec at standard paths, which limits how easily agents can consume it but does not contradict that the API exists. Missing for 10: a published OpenAPI/machine-readable spec, evidence of endpoint-level API reference depth, and independent or hands-on corroboration of API use.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Paperspace documents a public RESTful API for managing resources over HTTP, authenticated with team-scoped API keys. A machine-readable OpenAPI 3.0.3 spec (61 paths) is served at api.paperspace.com/v1, and a generated per-endpoint reference with cURL examples is built from it; the 404s from the probe hit docs-domain paths, not the versioned API artifact, so they do not contradict this. Missing for 10: independent or hands-on corroboration that the API works end-to-end for agent-driven workflows.",
     "evidenceIds": [
       "paperspace-docs-23",
-      "paperspace-docs-6",
       "paperspace-docs-40",
-      "paperspace-docs-1",
-      "paperspace-probe-3"
+      "paperspace-openapi-spec-20261106",
+      "paperspace-api-reference-20261106",
+      "paperspace-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -4303,8 +4305,16 @@
           "quote": "Programmatically manage Paperspace resources using conventional HTTP requests."
         },
         {
-          "evidenceId": "paperspace-docs-6",
-          "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI)."
+          "evidenceId": "paperspace-docs-40",
+          "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI). API Keys have team-scoped permissions"
+        },
+        {
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The production API domain serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json (info title \"Paperspace OpenAPI\", version \"1\", 61 paths; servers https://api.paperspace.com/v1)."
+        },
+        {
+          "evidenceId": "paperspace-api-reference-20261106",
+          "quote": "a static generated per-endpoint reference with copyable cURL examples"
         },
         {
           "evidenceId": "paperspace-docs-1",
@@ -4319,7 +4329,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Paperspace documents its own API keys for the REST API, SDK and CLI. Those keys carry team-scoped permissions, and team admins can revoke other members' keys, which gives coarse scoping and revocation. Nothing shows finer-grained, least-privilege scoping by resource or action. Missing for 10: per-resource/per-action permission scopes, read-only or role-limited keys, key expiry/TTL, agent-specific credential guidance, independent corroboration.",
+    "rationale": "Paperspace issues its own API keys for the REST API, JS SDK and CLI, and documents that keys have team-scoped permissions, with admins able to revoke other members' keys. Team scoping is a coarse boundary, not documented least-privilege control. Missing for 10: per-resource or per-action permission scopes (e.g. read-only or machine-only keys), key expiry/TTL, agent- or service-account-specific credentials, and independent or hands-on corroboration.",
     "evidenceIds": [
       "paperspace-docs-40",
       "paperspace-docs-41",
@@ -4349,9 +4359,9 @@
     "productId": "paperspace",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Paperspace's own API-key docs name an official 'Core JavaScript SDK' alongside the Core REST API and CLI, so a first-party SDK exists. The evidence is a single passing mention with no SDK reference docs, install or usage guides, or other language SDKs, and the OpenAPI probe found no published spec. Missing for 10: dedicated SDK documentation and reference, multi-language SDK coverage (e.g. Python), evidence the SDK is current and maintained, independent or hands-on corroboration of building against it.",
+    "rationale": "Paperspace's API-key docs name an official \"Core JavaScript SDK\" alongside the REST API and CLI, so a first-party SDK exists. Beyond that one mention, the pack has no SDK documentation, install instructions, language coverage or maintenance status. The REST API, OpenAPI spec and CLI are adjacent interfaces, not SDKs. Missing for 10: dedicated SDK documentation, SDKs for additional languages (e.g. Python), evidence the SDK is current and maintained, and hands-on or independent corroboration of building against it.",
     "evidenceIds": [
       "paperspace-docs-6",
       "paperspace-docs-40"
@@ -4364,10 +4374,6 @@
         {
           "evidenceId": "paperspace-docs-6",
           "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI)."
-        },
-        {
-          "evidenceId": "paperspace-docs-40",
-          "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI). API Keys have team-scoped permissions"
         }
       ]
     }
@@ -4378,7 +4384,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace is a GPU cloud platform, so webhook event subscriptions are a fair axis to ask about. However, nothing in the evidence pack documents registrable outbound HTTP callbacks. The REST API, SDK and CLI are inbound programmatic interfaces, not webhooks, so they earn no credit for this story.",
+    "rationale": "Webhooks are a fair axis for a GPU cloud platform, but nothing in the evidence documents registrable outbound HTTP callbacks or event subscriptions. The REST API, OpenAPI spec and CLI let a caller manage resources on request; they do not push events to a consumer, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4390,31 +4396,60 @@
   {
     "productId": "paperspace",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Paperspace documents a RESTful API, a JavaScript SDK and a CLI, but nothing in the evidence describes an interactive API reference or runnable examples. The OpenAPI probe found no spec, and the llms.txt mention of \"example code\" refers to DigitalOcean docs in general, not an interactive Paperspace API explorer. An interactive API reference is a fair axis for a cloud platform with a public API, so absent evidence means none rather than na.",
-    "evidenceIds": [],
+    "rationale": "Paperspace publishes its own API reference, generated from a machine-readable OpenAPI 3.0.3 spec, with per-endpoint copyable cURL examples. However, the reference is explicitly static with no in-page runner, so the 'interactive' part of the story is not delivered and examples must be run outside the docs. missing for 10: interactive in-browser try-it/runner, in-page execution of examples, independent or hands-on corroboration of the reference quality.",
+    "evidenceIds": [
+      "paperspace-api-reference-20261106",
+      "paperspace-openapi-spec-20261106",
+      "paperspace-docs-23"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "paperspace-api-reference-20261106",
+          "quote": "a static generated per-endpoint reference with copyable cURL examples (no in-page runner)"
+        },
+        {
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The DigitalOcean-hosted Paperspace API reference is generated from it."
+        },
+        {
+          "evidenceId": "paperspace-docs-23",
+          "quote": "Programmatically manage Paperspace resources using conventional HTTP requests."
+        }
+      ]
     }
   },
   {
     "productId": "paperspace",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Paperspace documents a Core RESTful API for programmatic resource management, but nothing in the evidence shows a downloadable machine-readable spec. The probe found every candidate OpenAPI/Swagger path returning 404. Having a REST API is adjacent to the story; it does not deliver a downloadable spec.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Paperspace's production API serves a machine-readable OpenAPI 3.0.3 document at https://api.paperspace.com/v1/openapi.json (61 paths), and the DigitalOcean-hosted API reference is generated from it. The generic-path probe 404s were on docs.digitalocean.com, a different host, so they do not contradict the spec's existence. Missing for 10: independent or community corroboration of using the spec, and documented discoverability of the spec URL from the docs (the unversioned path 404s).",
+    "evidenceIds": [
+      "paperspace-openapi-spec-20261106",
+      "paperspace-api-reference-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The production API domain serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json"
+        },
+        {
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The DigitalOcean-hosted Paperspace API reference is generated from it."
+        }
+      ]
     }
   },
   {
@@ -4423,7 +4458,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A GPU cloud platform could plausibly offer a dedicated sandbox or test mode isolated from production data, so this axis applies. The evidence documents no such capability. Machine creation, custom templates, snapshots and team-scoped API keys are general building blocks a user could arrange into a test setup, but they are not a product-provided sandbox. Nothing in the pack describes test environments isolated from production data.",
+    "rationale": "The evidence pack documents no sandbox, test mode, or staging environment for Paperspace's API or platform that isolates testing from production data. Users can create separate VMs, snapshots, and templates, but these are general infrastructure primitives. Building an isolated test setup from them would be a user-side workaround, not a documented sandbox capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4435,31 +4470,43 @@
   {
     "productId": "paperspace",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Paperspace documents a Core RESTful API, a JavaScript SDK and a CLI. However, nothing in the evidence mentions API versioning, version pinning, or a deprecation policy, and the OpenAPI probe returned 404 on every candidate path. Simply having an API does not satisfy a story about versioned APIs with a deprecation policy, so the axis applies but is unevidenced.",
-    "evidenceIds": [],
+    "rationale": "Paperspace serves a versioned API: the production OpenAPI 3.0.3 document is at /v1/openapi.json with version \"1\" and the server base is https://api.paperspace.com/v1, and the published API reference is generated from it. Nothing in the pack documents a deprecation policy, sunset timelines, or version-change guarantees, so only half the story is delivered. missing for 10: a documented deprecation/sunset policy, a changelog or versioning guarantees beyond the /v1 path, and independent corroboration of API stability.",
+    "evidenceIds": [
+      "paperspace-openapi-spec-20261106",
+      "paperspace-api-reference-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The production API domain serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json (info title \"Paperspace OpenAPI\", version \"1\", 61 paths; servers https://api.paperspace.com/v1)."
+        },
+        {
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The path without /v1 answers 404; the versioned path is the artifact."
+        }
+      ]
     }
   },
   {
     "productId": "paperspace",
     "storyId": "auto-shutdown-spend-guards",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Paperspace documents a first-party auto-shutdown feature that stops a machine after a configurable period of inactivity (one hour to one week), which covers the core of the forgotten-instance protection. However, it is inactivity-triggered rather than a fixed wall-clock timer, and nothing in the pack documents spend limits, budget caps or billing alerts. missing for 10: spend limits/budget caps or billing alerts, fixed-duration shutdown timers independent of activity, API/CLI configuration of auto-shutdown, independent or hands-on corroboration that auto-shutdown works as claimed.",
+    "rationale": "Paperspace documents a built-in auto-shutdown feature that stops a machine after a configurable inactivity period of one hour to one week. That directly addresses the forgotten-instance scenario, and the story asks for timers OR spend limits. Missing for 10: any documented spend limits or billing alerts, wall-clock (non-inactivity) shutdown timers, API/CLI configuration detail for auto-shutdown, and independent hands-on corroboration that it works.",
     "evidenceIds": [
       "paperspace-docs-5"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an ML engineer, I can set auto-shutdown timers or spend limits so a forgotten instance can't silently run up a huge bill",
       "citations": [
         {
@@ -4475,7 +4522,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a REST API, a JavaScript SDK and a CLI for programmatic management of Paperspace resources, plus one-at-a-time actions such as creating, resizing or snapshotting a machine. Nothing shows a native bulk or batch capability that acts on many machines, notebooks or deployments at once. The API and CLI are only building blocks a user could script loops around, so they earn no credit for this story.",
+    "rationale": "Paperspace documents a REST API, an OpenAPI spec and a CLI for managing resources, but these are building blocks a user could script loops over. Nothing in the evidence describes a native bulk operation, such as acting on many machines, notebooks or deployments in a single action. Templates and shared drives are adjacent features, not bulk operations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4490,10 +4537,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation is a fair question for a GPU cloud platform, but the evidence shows no user-definable rules that fire actions on events. Auto-shutdown is a single fixed inactivity-to-stop setting, an adjacent control rather than a rules engine. Workflows describes ML pipelines with no documented event triggers.",
+    "rationale": "The evidence pack does not document a general rule or event-trigger system where users define conditions that automatically fire actions. Auto-shutdown is a single fixed idle-timeout control, not user-defined event rules. Workflows describe ML pipelines with no mention of event-based triggers. Both are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": []
@@ -4505,7 +4552,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair axis for a GPU cloud/ML platform, but the evidence pack never documents cron-style or recurring schedules. Paperspace Workflows are described only as automated ML pipelines, which is a one-off pipeline capability, not a recurring schedule. Auto-shutdown is an inactivity-based stop rule, an adjacent control rather than job scheduling.",
+    "rationale": "The evidence shows Paperspace Workflows automate ML pipelines and that machines can auto-shut down after inactivity, but nothing documents scheduling a job or workflow to run on a recurring basis (cron, timed triggers). Workflows are a one-off automation primitive and auto-shutdown is an adjacent inactivity control; neither is a recurring schedule, so the axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4520,7 +4567,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace documents Workflows for automating ML pipelines, but the evidence says nothing about versioning, reviewing, or rolling back those workflows. Machine snapshots that you can revert to are a VM backup feature. That is an adjacent capability and does not give version history or rollback for automations.",
+    "rationale": "Paperspace documents Workflows for automating ML pipelines, but nothing in the evidence shows versioning, review, or rollback of those automations. The machine snapshot and backup revert feature applies to VM state, not automations, so it is an adjacent control and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4535,7 +4582,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a REST API, a CLI and team-scoped API keys for managing resources such as machines. Nothing in the pack shows a usage or billing endpoint, cost breakdowns, or a way to attribute GPU spend by team or workload. Generic resource-management APIs are building blocks, not the billing-attribution capability itself, so they earn no credit.",
+    "rationale": "The evidence documents a REST API, an OpenAPI spec, a CLI and team-scoped API keys for managing resources. None of it mentions usage or billing endpoints, cost reports, or any way to break down GPU spend by team or workload. General resource-management API access is an adjacent building block, not the billing-attribution capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4547,18 +4594,19 @@
   {
     "productId": "paperspace",
     "storyId": "custom-docker-images",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Paperspace documents custom templates, which capture a machine and its configuration so you can create new machines with your specifications, and you can pick a custom template at machine creation. Deployments are documented as running container images, but only for serving models; the evidence never confirms bringing your own Docker image as a development environment. Missing for 10: explicit documentation of user-supplied/custom Docker images for Machines or Notebooks, details on how to build and share templates, and independent or hands-on corroboration that templates reproduce an exact environment.",
+    "rationale": "Paperspace documents custom templates, which capture a machine and its configuration so you can create new machines with your exact specifications, and lets you pick a custom template at machine creation. Separately, Deployments are containers-as-a-service that run container images. Root SSH access lets you shape the environment before templating it. missing for 10: explicit documentation of bringing your own Docker image (registry or private image support) for Deployments or Notebooks, in-depth template workflow docs, and independent hands-on corroboration.",
     "evidenceIds": [
       "paperspace-docs-3",
       "paperspace-docs-25",
-      "paperspace-docs-8"
+      "paperspace-docs-8",
+      "paperspace-docs-12"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can run my own Docker image or custom machine template with my exact environment",
       "citations": [
         {
@@ -4579,24 +4627,16 @@
   {
     "productId": "paperspace",
     "storyId": "data-transfer-cloud-sync",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only first-party evidence for getting data into Paperspace is a documented how-to for mounting datasets in Gradient Notebooks, which is a thin, title-only mention. Shared drives, unlimited bandwidth and SSH root access are adjacent features, not transfer tooling, and one hands-on report says copying datasets onto Core machines was very slow. missing for 10: S3-compatible endpoints, cloud-storage sync, documented bulk transfer tooling for Machines, data-out/export paths, any detail on dataset mounting sources, positive independent corroboration of transfer efficiency.",
-    "evidenceIds": [
-      "paperspace-docs-39",
-      "paperspace-comm-8-refresh-43b4c2e26d9b0665"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The pack documents no S3-compatible endpoint, no cloud-storage sync, and no dedicated data-transfer tooling for moving data in and out. What it does show is adjacent only: shared drives are internal storage reachable from machines on a private network, plus 'free unlimited bandwidth', SSH root access and a bare doc title about mounting datasets in notebooks. None of these describes a transfer mechanism, and one community report says copying datasets onto Core servers was very slow.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a developer, I can move data in and out efficiently — S3-compatible endpoints, cloud-storage sync, or documented transfer tooling",
-      "citations": [
-        {
-          "evidenceId": "paperspace-docs-39",
-          "quote": "How to Mount Datasets in a Gradient Notebook"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -4605,12 +4645,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents assigning a public IP so a machine is reachable over the internet, and lists a private network as a feature to enable at machine creation; shared drives are described as accessible across machines in a private network. A user's report of hosting Plex servers loosely corroborates serving apps, but port and firewall controls and private-network setup are not documented in any depth. Missing for 10: documented port exposure or firewall/port-forwarding configuration, detailed private networking docs (subnets, inter-instance connectivity), and hands-on corroboration of private networking.",
+    "rationale": "Paperspace documents assigning a public IP so a machine is reachable over the internet, and enabling a private network at creation, with shared drives accessible across machines on that private network. Explicit port exposure, firewall or port-forwarding controls, and instance-to-instance private networking setup are not documented. missing for 10: documented port exposure/firewall configuration, details on connecting instances over the private network (subnets, addressing), independent hands-on corroboration of serving apps and private connectivity.",
     "evidenceIds": [
       "paperspace-docs-31",
       "paperspace-docs-25",
-      "paperspace-docs-4",
-      "paperspace-comm-1-refresh-c3eab05187af5444"
+      "paperspace-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -4638,7 +4677,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence includes a static availability page stating that CPU machines are available in all datacenter regions, and the create flow lets you pick a machine type and region. Nothing documents a real-time view of GPU stock by type and region before provisioning; static regional listings and approval gates for high-end GPUs are adjacent, not the capability itself.",
+    "rationale": "The evidence pack has no feature showing real-time GPU stock or capacity by type and region before provisioning. The only related item is a static availability page stating CPU machines are offered in all regions. That is a catalog of where machine types are offered, not live stockout visibility, and there is no API or console capacity endpoint in evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4653,7 +4692,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents a GPU machine catalog that includes the current-generation NVIDIA H100, gated behind an approval request, alongside older options such as Ampere A100s. A community report also shows a Quadro P6000 in use, so a range from current to cheaper previous-generation GPUs exists. Missing for 10: any evidence of H200 or B200 availability, a documented full GPU list with tiered pricing, and evidence that H100 access isn't constrained by the approval gate.",
+    "rationale": "Paperspace documents H100 machines, which require approval to use, alongside A100s with up to 8 GPUs, and a user reports running a Quadro P6000. That shows a mix of current and previous-generation GPU choices. However, H200 and B200 options are not evidenced, and H100 access is gated. Missing for 10: H200/B200-class availability, a documented full GPU catalog with pricing tiers for previous-gen options, independent corroboration of H100 availability.",
     "evidenceIds": [
       "paperspace-docs-17",
       "paperspace-docs-45",
@@ -4671,12 +4710,12 @@
           "quote": "If you choose any high-end machines, such as NVIDIA H100, you need to request for approval to use them."
         },
         {
-          "evidenceId": "paperspace-docs-45",
-          "quote": "Build & Run AI/ML Models on NVIDIA H100 GPUs"
+          "evidenceId": "paperspace-docs-11",
+          "quote": "Leverage the latest NVIDIA GPUs including Ampere A100s with up to 8 GPUs."
         },
         {
-          "evidenceId": "paperspace-docs-11",
-          "quote": "Choose from the largest GPU catalog in the world. Leverage the latest NVIDIA GPUs including Ampere A100s with up to 8 GPUs."
+          "evidenceId": "paperspace-docs-45",
+          "quote": "Build & Run AI/ML Models on NVIDIA H100 GPUs"
         },
         {
           "evidenceId": "paperspace-docs-26",
@@ -4691,11 +4730,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Paperspace documents creating machines through its API and CLI, general programmatic resource management over HTTP and the pspace CLI, a stop state reached through auto-shutdown, and a selectable starting state at creation. A community user reports hourly VM billing. However, the evidence never explicitly documents start, stop, restart or terminate calls in the API/CLI, and never states that stopped machines stop incurring compute charges. missing for 10: explicit API/CLI start/stop/restart/terminate operations, documentation that billing stops for stopped/terminated machines, hands-on corroboration of programmatic lifecycle control.",
+    "rationale": "Paperspace documents programmatic machine management through a REST API (an OpenAPI spec with 61 paths) and the pspace CLI, explicitly including machine creation. It also has a machine 'stop state', reachable via auto-shutdown, and a community user describes hourly billing for a GPU VM. The evidence never enumerates start, stop, restart, or terminate operations for the API/CLI, and never documents that stopped machines stop accruing compute charges. missing for 10: explicit documented API/CLI start, stop, restart and delete/terminate operations, first-party documentation that billing stops for stopped or terminated machines, independent hands-on corroboration of programmatic lifecycle control.",
     "evidenceIds": [
       "paperspace-docs-1",
       "paperspace-docs-23",
       "paperspace-docs-30",
+      "paperspace-openapi-spec-20261106",
       "paperspace-docs-5",
       "paperspace-docs-25",
       "paperspace-comm-9-refresh-f8ba53cbbfefbf10"
@@ -4722,8 +4762,8 @@
           "quote": "The auto-shutdown feature places your machine in a stop state after a predefined period of inactivity"
         },
         {
-          "evidenceId": "paperspace-docs-25",
-          "quote": "When you create a new machine, you choose your machine type, operating system or custom template, disk size, region, authentication, starting state"
+          "evidenceId": "paperspace-comm-9-refresh-f8ba53cbbfefbf10",
+          "quote": "the hourly rate for a standard GPU VM beats buying a local machine"
         }
       ]
     }
@@ -4734,7 +4774,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents Notebooks as a web-based Jupyter IDE and says users can connect to remote Jupyter kernels through alternative IDEs. Machines also support SSH access. However, the docs never name VS Code or Cursor or describe a one-step launch or connect flow, and one hands-on user reports that getting SSH access to Core VMs was 'an uphill battle.' Missing for 10: documented one-click Jupyter launch on Machines, named VS Code/Cursor remote-connect integration, evidence the flow is single-step, independent corroboration of a smooth IDE connection.",
+    "rationale": "Paperspace documents Notebooks as a web-based Jupyter IDE and says users can connect to remote Jupyter kernels through alternative IDEs. Machines support SSH connections, which covers the core of opening Jupyter or attaching an IDE. However, nothing documents a one-step VS Code or Cursor connection, and one hands-on user reported that getting SSH access to Core machines was 'an uphill battle', which lowers confidence in how seamless this is. Missing for 10: documented one-step VS Code/Cursor integration, detail on the alternative-IDE kernel connection flow, independent corroboration of smooth IDE/Jupyter access.",
     "evidenceIds": [
       "paperspace-docs-7",
       "paperspace-docs-38",
@@ -4768,7 +4808,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a general REST API and CLI for managing resources, plus docs pages on machine types and regional availability. Nothing shows a documented endpoint that returns the GPU catalog with live pricing and availability for programmatic querying before spending. The availability page is static documentation, and the pricing page shows no machine-readable rates.",
+    "rationale": "Paperspace documents a REST API with a published OpenAPI 3.0.3 spec and a CLI, but nothing in the evidence shows an endpoint that returns the GPU catalog with live pricing or availability. The only availability material is a static docs page saying CPU machines exist in all regions, and the marketing pages claim savings without any queryable prices. A general-purpose API is a building block, not the capability itself, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4783,7 +4823,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no mention of managed Slurm, managed Kubernetes, or any cluster job scheduler. It documents individual VMs (Machines), containers-as-a-service for serving models (Deployments), and ML pipeline automation (Workflows). These are adjacent features, not a managed Slurm or Kubernetes scheduler, so they earn no credit for this story.",
+    "rationale": "Scheduling jobs on managed Slurm or Kubernetes is a fair question for a GPU cloud, so the axis applies. However, the evidence never mentions Slurm, Kubernetes, or any managed cluster scheduler. Paperspace's documented offerings are VMs (Machines), Jupyter Notebooks, container Deployments and ML Workflows. These are adjacent features, not a managed Slurm or Kubernetes job scheduler.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4798,7 +4838,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers only single machines: multi-GPU types with up to 8 A100s and NVLink for GPU-to-GPU transfer within a machine. There is no documented way to provision a multi-node cluster with a fast inter-node interconnect. Private networking and shared drives are building blocks a user would have to assemble themselves, not a cluster product. High-end H100 machines also require approval, which cuts against the no-sales-cycle part of the story.",
+    "rationale": "The evidence shows only single-machine multi-GPU options: A100 machines with up to 8 GPUs and NVLink within a node. Separate machines can share a private network and shared drives, but that is a user-side arrangement, not a documented multi-node cluster with a fast inter-node interconnect for distributed training. High-end H100 machines also require an approval request, which works against the self-serve part of the story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4810,10 +4850,10 @@
   {
     "productId": "paperspace",
     "storyId": "on-demand-gpu-provisioning",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Paperspace documents creating GPU machines from the console, API, or CLI, offers an \"ML in a Box\" template with frameworks and CUDA preinstalled, and supports SSH with root access, so the core provisioning path exists. The \"within minutes\" claim rests only on marketing copy. High-end GPUs such as the H100 need approval first, and one hands-on user reported that getting SSH access was an uphill battle, which undercuts the fast time-to-running-code part of the story. missing for 10: independent evidence of provisioning-to-running-code time, on-demand GPU access without approval gates for high-end types, and corroborated smooth SSH onboarding.",
+    "rationale": "Paperspace documents creating GPU machines from the console, API, or CLI, with an OpenAPI-backed REST API. An \"ML in a Box\" template comes preinstalled with ML frameworks and CUDA drivers, and SSH gives root access, so the core story is covered. One hands-on report describes SSH access as an uphill battle, and high-end GPUs such as the H100 require approval before use. missing for 10: independent corroboration of the 'within minutes' provisioning-to-running time, evidence that top-tier GPUs are available on demand without approval, and smooth hands-on access reports.",
     "evidenceIds": [
       "paperspace-docs-1",
       "paperspace-docs-16",
@@ -4821,12 +4861,12 @@
       "paperspace-docs-12",
       "paperspace-docs-10",
       "paperspace-docs-17",
-      "paperspace-docs-25",
-      "paperspace-comm-8-refresh-43b4c2e26d9b0665"
+      "paperspace-openapi-spec-20261106",
+      "paperspace-docs-25"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can provision an on-demand GPU instance from the console or API and be running code on it within minutes",
       "citations": [
         {
@@ -4848,10 +4888,6 @@
         {
           "evidenceId": "paperspace-docs-10",
           "quote": "Go from signup to training a model in seconds"
-        },
-        {
-          "evidenceId": "paperspace-docs-17",
-          "quote": "If you choose any high-end machines, such as NVIDIA H100, you need to request for approval to use them."
         }
       ]
     }
@@ -4862,13 +4898,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents a Core RESTful API, a JavaScript SDK and a CLI for programmatically managing resources, and machine creation is explicitly available through the console, API or CLI. Nothing in the evidence claims or shows that every UI capability is exposed through the API, and the OpenAPI probe returned 404. missing for 10: explicit UI/API parity documentation, API coverage evidence for notebooks/deployments/workflows/templates/shared drives/user access, a published OpenAPI spec, independent hands-on corroboration.",
+    "rationale": "Paperspace documents a REST API with a machine-readable OpenAPI 3.0.3 spec (61 paths), a JavaScript SDK, and a CLI. Machine creation is explicitly available through the console, API, or CLI. However, nothing in the evidence claims or shows that the API matches the UI across all features: notebooks, deployments, workflows, team user management, snapshots and auto-shutdown are documented without stating API coverage. Missing for 10: an explicit UI–API parity statement, documented API coverage of notebooks, deployments, workflows, user access, templates and auto-shutdown, and independent hands-on confirmation of full parity.",
     "evidenceIds": [
       "paperspace-docs-1",
-      "paperspace-docs-23",
       "paperspace-docs-6",
-      "paperspace-docs-30",
-      "paperspace-probe-3"
+      "paperspace-docs-23",
+      "paperspace-openapi-spec-20261106",
+      "paperspace-api-reference-20261106",
+      "paperspace-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -4884,12 +4921,12 @@
           "quote": "Programmatically manage Paperspace resources using conventional HTTP requests."
         },
         {
-          "evidenceId": "paperspace-docs-6",
-          "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI)."
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The production API domain serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json"
         },
         {
-          "evidenceId": "paperspace-docs-30",
-          "quote": "Programmatically manage resources using the Paperspace Command Line Interface."
+          "evidenceId": "paperspace-docs-6",
+          "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI)."
         }
       ]
     }
@@ -4900,7 +4937,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no first-party data-export capability, such as exporting machine disks, snapshots, notebooks, or datasets in open formats. Root SSH access only lets a user copy files out manually, which is a user-side workaround. Snapshots are internal backups for reverting, and 'Cancel anytime' covers leaving but not exporting data.",
+    "rationale": "The evidence pack documents no first-party data-export feature, no bulk download, and no open-format export of machines, notebooks, or account data. SSH root access lets a user copy files out manually, but that is a user-side workaround. Snapshots and custom templates are internal backups that stay on the platform, and \"Cancel anytime\" concerns billing rather than exporting data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4915,7 +4952,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Source openness is a fair question for a cloud GPU platform, which could publish its CLI, SDK or platform code under an open license. The evidence pack documents only a proprietary console, REST API, JavaScript SDK and CLI. Nothing shows any Paperspace source code published under an open license.",
+    "rationale": "Openness of source code is a fair question for a cloud GPU and ML platform, so the axis applies. However, nothing in the evidence pack shows Paperspace publishing its platform, CLI or SDK source under an open license. The published OpenAPI spec and API reference are interface documentation, not source code under an open license, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4930,7 +4967,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a cloud ML platform, but the evidence describes Paperspace only as a hosted GPU cloud run in Paperspace datacenter regions. Nothing shows a self-hostable or on-prem distribution of the product. Root access to rented VMs and community reports of hosting other software on Paperspace boxes are adjacent capabilities and do not count as self-hosting Paperspace itself.",
+    "rationale": "Self-hosting is a fair question for a cloud ML platform, since some vendors ship on-prem or self-managed editions, so the axis applies. The evidence only describes Paperspace as a hosted cloud service (VMs, Notebooks, Deployments, API/CLI). Root SSH access to rented VMs is a feature of the hosted service, not a way to self-host the product itself, and nothing in the pack documents a self-hosted or on-prem distribution.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4945,7 +4982,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents per-second or per-minute billing granularity, or states that charges stop when a machine is stopped. Auto-shutdown is an adjacent cost-control feature, not a billing-granularity guarantee, and the community references only an 'hourly rate' and a flat $9/mo Pro tier.",
+    "rationale": "Nothing in the evidence pack documents per-second or per-minute billing, or billing that stops when an instance is stopped. The auto-shutdown feature is a related control that stops idle machines, not a billing-granularity guarantee. Community posts mention only an 'hourly rate' and a flat monthly Pro tier, neither of which shows sub-hour metering.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4960,10 +4997,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents Shared drives as network storage reachable from multiple machines on a private network, and Notebooks come with shared persistent storage. Together these cover the core idea of network-attached storage separate from any single instance. The evidence never says that shared drive data survives machine deletion or how to attach drives to new GPU rentals, and the machine-level 'persistent storage' is a per-machine disk, not network storage. Missing for 10: explicit documentation that shared drives outlive machine teardown, attach/mount workflow details, capacity and performance limits, and independent hands-on corroboration.",
+    "rationale": "Paperspace documents shared drives, network storage reachable from multiple machines on a private network, and Notebooks with shared persistent storage. This points to storage that is decoupled from any single machine. However, the evidence never states that shared drives survive when a machine is deleted, or that datasets and checkpoints carry over to later GPU rentals. missing for 10: explicit documentation that shared drives persist after machine teardown, attach/detach workflow details, capacity and pricing limits, and independent or hands-on corroboration.",
     "evidenceIds": [
       "paperspace-docs-4",
-      "paperspace-docs-7"
+      "paperspace-docs-7",
+      "paperspace-docs-39"
     ],
     "support": {
       "relation": "direct",
@@ -4977,6 +5015,10 @@
         {
           "evidenceId": "paperspace-docs-7",
           "quote": "Notebooks are a web-based Jupyter IDE with shared persistent storage for long-term development and inter-notebook collaboration"
+        },
+        {
+          "evidenceId": "paperspace-docs-39",
+          "quote": "How to Mount Datasets in a Gradient Notebook"
         }
       ]
     }
@@ -4987,7 +5029,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents a pre-built \"ML in a Box\" machine template that comes with the major ML frameworks and CUDA drivers preinstalled, so developers can skip environment assembly for general PyTorch/CUDA work. The template is chosen at machine creation alongside the OS. Beyond that one general-purpose image, the evidence shows no catalog of task-specific templates. User-made custom templates are a cloning feature, not pre-built templates. Missing for 10: evidenced vLLM and ComfyUI templates, a broader template catalog, explicit PyTorch naming, and independent hands-on corroboration of the ML in a Box template.",
+    "rationale": "Paperspace documents a pre-built \"ML in a Box\" machine template that comes preinstalled with the major ML frameworks and CUDA drivers. That covers the PyTorch/CUDA part of the story, and machine creation lets you pick a template. However, the evidence shows only this single generic template, and custom templates are user-made snapshots rather than pre-built ones. missing for 10: dedicated vLLM and ComfyUI templates, an explicit PyTorch-specific template listing or catalog of multiple pre-built images, independent hands-on corroboration of template launch.",
     "evidenceIds": [
       "paperspace-docs-13",
       "paperspace-docs-25"
@@ -5014,7 +5056,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace's docs show users choose a region when creating a machine, and machines run in multiple Paperspace datacenter regions. That gives some control over where machine-attached persistent storage lives, but there is no explicit data-residency commitment and no region choice documented for other data stores. missing for 10: list of available regions/geographies, explicit data-residency guarantees or compliance statements, region selection for notebooks/shared drives/datasets, independent corroboration.",
+    "rationale": "Paperspace's own machine-creation docs say users choose a region when creating a machine, and machines come with persistent storage across multiple datacenter regions, so users can pick where machine data lives. Nothing documents formal data-residency guarantees or region control for Notebooks, shared drives, or Deployments storage. missing for 10: enumerated region list, explicit data-residency/compliance commitments, region selection for non-machine storage (notebooks, datasets, shared drives), independent corroboration.",
     "evidenceIds": [
       "paperspace-docs-25",
       "paperspace-docs-35",
@@ -5046,7 +5088,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace is a cloud GPU and ML platform that hosts user data, so whether customer data can be kept out of AI training is a fair privacy question. The evidence pack has no policy, setting or opt-out about training on customer data. The docs cover only machines, storage, API keys and access controls, none of which address this story.",
+    "rationale": "Paperspace is a GPU cloud and ML platform that hosts user data and models. Whether customer data is excluded from AI training is therefore a fair privacy-posture question for this kind of product. The evidence pack has no data-use policy, training opt-out, or privacy commitment on the subject, so the axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5061,7 +5103,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack covers machine creation, storage resizing, shared drives, snapshots and backups, but it never documents data retention settings, retention periods, or deleting user data, machines or storage. Backups and snapshots are a related feature (keeping copies), not a way to control retention or deletion, so they earn no credit.",
+    "rationale": "The evidence pack documents no data retention policies, retention windows, or data or account deletion controls for Paperspace. Backups and snapshots, auto-shutdown, and storage resizing are related but different features and do not show user control over how long data is kept or how it is deleted.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5076,7 +5118,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair privacy question for a cloud GPU platform with a console, CLI and SDK, so the axis applies. However, nothing in the evidence pack mentions telemetry, usage tracking, analytics collection, or any opt-out control for the console, CLI or SDK.",
+    "rationale": "Opting out of telemetry or usage tracking is a fair question for a GPU cloud platform with a console, CLI and API. Nothing in the evidence pack mentions telemetry, analytics or usage-tracking controls, or any way to opt out. The cited items cover machines, notebooks, the API, the CLI and pricing, none of which bear on this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5091,10 +5133,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Paperspace documents that high-end machine types such as the H100 are gated and need an approval request. It also documents some fixed resource limits, such as storage resizable up to 2 TB. This is a thin signal of documented limits plus a request path, not a documented quota system. Missing for 10: a published account or team quota and instance-count limit reference, a documented step-by-step quota-increase process (form, API or ticket flow with expected turnaround), visibility of current usage against quota, and independent corroboration.",
+    "rationale": "Paperspace documents that high-end machine types such as NVIDIA H100 require a request for approval. That is a gating limit with an implied raise path. It also documents some per-machine limits, such as storage resizable up to 2 TB. There is no evidence of documented account quotas, instance-count limits or a defined quota-increase workflow. Missing for 10: documented account/team quotas and instance-count limits, a defined step-by-step limit-increase process (form, SLA, API), a quota visibility dashboard, and independent corroboration.",
     "evidenceIds": [
       "paperspace-docs-17",
-      "paperspace-docs-29"
+      "paperspace-docs-29",
+      "paperspace-docs-34"
     ],
     "support": {
       "relation": "direct",
@@ -5118,7 +5161,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reserved or committed-use discounts are a fair question for a GPU cloud, but the evidence pack never documents a reserved-instance, commitment, or term-based discount program for sustained GPU capacity. The \"Save up to 70%\" claim is a general price comparison against other clouds. The $9/mo Pro tier and \"cancel anytime\" flexibility are adjacent pricing features, not committed-use discounts.",
+    "rationale": "The evidence contains no reserved-instance, committed-use, or term-commitment discount offering for sustained GPU capacity. The \"save up to 70%\" claim is a general comparison against other clouds, \"cancel anytime\" describes no-commitment billing, and the $9/mo Pro tier is a notebook subscription with capped GPU hours, not a capacity commitment discount.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5133,7 +5176,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no SOC 2 attestation, trust center, data-handling or retention policy, or datacenter tier/certification information for Paperspace. Mentions of datacenter regions, private networks, and team-scoped API keys are adjacent operational features, not a verifiable security and compliance posture.",
+    "rationale": "Nothing in the evidence pack documents SOC 2 or other compliance attestations, data-handling policies, or datacenter tier certifications for Paperspace. The pack mentions only datacenter regions, team-scoped API keys and machine user access, which are adjacent features, not a verifiable security or compliance posture.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5148,7 +5191,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Paperspace documents Deployments as a containers-as-a-service offering for running container images and serving ML models. That is the product's own managed way to deploy code without hand-managing VMs, but the evidence never mentions autoscaling, scale-to-zero, or per-request serverless billing. Machine auto-shutdown is an adjacent VM idle-stop feature and earns no credit here. Missing for 10: documented autoscaling of GPU workers, scale-to-zero behavior, serverless per-usage billing, GPU-backed Deployment specifics, and any hands-on corroboration.",
+    "rationale": "Paperspace documents Deployments, a containers-as-a-service offering for running container images and serving ML models. That is the product's own managed way to deploy code without hand-managing VMs. However, nothing in the evidence shows autoscaling, scale-to-zero, or serverless GPU billing. Machine auto-shutdown only stops an idle VM after one hour to one week, which is an adjacent control and earns no credit. Missing for 10: documented autoscaling of Deployment replicas, scale-to-zero behavior, GPU-backed serverless workers, per-request or idle billing semantics, and any hands-on corroboration.",
     "evidenceIds": [
       "paperspace-docs-8"
     ],
@@ -5170,7 +5213,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Spot or interruptible GPU capacity is a fair question for a GPU cloud, so the axis applies. However, nothing in the evidence documents a spot, preemptible, or interruptible tier or any preemption semantics. The 'Save up to 70%' claim is a general price comparison against major public clouds, and auto-shutdown and the Pro tier are adjacent features, not discounted interruptible capacity.",
+    "rationale": "Paperspace is a GPU cloud, so spot or interruptible capacity is a fair question to ask of it. However, nothing in the evidence pack documents spot, preemptible, or interruptible instances, or any preemption semantics. The 'Save up to 70% on compute costs' claim is a general comparison with major public clouds, not a discounted interruptible tier, so it is adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5185,13 +5228,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Paperspace's own pages say you can bring your SSH key and connect directly to your VM with full root access. Its docs describe SSH connections to Linux and Windows machines and an authentication choice when you create a machine. One hands-on user said getting SSH access was 'an uphill battle', which points to usability friction rather than a concrete failure, so it lowers confidence instead of creating a dispute. Missing for 10: in-depth first-party docs on SSH key upload and management and on root privileges, and independent hands-on corroboration of a smooth key-based root SSH workflow.",
+    "rationale": "Paperspace states directly that you can bring your own SSH key and connect to the VM with full root access. Its docs confirm SSH connections to Linux and Windows machines and an authentication choice at machine creation. One hands-on community report calls getting SSH access an \"uphill battle\"; that describes friction, not a failure of the capability, so it lowers confidence rather than creating a dispute. Missing for 10: detailed first-party docs on SSH key upload and management, documented depth of root/sudo control, and independent hands-on confirmation that bring-your-own-key root SSH works smoothly.",
     "evidenceIds": [
       "paperspace-docs-19",
       "paperspace-docs-12",
       "paperspace-docs-2",
       "paperspace-docs-25",
-      "paperspace-comm-7"
+      "paperspace-comm-8-refresh-43b4c2e26d9b0665"
     ],
     "support": {
       "relation": "direct",
@@ -5208,7 +5251,7 @@
         },
         {
           "evidenceId": "paperspace-docs-25",
-          "quote": "When you create a new machine, you choose your machine type, operating system or custom template, disk size, region, authentication, starting state"
+          "quote": "When you create a new machine, you choose your machine type, operating system or custom template, disk size, region, authentication"
         }
       ]
     }
@@ -5219,7 +5262,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents team-scoped API keys, a team admin role that can revoke other members' keys, and adding or removing users to control machine access. That covers the core of credential governance. Nothing in the evidence shows a granular role model or any spend controls such as budgets or per-member limits, so the 'spend stays controlled' half is unevidenced. Missing for 10: documented role/permission tiers beyond team admin, finer-grained per-key scoping, spend limits or budget controls, independent corroboration.",
+    "rationale": "Paperspace documents team-scoped API keys and lets team admins revoke other members' keys, which implies an admin role. It also documents adding and removing users to control machine access. Missing for 10: a documented role model beyond the implied team admin, per-key permission scoping finer than team level, team member invitation and role assignment workflows, spend controls such as budgets or limits, and independent corroboration.",
     "evidenceIds": [
       "paperspace-docs-40",
       "paperspace-docs-41",
@@ -5251,7 +5294,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A public pricing page exists at paperspace.com/pricing, but the cited spans from it only describe Gradient and a free account. No evidence shows published per-GPU-hour rates for each GPU type. Marketing claims like \"Save up to 70%\" and community remarks about an hourly rate or the $9/mo Pro tier do not establish a public per-GPU-hour price list, so this applicable axis is unevidenced.",
+    "rationale": "The evidence shows that a paperspace.com/pricing page exists. However, the quoted content covers only Gradient marketing and a free-account prompt, not per-GPU-hour rates for each GPU type. The '70% savings' claims and community mentions of a $9/mo Pro tier and an unspecified 'hourly rate' do not show a public per-GPU-hour price list, so the story is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

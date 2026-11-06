@@ -1,19 +1,19 @@
 {
-  "hash": "fd9aaa9e72a3a9ff8a7c9154bd55c4b35b83dabd614af4dadfc2bbfde5971d88",
+  "hash": "d3d06c58397d9b198d249f3c27a95fc8d06e9bc96e4dffe1ea70ae817f575a1d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "LocalAI's core interface is a documented public HTTP API. It is OpenAI-compatible and works with any OpenAI SDK or client, and it also supports the Anthropic Messages API, the Open Responses API and functions/tools calling. Model management is reachable through the /models/apply endpoint, with per-user API keys when auth is enabled. Probes found no machine-readable OpenAPI spec on the docs site, and docs for the management endpoints are thin. Missing for 10: a published OpenAPI/Swagger spec, fuller documentation of the management/admin endpoints, independent hands-on corroboration.",
+    "rationale": "LocalAI is itself an API server: its docs describe an OpenAI-compatible REST API usable with any OpenAI SDK, plus the Anthropic Messages and Open Responses APIs. The repository ships a full Swagger 2.0 spec, and every server exposes an interactive Swagger UI and unauthenticated discovery endpoints, with per-user API keys for authenticated access. The website probes returning 404 for openapi.json do not contradict this, because the spec is served from the repo and the running server. Missing for 10: independent or hands-on corroboration that the full API surface works as documented.",
     "evidenceIds": [
       "localai-docs-1",
       "localai-docs-16",
-      "localai-docs-17",
-      "localai-docs-12",
       "localai-docs-32",
-      "localai-docs-9",
-      "localai-probe-3"
+      "localai-swagger-spec-20261106",
+      "localai-swagger-ui-20261106",
+      "localai-docs-22",
+      "localai-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -25,20 +25,20 @@
           "quote": "LocalAI exposes an OpenAI-compatible API. You can use it with any OpenAI SDK or client by pointing it to http://localhost:8080."
         },
         {
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "The official mudler/LocalAI repository ships a full Swagger 2.0 specification of the REST API (info title \"LocalAI API\", description \"The LocalAI Rest API.\") at swagger/swagger.json"
+        },
+        {
+          "evidenceId": "localai-swagger-ui-20261106",
+          "quote": "The full interactive API documentation is available without authentication at /swagger/index.html."
+        },
+        {
           "evidenceId": "localai-docs-16",
           "quote": "LocalAI also supports the **Anthropic Messages API**, the **Open Responses API**, and more."
         },
         {
-          "evidenceId": "localai-docs-17",
-          "quote": "LocalAI supports running the OpenAI functions and tools API across multiple backends."
-        },
-        {
-          "evidenceId": "localai-docs-12",
-          "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
-        },
-        {
-          "evidenceId": "localai-docs-32",
-          "quote": "One binary with an OpenAI-compatible API in front of it. Point an existing client at it and the calls keep working"
+          "evidenceId": "localai-docs-22",
+          "quote": "Run with `LOCALAI_AUTH=true` for multi-user support with admin/user roles, OAuth login, per-user API keys, and usage tracking."
         }
       ]
     },

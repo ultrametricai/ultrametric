@@ -1,17 +1,31 @@
 {
-  "hash": "700233c04a9b0a5204c6aad9aedf16d982f5c95908c214df868970794a1890ff",
+  "hash": "ac0d9187043a7f8634bf3973f5d74b2a76487a60108da24abd52397c668b6777",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "high",
-    "rationale": "LocalAI has a public documentation site, so offering llms.txt or agent-oriented docs is a fair question for it. Direct probes found no such docs: llms.txt, the markdown variant of the getting-started doc, and all candidate OpenAPI spec paths each returned HTTP 404. The pack's MCP, agent and OpenAI-compatible API material concerns other capabilities and does not show machine-readable docs meant for agents.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Probes show no llms.txt and no markdown docs mirror (both 404). LocalAI does document its own machine-readable discovery surfaces on every server: an \"API Discovery & Instructions\" page covering /.well-known/localai.json, /api/instructions and a Swagger tree, plus a full Swagger 2.0 spec in the repo, which an agent could be pointed at. This is partial agent-oriented documentation, not the llms.txt-style site docs the story names. Missing for 10: an llms.txt file, markdown or agent-readable versions of the docs site, evidence that /api/instructions content is written for agents, and hands-on corroboration of agents consuming these endpoints.",
+    "evidenceIds": [
+      "localai-probe-1",
+      "localai-probe-2",
+      "localai-swagger-ui-20261106",
+      "localai-swagger-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "localai-swagger-ui-20261106",
+          "quote": "The same \"API Discovery & Instructions\" page documents the unauthenticated discovery endpoints (/.well-known/localai.json, /api/instructions, and the /swagger tree)."
+        },
+        {
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "The server advertises it at runtime: the documented /.well-known/localai.json discovery response lists \"swagger\": \"/swagger/index.html\"."
+        }
+      ]
     },
     "productId": "localai",
     "storyId": "agentic-agent-docs"

@@ -1,16 +1,18 @@
 {
-  "hash": "564a6b1cf32622e55e16cd25112f22e673e9b639b33da7118deb889fede85874",
+  "hash": "bea1a21e174299fb0542d5bf7e9c1fa273c63f81059d78c8275ea79fd1fbe86b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep documents its own terminal CLI, zepctl, which provides full access to users, threads, Context Graphs and data operations. It also offers a pip-installable SDK, so it can be driven programmatically without a UI. However, nothing in the evidence shows CI or pipeline use, non-interactive auth, or scripted automation workflows. Missing for 10: documented CI/pipeline usage, non-interactive/headless authentication (e.g., API key via env vars), machine-readable output or exit-code semantics, and independent hands-on corroboration.",
+    "rationale": "Zep is API-first: it ships a Python SDK, a full OpenAPI 3.1 REST API, and the zepctl CLI, which gives \"full access to Zep\" from the terminal, so scripted, headless use is directly supported. Graph cloning also supports isolated test data. However, nothing in the evidence documents CI pipelines, non-interactive or token-based auth for automation, or zepctl scripting and exit-code behavior. missing for 10: explicit CI/CD usage docs, non-interactive auth guidance for zepctl, independent hands-on corroboration of headless/CI automation.",
     "evidenceIds": [
       "zep-docs-7",
       "zep-docs-23",
       "zep-probe-3",
-      "zep-docs-47"
+      "zep-openapi-spec-20261106",
+      "zep-docs-47",
+      "zep-graph-clone-testing-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -22,12 +24,16 @@
           "quote": "It provides full access to Zep, enabling you to manage users, threads, Context Graphs, and data operations from the terminal."
         },
         {
-          "evidenceId": "zep-probe-3",
-          "quote": "official CLI documented at https://help.getzep.com/zepctl-cli"
+          "evidenceId": "zep-openapi-spec-20261106",
+          "quote": "help.getzep.com serves a full OpenAPI 3.1 document (info title \"SDK Reference\", 148 paths, servers https://api.getzep.com/api/v4)."
         },
         {
           "evidenceId": "zep-docs-47",
           "quote": "pip install zep-cloud"
+        },
+        {
+          "evidenceId": "zep-graph-clone-testing-20261106",
+          "quote": "Clone a shared Context Graph to create an isolated test copy of an account, project, product, or business-domain graph"
         }
       ]
     },
