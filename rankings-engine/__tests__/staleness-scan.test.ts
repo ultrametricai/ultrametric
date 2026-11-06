@@ -1,9 +1,12 @@
 // Pure-function tests for the accuracy engine's staleness scanner
 // (rankings-engine/scripts/staleness-scan.ts): age math, the audit signatures (api-quality gap, the
 // cline agent-docs contradiction), flip candidacy, citation sampling, and the ranking score —
-// no network, no fs.
+// no network; fs only inside the repair-ledger loader test, against a temp directory.
 import { describe, expect, it } from 'vitest'
 import type { Evidence, Story, Verdict } from '@/lib/schemas'
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
 import {
   actionableQueueRows,
   ageDays,
@@ -11,6 +14,7 @@ import {
   hasAgentDocsContradiction,
   hasApiQualityGap,
   isDeadStatus,
+  loadApiQualityRepairCoverage,
   isLlmsFlipCandidate,
   mcpFlipEndpoint,
   recordsAbsence,
@@ -101,6 +105,59 @@ describe('hasApiQualityGap (the 54-product audit signature)', () => {
       verdict('api-machine-spec', 'none'),
       verdict('api-sandbox', 'none'),
     ], 'acme')).toBe(false)
+  })
+
+  // The repaired-honest-none case (orama/buzz/spline/working-copy after PRs #630/#632):
+  // a dated wave checked every api-quality cell and the absences held, so the cells stay
+  // zero-evidence nones — the ledger coverage, not the pack, records the check.
+  it('does not flag when a wave ledger covers every api-quality story, honest nones included', () => {
+    const zeroEvidenceNones = [
+      verdict('agentic-public-api', 'full', ['e1']),
+      verdict('api-machine-spec', 'none'),
+      verdict('api-sandbox', 'none'),
+    ]
+    const covered = new Set(['api-machine-spec', 'api-sandbox'])
+    expect(hasApiQualityGap(stories, zeroEvidenceNones, 'acme', covered)).toBe(false)
+    // The same verdicts without coverage still trip — the refinement adds no new gaps.
+    expect(hasApiQualityGap(stories, zeroEvidenceNones, 'acme')).toBe(true)
+    expect(hasApiQualityGap(stories, zeroEvidenceNones, 'acme', new Set())).toBe(true)
+  })
+
+  it('still flags when the ledger covers only some api-quality stories', () => {
+    expect(hasApiQualityGap(stories, [
+      verdict('agentic-public-api', 'full', ['e1']),
+      verdict('api-machine-spec', 'none'),
+      verdict('api-sandbox', 'none'),
+    ], 'acme', new Set(['api-machine-spec']))).toBe(true)
+  })
+})
+
+describe('loadApiQualityRepairCoverage (wave-ledger registry)', () => {
+  it('maps ledger cells to arena/product story sets and ignores non-matching files', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'apiq-ledger-'))
+    try {
+      fs.writeFileSync(path.join(dir, '2026-11-06-api-quality-wave9.json'), JSON.stringify({
+        cells: [
+          { product: 'acme', arena: 'widgets', storyId: 'api-machine-spec', disposition: 'evidence-appended' },
+          { product: 'acme', arena: 'widgets', storyId: 'api-sandbox', disposition: 'checked-still-absent' },
+          { product: 'other', arena: 'widgets', storyId: 'api-machine-spec', disposition: 'evidence-appended' },
+        ],
+      }))
+      fs.writeFileSync(path.join(dir, '2026-11-06-unrelated-report.json'), JSON.stringify({ cells: [
+        { product: 'acme', arena: 'widgets', storyId: 'api-versioning-policy' },
+      ] }))
+      fs.writeFileSync(path.join(dir, '2026-11-06-api-quality-broken.json'), 'not json')
+      const coverage = loadApiQualityRepairCoverage(dir)
+      expect(coverage.get('widgets/acme')).toEqual(new Set(['api-machine-spec', 'api-sandbox']))
+      expect(coverage.get('widgets/other')).toEqual(new Set(['api-machine-spec']))
+      expect(coverage.has('widgets/missing')).toBe(false)
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true })
+    }
+  })
+
+  it('returns an empty map for a missing directory', () => {
+    expect(loadApiQualityRepairCoverage('/nonexistent/apiq-ledgers').size).toBe(0)
   })
 })
 
