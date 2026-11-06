@@ -13628,12 +13628,13 @@
     "productId": "cubic",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A probe confirms cubic publishes a live llms.txt (HTTP 200 at docs.cubic.dev/llms.txt) with a summary and docs index, so an agent can be pointed at it directly. The docs are also served as .md pages, and there is an agent-setup guide (cubic-docs-15). missing for 10: no evidence of an llms-full.txt or full-content bundle, no independent or hands-on reports of agents actually consuming these docs.",
+    "rationale": "A hands-on probe confirms cubic serves a live llms.txt at docs.cubic.dev that indexes its documentation for agents. The docs are also published as markdown mirrors, and the API reference's markdown pages embed full OpenAPI YAML, which gives agents machine-readable docs. missing for 10: independent or community corroboration of agents actually using these docs, evidence of a full-content variant (e.g. llms-full.txt) or explicit agent-oriented docs guidance.",
     "evidenceIds": [
       "cubic-probe-1",
-      "cubic-docs-15"
+      "cubic-members-api-ref-20261106",
+      "cubic-analytics-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -13645,12 +13646,12 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://docs.cubic.dev/llms.txt"
         },
         {
-          "evidenceId": "cubic-probe-1",
-          "quote": "cubic reviews code on GitHub and in local coding workflows. These docs cover review setup"
+          "evidenceId": "cubic-members-api-ref-20261106",
+          "quote": "Each Members API endpoint page's markdown mirror embeds the full OpenAPI 3.1.0 YAML for that operation"
         },
         {
-          "evidenceId": "cubic-docs-15",
-          "quote": "Connect cubic's MCP server to your coding agent to read review findings and codebase context"
+          "evidenceId": "cubic-analytics-openapi-20261106",
+          "quote": "cubic publishes a machine-readable OpenAPI 3.1.0 document for its Analytics API"
         }
       ]
     }
@@ -13658,22 +13659,24 @@
   {
     "productId": "cubic",
     "storyId": "agentic-ai-insights",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "cubic generates AI insights and suggestions from the user's code and PR data inside the product. It posts review comments on bugs and improvements, offers a context-aware chat sidebar that can tour a PR or answer questions about selected code, produces an AI wiki of the codebase, and runs AI codebase scans for bugs and vulnerabilities. A community tester reports the comments became quieter and more useful. Missing for 10: AI-generated insights over the analytics dashboard data (it shows metrics but no AI summaries), and stronger independent corroboration of suggestion quality.",
+    "rationale": "Inside the product, cubic generates AI suggestions and insights from the user's code and PR data. This includes review comments on bugs and improvements, a context-aware chat sidebar that can \"tour this PR\", AI-generated PR descriptions, and an AI wiki that indexes the codebase with architecture diagrams. Its analytics dashboard, however, only presents metrics. Nothing shows AI-generated insights over that usage and delivery data. Community comments on suggestion quality are mixed but do not concretely contradict the capability. missing for 10: AI-generated insights over the analytics/team data (the dashboard is metrics-only per the evidence), independent hands-on corroboration of insight quality.",
     "evidenceIds": [
       "cubic-docs-25",
       "cubic-docs-50",
       "cubic-docs-9",
       "cubic-docs-10",
       "cubic-docs-22",
-      "cubic-docs-21",
+      "cubic-docs-26",
+      "cubic-docs-18",
+      "cubic-comm-1",
       "cubic-comm-7"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": [
         {
@@ -13685,16 +13688,12 @@
           "quote": "The chat sidebar helps you quickly understand and navigate your pull requests (PRs) with intelligent, context-aware assistance directly within cubic."
         },
         {
-          "evidenceId": "cubic-docs-10",
-          "quote": "Select code and choose **Add to AI chat** to ask about it with the diff and codebase as context."
-        },
-        {
           "evidenceId": "cubic-docs-22",
           "quote": "cubic's AI wiki automatically indexes your codebase and produces searchable wikis, complete with links to source code, architecture diagrams, and more."
         },
         {
-          "evidenceId": "cubic-docs-21",
-          "quote": "Codebase scans deploy thousands of AI agents to find bugs and vulnerabilities across your repository."
+          "evidenceId": "cubic-docs-26",
+          "quote": "Generates PR descriptions based on code changes"
         }
       ]
     }
@@ -13705,15 +13704,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "cubic runs several of its own behaviors autonomously in the background once enabled: automatic PR reviews on install, auto-approval of low-risk PRs (shadow mode, then live), automatic thread resolution, automatic issue-requirement analysis, and a wiki kept current through a rolling PR. These are fixed, event-triggered review features rather than user-defined automations; custom agents are review rules, not arbitrary background jobs. missing for 10: user-defined automation workflows with custom triggers or actions, recurring/scheduled runs (e.g. scheduled codebase scans), and independent or hands-on corroboration of autonomous operation.",
+    "rationale": "cubic runs several event-triggered background automations once installed and configured. It reviews new PRs automatically, auto-approves low-risk PRs after a shadow-mode trial, resolves threads when findings are fixed, checks PRs against linked Linear/Jira issues, and keeps the wiki current through a rolling PR. These are fixed, built-in behaviors that a user toggles or tunes, not automations the user designs. missing for 10: user-defined automation workflows beyond built-in review behaviors, recurring/scheduled jobs (e.g., scheduled codebase scans), independent or hands-on corroboration of autonomous operation.",
     "evidenceIds": [
       "cubic-docs-4",
       "cubic-docs-41",
       "cubic-docs-12",
       "cubic-docs-35",
       "cubic-docs-27",
-      "cubic-docs-33",
       "cubic-docs-23",
+      "cubic-docs-33",
       "cubic-docs-16"
     ],
     "support": {
@@ -13734,12 +13733,12 @@
           "quote": "Enable automatic thread resolution to close findings when the issue is fixed"
         },
         {
-          "evidenceId": "cubic-docs-33",
-          "quote": "cubic can automatically analyze your pull requests to see if they meet the requirements from your linked Linear or Jira issues."
-        },
-        {
           "evidenceId": "cubic-docs-23",
           "quote": "keeps them current through a rolling pull request"
+        },
+        {
+          "evidenceId": "cubic-docs-33",
+          "quote": "cubic can automatically analyze your pull requests to see if they meet the requirements from your linked Linear or Jira issues."
         }
       ]
     }
@@ -13750,16 +13749,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "cubic documents a built-in AI assistant users can hand tasks to. In PR comments you can ask questions, trigger reviews and request fixes. 'Fix with cubic' generates a fix and pushes it to the PR branch, and an in-product chat answers questions about selected code or gives a guided 'tour this PR'. Missing for 10: independent or hands-on corroboration of the assistant's task delegation, delegable tasks beyond review, Q&A and fixes, and current (non-archived) docs for the chat sidebar.",
+    "rationale": "cubic documents a built-in AI assistant users can hand work to. They can ask the in-product chat to tour a PR or explain selected code, mention @cubic-dev-ai in PR comments to trigger reviews and fixes, and click \"Fix with cubic\" to have it generate a fix and push it to the branch. Missing for 10: independent or hands-on corroboration of the assistant and fix delegation, and evidence of delegating tasks beyond PR review and fix scope (the chat sidebar page sits under archived docs).",
     "evidenceIds": [
-      "cubic-docs-29",
       "cubic-docs-7",
-      "cubic-docs-44",
-      "cubic-docs-10",
       "cubic-docs-9",
+      "cubic-docs-10",
+      "cubic-docs-29",
+      "cubic-docs-44",
+      "cubic-docs-30",
       "cubic-docs-50",
-      "cubic-docs-45",
-      "cubic-docs-5"
+      "cubic-docs-42"
     ],
     "support": {
       "relation": "direct",
@@ -13767,28 +13766,24 @@
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
       "citations": [
         {
-          "evidenceId": "cubic-docs-29",
-          "quote": "Interact with cubic in PR comments to ask questions, trigger reviews, and fix issues."
-        },
-        {
           "evidenceId": "cubic-docs-7",
           "quote": "cubic generates the fix and pushes it to your PR branch."
-        },
-        {
-          "evidenceId": "cubic-docs-44",
-          "quote": "cubic can automatically fix issues identified during code review. Request a targeted fix with one click."
-        },
-        {
-          "evidenceId": "cubic-docs-10",
-          "quote": "Select code and choose **Add to AI chat** to ask about it with the diff and codebase as context."
         },
         {
           "evidenceId": "cubic-docs-9",
           "quote": "Ask chat to \"tour this PR\" for a step-by-step review of the changes and what to check."
         },
         {
-          "evidenceId": "cubic-docs-50",
-          "quote": "The chat sidebar helps you quickly understand and navigate your pull requests (PRs) with intelligent, context-aware assistance directly within cubic."
+          "evidenceId": "cubic-docs-10",
+          "quote": "Select code and choose **Add to AI chat** to ask about it with the diff and codebase as context."
+        },
+        {
+          "evidenceId": "cubic-docs-29",
+          "quote": "Interact with cubic in PR comments to ask questions, trigger reviews, and fix issues."
+        },
+        {
+          "evidenceId": "cubic-docs-44",
+          "quote": "cubic can automatically fix issues identified during code review. Request a targeted fix with one click."
         }
       ]
     }
@@ -13799,12 +13794,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "cubic runs its own unattended automation: the GitHub app automatically reviews new PRs without user interaction, and an official CLI (`cubic review`) can review local changes and produce a prompt for a coding agent. However, the evidence never documents running the CLI non-interactively in a CI pipeline, so headless/CI use is only implied. missing for 10: documented CI/pipeline integration for the CLI, a non-interactive/headless mode with flags or exit codes, CI authentication guidance, independent hands-on corroboration.",
+    "rationale": "cubic ships its own CLI (`cubic review`) for scriptable local reviews, and as a GitHub app it automatically reviews new pull requests with no human trigger, which gives it unattended, CI-like automation. However, nothing documents running the CLI non-interactively inside a CI pipeline. missing for 10: documented CI pipeline integration (e.g. GitHub Actions or other CI recipes), explicit headless/non-interactive CLI mode with API-key auth and exit codes for CI gating, independent hands-on corroboration.",
     "evidenceIds": [
-      "cubic-docs-4",
-      "cubic-docs-41",
       "cubic-docs-8",
       "cubic-docs-31",
+      "cubic-docs-4",
       "cubic-probe-4"
     ],
     "support": {
@@ -13813,16 +13807,16 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "cubic-docs-4",
-          "quote": "Once installed, cubic automatically reviews new pull requests."
+          "evidenceId": "cubic-docs-8",
+          "quote": "review your uncommitted changes: `cubic review`"
         },
         {
           "evidenceId": "cubic-docs-31",
           "quote": "The **cubic CLI** reviews local changes before you push. It finds bugs and generates a prompt that your coding agent can use to fix them."
         },
         {
-          "evidenceId": "cubic-docs-8",
-          "quote": "review your uncommitted changes: `cubic review`"
+          "evidenceId": "cubic-docs-4",
+          "quote": "Once installed, cubic automatically reviews new pull requests."
         }
       ]
     }
@@ -13833,7 +13827,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is an AI code-review product, so letting it consume external MCP servers' tools is a fair question for this kind of product. The evidence only documents cubic's own MCP server, which coding agents connect to (the server role). It shows nothing about cubic acting as an MCP client that plugs in third-party MCP servers.",
+    "rationale": "cubic is an AI code-review agent, so consuming external MCP servers is a fair capability to ask about. The evidence only documents cubic's own MCP server, which coding agents connect to as clients. That is the opposite role and earns no credit here, and nothing shows cubic can plug in third-party MCP servers to use their tools.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13848,11 +13842,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "cubic documents an official MCP server that users connect to their coding agent. Through it the agent can read review findings and codebase context, request PR reviews, triage scan issues, and manage subscription and seats from an MCP client. A probe confirms a dedicated MCP server docs page. Missing for 10: independent or hands-on corroboration of the MCP server working, and setup details such as authentication, transport and the full tool list in the evidence.",
+    "rationale": "cubic documents an official MCP server that users connect to their coding agent to read review findings and codebase context, request PR reviews, and triage scan issues. A changelog entry extends it to subscription and seat management, and a probe confirms a dedicated MCP server docs page. Missing for 10: setup/auth and tool-list detail in the evidence, independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-15",
-      "cubic-docs-3",
-      "cubic-probe-3"
+      "cubic-probe-3",
+      "cubic-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -13864,12 +13858,12 @@
           "quote": "Connect cubic's MCP server to your coding agent to read review findings and codebase context, request PR reviews, and triage PR or codebase scan issues."
         },
         {
-          "evidenceId": "cubic-docs-3",
-          "quote": "You can now ask your coding agent to check your cubic subscription, manage team seats and roles, and purchase more seats without leaving your MCP client."
-        },
-        {
           "evidenceId": "cubic-probe-3",
           "quote": "official MCP server documented at https://docs.cubic.dev/ide/mcp-server"
+        },
+        {
+          "evidenceId": "cubic-docs-3",
+          "quote": "You can now ask your coding agent to check your cubic subscription, manage team seats and roles, and purchase more seats without leaving your MCP client."
         }
       ]
     }
@@ -13880,15 +13874,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "cubic documents several first-party natural-language control surfaces. In PR comments you can ask questions, trigger reviews and request fixes (\"@cubic-dev-ai review this PR\"), and a chat sidebar accepts requests like \"tour this PR\". Through its MCP server, a coding agent can request reviews, triage issues and manage subscription seats and roles conversationally. missing for 10: no evidence that configuration (cubic.yaml, custom agents, auto-approval settings) can be changed by natural language, and no independent or hands-on corroboration of the natural-language command surfaces.",
+    "rationale": "cubic documents several natural-language control surfaces. In PR comments you can ask questions, trigger reviews and fix issues (e.g. \"@cubic-dev-ai review this PR\"), and a chat sidebar accepts requests like \"tour this PR\". Its MCP server also lets a coding agent request reviews, triage issues and manage subscriptions and seats from natural-language prompts. missing for 10: independent or hands-on corroboration that natural-language commands work reliably, and evidence that configuration (cubic.yaml, custom agents) can be changed by natural language rather than YAML editing.",
     "evidenceIds": [
       "cubic-docs-29",
       "cubic-docs-42",
       "cubic-docs-9",
+      "cubic-docs-45",
       "cubic-docs-6",
       "cubic-docs-3",
       "cubic-docs-15",
-      "cubic-docs-45"
+      "cubic-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -13912,8 +13907,8 @@
           "quote": "Connect cubic's MCP server to your coding agent to read review findings and codebase context, request PR reviews, and triage PR or codebase scan issues."
         },
         {
-          "evidenceId": "cubic-docs-6",
-          "quote": "Reply to a review comment to ask for clarification"
+          "evidenceId": "cubic-docs-45",
+          "quote": "Ask follow-up questions about code changes without leaving the PR"
         }
       ]
     }
@@ -13922,9 +13917,9 @@
     "productId": "cubic",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "high",
-    "rationale": "cubic ships an official, documented CLI (`cubic review`) that reviews uncommitted local changes before push and generates a prompt a coding agent can use to fix the findings. It can also use an existing ChatGPT or Claude Code subscription for local reviews, which fits an AI-native workflow well. Missing for 10: documented command surface beyond local review (install, auth, scripting/non-interactive output), independent or hands-on corroboration of the CLI.",
+    "rationale": "cubic documents an official cubic CLI (`cubic review`) that reviews local, uncommitted changes before push and generates a prompt your coding agent can use to fix the findings. It can also use your ChatGPT Plus/Pro or Claude Code subscription for local reviews, which fits AI-native workflows well. Missing for 10: documented command surface beyond local review, installation and usage reference detail, and independent or hands-on corroboration of the CLI.",
     "evidenceIds": [
       "cubic-docs-31",
       "cubic-docs-8",
@@ -13959,12 +13954,15 @@
     "productId": "cubic",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "cubic documents its own Analytics API, which returns PR-level data on flagged issues, fixes, and AI-authored code. That makes it a real public API, but it is scoped to reading analytics rather than driving the product, for example triggering reviews or changing configuration. Probes for an OpenAPI spec all returned 404. The MCP server's ability to request reviews belongs to the separate MCP story and is not credited here. Missing for 10: documented API endpoints for driving core actions (triggering reviews, fixes, settings), a published OpenAPI or reference spec, auth and rate-limit documentation, and independent hands-on corroboration.",
+    "rationale": "cubic documents a public REST API: an Analytics API with a published OpenAPI 3.1.0 spec and API-key auth, plus a Members API with per-endpoint OpenAPI operations, an interactive playground, and path versioning. However, the documented API only covers exporting analytics and managing organizations and members. Core actions like triggering reviews, applying fixes, or configuring review behavior are evidenced only via PR comments, the CLI, and the MCP server, not the public API. Missing for 10: API endpoints to trigger or manage reviews, fixes and scans; a versioning or deprecation policy; independent hands-on corroboration of API use.",
     "evidenceIds": [
       "cubic-docs-20",
-      "cubic-probe-2"
+      "cubic-analytics-openapi-20261106",
+      "cubic-members-api-ref-20261106",
+      "cubic-api-playground-20261106",
+      "cubic-key-lifecycle-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -13974,6 +13972,22 @@
         {
           "evidenceId": "cubic-docs-20",
           "quote": "The Analytics API gives you PR-level data on how many issues were flagged, how many were fixed, how much AI code was authored, etc."
+        },
+        {
+          "evidenceId": "cubic-analytics-openapi-20261106",
+          "quote": "cubic publishes a machine-readable OpenAPI 3.1.0 document for its Analytics API"
+        },
+        {
+          "evidenceId": "cubic-members-api-ref-20261106",
+          "quote": "Each Members API endpoint page's markdown mirror embeds the full OpenAPI 3.1.0 YAML for that operation"
+        },
+        {
+          "evidenceId": "cubic-api-playground-20261106",
+          "quote": "Each endpoint page includes an authenticated request playground, response schemas, and code examples."
+        },
+        {
+          "evidenceId": "cubic-key-lifecycle-20261106",
+          "quote": "The API is path-versioned (/api/v1/organizations, /api/analytics/v1/prs) with a dated changelog"
         }
       ]
     }
@@ -13984,10 +13998,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is a SaaS code-review platform with an MCP server and an Analytics API, so scoped agent credentials are a fair question. However, no evidence shows that it issues scoped or least-privilege API keys or tokens for agents. The only related item is user role-based access control for subscription and settings changes, which is an adjacent control rather than scoped agent credentials.",
+    "rationale": "cubic documents API keys (personal or organization) for its Analytics and Members APIs, but nothing shows those keys can be scoped or limited to least-privilege permissions for an agent. The role-based access control it does document governs human team members' rights over subscription and settings, which is an adjacent feature, not scoped credentials.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": []
@@ -13999,7 +14013,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is a code-review SaaS, so shipping official SDKs is a fair question for this kind of product, but the evidence pack never mentions any SDK or client library. The Analytics API, MCP server and CLI are different capabilities, not official SDKs, and the OpenAPI probe returned 404s, so no generated clients are evidenced either.",
+    "rationale": "The evidence shows cubic publishes REST APIs (Analytics and Members) with OpenAPI 3.1.0 specs, an interactive playground with code examples, a CLI and an MCP server. None of the evidence mentions official SDK client libraries. An OpenAPI spec and playground snippets are building blocks a developer could use to generate a client, not first-party SDKs, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14014,7 +14028,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a SaaS code-review platform like cubic, but nothing in the evidence pack documents registrable outbound HTTP callbacks for events. The Analytics API (pull-based), the MCP server, the CLI and the Linear/Jira issue analysis are adjacent features, not webhook subscriptions, so they earn no credit.",
+    "rationale": "Webhooks are a fair axis for a SaaS code-review platform, but the evidence pack never documents registrable outbound HTTP callbacks. The pack covers an Analytics API, a Members API, an MCP server and a CLI, which are pull or request-driven interfaces, not event subscriptions, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14029,16 +14043,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "cubic runs event-triggered agents: it automatically reviews every new PR, re-reviews after force-pushes, and keeps an exported wiki current through a rolling pull request. Fixing is still human-initiated, either one click on 'Fix with cubic' or a comment command, so it does not autonomously fix software on its own trigger. Codebase scans deploy agents to find bugs, but no recurring schedule is documented. Missing for 10: scheduled/cron-based recurring agent runs, autonomous fix-without-human-trigger, general-purpose always-on maintenance agents beyond PR review, independent hands-on corroboration.",
+    "rationale": "cubic runs event-triggered agents: it automatically reviews every new PR and auto-approves low-risk ones, and it keeps an exported wiki current through a rolling pull request. Fixing is user-initiated (one click per finding), and codebase scans have no documented schedule, so it is not an always-on autonomous maintainer. missing for 10: scheduled/recurring agent runs, autonomous trigger-based fixing without a user click, configurable custom triggers, independent corroboration of autonomous operation",
     "evidenceIds": [
-      "cubic-docs-4",
       "cubic-docs-41",
-      "cubic-docs-2",
       "cubic-docs-23",
-      "cubic-docs-7",
       "cubic-docs-44",
-      "cubic-docs-21",
-      "cubic-docs-35"
+      "cubic-docs-35",
+      "cubic-docs-21"
     ],
     "support": {
       "relation": "direct",
@@ -14046,24 +14057,20 @@
       "subject": "As an ai-native user, I can set up always-on agents that run on schedules or triggers to maintain and fix my software autonomously",
       "citations": [
         {
-          "evidenceId": "cubic-docs-4",
-          "quote": "Once installed, cubic automatically reviews new pull requests."
+          "evidenceId": "cubic-docs-41",
+          "quote": "cubic automatically starts reviewing new pull requests in your selected repositories."
         },
         {
           "evidenceId": "cubic-docs-23",
           "quote": "keeps them current through a rolling pull request"
         },
         {
-          "evidenceId": "cubic-docs-7",
-          "quote": "cubic generates the fix and pushes it to your PR branch."
+          "evidenceId": "cubic-docs-44",
+          "quote": "cubic can automatically fix issues identified during code review. Request a targeted fix with one click."
         },
         {
-          "evidenceId": "cubic-docs-21",
-          "quote": "Codebase scans deploy thousands of AI agents to find bugs and vulnerabilities across your repository."
-        },
-        {
-          "evidenceId": "cubic-docs-2",
-          "quote": "cubic now reviews the new changes after a force-push when it can safely compare them with a previously reviewed version."
+          "evidenceId": "cubic-docs-35",
+          "quote": "Auto-approval lets you skip human review for pull requests that cubic determines are low risk and issue-free."
         }
       ]
     }
@@ -14071,46 +14078,89 @@
   {
     "productId": "cubic",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "cubic documents an Analytics API, but nothing in the evidence shows an interactive API reference or runnable examples, and the OpenAPI probe returned 404 on every candidate path. A plain API description page is not the interactive, runnable reference this story asks for, and a SaaS review platform could plausibly ship one, so the axis applies and the verdict is none.",
-    "evidenceIds": [],
+    "rationale": "cubic's API reference runs Mintlify's interactive playground with a per-endpoint \"Try it\" runner. The overview says each endpoint page includes an authenticated request playground, response schemas, and code examples, and these pages are backed by published OpenAPI 3.1.0 definitions for the Analytics and Members APIs. The probe's 404s were at generic paths, which does not contradict the Analytics spec published at /openapi/analytics.json. Missing for 10: independent or hands-on corroboration that the playground runner works across all endpoints.",
+    "evidenceIds": [
+      "cubic-api-playground-20261106",
+      "cubic-analytics-openapi-20261106",
+      "cubic-members-api-ref-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "cubic-api-playground-20261106",
+          "quote": "Each endpoint page includes an authenticated request playground, response schemas, and code examples."
+        },
+        {
+          "evidenceId": "cubic-api-playground-20261106",
+          "quote": "The API reference runs the Mintlify interactive playground (\"playground\":{\"display\":\"interactive\"}) with a \"Try it\" runner per endpoint"
+        },
+        {
+          "evidenceId": "cubic-analytics-openapi-20261106",
+          "quote": "cubic publishes a machine-readable OpenAPI 3.1.0 document for its Analytics API"
+        }
+      ]
     }
   },
   {
     "productId": "cubic",
     "storyId": "api-key-auth",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "cubic has an Analytics API, a CLI and an MCP server, so API-key authentication is a fair question for this product. However, no evidence item says how any of these authenticate or mentions API keys or tokens as an alternative to account login. The Analytics API's existence alone is an adjacent building block, not documented API-key authentication.",
-    "evidenceIds": [],
+    "rationale": "cubic documents API-key authentication for its Analytics API, using personal or organization keys, and documents the lifecycle of its legacy `cak_` keys. That is a real first-party capability, but the evidence only clearly shows key-based auth for analytics export, gated to Pro or Max, not as a general replacement for account login. missing for 10: explicit API-key auth documentation for the Members API, the CLI and the MCP server; docs on key creation and management; availability outside the Pro/Max tiers; independent or hands-on corroboration.",
+    "evidenceIds": [
+      "cubic-analytics-openapi-20261106",
+      "cubic-key-lifecycle-20261106",
+      "cubic-api-playground-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can authenticate with an API key instead of an account login",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "cubic-analytics-openapi-20261106",
+          "quote": "Export pull request analytics with a personal or organization API key. Access requires Pro or Max."
+        },
+        {
+          "evidenceId": "cubic-key-lifecycle-20261106",
+          "quote": "Analytics API keys that start with `cak_` keep working with the Analytics API, but cubic no longer creates them."
+        }
+      ]
     }
   },
   {
     "productId": "cubic",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "cubic documents an Analytics API, so a machine-readable API spec is a fair question for this product. However, no OpenAPI or equivalent spec is documented, and the probe found every common OpenAPI/Swagger path returning 404. The llms.txt file and the MCP server are related agent-facing features, not a downloadable API spec, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "cubic publishes a downloadable, machine-readable OpenAPI 3.1.0 document for its Analytics API at docs.cubic.dev/openapi/analytics.json. The Members API also exposes full OpenAPI 3.1.0 YAML, but only embedded per endpoint in markdown mirrors. The probe's 404s were on generic paths, not the documented one, so they do not contradict the claim. Missing for 10: a single downloadable spec covering the whole API including Members, a spec at a conventional discoverable path, independent hands-on corroboration.",
+    "evidenceIds": [
+      "cubic-analytics-openapi-20261106",
+      "cubic-members-api-ref-20261106",
+      "cubic-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "cubic-analytics-openapi-20261106",
+          "quote": "cubic publishes a machine-readable OpenAPI 3.1.0 document for its Analytics API"
+        },
+        {
+          "evidenceId": "cubic-members-api-ref-20261106",
+          "quote": "Each Members API endpoint page's markdown mirror embeds the full OpenAPI 3.1.0 YAML for that operation"
+        }
+      ]
     }
   },
   {
@@ -14119,7 +14169,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test workspace is a fair question for a SaaS code-review platform, but the evidence never documents an isolated environment for testing cubic away from production repositories or data. The closest item is auto-approval \"shadow mode\" (cubic-docs-12), which is a dry-run preview of one feature, not sandbox isolation, so it earns no credit.",
+    "rationale": "cubic is a SaaS code-review platform with public APIs, so a sandbox or test environment is a fair question to ask. The evidence documents no isolated sandbox that keeps testing away from production data. The closest items are adjacent and earn no credit: auto-approval \"shadow mode\" is a dry-run preview inside live repos, not sandbox isolation, and the API \"Try it\" playground sends authenticated requests to the real API with no documented test environment.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14131,16 +14181,33 @@
   {
     "productId": "cubic",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "cubic documents an Analytics API (cubic-docs-20), an MCP server and a CLI, so an API versioning and deprecation axis applies to it. Nothing in the evidence mentions API version numbers, version pinning, or a deprecation or sunset policy, and the OpenAPI probe returned 404 on every candidate path. Having an API at all is adjacent and earns no credit for versioning.",
-    "evidenceIds": [],
+    "rationale": "cubic's own APIs are path-versioned (/api/v1/organizations, /api/analytics/v1/prs) and have a dated changelog. The only lifecycle commitment documented is a single legacy-credential note: old `cak_` keys keep working but are no longer issued. The evidence explicitly states that no versioning or deprecation policy document exists. Missing for 10: a documented API deprecation policy (notice periods, sunset timelines, version support windows), a stated versioning policy, and independent corroboration.",
+    "evidenceIds": [
+      "cubic-key-lifecycle-20261106",
+      "cubic-members-api-ref-20261106",
+      "cubic-analytics-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "cubic-key-lifecycle-20261106",
+          "quote": "The API is path-versioned (/api/v1/organizations, /api/analytics/v1/prs) with a dated changelog"
+        },
+        {
+          "evidenceId": "cubic-key-lifecycle-20261106",
+          "quote": "Analytics API keys that start with `cak_` keep working with the Analytics API, but cubic no longer creates them."
+        },
+        {
+          "evidenceId": "cubic-members-api-ref-20261106",
+          "quote": "listOrganizations (GET /api/v1/organizations)"
+        }
+      ]
     }
   },
   {
@@ -14149,7 +14216,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "cubic's AI wiki automatically indexes the codebase and produces searchable wikis with source-code links and architecture diagrams, which directly addresses understanding how a codebase fits together. Code chat and the MCP server add codebase context. Missing for 10: explicit documentation of guidance on locating where to start making changes (only implied by searchable, source-linked wikis), and independent or hands-on corroboration of wiki quality.",
+    "rationale": "cubic's AI wiki automatically indexes the codebase and produces searchable wikis with links to source code and architecture diagrams, kept current in the repo. In-PR chat can also answer questions using the codebase as context, which directly supports learning how the code fits together. missing for 10: explicit documentation of using the wiki or chat to locate where to start a change, depth detail on what the wiki and diagrams cover, independent or hands-on corroboration of wiki quality.",
     "evidenceIds": [
       "cubic-docs-22",
       "cubic-docs-23",
@@ -14172,10 +14239,6 @@
         {
           "evidenceId": "cubic-docs-10",
           "quote": "Select code and choose **Add to AI chat** to ask about it with the diff and codebase as context."
-        },
-        {
-          "evidenceId": "cubic-docs-15",
-          "quote": "Connect cubic's MCP server to your coding agent to read review findings and codebase context"
         }
       ]
     }
@@ -14186,13 +14249,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "cubic's own agent can commit: it generates fixes for review findings and pushes commits to the PR branch. It also maintains a rolling pull request for its exported wiki, and it generates PR descriptions. It does not act as a general git agent that stages a developer's changes, writes their commit messages, creates feature branches, or opens arbitrary PRs; the docs point developers to normal git commands for that. Missing for 10: agent-driven staging of the developer's changes, commit-message authoring, branch creation on request, opening PRs for user work, and independent corroboration.",
+    "rationale": "cubic's own fix agent generates code fixes from review comments and pushes commits to the PR branch. That covers committing within an existing PR, and the AI wiki is kept current through a cubic-maintained rolling pull request. Nothing shows a developer directing the agent to stage arbitrary changes, write commit messages, create branches, or open general-purpose PRs; doc 51 refers to the user running normal Git commands themselves. Missing for 10: agent-driven staging, documented commit-message authoring, branch creation, opening arbitrary new PRs on request, independent corroboration.",
     "evidenceIds": [
       "cubic-docs-7",
       "cubic-docs-30",
       "cubic-docs-44",
-      "cubic-docs-23",
-      "cubic-docs-26"
+      "cubic-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -14210,10 +14272,6 @@
         {
           "evidenceId": "cubic-docs-23",
           "quote": "keeps them current through a rolling pull request"
-        },
-        {
-          "evidenceId": "cubic-docs-26",
-          "quote": "Generates PR descriptions based on code changes"
         }
       ]
     }
@@ -14224,14 +14282,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "cubic's docs state that once installed it automatically reviews new pull requests, comments on bugs and improvements, and re-reviews new changes after force-pushes. Context comes from learnings mined from senior reviewers' historical comments and from cross-repo checks of shared APIs and schemas, and community users note the comments are contextualized and have become quieter and more useful. missing for 10: rigorous independent hands-on evidence of review-comment accuracy (community feedback is brief and anecdotal), and PRs opened before installation need a manual trigger.",
+    "rationale": "cubic's docs say that once installed it automatically reviews new pull requests and comments on bugs and improvements. Its feedback draws on codebase context, cross-repo links and learnings from senior reviewers' past comments. Hands-on community reports back up the contextual quality: one user found it contextualizes the app where other tools stayed surface level, and a months-long tester found it quieter and more useful. Missing for 10: PRs opened before installation need a manual `@cubic-dev-ai review this PR` trigger, and only GitHub is evidenced, with no GitLab support.",
     "evidenceIds": [
       "cubic-docs-4",
       "cubic-docs-41",
       "cubic-docs-25",
-      "cubic-docs-2",
+      "cubic-docs-10",
       "cubic-docs-40",
       "cubic-docs-46",
+      "cubic-docs-5",
       "cubic-comm-1",
       "cubic-comm-7"
     ],
@@ -14249,16 +14308,16 @@
           "quote": "Comments on bugs and improvements in pull requests"
         },
         {
-          "evidenceId": "cubic-docs-2",
-          "quote": "cubic now reviews the new changes after a force-push when it can safely compare them with a previously reviewed version."
+          "evidenceId": "cubic-docs-46",
+          "quote": "Link related repositories so reviews can check shared APIs, schemas, docs, or release work."
         },
         {
           "evidenceId": "cubic-docs-40",
           "quote": "cubic analyzes their historical PR comments to extract learnings from the patterns they consistently enforce."
         },
         {
-          "evidenceId": "cubic-docs-46",
-          "quote": "Link related repositories so reviews can check shared APIs, schemas, docs, or release work."
+          "evidenceId": "cubic-comm-1",
+          "quote": "Some of the other tools I tried didn't seem to contextualize the app, so the comments were surface level and trite."
         },
         {
           "evidenceId": "cubic-comm-7",
@@ -14272,8 +14331,8 @@
     "storyId": "automated-test-and-lint-fixes",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "cubic's own coding agent can generate fixes for issues found in its code review and push them to the PR branch ('Fix with cubic'). That covers a narrow slice of the story, roughly fixing flagged code-quality or standards issues. No evidence shows it writing tests, resolving merge conflicts, or updating dependencies. Missing for 10: test generation, explicit lint-error fixing, merge-conflict resolution, dependency updates, independent hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "cubic documents its own fix capability: 'Fix with cubic' generates a fix for a review finding and pushes it to the PR branch. That loosely covers fixing code-quality and lint-style issues it flags. Nothing in the evidence shows it writing tests, resolving merge conflicts or updating dependencies. Missing for 10: test generation, explicit lint-error fixing, merge-conflict resolution, dependency updates, independent hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-7",
       "cubic-docs-44",
@@ -14285,12 +14344,12 @@
       "subject": "As a developer, I can have the agent write tests, fix lint errors, resolve merge conflicts, and update dependencies for me",
       "citations": [
         {
-          "evidenceId": "cubic-docs-44",
-          "quote": "cubic can automatically fix issues identified during code review. Request a targeted fix with one click."
-        },
-        {
           "evidenceId": "cubic-docs-7",
           "quote": "cubic generates the fix and pushes it to your PR branch."
+        },
+        {
+          "evidenceId": "cubic-docs-44",
+          "quote": "cubic can automatically fix issues identified during code review. Request a targeted fix with one click."
         },
         {
           "evidenceId": "cubic-docs-30",
@@ -14305,7 +14364,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing models automatically is a fair question for an AI code-review tool, but the evidence never documents cubic routing each task to the best model. Ultrareview is a separate deeper review mode the user triggers, which uses 'most capable review models'; that is not automatic per-task model selection. Connecting a ChatGPT or Claude Code subscription is a user choice of model source, not automatic routing.",
+    "rationale": "Automatic model routing is a fair question for an AI code-review tool, but the evidence pack never documents cubic picking a model per task. Ultrareview is a mode the user opts into to get 'most capable review models,' and CLI reviews use a subscription the user connects. Neither is automatic per-task model selection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14320,10 +14379,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no capability for selecting many items, such as PRs, findings or scan issues, and acting on them in one operation. The related material is adjacent rather than bulk operations. The org-level `cubic-config` repository is a configuration fallback for repositories without their own settings. Codebase scans are a repository-wide analysis. The stack-merge UI orders the merging of a PR stack. MCP triage is not described as batch.",
+    "rationale": "The evidence pack documents no bulk-operation capability, meaning no way to select many findings, PRs or repositories and apply one action to all of them. The nearest items are adjacent: org-wide default config via a `cubic-config` repo, merging a PR stack in order, repository-wide codebase scans, and CSV export. None of these is a documented bulk action across many items, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": []
@@ -14335,14 +14394,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "cubic lets teams define their own review rules (custom agents, configured in cubic.yaml), and these run automatically when PRs are opened. It also offers automatic actions such as policy-gated auto-approval and automatic thread resolution. These are fixed, PR-scoped behaviors, not a general event-to-action rule engine. missing for 10: user-definable event triggers beyond PR review, configurable custom actions per rule, documented conditional rule logic, independent or hands-on corroboration.",
+    "rationale": "cubic lets teams define custom review rules (custom agents) in `cubic.yaml`, and these run automatically when new pull requests open. It also offers configurable automatic actions such as auto-approval under repository policy and automatic thread resolution when an issue is fixed. However, these are fixed, PR-review-scoped behaviors rather than a general rule engine that maps arbitrary events to arbitrary actions. Missing for 10: user-defined event→action rules beyond PR review, documentation of a selectable range of trigger events and action types, independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-34",
       "cubic-docs-16",
-      "cubic-docs-4",
+      "cubic-docs-41",
       "cubic-docs-12",
       "cubic-docs-27",
-      "cubic-docs-35"
+      "cubic-docs-33"
     ],
     "support": {
       "relation": "direct",
@@ -14358,8 +14417,8 @@
           "quote": "`cubic.yaml` lives in the root of your repository and becomes the source of truth for AI review behavior, ignore patterns, PR descriptions, and custom agents."
         },
         {
-          "evidenceId": "cubic-docs-4",
-          "quote": "Once installed, cubic automatically reviews new pull requests."
+          "evidenceId": "cubic-docs-41",
+          "quote": "cubic automatically starts reviewing new pull requests in your selected repositories."
         },
         {
           "evidenceId": "cubic-docs-12",
@@ -14378,7 +14437,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduled recurring jobs are a fair question for an AI code-review platform, for example scheduled codebase scans. However, the evidence shows only one-off or event-triggered actions: automatic reviews on new PRs, comment-triggered reviews, on-demand codebase scans, and a wiki kept current via a rolling PR. None of these is a documented capability for users to define recurring schedules for jobs or workflows.",
+    "rationale": "Scheduling recurring jobs is a fair question for a code-review platform, which could offer things like scheduled codebase scans. The pack documents no user-configurable recurring schedule. Automatic PR reviews are event-triggered by new PRs, codebase scans have no documented schedule, and the wiki's rolling PR is automatic upkeep rather than a user-defined recurring job.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14391,9 +14450,9 @@
     "productId": "cubic",
     "storyId": "automation-versioned-workflows",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "cubic stores its automation configuration (AI review behavior, ignore patterns, PR descriptions, custom agents) in a repo-root `cubic.yaml` that acts as the source of truth, so automations are config-as-code and can be versioned alongside code. Auto-approval also offers a shadow mode for reviewing what the automation would do before switching it live. However, cubic documents no automation version history, change review, or rollback feature of its own; those depend on the user's Git workflow. Missing for 10: first-party version history for automations, a documented review/approval flow for config changes, explicit rollback capability, independent corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "cubic's review automations (review behavior, ignore patterns, PR descriptions, custom agents) are defined in a repository-resident `cubic.yaml` that is the documented source of truth. That puts automation config under the repo's version history and PR review, but cubic itself documents no versioning, change review, or rollback for these automations. Auto-approval's shadow mode is a dry-run preview before going live, not versioning or rollback. Missing for 10: first-party docs on automation version history, a review/approval flow for config changes, an explicit rollback mechanism, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-16",
       "cubic-docs-17",
@@ -14410,7 +14469,7 @@
         },
         {
           "evidenceId": "cubic-docs-17",
-          "quote": "Create a repository named `cubic-config` in your organization and add a `cubic.yaml` file to the root directory. cubic automatically applies these settings to any repository that doesn't have its own configuration."
+          "quote": "Create a repository named `cubic-config` in your organization and add a `cubic.yaml` file to the root directory."
         },
         {
           "evidenceId": "cubic-docs-12",
@@ -14425,10 +14484,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is an AI code-review product. Its documented agentic capability is limited to generating targeted fixes for review findings and pushing them to an existing PR branch. There is no evidence of a cloud agent that builds a new feature, runs tests on it, and produces a demo for review. The fix-on-review feature is adjacent and does not count toward this story.",
+    "rationale": "cubic is an AI code-review platform with a fix-generation coding agent, so asking whether a cloud agent can build, test, and demo a feature is a fair question for this kind of product. The evidence only shows targeted fixes for review findings pushed to an existing PR branch. Nothing documents an agent that builds a whole feature, runs tests, or produces a demo for review.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an ai-native user, I can have a cloud agent build, test, and demo a feature end-to-end for my review",
       "citations": []
@@ -14437,33 +14496,16 @@
   {
     "productId": "cubic",
     "storyId": "background-cloud-tasks",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "cubic's own 'Fix with cubic' feature lets a developer delegate a targeted code fix, which cubic generates and pushes as commits to the PR branch. That is a narrow form of hands-off coding-task delegation. Its longer-running modes (Ultrareview, codebase scans) are reviews, not coding tasks, and nothing documents an isolated cloud execution environment. Missing for 10: delegation of general or longer-running coding tasks beyond review-comment fixes, documented isolated/sandboxed cloud execution environments, background task status/monitoring, independent hands-on corroboration.",
-    "evidenceIds": [
-      "cubic-docs-7",
-      "cubic-docs-44",
-      "cubic-docs-30"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "cubic is an AI code-review product. The closest feature is \"Fix with cubic\", a one-click targeted fix for a single review comment that is pushed to the PR branch. That is an adjacent review-remediation feature, not delegation of longer-running coding tasks. Nothing in the evidence describes a background task agent or an isolated cloud execution environment. Ultrareview and codebase scans are long-running analyses, not coding-task execution.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a developer, I can delegate longer-running coding tasks to run in the background in an isolated cloud environment",
-      "citations": [
-        {
-          "evidenceId": "cubic-docs-7",
-          "quote": "cubic generates the fix and pushes it to your PR branch."
-        },
-        {
-          "evidenceId": "cubic-docs-44",
-          "quote": "cubic can automatically fix issues identified during code review. Request a targeted fix with one click."
-        },
-        {
-          "evidenceId": "cubic-docs-30",
-          "quote": "By default, cubic pushes commits directly to your PR branch."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -14472,7 +14514,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented control over which external tools or integrations the cubic agent may access, such as a tool allowlist or integration permission scopes. Role-based access control covers who can change subscription and settings, cubic.yaml configures review behavior, and linking Linear/Jira or related repos adds integrations. These are adjacent features, not agent tool-access governance.",
+    "rationale": "The evidence documents integrations such as Linear/Jira issue analysis, cross-repo linking and an MCP server. It also documents configuration via cubic.yaml and role-based access control over subscription and settings. None of it shows an admin control that allows or restricts which external tools or integrations the review agent may access. RBAC governs who changes settings, and cubic.yaml governs review behavior and ignore patterns; both are adjacent controls, not tool-access permissions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14487,7 +14529,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is an AI code-review product with a CLI, a web UI, and GitHub PR integration, so cross-device task continuity is a fair question to ask of it. However, the evidence never documents starting a task, such as a CLI review or chat session, on one device and resuming it from another device or browser. PR reviews living on GitHub or cubic.dev is a property of the host platform, not a documented session-handoff capability, so it earns no credit.",
+    "rationale": "cubic is a code-review tool with a web UI, a CLI and an AI chat, so cross-device task continuation is a fair question for it. However, no evidence documents starting a task or session on one device and resuming it from another device or browser. PR reviews and comments live on GitHub, but that is a host-platform capability rather than a cubic session-handoff feature, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14502,9 +14544,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "cubic documents a 'memory and learning' feature that extracts learnings from experienced reviewers' historical PR comments, which shows the review agent builds persistent knowledge. The evidence describes only onboarding-time extraction from selected reviewers, not ongoing automatic memory building and recall across sessions. The auto-maintained AI wiki is codebase indexing rather than agent memory, so it is not credited here. Missing for 10: evidence of continuous automatic memory capture from ongoing interactions, documentation of how memories are recalled in later reviews or sessions, memory management or visibility controls, and independent or hands-on corroboration.",
+    "rationale": "cubic documents a Memory & Learning feature in which it analyzes experienced reviewers' historical PR comments and extracts learnings that it then enforces. That is a first-party mechanism for building persistent review memory, though the evidence only details the onboarding seeding step. The auto-maintained AI wiki adds persistent codebase context, but it is adjacent to agent memory rather than memory itself. missing for 10: evidence that memory is built continuously and automatically from ongoing interactions (e.g., feedback on comments), documentation of how learnings are recalled across later reviews and sessions, user visibility or editing of stored memories, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "cubic-docs-40"
+      "cubic-docs-40",
+      "cubic-docs-22",
+      "cubic-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -14523,13 +14567,12 @@
     "storyId": "custom-agent-skills",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "cubic's own documented customization mechanism is \"custom agents\": review rules defined in cubic.yaml that enforce an organization's specific best practices on pull requests. This lets developers equip the reviewer for specialized checks, but only within PR review rule enforcement, not general-purpose skill or tool packages. missing for 10: a general skills/plugin mechanism beyond review rules, documentation of how custom agents are authored and what they can do, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "cubic's own 'custom agents' feature lets teams define specialized review rules that enforce organization-specific best practices, configured in cubic.yaml. This is a narrow, review-scoped form of equipping the agent for specialized tasks. missing for 10: general-purpose skill packaging or tool/skill definitions beyond review rules, documentation of how custom agents are authored and what they can do, independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-34",
       "cubic-docs-11",
-      "cubic-docs-16",
-      "cubic-docs-17"
+      "cubic-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -14557,10 +14600,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic documents a web-based PR diff view, including hiding test files from the diff and descriptions shown beside the diff. Nothing in the evidence shows a desktop app or running multiple sessions side by side, so the web diff UI is only an adjacent feature.",
+    "rationale": "The evidence shows cubic has a web-based PR review interface with a diff view and file tree (hiding test files from the diff, group descriptions shown beside the diff). Nothing documents a desktop app or running multiple sessions side by side. A web PR diff viewer is an adjacent feature, not the desktop multi-session experience the story asks for.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can review diffs visually and run multiple sessions side by side in a desktop app",
       "citations": []
@@ -14572,7 +14615,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Enterprise authentication such as SSO, SAML, or cloud-platform identity is a fair question for a SaaS code-review product, but the evidence pack never documents it. The closest items are adjacent and earn no credit: role-based access control for subscription settings (cubic-docs-47) and connecting ChatGPT or Claude subscriptions to supply models for local reviews (cubic-docs-14).",
+    "rationale": "Enterprise identity or cloud-platform authentication is a fair question for a SaaS code-review product, so the axis applies. The pack documents role-based access control, API keys, a GitHub app install and connecting ChatGPT or Claude subscriptions for models, but none of these is SSO, SAML/OIDC, or cloud-platform identity login. These are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14587,7 +14630,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "cubic's own CLI lets you connect an existing ChatGPT Plus/Pro or Claude Code subscription to run its models, but the docs scope this to local reviews only. There is no evidence it powers cubic's coding/fix agent or that it is a full sign-in flow. missing for 10: subscription sign-in for the coding/fix agent beyond local CLI reviews, documented auth flow details, independent hands-on corroboration",
+    "rationale": "cubic's CLI documents connecting an existing ChatGPT Plus/Pro or Claude Code subscription to use those models. That is a first-party bring-your-own-subscription sign-in, but it covers only local reviews, not cubic's agent features broadly. The evidence is a single documentation line. missing for 10: sign-in/auth flow details, coverage beyond local CLI reviews (e.g. PR reviews or fixes), limits/quota behavior under the connected plan, independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-14",
       "cubic-docs-31"
@@ -14614,7 +14657,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "cubic documents a native integration that reads linked Linear or Jira issues and checks PRs against their requirements, so Jira-based context extension exists as the product's own capability. Nothing in the evidence shows Slack, Google Drive, or a general workflow-tool connector framework. missing for 10: Slack integration for context, Google Drive integration, a broader catalog of workflow-tool connectors, independent corroboration of the Jira integration.",
+    "rationale": "cubic's own documented issue-analysis feature pulls linked Linear or Jira issues into PR review, checking whether changes meet the requirements. That is a real but narrow form of workflow-tool context. Nothing in the evidence shows connecting Slack, Google Drive or other workflow tools as context sources. missing for 10: Slack integration, Google Drive integration, a general mechanism for connecting arbitrary workflow tools as agent context, independent corroboration of the Jira/Linear integration",
     "evidenceIds": [
       "cubic-docs-33"
     ],
@@ -14636,10 +14679,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a cubic free tier reached by signing in with a personal account. The closest item, connecting an existing ChatGPT Plus/Pro or Claude Code subscription for local reviews, is an adjacent feature: it relies on paid third-party subscriptions and does not grant free-tier access from cubic. Flex capacity mentions included reviewed-line capacity but nothing free or tied to a personal account.",
+    "rationale": "The evidence pack does not document a free tier for cubic that is unlocked by signing in with a personal account. The closest item, connecting an existing ChatGPT Plus/Pro or Claude Code subscription for local CLI reviews, avoids API keys but uses a paid third-party subscription rather than giving free-tier access. The other pricing evidence covers included capacity, flex spend limits and Pro/Max gating, none of which shows a free personal tier.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can sign in with a personal account to get free-tier access without managing API keys",
       "citations": []
@@ -14651,12 +14694,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "cubic's AI wiki automatically indexes the whole codebase and produces searchable wikis with source links and architecture diagrams, so mapping and explaining a repo does not require hand-picking context files. Its MCP server also exposes codebase context to coding agents. However, the documented interactive chat is PR-centric and starts from selected code, and the wiki is described only briefly with no hands-on validation. Missing for 10: interactive agent Q&A over the whole unfamiliar codebase, in-depth docs on wiki coverage and quality, independent or hands-on corroboration.",
+    "rationale": "cubic's AI wiki automatically indexes the whole codebase and produces searchable documentation with source links and architecture diagrams, so no manual context-file selection is needed. Its MCP server also exposes codebase context to coding agents. However, the interactive, agent-driven explanation the story describes is only documented for PR-scoped chat and code you select yourself, and the evidence never shows an agent walking a developer through an unfamiliar repository on demand. missing for 10: documented conversational agent explanation of an entire repo (not PR-scoped), detail on wiki depth and coverage of large codebases, independent or hands-on corroboration of wiki quality.",
     "evidenceIds": [
       "cubic-docs-22",
       "cubic-docs-23",
-      "cubic-docs-15",
-      "cubic-docs-10"
+      "cubic-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -14684,7 +14726,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is an AI code review product with an IDE/CLI presence and generated fixes, so inline completion is a fair question to ask of it. However, nothing in the evidence documents inline code completions or next-edit suggestions while typing. The closest features are adjacent and earn no credit: the CLI reviews local changes on demand, 'Fix with cubic' pushes fixes to a PR branch, and 'Add to AI chat' answers questions about selected code.",
+    "rationale": "cubic is an AI code-review product with GitHub PR reviews, a local review CLI, chat, one-click fixes and an MCP server. As an AI developer tool with IDE-facing surfaces, it could plausibly ship completions, so the axis applies. The evidence pack never documents inline as-you-type completions or next-edit suggestions. Fix generation and local CLI reviews are adjacent features and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14699,7 +14741,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic's documented capabilities stop at reviewing and patching pull requests that already exist. Nothing in the evidence shows it taking a tracked issue and producing a new pull request end-to-end. The closest features are adjacent: it can check an existing PR against linked Linear/Jira issue requirements, and it can push one-click fixes for review comments to an existing PR branch.",
+    "rationale": "cubic is an AI code-review product with fix capabilities, so generating a PR from a tracked issue is a fair axis, but no evidence shows it does this. The closest features are adjacent: it checks existing PRs against linked Linear/Jira issue requirements, and it pushes review fixes to an already-open PR branch. Neither creates a pull request from an issue.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14714,7 +14756,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack shows a cubic JetBrains plugin or any in-IDE diff view. The 'Add to AI chat' code-selection feature (cubic-docs-10) belongs to cubic's own PR review UI, not a JetBrains IDE. The CLI and MCP server are separate terminal and agent tools; running them inside an IDE would be a user-side workaround, not this capability.",
+    "rationale": "Nothing in the evidence mentions a JetBrains plugin or any IDE extension that shows interactive diffs. The 'Add to AI chat' code-selection feature (cubic-docs-10) and the diff view appear to live in cubic's own web review UI, not inside a JetBrains IDE, so they are adjacent and earn no credit. The documented local tools are a CLI and an MCP server, neither of which is a JetBrains integration.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14729,7 +14771,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is an AI code review tool that also generates AI fixes, so license and public-code matching is a fair axis for it. However, nothing in the evidence pack mentions license detection, code-provenance matching, or public-code references for AI-suggested code. Its documented features cover bug and vulnerability review, custom agents, analytics, and codebase scans, none of which address this story.",
+    "rationale": "cubic is an AI code-review product that generates fixes, so showing license or public-code matching references for AI-suggested code is a fair question for it. Nothing in the evidence pack mentions license detection, code-provenance checks, or matching against public code. Its reviews, codebase scans and analytics cover bugs, vulnerabilities and AI-authorship metrics, not licensing or public-code matches.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14744,7 +14786,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is an AI code-review platform that also connects to coding agents through its MCP server and CLI, so a buyer could reasonably ask whether it supports live-app debugging. However, the evidence only covers reviewing PRs and local diffs, codebase scans, and passing review findings to agents. Nothing documents attaching to, inspecting, or debugging a live running web application from a coding assistant.",
+    "rationale": "cubic is an AI code-review platform with a CLI and an MCP server that coding agents can connect to, so live-app debugging from a coding assistant is a plausible axis. However, the evidence only covers reviewing diffs, local uncommitted changes, PR findings and codebase scans. Nothing shows attaching to, inspecting, or debugging a running web application.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14759,7 +14801,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic's CLI runs AI code review on local uncommitted changes (`cubic review`), but it does not act as a coding agent. It finds bugs and generates a prompt for a separate coding agent to apply the fixes. Its fix-generating capability ('Fix with cubic') runs on PR branches, not as a local terminal agent. A local review CLI is an adjacent feature and earns no credit for this story.",
+    "rationale": "cubic's terminal CLI (`cubic review`) runs a local AI review of uncommitted changes. It does not write code itself: it 'generates a prompt that your coding agent can use to fix them', so the coding agent is a separate third-party tool. Its only code-fixing capability ('Fix with cubic') runs on the PR branch, not locally from the terminal. A local review CLI is an adjacent feature, not a terminal coding agent, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -14774,7 +14816,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "cubic's own cross-repo reviews let users link related repositories so a review can check shared APIs, schemas, docs, or release work across projects. That is multi-project context, but it applies to PR reviews rather than a user-assembled session of multiple directories. missing for 10: documented ability to add multiple project directories to a single chat/CLI session, details on how linked-repo context is loaded or limited, independent or hands-on corroboration.",
+    "rationale": "cubic documents cross-repo reviews: you link related repositories so a review can check shared APIs, schemas, docs, or release work across them. That is its own way of giving broader multi-project context. However, it is scoped to PR reviews rather than a user-assembled session where you add multiple project directories, and the docs are thin. Missing for 10: adding multiple local project directories to a single chat/CLI session, details on how linked-repo context is used and its limits, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-46",
       "cubic-docs-37"
@@ -14801,7 +14843,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic's documented chat lives in its own web PR interface (chat sidebar, 'Add to AI chat'), not inside the developer's IDE. Its IDE-adjacent offerings are a CLI and an MCP server that feeds a third-party coding agent; that chat belongs to the other agent, not to cubic. No cubic IDE extension or in-IDE chat is evidenced.",
+    "rationale": "cubic's documented chat lives in its own web PR-review UI (the chat sidebar and 'Add to AI chat' on diffs), not inside the developer's IDE. Its IDE-adjacent offerings, the MCP server and the local CLI review, feed findings to a third-party coding agent rather than providing a cubic chat assistant in the IDE. These are adjacent features, so no credit is given for in-IDE contextual chat.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -14816,7 +14858,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "cubic documents that developers can connect an existing ChatGPT Plus/Pro or Claude Code subscription so local CLI reviews run on that provider's models. That is a choice between two providers, but it only covers local reviews. GitHub PR reviews and Ultrareview run on cubic's own models with no documented user choice. Missing for 10: model selection for GitHub PR, chat and Ultrareview sessions, specific model choice within a provider, providers beyond OpenAI and Anthropic, and independent or hands-on corroboration.",
+    "rationale": "cubic's own CLI lets developers connect an existing ChatGPT Plus/Pro or Claude Code subscription and use those models for local reviews, so a choice between two providers' models is documented. That choice is limited to local CLI reviews. Ultrareview's 'most capable review models' are picked by cubic, not the user. missing for 10: model selection for GitHub PR reviews and chat, explicit per-model picking beyond connecting a subscription, broader provider list, independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-14",
       "cubic-docs-31"
@@ -14843,13 +14885,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "cubic documents kicking off agent work from GitHub PR comments: @cubic-dev-ai triggers reviews, and 'Fix with cubic' generates fixes and pushes them to the PR branch. The evidence only covers GitHub; Linear appears only as linked-issue requirement analysis, not as a way to start tasks. missing for 10: GitLab triggering, Linear-initiated agent tasks, Slack triggering, independent corroboration.",
+    "rationale": "cubic documents kicking off agent work from GitHub. Commenting `@cubic-dev-ai review this PR` starts a review, PR comments can trigger reviews and fixes, and \"Fix with cubic\" generates a fix and pushes it to the PR branch. Only one of the four named surfaces is covered: Linear appears only as linked-issue context for requirement analysis, not as a trigger, and GitLab and Slack are not mentioned. Missing for 10: GitLab triggering, Linear-initiated agent tasks, Slack-initiated agent tasks, independent corroboration of the GitHub triggers.",
     "evidenceIds": [
-      "cubic-docs-29",
       "cubic-docs-42",
+      "cubic-docs-29",
       "cubic-docs-7",
-      "cubic-docs-44",
-      "cubic-docs-30"
+      "cubic-docs-44"
     ],
     "support": {
       "relation": "direct",
@@ -14857,12 +14898,12 @@
       "subject": "As a developer, I can kick off agent tasks directly from GitHub, GitLab, Linear, or Slack",
       "citations": [
         {
-          "evidenceId": "cubic-docs-29",
-          "quote": "Interact with cubic in PR comments to ask questions, trigger reviews, and fix issues."
-        },
-        {
           "evidenceId": "cubic-docs-42",
           "quote": "Post this comment on GitHub to start a review"
+        },
+        {
+          "evidenceId": "cubic-docs-29",
+          "quote": "Interact with cubic in PR comments to ask questions, trigger reviews, and fix issues."
         },
         {
           "evidenceId": "cubic-docs-7",
@@ -14877,7 +14918,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is an AI code review product: it reviews PRs and local changes, fixes review findings, and builds wikis and analytics. Generating a working app from a sketch, image, or PDF design is outside that category. Its only code generation is targeted fixes for review comments, which is not design-to-app generation.",
+    "rationale": "cubic is an AI code-review product: it reviews PRs and local changes, generates targeted fixes, writes PR descriptions and produces wikis. Generating a whole working app from a sketch, image or PDF design is an app-builder capability outside the code-review category. Nothing in the evidence shows cubic ships design-to-app generation, so the axis does not apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -14890,16 +14931,15 @@
     "productId": "cubic",
     "storyId": "natural-language-debugging",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "cubic documents natural-language Q&A about code. You can select code and use 'Add to AI chat' with the diff and codebase as context, ask follow-up questions in PR comments, and use a context-aware chat sidebar. It can also generate fixes for flagged issues. All of this is scoped to understanding and reviewing PR changes, not general debugging or troubleshooting. missing for 10: documented debugging/troubleshooting workflows driven by natural-language queries (e.g., diagnosing runtime errors or bug reports), use of NL queries outside PR review, independent or hands-on corroboration.",
+    "rationale": "cubic documents its own natural-language chat: you can select code and ask about it with the diff and codebase as context, ask follow-up questions in PR comments, and reply to review comments for clarification. This is framed around understanding and reviewing PR changes rather than debugging or troubleshooting a reported issue. missing for 10: documented debugging/troubleshooting workflows driven by natural-language queries (e.g., diagnosing a bug or error outside a PR diff), examples of troubleshooting use, independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-10",
       "cubic-docs-45",
-      "cubic-docs-29",
-      "cubic-docs-50",
       "cubic-docs-6",
-      "cubic-docs-7"
+      "cubic-docs-50",
+      "cubic-docs-29"
     ],
     "support": {
       "relation": "direct",
@@ -14915,12 +14955,12 @@
           "quote": "Ask follow-up questions about code changes without leaving the PR"
         },
         {
-          "evidenceId": "cubic-docs-29",
-          "quote": "Interact with cubic in PR comments to ask questions, trigger reviews, and fix issues."
+          "evidenceId": "cubic-docs-6",
+          "quote": "Reply to a review comment to ask for clarification"
         },
         {
-          "evidenceId": "cubic-docs-50",
-          "quote": "The chat sidebar helps you quickly understand and navigate your pull requests (PRs) with intelligent, context-aware assistance directly within cubic."
+          "evidenceId": "cubic-docs-29",
+          "quote": "Interact with cubic in PR comments to ask questions, trigger reviews, and fix issues."
         }
       ]
     }
@@ -14930,12 +14970,12 @@
     "storyId": "natural-language-feature-implementation",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "cubic is mainly an AI code reviewer, but it can generate and push fixes to the PR branch. Those fixes come from \"Fix with cubic\" on review findings and from PR-comment interactions that \"fix issues\". There is no documented way to describe an arbitrary feature or bug in plain language and have cubic implement it. Missing for 10: implementing features from a free-form natural-language request, documented multi-file changes, fixing bugs the user describes rather than ones cubic found in review, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "cubic is mainly a code-review product, but it documents its own fix capability: it generates fixes for review findings, pushes commits to the PR branch, and can be asked in PR comments to fix issues. That only partly matches the story's bug-fixing half. missing for 10: implementing new features from a plain-language description, evidence that fixes span multiple files, free-form bug requests not tied to a review finding, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-7",
-      "cubic-docs-29",
       "cubic-docs-44",
+      "cubic-docs-29",
       "cubic-docs-30"
     ],
     "support": {
@@ -14948,12 +14988,12 @@
           "quote": "cubic generates the fix and pushes it to your PR branch."
         },
         {
-          "evidenceId": "cubic-docs-29",
-          "quote": "Interact with cubic in PR comments to ask questions, trigger reviews, and fix issues."
-        },
-        {
           "evidenceId": "cubic-docs-44",
           "quote": "cubic can automatically fix issues identified during code review. Request a targeted fix with one click."
+        },
+        {
+          "evidenceId": "cubic-docs-29",
+          "quote": "Interact with cubic in PR comments to ask questions, trigger reviews, and fix issues."
         },
         {
           "evidenceId": "cubic-docs-30",
@@ -14968,15 +15008,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "cubic offers several programmatic surfaces of its own, but nothing documents a general API that matches the UI. There is an Analytics API for PR-level data and an MCP server for reading findings, requesting reviews, triaging scan issues and managing subscriptions and seats. Repository config is also handled as code via cubic.yaml. The OpenAPI probe found no spec, and many UI features have no documented API equivalent: wiki, auto-approval settings, cross-repo linking, stack merging and the chat sidebar. Missing for 10: a general-purpose public REST API with parity to the UI, a published OpenAPI spec, API coverage of settings and workflows beyond analytics and MCP, independent corroboration.",
+    "rationale": "cubic documents real programmatic surfaces: an Analytics API with a published OpenAPI 3.1.0 spec, a Members API, and an official MCP server that can request PR reviews, triage scan issues, and manage subscription seats and roles. Nothing shows these cover the full UI, though; many UI-driven features have no documented API equivalent, and much configuration happens through cubic.yaml rather than an API. missing for 10: documented API endpoints for triggering reviews/Ultrareview, Fix with cubic, custom agents, auto-approval settings, codebase scans, wiki and cross-repo configuration, plus any explicit API–UI parity statement or independent corroboration.",
     "evidenceIds": [
       "cubic-docs-20",
+      "cubic-analytics-openapi-20261106",
+      "cubic-members-api-ref-20261106",
       "cubic-docs-15",
       "cubic-docs-3",
-      "cubic-docs-16",
-      "cubic-docs-31",
-      "cubic-probe-2",
-      "cubic-probe-3"
+      "cubic-api-playground-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -14986,6 +15025,10 @@
         {
           "evidenceId": "cubic-docs-20",
           "quote": "The Analytics API gives you PR-level data on how many issues were flagged, how many were fixed, how much AI code was authored, etc."
+        },
+        {
+          "evidenceId": "cubic-members-api-ref-20261106",
+          "quote": "Each Members API endpoint page's markdown mirror embeds the full OpenAPI 3.1.0 YAML for that operation"
         },
         {
           "evidenceId": "cubic-docs-15",
@@ -15004,12 +15047,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "cubic documents several first-party export paths in open formats: CSV export of analytics team data, a PR-level Analytics API, AI wiki export as markdown files into the repo, and configuration kept in a repo-resident cubic.yaml. Nothing documents an 'export all data' capability covering review findings, comment history, or learned memories, and nothing covers account offboarding or deletion. missing for 10: comprehensive all-data export (review findings, comment history, learnings/memory), documented account deletion/offboarding process, independent corroboration of export completeness",
+    "rationale": "cubic documents several of its own export paths in open formats: CSV export of team-member analytics, an Analytics API returning PR-level data, and wiki export as markdown files into the repo. Review configuration also lives in-repo as cubic.yaml, so it stays portable. Nothing documents a complete export of all account data or an offboarding/deletion process, so the 'export all and leave' story is only partly covered. Missing for 10: a documented full-account data export (review findings, learnings/memory, chat history, custom agents state), account deletion/offboarding docs, and independent hands-on corroboration of the exports.",
     "evidenceIds": [
       "cubic-docs-19",
       "cubic-docs-20",
       "cubic-docs-23",
-      "cubic-docs-16"
+      "cubic-docs-16",
+      "cubic-analytics-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -15022,15 +15066,15 @@
         },
         {
           "evidenceId": "cubic-docs-23",
-          "quote": "cubic exports the wiki as markdown files into a directory in your repo (default `.cubic/wiki`)"
+          "quote": "cubic exports the wiki as markdown files into a directory in your repo"
         },
         {
           "evidenceId": "cubic-docs-20",
-          "quote": "The Analytics API gives you PR-level data on how many issues were flagged, how many were fixed, how much AI code was authored"
+          "quote": "The Analytics API gives you PR-level data on how many issues were flagged, how many were fixed"
         },
         {
           "evidenceId": "cubic-docs-16",
-          "quote": "`cubic.yaml` lives in the root of your repository and becomes the source of truth for AI review behavior, ignore patterns, PR descriptions, and custom agents."
+          "quote": "`cubic.yaml` lives in the root of your repository and becomes the source of truth for AI review behavior"
         }
       ]
     }
@@ -15041,7 +15085,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cubic is a SaaS AI code-review product, and whether its source is published under an open license is a fair question for any software product, so the axis applies. Nothing in the evidence pack mentions a public repository, open-source license, or source availability. The docs describe only hosted review features, a CLI and an MCP server.",
+    "rationale": "Whether a SaaS code-review product publishes its source under an open license is a fair question, so the axis applies. Nothing in the evidence pack mentions a public source repository or an open-source license for cubic. The published OpenAPI specs, llms.txt, CLI and MCP server are documentation and interfaces, not open source code.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15056,7 +15100,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an AI code-review service, so the axis applies. The evidence describes only a hosted GitHub app and dashboard, plus a local CLI that reviews uncommitted changes; that CLI is a client tool, not a self-hosted deployment of the core product. No documentation shows that cubic's review service can be deployed on user-controlled infrastructure.",
+    "rationale": "Self-hosting is a fair question for an AI code review service like cubic, but the evidence pack never mentions a self-hosted or on-prem deployment. The docs describe a hosted GitHub app, a local CLI that sends reviews to cubic's or the user's connected models, an MCP server, and APIs, none of which amounts to running the core product on your own infrastructure.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15068,16 +15112,28 @@
   {
     "productId": "cubic",
     "storyId": "parallel-agent-fleets",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "cubic is an AI code-review product, and nothing in the evidence shows users launching fleets of autonomous agents that work in parallel on different tasks for hours or days. The closest items are adjacent and earn no credit: codebase scans internally fan out 'thousands of AI agents' for one scan task, Ultrareview runs about 30 minutes, and 'Fix with cubic' makes one-off targeted fixes. None of these is a user-orchestrated, long-running, multi-task agent fleet.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "cubic's own codebase-scan feature deploys thousands of AI agents across a repository, which is a vendor-orchestrated parallel fleet. However, it serves a single purpose (finding bugs and vulnerabilities), not user-directed, distinct tasks. The longest documented run is Ultrareview at about 30 minutes, with no evidence of agents running autonomously for hours or days. missing for 10: user-launched fleets assigned to different arbitrary tasks, documented multi-hour/multi-day autonomous runs, fleet management or monitoring, independent corroboration",
+    "evidenceIds": [
+      "cubic-docs-21",
+      "cubic-docs-43"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an ai-native user, I can launch fleets of autonomous agents that work in parallel on different tasks for hours or days",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "cubic-docs-21",
+          "quote": "Codebase scans deploy thousands of AI agents to find bugs and vulnerabilities across your repository."
+        },
+        {
+          "evidenceId": "cubic-docs-43",
+          "quote": "It runs a longer, multi-pass analysis using cubic's most capable review models, and typically takes around 30 minutes."
+        }
+      ]
     }
   },
   {
@@ -15086,7 +15142,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic ships agentic features such as one-click 'Fix with cubic' fixes, so a buyer could fairly ask whether it supports multiple parallel attempts. The evidence documents only single fixes pushed directly to the PR branch, with no way to run several attempts and compare them before choosing one. Codebase scans that deploy many agents to find bugs are a different capability and do not count toward this story.",
+    "rationale": "cubic is an AI code review product that also generates fixes (\"Fix with cubic\" pushes a single fix to the PR branch), so a buyer could fairly ask about parallel task attempts. However, nothing in the evidence shows running multiple attempts in parallel and comparing them before choosing one. Codebase scans that deploy many agents to find bugs are a different capability and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15101,7 +15157,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows cubic offering a way to plug third-party or partner-built agent apps into its workflows, such as a marketplace, app directory or partner integration framework. Custom agents are in-house review rules defined by your own team. The MCP server works the other way round: it exposes cubic to your coding agent. Connecting a ChatGPT or Claude Code subscription only supplies models for local reviews. These are adjacent features and earn no credit.",
+    "rationale": "The evidence pack documents no marketplace, app directory, or mechanism for installing third-party, partner-built agent apps into cubic workflows. Custom agents are the team's own review rules. The MCP server exposes cubic to external coding agents rather than hosting partner apps. Connecting ChatGPT or Claude Code subscriptions only supplies models for local reviews. These are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15116,12 +15172,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "cubic documents a repo-root `cubic.yaml` that is the source of truth for AI review behavior and custom agents. Custom agents are review rules that enforce an organization's coding standards and best practices, and an org-wide `cubic-config` repo can supply defaults for repositories without their own file. Missing for 10: detail on the file's instruction syntax or support for free-form convention guidance (beyond review rules), and independent or hands-on corroboration that the agent follows these rules.",
+    "rationale": "cubic documents a repo-root `cubic.yaml` file as the source of truth for AI review behavior and custom agents. Custom agents are review rules that enforce an organization's coding standards and best practices, and an org-wide `cubic-config` repo can supply defaults to repositories without their own file. missing for 10: documented syntax or examples for writing standards rules in the file, evidence of free-form conventions or instructions beyond custom agent rules, independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-16",
+      "cubic-docs-17",
       "cubic-docs-34",
-      "cubic-docs-11",
-      "cubic-docs-17"
+      "cubic-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -15153,7 +15209,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "cubic provides a PR diff view that can hide test files and shows group explanations beside the diff. It automatically reviews new pull requests and comments on bugs, and the `cubic review` CLI checks local changes before push. Deeper checks come from Ultrareview, custom agents and cross-repo reviews. missing for 10: evidence of running deterministic CI/test checks or merge-blocking status checks (the 'checks' here are AI reviews), and independent hands-on corroboration that the reviews reliably catch problems.",
+    "rationale": "cubic provides its own diff inspection UI, which can hide test files and keeps group explanations beside the diff. It also runs automated AI review checks on PRs (bug and improvement comments, custom-agent rule enforcement, Ultrareview for risky changes) and a CLI that reviews uncommitted local changes before pushing. Community skepticism about AI review accuracy is general and does not concretely contradict these capabilities. missing for 10: independent hands-on corroboration that the checks reliably catch problems, and documented merge-gating (e.g., blocking status checks) tied to review findings.",
     "evidenceIds": [
       "cubic-docs-1",
       "cubic-docs-32",
@@ -15162,9 +15218,7 @@
       "cubic-docs-8",
       "cubic-docs-31",
       "cubic-docs-13",
-      "cubic-docs-34",
-      "cubic-docs-46",
-      "cubic-comm-7"
+      "cubic-docs-34"
     ],
     "support": {
       "relation": "direct",
@@ -15180,20 +15234,20 @@
           "quote": "the group description stays beside the diff as you scroll, so you can read the code and its explanation together"
         },
         {
-          "evidenceId": "cubic-docs-4",
-          "quote": "Once installed, cubic automatically reviews new pull requests."
+          "evidenceId": "cubic-docs-25",
+          "quote": "Comments on bugs and improvements in pull requests"
         },
         {
           "evidenceId": "cubic-docs-8",
-          "quote": "Run a review before you push to catch issues while you're working.... review your uncommitted changes: `cubic review`"
+          "quote": "Run a review before you push to catch issues while you're working."
         },
         {
-          "evidenceId": "cubic-docs-13",
-          "quote": "Ultrareview runs a longer review using cubic's most capable review models, which is useful for risky migrations, security-sensitive changes, or complex refactors."
+          "evidenceId": "cubic-docs-31",
+          "quote": "The **cubic CLI** reviews local changes before you push. It finds bugs and generates a prompt that your coding agent can use to fix them."
         },
         {
-          "evidenceId": "cubic-docs-46",
-          "quote": "Link related repositories so reviews can check shared APIs, schemas, docs, or release work."
+          "evidenceId": "cubic-docs-34",
+          "quote": "Custom agents are review rules that enforce your organization's specific best practices across pull requests."
         }
       ]
     }
@@ -15204,7 +15258,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cubic is a SaaS AI code-review platform that processes customer code, so data region or residency choice is a fair question to ask of it. Nothing in the evidence pack mentions storage regions, data residency, or choosing a data location. The closest items cover cubic.yaml configuration and role-based access control, which are adjacent features and earn no credit for this story.",
+    "rationale": "Choosing a data storage region is a fair question for a SaaS AI code-review service like cubic, so the axis applies. Nothing in the evidence pack mentions data residency, region selection, or where data is stored. The cited items cover reviews, analytics, APIs, CLI and MCP, none of which addresses this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15219,7 +15273,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is an AI code-review service that processes customer code, so a training opt-out or no-training guarantee is a fair question to ask of it. The evidence pack has no documentation of a training opt-out, a data-retention policy, or any statement about whether customer code trains models. The memory-and-learning feature, which extracts learnings from reviewer comments, is a review-personalization feature, not a training-privacy control.",
+    "rationale": "cubic is an AI code-review service that processes customer code, so a training opt-out or no-training policy is a fair question to ask of it. The evidence pack contains no documentation of a no-training commitment, a data-usage policy or an opt-out control. The memory feature that learns from historical reviewer comments is a different capability and does not address model training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15234,7 +15288,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair question for an AI code-review SaaS that processes repository code, but nothing in the evidence pack documents retention periods, deletion controls, or data-purge options. Nearby features such as cubic.yaml ignore patterns, CSV analytics export, and role-based access control are different capabilities and earn no credit here.",
+    "rationale": "Data retention and deletion controls are a fair question for an AI code-review SaaS that indexes and stores codebase data, so the axis applies. The evidence pack covers review features, configuration, analytics exports, APIs and access control, but none of it documents retention periods, deletion requests or data-purge controls.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15249,7 +15303,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for an AI code-review SaaS with a CLI and MCP server, so the axis applies. The evidence pack has no setting, flag, or policy for opting out of telemetry or usage tracking. The analytics dashboard and Analytics API describe team metrics, a different feature, and earn no credit.",
+    "rationale": "cubic is a SaaS code-review product with a CLI, so a telemetry or usage-tracking opt-out is a fair question to ask of it. The evidence pack has nothing on telemetry controls or opting out of usage tracking. The analytics dashboard and Analytics API are customer-facing reporting features, not privacy opt-out controls, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15264,7 +15318,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is an AI code-review product with a fix agent that pushes commits, so a configurable cloud environment for its agents is a fair question. However, the evidence never documents environment, dependency, or setup-step configuration. cubic.yaml covers only review behavior, ignore patterns, PR descriptions and custom agents, which is an adjacent control and earns no credit.",
+    "rationale": "cubic is an AI code review product whose agents generate and push fixes and run codebase scans, so a configurable execution environment is a fair question for it. However, no evidence shows a reproducible cloud environment with repository dependencies or setup steps. cubic.yaml configures only review behavior, ignore patterns, PR descriptions and custom agents, which is an adjacent control and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15277,15 +15331,14 @@
     "productId": "cubic",
     "storyId": "root-cause-analysis",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "cubic finds bugs in PRs and across the codebase, offers codebase-aware chat for asking about code, generates fixes, and can auto-resolve findings once an issue is fixed, which loosely covers locating and verifying fixes. Nothing shows it reproducing issues or doing runtime root-cause debugging; its approach is static AI review. Missing for 10: issue reproduction (running or replaying failures), explicit root-cause narrowing workflows, execution-based verification of fixes beyond thread auto-resolution, and independent hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "cubic's own documented review features touch parts of this story. It finds bugs in PRs and codebase scans, lets developers ask chat about selected code with codebase context, generates fixes, and can auto-resolve findings once the issue is fixed, which is a limited form of fix verification. It is a static review tool, though, and nothing shows it reproducing issues or running a root-cause investigation. missing for 10: issue reproduction (running or replaying failing behavior), a guided root-cause narrowing workflow, execution-based fix verification such as running tests, and hands-on corroboration.",
     "evidenceIds": [
-      "cubic-docs-21",
-      "cubic-docs-25",
-      "cubic-docs-10",
-      "cubic-docs-7",
       "cubic-docs-27",
+      "cubic-docs-44",
+      "cubic-docs-10",
+      "cubic-docs-21",
       "cubic-docs-31"
     ],
     "support": {
@@ -15294,20 +15347,20 @@
       "subject": "As a developer, I can reproduce issues, narrow down root causes, and verify fixes",
       "citations": [
         {
-          "evidenceId": "cubic-docs-21",
-          "quote": "Codebase scans deploy thousands of AI agents to find bugs and vulnerabilities across your repository."
+          "evidenceId": "cubic-docs-27",
+          "quote": "Enable automatic thread resolution to close findings when the issue is fixed"
+        },
+        {
+          "evidenceId": "cubic-docs-44",
+          "quote": "cubic can automatically fix issues identified during code review. Request a targeted fix with one click."
         },
         {
           "evidenceId": "cubic-docs-10",
           "quote": "Select code and choose **Add to AI chat** to ask about it with the diff and codebase as context."
         },
         {
-          "evidenceId": "cubic-docs-7",
-          "quote": "cubic generates the fix and pushes it to your PR branch."
-        },
-        {
-          "evidenceId": "cubic-docs-27",
-          "quote": "Enable automatic thread resolution to close findings when the issue is fixed"
+          "evidenceId": "cubic-docs-21",
+          "quote": "Codebase scans deploy thousands of AI agents to find bugs and vulnerabilities across your repository."
         }
       ]
     }
@@ -15318,7 +15371,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandboxing is a fair question for cubic, since its agents read codebases, run codebase scans and generate and push fixes. However, no evidence describes those agents running in an isolated sandbox for code, tool or network access. Shadow mode for auto-approval is a dry-run preview of approval decisions, not sandbox isolation, so it earns no credit.",
+    "rationale": "cubic is an AI code-review product whose agents generate fixes, push commits and run codebase scans, so sandboxed execution is a fair question for it. Nothing in the evidence pack describes the agent running in an isolated sandbox for code, tool or network access. The nearest items are shadow mode for auto-approval and RBAC for settings, which are adjacent controls and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15333,11 +15386,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "cubic's AI wiki indexes the codebase into searchable wikis with source links and architecture diagrams, and exports them as markdown kept current in the repo. That gives the team a shared, repo-derived knowledge base. Cross-repo linking lets related repositories, including docs, be considered together during reviews, but it is a review feature, not a workspace. missing for 10: ingesting external docs (not only code) into the workspace, an explicit team-shared workspace construct combining multiple repos and docs, independent or hands-on corroboration of the wiki.",
+    "rationale": "cubic's AI wiki indexes the codebase automatically and produces searchable wikis with source links and architecture diagrams. It also exports them as markdown into the repo and keeps them current through a rolling PR, which serves the team as a shared reference built from repos. The evidence does not show ingesting separate docs, or an explicit shared-workspace construct the lead creates. The `cubic.yaml` \"source of truth\" applies only to review configuration, so it is adjacent and not credited here. Missing for 10: building the workspace from non-code docs, an explicit shared team workspace or collaboration model, multi-repo aggregation into one knowledge base, independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-22",
-      "cubic-docs-23",
-      "cubic-docs-46"
+      "cubic-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -15351,10 +15403,6 @@
         {
           "evidenceId": "cubic-docs-23",
           "quote": "cubic exports the wiki as markdown files into a directory in your repo (default `.cubic/wiki`) and keeps them current through a rolling pull request."
-        },
-        {
-          "evidenceId": "cubic-docs-46",
-          "quote": "Link related repositories so reviews can check shared APIs, schemas, docs, or release work."
         }
       ]
     }
@@ -15364,8 +15412,8 @@
     "storyId": "terminal-scripting-automation",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "cubic ships its own CLI with a `cubic review` command that reviews local uncommitted changes and outputs a prompt for a coding agent, so the capability can be invoked from the command line. Nothing documents a non-interactive or headless mode, or show that it is meant for scripts or automation. missing for 10: documented non-interactive/headless flags, machine-readable output formats, exit codes for scripting, CI/script automation examples, independent hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "cubic ships its own CLI with a `cubic review` command that reviews local changes and generates a fix prompt for a coding agent, so a scriptable command-line entry point exists. Nothing documents running it non-interactively, such as headless flags, machine-readable output, exit codes, or CI or script usage. missing for 10: documented non-interactive/headless mode, structured (e.g. JSON) output and exit-code semantics for scripting, CI/workflow automation examples, independent hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-8",
       "cubic-docs-31",
@@ -15397,7 +15445,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cubic is an AI code-review service that processes customer code with AI models, so a training opt-out is a fair question to ask of it. Nothing in the evidence pack covers data-retention policy, model-training use of code or prompts, or any opt-out control. Connecting a ChatGPT or Claude subscription for local reviews (cubic-docs-14) is about model choice, an adjacent feature, and does not count as a training opt-out.",
+    "rationale": "Opting out of model training is a fair question for an AI code-review service like cubic. Nothing in the evidence pack covers data usage, training policies, zero-retention terms or an opt-out control; the docs cover review features, configuration, analytics, billing and APIs instead.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15412,7 +15460,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "cubic is an AI code-review product that works alongside coding agents. Through its MCP server, CLI and \"Fix with cubic\" pushes, a unified place to manage agent work is a plausible ask, so the axis applies. However, no evidence shows a workspace for launching, tracking or managing multiple agent-driven coding sessions. The analytics dashboard reports AI coding usage on merged PRs, and the MCP server feeds review findings to an external agent; both are adjacent features, not session management.",
+    "rationale": "cubic is an AI code review platform that does run coding agents (one-click fixes pushed to PR branches, an MCP server for external agents), so a buyer could fairly ask about a session-management workspace. However, the evidence never documents a unified workspace for running or managing multiple agent-driven coding sessions. The closest items are adjacent features: per-comment fixes, MCP access for an external agent, and analytics on AI coding usage. None of these provides multi-session agent management.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -15425,9 +15473,9 @@
     "productId": "cubic",
     "storyId": "vulnerability-autofix",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "cubic's own docs say codebase scans find vulnerabilities and Ultrareview targets security-sensitive changes. Developers can ask follow-up questions on review comments with diff and codebase context, and 'Fix with cubic' generates fixes and pushes them to the PR branch. However, the explanation and auto-fix features are documented only for review findings in general, not specifically for security vulnerabilities. missing for 10: documentation that explanations and one-click fixes apply to security or vulnerability findings (including codebase-scan results), security-specific explanation depth, independent hands-on corroboration of security fixes.",
+    "rationale": "cubic's own docs cover the pieces of this story. Codebase scans find vulnerabilities, Ultrareview targets security-sensitive changes, one-click 'Fix with cubic' generates and pushes fixes, and developers can reply to review comments or use context-aware chat for clarification. None of this is documented specifically for security vulnerabilities; the fix and explanation features are described for review issues in general. missing for 10: security-specific explanations of vulnerabilities (severity, exploit context, remediation guidance), documentation that auto-fix applies to vulnerability findings, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cubic-docs-21",
       "cubic-docs-13",
@@ -15435,7 +15483,7 @@
       "cubic-docs-44",
       "cubic-docs-6",
       "cubic-docs-10",
-      "cubic-docs-45"
+      "cubic-docs-29"
     ],
     "support": {
       "relation": "direct",
@@ -15447,12 +15495,16 @@
           "quote": "Codebase scans deploy thousands of AI agents to find bugs and vulnerabilities across your repository."
         },
         {
+          "evidenceId": "cubic-docs-7",
+          "quote": "cubic generates the fix and pushes it to your PR branch."
+        },
+        {
           "evidenceId": "cubic-docs-44",
           "quote": "cubic can automatically fix issues identified during code review. Request a targeted fix with one click."
         },
         {
-          "evidenceId": "cubic-docs-7",
-          "quote": "cubic generates the fix and pushes it to your PR branch."
+          "evidenceId": "cubic-docs-6",
+          "quote": "Reply to a review comment to ask for clarification"
         },
         {
           "evidenceId": "cubic-docs-10",

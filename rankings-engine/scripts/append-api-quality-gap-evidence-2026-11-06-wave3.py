@@ -183,6 +183,14 @@ ITEMS = {
          'Retell publishes a dated deprecation-notices page tracking "Retell API, SDK, and billing deprecations and breaking changes" with RSS subscription, configurable workspace notification recipients, migration deadlines and impacted endpoints (e.g. removing GET /list-agents in favor of POST /v2/list-agents): "API deprecations take effect in the API itself, so staying on an older SDK version doesn\'t defer them." The API is path-versioned (/v2); no forward-looking minimum-notice commitment is stated as policy.'),
     ],
     ('design-tools', 'penpot'): [
+        # Pre-audit correction (run before the first push, the wave-2 procedure): the
+        # openness-open-license re-roll went full while its rationale noted the license
+        # name was missing. The repository license is appended verbatim so the credit
+        # rests on the license text (the PR #627 smithery-license precedent).
+        ('penpot-mpl-license-20261106', 'github',
+         'https://raw.githubusercontent.com/penpot/penpot/main/LICENSE',
+         ['Mozilla Public License Version 2.0'],
+         'The penpot/penpot repository is licensed under the Mozilla Public License Version 2.0 (the LICENSE file opens "Mozilla Public License Version 2.0"). The full platform source (frontend, backend, exporter) is public in the same repository.'),
         ('penpot-openapi-spec-20261106', 'claimed-docs',
          'https://design.penpot.app/api/main/doc/openapi.json',
          ['"openapi":"3.0.0"', 'MAIN API'],

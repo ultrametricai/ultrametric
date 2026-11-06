@@ -51,8 +51,22 @@ Wave-3 specifics:
   /changelog/ are soft 404s (the real changelog is changelog.mparticle.com).
 
 Scoped re-judges run under the ratified v6 rubric, then `derive` per touched arena and
-the dependent generators. Engine output is accepted as-is; honest negatives ship, and
-checked-absent cells that publish as engine partials on adjacent evidence are recorded
-with both readings.
+the dependent generators. Engine output is accepted as-is; honest negatives ship
+(fastmail, zero, and orama publish all-none api-quality rows, and Retell's machine-spec
+counter-check held). One checked-absent cell publishes as an engine partial on adjacent
+evidence (jira api-interactive-docs, partial q4 on the Postman-collection affordance);
+the ledger records both readings.
+
+## Pre-audit (before the first push)
+
+Per the wave-2 procedure, every verdict cell of the thirteen re-rolled arena rows was
+diffed against the merge base and the verdict-level ups re-read against the v6 on-axis
+bar: 104 up-moves, 56 verdict-level (30 target cells, 26 side-effect flips). One
+correction had a verifiable artifact: penpot's openness-open-license re-roll went full
+with the rationale noting the missing license name, so the MPL-2.0 LICENSE file is
+appended verbatim and the cell re-judged resting on the license text (the PR #627
+smithery-license precedent applied proactively). Six conceded-thin partials carry their
+limits inside their published rationales and stand; the rest rest on on-axis evidence.
+Cell-level detail in the ledger's `preAudit` section.
 
 Row-level output: `2026-11-06-api-quality-wave3.json`.
