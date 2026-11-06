@@ -1,18 +1,35 @@
 {
-  "hash": "ff907b7235e2b925bf3b0c5b83dc3cfc4f6ea915d15c8527c3e3f102777d1555",
+  "hash": "3bba75b0f894919ce879647600dc58eb5a5f9da9ae58ab6f89527b6bfb4357d8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Neon supports bulk work indirectly. Agents can run multi-statement SQL through the MCP server's \"Run SQL Transaction\" tool, which covers set-based operations over many rows. Platforms can automate creating, configuring and cleaning up tens of thousands of projects through the Management API. neon.ts declares branch policy (TTLs, sizing) that the CLI applies through inspect/plan/apply. None of the evidence shows a dedicated batch endpoint or command for acting on many projects or branches in one call, so bulk platform operations must be scripted from per-resource API calls. Missing for 10: explicit batch/bulk API endpoints or CLI commands for many projects or branches at once, documented bulk-operation examples, and independent or hands-on corroboration of bulk workflows.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Neon documents managing projects programmatically at very large scale through its API, and neon.ts declares one per-branch policy (TTLs, compute sizing, protected status) for every branch. The MCP server also offers a \"Run SQL Transaction\" tool for multi-statement execution. However, no dedicated bulk endpoint or batch action for acting on many projects or branches in one operation is documented, so most of the story rests on implied scripting over per-item API calls. Missing for 10: an explicit bulk/batch API or CLI/MCP operation across many projects or branches, documented limits and behavior of such operations, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "neon-supp-mcp-tool-surface",
-      "neon-probe-7",
       "neon-supp-branching-for-agents",
-      "neon-docs-50",
-      "neon-supp-neon-ts-config"
+      "neon-supp-neon-ts-config",
+      "neon-supp-mcp-tool-surface"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "neon-supp-branching-for-agents",
+          "quote": "Platforms can manage tens of thousands (in some cases, millions) of projects programmatically through the Neon API. Project creation, configuration, and cleanup are fully automated"
+        },
+        {
+          "evidenceId": "neon-supp-neon-ts-config",
+          "quote": "It declares which Neon services exist on your project and how each branch is configured"
+        },
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "\"Run SQL Transaction\""
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "automation-bulk-operations"
   }

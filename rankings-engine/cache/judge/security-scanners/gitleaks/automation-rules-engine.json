@@ -1,23 +1,47 @@
 {
-  "hash": "12a9103596fb00d853d19a5f36f1b7e0112c075377d5097a2dad80d22a525904",
+  "hash": "50f568deea943f272019914c1744186d5aa16c7c7907864a95db644ab8f2560b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Gitleaks lets users write their own detection rules, including composite and allowlist rules, in a gitleaks.toml config. Events can trigger automatic actions: a pre-commit hook blocks commits containing secrets, and gitleaks-action scans PRs and commits, comments on PRs and alerts listed accounts. However, the rules only define what counts as a secret; the resulting actions are fixed (fail, comment, notify) rather than user-defined event→action automations. Missing for 10: a general user-configurable rule→action engine, custom actions beyond fail/comment/alert, event types beyond commits and PRs, independent corroboration.",
+    "rationale": "Gitleaks lets users write their own detection rules. Its first-party gitleaks-action runs automatically on pull requests and commits, and when a rule matches it comments on the PR and alerts listed GitHub accounts; a pre-commit hook also blocks commits that contain secrets. However, the actions are fixed (fail, comment, alert) and the triggering events come from GitHub workflows and git hooks, not from a general rule-to-action engine. Missing for 10: user-definable event-to-action rules beyond secret detection, configurable action types (e.g. webhooks or custom remediation), triggers beyond PR/commit, independent corroboration.",
     "evidenceIds": [
       "gitleaks-gh-5",
-      "gitleaks-gh-7",
-      "gitleaks-gh-20",
-      "gitleaks-gh-4",
-      "gitleaks-gh-12",
-      "gitleaks-docs-1",
+      "gitleaks-docs-5",
       "gitleaks-docs-2",
       "gitleaks-docs-3",
-      "gitleaks-docs-5",
+      "gitleaks-gh-4",
+      "gitleaks-gh-12",
       "gitleaks-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "gitleaks-gh-5",
+          "quote": "Gitleaks offers a configuration format you can follow to write your own secret detection rules"
+        },
+        {
+          "evidenceId": "gitleaks-docs-5",
+          "quote": "You can use it to automatically run a gitleaks scan on all your team's pull requests and commits, or run on-demand scans."
+        },
+        {
+          "evidenceId": "gitleaks-docs-2",
+          "quote": "**gitleaks-action** uses this token to call [a GitHub API] to comment on PRs."
+        },
+        {
+          "evidenceId": "gitleaks-docs-3",
+          "quote": "A list of GitHub accounts that should be alerted when **gitleaks-action** detects a leak."
+        },
+        {
+          "evidenceId": "gitleaks-gh-4",
+          "quote": "You can run Gitleaks as a pre-commit hook by copying the example `pre-commit.py` script into your `.git/hooks/` directory."
+        }
+      ]
+    },
     "productId": "gitleaks",
     "storyId": "automation-rules-engine"
   }

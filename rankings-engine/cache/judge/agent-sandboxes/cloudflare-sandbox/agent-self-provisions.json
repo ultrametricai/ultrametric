@@ -1,21 +1,42 @@
 {
-  "hash": "2f4ad1edad9018942fe59046039417549702bd8756d3f4cd78094f56305e7e24",
+  "hash": "a98c171f441c398896866ab4ac452ce0aa71e4cead01e75054c3563e33d576a4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "The SDK lets code provision a sandbox programmatically with getSandbox(), which gets or creates one by ID. It can then run code via exec() and the interpreter, capturing stdout, stderr, exit codes and returned values, and read results back with readFile(), all without a human in the loop. Teardown is the weak link: the pack documents no explicit destroy or delete call. One community report notes there is no idle auto-destroy, so implementers must do their own cleanup, while another notes containers auto-shutdown when they stop receiving requests. Missing for 10: a documented explicit sandbox teardown/destroy API, controllable lifecycle cleanup, and independent hands-on corroboration of an agent running the full loop end to end.",
+    "rationale": "The SDK documents programmatic provisioning via getSandbox(), which gets or creates a sandbox by ID. It also documents code execution with captured stdout, stderr and exit codes, plus file reads, so an agent can run the provision, execute and read loop without a human. The pack never documents an explicit teardown or destroy call, and a community member notes there is no auto-destroy after idle time, leaving cleanup to the implementer. missing for 10: a documented sandbox teardown/destroy API, an idle auto-destroy or lifecycle policy, and hands-on corroboration of a fully autonomous end-to-end agent loop.",
     "evidenceIds": [
       "cloudflare-sandbox-docs-37",
       "cloudflare-sandbox-docs-1",
       "cloudflare-sandbox-docs-2",
-      "cloudflare-sandbox-docs-27",
       "cloudflare-sandbox-docs-24",
-      "cloudflare-sandbox-docs-41",
-      "cloudflare-sandbox-comm-7",
-      "cloudflare-sandbox-comm-5"
+      "cloudflare-sandbox-docs-42",
+      "cloudflare-sandbox-comm-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, my agent can provision its own sandbox, execute code, read the results, and tear it down — end to end without a human",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-sandbox-docs-37",
+          "quote": "getSandbox() - Gets or creates a sandbox instance by ID."
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-1",
+          "quote": "sandbox.exec() - Execute shell commands in the sandbox and capture stdout, stderr, and exit codes."
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-2",
+          "quote": "const file = await sandbox.readFile(\"/workspace/hello.txt\");"
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-24",
+          "quote": "Sandboxes are ideal for building AI agents that need to execute code"
+        }
+      ]
+    },
     "productId": "cloudflare-sandbox",
     "storyId": "agent-self-provisions"
   }

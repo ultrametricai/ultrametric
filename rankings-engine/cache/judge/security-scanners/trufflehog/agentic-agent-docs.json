@@ -1,20 +1,32 @@
 {
-  "hash": "410a15e2c431f16a83e061fa8ccda5bc98281380a2c864f37eb3afe8b24035e9",
+  "hash": "39f79ea1450c1c9d03ed5e5f985b608d15d757fb43c4496f02ead61c26171017",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "There is no llms.txt (the probe got HTTP 404), but TruffleHog serves its docs as raw markdown with frontmatter at docs.md. Individual pages are also available as .md (pre-commit-hooks.md, custom-detectors.md, customizing-detection.md, analyzers.md, getting-started.md), so an agent can ingest clean markdown docs. missing for 10: an llms.txt index, explicitly agent-oriented documentation, and independent confirmation that agents use these docs.",
+    "rationale": "TruffleHog has no llms.txt (the probe returned HTTP 404). However, its docs are served as raw Markdown with frontmatter: docs.md returned HTTP 200, and pages such as pre-commit-hooks.md and custom-detectors.md exist. That gives an agent machine-readable docs to ingest, though nothing labels them as agent-oriented. missing for 10: an llms.txt index, explicitly documented agent-oriented docs or guidance, an OpenAPI spec, independent corroboration of agent use.",
     "evidenceIds": [
       "trufflehog-probe-1",
       "trufflehog-probe-2",
       "trufflehog-docs-5",
-      "trufflehog-docs-6",
-      "trufflehog-docs-7",
-      "trufflehog-docs-9",
-      "trufflehog-docs-10"
+      "trufflehog-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "trufflehog-probe-2",
+          "quote": "PROBE docs-md: HTTP 200 at https://trufflesecurity.com/docs.md"
+        },
+        {
+          "evidenceId": "trufflehog-docs-5",
+          "quote": "Pre-commit hooks are a useful way to prevent secrets in code from being pushed from a git repository."
+        }
+      ]
+    },
     "productId": "trufflehog",
     "storyId": "agentic-agent-docs"
   }

@@ -1,20 +1,34 @@
 {
-  "hash": "f71a10d1872f7f576798516aa2df26705f7806f19c134fd2d2418cbaa54e2b65",
+  "hash": "3b37c6de1f6db283022b73a9da84047e92bbecf1fc4147c1d8be526dee3b624b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Neon has the pieces for versioned, reviewable changes. neon.ts is a declarative config committed to the repo that the CLI runs through inspect/plan/apply, and it can declare Functions. Database changes can be validated on temporary branches and reverted with snapshots, instant restore and branch reset. However, nothing documents rollback of the automations themselves (Functions, triggers) as distinct from database state. Missing for 10: documented version history and rollback for Functions/triggers, an explicit review/diff workflow for automation changes, and independent hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Neon's neon.ts is a config-as-code file committed to the repo that declares services, including Functions, and is applied through inspect/plan/apply logic. That gives some versioning and a pre-apply review step for function/automation definitions. Snapshot and branch restore cover database data and schema, not automations, so they are not credited here. missing for 10: documented rollback of automations/functions, explicit automation version history, a documented review/approval workflow for automation changes, independent or hands-on corroboration.",
     "evidenceIds": [
       "neon-supp-neon-ts-config",
-      "neon-docs-40",
-      "neon-supp-functions-agents",
-      "neon-supp-branching-for-agents",
-      "neon-docs-44",
-      "neon-supp-copilot-agents",
-      "neon-supp-mcp-tool-surface"
+      "neon-supp-functions-agents"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": [
+        {
+          "evidenceId": "neon-supp-neon-ts-config",
+          "quote": "`neon.ts` is a TypeScript config file you commit to your repository. It declares which Neon services exist on your project and how each branch is configured"
+        },
+        {
+          "evidenceId": "neon-supp-neon-ts-config",
+          "quote": "To call the same `inspect` / `plan` / `apply` logic from your own script or CI job instead of the CLI, see `@neon/config-runtime`."
+        },
+        {
+          "evidenceId": "neon-supp-functions-agents",
+          "quote": "Declare the AI Gateway and the function in `neon.ts`."
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "automation-versioned-workflows"
   }

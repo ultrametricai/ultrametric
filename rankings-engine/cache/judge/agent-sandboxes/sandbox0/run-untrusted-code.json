@@ -1,20 +1,46 @@
 {
-  "hash": "3d502aeeaca918e85a334908278596d8d1aaa1ca799c800d6546845b832ee422",
+  "hash": "f192d6752cd80e0a014c8b44a78eafedb5d24a0f9e2e301500748972ac593d35",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "sandbox0",
-    "storyId": "run-untrusted-code",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0's docs describe each sandbox as an isolated cloud computer where an agent can run code. They also document several controls that keep that code away from the user's own systems: running agents in a sandbox instead of on a VM or workstation, `SandboxNetworkPolicy` for outbound traffic, and credential features that keep raw secrets out of the sandbox process. Stateful and stateless execution contexts are documented too. missing for 10: documentation of the isolation technology and its security guarantees (e.g., microVM or kernel-level boundary), independent or hands-on corroboration of the isolation.",
+    "rationale": "Sandbox0's own docs describe running agent code in an isolated cloud computer rather than on the developer's VM or workstation. Supporting controls include outbound network policy, credential injection that keeps raw secrets out of the sandbox process, and a signed audit ledger. However, the strength of the isolation boundary itself (microVM, gVisor, container hardening, kernel separation) is never documented, so protection against untrusted code is claimed but its depth is unproven. missing for 10: documented isolation technology and escape-resistance guarantees, explicit framing of untrusted-code threat handling, independent or hands-on corroboration of isolation strength.",
     "evidenceIds": [
       "sandbox0-docs-1",
+      "sandbox0-docs-28",
       "sandbox0-docs-13",
       "sandbox0-docs-15",
-      "sandbox0-docs-21",
-      "sandbox0-docs-28",
-      "sandbox0-probe-2"
-    ]
+      "sandbox0-docs-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can execute untrusted, AI-generated code without risking my own infrastructure",
+      "citations": [
+        {
+          "evidenceId": "sandbox0-docs-1",
+          "quote": "A sandbox gives a user's AI agent an isolated cloud computer where it can run code, install software, manage files, and control network access."
+        },
+        {
+          "evidenceId": "sandbox0-docs-28",
+          "quote": "inside a Sandbox0 sandbox instead of on a cloud VM, VPS, or developer workstation."
+        },
+        {
+          "evidenceId": "sandbox0-docs-13",
+          "quote": "`SandboxNetworkPolicy` controls outbound traffic for a sandbox."
+        },
+        {
+          "evidenceId": "sandbox0-docs-15",
+          "quote": "Credential features let Sandbox0 authenticate outbound traffic without placing raw secret material inside the sandbox process."
+        },
+        {
+          "evidenceId": "sandbox0-docs-19",
+          "quote": "Sandbox0 provides runtime metrics, historical logs, and a signed audit ledger for each sandbox."
+        }
+      ]
+    },
+    "productId": "sandbox0",
+    "storyId": "run-untrusted-code"
   }
 }

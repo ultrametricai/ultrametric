@@ -1,21 +1,52 @@
 {
-  "hash": "520939021005e446077d6071991744c60dd0cf1a492a1fd754220593361e2ce4",
+  "hash": "a87edfe7cd590b9e70a1f7dbb76a79ffc28547cf69b4fe06098332d6c2eb0494",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The Semgrep CLI runs scans locally without login (`semgrep scan`, `--dry-run`) and exports SARIF (`--sarif --sarif-output`). A hands-on report describes feeding Semgrep SARIF to LLMs to triage the most interesting findings, which matches the agent-parse-and-triage loop. Ticket creation is documented only as an AppSec Platform triage feature, and the API is described as listing findings, so issue filing would come from the agent's own tooling or the platform. Missing for 10: documented CLI or agent-driven issue filing, explicit JSON output and exit-code semantics for headless automation, and documented false-positive filtering in a headless CLI flow.",
+    "rationale": "Semgrep documents a headless CLI that runs without login (`semgrep scan`, `semgrep ci`) and exports machine-readable SARIF, and a community user confirms building LLM-driven triage on that SARIF output. Issue filing is documented only as AppSec Platform ticket creation and an API for gathering findings, not as an agent-driven flow from CLI results, so the final step of the story is only partly covered. missing for 10: a documented end-to-end flow for an agent filing issues from CLI scan results, documented JSON output schema/exit-code semantics for agent parsing, and independent corroboration of automated issue filing for real (non-false-positive) findings.",
     "evidenceIds": [
       "semgrep-docs-27",
       "semgrep-docs-34",
-      "semgrep-docs-33",
       "semgrep-docs-20",
+      "semgrep-docs-19",
       "semgrep-comm-14",
       "semgrep-docs-22",
       "semgrep-docs-17",
       "semgrep-gh-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent run a scan headlessly via the CLI, parse machine-readable results, and file issues for real findings",
+      "citations": [
+        {
+          "evidenceId": "semgrep-docs-27",
+          "quote": "semgrep scan - This is the recommended command for scanning local codebases or scanning a project when you don't have a Semgrep account"
+        },
+        {
+          "evidenceId": "semgrep-docs-34",
+          "quote": "You do **not** need to be logged in to run a scan."
+        },
+        {
+          "evidenceId": "semgrep-docs-20",
+          "quote": "To export the results to a SARIF file: semgrep ci --sarif --sarif-output=semgrep.sarif"
+        },
+        {
+          "evidenceId": "semgrep-comm-14",
+          "quote": "Built a tool using Semgrep's SARIF output plus prompted LLMs to help prioritize triage"
+        },
+        {
+          "evidenceId": "semgrep-docs-22",
+          "quote": "Send alerts and notifications or create tickets to track findings identified by Semgrep Code"
+        },
+        {
+          "evidenceId": "semgrep-docs-17",
+          "quote": "Semgrep AppSec Platform provides an API that enables you to list deployments, gather findings created by Semgrep AppSec Platform, and list projects."
+        }
+      ]
+    },
     "productId": "semgrep",
     "storyId": "agent-runs-scan-headless"
   }

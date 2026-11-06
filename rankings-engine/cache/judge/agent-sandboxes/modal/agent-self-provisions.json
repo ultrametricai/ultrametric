@@ -1,23 +1,57 @@
 {
-  "hash": "48929c4ddcb2cda0899464417007f92be501cb0e591a3fd1c1c0aa5727e3f66d",
+  "hash": "6469f94917482ff513e9608ad83926d5352436fe19c56d3e3ba623ab2ed1e56d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Modal documents the core loop for agents in its SDKs. Sandboxes are created programmatically from an image (modal-docs-2, modal-docs-20). Commands run via sb.exec, and output is read through a subprocess-like Sandbox object and a logs fetch/tail API (modal-docs-21, modal-docs-25, modal-docs-23). A first-party example has an LLM agent generating and executing code in a Sandbox (modal-docs-22, modal-docs-30), and a community developer reports driving Sandboxes from an agent runtime (modal-comm-2). missing for 10: an explicit documented terminate/teardown call (only implied by 'ephemeral'), and independent hands-on corroboration of the full unattended provision-to-teardown loop.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Modal's own SDK docs show agents creating Sandboxes programmatically from JS, Go and Python, running commands with exec, and reading results through a subprocess-like API and a logs fetch/tail API. Modal positions Sandboxes as a safe environment for AI agent code. Explicit teardown is not documented: the only support is the word \"ephemeral\", so the full lifecycle is not shown end to end. missing for 10: explicit documented terminate/teardown API, an end-to-end agent lifecycle example including cleanup, independent hands-on corroboration of unattended operation.",
     "evidenceIds": [
-      "modal-docs-1",
       "modal-docs-2",
+      "modal-docs-19",
       "modal-docs-20",
       "modal-docs-21",
+      "modal-docs-22",
       "modal-docs-25",
       "modal-docs-23",
-      "modal-docs-22",
-      "modal-docs-30",
-      "modal-docs-19",
-      "modal-comm-2"
+      "modal-docs-1",
+      "modal-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, my agent can provision its own sandbox, execute code, read the results, and tear it down — end to end without a human",
+      "citations": [
+        {
+          "evidenceId": "modal-docs-2",
+          "quote": "Spin up fresh, isolated sandboxes programmatically."
+        },
+        {
+          "evidenceId": "modal-docs-19",
+          "quote": "run untrusted user code, or as a safe environment for AI agents."
+        },
+        {
+          "evidenceId": "modal-docs-21",
+          "quote": "const p = await sb.exec([\"cat\", \"/mnt/volume/message.txt\"]);"
+        },
+        {
+          "evidenceId": "modal-docs-22",
+          "quote": "We execute the agent's code in a Modal Sandbox, which allows us to run arbitrary code in a safe environment."
+        },
+        {
+          "evidenceId": "modal-docs-25",
+          "quote": "A `Sandbox` object lets you interact with a running sandbox. This API is similar to Python's asyncio.subprocess.Process"
+        },
+        {
+          "evidenceId": "modal-docs-23",
+          "quote": "We've added a modal.Sandbox.logs API, allowing you to fetch() logs from a specific date/time range or to tail() the most recent logs."
+        },
+        {
+          "evidenceId": "modal-docs-1",
+          "quote": "Programmatically scale secure, ephemeral environments for running untrusted code."
+        }
+      ]
+    },
     "productId": "modal",
     "storyId": "agent-self-provisions"
   }

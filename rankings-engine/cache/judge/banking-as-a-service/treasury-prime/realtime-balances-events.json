@@ -1,21 +1,46 @@
 {
-  "hash": "83638b8f4399a7a0e02799dd61a0e77354c3933d5e97fe4334427c116aba0f30",
+  "hash": "ee237584340a6f21036774ae40a128dbc0155d4af264ffc0fb8dcd13ac4a256e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Treasury Prime documents registrable outbound webhooks with full CRUD endpoints, subscribable event types (e.g., `card.create`), and status-tracked transfer objects for ACH (including `returned`) and wire, which covers the event-driven half of the story. Nothing in the evidence addresses balance reads that reflect holds or pending activity, and the event-type list is not shown to cover every transaction state change. Missing for 10: documented available/pending balance fields that reflect holds, evidence that webhooks fire on every transaction state change across ACH, wire, book, and card, and independent or hands-on corroboration.",
+    "rationale": "Treasury Prime documents registrable outbound webhooks with subscribable event types, a full webhook CRUD API, and status tracking on ACH and wire objects. That covers the event-driven half of the story. Nothing in the pack shows balance reads that reflect holds or pending activity, and nothing confirms webhooks fire for every transaction state change. Missing for 10: documented available/pending balance fields that account for holds, evidence of webhook coverage for all transaction state transitions (ACH, wire, book, card), and independent corroboration.",
     "evidenceIds": [
       "treasury-prime-docs-28",
       "treasury-prime-docs-30",
       "treasury-prime-docs-31",
-      "treasury-prime-docs-34",
       "treasury-prime-docs-40",
       "treasury-prime-docs-21",
-      "treasury-prime-docs-22",
-      "treasury-prime-docs-27"
+      "treasury-prime-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the ledger is real-time and event-driven — balance reads that reflect holds and pending activity, and webhooks for every transaction state change so my system mirrors the bank exactly",
+      "citations": [
+        {
+          "evidenceId": "treasury-prime-docs-28",
+          "quote": "To receive webhook notifications, you must first register the URL where the webhook should be sent and the triggering event."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-30",
+          "quote": "Create a [Webhook](/reference/webhook) by subscribing to these event types."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-40",
+          "quote": "When a new card is created, a [webhook](/reference/webhook) callback is made if you have subscribed to updates for `card.create`."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-21",
+          "quote": "Treasury Prime updates the [ACH object](/reference/ach) status to `returned` and populates the `error` field with the appropriate return code."
+        },
+        {
+          "evidenceId": "treasury-prime-docs-22",
+          "quote": "You can track the progress of a wire by checking the `status` attribute on the Wire Transfer object."
+        }
+      ]
+    },
     "productId": "treasury-prime",
     "storyId": "realtime-balances-events"
   }

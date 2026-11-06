@@ -1,17 +1,35 @@
 {
-  "hash": "60389730a398c9402985abdebc3156b5f55e266fffa41713bcaec595498afb6c",
+  "hash": "e0ab1831ab3b038ee8262e6d332d07ddd3bae92d418da9018063522839705d6f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs say CockroachDB Cloud offers Serverless/Basic clusters whose Request Unit consumption \"scales to zero when your cluster has no activity\", and RU-based Standard clusters, which implies usage-based elastic compute. Horizontal scaling is also claimed, but nothing explicitly states that compute scales up automatically under load without manual resizing or downtime. Missing for 10: explicit documentation of automatic scale-up with load, a no-downtime guarantee during scaling, details on autoscaling limits or behavior, and independent or hands-on corroboration.",
+    "rationale": "CockroachDB Cloud's Basic/Serverless offering documents usage-based Request Unit consumption that 'scales to zero when your cluster has no activity', which shows automatic scale-down. Automatic scale-up with load is only implied by 'Serverless' and generic horizontal-scaling claims; horizontal scaling alone is not automatic autoscaling. Missing for 10: explicit documentation of automatic compute scale-up under load, evidence of no manual resizes or downtime during scaling events, independent or hands-on corroboration.",
     "evidenceIds": [
       "cockroachdb-docs-18",
       "cockroachdb-docs-17",
-      "cockroachdb-docs-29",
       "cockroachdb-gh-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, compute autoscales up and down with load automatically, without manual resizes or downtime",
+      "citations": [
+        {
+          "evidenceId": "cockroachdb-docs-18",
+          "quote": "Request Unit consumption scales to zero when your cluster has no activity."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-17",
+          "quote": "create a new CockroachDB Serverless cluster"
+        },
+        {
+          "evidenceId": "cockroachdb-gh-2",
+          "quote": "It **scales** horizontally"
+        }
+      ]
+    },
     "productId": "cockroachdb",
     "storyId": "autoscaling-under-load"
   }

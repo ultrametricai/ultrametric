@@ -1,20 +1,31 @@
 {
-  "hash": "ae74429fc42b992667228497bb3facd6865834d93aaa9a5f6516215430c6f56b",
+  "hash": "46bb0445327be6e5e5b3ea0cb37532081885d6f8da3a85e57dc5da12a05460cd",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "sandbox0",
-    "storyId": "privacy-retention-controls",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents its own retention and deletion controls for sandbox state. `hard_ttl` expiry durably requests deletion of identity and RootFS state, and the soft `ttl` triggers a pause. Users can choose whether the writable RootFS and process memory are preserved across checkpoints, and can manage persistent files without resuming compute. It does not document deletion or retention controls for snapshots, historical logs, the audit ledger, or account- and team-level data, so the story is only partly covered. missing for 10: explicit on-demand delete APIs for sandboxes/snapshots, retention settings for logs and the audit ledger, account/team data-deletion policy, independent corroboration",
+    "rationale": "Sandbox0 documents a `hard_ttl` whose expiry \"durably requests deletion of identity and RootFS state\", giving users a first-party way to bound how long sandbox data persists. The file-management docs say users can \"read and manage persistent files\", but they do not explicitly describe deleting files. The pack also says nothing about retention or deletion for logs, the audit ledger, or snapshots. missing for 10: explicit on-demand sandbox/snapshot deletion API, retention controls for historical logs and audit ledger, documented data-retention policy, independent corroboration.",
     "evidenceIds": [
       "sandbox0-docs-38",
-      "sandbox0-docs-2",
-      "sandbox0-docs-6",
-      "sandbox0-docs-7",
-      "sandbox0-docs-8",
-      "sandbox0-docs-36"
-    ]
+      "sandbox0-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": [
+        {
+          "evidenceId": "sandbox0-docs-38",
+          "quote": "hard_ttl: Hard sandbox timeout. Expiry durably requests deletion of identity and RootFS state."
+        },
+        {
+          "evidenceId": "sandbox0-docs-7",
+          "quote": "Read and manage persistent files without starting or resuming sandbox compute."
+        }
+      ]
+    },
+    "productId": "sandbox0",
+    "storyId": "privacy-retention-controls"
   }
 }

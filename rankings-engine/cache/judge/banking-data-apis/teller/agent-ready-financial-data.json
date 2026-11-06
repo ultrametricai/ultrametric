@@ -1,21 +1,38 @@
 {
-  "hash": "3b8325209b32500b0ab45c98dbb45cf9fda62e517caf7664339fa4d547dc2d0c",
+  "hash": "9f73a1e1c97dbbc491c8512d9bba9d90fbad30c3c4ea239bc09e6d31be1d5c49",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Teller documents structured resources per endpoint: balances, ledger transactions, identity with beneficial-owner data, and paginated transaction lists. It also adds category enrichment to transactions, which gives an automated workflow fields it can reason over directly. However, probes found no machine-readable OpenAPI/Swagger spec and no llms.txt, so schemas exist only as prose docs, and the visible enrichment is limited to categorization. Missing for 10: machine-readable published schema (OpenAPI), explicit evidence of the JSON response format and field-level schema detail, richer enrichment such as merchant normalization, and independent hands-on corroboration that the data is agent-consumable.",
+    "rationale": "Teller documents structured API resources for balances, transactions and identity, and its transactions docs define a fixed set of category values. That category enrichment is something an automated workflow can reason over. However, the evidence never explicitly says responses are JSON, and every OpenAPI/Swagger probe returned 404, so there is no machine-readable schema an agent could ingest. Missing for 10: a published OpenAPI or machine-readable schema, explicit confirmation of the JSON response format, enrichment beyond categorization (such as merchant normalization), and independent hands-on corroboration that responses are agent-consumable.",
     "evidenceIds": [
-      "teller-docs-2",
-      "teller-docs-3",
-      "teller-docs-4",
       "teller-docs-16",
+      "teller-docs-3",
+      "teller-docs-2",
+      "teller-docs-4",
       "teller-docs-21",
-      "teller-probe-1",
-      "teller-probe-3",
-      "teller-comm-1"
+      "teller-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, the data comes back agent-consumable — clean structured JSON, documented schemas, and enrichment an automated financial workflow can reason over without heuristic parsing",
+      "citations": [
+        {
+          "evidenceId": "teller-docs-16",
+          "quote": "the category that the transaction belongs to. Teller uses the following values for categorization"
+        },
+        {
+          "evidenceId": "teller-docs-3",
+          "quote": "The transactions API exposes the ledger transactions of a financial account."
+        },
+        {
+          "evidenceId": "teller-docs-2",
+          "quote": "The account balances API provides your application with live, real-time account balances."
+        }
+      ]
+    },
     "productId": "teller",
     "storyId": "agent-ready-financial-data"
   }

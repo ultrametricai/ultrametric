@@ -1,20 +1,36 @@
 {
-  "hash": "539c7c5f30e14dcd965b9e41924c9d1917f5860d032137590714c157f7870f70",
+  "hash": "a499642f3b633ccfc498a610b4ac818ecd18659e6a41650b0b147873f2b41bf1",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "E2B documents a sandbox timeout that developers can change at runtime with `setTimeout`/`set_timeout`, which resets it to the new value. The sandbox shuts down when the timeout expires, and `kill` can end it earlier. Sessions are also hard-capped at 1 hour (Base) or 24 hours (Pro), and the CLI can shut down one or all running sandboxes. missing for 10: an idle-based (inactivity) timeout rather than a wall-clock timeout, an explicit statement that billing stops on timeout or shutdown, evidence of setting the timeout at creation time, and independent or hands-on corroboration.",
+    "rationale": "E2B documents a sandbox timeout that can be changed at runtime with setTimeout/set_timeout and reset to a new value. It also documents kill to shut a sandbox down before the timeout expires, which implies automatic shutdown when the timeout is reached. However, the evidence shows no idle/inactivity-based auto-shutdown and never states that billing stops when a sandbox times out; paused sandboxes are also kept indefinitely with no automatic deletion. missing for 10: inactivity-based (idle) auto-shutdown, explicit documentation that billing stops on timeout, a documented timeout parameter at sandbox creation, independent or hands-on corroboration.",
     "evidenceIds": [
-      "e2b-docs-20",
       "e2b-docs-5",
       "e2b-docs-6",
-      "e2b-docs-22",
-      "e2b-docs-14",
-      "e2b-docs-25",
-      "e2b-docs-39"
+      "e2b-docs-20",
+      "e2b-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can set timeouts so sandboxes shut down automatically and stop billing when idle or done",
+      "citations": [
+        {
+          "evidenceId": "e2b-docs-20",
+          "quote": "You can change the sandbox timeout when it's running by calling the `setTimeout` method in JavaScript or `set_timeout` method in Python."
+        },
+        {
+          "evidenceId": "e2b-docs-5",
+          "quote": "When you call the set timeout method, the sandbox timeout will be reset to the new value that you specified."
+        },
+        {
+          "evidenceId": "e2b-docs-6",
+          "quote": "You can shutdown the sandbox any time even before the timeout is up by calling the `kill` method."
+        }
+      ]
+    },
     "productId": "e2b",
     "storyId": "auto-teardown-timeouts"
   }

@@ -1,19 +1,41 @@
 {
-  "hash": "2b9e1e5a0a6483e3155f01eb2f6fb4080b6f7af8b7fb7a037e50a42eebc22f52",
+  "hash": "787e8514437aa960523ae4753343aceaeef71e689c807c2c65410d462bfce579",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents a refreshable soft `ttl` that can keep a sandbox running while work continues, plus a separate `hard_ttl`. It also offers a session supervisor for background workers and agent runtimes that must outlive an SDK call, and pause/resume that preserves the full RootFS so long tasks can span pauses. Per-second compute billing with no one-hour minimum fits long sessions. Missing for 10: an explicit documented maximum runtime or a stated hours-to-days guarantee, non-experimental preservation of in-memory process state across pauses, and independent or hands-on corroboration of multi-day sessions.",
+    "rationale": "Sandbox0 documents a refreshable soft `ttl` that keeps a sandbox running while work continues, plus a separate `hard_ttl`. Its session supervisor is meant for background workers and agent runtimes that outlive an SDK call, and pause/resume preserves the RootFS so long tasks can span idle periods. Per-second billing with no one-hour minimum makes long runs practical. missing for 10: an explicit documented maximum runtime confirming multi-hour or multi-day sessions, independent or hands-on corroboration of long-running stability.",
     "evidenceIds": [
       "sandbox0-docs-38",
       "sandbox0-docs-20",
       "sandbox0-docs-2",
-      "sandbox0-docs-6",
-      "sandbox0-docs-4",
-      "sandbox0-docs-36"
+      "sandbox0-docs-36",
+      "sandbox0-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can keep a sandbox session running for hours or days for long agent tasks",
+      "citations": [
+        {
+          "evidenceId": "sandbox0-docs-38",
+          "quote": "claim a sandbox with a soft ttl; refresh the soft deadline while work continues, then let it expire when idle"
+        },
+        {
+          "evidenceId": "sandbox0-docs-20",
+          "quote": "background workers and agent runtimes that must outlive an SDK call"
+        },
+        {
+          "evidenceId": "sandbox0-docs-2",
+          "quote": "Preserve the whole writable root filesystem across successful checkpoints, pause compute between tasks, and resume the same sandbox when work returns."
+        },
+        {
+          "evidenceId": "sandbox0-docs-5",
+          "quote": "the RootFS expands automatically online as it fills, within the configured device ceiling, while the agent keeps running."
+        }
+      ]
+    },
     "productId": "sandbox0",
     "storyId": "long-running-sessions"
   }

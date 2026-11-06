@@ -1,18 +1,30 @@
 {
-  "hash": "027fc9d6490b5ecd451d74dd5e2e95d9bf5520801634e33b2735bef4f2c362ff",
+  "hash": "b927a86f0de4727569a6c2104af32f008aa715bcadc6f8fe3ace8e19be7b553f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Gecko offers event-driven building blocks rather than a general rule engine. Webhooks push scan and finding events to your systems, for example to page a channel when a scan fails or open a workflow when a critical lands (docs-24, docs-10). PR checks have a configurable fail-on-severity threshold (docs-29), and Gecko automatically rechecks findings when a fix merges (docs-16). Missing for 10: a native user-defined rule/condition-action engine inside Gecko, configurable automatic actions beyond the severity gate (acting on webhooks requires external tooling), and independent or hands-on corroboration.",
+    "rationale": "Gecko offers one narrow, user-configurable event rule of its own. On pull-request scans you set a fail-on severity threshold, and Gecko automatically posts a pass/fail check back to GitHub or GitLab. Webhooks only push events to your own systems, where you would build the actions yourself, so they are a building block and earn no credit here. Scan schedules are recurring, not event-triggered. missing for 10: a general rule engine with custom event conditions mapped to configurable actions (e.g. auto-ticket or auto-fix on a critical finding), documentation of rule configuration beyond the PR-check threshold, and independent hands-on corroboration.",
     "evidenceIds": [
-      "gecko-security-docs-24",
-      "gecko-security-docs-10",
       "gecko-security-docs-29",
-      "gecko-security-docs-16",
-      "gecko-security-docs-30"
+      "gecko-security-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "gecko-security-docs-29",
+          "quote": "**Fail-on severity**: the severity threshold that fails the check (for example, fail on High and above)."
+        },
+        {
+          "evidenceId": "gecko-security-docs-5",
+          "quote": "Gecko posts a pass/fail check back to GitHub or GitLab so reviewers see the security status inline."
+        }
+      ]
+    },
     "productId": "gecko-security",
     "storyId": "automation-rules-engine"
   }

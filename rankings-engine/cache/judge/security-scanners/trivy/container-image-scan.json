@@ -1,20 +1,42 @@
 {
-  "hash": "c454952ef84577c8e43a24f5d7f6d658e7f824e6685b68820ef5e3c6e6b089d4",
+  "hash": "696854396afb1cd5dfa9a357277fdbdd8579f661c7145842a7966b0412f246a4",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Trivy's docs say `trivy image [YOUR_IMAGE_NAME]` detects known vulnerabilities in container images, and lock-file scanning (Gemfile.lock, package-lock.json) covers application dependencies. Community users report running it in CI/CD and bundled with Harbor for image analysis, which supports scanning before deployment. Missing for 10: explicit documentation that OS-package and application-layer detection both apply within image scans (the lock-file evidence comes from the filesystem-target page), and documented pre-deploy gating such as severity thresholds or exit codes.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Trivy's docs show it detecting known vulnerabilities in container images via `trivy image`. Community users report running it in CI/CD and Harbor registry workflows, which supports scanning before deploy. However, the evidence never says OS packages are covered, and lock-file (application dependency) detection is documented only for the filesystem target, not for images. Missing for 10: explicit documentation of OS-package vulnerability detection inside images, explicit documentation of application-dependency scanning within the image target, and hands-on corroboration of both layers being detected.",
     "evidenceIds": [
-      "trivy-docs-1",
       "trivy-docs-17",
+      "trivy-docs-1",
       "trivy-docs-2",
-      "trivy-comm-11",
-      "trivy-comm-12",
       "trivy-comm-13",
-      "trivy-comm-14"
+      "trivy-comm-14",
+      "trivy-comm-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a devops-lead, I can scan container images for OS-package and application-layer vulnerabilities before deploying them",
+      "citations": [
+        {
+          "evidenceId": "trivy-docs-17",
+          "quote": "It detects known vulnerabilities in your container image... `$ trivy image [YOUR_IMAGE_NAME]`"
+        },
+        {
+          "evidenceId": "trivy-docs-2",
+          "quote": "Trivy will look for vulnerabilities based on lock files such as Gemfile.lock and package-lock.json."
+        },
+        {
+          "evidenceId": "trivy-comm-13",
+          "quote": "It comes bundled with the harbor docker registry, meaning you get security analysis of your images"
+        },
+        {
+          "evidenceId": "trivy-comm-14",
+          "quote": "it's super easy to integrate in every ci/cd pipeline"
+        }
+      ]
+    },
     "productId": "trivy",
     "storyId": "container-image-scan"
   }

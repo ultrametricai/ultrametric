@@ -1,17 +1,39 @@
 {
-  "hash": "7b92e1efac075e00f8ea2565ba74512862c0e6f7692f5fc4f34a7a2420563ff3",
+  "hash": "2e1e4b2ecb4e5a64d5e8dc2ce33b0a72db225fa2fbf47a80b3e44ebcb2ba9609",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Sandbox0 documents a soft `ttl` that automatically pauses a sandbox on expiry and can be refreshed while work continues, so it lapses when idle. A `hard_ttl` deletes the sandbox and its RootFS state. Paused sandboxes incur no compute charges, only storage, under per-second billing. Missing for 10: independent or hands-on corroboration that timeouts trigger reliably, and automatic idle detection (idleness depends on the client no longer refreshing the TTL).",
+    "confidence": "medium",
+    "rationale": "Sandbox0 documents two timeouts. A soft `ttl` pauses the sandbox on expiry and can be refreshed while work continues, then left to expire when idle. A `hard_ttl` deletes the sandbox's identity and RootFS state. Pricing docs confirm paused sandboxes incur no compute charges, only storage. Missing for 10: independent or hands-on corroboration; true activity-based idle detection, since idle shutdown relies on the caller refreshing the soft TTL; and paused sandboxes still accrue storage charges, so billing does not stop entirely unless hard_ttl deletes them.",
     "evidenceIds": [
       "sandbox0-docs-38",
       "sandbox0-docs-3",
-      "sandbox0-docs-36",
-      "sandbox0-docs-2"
+      "sandbox0-docs-36"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can set timeouts so sandboxes shut down automatically and stop billing when idle or done",
+      "citations": [
+        {
+          "evidenceId": "sandbox0-docs-38",
+          "quote": "ttl: Soft runtime timeout. Expiry requests the same planned pause transaction. hard_ttl: Hard sandbox timeout. Expiry durably requests deletion of identity and RootFS state."
+        },
+        {
+          "evidenceId": "sandbox0-docs-38",
+          "quote": "claim a sandbox with a soft ttl; refresh the soft deadline while work continues, then let it expire when idle"
+        },
+        {
+          "evidenceId": "sandbox0-docs-3",
+          "quote": "On Sandbox0 Cloud, paused sandboxes incur no compute charges."
+        },
+        {
+          "evidenceId": "sandbox0-docs-36",
+          "quote": "Paused sandboxes incur storage charges only."
+        }
+      ]
+    },
     "productId": "sandbox0",
     "storyId": "auto-teardown-timeouts"
   }

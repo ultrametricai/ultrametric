@@ -1,16 +1,35 @@
 {
-  "hash": "9920387345052a34f40cc84921c67aecd8d148c9001519cbe0f548b479c5bcc4",
+  "hash": "28b60ac148c3c791171043aa2d2ecee624668441a1be6b6feca9076d6687f742",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Yubico's FIDO2 documentation says the key requires user presence (a touch) and can optionally enforce user verification by PIN entry, so a stolen key alone cannot authenticate. The ykman CLI supports PIN management, and community users confirm setting a FIDO2 PIN. A community caveat is that keys ship without a PIN, so it must be set before enrolling. Missing for 10: any evidence of built-in biometric verification, in-depth first-party docs on FIDO2 PIN policy (retry limits, enforcing verification by default), and a way to require a PIN without re-enrolling keys already registered without one.",
+    "rationale": "Yubico's FIDO2 docs state the key can enforce user verification via PIN entry in addition to touch. ykman manages PINs, and a community report confirms a FIDO2 PIN can be set, though keys ship without one and must be re-enrolled after setting it. Missing for 10: in-depth first-party FIDO2 PIN/UV documentation beyond the SSH guide, any evidence of a built-in biometric option, and evidence that UV can be forced at the key level rather than left optional and off by default.",
     "evidenceIds": [
       "yubikey-docs-6",
       "yubikey-probe-rt-1",
       "yubikey-comm-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a security engineer, the key supports on-device user verification — a FIDO2 PIN or built-in biometric — so a stolen key alone cannot authenticate",
+      "citations": [
+        {
+          "evidenceId": "yubikey-docs-6",
+          "quote": "FIDO2 also requires user presence (a touch on your YubiKey) for cryptographic operations, and can optionally enforce user verification (PIN entry)."
+        },
+        {
+          "evidenceId": "yubikey-probe-rt-1",
+          "quote": "Full scriptable device management: enable applications, PINs, PIV/OATH/OTP slots, device info."
+        },
+        {
+          "evidenceId": "yubikey-comm-13",
+          "quote": "you need to unenroll everywhere, set a PIN, and enroll again."
+        }
+      ]
+    },
     "productId": "yubikey",
     "storyId": "pin-biometric-verification"
   }

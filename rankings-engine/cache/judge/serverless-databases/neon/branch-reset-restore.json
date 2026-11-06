@@ -1,19 +1,41 @@
 {
-  "hash": "576620231d3aa197c49172b3849ea7900c7b0c424f967f88cb2f61718e8a3e76",
+  "hash": "6de805217558aed789eeaf7415d4bbbc58270937612da917780aab96e967ee78",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Neon documents an \"Instant restore\" capability for branches. Its MCP surface lists create/reset/restore branch tools plus \"Finalize branch restore from snapshot\", and the docs describe restores that keep the connection string via `finalize_restore: true` and snapshot restores that move between versions instantly. A production user independently confirms they \"periodically reset the branch to its parent,\" so neither operation needs a dump. missing for 10: in-depth first-party documentation in the pack of the reset-from-parent mechanics, and details on the point-in-time restore window and granularity (the Instant restore page appears only as a title).",
+    "confidence": "medium",
+    "rationale": "Neon documents branch reset and restore as first-party operations: the MCP tool surface lists create/reset/restore branches and finalizing a branch restore from a snapshot. The docs describe restores that keep the same connection string and moving between versions instantly, and a production user independently reports periodically resetting a branch to its parent. Missing for 10: in-depth first-party documentation of reset-from-parent mechanics and point-in-time restore windows (the Instant restore page appears only as a title), and hands-on corroboration of restoring to an earlier timestamp.",
     "evidenceIds": [
-      "neon-docs-8",
-      "neon-docs-29",
-      "neon-docs-44",
       "neon-supp-mcp-tool-surface",
+      "neon-docs-44",
       "neon-supp-branching-for-agents",
-      "neon-comm-10"
+      "neon-comm-10",
+      "neon-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can reset a branch from its parent or restore it to an earlier state without rebuilding from a dump",
+      "citations": [
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "create/reset/restore branches, \"Finalize branch restore from snapshot\""
+        },
+        {
+          "evidenceId": "neon-docs-44",
+          "quote": "restores them without changing the connection string, by transferring compute endpoints to a new branch via the `finalize_restore: true` flag"
+        },
+        {
+          "evidenceId": "neon-supp-branching-for-agents",
+          "quote": "Restores allow platforms to move between versions instantly."
+        },
+        {
+          "evidenceId": "neon-comm-10",
+          "quote": "periodically reset the branch to its parent"
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "branch-reset-restore"
   }

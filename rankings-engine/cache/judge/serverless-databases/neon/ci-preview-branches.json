@@ -1,21 +1,37 @@
 {
-  "hash": "cd07dcd9836a24933c3072ba328be230b3e5a72e23c38058434d293aab40a922",
+  "hash": "67c45f7a8f6b6e31adcf332b450e999dfde236542cc703dda2e541a23093cfce",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Neon documents branching as a core primitive. Branches can be created and managed programmatically through the Neon API, the CLI, and a GitHub integration. neon.ts adds per-branch policy with auto-expiring TTLs (e.g. `{ ttl: \"7d\" }`) that can be applied from a CI job via `@neon/config-runtime`, and Neon Auth explicitly supports isolated 'preview or CI branches'. Missing for 10: an explicitly documented per-pull-request create/delete workflow (e.g. GitHub Actions steps or a deploy-platform preview integration) beyond page titles, an explicit branch-delete step for teardown, and independent hands-on corroboration of per-PR automation.",
+    "rationale": "Neon's own docs show branch lifecycle automation that can run from CI. neon.ts declares per-branch policy, including TTLs for auto-expiring branches, and its plan/apply logic can be called from a CI job. Auth docs also reference preview and CI branches. However, the pack never documents an explicit per-pull-request create-on-open / delete-on-close workflow; the GitHub integration appears only as a page title. Missing for 10: documented per-PR branch creation and teardown triggered by PR events, deploy-platform (e.g. Vercel preview) integration details, and hands-on or independent corroboration of CI branch automation.",
     "evidenceIds": [
-      "neon-docs-25",
-      "neon-docs-18",
-      "neon-docs-35",
-      "neon-docs-11",
-      "neon-docs-20",
       "neon-supp-neon-ts-config",
       "neon-docs-53",
-      "neon-comm-10"
+      "neon-docs-35",
+      "neon-docs-11",
+      "neon-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can create and tear down per-pull-request database branches automatically from CI or my deploy platform",
+      "citations": [
+        {
+          "evidenceId": "neon-supp-neon-ts-config",
+          "quote": "To call the same `inspect` / `plan` / `apply` logic from your own script or CI job instead of the CLI, see `@neon/config-runtime`."
+        },
+        {
+          "evidenceId": "neon-supp-neon-ts-config",
+          "quote": "for auto-expiring branches"
+        },
+        {
+          "evidenceId": "neon-docs-53",
+          "quote": "test sign-up, login, and OAuth flows in preview or CI branches without touching production"
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "ci-preview-branches"
   }

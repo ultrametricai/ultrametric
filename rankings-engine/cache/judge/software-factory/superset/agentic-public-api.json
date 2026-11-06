@@ -1,22 +1,39 @@
 {
-  "hash": "208ed790b9b4793e4ec4af07d48ad054af4888ac43b9b5bb20aafd1e4c1cb53a",
+  "hash": "cea627fecfa90bb6a728904a584706f7b23def122d91679484874f4196f256de",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Superset documents several programmatic surfaces: a TypeScript SDK for workspaces, tasks, projects and automations; a CLI that drives the same backend as the desktop app; and a hosted MCP server. A runtime probe confirmed a live OpenAPI 3.1 'Superset API' spec at api.superset.sh, with OAuth 2.1 and API-key auth indexed in llms.txt. The 404s at the docs-subdomain OpenAPI paths only show the spec is hosted elsewhere, not that it is absent. Missing for 10: independent or community hands-on reports of using the public API or SDK in practice.",
+    "rationale": "Superset publishes an OpenAPI 3.1 'Superset API' spec for programmatic access to its agent-orchestration platform, and a runtime probe retrieved it. The same surface is fronted by a TypeScript SDK and a hosted MCP server, both live and documented, so the product itself offers a documented public API. The earlier 404s were only on docs-subdomain paths; the spec lives on the api subdomain, so they do not contradict this. missing for 10: independent or hands-on community corroboration of using the REST API directly, and evidence of per-endpoint reference documentation depth.",
     "evidenceIds": [
       "superset-probe-rt-3",
       "superset-probe-rt-1",
-      "superset-probe-rt-2",
       "superset-docs-9",
       "superset-docs-23",
-      "superset-docs-29",
-      "superset-docs-8",
       "superset-docs-2",
-      "superset-docs-24"
+      "superset-probe-rt-2",
+      "superset-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "superset-probe-rt-3",
+          "quote": "keyless GET of https://api.superset.sh/openapi.json returned the OpenAPI 3.1 spec — title 'Superset API', summary \"Programmatic access to Superset's agent-orchestration platform\""
+        },
+        {
+          "evidenceId": "superset-docs-9",
+          "quote": "The Superset TypeScript SDK lets you create and manage your workspaces, tasks, projects, and automations from code."
+        },
+        {
+          "evidenceId": "superset-probe-rt-1",
+          "quote": "auth.md (OAuth 2.1 + PKCE with dynamic client registration, or API keys)"
+        }
+      ]
+    },
     "productId": "superset",
     "storyId": "agentic-public-api"
   }

@@ -1,18 +1,39 @@
 {
-  "hash": "289c342039600d6fc86151d4030f9b0a9443c804a87ed6d7da714d6a04c4c0c3",
+  "hash": "4c44aa7b18685d748b4b37b15959fb7090744ac21ab41f61d17a7c8164341cad",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Neon gives agents and users programmatic deletion and some expiry controls. The MCP surface includes create, update and delete project, plus recovering a deleted project and deleting or resetting branches. neon.ts supports per-branch TTLs (e.g. `{ ttl: \"7d\" }`) for auto-expiring branches, and snapshots can be scheduled. Unclaimed agent-provisioned projects expire after 72 hours, and project cleanup is described as fully automated via the API. Missing for 10: documented controls over the history/restore retention window, guarantees and timelines for purging deleted data and backups, and any retention-policy or compliance documentation or independent corroboration.",
+    "rationale": "Neon documents its own controls over how long data lives and how it is removed. neon.ts lets you set per-branch TTLs for auto-expiring branches. The MCP server exposes project delete and recovery plus scheduled snapshots, and project cleanup can be automated through the API. However, there is no documented configuration of the history/point-in-time retention window and no description of what deletion actually purges or when. missing for 10: configurable history/PITR retention window, documented deletion and purge guarantees (including backups), account-level data deletion policy, independent or hands-on corroboration.",
     "evidenceIds": [
-      "neon-supp-mcp-tool-surface",
       "neon-supp-neon-ts-config",
-      "neon-supp-agent-claim-flow",
-      "neon-supp-branching-for-agents",
-      "neon-docs-44"
+      "neon-supp-mcp-tool-surface",
+      "neon-supp-branching-for-agents"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": [
+        {
+          "evidenceId": "neon-supp-neon-ts-config",
+          "quote": "TTLs like `{ ttl: \"7d\" }` for auto-expiring branches"
+        },
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "create/update/delete project"
+        },
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "snapshots (create/restore/schedule)"
+        },
+        {
+          "evidenceId": "neon-supp-branching-for-agents",
+          "quote": "Project creation, configuration, and cleanup are fully automated"
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "privacy-retention-controls"
   }

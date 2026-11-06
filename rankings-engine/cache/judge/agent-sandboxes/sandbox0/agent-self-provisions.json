@@ -1,23 +1,47 @@
 {
-  "hash": "04e0340b43d68d01250df42d3b435c8795caf0ed05edb353d4d3633b90abb077",
+  "hash": "a715ec9a8d02cb042ca6edb9cf6b07aafbca70f377804cdabd63758c670c1f5b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0's docs cover the full loop programmatically. An agent can use a team API key with the Go/Python/TypeScript SDKs or raw HTTP API to claim sandboxes, run code through REPL or Cmd contexts, read files, and have the sandbox deleted via hard_ttl expiry. Native OpenAI Agents SDK and LangChain Deep Agents backends, plus a non-interactive `s0` CLI, support unattended operation. Missing for 10: an explicitly documented on-demand delete/teardown call (only TTL-driven deletion is shown), explicit documentation of capturing execution stdout/results, a published OpenAPI spec (probe returned 404), and independent hands-on corroboration of the end-to-end loop.",
+    "rationale": "Sandbox0 documents agent-oriented provisioning: SDKs with a team API key, claiming sandboxes from snapshots, and running code in REPL or Cmd contexts. Agents can read results through the files API, and teardown is possible through hard_ttl expiry, which deletes the sandbox's identity and RootFS. However, the pack never shows an explicit programmatic delete or teardown call, and it never documents how command output is returned to the caller, so end-to-end coverage is only partial. missing for 10: an explicit API/SDK delete or terminate call, documented retrieval of execution stdout/results from contexts, and an end-to-end agent lifecycle example or independent hands-on corroboration.",
     "evidenceIds": [
       "sandbox0-docs-1",
-      "sandbox0-docs-37",
       "sandbox0-docs-21",
       "sandbox0-docs-7",
-      "sandbox0-docs-38",
       "sandbox0-docs-29",
-      "sandbox0-docs-25",
-      "sandbox0-docs-26",
-      "sandbox0-docs-27",
-      "sandbox0-probe-3"
+      "sandbox0-docs-37",
+      "sandbox0-docs-38",
+      "sandbox0-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, my agent can provision its own sandbox, execute code, read the results, and tear it down — end to end without a human",
+      "citations": [
+        {
+          "evidenceId": "sandbox0-docs-37",
+          "quote": "If you want to use the SDKs or raw HTTP API, create a team-scoped API key and export it as SANDBOX0_TOKEN."
+        },
+        {
+          "evidenceId": "sandbox0-docs-1",
+          "quote": "A sandbox gives a user's AI agent an isolated cloud computer where it can run code, install software, manage files, and control network access."
+        },
+        {
+          "evidenceId": "sandbox0-docs-21",
+          "quote": "Each context runs a process and can be either a **REPL** (stateful) or **Cmd** (stateless) type."
+        },
+        {
+          "evidenceId": "sandbox0-docs-7",
+          "quote": "Read and manage persistent files without starting or resuming sandbox compute."
+        },
+        {
+          "evidenceId": "sandbox0-docs-38",
+          "quote": "hard_ttl: Hard sandbox timeout. Expiry durably requests deletion of identity and RootFS state."
+        }
+      ]
+    },
     "productId": "sandbox0",
     "storyId": "agent-self-provisions"
   }

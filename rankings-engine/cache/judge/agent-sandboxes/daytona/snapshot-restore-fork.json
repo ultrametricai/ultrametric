@@ -1,11 +1,11 @@
 {
-  "hash": "78877b304beefe8046accfdd490871f66be2173e1cfe98ed9c8799f02d028312",
+  "hash": "1f7a8bd2f887af91b26b7d91ab8cf6734843008316886c636bacb5a623e7695c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Daytona's docs say snapshots capture and persist a sandbox's current state: filesystem only for container sandboxes (cold), filesystem plus memory for VM sandboxes (hot). They also document creating new sandboxes from snapshots, including warm pools of pre-created sandboxes built from one, and the CLI manages snapshots. Together this covers the snapshot-then-fork flow. Missing for 10: explicit documentation of restoring an existing sandbox in place from a snapshot, concrete SDK/API calls for snapshot-and-fork of a live sandbox, and independent or hands-on corroboration.",
+    "rationale": "Daytona's docs say snapshots capture and persist a running sandbox's state: filesystem only for container sandboxes, and filesystem plus memory for VM sandboxes. A snapshot can be used to create new sandboxes, including warm pools built from it, which covers forking. However, the evidence never explicitly describes restoring an existing sandbox from a snapshot, and all of it is vendor docs. missing for 10: explicit documentation of restoring or rolling back a sandbox to a prior snapshot, documentation of a programmatic snapshot-from-live-sandbox API flow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "daytona-docs-2",
       "daytona-docs-22",
@@ -13,6 +13,29 @@
       "daytona-docs-23",
       "daytona-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can snapshot a sandbox and later restore or fork new sandboxes from that snapshot",
+      "citations": [
+        {
+          "evidenceId": "daytona-docs-22",
+          "quote": "captures and persists a sandbox’s current state; container sandboxes capture filesystem state only (cold snapshots), VM sandboxes capture filesystem and memory state (hot snapshots)"
+        },
+        {
+          "evidenceId": "daytona-docs-2",
+          "quote": "Snapshots are persistent, point-in-time captures of sandbox state, including the filesystem, installed packages, dependencies, and settings."
+        },
+        {
+          "evidenceId": "daytona-docs-21",
+          "quote": "Daytona builds it into a snapshot you can use to create sandboxes"
+        },
+        {
+          "evidenceId": "daytona-docs-23",
+          "quote": "keep a configured number of pre-created, running sandboxes built from a snapshot"
+        }
+      ]
+    },
     "productId": "daytona",
     "storyId": "snapshot-restore-fork"
   }

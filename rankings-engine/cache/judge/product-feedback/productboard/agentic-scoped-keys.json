@@ -1,19 +1,37 @@
 {
-  "hash": "77accbdb2b14650018c76cfa335ceae2ff09dad3b43309ca4852fbcc74599a5e",
+  "hash": "259622418c8627ce7df0ba01fa42204e0e347fbff423f082a9a63a8cdf366309",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Productboard provides agent-oriented credentials: OAuth with Dynamic Client Registration and PKCE for MCP clients, an OAuth authorization-code flow with consent screens, and personal access tokens. Admins can also restrict which roles may connect an agent. However, the evidence never documents granular scopes or per-token permission limits. Agents appear to inherit the signed-in user's access rather than receive a narrowly scoped credential. Missing for 10: documented granular OAuth/token scopes (e.g., read-only or per-entity), per-credential permission restriction for agents, independent corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Productboard documents agent-specific credential issuance: MCP clients authenticate through Dynamic Client Registration and an OAuth authorization-code flow with PKCE, and the OAuth flow uses consent screens and refreshable tokens. Admins can also restrict which roles may connect an agent, so an agent's access is bounded by the connecting user's role. However, no evidence shows granular per-token scopes or least-privilege permission selection, so the 'scoped' part of the story is only implied. Missing for 10: explicitly documented OAuth/API token scopes, per-credential permission restriction (e.g., read-only or entity-limited tokens), and independent corroboration.",
     "evidenceIds": [
       "productboard-docs-41",
       "productboard-docs-44",
-      "productboard-docs-43",
       "productboard-docs-39",
       "productboard-docs-38",
-      "productboard-docs-50"
+      "productboard-docs-43"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "productboard-docs-41",
+          "quote": "Authenticate MCP (Model Context Protocol) clients using Dynamic Client Registration and the authorization code flow with PKCE. No client secret required."
+        },
+        {
+          "evidenceId": "productboard-docs-44",
+          "quote": "Authenticate users via the OAuth 2.0 authorization code flow with consent screens and refreshable tokens."
+        },
+        {
+          "evidenceId": "productboard-docs-39",
+          "quote": "Under **Who can use it**, choose which roles may connect an agent — for example, makers with admin access, makers, contributors, or viewers."
+        }
+      ]
+    },
     "productId": "productboard",
     "storyId": "agentic-scoped-keys"
   }

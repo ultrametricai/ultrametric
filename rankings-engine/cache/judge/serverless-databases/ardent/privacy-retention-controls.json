@@ -1,17 +1,35 @@
 {
-  "hash": "d1316c76819fd3dfb09b20bd4071b469232bb8e6f0d2ddf06dc74a901934ea6b",
+  "hash": "7b197da0470bc72ac83bbac079c699ebb16ee0ffb3c419f8f21a0600303e27a9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Ardent documents some deletion controls: agents can create and delete their own branches via the CLI, and the API offers a deletion-lock endpoint that blocks connector deletes until unlocked. It also states that actual data never leaves the data plane and that preflight stores no credentials. There is no evidence of configurable retention policies or of controlling how long Ardent keeps data. Missing for 10: retention policies/TTL or auto-expiry for branches, documented account/org-level data deletion and purge guarantees, control over retention of control-plane metadata, independent corroboration.",
+    "confidence": "low",
+    "rationale": "Ardent documents some deletion controls of its own: a connector deletion-lock API endpoint that blocks deletes until unlocked, and CLI-driven creation and deletion of branches. Its architecture docs also say actual data stays in the data plane, with only metadata reaching the control plane. There is no evidence of retention policies such as branch TTLs or auto-expiry, of retention windows for metadata or logs, or of a way to purge vendor-held data. missing for 10: configurable retention periods or branch expiry, documented account and data deletion and purge guarantees, metadata and log retention policy, independent corroboration.",
     "evidenceIds": [
-      "ardent-docs-19",
       "ardent-docs-16",
-      "ardent-docs-23",
-      "ardent-docs-6"
+      "ardent-docs-19",
+      "ardent-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": [
+        {
+          "evidenceId": "ardent-docs-16",
+          "quote": "Lock deletion | POST /v1/connectors/{connector_id}/deletion-lock | Blocks deletes until unlocked"
+        },
+        {
+          "evidenceId": "ardent-docs-19",
+          "quote": "The agent runs the Ardent CLI itself — creating, using, and deleting its own branches"
+        },
+        {
+          "evidenceId": "ardent-docs-23",
+          "quote": "Your actual data never leaves the data plane."
+        }
+      ]
+    },
     "productId": "ardent",
     "storyId": "privacy-retention-controls"
   }

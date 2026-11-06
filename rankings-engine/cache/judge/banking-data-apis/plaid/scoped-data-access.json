@@ -1,19 +1,36 @@
 {
-  "hash": "40bb3c0e10d19480ef0e482650b1759681873c91c418339ffc3752bb25537da8",
+  "hash": "12a1126a3d78855aa30b6263df15767f62dbfeaa6da91fd68bbfe4c8373352d7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Plaid divides data access into separate products (Auth, Balance, Identity, Transactions), and its Sandbox endpoint takes a list of 'initial products' when creating Items, which implies developers choose which data products an Item requests. The pack never documents product-scoped consent screens in Link or any explicit data-minimization controls. One community comment says users are not told they may be sharing more than account numbers, which lowers confidence but does not concretely show that developer-side scoping fails. Missing for 10: documentation that Link consent is scoped per product, explicit data-minimization or field-level scope controls, documentation of the production products parameter, and independent corroboration that scoping limits data access.",
+    "rationale": "Plaid's data access is split into separately documented products (Auth, Balance, Identity, Transactions), and the Sandbox endpoint lets a developer specify 'initial products' for an Item, which implies product-level requests rather than a single blanket grant. However, the pack never documents product-scoped consent screens or any explicit data-minimization controls. A community report that Link flows give no indication users are sharing more than bare account numbers lowers confidence but does not concretely refute product scoping. Missing for 10: first-party docs on how products map to user consent scopes, documented data-minimization or field-level controls, docs on adding or removing scopes after linking, and independent hands-on corroboration that requesting one product limits the data shared.",
     "evidenceIds": [
       "plaid-docs-1",
-      "plaid-docs-2",
-      "plaid-docs-3",
-      "plaid-docs-4",
+      "plaid-docs-12",
       "plaid-docs-14",
       "plaid-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I request only the data scopes I need — product-scoped consents and documented data-minimization controls, not an all-or-nothing grant",
+      "citations": [
+        {
+          "evidenceId": "plaid-docs-14",
+          "quote": "This endpoint allows you to generate a public_token for an arbitrary institution ID, initial products, and test credentials."
+        },
+        {
+          "evidenceId": "plaid-docs-1",
+          "quote": "Auth allows you to request a user's checking, savings, or cash management account and routing number"
+        },
+        {
+          "evidenceId": "plaid-docs-12",
+          "quote": "Using Identity, you can access a user's phone number, email address, mailing address, and name."
+        }
+      ]
+    },
     "productId": "plaid",
     "storyId": "scoped-data-access"
   }

@@ -1,22 +1,43 @@
 {
-  "hash": "ce418ac9a90725703dd3d432698f8a40cd8ee05fd891ae280650847c988dd3ac",
+  "hash": "7ff2b40cb26b242e0bf412da14bb5936c0809caf35fc83f149a9593f6a04d9af",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Neon positions branching as a core feature: it 'branches with your app', has a dedicated Branching docs page, and exposes create/reset/restore branch tools via its MCP server. Its docs describe running schema migrations on temporary branches while production stays untouched, and snapshots that capture 'schema and data'. A production user independently confirms they 'branch off the main database to test things out, and periodically reset the branch to its parent.' Missing for 10: explicit documentation of the copy-on-write mechanism, evidence that branch creation is instant (only restore is described as instant), and substantive branching doc content beyond a page title.",
+    "rationale": "Neon documents database branching as a core feature for developing and testing. A production user confirms they \"branch off the main database to test things out,\" and the docs describe running migrations on temporary branches while \"keeping production untouched.\" The pack, however, never explicitly says branch creation is instant or copy-on-write, and it never says outright that a branch carries the parent's data as well as its schema. missing for 10: explicit first-party documentation of copy-on-write semantics, explicit evidence that branch creation is instant, explicit statement that branches include production data alongside schema, and independent hands-on corroboration of branch speed.",
     "evidenceIds": [
       "neon-docs-1",
       "neon-docs-25",
       "neon-comm-10",
       "neon-docs-45",
       "neon-supp-copilot-agents",
-      "neon-supp-branching-for-agents",
       "neon-supp-mcp-tool-surface",
-      "neon-docs-8",
-      "neon-supp-neon-ts-config"
+      "neon-docs-53"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can create an instant copy-on-write branch of my database — schema and data — to develop and test against production-shaped data",
+      "citations": [
+        {
+          "evidenceId": "neon-docs-1",
+          "quote": "Serverless database that scales and branches with your app."
+        },
+        {
+          "evidenceId": "neon-comm-10",
+          "quote": "We can branch off the main database to test things out, and periodically reset the branch to its parent."
+        },
+        {
+          "evidenceId": "neon-docs-45",
+          "quote": "run safe schema migrations and query optimizations on temporary Neon branches, keeping production untouched until changes are validated"
+        },
+        {
+          "evidenceId": "neon-docs-53",
+          "quote": "Every database branch gets its own isolated auth environment, so you can test sign-up, login, and OAuth flows in preview or CI branches without touching production."
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "database-branching"
   }

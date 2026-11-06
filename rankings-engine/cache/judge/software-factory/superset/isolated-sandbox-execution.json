@@ -1,16 +1,31 @@
 {
-  "hash": "5aee92418f41271b78f10e5fb9a90ed5627f64442082c5c8044186439c7836d1",
+  "hash": "ce09c1aac4eeba5ffd40008a790885f60269c0d1942335686db367bd9aab5dda",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Superset gives each agent its own Git worktree and branch, and setup scripts can install dependencies per worktree. However, its own docs say worktrees 'separate working files, but do not sandbox processes', so agents run code unsandboxed on the host. The story asks for safe execution inside an isolated sandbox, and nothing in the evidence shows process, container or VM isolation.",
+    "rationale": "Superset gives each agent its own Git worktree and branch, but its docs say worktrees \"do not sandbox processes,\" so agent code and dependency installs run on the host machine. Project setup scripts can install dependencies, but that is a worktree convenience, not sandboxed execution. No evidence shows a container, VM or other process-level isolation.",
     "evidenceIds": [
       "superset-docs-16",
       "superset-docs-26",
       "superset-comm-9"
     ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a developer, I can have an agent safely execute code and install dependencies inside an isolated sandbox",
+      "citations": [
+        {
+          "evidenceId": "superset-docs-16",
+          "quote": "Each task runs in its own Git worktree and branch. Worktrees separate working files, but do not sandbox processes or prevent merge conflicts."
+        },
+        {
+          "evidenceId": "superset-comm-9",
+          "quote": "Those scripts can install dependencies, transfer env variables, and spin up branching services."
+        }
+      ]
+    },
     "productId": "superset",
     "storyId": "isolated-sandbox-execution"
   }

@@ -1,18 +1,35 @@
 {
-  "hash": "42edbc2ba13ff014dc408ddb54ec56c85c32dad6dc5fb799ae7f0684728e0f85",
+  "hash": "b70624c3a6572f04dabdb6fc7fe455559b08fe0f86968111caedfab1da1e47a7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The CLI supports scoping scans to new commits and failing on findings: `trufflehog git file://. --since-commit HEAD --results=verified,unknown --fail`. It also ships as a Docker image and Homebrew binary, which makes it CI-runnable. However, this invocation is documented only for pre-commit hooks, and the evidence contains no CI or pull-request guidance. Missing for 10: documented CI/PR integration (e.g., a GitHub Action or pipeline examples), explicit exit-code semantics for --fail, base-branch diffing for PRs, and independent hands-on corroboration.",
+    "rationale": "TruffleHog's own CLI has a `--fail` flag that can be combined with `--since-commit` to scan only new commits and return a failing exit code. However, the evidence shows this only in a pre-commit hook context, not in CI pipelines running on pull requests. A Docker image and pre-receive hooks are documented, but nothing describes an official CI integration or per-PR workflow. missing for 10: documented CI/pull-request integration (e.g., an official CI action or pipeline examples), explicit exit-code semantics documentation, independent hands-on corroboration of failing builds in CI.",
     "evidenceIds": [
       "trufflehog-docs-13",
-      "trufflehog-docs-5",
       "trufflehog-gh-2",
-      "trufflehog-gh-1",
-      "trufflehog-probe-4"
+      "trufflehog-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a devops-lead, I can run scans in CI on every pull request and fail the build on new findings via exit codes",
+      "citations": [
+        {
+          "evidenceId": "trufflehog-docs-13",
+          "quote": "trufflehog git file://. --since-commit HEAD --results=verified,unknown --fail"
+        },
+        {
+          "evidenceId": "trufflehog-gh-2",
+          "quote": "docker run --rm -it -v \"$PWD:/pwd\" trufflesecurity/trufflehog:latest github --org=trufflesecurity"
+        },
+        {
+          "evidenceId": "trufflehog-docs-30",
+          "quote": "consider the pre-receive hook option which can block commits with secrets from being accepted"
+        }
+      ]
+    },
     "productId": "trufflehog",
     "storyId": "ci-pipeline-gate"
   }

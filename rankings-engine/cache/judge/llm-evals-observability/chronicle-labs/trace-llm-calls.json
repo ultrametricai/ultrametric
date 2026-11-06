@@ -1,19 +1,41 @@
 {
-  "hash": "d4406f07f3bf2be68f8a39fcea6a3bba2a48c7084668778ee32077bbe41628e8",
+  "hash": "7eba5084e38e896fca6cc0ffc13c77e8f61de6b4575049865123c36e050cc774",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "chronicle-labs",
-    "storyId": "trace-llm-calls",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Chronicle documents its own trace ingestion: agents send telemetry via the SDK or an OpenTelemetry exporter, using a key scoped with traces:write, and the data can be queried in Timeline or through the SDK. However, nothing in the evidence says these traces capture LLM-call inputs/outputs, latency, or token usage; the 'records every request' claim is about simulated twin services, not model calls. missing for 10: explicit capture of LLM prompt/completion content, latency metrics, token usage fields, independent or hands-on corroboration.",
+    "rationale": "Chronicle documents its own trace ingestion: developers can send traces through the SDK or an OpenTelemetry exporter, with a dedicated traces:write key scope, and query them in Timeline or through the SDK. The docs never say these traces capture LLM-call inputs, outputs, latency, or token usage; they focus on agent requests, changed records, and scores. missing for 10: explicit LLM-call span capture with prompt inputs and completion outputs, latency metrics, token usage fields, independent or hands-on corroboration.",
     "evidenceIds": [
       "chronicle-labs-docs-32",
       "chronicle-labs-docs-19",
       "chronicle-labs-docs-17",
-      "chronicle-labs-docs-30",
       "chronicle-labs-docs-14"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can capture traces of my LLM calls with inputs, outputs, latency, and token usage",
+      "citations": [
+        {
+          "evidenceId": "chronicle-labs-docs-32",
+          "quote": "Use SDK trace ingestion or an OpenTelemetry exporter pointed at Chronicle."
+        },
+        {
+          "evidenceId": "chronicle-labs-docs-19",
+          "quote": "Send them from your own code, from your agent's tool calls, or from an OpenTelemetry exporter, then query them in Timeline or through the SDK."
+        },
+        {
+          "evidenceId": "chronicle-labs-docs-17",
+          "quote": "A key supplied to your agent process typically has agents:write and traces:write."
+        },
+        {
+          "evidenceId": "chronicle-labs-docs-14",
+          "quote": "See every request, change, and score."
+        }
+      ]
+    },
+    "productId": "chronicle-labs",
+    "storyId": "trace-llm-calls"
   }
 }

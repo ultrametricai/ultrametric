@@ -1,23 +1,47 @@
 {
-  "hash": "590057d44752edd99e7982fc1d70c2e5d6f529ebd5e500c8827f8a1e536af8ef",
+  "hash": "15461dbef6dc39a6618010fcd3273805c3dd6284c8d43b7746fe2bab5be440cf",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "First-party docs show the core operations an agent would call through the API: server-side session creation (client_secret returned by your server), balances, transactions, ownership refreshes, a relink API with webhooks, and an explicit 'Financial insights for agents' use case for balance and transaction monitoring via the Link CLI. Stripe also ships an official MCP server that lets AI agents interact with the Stripe API. Missing for 10: evidence of scoped/restricted credentials for agent access, MCP tools specific to Financial Connections (the MCP evidence is generic to the Stripe API), an explicit session-creation endpoint reference, and independent hands-on corroboration of agent use.",
+    "rationale": "Stripe's own docs show programmatic access to balances and transaction history, a server-side flow that returns a client_secret for launching the link session, a relink API for managing inactive connections, and an official Stripe MCP server that lets agents call the Stripe API. The docs also list agent use cases via a Link CLI. However, none of the evidence confirms that the MCP server exposes Financial Connections operations, and scoped or restricted credentials for agents are never documented. Missing for 10: scoped/restricted agent credentials, explicit MCP tools for Financial Connections sessions/balances/transactions, an explicitly documented session-creation endpoint, and independent hands-on corroboration of agent operation.",
     "evidenceIds": [
       "stripe-financial-connections-docs-2",
       "stripe-financial-connections-docs-4",
       "stripe-financial-connections-docs-6",
-      "stripe-financial-connections-docs-11",
-      "stripe-financial-connections-docs-13",
       "stripe-financial-connections-docs-14",
-      "stripe-financial-connections-docs-25",
       "stripe-financial-connections-docs-18",
-      "stripe-financial-connections-probe-4",
-      "stripe-financial-connections-probe-5"
+      "stripe-financial-connections-docs-11",
+      "stripe-financial-connections-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can operate the platform — create link sessions, retrieve balances and transactions, and manage connections through the API or an MCP surface with scoped credentials",
+      "citations": [
+        {
+          "evidenceId": "stripe-financial-connections-docs-2",
+          "quote": "Access an account’s current and available balances."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-4",
+          "quote": "Access an account’s transaction history."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-6",
+          "quote": "Use collectFinancialConnectionsAccounts to launch the authentication flow from your client using the client_secret returned by your server"
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-14",
+          "quote": "Use the relink API to help your user reconnect their inactive account."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-18",
+          "quote": "The Stripe Model Context Protocol (MCP) server provides tools that AI agents can use to interact with the Stripe API"
+        }
+      ]
+    },
     "productId": "stripe-financial-connections",
     "storyId": "agent-links-and-reads"
   }

@@ -1,24 +1,37 @@
 {
-  "hash": "b850e12285291a1501d79dc472f1034a8df6cf4792853393dba36c6d973315d6",
+  "hash": "30e8cc22b3398ff8f982ba29a7db064e4b9ae1b3c3023a9f697922980f579ff5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Stripe's docs describe a programmatic integration for Financial Connections: the server creates a session and returns a client_secret, data for balances, ownership and transactions is retrievable, there is a relink API, and webhook events fire on refresh completion. Machine-readable .md docs and llms.txt are served, and the Stripe MCP server wraps the Stripe API for agents. Community posts confirm real integrations and a transactions API. Missing for 10: no cited API reference listing Financial Connections endpoints and objects, no OpenAPI spec found at the probed docs paths, and no hands-on report of driving the full flow purely via API, since account linking relies on a client-side auth UI.",
+    "rationale": "Stripe's own docs show Financial Connections is driven programmatically: a server returns a client_secret, there is a relink API, and webhook events cover account linking and data refreshes. Stripe's official MCP server also exposes the Stripe API to AI agents. However, the pack has no Financial Connections API reference, and the OpenAPI probe returned 404 at every candidate path, so the depth of the public API is not fully evidenced. missing for 10: a cited API reference for Financial Connections resources (accounts, sessions, balance/ownership/transaction refresh endpoints), a machine-readable OpenAPI spec (the probe found none), and independent hands-on corroboration of driving the product via the API.",
     "evidenceIds": [
       "stripe-financial-connections-docs-6",
       "stripe-financial-connections-docs-14",
-      "stripe-financial-connections-docs-2",
-      "stripe-financial-connections-docs-4",
       "stripe-financial-connections-docs-12",
       "stripe-financial-connections-docs-18",
-      "stripe-financial-connections-probe-1",
-      "stripe-financial-connections-probe-2",
-      "stripe-financial-connections-probe-3",
-      "stripe-financial-connections-comm-14",
-      "stripe-financial-connections-comm-6"
+      "stripe-financial-connections-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "stripe-financial-connections-docs-6",
+          "quote": "Use collectFinancialConnectionsAccounts to launch the authentication flow from your client using the client_secret returned by your server"
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-14",
+          "quote": "Use the relink API to help your user reconnect their inactive account."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-18",
+          "quote": "The Stripe Model Context Protocol (MCP) server provides tools that AI agents can use to interact with the Stripe API"
+        }
+      ]
+    },
     "productId": "stripe-financial-connections",
     "storyId": "agentic-public-api"
   }

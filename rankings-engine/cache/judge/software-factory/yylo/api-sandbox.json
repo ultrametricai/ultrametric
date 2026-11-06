@@ -1,19 +1,41 @@
 {
-  "hash": "ac0098b1fd566d3d4f9316e83ff67272daedc7b987ca69768802ab0909e78e35",
+  "hash": "f24b5177c4a34adf80a1422caa535d5530bd02dd6c73088c708c7f148d068de7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "YYLO isolates agent work from the protected target. `task start` freezes the protected SHA and creates a dedicated branch/worktree, preflight is read-only, and merges compose in a private detached candidate with expected-old ref protection. Benchmark candidates also run in private fresh repositories rather than shared worktrees. This is Git-level isolation from the protected branch, not a documented sandbox environment that separates test data from production data. missing for 10: an explicit sandbox or test environment for runtime and data isolation, any mention of production-data protection beyond Git refs, and independent or hands-on corroboration.",
+    "rationale": "YYLO ships its own Git-level isolation: task worktrees on dedicated branches that freeze the protected target SHA, and benchmark candidates executed in private fresh repositories. This keeps agent work off the protected target until an explicit merge. It is repository/worktree isolation rather than a documented runtime sandbox, and read-only preflight is a dry-run-style check, not sandbox isolation. Missing for 10: process/filesystem/network sandboxing of execution, any separation of production data or services (as opposed to the Git branch), and independent or hands-on corroboration.",
     "evidenceIds": [
-      "yylo-gh-4",
-      "yylo-gh-5",
-      "yylo-docs-2",
-      "yylo-docs-16",
       "yylo-docs-25",
-      "yylo-docs-13"
+      "yylo-gh-4",
+      "yylo-docs-16",
+      "yylo-docs-23",
+      "yylo-gh-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "yylo-docs-25",
+          "quote": "Execute candidates in private fresh repositories, not shared task worktrees."
+        },
+        {
+          "evidenceId": "yylo-gh-4",
+          "quote": "`task start` freezes the protected target SHA, creates a dedicated branch/worktree, and completes configured dependency hydration before reporting `WORKING`."
+        },
+        {
+          "evidenceId": "yylo-docs-16",
+          "quote": "Advanced: a separate metadata controller, isolated task worktrees and managed merging."
+        },
+        {
+          "evidenceId": "yylo-docs-23",
+          "quote": "Plan and evaluate coding-agent experiments with isolated attempts, retained evidence and a separate governed workflow lane."
+        }
+      ]
+    },
     "productId": "yylo",
     "storyId": "api-sandbox"
   }

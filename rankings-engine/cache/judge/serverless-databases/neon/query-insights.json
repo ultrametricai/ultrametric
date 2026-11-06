@@ -1,18 +1,35 @@
 {
-  "hash": "63b90dabcfbec2b9cd9a3880d57ff1a7ff9a365fc62e8d4662674b4ff74714e0",
+  "hash": "beea12af791a345faccda34d07415a1965e11f1cc21f107229886b83d0008037",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Neon documents slow-query listing and database inspection, but only through agent and CLI tooling, not a built-in insights view. The hosted MCP server exposes `list_slow_queries` and `inspect_database`, and `neon inspect db` runs 15 read-only checks covering unused indexes, stalled queries, cache hit rate, bloat and table/index sizes. Query optimization is also offered via the AI SQL Editor and Copilot agents. Missing for 10: a documented console insights dashboard, true index recommendations (only unused-index detection is evidenced), time-series performance metrics, and independent hands-on corroboration.",
+    "rationale": "Neon documents its own slow-query and database-health tooling: the MCP server's \"List Slow Queries\" tool, and `inspect_database` / `neon inspect db`. These run 15 read-only checks covering index sizes, unused indexes, stalled queries, cache hit rate and bloat, which covers part of the slow-query and metrics story. However, this is exposed through MCP and CLI tools rather than a built-in insights view, and only unused-index detection is shown, not true index recommendations. Missing for 10: a documented console insights or monitoring dashboard, explicit index recommendations, time-series performance metrics, and independent or hands-on corroboration.",
     "evidenceIds": [
       "neon-supp-mcp-tool-surface",
       "neon-supp-mcp-transport",
-      "neon-probe-7",
-      "neon-supp-sql-editor-ai",
-      "neon-supp-copilot-agents"
+      "neon-probe-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can see slow queries, index recommendations, and performance metrics in a built-in insights view",
+      "citations": [
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "\"List Slow Queries\", \"Inspect Database\""
+        },
+        {
+          "evidenceId": "neon-supp-mcp-transport",
+          "quote": "exposes the same 15 read-only checks as `neon inspect db` (table/index sizes, unused indexes, stalled queries with waits and blockers, cache hit rate, bloat, replication state)"
+        },
+        {
+          "evidenceId": "neon-probe-7",
+          "quote": "\"list_slow_queries\", \"inspect_database\""
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "query-insights"
   }

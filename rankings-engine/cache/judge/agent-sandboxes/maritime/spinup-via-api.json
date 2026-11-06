@@ -1,21 +1,47 @@
 {
-  "hash": "ae264b14c766852c94c3494555d91ccc1b1ac9fa4bf4f3fd6896b288d0ffc677",
+  "hash": "941ca9236f6e18398d3a6a4aa4366e73c3ca581bf271c35bfa30ee793fe1f926",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The SDK documents a single idempotent `provision` call that creates a per-user agent (maritime-docs-2, maritime-docs-45, maritime-docs-18). Each agent runs in its own micro-VM with VM-scoped secret injection, which gives real isolation (maritime-docs-37, maritime-docs-33). However, speed is only documented as 'under 5 minutes' for the quickstart and 'one image pull from live', not seconds (maritime-docs-14, maritime-docs-13), and the product is framed as agent hosting rather than general-purpose sandboxes. Missing for 10: documented seconds-level provisioning or cold-start latency, explicit sandbox-isolation guarantees, an API reference or OpenAPI spec for the provision call (the OpenAPI probe returned 404), and independent or hands-on corroboration.",
+    "rationale": "Maritime's SDK documents a single idempotent `provision` call that creates a per-user agent, and each agent runs in its own micro-VM with secrets injected only into that VM, so one-call isolated provisioning is the product's own capability. Nothing shows the environment is live in seconds: the only timing claim is a whole quickstart 'in under 5 minutes', and no provisioning latency is documented. missing for 10: documented seconds-level time-to-live for provisioned environments, an explicit isolation model for the sandbox, independent or hands-on corroboration of provisioning speed.",
     "evidenceIds": [
       "maritime-docs-2",
       "maritime-docs-45",
       "maritime-docs-18",
       "maritime-docs-37",
       "maritime-docs-33",
-      "maritime-docs-14",
-      "maritime-docs-13",
-      "maritime-docs-5"
+      "maritime-docs-5",
+      "maritime-docs-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can spin up an isolated sandbox with one API/SDK call and get a live environment in seconds",
+      "citations": [
+        {
+          "evidenceId": "maritime-docs-45",
+          "quote": "provision is idempotent on it: it returns the existing agent if there is one, else creates a new one. Safe to call on every sign-in."
+        },
+        {
+          "evidenceId": "maritime-docs-18",
+          "quote": "Give every one of your users their own agent with the TypeScript or Python SDK."
+        },
+        {
+          "evidenceId": "maritime-docs-37",
+          "quote": "its own always-on micro-VM in the cloud, persistent storage, sleep/wake economics"
+        },
+        {
+          "evidenceId": "maritime-docs-33",
+          "quote": "injected only into that agent's VM"
+        },
+        {
+          "evidenceId": "maritime-docs-14",
+          "quote": "Deploy your first agent and talk to it, in under 5 minutes."
+        }
+      ]
+    },
     "productId": "maritime",
     "storyId": "spinup-via-api"
   }

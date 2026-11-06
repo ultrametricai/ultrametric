@@ -1,22 +1,41 @@
 {
-  "hash": "438d91b44e39617d762eb6fe99346facf4110cd802b030f3634c90656a2a02e4",
+  "hash": "c4e4fb0259c8eeb32c91e8650189302f078a81458fcc37fa677937ca56bbe8f7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Token2's open-source fido2-manage is a libfido2-based CLI with an audit/export feature that dumps device info and relying parties to JSON or CSV. It can also list resident passkeys, SSH resident keys and bio templates, so an agent can script read-only state collection for FIDO2. However, the evidence never says the device-info dump includes serial number, firmware version or enabled applications. PIV/OTP state is only managed through GUI tools (Companion App, miniDriver), and nothing shows fleet-scale aggregation. Missing for 10: explicit serial/firmware/enabled-applications fields in the export, programmatic read of PIV/OTP state, documented fleet-wide audit workflow, independent hands-on corroboration.",
+    "rationale": "Token2's official open-source fido2-manage CLI can dump device info and relying parties to JSON or CSV for audit/export, and it lists resident credentials, so an agent can read key state programmatically. However, the evidence never says the device-info dump includes serial number, firmware version, or enabled applications (PIV/OTP), and fleet-wide aggregation is not documented. Missing for 10: explicit serial/firmware fields in the export, enabled-application (PIV/OTP) state reporting, fleet-scale multi-key audit workflow, independent corroboration.",
     "evidenceIds": [
       "token2-gh-6",
       "token2-gh-1",
-      "token2-gh-2",
-      "token2-gh-4",
-      "token2-gh-5",
-      "token2-docs-19",
-      "token2-docs-21",
       "token2-probe-4",
-      "token2-docs-12"
+      "token2-docs-19",
+      "token2-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can read a key's state programmatically — serial, firmware version, enabled applications, stored credentials — to audit security posture across a fleet",
+      "citations": [
+        {
+          "evidenceId": "token2-gh-6",
+          "quote": "Audit/export: dump device info + relying parties to JSON or CSV"
+        },
+        {
+          "evidenceId": "token2-gh-1",
+          "quote": "Resident credentials (passkeys): list (with user handle), delete, edit metadata"
+        },
+        {
+          "evidenceId": "token2-docs-19",
+          "quote": "providing command-line tools and an optional graphical interface for advanced key management operations"
+        },
+        {
+          "evidenceId": "token2-docs-21",
+          "quote": "It provides functionalities to view information, manage relying parties, and perform various operations on connected FIDO2.1 devices."
+        }
+      ]
+    },
     "productId": "token2",
     "storyId": "agent-key-audit"
   }

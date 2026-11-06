@@ -1,21 +1,36 @@
 {
-  "hash": "e53e75a0a28886b367104ce546c35eed3b9a54af1e26a88412d0bc2b9106010e",
+  "hash": "ee9dc60f781a48c79ff8519d6cf2a780e73972b0c81d5a6f61e704ca1c9438b2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico's official ykman CLI is scriptable and documented for device info, enabled applications, and PIV/OATH/OTP slot management. The firmware docs name ykman as a way to read the firmware version, and SDKs (python-fido2, .NET, YubiKit) allow reading from code. Fleet-wide auditing is not covered: the YubiEnterprise REST API only handles delivery, inventory and shipment, not live device state. So an agent would have to run ykman locally against each attached key and aggregate the results itself. Missing for 10: explicit evidence of serial and stored-credential enumeration, documented machine-readable (e.g. JSON) output, a centralized fleet-state API, and hands-on corroboration of an audit workflow.",
+    "rationale": "Yubico's official ykman CLI is documented as scriptable and covers device info, enabled applications and PIV/OATH/OTP slots, and Yubico's docs name ykman as a way to read firmware version, so the core read-state capability exists. However, the evidence never explicitly shows reading serial numbers, enumerating stored credentials, or machine-readable output suited to fleet audit. The YubiEnterprise REST API covers delivery, inventory and shipments, not live device state. Missing for 10: explicit serial and stored-credential enumeration docs, structured (e.g. JSON) output, a fleet-wide device-state audit surface, and independent hands-on corroboration.",
     "evidenceIds": [
       "yubikey-probe-rt-1",
-      "yubikey-docs-4",
       "yubikey-docs-15",
-      "yubikey-docs-25",
-      "yubikey-probe-4",
-      "yubikey-docs-19",
-      "yubikey-probe-rt-3",
-      "yubikey-probe-rt-2"
+      "yubikey-docs-4",
+      "yubikey-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can read a key's state programmatically — serial, firmware version, enabled applications, stored credentials — to audit security posture across a fleet",
+      "citations": [
+        {
+          "evidenceId": "yubikey-probe-rt-1",
+          "quote": "Full scriptable device management: enable applications, PINs, PIV/OATH/OTP slots, device info."
+        },
+        {
+          "evidenceId": "yubikey-docs-15",
+          "quote": "The quickest and most convenient way to determine your device's firmware version is to use either the Yubico Authenticator ... or ykman"
+        },
+        {
+          "evidenceId": "yubikey-docs-4",
+          "quote": "Configure your YubiKey via the command line."
+        }
+      ]
+    },
     "productId": "yubikey",
     "storyId": "agent-key-audit"
   }

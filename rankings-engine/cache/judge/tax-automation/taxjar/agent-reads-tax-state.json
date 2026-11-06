@@ -1,23 +1,43 @@
 {
-  "hash": "301167c7c70dc5ced03754aaae4240bd99e3fccee0407a8bc0cdeae0a9ae52a4",
+  "hash": "34fb6975c4a781714ea834787085ccd448e11f5018d4b29b336e533274af9c69",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "TaxJar's REST API, with official clients, exposes a `nexusRegions` endpoint for listing nexus regions and lets an agent push transactions using an API-key token. That covers a thin slice of reading and acting on tax posture. Economic-nexus threshold tracking and AutoFile filing are documented only as product or UI features, not as agent-accessible API data. The API key is a single token with no evidence of scoping, and probes found no llms.txt or OpenAPI spec. Missing for 10: API access to registrations, accrued liability and upcoming filing deadlines, nexus-threshold progress via API, scoped or least-privilege credentials, any MCP surface, and machine-readable API specs.",
+    "rationale": "TaxJar's own API, authenticated by API key, exposes a nexus-regions listing and lets you push order transactions, so an agent could read part of the tax posture and act on transaction data. Registrations, accrued liability and upcoming filings are documented only as dashboard and AutoFile features, not as API reads. There is no MCP surface, and the evidence shows only a single API key with no scoping. missing for 10: API access to registrations, accrued liability and upcoming-filing data, scoped or least-privilege credentials, an MCP server, machine-readable agent docs (llms.txt and OpenAPI both 404), and independent corroboration.",
     "evidenceIds": [
       "taxjar-gh-6",
-      "taxjar-gh-3",
-      "taxjar-docs-1",
       "taxjar-docs-2",
       "taxjar-docs-11",
-      "taxjar-docs-7",
-      "taxjar-docs-8",
-      "taxjar-docs-6",
+      "taxjar-gh-3",
+      "taxjar-docs-1",
       "taxjar-probe-1",
       "taxjar-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can read my tax posture — nexus status, registrations, accrued liability, upcoming filings — and act on it through the API or an MCP surface with scoped credentials",
+      "citations": [
+        {
+          "evidenceId": "taxjar-gh-6",
+          "quote": "[`nexusRegions` - List nexus regions](#list-nexus-regions-api-docs)"
+        },
+        {
+          "evidenceId": "taxjar-docs-2",
+          "quote": "TaxJar uses API keys to allow access to the API."
+        },
+        {
+          "evidenceId": "taxjar-gh-3",
+          "quote": "[`createOrder` - Create order transaction](#create-order-transaction-api-docs)"
+        },
+        {
+          "evidenceId": "taxjar-docs-1",
+          "quote": "You can use our API to get information on sales tax rates, categories or upload transactions."
+        }
+      ]
+    },
     "productId": "taxjar",
     "storyId": "agent-reads-tax-state"
   }

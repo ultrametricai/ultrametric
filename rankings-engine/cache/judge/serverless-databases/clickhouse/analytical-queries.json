@@ -1,26 +1,52 @@
 {
-  "hash": "1ce6d755745ce5d26de21c36e2dcf8bac23503d8e9a92040c74c48ac0be0f477",
+  "hash": "6f4a64626b72e4e09d35727098011d6be6846cbf6be517b1382c7eef5529325c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "ClickHouse is a column-oriented analytical DBMS. First-party docs claim millisecond queries at petabyte scale and describe incremental materialized views that move aggregation cost to insert time for faster SELECTs. Independent users corroborate this: real-time aggregation over hundreds of millions of rows inserted daily, queries a couple orders of magnitude faster than Postgres, and use as a single-server data source for BI and in-product analytics, all without a separate warehouse. Missing for 10: in-depth first-party documentation or benchmarks on dashboard-latency aggregation performance, and resolution of community-reported JOIN limitations that can affect complex analytical queries.",
+    "rationale": "ClickHouse is a column-oriented DBMS built for real-time analytics. Its docs claim millisecond queries at petabyte scale and describe materialized views that move aggregation cost to insert time for faster SELECTs. Independent users report real-time aggregation over hundreds of millions of daily rows, results orders of magnitude faster than Postgres, and production use powering in-product analytics and BI tools. Missing for 10: in-depth first-party documentation of aggregation query performance and dashboard-latency benchmarks, and evidence addressing the community-reported JOIN limitations for complex aggregations.",
     "evidenceIds": [
+      "clickhouse-probe-1",
       "clickhouse-docs-12",
       "clickhouse-docs-18",
-      "clickhouse-docs-9",
-      "clickhouse-docs-45",
-      "clickhouse-probe-1",
       "clickhouse-comm-20",
       "clickhouse-comm-15",
       "clickhouse-comm-11",
-      "clickhouse-comm-12",
-      "clickhouse-comm-13",
       "clickhouse-comm-9",
-      "clickhouse-comm-18",
-      "clickhouse-comm-19"
+      "clickhouse-comm-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can run heavy analytical aggregations over large tables fast enough for dashboards without exporting to a separate warehouse",
+      "citations": [
+        {
+          "evidenceId": "clickhouse-probe-1",
+          "quote": "ClickHouse is a fast open-source column-oriented database management system (DBMS) optimized for real-ti"
+        },
+        {
+          "evidenceId": "clickhouse-docs-12",
+          "quote": "Powering agentic systems with millisecond queries at petabyte scale."
+        },
+        {
+          "evidenceId": "clickhouse-docs-18",
+          "quote": "Incremental Materialized Views (Materialized Views) allow you to shift the cost of computation from query time to insert time, resulting in faster SELECT queries."
+        },
+        {
+          "evidenceId": "clickhouse-comm-20",
+          "quote": "no other database gives real-time aggregation over hundreds of millions of rows inserted daily for virtually zero cost"
+        },
+        {
+          "evidenceId": "clickhouse-comm-11",
+          "quote": "It perfectly works on a single-server as a data source for self-service BI tools"
+        },
+        {
+          "evidenceId": "clickhouse-comm-9",
+          "quote": "We're using Clickhouse to power our in-product analytics."
+        }
+      ]
+    },
     "productId": "clickhouse",
     "storyId": "analytical-queries"
   }

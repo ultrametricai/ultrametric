@@ -1,21 +1,42 @@
 {
-  "hash": "b49f8b4e130e509825e3f1c77845c74878728740db6763b3fb1fbd2518e42739",
+  "hash": "5dc912f713fe525ae458321c11e964bbea70aaf2609f8125e92f6f7468a9afc8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Solo 2 can be driven programmatically through a documented `solo2` CLI (list devices, verified firmware update, admin commands such as LED control) and through standard protocols (FIDO2/WebAuthn, OATH, PIV, OpenPGP) usable with generic tools like `fido2-token`. There is no dedicated documented API reference or machine-readable spec, and the older Python Solo CLI fails against current python-fido2 with no firmware release since 2022, which raises maintenance concerns. Missing for 10: documented programmatic API/SDK reference, machine-readable spec or agent-oriented docs (llms.txt/OpenAPI 404), evidence of maintained up-to-date tooling, independent hands-on corroboration of the solo2 CLI.",
+    "rationale": "Solo 2 can be driven programmatically through its own interfaces. It speaks standard protocols (FIDO2/WebAuthn, OATH, PIV, OpenPGP) that standard tooling like `fido2-token` can use, and it has a documented `solo2` CLI with scriptable commands such as `list`, `update` and LED admin settings. There is no dedicated, documented public API: probes found no OpenAPI spec or llms.txt on the docs site. missing for 10: a first-party API/SDK reference documenting programmatic control, evidence the solo2 CLI or protocol interfaces are kept current and machine-friendly, independent corroboration of programmatic use.",
     "evidenceIds": [
-      "solokeys-gh-2",
+      "solokeys-gh-1",
       "solokeys-gh-3",
       "solokeys-gh-4",
-      "solokeys-gh-1",
+      "solokeys-gh-2",
       "solokeys-docs-10",
-      "solokeys-probe-3",
-      "solokeys-probe-1",
-      "solokeys-probe-rt-1"
+      "solokeys-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "solokeys-gh-1",
+          "quote": "also speaks OATH (TOTP/HOTP), PIV, and OpenPGP"
+        },
+        {
+          "evidenceId": "solokeys-gh-4",
+          "quote": "solo2 list                   # list connected devices  (alias: solo2 ls)"
+        },
+        {
+          "evidenceId": "solokeys-gh-3",
+          "quote": "solo2 app admin set led 007f7f 00007f # set led to teal (idle) / blue (active)"
+        },
+        {
+          "evidenceId": "solokeys-docs-10",
+          "quote": "You can \"wipe\" a device using `fido2-token -R`"
+        }
+      ]
+    },
     "productId": "solokeys",
     "storyId": "agentic-public-api"
   }

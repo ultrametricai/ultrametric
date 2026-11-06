@@ -1,19 +1,36 @@
 {
-  "hash": "d876185714300e68ec4f1486e250922abaa1fef599af6bf87ab9e1051bce88c6",
+  "hash": "afbeab3c320b21fefa9526392e4813ee266da69180290a7f74204c0e7d09b9ae",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs show Semgrep runs as a CI job across supported providers, triggered on push events and pull/merge requests, using the `semgrep ci` command with findings sent to the AppSec Platform. The pack never mentions exit codes, build-failing behavior, or diff-aware scanning that limits results to new findings, so the build-gating half of the story is unevidenced. Missing for 10: documented non-zero exit codes on findings, build failure/blocking configuration, diff-aware scanning of only new findings on PRs, and independent hands-on corroboration of CI gating.",
+    "rationale": "Semgrep documents running as a CI job across supported CI providers, triggered on pull or merge request events, using the `semgrep ci` command. The evidence never addresses failing the build through exit codes or limiting the gate to new findings, so the blocking half of the story is unproven. Missing for 10: documented exit-code behavior that fails the build on findings, diff-aware scanning that gates only new findings, independent hands-on corroboration of CI gating.",
     "evidenceIds": [
       "semgrep-docs-14",
       "semgrep-docs-25",
-      "semgrep-docs-28",
       "semgrep-docs-45",
-      "semgrep-docs-19",
-      "semgrep-probe-4"
+      "semgrep-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a devops-lead, I can run scans in CI on every pull request and fail the build on new findings via exit codes",
+      "citations": [
+        {
+          "evidenceId": "semgrep-docs-14",
+          "quote": "This guide walks you through creating a Semgrep job in the following CI providers, which are explicitly supported in Semgrep AppSec Platform"
+        },
+        {
+          "evidenceId": "semgrep-docs-25",
+          "quote": "your development cycle benefits from the automated scanning of repositories at various events, such as: Push events; Pull requests or merge requests"
+        },
+        {
+          "evidenceId": "semgrep-docs-45",
+          "quote": "Semgrep is integrated into CI environments by creating a **job** that is run by the CI provider."
+        }
+      ]
+    },
     "productId": "semgrep",
     "storyId": "ci-pipeline-gate"
   }

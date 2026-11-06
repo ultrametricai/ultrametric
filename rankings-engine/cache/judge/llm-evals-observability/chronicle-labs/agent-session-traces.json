@@ -1,19 +1,42 @@
 {
-  "hash": "1fb66cae965dad8e48c73ba89e59482baf9ef902803e1323bfb37a527ffebea1",
+  "hash": "9e66b719eab14377606e65f7b1365c374a8d67652bc8049eace589e51be7e3b8",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "chronicle-labs",
-    "storyId": "agent-session-traces",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Chronicle documents trace ingestion through its SDK or an OpenTelemetry exporter. Agent keys carry a traces:write scope, and a per-trial Timeline shows everything one agent did during a trial, so multi-step runs are captured and grouped by trial. However, nested span hierarchies and grouping into sessions or threads are never explicitly documented; OTel support only implies span semantics. Missing for 10: explicit nested parent/child span documentation, session/thread grouping of traces (beyond per-trial Timeline), independent or hands-on corroboration.",
+    "rationale": "Chronicle documents its own trace ingestion through the SDK or an OpenTelemetry exporter, with agent keys scoped to traces:write. A Timeline view shows everything one agent did during one trial, which covers tracing multi-step runs. The docs never say that spans nest hierarchically or that traces group into sessions or threads; per-trial grouping is the closest documented equivalent. Missing for 10: explicit nested span hierarchy, session/thread grouping of traces, depth of trace data model docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "chronicle-labs-docs-32",
       "chronicle-labs-docs-19",
-      "chronicle-labs-docs-17",
       "chronicle-labs-docs-30",
+      "chronicle-labs-docs-17",
       "chronicle-labs-docs-14"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can trace multi-step agent runs as nested spans grouped into sessions or threads",
+      "citations": [
+        {
+          "evidenceId": "chronicle-labs-docs-32",
+          "quote": "Use SDK trace ingestion or an OpenTelemetry exporter pointed at Chronicle."
+        },
+        {
+          "evidenceId": "chronicle-labs-docs-19",
+          "quote": "Send them from your own code, from your agent's tool calls, or from an OpenTelemetry exporter, then query them in Timeline or through the SDK."
+        },
+        {
+          "evidenceId": "chronicle-labs-docs-30",
+          "quote": "Everything one agent did during one trial, plus scoring."
+        },
+        {
+          "evidenceId": "chronicle-labs-docs-17",
+          "quote": "A key supplied to your agent process typically has agents:write and traces:write."
+        }
+      ]
+    },
+    "productId": "chronicle-labs",
+    "storyId": "agent-session-traces"
   }
 }

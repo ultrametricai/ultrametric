@@ -1,20 +1,42 @@
 {
-  "hash": "ea8bdbfb5611379e81878b3fc2278bd0d2f2a68afc377bd5c648dd85f957622e",
+  "hash": "7b55417f70a90f1287b8f2ceb3659653f83c71459e41f79d0b019de881e84408",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "TrueLayer documents real, registrable outbound webhooks: one webhook URI per Console app, JSON payloads, and a mandatory `Tl-Signature` check backed by official signing libraries. However, the documented events cover only Payments API v3 events such as payment status changes. Nothing shows webhooks for new transactions, balance updates or bank connection state from the Data API, which is the core of this story. Missing for 10: webhook events for new transactions, balance updates and connection/consent state changes; evidence that Data API changes are pushed rather than polled; independent or hands-on corroboration.",
+    "rationale": "TrueLayer documents signed webhooks (Tl-Signature validation, one registrable webhook URI per Console app), but they cover Payments API v3 events such as payment status changes. Nothing shows webhooks for Data API transactions, balance updates or connection/consent state changes. missing for 10: webhooks for new transactions, balance-update webhooks, connection/consent state-change webhooks, any Data API webhook documentation, independent corroboration.",
     "evidenceIds": [
       "truelayer-docs-13",
       "truelayer-docs-14",
       "truelayer-docs-33",
       "truelayer-docs-34",
       "truelayer-docs-35",
-      "truelayer-gh-1",
       "truelayer-docs-28"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, data changes arrive as signed webhooks — new transactions, balance updates, connection state changes — so my system stays current without polling",
+      "citations": [
+        {
+          "evidenceId": "truelayer-docs-34",
+          "quote": "You must validate all incoming webhook requests through the `Tl-Signature` that accompanies the webhook."
+        },
+        {
+          "evidenceId": "truelayer-docs-35",
+          "quote": "Each of your apps in Console can have a single webhook URI, which the Payments API sends webhooks to."
+        },
+        {
+          "evidenceId": "truelayer-docs-14",
+          "quote": "Webhooks are JSON-format notifications you receive when any event occurs within the Payments API v3."
+        },
+        {
+          "evidenceId": "truelayer-docs-33",
+          "quote": "webhooks inform you about: when a payment changes to a new status in the authorisation process"
+        }
+      ]
+    },
     "productId": "truelayer",
     "storyId": "webhook-data-events"
   }

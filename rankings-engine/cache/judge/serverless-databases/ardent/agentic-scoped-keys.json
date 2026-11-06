@@ -1,18 +1,40 @@
 {
-  "hash": "4102a573524e469f6056a280b5526c0440929da064837b122121d5a038b58767",
+  "hash": "51f8e09d1b959d39d33d8836fb615ef3a7e75c75f09eaf2901cd7abe1751c2f9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Ardent's API authentication documents role-based credentials, including a role_org_viewer role for read-only automation, and token-based CLI auth via ARDENT_TOKEN. Its agent workflow is explicitly least-privilege: the agent receives only a branch URL, needs no Ardent token, and can't touch anything but its branch. However, only one API role is evidenced, and the steps for issuing a scoped API token for an agent are not shown. missing for 10: a documented flow for issuing and revoking agent-specific API tokens, resource- or project-level token scoping beyond org roles, token expiry/rotation controls, independent corroboration.",
+    "rationale": "Ardent's API authentication docs show role-scoped tokens, such as a read-only role_org_viewer for automation. The agent workflow docs describe giving an agent only a branch URL that needs no Ardent token, can't touch anything but its branch and has zero access to the source database. That is real least-privilege scoping, but token scoping is only evidenced at the org-role level, with one role shown. missing for 10: documentation of the full role set and of issuing tokens scoped to a project, connector or branch; token expiry and revocation controls; independent or hands-on corroboration.",
     "evidenceIds": [
       "ardent-docs-15",
       "ardent-docs-10",
       "ardent-docs-18",
-      "ardent-docs-24",
-      "ardent-docs-14"
+      "ardent-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "ardent-docs-15",
+          "quote": "role_org_viewer | Read-only automation and reporting"
+        },
+        {
+          "evidenceId": "ardent-docs-18",
+          "quote": "The agent needs no Ardent token and can't touch anything but its branch."
+        },
+        {
+          "evidenceId": "ardent-docs-24",
+          "quote": "If a branch URL is ever compromised, it has zero access to your original database. This makes it safe to hand branch URLs to AI agents"
+        },
+        {
+          "evidenceId": "ardent-docs-10",
+          "quote": "Set ARDENT_TOKEN and run commands normally — no login step"
+        }
+      ]
+    },
     "productId": "ardent",
     "storyId": "agentic-scoped-keys"
   }

@@ -1,23 +1,44 @@
 {
-  "hash": "401d7d6d42d1b295c96437366c7b0e98f580b2aa8b2710457004b3ce4244b24a",
+  "hash": "c547c8a1bd8da4180b3f486f7340170064ca1e170daa25f9824b6587c505e544",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Snyk's CLI is documented to run in CI/CD pipelines under service-account roles (`snyk test`, `snyk code test`). A local MCP server built on the CLI lets coding agents trigger scans, and the platform can export issues to Jira. The evidence never shows machine-readable CLI output: the report is described as terminal output plus an HTML plugin, with no JSON or SARIF. It also shows no agent-driven path from CLI results to filed issues. Missing for 10: documented JSON/SARIF output flags, a CLI-to-issue-tracker filing workflow for agents, and independent hands-on corroboration.",
+    "rationale": "The Snyk CLI is documented to run in CI/CD pipelines under service accounts (headless), and there is a local MCP server built on the CLI that coding agents can prompt to scan. Snyk also documents exporting issues to Jira. However, the pack never documents machine-readable output such as JSON or SARIF flags: the only reporting evidence is a terminal report and an HTML plugin. Issue filing is also not tied to CLI scan results or to filtering for real findings. missing for 10: documented machine-readable CLI output (JSON/SARIF), an evidenced CLI-to-issue-tracker workflow, independent hands-on corroboration of agent-driven headless use.",
     "evidenceIds": [
       "snyk-gh-3",
-      "snyk-gh-5",
-      "snyk-gh-6",
-      "snyk-docs-73",
       "snyk-docs-47",
+      "snyk-docs-73",
       "snyk-docs-28",
       "snyk-docs-11",
       "snyk-docs-6",
-      "snyk-intdir-1",
+      "snyk-gh-6",
       "snyk-docs-42"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent run a scan headlessly via the CLI, parse machine-readable results, and file issues for real findings",
+      "citations": [
+        {
+          "evidenceId": "snyk-gh-3",
+          "quote": "You can also run the CLI in your CI/CD pipeline."
+        },
+        {
+          "evidenceId": "snyk-docs-47",
+          "quote": "This Organization-level role allows service accounts in CI/CD pipelines to run basic Snyk CLI commands."
+        },
+        {
+          "evidenceId": "snyk-docs-28",
+          "quote": "The Snyk MCP Server is designed as a local MCP server, running on your system using the Snyk CLI to ensure local file access."
+        },
+        {
+          "evidenceId": "snyk-docs-6",
+          "quote": "Track and export Snyk issues to your Jira project."
+        }
+      ]
+    },
     "productId": "snyk",
     "storyId": "agent-runs-scan-headless"
   }

@@ -1,11 +1,11 @@
 {
-  "hash": "7def97ab598ec5b6f2ecafec18d23b37e94306384f25d7854d02672ff6fade16",
+  "hash": "f3e25f284658ecb0a50ed2e41f7ccaf351184df449f195d9efa72531204e3c71",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Semgrep ships a headless CLI that installs via pipx or uv. `semgrep scan` runs without login and `semgrep ci` supports SARIF export and `--dry-run`. First-party guides cover CI jobs for explicitly supported providers, triggered on push and PR/MR events, plus pre-commit hooks and a platform API. A Microsoft practitioner independently corroborates building an automated pipeline on Semgrep's SARIF output. Missing for 10: documented exit-code/build-failure gating behavior for CI pipelines.",
+    "rationale": "Semgrep ships a headless CLI that installs via pipx/uv and runs without login (`semgrep scan`, `semgrep ci`). It has a documented guide for adding Semgrep jobs to explicitly supported CI providers, triggered on push and PR/MR events. Machine-readable SARIF output and a pre-commit hook round out automation, and a community user reports building an automated LLM triage pipeline on the SARIF output. missing for 10: independent hands-on corroboration of CI-provider job reliability at scale (one community report notes heavy CPU use when running the CI ruleset locally).",
     "evidenceIds": [
       "semgrep-docs-14",
       "semgrep-docs-45",
@@ -14,13 +14,41 @@
       "semgrep-docs-20",
       "semgrep-docs-27",
       "semgrep-docs-34",
-      "semgrep-docs-33",
       "semgrep-docs-26",
       "semgrep-docs-16",
-      "semgrep-docs-17",
-      "semgrep-probe-4",
       "semgrep-comm-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "semgrep-docs-45",
+          "quote": "Semgrep is integrated into CI environments by creating a **job** that is run by the CI provider."
+        },
+        {
+          "evidenceId": "semgrep-docs-14",
+          "quote": "This guide walks you through creating a Semgrep job in the following CI providers, which are explicitly supported in Semgrep AppSec Platform"
+        },
+        {
+          "evidenceId": "semgrep-docs-25",
+          "quote": "your development cycle benefits from the automated scanning of repositories at various events, such as: Push events; Pull requests or merge requests"
+        },
+        {
+          "evidenceId": "semgrep-docs-20",
+          "quote": "semgrep ci --sarif --sarif-output=semgrep.sarif"
+        },
+        {
+          "evidenceId": "semgrep-docs-34",
+          "quote": "You do **not** need to be logged in to run a scan."
+        },
+        {
+          "evidenceId": "semgrep-comm-14",
+          "quote": "Built a tool using Semgrep's SARIF output plus prompted LLMs to help prioritize triage"
+        }
+      ]
+    },
     "productId": "semgrep",
     "storyId": "agentic-headless"
   }

@@ -1,20 +1,46 @@
 {
-  "hash": "5b477d1048f9e2326e8aed2ff4b3c5a9335f5f7d0d7e1f24e2130abcb1a7848a",
+  "hash": "ae3555ce82b17dc7ad69f5dc996f2d6be50a822375750e5d406387634003d2de",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The `ccloud` CLI is documented to create, manage, and connect to CockroachDB Cloud clusters. The official Cloud MCP server lets AI tools explore live schemas, execute statements, insert rows, and run queries using OAuth or API key auth. Continuum also lets agents deploy virtual clusters, so every step of the story maps to a documented non-dashboard path. Missing for 10: explicit evidence of fetching the connection string programmatically, a documented non-interactive auth flow for `ccloud` (the quickstart is described as interactive), a documented management REST API (OpenAPI probe found nothing), and any hands-on or independent corroboration of an agent running the full flow.",
+    "rationale": "The `ccloud` CLI is documented to create, manage, and connect to CockroachDB Cloud clusters. The official Cloud MCP server lets AI tools explore live schemas, execute statements and run queries, and Continuum lets agents deploy virtual clusters. Together these cover most of the flow outside the dashboard, but the evidence never shows a single unattended end-to-end path: the documented `ccloud quickstart` logs in interactively, and connection-string retrieval and DDL schema application are only implied. Missing for 10: explicit non-interactive CLI or API provisioning, documented connection-string retrieval, explicit schema migration or DDL via MCP or CLI, a published provisioning API spec (the OpenAPI probe returned 404), and hands-on corroboration of an agent doing the full flow.",
     "evidenceIds": [
       "cockroachdb-docs-10",
       "cockroachdb-docs-17",
       "cockroachdb-docs-4",
       "cockroachdb-docs-28",
       "cockroachdb-docs-32",
-      "cockroachdb-probe-4",
-      "cockroachdb-gh-1"
+      "cockroachdb-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my coding agent can provision a database end to end — create it, fetch the connection string, apply schema, and run queries — through the API, CLI, or MCP without touching the dashboard",
+      "citations": [
+        {
+          "evidenceId": "cockroachdb-docs-10",
+          "quote": "The `ccloud` tool is a command-line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-17",
+          "quote": "install `ccloud` and use the `ccloud quickstart` command to interactively log in and create a new CockroachDB Serverless cluster."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-28",
+          "quote": "Your AI tools can explore live schemas and run queries against any cluster using OAuth or API key authentication."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-4",
+          "quote": "A user can interact with their clusters using natural language prompts to perform read and write operations such as listing tables, executing statements, and inserting rows into a table."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-32",
+          "quote": "Cockroach Continuum supports cluster virtualization, allowing application developers and agents to deploy virtual clusters on a dedicated host cluster."
+        }
+      ]
+    },
     "productId": "cockroachdb",
     "storyId": "agent-provisions-database"
   }

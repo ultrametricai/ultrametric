@@ -1,22 +1,43 @@
 {
-  "hash": "20169b427bd32b954b58775600ad017a9334c18222cf8b1f276cf5399cc2a026",
+  "hash": "530b31fc82295dc75968c7acc2d1e830486dba2b68ce8ff344c17c4ded4d493d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Daytona's core product is isolated sandboxes. Each one gets a dedicated kernel, filesystem, network stack and resources, can be driven programmatically via SDK, CLI or MCP, and sits behind a firewall that limits outbound access and data exfiltration. That lets an agent run and test code in a disposable environment separated from production systems, and snapshots and volumes let users seed reproducible test state. Missing for 10: independent or hands-on corroboration that the isolation holds in practice, and any documented test or staging mode for Daytona's own API and account that is separate from live usage.",
+    "confidence": "high",
+    "rationale": "Daytona's core product is isolated sandboxes. Each sandbox gets a dedicated kernel, filesystem, network stack and resources, and sits behind a firewall that blocks exfiltration, so it provides true sandbox isolation rather than a dry-run mode. AI agents can create and test in these sandboxes programmatically via the SDKs, CLI and MCP server. missing for 10: independent or hands-on corroboration that the isolation holds, and explicit documentation on keeping production data or credentials separate from sandboxes.",
     "evidenceIds": [
       "daytona-docs-1",
       "daytona-docs-28",
       "daytona-docs-26",
       "daytona-docs-19",
-      "daytona-docs-21",
-      "daytona-docs-6",
       "daytona-docs-16",
       "daytona-docs-33",
       "daytona-probe-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "daytona-docs-28",
+          "quote": "Each sandbox runs in isolation, giving it a dedicated kernel, filesystem, network stack, and allocated vCPU, RAM, and disk."
+        },
+        {
+          "evidenceId": "daytona-docs-26",
+          "quote": "Each sandbox runs behind a firewall that restricts which external IP addresses and domains it can reach, preventing untrusted code from exfiltrating data or contacting arbitrary hosts."
+        },
+        {
+          "evidenceId": "daytona-docs-1",
+          "quote": "Sandboxes are isolated runtime environments you can manage programmatically to run code."
+        },
+        {
+          "evidenceId": "daytona-docs-16",
+          "quote": "Daytona Model Context Protocol (MCP) server enables AI agents to interact with Daytona Sandboxes programmatically."
+        }
+      ]
+    },
     "productId": "daytona",
     "storyId": "api-sandbox"
   }

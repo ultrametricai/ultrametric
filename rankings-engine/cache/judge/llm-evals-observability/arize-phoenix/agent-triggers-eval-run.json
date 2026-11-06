@@ -1,23 +1,43 @@
 {
-  "hash": "b9a9b11c23c1cd38149ffa4228a1fb23ad8a73506a395177640ca90bb7658c6c",
+  "hash": "db51b9ea82d2d2b34efcaafd9bbf6cf4f4af192370e2c14653cbebb192679505",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "arize-phoenix",
-    "storyId": "agent-triggers-eval-run",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Phoenix documents a remote MCP endpoint that lets agents such as Claude Code and Cursor \"search, query, and operate on\" datasets and experiments, with `px setup mcp` to wire up the agent. It also ships Python and TypeScript SDKs for running evaluations against datasets, and every evaluation execution captures inputs, judge reasoning, and final scores. Together these cover the agent-driven create → evaluate → read-back loop at its core. Missing for 10: explicit documentation of programmatic dataset creation via API/MCP (\"operate on\" is vague), explicit documentation of reading experiment results back through the API/MCP, and independent hands-on corroboration of an agent completing the full loop.",
+    "rationale": "Phoenix ships an official remote MCP endpoint through which agents such as Claude Code or Cursor can 'search, query, and operate on' datasets and experiments. It also documents Python and TypeScript SDKs for running evaluations against datasets, and evaluation executions capture final scores and reasoning. That covers the core loop programmatically, but the evidence never explicitly shows an agent creating a dataset, triggering an eval run, or reading results back end to end. missing for 10: explicit documentation of agent- or API-driven dataset creation and eval-result retrieval (no OpenAPI spec found), hands-on or independent corroboration of the full create→run→read-back loop.",
     "evidenceIds": [
       "arize-phoenix-docs-58",
-      "arize-phoenix-docs-69",
-      "arize-phoenix-docs-82",
       "arize-phoenix-docs-76",
-      "arize-phoenix-docs-75",
       "arize-phoenix-docs-42",
-      "arize-phoenix-gh-1",
       "arize-phoenix-docs-83",
-      "arize-phoenix-probe-4"
-    ]
+      "arize-phoenix-gh-1",
+      "arize-phoenix-docs-26"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent create a dataset, trigger an eval run programmatically, and read back the results",
+      "citations": [
+        {
+          "evidenceId": "arize-phoenix-docs-58",
+          "quote": "Point any MCP-compatible client (Claude Code, Cursor, VS Code, and others) at your Phoenix instance’s `/mcp` endpoint and it can search, query, and operate on your projects, traces, datasets, experiments, prompts, and annotations"
+        },
+        {
+          "evidenceId": "arize-phoenix-docs-76",
+          "quote": "Python and TypeScript SDKs for running evaluations against Phoenix traces, datasets, or any data source."
+        },
+        {
+          "evidenceId": "arize-phoenix-docs-42",
+          "quote": "Every evaluation execution captures the input data, the exact prompts sent to the judge LLM, the model's full reasoning, the final scores, and execution timing."
+        },
+        {
+          "evidenceId": "arize-phoenix-docs-83",
+          "quote": "Hand investigations to Phoenix Intelligence, the built-in AI agent that inspects traces, iterates prompts, and runs experiments"
+        }
+      ]
+    },
+    "productId": "arize-phoenix",
+    "storyId": "agent-triggers-eval-run"
   }
 }

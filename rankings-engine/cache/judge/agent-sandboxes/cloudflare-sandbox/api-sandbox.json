@@ -1,21 +1,40 @@
 {
-  "hash": "a992d119f8e9b3e0e8a8204e2248316e881f5971c047230839cf63ecb515c28e",
+  "hash": "59bd711f2c45b2713b9d70299c59cb68cd8debe58bb7c14c3961faac0f85eafb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Cloudflare Sandboxes is built to run untrusted or agent-generated code in isolated environments. Each sandbox gets its own VM or container with a full Linux environment, and the SDK can intercept outbound HTTP via Workers, so an agent can execute and test code walled off from production systems. However, the docs do not explicitly frame this as test-versus-production data separation. Bindings to KV/R2/Durable Objects could reach real data unless the user scopes them, and a community user notes outbound network control looks all-or-nothing. missing for 10: explicit guidance or features for isolating test data from production (e.g., scoped or mock bindings, seeded test datasets), documented fine-grained egress restrictions, independent hands-on corroboration of the isolation guarantees.",
+    "rationale": "Cloudflare Sandboxes provides isolated, VM-based execution environments for running untrusted code, and outbound HTTP can be intercepted by Workers, so agents can test away from production systems. But the docs never frame this as protecting production data, and bindings to KV/R2/Durable Objects mean isolation from real data depends on how the user configures it. The community-reported all-or-nothing outbound network control further limits guarantees. missing for 10: documented production-data separation (test/staging data or seeded fixtures), fine-grained outbound egress controls, independent hands-on corroboration of isolation from production resources.",
     "evidenceIds": [
       "cloudflare-sandbox-docs-34",
       "cloudflare-sandbox-docs-38",
       "cloudflare-sandbox-docs-50",
-      "cloudflare-sandbox-docs-41",
-      "cloudflare-sandbox-docs-23",
-      "cloudflare-sandbox-docs-24",
-      "cloudflare-sandbox-docs-20",
-      "cloudflare-sandbox-comm-2"
+      "cloudflare-sandbox-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-sandbox-docs-34",
+          "quote": "The Sandbox SDK enables you to run untrusted code securely in isolated environments."
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-38",
+          "quote": "VM-based isolation - Each sandbox runs in its own VM"
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-50",
+          "quote": "Each sandbox runs in its own isolated container with a full Linux environment, providing strong security boundaries while maintaining performance."
+        },
+        {
+          "evidenceId": "cloudflare-sandbox-docs-23",
+          "quote": "Intercept and handle outbound HTTP from sandboxes using Workers."
+        }
+      ]
+    },
     "productId": "cloudflare-sandbox",
     "storyId": "api-sandbox"
   }

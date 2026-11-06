@@ -1,19 +1,41 @@
 {
-  "hash": "1405b3ba2396455aa85e560e1fa45307705e99c5d20cd5a741da83017d069c39",
+  "hash": "38571bb62d55c75fc73915caafdd99e3497a8750b14e02cebb0b2e13dc79b343",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Turso's docs describe point-in-time recovery that restores a database to a specific point in time, explicitly for recovering from user errors such as dropping a table by mistake. Separately, branching creates a new database from an existing one (`turso db create ... --from-db`). Together these cover the core of the story, but only through short first-party snippets. Missing for 10: retention-window length or limits, the PITR restore command or workflow (including whether it can restore into a new branch rather than in place), and independent or hands-on corroboration of recovery.",
+    "rationale": "Turso's own docs say PITR can restore a database to a specific point in time to recover from user errors such as dropping a table, which covers the core recovery need. Branching from an existing database is also documented. However, the evidence never shows branching at a chosen timestamp or the length of the retention window, so the 'any point within the retention window' part is unproven. Missing for 10: documented retention-window duration/limits, explicit branch-from-timestamp capability, restore workflow details (CLI/API), and independent or hands-on corroboration of PITR.",
     "evidenceIds": [
-      "turso-docs-4",
-      "turso-docs-33",
       "turso-docs-42",
+      "turso-docs-33",
+      "turso-docs-4",
       "turso-docs-18",
-      "turso-docs-32",
-      "turso-docs-41"
+      "turso-docs-32"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can restore or branch the database to any point in time within the retention window to recover from bad writes",
+      "citations": [
+        {
+          "evidenceId": "turso-docs-42",
+          "quote": "PITR allows you to restore a database to a specific point in time. This is useful for recovering from user errors, such as dropping a table by mistake."
+        },
+        {
+          "evidenceId": "turso-docs-33",
+          "quote": "Turso supports point-in-time recovery (PITR) for databases."
+        },
+        {
+          "evidenceId": "turso-docs-18",
+          "quote": "turso db create my-new-database-branch --from-db my-existing-database"
+        },
+        {
+          "evidenceId": "turso-docs-32",
+          "quote": "A branch is a separate database instance that is created from an existing database."
+        }
+      ]
+    },
     "productId": "turso",
     "storyId": "point-in-time-recovery"
   }

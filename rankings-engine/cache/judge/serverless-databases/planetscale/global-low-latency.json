@@ -1,17 +1,36 @@
 {
-  "hash": "57b432bfffcd448bd5658ce16c2443116e455d405e7bd31eef3ffb93e110a540",
+  "hash": "4726609cafd5f1b1ad097275fe973ad47d102fc434b89f0f5c1a3f365e3768f0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The changelog confirms that Vitess databases can have read-only regions configured on the default branch, and that you can list the regions available to a database. The Postgres docs show replicas serving reads via a `|replica` username suffix to reduce load on the primary. However, the evidence never documents creating replicas in specific regions, routing users to the nearest region, or measured latency benefits. Missing for 10: docs on provisioning read-only regions, region placement for Postgres replicas, automatic nearest-region read routing, and independent corroboration of worldwide read latency.",
+    "rationale": "A changelog entry confirms PlanetScale has configurable Vitess read-only regions and lists the regions available to a database, which points to a first-party way to put read replicas in other regions. Separate docs show reads can be routed to replicas to offload the primary, but nothing ties replicas to geographic placement or latency. missing for 10: first-party docs on creating and placing read-only regions, Postgres cross-region replica support, guidance on routing reads to the nearest region, independent or hands-on evidence of lower worldwide read latency.",
     "evidenceIds": [
       "planetscale-docs-8",
       "planetscale-docs-14",
       "planetscale-docs-22",
       "planetscale-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can place data or replicas in regions close to my users to keep read latency low worldwide",
+      "citations": [
+        {
+          "evidenceId": "planetscale-docs-8",
+          "quote": "You can now list the regions available to a database, and list configured Vitess read-only regions for the database's default branch."
+        },
+        {
+          "evidenceId": "planetscale-docs-22",
+          "quote": "They provide a way to reduce load on your primary instance by allowing you to read from a replica."
+        },
+        {
+          "evidenceId": "planetscale-docs-14",
+          "quote": "Append `|replica` to the end of your username for the branch you want to target"
+        }
+      ]
+    },
     "productId": "planetscale",
     "storyId": "global-low-latency"
   }

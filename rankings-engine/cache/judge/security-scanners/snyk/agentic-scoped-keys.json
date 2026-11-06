@@ -1,17 +1,36 @@
 {
-  "hash": "77e8d0c673c084ee59b875c4ba3fa7617e2af74dfd6234621f0a1a58ade1a98f",
+  "hash": "269bfe77417e121956eb0eead767dc542911aa0d296389de50ba5cd1679b6d8c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Snyk documents organization-level custom role templates for service accounts. The CLI Tester role grants only `snyk test` and `snyk monitor`, and the Read-Only CLI Tester role blocks `snyk monitor`. Its plans also list role-based access control. Together these give a least-privilege, non-human credential pattern an agent could use, but the evidence frames it around CI/CD pipelines, not agents, and never covers token issuance itself. Missing for 10: agent-specific credential issuance (e.g. for the MCP server/Snyk Studio), documented API token scoping, expiry and rotation controls, and independent or hands-on corroboration.",
+    "rationale": "Snyk documents its own organization-level custom role templates for service accounts. One permits only basic CLI commands such as `snyk test`/`snyk monitor`, and a read-only variant blocks `snyk monitor`, which gives scoped, least-privilege non-human credentials. Role-based access control also appears in its plans. The evidence frames these for CI/CD pipelines rather than AI agents, and does not document the token issuance flow itself. Missing for 10: explicit documentation of issuing API tokens for service accounts, agent-specific credential scoping (e.g., for the MCP server or Studio), expiry/rotation controls, independent corroboration.",
     "evidenceIds": [
       "snyk-docs-47",
-      "snyk-docs-73",
       "snyk-docs-48",
+      "snyk-docs-73",
       "snyk-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "snyk-docs-47",
+          "quote": "This Organization-level role allows service accounts in CI/CD pipelines to run basic Snyk CLI commands."
+        },
+        {
+          "evidenceId": "snyk-docs-48",
+          "quote": "This Organization-level role blocks the use of `snyk monitor`."
+        },
+        {
+          "evidenceId": "snyk-docs-73",
+          "quote": "The role grants permissions to run `snyk test` to check Projects for vulnerabilities and `snyk monitor`"
+        }
+      ]
+    },
     "productId": "snyk",
     "storyId": "agentic-scoped-keys"
   }

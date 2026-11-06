@@ -1,21 +1,47 @@
 {
-  "hash": "66f1f46165103350017d11d252c06528f2c103b1fad83b8f11f1ed7724e5af92",
+  "hash": "ed28f5fa288ebeae64435ef8203370ec7b5e3390f426017fa2a4a63f0cf2d481",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Trivy is a documented CLI that runs headlessly (`trivy image`, `trivy k8s --report summary`, `docker run aquasec/trivy`), and community users say it is very easy to automate and drop into CI/CD pipelines. Machine-readable output is evidenced only indirectly through CycloneDX/SPDX SBOM generation, and nothing shows filing issues from findings. Missing for 10: explicit JSON/SARIF vulnerability-report output for parsing, any issue-filing or triage integration, hands-on evidence of an agent-driven scan-to-issue workflow.",
+    "rationale": "Trivy is a documented headless CLI (`trivy image`, docker run) with an official MCP server plugin that lets agents call its scanning, and community users say it is easy to automate in CI. However, the evidence never documents machine-readable vulnerability output such as JSON or SARIF; the only structured formats shown are CycloneDX/SPDX SBOMs, and nothing covers turning findings into filed issues. Missing for 10: documented machine-readable findings output (JSON/SARIF) for agent parsing, any issue-filing or triage workflow for real findings, hands-on corroboration of an agent-driven scan-to-issue loop.",
     "evidenceIds": [
       "trivy-docs-17",
-      "trivy-gh-1",
-      "trivy-gh-2",
       "trivy-probe-5",
-      "trivy-docs-6",
+      "trivy-gh-2",
       "trivy-docs-13",
+      "trivy-docs-18",
       "trivy-comm-11",
       "trivy-comm-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent run a scan headlessly via the CLI, parse machine-readable results, and file issues for real findings",
+      "citations": [
+        {
+          "evidenceId": "trivy-docs-17",
+          "quote": "`$ trivy image [YOUR_IMAGE_NAME]`"
+        },
+        {
+          "evidenceId": "trivy-probe-5",
+          "quote": "official CLI documented at https://github.com/aquasecurity/trivy"
+        },
+        {
+          "evidenceId": "trivy-docs-13",
+          "quote": "This plugin starts a Model Context Protocol (MCP) server that integrates Trivy's security scanning capabilities with VS Code and other MCP-enabled tools."
+        },
+        {
+          "evidenceId": "trivy-docs-18",
+          "quote": "Trivy can generate the following SBOM formats. * CycloneDX * SPDX"
+        },
+        {
+          "evidenceId": "trivy-comm-11",
+          "quote": "very solid tool, very easy to write automation around."
+        }
+      ]
+    },
     "productId": "trivy",
     "storyId": "agent-runs-scan-headless"
   }

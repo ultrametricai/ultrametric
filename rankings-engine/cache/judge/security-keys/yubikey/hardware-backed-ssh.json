@@ -1,11 +1,11 @@
 {
-  "hash": "cbe43a989dfc1305a8d72bfc5f9c10e527d23d10b80b6573a34e020058fdec4a",
+  "hash": "63f0e919d4b94f0805ad0015b1d5e0a9545e6e52d8eb563e9baf9ca4dbd95949",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Yubico's SSH guides document generating non-exportable SSH keys directly on the YubiKey with OpenSSH via FIDO2. Every cryptographic operation requires user presence (a touch), with optional PIN. A hands-on community report confirms ed25519 FIDO SSH keys work, and docs plus community confirm PIV (PKCS#11) and OpenPGP smartcard key storage. Missing for 10: explicit documentation of SSH via the PIV/OpenPGP paths, and evidence of touch-policy enforcement on those applets.",
+    "rationale": "Yubico documents generating SSH keys directly on the YubiKey's FIDO2 application with OpenSSH. The private key never leaves the hardware, and FIDO2 requires user presence (a touch) for cryptographic operations. Hardware-backed private keys are also documented for PIV (via PKCS#11) and OpenPGP, and community reports corroborate ed25519 FIDO SSH keys, PIV and GPG smartcard use. Missing for 10: explicit documentation of SSH-specific touch policies for the PIV and OpenPGP paths.",
     "evidenceIds": [
       "yubikey-docs-5",
       "yubikey-docs-6",
@@ -13,11 +13,41 @@
       "yubikey-docs-24",
       "yubikey-docs-8",
       "yubikey-docs-9",
-      "yubikey-docs-26",
       "yubikey-comm-14",
       "yubikey-comm-16",
       "yubikey-comm-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, my SSH keys can be hardware-backed on the device — via FIDO2 sk-ssh keys, PIV, or OpenPGP — so server access requires a physical touch",
+      "citations": [
+        {
+          "evidenceId": "yubikey-docs-24",
+          "quote": "This guide shows how to generate and use SSH keys directly on your FIDO2 security key with OpenSSH."
+        },
+        {
+          "evidenceId": "yubikey-docs-6",
+          "quote": "FIDO2 also requires user presence (a touch on your YubiKey) for cryptographic operations"
+        },
+        {
+          "evidenceId": "yubikey-docs-23",
+          "quote": "you can generate the private key directly on the hardware, where it cannot be exported or extracted"
+        },
+        {
+          "evidenceId": "yubikey-docs-8",
+          "quote": "It enables RSA or ECC sign/encrypt operations using a private key stored on a smartcard (such as the YubiKey), through common interfaces like PKCS#11."
+        },
+        {
+          "evidenceId": "yubikey-docs-9",
+          "quote": "It enables RSA or ECC sign/encrypt operations using a private key stored on a smartcard (such as YubiKeys)"
+        },
+        {
+          "evidenceId": "yubikey-comm-14",
+          "quote": "They also support ed25519 FIDO SSH keys"
+        }
+      ]
+    },
     "productId": "yubikey",
     "storyId": "hardware-backed-ssh"
   }

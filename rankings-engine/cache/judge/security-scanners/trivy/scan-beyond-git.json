@@ -1,17 +1,31 @@
 {
-  "hash": "8c7b3662885eb0dcf7b05aa9bf7e87f7ee50ec3a3989ee78837acbcc8b21bec9",
+  "hash": "0e1db77b3c351b4f80804a43502a621cc8481139b260158147243f91626be4f3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Trivy's docs say it detects exposed secrets (passwords, API keys, tokens) in any container image and filesystem, with secret scanning on by default. It can also scan image configuration for secrets via `--image-config-scanners`, so Docker images and local filesystems are clearly covered. Missing for 10: any evidence of scanning S3 buckets or other cloud object storage for secrets, any evidence of scanning CI logs (filesystem scanning of exported logs is only implied), and independent hands-on confirmation of secret-detection quality.",
+    "rationale": "Trivy's docs state that it scans container images and filesystems (non-git sources) for exposed secrets, with secret scanning on by default, and that it can also scan image configuration for secrets. That covers the Docker-image part of the story. Nothing in the evidence shows scanning of S3 buckets or CI logs, so only part of the story is delivered. Missing for 10: S3 bucket secret scanning, CI log secret scanning, independent hands-on corroboration of secret detection.",
     "evidenceIds": [
       "trivy-docs-3",
       "trivy-docs-10",
-      "trivy-docs-19",
-      "trivy-docs-17"
+      "trivy-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can scan non-git sources like S3 buckets, Docker images, and CI logs for leaked secrets",
+      "citations": [
+        {
+          "evidenceId": "trivy-docs-3",
+          "quote": "Trivy scans any container image, filesystem and git repository to detect exposed secrets like passwords, api keys, and tokens. Secret scanning is enabled by default."
+        },
+        {
+          "evidenceId": "trivy-docs-19",
+          "quote": "Trivy scans the configuration of container images for * Misconfigurations * Secrets"
+        }
+      ]
+    },
     "productId": "trivy",
     "storyId": "scan-beyond-git"
   }

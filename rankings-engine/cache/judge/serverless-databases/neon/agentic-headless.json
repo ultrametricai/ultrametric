@@ -1,25 +1,47 @@
 {
-  "hash": "0ae6c45e5dd2cced0e1184e323cf905a54142cff901a7a9ab949e70ce3b207e4",
+  "hash": "d71f4f88a093b830a28ef3dd2b98e3c1b9e864f2103a6d4b6ced3608317f24e1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Neon's docs describe several headless and CI paths. The `neon.ts` config logic can be called \"from your own script or CI job\" via `@neon/config-runtime`, and the CLI supports unattended setup (`-y --agent`) and JSON output. Automation is also covered by scoped API keys, a Management API with an OpenAPI spec, a keyless agent provisioning flow for when \"no human is signed in\", and per-branch auth environments for CI branches. A runtime probe confirmed the CLI runs keylessly from npx. Missing for 10: hands-on or independent corroboration of a real CI pipeline run (the probe only checked `--version`), and documented specifics of the GitHub integration / CI workflow beyond its title.",
+    "rationale": "Neon runs headlessly and in CI. Its CLI ran keylessly via npx in a runtime probe and supports unattended setup with `-y --agent`. neon.ts plan/apply logic can be called \"from your own script or CI job\" via @neon/config-runtime, and the Management API with scoped API keys allows fully automated project creation and cleanup. Missing for 10: detailed CI pipeline docs (the GitHub integration appears only as a title) and independent hands-on corroboration of an actual CI run.",
     "evidenceIds": [
       "neon-supp-neon-ts-config",
       "neon-supp-cli-agent-setup",
-      "neon-supp-cli-ask",
       "neon-probe-rt-1",
-      "neon-supp-api-key-scoping",
-      "neon-supp-api-llms-index",
-      "neon-probe-3",
-      "neon-supp-agent-claim-flow",
       "neon-supp-branching-for-agents",
+      "neon-supp-api-key-scoping",
       "neon-docs-53",
-      "neon-docs-18",
-      "neon-docs-56"
+      "neon-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "neon-supp-neon-ts-config",
+          "quote": "To call the same `inspect` / `plan` / `apply` logic from your own script or CI job instead of the CLI, see `@neon/config-runtime`."
+        },
+        {
+          "evidenceId": "neon-supp-cli-agent-setup",
+          "quote": "pass -y and --agent for an unattended agent setup"
+        },
+        {
+          "evidenceId": "neon-probe-rt-1",
+          "quote": "the official Neon CLI ran keylessly from npm — `npx -y neon@latest --version` printed `4.14.1` with no account"
+        },
+        {
+          "evidenceId": "neon-supp-branching-for-agents",
+          "quote": "Project creation, configuration, and cleanup are fully automated"
+        },
+        {
+          "evidenceId": "neon-docs-53",
+          "quote": "you can test sign-up, login, and OAuth flows in preview or CI branches without touching production"
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "agentic-headless"
   }

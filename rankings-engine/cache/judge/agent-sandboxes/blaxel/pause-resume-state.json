@@ -1,18 +1,40 @@
 {
-  "hash": "d0bb00b414116427ab393d2706dd99eab3bcaeb11cafbfee9de021f97c9fff53",
+  "hash": "ccd0fc6f7f640dd91dac3853d7e6a74d8eb0eba5239b070a50f1c811aa956b99",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Blaxel documents that sandboxes automatically go to standby after a few seconds of inactivity and resume in under 25ms 'even after weeks'. It also offers point-in-time snapshots with rollback and an archive/unarchive flow that keeps the filesystem, and its expiration docs reference snapshot storage, which implies standby state is persisted. The docs say this delivers the core pause/resume story, but memory preservation is only implied by the fast resume, not stated outright. missing for 10: explicit statement that in-memory/process state survives standby, a documented developer-triggered pause API (standby is automatic on inactivity), independent or hands-on corroboration.",
+    "rationale": "Blaxel documents sandboxes automatically going to standby (scale-to-zero after 5s of inactivity) and resuming in under 25ms even after weeks. It also documents archiving a sandbox to keep its filesystem and unarchiving it later. The docs do not say that memory or process state is preserved, and the pause is triggered by inactivity rather than by the developer. missing for 10: explicit documentation that memory/process state survives standby, a developer-triggered pause/resume API, independent or hands-on corroboration.",
     "evidenceIds": [
       "blaxel-docs-2",
       "blaxel-docs-16",
-      "blaxel-docs-21",
       "blaxel-docs-22",
-      "blaxel-docs-25"
+      "blaxel-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pause a running sandbox and resume it later with filesystem and memory state intact",
+      "citations": [
+        {
+          "evidenceId": "blaxel-docs-2",
+          "quote": "Automatic scale-to-zero after 5s inactivity, resume from standby under 25ms even after weeks."
+        },
+        {
+          "evidenceId": "blaxel-docs-16",
+          "quote": "Sandboxes resume from standby in under 25 milliseconds and automatically scale to zero after a few seconds of inactivity."
+        },
+        {
+          "evidenceId": "blaxel-docs-22",
+          "quote": "Archive a sandbox to keep its filesystem while shutting it down, and unarchive it later to get it back."
+        },
+        {
+          "evidenceId": "blaxel-docs-21",
+          "quote": "Create point-in-time snapshots of sandboxes, roll them back to a checkpoint, and fork them into new sandboxes."
+        }
+      ]
+    },
     "productId": "blaxel",
     "storyId": "pause-resume-state"
   }

@@ -1,20 +1,41 @@
 {
-  "hash": "ff30187f4be1e66361b9a4130281ca275846eb939ce0fe8fdccd6112142f42f8",
+  "hash": "f9fb783fc2e8b3a17e8c3fb9174af4d4d721b8b686895011fc81a3d21f965716",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "bentolabs",
-    "storyId": "agent-session-traces",
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Bento documents OpenTelemetry span capture with an explorable span tree, and automatic capture of every model call, tool call and agent step (e.g., Google ADK). It also groups runs via `session_id` passed to `init()` and applied to every span, and via a shared `convo_id` that ties runs into conversations. Missing for 10: detailed docs on parent/child span nesting semantics for multi-step runs, and independent or hands-on corroboration of the session/thread grouping views.",
+    "rationale": "Bento's own docs describe a span tree built from OpenTelemetry spans and capture of every model call, tool call, and agent step. Runs can be grouped via a `session_id` applied to every span and a `convo_id` that ties runs together, which covers both the nested-span and the session/thread parts of the story. Missing for 10: in-depth documentation of how span parent/child nesting is structured and how sessions or threads are viewed, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "bentolabs-docs-3",
       "bentolabs-docs-23",
       "bentolabs-docs-24",
-      "bentolabs-docs-39",
-      "bentolabs-docs-18",
-      "bentolabs-docs-21"
-    ]
+      "bentolabs-docs-39"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can trace multi-step agent runs as nested spans grouped into sessions or threads",
+      "citations": [
+        {
+          "evidenceId": "bentolabs-docs-3",
+          "quote": "Every span from every framework, captured over OpenTelemetry. Open the span tree"
+        },
+        {
+          "evidenceId": "bentolabs-docs-39",
+          "quote": "Capture every model call, tool call, and agent step from a Google ADK app with one line."
+        },
+        {
+          "evidenceId": "bentolabs-docs-23",
+          "quote": "`init()` accepts `user_id`, `session_id`, and `tags` kwargs. Bento invokes them on every span"
+        },
+        {
+          "evidenceId": "bentolabs-docs-24",
+          "quote": "pass the same `convo_id` on every call and Bento ties the runs together for you."
+        }
+      ]
+    },
+    "productId": "bentolabs",
+    "storyId": "agent-session-traces"
   }
 }

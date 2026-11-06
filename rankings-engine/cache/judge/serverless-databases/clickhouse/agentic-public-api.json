@@ -1,19 +1,31 @@
 {
-  "hash": "cde82f6f72a01af922df058d8c53747de7872de767ca5b2cc4af8a9870c35103",
+  "hash": "27835b1fe644462c87c90ffb69460f049ba5ae3fbfd5b1fb1527c7936bba5d19",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "A probe confirms a published OpenAPI spec at clickhouse.com/openapi.json, and the changelog documents HTTP-interface behavior such as the X-ClickHouse-Format request header, so the product can be driven programmatically over a public API. The official CLI and MCP server add further documented programmatic surfaces. Missing for 10: in-depth API reference documentation in the pack (endpoints, authentication, Cloud management API scope), and independent or hands-on corroboration of driving the product through the API.",
+    "rationale": "ClickHouse exposes an HTTP interface: the changelog documents the X-ClickHouse-Format HTTP request header for selecting response format, and a probe found a published OpenAPI spec at clickhouse.com/openapi.json. The pack gives no in-depth API reference, so the breadth of API-driven control is unproven. Missing for 10: comprehensive public API reference documentation (endpoints, auth, operations), evidence the API covers management beyond queries, independent or hands-on corroboration of driving the product via the API.",
     "evidenceIds": [
       "clickhouse-probe-3",
-      "clickhouse-docs-14",
       "clickhouse-docs-19",
-      "clickhouse-probe-5",
-      "clickhouse-docs-31",
-      "clickhouse-probe-4"
+      "clickhouse-docs-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "clickhouse-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://clickhouse.com/openapi.json — contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "clickhouse-docs-19",
+          "quote": "The X-ClickHouse-Format HTTP request header now explicitly selects the format of the response: it is an alias for the output_format setting, so it overrides the FORMAT clause of the query"
+        }
+      ]
+    },
     "productId": "clickhouse",
     "storyId": "agentic-public-api"
   }

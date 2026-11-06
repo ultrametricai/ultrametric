@@ -1,21 +1,41 @@
 {
-  "hash": "7cd7b1bd65597f4f5b6462539aade21931b349d03f735bc9ed2a41a256497b90",
+  "hash": "d9726cbfb9706cf4426bfe37935df314cfa681c1bfa1b5b0578ce993ea663e42",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Supabase documents running the full stack locally with `supabase init` and `supabase start`, developing against that local stack and capturing schema migrations in version control, and self-hosting the same services via Docker. A runtime probe confirmed the official CLI installs and runs from npm with no account or login. A community comment calls the local-dev and migration story a weakness, but that is a quality complaint rather than a concrete failure, so it lowers confidence rather than creating a dispute. Missing for 10: explicit evidence that `supabase start` runs fully offline and keyless (the probe only ran `--version`), documented CI test workflows, explicit parity guarantees between the local and hosted engines, and independent hands-on corroboration of local stack runs.",
+    "rationale": "Supabase documents running a local Supabase stack through its CLI with `supabase init` and `supabase start`, and self-hosting the services with Docker. A runtime probe confirmed the CLI ran from npm with no account or login. However, nothing in the pack explicitly documents fully offline operation, CI test workflows, or parity between the local stack and the hosted engine, so coverage is incomplete. Missing for 10: explicit documentation of offline (no-network) operation, a documented CI testing workflow on the local stack, a statement that the local stack is the same engine as hosted, and a hands-on run of `supabase start` without login (only `--version` was probed).",
     "evidenceIds": [
       "supabase-docs-5",
       "supabase-docs-32",
       "supabase-docs-25",
-      "supabase-docs-6",
-      "supabase-docs-37",
       "supabase-probe-rt-1",
-      "supabase-probe-5",
-      "supabase-comm-5"
+      "supabase-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run the same engine locally and keylessly — no account or cloud dependency — for offline development and CI tests",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-5",
+          "quote": "supabase start to launch the Supabase services"
+        },
+        {
+          "evidenceId": "supabase-docs-25",
+          "quote": "Develop locally using the CLI to run a local Supabase stack"
+        },
+        {
+          "evidenceId": "supabase-probe-rt-1",
+          "quote": "the official Supabase CLI ran keylessly from npm — `npx -y supabase --version` printed `2.117.0` with no account or login"
+        },
+        {
+          "evidenceId": "supabase-docs-37",
+          "quote": "The fastest and recommended way to self-host Supabase is to use Docker."
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "local-keyless-engine"
   }

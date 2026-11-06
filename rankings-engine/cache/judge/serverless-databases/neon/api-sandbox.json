@@ -1,23 +1,38 @@
 {
-  "hash": "76fbeaca1acca15e5a9754659272993b9a012f6a6fad802d59b0b460544be166",
+  "hash": "59bbf78859d44f699fea4a3877376285cbaa65bfa9c747cff1148839a0921d82",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Neon's branching model gives AI-native users an isolated sandbox: documented Copilot agents run migrations and query optimizations on temporary branches, \"keeping production untouched\" until changes are validated. Each branch also gets its own isolated auth environment for CI and preview testing, and neon.ts supports auto-expiring branch TTLs. A production user independently confirms branching off main to test and then resetting the branch, and the MCP server's read-only mode was verified live by probe. Missing for 10: the core branching docs appear only as a title in the pack, and no hands-on probe actually created a branch and confirmed data isolation from production.",
+    "rationale": "Neon documents isolated database branches as its sandbox mechanism: agents run migrations and query optimizations on temporary branches while production stays untouched. Each branch also gets its own isolated auth environment, and neon.ts can set TTLs so branches auto-expire. A hands-on community user confirms branching off main to test and then resetting the branch to its parent, so this is true isolation, not a dry-run. Missing for 10: detailed first-party evidence of branch isolation semantics (the branching docs page appears only as a title in the pack).",
     "evidenceIds": [
-      "neon-docs-25",
-      "neon-supp-copilot-agents",
       "neon-docs-45",
+      "neon-supp-copilot-agents",
       "neon-docs-53",
       "neon-supp-neon-ts-config",
-      "neon-supp-branching-for-agents",
       "neon-comm-10",
-      "neon-supp-mcp-scoping-readonly",
-      "neon-probe-7",
-      "neon-docs-36"
+      "neon-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "neon-docs-45",
+          "quote": "run safe schema migrations and query optimizations on temporary Neon branches, keeping production untouched until changes are validated"
+        },
+        {
+          "evidenceId": "neon-docs-53",
+          "quote": "Every database branch gets its own isolated auth environment, so you can test sign-up, login, and OAuth flows in preview or CI branches without touching production."
+        },
+        {
+          "evidenceId": "neon-comm-10",
+          "quote": "We can branch off the main database to test things out, and periodically reset the branch to its parent."
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "api-sandbox"
   }

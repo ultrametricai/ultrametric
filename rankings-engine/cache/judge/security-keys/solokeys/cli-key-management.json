@@ -1,18 +1,35 @@
 {
-  "hash": "196844aaf47ed9c2c3f5b6f153e81e98a609e2c855b6e798eb8f1f4357f49aaf",
+  "hash": "518f6d0c14f21dc612e5ca478c21e69efa7cb666c3158e5e40a52f5c41f8f38a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The official solo2 repo documents a `solo2` CLI that can list connected devices, set the LED through the admin app, and run `update`, which downloads, verifies and flashes signed firmware. That is real scriptable device management, but evidence for the rest of the story is thin. Resetting the device relies on the third-party `fido2-token -R`. The bit-rot probe tested the Solo 1 `solo-python` tool, not the `solo2` CLI, so it does not concretely contradict this capability. Missing for 10: PIN setting via the CLI, enabling or disabling applications, slot management (PIV/OATH/OpenPGP), documented device-state readout beyond listing, explicit scripting/JSON output docs, and independent hands-on corroboration of the solo2 CLI.",
+    "rationale": "The solo2 repo documents an official `solo2` CLI that lists connected devices, sets admin options such as the LED, and runs a verified firmware `update`, so the core of CLI-based management exists. The bit-rot probe concerns the Solo 1 `solo-python` tool (solo1-cli), so it does not concretely contradict the solo2 CLI, though it lowers confidence. Wiping relies on the third-party `fido2-token`, which earns no credit. missing for 10: enabling/disabling applications, PIN setting, slot management (OATH/PIV/OpenPGP), richer device-state reads, documented scripting/machine-readable output, independent hands-on corroboration of the solo2 CLI working",
     "evidenceIds": [
-      "solokeys-gh-2",
       "solokeys-gh-3",
       "solokeys-gh-4",
-      "solokeys-docs-10",
-      "solokeys-probe-rt-1"
+      "solokeys-gh-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can configure and manage the key from an official CLI — enable applications, set PINs, manage slots, read device state — scriptably",
+      "citations": [
+        {
+          "evidenceId": "solokeys-gh-3",
+          "quote": "solo2 app admin set led 007f7f 00007f # set led to teal (idle) / blue (active) - use 000000 to turn the led off"
+        },
+        {
+          "evidenceId": "solokeys-gh-4",
+          "quote": "solo2 list                   # list connected devices  (alias: solo2 ls)"
+        },
+        {
+          "evidenceId": "solokeys-gh-2",
+          "quote": "`update` downloads the signed release, **verifies its SHA-256**, and flashes it."
+        }
+      ]
+    },
     "productId": "solokeys",
     "storyId": "cli-key-management"
   }

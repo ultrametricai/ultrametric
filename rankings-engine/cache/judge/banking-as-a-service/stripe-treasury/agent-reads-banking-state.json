@@ -1,21 +1,42 @@
 {
-  "hash": "cb5b727a1ba9aa346f050334031cff81af38ffadb29584d7d22fd5ce13761914",
+  "hash": "62de6da557045c29f283ce3635c100941945470837e991d34a73b5d69a8f6fbb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe Treasury exposes FinancialAccount objects through the API, and every fund movement creates a Transaction ledger object meant for building activity feeds and reconciliation. ReceivedDebit objects and v2 transaction-created events give programmatic visibility into money movement, and docs are agent-readable via llms.txt and .md pages. Stripe also ships an official MCP server, but the evidence does not show it covering Treasury data. missing for 10: explicit pending/in-flight activity status, an API for documents or statements, evidence that the MCP server exposes Treasury accounts and transactions, independent hands-on corroboration of agent read access.",
+    "rationale": "Stripe Treasury documents an API for reading account state: FinancialAccount objects are exposed in the API reference, and Transaction objects serve as ledger entries for building activity feeds and reconciliation, with webhook events on transaction creation. An official Stripe MCP server exists, but nothing in the pack shows it covers Treasury data. Pending activity and documents such as statements are not evidenced at all. missing for 10: evidence of pending/in-flight activity reads, account documents/statements via API, MCP coverage of Treasury data, independent hands-on corroboration of agent read access.",
     "evidenceIds": [
       "stripe-treasury-docs-16",
       "stripe-treasury-docs-19",
       "stripe-treasury-docs-13",
-      "stripe-treasury-docs-18",
       "stripe-treasury-docs-20",
-      "stripe-treasury-probe-1",
-      "stripe-treasury-probe-2",
+      "stripe-treasury-docs-18",
       "stripe-treasury-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can read the full banking picture — accounts, transactions, pending activity, documents — through a clean API or MCP surface without screen-scraping a dashboard",
+      "citations": [
+        {
+          "evidenceId": "stripe-treasury-docs-16",
+          "quote": "Stripe Treasury for Platforms provides users with a container for money called a FinancialAccount that is separate from their Payments balance."
+        },
+        {
+          "evidenceId": "stripe-treasury-docs-19",
+          "quote": "Every movement of funds into or out of a financial account creates a Transaction object. Transactions are the ledger entries for your financial accounts."
+        },
+        {
+          "evidenceId": "stripe-treasury-docs-13",
+          "quote": "Use transactions to build account activity feeds, reconcile against your internal systems, and track money movement through your platform."
+        },
+        {
+          "evidenceId": "stripe-treasury-docs-20",
+          "quote": "v2.money_management.transaction.created | A flow creates a transaction on a financial account."
+        }
+      ]
+    },
     "productId": "stripe-treasury",
     "storyId": "agent-reads-banking-state"
   }

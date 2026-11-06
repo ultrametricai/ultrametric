@@ -1,21 +1,52 @@
 {
-  "hash": "d45237f65f337f3a67c65089653ceb38ddfca232f30fa4b733329756164a08ec",
+  "hash": "4c936fc3736b0d72298695340edb2d3f9878673a05c0c2e05a6b16a2b9c0801f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ardent documents a CI/CD workflow where every PR gets its own fresh database branch (ardent-docs-20). The pieces for CI automation are documented: `ardent branch create pr-123 --print-url`, JSON output and errors, token auth via ARDENT_TOKEN with no login step, idempotent re-runs, and an API aimed at CI systems and internal developer platforms. Teardown is only implied, through mentions of scripts and agents deleting their own branches. missing for 10: explicit documented branch-delete or automatic cleanup on PR close, native deploy-platform integrations (e.g. a Vercel or GitHub Actions integration), independent hands-on corroboration of the per-PR CI flow.",
+    "rationale": "Ardent documents a per-PR CI workflow ('Every PR runs against its own fresh database branch'). It also offers CI-friendly CLI branch creation (`ardent branch create pr-123 --print-url`), token-based auth with no login step, idempotent re-runs, JSON errors, and an API aimed at CI systems. Branch deletion appears only in the agent workflow, where the CLI handles 'creating, using, and deleting' branches. Automated teardown on PR close from CI is never documented, and no deploy-platform integration is shown. missing for 10: documented automatic per-PR teardown on PR close/merge in CI, native deploy-platform (e.g. preview-deployment) integration, a concrete CI pipeline example, independent hands-on corroboration.",
     "evidenceIds": [
       "ardent-docs-20",
       "ardent-docs-8",
       "ardent-docs-10",
-      "ardent-docs-11",
       "ardent-docs-13",
       "ardent-docs-14",
       "ardent-docs-18",
-      "ardent-docs-19"
+      "ardent-docs-19",
+      "ardent-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can create and tear down per-pull-request database branches automatically from CI or my deploy platform",
+      "citations": [
+        {
+          "evidenceId": "ardent-docs-20",
+          "quote": "Every PR runs against its own fresh database branch cloned from your connected source"
+        },
+        {
+          "evidenceId": "ardent-docs-8",
+          "quote": "ardent branch create pr-123 --print-url"
+        },
+        {
+          "evidenceId": "ardent-docs-10",
+          "quote": "Set ARDENT_TOKEN and run commands normally — no login step"
+        },
+        {
+          "evidenceId": "ardent-docs-14",
+          "quote": "Use the API when you are building CI systems, internal developer platforms, custom dashboards, or agent workflows."
+        },
+        {
+          "evidenceId": "ardent-docs-19",
+          "quote": "The agent runs the Ardent CLI itself — creating, using, and deleting its own branches"
+        },
+        {
+          "evidenceId": "ardent-docs-13",
+          "quote": "a re-run picks up the original request instead of starting a second one"
+        }
+      ]
+    },
     "productId": "ardent",
     "storyId": "ci-preview-branches"
   }

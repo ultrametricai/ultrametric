@@ -1,19 +1,36 @@
 {
-  "hash": "3c568bea54d3fbe741a5c672f9d46fd72037594b4b74ee6daee31ed3b603f1ab",
+  "hash": "f14f6407aaa50946e2893ea873eb694e23ee6ccea8fe2f3761766535a7c2e8d0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Turso documents Embedded Replicas, which keep a local read replica of a cloud database: reads are served locally and writes go to the cloud primary and are reflected back. The durability page cites 11-nines data durability, and marketing says data is \"Replicated.\" However, nothing in the pack describes high-availability architecture, failover behavior, or adding server-side read replicas across regions. missing for 10: documented HA/failover behavior (primary loss, promotion, RTO/RPO), server-side multi-region read replica provisioning, availability SLA, independent corroboration of replica/failover reliability.",
+    "rationale": "Turso documents Embedded Replicas, which keep a local read replica of a cloud database: reads are served locally and writes go to the cloud primary, then flow back to the replica. The durability page also gives an eleven-nines durability figure. However, the pack contains no documentation of high availability, failover behavior, replica promotion, or server-side regional read replicas, so only the read-replica half of the story is evidenced. missing for 10: documented HA architecture, failover/primary-promotion behavior, server-side or multi-region read replicas, uptime/availability SLA, independent corroboration of failover.",
     "evidenceIds": [
       "turso-docs-5",
-      "turso-docs-19",
       "turso-docs-35",
-      "turso-docs-10",
       "turso-docs-39",
-      "turso-comm-10"
+      "turso-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can add read replicas and rely on documented high-availability and failover behavior",
+      "citations": [
+        {
+          "evidenceId": "turso-docs-5",
+          "quote": "Embedded Replicas keep a local read replica of a Turso Cloud database: reads run locally from the file in microseconds, and writes are sent to the cloud primary and then reflected back to the replica."
+        },
+        {
+          "evidenceId": "turso-docs-35",
+          "quote": "providing local-first writes, explicit `push()` / `pull()`, and significantly less bandwidth and lower latency"
+        },
+        {
+          "evidenceId": "turso-docs-39",
+          "quote": "That's it. Encrypted. Replicated. Yours."
+        }
+      ]
+    },
     "productId": "turso",
     "storyId": "replicas-failover"
   }

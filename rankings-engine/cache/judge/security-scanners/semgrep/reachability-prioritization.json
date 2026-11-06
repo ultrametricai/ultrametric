@@ -1,17 +1,31 @@
 {
-  "hash": "d3632f4f394c34502035fbc0e39657270a8b30f168cb93fc41610cce52d3446a",
+  "hash": "ec3ce7b36d5b96fb997d740dae59ddaafdfa43e7596d3803a7d9ff47b08494e2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Semgrep Supply Chain is a first-party SCA tool that flags dependency vulnerability findings as reachable when code in the codebase matches the vulnerability definition. That gives security engineers a reachability signal to prioritize dependency alerts. Missing for 10: documentation of how reachable findings are filtered, sorted or prioritized in triage; details on how deep the reachability analysis goes and which languages it covers; independent or hands-on corroboration that reachability cuts dependency-alert noise.",
+    "rationale": "Semgrep Supply Chain is a first-party SCA tool, and its docs say it flags dependency findings as reachable when code in the codebase matches the vulnerability definition. That is the core reachability signal this story depends on. However, the evidence does not document filtering, sorting or triaging alerts by reachability status, and nothing independent confirms the analysis works in practice. Missing for 10: documented prioritization/filtering of alerts by reachability status, detail on reachability analysis depth (e.g., transitive dependencies or call paths), independent or hands-on corroboration.",
     "evidenceIds": [
       "semgrep-docs-11",
       "semgrep-docs-24",
-      "semgrep-docs-29",
-      "semgrep-docs-55"
+      "semgrep-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can prioritize dependency alerts by whether the vulnerable code is actually reachable from my code",
+      "citations": [
+        {
+          "evidenceId": "semgrep-docs-11",
+          "quote": "If there's a code pattern in the codebase that matches the vulnerability definition, the finding is flagged as reachable."
+        },
+        {
+          "evidenceId": "semgrep-docs-29",
+          "quote": "Semgrep Supply Chain is a software composition analysis (SCA) tool that detects security vulnerabilities in your codebase introduced by open source dependencies."
+        }
+      ]
+    },
     "productId": "semgrep",
     "storyId": "reachability-prioritization"
   }

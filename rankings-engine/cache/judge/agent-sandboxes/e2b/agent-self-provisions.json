@@ -1,23 +1,47 @@
 {
-  "hash": "c037b0cfba6176c8aa3ae95dafbb88c372d6f0562514d72c42908a2857d1eb8a",
+  "hash": "16e469492eab099f68ab8c53fa6a14e794808f34408567d58d10b7f5f5d175fa",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "E2B's first-party SDK docs cover each step of the loop programmatically. Sandbox.create() provisions the sandbox, and runCode()/commands.run() execute code. The execution result, files.read() and files.list() let the agent read outputs, and kill() tears the sandbox down before timeout. Env-var API-key auth for non-interactive environments and LLM tool-use integration let an agent run this loop without a human. Missing for 10: independent hands-on corroboration of the full autonomous provision-execute-teardown loop (the one community report covers agent loops with interactive commands, not this lifecycle).",
+    "rationale": "E2B's SDK documents every step of the loop programmatically. The agent can create a sandbox (Sandbox.create), run code (runCode, commands.run), read results and files (files.read, files.list), and tear down with `kill`. Non-interactive API-key auth and LLM tool-use integration let an agent drive this with no human involved. Missing for 10: independent or hands-on corroboration that an agent runs the full provision-to-teardown lifecycle autonomously.",
     "evidenceIds": [
       "e2b-docs-1",
-      "e2b-docs-21",
-      "e2b-docs-8",
       "e2b-docs-19",
-      "e2b-docs-2",
+      "e2b-docs-8",
       "e2b-docs-6",
-      "e2b-docs-35",
       "e2b-docs-32",
-      "e2b-docs-43",
-      "e2b-gh-3"
+      "e2b-docs-35",
+      "e2b-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an ai-native user, my agent can provision its own sandbox, execute code, read the results, and tear it down — end to end without a human",
+      "citations": [
+        {
+          "evidenceId": "e2b-docs-1",
+          "quote": "const sbx = await Sandbox.create() // Creates a persistent sandbox session\nconst execution = await sbx.runCode('print(\"hello world\")')"
+        },
+        {
+          "evidenceId": "e2b-docs-19",
+          "quote": "You can read files from the sandbox filesystem using the `files.read()` method."
+        },
+        {
+          "evidenceId": "e2b-docs-6",
+          "quote": "You can shutdown the sandbox any time even before the timeout is up by calling the `kill` method."
+        },
+        {
+          "evidenceId": "e2b-docs-32",
+          "quote": "E2B can work with any LLM and AI framework. The easiest way to connect an LLM to E2B is to use the tool use capabilities of the LLM"
+        },
+        {
+          "evidenceId": "e2b-docs-35",
+          "quote": "This is the recommended option for non-interactive environments like CI/CD pipelines, servers, and containers."
+        }
+      ]
+    },
     "productId": "e2b",
     "storyId": "agent-self-provisions"
   }

@@ -1,18 +1,36 @@
 {
-  "hash": "d62b54f107fba4bdda6f8a8de68c3047fc53712f3add371f3ec0c22bd9575c0e",
+  "hash": "4fb2fbfc2867cdd305c4e2b32daf4ea26a7a041c4d6ad45ed888d8a1b0febebf",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Vercel Sandbox documents persistence as the default: stopping a sandbox auto-snapshots its filesystem and preserves its configuration, and retrieving it by name resumes it. However, the docs explicitly scope what is restored to filesystem and configuration, so the 'memory state intact' half of the story is unevidenced. missing for 10: evidence that memory/process state (running processes, in-memory data) survives pause/resume, independent or hands-on corroboration of resume behavior.",
+    "rationale": "Vercel Sandbox documents stop-and-resume persistence: it auto-saves state on stop, snapshots the filesystem automatically, and resumes a sandbox when you retrieve it by name. However, the docs say only the filesystem and configuration are restored, so memory and process state surviving a resume is not evidenced. missing for 10: memory/process-state preservation across pause and resume, independent or hands-on corroboration.",
     "evidenceIds": [
       "vercel-sandbox-docs-11",
-      "vercel-sandbox-docs-12",
-      "vercel-sandbox-docs-18",
       "vercel-sandbox-docs-40",
-      "vercel-sandbox-docs-31"
+      "vercel-sandbox-docs-18",
+      "vercel-sandbox-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pause a running sandbox and resume it later with filesystem and memory state intact",
+      "citations": [
+        {
+          "evidenceId": "vercel-sandbox-docs-11",
+          "quote": "Sandboxes that auto-save state on stop and resume where you left off. Persistence is the default."
+        },
+        {
+          "evidenceId": "vercel-sandbox-docs-40",
+          "quote": "when a sandbox stops, the SDK automatically snapshots its filesystem, and the sandbox configuration is preserved across sessions, so both are restored the next time you resume"
+        },
+        {
+          "evidenceId": "vercel-sandbox-docs-18",
+          "quote": "Or retrieve an existing sandbox by name (resumes if stopped)"
+        }
+      ]
+    },
     "productId": "vercel-sandbox",
     "storyId": "pause-resume-state"
   }

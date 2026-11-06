@@ -1,19 +1,37 @@
 {
-  "hash": "addd0e6fc5e5c5468a8b876d1179794aa6f206f45e05d1877223128adfef679c",
+  "hash": "5930e0e6dc09a4a742c3bbb22dfa4a119a1dc5f5a4798abcfdbedb464eb509c6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Plaid is an API-first service, and its own Sandbox supports fully programmatic use. The /sandbox/public_token/create endpoint creates test Items via the API without the client-side Link UI, and the official plaid-node SDK makes server-side calls, so automated test runs can work end to end without a browser. However, real-user Items still depend on the interactive Link component, and nothing documents CI specifically. Missing for 10: explicit CI/headless setup documentation, an official CLI, independent or hands-on corroboration of CI usage, and a headless path for non-Sandbox Item creation.",
+    "rationale": "Plaid is an API with a Node SDK. Its Sandbox exposes a Sandbox-only endpoint, /sandbox/public_token/create, that creates test Items via the API, so test flows can run programmatically without the interactive Link UI. However, no evidence explicitly documents CI usage, and in Production account linking still goes through the client-side Link component that end users interact with. Missing for 10: explicit CI/headless automation documentation or guides, a headless path for Production account linking, independent hands-on corroboration of CI usage.",
     "evidenceIds": [
-      "plaid-docs-7",
-      "plaid-docs-13",
       "plaid-docs-14",
+      "plaid-docs-13",
+      "plaid-docs-7",
       "plaid-docs-5",
-      "plaid-gh-1",
-      "plaid-gh-2"
+      "plaid-gh-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "plaid-docs-14",
+          "quote": "you can also create Items in Sandbox via the API, using a special Sandbox-only endpoint, /sandbox/public_token/create. This endpoint allows you to generate a public_token for an arbitrary institution ID, initial products, and test credentials."
+        },
+        {
+          "evidenceId": "plaid-docs-13",
+          "quote": "All Plaid functionality of both the Plaid API and Plaid Link is supported in the Sandbox environment."
+        },
+        {
+          "evidenceId": "plaid-docs-7",
+          "quote": "you can create an unlimited number of test Items."
+        }
+      ]
+    },
     "productId": "plaid",
     "storyId": "agentic-headless"
   }

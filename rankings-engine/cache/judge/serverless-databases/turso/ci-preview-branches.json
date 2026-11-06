@@ -1,20 +1,45 @@
 {
-  "hash": "3626d94dcd39f5ea17ea17a29f99cf9cb2976bb86f882cf8c01b40aee4f07373",
+  "hash": "d9b58e0c43dabcc0b2afb070b83f77cd4764050d5c1bf6264801628410ce33f4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Turso's branching docs explicitly say automated branching is useful for creating a new database for each pull request, and show a branch created via `turso db create ... --from-db` (a branch is a separate database instance). The Platform API and CLI let you programmatically create, manage and tear down databases, so CI-driven creation and deletion is supported. Missing for 10: a documented CI recipe (e.g. GitHub Actions) or deploy-platform integration, explicit branch teardown/cleanup docs, and independent or hands-on corroboration.",
+    "rationale": "Turso documents branches as separate database instances created from an existing database via CLI, and explicitly says automating branching is useful for creating a new database per pull request. The Platform API supports programmatic creation and teardown of databases, which covers the create-and-destroy lifecycle. missing for 10: a documented CI recipe (e.g. a GitHub Actions workflow) or deploy-platform integration, explicit branch-deletion docs, and independent hands-on corroboration.",
     "evidenceIds": [
       "turso-docs-11",
       "turso-docs-18",
       "turso-docs-32",
-      "turso-docs-3",
       "turso-docs-8",
-      "turso-docs-60",
-      "turso-docs-50"
+      "turso-docs-60"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform-engineer, I can create and tear down per-pull-request database branches automatically from CI or my deploy platform",
+      "citations": [
+        {
+          "evidenceId": "turso-docs-11",
+          "quote": "Automating branching is useful for creating a new database for each pull request."
+        },
+        {
+          "evidenceId": "turso-docs-18",
+          "quote": "turso db create my-new-database-branch --from-db my-existing-database"
+        },
+        {
+          "evidenceId": "turso-docs-32",
+          "quote": "A branch is a separate database instance that is created from an existing database."
+        },
+        {
+          "evidenceId": "turso-docs-8",
+          "quote": "Each entity gets its own isolated SQLite database that you create, token-scope, and tear down via the API."
+        },
+        {
+          "evidenceId": "turso-docs-60",
+          "quote": "Programmatically manage databases, groups, organizations, and tokens with the Turso Platform API."
+        }
+      ]
+    },
     "productId": "turso",
     "storyId": "ci-preview-branches"
   }

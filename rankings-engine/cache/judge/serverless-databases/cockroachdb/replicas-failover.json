@@ -1,19 +1,37 @@
 {
-  "hash": "d2ec731b06ad1e30fa2a3430da53559c9848ff98b1513fa0df12949f754eb421",
+  "hash": "e32652b8ee0a146e27108915f9737c029ba51879f84a01e4a31dc687412e0dfe",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "High availability and automatic failover are clearly documented: the docs and README say CockroachDB survives disk, machine, rack and datacenter failures with no manual intervention, and multi-region survival goals set how many simultaneous failures a database tolerates. The read-replica half is thin, evidenced only by a community remark that Follower Reads exist as an enterprise feature. Missing for 10: first-party docs on adding read replicas or follower reads, a detailed failover-behavior walkthrough (timings, leaseholder transfer), and independent hands-on failover corroboration.",
+    "rationale": "CockroachDB's own docs and README say it survives disk, machine, rack and datacenter failures with no manual intervention, and that survival goals set how many simultaneous failures a database can tolerate. That covers the high-availability and failover half of the story. The ability to add read replicas is not documented first-party; only a community comment mentions follower reads, as an enterprise feature. Missing for 10: first-party docs on adding read replicas or follower reads, detailed failover mechanics (replication factor, leaseholder failover, recovery times), hands-on corroboration of failover behavior.",
     "evidenceIds": [
       "cockroachdb-gh-2",
       "cockroachdb-docs-14",
-      "cockroachdb-docs-20",
       "cockroachdb-docs-7",
-      "cockroachdb-docs-31",
+      "cockroachdb-docs-20",
       "cockroachdb-comm-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can add read replicas and rely on documented high-availability and failover behavior",
+      "citations": [
+        {
+          "evidenceId": "cockroachdb-gh-2",
+          "quote": "It **scales** horizontally; **survives** disk, machine, rack, and even datacenter failures with minimal latency disruption and no manual intervention"
+        },
+        {
+          "evidenceId": "cockroachdb-docs-7",
+          "quote": "_Survival goal_ dictates how many simultaneous failure(s) a database can survive."
+        },
+        {
+          "evidenceId": "cockroachdb-comm-9",
+          "quote": "I stopped using them when they released Follower-Reads as an enterprise feature."
+        }
+      ]
+    },
     "productId": "cockroachdb",
     "storyId": "replicas-failover"
   }

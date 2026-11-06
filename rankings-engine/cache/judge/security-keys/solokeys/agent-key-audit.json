@@ -1,17 +1,31 @@
 {
-  "hash": "56f104da32dc02d367765c275b7201ff75a8bf7e2b66bfddeb13a171e9f8a492",
+  "hash": "0c17a948713e2513ff78dc6b62e4a900571228f08bcb1ec8fe00141a2ac5b17f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The solo2 CLI offers a scriptable `solo2 list` to enumerate connected devices, plus admin subcommands like LED setting and firmware `update`. That gives an agent some programmatic access, but nothing documents reading serial, firmware version, enabled applications or stored credentials as structured output. The runtime probe also shows the older official Python Solo CLI (`solo version`) fails against current python-fido2, and there has been no firmware release since 2022, which weakens confidence in maintained tooling. Missing for 10: documented commands to read serial, firmware version, enabled apps and credential inventory, machine-readable (e.g. JSON) output for fleet auditing, and hands-on corroboration that state-reading works on current toolchains.",
+    "rationale": "The first-party solo2 CLI documents a `solo2 list` command that enumerates connected devices programmatically, and it handles signed firmware updates. Nothing in the evidence shows it reporting serials, firmware versions, enabled applications or stored credentials in a form an agent could audit. The broken solo-python CLI in the runtime probe is the Solo 1 tool, so it does not contradict the solo2 CLI. Missing for 10: documented readout of serial and firmware version, enumeration of enabled applications (FIDO2/OATH/PIV/OpenPGP), listing of stored credentials, machine-readable (e.g. JSON) output for fleet auditing, and hands-on corroboration.",
     "evidenceIds": [
       "solokeys-gh-4",
-      "solokeys-gh-3",
       "solokeys-gh-2",
-      "solokeys-probe-rt-1"
+      "solokeys-gh-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can read a key's state programmatically — serial, firmware version, enabled applications, stored credentials — to audit security posture across a fleet",
+      "citations": [
+        {
+          "evidenceId": "solokeys-gh-4",
+          "quote": "solo2 list                   # list connected devices  (alias: solo2 ls)"
+        },
+        {
+          "evidenceId": "solokeys-gh-2",
+          "quote": "`update` downloads the signed release, **verifies its SHA-256**, and flashes it."
+        }
+      ]
+    },
     "productId": "solokeys",
     "storyId": "agent-key-audit"
   }

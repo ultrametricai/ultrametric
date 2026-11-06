@@ -1,11 +1,11 @@
 {
-  "hash": "a08159049b0d4fe766ac4cd9d8e78ec673dbeedee2e73ed854a132450e7bc546",
+  "hash": "17ce9983045bf9e8092f3649872c42ebecb8f49a5f8b7885a5954d50a64ee25d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Runloop documents running commands inside Devboxes, which it describes as isolated Linux sandboxes. The docs cover command execution at scale, stateful named shells that keep environment and working directory across commands, an interactive PTY for shells and REPLs, and SSH access via `rli`. Package installation is supported through Dockerfile-based blueprints, reusable startup actions, and snapshots that save a populated build cache. Missing for 10: an explicit doc example of installing packages at runtime (e.g. apt/pip inside a running devbox), and independent or hands-on corroboration.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Runloop documents running arbitrary commands inside Devboxes through command execution, stateful named shells, an interactive PTY and SSH. Package installation is only implied: blueprints built from a Dockerfile and reusable startup actions suggest it, but no evidence explicitly shows installing packages (e.g. apt or pip) inside a running sandbox. missing for 10: explicit documentation of package installation inside a devbox (apt/pip/npm), detail on what commands are permitted or restricted, independent or hands-on corroboration.",
     "evidenceIds": [
       "runloop-docs-59",
       "runloop-docs-61",
@@ -14,10 +14,35 @@
       "runloop-docs-67",
       "runloop-docs-2",
       "runloop-docs-14",
-      "runloop-docs-15",
-      "runloop-docs-13",
-      "runloop-probe-1"
+      "runloop-docs-48"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run arbitrary shell commands and install packages inside the sandbox",
+      "citations": [
+        {
+          "evidenceId": "runloop-docs-59",
+          "quote": "Run and execute code at scale"
+        },
+        {
+          "evidenceId": "runloop-docs-61",
+          "quote": "Use stateful named shells to maintain environment and working directory across commands"
+        },
+        {
+          "evidenceId": "runloop-docs-62",
+          "quote": "Open an interactive pseudo-terminal on a Devbox for TUIs, REPLs, and shells that need a real TTY"
+        },
+        {
+          "evidenceId": "runloop-docs-9",
+          "quote": "choose **SSH** to open a secure shell session directly into your devbox"
+        },
+        {
+          "evidenceId": "runloop-docs-14",
+          "quote": "Blueprints allow you to optimize your workflows by specifying these startup actions once, then reuse them across multiple Devboxes."
+        }
+      ]
+    },
     "productId": "runloop",
     "storyId": "shell-and-packages"
   }

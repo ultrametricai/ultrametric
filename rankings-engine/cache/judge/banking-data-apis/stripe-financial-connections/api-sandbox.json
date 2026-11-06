@@ -1,16 +1,31 @@
 {
-  "hash": "db8c14ae075f4e4ca729073966bf905caa3f2a135883087f3123e7fa9b631ab7",
+  "hash": "a2b27a183ef46f4fc02c4aa5356238ced401bf842bfe330befd32f73c5fdba62",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe documents a dedicated Financial Connections testing mode: the auth flow shows only Stripe-managed test institutions, and accounts can be linked without real credentials, so testing never touches real bank data. A community user also reports being sent to the test dashboard, which independently confirms a separate test environment. missing for 10: explicit documentation of test/live key isolation and data separation, detail on available test scenarios (balances, transactions, ownership, failure cases), and agent-specific guidance for driving the sandbox programmatically.",
+    "rationale": "Stripe documents a dedicated testing mode for Financial Connections. In it, the authentication flow shows only Stripe-managed test institutions, and accounts can be linked without real credentials. A hands-on community report also notes being routed to the test dashboard. However, the evidence never explicitly states that test mode is isolated from live production data, and does not show which data types (balances, ownership, transactions, webhooks) can be exercised in the sandbox. Missing for 10: explicit documentation that sandbox data is separated from production, coverage of test data for balances/ownership/transactions refreshes and webhooks, and independent corroboration of agent-driven testing workflows.",
     "evidenceIds": [
       "stripe-financial-connections-docs-15",
       "stripe-financial-connections-docs-26",
       "stripe-financial-connections-comm-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "stripe-financial-connections-docs-15",
+          "quote": "the authentication flow exclusively shows a selection of test institutions managed by Stripe. The client can link accounts from any of these institutions without providing credentials."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-comm-8",
+          "quote": "it redirects to the test dashboard"
+        }
+      ]
+    },
     "productId": "stripe-financial-connections",
     "storyId": "api-sandbox"
   }

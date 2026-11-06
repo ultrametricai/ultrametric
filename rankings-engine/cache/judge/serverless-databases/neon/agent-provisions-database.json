@@ -1,24 +1,53 @@
 {
-  "hash": "cf80df1e9a9c152fb30be99295308c512774de01afe7dca73b9bcb50f94e8d59",
+  "hash": "d65d67ea7aa5dd5b08ccef83491798a1a1beace34e2f2ba6e5c1b9e5d0299a5e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Neon documents every step of the story without the dashboard. The hosted MCP server exposes create project and branch, Prepare/Complete Database Migration, Run SQL and Run SQL Transaction. `neon claim create` and the agent identity REST flow provision a project with no human signed in and write `DATABASE_URL` to `.env`. The Management API is documented for fully automated, programmatic project creation, with an OpenAPI spec and an LLM-oriented index. Probes confirm the CLI runs from npm, the OAuth-gated MCP endpoint is live, and the scoped tool list (including run_sql) is returned. Missing for 10: no hands-on or independent run of the full create → connection string → schema → query flow (probes only reached the auth gate and tool list), and no explicit MCP or CLI connection-string retrieval command is shown beyond the `.env` write.",
+    "rationale": "Neon's own tooling covers the whole agent flow without the dashboard. The hosted MCP server includes project creation, SQL execution and schema-migration tools. `neon claim create` (or the REST claim API) provisions a project with no human signed in and writes DATABASE_URL to .env. The Management API automates project creation programmatically. Probes confirm the MCP endpoint and CLI are live. Missing for 10: independent or hands-on corroboration of a complete end-to-end run (create → connection string → schema → query) by an agent.",
     "evidenceIds": [
       "neon-supp-mcp-tool-surface",
       "neon-supp-agent-claim-flow",
       "neon-docs-47",
+      "neon-docs-39",
       "neon-supp-branching-for-agents",
-      "neon-supp-api-llms-index",
-      "neon-supp-cli-agent-setup",
-      "neon-probe-rt-1",
-      "neon-probe-rt-2",
-      "neon-probe-6",
       "neon-probe-7",
-      "neon-probe-3"
+      "neon-probe-6",
+      "neon-probe-rt-1",
+      "neon-supp-api-llms-index"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, my coding agent can provision a database end to end — create it, fetch the connection string, apply schema, and run queries — through the API, CLI, or MCP without touching the dashboard",
+      "citations": [
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "project/branch lifecycle (create/update/delete project"
+        },
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "schema work (\"Prepare Database Migration\", \"Complete Database Migration\", \"Compare database schema\")"
+        },
+        {
+          "evidenceId": "neon-supp-mcp-tool-surface",
+          "quote": "SQL (\"Run SQL\", \"Run SQL Transaction\""
+        },
+        {
+          "evidenceId": "neon-supp-agent-claim-flow",
+          "quote": "The CLI writes `DATABASE_URL` (and granted service URLs) to `.env` or `.env.local`"
+        },
+        {
+          "evidenceId": "neon-docs-39",
+          "quote": "You need a Neon project and no human is signed in. Provision now."
+        },
+        {
+          "evidenceId": "neon-supp-branching-for-agents",
+          "quote": "Project creation, configuration, and cleanup are fully automated"
+        }
+      ]
+    },
     "productId": "neon",
     "storyId": "agent-provisions-database"
   }

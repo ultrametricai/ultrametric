@@ -1,20 +1,42 @@
 {
-  "hash": "cb8df94d69ac3064b0fb3e1065e2ab8c147f623a120a35c229f18797df285478",
+  "hash": "33ed03aee133333a1631cf6d1c0c7a5d629c5711f2c0f939cb6f5eb2c691ce50",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "PlanetScale's documented database branching gives you isolated development and testing environments separate from production. Postgres branches are 'isolated database deployments' for dev/test (docs-10, docs-32), and Vitess branches the schema like code (docs-9). Agents and scripts can drive this through the CLI, which creates and lists branches and runs non-interactive SQL (docs-41, docs-17); branches can also be restored to a point in time (docs-5), and a community user corroborates branch-per-Git-branch workflows (comm-9). Missing for 10: documented guardrails that keep agents/MCP or service tokens scoped to non-production branches, and clarity on seeding realistic test data into a sandbox branch without copying production data.",
+    "rationale": "PlanetScale's own branching feature provides isolated database deployments for development and testing, separate from production. The CLI lets scripts and agents create branches and run non-interactive SQL, so an agent could work against a non-production branch. However, nothing documents an agent-specific sandbox workflow, and the MCP server is described as working from production Insights data rather than scoped to development branches. missing for 10: explicit documentation of agents or MCP being scoped to non-production branches, guardrails preventing agent access to production data, and independent or hands-on corroboration of agent testing against branches.",
     "evidenceIds": [
       "planetscale-docs-10",
       "planetscale-docs-32",
       "planetscale-docs-9",
       "planetscale-docs-41",
       "planetscale-docs-17",
-      "planetscale-docs-5",
       "planetscale-comm-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "planetscale-docs-10",
+          "quote": "Branches on PlanetScale Postgres are isolated database deployments that provide you with separate environments for development and testing"
+        },
+        {
+          "evidenceId": "planetscale-docs-32",
+          "quote": "You can then create development branches that you can use for development before shipping schema changes to production."
+        },
+        {
+          "evidenceId": "planetscale-docs-41",
+          "quote": "Create, delete and list your Vitess, Neki, and Postgres databases and branches"
+        },
+        {
+          "evidenceId": "planetscale-docs-17",
+          "quote": "Run non-interactive SQL for agents and scripts (`pscale sql`)"
+        }
+      ]
+    },
     "productId": "planetscale",
     "storyId": "api-sandbox"
   }

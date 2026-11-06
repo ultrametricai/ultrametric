@@ -1,19 +1,37 @@
 {
-  "hash": "0b038b195eabfaf43e2c09ea941e88b02caf5f4c1242b54a3ad6e9077c736ea2",
+  "hash": "60c88ab54ff72e2a66a71673d1c301a8da0e84861ee5e71b1408bebd7a3cb1fb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
-    "confidence": "high",
-    "rationale": "The Nitrokey 3 firmware repository states the software is fully open source, written in Rust on the Trussed framework, and dual-licensed Apache 2.0/MIT. A runtime probe confirms public tagged releases (v1.8.3) and a documented firmware-update path. One caveat: a community report says the Nitrokey HSM's internal applet is not open source, so openness is not uniform across the product line. Missing for 10: any evidence of an independent security audit, a way to verify that the flashed binary matches the public source (e.g. reproducible builds), and open firmware for the HSM model.",
+    "confidence": "medium",
+    "rationale": "Nitrokey publishes the Nitrokey 3 firmware as fully open source Rust code, dual-licensed under Apache 2.0 and MIT, with tagged installable releases, so it can be inspected rather than taken on trust. However, a community user reports that the applet in the original Nitrokey HSM is not free or open source, so openness does not extend across the whole product line. The Common Criteria EAL 6+ certification covers the secure element chip, not an independent audit of Nitrokey's firmware. Missing for 10: open firmware across all Nitrokey models (the HSM applet is closed), an independent third-party audit of the firmware, and evidence of reproducible builds or verification that shipped binaries match the source.",
     "evidenceIds": [
       "nitrokey-gh-1",
       "nitrokey-gh-2",
       "nitrokey-gh-3",
       "nitrokey-probe-rt-2",
-      "nitrokey-docs-13",
       "nitrokey-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, the firmware is open source or independently audited, so I don't have to take the vendor's word for what runs on the device",
+      "citations": [
+        {
+          "evidenceId": "nitrokey-gh-1",
+          "quote": "This software is fully open source."
+        },
+        {
+          "evidenceId": "nitrokey-gh-3",
+          "quote": "All software, unless otherwise noted, is dual licensed under Apache 2.0 and MIT license."
+        },
+        {
+          "evidenceId": "nitrokey-probe-rt-2",
+          "quote": "Nitrokey 3 firmware is open source in Rust WITH tagged, installable releases"
+        }
+      ]
+    },
     "productId": "nitrokey",
     "storyId": "open-source-firmware"
   }

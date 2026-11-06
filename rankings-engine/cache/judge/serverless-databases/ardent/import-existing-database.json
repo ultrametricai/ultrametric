@@ -1,19 +1,41 @@
 {
-  "hash": "a42f04cb60332a25be93ab2d51edc7d1cdfbacaebb01823d6a36717a37746947",
+  "hash": "21a069b46db0b1a7d94180ef45a3b58e8849f07cbe856c91a353abf70e577c9d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ardent documents connecting an existing production Postgres (Supabase, RDS, PlanetScale, or self-hosted) through a connector flow. That flow includes a non-invasive preflight check, resumable setup via `ardent connector retry-setup`, and replication status flowing to the control plane, and the docs stress it works 'without touching production.' However, this is a replication/branching onboarding rather than a migration that moves the production database onto Ardent, and the evidence never addresses downtime explicitly. Missing for 10: an explicit migration/import guide for moving a production DB, documented downtime or cutover behavior, handling guidance for large databases, and independent hands-on corroboration of the onboarding path.",
+    "rationale": "Ardent documents a path for connecting an existing production Postgres database (Supabase, RDS, PlanetScale, self-hosted) as a connector. That path includes a preflight check, resumable setup and replicated isolated copies, framed as never touching production, so source downtime is implicitly minimal. However, this connects production as a branching source rather than migrating the production workload onto Ardent. missing for 10: an explicit documented migration/import guide with downtime guarantees, details on initial sync time for large databases, cutover steps, and independent hands-on corroboration.",
     "evidenceIds": [
       "ardent-docs-1",
       "ardent-docs-3",
       "ardent-docs-6",
       "ardent-docs-7",
-      "ardent-docs-23",
-      "ardent-docs-2"
+      "ardent-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can import an existing production database with minimal downtime using a documented migration path",
+      "citations": [
+        {
+          "evidenceId": "ardent-docs-3",
+          "quote": "Any Postgres — Supabase, RDS, PlanetScale, or self-hosted."
+        },
+        {
+          "evidenceId": "ardent-docs-6",
+          "quote": "Preflight checks whether Ardent can branch this database. It creates nothing and stores no credentials — it just tells you what, if anything, to fix."
+        },
+        {
+          "evidenceId": "ardent-docs-7",
+          "quote": "If it's interrupted, resume with: ardent connector retry-setup <name>"
+        },
+        {
+          "evidenceId": "ardent-docs-1",
+          "quote": "Ardent creates instant, isolated copies of your production Postgres database — in seconds, right from your terminal."
+        }
+      ]
+    },
     "productId": "ardent",
     "storyId": "import-existing-database"
   }

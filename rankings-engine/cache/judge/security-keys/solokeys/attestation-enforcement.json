@@ -1,16 +1,30 @@
 {
-  "hash": "320d38be62dbc87014fc104cbcd445badf2fa8a101f94d96c678ef36ab24ede7",
+  "hash": "b73983f513c691fe4a468f79496658206bf90b63061287c38962e0891aeba15f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "The docs say Solo builds with a default attestation key and that you can generate, sign and program your own attestation key pair across many devices. That gives a relying party something to verify at enrollment, and a custom key could be used to recognize only approved devices. However, these docs come from the customization and building pages tied to the STM32L432 (Solo 1) firmware path, not clearly to Solo 2, and nothing describes how a verifier would check the attestation. Missing for 10: Solo 2-specific attestation certificate/AAGUID documentation, FIDO Metadata Service listing or published root certificates for relying-party verification, guidance on enforcing approved models at registration, and independent or hands-on corroboration.",
+    "rationale": "The only evidence is that Solo firmware builds with a default attestation key, and that users can generate, sign and program their own attestation key pair, even across many devices. That implies the key emits attestation a relying party could check. However, these docs come from the customization and building pages, which reference the STM32L432 (Solo 1) build, so applicability to Solo 2 is unclear. Nothing documents how a relying party verifies genuineness or enforces approved models at registration. Missing for 10: Solo 2-specific attestation certificate chain/root CA publication, AAGUID or FIDO Metadata Service listing for model allowlisting, documented registration-time verification flow, independent corroboration.",
     "evidenceIds": [
       "solokeys-docs-5",
-      "solokeys-docs-14",
-      "solokeys-gh-1"
+      "solokeys-docs-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, I can verify device attestation at registration to enforce that only genuine, approved key models are enrolled",
+      "citations": [
+        {
+          "evidenceId": "solokeys-docs-5",
+          "quote": "If you don't want to use the default attestation key that Solo builds with, you can create your own and program it."
+        },
+        {
+          "evidenceId": "solokeys-docs-14",
+          "quote": "Now to generate & sign the attestation key pair that will go on your device, or maybe 100,000 devices :)"
+        }
+      ]
+    },
     "productId": "solokeys",
     "storyId": "attestation-enforcement"
   }

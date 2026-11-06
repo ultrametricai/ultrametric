@@ -1,19 +1,36 @@
 {
-  "hash": "9e96feff9f29853fad8b5a3518ac9e7d6daf1ba51f1b22c8bb3ff99814f47470",
+  "hash": "ff2be12bcb476ee6fbfe8b46b66cc7bda995377e9cfc248106d78bafdd2087f2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Token2's own fido2-manage tool manages resident keys (passkeys) on FIDO2.1 devices, including listing them with user handles, deleting them, and editing metadata. Its SSH support lists and rehydrates resident keys. Together these strongly indicate discoverable-credential storage, though the tool is manufacturer-agnostic rather than a direct product spec for Token2 keys. Missing for 10: explicit Token2 key spec stating discoverable-credential support and slot capacity, documentation of usernameless WebAuthn sign-in flows, independent hands-on corroboration.",
+    "rationale": "Token2's own fido2-manage tool and Companion App document managing passkeys (resident keys) on FIDO2.1 devices, including listing them with user handles. That implies the keys store discoverable credentials. However, the tool is described as manufacturer-agnostic, and nothing explicitly documents usernameless WebAuthn sign-in with Token2 keys. Missing for 10: explicit statement that Token2 keys store discoverable credentials, resident-key storage capacity, documented usernameless sign-in flow, independent or hands-on corroboration.",
     "evidenceIds": [
       "token2-gh-1",
       "token2-gh-2",
       "token2-docs-8",
-      "token2-gh-4",
-      "token2-docs-7",
-      "token2-docs-16"
+      "token2-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, the key stores discoverable FIDO2 credentials (resident keys / device-bound passkeys) so users can sign in to WebAuthn services without typing a username",
+      "citations": [
+        {
+          "evidenceId": "token2-gh-1",
+          "quote": "Resident credentials (passkeys): list (with user handle), delete, edit metadata"
+        },
+        {
+          "evidenceId": "token2-docs-8",
+          "quote": "fido2-manage is an open-source tool allowing to manage FIDO2.1 devices over USB or NFC, including Passkey (resident keys) management."
+        },
+        {
+          "evidenceId": "token2-docs-7",
+          "quote": "It provides a simple interface to view device information, manage passkeys, change PINs, and perform factory resets."
+        }
+      ]
+    },
     "productId": "token2",
     "storyId": "fido2-resident-passkeys"
   }

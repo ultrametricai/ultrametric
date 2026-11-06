@@ -1,16 +1,36 @@
 {
-  "hash": "fc8d908a05e42b7a84cbcb8d0bcab5011e3e4f4b6b9e5b326ef78b98bf3ca152",
+  "hash": "3838ada00986bda9c90d556e16e99904f607774445dfed9ac483288c5748b5f9",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "sandbox0",
-    "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Sandbox0 documents webhooks that fire on process events, sandbox lifecycle changes, and file modifications. It also documents a configurable auto_resume behavior where inbound access automatically wakes a paused sandbox. Both are first-party, event-driven automatic actions, but the webhooks only notify an external consumer, which must then perform the action. There is no evidence of a user-defined rule engine that maps conditions to in-product actions. Missing for 10: user-definable event→action rules or conditions, event filtering, in-product action execution beyond callbacks, detailed webhook configuration docs, independent corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Sandbox0 has a few built-in, configurable event-triggered behaviors: auto_resume wakes a paused sandbox on inbound access, and soft/hard TTL expiry automatically triggers a pause or deletion. Webhooks emit process, lifecycle and file-modification events, but the user must handle them externally, so they are only a building block toward rules. There is no documented general rules engine for user-defined event-to-action logic. Missing for 10: user-definable rule/condition syntax, arbitrary action targets, event filtering or conditional logic, independent or hands-on corroboration.",
     "evidenceIds": [
-      "sandbox0-docs-18",
-      "sandbox0-docs-4"
-    ]
+      "sandbox0-docs-4",
+      "sandbox0-docs-38",
+      "sandbox0-docs-18"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "sandbox0-docs-4",
+          "quote": "With auto_resume enabled, supported inbound access can wake a paused sandbox"
+        },
+        {
+          "evidenceId": "sandbox0-docs-38",
+          "quote": "ttl: Soft runtime timeout. Expiry requests the same planned pause transaction. hard_ttl: Hard sandbox timeout. Expiry durably requests deletion of identity and RootFS state."
+        },
+        {
+          "evidenceId": "sandbox0-docs-18",
+          "quote": "Webhooks allow you to react to process events, sandbox lifecycle changes, and file modifications."
+        }
+      ]
+    },
+    "productId": "sandbox0",
+    "storyId": "automation-rules-engine"
   }
 }

@@ -1,19 +1,36 @@
 {
-  "hash": "8cfc8d77df946eb2b60687f7144a167f146c21cdb58ff0d7ff07a6ac5544a605",
+  "hash": "a4617fcfe0cb3b5c075a7d0ab6bfc228e289f0ae8a5872c4d6e3ca8bd3b0341c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Numeral is fully API-driven and so inherently headless: it uses API keys, including TEST keys for non-production use, REST endpoints for products, calculations, transactions and refunds, an authenticated ping health-check endpoint, and an MCP HTTPS endpoint that agents can call with a secret key. All of this supports scripted, unattended automation. However, there is no CLI and no CI-specific guidance, so CI use is only implied by the API design. Missing for 10: an official CLI or SDK for headless runs, documented CI/CD usage patterns such as sandbox test fixtures in pipelines, a published OpenAPI spec (the probe returned 404), and independent hands-on corroboration.",
+    "rationale": "Numeral is an API-first tax service. It documents headless programmatic use: a TEST API key, REST endpoints for products, calculations and transactions, and an authenticated health-check endpoint that automation could poll. It also ships an HTTPS MCP server that agents call with a secret API key. However, nothing documents a CLI, CI pipeline integration, or a CI-oriented sandbox workflow, and no OpenAPI spec was found by probe. missing for 10: official CLI or CI integration docs, CI/test-mode automation guidance, published OpenAPI spec, independent hands-on corroboration.",
     "evidenceIds": [
       "numeral-docs-19",
       "numeral-docs-22",
-      "numeral-docs-2",
       "numeral-docs-30",
-      "numeral-docs-7",
       "numeral-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "numeral-docs-19",
+          "quote": "1. Get a TEST API key from your Numeral Dashboard"
+        },
+        {
+          "evidenceId": "numeral-docs-22",
+          "quote": "Authenticated health check endpoint that returns status, environment, timestamp, and API version."
+        },
+        {
+          "evidenceId": "numeral-docs-30",
+          "quote": "any MCP-capable client (Claude Code, Claude Desktop, Cursor, or your own agent built on an LLM SDK) can connect with your existing Numeral secret API key"
+        }
+      ]
+    },
     "productId": "numeral",
     "storyId": "agentic-headless"
   }

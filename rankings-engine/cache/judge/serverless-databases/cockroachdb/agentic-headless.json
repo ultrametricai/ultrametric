@@ -1,20 +1,37 @@
 {
-  "hash": "ddcd23fb77ab884687abb46aa15d2042c17d1c3b050df87e12808ccfd85bfd6a",
+  "hash": "4ef2bdaf3a76dcac1549d78166702fce544fe7a9e0b4c19a764acd3c417f74ff",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "CockroachDB has the building blocks for automation. `cockroach start-single-node` is documented for quick SQL testing and app development, `cockroach demo` spins up temporary in-memory clusters, and the `ccloud` CLI creates and manages Cloud clusters. Standard Postgres drivers work over the wire protocol, and the MCP server accepts API key auth. However, the evidence never explicitly documents CI usage or non-interactive operation: `demo` opens an interactive shell and `ccloud quickstart` uses interactive login. Missing for 10: explicit CI/headless setup docs (e.g. container images, non-interactive flags, service-account auth for ccloud), and hands-on or independent corroboration of CI use.",
+    "rationale": "CockroachDB ships its own CLI tooling: `cockroach demo` starts temporary in-memory clusters, single-node mode is documented for quick SQL testing, and `ccloud` creates and manages cloud clusters from the command line. These are plausible building blocks for CI automation, but the evidence never documents headless or non-interactive CI usage, and both `cockroach demo` and `ccloud quickstart` are described as interactive. missing for 10: explicit headless/non-interactive or CI usage docs, non-interactive auth for ccloud in pipelines, CI integration examples, independent hands-on corroboration.",
     "evidenceIds": [
-      "cockroachdb-docs-2",
       "cockroachdb-docs-1",
+      "cockroachdb-docs-2",
       "cockroachdb-docs-10",
       "cockroachdb-docs-17",
-      "cockroachdb-gh-1",
-      "cockroachdb-docs-28",
       "cockroachdb-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "cockroachdb-docs-2",
+          "quote": "A single-node cluster is appropriate for quick SQL testing or app development."
+        },
+        {
+          "evidenceId": "cockroachdb-docs-1",
+          "quote": "starts a temporary, in-memory CockroachDB cluster of one or more nodes"
+        },
+        {
+          "evidenceId": "cockroachdb-docs-10",
+          "quote": "The `ccloud` tool is a command-line interface (CLI) tool that allows you to create, manage, and connect to CockroachDB Cloud clusters."
+        }
+      ]
+    },
     "productId": "cockroachdb",
     "storyId": "agentic-headless"
   }

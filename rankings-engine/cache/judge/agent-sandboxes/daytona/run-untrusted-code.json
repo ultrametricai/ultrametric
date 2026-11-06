@@ -1,23 +1,47 @@
 {
-  "hash": "765914c15690eea7aecc352f8342caf0e9d9ac66de0b733136ddcb0a36218cec",
+  "hash": "8cb0d6ec478f4f3e73484b06db9d68d791184c5a5d3a1870714c1319039254b7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Daytona is positioned for running AI-generated code (probe-1) and documents the core safeguards. Each sandbox is isolated with a dedicated kernel, filesystem, network stack and allocated resources (docs-28), with an optional dedicated-VM mode (docs-15). A per-sandbox firewall blocks untrusted code from exfiltrating data or contacting arbitrary hosts, and it can be configured at creation or while running (docs-26, docs-19, docs-8). Code runs inside these sandboxes through stateless or stateful execution APIs (docs-25, docs-6, docs-33). Missing for 10: independent or hands-on corroboration that the isolation actually contains hostile code, such as security audits or escape testing.",
+    "rationale": "Daytona's own docs describe sandboxes as isolated runtime environments for running code. Each sandbox gets a dedicated kernel, filesystem, network stack and allocated resources, VM-backed sandboxes are available, and a per-sandbox firewall explicitly prevents untrusted code from exfiltrating data; the product positions itself as secure infrastructure for running AI-generated code. Missing for 10: independent or hands-on corroboration that the isolation holds, and deeper documentation of the isolation technology and threat model (e.g., escape protections).",
     "evidenceIds": [
-      "daytona-probe-1",
+      "daytona-docs-1",
       "daytona-docs-28",
       "daytona-docs-15",
       "daytona-docs-26",
       "daytona-docs-19",
-      "daytona-docs-8",
-      "daytona-docs-25",
-      "daytona-docs-6",
-      "daytona-docs-33",
-      "daytona-docs-1"
+      "daytona-probe-1",
+      "daytona-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can execute untrusted, AI-generated code without risking my own infrastructure",
+      "citations": [
+        {
+          "evidenceId": "daytona-docs-28",
+          "quote": "Each sandbox runs in isolation, giving it a dedicated kernel, filesystem, network stack, and allocated vCPU, RAM, and disk."
+        },
+        {
+          "evidenceId": "daytona-docs-26",
+          "quote": "Each sandbox runs behind a firewall that restricts which external IP addresses and domains it can reach, preventing untrusted code from exfiltrating data or contacting arbitrary hosts."
+        },
+        {
+          "evidenceId": "daytona-docs-1",
+          "quote": "Sandboxes are isolated runtime environments you can manage programmatically to run code."
+        },
+        {
+          "evidenceId": "daytona-probe-1",
+          "quote": "Daytona is a secure and elastic infrastructure for running AI-generated code."
+        },
+        {
+          "evidenceId": "daytona-docs-15",
+          "quote": "Daytona also provides VM sandboxes with a dedicated Linux VM or Windows operating system"
+        }
+      ]
+    },
     "productId": "daytona",
     "storyId": "run-untrusted-code"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "e4dab8127be2bae53c1dcadc24fefbb9043ea37cbc1d062f5cfd25c3462701f9",
+  "hash": "35e10ba3a6598aaf6bc1b6515f2610f54e8e2efad11bee4ab2bc96029a368100",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Stripe's webhook docs show a first-party refresh mechanism: separate events fire after balance, ownership and transaction refreshes complete, which implies asynchronous refresh operations per data type. However, no cited doc shows an API call that triggers a refresh on demand, and a community comment mentions a limit of 'only daily pulls,' which leaves the freshness ceiling unclear. missing for 10: explicit documentation of an on-demand refresh API endpoint, documented refresh semantics (rate limits, frequency caps, status lifecycle), hands-on corroboration that on-demand refresh works.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Stripe's own webhook docs list events sent after a balance, ownership, or transaction refresh completes. That shows refreshes exist and finish asynchronously with a completion signal. The pack never shows the API call that triggers an on-demand refresh, and one community report describes a limit to only daily pulls, which leaves on-demand refresh frequency uncertain. Missing for 10: an explicitly documented API endpoint or parameter to trigger an on-demand refresh, documented refresh semantics (rate limits, statuses, latency), and hands-on corroboration that on-demand refresh works.",
     "evidenceIds": [
       "stripe-financial-connections-docs-13",
       "stripe-financial-connections-docs-24",
       "stripe-financial-connections-docs-25",
       "stripe-financial-connections-comm-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can trigger an on-demand refresh of a connected account's data through the API when my use case needs now-fresh data, with the refresh semantics documented",
+      "citations": [
+        {
+          "evidenceId": "stripe-financial-connections-docs-13",
+          "quote": "Sent after a balance refresh is complete."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-24",
+          "quote": "Sent after an ownership refresh is complete."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-25",
+          "quote": "Sent after a transaction refresh is complete."
+        }
+      ]
+    },
     "productId": "stripe-financial-connections",
     "storyId": "on-demand-refresh"
   }

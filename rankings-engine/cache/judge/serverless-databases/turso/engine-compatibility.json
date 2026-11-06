@@ -1,21 +1,39 @@
 {
-  "hash": "de5659a425722e43e93f4942768cd3afa75a6a50e59291c1205cb268b7015f5c",
+  "hash": "d96dc1fac11b98b8e08bbede8236a34c1ddd95f65a10bb9fa3bdd959f4d9c8f2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "disputed",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Turso's docs claim it is 'fully backwards compatible with SQLite' and can open existing SQLite files, and libSQL is an SQLite fork. Hands-on community reports concretely contradict the 'not a lookalike subset' claim. They cite missing savepoints, window functions and ATTACH DATABASE, and say PRAGMA journal_mode=WAL does not allow reads from another process. They also report that file-format compatibility breaks once Turso extensions are used, so the SQLite CLI, Litestream and recovery tools stop working. missing for 10: independently verified full SQLite dialect coverage (savepoints, window functions, ATTACH), WAL multi-process behavior parity, and file-format compatibility when Turso-specific features are used.",
+    "rationale": "Turso's docs claim it is \"Fully backwards compatible with SQLite\" and that local databases are \"fully SQLite-compatible — they open existing SQLite files\". libSQL is described as a fork of SQLite. Hands-on community reports concretely contradict the \"fully\" claim: one says savepoints, window functions and ATTACH DATABASE are missing, another says PRAGMA journal_mode=WAL cross-process reads fail with an exclusive lock, and a third says file-format compatibility breaks once Turso extensions are used. Missing for 10: verified parity with SQLite features (savepoints, window functions, ATTACH, WAL multi-process behavior), documentation of SQLite extension loading, and independent confirmation that existing SQLite code runs unmodified.",
     "evidenceIds": [
       "turso-docs-24",
       "turso-docs-30",
       "turso-docs-13",
       "turso-gh-1",
-      "turso-comm-10",
+      "turso-comm-9",
       "turso-comm-4",
-      "turso-comm-8",
-      "turso-comm-9"
+      "turso-comm-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I get real engine compatibility — the Postgres, MySQL, or SQLite dialect and extensions my existing code expects — not a lookalike subset",
+      "citations": [
+        {
+          "evidenceId": "turso-docs-24",
+          "quote": "Fully backwards compatible with SQLite, but built for the next generation"
+        },
+        {
+          "evidenceId": "turso-docs-30",
+          "quote": "They are fully SQLite-compatible — they open existing SQLite files — and run entirely in your process, no server needed"
+        },
+        {
+          "evidenceId": "turso-gh-1",
+          "quote": "libSQL is an open source, open contribution fork of SQLite, created and maintained by Turso."
+        }
+      ]
+    },
     "productId": "turso",
     "storyId": "engine-compatibility"
   }

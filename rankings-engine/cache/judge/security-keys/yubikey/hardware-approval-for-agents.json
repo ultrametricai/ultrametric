@@ -1,20 +1,35 @@
 {
-  "hash": "91b00fa011800a8cb80e7a8158257aa131149fff3a955f64ef3141556054c05c",
+  "hash": "20f94f98bada017e4fdb51096a1b4d5fefe1bdf569125ce5cff7e97abd9780aa",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico documents that FIDO2 operations require user presence, meaning a physical touch, for cryptographic operations. A community user confirms the value of touch-to-sign: it cannot be triggered remotely. Yubico also ships SDKs such as python-fido2 and desktop/mobile libraries that could wire this touch into custom approval flows. Nothing in the pack shows a ready-made way to gate agent-initiated or automated actions, so each integrator must build that themselves. Missing for 10: documented agent/automation approval workflows, any first-party integration with AI agent tooling (no MCP or llms.txt), and hands-on evidence of touch-gating used for agent actions.",
+    "rationale": "YubiKey's own FIDO2 implementation requires user presence (a physical touch) for cryptographic operations, including FIDO2-backed SSH keys. Any automated action routed through those keys therefore cannot complete without a human touch, and a community comment confirms the touch-to-sign model resists remote abuse. Nothing documents framing or configuring this as an approval gate for agent-initiated or automated actions, so applying it to agent workflows depends on integrating through signing or SSH. missing for 10: documented agent or automation approval workflows, per-action policy for requiring touch on sensitive operations, independent hands-on corroboration of use as an agent approval step.",
     "evidenceIds": [
       "yubikey-docs-6",
-      "yubikey-comm-10",
-      "yubikey-docs-2",
-      "yubikey-docs-13",
-      "yubikey-probe-rt-3",
-      "yubikey-docs-3",
-      "yubikey-probe-rt-4"
+      "yubikey-docs-24",
+      "yubikey-comm-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can require a physical key touch as the human-approval step for sensitive automated or agent-initiated actions",
+      "citations": [
+        {
+          "evidenceId": "yubikey-docs-6",
+          "quote": "FIDO2 also requires user presence (a touch on your YubiKey) for cryptographic operations, and can optionally enforce user verification (PIN entry)."
+        },
+        {
+          "evidenceId": "yubikey-docs-24",
+          "quote": "This guide shows how to generate and use SSH keys directly on your FIDO2 security key with OpenSSH."
+        },
+        {
+          "evidenceId": "yubikey-comm-10",
+          "quote": "The whole point of this touch to sign is that it can't be hacked remotely"
+        }
+      ]
+    },
     "productId": "yubikey",
     "storyId": "hardware-approval-for-agents"
   }

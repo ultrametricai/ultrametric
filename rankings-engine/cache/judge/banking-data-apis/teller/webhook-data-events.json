@@ -1,15 +1,30 @@
 {
-  "hash": "e5c9d053135fe7a0f2ec9b74c78f10e20481b0b9ce9bfa06c2f16721b4f0df33",
+  "hash": "931a819831814487757bbf3a458de7dd728526839228051fae5bf0d6299e65c3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Teller documents registrable outbound webhooks: you configure a URL in the Teller Dashboard, and Teller sends events when it detects changes in user enrollments or their financial data. That covers the core push-instead-of-poll need, and enrollment changes roughly map to connection state. However, the evidence never mentions payload signing or names specific transaction or balance event types. missing for 10: evidence that webhooks are signed and verifiable, an enumerated event catalog (new transactions, balance updates, connection state changes), independent or hands-on corroboration of delivery.",
+    "rationale": "Teller documents registrable outbound webhooks: you configure a URL in the Teller Dashboard, and Teller calls it when changes are detected in user enrollments or their financial data. That covers the core push model and plausibly connection-state and data changes. However, the evidence shows no signature verification and no enumerated event types for new transactions or balance updates. Missing for 10: documented webhook signing/verification, explicit event types for new transactions, balance updates and connection state changes, and independent or hands-on corroboration.",
     "evidenceIds": [
       "teller-docs-7",
       "teller-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, data changes arrive as signed webhooks — new transactions, balance updates, connection state changes — so my system stays current without polling",
+      "citations": [
+        {
+          "evidenceId": "teller-docs-7",
+          "quote": "To register a new webhook, you need to have a URL in your app that Teller can call. You can configure a new webhook from the Teller Dashboard"
+        },
+        {
+          "evidenceId": "teller-docs-17",
+          "quote": "Teller sends webhook events when specific conditions or changes are detected in user enrollments or their financial data."
+        }
+      ]
+    },
     "productId": "teller",
     "storyId": "webhook-data-events"
   }

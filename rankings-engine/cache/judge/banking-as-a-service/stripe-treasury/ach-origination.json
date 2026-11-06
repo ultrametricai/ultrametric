@@ -1,18 +1,41 @@
 {
-  "hash": "8ac9f0693d80ec149bb0f324138fc2624615f0435824f92e821f865341e6bd74",
+  "hash": "d3dbe6c6814565c4f21819900c9439e209e51a366749107e3c99b72ded86ee91",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Treasury documents API-driven money movement as first-class objects: OutboundPayment for push transfers, inbound transfers for pulls, and ReceivedDebit objects for third-party debits. Every movement creates a ledger Transaction with a v2.money_management.transaction.created webhook, and returns appear among the platform-owned controls. However, none of the evidence names ACH, and the unhappy paths are barely modeled. Missing for 10: explicit ACH origination of credits and debits, same-day ACH windows, NOCs and reversals as first-class objects, return-specific objects and webhook events, independent hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Treasury documents API money-movement objects: OutboundPayment push transfers, ReceivedDebit objects for authorized third-party debits, and inbound transfers. It also mentions returns among platform controls and emits transaction-created webhooks. None of the evidence names ACH rails, same-day windows, NOCs, or reversals, so the story's specifics are largely unevidenced. Missing for 10: explicit ACH credit/debit origination docs, same-day ACH windows, returns/NOCs/reversals as first-class API objects, specific webhook events for those unhappy paths, and hands-on corroboration.",
     "evidenceIds": [
       "stripe-treasury-docs-10",
       "stripe-treasury-docs-18",
+      "stripe-treasury-docs-22",
       "stripe-treasury-docs-19",
-      "stripe-treasury-docs-20",
-      "stripe-treasury-docs-22"
+      "stripe-treasury-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can originate ACH through the API — credits and debits, same-day windows, and the unhappy paths (returns, NOCs, reversals) modeled as first-class objects with webhooks",
+      "citations": [
+        {
+          "evidenceId": "stripe-treasury-docs-10",
+          "quote": "OutboundPayment objects represent push-based transfers from: A platform’s financial accounts to a financial account owned by connected accounts."
+        },
+        {
+          "evidenceId": "stripe-treasury-docs-18",
+          "quote": "Any transaction initiated after this authorization generates a ReceivedDebit object"
+        },
+        {
+          "evidenceId": "stripe-treasury-docs-22",
+          "quote": "Build and operate controls for account onboarding, bank account linking, inbound transfers, outbound money movement, received credits, returns, negative balances, and financial account feature changes."
+        },
+        {
+          "evidenceId": "stripe-treasury-docs-20",
+          "quote": "v2.money_management.transaction.created | A flow creates a transaction on a financial account."
+        }
+      ]
+    },
     "productId": "stripe-treasury",
     "storyId": "ach-origination"
   }

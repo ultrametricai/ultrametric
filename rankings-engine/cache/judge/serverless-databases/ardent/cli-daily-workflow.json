@@ -1,21 +1,46 @@
 {
-  "hash": "84d583498ca09a4d01ab4ef58ed2fd3c8c4046edd0a0c5d8ebd280c5a2ca7dd3",
+  "hash": "793c4c29be61e1e04ff3b1fef7669116631fed6544c9a0d9a9b6ed079e459150",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The official CLI documents the core terminal loop. `ardent branch create` makes databases. `--print-url` and `--url-type` (direct, pooled or prisma) give you connection URLs. `ardent branch info --format json` lets you inspect them. Token auth needs no login step, and the CLI remembers your project, connector and branch context, so the dashboard isn't required. However, no dedicated shell or psql subcommand is evidenced: shelling in is only implied by feeding the printed URL to an external client. missing for 10: a documented interactive shell/SQL-console command, a full CLI command reference covering list/delete/connect in depth, independent hands-on corroboration of the CLI workflow.",
+    "rationale": "Ardent ships an official CLI that works from the terminal. It covers creating branches (`ardent branch create`), connecting by printing the connection URL in direct, pooled or prisma form, and inspecting branches (`ardent branch info --format json`), plus connector setup and resume commands. No CLI command is documented for shelling into a database. Missing for 10: a documented shell/psql-into-branch command, evidence the full daily loop runs without the dashboard, and independent hands-on corroboration.",
     "evidenceIds": [
+      "ardent-probe-3",
       "ardent-docs-1",
       "ardent-docs-8",
-      "ardent-docs-9",
-      "ardent-docs-10",
       "ardent-docs-12",
       "ardent-docs-7",
-      "ardent-docs-19",
-      "ardent-probe-3"
+      "ardent-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the official CLI covers my daily loop — create, connect, shell into, and inspect databases — without opening the dashboard",
+      "citations": [
+        {
+          "evidenceId": "ardent-probe-3",
+          "quote": "official CLI documented at https://docs.tryardent.com/cli/overview"
+        },
+        {
+          "evidenceId": "ardent-docs-8",
+          "quote": "ardent branch create pr-123 --print-url    # prints only the connection URL"
+        },
+        {
+          "evidenceId": "ardent-docs-8",
+          "quote": "ardent branch info my-feature --format json # prints a stable JSON object"
+        },
+        {
+          "evidenceId": "ardent-docs-12",
+          "quote": "--url-type <type> | Which URL to print: direct (default), pooled, or prisma"
+        },
+        {
+          "evidenceId": "ardent-docs-1",
+          "quote": "Ardent creates instant, isolated copies of your production Postgres database — in seconds, right from your terminal."
+        }
+      ]
+    },
     "productId": "ardent",
     "storyId": "cli-daily-workflow"
   }

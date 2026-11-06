@@ -1,21 +1,43 @@
 {
-  "hash": "02acebe35cfcce475f3ec415b496eedf164620e92ab6e8554acdef9202c34953",
+  "hash": "902ff9821ed76acd9182202aca7dca27f157030891c1bc9613c1e5de7c8f67d0",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "galileo",
-    "storyId": "trace-llm-calls",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Galileo's docs show it captures every session, trace, and span once instrumented. It offers a quickstart to log a first trace with OpenAI, Anthropic, Gemini or Azure from Python or TypeScript, a `@log` decorator in the Python SDK, and OpenTelemetry-based tracing. Cost alerts on logs imply token and cost data is recorded, but no evidence explicitly lists inputs, outputs, latency, or token counts as captured span fields. missing for 10: explicit documentation of per-call input/output, latency and token-usage fields, independent or hands-on corroboration.",
+    "rationale": "Galileo's own docs show it captures LLM-call traces. Instrumentation records every session, trace and span, the Python SDK offers an `@log` decorator for spans, and OpenTelemetry-based distributed tracing joins spans into a single trace, with a quickstart for logging a first trace. However, the pack never says which fields a trace records; only a Cost alert metric hints at usage data. Missing for 10: explicit documentation that traces capture inputs and outputs, latency/duration per call, and token usage counts, plus independent or hands-on corroboration.",
     "evidenceIds": [
       "galileo-docs-6",
-      "galileo-docs-30",
-      "galileo-docs-43",
       "galileo-gh-1",
       "galileo-docs-7",
-      "galileo-docs-26",
+      "galileo-docs-30",
+      "galileo-docs-43",
       "galileo-docs-49"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can capture traces of my LLM calls with inputs, outputs, latency, and token usage",
+      "citations": [
+        {
+          "evidenceId": "galileo-docs-6",
+          "quote": "Once instrumented, Galileo captures every session, trace, and span, producing a structured stream of real-time data."
+        },
+        {
+          "evidenceId": "galileo-gh-1",
+          "quote": "You can also use the `@log` decorator to log spans."
+        },
+        {
+          "evidenceId": "galileo-docs-7",
+          "quote": "Galileo joins all spans that share a trace ID into a single trace."
+        },
+        {
+          "evidenceId": "galileo-docs-30",
+          "quote": "Learn how to log your first trace with Galileo"
+        }
+      ]
+    },
+    "productId": "galileo",
+    "storyId": "trace-llm-calls"
   }
 }

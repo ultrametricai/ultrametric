@@ -1,18 +1,40 @@
 {
-  "hash": "784cfe5a3acf9bd62b195fa99d7d5cb7dcf69b7dd194c89e782b7cad6cd20efa",
+  "hash": "6155743b81265e36301bd328acab205b3e1382a46731f4a8e78dbdc89df27d14",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "PlanetScale documents an official hosted MCP server that gives agents access to database information and tools. It also offers `pscale sql` for non-interactive agent SQL and service-token authentication for headless agents, so agents can do database work. However, nothing in the evidence shows the tools are scoped to separate read-only from destructive operations, which is the core of the safe-delegation story. Missing for 10: documented read-only vs. destructive tool separation, permission scoping of MCP/service-token tools for SQL and schema changes, and independent hands-on corroboration.",
+    "rationale": "PlanetScale documents its own agent-facing paths for database work: a hosted MCP server that connects agents to databases with tools, and a `pscale sql` command for non-interactive SQL by agents. Service tokens can authenticate the MCP server for headless agents. However, nothing in the evidence shows tools scoped or labeled to separate read-only from destructive actions, so the safety half of the story is unevidenced. Missing for 10: documented read-only vs destructive tool separation, permission scoping of MCP or service-token access for SQL/schema operations, schema-change tooling exposed to agents, independent or hands-on corroboration.",
     "evidenceIds": [
+      "planetscale-docs-17",
       "planetscale-docs-19",
       "planetscale-docs-45",
-      "planetscale-docs-44",
-      "planetscale-docs-17",
-      "planetscale-probe-4"
+      "planetscale-docs-44"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can run SQL and schema operations through scoped tools that distinguish read-only from destructive actions, so I can safely delegate database work",
+      "citations": [
+        {
+          "evidenceId": "planetscale-docs-17",
+          "quote": "Run non-interactive SQL for agents and scripts (`pscale sql`)"
+        },
+        {
+          "evidenceId": "planetscale-docs-19",
+          "quote": "Connect Claude, Cursor, Notion, and other MCP-compatible tools to your PlanetScale databases and Insights"
+        },
+        {
+          "evidenceId": "planetscale-docs-45",
+          "quote": "The hosted MCP server provides access to database information and tools"
+        },
+        {
+          "evidenceId": "planetscale-docs-44",
+          "quote": "Use a PlanetScale service token to authenticate the hosted MCP server in CI, headless agents, and clients that send a custom HTTP header"
+        }
+      ]
+    },
     "productId": "planetscale",
     "storyId": "agent-safe-sql-operations"
   }

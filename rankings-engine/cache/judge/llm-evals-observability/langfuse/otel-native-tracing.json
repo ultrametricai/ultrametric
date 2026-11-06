@@ -1,17 +1,32 @@
 {
-  "hash": "64aa35b1acbe0b1469ad445ef365d1d75b461dbb0c4f1d8e86718031ed7097db",
+  "hash": "90283ad3bbb36ed78c4574533e71542d73a0b7ae45bf1a4fd059b95f31fa51cc",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "langfuse",
-    "storyId": "otel-native-tracing",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Langfuse's own docs say it can receive traces on a dedicated OTLP endpoint (`/api/public/otel`) and list OpenTelemetry as a first-class ingestion path alongside its native SDKs, so developers can instrument with standard OTel instead of a proprietary format. One community comment preferring Phoenix's OpenTelemetry approach reflects a preference, not a documented failure, so it does not create a dispute. Missing for 10: evidence of exporting or forwarding traces out of Langfuse over OTLP, detail on supported OTel semantic conventions and protocols, and independent hands-on corroboration of OTLP ingestion.",
+    "rationale": "Langfuse's own docs show it can ingest traces over OpenTelemetry: it exposes a native OTLP endpoint at /api/public/otel and lists OpenTelemetry as a trace-capture path alongside its proprietary SDKs. That covers the 'receive' half of the story. Nothing in the pack shows Langfuse sending or exporting traces out over OTLP, and one community comment preferring a competitor's OpenTelemetry approach is not concrete counter-evidence. missing for 10: documented outbound OTLP trace export/forwarding, details on OTLP protocol/transport support (gRPC vs HTTP, semantic-convention mapping), independent hands-on corroboration of OTLP ingestion.",
     "evidenceIds": [
       "langfuse-docs-18",
       "langfuse-docs-35",
       "langfuse-docs-5"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can send and receive traces over OpenTelemetry (OTLP) instead of a proprietary format",
+      "citations": [
+        {
+          "evidenceId": "langfuse-docs-18",
+          "quote": "Langfuse can receive traces on the `/api/public/otel` (OTLP) endpoint."
+        },
+        {
+          "evidenceId": "langfuse-docs-5",
+          "quote": "Capture traces via our native SDKs for Python/JS, 100+ library/framework integrations, OpenTelemetry, or via an LLM Gateway such as LiteLLM"
+        }
+      ]
+    },
+    "productId": "langfuse",
+    "storyId": "otel-native-tracing"
   }
 }

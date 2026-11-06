@@ -1,20 +1,36 @@
 {
-  "hash": "cb27b4e182415cca0524261774804a12581397067dc0917d57addf9254272564",
+  "hash": "eb12ae0c3b68a0daa6801c99ef40d1643f31dd8d407e27f6074573179a2ffb8f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe documents that one Financial Connections integration covers ACH account verification, balances, ownership details and transactions (docs-1, docs-2/3/4). Its use cases pair bank-account collection with data access in the same flow, such as ACH plus balances or payouts plus ownership (docs-8, docs-9). A beta integrator also describes using one link for both verification and fraud signals (comm-6). missing for 10: explicit documentation that a single authentication session can request multiple data permissions at once, confirmation that no re-consent or extra flow is needed to add products later, and current independent hands-on corroboration (comm-8's 2022 note that Transactions was 'Coming Soon' is dated)",
+    "rationale": "Stripe documents that one Financial Connections integration covers bank verification, balances, ownership details and transactions. Its docs also say a bank account collected for ACH or Connect payouts can be used for account data such as balances and ownership, which implies a single linked account serves several data products. However, the evidence never says one authentication session requests multiple data permissions at once without re-prompting the user. missing for 10: explicit documentation of requesting multiple data permissions (balances, ownership, transactions) in one session, proof that adding a data product later needs no separate user flow, independent hands-on corroboration.",
     "evidenceIds": [
       "stripe-financial-connections-docs-1",
-      "stripe-financial-connections-docs-2",
-      "stripe-financial-connections-docs-3",
-      "stripe-financial-connections-docs-4",
       "stripe-financial-connections-docs-8",
       "stripe-financial-connections-docs-9",
-      "stripe-financial-connections-comm-6"
+      "stripe-financial-connections-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, one link session can power multiple data products — auth, balances, transactions, identity — without forcing the user through separate connection flows per product",
+      "citations": [
+        {
+          "evidenceId": "stripe-financial-connections-docs-1",
+          "quote": "You can use one integration to instantly verify bank accounts for ACH payments, reduce underwriting risk with balances data, mitigate fraud by verifying account ownership details, and build new fintech products with transactions data."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-8",
+          "quote": "Collect a bank account for ACH Direct Debit payments while using account data, including balances."
+        },
+        {
+          "evidenceId": "stripe-financial-connections-docs-9",
+          "quote": "Collect a bank account to use for Connect payouts, and use account data, such as ownership details, with your integration."
+        }
+      ]
+    },
     "productId": "stripe-financial-connections",
     "storyId": "multi-product-sessions"
   }

@@ -1,22 +1,48 @@
 {
-  "hash": "edea63968274877c51ffea3a5f04fbd723c2e6bbc658c9a8353f2f61c97c9bf8",
+  "hash": "ab17560f8a2fd0237f186fd78ba9612d6706b70c401c2f3b1a95de9d31810c96",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Supabase documents a Management API for managing organizations and projects programmatically, backed by a live OpenAPI spec. Its official hosted MCP server lets agents query the database and manage migrations, and probes confirm that endpoint is live and speaks OAuth. The CLI runs keylessly and captures schema changes as migration files, so create, apply-schema, and query steps are all reachable without the dashboard. Missing for 10: explicit evidence that a hosted project can be created via API, CLI, or MCP (the docs only say 'manage projects'); a documented programmatic way to fetch the connection string; and hands-on or independent confirmation of the full end-to-end flow.",
+    "rationale": "Supabase documents its own programmatic surfaces for most of this flow. The Management API manages organizations and projects programmatically, the MCP server lets agents query databases and manage migrations, and the CLI handles local project setup and schema migration files. Runtime probes confirm the CLI runs from npm and the hosted MCP endpoint is live with an OAuth flow. missing for 10: explicit evidence that an agent can fetch the connection string via API/CLI/MCP, explicit documentation of creating a hosted project through the API or MCP (only implied by 'manage projects'), and independent hands-on corroboration of a full end-to-end agent provisioning run.",
     "evidenceIds": [
       "supabase-docs-28",
-      "supabase-probe-3",
       "supabase-docs-1",
       "supabase-docs-2",
-      "supabase-probe-rt-2",
       "supabase-docs-25",
       "supabase-docs-5",
+      "supabase-probe-3",
       "supabase-probe-rt-1",
-      "supabase-docs-20"
+      "supabase-probe-rt-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my coding agent can provision a database end to end — create it, fetch the connection string, apply schema, and run queries — through the API, CLI, or MCP without touching the dashboard",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-28",
+          "quote": "Manage your Supabase organizations and projects programmatically."
+        },
+        {
+          "evidenceId": "supabase-docs-2",
+          "quote": "your agent can query your database, manage migrations, deploy Edge Functions"
+        },
+        {
+          "evidenceId": "supabase-docs-1",
+          "quote": "Once connected, your AI assistants can interact with and query your Supabase projects on your behalf."
+        },
+        {
+          "evidenceId": "supabase-docs-25",
+          "quote": "then capture your changes in schema migration files, which can be saved in version control."
+        },
+        {
+          "evidenceId": "supabase-probe-rt-2",
+          "quote": "the documented remote MCP endpoint is live and speaks the MCP OAuth flow."
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "agent-provisions-database"
   }

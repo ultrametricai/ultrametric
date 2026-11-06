@@ -1,18 +1,37 @@
 {
-  "hash": "0005ea7ea4c98092075ae12f1a76ea1a3f4359baf351f166dfcd18a837965123",
+  "hash": "d2ba0e386dabd61106e5801318d9d56c978734192b140cf1166003793f4e911e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A probe confirms a live llms.txt at supabase.com/llms.txt that links to a single-file full documentation dump. Docs pages are served as .md variants (e.g., ai-skills.md, plugins.md), and a keyless probe found a machine-discoverable agent-skills catalog at /.well-known/agent-skills/index.json, backed by Agent Skills documentation. Missing for 10: no independent or community corroboration of agents actually using llms.txt or the skills, and the root /docs.md endpoint returns 404.",
+    "rationale": "A live probe confirms https://supabase.com/llms.txt returns HTTP 200 and links to a single-file full documentation. Supabase also documents Agent Skills, folders of instructions agents can discover. A keyless probe found a machine-discoverable agent-skills index at /.well-known/agent-skills/index.json. missing for 10: the /docs.md markdown endpoint returned 404, and the contents of the full-documentation file were not verified.",
     "evidenceIds": [
       "supabase-probe-1",
-      "supabase-probe-2",
       "supabase-probe-rt-3",
       "supabase-docs-3",
-      "supabase-docs-44"
+      "supabase-docs-44",
+      "supabase-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "supabase-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://supabase.com/llms.txt # Supabase Docs"
+        },
+        {
+          "evidenceId": "supabase-docs-3",
+          "quote": "Agent Skills are folders of instructions, scripts, and resources that agents can discover and use to do things more accurately and efficiently."
+        },
+        {
+          "evidenceId": "supabase-probe-rt-3",
+          "quote": "returned the machine-discoverable agent-skills catalog ($schema schemas.agentskills.io/discovery/0.2.0) covering Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, and Queues"
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "agentic-agent-docs"
   }

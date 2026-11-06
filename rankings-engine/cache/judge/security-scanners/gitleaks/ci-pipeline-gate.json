@@ -1,21 +1,41 @@
 {
-  "hash": "201126fc43d453397a24773dae396e80f2dd6a0a085a020d555c62f1799a8374",
+  "hash": "2a5ec9895ebd671269b14742e33b07292a746e5a769b1e0b87b3b1c9eeeaa040",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The first-party gitleaks-action runs scans automatically on a team's pull requests and comments findings on PRs. Baseline support limits reports to new findings only, and the pre-commit hook's 'Failed' output implies a failing status when secrets are found. missing for 10: explicit documentation of exit-code semantics for failing CI builds, a documented baseline-in-CI workflow for PRs, CI integrations beyond GitHub Actions, independent hands-on corroboration.",
+    "rationale": "Gitleaks' official gitleaks-action runs scans automatically on a team's pull requests and comments on PRs, and the baseline feature limits reported findings to new ones only. However, the pack never documents exit-code behavior or that a finding fails the CI build; the only 'Failed' output shown is from the pre-commit hook. missing for 10: documented non-zero exit codes on findings, explicit CI build-failure behavior, independent hands-on corroboration of PR gating.",
     "evidenceIds": [
       "gitleaks-docs-5",
       "gitleaks-docs-1",
       "gitleaks-docs-2",
-      "gitleaks-docs-11",
       "gitleaks-gh-6",
-      "gitleaks-gh-13",
-      "gitleaks-gh-12",
-      "gitleaks-probe-3"
+      "gitleaks-gh-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a devops-lead, I can run scans in CI on every pull request and fail the build on new findings via exit codes",
+      "citations": [
+        {
+          "evidenceId": "gitleaks-docs-5",
+          "quote": "You can use it to automatically run a gitleaks scan on all your team's pull requests and commits, or run on-demand scans."
+        },
+        {
+          "evidenceId": "gitleaks-docs-2",
+          "quote": "**gitleaks-action** uses this token to call [a GitHub API] to comment on PRs."
+        },
+        {
+          "evidenceId": "gitleaks-gh-13",
+          "quote": "After running the detect command with the --baseline-path parameter, report output (findings.json) will only contain new issues."
+        },
+        {
+          "evidenceId": "gitleaks-gh-6",
+          "quote": "When using a baseline, gitleaks will ignore any old findings that are present in the baseline."
+        }
+      ]
+    },
     "productId": "gitleaks",
     "storyId": "ci-pipeline-gate"
   }

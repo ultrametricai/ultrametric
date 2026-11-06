@@ -1,19 +1,36 @@
 {
-  "hash": "d53c03c5d1ca6a0bec96a98a7aa846190b8b2dbbd722f96d0a524d50d6265839",
+  "hash": "12eb99221b7dc0df389f159ed403f4151bc138e75ef44a401019ff7cef734198",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Daytona docs say each sandbox runs in isolation with a dedicated kernel, filesystem, network stack and allocated vCPU/RAM/disk. They also offer VM sandboxes with a dedicated Linux or Windows VM, plus a per-sandbox egress firewall, which amounts to a documented VM-level boundary. Missing for 10: no documentation of the underlying isolation technology (hypervisor/microVM type) or a threat model, unclear whether default container sandboxes get the same hard boundary as VM sandboxes, and no independent or hands-on corroboration.",
+    "rationale": "Daytona documents that each sandbox gets a dedicated kernel, filesystem, network stack and allocated resources, and it offers VM sandboxes with a dedicated Linux or Windows VM, which is a hardware-virtualized boundary. However, the docs also describe container sandboxes, so hard VM-level isolation is not clearly guaranteed for every sandbox, and the boundary is documented only at a high level. Missing for 10: no documented isolation technology or hypervisor (microVM type, gVisor/Kata/Firecracker), no clarity on whether default container sandboxes get the same hard boundary, no published threat model or escape-mitigation details, and no independent or hands-on corroboration of the isolation.",
     "evidenceIds": [
       "daytona-docs-28",
       "daytona-docs-15",
-      "daytona-docs-13",
       "daytona-docs-22",
-      "daytona-docs-26",
-      "daytona-docs-1"
+      "daytona-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can rely on a documented hard isolation boundary (microVM or equivalent) between sandboxes and my systems",
+      "citations": [
+        {
+          "evidenceId": "daytona-docs-28",
+          "quote": "Each sandbox runs in isolation, giving it a dedicated kernel, filesystem, network stack, and allocated vCPU, RAM, and disk."
+        },
+        {
+          "evidenceId": "daytona-docs-15",
+          "quote": "Daytona also provides VM sandboxes with a dedicated Linux VM or Windows operating system"
+        },
+        {
+          "evidenceId": "daytona-docs-22",
+          "quote": "container sandboxes capture filesystem state only (cold snapshots), VM sandboxes capture filesystem and memory state (hot snapshots)"
+        }
+      ]
+    },
     "productId": "daytona",
     "storyId": "hard-isolation-boundary"
   }

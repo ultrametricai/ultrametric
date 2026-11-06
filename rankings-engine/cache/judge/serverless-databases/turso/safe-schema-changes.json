@@ -1,21 +1,35 @@
 {
-  "hash": "443a9d5696eb420cad6ec75a751ccbac02916909a005de958d1ff9a35165ada5",
+  "hash": "7469cc8a7ebe0c5f136092072a73d9f20ac96994d69858db2d74f12c89fbc11c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Turso documents database branching: a branch is a copy of an existing database that you can change without affecting the original, and branch creation can be automated per pull request. Point-in-time recovery offers a rollback safety net for mistakes such as dropping a table, and one community user briefly mentions \"automatic schema migrations.\" However, the evidence shows no way to merge a branch's schema back into production, no deploy-request workflow, and no online or non-locking DDL, so applying the change to production stays manual. Missing for 10: branch-to-production schema merge or diff, deploy-request or review workflow, online/non-blocking DDL guarantees, and independent hands-on evidence of safe production migrations.",
+    "rationale": "Turso documents database branching: a separate copy created from an existing database, so you can make changes without affecting the original. It can also be automated to create a database per pull request, which lets developers test schema changes in isolation. Nothing in the pack shows a way to merge branch schema back into production, deploy requests, or online/non-locking DDL; PITR is recovery after the fact, not safe rollout. Missing for 10: branch-to-production merge or schema diff/promotion, deploy-request workflow, online non-blocking DDL, independent hands-on corroboration of safe schema rollout.",
     "evidenceIds": [
-      "turso-docs-3",
-      "turso-docs-11",
-      "turso-docs-18",
-      "turso-docs-32",
       "turso-docs-41",
-      "turso-docs-4",
-      "turso-docs-42",
-      "turso-comm-6"
+      "turso-docs-11",
+      "turso-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can ship schema changes safely — online DDL, deploy requests, or branch-and-merge workflows — without locking or breaking production",
+      "citations": [
+        {
+          "evidenceId": "turso-docs-41",
+          "quote": "Branches are useful for development and testing, because they allow you to make changes to the database without affecting the original database."
+        },
+        {
+          "evidenceId": "turso-docs-11",
+          "quote": "Automating branching is useful for creating a new database for each pull request."
+        },
+        {
+          "evidenceId": "turso-docs-18",
+          "quote": "turso db create my-new-database-branch --from-db my-existing-database"
+        }
+      ]
+    },
     "productId": "turso",
     "storyId": "safe-schema-changes"
   }

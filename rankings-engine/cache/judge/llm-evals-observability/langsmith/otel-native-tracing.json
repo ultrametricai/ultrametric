@@ -1,18 +1,37 @@
 {
-  "hash": "cd7cf422263069a82bb4279a1fd66d7abde8f1c3b694263711767a8816d17109",
+  "hash": "2ca9b518db3bc1ba69799a66e4840e1e0e26a40a6ace77ce3f3f4587f9647852",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "langsmith",
-    "storyId": "otel-native-tracing",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LangSmith's docs say it supports OpenTelemetry-based tracing and accepts traces from any OpenTelemetry-compatible application or agent. It also describes routing through an OpenTelemetry Collector that fans out to multiple destinations, and a community reply confirms the OpenTelemetry integration. Missing for 10: documentation of the OTLP endpoint and protocol details (HTTP/gRPC, semantic conventions), and evidence that traces can be exported out of LangSmith over OTLP rather than only through its UI/API.",
+    "rationale": "LangSmith's docs show it can ingest OpenTelemetry traces from any OTel-compatible application, including routing through an OpenTelemetry Collector with fanout. A community reply also confirms the OTel integration. The evidence covers only sending traces into LangSmith over OpenTelemetry; nothing shows LangSmith exporting or emitting its traces over OTLP to other backends, so the 'receive' half of the story is unproven. Missing for 10: documented OTLP export of LangSmith traces to external consumers, explicit OTLP endpoint/protocol details (HTTP vs gRPC), and hands-on corroboration of OTLP ingestion depth.",
     "evidenceIds": [
       "langsmith-docs-11",
       "langsmith-docs-45",
       "langsmith-docs-46",
       "langsmith-comm-3-refresh-deb76cb7c1dcbd1f"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can send and receive traces over OpenTelemetry (OTLP) instead of a proprietary format",
+      "citations": [
+        {
+          "evidenceId": "langsmith-docs-11",
+          "quote": "LangSmith supports OpenTelemetry-based tracing, allowing you to send traces from any OpenTelemetry-compatible application."
+        },
+        {
+          "evidenceId": "langsmith-docs-46",
+          "quote": "an OpenTelemetry Collector, which batches and routes them to one or more destinations simultaneously (fanout)."
+        },
+        {
+          "evidenceId": "langsmith-comm-3-refresh-deb76cb7c1dcbd1f",
+          "quote": "LangSmith does integrate with OpenTelemetry"
+        }
+      ]
+    },
+    "productId": "langsmith",
+    "storyId": "otel-native-tracing"
   }
 }

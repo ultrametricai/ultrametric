@@ -1,11 +1,11 @@
 {
-  "hash": "97d401306dc4879cde32bf1c31e9ed544cf03443da6df7ce7c6f9e0429b9cda5",
+  "hash": "a5968d508ab2bbf80660709d332f266992b692799fba13c2d4637c7294d001ab",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "ClickHouse Cloud pricing docs say unused resources scale down to zero so you don't pay for idle services, and that compute and storage are billed separately and drop to zero when idle. That covers the core idle-to-zero behavior for prototypes. Storage is still billed under usage-based pricing, so an idle project costs little rather than literally nothing. Durability while idle is only implied by the separated storage, plus backups exportable to your own cloud account. Missing for 10: explicit statement that data persists durably across scale-to-zero, evidence of a truly $0 idle or free tier, resume/cold-start behavior, independent or hands-on corroboration.",
+    "rationale": "ClickHouse Cloud's pricing pages say idle compute scales down to zero, so you don't pay for idle services, and that compute and storage are billed separately. Storage is still billed, so an idle prototype does not truly cost nothing. Data durability while idle is only implied by the separate storage model and the backup-export option. missing for 10: documentation that an idle service incurs zero total cost (storage is still charged), explicit durability guarantees for idle or scaled-to-zero services, docs on idle timeout and wake-up behavior, independent hands-on corroboration.",
     "evidenceIds": [
       "clickhouse-docs-11",
       "clickhouse-docs-25",
@@ -13,6 +13,25 @@
       "clickhouse-docs-40",
       "clickhouse-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a founder, idle databases scale to zero so prototypes and side projects cost nothing while the data stays durable",
+      "citations": [
+        {
+          "evidenceId": "clickhouse-docs-11",
+          "quote": "We automatically scale unused resources down to zero so that you don't pay for idle services"
+        },
+        {
+          "evidenceId": "clickhouse-docs-41",
+          "quote": "Usage-based pricing: pay only for the compute and storage you use, scaled separately and down to zero when idle."
+        },
+        {
+          "evidenceId": "clickhouse-docs-22",
+          "quote": "Export backups to your own cloud account"
+        }
+      ]
+    },
     "productId": "clickhouse",
     "storyId": "scale-to-zero-idle"
   }

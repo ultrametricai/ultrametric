@@ -1,19 +1,36 @@
 {
-  "hash": "9348a34c599b7af543fa8fed11b03afa7f8f6e03ed64841fe5d671584db1de46",
+  "hash": "f007cbd98123fd363f88aa6ae07a9b2325662f2f451ce2a09308801d1c1ff535",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Gecko scans pull requests and posts a pass/fail check back to GitHub or GitLab. It applies a configurable fail-on severity threshold and separates findings the PR introduces from pre-existing ones, so new findings can block a PR (gecko-security-docs-5, -28, -29). It does this through a hosted App status check, not a CI runner step. Scans can be triggered from a pipeline via the API with a dedicated CI/CD key (gecko-security-docs-10, -25), but nothing documents a CLI or exit-code behavior that would fail a CI job. missing for 10: CLI or CI-runner integration that returns non-zero exit codes on new findings, documented pipeline examples (e.g., GitHub Actions/GitLab CI job), independent hands-on corroboration of PR gating.",
+    "rationale": "Gecko runs its own PR scans and posts a pass/fail check back to GitHub or GitLab. A configurable fail-on severity threshold fails that check, and findings introduced by the PR are separated from pre-existing ones. This is a hosted status check, not a scanner you run inside your CI pipeline that returns exit codes. missing for 10: a CLI or CI step that returns non-zero exit codes, explicit confirmation that only new findings trip the failure, and independent hands-on corroboration of PR gating.",
     "evidenceIds": [
       "gecko-security-docs-5",
       "gecko-security-docs-28",
       "gecko-security-docs-29",
-      "gecko-security-docs-19",
-      "gecko-security-docs-10",
-      "gecko-security-docs-25"
+      "gecko-security-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a devops-lead, I can run scans in CI on every pull request and fail the build on new findings via exit codes",
+      "citations": [
+        {
+          "evidenceId": "gecko-security-docs-5",
+          "quote": "Gecko posts a pass/fail check back to GitHub or GitLab so reviewers see the security status inline."
+        },
+        {
+          "evidenceId": "gecko-security-docs-29",
+          "quote": "**Fail-on severity**: the severity threshold that fails the check (for example, fail on High and above)."
+        },
+        {
+          "evidenceId": "gecko-security-docs-28",
+          "quote": "Findings introduced by the PR are separated from pre-existing ones, so reviewers focus on what the change adds."
+        }
+      ]
+    },
     "productId": "gecko-security",
     "storyId": "ci-pipeline-gate"
   }

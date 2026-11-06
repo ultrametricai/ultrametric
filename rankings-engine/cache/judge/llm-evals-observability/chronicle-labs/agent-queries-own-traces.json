@@ -1,20 +1,37 @@
 {
-  "hash": "43d0fbccbfc66e73a9154b5a6d9ed27b7aceefa5dff56b932a6ef34ad65b3f92",
+  "hash": "eec34f542decd6ea995d016c6cefaa099392f7aecaf79e11b6899fff072d6a0d",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "chronicle-labs",
-    "storyId": "agent-queries-own-traces",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Chronicle documents querying ingested telemetry through its SDK, including semantic search over event content at POST /v1/search. The same resources are exposed across Python, TypeScript, Go, Rust and other SDKs, and access uses scoped API keys, so an agent could programmatically pull trace data to debug. However, nothing in the evidence shows eval results or metrics being queryable through the API, and there is no first-party MCP server for querying data. The MCP mention refers to simulated environments, not query access, and no OpenAPI spec was found. Missing for 10: documented API/SDK access to eval results and scores, metrics query endpoints, an official MCP server for agent querying, a published OpenAPI spec, and hands-on corroboration.",
+    "rationale": "Chronicle documents querying telemetry events through its SDK and a REST endpoint (POST /v1/search, semantic search over event content), so an agent could programmatically pull traces to debug. Nothing shows a first-party MCP server for querying this data, or API access to metrics or eval/score results. The MCP servers mentioned are simulated environment components, not a query interface. missing for 10: an official MCP server for querying observability data, documented API access to eval results and metrics, a published OpenAPI spec (probe returned 404), and independent or hands-on corroboration.",
     "evidenceIds": [
       "chronicle-labs-docs-19",
       "chronicle-labs-docs-20",
       "chronicle-labs-docs-33",
-      "chronicle-labs-docs-5",
-      "chronicle-labs-docs-17",
-      "chronicle-labs-probe-2"
-    ]
+      "chronicle-labs-docs-5"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent query my traces, metrics, and eval results through an API or MCP server to debug my app",
+      "citations": [
+        {
+          "evidenceId": "chronicle-labs-docs-19",
+          "quote": "then query them in Timeline or through the SDK"
+        },
+        {
+          "evidenceId": "chronicle-labs-docs-20",
+          "quote": "events.search(query) | POST /v1/search | Semantic search over event content."
+        },
+        {
+          "evidenceId": "chronicle-labs-docs-33",
+          "quote": "Every SDK exposes the same resources with the same method names, adjusted to the language's conventions."
+        }
+      ]
+    },
+    "productId": "chronicle-labs",
+    "storyId": "agent-queries-own-traces"
   }
 }

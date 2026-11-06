@@ -1,23 +1,48 @@
 {
-  "hash": "424e94092b561df82b03bbc48f53a7153d60c3e11564eeda277aaf9099428270",
+  "hash": "ac49d6261dc87517496c0fdb08a62bfcd330729f5e14da86c5861cfaba27f150",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Plaid's API documents real-time balance retrieval, up to 24 months of transactions (including `transactionsSync` in the Node SDK), Link for connecting accounts, and Item status webhooks, so an agent could drive the core data operations programmatically. The official MCP server, however, is a Dashboard diagnostics and analytics tool, not an operational surface for creating Link sessions or pulling account data. The evidence also shows only Dashboard-issued API keys, with nothing on scoped credentials. Missing for 10: an operational MCP surface for Link, balances and transactions; documented scoped or least-privilege agent credentials; explicit server-side Link session creation and connection-management endpoints; a published OpenAPI spec (probes returned 404); independent hands-on corroboration of agent use.",
+    "rationale": "Plaid's own API documents real-time balance retrieval, up to 24 months of transactions (with an SDK `transactionsSync` call), Link for connecting accounts, and an API endpoint for creating Items in Sandbox, so an agent can drive the core data operations programmatically. Its hosted MCP server, however, covers only Dashboard diagnostics and analytics (debugging Items, Link conversion, usage), not operating link sessions or data retrieval. Missing for 10: documented server-side link-session creation endpoint, agent-oriented connection management (update/remove Items), scoped or least-privilege credentials beyond plain API keys, an MCP surface for operational actions, and independent hands-on corroboration of agent use.",
     "evidenceIds": [
       "plaid-docs-2",
       "plaid-docs-4",
       "plaid-docs-5",
-      "plaid-docs-8",
-      "plaid-docs-9",
-      "plaid-docs-10",
       "plaid-docs-14",
       "plaid-gh-1",
-      "plaid-probe-3",
-      "plaid-probe-4"
+      "plaid-docs-9",
+      "plaid-docs-10",
+      "plaid-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can operate the platform — create link sessions, retrieve balances and transactions, and manage connections through the API or an MCP surface with scoped credentials",
+      "citations": [
+        {
+          "evidenceId": "plaid-docs-2",
+          "quote": "Balance is Plaid's product for receiving real-time balance information."
+        },
+        {
+          "evidenceId": "plaid-docs-4",
+          "quote": "Retrieve up to 24 months of transaction data and stay up-to-date with webhooks"
+        },
+        {
+          "evidenceId": "plaid-docs-5",
+          "quote": "Plaid Link is the client-side component that your users will interact with in order to link their accounts to Plaid and allow you to access their accounts via the Plaid API."
+        },
+        {
+          "evidenceId": "plaid-docs-14",
+          "quote": "you can also create Items in Sandbox via the API, using a special Sandbox-only endpoint, /sandbox/public_token/create."
+        },
+        {
+          "evidenceId": "plaid-docs-9",
+          "quote": "It provides Production diagnostics and analytics tools, including tools for debugging Items, reviewing Link conversion data, and checking usage metrics."
+        }
+      ]
+    },
     "productId": "plaid",
     "storyId": "agent-links-and-reads"
   }

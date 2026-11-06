@@ -1,21 +1,51 @@
 {
-  "hash": "18b0bea2a3ade09eadd61cd2267a6bc7f69dc56be4faa170a2dc2e88edbad902",
+  "hash": "b559cabec93a88ed7e4410bf31df24a1159a2b04405549a0c19c60e7ed0b9862",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "braintrust",
-    "storyId": "custom-code-scorers",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Braintrust explicitly advertises scoring outputs with code. Its SDKs take a `scores` array in `Eval(...)` and provide scorer constructors, such as a trace-assertion scorer in the TypeScript SDK. Scorers are first-class objects that can be managed via the API and authored through MCP, and they produce numeric scores alongside label-assigning classifiers. Missing for 10: a documented example of a user-written custom scorer function (the GitHub example uses the built-in LevenshteinScorer), details on scorer signatures and return formats, and independent hands-on corroboration of custom scorer authoring.",
+    "rationale": "Braintrust's own docs say evals can 'Score outputs with LLMs, code, or humans', the SDK exposes a scorer factory based on trace assertions, and the API and MCP let users manage and author scorers. That establishes code-based scoring as a first-party capability, but the pack never shows an actual user-written custom scorer function: the GitHub example only plugs in the built-in LevenshteinScorer. Custom metrics and classifiers are mentioned, but how to define them is not documented here. missing for 10: an explicit worked example of a user-defined code scorer (function signature and return format), documentation of custom metric definition beyond a single mention, independent or hands-on corroboration of writing custom scorers.",
     "evidenceIds": [
       "braintrust-docs-68",
       "braintrust-docs-50",
-      "braintrust-gh-1",
       "braintrust-docs-64",
       "braintrust-docs-34",
       "braintrust-docs-9",
-      "braintrust-docs-38"
-    ]
+      "braintrust-gh-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ML engineer, I can write custom code-based scorers and metrics for my evaluations",
+      "citations": [
+        {
+          "evidenceId": "braintrust-docs-68",
+          "quote": "Score outputs with LLMs, code, or humans"
+        },
+        {
+          "evidenceId": "braintrust-docs-50",
+          "quote": "Scorers measure quality with numeric scores, while classifiers assign labels so you can group and analyze results"
+        },
+        {
+          "evidenceId": "braintrust-docs-64",
+          "quote": "Create an Eval scorer that will evaluate an agent based on assertions on the generated trace."
+        },
+        {
+          "evidenceId": "braintrust-docs-34",
+          "quote": "Manage prompts, tools, and scorers"
+        },
+        {
+          "evidenceId": "braintrust-docs-9",
+          "quote": "author prompts and scorers, configure monitoring, and run evals"
+        },
+        {
+          "evidenceId": "braintrust-gh-1",
+          "quote": "scores: [LevenshteinScorer],"
+        }
+      ]
+    },
+    "productId": "braintrust",
+    "storyId": "custom-code-scorers"
   }
 }

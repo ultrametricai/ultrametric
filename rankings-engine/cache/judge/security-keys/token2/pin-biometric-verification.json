@@ -1,17 +1,41 @@
 {
-  "hash": "2b71f3f1b1cfbdc2ea6ba5e2362802daddd4623ef1a729f50e88e5bb94ede936",
+  "hash": "26d1487255d5873077bc46c7ada106ee699512127dbf8a181b5e171b6a7b18a6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Token2's docs say browsers prompt users to set a PIN on its FIDO keys. Its official tooling manages that PIN (set, change, minimum PIN length) and handles PIN changes and resets. The fido2-manage tool also lists, enrolls and deletes biometric templates, so on-device user verification is clearly supported. Missing for 10: explicit documentation that user verification is enforced so a stolen key cannot authenticate, confirmation of which Token2 key models have built-in biometric sensors (the bio tooling is manufacturer-agnostic), and independent or hands-on corroboration.",
+    "rationale": "Token2's own documentation shows its FIDO keys use an on-device PIN: browsers prompt to set one, and Token2's companion app and fido2-manage tool can set and change it and enforce a minimum PIN length. The tooling also manages biometric templates, but it is manufacturer-agnostic, so this does not confirm biometric hardware on Token2 keys. missing for 10: explicit documentation that user verification is enforced so a stolen key cannot authenticate, confirmation of built-in biometric sensors on Token2 keys, independent hands-on corroboration.",
     "evidenceIds": [
       "token2-docs-13",
+      "token2-docs-7",
       "token2-gh-3",
       "token2-gh-5",
-      "token2-docs-7"
+      "token2-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a security engineer, the key supports on-device user verification — a FIDO2 PIN or built-in biometric — so a stolen key alone cannot authenticate",
+      "citations": [
+        {
+          "evidenceId": "token2-docs-13",
+          "quote": "most modern browsers will prompt to set a PIN when required"
+        },
+        {
+          "evidenceId": "token2-gh-3",
+          "quote": "PIN management: set, change, set minimum PIN length, min-PIN-length RP allow-list"
+        },
+        {
+          "evidenceId": "token2-docs-7",
+          "quote": "manage passkeys, change PINs, and perform factory resets"
+        },
+        {
+          "evidenceId": "token2-gh-5",
+          "quote": "Biometric templates (bio models): list, rename, delete, enroll"
+        }
+      ]
+    },
     "productId": "token2",
     "storyId": "pin-biometric-verification"
   }
