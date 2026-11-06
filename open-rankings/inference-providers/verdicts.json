@@ -6451,6 +6451,1237 @@
     }
   },
   {
+    "productId": "hugging-face",
+    "storyId": "agentic-agent-docs",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Hugging Face has no root llms.txt: the probe returned HTTP 404. It does offer agent-consumable documentation: docs pages are served as raw markdown (index.md returns HTTP 200), an OpenAPI spec sits at /.well-known/openapi.json, and the hf CLI ships a Skill for coding agents like Claude Code, Codex and Cursor. Missing for 10: a published llms.txt/llms-full.txt index, documentation describing the markdown docs as an agent entry point, and independent or hands-on corroboration of agents consuming these docs.",
+    "evidenceIds": [
+      "hugging-face-probe-1",
+      "hugging-face-probe-2",
+      "hugging-face-probe-3",
+      "hugging-face-gh-5"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-gh-5",
+          "quote": "If you use Claude Code, Codex, Cursor, or another coding agent, install the `hf` CLI Skill — a command reference generated from your installed CLI:"
+        },
+        {
+          "evidenceId": "hugging-face-probe-2",
+          "quote": "PROBE docs-md: HTTP 200 at https://huggingface.co/docs/inference-providers/index.md"
+        },
+        {
+          "evidenceId": "hugging-face-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://huggingface.co/.well-known/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence documents Inference Providers APIs, a chat-completion playground and model hosting. These are building blocks a developer could use to run models. None of it describes an in-product feature that generates insights or suggestions from a user's own data, such as their datasets, repos or usage. The axis applies to an ML hub platform, but there is no evidence the capability ships.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows only a one-off capability: running a single job on Hugging Face infrastructure (gh-4). Nothing shows automations that are scheduled, recurring or triggered to run autonomously in the background. Repo webhooks (docs-17) only notify a consumer about repo changes, so they are a building block a developer could use to construct automation rather than an automation feature itself.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A built-in assistant is a reasonable thing to ask of an ML hub platform, so the axis applies. However, the evidence shows no in-product AI assistant that users can delegate tasks to. What it does show is adjacent: an Inference Providers API, a chat-completion playground for comparing models, and an hf CLI Skill for external coding agents such as Claude Code and Cursor. None of these is a native assistant acting inside Hugging Face.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-headless",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Hugging Face ships its own scriptable `hf` CLI for listing models, uploading files and running jobs on its infrastructure, plus token-authenticated APIs and a published OpenAPI spec, so non-interactive automation is clearly possible. However, the evidence never documents a CI integration or headless execution as such, so the depth of CI support is unproven. missing for 10: explicit CI/CD integration docs (e.g. GitHub Actions or pipeline examples), documented non-interactive auth via environment-variable tokens, headless-mode guidance, independent or hands-on corroboration of CI use.",
+    "evidenceIds": [
+      "hugging-face-gh-1",
+      "hugging-face-gh-3",
+      "hugging-face-gh-4",
+      "hugging-face-gh-5",
+      "hugging-face-docs-7",
+      "hugging-face-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-gh-3",
+          "quote": "hf upload username/my-cool-model ./model.safetensors"
+        },
+        {
+          "evidenceId": "hugging-face-gh-4",
+          "quote": "# Run a job on Hugging Face infrastructure"
+        },
+        {
+          "evidenceId": "hugging-face-gh-1",
+          "quote": "hf models ls --warm"
+        },
+        {
+          "evidenceId": "hugging-face-docs-7",
+          "quote": "Point it at Inference Providers to run [the latest open models available](https://huggingface.co/models?inference_provider=all) with a single Hugging Face token."
+        },
+        {
+          "evidenceId": "hugging-face-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://huggingface.co/.well-known/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Hugging Face could plausibly ship an MCP-client capability (for example, in a chat or inference product), so the axis applies, but nothing in the evidence pack shows it can connect to MCP servers. The Inference Providers docs mention generic tool calling in chat completions, which is a developer building block rather than MCP server integration. The hf CLI Skill runs the other way: it helps external coding agents use Hugging Face.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Hugging Face is a platform rather than an agent, so publishing an official MCP server is a fair question and the axis applies. Nothing in the evidence pack documents an official MCP server or endpoint. The closest item is an `hf` CLI Skill for coding agents, which is an adjacent integration, not MCP.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Hugging Face ships a first-party `hf` CLI Skill that lets coding agents such as Claude Code, Codex or Cursor drive the hf CLI. That gives natural-language operation of the Hub (listing models, uploading, running jobs), but only through a third-party agent, not a native natural-language interface. The chat-completion API is model inference, not operating the product, and the openapi and docs-md probes are only building blocks, so none of them earn credit. Missing for 10: a native natural-language control surface in the product, documentation of the skill's scope and depth, and hands-on corroboration that agent-driven operation works.",
+    "evidenceIds": [
+      "hugging-face-gh-5",
+      "hugging-face-gh-3",
+      "hugging-face-gh-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can operate the product with natural-language commands",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-gh-5",
+          "quote": "If you use Claude Code, Codex, Cursor, or another coding agent, install the `hf` CLI Skill — a command reference generated from your installed CLI:"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "The official huggingface/huggingface_hub repo documents the `hf` CLI for listing inference-served models, uploading files and running jobs on HF infrastructure. It also ships an `hf` CLI Skill for coding agents such as Claude Code, Codex and Cursor, which covers the AI-native angle directly. Missing for 10: in-depth dedicated CLI reference documentation in the pack, independent or hands-on corroboration of CLI use.",
+    "evidenceIds": [
+      "hugging-face-gh-1",
+      "hugging-face-gh-3",
+      "hugging-face-gh-4",
+      "hugging-face-gh-5"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can use an official CLI",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-gh-5",
+          "quote": "If you use Claude Code, Codex, Cursor, or another coding agent, install the `hf` CLI Skill — a command reference generated from your installed CLI:"
+        },
+        {
+          "evidenceId": "hugging-face-gh-1",
+          "quote": "hf models ls --warm"
+        },
+        {
+          "evidenceId": "hugging-face-gh-3",
+          "quote": "hf upload username/my-cool-model ./model.safetensors"
+        },
+        {
+          "evidenceId": "hugging-face-gh-4",
+          "quote": "# Run a job on Hugging Face infrastructure"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Hugging Face documents a public programmatic API. Inference Providers offers a single consistent API that is a drop-in replacement for OpenAI chat completions, with provider routing via model-id suffixes and billing via HTTP headers. The Hub has its own API docs page, and a probe confirmed a machine-readable OpenAPI spec at /.well-known/openapi.json. Missing for 10: independent hands-on corroboration of how much of the Hub's management operations the API covers (beyond inference calls).",
+    "evidenceIds": [
+      "hugging-face-docs-1",
+      "hugging-face-docs-2",
+      "hugging-face-docs-3",
+      "hugging-face-docs-5",
+      "hugging-face-docs-15",
+      "hugging-face-docs-17",
+      "hugging-face-probe-3",
+      "hugging-face-probe-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-1",
+          "quote": "giving you access to their specialized capabilities through a single, consistent API"
+        },
+        {
+          "evidenceId": "hugging-face-docs-2",
+          "quote": "Drop-in replacement for the OpenAI chat completions API."
+        },
+        {
+          "evidenceId": "hugging-face-docs-15",
+          "quote": "This can be done by passing `\"X-HF-Bill-To: my-org-name\"` as a header in your HTTP requests."
+        },
+        {
+          "evidenceId": "hugging-face-probe-3",
+          "quote": "HTTP 200 at https://huggingface.co/.well-known/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence mentions using 'a single Hugging Face token' and bringing your own provider key. Nothing documents issuing scoped, fine-grained, or least-privilege tokens for an agent. Billing to an org via a header is an adjacent control, not credential scoping, so the axis applies but no supporting evidence exists.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-sdks",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Hugging Face ships its own official huggingface_hub library on GitHub, which provides programmatic calls such as snapshot_download, and its Inference Providers docs describe a single consistent API that works as a drop-in replacement for OpenAI chat completions. The evidence is thin on SDK breadth: only Python usage appears, there is no SDK reference documentation, and a community report says HF's Python libraries break backwards compatibility on public APIs, which questions their stability rather than their existence. missing for 10: documented SDK coverage across multiple languages (e.g., JS/TS), first-party SDK reference docs for building against Inference Providers, and independent corroboration of stable, well-typed SDK APIs.",
+    "evidenceIds": [
+      "hugging-face-gh-2",
+      "hugging-face-gh-1",
+      "hugging-face-docs-1",
+      "hugging-face-docs-2",
+      "hugging-face-comm-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can build against official SDKs",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-gh-2",
+          "quote": "snapshot_download(\"sentence-transformers/all-MiniLM-L6-v2\")"
+        },
+        {
+          "evidenceId": "hugging-face-docs-1",
+          "quote": "giving you access to their specialized capabilities through a single, consistent API"
+        },
+        {
+          "evidenceId": "hugging-face-docs-2",
+          "quote": "Drop-in replacement for the OpenAI chat completions API."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "agentic-webhooks",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Hugging Face's own Hub API docs say it provides webhooks to receive real-time incremental info about repos, which is a first-party outbound event subscription. The evidence is a single sentence, so the subscription mechanics and event coverage are unproven. Missing for 10: documentation of how to register a webhook endpoint (UI/API), the list of event types, payload format, secret/signature verification and retry behavior, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "hugging-face-docs-17"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-17",
+          "quote": "We also provide [webhooks](./webhooks) to receive real-time incremental info about repos."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "api-interactive-docs",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The chat-completion docs describe an interactive experience where you can compare two models' outputs side-by-side and switch between UI view and code snippets. A probe also confirms a machine-readable OpenAPI spec is published at /.well-known/openapi.json. That points to interactive, runnable exploration of the API, but the evidence does not show a full browsable API reference with try-it-now examples across endpoints. missing for 10: an explicitly documented interactive API reference covering all endpoints, runnable in-browser examples per endpoint, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "hugging-face-docs-8",
+      "hugging-face-docs-9",
+      "hugging-face-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-9",
+          "quote": "Easily switch between UI view and code snippets."
+        },
+        {
+          "evidenceId": "hugging-face-docs-8",
+          "quote": "Compare the output of two models side-by-side."
+        },
+        {
+          "evidenceId": "hugging-face-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://huggingface.co/.well-known/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "api-machine-spec",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "A live probe found a machine-readable OpenAPI document at https://huggingface.co/.well-known/openapi.json (HTTP 200, containing an \"openapi\" key), so a user or agent can download the spec directly. Missing for 10: first-party documentation describing the spec and which APIs it covers, and independent or hands-on confirmation that it is complete and kept current.",
+    "evidenceIds": [
+      "hugging-face-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://huggingface.co/.well-known/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A sandbox or test environment isolated from production data is a fair question for a hosted ML platform and API. However, nothing in the evidence documents a sandbox, test mode, or isolated non-production environment. The playground's side-by-side model comparison and running jobs on HF infrastructure are adjacent features, not sandbox isolation from production data.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Hugging Face is an API platform, so versioning and deprecation policy are fair questions, but the evidence pack shows neither a versioned API scheme nor a documented deprecation policy. The published OpenAPI spec and the OpenAI-compatible endpoint are adjacent features, not versioning or deprecation guarantees. A community report says HF libraries break public APIs in minor releases without documenting it, which points away from such a policy.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence documents a bulk or batch capability: no batch inference, no bulk repo edits, and no multi-item management operations. The CLI and library items show single actions only: uploading one file, listing models, running a job, and calling snapshot_download on a single repo with no stated bulk semantics. The OpenAPI and webhook items describe a general API surface, not a bulk-operations feature.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The only event-related evidence is that Hugging Face provides webhooks to receive real-time info about repos. That is a developer building block for constructing event-driven automation, not a documented way to define rules that trigger actions. The 'run a job' CLI item is a one-off action, not an event-triggered rule, so nothing in the pack shows a built-in rule or trigger-action capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows only that the hf CLI can run a one-off job on Hugging Face infrastructure. Nothing documents a recurring schedule, cron-style triggers, or scheduled workflows, and a one-off job run does not count as recurring scheduling. Repo webhooks are a different event-driven feature and are not scheduling.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Versioning, reviewing, and rolling back automations is a fair question for a hosting and automation platform like Hugging Face, so the axis applies. The pack shows only adjacent capabilities: running a one-off job, uploading files to a repo, and repo webhooks. Nothing documents versioning, review, or rollback of automation definitions such as jobs or webhooks, so the verdict is none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "availability-sla",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Hugging Face is a hosted platform with paid tiers (Inference Endpoints, Inference Providers), so a stated availability SLA is a fair question for this product. However, nothing in the evidence pack mentions an uptime SLA, availability commitment, or service credits for any paid or enterprise tier. The cited pricing, routing and provider-selection docs are adjacent features, not an availability guarantee.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a founder, I can get a stated availability SLA on paid or enterprise tiers",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "batch-discounted-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Hugging Face offers inference through Inference Providers, so a batch-inference discount is a fair question for this product. The evidence pack documents only real-time, OpenAI-compatible calls billed at the same rates as the underlying provider. A generic \"run a job on Hugging Face infrastructure\" CLI mention is an adjacent feature, not an asynchronous batch inference API, and no batch discount is documented anywhere.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ml-engineer, I can submit asynchronous batch inference jobs at a documented discount versus real-time pricing",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "coding-agent-integrations",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Hugging Face documents Inference Providers as a drop-in replacement for the OpenAI chat completions API where you just swap the base URL. One docs line implies a guide for pointing a tool at Inference Providers with a single HF token, but the pack never names which coding agents or agent frameworks get first-party integration guides. Missing for 10: named first-party integration guides for specific coding agents and agent frameworks, step-by-step configuration docs, and independent or hands-on corroboration of those integrations.",
+    "evidenceIds": [
+      "hugging-face-docs-7",
+      "hugging-face-docs-2",
+      "hugging-face-docs-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can plug the provider into coding agents and agent frameworks through documented, first-party integration guides",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-7",
+          "quote": "Point it at Inference Providers to run [the latest open models available](https://huggingface.co/models?inference_provider=all) with a single Hugging Face token."
+        },
+        {
+          "evidenceId": "hugging-face-docs-2",
+          "quote": "Drop-in replacement for the OpenAI chat completions API."
+        },
+        {
+          "evidenceId": "hugging-face-docs-3",
+          "quote": "Just swap-out the base URL to instantly access hundreds of additional open-weights models through our provider network."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "day-zero-model-availability",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Hugging Face hosts public open-weight models and documents running 'the latest open models available' through Inference Providers. A community comment says open-weights distribution is 'sorted', and an incident report shows recent models such as DeepSeek-V4-Pro and Kimi-K2.6 being served on the platform. However, no evidence documents how quickly new releases reach the platform. missing for 10: documented or measured time-to-availability after public release, independent corroboration of day-zero availability.",
+    "evidenceIds": [
+      "hugging-face-docs-7",
+      "hugging-face-docs-3",
+      "hugging-face-docs-20",
+      "hugging-face-comm-2",
+      "hugging-face-comm-11"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ml-engineer, I can get newly released open-weight models on the platform quickly after their public release",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-7",
+          "quote": "Point it at Inference Providers to run [the latest open models available](https://huggingface.co/models?inference_provider=all) with a single Hugging Face token."
+        },
+        {
+          "evidenceId": "hugging-face-docs-3",
+          "quote": "Just swap-out the base URL to instantly access hundreds of additional open-weights models through our provider network."
+        },
+        {
+          "evidenceId": "hugging-face-docs-20",
+          "quote": "Host and collaborate on unlimited public models, datasets and applications."
+        },
+        {
+          "evidenceId": "hugging-face-comm-2",
+          "quote": "They said distribution of open weights is now sorted"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "dedicated-endpoints-autoscale",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is a single homepage line saying models can be deployed on optimized Inference Endpoints on a GPU in a few clicks, which points to a first-party dedicated-deployment product. Nothing in the pack documents autoscaling, scale-to-zero, replica limits, or isolation from the shared serverless Inference Providers pool. The rest of the material covers the shared provider-routing API, which is the opposite of dedicated capacity. Missing for 10: documented autoscaling configuration, explicit dedicated or isolated capacity guarantees, GPU instance selection details, in-depth Inference Endpoints docs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "hugging-face-docs-21"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ml-engineer, I can deploy a model on dedicated GPU capacity with autoscaling so my traffic is isolated from the shared serverless pool",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-21",
+          "quote": "Deploy on optimized [Inference Endpoints](/pricing#endpoints) or update your [Spaces applications](/pricing#spaces) to a GPU in a few clicks."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "documented-rate-limits",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack covers Inference Providers pricing (pass-through provider rates, bring-your-own key, monthly usage view, org billing header), but nothing documents rate limits or how they scale across usage tiers. Rate-limit documentation is a fair question for an API platform, so the axis applies and the lack of evidence yields none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can read documented rate limits and how they scale across usage tiers before I hit them in production",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "drop-in-provider-switch",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Hugging Face's first-party docs describe Inference Providers as a drop-in replacement for the OpenAI chat completions API: you swap the base URL and use a single token. Providers can also be chosen through model-id suffixes, so an agent can switch to or away from Hugging Face without provider-specific code. Tool use is also documented on the chat-completion endpoint. Missing for 10: independent or hands-on corroboration of drop-in compatibility, and documented detail on parity gaps such as streaming or parameter differences versus OpenAI.",
+    "evidenceIds": [
+      "hugging-face-docs-2",
+      "hugging-face-docs-3",
+      "hugging-face-docs-7",
+      "hugging-face-docs-5",
+      "hugging-face-docs-10",
+      "hugging-face-docs-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can have an agent switch to or away from this provider mid-workflow because it speaks the standard chat-completions API without provider-specific code changes",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-2",
+          "quote": "Drop-in replacement for the OpenAI chat completions API."
+        },
+        {
+          "evidenceId": "hugging-face-docs-3",
+          "quote": "Just swap-out the base URL to instantly access hundreds of additional open-weights models through our provider network."
+        },
+        {
+          "evidenceId": "hugging-face-docs-5",
+          "quote": "You can also select the provider of your choice by appending the provider name to the model id (e.g. `\"openai/gpt-oss-120b:groq\"`)."
+        },
+        {
+          "evidenceId": "hugging-face-docs-10",
+          "quote": "Using grammars, constraints, and tools."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "embeddings-endpoint",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents Inference Providers for chat completion and image/video generation through a single API, but never mentions an embeddings (feature-extraction) task or a reranking capability. The only related item downloads a sentence-transformers model file. That is a developer building block for running embeddings yourself, not a documented embedding or rerank service, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can generate embeddings (and rerank results) for retrieval pipelines without a second vendor",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "fine-tune-and-serve",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows serving: deploying on Inference Endpoints, uploading model weights to a repo, and a generic 'run a job on Hugging Face infrastructure' command. Nothing documents a fine-tuning capability that trains a supported base model on user data. Generic compute jobs are a developer building block, not the fine-tune-and-serve workflow itself, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an ml-engineer, I can fine-tune a supported base model on my own data and serve the result on the same platform",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "low-latency-serving",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Hugging Face's Inference Providers route requests to the fastest available provider by default, using a `:fastest` policy defined as highest throughput in tokens per second. Developers can also pin a specific provider, and the homepage advertises optimized Inference Endpoints. This covers the high-throughput half of the story, but nothing documents time-to-first-token or latency guarantees for latency-sensitive serving. missing for 10: documented time-to-first-token or latency metrics and guarantees, benchmarks or independent hands-on evidence of serving speed, detail on how Inference Endpoints are optimized for latency.",
+    "evidenceIds": [
+      "hugging-face-docs-6",
+      "hugging-face-docs-5",
+      "hugging-face-docs-12",
+      "hugging-face-docs-21"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can serve latency-sensitive workloads with fast time-to-first-token and high-throughput generation",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-6",
+          "quote": "By default, our system automatically selects the fastest available provider for the specified model (equivalent to the `:fastest` policy — highest throughput in tokens per second)."
+        },
+        {
+          "evidenceId": "hugging-face-docs-12",
+          "quote": "Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning."
+        },
+        {
+          "evidenceId": "hugging-face-docs-21",
+          "quote": "Deploy on optimized [Inference Endpoints](/pricing#endpoints)"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "measured-speed-claims",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows a `:fastest` routing policy that selects the provider with the highest tokens-per-second throughput. That is a routing feature, not published latency or throughput numbers, benchmarks, or load-testing guides that let an engineer verify speed claims. Nothing in the pack shows Hugging Face publishing such figures or methodology.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an ml-engineer, I can see published tokens-per-second or latency numbers, benchmarks, or load-testing guides backing the provider's speed claims",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "model-deprecation-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Hugging Face serves hosted models through Inference Providers, so a deprecation-policy axis applies. However, the evidence pack contains no documented deprecation policy, removal timeline, or advance-notice commitment for hosted models. Community complaints about library backward-compatibility concern Python libraries, not hosted model removal, so they are not relevant here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can rely on a documented deprecation policy with advance notice before a hosted model is removed",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "models-endpoint-discovery",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Hugging Face's own `hf` CLI lets an agent list the models currently served by Inference Providers (`hf models ls --warm`), so the catalog can be enumerated programmatically. However, no evidence documents an OpenAI-style GET /v1/models HTTP endpoint: the OpenAI drop-in claim covers chat completions only, and the openapi.json probe does not show a models-list route. Missing for 10: a documented GET /v1/models-style HTTP endpoint on the Inference Providers router, response schema and filtering docs, and independent or hands-on confirmation that the listing reflects the live catalog.",
+    "evidenceIds": [
+      "hugging-face-gh-1",
+      "hugging-face-docs-7",
+      "hugging-face-docs-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent enumerate the live model catalog programmatically via a documented GET /v1/models-style endpoint",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-gh-1",
+          "quote": "# Find models served by Inference Providers\nhf models ls --warm"
+        },
+        {
+          "evidenceId": "hugging-face-docs-7",
+          "quote": "Point it at Inference Providers to run [the latest open models available](https://huggingface.co/models?inference_provider=all) with a single Hugging Face token."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "multimodal-endpoints",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Hugging Face's Inference Providers documents image and video generation, including LoRA and style customization, alongside chat completion. It exposes these through a single, consistent API across providers, so a developer can call non-text models on the same platform. missing for 10: explicit documentation of vision (image-understanding) and audio (speech/ASR/TTS) tasks, detailed task-level API docs for image generation, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "hugging-face-docs-18",
+      "hugging-face-docs-1",
+      "hugging-face-docs-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can call vision, audio, or image-generation models beyond text chat on the same platform",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-18",
+          "quote": "**Image and Video Generation**: Create custom images and videos, including support for LoRAs and style customization"
+        },
+        {
+          "evidenceId": "hugging-face-docs-1",
+          "quote": "Our platform integrates with leading AI infrastructure providers, giving you access to their specialized capabilities through a single, consistent API."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "open-weight-catalog-breadth",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Hugging Face's Inference Providers offer access to 'hundreds of additional open-weights models' through a single OpenAI-compatible API. GPT-OSS is documented explicitly (openai/gpt-oss-120b), and an independent incident report shows inference requests to DeepSeek-V4, DeepSeek-V3.1, Qwen3-235B and Kimi-K2.6 served on Hugging Face. Because not every named family and the shared-serverless nature are documented, this is partial rather than full. Missing for 10: explicit evidence that Llama models are in the provider catalog, first-party documentation listing the Qwen/DeepSeek families, and explicit documentation that these run on shared serverless (not dedicated) endpoints.",
+    "evidenceIds": [
+      "hugging-face-docs-3",
+      "hugging-face-docs-5",
+      "hugging-face-docs-7",
+      "hugging-face-docs-1",
+      "hugging-face-comm-11",
+      "hugging-face-gh-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can choose among a broad catalog of current open-weight model families (Llama, Qwen, DeepSeek, GPT-OSS and peers) on shared serverless endpoints",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-3",
+          "quote": "Just swap-out the base URL to instantly access hundreds of additional open-weights models through our provider network."
+        },
+        {
+          "evidenceId": "hugging-face-docs-5",
+          "quote": "You can also select the provider of your choice by appending the provider name to the model id (e.g. `\"openai/gpt-oss-120b:groq\"`)."
+        },
+        {
+          "evidenceId": "hugging-face-docs-7",
+          "quote": "Point it at Inference Providers to run [the latest open models available](https://huggingface.co/models?inference_provider=all) with a single Hugging Face token."
+        },
+        {
+          "evidenceId": "hugging-face-comm-11",
+          "quote": "These included GPT-2 (prompt \"Hi\"), DeepSeek-V4-Pro/Flash, Kimi-K2.6, DeepSeek-V3.1 and Qwen3-235B-A22B"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "openai-compatible-endpoint",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Hugging Face's own docs describe Inference Providers as a drop-in replacement for the OpenAI chat completions API. They say you just swap the base URL and point an existing client at it with a single Hugging Face token, which covers both the base-URL and API-key parts of the story. missing for 10: independent or hands-on corroboration that OpenAI SDK clients work unmodified, the exact base URL value or a code snippet in the evidence, and documented compatibility beyond chat completions (e.g. embeddings or other endpoints).",
+    "evidenceIds": [
+      "hugging-face-docs-2",
+      "hugging-face-docs-3",
+      "hugging-face-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can point an existing OpenAI SDK client at the provider by changing only the base URL and API key",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-2",
+          "quote": "Drop-in replacement for the OpenAI chat completions API."
+        },
+        {
+          "evidenceId": "hugging-face-docs-3",
+          "quote": "Just swap-out the base URL to instantly access hundreds of additional open-weights models through our provider network."
+        },
+        {
+          "evidenceId": "hugging-face-docs-7",
+          "quote": "Point it at Inference Providers to run [the latest open models available](https://huggingface.co/models?inference_provider=all) with a single Hugging Face token."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Hugging Face ships its own programmatic surfaces that cover many UI actions. The hf CLI and huggingface_hub library list models, download snapshots, upload files to repos and run jobs. A public OpenAPI spec is served, and the inference playground lets users switch between UI view and code snippets. Nothing documents that the API matches everything the UI can do; settings, usage dashboards and Spaces/Endpoints deployment are described as UI or 'a few clicks' flows. Missing for 10: an explicit API/UI parity statement, API coverage of account settings and usage reporting, documented API flows for Spaces and Inference Endpoints deployment, and independent hands-on corroboration of parity.",
+    "evidenceIds": [
+      "hugging-face-gh-1",
+      "hugging-face-gh-2",
+      "hugging-face-gh-3",
+      "hugging-face-gh-4",
+      "hugging-face-probe-3",
+      "hugging-face-docs-9",
+      "hugging-face-docs-17",
+      "hugging-face-docs-15"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-gh-3",
+          "quote": "hf upload username/my-cool-model ./model.safetensors"
+        },
+        {
+          "evidenceId": "hugging-face-gh-4",
+          "quote": "# Run a job on Hugging Face infrastructure"
+        },
+        {
+          "evidenceId": "hugging-face-gh-1",
+          "quote": "hf models ls --warm"
+        },
+        {
+          "evidenceId": "hugging-face-probe-3",
+          "quote": "contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "hugging-face-docs-9",
+          "quote": "Easily switch between UI view and code snippets."
+        },
+        {
+          "evidenceId": "hugging-face-docs-17",
+          "quote": "We also provide [webhooks](./webhooks) to receive real-time incremental info about repos."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Hugging Face's official huggingface_hub client can download an entire repo snapshot (`snapshot_download`), and its CLI example shows hosting models in the open safetensors format, so hosted repo content can be pulled off the platform with first-party tooling. Nothing documents an account-wide export of all user data, or what formats such an export would use. missing for 10: documented full-account data export (all repos, datasets, Spaces, discussions, settings), explicit open-format guarantees for exported data, offboarding/deletion guidance, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "hugging-face-gh-2",
+      "hugging-face-gh-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can export all of my data in open formats and leave",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-gh-2",
+          "quote": "snapshot_download(\"sentence-transformers/all-MiniLM-L6-v2\")"
+        },
+        {
+          "evidenceId": "hugging-face-gh-3",
+          "quote": "hf upload username/my-cool-model ./model.safetensors"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "openness-open-license",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows Hugging Face publishes some of its own code publicly, such as the huggingface_hub client repo on GitHub, and community comments describe its Transformers, accelerate and datasets libraries as open source. Nothing documents a specific license, and nothing shows the core Hub platform's source is readable. missing for 10: explicit open-license documentation (e.g., Apache/MIT terms), evidence that the Hub/platform source itself is open, first-party docs on source availability.",
+    "evidenceIds": [
+      "hugging-face-gh-1",
+      "hugging-face-comm-5",
+      "hugging-face-comm-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can read the product's source under an open license",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-comm-5",
+          "quote": "Hugging Face have been a great open source steward of Transformers"
+        },
+        {
+          "evidenceId": "hugging-face-comm-3",
+          "quote": "HF's accelerate, transformers and datasets are \"some of the worst open source Python libraries I have ever used.\""
+        },
+        {
+          "evidenceId": "hugging-face-gh-1",
+          "quote": "hf models ls --warm"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a model-hosting and inference platform like Hugging Face, so the axis applies. The pack has no evidence of a self-hostable Hub or Inference Providers deployment. What it does show is adjacent and earns no credit: downloading model weights (snapshot_download), managed Inference Endpoints and Spaces, and jobs run on Hugging Face infrastructure.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can self-host the core product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency is a fair question for a hosting and inference platform like Hugging Face, but the evidence pack never mentions region selection or storage location for repos, datasets, endpoints, or inference. Choosing an inference provider by name (e.g. ':groq') is an adjacent routing control, not a documented choice of where data is stored. Inference Endpoints are mentioned without any region or residency detail.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no documentation of a training opt-out, a no-training data policy, or a data-retention control for Hugging Face or its Inference Providers. Provider selection and bring-your-own-key features are adjacent controls and do not show that user data is excluded from model training.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Controlling data retention and deletion is a fair privacy question for a model hub and inference platform like Hugging Face, so the axis applies. However, nothing in the evidence pack documents retention policies, data deletion controls, or zero-retention options for inference requests. Uploading files, usage dashboards and billing headers are unrelated features and earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry is a fair question for a platform and client library like Hugging Face, so the axis applies. However, nothing in the evidence pack documents a telemetry or usage-tracking opt-out. The pack covers inference providers, billing, CLI usage and community sentiment, none of which addresses telemetry controls.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "prompt-caching-support",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Hugging Face runs inference through Inference Providers and Inference Endpoints, so prompt/prefix caching is a fair axis for it. However, the evidence pack never mentions caching of repeated context. The nearest items are adjacent: cheapest-provider routing, fastest-provider selection and lower reasoning effort, none of which is prefix caching.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ml-engineer, I can benefit from prompt/prefix caching that reduces latency or cost on repeated context",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "serve-custom-weights",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Uploading custom weights is directly documented (`hf upload username/my-cool-model ./model.safetensors`). The homepage says models can be deployed on Inference Endpoints 'in a few clicks', and Inference Providers mention LoRA support for image and video generation. However, the evidence never explicitly shows an uploaded custom model or LoRA adapter being served. Missing for 10: explicit docs on deploying user-uploaded weights to Inference Endpoints, LoRA adapter serving for LLMs, and hands-on or independent corroboration of the end-to-end upload-to-serve flow.",
+    "evidenceIds": [
+      "hugging-face-gh-3",
+      "hugging-face-docs-21",
+      "hugging-face-docs-18",
+      "hugging-face-docs-20"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ml-engineer, I can upload and serve my own custom model weights or LoRA adapters",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-gh-3",
+          "quote": "hf upload username/my-cool-model ./model.safetensors"
+        },
+        {
+          "evidenceId": "hugging-face-docs-21",
+          "quote": "Deploy on optimized [Inference Endpoints](/pricing#endpoints) or update your [Spaces applications](/pricing#spaces) to a GPU in a few clicks."
+        },
+        {
+          "evidenceId": "hugging-face-docs-18",
+          "quote": "Create custom images and videos, including support for LoRAs and style customization"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "spend-controls-budgets",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows only that users can view past-month usage broken down by model and provider, bill usage to an organization, and bring their own provider key. None of these is a spending cap or a budget alert. A usage dashboard is an adjacent feature: it does not stop a runaway workload or warn about one, so there is no documented capability for this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a founder, I can set spending caps or budget alerts so a runaway workload cannot generate an unbounded bill",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "status-page-uptime",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A public status page with incident history is a fair question for a hosted AI platform like Hugging Face, so the axis applies. Nothing in the evidence pack documents a status page, uptime history, or incident log. The community threads that mention a security intrusion report describe one event, not a status page with incident history.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a founder, I can check a public status page with incident history before betting production traffic on the platform",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "streaming-responses",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Hugging Face Inference Providers documents an OpenAI-compatible chat completions API, but nothing in the evidence mentions streaming, SSE, or token-by-token output. A drop-in compatibility claim does not document this specific capability, so this applicable axis has no supporting evidence.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can stream completions token by token over SSE for responsive user experiences",
+      "citations": []
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "structured-outputs-json-schema",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Hugging Face's chat-completion docs cover \"grammars, constraints, and tools\" and describe a strict flag under which the model \"will always follow the exact schema defined in the `schema` field\". That is first-party schema-constrained output. The evidence is limited to brief snippets, with no detail on how far it extends across providers. Missing for 10: documentation of which providers/models honor schema/grammar constraints, detail on grammar formats beyond JSON schema, independent or hands-on corroboration that responses parse reliably.",
+    "evidenceIds": [
+      "hugging-face-docs-10",
+      "hugging-face-docs-11"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can enforce structured outputs against a JSON schema (or grammar) so model responses parse reliably",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-10",
+          "quote": "Using grammars, constraints, and tools."
+        },
+        {
+          "evidenceId": "hugging-face-docs-11",
+          "quote": "If set to true, the model will always follow the exact schema defined in the `schema` field."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "tool-calling-fidelity",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Hugging Face's chat-completion docs cover 'grammars, constraints, and tools' through an OpenAI-compatible API, and strict schema adherence is documented for structured output. That shows first-party tool support, but only as a thin mention. Missing for 10: documented parallel tool calls, multi-step/agent-loop tool use, evidence of tool-call reliability across open models and providers, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "hugging-face-docs-10",
+      "hugging-face-docs-2",
+      "hugging-face-docs-11"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can rely on faithful function/tool calling — including parallel and multi-step tool use — so agent loops run on open models without breaking",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-10",
+          "quote": "Using grammars, constraints, and tools."
+        },
+        {
+          "evidenceId": "hugging-face-docs-2",
+          "quote": "Drop-in replacement for the OpenAI chat completions API."
+        },
+        {
+          "evidenceId": "hugging-face-docs-11",
+          "quote": "If set to true, the model will always follow the exact schema defined in the `schema` field."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "hugging-face",
+    "storyId": "transparent-token-pricing",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Hugging Face's own pricing docs say it charges the same rates as the underlying provider with no added fees. Its `:cheapest` routing policy ranks providers by price per output token, which implies per-token prices exist and are tracked per provider. However, no evidence shows a public, browsable per-token price list covering every hosted model. missing for 10: a documented public per-model per-token price table, confirmation that it covers every hosted model, and independent corroboration that pricing is self-serve with no sales contact.",
+    "evidenceIds": [
+      "hugging-face-docs-16",
+      "hugging-face-docs-4",
+      "hugging-face-docs-14"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a founder, I can see public per-token prices for every hosted model without talking to sales",
+      "citations": [
+        {
+          "evidenceId": "hugging-face-docs-16",
+          "quote": "Hugging Face charges you the same rates as the provider, with no additional fees."
+        },
+        {
+          "evidenceId": "hugging-face-docs-4",
+          "quote": "`:cheapest` for the most cost-efficient provider (lowest price per output token)"
+        },
+        {
+          "evidenceId": "hugging-face-docs-14",
+          "quote": "see your usage for the past month, broken down by model and provider."
+        }
+      ]
+    }
+  },
+  {
     "productId": "morph",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
@@ -8826,6 +10057,1021 @@
         {
           "evidenceId": "munito-ai-docs-10",
           "quote": "Each model with its context, its regions and its price for each service tier."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Live probes confirm Replicate serves an llms.txt at replicate.com/llms.txt (HTTP 200) and a markdown docs index at replicate.com/docs.md, so an agent can be pointed at agent-oriented docs directly. The llms.txt content is largely product-overview prose rather than a richly structured doc map. Missing for 10: evidence that llms.txt links comprehensively into the API and reference docs (or an llms-full.txt), and independent or hands-on corroboration of agent use.",
+    "evidenceIds": [
+      "replicate-probe-1",
+      "replicate-probe-2",
+      "replicate-docs-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "replicate-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://replicate.com/llms.txt # Run AI with an API"
+        },
+        {
+          "evidenceId": "replicate-probe-2",
+          "quote": "PROBE docs-md: HTTP 200 at https://replicate.com/docs.md Get started"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is an API platform for running and fine-tuning models, so in-product AI insights on a user's data is a fair question for it. The evidence only shows built-in metrics and logs, which are non-AI monitoring, plus fine-tuning on your own data, which is a developer building block rather than in-product insights or suggestions. Nothing documents AI-generated insights surfaced inside the product.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is a model-hosting and inference API, and such a platform could plausibly offer scheduled or triggered background jobs, so the axis applies. However, the evidence documents no recurring schedules, triggers, or autonomous background automations. Automatic scaling up and down to zero is infrastructure elasticity, an adjacent feature that is not a user-configured automation.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A model-hosting platform could plausibly ship a built-in assistant that takes delegated tasks, so this axis applies. The evidence only describes running, fine-tuning and deploying hosted models through an API. Hosted models with conversational editing are catalog content, not a built-in product assistant, and the pack contains no evidence of an in-product agent.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-headless",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Replicate is an API-first service ('Run AI with an API', 'one line of code', run a model from Node.js), so the product itself can be driven headlessly from code. However, no evidence explicitly documents CI usage, such as pipeline setup, token handling or GitHub Actions, and no OpenAPI spec was found. missing for 10: explicit CI/automation documentation, API authentication docs for non-interactive environments, a published OpenAPI spec, independent hands-on corroboration",
+    "evidenceIds": [
+      "replicate-probe-1",
+      "replicate-docs-1",
+      "replicate-probe-2",
+      "replicate-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "replicate-probe-1",
+          "quote": "Run AI with an API"
+        },
+        {
+          "evidenceId": "replicate-docs-1",
+          "quote": "You can run these with one line of code."
+        },
+        {
+          "evidenceId": "replicate-probe-2",
+          "quote": "Run a model from Node.js"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is a model-hosting and inference API. Such a platform could plausibly accept MCP servers as tool sources for model runs, so the axis applies. However, the evidence pack covers only running, fine-tuning, deploying and pricing models, and never mentions connecting or consuming MCP servers or their tools.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is an AI model hosting and inference API platform, not an agent, so shipping an official MCP server is a fair question for it. Nothing in the evidence mentions an MCP server or endpoint; the llms.txt and docs.md probes show general documentation only, and these are not MCP support.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-nl-commands",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Natural-language operation is a fair axis for an AI model-hosting platform, but the evidence describes no first-party way to operate Replicate itself (running models, deploying, managing predictions) through natural-language commands. Text-prompted image models are hosted model features rather than product control, and llms.txt or docs.md only serve documentation to agents, so neither earns credit for this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can operate the product with natural-language commands",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-official-cli",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An official CLI is a fair axis for an API platform like Replicate, so the story applies. However, nothing in the evidence pack documents a Replicate command-line interface. The only related item is Cog, described as an open-source tool for packaging and deploying custom models, which is not shown to be a CLI for running or managing Replicate workflows. The probes show only llms.txt and docs.md (Node.js and Colab guides) and no OpenAPI spec.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can use an official CLI",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Replicate presents itself as an API-first product: its llms.txt is titled \"Run AI with an API\" and says models run \"with one line of code.\" Its machine-readable docs.md links language-specific getting-started guides such as Node.js. The OpenAPI probe returning 404 at common paths only shows no spec was found at those locations; it does not contradict that a documented API exists. missing for 10: API reference detail (endpoints, auth, prediction lifecycle) in the evidence, a discoverable OpenAPI/machine-readable spec, independent hands-on corroboration.",
+    "evidenceIds": [
+      "replicate-probe-1",
+      "replicate-probe-2",
+      "replicate-docs-1",
+      "replicate-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "replicate-probe-1",
+          "quote": "# Run AI with an API"
+        },
+        {
+          "evidenceId": "replicate-probe-1",
+          "quote": "Run and fine-tune open-source models. Deploy custom models at scale. All with one line of code."
+        },
+        {
+          "evidenceId": "replicate-probe-2",
+          "quote": "[Run a model from Node.js](/docs/get-started/nodejs)"
+        },
+        {
+          "evidenceId": "replicate-docs-1",
+          "quote": "You can run these with one line of code."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is an API platform, so issuing scoped, least-privilege API credentials is a fair question for it. Nothing in the evidence pack mentions API tokens, scoping, permissions, or per-agent credentials. The cited material covers model running, fine-tuning, deployment, scaling, pricing and image models only.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-sdks",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Replicate's own docs index includes a language-specific getting-started guide ('Run a model from Node.js'), and llms.txt says models run 'with one line of code', which suggests first-party client tooling. Neither item explicitly names an official SDK package, and the OpenAPI probe returned 404 at all candidate paths. Missing for 10: explicit naming of official SDK packages, the list of supported languages, SDK reference documentation, and independent or hands-on corroboration of SDK use.",
+    "evidenceIds": [
+      "replicate-probe-2",
+      "replicate-probe-1",
+      "replicate-docs-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can build against official SDKs",
+      "citations": [
+        {
+          "evidenceId": "replicate-probe-2",
+          "quote": "[Run a model from Node.js](/docs/get-started/nodejs)"
+        },
+        {
+          "evidenceId": "replicate-probe-1",
+          "quote": "Run and fine-tune open-source models. Deploy custom models at scale. All with one line of code."
+        },
+        {
+          "evidenceId": "replicate-docs-1",
+          "quote": "You can run these with one line of code."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is an API platform for running models, so subscribing to events via registrable outbound HTTP webhooks is a fair question for it. However, nothing in the evidence pack mentions webhooks, callbacks or event subscriptions. The cited items cover running, fine-tuning, deploying and scaling models, pricing, and metrics/logs, none of which is evidence of webhook delivery.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Replicate has docs, including get-started guides for Node.js and Colab, and claims models run with one line of code. Nothing shows an interactive API reference or in-browser runnable examples, and the probe found no OpenAPI spec at any candidate path. The axis applies to an API platform, but the capability is unevidenced, so the verdict is none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is an API platform, so a machine-readable API spec is a fair question for it. The evidence shows no downloadable OpenAPI or equivalent: the probe found every candidate OpenAPI/Swagger path returned 404. The llms.txt and docs.md files are LLM-friendly documentation, which is adjacent material and not an API specification.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A sandbox or test environment is a fair question for an API platform like Replicate, so the axis applies. Nothing in the evidence documents a sandbox, test mode, or isolation from production data. The 'production' mention refers only to models being ready to use in production, and pay-per-use billing and auto-scaling are not sandbox isolation.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is an API platform, so a versioned API with a documented deprecation policy is a fair question to ask of it. However, nothing in the evidence pack mentions API versioning, version pinning, or any deprecation policy. The OpenAPI probe found no spec at any candidate path, and the llms.txt and docs.md probes show only getting-started and marketing content.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk operations are a fair question for a model-hosting API, but the pack shows no documented way for a user to run one operation across many items at once (e.g. batch prediction submission or bulk management of predictions or models). The 'batching' mention refers to server-side inference infrastructure the platform manages, and autoscaling is an adjacent capacity feature; neither is a user-facing bulk operation.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Event-triggered automation is a fair question for an ML inference API platform, but the evidence pack does not document any way to define rules that fire actions on events. Automatic scale-up and scale-to-zero is platform-managed infrastructure behavior, an adjacent feature rather than user-defined event rules, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Recurring job or workflow scheduling is a fair question for an AI model-hosting and API platform like Replicate, so the axis applies. The evidence pack covers running models, fine-tuning, deploying with Cog, autoscaling and billing, but nothing documents a cron-like or recurring scheduler. Autoscaling and one-off runs ('one line of code') are adjacent behaviors, not a recurring schedule.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Versioning, reviewing and rolling back deployed workflows is a fair question for an ML hosting and deployment platform, so the axis applies. The evidence pack does not document any versioning, change review or rollback capability. The cited items cover running, fine-tuning, deploying via Cog, autoscaling, metrics/logs and pricing, none of which address this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "availability-sla",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is a hosted inference platform, so a stated availability SLA on paid or enterprise tiers is a fair question to ask. Nothing in the evidence pack mentions an SLA, uptime commitment, or enterprise reliability guarantee. Autoscaling and managed infrastructure are related features but are not a stated availability SLA.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a founder, I can get a stated availability SLA on paid or enterprise tiers",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "batch-discounted-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no batch or asynchronous job submission feature and no discounted batch pricing tier. The pricing evidence covers only pay-per-processing-time and scale-to-zero billing. The mention of Replicate handling 'batching' is internal infrastructure management, not a discounted batch-job capability, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ml-engineer, I can submit asynchronous batch inference jobs at a documented discount versus real-time pricing",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "coding-agent-integrations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is a model-hosting API provider, so first-party integration guides for coding agents and agent frameworks are a fair question. The evidence pack only shows an llms.txt file and generic get-started guides for Node.js and Colab. These are developer building blocks and language quickstarts, not documented guides for plugging Replicate into coding agents or agent frameworks.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can plug the provider into coding agents and agent frameworks through documented, first-party integration guides",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "day-zero-model-availability",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Replicate documents a continuously growing catalog of open-source models, with community-published models and new ones \"added every day.\" That implies fresh models arrive regularly, but nothing documents how quickly newly released open-weight models appear after their public release. Self-deploying via Cog is a user-side workaround and earns no credit. Missing for 10: any evidence of time-to-availability for new open-weight releases, examples of day-one or same-week launches, and independent corroboration of catalog freshness.",
+    "evidenceIds": [
+      "replicate-docs-12",
+      "replicate-docs-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ml-engineer, I can get newly released open-weight models on the platform quickly after their public release",
+      "citations": [
+        {
+          "evidenceId": "replicate-docs-12",
+          "quote": "Thousands of open-source machine learning models have been contributed by our community and more are added every day."
+        },
+        {
+          "evidenceId": "replicate-docs-1",
+          "quote": "Our community has already published thousands of models that are ready to use in production."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "dedicated-endpoints-autoscale",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Replicate can deploy custom models with Cog and scales automatically, including down to zero. Nothing documents dedicated GPU capacity or isolation from a shared serverless pool. The only hint is a pricing line noting that 'other private models' bill for idle time, which implies but does not document reserved hardware. Generic autoscaling is an adjacent feature, not the dedicated, isolated deployment this story asks for.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ml-engineer, I can deploy a model on dedicated GPU capacity with autoscaling so my traffic is isolated from the shared serverless pool",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "documented-rate-limits",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack contains no documentation of API rate limits or of how limits scale across usage tiers. The available items cover per-second billing, cost estimates on model pages, and automatic infrastructure scaling. Autoscaling is about capacity, not published request limits, so it is an adjacent feature that earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can read documented rate limits and how they scale across usage tiers before I hit them in production",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "drop-in-provider-switch",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is a model-hosting inference API, so an OpenAI-compatible chat-completions endpoint is a fair axis for it. However, nothing in the evidence pack documents a standard chat-completions interface or drop-in compatibility; the docs only describe running models 'with one line of code' through Replicate's own API. Absence of evidence for an applicable capability yields none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can have an agent switch to or away from this provider mid-workflow because it speaks the standard chat-completions API without provider-specific code changes",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "embeddings-endpoint",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is a model-hosting API platform, so serving embedding and reranking models is a fair question for it. However, nothing in the evidence pack mentions embedding or reranking models or endpoints. Generic claims about thousands of community models and deploying custom models via Cog are developer building blocks, not documented embedding or rerank capability, and the featured models are all image-generation.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can generate embeddings (and rerank results) for retrieval pipelines without a second vendor",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "fine-tune-and-serve",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Replicate's own docs say users can improve open-source models with their own data to create new models, and its pricing covers both training public models and serving fine-tunes. Billing for fast-booting fine-tunes is per active request time, which shows the fine-tuned result is served on the same platform. missing for 10: detailed training API/workflow documentation, an explicit list of supported base models beyond the Flux example, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "replicate-docs-2",
+      "replicate-probe-1",
+      "replicate-docs-10",
+      "replicate-docs-11",
+      "replicate-docs-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an ml-engineer, I can fine-tune a supported base model on my own data and serve the result on the same platform",
+      "citations": [
+        {
+          "evidenceId": "replicate-docs-2",
+          "quote": "You can improve open-source models with your own data to create new models that are better suited to specific tasks."
+        },
+        {
+          "evidenceId": "replicate-probe-1",
+          "quote": "Run and fine-tune open-source models."
+        },
+        {
+          "evidenceId": "replicate-docs-10",
+          "quote": "When running or training one of these public models, you only pay for the time it takes to process your request."
+        },
+        {
+          "evidenceId": "replicate-docs-11",
+          "quote": "For fast booting fine-tunes you'll only be billed for the time the model is active and processing your requests"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "low-latency-serving",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is an inference platform, so a latency/throughput story applies. The evidence pack contains nothing on time-to-first-token, streaming, latency targets or generation throughput. The only related material is automatic scale-up, managed batching and 'fast booting fine-tunes' mentioned in a billing context. These are adjacent capacity and infrastructure features, not documented low-latency or high-throughput serving.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a developer, I can serve latency-sensitive workloads with fast time-to-first-token and high-throughput generation",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "measured-speed-claims",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack contains no published tokens-per-second figures, latency numbers, benchmarks, or load-testing guides. The closest items are autoscaling claims, built-in metrics for monitoring your own model's performance, and a mention of 'fast booting fine-tunes'. These are adjacent monitoring and scaling features, not published speed evidence backing the provider's claims.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ml-engineer, I can see published tokens-per-second or latency numbers, benchmarks, or load-testing guides backing the provider's speed claims",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "model-deprecation-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A deprecation policy with advance notice before a hosted model is removed is a fair question for a model-hosting platform like Replicate, so the axis applies. However, none of the evidence (marketing copy, pricing, model listings, probes) mentions deprecation, removal notice, or model lifecycle guarantees.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can rely on a documented deprecation policy with advance notice before a hosted model is removed",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "models-endpoint-discovery",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence says Replicate hosts thousands of community and proprietary models, but nothing documents an API endpoint that lists the model catalog programmatically. The OpenAPI probes all returned 404, and the docs.md and llms.txt probes show no catalog-listing endpoint. The axis clearly applies to a model-hosting API platform, so absent evidence yields none rather than na.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can have an agent enumerate the live model catalog programmatically via a documented GET /v1/models-style endpoint",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "multimodal-endpoints",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Replicate's own docs show image-generation and image-editing models that run on the same API platform as thousands of other community and proprietary models, all callable with one line of code. However, the pack has no evidence of vision (image-understanding) or audio models, nor of text-chat models alongside them, so the multimodal breadth the story asks for is only partly shown. missing for 10: documented vision/image-understanding models, documented audio (speech/music/transcription) models, explicit evidence of text-chat models on the same platform, independent or hands-on corroboration of multimodal calls.",
+    "evidenceIds": [
+      "replicate-docs-1",
+      "replicate-docs-3",
+      "replicate-docs-12",
+      "replicate-docs-14",
+      "replicate-docs-15",
+      "replicate-docs-16"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can call vision, audio, or image-generation models beyond text chat on the same platform",
+      "citations": [
+        {
+          "evidenceId": "replicate-docs-1",
+          "quote": "Our community has already published thousands of models that are ready to use in production. You can run these with one line of code."
+        },
+        {
+          "evidenceId": "replicate-docs-3",
+          "quote": "Image models like Flux can generate images of a particular person, object, or style."
+        },
+        {
+          "evidenceId": "replicate-docs-12",
+          "quote": "We also host a wide variety of proprietary models."
+        },
+        {
+          "evidenceId": "replicate-docs-14",
+          "quote": "Create and edit images from text with close instruction following, sharp text rendering, and detailed edits."
+        },
+        {
+          "evidenceId": "replicate-docs-15",
+          "quote": "Google's fast image generation model with conversational editing, multi-image fusion, and character consistency"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "open-weight-catalog-breadth",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Replicate documents a large catalog of community-published open-source models, runnable with one line of code. Public models are billed only for processing time and scale automatically, including down to zero, which fits shared serverless endpoints. However, the evidence never names the specific open-weight LLM families in the story, and the examples shown are mostly image models. Missing for 10: explicit evidence that Llama, Qwen, DeepSeek or GPT-OSS models are in the catalog, confirmation that current LLM families are kept up to date, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "replicate-docs-1",
+      "replicate-docs-12",
+      "replicate-docs-10",
+      "replicate-docs-5",
+      "replicate-docs-6",
+      "replicate-probe-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can choose among a broad catalog of current open-weight model families (Llama, Qwen, DeepSeek, GPT-OSS and peers) on shared serverless endpoints",
+      "citations": [
+        {
+          "evidenceId": "replicate-docs-1",
+          "quote": "Our community has already published thousands of models that are ready to use in production. You can run these with one line of code."
+        },
+        {
+          "evidenceId": "replicate-docs-12",
+          "quote": "Thousands of open-source machine learning models have been contributed by our community and more are added every day."
+        },
+        {
+          "evidenceId": "replicate-docs-10",
+          "quote": "When running or training one of these public models, you only pay for the time it takes to process your request."
+        },
+        {
+          "evidenceId": "replicate-docs-6",
+          "quote": "If you don't get any traffic, we scale down to zero and don't charge you a thing."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "openai-compatible-endpoint",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies: Replicate is a model-hosting API provider, so an OpenAI-compatible endpoint is a fair question to ask. However, nothing in the evidence pack mentions OpenAI SDK compatibility or a drop-in base-URL swap. The evidence covers only general model running, scaling, pricing, and an available Node.js quickstart.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can point an existing OpenAI SDK client at the provider by changing only the base URL and API key",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Replicate presents itself as API-first ('Run AI with an API'). Its docs say running, fine-tuning and deploying custom models all work through code, and there are language quickstarts such as Node.js. Nothing documents full API–UI parity: cost estimates appear on the model's page, metrics and logs are not shown as API-accessible, and no OpenAPI spec was found at any probed path. missing for 10: explicit statement or evidence of full UI/API parity, API access to metrics/logs/cost estimates and account management, a published OpenAPI spec, independent hands-on corroboration.",
+    "evidenceIds": [
+      "replicate-probe-1",
+      "replicate-docs-1",
+      "replicate-probe-2",
+      "replicate-docs-4",
+      "replicate-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "replicate-probe-1",
+          "quote": "Run and fine-tune open-source models. Deploy custom models at scale. All with one line of code."
+        },
+        {
+          "evidenceId": "replicate-docs-1",
+          "quote": "You can run these with one line of code."
+        },
+        {
+          "evidenceId": "replicate-probe-2",
+          "quote": "Run a model from Node.js"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "openness-full-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data export and portability is a fair question for a hosted ML platform, but the evidence pack never documents exporting a user's data (predictions, fine-tunes, weights, logs) in open formats. Cog being open-source is about packaging and deploying custom models onto Replicate, not about exporting account data to leave, so it earns no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can export all of my data in open formats and leave",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "openness-open-license",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Replicate documents Cog, its own first-party packaging tool for deploying custom models, as open source. That makes one component of the product readable, but nothing shows the core hosted platform's source is open. The many open-source models it hosts are community or third-party models, not Replicate's own source, so they earn no credit. Missing for 10: evidence that the core platform/API source is published, the specific open license named, a link to the source repository, and independent corroboration.",
+    "evidenceIds": [
+      "replicate-docs-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can read the product's source under an open license",
+      "citations": [
+        {
+          "evidenceId": "replicate-docs-4",
+          "quote": "you can deploy your own custom models using Cog, our open-source tool for packaging machine learning models"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for an AI-inference platform, but the evidence describes Replicate only as a managed hosted service. Cog is an open-source model-packaging tool, which is a building block rather than a self-hostable Replicate platform, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can self-host the core product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency and region selection is a fair question for a cloud AI inference platform like Replicate, so the axis applies. Nothing in the evidence pack mentions choosing a storage region, data residency, or data location controls. Docs-7 says Replicate handles the infrastructure, but that does not give the user a region choice.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is an AI model hosting and inference platform, so a training-data opt-out is a fair question to ask of it. The evidence pack covers running models, fine-tuning on your own data, deployment, scaling and pricing. None of it documents a policy or control that keeps customer inputs or outputs out of AI model training.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data retention and deletion controls are a fair question for an AI model-hosting API platform like Replicate. Nothing in the evidence pack covers retention periods, deletion of predictions or inputs and outputs, or privacy controls. The items cover model running, fine-tuning, scaling, pricing and logs only.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry or usage tracking is a fair privacy question for a hosted model API platform like Replicate, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out. The only related item describes built-in performance metrics and logs, which is an adjacent observability feature rather than a privacy control.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "prompt-caching-support",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is a model inference platform, so prompt/prefix caching is a fair axis, but the evidence pack never mentions caching of repeated context. Batching, autoscaling and per-second billing are related speed and cost features, not prompt or prefix caching, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ml-engineer, I can benefit from prompt/prefix caching that reduces latency or cost on repeated context",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "serve-custom-weights",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Replicate documents deploying your own custom models with Cog, its open-source packaging tool, and serving them with managed infrastructure (including model weights), autoscaling and scale-to-zero. It also supports fine-tuning open-source models on your own data, with fast-booting fine-tunes billed only for active time. However, the evidence does not explicitly describe uploading arbitrary pre-trained weight files or bringing your own LoRA adapters, and there is no independent or hands-on corroboration. missing for 10: explicit documentation of uploading your own LoRA adapters or raw weight files for serving, step-by-step Cog deployment detail, independent/hands-on corroboration.",
+    "evidenceIds": [
+      "replicate-docs-4",
+      "replicate-docs-7",
+      "replicate-docs-2",
+      "replicate-docs-11",
+      "replicate-probe-1",
+      "replicate-docs-5"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ml-engineer, I can upload and serve my own custom model weights or LoRA adapters",
+      "citations": [
+        {
+          "evidenceId": "replicate-docs-4",
+          "quote": "you can deploy your own custom models using Cog, our open-source tool for packaging machine learning models"
+        },
+        {
+          "evidenceId": "replicate-docs-7",
+          "quote": "We handle API servers, dependencies, model weights, CUDA, GPUs, and batching."
+        },
+        {
+          "evidenceId": "replicate-docs-11",
+          "quote": "For fast booting fine-tunes you'll only be billed for the time the model is active and processing your requests"
+        },
+        {
+          "evidenceId": "replicate-probe-1",
+          "quote": "Run and fine-tune open-source models. Deploy custom models at scale."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "spend-controls-budgets",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence covers pay-per-use billing, per-model cost estimates, scale-to-zero and performance metrics. None of it documents spending caps, hard limits or budget alerts that would stop or flag a runaway workload. These are adjacent billing behaviors, not the capability itself, so the applicable axis earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a founder, I can set spending caps or budget alerts so a runaway workload cannot generate an unbounded bill",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "status-page-uptime",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A public status page with incident history is a fair question for a hosted inference platform like Replicate, so the axis applies. Nothing in the pack mentions a status page or incident history. Built-in metrics and logs [replicate-docs-8] are a different, adjacent feature: they monitor a user's own model, not platform uptime.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a founder, I can check a public status page with incident history before betting production traffic on the platform",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "streaming-responses",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Streaming completions token by token over SSE is a fair question for a model-hosting API like Replicate, so the axis applies. However, nothing in the evidence pack mentions streaming, SSE, or token-by-token output. The docs cover running models, fine-tuning, autoscaling, pricing and image models only.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can stream completions token by token over SSE for responsive user experiences",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "structured-outputs-json-schema",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate is a model-hosting and inference API, so enforcing JSON-schema or grammar-constrained outputs is a fair question for it. However, nothing in the evidence pack mentions structured outputs, JSON schema enforcement, or grammar-constrained decoding. The cited docs cover running models, fine-tuning, deploying with Cog, autoscaling, pricing and image models only.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can enforce structured outputs against a JSON schema (or grammar) so model responses parse reliably",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "tool-calling-fidelity",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Replicate hosts and runs open models, so faithful tool calling on those models is a fair question for this product. However, nothing in the evidence pack mentions function or tool calling, parallel tool calls, or multi-step agent loops; the evidence covers only model hosting, scaling, fine-tuning, pricing and image models.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can rely on faithful function/tool calling — including parallel and multi-step tool use — so agent loops run on open models without breaking",
+      "citations": []
+    }
+  },
+  {
+    "productId": "replicate",
+    "storyId": "transparent-token-pricing",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Replicate's public pricing page says cost estimates are published on each model's page, and that public models are billed for processing time, so per-model pricing is visible without contacting sales. The evidence shows time-based billing and 'estimates' rather than explicit per-token prices for every hosted model. Missing for 10: documented per-token price listings, confirmation that every hosted (including proprietary) model has public prices, exact rather than estimated rates, independent corroboration.",
+    "evidenceIds": [
+      "replicate-docs-9",
+      "replicate-docs-10",
+      "replicate-docs-12"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a founder, I can see public per-token prices for every hosted model without talking to sales",
+      "citations": [
+        {
+          "evidenceId": "replicate-docs-9",
+          "quote": "You'll find estimates for how much any model will cost you on the model's page."
+        },
+        {
+          "evidenceId": "replicate-docs-10",
+          "quote": "When running or training one of these public models, you only pay for the time it takes to process your request."
         }
       ]
     }
