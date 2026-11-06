@@ -6005,7 +6005,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy's documented programmatic surface covers only authentication (`auth`) and read operations (`companyCaptable`, `companyTransactions`). Grant automation is described only as an in-app, few-clicks workflow. Nothing in the evidence shows an API that can create draft securities, or any board-approval queue that agent-drafted grants could land in.",
+    "rationale": "Ledgy's documented GraphQL API exposes only read operations: auth, companyCaptable and companyTransactions for retrieving cap table data. Nothing shows a write or mutation surface for drafting option grants, or any board-approval queue reachable programmatically. Bulk granting is described only as an in-app workflow, which does not count as an agent-accessible programmatic surface.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6018,16 +6018,16 @@
     "productId": "ledgy",
     "storyId": "agent-reconciles-ownership",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Ledgy documents programmatic cap-table retrieval. The companyCaptable operation is authenticated through OAuth 2.0 client_credentials service accounts and supports paging and changed-since deltas, so an agent can pull the current cap table. Nothing in the evidence covers reconciling against a data room or supplying the supporting documents to compare against. Probes also found no OpenAPI spec or llms.txt for agents to consume. Missing for 10: data-room or document export via API for reconciliation, a published machine-readable API schema, agent-oriented docs (llms.txt), and hands-on corroboration of the cap table pull.",
+    "rationale": "Ledgy documents a public GraphQL API with a `companyCaptable` operation. An agent can call it using OAuth 2.0 client-credentials service-account tokens, with paging and delta (changed-rows) retrieval, so pulling the current cap table programmatically is a direct first-party capability. The reconciliation half is not delivered by the product: no data-room integration or document-export API is shown, and probes found no llms.txt, no OpenAPI spec, and no published schema or introspection guidance to help an agent. Missing for 10: a documented data-room reconciliation or document-retrieval capability, a machine-readable schema/llms.txt for agent discovery, a test company or console, and independent hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-6",
-      "ledgy-docs-21",
       "ledgy-docs-1",
       "ledgy-docs-18",
       "ledgy-docs-27",
       "ledgy-docs-30",
+      "ledgy-graphql-reference-20261106",
       "ledgy-probe-1",
       "ledgy-probe-2"
     ],
@@ -6039,6 +6039,10 @@
         {
           "evidenceId": "ledgy-docs-6",
           "quote": "The companyCaptable operation is a Ledgy interface for one specific company. The operation user can retrieve cap table data about the queried company."
+        },
+        {
+          "evidenceId": "ledgy-docs-1",
+          "quote": "Requests are authenticated with an OAuth 2.0 access token belonging to a service account."
         },
         {
           "evidenceId": "ledgy-docs-30",
@@ -6056,8 +6060,8 @@
     "storyId": "agentic-agent-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Ledgy is a SaaS platform with public API docs, so publishing llms.txt or agent-oriented docs is a fair axis. The probe returned HTTP 404 for docs.ledgy.com/llms.txt, and nothing in the pack describes agent-oriented documentation. The OAuth discovery metadata endpoint is an authentication feature, not agent docs, so it earns no credit.",
+    "confidence": "high",
+    "rationale": "An llms.txt file or agent-oriented docs is a fair thing to ask of a SaaS platform with a public API, so the axis applies. A direct probe returned HTTP 404 for docs.ledgy.com/llms.txt, and nothing in the pack describes agent-oriented documentation. The only API docs are a static GraphQL reference with no schema artifact, which does not count as agent-oriented documentation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6072,7 +6076,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is an equity-management SaaS where in-product AI insights are a fair capability to ask about, but the evidence shows no AI-generated insights or suggestions. The closest items are adjacent, non-AI features: automated compliance error flags, configurable reports and one-click financial reports.",
+    "rationale": "Ledgy is an equity-management SaaS, so in-product AI insights are a fair axis. The evidence pack documents reporting, custom views and automated compliance error flags, but none of it mentions AI-generated insights or suggestions. Rule-based error flags and configurable reports are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6087,7 +6091,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows bulk 'automation' of granting, document and signature workflows, done in a few clicks. Those are user-initiated one-off bulk actions, not user-configured automations that run autonomously or on a recurring schedule in the background. HRIS integrations and automated error flags are built-in adjacent features, not user-defined background automations.",
+    "rationale": "Background automation is a fair question for an equity-management SaaS, so the axis applies. The evidence only shows bulk, user-triggered workflow automation (granting, documents, signatures), HRIS data syncs, automated error flags, and API service accounts with delta queries. None of these documents user-configurable automations that run autonomously on a schedule or trigger. Bulk one-off actions are not recurring background jobs, and the API is a developer building block, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -6102,7 +6106,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a plausible capability for an equity-management SaaS like Ledgy, so the axis applies. However, nothing in the evidence pack mentions an AI assistant or any way to delegate tasks to one. The bulk workflow automation and automated error flags are rule-based features, not an AI assistant, so they earn no credit.",
+    "rationale": "Ledgy is an equity-management SaaS, and a built-in AI assistant is a plausible feature for this kind of product, so the axis applies. Nothing in the evidence pack mentions an in-product AI assistant or any way to delegate tasks to one. The automation evidence covers bulk granting, signature workflows and one-click reports, which are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6117,14 +6121,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ledgy documents a machine-to-machine API. Service accounts use the OAuth 2.0 client_credentials grant, which allows non-interactive, headless access suitable for automated integrations. The documented operations (auth, companyCaptable, companyTransactions with paging and incremental deltas) are read-oriented, and probes found no OpenAPI spec. missing for 10: CLI or CI-specific tooling/docs, documented write operations for automation, published OpenAPI spec, independent hands-on corroboration.",
+    "rationale": "Ledgy offers a public GraphQL API with service accounts that get tokens through the OAuth 2.0 client_credentials grant, which supports non-interactive, headless automation such as incremental cap-table and transaction syncs. However, the documented operations are mainly read-only (auth, companyCaptable, companyTransactions), and there is no CLI, no CI guidance, no test company or console, and no schema artifact. Missing for 10: CLI or official CI integration, write/mutation operations for automating workflows, sandbox/test environment, schema/OpenAPI artifact, independent hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-1",
       "ledgy-docs-18",
       "ledgy-docs-27",
-      "ledgy-docs-4",
       "ledgy-docs-30",
-      "ledgy-docs-6",
+      "ledgy-graphql-reference-20261106",
       "ledgy-probe-2"
     ],
     "support": {
@@ -6141,12 +6144,12 @@
           "quote": "Exchange the credentials for an access token using the OAuth 2.0 `client_credentials` grant"
         },
         {
-          "evidenceId": "ledgy-docs-4",
-          "quote": "the credentials are scoped per integration, the tokens are short-lived, and revocation takes effect immediately."
-        },
-        {
           "evidenceId": "ledgy-docs-30",
           "quote": "companyTransactions and companyCaptable can return a company's rows in pages, and only the rows that changed since an earlier request."
+        },
+        {
+          "evidenceId": "ledgy-graphql-reference-20261106",
+          "quote": "Ledgy documents a public GraphQL API"
         }
       ]
     }
@@ -6157,7 +6160,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is an equity-management SaaS. A product of this kind could plausibly embed an AI assistant that consumes external MCP tools, so the axis applies. The evidence pack only documents an OAuth service-account API, cap-table operations and HRIS integrations. Nothing shows Ledgy can connect to or use MCP servers.",
+    "rationale": "Ledgy is an equity-management SaaS, and such a product could plausibly embed an AI assistant that consumes external MCP servers, so the axis applies. The evidence pack documents only a GraphQL API with OAuth service accounts, HRIS integrations and equity workflows. Nothing shows an AI agent or MCP-client capability that can plug in external MCP servers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6171,8 +6174,8 @@
     "storyId": "agentic-mcp-server",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Ledgy is an equity-management SaaS, so publishing an official MCP server is a fair question for it. The evidence pack documents only an OAuth 2.0 service-account API with operations such as auth, companyCaptable and companyTransactions, and never mentions an MCP server. A REST/GraphQL-style API is a developer building block for constructing an MCP server, not the capability itself, so it earns no credit.",
+    "confidence": "medium",
+    "rationale": "Ledgy is a SaaS equity-management platform, so an official MCP server is a fair question for it. The pack documents only a GraphQL API with OAuth service-account authentication, and it contains no evidence of an official MCP server. The API is a developer building block, not the MCP capability itself, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6187,7 +6190,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is an equity-management SaaS, so a natural-language or AI-assistant interface is a fair question for this kind of product. The evidence only documents an OAuth-authenticated API (auth, companyCaptable, companyTransactions operations) and click-driven UI features; nothing shows the product accepting natural-language commands. The probes found no llms.txt and no OpenAPI spec, which is further sign of no AI-facing surface.",
+    "rationale": "Ledgy is an equity-management SaaS that could plausibly ship a natural-language assistant, so the axis applies. The evidence covers only a GraphQL API with OAuth service accounts, UI features such as report building and bulk granting, and probes showing no llms.txt or OpenAPI spec. Nothing shows the product accepting natural-language commands.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6202,7 +6205,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is an equity-management SaaS with a documented OAuth service-account API, so an official CLI is a fair question to ask. However, nothing in the evidence pack mentions a CLI tool, command-line client or terminal workflow. The API operations (auth, companyCaptable, companyTransactions) are developer building blocks, not a CLI, so they earn no credit.",
+    "rationale": "Ledgy is an equity-management SaaS that could plausibly ship an official CLI, so the axis applies. The evidence shows only a GraphQL API with OAuth service-account tokens and inline curl examples, which is a developer building block rather than an official CLI. No first-party CLI tool is documented anywhere in the pack.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6217,14 +6220,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ledgy documents a public API with OAuth 2.0 client_credentials service accounts and named operations (auth, companyCaptable, companyTransactions) that support paging and change-only retrieval. The documented operations only read data, so 'driving' the product (granting, vesting, orders) via API is unevidenced, and probes found no OpenAPI spec or llms.txt. missing for 10: documented write/mutation operations to drive workflows, machine-readable API spec (OpenAPI), independent or hands-on corroboration.",
+    "rationale": "Ledgy documents a public GraphQL API at app.ledgy.com/graphql. It uses OAuth 2.0 client_credentials service-account tokens and has documented operations: auth, companyCaptable, and companyTransactions with paging and delta sync. However, the evidenced operations are read-oriented (retrieving cap table and transaction data), so driving the product's workflows programmatically is not shown, and the reference lacks machine-readable schema artifacts. Missing for 10: documented write operations or mutations for driving workflows, a schema/SDL or OpenAPI download, introspection guidance, a sandbox or test company, a versioning policy, and independent hands-on corroboration.",
     "evidenceIds": [
+      "ledgy-graphql-reference-20261106",
       "ledgy-docs-1",
       "ledgy-docs-18",
-      "ledgy-docs-21",
-      "ledgy-docs-22",
-      "ledgy-docs-30",
       "ledgy-docs-27",
+      "ledgy-docs-21",
+      "ledgy-docs-30",
       "ledgy-probe-2"
     ],
     "support": {
@@ -6233,8 +6236,12 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "ledgy-docs-1",
-          "quote": "Requests are authenticated with an OAuth 2.0 access token belonging to a service account."
+          "evidenceId": "ledgy-graphql-reference-20261106",
+          "quote": "Ledgy documents a public GraphQL API (\"Ledgy's GraphQL API Reference\", endpoint https://app.ledgy.com/graphql, OAuth 2.0 service-account tokens)"
+        },
+        {
+          "evidenceId": "ledgy-docs-18",
+          "quote": "Exchange the credentials for an access token using the OAuth 2.0 `client_credentials` grant"
         },
         {
           "evidenceId": "ledgy-docs-21",
@@ -6243,10 +6250,6 @@
         {
           "evidenceId": "ledgy-docs-30",
           "quote": "companyTransactions and companyCaptable can return a company's rows in pages, and only the rows that changed since an earlier request."
-        },
-        {
-          "evidenceId": "ledgy-docs-18",
-          "quote": "Exchange the credentials for an access token using the OAuth 2.0 `client_credentials` grant"
         }
       ]
     }
@@ -6257,12 +6260,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ledgy lets admins create dedicated API service accounts that authenticate via the OAuth 2.0 client_credentials grant. The docs say these credentials are 'scoped per integration', tokens are short-lived (24h), and revocation is immediate, so per-agent credentials can be issued and killed. No permission-level scoping is documented, such as read-only access, per-operation or per-company limits, or role assignment for a service account, so least-privilege is only partly evidenced. Missing for 10: documented fine-grained permission scopes or roles for service accounts, least-privilege configuration options, independent or hands-on corroboration.",
+    "rationale": "Ledgy lets admins create dedicated API service accounts for an integration such as an agent. These authenticate via OAuth 2.0 client_credentials with short-lived (24h) tokens, and the docs say the credentials are 'scoped per integration' and can be revoked immediately. However, nothing documents choosing permission scopes, read-only access, or per-operation or per-company restrictions, so least-privilege scoping depth is unproven. Missing for 10: documented selectable permission scopes or roles for service accounts, read-only or operation-level restriction, independent or hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-4",
       "ledgy-docs-27",
-      "ledgy-docs-1",
       "ledgy-docs-18",
+      "ledgy-docs-1",
       "ledgy-docs-3",
       "ledgy-docs-29"
     ],
@@ -6280,8 +6283,8 @@
           "quote": "Create one in the Ledgy app under Company Settings → General → API service accounts"
         },
         {
-          "evidenceId": "ledgy-docs-1",
-          "quote": "Requests are authenticated with an OAuth 2.0 access token belonging to a service account."
+          "evidenceId": "ledgy-docs-18",
+          "quote": "Exchange the credentials for an access token using the OAuth 2.0 `client_credentials` grant"
         },
         {
           "evidenceId": "ledgy-docs-3",
@@ -6296,7 +6299,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a Ledgy API with OAuth 2.0 service-account authentication and operations such as auth, companyCaptable and companyTransactions. Nothing in the pack mentions an official SDK or client library in any language. Raw API access is only a building block for constructing a client, not an official SDK, and the probes found no OpenAPI spec that could generate one.",
+    "rationale": "Ledgy documents a public GraphQL API with OAuth 2.0 service-account authentication and inline curl examples, but nothing in the evidence mentions an official SDK or client library in any language. A raw API is a developer building block, not an SDK. The axis applies to a SaaS platform like this, so the absence of evidence is 'none'.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6311,7 +6314,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is a SaaS equity-management platform with an API, so a webhooks story is a fair question for it. The evidence documents only OAuth service-account authentication and pull-based query operations. The closest item is delta retrieval of changed rows since an earlier request, which is polling rather than registrable outbound HTTP callbacks, so it earns no credit.",
+    "rationale": "Ledgy is a SaaS equity-management platform with a public GraphQL API, so webhooks are a fair axis. The evidence documents no registrable outbound HTTP callbacks. The closest feature is the ability to fetch only rows changed since an earlier request, which is pull-based incremental sync rather than event subscription.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6325,11 +6328,11 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Ledgy has a documented API: OAuth 2.0 service accounts and operations such as auth, companyCaptable and companyTransactions. Nothing in the evidence shows an interactive API reference, try-it console or runnable examples, and probes for an OpenAPI spec all returned 404. The axis applies to an API-bearing SaaS product, so the lack of evidence makes this none rather than na.",
+    "confidence": "high",
+    "rationale": "Ledgy publishes a GraphQL API reference, but it is a static SpectaQL-generated page with copy-paste curl examples. The evidence explicitly states there is no console and no test company, so nothing in the reference is interactive or runnable in place. A static reference is an adjacent feature and does not deliver the interactive, runnable reference the story asks for.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": []
@@ -6340,8 +6343,8 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Ledgy has a documented API with named operations such as auth, companyCaptable and companyTransactions, so a downloadable machine-readable spec is a fair question. No evidence shows one is published, and probes of the common OpenAPI/Swagger paths all returned 404. The OAuth authorization-server metadata endpoint describes authentication only, not the API, so it is adjacent and earns no credit.",
+    "confidence": "high",
+    "rationale": "Ledgy documents a public GraphQL API, but the reference explicitly states no schema artifact, SDL download, or introspection guidance is published. Probes of common OpenAPI/Swagger paths all returned 404. The OAuth authorization-server metadata endpoint describes authentication, not the API surface, so it does not count as an API spec.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6356,7 +6359,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is an equity-management SaaS with a documented API, so a sandbox or test environment is a fair question to ask of it. The evidence pack never mentions a sandbox, a test company, or any non-production environment. Per-integration service-account scoping and revocable tokens are access-control features, not isolation from production data, so they earn no credit.",
+    "rationale": "Ledgy documents a public GraphQL API with OAuth service accounts, so a sandbox or test environment is a fair question for this product. The evidence shows no sandbox, test company, or isolated environment, and the API reference summary explicitly says there is \"no console, no test company.\" Per-integration service accounts and permissions are access controls, not isolation from production data, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6371,7 +6374,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy documents an API with OAuth service accounts and operations such as companyCaptable and companyTransactions, so this axis applies. However, nothing in the evidence describes API versioning or a deprecation policy. The note advising API-key users to migrate to service accounts is a credential migration recommendation, not a versioning or deprecation policy.",
+    "rationale": "Ledgy documents a public GraphQL API, so API versioning and a deprecation policy are fair questions to ask. The evidence explicitly says there is no versioning page. The only lifecycle text is a note on migrating legacy API keys to service accounts, which is a credential change, not a deprecation policy for API versions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6383,19 +6386,18 @@
   {
     "productId": "ledgy",
     "storyId": "asc-718-expense-report",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Ledgy's financial reporting module generates equity accounting reports under US GAAP, the framework that contains ASC 718. The reports include tranche-level detail, configurable settings and overrides, and access controls for collaborating with finance teams. Separate equity-compliance material documents one-click reports and exports. Missing for 10: explicit naming of ASC 718 expense reports, documentation of audit-ready outputs or auditor handoff, and independent or hands-on corroboration.",
+    "rationale": "Ledgy's own financial reporting module claims to generate equity accounting reports under US GAAP with tranche-level detail, and it offers configurable reporting settings and exports. That plausibly covers ASC 718 expense reporting. However, ASC 718 is never named, and nothing shows the output is audit-ready or is used by accountants with auditors. The only evidence is vendor marketing copy. Missing for 10: explicit ASC 718 expense report documentation, evidence of an audit-ready output format or auditor handoff, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-13",
       "ledgy-docs-32",
-      "ledgy-docs-33",
       "ledgy-docs-24"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ops user, I can produce ASC 718 stock-based compensation expense reports my accountants can hand to auditors",
       "citations": [
         {
@@ -6405,10 +6407,6 @@
         {
           "evidenceId": "ledgy-docs-32",
           "quote": "Select your ideal financial reporting settings, including custom overrides and preferred aggregate grouping, making reports that work for your business."
-        },
-        {
-          "evidenceId": "ledgy-docs-33",
-          "quote": "Control who can access financial reporting to collaborate securely across teams."
         },
         {
           "evidenceId": "ledgy-docs-24",
@@ -6423,7 +6421,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ledgy's marketing pages say users can grant share awards in bulk and run granting, document and signature workflows in bulk. That is a first-party bulk capability, but only for equity-grant workflows, and it is described in marketing copy without operational detail. The documented API surface (auth, companyCaptable, companyTransactions with paging and delta reads) appears read-only, with no bulk write or mutation operations. missing for 10: programmatic/API bulk operations an AI-native user could drive, bulk actions beyond grants/documents/signatures, detailed docs on bulk limits or behavior, independent or hands-on corroboration.",
+    "rationale": "Ledgy's marketing pages say equity grants, documents and signature workflows can be handled in bulk, with share awards created, signed and shared \"in bulk\" in a few clicks. That is a real first-party bulk capability. However, it appears limited to the granting workflow, and the documented GraphQL API exposes only read operations (auth, companyCaptable, companyTransactions with paging), so there is no evidenced programmatic bulk mutation for AI-native automation. Missing for 10: bulk operations beyond grants/documents/signatures, API-level bulk write endpoints, in-depth docs on bulk limits and behavior, independent or hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-10",
       "ledgy-docs-12"
@@ -6434,12 +6432,12 @@
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": [
         {
-          "evidenceId": "ledgy-docs-12",
-          "quote": "Grant share awards one by one, or in bulk, creating, signing and sharing contracts in just a few clicks."
-        },
-        {
           "evidenceId": "ledgy-docs-10",
           "quote": "Automate your granting, document and signature workflows in bulk to make expansion easy."
+        },
+        {
+          "evidenceId": "ledgy-docs-12",
+          "quote": "Grant share awards one by one, or in bulk, creating, signing and sharing contracts in just a few clicks."
         }
       ]
     }
@@ -6450,7 +6448,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows user-definable rules that fire actions automatically on events. Bulk workflow automation, automated compliance error flags, HRIS syncing and API delta queries are adjacent features or developer building blocks, not an event-triggered rules engine.",
+    "rationale": "The evidence pack documents no user-definable rule engine or event-triggered actions. The automation claims cover bulk granting, document and signature workflows, and automated compliance error flags, which are adjacent features rather than configurable event-to-action rules. The API's changed-rows retrieval is a polling building block, not a trigger mechanism.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6465,7 +6463,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is an equity-management SaaS where scheduled reports or recurring syncs are a fair question, but the evidence shows no user-configurable recurring job or workflow scheduler. 'Automate ... workflows in bulk' describes one-off bulk actions, not a recurring schedule. 'Vesting schedules' are equity terms rather than job scheduling, and the API's changed-rows-since-last-request paging is only a building block a developer could poll on their own schedule.",
+    "rationale": "The evidence pack never documents a way to schedule recurring jobs or workflows in Ledgy. 'Automate your granting, document and signature workflows in bulk' describes one-off bulk actions, not a recurring schedule. Vesting schedules are an equity concept rather than job scheduling, and the incremental API pagination is only a building block a user could drive from their own external scheduler.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6480,7 +6478,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy markets equity workflow automation, so versioning, reviewing, and rolling back automations is a fair question for it. However, the evidence pack documents no version history, change review, or rollback for automations or workflows. The only relevant evidence is generic bulk-automation claims and API credential rotation, which is an adjacent feature and does not count toward this story.",
+    "rationale": "Ledgy documents bulk granting, document and signature workflow automation, so the automation-depth axis applies. However, no evidence shows that these automations can be versioned, reviewed before change, or rolled back. The only lifecycle text concerns credential rotation and revocation and a legacy API-key deprecation note, which are adjacent controls and not automation version control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6495,7 +6493,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows signature workflows only for equity grant contracts (docs-10, docs-12) and documents attached to imported historical transactions (docs-7). Nothing documents drafting board consents or stockholder approvals, routing those resolutions for e-signature, or linking approvals to the transactions they authorize. Grant-contract signing is an adjacent feature and does not earn credit for this governance story.",
+    "rationale": "The evidence pack never mentions drafting board consents or stockholder approvals, or routing them for signature. The signature workflows it documents are for equity grant contracts (docs-10, docs-12), and document attachment covers importing historical transactions (docs-7). Both are adjacent features, not the governance-approval workflow this story asks for, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -6510,7 +6508,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Ledgy's own product pages say share awards can be granted \"one by one, or in bulk\" with contracts created, signed and shared in a few clicks. They also say granting workflows can be automated in bulk, and that historical transaction data can be brought into the cap table with documents attached. These are marketing-level claims only, with no detail on how the bulk upload works. Missing for 10: documentation of the bulk upload mechanism (spreadsheet/CSV template, validation, error handling), explicit confirmation that historical transactions are imported in batch rather than one by one, and independent or hands-on corroboration.",
+    "rationale": "Ledgy's own marketing pages say share awards can be granted in bulk as well as one by one, and that granting workflows can be automated in bulk; it also claims historical transaction data can be brought into the cap table. Evidence is limited to marketing copy, with no detail on how the bulk upload works. Missing for 10: documentation of the bulk upload mechanism (file template, validation, error handling), explicit confirmation that historical transactions can be imported in batches, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-12",
       "ledgy-docs-10",
@@ -6541,12 +6539,13 @@
     "storyId": "cap-table-full-export",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Ledgy documents its own data retrieval: the companyCaptable and companyTransactions API operations return a company's cap table and transaction rows in pages. Its marketing also mentions 'custom views and exports' for compliance reports. None of this confirms Excel/CSV export of the complete cap table and full transaction history from the app. missing for 10: explicit Excel/CSV export formats, documented full cap-table and transaction-history file export in the UI, confirmation that export is available at any time and on any plan, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Ledgy documents its own data-access paths for this story: 'custom views and exports' in the product, and API operations (companyCaptable, companyTransactions) that return a company's full cap table and transaction rows in pages. This shows the data can be taken out, but no Excel/CSV or other open file format is documented, and the export mention is tied to compliance reports, not the whole cap table and history. Missing for 10: explicit Excel/CSV export of the complete cap table, a documented full transaction-history file export, a statement of on-demand export at any time with no lock-in, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "ledgy-docs-24",
       "ledgy-docs-30",
-      "ledgy-docs-21",
-      "ledgy-docs-24"
+      "ledgy-docs-6",
+      "ledgy-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -6554,16 +6553,16 @@
       "subject": "As an ops user, I can export my complete cap table and full transaction history to open formats (Excel/CSV) at any time — my ownership data is never held hostage",
       "citations": [
         {
+          "evidenceId": "ledgy-docs-24",
+          "quote": "One-click equity compliance reports, custom views and exports, make meeting compliance deadlines a breeze."
+        },
+        {
           "evidenceId": "ledgy-docs-30",
           "quote": "companyTransactions and companyCaptable can return a company's rows in pages, and only the rows that changed since an earlier request."
         },
         {
-          "evidenceId": "ledgy-docs-21",
+          "evidenceId": "ledgy-docs-6",
           "quote": "The operation user can retrieve cap table data about the queried company."
-        },
-        {
-          "evidenceId": "ledgy-docs-24",
-          "quote": "One-click equity compliance reports, custom views and exports, make meeting compliance deadlines a breeze."
         }
       ]
     }
@@ -6574,7 +6573,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Ledgy's cap-table page claims you can bring historical transaction data into the cap table with documents attached, which loosely covers importing data and linking it to source documents. Nothing documents a guided import flow, spreadsheet or other-platform migration paths, import validation, or a reconciliation workflow. The automated error flags are described for compliance risks, not import validation, so they earn no credit. Missing for 10: guided import wizard, spreadsheet/competitor-platform import support, import validation checks, reconciliation against source documents, independent or hands-on corroboration.",
+    "rationale": "Ledgy's marketing says users can bring historical transaction data into the cap table with documents attached, which loosely touches import and source-document traceability. Nothing in the pack describes a guided spreadsheet or cross-platform migration flow, import validation, or reconciliation. The compliance error flags concern compliance risks, not migration validation, so they earn no credit. Missing for 10: guided import wizard from spreadsheets or other platforms, import validation/error checking, reconciliation against source documents, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-7"
     ],
@@ -6596,11 +6595,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Ledgy documents a cap table product: you can import historical transactions with attached documents, build reports, issue share awards and option grants with vesting schedules, and generate IFRS 2/GAAP equity reports suitable for auditors. The companyCaptable API also exposes cap table data. Missing for 10: explicit evidence for share classes, share certificates and SAFEs/convertibles; investor-facing access to the cap table; independent or hands-on corroboration that it works as a live single source of truth.",
+    "rationale": "Ledgy documents a core cap table product: historical transactions can be imported with documents attached, reports are configurable, and the companyCaptable and companyTransactions API operations expose the data. It also documents option and share-award granting, vesting, and IFRS 2/GAAP equity reporting relevant to auditors. However, the evidence never mentions share classes, share certificates, SAFEs/convertibles, or investor-facing access to the live record. Missing for 10: explicit share class and certificate management, SAFE/convertible instrument support, investor/auditor access to the cap table as a shared source of truth, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-7",
       "ledgy-docs-8",
       "ledgy-docs-12",
+      "ledgy-docs-10",
       "ledgy-docs-11",
       "ledgy-docs-13",
       "ledgy-docs-6",
@@ -6634,12 +6634,11 @@
     "productId": "ledgy",
     "storyId": "custom-vesting-schedules",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Ledgy's own marketing says admins can create custom vesting schedules and vary them by group, so the core capability exists. Nothing in the evidence describes cliffs, milestone-based vesting, exit acceleration or automatic vested-vs-unvested tracking. Tranche-level detail in financial reports only hints at tracking. Missing for 10: documented cliff configuration, milestone/performance vesting, acceleration on exit (single/double trigger), explicit automatic vested vs unvested tracking, in-depth docs or hands-on corroboration.",
+    "rationale": "Ledgy's own marketing says admins can create custom vesting schedules and vary them by group, which directly addresses the core of the story. The claim is a single thin marketing line with no documented detail on schedule types or automatic tracking. missing for 10: documented cliff support, milestone-based vesting, acceleration-on-exit triggers, automatic vested vs unvested tracking, in-depth docs, independent or hands-on corroboration.",
     "evidenceIds": [
-      "ledgy-docs-11",
-      "ledgy-docs-13"
+      "ledgy-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -6649,10 +6648,6 @@
         {
           "evidenceId": "ledgy-docs-11",
           "quote": "Switch up vesting schedules for different groups, or create custom vesting to reflect your needs."
-        },
-        {
-          "evidenceId": "ledgy-docs-13",
-          "quote": "with tranche-level details in one click"
         }
       ]
     }
@@ -6663,13 +6658,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers in-platform signing of share-award contracts and grant documents, and attaching documents to historical transactions. It never mentions electronic share certificates, legally binding signatures on them, or certificates linked to specific cap table entries. Contract signing for equity awards is an adjacent feature, so it earns no credit toward this story.",
-    "evidenceIds": [],
+    "rationale": "The evidence pack never mentions electronic share certificates. The closest items are in-platform signing of share-award contracts and grants, and documents attached to historical cap-table transactions. These are adjacent features, not certificate issuance with legal signature and a permanent link to the cap-table entry.",
+    "evidenceIds": [
+      "ledgy-docs-12",
+      "ledgy-docs-7"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a founder, I can issue electronic share certificates that are legally signed in-platform and permanently linked to the cap table entry they represent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "ledgy-docs-12",
+          "quote": "Grant share awards one by one, or in bulk, creating, signing and sharing contracts in just a few clicks."
+        },
+        {
+          "evidenceId": "ledgy-docs-7",
+          "quote": "Bring historical transaction data into your cap table, with documents attached for maximum visibility and accuracy."
+        }
+      ]
     }
   },
   {
@@ -6678,10 +6685,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only adjacent pieces: documents attached to cap table transactions, custom report views, and segmented permissions for internal team members. Nothing documents a shareable, permissioned data room for external counsel or investors that combines cap table views with underlying documents, so these adjacent features earn no credit.",
+    "rationale": "The evidence pack never mentions a data room or any way to share cap table views and documents with external counsel or investors. What it does show is adjacent: documents attached to historical transactions, permissions segmented for internal team members, custom views and exports. None of that is the permissioned, diligence-ready external sharing the story asks for.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an ops user, I can share a permissioned, diligence-ready data room — cap table views plus underlying documents — with counsel and investors",
       "citations": []
@@ -6693,10 +6700,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is an equity management product, so an employee-facing equity portal is a fair question to ask of it. The evidence never documents employees viewing their own grants, vesting progress, strike price, or outcome scenarios. The only participant-facing evidence covers tracking market orders and receiving payouts on the trading platform, which is an adjacent feature and earns no credit for this story.",
+    "rationale": "The evidence shows employee-facing trading and settlement features: participants can track and submit market orders and receive payouts. That is a different capability from a personal portal showing grants, vesting progress, strike price and scenario-based equity value. None of those story elements is documented, so this adjacent feature earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an employee, I get my own portal showing my grants, vesting progress, strike price, and what my equity could be worth under different outcomes",
       "citations": []
@@ -6706,16 +6713,15 @@
     "productId": "ledgy",
     "storyId": "equity-api-read",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Ledgy documents an OAuth-authenticated API with a companyCaptable operation that retrieves a company's cap table data, with pagination and changed-since retrieval. The docs never say which entities that cap table data includes, so the full-table scope of the story is unconfirmed. Missing for 10: documented coverage of stakeholders, share classes, securities and vesting states in the API response, a published schema or OpenAPI spec (probes returned 404), and independent or hands-on corroboration.",
+    "rationale": "Ledgy documents a public GraphQL API authenticated with OAuth 2.0 service-account tokens. Its `companyCaptable` operation retrieves a company's cap table data, with pagination and changed-since delta queries, so the core of the story is directly supported. However, the evidence never states that the returned data includes stakeholders, share classes, securities, or vesting states, and no downloadable schema or introspection guidance is published to confirm field coverage. Missing for 10: documented field-level coverage of stakeholders, share classes, securities and vesting states; a published schema/SDL artifact; independent or hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-21",
       "ledgy-docs-30",
+      "ledgy-graphql-reference-20261106",
       "ledgy-docs-1",
-      "ledgy-docs-18",
-      "ledgy-docs-27",
-      "ledgy-probe-2"
+      "ledgy-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -6743,7 +6749,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents an audit log that records who changed the cap table, what changed, when, or under what authorization. The nearby features are different capabilities: importing historical transactions, API delta sync of changed rows, and permission segmentation. None of them is a change audit trail, so they earn no credit.",
+    "rationale": "An audit log of cap-table changes is a fair axis for a cap-table platform, but the evidence never documents one recording who changed what, when, and under what authorization. The nearest items are adjacent and earn no credit: API delta sync of changed rows, historical transaction import with attached documents, and tracking of market orders.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6758,7 +6764,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is an equity management platform, so explaining equity to employees is a fair question to ask of it. The evidence pack only shows admin-facing reporting (global mobility tax reporting, compliance reports) and employee order submission and payouts. Nothing documents plain-language explanations of tax treatment, exercise windows or dilution for employees, and adjacent trading features do not count.",
+    "rationale": "Ledgy is an equity management platform, so employee-facing plain-language explanations of equity are a fair question for it. The pack only documents admin-side features: cap table reporting, compliance and global-mobility tax reporting, financial reporting, and trading and settlement. Nothing shows employees getting plain-language explanations of tax treatment, exercise windows or dilution.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6773,7 +6779,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Exit waterfall modeling is a fair question for an equity management and cap table platform like Ledgy, so the axis applies. However, nothing in the evidence pack mentions exit scenarios, waterfall calculations, liquidation preferences, participation, or proceeds per share class or stakeholder. The cap table reporting and the cap table API cover adjacent features, not this capability.",
+    "rationale": "Exit waterfall modeling is a fair question for an equity and cap table platform like Ledgy, so the axis applies. However, nothing in the pack mentions exit scenarios, waterfall calculations, liquidation preferences or participation. Cap table reporting and custom views are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6786,9 +6792,9 @@
     "productId": "ledgy",
     "storyId": "hris-payroll-sync",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Ledgy's own marketing says it offers 70+ HRIS integrations that keep data accurate, and that custom fields can be synced in one click, so a first-party HRIS sync exists. The evidence never says which systems are covered, or that hires and terminations update stakeholder and equity records automatically. Missing for 10: named support for Gusto/Rippling or a payroll system, documented automatic flow of new hires and terminations into stakeholder records, sync frequency and field-mapping docs, independent or hands-on corroboration.",
+    "rationale": "Ledgy's own marketing claims 70+ HRIS integrations that keep large volumes of data accurate, plus one-click syncing of custom fields, so the core capability exists first-party. The depth is unproven: nothing names Gusto or Rippling, and nothing confirms that new hires and terminations flow automatically into stakeholder or equity records. Missing for 10: named HRIS/payroll connectors (e.g. Gusto, Rippling), documented automatic stakeholder creation for new hires, termination handling affecting vesting or equity records, sync frequency/setup docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-9",
       "ledgy-docs-31"
@@ -6815,7 +6821,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions HMRC/EMI valuations, country-specific option plans, or non-US valuation support. The related items do not deliver this story: UK GAAP/IFRS 2 accounting reports, global mobility tax reporting, and international payouts are adjacent features, not valuation or scheme support.",
+    "rationale": "The evidence pack never mentions HMRC or EMI valuations, or country-specific option plans and schemes. The nearest items are adjacent features, not this capability: UK GAAP/IFRS 2 financial reporting is equity accounting, and global mobility reporting tracks cross-border tax.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6830,7 +6836,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions an investor-facing portal or structured investor updates. The closest items are adjacent and earn no credit: segmented permissions for team members, a trading platform for employee participants, and a companyCaptable API that a developer could use to build such a portal. The axis applies to a cap table management product, so the lack of evidence makes this 'none' rather than 'na'.",
+    "rationale": "Ledgy is an equity and cap-table platform, so an investor portal is a fair question to ask of it. However, the evidence never mentions investor-facing portal views of holdings or structured investor updates. The closest items do not qualify: employee trading participant views, team-member permission segmentation, and a cap-table API are adjacent features or developer building blocks, not an investor portal.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6845,7 +6851,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions outside counsel, law-firm roles, or external advisor access for preparing documents and updating records. The only related material is generic permission segmentation for team members and access control for financial reporting. These are adjacent controls, not the law-firm collaboration capability the story asks for.",
+    "rationale": "Ledgy is an equity and cap-table platform, so external counsel collaboration is a fair question for it. The evidence only shows generic permission segmentation for team members and access control on financial reporting. Nothing documents law-firm or outside-counsel roles, or counsel preparing documents and updating records directly in the platform. Those permission controls are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6857,33 +6863,16 @@
   {
     "productId": "ledgy",
     "storyId": "online-option-exercise",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Ledgy's trading and settlement platform lets participants submit market orders online with 'sell to cover', 'sell all' or 'hold all' choices. These are typical option-exercise methods, and Ledgy connects the nominee, broker and paying agent. However, the evidence never explicitly mentions exercising options, paying the exercise price, or issuing the resulting shares. missing for 10: explicit option-exercise workflow, exercise-price payment flow, share issuance and cap-table update after exercise, paperless/e-signature exercise confirmation, independent corroboration.",
-    "evidenceIds": [
-      "ledgy-docs-35",
-      "ledgy-docs-26",
-      "ledgy-docs-16"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence never describes employees exercising vested options online. There is no documented strike-price payment and no resulting share issuance. The closest material is the trading-and-settlement module, where participants submit market orders with 'sell to cover' or 'hold all' choices and receive payouts via Airwallex. That is adjacent trading and settlement functionality, not a documented paperless exercise workflow, so it earns no credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an employee, I can exercise my vested options online — including payment and the resulting share issuance — without paper forms",
-      "citations": [
-        {
-          "evidenceId": "ledgy-docs-35",
-          "quote": "submit market orders and choose between ‘sell to cover’, ‘sell all’, ‘hold all’, or other options."
-        },
-        {
-          "evidenceId": "ledgy-docs-26",
-          "quote": "One trading and settlement platform that enables participants and admins to keep track of past and current market orders from the moment they’re submitted, to the moment the money lands in their account."
-        },
-        {
-          "evidenceId": "ledgy-docs-16",
-          "quote": "Ledgy connects nominee, broker, and paying agent, all in one place to streamline global employee trading."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -6892,15 +6881,13 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Ledgy documents its own API with service-account OAuth 2.0 auth. The only operations shown are read operations: `auth`, `companyCaptable` and `companyTransactions`, which retrieve cap table and transaction data with paging and incremental sync. The UI's write workflows (granting awards, vesting changes, report building, compliance, trading and settlement) have no documented API equivalent, and no OpenAPI spec was found. Missing for 10: API write operations for grants, vesting, documents and signatures, reporting, compliance and trading; a published API reference or OpenAPI spec showing full UI parity; independent corroboration.",
+    "rationale": "Ledgy documents its own public GraphQL API, authenticated with OAuth service-account tokens. The documented operations are only auth, companyCaptable and companyTransactions, all reads of basic company, cap table and transaction data. UI capabilities such as bulk granting, contract signing, vesting changes, financial reporting, compliance and trading orders have no documented API equivalent, and no OpenAPI or schema artifact was found. Missing for 10: write/mutation operations, API coverage of granting/vesting/reporting/trading workflows, a published schema or SDL showing full surface parity, independent corroboration of UI-API parity.",
     "evidenceIds": [
-      "ledgy-docs-1",
-      "ledgy-docs-18",
+      "ledgy-graphql-reference-20261106",
       "ledgy-docs-21",
       "ledgy-docs-22",
       "ledgy-docs-30",
       "ledgy-docs-12",
-      "ledgy-docs-35",
       "ledgy-probe-2"
     ],
     "support": {
@@ -6909,16 +6896,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "ledgy-graphql-reference-20261106",
+          "quote": "Ledgy documents a public GraphQL API"
+        },
+        {
           "evidenceId": "ledgy-docs-21",
-          "quote": "The `companyCaptable` operation is a Ledgy interface for one specific company. The operation user can retrieve cap table data about the queried company."
+          "quote": "The operation user can retrieve cap table data about the queried company."
         },
         {
           "evidenceId": "ledgy-docs-30",
           "quote": "companyTransactions and companyCaptable can return a company's rows in pages, and only the rows that changed since an earlier request."
-        },
-        {
-          "evidenceId": "ledgy-docs-1",
-          "quote": "Requests are authenticated with an OAuth 2.0 access token belonging to a service account."
         }
       ]
     }
@@ -6929,11 +6916,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Ledgy documents its own data-out paths: compliance reports with custom views and exports, plus API operations (companyCaptable, companyTransactions) that return a company's cap table and transaction rows in pages. Nothing shows a complete account-wide export, named open file formats, or an offboarding path. missing for 10: documented full-account data export covering all data (documents, grants, vesting, reports), explicit open formats (e.g. CSV/JSON), an exit/offboarding procedure, and independent corroboration.",
+    "rationale": "Ledgy documents its own exports alongside compliance reports, and a GraphQL API that returns cap table and transaction data in pages with incremental changes. Nothing shows a complete account export, the file formats, or an offboarding path. Missing for 10: a documented full-data export covering all entities and documents, an explicit open format (e.g. CSV/JSON), and offboarding/exit guidance.",
     "evidenceIds": [
       "ledgy-docs-24",
       "ledgy-docs-30",
-      "ledgy-docs-6"
+      "ledgy-docs-21",
+      "ledgy-graphql-reference-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6949,7 +6937,7 @@
           "quote": "companyTransactions and companyCaptable can return a company's rows in pages, and only the rows that changed since an earlier request."
         },
         {
-          "evidenceId": "ledgy-docs-6",
+          "evidenceId": "ledgy-docs-21",
           "quote": "The operation user can retrieve cap table data about the queried company."
         }
       ]
@@ -6961,7 +6949,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is available under an open license is a fair question for any software product, including a SaaS equity-management platform like Ledgy, so the axis applies. Nothing in the evidence pack mentions a public repository, published source code, or an open-source license. The evidence covers only the API, OAuth service accounts, and product features.",
+    "rationale": "Ledgy is a SaaS equity-management product, and publishing its source under an open license is a fair question for any software product, so the axis applies. The evidence pack covers only its hosted app and its GraphQL API with service-account authentication. Nothing mentions a public source repository or an open-source license, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6976,7 +6964,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is a hosted equity-management SaaS, and self-hosting is a fair question for a product of this kind. The evidence pack documents only the hosted app (app.ledgy.com) and its OAuth-based API. Nothing mentions a self-hosted, on-premise or open-source deployment of the core product.",
+    "rationale": "Ledgy is a SaaS equity-management platform, so self-hosting is a fair question for this kind of product and the axis applies. The evidence pack contains no mention of a self-hosted, on-premise or downloadable deployment of the core product. All documented access goes through the hosted app.ledgy.com service.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6991,7 +6979,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Ledgy documents its own grant-issuance capability: awards can be granted one by one, with contracts created, signed and shared, and granting, document and signature workflows can be automated. Nothing in the evidence shows a board approval flow or 409A valuation or strike-price compliance, so only the issuance part of the end-to-end story is supported. Missing for 10: documented board approval workflow, 409A valuation and compliant strike-price setting, evidence these run as one end-to-end flow, independent or hands-on corroboration.",
+    "rationale": "Ledgy documents its own grant workflow: awards can be issued one by one or in bulk, with contracts created, signed and shared, and granting, document and signature workflows can be automated. That covers the core 'issue options to a new hire' step. Nothing in the evidence describes a board approval flow, 409A valuations or a 409A-compliant strike price, or links these into one end-to-end workflow. Missing for 10: board approval flow, 409A valuation/strike price setting, evidence of a single end-to-end issuance workflow, independent or hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-12",
       "ledgy-docs-10"
@@ -7018,13 +7006,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Ledgy documents API service accounts that use OAuth 2.0 client_credentials, are scoped per integration, and can be revoked immediately. An authorized integration can therefore get its own non-admin credential rather than full admin access. However, nothing shows a delegated third-party authorization flow, or data-level scoping that limits a party to a slice of the equity data. The 'segment permissions' claims apply to team members, not external API consumers. Missing for 10: a delegated/partner OAuth flow for third parties, documented per-scope or per-dataset permission controls for service accounts, and independent or hands-on corroboration.",
+    "rationale": "Ledgy lets a company create API service accounts whose credentials are scoped per integration. These use short-lived OAuth 2.0 client_credentials tokens and can be revoked immediately, so an authorized third-party integration can reach cap table data without admin login credentials. The evidence does not show that a service account can be limited to a specific slice of equity data, and it describes no delegated third-party authorization flow. The in-app permission segmentation applies to team members and is a separate feature. Missing for 10: documented data-level permission scopes for service accounts (e.g. read-only or per-dataset), a delegated authorization flow for third parties such as law firms or wealth managers, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ledgy-docs-4",
-      "ledgy-docs-1",
       "ledgy-docs-27",
+      "ledgy-docs-28",
       "ledgy-docs-3",
-      "ledgy-docs-18"
+      "ledgy-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -7036,12 +7024,12 @@
           "quote": "the credentials are scoped per integration, the tokens are short-lived, and revocation takes effect immediately"
         },
         {
-          "evidenceId": "ledgy-docs-1",
-          "quote": "Requests are authenticated with an OAuth 2.0 access token belonging to a service account."
-        },
-        {
           "evidenceId": "ledgy-docs-27",
           "quote": "Create one in the Ledgy app under Company Settings → General → API service accounts"
+        },
+        {
+          "evidenceId": "ledgy-docs-28",
+          "quote": "Exchange the credentials for an access token using the OAuth 2.0 client_credentials grant"
         },
         {
           "evidenceId": "ledgy-docs-3",
@@ -7056,7 +7044,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is a SaaS equity-management platform, so letting customers choose a data storage region is a fair question for it. The evidence pack never mentions data residency, hosting regions, or region selection. The 'global' references (cross-border mobility reporting, payouts in 170 countries) are about workforce and payments, not where customer data is stored, so they earn no credit.",
+    "rationale": "Data region or residency selection is a fair question for a SaaS equity-management platform, so the axis applies. Nothing in the evidence pack mentions choosing a storage region or data residency. The 'global' mentions concern employee payouts, trading and mobility reporting, not where data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7071,7 +7059,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is an equity-management SaaS that handles sensitive cap table and employee data, so whether customer data can be kept out of AI training is a fair question for it. Nothing in the evidence mentions AI training, a training opt-out, or a data-use policy. Permission segmentation and credential revocation are adjacent access controls, not a training opt-out, so they earn no credit.",
+    "rationale": "Ledgy is an equity-management SaaS that holds sensitive customer data, so an AI-training opt-out or data-use policy is a fair question for it. However, nothing in the evidence pack addresses AI model training, data-use policies, or opt-out controls. The permission-segmentation and access-control items are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7086,7 +7074,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair question for an equity-management SaaS like Ledgy, but the evidence pack documents no retention settings, data-deletion requests, or purge controls. Revoking a service account, which deletes the account and invalidates its tokens, is a credential-lifecycle control. Segmented permissions are access control. Neither is control over retention or deletion of company or user data.",
+    "rationale": "Data retention and deletion controls are a fair question for an equity-management SaaS that holds sensitive cap table and employee data, so the axis applies. However, the evidence documents no retention policies, data-deletion requests, or purge controls. The only 'delete' mention is revoking a service account, which removes an API credential rather than customer data. That is an adjacent control and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7101,7 +7089,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is a SaaS equity-management platform, so a telemetry and usage-tracking opt-out is a fair question to ask of it. Nothing in the evidence pack mentions telemetry, analytics, usage tracking, or any opt-out control. The cited material covers only API authentication, cap table features and permissions, none of which is about this story.",
+    "rationale": "Ledgy is a SaaS equity-management platform, so a telemetry or usage-tracking opt-out is a fair question to ask of it. Nothing in the evidence pack mentions telemetry, analytics, usage tracking, or any opt-out control. The permission and confidentiality features listed control team access, which is a different capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7116,7 +7104,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is an equity and cap-table management product, so modeling a priced round is a fair question for it. However, the evidence pack documents only cap table record-keeping, reporting, API access and permissions. Nothing covers scenario modeling of dilution, option pool top-ups, SAFE conversion or pro-forma ownership, or sharing such a scenario with counsel and investors.",
+    "rationale": "Round modeling is a fair question for an equity and cap-table product like Ledgy, so the axis applies. However, the evidence covers only cap-table record-keeping, reporting, permissions, equity plans and API access. Nothing documents round or scenario modeling, dilution calculation, option pool top-up, SAFE conversion, pro-forma ownership, or sharing scenarios with counsel and investors.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7131,10 +7119,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy's evidence describes generic 'one-click equity compliance reports', automated error flags and global mobility reporting. Nothing in the pack mentions Rule 701 disclosure thresholds, Form 3921 filings or 83(b) elections. Without any documentation of these US-specific filings being tracked or generated from the cap table, the generic compliance claims cannot be credited to this story.",
+    "rationale": "Ledgy's compliance pages describe generic 'one-click equity compliance reports' and automated error flags. Nothing in the evidence mentions Rule 701 disclosure thresholds, Form 3921 filings, 83(b) elections, or any US-specific filing generation from the cap table. That generic compliance reporting is adjacent to this story and does not show it delivers the named US filings.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an ops user, US equity compliance — Rule 701 disclosure thresholds, Form 3921 filings, 83(b) elections — is tracked and generated from the cap table automatically",
       "citations": []
@@ -7146,7 +7134,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is a cap table and equity management platform, so issuing SAFEs or convertible notes is a fair question for it. However, nothing in the evidence mentions SAFEs, convertible notes, or modeling of conversion terms. The documented signing workflows cover employee share awards and grants, which is an adjacent feature and earns no credit for this fundraising-instrument story.",
+    "rationale": "Nothing in the evidence mentions SAFEs, convertible notes, or modeling their conversion terms on the cap table. The documented signing workflows cover employee share awards and grants, which is an adjacent equity-plan feature rather than fundraising instruments, and importing historical transactions with attached documents is not in-platform creation, sending, or e-signing. A cap-table product could plausibly offer this, so the axis applies and the lack of evidence makes the verdict none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7161,7 +7149,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Ledgy is an equity-management and cap-table platform, so in-platform 409A valuations are a fair question for this kind of product. Nothing in the evidence pack mentions 409A or any valuation service. The cap table data, API access and IFRS 2/US GAAP financial reporting are related features, not valuation ordering or scheduled valuation refreshes, so they earn no credit.",
+    "rationale": "Ordering 409A valuations is a fair question for an equity-management and cap-table platform, so the axis applies. However, nothing in the evidence mentions 409A, valuation ordering, or scheduled valuation refreshes. The closest material covers IFRS 2/US GAAP financial reporting and cap table data retrieval, which are adjacent features and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

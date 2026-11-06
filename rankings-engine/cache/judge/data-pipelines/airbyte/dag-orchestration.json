@@ -1,14 +1,15 @@
 {
-  "hash": "338ebbc609937546fe96f1b66979b96e3f50b1cec084b30e60a6e319483feec7",
+  "hash": "d0c2f0703dd4873089b663a08bccc0db83f4bbbe34db68db8b9754b37f9068f1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Airbyte's own dbt Cloud integration chains one downstream step: dbt transformations run immediately after a sync. That is a narrow, fixed form of step ordering, not a general way to define dependencies between pipeline steps and datasets. Its schedules are time-based, and the docs send cross-pipeline ordering to external orchestrators like Airflow, which earns no credit here. Missing for 10: user-defined dependencies between connections or steps, dataset-aware dependency graphs (DAGs), multi-step ordered orchestration, and independent or hands-on corroboration.",
+    "rationale": "Airbyte's own dbt Cloud integration chains a dbt transformation to run immediately after a connection's sync, which is a narrow built-in form of step sequencing. Beyond that, schedules are per-connection only, and the docs point to external orchestrators like Airflow, which does not count as the product's own capability. Missing for 10: general dependency definitions between connections, steps or datasets; DAG-style orchestration across multiple pipelines; dataset-aware triggering; independent corroboration of the dbt chaining.",
     "evidenceIds": [
       "airbyte-docs-11",
-      "airbyte-docs-27"
+      "airbyte-docs-27",
+      "airbyte-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -18,6 +19,10 @@
         {
           "evidenceId": "airbyte-docs-11",
           "quote": "By using the dbt Cloud integration, you can create and run dbt transformations immediately following syncs in Airbyte Cloud."
+        },
+        {
+          "evidenceId": "airbyte-docs-53",
+          "quote": "For each connection, you can select between three options that allow a sync to run. The three options for `Schedule Type` are: Scheduled, Cron, Manual"
         }
       ]
     },

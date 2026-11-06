@@ -1,17 +1,39 @@
 {
-  "hash": "d9a0d6d775984af4a3b4486385cee71df61edcc840673aada88953fe5d1460b8",
+  "hash": "e1227de900f864c657deda3e522e3932a6df180b3a7db2250d7c76a8abbc53f0",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack says Fivetran syncs databases with automatic incremental syncs, captures deletes, and offers a soft delete mode. None of it mentions log-based CDC, binlog or WAL reading, or lower load on the source, so the story's core mechanism is unevidenced. Generic incremental syncs and delete capture are adjacent features, not documented log-based replication.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Fivetran documents pre-built database connectors with automatic incremental syncs, delete capture, and soft-delete/live/history sync modes. That covers the outcome of replicating updates and deletes, but nothing in the pack says this is done by reading logs (binlog/WAL) rather than querying the source. Missing for 10: any documented log-based CDC via binlog/WAL, evidence of low source impact, database-specific delete-capture docs (the delete-capture line is truncated and the connector table is for an application), and hands-on corroboration.",
+    "evidenceIds": [
+      "fivetran-docs-24",
+      "fivetran-docs-18",
+      "fivetran-docs-13",
+      "fivetran-docs-35"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a data engineer, I replicate databases with log-based CDC (binlog/WAL) so I capture updates and deletes without hammering the source",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fivetran-docs-24",
+          "quote": "Fivetran provides pre-built data connectors that automatically sync data from your applications, databases, event streams, and files to your data warehouse or data lake."
+        },
+        {
+          "evidenceId": "fivetran-docs-18",
+          "quote": "Each connector handles schema changes, API updates, and incremental syncs automatically"
+        },
+        {
+          "evidenceId": "fivetran-docs-13",
+          "quote": "Fivetran captures deletes whene"
+        },
+        {
+          "evidenceId": "fivetran-docs-35",
+          "quote": "Soft Delete Mode ... Live Mode ... History Mode"
+        }
+      ]
     },
     "productId": "fivetran",
     "storyId": "cdc-log-replication"

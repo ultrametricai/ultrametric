@@ -1,19 +1,20 @@
 {
-  "hash": "6732ed91d6f8efe4327679f17680054d6b66f94e324e475624942f16ee37b6b3",
+  "hash": "40d0e145992f4fdf5808c9cfb1a6a63c0e06a7aa88ceb04ceb4565aa4340db90",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Meilisearch documents adding documents to an existing index. Its first-party sync integrations (Meilisync, the Rails ActiveRecord auto-sync) imply incremental change propagation rather than full rebuilds. However, no evidence explicitly documents update or delete semantics or near-real-time visibility. One community production report says indexing of 50k constantly changing records fell behind for hours. Another says early indexing couldn't keep up until batch indexing fixed it. Missing for 10: explicit documentation of incremental update/delete operations, stated indexing latency or near-real-time guarantees, and independent corroboration under high-churn workloads.",
+    "rationale": "Meilisearch documents adding documents to an existing index, and its first-party sync integrations (Meilisync database sync, Rails ActiveRecord auto-sync) imply incremental propagation of changes rather than full rebuilds. Near-real-time visibility is never documented, and one production user reports indexing of constantly changing records falling hours behind, while others report much-improved indexing speed after batch indexing arrived. missing for 10: documented update and delete semantics, any documented indexing latency or near-real-time guarantee, independent confirmation that changes are searchable quickly under churn.",
     "evidenceIds": [
       "meilisearch-docs-2",
+      "meilisearch-docs-57",
       "meilisearch-docs-71",
       "meilisearch-docs-85",
       "meilisearch-docs-87",
       "meilisearch-comm-9",
-      "meilisearch-comm-16",
-      "meilisearch-comm-7"
+      "meilisearch-comm-7",
+      "meilisearch-comm-16"
     ],
     "support": {
       "relation": "direct",
@@ -25,12 +26,16 @@
           "quote": "creating a project and an index, adding documents to it, and performing your first search"
         },
         {
+          "evidenceId": "meilisearch-docs-85",
+          "quote": "ActiveRecord sync. Auto-sync models with Meilisearch."
+        },
+        {
           "evidenceId": "meilisearch-docs-71",
           "quote": "Sync databases with Meilisearch automatically."
         },
         {
-          "evidenceId": "meilisearch-docs-85",
-          "quote": "ActiveRecord sync. Auto-sync models with Meilisearch."
+          "evidenceId": "meilisearch-comm-7",
+          "quote": "search speed and especially indexing speed have increased a lot"
         }
       ]
     },

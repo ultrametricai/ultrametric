@@ -1257,7 +1257,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "A live probe confirms Canny serves an llms.txt at developers.canny.io (HTTP 200) titled \"Canny Developer Documentation,\" so an agent can be pointed at it. Beyond that probe, the evidence is thin: only the file's header is visible, and no first-party page documents or describes the agent-oriented docs. The MCP server is a separate capability and is not credited here. missing for 10: evidence of the llms.txt's actual content and completeness (e.g., coverage of API reference, SDK and widget docs), an llms-full.txt or markdown-rendered doc pages, first-party documentation announcing agent-oriented docs, independent or hands-on corroboration of agent use.",
+    "rationale": "A live probe confirms Canny serves an llms.txt at developers.canny.io (HTTP 200, titled 'Canny Developer Documentation'), so agents can be pointed at it. Its depth is unproven: only a truncated header is visible, no first-party docs describe it, and the OpenAPI probe returned 404 at every candidate path. missing for 10: confirmation of full llms.txt contents and scope (e.g., API reference coverage), first-party documentation of agent-oriented docs, a machine-readable OpenAPI spec, independent or hands-on corroboration of agent use",
     "evidenceIds": [
       "canny-probe-1"
     ],
@@ -1268,7 +1268,7 @@
       "citations": [
         {
           "evidenceId": "canny-probe-1",
-          "quote": "HTTP 200 at https://developers.canny.io/llms.txt # Canny Developer Documentation"
+          "quote": "PROBE llms.txt: HTTP 200 at https://developers.canny.io/llms.txt # Canny Developer Documentation"
         }
       ]
     }
@@ -1279,7 +1279,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Canny exposing its data to external LLMs (ChatGPT, Claude, Cursor) through an MCP server, where those tools produce themes and insights. That analysis happens in third-party AI tools, not inside Canny. Autopilot automatically captures feature requests from transcripts and conversations, but nothing documents it generating insights or suggestions for users inside the product, so it is an adjacent feature.",
+    "rationale": "The evidence shows two AI-related capabilities, and neither is in-product insights. The MCP server lets external LLMs (ChatGPT, Claude, Cursor) query Canny data for themes and ARR impact, but that analysis happens in the user's own AI tool, not inside Canny. Autopilot uses automation to capture feature requests from transcripts and support tools, which is ingestion rather than insights or suggestions. No evidence documents AI-generated insights or suggestions surfaced within Canny itself.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1294,7 +1294,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Canny's own Autopilot feature captures feedback automatically from support, sales, call-transcript and review sources. Its native integrations keep statuses in sync with Jira, Linear, GitHub and others. Together these are product-run background automation, but only for feedback capture and sync. The MCP 'run agents that act on feedback' claim relies on external LLM tools, so it earns no credit here. missing for 10: user-configurable automation rules/triggers, scheduling or recurring workflow setup, autonomy controls beyond feedback capture, independent or hands-on corroboration",
+    "rationale": "Canny's own Autopilot feature automatically captures feedback in the background from support, sales, and call-transcript sources, and native integrations sync statuses with tools like Jira and Linear. That is product-native autonomous automation, but it is a fixed capture and sync pipeline rather than general user-configurable automations. The \"run agents\" claim depends on external LLM agents connecting through MCP, which is a building block and earns no credit here. Missing for 10: user-defined automation rules or triggers, scheduling or recurring-job configuration, documentation of how Autopilot is set up and controlled, independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-11",
       "canny-docs-7",
@@ -1309,15 +1309,15 @@
       "citations": [
         {
           "evidenceId": "canny-docs-11",
-          "quote": "Autopilot captures feedback from support, sales, and review platforms automatically."
-        },
-        {
-          "evidenceId": "canny-intdir-2",
-          "quote": "Autopilot pulls feature requests out of your Fathom call transcripts automatically."
+          "quote": "Autopilot captures feedback from support, sales, and review platforms automatically. Native integrations keep the rest of your stack in sync."
         },
         {
           "evidenceId": "canny-docs-7",
           "quote": "Automatically capture feedback from Gong, Intercom, Slack, and dozens of other sources"
+        },
+        {
+          "evidenceId": "canny-intdir-2",
+          "quote": "Autopilot pulls feature requests out of your Fathom call transcripts automatically."
         },
         {
           "evidenceId": "canny-intdir-4",
@@ -1332,7 +1332,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no built-in AI assistant inside Canny that users can delegate tasks to. The MCP server lets external LLMs (ChatGPT, Claude, Cursor) query and act on Canny data, but the assistant there is the external host, not a product-native assistant. Autopilot is a built-in automated feedback-capture pipeline, not a general assistant users hand tasks to, so it is an adjacent feature and earns no credit.",
+    "rationale": "The evidence pack does not show a built-in AI assistant inside Canny that users can delegate tasks to. The AI-related evidence describes Canny's MCP server, which exposes Canny data and actions to external LLMs (ChatGPT, Claude, Cursor), so the assistant lives outside the product. Autopilot is described only as automatic feedback capture from other sources, which is an adjacent automation feature rather than an assistant you hand tasks to.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1347,7 +1347,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Headless or CI automation is a fair question for a SaaS feedback platform, but the evidence pack documents no CLI, CI integration, or headless execution mode. The only related items are an API Reference page title with no content and an MCP server that is used interactively through chat clients like ChatGPT, Claude, and Cursor with sign-in. Neither documents running Canny headlessly in CI, so this is absence of evidence for an applicable capability.",
+    "rationale": "The evidence pack documents no headless or CI mode for Canny: no CLI, no CI integration, and no service-token automation guidance. The MCP server is built for interactive LLM clients with sign-in ('No API keys'). The API reference appears only as a page title with no content, and a bare API is at most a developer building block, not a documented headless or CI capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1362,7 +1362,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canny ships AI features such as Autopilot, so a buyer could fairly ask whether it can consume external MCP servers; the axis applies. The evidence only documents Canny's own MCP server, which lets ChatGPT, Claude or Cursor reach Canny data. That is the server role and earns no credit for a client-side story where Canny would plug in other MCP servers and use their tools. Nothing in the pack shows Canny acting as an MCP client.",
+    "rationale": "The evidence only shows that Canny publishes its own MCP server, which external AI clients such as ChatGPT, Claude and Cursor connect to. That is the server role, not this client-side story, so it earns no credit here. Nothing in the pack shows Canny itself (including its AI Autopilot feature) letting users plug in external MCP servers and use their tools. Because a SaaS product with AI features could plausibly act as an MCP client, the axis applies and the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1377,12 +1377,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Canny documents an official MCP server, with secure sign-in, that can be added to ChatGPT, Claude, or Cursor. It supports both reading feedback (themes, ARR impact, roadmap) and taking actions (updating statuses, linking deals, replying to customers), and the probe confirms a dedicated MCP feature page. Missing for 10: independent or hands-on corroboration, and in-depth technical docs such as a tool reference, endpoint URL, and setup steps beyond the marketing page.",
+    "rationale": "Canny documents a first-party MCP server that users add to ChatGPT, Claude, or Cursor with a secure sign-in. Agents can query feedback, themes, ARR impact and the roadmap, and can act on it by updating statuses, linking deals, replying to customers and sending conversations to Autopilot. A probe confirms the official MCP page exists. Missing for 10: independent or hands-on corroboration of the server working, and in-depth technical documentation such as an endpoint URL, tool reference, or auth/permission details beyond marketing copy.",
     "evidenceIds": [
       "canny-docs-3",
       "canny-docs-4",
       "canny-docs-5",
+      "canny-docs-6",
       "canny-docs-9",
+      "canny-docs-10",
       "canny-docs-13",
       "canny-probe-3"
     ],
@@ -1400,8 +1402,8 @@
           "quote": "Move ideas through your workflow without leaving your LLM. Update statuses, link deals, organize requests, and reply to customers."
         },
         {
-          "evidenceId": "canny-docs-4",
-          "quote": "Ask your LLM what customers asked for and understand the context behind each request."
+          "evidenceId": "canny-docs-10",
+          "quote": "run agents that act on feedback"
         },
         {
           "evidenceId": "canny-probe-3",
@@ -1413,10 +1415,10 @@
   {
     "productId": "canny",
     "storyId": "agentic-nl-commands",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Canny's official MCP server lets users operate it in natural language from ChatGPT, Claude or Cursor: they can ask what customers requested, query the roadmap, update statuses, link deals, organize requests and reply to customers. However, this works only through external LLM clients rather than a native in-product natural-language interface, and the documented action set is limited. missing for 10: a native in-app natural-language command interface, documentation of the full scope of MCP-exposed actions and their limits, and independent or hands-on corroboration that the natural-language operations work as claimed.",
+    "rationale": "Canny ships a first-party MCP server for ChatGPT, Claude and Cursor. Through it, users can ask natural-language questions about feedback, themes, ARR impact and the roadmap, and take actions such as updating statuses, linking deals, organizing requests and replying to customers. Natural-language operation therefore runs through external LLM clients rather than a native in-app assistant, and the evidence is vendor marketing only. Missing for 10: a native in-product natural-language interface, documentation of the full set of MCP tools and their limits, and independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-3",
       "canny-docs-4",
@@ -1426,7 +1428,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
@@ -1439,11 +1441,11 @@
         },
         {
           "evidenceId": "canny-docs-9",
-          "quote": "Connect Canny to ChatGPT, Claude, and Cursor. Ask questions about customer feedback, take action on it, and ground your AI workflows in real customer data."
+          "quote": "Connect Canny to ChatGPT, Claude, and Cursor. Ask questions about customer feedback, take action on it"
         },
         {
-          "evidenceId": "canny-probe-3",
-          "quote": "official MCP server documented at https://canny.io/features/mcp"
+          "evidenceId": "canny-docs-3",
+          "quote": "Add Canny's MCP server to ChatGPT, Claude, or Cursor with a secure sign-in."
         }
       ]
     }
@@ -1454,7 +1456,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a reasonable thing to ask of a SaaS feedback platform, so the story applies. However, the evidence pack documents only a JavaScript SDK, an API reference, widgets, integrations and an MCP server, with no mention of an official command-line tool. The MCP server and API are adjacent capabilities, not a CLI, so they earn no credit here.",
+    "rationale": "An official CLI is a reasonable thing to ask of a SaaS feedback platform like Canny, so the axis applies. The evidence shows a JavaScript SDK, an API reference, widgets and an official MCP server, but no official command-line tool. MCP and API evidence belong to other stories and cannot be credited here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1469,10 +1471,9 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Canny publishes a first-party 'Canny API Reference' at developers.canny.io/api-reference, and its developer docs expose an llms.txt, so a documented public API exists. The pack gives only the page title, though: no endpoints, operations, or auth model are shown, and probes found no OpenAPI spec. The MCP server is a separate capability and is not credited here. Missing for 10: evidence of the API's endpoint coverage and operations, authentication details, a machine-readable OpenAPI spec, and independent or hands-on corroboration.",
+    "rationale": "Canny publishes a first-party API reference at developers.canny.io/api-reference, which shows a documented public API exists. The pack gives only the page title, though, so its scope (endpoints, auth, write operations) is unshown. No OpenAPI spec was found at any probed path. The MCP server is a separate capability and is not credited here. Missing for 10: evidence of API scope and endpoints, authentication and write-operation details, a machine-readable OpenAPI spec, and hands-on or independent corroboration.",
     "evidenceIds": [
       "canny-docs-16",
-      "canny-probe-1",
       "canny-probe-2"
     ],
     "support": {
@@ -1483,10 +1484,6 @@
         {
           "evidenceId": "canny-docs-16",
           "quote": "Canny API Reference"
-        },
-        {
-          "evidenceId": "canny-probe-1",
-          "quote": "Developer resources for integrating with Canny"
         }
       ]
     }
@@ -1497,7 +1494,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows an official MCP server with 'secure sign-in' and 'no API keys', plus an API reference page. Nothing documents issuing scoped, permission-limited, or least-privilege credentials for an agent, and a sign-in flow alone is not evidence of credential scoping. The axis applies to a SaaS product with an API, so the absence of evidence is 'none'.",
+    "rationale": "Canny is a SaaS platform with an API and an MCP server, so scoped agent credentials are a fair question. However, the evidence never documents scoped, permission-limited, or least-privilege API keys or tokens. The MCP page's \"secure sign-in, no API keys\" describes an authentication method, not credential scoping, and the plan-gated staging workspace is an adjacent environment feature rather than least-privilege credentials.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1512,13 +1509,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Canny documents its own official JavaScript SDK, used to identify users and tie their feedback to existing accounts. Its developer docs also cover web and mobile widget embedding and an API reference. The SDK's scope appears narrow (identify and widget), and no multi-language or server-side SDKs are evidenced. Missing for 10: server-side or multi-language official SDKs, SDK coverage of the full API, any published OpenAPI spec (all probes returned 404), and independent hands-on corroboration.",
+    "rationale": "Canny documents an official JavaScript SDK for identifying users and embedding widgets on web and mobile, and its llms.txt references SDK installation. That is a real first-party SDK, but its scope is narrow (identify and widget embedding), and the evidence shows no general-purpose SDKs for building against the API. Missing for 10: official SDKs covering the full API across multiple languages, a published OpenAPI spec (all probed paths returned 404), and independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-2",
       "canny-probe-1",
+      "canny-docs-17",
       "canny-docs-18",
-      "canny-docs-16",
-      "canny-probe-2"
+      "canny-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -1542,7 +1539,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents registrable outbound HTTP webhooks for Canny events. The Discord notifications and the Jira/Linear/GitHub status-sync integrations are chat-app and native integrations, not programmatic webhooks. The API reference and MCP server items cover inbound access, not event subscriptions.",
+    "rationale": "Webhooks are a fair question for a SaaS feedback platform like Canny, so the axis applies. However, the evidence pack documents no registrable outbound HTTP callbacks. Discord notifications are chat-app notifications and do not qualify, and the API reference appears only as a title with no webhook content.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1557,13 +1554,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Canny documents Autopilot, which automatically pulls feature requests out of call transcripts and support sources, roughly decluttering raw feedback. Its official MCP server lets an LLM dig into top themes and ARR impact across ideas to surface impactful opportunities. However, the opportunity analysis runs through an external LLM via MCP rather than a documented native AI insights feature, and the evidence is vendor marketing only. Missing for 10: documented native AI deduplication/merging and theme clustering, a built-in impact-ranking or opportunity-scoring feature, and independent or hands-on corroboration.",
+    "rationale": "Canny documents Autopilot, which automatically pulls feature requests out of call transcripts and support or sales sources. Its first-party MCP server lets a user's LLM dig into top themes and ARR impact across ideas, which covers capturing raw feedback and surfacing high-impact opportunities. However, the AI analysis runs in an external LLM through MCP, and no native AI deduplication or impact ranking is documented. Missing for 10: explicit AI deduplication or merging of noisy feedback, native in-product AI prioritization of opportunities, independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-4",
-      "canny-intdir-2",
       "canny-docs-11",
+      "canny-intdir-2",
       "canny-docs-5",
-      "canny-docs-7"
+      "canny-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -1595,7 +1592,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "No evidence shows Canny's own AI turning a plain-language feedback description into a structured set of proposed tasks. Autopilot extracts feature requests from conversations and transcripts, which captures feedback rather than decomposing it into tasks. Drafting PRDs happens in the user's external LLM via the MCP server, and the Jira, Linear and Asana integrations only send and sync existing feedback; these are adjacent capabilities and earn no credit.",
+    "rationale": "The evidence shows Canny's Autopilot extracting feature requests from conversations and call transcripts, and its MCP server letting an external LLM such as Claude draft PRDs from Canny data. Neither is Canny itself turning a plain-language feedback description into a structured set of proposed tasks. Autopilot produces feedback items rather than tasks, and the PRD drafting is done by the host LLM using Canny as a data layer, so both are only adjacent.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1610,10 +1607,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only that a page titled 'Canny API Reference' exists. Nothing shows it is interactive or offers runnable examples, such as a try-it console or executable requests. The OpenAPI probe found no spec at any candidate path, which also argues against a spec-driven interactive explorer. A plain reference page is adjacent to this story, not the capability itself.",
+    "rationale": "The evidence shows only that a page titled 'Canny API Reference' exists. Nothing indicates it is interactive or offers runnable or try-it examples, and the OpenAPI/Swagger probe returned 404 on every candidate path, so there is no machine-readable spec behind an interactive explorer. A static reference page is adjacent to this story, not the capability itself.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": []
@@ -1625,7 +1622,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canny documents an API Reference page, but the evidence shows no downloadable machine-readable spec: every probed OpenAPI/Swagger path returned 404. The llms.txt file and the MCP server are different capabilities and do not count toward an OpenAPI-equivalent spec.",
+    "rationale": "Canny publishes a human-readable API Reference and an llms.txt documentation index, but neither is a machine-readable API spec. Probes of the common OpenAPI and Swagger paths all returned 404. Nothing in the evidence shows a downloadable OpenAPI or equivalent spec, so this applicable axis is unmet.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1637,16 +1634,27 @@
   {
     "productId": "canny",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Canny is a SaaS feedback platform with an API, SDK and MCP server, so a sandbox or test environment is a fair question to ask of it. Nothing in the evidence pack mentions a sandbox, test mode, staging workspace, or any other way to isolate test activity from production data. The MCP material describes acting on real customer data, which is the opposite of isolation.",
-    "evidenceIds": [],
+    "rationale": "Canny documents a staging/sandbox workspace that is a completely separate instance of Canny, so testing is isolated from production data (true sandbox isolation, not a dry-run). However, it is limited to the Business plan, must be set up by contacting support, and is a general workspace rather than an API test mode or test keys, with no mention in the developer docs. Missing for 10: self-serve or programmatic sandbox provisioning, API-level test mode or test keys, availability beyond the Business plan, developer-docs coverage, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "canny-staging-workspace-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "canny-staging-workspace-20261106",
+          "quote": "For accounts on the Business plan, we offer a free workspace for staging/sandbox purposes"
+        },
+        {
+          "evidenceId": "canny-staging-workspace-20261106",
+          "quote": "Each workspace is a completely separate instance of Canny"
+        }
+      ]
     }
   },
   {
@@ -1655,7 +1663,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canny has a public API reference (only its page title appears in the pack), so this axis applies to the product. Nothing in the evidence shows API versioning or a documented deprecation policy. The MCP, SDK, changelog and integration items are about other capabilities and do not transfer to this story.",
+    "rationale": "Canny has an API reference (title only in the pack), so the axis applies. Nothing in the evidence shows API versioning or a documented deprecation policy, and the OpenAPI probe returned 404 on every candidate path.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1670,7 +1678,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies to a feedback-to-tasks product like Canny. However, the evidence documents no review or approval gate for a task's scope before work begins. The closest features are status updates and sending feedback to Jira, Linear, GitHub and similar tools with status sync. These are adjacent workflow controls, not a documented scope-approval step.",
+    "rationale": "A scope-approval gate before work begins is a fair question for a feedback-to-tasks product like Canny, so the axis applies. The evidence only shows updating idea statuses and sending feedback to Jira, Linear, GitHub, ClickUp, or Asana with status sync. Those are adjacent workflow and integration features, not a documented review-and-approve step for task scope before work starts.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1685,7 +1693,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Automation workflows triggered by feedback events are a fair question for a feedback-management product, but the evidence shows no native workflow builder for SLAs, trial extensions, or discount offers. What the evidence does show is adjacent only: Autopilot feedback capture, status sync with Jira, Linear and similar tools, Discord notifications, and an MCP server that would let users build their own agents. None of these is the requested capability.",
+    "rationale": "The pack documents no workflow builder or trigger-based automation for SLAs, trial extensions, or discount offers. The closest items are status sync to issue trackers, an MCP server that lets external agents act on feedback, and changelog announcements. These are adjacent features or developer building blocks, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1700,10 +1708,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents automatic customer notifications triggered by a feature request's status change. The closest items are adjacent: changelog announcements (canny-docs-8), manual status updates and replies via MCP (canny-docs-5), status sync with Jira, Linear and GitHub (canny-intdir-4/5/6), and Discord notifications aimed at the team (canny-intdir-1). None of these is the requested automated customer-facing notification, so no credit is given.",
+    "rationale": "The evidence pack never documents automatic customer notifications triggered by a feature-request status change. The nearby items are adjacent features: changelog announcements of shipped work, manually updating statuses and replying to customers via MCP, syncing statuses with Jira, Linear and others, and team-facing Discord notifications. None of these is the capability the story asks for.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a product-manager, I can automatically notify customers when the status of their requested feature changes",
       "citations": []
@@ -1715,7 +1723,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any bulk or batch operation in Canny. The MCP page describes per-item actions such as updating statuses, linking deals, and organizing requests, but never acting on many items at once. Having an LLM loop over single-item MCP actions or the API would be a building-block workaround, not a native bulk capability.",
+    "rationale": "The evidence pack never documents bulk or batch operations across many items. The MCP server lets users update statuses, link deals and organize requests, but that describes per-item actions taken from an LLM, not a bulk capability. The existence of an API reference is a developer building block a user could script against, not a documented bulk feature, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1730,7 +1738,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "User-defined automation rules are a fair axis for a feedback-management SaaS like Canny, but the evidence pack never documents a way for users to define event-triggered rules. Autopilot's automatic feedback capture, built-in status syncing with Jira, Linear and others, Discord notifications, and LLM-driven actions over MCP are adjacent features, not a configurable rule engine.",
+    "rationale": "The evidence pack does not document any user-configurable rule engine where a user defines event-based triggers and actions. Autopilot's automatic feedback capture, the status sync with Jira, Linear and GitHub, and Discord notifications are fixed integration behaviors, not user-defined event rules. These are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1745,7 +1753,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a feedback-management SaaS, so the axis applies. However, the evidence never documents a user-configurable recurring schedule, cron, or scheduled workflow. Autopilot's automatic feedback capture and the integration status syncs are continuous ingestion and sync behaviors, not schedulable recurring jobs, so they earn no credit here.",
+    "rationale": "Recurring scheduling is a fair question for a feedback-management SaaS, but the evidence pack never documents any way to schedule recurring jobs or workflows. Autopilot's automatic feedback capture and the integration status syncs are continuous ingestion and sync behaviors, not user-defined recurring schedules. MCP-driven actions are one-off agent operations, so none of this counts toward the story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1760,7 +1768,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canny has automation features, such as Autopilot feedback capture, status-syncing integrations and MCP actions, so the axis applies. However, nothing in the evidence documents versioning, review/approval or rollback of automation configurations.",
+    "rationale": "Canny ships automations (Autopilot feedback capture, status sync, MCP-driven actions), so the question applies, but no evidence shows versioning, review, or rollback of those automations. The plan-gated staging workspace is a separate instance, not version control or rollback, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1775,10 +1783,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Canny ships its own changelog product for announcing shipped features to customers, so the core of a public changelog exists. Nothing in the evidence documents custom-domain hosting or full branding of that page. missing for 10: documented custom-domain support for the changelog, documented branding/theming controls, explicit confirmation the changelog is a standalone public page, independent or hands-on corroboration",
+    "rationale": "Canny documents a public changelog product for announcing what shipped. The staging-workspace doc also notes each workspace has its own subdomain and changelog. Nothing in the pack shows custom-domain hosting or full branding control of the changelog page. missing for 10: custom domain support for the changelog, branding/theming controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-8",
-      "canny-docs-14"
+      "canny-docs-14",
+      "canny-staging-workspace-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1792,6 +1801,10 @@
         {
           "evidenceId": "canny-docs-14",
           "quote": "Product Changelog Software and Release Notes Tool"
+        },
+        {
+          "evidenceId": "canny-staging-workspace-20261106",
+          "quote": "own subdomain, boards, changelog, admin team"
         }
       ]
     }
@@ -1802,7 +1815,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Canny's Autopilot is documented as automatically capturing feedback from sales, support, and chat sources. Named integrations include Gong, Fathom, and Fireflies call transcripts, Intercom, and Slack, which covers all three channels in the story. All of this comes from vendor marketing and integration-directory text, with no detail on how extraction works. Missing for 10: independent or hands-on corroboration, in-depth docs on extraction accuracy and deduplication, and explicitly named support-ticketing systems beyond generic 'support' platforms.",
+    "rationale": "Canny's Autopilot is documented as automatically capturing feedback from support, sales, and review platforms. Named sources cover sales calls (Gong, Fathom and Fireflies transcripts) and chat (Intercom, Slack), so all three channels in the story are claimed. Missing for 10: independent or hands-on corroboration of extraction quality, specific named support-ticketing integrations and detailed docs on how Autopilot extracts and dedupes feedback.",
     "evidenceIds": [
       "canny-docs-7",
       "canny-docs-11",
@@ -1840,7 +1853,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Canny documents centralized capture of feedback from many sources: Gong, Intercom, Slack, support, sales and review platforms, plus customers directly through its Portal. That makes it a single feedback repository. Querying it is documented only through LLM access via the MCP server, with no native in-product search described. missing for 10: explicit native search/filter documentation for the repository, explicit internal-colleague submission flow, independent or hands-on corroboration.",
+    "rationale": "Canny documents centralizing feedback captured automatically from Gong, Intercom, Slack, support, sales and review platforms, plus directly from customers on its Portal. That covers the single-repository and colleague/customer intake parts of the story. Querying the repository is only shown through the MCP integration (asking an LLM what customers requested); no native search or filter feature is documented. missing for 10: documented native search/filtering across the repository, explicit internal-colleague submission flow, independent or hands-on corroboration",
     "evidenceIds": [
       "canny-docs-7",
       "canny-docs-11",
@@ -1863,7 +1876,7 @@
         },
         {
           "evidenceId": "canny-docs-4",
-          "quote": "Ask your LLM what customers asked for and understand the context behind each request. Dig into top themes, ARR impact across ideas, and query your team's roadmap."
+          "quote": "Ask your LLM what customers asked for and understand the context behind each request."
         }
       ]
     }
@@ -1874,7 +1887,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canny documents a changelog product for announcing shipped features, but nothing in the evidence describes customers subscribing to email notifications for new changelog entries. The changelog is an adjacent feature, not the subscription capability itself, and the only notification integration cited is Discord.",
+    "rationale": "Canny ships a changelog product for announcing what was shipped, so this axis applies. However, nothing in the evidence documents customers subscribing to email notifications when new changelog entries are published. The changelog pages only describe announcing releases generally, which does not establish email subscription delivery.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1889,7 +1902,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Canny's own docs say Autopilot automatically captures feedback from support, sales, and review platforms. Named sources cover each category: Gong, Fathom and Fireflies for sales calls, Intercom for support/chat, and Slack for chat. Missing for 10: detailed per-integration setup and docs for the support and chat tools (only marketing-level one-liners), and independent or hands-on corroboration.",
+    "rationale": "Canny's own docs say Autopilot automatically captures feedback from support, sales, and review platforms. They name Gong (sales), Intercom (support/chat) and Slack (chat), and directory entries describe capture from Fathom and Fireflies sales-call transcripts. Missing for 10: detailed per-integration documentation for support and chat tools such as Intercom and Slack (evidence is mostly marketing-level one-liners), and independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-7",
       "canny-docs-11",
@@ -1926,14 +1939,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Canny's native integrations let a PM send a feedback item to Jira, Linear, GitHub, ClickUp, or Asana, link it to existing issues or tasks, and sync statuses. That turns feedback into actionable work items in task tools, and MCP lets agents act on feedback and draft PRDs. However, the evidence is one-line marketing copy, the Jira path is limited to Jira Cloud, and nothing shows how a new task is created or what fields carry over. missing for 10: detailed docs on creating new tasks/projects from a submission (field mapping, workflow), native in-Canny task or project creation, Jira Server/Data Center support, independent or hands-on corroboration.",
+    "rationale": "Canny's own native integrations let a PM send a feedback item to Jira, Linear, GitHub, ClickUp, or Asana, link it to existing issues or tasks, and sync statuses, so feedback becomes an actionable task. The task itself lives in an external tracker rather than inside Canny, the Jira integration is Cloud-only, and the evidence is one-line directory blurbs. missing for 10: native in-Canny task or project creation, detailed documentation of the feedback-to-task conversion flow (field mapping, what is created), support beyond Jira Cloud, independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-intdir-4",
       "canny-intdir-5",
       "canny-intdir-6",
       "canny-intdir-7",
       "canny-intdir-8",
-      "canny-docs-5",
       "canny-docs-10"
     ],
     "support": {
@@ -1967,20 +1979,18 @@
   {
     "productId": "canny",
     "storyId": "customer-context-for-prioritization",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Canny documents tying feedback to identified user accounts via its SDK. Through its MCP server, it also lets PMs understand the context behind each request, see ARR impact across ideas, and link deals, which directly supports prioritizing by customer value. missing for 10: in-depth docs on the in-app display of customer/company attributes next to feedback (Companies and Custom Fields pages appear only as titles), explicit prioritization or segmentation workflows beyond the MCP/LLM interface, independent or hands-on corroboration.",
+    "rationale": "Canny's own SDK ties each piece of feedback to the identified user account. Its MCP feature lets PMs see the context behind each request, ARR impact across ideas, and linked deals, which supports prioritizing by customer value. However, the in-product view of customer attributes alongside feedback is thinly documented: the Companies and Custom Fields docs appear only as titles, and ARR insight is shown only through the LLM/MCP surface. missing for 10: documented in-app display of customer/company attributes (e.g. MRR, plan, segment) next to each post, segment-based filtering or revenue-weighted prioritization in the Canny UI, content behind the Companies and Custom Fields docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-2",
       "canny-docs-4",
-      "canny-docs-5",
-      "canny-docs-23",
-      "canny-docs-20"
+      "canny-docs-5"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a product-manager, I can access customer context alongside feedback so I prioritize what really matters",
       "citations": [
         {
@@ -1989,11 +1999,11 @@
         },
         {
           "evidenceId": "canny-docs-4",
-          "quote": "Ask your LLM what customers asked for and understand the context behind each request. Dig into top themes, ARR impact across ideas"
+          "quote": "understand the context behind each request. Dig into top themes, ARR impact across ideas"
         },
         {
           "evidenceId": "canny-docs-5",
-          "quote": "Update statuses, link deals, organize requests, and reply to customers."
+          "quote": "Update statuses, link deals, organize requests"
         }
       ]
     }
@@ -2004,7 +2014,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence confirms that Canny offers an embeddable widget for web and mobile, but only page titles are shown. Nothing documents customizing the widget's label or colors to match a brand. The llms.txt probe text is truncated at 'widget cu', which is too thin to count as support for label or color customization.",
+    "rationale": "The evidence shows Canny offers an embeddable web widget (canny-docs-17), but nothing documents customizing the widget's label or colors to match a brand. The llms.txt probe cuts off at \"widget cu\", which is too incomplete to count as affirmative support. Missing for 10: documented label customization, documented color/theming options for the widget.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2019,7 +2029,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canny documents a changelog product for announcing shipped features, but nothing in the evidence describes a rich text editor, custom components, or help-content authoring. A changelog feature alone does not show the formatting capability the story asks for, so this applicable axis has no supporting evidence.",
+    "rationale": "Canny documents a changelog product for announcing shipped features, but the pack has no evidence of a rich text editor, custom components, or tooling for authoring help content. The axis applies to a changelog/feedback tool, so absence of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2034,10 +2044,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Canny has its own first-party docs page titled \"Embed a Canny widget into your website\" and documents a JavaScript SDK, so the product does ship an embeddable web widget. The pack shows only the page title, though, with no detail on the install method. missing for 10: evidence that install is a single script tag, evidence that no build step or bundler is required, the widget install snippet and configuration details, independent or hands-on corroboration.",
+    "rationale": "Canny documents embedding a widget into a website and offers a JavaScript SDK, so the core capability of an embeddable web feedback widget is first-party. However, the evidence is mostly page titles and never shows the install snippet, so the single-script-tag, no-build-step part of the story is unproven. Missing for 10: evidence that installation is a single script tag, confirmation that no build step or bundler is needed, details of the widget's install snippet and configuration, independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-17",
-      "canny-docs-2"
+      "canny-docs-2",
+      "canny-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -2051,6 +2062,10 @@
         {
           "evidenceId": "canny-docs-2",
           "quote": "Install our JavaScript SDK to identify your users."
+        },
+        {
+          "evidenceId": "canny-probe-1",
+          "quote": "Developer resources for integrating with Canny, including SDK installation, widget cu"
         }
       ]
     }
@@ -2061,7 +2076,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Canny embedding its widget into the developer's own website or app, an API reference, an MCP server for external LLM tools, and first-party native integrations. None of it documents a framework for developers to build custom integrations that render and run inside Canny's own interface. Those items are adjacent capabilities or building blocks and earn no credit toward this story.",
+    "rationale": "The evidence shows an API reference, widgets and SDKs for embedding Canny into the developer's own site or app, Canny-built native integrations, and an MCP server for external AI tools. None of it documents a way for developers to build custom integrations or apps that appear and run inside Canny's own interface. Widget embedding works in the opposite direction, and custom fields are an adjacent feature, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2076,7 +2091,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Canny documents its own changelog product for announcing shipped updates, and separately documents embedding 'a Canny widget' into websites and mobile apps. Nothing in the evidence shows that the embeddable widget actually displays the changelog in-product rather than only the feedback board, so the embedded-changelog part of the story is unproven. missing for 10: explicit documentation of an embeddable changelog widget (in-app display, install snippet, unread or notification behavior), plus independent or hands-on corroboration.",
+    "rationale": "Canny documents its own changelog product for announcing shipped updates, and separately documents embedding a Canny widget into websites and mobile apps. Nothing in the evidence says that widget shows the changelog rather than only feedback boards, so in-product changelog embedding is implied rather than shown. missing for 10: explicit documentation of an embeddable changelog widget, in-app changelog install or configuration details, independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-8",
       "canny-docs-14",
@@ -2113,11 +2128,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Canny's developer docs state that installing its JavaScript SDK identifies users, so feedback they leave is tied to their existing account in your application. Separate doc pages for Single Sign-On and Secure Identify Requests support this flow, though only their titles appear in the evidence. Missing for 10: detailed content on the identify call parameters and secure-identify mechanics (only titles are evidenced), and independent or hands-on corroboration.",
+    "rationale": "Canny's developer docs state that installing its JavaScript SDK identifies users, so feedback they leave is tied to their existing account in your application. Dedicated pages for Single Sign-On and Secure Identify Requests point to supporting identification flows. missing for 10: detailed first-party content on the identify call parameters and secure-identify mechanics (only page titles are present), and independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-2",
       "canny-docs-19",
-      "canny-docs-21"
+      "canny-docs-21",
+      "canny-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -2129,12 +2145,12 @@
           "quote": "Install our JavaScript SDK to identify your users. This way, when they leave feedback on Canny, it'll be tied to their existing user account in your application."
         },
         {
-          "evidenceId": "canny-docs-19",
-          "quote": "How to Implement Single Sign-On"
-        },
-        {
           "evidenceId": "canny-docs-21",
           "quote": "Secure Identify Requests Install Docs"
+        },
+        {
+          "evidenceId": "canny-docs-19",
+          "quote": "How to Implement Single Sign-On"
         }
       ]
     }
@@ -2145,7 +2161,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Jumping to items by typing a short name or identifier is a fair navigation capability for a feedback-management product, so the axis applies. Nothing in the evidence pack documents short IDs, a quick-jump command, or a search-by-key feature for feedback items, tasks, or initiatives. MCP querying and the issue-linking integrations are different capabilities and earn no credit here.",
+    "rationale": "Quick navigation to items by short name is a fair axis for a feedback and roadmap tool, so the story applies. The evidence pack covers widgets, SSO, integrations, the MCP server and a staging workspace, but nothing documents short identifiers or a jump-to or quick-search navigation feature. LLM querying via MCP and issue linking to Jira or Linear are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2160,10 +2176,9 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Canny's own JavaScript SDK identifies users so that the feedback they leave is tied to their existing customer account. The product itself links each feedback item to the customer who submitted it. Company-level association is also documented (Install Companies), and MCP docs mention seeing the context and ARR behind each customer request. missing for 10: PM-side manual linking of feedback to a customer (e.g. logging feedback on a customer's behalf), detailed first-party docs on per-item customer attribution, independent or hands-on corroboration.",
+    "rationale": "Canny's own docs say that once users are identified through its JavaScript SDK, the feedback they leave is tied to their existing user account in your application, so each feedback item is linked to the customer who submitted it. The MCP docs also describe asking what customers asked for and the context behind each request. Missing for 10: documentation of a PM manually attributing feedback to a customer (e.g., on their behalf), evidence that Autopilot-captured feedback from Gong/Intercom/Slack is attributed to specific customers, and independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-2",
-      "canny-docs-23",
       "canny-docs-4"
     ],
     "support": {
@@ -2188,12 +2203,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Canny documents linking feedback to existing Jira, Linear, and GitHub issues with status sync. It also mentions querying the team's roadmap and a changelog that shows customers their closed feedback was heard, which implies a link to releases. None of the evidence explicitly describes linking requests to Canny roadmap features, initiatives, or release entries. Missing for 10: explicit documentation of linking feedback to roadmap features, any initiative-level linking, explicit linking of requests to changelog releases, and independent or hands-on corroboration.",
+    "rationale": "Canny's own integrations link feedback to existing Jira, Linear and GitHub issues with status sync. Its changelog ties closed feedback to shipped releases, and the MCP page says a team roadmap exists and can be queried. None of this explicitly shows linking requests to roadmap features or initiatives inside Canny. Missing for 10: documented linking of requests to roadmap items, an initiatives concept, explicit release-to-request linkage docs, and hands-on corroboration.",
     "evidenceIds": [
-      "canny-intdir-4",
-      "canny-intdir-5",
+      "canny-docs-8",
       "canny-docs-4",
-      "canny-docs-8"
+      "canny-intdir-4",
+      "canny-intdir-5"
     ],
     "support": {
       "relation": "direct",
@@ -2201,16 +2216,20 @@
       "subject": "As a product-manager, I can link feedback requests to roadmap features, initiatives, and releases",
       "citations": [
         {
-          "evidenceId": "canny-intdir-4",
-          "quote": "Send feedback to Jira, link it to existing issues, and sync statuses."
+          "evidenceId": "canny-docs-8",
+          "quote": "Announce what you shipped, show customers you heard them, and turn closed feedback into retention and upgrades."
         },
         {
           "evidenceId": "canny-docs-4",
           "quote": "query your team's roadmap"
         },
         {
-          "evidenceId": "canny-docs-8",
-          "quote": "Announce what you shipped, show customers you heard them, and turn closed feedback into retention and upgrades."
+          "evidenceId": "canny-intdir-4",
+          "quote": "Send feedback to Jira, link it to existing issues, and sync statuses."
+        },
+        {
+          "evidenceId": "canny-intdir-5",
+          "quote": "Send feedback to Linear, link it to existing issues, and sync statuses."
         }
       ]
     }
@@ -2221,7 +2240,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Canny's own integrations push feedback items into delivery tools (Jira, Linear, GitHub, ClickUp, Asana), link them to issues and sync statuses. Its official MCP server lets a developer in Cursor or Claude pull request context, draft PRDs and build the features. However, what moves into the workflow is feedback or ideas rather than an approved specification artifact. Missing for 10: a first-class spec/PRD object with an approval state, a documented flow that hands an approved spec into Jira/Linear/GitHub tasks, and hands-on or independent corroboration.",
+    "rationale": "Canny's native integrations send feedback items to Jira, Linear, GitHub, ClickUp and Asana, link them to issues and sync statuses. Its MCP server brings Canny data into Cursor or Claude so a developer can draft PRDs from requests and build the features. But the item Canny hands off is a feedback post, not an approved product specification, and any PRD is drafted by the user's LLM rather than managed by Canny. Missing for 10: a first-party specification/PRD artifact with an approval state, a documented flow for pulling an approved spec into implementation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-intdir-4",
       "canny-intdir-5",
@@ -2249,10 +2268,6 @@
         {
           "evidenceId": "canny-docs-10",
           "quote": "Draft PRDs from real requests and build the features with Claude"
-        },
-        {
-          "evidenceId": "canny-docs-9",
-          "quote": "Connect Canny to ChatGPT, Claude, and Cursor."
         }
       ]
     }
@@ -2261,14 +2276,14 @@
     "productId": "canny",
     "storyId": "link-to-feedback-site",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Canny's developer install docs tell developers to add a link to the Canny feedback site in their application. The JavaScript SDK then ties feedback left through that portal to existing user accounts, and widget embed docs give a further in-app entry point. Missing for 10: independent or hands-on corroboration, and detailed docs on the link itself (URL format, auto-login via SSO link).",
+    "rationale": "Canny's own install docs tell developers to add a link to the Canny feedback site in their application, and the main site confirms customers can give feedback directly on the Portal. The JavaScript SDK can identify users so their feedback ties to existing accounts, and widget-embed docs exist for web and mobile. Missing for 10: independent or hands-on corroboration, and detailed docs on link configuration (e.g., SSO-authenticated or deep links) beyond the brief instruction.",
     "evidenceIds": [
       "canny-docs-1",
       "canny-docs-2",
-      "canny-docs-17",
-      "canny-docs-19"
+      "canny-docs-7",
+      "canny-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -2280,8 +2295,8 @@
           "quote": "In your application, add a link to your Canny feedback site. Put the link somewhere it's easy to find."
         },
         {
-          "evidenceId": "canny-docs-2",
-          "quote": "Install our JavaScript SDK to identify your users. This way, when they leave feedback on Canny, it'll be tied to their existing user account in your application."
+          "evidenceId": "canny-docs-7",
+          "quote": "or directly from customers on your Portal"
         }
       ]
     }
@@ -2290,9 +2305,9 @@
     "productId": "canny",
     "storyId": "one-click-integration-setup",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Canny documents a native integrations directory covering common tools: Jira, Linear, GitHub, ClickUp, Asana, Discord, Fathom and Fireflies, plus Gong, Intercom and Slack capture via Autopilot. However, the 'in just a few clicks' setup ease is only evidenced for the MCP connection ('secure sign-in… no engineering'), not for the native integrations, so the story's ease-of-connection element is unproven for most tools. missing for 10: documented click-through setup flow for native integrations, independent or hands-on corroboration of quick setup, detail beyond one-line directory blurbs.",
+    "rationale": "Canny documents a broad native integration directory. It covers Jira, Linear, GitHub, ClickUp and Asana with issue linking and status sync, plus Discord notifications, Fathom/Fireflies transcript capture, and Gong, Intercom and Slack feedback capture. The 'just a few clicks' setup is only evidenced for the MCP server ('secure sign-in. No API keys, no engineering'), not for the integrations generally, and Jira support is limited to Jira Cloud. missing for 10: documented click-through/OAuth setup flow for the native integrations, evidence of setup effort for tools beyond MCP, independent or hands-on corroboration of ease of connection.",
     "evidenceIds": [
       "canny-docs-11",
       "canny-docs-7",
@@ -2303,6 +2318,7 @@
       "canny-intdir-8",
       "canny-intdir-1",
       "canny-intdir-2",
+      "canny-intdir-3",
       "canny-docs-3"
     ],
     "support": {
@@ -2339,11 +2355,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Canny documents its own programmatic surfaces: an API Reference page exists, and the official MCP server lets users update statuses, link deals, organize requests and reply to customers. Nothing in the pack shows these cover everything the UI can do, and the OpenAPI probe returned 404 on every candidate path. Missing for 10: evidence of API/UI feature parity, endpoint coverage details from the API reference, a machine-readable OpenAPI spec, independent or hands-on corroboration.",
+    "rationale": "Canny documents an API (an API Reference page exists). Its official MCP server lets users take workflow actions such as updating statuses, linking deals, organizing requests and replying to customers. Nothing in the evidence shows the API covers everything the UI can do, and no OpenAPI spec was found, so parity is unproven. Missing for 10: documented API endpoint coverage matching UI functionality, a published OpenAPI spec, any statement or corroboration of UI/API parity, and API coverage for admin and settings actions.",
     "evidenceIds": [
       "canny-docs-16",
       "canny-docs-5",
-      "canny-probe-3",
+      "canny-docs-12",
       "canny-probe-2"
     ],
     "support": {
@@ -2360,8 +2376,8 @@
           "quote": "Update statuses, link deals, organize requests, and reply to customers."
         },
         {
-          "evidenceId": "canny-probe-3",
-          "quote": "official MCP server documented at https://canny.io/features/mcp"
+          "evidenceId": "canny-docs-12",
+          "quote": "Canny MCP: Access and take action on Canny data in Claude, ChatGPT, and others"
         }
       ]
     }
@@ -2372,7 +2388,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no data-export feature, no open export formats (CSV/JSON dumps), and nothing on account exit or portability. The API reference title and the MCP server's data access are developer building blocks or adjacent features for querying data, not a documented export-all capability, so they earn no credit.",
+    "rationale": "Data export and portability is a fair question for a SaaS feedback platform like Canny, but the evidence pack never documents a bulk export feature, export formats such as CSV or JSON, or an account-exit path. The API reference title and the MCP server's data access are developer building blocks or adjacent features, not a documented export-everything capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2387,7 +2403,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is available under an open license is a fair question for a SaaS feedback tool like Canny, so the axis applies. Nothing in the evidence pack mentions source code availability, a public repository, or an open-source license. The pack covers only the hosted service, SDK, widgets, API reference, integrations, and MCP server, so the verdict is none rather than na.",
+    "rationale": "Whether a SaaS feedback tool publishes its source under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence pack shows Canny's source code is available or openly licensed. The pack covers only the hosted product, SDK and widget install docs, the API reference, the MCP server, and integrations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2402,7 +2418,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a SaaS feedback-management product like Canny, so the axis applies. Nothing in the evidence pack documents a self-hosted, on-premise, or open-source deployment option. The materials describe only Canny's hosted portal, SDK and widget embeds, integrations, API and hosted MCP server.",
+    "rationale": "Self-hosting is a fair question for a SaaS feedback-management product, so the axis applies. The evidence describes only Canny's hosted service: an embedded widget, a JavaScript SDK, hosted integrations and a hosted MCP server. Nothing documents a deployable or on-premises version. The Business-plan staging workspace is another Canny-hosted instance, not self-hosting, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2417,7 +2433,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a prioritization or scoring feature with fields like value, risk, impact, confidence, or effort. The 'Custom Fields' item is only a developer install page title with no content tying it to idea scoring. The MCP mention of 'ARR impact across ideas' is a query and reporting capability, not a scoring framework.",
+    "rationale": "Nothing in the evidence shows Canny letting a product manager score ideas on value, risk, impact, confidence, or effort. The \"ARR impact across ideas\" MCP mention is a revenue-analysis query, not a scoring model. The \"Custom Fields\" item is only a developer-docs page title with no content tying it to prioritization scoring. The axis clearly applies to a feedback and roadmapping tool, so the lack of evidence yields \"none\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2432,7 +2448,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canny is a hosted SaaS feedback platform, so choosing a data storage region or residency is a fair question to ask of it. Nothing in the evidence pack mentions data regions, residency options, or storage location. The items on security and SSO cover identity verification only and do not address residency.",
+    "rationale": "Data region or residency selection is a fair question for a SaaS feedback platform like Canny, so the axis applies. Nothing in the evidence pack mentions choosing a storage region, EU/US hosting, or residency controls. The staging workspace is a separate instance for testing, not a residency option, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2447,7 +2463,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canny is a SaaS feedback platform that processes customer data and offers AI features (Autopilot, MCP), so an AI-training opt-out is a fair question to ask of it. The evidence pack says nothing about training-data policies, opt-out controls, or contractual no-training commitments. The MCP and Autopilot items describe AI features, not data-use protections.",
+    "rationale": "Canny is a SaaS feedback platform with AI features such as Autopilot and an MCP server, so a training opt-out is a fair question to ask of it. The evidence pack, however, has no documentation of an AI-training opt-out, a no-training commitment, or any data-use policy for model training. The MCP and Autopilot material covers AI features, not data-use controls, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2462,7 +2478,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canny is a SaaS feedback platform that stores customer and user data, so data retention and deletion controls are a fair axis to judge. The evidence pack has no documented retention settings, deletion workflows, data-purge APIs, or retention policies. The MCP, integration, SSO and widget items do not address the story, and the API reference appears only as a title with no deletion endpoints shown.",
+    "rationale": "Data retention and deletion controls are a fair question for a SaaS feedback platform like Canny, so the axis applies. The evidence pack covers SDK install, SSO, integrations, the MCP server and a staging workspace, but nothing documents retention settings, deletion controls, or data purge capabilities. The API reference title and MCP workflow actions (update statuses, organize requests) say nothing about deletion or retention.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2477,7 +2493,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS feedback platform like Canny, so the axis applies. Nothing in the evidence pack documents any telemetry or usage-tracking opt-out. The SDK, widget, SSO, secure-identify and MCP items cover user identification and data access, not opting out of tracking.",
+    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS feedback platform like Canny, so the axis applies. Nothing in the evidence pack documents a telemetry, analytics or usage-tracking opt-out. The SDK identify and SSO docs cover tying feedback to user accounts, not opting out of tracking.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2492,7 +2508,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence only mentions that requests can be organized through the MCP integration. Nothing documents a hierarchy of features, components, and initiatives for structuring requests. Generic 'organize requests' is an adjacent capability and does not establish the hierarchical structure this story requires.",
+    "rationale": "The pack contains no documentation of a hierarchy of features, components, or initiatives in Canny. The MCP page mentions that you can 'organize requests', but that is a generic action with no hierarchical structure described. Integrations that link feedback to Jira, Linear, and similar tools are external issue trackers, not Canny's own hierarchy.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2505,9 +2521,9 @@
     "productId": "canny",
     "storyId": "public-feedback-portal",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Canny's own docs describe a hosted feedback site that you link from your application, where customers leave feedback directly on your Portal. An embeddable widget is also documented. Voting on ideas and the portal's public visibility are never explicitly evidenced in the pack. Missing for 10: explicit documentation of customer voting on ideas, detail on public portal/board configuration, independent or hands-on corroboration.",
+    "rationale": "Canny's own docs describe a hosted feedback site and portal that customers reach from your app and use to leave feedback directly, so the hosted intake portal is documented. Nothing in the pack mentions customers voting on ideas, which is a core half of the story. missing for 10: evidence of customer voting on ideas, detail on public/anonymous portal access and configuration, independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-1",
       "canny-docs-2",
@@ -2530,10 +2546,6 @@
         {
           "evidenceId": "canny-docs-2",
           "quote": "when they leave feedback on Canny, it'll be tied to their existing user account in your application"
-        },
-        {
-          "evidenceId": "canny-docs-17",
-          "quote": "Embed a Canny widget into your website"
         }
       ]
     }
@@ -2544,7 +2556,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Canny's own changelog product page says it lets teams announce shipped features and close the loop with customers who gave feedback, and it presents itself as dedicated changelog and release-notes software. The evidence is marketing-level only, with no detail on how publishing or customer notification works. Missing for 10: documentation of publishing mechanics (editor, scheduling, notifying voters or linking posts to feedback) and independent or hands-on corroboration.",
+    "rationale": "Canny ships a first-party changelog product, marketed as 'Product Changelog Software and Release Notes Tool', for announcing shipped work and showing customers their feedback was heard. That matches the story's publish-and-close-the-loop goal. The evidence is marketing-level only, so the publishing workflow and how customers are notified are not detailed. Missing for 10: in-depth docs on publishing and authoring changelog entries, documented customer notification of linked feedback, independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-8",
       "canny-docs-14",
@@ -2572,7 +2584,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Canny ships an official MCP server for ChatGPT, Claude, and Cursor. Its own docs say users can ask their LLM what customers asked for and dig into top themes and ARR impact across ideas, which matches this story directly. Missing for 10: in-depth documentation of the MCP tools and queries for theme and ARR analysis, and independent or hands-on corroboration that these queries work as claimed.",
+    "rationale": "Canny's official MCP server connects ChatGPT, Claude, or Cursor to Canny data. Its docs say users can ask their LLM about top feedback themes and ARR impact across ideas, which matches the story directly. Missing for 10: detailed tool-level documentation of the theme and ARR queries, and independent or hands-on corroboration of answer quality.",
     "evidenceIds": [
       "canny-docs-3",
       "canny-docs-4",
@@ -2605,11 +2617,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Canny documents a hosted feedback site/Portal where customers submit feedback directly, and the basic install step is only adding a link to it. However, tying feedback to user accounts requires installing a JavaScript SDK, and the 'no engineering' claim in the evidence refers to the MCP server, not portal setup. Missing for 10: documentation of a no-code portal setup or configuration flow for PMs, user identification without developer work (SDK/SSO), and independent hands-on corroboration.",
+    "rationale": "Canny documents a hosted, customer-facing feedback site/Portal, and the only setup step shown is adding a link to it, which suggests a product manager could launch it without code. However, no evidence describes a no-code admin setup flow. User identification requires installing a JavaScript SDK, which implies engineering work. The \"no engineering\" claim applies only to the MCP server, a different story. Missing for 10: documented self-serve portal setup and configuration by non-technical users, evidence that the portal can be branded or customized without engineering, and independent or hands-on corroboration.",
     "evidenceIds": [
       "canny-docs-7",
       "canny-docs-1",
-      "canny-docs-2"
+      "canny-docs-2",
+      "canny-staging-workspace-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -2623,6 +2636,10 @@
         {
           "evidenceId": "canny-docs-1",
           "quote": "In your application, add a link to your Canny feedback site. Put the link somewhere it's easy to find."
+        },
+        {
+          "evidenceId": "canny-docs-2",
+          "quote": "Install our JavaScript SDK to identify your users."
         }
       ]
     }
@@ -2632,8 +2649,8 @@
     "storyId": "reply-to-customers-inline",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Canny's own MCP feature documents that a PM can \"reply to customers\" while moving ideas through the workflow, and the changelog lets teams \"show customers you heard them\" to close the loop. However, the reply capability is only described as an action taken from inside an external LLM, not from within the feedback record in Canny itself, and there are no details on how replies work. missing for 10: documented in-record reply UI on the feedback post, details of reply delivery (email/comment/notification), first-party docs depth, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Canny's own documentation says its MCP server lets users \"reply to customers\" while acting on feedback ideas. That is a first-party reply capability, but it is documented as happening from inside an LLM, not from within the feedback record in Canny's UI. The changelog's \"show customers you heard them\" adds broadcast-style loop closing, not direct replies. Missing for 10: documentation of replying directly from the feedback record/post in the Canny app, details on how replies reach customers (email, comment, notification), and hands-on or independent corroboration.",
     "evidenceIds": [
       "canny-docs-5",
       "canny-docs-8"
@@ -2645,7 +2662,7 @@
       "citations": [
         {
           "evidenceId": "canny-docs-5",
-          "quote": "Update statuses, link deals, organize requests, and reply to customers."
+          "quote": "Move ideas through your workflow without leaving your LLM. Update statuses, link deals, organize requests, and reply to customers."
         },
         {
           "evidenceId": "canny-docs-8",
@@ -2660,7 +2677,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canny is a feedback and roadmap tool, so rescheduling initiatives across releases is a fair question for it. The evidence only shows updating idea statuses, querying the roadmap, and publishing changelogs. Nothing documents rescheduling initiatives, setting target dates, or moving items between releases; workflow status changes are an adjacent feature, not release rescheduling.",
+    "rationale": "Canny is a feedback and roadmapping product, so rescheduling initiatives and moving them between releases is a fair question to ask of it. The evidence pack does not document this capability. It only shows querying the roadmap and moving ideas through workflow statuses via MCP, which is an adjacent status-update feature, not rescheduling or release reassignment.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2675,12 +2692,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Canny's Autopilot is documented as automatically capturing feedback and pulling feature requests out of call transcripts and support, sales and review sources, which covers the automatic insight-detection half of the story. Nothing in the evidence says Autopilot links the extracted insights to existing feature ideas; MCP-driven 'organize requests' is user-directed LLM action, not automatic linking. Missing for 10: documented automatic linking or deduplication of detected insights to related ideas, detail on how the AI detection works, independent or hands-on corroboration.",
+    "rationale": "Canny's own Autopilot feature is documented as automatically pulling feature requests out of call transcripts and capturing feedback from support, sales and review sources. That covers the automatic-detection half of the story. The docs never explicitly say Autopilot links detected feedback to related existing ideas, and the MCP theme analysis runs through an external LLM rather than Canny itself. Missing for 10: explicit documentation of AI linking or deduplicating extracted feedback into existing feature ideas, clear statement that Autopilot is AI-driven, and independent or hands-on corroboration of detection accuracy.",
     "evidenceIds": [
       "canny-intdir-2",
       "canny-docs-11",
+      "canny-docs-6",
       "canny-docs-7",
-      "canny-docs-6"
+      "canny-intdir-3"
     ],
     "support": {
       "relation": "direct",
@@ -2708,7 +2726,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canny documents a changelog for announcing shipped features, and it identifies users, custom fields and companies. However, no evidence shows release announcements can be segmented or targeted by user attributes. User identification and custom fields are adjacent building blocks, not the targeting capability itself.",
+    "rationale": "Canny documents a changelog for announcing shipped features and SDK user identification with custom fields and company data. No evidence shows that changelog announcements can be segmented or targeted by user attributes, and the user-identification data is documented only for tying feedback to accounts. The axis applies to a changelog product, so the lack of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2720,38 +2738,16 @@
   {
     "productId": "canny",
     "storyId": "track-task-progress",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Canny's own integrations link feedback to Jira, Linear, GitHub, ClickUp and Asana issues and sync their statuses, so a PM can see the status of linked work inside Canny. Nothing in the evidence shows a real-time per-task view, blocker reasons, or last-update timestamps. Missing for 10: real-time in-progress task monitoring view, what each task is blocked on, last-update tracking, and any hands-on corroboration.",
-    "evidenceIds": [
-      "canny-intdir-4",
-      "canny-intdir-5",
-      "canny-intdir-7",
-      "canny-docs-5"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Canny can push feedback to Jira, Linear, GitHub, ClickUp and Asana and sync statuses, and it can update idea statuses. That is an adjacent status-sync feature for feedback items, not a monitoring view of in-progress tasks. Nothing in the pack shows real-time task status, blockers, or last-update information.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a product-manager, I can watch the real-time status of each in-progress task, including what it's blocked on and its last update",
-      "citations": [
-        {
-          "evidenceId": "canny-intdir-4",
-          "quote": "Send feedback to Jira, link it to existing issues, and sync statuses."
-        },
-        {
-          "evidenceId": "canny-intdir-5",
-          "quote": "Send feedback to Linear, link it to existing issues, and sync statuses."
-        },
-        {
-          "evidenceId": "canny-intdir-7",
-          "quote": "Send feedback to ClickUp, link it to existing tasks, and sync statuses."
-        },
-        {
-          "evidenceId": "canny-docs-5",
-          "quote": "Move ideas through your workflow without leaving your LLM. Update statuses"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -2760,7 +2756,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Usage or adoption analytics is a fair question for a SaaS feedback platform like Canny, so the axis applies. The evidence only covers feedback insights via MCP: top themes, ARR impact, and leadership reports. Nothing documents usage or adoption analytics for how the product is used across a workspace.",
+    "rationale": "The evidence describes analytics over customer feedback content, such as top themes, ARR impact across ideas and leadership reports via MCP. It does not document usage or adoption analytics showing how Canny is used across a workspace. That feedback analysis is an adjacent capability, so it earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
