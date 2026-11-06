@@ -1,11 +1,11 @@
 {
-  "hash": "8646d79c2b279c6987e02ee64c3d8c804211c33174a11acd8f8fd2f62ff29194",
+  "hash": "ebcc367b66b53831cd10d1efadcfcd4646c305e6231294bc7990a8c2e9b6a34e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ScrapingBee's own JavaScript scenario feature can click and fill form fields before the HTML is returned, so a single API call could log in and reach gated content. However, there is no evidence of a persistent browser session for continuing to interact with a page that was already scraped. session_id only keeps the same IP across requests, and cookies are just passed in. Missing for 10: stateful continued interaction with an already-scraped page across calls, documented login-wall or authentication flows, independent or hands-on corroboration.",
+    "rationale": "ScrapingBee's JavaScript scenario lets a developer script clicks and form fills inside its headless browser before the HTML is returned, so a login form could be completed within one request. Nothing shows a developer can keep interacting with a page after it has been scraped: session_id only reuses an IP, and cookies only pass custom cookies, not a live browser state. Missing for 10: persistent browser sessions across calls, a documented login-wall or auth workflow, and independent hands-on corroboration.",
     "evidenceIds": [
       "scrapingbee-docs-3",
       "scrapingbee-docs-21",
@@ -24,6 +24,10 @@
         {
           "evidenceId": "scrapingbee-docs-21",
           "quote": "{\"instructions\": [{\"wait_for_and_click\": \"#accept\"}, {\"fill\": [\"#search\", \"ScrapingBee\"]}, {\"wait\": 1000}, {\"scroll_y\": 800}]}"
+        },
+        {
+          "evidenceId": "scrapingbee-docs-43",
+          "quote": "Pass custom cookies to the webpage you want to scrape"
         }
       ]
     },

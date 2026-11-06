@@ -1,17 +1,34 @@
 {
-  "hash": "cb9a7769bea09f7da76a4ccae48ce79dd9f2bf596d63c2a82889884c973c6759",
+  "hash": "0441b097fe672c0435a8b729a831a62a49082aa05c776ee23fba7add08ffb508",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Signifyd can ingest outcome events, including chargebacks and representment outcomes. It also shows merchants can cancel guarantees. Nothing documents that analyst review decisions or confirmed fraud outcomes are fed back to retrain the model or tune Decision Center rules. Recording outcome events is an adjacent data-ingestion capability, not evidence that the system learns from each worked case.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Signifyd's own testing docs say production-team orders feed model learning: test-team orders are 'not used in model learning', and test data in production can 'pollute the model'. It also documents APIs for recording confirmed outcomes such as Chargeback and Representment Outcome events. However, no evidence says analyst review decisions or these outcome events update the model or Decision Center rules. missing for 10: explicit documentation that analyst review decisions feed back into the model, explicit documentation that chargeback or fraud outcomes retrain the model or adjust rules, analyst-facing review workflow evidence, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "signifyd-test-teams-20261106",
+      "signifyd-docs-5",
+      "signifyd-docs-6"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a risk analyst, my review decisions and confirmed fraud outcomes feed back into the model and rules, so the system learns from every case we work",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "signifyd-test-teams-20261106",
+          "quote": "Any test data added to a production environment can pollute the model with false data."
+        },
+        {
+          "evidenceId": "signifyd-docs-5",
+          "quote": "To create a chargeback against an Order in the Signifyd system, you need to record a Chargeback Event."
+        },
+        {
+          "evidenceId": "signifyd-docs-6",
+          "quote": "To set the outcome of a Chargeback's Representment in the Signifyd system, you need to record a Representment Outcome Event."
+        }
+      ]
     },
     "productId": "signifyd",
     "storyId": "review-outcomes-feedback"

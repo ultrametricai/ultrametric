@@ -1,17 +1,30 @@
 {
-  "hash": "81eff3348069c4767f1543cf944affcdc245ec2f804d042b9b96e2450a648d6a",
+  "hash": "12cd246e8b13b4df00a285d81d8e472f5082a69078d0d725e1e9a1e8abe6ab5c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Raygun is a SaaS monitoring platform with public APIs (Deployments API, source map upload API), so an interactive API reference is a fair question. The evidence pack never mentions an interactive or runnable API reference, and probes for OpenAPI/Swagger specs all returned 404.",
-    "evidenceIds": [],
+    "rationale": "Raygun hosts Swagger UI over its published OpenAPI 3.0.3 v3 spec (46 paths). All submit methods are enabled, so each operation has a working \"Try it out\" runner, which makes it an interactive reference with runnable requests. The 404s on raygun.com/openapi.json do not contradict this, because the spec is served from the api.raygun.com origin. Missing for 10: a sandbox or mock environment (the runner executes against the production API with a Personal Access Token), documented multi-language code samples, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "raygun-swagger-ui-20261106",
+      "raygun-openapi-spec-20261106",
+      "raygun-api-guide-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "raygun-swagger-ui-20261106",
+          "quote": "Raygun hosts Swagger UI over its spec at https://api.raygun.com/v3/swagger/index.html; the served configuration loads the v3 spec and enables all submit methods, so the per-operation \"Try it out\" runner is available"
+        },
+        {
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "Raygun publishes a downloadable OpenAPI 3.0.3 document (\"Raygun API\", 46 paths, servers https://api.raygun.com/v3) at the API origin"
+        }
+      ]
     },
     "productId": "raygun",
     "storyId": "api-interactive-docs"

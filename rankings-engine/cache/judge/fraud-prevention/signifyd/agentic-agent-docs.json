@@ -1,14 +1,15 @@
 {
-  "hash": "79b2a4f0ed32f0812c2da98307abdba9a5247054dc72948faf166dd2cf1cfd85",
+  "hash": "a9ab5e8db54ba7660265f105877a882406c6ca238b1bb38b80968d772e94cc40",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The llms.txt probe returned HTTP 404, so there is no llms.txt index for agents. However, Signifyd's developer docs do serve raw markdown versions of pages (introduction.md returned HTTP 200 with markdown content), which an agent can be pointed at. That gives some agent-consumable documentation, but nothing is explicitly built or labeled for agents. missing for 10: an llms.txt or llms-full.txt index, explicitly agent-oriented documentation or guidance, evidence that markdown coverage extends beyond the single probed page, and independent or hands-on corroboration of agent use.",
+    "rationale": "Signifyd's ReadMe-hosted docs serve per-page Markdown mirrors that an agent can read. A probe confirmed the .md version of the reference introduction returns HTTP 200, and an OpenAPI 3.0.3 spec is published. However, the probe of developer.signifyd.com/llms.txt returned 404, which contradicts the claim that llms.txt is served, so agents get no index file. missing for 10: a working llms.txt index (probe returned 404), any agent-specific docs guidance, and independent hands-on corroboration of agents consuming the docs.",
     "evidenceIds": [
+      "signifyd-probe-2",
       "signifyd-probe-1",
-      "signifyd-probe-2"
+      "signifyd-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -17,7 +18,11 @@
       "citations": [
         {
           "evidenceId": "signifyd-probe-2",
-          "quote": "HTTP 200 at https://developer.signifyd.com/main/reference/introduction.md"
+          "quote": "PROBE docs-md: HTTP 200 at https://developer.signifyd.com/main/reference/introduction.md"
+        },
+        {
+          "evidenceId": "signifyd-openapi-spec-20261106",
+          "quote": "Signifyd publishes a downloadable OpenAPI 3.0.3 document"
         }
       ]
     },

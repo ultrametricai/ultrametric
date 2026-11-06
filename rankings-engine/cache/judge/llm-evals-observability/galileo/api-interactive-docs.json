@@ -1,17 +1,33 @@
 {
-  "hash": "f99af86add72d57659a5b0a778a5fdc87dde268e53d149ca800d47ff2cc2dbb4",
+  "hash": "c9513cea77886a97df63ff80638a7724f5f0aa6ba981f8d9493f417713344d4f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Galileo is a SaaS evaluation and observability platform, so an interactive API reference is a fair question to ask of it. The pack contains no evidence of an interactive or try-it API reference, and the OpenAPI probe returned 404 on every candidate path. The cookbooks, quickstarts and SDK guides are tutorials, not an interactive API reference with runnable examples.",
-    "evidenceIds": [],
+    "rationale": "Galileo's docs host a Mintlify API reference generated from its published OpenAPI 3.1.0 spec (202 /v2/ paths). Every endpoint has a \"Try it\" playground that executes real requests, so the reference is interactive and its examples are runnable. The probe 404s on docs-origin OpenAPI paths do not contradict this, because the spec is served from the API origin. Missing for 10: independent or hands-on corroboration of the playground, a sandbox or test environment (it runs against production with a real token), and clean spec metadata (title \"FastAPI\", version \"0.1.0\").",
+    "evidenceIds": [
+      "galileo-tryit-20261106",
+      "galileo-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "galileo-tryit-20261106",
+          "quote": "The Mintlify-hosted API reference (generated from the OpenAPI document) runs the \"Try it\" playground per endpoint, with .md mirrors of every page."
+        },
+        {
+          "evidenceId": "galileo-tryit-20261106",
+          "quote": "The runner mounts client-side and executes against the production API with a real token."
+        },
+        {
+          "evidenceId": "galileo-openapi-spec-20261106",
+          "quote": "Galileo publishes a downloadable OpenAPI 3.1.0 document at its API origin (202 paths, all under /v2/)"
+        }
+      ]
     },
     "productId": "galileo",
     "storyId": "api-interactive-docs"

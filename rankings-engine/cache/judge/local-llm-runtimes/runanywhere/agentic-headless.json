@@ -1,17 +1,17 @@
 {
-  "hash": "20fad299c9c6320c9b6bd755f8e693ee9a8c891ec51798733a3882e68754bb97",
+  "hash": "38c2d766e843f3f2b5906f0e0da4a9d42e9a53728c89a9d3e5f02bcb8caa1336",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "RunAnywhere ships an official CLI (Wally) that can run local models offline without an account, and it exposes an OpenAI-compatible endpoint, so scripted use is plausible. However, nothing documents a headless or CI mode. Cloud authentication is a browser approval flow, which works against unattended CI runs. missing for 10: documented non-interactive/headless CLI mode, CI usage guidance or examples, a non-browser auth path (API key/token) for automation, independent hands-on corroboration.",
+    "rationale": "RunAnywhere has programmatic surfaces that could plausibly run unattended. Its hosted Wally API is OpenAI-compatible and authenticated with the caller's own key, and the CLI can run small local models offline without an account. However, nothing in the evidence documents a headless or CI mode, and CLI authentication for cloud use is browser-based, which is a hurdle for non-interactive pipelines. Missing for 10: documented headless/CI usage guide, non-interactive CLI auth (e.g. env-var keys or service tokens), isolated test environment or mock mode, and hands-on corroboration of unattended runs.",
     "evidenceIds": [
-      "runanywhere-probe-3",
-      "runanywhere-docs-6",
       "runanywhere-docs-4",
+      "runanywhere-docs-6",
       "runanywhere-docs-5",
-      "runanywhere-docs-15"
+      "runanywhere-tryit-20261106",
+      "runanywhere-contract-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -19,16 +19,16 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "runanywhere-docs-6",
-          "quote": "When a small model on your own machine is enough, the same CLI runs it, offline and without an account."
-        },
-        {
           "evidenceId": "runanywhere-docs-4",
           "quote": "The endpoint is OpenAI-compatible, so the official OpenAI clients work by pointing `base_url` at it."
         },
         {
-          "evidenceId": "runanywhere-probe-3",
-          "quote": "official CLI documented at https://github.com/RunanywhereAI/wally/releases"
+          "evidenceId": "runanywhere-docs-6",
+          "quote": "the same CLI runs it, offline and without an account."
+        },
+        {
+          "evidenceId": "runanywhere-tryit-20261106",
+          "quote": "Executing requires the caller's own key and runs against the production gateway."
         }
       ]
     },

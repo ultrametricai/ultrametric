@@ -6029,7 +6029,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Signifyd lists an Account Protection product ('Defend customer accounts') and Return Insights for return-related risk alongside its checkout fraud protection. That is a first-party claim of coverage beyond checkout, but it is only a one-line marketing mention. The API docs shown cover only checkout, sale, chargeback and decision events. missing for 10: documented account-takeover scoring, fake account creation detection, promo abuse detection, explicit policy-abuse scoring, evidence that these surfaces are scored and managed in the same Decision Center system as orders, and independent or hands-on corroboration.",
+    "rationale": "Signifyd's own site lists an Account Protection product ('Defend customer accounts') and Return Insights for returns, so it has first-party offerings beyond checkout. The only support is those one-line marketing taglines; the API docs cover only checkout, sale, chargeback and decision flows. missing for 10: documented account takeover scoring (login/account events), fake account creation detection, promo abuse scoring, evidence that these are scored and managed in the same decision system as checkout, independent corroboration",
     "evidenceIds": [
       "signifyd-docs-30",
       "signifyd-docs-15",
@@ -6057,7 +6057,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is a commerce fraud-protection platform, so telling malicious bots apart from legitimate AI buying agents is a fair axis for it. The evidence pack, however, never mentions AI agents, agentic commerce, or bot-versus-agent classification. Device profiling, Account Protection and fraud-decision APIs are adjacent features and do not show this capability.",
+    "rationale": "Signifyd is a commerce fraud-prevention platform, so telling malicious bots apart from legitimate AI buying agents is a fair question for it. The evidence pack never mentions bot detection, AI agents, or agentic-commerce handling. Device profiling, account protection and fraud decisions are related features but do not show this specific capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6072,7 +6072,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is a fraud platform, so programmatic rule and list management is a fair axis. The evidence only shows order-event submission, per-order decision retrieval, chargebacks and webhooks. The single mention of Decision Center says policies can be configured at a checkpoint, with no API for creating velocity rules, editing blocklists or reading overall posture. Nothing in the pack documents human approval gates for agent-proposed changes.",
+    "rationale": "Signifyd's documented API covers order event submission (Checkout and Sale), decision retrieval, chargebacks, guarantee cancellation and webhooks. The evidence shows no API for reading fraud posture or for creating and updating rules or lists such as velocity rules or blocklists, and no human approval gates for agent-proposed changes. Decision Center policies are mentioned only as being configured at a checkpoint, with no documented programmatic rule management, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6087,7 +6087,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd documents a REST API that can retrieve the latest fraud decision for a single order and webhooks for decision events. Nothing in the evidence shows a review-queue endpoint for pulling flagged cases with their context, or any agent-facing capability to summarize evidence and recommend a decision for human confirmation. These are developer building blocks at most, so they earn no credit.",
+    "rationale": "Signifyd is a fraud-decisioning platform, so an agent-operable review queue is a fair axis for it. The evidence documents no such capability: it shows only order submission, a per-order Get Decision lookup, and decision webhooks. Nothing covers listing flagged or manual-review cases with their context, agent-side evidence summarization, or a recommend-then-human-confirm workflow; at most these are developer building blocks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6100,12 +6100,13 @@
     "productId": "signifyd",
     "storyId": "agentic-agent-docs",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The llms.txt probe returned HTTP 404, so there is no llms.txt index for agents. However, Signifyd's developer docs do serve raw markdown versions of pages (introduction.md returned HTTP 200 with markdown content), which an agent can be pointed at. That gives some agent-consumable documentation, but nothing is explicitly built or labeled for agents. missing for 10: an llms.txt or llms-full.txt index, explicitly agent-oriented documentation or guidance, evidence that markdown coverage extends beyond the single probed page, and independent or hands-on corroboration of agent use.",
+    "rationale": "Signifyd's ReadMe-hosted docs serve per-page Markdown mirrors that an agent can read. A probe confirmed the .md version of the reference introduction returns HTTP 200, and an OpenAPI 3.0.3 spec is published. However, the probe of developer.signifyd.com/llms.txt returned 404, which contradicts the claim that llms.txt is served, so agents get no index file. missing for 10: a working llms.txt index (probe returned 404), any agent-specific docs guidance, and independent hands-on corroboration of agents consuming the docs.",
     "evidenceIds": [
+      "signifyd-probe-2",
       "signifyd-probe-1",
-      "signifyd-probe-2"
+      "signifyd-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6114,7 +6115,11 @@
       "citations": [
         {
           "evidenceId": "signifyd-probe-2",
-          "quote": "HTTP 200 at https://developer.signifyd.com/main/reference/introduction.md"
+          "quote": "PROBE docs-md: HTTP 200 at https://developer.signifyd.com/main/reference/introduction.md"
+        },
+        {
+          "evidenceId": "signifyd-openapi-spec-20261106",
+          "quote": "Signifyd publishes a downloadable OpenAPI 3.0.3 document"
         }
       ]
     }
@@ -6125,7 +6130,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents fraud-review APIs, decisions, webhooks and a marketing tagline for \"Return Insights\" offering \"actionable intelligence\". Nothing states that the product generates AI-driven insights or suggestions from a user's data inside the product. The Return Insights line is a one-line product label with no description of AI generation or in-product suggestion behavior, so it is an adjacent feature and earns no credit.",
+    "rationale": "The evidence pack does not document any in-product AI-generated insights or suggestions drawn from the merchant's data. The closest items are a one-line marketing tagline for 'Return Insights' (\"actionable intelligence\"), with no description of AI generation or how insights are surfaced. There are also model-driven fraud decisions retrieved via API and configurable Decision Center policies, but these are adjacent features, not AI insight or suggestion capabilities.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6140,11 +6145,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Signifyd documents user-configurable Decision Center policies at the Sale checkpoint that are applied automatically to incoming orders. It also documents automatic guarantee decisions pushed out via registered webhooks. Together these are a narrow form of user-set automation that runs without manual intervention, but they are limited to fraud-decision rules, not general background automations. Missing for 10: general-purpose automation or workflow builder, scheduled or recurring background jobs, agent-driven autonomous actions, detailed policy-configuration docs, independent corroboration.",
+    "rationale": "Signifyd documents one user-configurable mechanism that runs on its own: Decision Center policies set at the Sale checkpoint are applied automatically to every incoming order. Webhooks then push each guarantee decision to the merchant's store in real time. This is a narrow, fraud-policy form of background automation, not a general automation builder. Missing for 10: general-purpose automation or workflow configuration, scheduled or recurring jobs, agent-driven autonomous actions, depth of documentation on Decision Center policies, and independent or hands-on corroboration.",
     "evidenceIds": [
       "signifyd-docs-23",
-      "signifyd-docs-8",
-      "signifyd-docs-7"
+      "signifyd-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -6153,7 +6157,7 @@
       "citations": [
         {
           "evidenceId": "signifyd-docs-23",
-          "quote": "policies for Sale events can be configured at the Sale checkpoint, and they will be applied to orders created via requests to this endpoint."
+          "quote": "If Decision Center is enabled, policies for Sale events can be configured at the Sale checkpoint, and they will be applied to orders created via requests to this endpoint."
         },
         {
           "evidenceId": "signifyd-docs-8",
@@ -6168,7 +6172,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is a SaaS fraud-protection platform, so a built-in AI assistant is a fair question to ask of it. However, nothing in the evidence pack describes an in-product assistant that users can delegate tasks to. The material covers only REST APIs, webhooks, SDKs, device profiling, and Decision Center policies, none of which is a conversational or agentic assistant.",
+    "rationale": "Signifyd is a SaaS fraud-protection platform with a merchant-facing app, so a built-in AI assistant is a fair question and the axis applies. The evidence covers only REST APIs, webhooks, SDKs, Decision Center policies and test teams, with no mention of an in-product AI assistant that users can hand tasks to.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6181,13 +6185,14 @@
     "productId": "signifyd",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Signifyd is an API-first SaaS service. Its documented REST API covers authenticating, submitting orders (Checkout/Sale), retrieving decisions, polling and creating webhooks, so headless, programmatic automation is the product's own interaction model. Nothing addresses CI use specifically. Missing for 10: an official CLI or CI-runner tooling, documented CI/pipeline or sandbox test-environment guidance, and independent hands-on corroboration of headless automation.",
+    "rationale": "Signifyd is an API-first SaaS service, so it can be driven headlessly. It has a REST API with per-team API-key Basic auth, an OpenAPI 3.0.3 spec, and both polling and webhook decision retrieval. For CI, isolation relies on test teams with their own keys, but these require contacting support, and there is no CLI, no sandbox base URL and no self-serve test mode. Missing for 10: an official CLI or CI tooling, a self-serve sandbox or test mode with a separate endpoint, and independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "signifyd-docs-1",
-      "signifyd-docs-4",
-      "signifyd-docs-21",
+      "signifyd-openapi-spec-20261106",
+      "signifyd-tryit-20261106",
+      "signifyd-test-teams-20261106",
       "signifyd-docs-26",
       "signifyd-docs-7"
     ],
@@ -6201,16 +6206,12 @@
           "quote": "This document will show you how to use Signifyd's REST API to authenticate, make requests, and retrieve data."
         },
         {
-          "evidenceId": "signifyd-docs-4",
-          "quote": "Retrieve the latest fraud decision for an order in the Signifyd system."
+          "evidenceId": "signifyd-test-teams-20261106",
+          "quote": "we can update your newly created Signifyd production team to a test team"
         },
         {
           "evidenceId": "signifyd-docs-26",
           "quote": "you can use the Signifyd Get Decision API to poll for the guarantee decision of the order."
-        },
-        {
-          "evidenceId": "signifyd-docs-7",
-          "quote": "Create a new webhook. This will add to the list of any existing webhooks."
         }
       ]
     }
@@ -6221,7 +6222,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is a commerce fraud-protection SaaS whose documented surface is REST APIs, webhooks, SDKs and device profiling. It is not an agent or assistant that consumes external tools, so acting as an MCP client is a category error for this kind of product. Nothing in the evidence shows it ships any agent or MCP-client capability that would make the axis apply.",
+    "rationale": "Signifyd is a fraud-protection and chargeback SaaS that exposes a REST API, webhooks and SDKs. It is not an AI agent or tool-using host, so acting as an MCP client is outside its product category. Nothing in the evidence shows an agent or AI assistant inside the product that could consume tools from MCP servers, so the axis does not apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6236,7 +6237,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is a SaaS fraud-protection platform, so an official MCP server is a plausible capability and the axis applies. The evidence pack documents only a REST API, webhooks, mobile SDKs and a markdown docs endpoint, with no mention of an MCP server or agent connector. Those are developer building blocks, not the capability itself.",
+    "rationale": "Signifyd is a SaaS fraud-protection platform, so publishing an official MCP server is a fair question for it. The evidence pack documents only a REST API, an OpenAPI spec, SDKs, webhooks and .md doc mirrors; it never mentions an MCP server. Developer building blocks like the REST API and OpenAPI spec earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6251,7 +6252,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Asking whether a SaaS fraud-protection platform supports natural-language commands is a fair question for this kind of product, so the axis applies. The evidence only documents REST API endpoints, webhooks, SDKs, and device-profiling scripts. Nothing shows a natural-language interface, chat assistant, or conversational command capability, so the verdict is none.",
+    "rationale": "Natural-language operation is a fair question for a fraud-protection SaaS platform, but the evidence only documents a REST API, an OpenAPI spec, SDKs, webhooks and a Try It! panel. None of it describes a conversational assistant, copilot, or natural-language command interface. API and spec materials are developer building blocks, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6266,7 +6267,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is a SaaS fraud-protection platform, so an official CLI is a fair thing to ask about. The evidence documents only a REST API, webhooks, mobile SDKs and a device-profiling script, and never mentions a command-line tool. Those are adjacent developer building blocks, not a CLI, so they earn no credit.",
+    "rationale": "Asking whether a fraud-protection SaaS platform ships an official CLI is a fair question, so the axis applies. The evidence pack documents a REST API, an OpenAPI spec, mobile SDKs, webhooks and a Try It! panel. None of these is an official command-line tool. SDKs and the API are developer building blocks and earn no credit toward a CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6281,15 +6282,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Signifyd publishes a documented public REST API covering authentication, requests, and data retrieval. Documented endpoints include Checkout, Sale, Get Decision, Chargeback, Representment Outcome, and webhook creation, so a programmatic user can drive the core fraud-review workflow end to end. The probe confirms the API reference docs are publicly reachable, including in markdown form. Missing for 10: independent or hands-on corroboration of real API usage beyond vendor documentation.",
+    "rationale": "Signifyd documents a public REST API with authentication, endpoints for checkout, sale, get decision, chargebacks and webhook creation, plus a downloadable OpenAPI 3.0.3 spec, a Try It panel, a versioning policy and test teams for safe use. Some docs are gated behind login, and the llms.txt probe returned 404 despite a claim that it is served. missing for 10: independent hands-on corroboration of agent-driven use, a fully ungated reference (some Enterprise docs need login), and a published changelog.",
     "evidenceIds": [
       "signifyd-docs-1",
       "signifyd-docs-3",
-      "signifyd-docs-2",
       "signifyd-docs-4",
-      "signifyd-docs-5",
       "signifyd-docs-7",
-      "signifyd-docs-26",
+      "signifyd-openapi-spec-20261106",
+      "signifyd-tryit-20261106",
+      "signifyd-versioning-20261106",
       "signifyd-probe-2"
     ],
     "support": {
@@ -6306,8 +6307,8 @@
           "quote": "Retrieve the latest fraud decision for an order in the Signifyd system."
         },
         {
-          "evidenceId": "signifyd-docs-3",
-          "quote": "The Checkout endpoint in Signifyd's API is used to record a Checkout Event in a Pre-Auth flow."
+          "evidenceId": "signifyd-openapi-spec-20261106",
+          "quote": "Signifyd publishes a downloadable OpenAPI 3.0.3 document (\"Signifyd API\", version 3.0, servers https://api.signifyd.com/v3)"
         },
         {
           "evidenceId": "signifyd-docs-7",
@@ -6322,7 +6323,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is an API-driven SaaS fraud platform, so issuing scoped or least-privilege API credentials is a fair question to ask of it. The evidence only says the REST API docs explain how to authenticate. Nothing in the pack shows scoped keys, permission-limited tokens, or per-agent credential issuance.",
+    "rationale": "Signifyd's API uses HTTP Basic auth with a per-team API key, and test teams act as separate tenants with their own keys. That is tenant isolation, not scoped or least-privilege credentials. Nothing in the pack shows permission scopes, endpoint-restricted keys, read-only keys or agent-specific credentials, so the applicable axis is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6337,7 +6338,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Signifyd documents official SDKs: self-contained libraries with instructions, examples, and project files. They are described only for mobile application developers, and the rest of the integration is the raw REST API. Missing for 10: server-side/backend language SDKs, SDK coverage of the core Checkout/Sale/Decision APIs, version or language detail, independent or hands-on corroboration.",
+    "rationale": "Signifyd documents official SDKs, but only as mobile-app libraries that come with instructions, examples and project files. The core integration surface is a REST API, with no evidence of official server-side or language SDKs. The published OpenAPI spec is only a developer building block for generating clients, so it earns no SDK credit. missing for 10: official server-side/backend language SDKs for the REST API, SDK reference depth (languages, versions, maintenance), independent or hands-on corroboration of SDK quality",
     "evidenceIds": [
       "signifyd-docs-12",
       "signifyd-docs-28"
@@ -6358,13 +6359,14 @@
     "productId": "signifyd",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Signifyd documents a create-webhook API endpoint for registering webhooks programmatically. It also documents outbound webhook notifications sent to the merchant's store whenever a guarantee decision is made, giving a programmatic consumer real-time event delivery. missing for 10: documentation of the full set of subscribable event types beyond guarantee decisions, payload signing/verification and retry semantics, independent or hands-on corroboration.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Signifyd documents a programmatic webhook-registration endpoint (\"Create a new webhook\") and outbound HTTP webhooks that notify the merchant's store whenever a guarantee decision is made. Its versioning policy also references webhook events and version-targeted webhook tooling, so programmatic consumers can register callbacks and receive events. missing for 10: a documented catalog of all subscribable event types, signature verification and retry/delivery semantics, and independent hands-on corroboration.",
     "evidenceIds": [
       "signifyd-docs-7",
       "signifyd-docs-8",
-      "signifyd-docs-27"
+      "signifyd-docs-27",
+      "signifyd-versioning-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6377,7 +6379,11 @@
         },
         {
           "evidenceId": "signifyd-docs-8",
-          "quote": "Signifyd can send a webhook to notify your online store every time a guarantee decision is made on a submitted order. This provides you with real-time updates"
+          "quote": "Signifyd can send a webhook to notify your online store every time a guarantee decision is made on a submitted order. This provides you with real-time updates enabling you to ship orders quickly and efficiently."
+        },
+        {
+          "evidenceId": "signifyd-versioning-20261106",
+          "quote": "webhook tooling addresses \"a specific API version - V2, V3 or ALL\""
         }
       ]
     }
@@ -6388,7 +6394,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is a fraud-protection platform with a merchant console, so a built-in AI assistant is a fair question to ask of it. The evidence pack covers only REST APIs, webhooks, SDKs, device profiling and Decision Center policy configuration. It has nothing on a console-native AI assistant for natural-language queries over fraud data, drafted rules or investigation summaries. Decision Center policies are an adjacent rules feature, not an AI assistant.",
+    "rationale": "The evidence pack covers Signifyd's REST API, webhooks, SDKs, test teams and Decision Center policy checkpoints. None of it documents a built-in AI assistant in the console for natural-language queries over fraud data, drafting rules, or summarizing investigations. A fraud platform could plausibly ship such an assistant, so the axis applies and the absence of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6400,61 +6406,116 @@
   {
     "productId": "signifyd",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence shows a per-endpoint REST API reference (Sale, Checkout, Get Decision, webhooks) and a markdown version of the docs. Nothing in the pack shows the reference is interactive or offers runnable examples, such as a try-it console or executable request samples. A static reference is adjacent to this story and does not satisfy it.",
-    "evidenceIds": [],
+    "rationale": "Signifyd's ReadMe-hosted API reference has a 'Try It!' panel on endpoint pages, so examples can be run interactively, and a downloadable OpenAPI 3.0.3 spec backs it. Running requests needs real per-team API credentials, a safe test team is not self-serve because it requires contacting support, and some Enterprise API docs are gated behind the app login. missing for 10: credential-free or sandboxed runnable examples, ungated access to the full reference, and independent or hands-on confirmation that the Try It panel works.",
+    "evidenceIds": [
+      "signifyd-tryit-20261106",
+      "signifyd-openapi-spec-20261106",
+      "signifyd-test-teams-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "signifyd-tryit-20261106",
+          "quote": "Click Try It! to start a request and see the response here"
+        },
+        {
+          "evidenceId": "signifyd-tryit-20261106",
+          "quote": "Auth is HTTP Basic with a per-team API key, so execution needs real credentials."
+        },
+        {
+          "evidenceId": "signifyd-openapi-spec-20261106",
+          "quote": "Signifyd publishes a downloadable OpenAPI 3.0.3 document"
+        }
+      ]
     }
   },
   {
     "productId": "signifyd",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Signifyd has REST API reference pages and a Markdown rendering of its docs (introduction.md). None of it shows a downloadable OpenAPI or equivalent machine-readable spec. Markdown docs and human-readable endpoint references are adjacent features and do not count as an API spec.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Signifyd publishes a downloadable OpenAPI 3.0.3 document for its v3 API at a stable JSON URL, linked from the reference introduction, so the core story is met with a standard machine-readable spec. Discovery is slightly awkward because the ReadMe UI download button is disabled and the spec is reached only through a prose link. missing for 10: in-UI download button, independent or hands-on corroboration that the spec is complete and valid.",
+    "evidenceIds": [
+      "signifyd-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "signifyd-openapi-spec-20261106",
+          "quote": "Signifyd publishes a downloadable OpenAPI 3.0.3 document"
+        },
+        {
+          "evidenceId": "signifyd-openapi-spec-20261106",
+          "quote": "An OpenAPI specification is available at this link"
+        }
+      ]
     }
   },
   {
     "productId": "signifyd",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Testing in a sandbox is a fair question for a fraud-prevention API like Signifyd, so the axis applies. However, nothing in the evidence pack mentions a sandbox, test environment, test API keys, or any way to separate test traffic from production. The cited docs cover only production API endpoints, webhooks, SDKs and sensitive-data rejection.",
-    "evidenceIds": [],
+    "rationale": "Signifyd documents test teams as its own isolation mechanism. A test team is a separate tenant with its own API key, and its orders are not used in model learning. Signifyd explicitly warns against sending test orders to production teams, so testing can happen without touching production data. However, there is no dedicated sandbox base URL or self-serve test mode, and converting a team requires contacting the Implementation Manager or support. missing for 10: self-serve sandbox provisioning, a dedicated sandbox endpoint or test mode, documented sandbox decision behavior or test fixtures, independent hands-on corroboration.",
+    "evidenceIds": [
+      "signifyd-test-teams-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "signifyd-test-teams-20261106",
+          "quote": "we can update your newly created Signifyd production team to a test team"
+        },
+        {
+          "evidenceId": "signifyd-test-teams-20261106",
+          "quote": "orders created are not used in model learning"
+        },
+        {
+          "evidenceId": "signifyd-test-teams-20261106",
+          "quote": "it is strongly recommended to never send test orders to your production teams. Any test data added to a production environment can pollute the model with false data."
+        }
+      ]
     }
   },
   {
     "productId": "signifyd",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Signifyd has a documented REST API, so this axis applies. However, nothing in the evidence pack mentions API version numbers, version pinning, or a deprecation or sunset policy. The endpoint references describe what each call does, not its versioning or lifecycle guarantees.",
-    "evidenceIds": [],
+    "rationale": "Signifyd's API is major-path-versioned (v3 servers, with V2/V3 webhook targeting). It publishes a backward-compatibility policy stating it only bumps the version for non-backward-compatible changes and lists what counts as compatible. The deprecation half of the story is not delivered: there is no deprecation notice window and no changelog (the changelog URL returns 404). Missing for 10: a documented deprecation policy with notice/sunset windows, a published changelog, independent corroboration.",
+    "evidenceIds": [
+      "signifyd-versioning-20261106",
+      "signifyd-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "signifyd-versioning-20261106",
+          "quote": "We only update the version of our API when a non-backward-compatible change is made"
+        },
+        {
+          "evidenceId": "signifyd-openapi-spec-20261106",
+          "quote": "Signifyd publishes a downloadable OpenAPI 3.0.3 document (\"Signifyd API\", version 3.0, servers https://api.signifyd.com/v3)"
+        }
+      ]
     }
   },
   {
@@ -6463,7 +6524,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd applies to this story because a fraud-prevention SaaS with a REST API could offer batch endpoints. However, the evidence only shows per-order endpoints: Sale, Checkout, Get Decision, Chargeback and Cancel Guarantee each act on a single order. No batch or bulk operation across many items is documented.",
+    "rationale": "Bulk operations are a fair question for a fraud-protection API platform, but every documented endpoint (Sale, Checkout, Get Decision, Chargeback, Representment, guarantee cancellation) works on a single order or event. The evidence shows no batch endpoint, bulk import, or multi-item action. Webhooks and per-order APIs are adjacent features and do not count toward bulk operations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6478,10 +6539,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Signifyd's Decision Center lets merchants configure policies at the Sale checkpoint, and these are applied automatically to orders created through the Sale event endpoint. That is a product-native rule-on-event mechanism. Webhooks also fire on every guarantee decision, but this is only a built-in event notification, not a user-defined rule. Missing for 10: documentation of how rules and conditions are authored, which actions a policy can trigger, rule coverage at other checkpoints (Checkout, chargeback and similar events), and any hands-on or independent corroboration.",
+    "rationale": "Signifyd's Decision Center lets merchants configure policies at the Sale checkpoint, and those policies apply automatically to orders created through Sale events. That is a product-native, event-triggered rules capability, but the pack mentions it only in one conditional line ('If Decision Center is enabled'), and the webhooks only notify about decisions rather than act as user-defined rules. Missing for 10: documentation of rule conditions and authoring, the range of actions a rule can trigger, coverage of checkpoints beyond Sale, and independent or hands-on corroboration.",
     "evidenceIds": [
       "signifyd-docs-23",
-      "signifyd-docs-8"
+      "signifyd-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -6491,10 +6552,6 @@
         {
           "evidenceId": "signifyd-docs-23",
           "quote": "If Decision Center is enabled, policies for Sale events can be configured at the Sale checkpoint, and they will be applied to orders created via requests to this endpoint."
-        },
-        {
-          "evidenceId": "signifyd-docs-8",
-          "quote": "Signifyd can send a webhook to notify your online store every time a guarantee decision is made on a submitted order."
         }
       ]
     }
@@ -6505,7 +6562,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is a fraud-protection SaaS platform, so asking about scheduled or recurring automation is a fair question. The evidence only shows event-driven API calls (Checkout, Sale) and decision webhooks. Polling the Get Decision API would be a user-side workaround, not a product scheduler, and nothing documents recurring jobs or scheduled workflows.",
+    "rationale": "Signifyd is a fraud-protection SaaS platform that could plausibly offer scheduled reports or recurring workflows, so the axis applies. The evidence covers only event-driven API calls (Checkout, Sale, Chargeback) and decision webhooks, with no documented scheduling or recurring-job capability. Polling the Get Decision API would be a user-side workaround and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6520,7 +6577,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd has configurable Decision Center policies at checkpoints, so versioning, reviewing, and rolling back automations is a fair question for this product. However, the evidence pack documents no version history, change review, or rollback for those policies. Cancelling a guarantee is an order-level action, not an automation rollback, so it earns no credit.",
+    "rationale": "Signifyd's Decision Center lets merchants configure policies at checkpoints, so versioning and rolling back those automations is a fair question for this product. However, the evidence never documents version history, review, or rollback for policies. The published back-compat policy covers the vendor's own API versioning, not versioning of a user's automations, so it is adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6535,13 +6592,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Signifyd's own docs describe a guarantee product: 'Guaranteed Fraud Protection', a guarantee decision issued per submitted order, and guarantees that carry coverage and can be cancelled with a prorated invoice credit. This shows liability for approved orders shifts to Signifyd, but the pack never says chargebacks on guaranteed orders are reimbursed or spells out what is covered. Missing for 10: explicit statement that disputed approved orders are reimbursed, published coverage terms (eligible chargeback reason codes, limits, claim process), independent corroboration of payouts.",
+    "rationale": "Signifyd's own docs describe a guarantee product: orders are sent for \"Guaranteed Fraud Protection,\" guarantee decisions are issued per order, and guarantees carry \"coverage\" that cancellations reduce, with a prorated invoice credit. However, the pack never states that Signifyd reimburses approved orders that are later charged back, and it gives no explicit coverage terms. The liability shift is implied rather than documented. Missing for 10: explicit statement that approved-then-disputed orders are reimbursed, published coverage terms and exclusions (eligible chargeback reason codes, claim process, payout timing), and independent or hands-on corroboration.",
     "evidenceIds": [
-      "signifyd-docs-31",
       "signifyd-docs-11",
-      "signifyd-docs-27",
+      "signifyd-docs-31",
+      "signifyd-docs-8",
       "signifyd-docs-19",
-      "signifyd-docs-13"
+      "signifyd-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -6549,20 +6606,24 @@
       "subject": "As a finance lead, I can shift fraud liability to the vendor — a chargeback guarantee that reimburses approved-then-disputed orders, with clear coverage terms",
       "citations": [
         {
-          "evidenceId": "signifyd-docs-31",
-          "quote": "Guaranteed Fraud Protection Approve more transactions, guarantee fraud protection and grow revenue with less risk"
-        },
-        {
           "evidenceId": "signifyd-docs-11",
           "quote": "Integrating Signifyd on your online stores enables orders placed on your stores to be sent to Signifyd for Guaranteed Fraud Protection."
         },
         {
-          "evidenceId": "signifyd-docs-27",
+          "evidenceId": "signifyd-docs-31",
+          "quote": "Guaranteed Fraud Protection Approve more transactions, guarantee fraud protection and grow revenue with less risk"
+        },
+        {
+          "evidenceId": "signifyd-docs-8",
           "quote": "Signifyd can send a webhook to notify your online store every time a guarantee decision is made on a submitted order."
         },
         {
           "evidenceId": "signifyd-docs-19",
           "quote": "Guarantee cancellations reduce or eliminate coverage and are accompanied by a prorated invoice credit based on the refunded amount."
+        },
+        {
+          "evidenceId": "signifyd-docs-5",
+          "quote": "To create a chargeback against an Order in the Signifyd system, you need to record a Chargeback Event."
         }
       ]
     }
@@ -6573,7 +6634,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is a single mention that, when Decision Center is enabled, policies can be configured at the Sale checkpoint and applied to orders. That points to a first-party policy/rules capability, but nothing describes what those policies can contain or what outcomes they produce. Missing for 10: documentation that rules can reference model scores, velocity counters, list matches and transaction attributes; explicit allow/block/review outcomes; a rule-authoring interface for analysts; independent or hands-on corroboration.",
+    "rationale": "The only on-topic evidence is a single mention that, when Decision Center is enabled, policies can be configured at the Sale checkpoint and applied to orders. That suggests a first-party policy or rules capability, but nothing shows what those policies can contain or what decisions they produce. Missing for 10: documentation of authoring custom rules, combining model scores, velocity counters, list matches, and transaction attributes in conditions, allow/block/review outcomes, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "signifyd-docs-23"
     ],
@@ -6595,11 +6656,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Signifyd documents a device-profiling script for the merchant's checkout page, and its Checkout and Sale APIs let developers submit order and payment details for fraud review, so merchant-side device and order data does reach scoring. Nothing in the pack shows developers can supply their own fingerprints, behavioral data or arbitrary custom metadata that tunes the model. Missing for 10: custom metadata or custom-field submission, merchant-supplied behavioral signals, bring-your-own device fingerprints, evidence that submitted signals change model scoring, independent corroboration.",
+    "rationale": "Signifyd documents that merchants submit order, payment and transaction details through the Checkout and Sale APIs for fraud review. It also offers a device-profiling script for the checkout page and mobile SDKs, so some merchant-side signals do reach its scoring. Nothing shows a developer supplying their own fingerprints, behavioral data or arbitrary custom fields to shape the model, and Decision Center policies are rule configuration, not signal input. Missing for 10: documented custom-metadata or custom-field submission, merchant-supplied device fingerprint and behavioral data fields, evidence that submitted signals change model scoring per merchant, independent corroboration.",
     "evidenceIds": [
       "signifyd-docs-10",
       "signifyd-docs-21",
-      "signifyd-docs-22"
+      "signifyd-docs-22",
+      "signifyd-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -6608,15 +6670,19 @@
       "citations": [
         {
           "evidenceId": "signifyd-docs-10",
-          "quote": "Place the following script just before the closing `</head>` tag on your checkout page. The script loads asynchronously and does not affect page load time."
+          "quote": "Place the following script just before the closing `</head>` tag on your checkout page."
         },
         {
           "evidenceId": "signifyd-docs-21",
-          "quote": "use the Checkout API to submit the order and payment details to Signifyd for fraud review."
+          "quote": "use the Checkout API to submit the order and payment details to Signifyd for fraud review"
         },
         {
           "evidenceId": "signifyd-docs-22",
-          "quote": "use the Sale API to submit the order and transaction details to Signifyd for fraud review."
+          "quote": "use the Sale API to submit the order and transaction details to Signifyd for fraud review"
+        },
+        {
+          "evidenceId": "signifyd-docs-12",
+          "quote": "SDKs provide mobile application developers with self-contained libraries for implementing Signifyd."
         }
       ]
     }
@@ -6627,7 +6693,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency and retention controls are a fair question for a fraud-prevention SaaS that stores order and payment data, so the axis applies. Nothing in the evidence pack documents regional hosting, residency options or retention and deletion controls. The sensitive-data protection layer rejects unwanted sensitive data at the API, which is an adjacent control rather than residency or retention.",
+    "rationale": "Data residency and retention are fair questions for a fraud-protection SaaS, so the axis applies. The evidence pack documents no regional hosting options and no retention or deletion controls. The sensitive-data protection layer only rejects unwanted sensitive data at the API, which is an adjacent control and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6642,7 +6708,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Signifyd markets a first-party Chargeback Recovery product. Its API lets merchants record chargebacks against orders and record the outcome of a chargeback's representment, which implies Signifyd handles representment. The pack does not show evidence being compiled automatically or submitted to issuers. Missing for 10: documentation of automated evidence compilation from order, delivery, and session data; documentation of automated submission to the issuer without manual work; independent or hands-on corroboration of automated chargeback responses.",
+    "rationale": "Signifyd markets a first-party Chargeback Recovery product and documents API events for recording chargebacks and representment outcomes, so chargeback representment is within the product's scope. Nothing in the pack shows how evidence is assembled from order, delivery, and session data, or that responses are submitted to the issuer automatically without manual work. missing for 10: documented automated evidence compilation from order/delivery/session data, documented automatic submission to issuers, workflow detail beyond a marketing tagline, independent or hands-on corroboration.",
     "evidenceIds": [
       "signifyd-docs-14",
       "signifyd-docs-5",
@@ -6658,12 +6724,12 @@
           "quote": "Chargeback Recovery Take charge of your chargebacks"
         },
         {
-          "evidenceId": "signifyd-docs-5",
-          "quote": "To create a chargeback against an Order in the Signifyd system, you need to record a Chargeback Event."
-        },
-        {
           "evidenceId": "signifyd-docs-6",
           "quote": "To set the outcome of a Chargeback's Representment in the Signifyd system, you need to record a Representment Outcome Event."
+        },
+        {
+          "evidenceId": "signifyd-docs-5",
+          "quote": "To create a chargeback against an Order in the Signifyd system, you need to record a Chargeback Event."
         }
       ]
     }
@@ -6674,7 +6740,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of a reporting dashboard or analytics view showing dispute rate, false-positive rate, approval-rate lift or review workload, and nothing on exporting such metrics. The REST API for retrieving data, the chargeback and representment event endpoints, and the marketing lines about approving more transactions and authorization-rate optimization are developer building blocks or adjacent features, not the finance reporting capability itself.",
+    "rationale": "The evidence pack documents per-order APIs (decisions, chargeback events, representment outcomes) and marketing claims about approval and authorization rates. It contains no reporting dashboard, no metrics for dispute rate, false-positive rate, approval-rate lift or review workload, and no export capability. Per-order APIs are developer building blocks from which a user would have to construct the metrics, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6689,7 +6755,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is a fraud-prevention platform, so allow/block lists and velocity limits are a fair question to ask of it. The pack, however, never mentions allow lists, block lists, list entries for emails, cards, devices or IPs, velocity limits, or any API to manage them. The only related item says Decision Center policies can be configured at the Sale checkpoint. That is an adjacent rules feature, not documented list or velocity management, so it earns no credit.",
+    "rationale": "The evidence pack never mentions allow or block lists for emails, cards, devices or IPs. It also says nothing about velocity limits, or about managing either through the dashboard or an API. The only related item is that Decision Center policies can be configured at the Sale checkpoint, which is an adjacent policy feature rather than list or velocity management. The axis clearly applies to a fraud-protection product, so absent evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6704,7 +6770,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A review queue is a fair axis for a fraud-protection product, but the evidence pack does not document any analyst review queue or case view showing customer history, signals or similar cases. The references to orders being submitted 'for fraud review' describe Signifyd's own decisioning via the API. Decision Center policy configuration is an adjacent feature, not a manual review queue.",
+    "rationale": "A manual review queue is a fair question for a fraud-prevention product, so the axis applies. The evidence covers only API submission, decision retrieval, webhooks and Decision Center policy configuration. Nothing documents an analyst review queue showing customer history, signals or similar cases. The Decision Center policy mention is an adjacent control, not a review queue.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6719,7 +6785,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Model-performance measurement and shadow-mode testing are fair questions for a fraud-decisioning platform, so the axis applies. The evidence pack covers decision APIs, webhooks, chargebacks and configuring Decision Center policies at checkpoints. Nothing documents precision/recall reporting on merchant traffic or shadow-mode trials of new models or rules before they take over decisions.",
+    "rationale": "Measuring model precision and recall and running shadow-mode trials is a fair question for a fraud-decisioning product, so the axis applies. The pack has no evidence of either capability. The test teams it does document are an isolated test tenant whose orders are excluded from model learning, not shadow evaluation of a new model on live traffic. Decision Center's checkpoint policies are an adjacent rules feature with no documented measurement or shadow mode.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6734,7 +6800,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cross-merchant network intelligence is a fair axis for a fraud-scoring product like Signifyd. However, no evidence item mentions a consortium, a network of merchants, or signals from other businesses feeding into decisions. The pack covers only API endpoints, webhooks, device profiling and product-marketing taglines, so the verdict is none.",
+    "rationale": "Signifyd is a fraud-scoring product, so a cross-merchant network signal is a fair question. However, nothing in the evidence pack documents data or identities seen across other merchants informing a decision. The only related material is the test-teams doc, which mentions orders being used in \"model learning\"; that does not establish cross-merchant network intelligence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6747,19 +6813,19 @@
     "productId": "signifyd",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Signifyd documents a broad REST API covering order submission (Checkout/Sale), decision retrieval, chargebacks, representment outcomes, guarantee cancellation and webhook creation. Nothing in the evidence claims API–UI parity, and Decision Center policy configuration appears to happen at checkpoints with no documented API for it. Missing for 10: an explicit API/UI parity statement, API coverage for Decision Center policy and rule management, account/team administration endpoints, and independent corroboration of parity.",
+    "rationale": "Signifyd documents a broad REST API, published as an OpenAPI 3.0.3 spec. It covers order submission (Checkout/Sale), decision retrieval, chargebacks, representment outcomes, guarantee cancellation and webhook creation. Nothing states that the API matches the UI feature for feature, though. Decision Center policies are described as configured at checkpoints rather than through API calls, and some Enterprise API docs sit behind the app login. missing for 10: an explicit API/UI parity statement, documented API coverage of Decision Center policy configuration and other dashboard/admin functions, ungated Enterprise API docs, and independent or hands-on confirmation of parity.",
     "evidenceIds": [
       "signifyd-docs-1",
-      "signifyd-docs-3",
-      "signifyd-docs-2",
+      "signifyd-openapi-spec-20261106",
       "signifyd-docs-4",
       "signifyd-docs-5",
       "signifyd-docs-6",
       "signifyd-docs-7",
       "signifyd-docs-13",
-      "signifyd-docs-23"
+      "signifyd-docs-23",
+      "signifyd-tryit-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6771,20 +6837,16 @@
           "quote": "This document will show you how to use Signifyd's REST API to authenticate, make requests, and retrieve data."
         },
         {
+          "evidenceId": "signifyd-docs-7",
+          "quote": "Create a new webhook. This will add to the list of any existing webhooks."
+        },
+        {
           "evidenceId": "signifyd-docs-4",
           "quote": "Retrieve the latest fraud decision for an order in the Signifyd system."
         },
         {
           "evidenceId": "signifyd-docs-5",
           "quote": "To create a chargeback against an Order in the Signifyd system, you need to record a Chargeback Event."
-        },
-        {
-          "evidenceId": "signifyd-docs-7",
-          "quote": "Create a new webhook. This will add to the list of any existing webhooks."
-        },
-        {
-          "evidenceId": "signifyd-docs-23",
-          "quote": "If Decision Center is enabled, policies for Sale events can be configured at the Sale checkpoint, and they will be applied to orders created via requests to this endpoint."
         }
       ]
     }
@@ -6795,7 +6857,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents no bulk data export, open-format download, or account-exit/offboarding process for Signifyd. The REST API can retrieve data and the Get Decision API returns decisions one order at a time, but these are developer building blocks for constructing an export, not an export capability, so they earn no credit.",
+    "rationale": "Data export is a fair question for a SaaS fraud-protection platform, so the axis applies. The evidence shows only per-order API retrieval of fraud decisions and a general REST API. There is no documented bulk export of account data in open formats and no offboarding path. Per-order retrieval is at most a developer building block, so it earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6810,7 +6872,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is available under an open license is a fair question for a SaaS fraud-protection platform, so the axis applies. The evidence covers only proprietary REST API docs and mobile SDKs, with no mention of a source repository or open license for the product. The SDK 'project files' are integration libraries with no stated license, not the product's source.",
+    "rationale": "Whether a product's source is available under an open license is a fair question for any software product, including a SaaS fraud-protection service, so this axis applies. The evidence shows only proprietary REST API docs, a downloadable OpenAPI spec and mobile SDKs, with no license stated. An API spec or SDK distribution is not the product's source under an open license.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6825,7 +6887,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is documented only as a hosted service: merchants send order data to Signifyd's REST API for fraud review and receive decisions or webhooks back. Nothing in the pack describes a self-hosted, on-premises, or open-source deployment of the core product. Self-hosting is a fair deployment question for a fraud-protection service, so the absence of evidence is 'none', not 'na'. The mobile SDKs and the device-profiling script are client-side integration pieces, not a self-hostable core.",
+    "rationale": "Self-hosting is a fair openness question for a fraud-protection service, so the axis applies. However, every evidence item describes Signifyd as a hosted API (servers at https://api.signifyd.com/v3) that merchants call. Nothing documents a self-hosted, on-premises or open-source deployment of the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6840,7 +6902,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only Signifyd's REST API (Checkout, Sale, Get Decision, webhooks), a device-profiling script, and mobile SDKs. Nothing in the pack names maintained connectors for Shopify, Salesforce Commerce Cloud, BigCommerce or any PSP. The 'Issuer integrations' marketing line is about bank authorization rates, not commerce-stack plugins, so it does not count toward this story.",
+    "rationale": "The evidence pack documents only Signifyd's REST API, webhooks, a device-profiling script, and mobile SDKs. None of it names maintained connectors for Shopify, Salesforce Commerce, BigCommerce, or any PSP. The generic \"integrating Signifyd on your online stores\" line and the \"Issuer integrations\" marketing copy are adjacent claims or developer building blocks, not documented prebuilt commerce-stack integrations, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6855,7 +6917,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is a SaaS fraud-protection service that stores merchant order data, so data region/residency choice is a fair question for it. The evidence pack has no mention of selectable storage regions or residency controls. The sensitive-data rejection layer is an adjacent privacy control, not residency, and earns no credit.",
+    "rationale": "Data residency is a fair question for a SaaS fraud-protection service that processes order and payment data, so the axis applies. Nothing in the evidence pack documents choosing a storage region or residency option. The only server documented is a single API base URL, and the sensitive-data rejection layer is a separate control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6870,10 +6932,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is a SaaS fraud-protection service that processes merchant order data, so an opt-out from AI model training is a fair question for it. The evidence pack documents no training opt-out or data-use control. The sensitive-data protection layer only rejects unwanted sensitive data at the API. That is an adjacent control, not a way to keep submitted data out of model training.",
+    "rationale": "The only related evidence is Signifyd's test-team mechanism, where test orders are \"not used in model learning\". That is a test-isolation feature, converted only through Signifyd support, and not a privacy control that keeps a customer's real data out of model training. Because it is an adjacent control, it earns no credit, and the pack documents no opt-out from model training for production data.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
       "citations": []
@@ -6885,7 +6947,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a fraud-protection SaaS that ingests customer order data, so the axis applies. The pack documents no retention settings, deletion endpoints, or data-erasure workflows. The sensitive-data protection layer is a different control: it rejects unwanted sensitive data at ingestion rather than managing how long stored data is kept or deleted. Guarantee cancellation is a billing and coverage action, not data deletion.",
+    "rationale": "Signifyd is a fraud-protection SaaS that processes order and customer data, so retention and deletion controls are a fair question to ask of it. The evidence pack documents no retention settings, deletion API, or data-erasure workflow. The sensitive-data rejection layer and test teams excluded from model learning are adjacent data-handling controls, and cancelling a guarantee changes coverage rather than deleting data, so none of these count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6900,7 +6962,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd ships SDKs and a device-profiling script, so a telemetry or usage-tracking opt-out is a fair question for this product. The evidence pack documents no such opt-out. The sensitive-data protection layer only rejects unwanted sensitive data in API requests, which is an adjacent control rather than a way to opt out of telemetry.",
+    "rationale": "Signifyd ships SDKs and a device-profiling script, so a telemetry or usage-tracking opt-out is a fair question and the axis applies. The pack, however, documents no opt-out for telemetry or usage tracking. Test teams keep orders out of model learning, but that is a test-isolation feature, not a telemetry opt-out, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6915,7 +6977,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "SCA routing is a fair question for a payment fraud-decisioning product, so the axis applies. However, the evidence only documents a Pre-Auth Checkout fraud review and a generic 'Authorization Rate Optimization' claim. Nothing mentions 3DS triggering, SCA exemption requests, or European/PSD2 routing, so this is adjacent at best and earns no credit.",
+    "rationale": "SCA routing is a fair question for a fraud-prevention platform like Signifyd, so the axis applies. However, the evidence pack never mentions SCA, 3DS triggering, or exemption requests. The Pre-Auth Checkout API and the 'Authorization Rate Optimization' marketing line are adjacent features and do not show SCA routing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6930,11 +6992,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Signifyd's REST API sits outside the payment flow. Docs say to call Checkout before \"your Payment Gateway\" (pre-auth) or Sale after \"your payment processor\" authorizes (post-auth), which implies it is not tied to any one processor's rails. Multi-PSP support is only implied by this generic wording, not stated outright. missing for 10: an explicit list of supported PSPs/gateways or e-commerce platform connectors, documentation of running multiple processors at once, and independent or hands-on corroboration.",
+    "rationale": "Signifyd's own REST API is designed to sit alongside the merchant's own processor. Checkout is called before \"your Payment Gateway\" in Pre-Auth, and Sale is called after authorization by \"your payment processor\" in Post-Auth. That implies the integration does not depend on a single processor's rails, but the evidence never explicitly names multiple PSPs, gateways or platforms. missing for 10: explicit list of supported PSPs/gateways, documented e-commerce platform integrations, evidence of multi-PSP use in one account, independent corroboration.",
     "evidenceIds": [
+      "signifyd-docs-3",
       "signifyd-docs-21",
       "signifyd-docs-22",
-      "signifyd-docs-3",
       "signifyd-docs-1"
     ],
     "support": {
@@ -6943,16 +7005,16 @@
       "subject": "As a developer, I can use the product across whatever payment stack I run — multiple PSPs, gateways, and platforms — rather than being locked to one processor's rails",
       "citations": [
         {
+          "evidenceId": "signifyd-docs-3",
+          "quote": "This call should be made _before_ calling your Payment Gateway."
+        },
+        {
           "evidenceId": "signifyd-docs-21",
-          "quote": "prior to sending the payment authorization to your payment processor use the Checkout API to submit the order and payment details to Signifyd for fraud review"
+          "quote": "prior to sending the payment authorization to your payment processor use the Checkout API to submit the order and payment details to Signifyd for fraud review."
         },
         {
           "evidenceId": "signifyd-docs-22",
-          "quote": "after the order has been authorized by your payment processor use the Sale API to submit the order and transaction details to Signifyd for fraud review"
-        },
-        {
-          "evidenceId": "signifyd-docs-3",
-          "quote": "This call should be made _before_ calling your Payment Gateway."
+          "quote": "after the order has been authorized by your payment processor use the Sale API to submit the order and transaction details to Signifyd for fraud review."
         }
       ]
     }
@@ -6963,12 +7025,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Signifyd documents a Pre-Auth Checkout API that is called before the payment gateway to submit order and payment details for fraud review, and a Get Decision API that retrieves the fraud decision, so the pre-authorization API flow is the product's own documented capability. The evidence never shows that the Checkout call returns a risk score synchronously in its response, and the webhook and polling docs suggest decisions may arrive asynchronously. Missing for 10: explicit synchronous in-response decision or score from the Checkout call, evidence that the output is a machine-learning risk score rather than a guarantee decision, latency or real-time SLA details, independent or hands-on corroboration.",
+    "rationale": "Signifyd documents a Pre-Auth Checkout API that is called before the payment gateway to submit orders for fraud review, a Get Decision API for retrieving fraud decisions, and test-team docs noting orders feed 'model learning'. However, the evidence never shows the Checkout response returning a decision or score synchronously, and decisions are described as delivered via webhook or polling. Missing for 10: explicit documentation that the pre-auth call returns a synchronous decision/score in its response, an exposed numeric ML risk score rather than a guarantee decision, latency figures, independent hands-on corroboration.",
     "evidenceIds": [
-      "signifyd-docs-3",
+      "signifyd-docs-18",
       "signifyd-docs-21",
       "signifyd-docs-4",
-      "signifyd-docs-26"
+      "signifyd-docs-26",
+      "signifyd-test-teams-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6976,8 +7039,8 @@
       "subject": "As a developer, I can get a machine-learning risk score for a transaction in real time — synchronously, before authorization completes — through a documented API",
       "citations": [
         {
-          "evidenceId": "signifyd-docs-3",
-          "quote": "The Checkout endpoint in Signifyd's API is used to record a Checkout Event in a Pre-Auth flow. This call should be made _before_ calling your Payment Gateway."
+          "evidenceId": "signifyd-docs-18",
+          "quote": "The Checkout endpoint in Signifyd's API is used to record a Checkout Event in a Pre-Auth flow. This call should be made before calling your Payment Gateway."
         },
         {
           "evidenceId": "signifyd-docs-21",
@@ -6993,16 +7056,33 @@
   {
     "productId": "signifyd",
     "storyId": "review-outcomes-feedback",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Signifyd can ingest outcome events, including chargebacks and representment outcomes. It also shows merchants can cancel guarantees. Nothing documents that analyst review decisions or confirmed fraud outcomes are fed back to retrain the model or tune Decision Center rules. Recording outcome events is an adjacent data-ingestion capability, not evidence that the system learns from each worked case.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Signifyd's own testing docs say production-team orders feed model learning: test-team orders are 'not used in model learning', and test data in production can 'pollute the model'. It also documents APIs for recording confirmed outcomes such as Chargeback and Representment Outcome events. However, no evidence says analyst review decisions or these outcome events update the model or Decision Center rules. missing for 10: explicit documentation that analyst review decisions feed back into the model, explicit documentation that chargeback or fraud outcomes retrain the model or adjust rules, analyst-facing review workflow evidence, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "signifyd-test-teams-20261106",
+      "signifyd-docs-5",
+      "signifyd-docs-6"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a risk analyst, my review decisions and confirmed fraud outcomes feed back into the model and rules, so the system learns from every case we work",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "signifyd-test-teams-20261106",
+          "quote": "Any test data added to a production environment can pollute the model with false data."
+        },
+        {
+          "evidenceId": "signifyd-docs-5",
+          "quote": "To create a chargeback against an Order in the Signifyd system, you need to record a Chargeback Event."
+        },
+        {
+          "evidenceId": "signifyd-docs-6",
+          "quote": "To set the outcome of a Chargeback's Representment in the Signifyd system, you need to record a Representment Outcome Event."
+        }
+      ]
     }
   },
   {
@@ -7011,7 +7091,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers API order submission, automated guarantee decisions, webhooks, and Decision Center policy checkpoints. Nothing documents team review features such as case assignment, escalation, review SLAs, or an audit trail of who approved what and why. Decision Center policies and the Get Decision API are adjacent automation features, not a human review workflow.",
+    "rationale": "Team review workflows are a fair question for a fraud-protection platform, so the axis applies. The evidence pack documents order submission, fraud decisions, Decision Center policies and webhooks. Nothing describes reviewer assignment, escalation, review SLAs, or an audit trail showing who approved a decision and why.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7026,7 +7106,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Backtesting rules is a fair question for a fraud-prevention platform, so the axis applies. The evidence shows only that Decision Center policies can be configured at the Sale checkpoint and applied to live orders. Nothing in the pack shows replaying a rule against historical traffic or reporting what it would have blocked, flagged, or cost.",
+    "rationale": "Signifyd documents configurable Decision Center policies at the Sale checkpoint. Nothing in the evidence describes backtesting or simulating a rule against historical traffic, or reporting what it would have blocked, flagged, or cost. Test teams are an adjacent isolation mechanism for live test orders, not historical rule replay, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7041,7 +7121,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Explaining risk scores is a fair question for a fraud-decisioning product. The evidence only shows that Signifyd returns fraud or guarantee decisions, through the Get Decision API and webhooks. Nothing in the pack documents risk factors, reason codes, or any explanation of why a transaction scored as risky.",
+    "rationale": "Explaining why a transaction scored as risky is a fair question for a fraud-decisioning product like Signifyd, so the axis applies. The evidence only shows that the Get Decision API and webhooks return or announce a fraud/guarantee decision. Nothing documents that each score comes with its top risk factors, reason codes or any other explanation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7056,7 +7136,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Signifyd documents that, with Decision Center enabled, merchants can configure their own policies at the Sale checkpoint and apply them to orders. That is first-party decision-policy control rather than a single fixed outcome, but the evidence does not say these policies key on score ranges or which actions they can trigger. missing for 10: documented mapping of score ranges to allow/review/block actions, step-up 3DS as a policy action, threshold-tuning documentation, Checkout/pre-auth policy evidence, independent or hands-on corroboration.",
+    "rationale": "Signifyd documents Decision Center, where merchants can configure policies at the Sale checkpoint that are applied to orders. That is the product's own decision-policy configuration, but the evidence never shows score-range thresholds or mapping to allow/review/block/3DS step-up actions. missing for 10: documented score-range-to-action mapping, merchant-tunable score thresholds, explicit allow/review/block/step-up 3DS action set, hands-on or independent corroboration.",
     "evidenceIds": [
       "signifyd-docs-23"
     ],
@@ -7078,7 +7158,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Signifyd is an e-commerce fraud-decision platform, so passing agent identity into its risk decision is an applicable axis. The evidence only covers generic Checkout/Sale order submission, device profiling, decisions and webhooks. Nothing documents agentic-payment protocol fields, signed agent tokens, or delegated spending scopes as decision inputs.",
+    "rationale": "Signifyd is a fraud-decisioning platform, so passing agent identity into the risk decision is a fair question to ask of it. Nothing in the evidence pack documents fields or support for agentic-payment protocols, signed agent tokens, or delegated spending scopes as decision inputs. The Checkout and Sale endpoints take only generic order and payment details, which do not establish agent-identity signals.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
