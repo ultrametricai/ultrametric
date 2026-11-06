@@ -1,17 +1,24 @@
 {
-  "hash": "c65fcad836e455221e20b5f292d99a0861318bb269132ab2ef9f17f23e7e9e61",
+  "hash": "63ccc21d0e848ef90d0af9e9b85ff6470524aa8373a5a33cf99ef15321d77aed",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "A CDP like mParticle could plausibly offer a separate sandbox or development environment, so this axis applies. However, no item in the evidence pack mentions a sandbox, a development environment, or test data isolated from production. The cited docs cover event ingestion, IDSync, audiences, privacy controls and Warehouse Sync, none of which address test isolation.",
-    "evidenceIds": [],
+    "rationale": "mParticle's own Events API tags every batch with an environment field set to \"production\" or \"development\". The client SDKs set it through isDevelopmentMode, and the docs say this segregates development data from production data, so test traffic is kept apart from production data. However, this is a per-event flag inside the same account, not an isolated sandbox instance or test tenant, and the docs never use the word sandbox. Missing for 10: a dedicated isolated sandbox environment or test tenant, documentation of how far the dev/prod segregation extends (audiences, integrations, forwarding), and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mparticle-environment-flag-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mparticle-environment-flag-20261106",
+          "quote": "Every Events API batch carries an environment field, \"production\" or \"development\" (default production; the client SDKs set it via isDevelopmentMode), which segregates development data from production data within the same account."
+        }
+      ]
     },
     "productId": "mparticle",
     "storyId": "api-sandbox"

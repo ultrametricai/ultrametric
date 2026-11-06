@@ -5202,10 +5202,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only basic prototyping: connecting boards as screens to create interactive prototypes, plus a community comment that the prototype feature works well. Nothing covers the advanced behaviors this story asks for, such as animation between states, conditions or variables, or scroll effects. Basic board-linking is an adjacent capability, not the advanced prototyping requested.",
+    "rationale": "The evidence documents only basic prototyping: connecting boards as screens and general 'interactive prototypes'. Nothing covers the advanced behavior this story asks for — animated transitions between states, conditions or variables, or scroll effects. Basic linking of boards is a related but different capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a designer, prototypes can carry advanced behavior — animation between states, conditions or variables, scroll effects — to feel like the real product",
       "citations": []
@@ -5217,14 +5217,15 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Penpot ships an official MCP server built on its open plugin API, which it describes as enabling multi-directional AI workflows. Its marketing pages say agents can interact with design files to create artifacts, generate editable design structures, and migrate designs into Penpot, so write access is claimed and not just read access. Missing for 10: detailed first-party reference docs for the write operations (create/modify shapes, components, tokens) via MCP or the plugin API, any published API spec (OpenAPI probes returned 404), and independent or hands-on confirmation that agents can write designs.",
+    "rationale": "Penpot ships an official MCP server built on its plugin API for \"multi-directional\" AI workflows. The docs describe agents \"generating editable design structures\" and migrating designs into Penpot through MCP, which are write operations. A documented plugin system and a token-authenticated backend RPC API with an auto-generated OpenAPI spec (152 paths) add further programmatic surfaces. Missing for 10: an explicit list of MCP write tools or plugin-API create/modify methods, and independent hands-on corroboration of agents editing designs.",
     "evidenceIds": [
       "penpot-docs-1",
-      "penpot-docs-32",
       "penpot-docs-40",
-      "penpot-docs-15",
+      "penpot-docs-25",
+      "penpot-docs-32",
       "penpot-docs-5",
-      "penpot-docs-3",
+      "penpot-docs-6",
+      "penpot-openapi-spec-20261106",
       "penpot-probe-3"
     ],
     "support": {
@@ -5237,20 +5238,20 @@
           "quote": "Penpot MCP server is agnostic and enables high-quality multi-directional AI workflows through our world-class open plugin API."
         },
         {
-          "evidenceId": "penpot-docs-32",
-          "quote": "AI agents can easily read and interact with your design files creating high-fidelity artifacts."
-        },
-        {
           "evidenceId": "penpot-docs-40",
           "quote": "Penpot enables plenty of AI workflows, from generating editable design structures to connecting product logic, tokens, and implementation."
         },
         {
-          "evidenceId": "penpot-docs-15",
-          "quote": "Migrate your designs into Penpot by connecting Figma’s and Penpot’s MCPs."
+          "evidenceId": "penpot-docs-25",
+          "quote": "Migrate your designs into Penpot by connecting Figma's and Penpot's MCPs."
         },
         {
-          "evidenceId": "penpot-docs-5",
-          "quote": "Our plugin system brings the flexibility that devs need to create and publish their own custom extensions."
+          "evidenceId": "penpot-docs-32",
+          "quote": "AI agents can easily read and interact with your design files creating high-fidelity artifacts."
+        },
+        {
+          "evidenceId": "penpot-openapi-spec-20261106",
+          "quote": "Penpot's hosted SaaS instance serves a machine-readable OpenAPI 3.0.0 document for the backend RPC API (152 paths, server design.penpot.app/api/main/methods)."
         }
       ]
     }
@@ -5261,7 +5262,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Penpot documents an MCP server, a plugin API and access tokens, but no evidence shows an agent can render or export screenshots, images or production formats through them. The 'external rendering' line [penpot-docs-3] describes exposing objects and properties so other apps can render them, which is adjacent rather than export. The CSS/HTML/SVG/JSON line [penpot-docs-21] describes an inspect and code feature that is not tied to any programmatic surface.",
+    "rationale": "The pack documents an MCP server, a plugin API, an auto-generated backend RPC OpenAPI spec and access tokens, but none of these items state that an agent can render or export designs (screenshots, PNG/JPG/PDF or other production formats) programmatically. The 'external rendering' claim describes giving other apps access to objects and properties, which is a building block rather than an export capability, and the CSS/HTML/SVG claims describe inspect features, not a documented programmatic export surface.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5276,15 +5277,15 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Penpot documents an official, self-hostable MCP server that lets any AI agent read and interact with design files, plus an API with broad access to objects and properties and workflows that tie tokens to implementation. However, the specific design context the story names is only partly evidenced, and no hands-on report confirms that agents actually implement designs this way. Missing for 10: documented screenshot or render retrieval via MCP, documented component-to-code mappings, explicit listing of the variables/frames the MCP exposes, and independent hands-on corroboration.",
+    "rationale": "Penpot documents an official, agent-agnostic MCP server that lets AI agents read and interact with design files. It also offers an API with extensive access to objects and properties, backed by a published OpenAPI document, and its AI workflows mention connecting tokens to implementation. However, the specific design-context elements the story names are not shown as retrievable through the MCP server. Missing for 10: documented MCP/API retrieval of frames/boards, variables/tokens, rendered screenshots, and component-to-code mappings, plus hands-on or independent corroboration of agent-driven implementation.",
     "evidenceIds": [
       "penpot-docs-1",
       "penpot-docs-32",
       "penpot-docs-3",
       "penpot-docs-40",
       "penpot-docs-31",
-      "penpot-probe-3",
-      "penpot-docs-21"
+      "penpot-openapi-spec-20261106",
+      "penpot-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -5292,12 +5293,12 @@
       "subject": "As an AI-native user, my coding agent can pull real design context — frames, variables, screenshots, component mappings — through an MCP server or API to implement the design",
       "citations": [
         {
-          "evidenceId": "penpot-docs-1",
-          "quote": "Connect Penpot with any AI agent, any LLM. Penpot MCP server is agnostic and enables high-quality multi-directional AI workflows through our world-class open plugin API."
-        },
-        {
           "evidenceId": "penpot-docs-32",
           "quote": "In Penpot, design is expressed as code, so AI agents can easily read and interact with your design files creating high-fidelity artifacts."
+        },
+        {
+          "evidenceId": "penpot-docs-1",
+          "quote": "Penpot MCP server is agnostic and enables high-quality multi-directional AI workflows through our world-class open plugin API."
         },
         {
           "evidenceId": "penpot-docs-3",
@@ -5314,13 +5315,14 @@
     "productId": "penpot",
     "storyId": "agentic-agent-docs",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Penpot publishes an llms.txt at penpot.app/llms.txt that an agent can be pointed at, but the cited content is product-overview material (a Figma comparison and a plugin count). The probe found no llms.txt on the technical help docs site (help.penpot.app). That is a different host, so it limits depth rather than contradicting the claim. missing for 10: llms.txt or agent-oriented coverage of the technical/help documentation, evidence that the llms.txt indexes in-depth docs (API, plugins, MCP setup), independent or hands-on corroboration of agent use of these docs",
+    "rationale": "Penpot publishes an llms.txt at penpot.app, which agents can be pointed at. It summarises the product and its plugin ecosystem. However, the technical help site (help.penpot.app) returns 404 for llms.txt, so the agent-oriented file appears to cover marketing-level content rather than the full documentation. The hosted instance does serve an auto-generated OpenAPI document that agents could consume as machine-readable API docs. missing for 10: llms.txt on the technical docs site (help.penpot.app), evidence that llms.txt covers in-depth docs rather than product overview, independent or hands-on corroboration of agents using it.",
     "evidenceIds": [
       "penpot-docs-16",
       "penpot-docs-24",
-      "penpot-probe-1"
+      "penpot-probe-1",
+      "penpot-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5334,6 +5336,10 @@
         {
           "evidenceId": "penpot-docs-24",
           "quote": "Plugins (113+): Community plugin marketplace with accessibility, code, AI, and design system tools."
+        },
+        {
+          "evidenceId": "penpot-openapi-spec-20261106",
+          "quote": "Penpot's hosted SaaS instance serves a machine-readable OpenAPI 3.0.0 document for the backend RPC API"
         }
       ]
     }
@@ -5344,7 +5350,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes an MCP server and plugin API that let external AI agents read and act on Penpot design files. Community AI plugins are also mentioned. None of this documents a native, in-product feature that generates insights or suggestions from the user's data. These are external-agent and developer building blocks, so they earn no credit for this story.",
+    "rationale": "Penpot's documented AI capability is an MCP server that lets external agents and LLMs read and act on design files. That is an integration path to outside AI, not AI-generated insights or suggestions delivered inside the product. The '113+' plugin marketplace mentions AI tools, but these are community extensions, not a first-party feature. Nothing in the pack shows built-in AI analysis of a user's data within Penpot.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5359,7 +5365,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Penpot documents an MCP server, outbound webhooks, and an API marketed for \"workflow automation.\" These are building blocks that let external agents or apps drive automation. The evidence shows no first-party feature for setting up automations that run autonomously in the background, such as triggers, schedules, or rules executed by Penpot itself. The automation would live in the external agent or the system receiving the webhooks, so it earns no credit here.",
+    "rationale": "Background automation is a fair axis for a design platform, but the evidence shows no Penpot-native feature for setting up recurring, scheduled or rule-based automations that run on their own. The MCP server is driven by an external agent prompting it ('prompt away'). Outbound webhooks, the plugin API and access tokens are developer building blocks that external systems could use to build automation, not an automation capability of Penpot itself. The 'Automate tedious tasks' claim describes agent-connected workflows, not autonomous background runs.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5374,13 +5380,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair question for a design tool, but the evidence documents no native assistant inside Penpot. What is documented is an MCP server for connecting external, user-chosen agents and a community plugin marketplace that includes AI tools. Both are adjacent integration routes, not a first-party assistant you can delegate tasks to inside the product.",
-    "evidenceIds": [],
+    "rationale": "An in-product AI assistant is a fair axis for a design tool, but the evidence documents no built-in assistant. Penpot only offers an MCP server so users can bring their own external agent, and AI features exist only as community plugins. Both are adjacent capabilities, not a native assistant that users delegate tasks to inside the product.",
+    "evidenceIds": [
+      "penpot-docs-31",
+      "penpot-docs-24"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "penpot-docs-31",
+          "quote": "Choose your agent, connect to Penpot MCP and prompt away!"
+        },
+        {
+          "evidenceId": "penpot-docs-24",
+          "quote": "Community plugin marketplace with accessibility, code, AI, and design system tools."
+        }
+      ]
     }
   },
   {
@@ -5388,14 +5406,14 @@
     "storyId": "agentic-headless",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Penpot documents an API that apps can reach with access tokens instead of an interactive login, and says it enables \"workflow automation\" and \"external rendering\". It also ships Docker Compose and Helm deployments and a self-hostable MCP server, which together allow automation without the UI. Missing for 10: an explicit headless mode or CLI, documented CI/pipeline usage or examples, a published API spec (OpenAPI probes returned 404), and independent hands-on corroboration of headless automation.",
+    "confidence": "medium",
+    "rationale": "Penpot documents token-authenticated programmatic access to its backend RPC API, described by an auto-generated OpenAPI spec, and promotes workflow automation and external rendering. It can also be deployed with docker compose or Kubernetes, so non-interactive, scripted use is supported. There is no documented headless runner, CLI, or CI integration guide, so running Penpot in CI pipelines is only implied by API access and containerized deployment. Missing for 10: an official headless/CLI mode, CI-specific documentation or examples, a documented headless export/render workflow, and hands-on corroboration of CI usage.",
     "evidenceIds": [
       "penpot-docs-6",
+      "penpot-openapi-spec-20261106",
       "penpot-docs-3",
-      "penpot-docs-17",
-      "penpot-docs-19",
-      "penpot-probe-2"
+      "penpot-docs-8",
+      "penpot-backend-api-docs-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5407,16 +5425,16 @@
           "quote": "Use access tokens as an alternative login authentication. They can allow an app to access Penpot's API."
         },
         {
+          "evidenceId": "penpot-openapi-spec-20261106",
+          "quote": "Penpot's hosted SaaS instance serves a machine-readable OpenAPI 3.0.0 document for the backend RPC API"
+        },
+        {
           "evidenceId": "penpot-docs-3",
           "quote": "Get extensive access to objects and properties to enable external rendering, workflow automation, enhanced app functionality, and more."
         },
         {
-          "evidenceId": "penpot-docs-17",
+          "evidenceId": "penpot-docs-8",
           "quote": "Deploy with docker compose"
-        },
-        {
-          "evidenceId": "penpot-docs-19",
-          "quote": "Deploy the MCP server in your own environment without relying on third-party clouds."
         }
       ]
     }
@@ -5427,7 +5445,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A design platform could plausibly ship a built-in assistant that consumes external MCP servers, so this axis applies. The evidence only documents Penpot's own MCP server, which external agents connect to (the server role), and does not show Penpot acting as an MCP client. The Figma-to-Penpot migration claim describes an external agent connecting both products' MCP servers, not Penpot consuming third-party tools.",
+    "rationale": "Penpot documents an official MCP server that external AI agents connect to. That is the server role, a different story. Nothing in the pack shows Penpot itself acting as an MCP client that loads external MCP servers and uses their tools. The Figma-migration line describes an outside agent connecting both MCP servers, not Penpot consuming one.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5440,14 +5458,14 @@
     "productId": "penpot",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Penpot documents an official, agent-agnostic MCP server on its own site, saying users can connect any AI agent or LLM, and a probe confirms the page exists. It also documents self-hosting the MCP server in your own environment. Missing for 10: detailed setup and tool-surface documentation (transport, auth, available tools), and independent or hands-on corroboration that agents connect successfully.",
+    "rationale": "Penpot's own docs present an official Penpot MCP server that is agent- and LLM-agnostic, can be self-deployed, and is designed so you can 'choose your agent, connect to Penpot MCP and prompt away'. A probe confirms the official MCP server page exists. The evidence is mostly marketing-level, though. Missing for 10: detailed setup/tool reference documentation (transports, exposed tools, auth flow), independent or hands-on corroboration of agents connecting successfully.",
     "evidenceIds": [
       "penpot-docs-1",
       "penpot-docs-31",
-      "penpot-docs-39",
       "penpot-docs-19",
+      "penpot-docs-27",
       "penpot-docs-32",
       "penpot-probe-3"
     ],
@@ -5458,15 +5476,11 @@
       "citations": [
         {
           "evidenceId": "penpot-docs-1",
-          "quote": "Connect Penpot with any AI agent, any LLM. Penpot MCP server is agnostic and enables high-quality multi-directional AI workflows"
+          "quote": "Connect Penpot with any AI agent, any LLM. Penpot MCP server is agnostic and enables high-quality multi-directional AI workflows through our world-class open plugin API."
         },
         {
           "evidenceId": "penpot-docs-31",
           "quote": "Choose your agent, connect to Penpot MCP and prompt away!"
-        },
-        {
-          "evidenceId": "penpot-docs-39",
-          "quote": "Connect Penpot MCP server to your trusted AI agent."
         },
         {
           "evidenceId": "penpot-docs-19",
@@ -5485,7 +5499,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Penpot ships an official MCP server that lets users \"connect to Penpot MCP and prompt away\" from an external AI agent, so they can operate design files with natural-language prompts. However, this works only through a bring-your-own agent/LLM, and there is no evidence of a native in-app natural-language command interface. missing for 10: native in-product natural-language command surface, documentation of which operations can be driven by prompts, independent or hands-on corroboration that prompt-driven operation works.",
+    "rationale": "Penpot ships a first-party MCP server built so external AI agents can read and act on design files, and its docs tell users to 'connect to Penpot MCP and prompt away'. That makes natural-language operation a documented product capability, but only through a user-supplied external agent and LLM, with no native in-app command interface. Missing for 10: a built-in natural-language command interface, documentation of which operations agents can perform through the MCP server, and independent or hands-on corroboration that prompting works reliably.",
     "evidenceIds": [
       "penpot-docs-31",
       "penpot-docs-32",
@@ -5504,7 +5518,11 @@
         },
         {
           "evidenceId": "penpot-docs-32",
-          "quote": "In Penpot, design is expressed as code, so AI agents can easily read and interact with your design files creating high-fidelity artifacts."
+          "quote": "AI agents can easily read and interact with your design files creating high-fidelity artifacts."
+        },
+        {
+          "evidenceId": "penpot-docs-1",
+          "quote": "Penpot MCP server is agnostic and enables high-quality multi-directional AI workflows through our world-class open plugin API."
         },
         {
           "evidenceId": "penpot-docs-40",
@@ -5519,7 +5537,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair axis for a design platform like Penpot, but the evidence pack never mentions one. The MCP server, plugin API, access tokens, webhooks and docker/Helm deployment are adjacent capabilities, not an official command-line interface.",
+    "rationale": "A design platform could plausibly ship an official CLI, so the axis applies. However, the evidence pack documents no Penpot CLI. The MCP server, RPC/OpenAPI backend API, access tokens, plugins and docker/Helm deployment are adjacent integration surfaces or developer building blocks, not an official command-line tool.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5531,37 +5549,37 @@
   {
     "productId": "penpot",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Penpot's own docs describe an API that apps can reach with access tokens and that exposes objects and properties for workflow automation. It also documents an open plugin API that its MCP server uses to let AI agents drive designs. However, the pack contains no API reference documentation, and probes for an OpenAPI/Swagger spec at the help site returned 404. That leaves how deep and how well documented the public API is unproven. missing for 10: published API reference/OpenAPI spec, documented endpoint coverage for creating and editing designs, independent or hands-on corroboration of driving Penpot via the API.",
+    "rationale": "Penpot documents a public backend RPC API. The hosted instance serves a machine-readable OpenAPI 3.0.0 document with 152 paths and a Swagger UI, the integration guide points developers to the auto-generated API reference, and access tokens let an app authenticate against it. The probe 404s on help.penpot.app do not contradict this, because the spec lives on design.penpot.app. Missing for 10: hand-written narrative API guides beyond the auto-generated reference, API docs on by default for self-hosted instances (they sit behind a flag), and independent hands-on reports of driving Penpot through the API.",
     "evidenceIds": [
+      "penpot-openapi-spec-20261106",
+      "penpot-backend-api-docs-20261106",
+      "penpot-swagger-ui-20261106",
       "penpot-docs-6",
-      "penpot-docs-3",
-      "penpot-docs-1",
-      "penpot-docs-32",
-      "penpot-probe-2"
+      "penpot-docs-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "penpot-openapi-spec-20261106",
+          "quote": "Penpot's hosted SaaS instance serves a machine-readable OpenAPI 3.0.0 document for the backend RPC API (152 paths, server design.penpot.app/api/main/methods)."
+        },
+        {
+          "evidenceId": "penpot-backend-api-docs-20261106",
+          "quote": "The integration guide directs developers to \"the backend API documentation, generated automatically from source code, as a guide\""
+        },
         {
           "evidenceId": "penpot-docs-6",
           "quote": "Use access tokens as an alternative login authentication. They can allow an app to access Penpot's API."
         },
         {
-          "evidenceId": "penpot-docs-3",
-          "quote": "Get extensive access to objects and properties to enable external rendering, workflow automation, enhanced app functionality, and more."
-        },
-        {
-          "evidenceId": "penpot-docs-1",
-          "quote": "Penpot MCP server is agnostic and enables high-quality multi-directional AI workflows through our world-class open plugin API."
-        },
-        {
-          "evidenceId": "penpot-docs-32",
-          "quote": "AI agents can easily read and interact with your design files creating high-fidelity artifacts."
+          "evidenceId": "penpot-swagger-ui-20261106",
+          "quote": "The hosted instance serves a Swagger UI page (\"MAIN API\") that loads the live OpenAPI document from /api/main/doc/openapi.json."
         }
       ]
     }
@@ -5569,37 +5587,31 @@
   {
     "productId": "penpot",
     "storyId": "agentic-scoped-keys",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Penpot documents personal access tokens that let an app, such as an agent, authenticate to Penpot's API, so it issues its own API credentials. Nothing in the evidence shows those tokens can be scoped, permission-limited, or restricted to least privilege. missing for 10: documented token scopes or permission granularity, per-agent or per-team restriction, read-only or limited-access token options, expiry or revocation controls, independent corroboration.",
-    "evidenceIds": [
-      "penpot-docs-6"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Penpot documents personal access tokens as an alternative login method that lets an app call its API. Nothing in the evidence shows those tokens can be limited by permission, file, team, or read/write scope, so they are an adjacent credential feature, not the scoped, least-privilege credentials the story asks for. No evidence describes scoping for agent or MCP connections either.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": [
-        {
-          "evidenceId": "penpot-docs-6",
-          "quote": "Use access tokens as an alternative login authentication. They can allow an app to access Penpot's API."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "penpot",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Penpot documents its own open plugin API and plugin system that developers can build and publish extensions against, plus an access-token-authenticated API with extensive object and property access. That is an official programmatic surface, but no named, packaged SDKs or client libraries are evidenced, and probes found no published OpenAPI spec. Missing for 10: explicitly named official SDK or client-library packages, language coverage, SDK reference docs, independent or hands-on corroboration of building with them.",
+    "rationale": "Penpot documents an official open plugin API that developers can build and publish extensions against. It also has a documented backend RPC API, with an auto-generated OpenAPI 3.0 spec and access-token authentication, that programmatic and AI consumers can target. However, no evidence shows packaged official SDK client libraries, for example npm or Python packages, or SDK reference docs. missing for 10: published official language SDK packages, SDK documentation and examples, independent hands-on corroboration of building against them.",
     "evidenceIds": [
       "penpot-docs-1",
       "penpot-docs-5",
-      "penpot-docs-3",
       "penpot-docs-6",
+      "penpot-openapi-spec-20261106",
+      "penpot-backend-api-docs-20261106",
       "penpot-docs-37"
     ],
     "support": {
@@ -5609,19 +5621,19 @@
       "citations": [
         {
           "evidenceId": "penpot-docs-1",
-          "quote": "Penpot MCP server is agnostic and enables high-quality multi-directional AI workflows through our world-class open plugin API."
+          "quote": "enables high-quality multi-directional AI workflows through our world-class open plugin API"
         },
         {
           "evidenceId": "penpot-docs-5",
           "quote": "Our plugin system brings the flexibility that devs need to create and publish their own custom extensions."
         },
         {
-          "evidenceId": "penpot-docs-3",
-          "quote": "Get extensive access to objects and properties to enable external rendering, workflow automation, enhanced app functionality, and more."
-        },
-        {
           "evidenceId": "penpot-docs-6",
           "quote": "They can allow an app to access Penpot's API."
+        },
+        {
+          "evidenceId": "penpot-openapi-spec-20261106",
+          "quote": "Penpot's hosted SaaS instance serves a machine-readable OpenAPI 3.0.0 document for the backend RPC API"
         }
       ]
     }
@@ -5630,12 +5642,13 @@
     "productId": "penpot",
     "storyId": "agentic-webhooks",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Penpot's integrations page documents first-party outbound webhooks: event calls from Penpot to other applications for events such as file creation or update and new comments. This directly matches subscribing to events. However, the evidence is a short marketing-level description, with no documentation of how a consumer registers an endpoint or what it receives. missing for 10: documented webhook registration/subscription steps, payload format and full event catalog, delivery/retry and signing details, independent or hands-on corroboration.",
+    "rationale": "Penpot's first-party integrations page documents outbound webhooks as event calls from Penpot to other applications for events such as file creation or update and comments added. This is a genuine programmatic HTTP callback capability, not a chat-app notification. However, Penpot's own integration guide states the webhook system has no dedicated documentation yet, so registration, payloads and the event catalog are unproven. Missing for 10: documented webhook registration/subscription flow, full event list and payload schema, delivery/retry/signing details, independent or hands-on corroboration.",
     "evidenceIds": [
       "penpot-docs-4",
-      "penpot-docs-20"
+      "penpot-docs-20",
+      "penpot-backend-api-docs-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5647,8 +5660,8 @@
           "quote": "Outbound webhooks are event calls from Penpot to other applications. They notify that some event occurred, e.g. a file has been created or updated, a comment has been added, etc."
         },
         {
-          "evidenceId": "penpot-docs-20",
-          "quote": "Outbound webhooks are event calls from Penpot to other applications."
+          "evidenceId": "penpot-backend-api-docs-20261106",
+          "quote": "The guide also notes the webhook system has no dedicated documentation yet."
         }
       ]
     }
@@ -5659,10 +5672,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Penpot's AI story is an MCP server and plugin API that let external AI agents and LLMs work on design files. It also has a community plugin marketplace that includes AI tools. None of this is built-in, in-editor AI for image generation, background removal, content-aware fill or copy suggestions; these are developer building blocks and third-party extensions, which earn no credit.",
+    "rationale": "Built-in AI for asset chores is a fair question for a design editor, but the evidence shows no native image generation, background removal, content-aware fill or copy suggestions inside Penpot. What is documented is an MCP server that lets external AI agents connect to Penpot, plus a community plugin marketplace that includes AI tools. Both are adjacent building blocks or third-party extensions, not the product's own built-in capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a designer, built-in AI handles asset chores — image generation, background removal, content-aware fills, copy suggestions — inside the editor",
       "citations": []
@@ -5671,31 +5684,65 @@
   {
     "productId": "penpot",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Penpot documents an API reachable via access tokens, a plugin API and an MCP server, so this axis applies. Nothing in the evidence describes an interactive API reference or runnable examples, and the OpenAPI/Swagger probes all returned 404. API existence alone does not count as an explorable, runnable reference.",
-    "evidenceIds": [],
+    "rationale": "Penpot's hosted instance serves a Swagger UI page (\"MAIN API\") backed by an auto-generated OpenAPI 3.0.0 document of 152 backend RPC paths, and live calls can be made after authenticating. That is a real, product-provided interactive reference. However, the help docs point users to the static generated reference rather than this UI, it is gated by a flag on self-hosted instances, and no curated runnable examples are documented. missing for 10: documented runnable request examples, discoverable linking of the interactive UI from official docs, default availability on self-hosted instances, hands-on or independent corroboration of try-it-out usability",
+    "evidenceIds": [
+      "penpot-swagger-ui-20261106",
+      "penpot-openapi-spec-20261106",
+      "penpot-backend-api-docs-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "penpot-swagger-ui-20261106",
+          "quote": "The hosted instance serves a Swagger UI page (\"MAIN API\") that loads the live OpenAPI document from /api/main/doc/openapi.json."
+        },
+        {
+          "evidenceId": "penpot-swagger-ui-20261106",
+          "quote": "Live calls require instance authentication"
+        },
+        {
+          "evidenceId": "penpot-openapi-spec-20261106",
+          "quote": "Penpot's hosted SaaS instance serves a machine-readable OpenAPI 3.0.0 document for the backend RPC API (152 paths, server design.penpot.app/api/main/methods)."
+        }
+      ]
     }
   },
   {
     "productId": "penpot",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Penpot documents an API that apps can reach with access tokens, so this axis applies. However, the evidence pack never mentions a downloadable OpenAPI or equivalent machine-readable spec. A probe of the common OpenAPI and Swagger paths on help.penpot.app returned 404 on every one. The API's existence, the plugin API and the MCP server are adjacent capabilities, not a published spec.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Penpot's hosted instance serves a machine-readable OpenAPI 3.0.0 document for its backend RPC API at /api/main/doc/openapi.json. It has 152 paths, is auto-generated from source, and is version-tracked to the release, with a Swagger UI that loads the live spec. The probe 404s were on the help.penpot.app docs host, not the API host, so they do not contradict this. Missing for 10: the help docs link the static reference rather than the OpenAPI document, so the spec is not prominently surfaced; on self-hosted instances it is gated behind the enable-backend-api-doc flag; and there is no independent hands-on corroboration.",
+    "evidenceIds": [
+      "penpot-openapi-spec-20261106",
+      "penpot-swagger-ui-20261106",
+      "penpot-backend-api-docs-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "penpot-openapi-spec-20261106",
+          "quote": "Penpot's hosted SaaS instance serves a machine-readable OpenAPI 3.0.0 document for the backend RPC API (152 paths, server design.penpot.app/api/main/methods)."
+        },
+        {
+          "evidenceId": "penpot-swagger-ui-20261106",
+          "quote": "The hosted instance serves a Swagger UI page (\"MAIN API\") that loads the live OpenAPI document from /api/main/doc/openapi.json."
+        },
+        {
+          "evidenceId": "penpot-backend-api-docs-20261106",
+          "quote": "the backend API documentation, generated automatically from source code, as a guide"
+        }
+      ]
     }
   },
   {
@@ -5704,13 +5751,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Penpot is a design platform with an API, MCP server and plugins, so a sandbox or test environment is a fair question to ask of it. However, the evidence documents no sandbox, staging or test-mode feature that isolates agent experiments from production data. Self-hosting a separate instance is a deployment option the user would have to set up themselves, not a sandbox capability, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Penpot does not document a sandbox or test environment that isolates agent or API experiments from production design data. The only related evidence is self-hosting, where a user could stand up a separate instance; that is a user-side deployment workaround, not a sandbox feature, so it earns no credit. There is also no dry-run mode for MCP or API actions.",
+    "evidenceIds": [
+      "penpot-docs-7",
+      "penpot-docs-30"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "penpot-docs-7",
+          "quote": "Run it in your private cloud, on-premise, or any environment you control."
+        },
+        {
+          "evidenceId": "penpot-docs-30",
+          "quote": "you can set up an instance of Penpot in just 3 minutes!"
+        }
+      ]
     }
   },
   {
@@ -5719,7 +5778,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Penpot documents APIs: a plugin API, access tokens for API access, webhooks and an MCP server. None of the evidence mentions API versioning or a deprecation policy, and the OpenAPI spec probe returned 404 on every candidate path. The axis applies to a design platform with public APIs, so the lack of evidence makes this none rather than na.",
+    "rationale": "Penpot publishes an auto-generated OpenAPI document whose info.version follows the product release. That is a release label, not versioned API endpoints. Nothing in the evidence describes API version guarantees or a deprecation policy for the RPC, plugin, or MCP APIs. missing for 10: explicitly versioned API endpoints or contracts, a documented deprecation policy with timelines, changelog or migration guidance for API changes.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5734,10 +5793,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence never documents a bulk-operation capability, such as batch-editing, multi-select actions or batch API calls across many items. The plugin API's 'extensive access to objects' and the MCP server's general automation claims are developer building blocks an agent could use to construct bulk edits, not the capability itself. Component main-to-copy propagation is an adjacent component feature, not general bulk operations.",
+    "rationale": "The evidence shows an MCP server, a plugin API, an RPC/OpenAPI backend and component-copy propagation. None of it documents a first-party capability to perform bulk operations across many items at once. These are developer building blocks or adjacent features (main-component updates reflecting to copies), so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": []
@@ -5749,10 +5808,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Penpot documents outbound webhooks that fire automatically when events occur, such as a file being created or updated or a comment being added. That is a native event-triggered action: an HTTP call to another application. Any rule logic or resulting automation has to live in the receiving system, since Penpot shows no rule definition of its own. Missing for 10: user-definable rules or conditions, native in-product actions beyond the outbound notification, a documented event catalog and webhook registration details, and independent or hands-on corroboration.",
+    "rationale": "Penpot documents its own outbound webhooks, which fire HTTP calls to other applications when events occur, such as a file being created or updated or a comment being added. That gives a basic event-triggered action, but there is no in-product rule engine, and the integration guide says the webhook system has no dedicated documentation yet. Missing for 10: a user-definable rule/condition engine, configurable in-product actions beyond outbound calls, a documented list of event types and filtering, webhook documentation, and hands-on corroboration.",
     "evidenceIds": [
       "penpot-docs-4",
-      "penpot-docs-20"
+      "penpot-docs-20",
+      "penpot-backend-api-docs-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5762,6 +5822,10 @@
         {
           "evidenceId": "penpot-docs-4",
           "quote": "Outbound webhooks are event calls from Penpot to other applications. They notify that some event occurred, e.g. a file has been created or updated, a comment has been added, etc."
+        },
+        {
+          "evidenceId": "penpot-backend-api-docs-20261106",
+          "quote": "The guide also notes the webhook system has no dedicated documentation yet."
         }
       ]
     }
@@ -5772,7 +5836,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Penpot documents event-driven outbound webhooks, an MCP server, plugins, and API access tokens. These are triggers or building blocks an external scheduler could use, but none is a first-party way to schedule recurring jobs or workflows. No evidence shows any built-in recurring schedule, cron, or timed automation.",
+    "rationale": "Penpot documents AI workflow automation through its MCP server, a plugin API, an RPC API with access tokens, and event-triggered outbound webhooks. Nothing in the evidence shows a native way to schedule recurring jobs or workflows. Webhooks fire on one-off events and the API is a developer building block, so neither counts as recurring scheduling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5787,7 +5851,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Penpot documents automation surfaces: an MCP server, a plugin API, webhooks and access tokens. Nothing in the evidence shows versioning, review, or rollback of those automations. The only restore-like feature, restoring a deleted main component from a copy, concerns design components rather than automations, so it is an adjacent feature and earns no credit.",
+    "rationale": "Penpot documents automation surfaces: an MCP server, a plugin API, outbound webhooks and an RPC API. Nothing in the evidence shows a way to version, review, or roll back those automations. Restoring a deleted main component from a copy is a design-asset recovery feature, not automation version control, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5802,11 +5866,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Penpot's own docs describe a plugin system that lets developers create and publish their own custom extensions. They reference an open plugin API and a community marketplace of 113+ plugins, which supports the build-and-distribute part of the story. The evidence never mentions API reference documentation, TypeScript typings, or sample code. The older community comment wishing for a plugin system predates these docs and is not a concrete contradiction. Missing for 10: evidence of typings/type definitions, sample plugins or starter templates, detailed plugin API reference docs, independent hands-on corroboration of building and publishing a plugin.",
+    "rationale": "Penpot's own docs describe a plugin system that lets developers 'create and publish their own custom extensions' through an 'open plugin API', backed by a community marketplace of 113+ plugins. The pack does not show plugin API reference docs, TypeScript typings, or sample code. The 2022 HN comment wishing for a plugin system predates these claims and is not a concrete contradiction. Missing for 10: plugin API reference documentation, published typings, sample/starter plugins, distribution workflow details, independent hands-on corroboration of building a plugin.",
     "evidenceIds": [
       "penpot-docs-5",
-      "penpot-docs-24",
       "penpot-docs-37",
+      "penpot-docs-24",
       "penpot-docs-1"
     ],
     "support": {
@@ -5819,12 +5883,12 @@
           "quote": "Our plugin system brings the flexibility that devs need to create and publish their own custom extensions."
         },
         {
-          "evidenceId": "penpot-docs-24",
-          "quote": "Plugins (113+): Community plugin marketplace with accessibility, code, AI, and design system tools."
-        },
-        {
           "evidenceId": "penpot-docs-37",
           "quote": "Use community plugins or build your own."
+        },
+        {
+          "evidenceId": "penpot-docs-24",
+          "quote": "Plugins (113+): Community plugin marketplace with accessibility, code, AI, and design system tools."
         },
         {
           "evidenceId": "penpot-docs-1",
@@ -5839,7 +5903,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Penpot has a published pricing page (penpot.dev/pricing). The evidence shows only general plan bullets: unlimited teams, no file limits within storage capacity, and community plugins. Nothing in the pack shows seat types, named tiers or prices, or how AI/MCP features are gated by plan. missing for 10: documented seat types, named tier structure with prices, AI-feature gating per plan, independent corroboration of pricing clarity",
+    "rationale": "Penpot publishes a pricing page (penpot.dev/pricing), but the evidence shows only generic plan perks: unlimited teams, no file limits within storage capacity, and community plugins. Nothing in the pack shows how seats, tiers, or AI features are broken down, so a buyer cannot confirm the story's core clarity elements. Missing for 10: documented seat types and per-seat pricing, named plan tiers with price points, AI-feature gating by plan, independent corroboration of pricing clarity.",
     "evidenceIds": [
       "penpot-docs-9",
       "penpot-docs-10",
@@ -5852,8 +5916,12 @@
       "subject": "As a product manager, published plan pricing makes seat types, tiers, and AI-feature gating clear before procurement",
       "citations": [
         {
-          "evidenceId": "penpot-docs-29",
-          "quote": "No file limits. Create as many as you need within your storage capacity. ... Unlimited Teams. Collaborate freely with unlimited teams."
+          "evidenceId": "penpot-docs-9",
+          "quote": "Unlimited Teams - Collaborate freely with unlimited teams."
+        },
+        {
+          "evidenceId": "penpot-docs-10",
+          "quote": "No file limits - Create as many as you need within your storage capacity."
         },
         {
           "evidenceId": "penpot-docs-37",
@@ -5865,23 +5933,16 @@
   {
     "productId": "penpot",
     "storyId": "comments-review-flows",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only on-topic evidence is a webhook doc listing \"a comment has been added\" as a Penpot event, which implies files support comments. Nothing describes how commenting works on designs, and @mentions and resolving threads are not covered at all. missing for 10: first-party docs on commenting directly on canvas/designs, @mentioning teammates, resolving comment threads, independent or hands-on corroboration of in-file review workflows.",
-    "evidenceIds": [
-      "penpot-docs-4"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no documentation of commenting on designs, @-mentioning teammates, or resolving comment threads. The only reference to comments is a webhook event example (\"a comment has been added\"). That is evidence for the outbound-webhooks story and does not show in-file comment, mention, or resolve workflows. Commenting is a fair axis for a collaborative design tool, so the verdict is none rather than na.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a product manager, I can comment directly on designs, mention teammates, and resolve threads so review happens in the file, not in email",
-      "citations": [
-        {
-          "evidenceId": "penpot-docs-4",
-          "quote": "a comment has been added"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5890,11 +5951,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Penpot's own docs say developers can inspect and integrate code matching the design in CSS, HTML, SVG and JSON, and its GitHub README says design is expressed as code for direct translation. That is first-party design-to-code output, but the pack gives no detail on how production-ready the output is. missing for 10: documented component-to-code mappings linking design components to codebase components, detail on code-output quality and framework targets, independent or hands-on corroboration that the generated code is shippable.",
+    "rationale": "Penpot's own docs say it outputs code from designs: an inspect mode that yields CSS, HTML, SVG and JSON, plus CSS Grid/Flex layouts so the markup reflects real layout rules. The GitHub README adds that design is 'expressed as code, enabling a direct translation'. However, nothing shows component-to-code mappings into a codebase, or that the generated code is production-ready rather than reference snippets. Missing for 10: documented component-to-code mapping to real code components, evidence the generated HTML/CSS is shippable as-is, and independent or hands-on corroboration of output quality.",
     "evidenceIds": [
       "penpot-docs-21",
       "penpot-docs-36",
       "penpot-gh-1",
+      "penpot-docs-14",
       "penpot-docs-40"
     ],
     "support": {
@@ -5908,11 +5970,11 @@
         },
         {
           "evidenceId": "penpot-gh-1",
-          "quote": "developers feel at home using Penpot, because design is expressed as code, enabling a direct translation and shipping products faster."
+          "quote": "design is expressed as code, enabling a direct translation and shipping products faster."
         },
         {
-          "evidenceId": "penpot-docs-40",
-          "quote": "Penpot enables plenty of AI workflows, from generating editable design structures to connecting product logic, tokens, and implementation."
+          "evidenceId": "penpot-docs-14",
+          "quote": "Design responsive and rules-based interfaces with wireframes, interactive prototypes, and CSS Grid and Flex layouts."
         }
       ]
     }
@@ -5921,9 +5983,9 @@
     "productId": "penpot",
     "storyId": "design-tokens-variables",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Penpot's own marketing says it has native design tokens and lists a Design Tokens feature for aligning designers and developers, so the core capability exists first-party. The evidence never describes which token types it supports, how tokens are managed, or any modes or themes applied across designs. missing for 10: documentation of color/spacing/typography token types, token management workflow, modes/themes support and switching, application of tokens across files, independent or hands-on corroboration",
+    "rationale": "Penpot's own docs claim native design tokens as a design-system feature, so the core token capability is first-party. But the evidence never describes token types (colors, spacing, typography) or modes/themes applied across designs. missing for 10: documented token types (color, spacing, typography), modes or themes switching across designs, in-depth token management docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "penpot-docs-16",
       "penpot-docs-33",
@@ -5952,41 +6014,34 @@
   {
     "productId": "penpot",
     "storyId": "export-formats-assets",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only evidence on this story is a hands-on community report (penpot-comm-5) that Penpot could export individual layers. The same user could not export the whole design as a single PDF or JPG, and no first-party export documentation is in the pack. Missing for 10: first-party docs on export formats (PNG/SVG/PDF and more), per-layer export presets, scale multipliers, slices, multi-board or whole-file PDF export, and independent corroboration.",
-    "evidenceIds": [
-      "penpot-comm-5"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no first-party documentation of asset export. Nothing covers export formats (PNG, SVG, PDF), per-layer export presets, scale multipliers or slices. The only related items are a mention of SVG as an open standard for code inspection (an adjacent feature) and one community remark that a user 'could only export a layer'. That remark is too thin, and too negative about formats, to count as the product's own capability for this story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a designer, I can export production assets — PNG, SVG, PDF, and more — with per-layer presets, scales, and slices",
-      "citations": [
-        {
-          "evidenceId": "penpot-comm-5",
-          "quote": "I could only export a layer."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "penpot",
     "storyId": "free-tier-real-design",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Penpot's pricing page lists unlimited teams and no file limits (bounded by storage capacity), and a community user confirms you can use the free hosted instance. Other users say they have replaced Figma with it, and prototyping and components are documented. However, the evidence never explicitly ties these entitlements to a no-cost seat, and several hands-on reports describe lag and crashes on complex files, which weakens the 'usable for real work' claim. Missing for 10: explicit documentation of what the free plan includes (seats, storage cap, collaboration features), first-party confirmation that collaboration needs no paid seat, and consistent evidence that the editor performs well on complex real-world files.",
+    "rationale": "Penpot's pricing page advertises unlimited teams and no file limits, a community user confirms 'you can self-deploy or use their free instance', and the MPL-2.0 open-source license means self-hosting costs nothing. Its documented editor covers components, prototyping, and Flex/Grid layouts. Hands-on reports are mixed: several users praise it as a working Figma replacement, while others describe lag, crashes, and slowdowns on complex files, which undercuts 'usable' for heavier work. Missing for 10: explicit first-party statement that the free plan includes these features, a documented seat/collaboration model for the free tier, and consistent evidence of performance on complex files.",
     "evidenceIds": [
-      "penpot-docs-29",
       "penpot-docs-9",
-      "penpot-docs-10",
+      "penpot-docs-29",
       "penpot-comm-1",
-      "penpot-comm-3",
-      "penpot-comm-12",
+      "penpot-mpl-license-20261106",
+      "penpot-docs-14",
       "penpot-docs-12",
-      "penpot-docs-11",
+      "penpot-comm-3",
+      "penpot-comm-10",
       "penpot-comm-16",
       "penpot-comm-19"
     ],
@@ -5996,12 +6051,20 @@
       "subject": "As a designer, the free tier supports real design work — usable editor and collaboration without a paid seat",
       "citations": [
         {
+          "evidenceId": "penpot-docs-9",
+          "quote": "Unlimited Teams - Collaborate freely with unlimited teams."
+        },
+        {
           "evidenceId": "penpot-docs-29",
-          "quote": "No file limits. Create as many as you need within your storage capacity. ... Unlimited Teams. Collaborate freely with unlimited teams."
+          "quote": "No file limits. Create as many as you need within your storage capacity."
         },
         {
           "evidenceId": "penpot-comm-1",
           "quote": "You can self-deploy or use their free instance."
+        },
+        {
+          "evidenceId": "penpot-mpl-license-20261106",
+          "quote": "The penpot/penpot repository is licensed under the Mozilla Public License Version 2.0"
         },
         {
           "evidenceId": "penpot-comm-3",
@@ -6015,8 +6078,8 @@
     "storyId": "inspect-code-handoff",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Penpot's own docs say developers can \"inspect and integrate code\" with CSS, HTML, SVG and JSON output, so a first-party inspect capability exists. The evidence covers only that single marketing line; nothing documents layer measurements, style or asset extraction, iOS/Android snippets, or access without an editor seat. Missing for 10: layer measurements, style and asset export details, iOS/Android code snippets, evidence that inspection works without an editor seat, and hands-on or independent corroboration.",
+    "confidence": "low",
+    "rationale": "Penpot's own marketing documents an inspect capability that yields code in open standards (CSS, HTML, SVG, JSON), which covers the code-snippet part of the story. The pack has no detail on layer measurements, style or asset extraction, iOS/Android snippets, or developer access without an editor seat. Missing for 10: documented layer measurements and style/asset inspection, iOS/Android code snippets, evidence of view-only or seat-free developer access, in-depth inspect-mode docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "penpot-docs-21",
       "penpot-docs-36"
@@ -6037,9 +6100,9 @@
     "productId": "penpot",
     "storyId": "interactive-prototypes",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Penpot's own docs say designers can prototype interactions by connecting boards that act as screens, and they advertise interactive prototypes. A community user reports the prototype feature works well, which supports the core no-code screen-wiring part of the story. Missing for 10: documented trigger types, transition/animation options, overlay support, and hands-on detail beyond a single positive comment.",
+    "rationale": "Penpot's own docs say designers can prototype interactions by connecting boards that act as screens, and it advertises interactive prototypes. A community user reports the prototype feature works well. The specific elements the story names are not documented in the evidence. missing for 10: documented trigger types (click/hover/etc.), documented transition/animation options, documented overlay support, hands-on corroboration of those specifics.",
     "evidenceIds": [
       "penpot-docs-12",
       "penpot-docs-14",
@@ -6071,11 +6134,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Penpot's first-party MCP server is marketed for prompt-driven design work. Its docs say to connect an agent and \"prompt away\", and claim AI workflows can generate \"editable design structures\" and \"high-fidelity artifacts\" in Penpot files. However, Penpot has no built-in prompt-to-design generator: the user must bring and connect their own external AI agent or LLM, and the docs never show actual first drafts, layouts, or full mockups being produced. missing for 10: native in-app prompt-to-design generation, documented examples of generated layouts or full mockups, prompt-based editing workflow detail, hands-on or independent corroboration of output quality.",
+    "rationale": "Penpot documents a first-party MCP server so that an external AI agent can be prompted to create and edit design artifacts in Penpot files ('prompt away', 'generating editable design structures'). Prompt-driven design is therefore possible, but only through a bring-your-own agent or LLM, not a native in-app generator. Missing for 10: a native in-product prompt-to-design feature, documented examples of first drafts, layouts or full mockups being produced, and independent or hands-on corroboration of output quality.",
     "evidenceIds": [
       "penpot-docs-31",
-      "penpot-docs-40",
       "penpot-docs-32",
+      "penpot-docs-40",
       "penpot-docs-1",
       "penpot-docs-27"
     ],
@@ -6089,12 +6152,12 @@
           "quote": "Choose your agent, connect to Penpot MCP and prompt away!"
         },
         {
-          "evidenceId": "penpot-docs-40",
-          "quote": "Penpot enables plenty of AI workflows, from generating editable design structures to connecting product logic, tokens, and implementation."
-        },
-        {
           "evidenceId": "penpot-docs-32",
           "quote": "AI agents can easily read and interact with your design files creating high-fidelity artifacts."
+        },
+        {
+          "evidenceId": "penpot-docs-40",
+          "quote": "Penpot enables plenty of AI workflows, from generating editable design structures to connecting product logic, tokens, and implementation."
         }
       ]
     }
@@ -6102,19 +6165,18 @@
   {
     "productId": "penpot",
     "storyId": "open-file-format",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Penpot's own site states it offers \"Penpot's open file format\" alongside open standards such as SVG and JSON. Its GitHub README adds that \"design is expressed as code,\" which supports portability and tooling outside the editor. Missing for 10: a published specification or schema for the file format, and independent or hands-on evidence of tooling or round-tripping files outside Penpot.",
+    "rationale": "Penpot's own site advertises an \"open file format\" alongside open standards (SVG, JSON, CSS, HTML), and the full platform source, including the code that reads and writes the format, is public under MPL 2.0, so the format can be inspected outside the vendor's editor. However, the pack contains no published specification of the file format and no evidence of designs being parsed or edited by external tools, so the portability claim rests on marketing copy plus open source rather than format documentation. Missing for 10: a documented file-format specification or schema, evidence of the native export/import file structure, and independent or hands-on corroboration of third-party tooling working with Penpot files.",
     "evidenceIds": [
       "penpot-docs-21",
-      "penpot-docs-36",
-      "penpot-gh-1",
-      "penpot-docs-32"
+      "penpot-mpl-license-20261106",
+      "penpot-gh-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, the file format is open or documented, so my designs stay portable and toolable outside the vendor's editor",
       "citations": [
         {
@@ -6122,12 +6184,12 @@
           "quote": "Enjoy open standards like CSS, HTML, SVG and JSON as well as Penpot's open file format."
         },
         {
-          "evidenceId": "penpot-gh-1",
-          "quote": "design is expressed as code, enabling a direct translation and shipping products faster."
+          "evidenceId": "penpot-mpl-license-20261106",
+          "quote": "The full platform source (frontend, backend, exporter) is public in the same repository."
         },
         {
-          "evidenceId": "penpot-docs-32",
-          "quote": "In Penpot, design is expressed as code, so AI agents can easily read and interact with your design files"
+          "evidenceId": "penpot-gh-1",
+          "quote": "design is expressed as code, enabling a direct translation and shipping products faster"
         }
       ]
     }
@@ -6136,15 +6198,15 @@
     "productId": "penpot",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Penpot documents its own API surfaces: an access-token-authenticated API, an open plugin API with \"extensive access to objects and properties\", and an MCP server for agents. Nothing in the evidence states that these surfaces match everything the UI can do, and probes found no published OpenAPI spec to confirm coverage. missing for 10: an explicit API/UI parity claim, a published API reference or OpenAPI spec showing endpoint coverage of UI features (components, prototyping, tokens, export), and independent hands-on corroboration of programmatic completeness.",
+    "rationale": "Penpot documents a broad programmatic surface. Its backend RPC API has an auto-generated OpenAPI 3.0 document with 152 paths, reachable with access tokens, and a plugin API claims extensive access to objects and properties, which the MCP server builds on for agent workflows. However, nothing states that the API matches the UI feature for feature. Missing for 10: explicit documentation that every UI capability is exposed via the API, hands-on or independent confirmation of parity, and documentation for the webhook system.",
     "evidenceIds": [
+      "penpot-openapi-spec-20261106",
+      "penpot-backend-api-docs-20261106",
       "penpot-docs-3",
       "penpot-docs-6",
-      "penpot-docs-1",
-      "penpot-docs-32",
-      "penpot-probe-2"
+      "penpot-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -6152,20 +6214,20 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "penpot-openapi-spec-20261106",
+          "quote": "Penpot's hosted SaaS instance serves a machine-readable OpenAPI 3.0.0 document for the backend RPC API (152 paths, server design.penpot.app/api/main/methods)"
+        },
+        {
+          "evidenceId": "penpot-backend-api-docs-20261106",
+          "quote": "the generated RPC reference listing every method with params and docstrings"
+        },
+        {
           "evidenceId": "penpot-docs-3",
           "quote": "Get extensive access to objects and properties to enable external rendering, workflow automation, enhanced app functionality, and more."
         },
         {
           "evidenceId": "penpot-docs-6",
           "quote": "They can allow an app to access Penpot's API."
-        },
-        {
-          "evidenceId": "penpot-docs-1",
-          "quote": "Penpot MCP server is agnostic and enables high-quality multi-directional AI workflows through our world-class open plugin API."
-        },
-        {
-          "evidenceId": "penpot-docs-32",
-          "quote": "AI agents can easily read and interact with your design files creating high-fidelity artifacts."
         }
       ]
     }
@@ -6176,7 +6238,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Penpot documents an open file format plus open standards (CSS, HTML, SVG, JSON), and self-hosting means users control where their data lives, so leaving with open-format design data is plausible. However, no evidence documents a bulk 'export all my data' workflow, and one hands-on user reported being able to export only a single layer rather than a whole file as PDF/JPG. missing for 10: documented bulk/account-wide export of all files and assets, explicit export procedure for the open file format, independent corroboration of complete data portability.",
+    "rationale": "Penpot's own docs claim support for open standards (CSS, HTML, SVG, JSON) and its own open file format, and self-hosting gives users control over where their data lives. However, nothing documents a bulk export of all account or team data, and one older hands-on report says only individual layers could be exported, not a whole design as a single file. missing for 10: documented bulk/full-account export workflow, documentation of the open file format's contents and portability, independent confirmation that a complete exit is possible.",
     "evidenceIds": [
       "penpot-docs-21",
       "penpot-docs-28",
@@ -6201,33 +6263,31 @@
   {
     "productId": "penpot",
     "storyId": "openness-open-license",
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Penpot's own docs repeatedly call it an open-source design platform, a public GitHub repository (github.com/penpot/penpot) appears in the evidence, and community users treat it as open source. That supports reading its source under an open license, but the specific license is never named and source access is only implied by the repo link. missing for 10: the named open-source license (terms and OSI status), and explicit first-party documentation of where and how to read or obtain the source.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "The penpot/penpot GitHub repository is licensed under the Mozilla Public License 2.0, an OSI-approved open-source license, and the full platform source (frontend, backend, exporter) is public in that repository. Penpot's own docs also describe it as an open-source design platform. missing for 10: independent hands-on corroboration of reading or building the source.",
     "evidenceIds": [
+      "penpot-mpl-license-20261106",
       "penpot-docs-38",
-      "penpot-docs-16",
-      "penpot-gh-1",
-      "penpot-comm-18",
-      "penpot-comm-2"
+      "penpot-docs-16"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can read the product's source under an open license",
       "citations": [
         {
+          "evidenceId": "penpot-mpl-license-20261106",
+          "quote": "The penpot/penpot repository is licensed under the Mozilla Public License Version 2.0"
+        },
+        {
+          "evidenceId": "penpot-mpl-license-20261106",
+          "quote": "The full platform source (frontend, backend, exporter) is public in the same repository."
+        },
+        {
           "evidenceId": "penpot-docs-38",
           "quote": "Penpot is the only open-source design platform that is truly deployment agnostic."
-        },
-        {
-          "evidenceId": "penpot-docs-16",
-          "quote": "Open-source alternative with self-hosting, unlimited files, native design tokens."
-        },
-        {
-          "evidenceId": "penpot-comm-18",
-          "quote": "Nice addition to open source design tools."
         }
       ]
     }
@@ -6238,14 +6298,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Penpot documents first-party self-hosting in private cloud, on-premise, or any controlled environment. Supported deployment paths include docker compose, an official Helm Chart, Openshift and Rancher. Community users confirm they have self-hosted it on Docker/Portainer successfully. missing for 10: consistent hands-on stability evidence, since one user reports a self-hosted instance crashing after a few minutes while others report it works fine.",
+    "rationale": "Penpot documents first-party self-hosting via docker compose and Kubernetes (official Helm Chart, OpenShift, Rancher) in any environment you control. Its full platform source is public under MPL-2.0, and community members report running self-hosted instances successfully. missing for 10: consistent hands-on stability evidence, since some self-hosters report crashes and lag under load while others report it working fine.",
     "evidenceIds": [
       "penpot-docs-7",
       "penpot-docs-38",
       "penpot-docs-42",
       "penpot-docs-30",
       "penpot-docs-28",
-      "penpot-docs-16",
+      "penpot-mpl-license-20261106",
       "penpot-comm-12",
       "penpot-comm-9",
       "penpot-comm-1",
@@ -6265,8 +6325,8 @@
           "quote": "Deploy with docker compose ... Use Kubernetes in its different flavors: Deploy the official Helm Chart, Deploy in Openshift, Deploy in Rancher"
         },
         {
-          "evidenceId": "penpot-docs-30",
-          "quote": "you can set up an instance of Penpot in just 3 minutes!"
+          "evidenceId": "penpot-mpl-license-20261106",
+          "quote": "The full platform source (frontend, backend, exporter) is public in the same repository."
         },
         {
           "evidenceId": "penpot-comm-12",
@@ -6278,10 +6338,10 @@
   {
     "productId": "penpot",
     "storyId": "plugin-ecosystem-marketplace",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Penpot's own docs describe a community plugin marketplace with 113+ plugins covering accessibility, code, AI, and design-system tools, and invite designers to use community plugins or build their own on the plugin system. The 2022 community comment that Penpot lacked a plugin system predates these docs and does not contradict them. Missing for 10: explicit evidence of icon and data-filler plugins, independent or hands-on corroboration of marketplace breadth and quality, and evidence that the ecosystem is 'large' (one community comment notes Figma's ecosystem holds most mindshare).",
+    "rationale": "Penpot documents a community plugin marketplace of 113+ plugins covering accessibility, code, AI and design-system tools, plus the option to use community plugins or build your own. The story's specific examples of icon and data-filler plugins are not evidenced, and the marketplace's size and quality rest only on vendor claims. missing for 10: evidence of icon plugins, evidence of data-filler plugins, independent or hands-on corroboration of the marketplace's size and quality.",
     "evidenceIds": [
       "penpot-docs-24",
       "penpot-docs-37",
@@ -6289,7 +6349,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a designer, I can extend the editor from a large plugin community or marketplace — icons, data fillers, accessibility checkers, and more",
       "citations": [
         {
@@ -6310,10 +6370,10 @@
   {
     "productId": "penpot",
     "storyId": "privacy-data-residency",
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "Penpot's own documented self-hosting lets users decide where their data lives: private cloud, on-premise, or any environment they control, deployed via docker compose or Kubernetes/Helm. Community users confirm running self-hosted instances. Residency control therefore comes only through self-deployment; nothing shows region or residency selection on Penpot's hosted cloud. Missing for 10: region/residency choice for the hosted SaaS instance, documented data-residency guarantees or region list, and independent corroboration of residency-specific controls.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Penpot's own documentation says users can \"choose where and how to host it\" and can run it in a private cloud, on-premise, or any environment they control. Official Docker Compose and Kubernetes/Helm deployment paths make this practical, and community users report self-hosting it successfully, so users fully control where their data lives. missing for 10: region/residency selection for the hosted SaaS instance, explicit data-residency or compliance documentation.",
     "evidenceIds": [
       "penpot-docs-28",
       "penpot-docs-38",
@@ -6324,7 +6384,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
       "citations": [
         {
@@ -6337,11 +6397,11 @@
         },
         {
           "evidenceId": "penpot-docs-42",
-          "quote": "Deploy the official Helm Chart, Deploy in Openshift, Deploy in Rancher"
+          "quote": "Use Kubernetes in its different flavors: Deploy the official Helm Chart, Deploy in Openshift, Deploy in Rancher"
         },
         {
-          "evidenceId": "penpot-comm-1",
-          "quote": "You can self-deploy or use their free instance."
+          "evidenceId": "penpot-comm-12",
+          "quote": "Have been self-hosting this on Docker/Portainer for several weeks for a few people. Works fine so far."
         }
       ]
     }
@@ -6351,13 +6411,13 @@
     "storyId": "privacy-no-training",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Penpot's own self-hosting lets users run it in environments they control, and it states it will never make business out of user data. Its MCP server can also be deployed without third-party clouds and paired with an agent the user trusts. Together these give users real control over where their design data goes, but nothing explicitly addresses AI model training. Missing for 10: an explicit no-AI-training policy or opt-out for the hosted service, documentation on how data is handled when connected LLMs process it, and independent corroboration.",
+    "confidence": "medium",
+    "rationale": "Penpot's self-hosting page commits that 'Penpot will never make business out of your data' and lets users choose where to host it. Running it on-premise or in a private cloud keeps design data out of the vendor's hands, which in practice prevents vendor-side model training. However, no evidence explicitly addresses AI training: there is no stated no-training policy and no opt-out control for the hosted SaaS. Missing for 10: an explicit statement that user data is not used for AI/model training, an opt-out setting for hosted-instance users, and independent corroboration.",
     "evidenceIds": [
       "penpot-docs-28",
       "penpot-docs-7",
-      "penpot-docs-19",
-      "penpot-docs-27"
+      "penpot-docs-38",
+      "penpot-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -6375,10 +6435,6 @@
         {
           "evidenceId": "penpot-docs-19",
           "quote": "Deploy the MCP server in your own environment without relying on third-party clouds."
-        },
-        {
-          "evidenceId": "penpot-docs-27",
-          "quote": "Connect it to any AI agent or LLM you trust."
         }
       ]
     }
@@ -6389,10 +6445,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Penpot's evidence covers self-hosting, where data is hosted, and who can access it. It does not document any retention policy, configurable retention periods, or user or account data-deletion controls. Choosing a hosting location is an adjacent control and earns no credit toward retention and deletion.",
+    "rationale": "Penpot's evidence documents self-hosting: you can choose where data is hosted and who can access it. That is a hosting and access control, not a documented feature for setting retention periods or deleting user or AI-processed data. No retention policy, data-deletion, or purge capability is shown, so this related deployment control earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can control data retention and deletion",
       "citations": []
@@ -6404,7 +6460,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a design platform, but the evidence pack never documents a telemetry or usage-tracking setting or opt-out control. The only related material is adjacent: self-hosting in your own environment and a general privacy pledge ('Penpot will never make business out of your data'). Neither is an opt-out mechanism, so neither earns credit.",
+    "rationale": "Telemetry opt-out is a fair question for a hosted or self-hostable design platform, so the axis applies. The pack has no documented telemetry or usage-tracking opt-out. The closest items are a privacy promise ('never make business out of your data') and self-hosting, which are adjacent controls, not an opt-out mechanism.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6419,7 +6475,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents simultaneous multi-user editing of the same file, live cursors, or instant sync. The pricing line 'Unlimited Teams - Collaborate freely' is about how many teams you can have, not real-time co-editing, so it is an adjacent feature. Community comments about several self-hosted users say nothing about live multiplayer editing.",
+    "rationale": "The evidence pack never documents simultaneous multi-user editing, live cursors, or real-time sync in Penpot. The pricing line \"Collaborate freely with unlimited teams\" is about team and account limits, not live co-editing, so it is only adjacent and earns no credit. Real-time multiplayer is a fair axis for a design tool, so the verdict is \"none\" rather than \"na\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6434,7 +6490,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Penpot's own marketing says it supports responsive, rules-based interfaces built with CSS Grid and Flex layouts, which covers the auto-layout and grid parts of the story. That claim rests on a single homepage line, with no user-guide detail on how frames resize and no mention of constraints. Missing for 10: documentation of constraints (pin/scale behavior), in-depth user-guide docs on Flex/Grid layout and frame resizing behavior, hands-on or independent corroboration.",
+    "rationale": "Penpot's homepage says it can design responsive, rules-based interfaces with CSS Grid and Flex layouts. That covers the auto-layout and grid parts of the story directly, but the only evidence is one marketing line. Missing for 10: any evidence of constraints (pinning/scaling children when a frame resizes), in-depth user-guide documentation of Flex/Grid layout behavior, and hands-on or independent corroboration that frames actually resize the way real UIs flex.",
     "evidenceIds": [
       "penpot-docs-14"
     ],
@@ -6456,14 +6512,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Penpot documents reusable components and component copies that stay linked to the Main component, so updates propagate to the copies. Variants are a first-party feature, but the evidence for them is only a thin marketing line, and community comments say variants and components lag Figma or feel hard to handle. That criticism is not a concrete contradiction. Per-instance overrides are never documented. Missing for 10: documented per-instance overrides that persist while staying linked, in-depth variant documentation, and independent hands-on corroboration of variant and override behavior.",
+    "rationale": "Penpot's docs describe reusable components, variants, and component copies that stay linked to a main component so its updates propagate, which covers most of the story. Per-instance overrides are not explicitly documented anywhere in the pack. A community comment says variants are not yet at Figma's level, but that is a maturity opinion, not a concrete contradiction. Missing for 10: documented per-instance override behavior (overriding copies while keeping the link), in-depth variant documentation, hands-on corroboration of the variants and linking workflow.",
     "evidenceIds": [
       "penpot-docs-11",
       "penpot-docs-22",
       "penpot-docs-41",
-      "penpot-docs-23",
-      "penpot-comm-1",
-      "penpot-comm-9"
+      "penpot-docs-35",
+      "penpot-comm-1"
     ],
     "support": {
       "relation": "direct",
@@ -6491,14 +6546,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Penpot's own docs describe itself as an open-source design platform you can run in a private cloud, on-premise, or any environment you control. Official deployment paths include docker compose, a Helm Chart, OpenShift and Rancher, and several community users confirm they self-host it. Some users report crashes and lag on self-hosted instances, but that concerns stability, not whether self-hosting is offered. Missing for 10: the specific open-source license is never named, so its terms are unevidenced.",
+    "rationale": "Penpot documents self-hosting in a private cloud, on-premise, or any controlled environment, using docker compose, an official Helm Chart, OpenShift, or Rancher. The full platform source (frontend, backend, exporter) is public under MPL-2.0, and community users confirm running self-hosted instances. Some hands-on reports describe crashes and lag on self-hosted deployments, but these concern stability, not whether self-hosting is possible. missing for 10: consistent independent evidence of stable self-hosted operation under multi-user load.",
     "evidenceIds": [
       "penpot-docs-38",
       "penpot-docs-7",
-      "penpot-docs-16",
       "penpot-docs-42",
       "penpot-docs-30",
-      "penpot-docs-28",
+      "penpot-mpl-license-20261106",
+      "penpot-docs-16",
       "penpot-comm-12",
       "penpot-comm-9",
       "penpot-comm-1"
@@ -6514,11 +6569,11 @@
         },
         {
           "evidenceId": "penpot-docs-42",
-          "quote": "Deploy with docker compose ... Use Kubernetes in its different flavors: Deploy the official Helm Chart, Deploy in Openshift, Deploy in Rancher"
+          "quote": "Use Kubernetes in its different flavors: Deploy the official Helm Chart, Deploy in Openshift, Deploy in Rancher"
         },
         {
-          "evidenceId": "penpot-docs-16",
-          "quote": "Open-source alternative with self-hosting, unlimited files, native design tokens."
+          "evidenceId": "penpot-mpl-license-20261106",
+          "quote": "The full platform source (frontend, backend, exporter) is public in the same repository."
         },
         {
           "evidenceId": "penpot-comm-12",
@@ -6533,12 +6588,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Penpot's docs say components can be reused across files, and that copies stay linked so changes to the Main component flow to them. That covers the core of cross-file component reuse with source-driven updates. The evidence never describes publishing a shared library, sharing styles across projects, or a controlled review/accept flow for updates. Community remarks that its design-system features trail Figma are general and do not contradict the documented behavior. Missing for 10: explicit shared-library publish/connect workflow, cross-project scope, shared styles (colors/typography) via libraries, controlled update review/accept mechanism, independent hands-on corroboration.",
+    "rationale": "Penpot's docs say components can be reused across files and that copies stay linked, so changes to the main component can reach them. That covers the core of cross-file reuse and update propagation. Missing for 10: explicit documentation of shared-library publishing, sharing of styles (colors, typography) alongside components, cross-project scope, a controlled review/accept step for incoming updates, and independent hands-on corroboration.",
     "evidenceIds": [
       "penpot-docs-11",
-      "penpot-docs-22",
-      "penpot-docs-23",
-      "penpot-docs-35"
+      "penpot-docs-35",
+      "penpot-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -6562,7 +6616,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Penpot is a design tool, so vector editing is a fair axis to judge it on. However, the evidence pack never documents a pen tool, path editing, boolean operations, or precise alignment tools. The only nearby material is SVG export, CSS Grid/Flex layouts and general 'Figma clone' remarks, which are adjacent features and earn no credit.",
+    "rationale": "Penpot is a design tool, so professional vector editing is a fair question for it. However, the evidence pack never mentions a pen tool, path editing, boolean operations or alignment controls. General statements about designing interfaces, prototyping and components describe other features, not the vector toolset this story asks about.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6577,7 +6631,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Version history is a fair question for a collaborative design tool, so the axis applies. However, the evidence pack never documents Penpot file version history, named milestones, version comparison, or restoring an earlier file state. The only 'restore' mention is restoring a deleted main component from a copy, which is an adjacent component feature, not file versioning.",
+    "rationale": "Version history is a fair axis for a design tool like Penpot, but the evidence pack never documents named versions, version comparison, or restoring a file to an earlier state. The only restore-related item covers recreating a deleted main component from a copy, which is a different feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
