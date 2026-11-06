@@ -319,6 +319,9 @@ jobs:
             pnpm engine derive --category "$ARENA"
             pnpm engine logos --category "$ARENA" --product "$PRODUCT"
           done < /tmp/bringups.txt
+          # New products need intervals before validation. Refresh once for the whole fleet
+          # after all derives because the measured uncertainty model is shared across arenas.
+          pnpm tsx rankings-engine/scripts/compute-confidence-intervals.ts
           # Same contract as spike-engine: derive restamps rankings.generatedAt and judge adds
           # verdicts, inputs of the vendor-review interchange records, the story graph, and the
           # step rankings.
