@@ -1,15 +1,30 @@
 {
-  "hash": "830920a665eb2393b896c90b4d31d1e7b732f83fbc492ac50b38eec2e04e48b0",
+  "hash": "38163d5b94201bfd8c7c15339354b8fd506763c6aaff74e575c48bcc42a28de4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Square has a dedicated first-party Idempotency page under its common API patterns, and its llms.txt states that \"every write endpoint accepts an idempotency key.\" That is the core mechanism for safely retrying payment-creating requests without duplicate charges. missing for 10: detailed documentation of retry semantics (dedupe window, behavior on reused keys with different payloads), SDK examples showing idempotency keys in use, independent or hands-on corroboration that retries never produce duplicate charges.",
+    "rationale": "Square's own developer guidance states that every write endpoint accepts an idempotency key, and it ships a dedicated Idempotency page under common API patterns, so safe retries of write requests such as payments are a first-party capability. The evidence is thin, though: one sentence plus a page title. missing for 10: documented retry semantics (key retention window, behavior when a key is reused with a different request body), an explicit guarantee against duplicate charges on payment retries, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "square-docs-22",
-      "square-supp-llms-agent-guidance"
+      "square-supp-llms-agent-guidance",
+      "square-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can safely retry any API request using idempotency keys so network failures never create duplicate charges",
+      "citations": [
+        {
+          "evidenceId": "square-supp-llms-agent-guidance",
+          "quote": "every write endpoint accepts an idempotency key"
+        },
+        {
+          "evidenceId": "square-docs-22",
+          "quote": "Idempotency"
+        }
+      ]
+    },
     "productId": "square",
     "storyId": "idempotent-api-retries"
   }

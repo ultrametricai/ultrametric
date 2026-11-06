@@ -1,16 +1,34 @@
 {
-  "hash": "8155f312e8ada277e55d5cb57a105748631de70b24705c6e5c391bffef1a0d98",
+  "hash": "b0c0c2c59149e80acf740404153a39ed160eeda48b7f895fb0f6654652edd57d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Airwallex documents first-party webhooks that send real-time push notifications to your application when account events occur. It also documents reliability semantics: a 200-acknowledgement requirement, stable event IDs for idempotent retry handling, delivery-status inspection and manual re-delivery. The Developer MCP can simulate events in the sandbox for testing. Missing for 10: explicit documentation of endpoint registration and per-event-type subscription selection, signature verification details, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Airwallex's first-party docs describe webhooks as real-time push notifications sent to your application when account events occur. The docs also cover delivery semantics: your endpoint must return 200, each event has a stable id for safe retry handling, and the web app shows delivery status and lets you re-deliver events, so a programmatic consumer can receive them. Missing for 10: explicit documentation of how endpoints are registered and how specific event types are subscribed to, signature verification details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-15",
-      "awx-supp-webhooks",
-      "awx-supp-developer-mcp"
+      "awx-supp-webhooks"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "airwallex-docs-15",
+          "quote": "Webhooks enable Airwallex to send instant, real-time push notifications to your application when events occur in your Airwallex account."
+        },
+        {
+          "evidenceId": "awx-supp-webhooks",
+          "quote": "Your endpoint must respond with a 200 status code so that Airwallex can confirm delivery. Each event has a stable `id` so you can safely handle retries and avoid processing the same event twice."
+        },
+        {
+          "evidenceId": "awx-supp-webhooks",
+          "quote": "inspect delivery status (success, queued, or failed) and re-deliver events after downtime or for debugging."
+        }
+      ]
+    },
     "productId": "airwallex",
     "storyId": "agentic-webhooks"
   }

@@ -1,15 +1,30 @@
 {
-  "hash": "ecc63db4d31138a251fc43777cded0816f975606883d10ee00786e4fee0afc95",
+  "hash": "b7534ef8abbb832ab11b584b76237e174f98023daa71c06f9e9ca3a1e19ef8d1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Honcho stores messages and has its 'deriver' process them in the background, so asynchronous memory processing is its own documented capability (gh-1, docs-10). Nothing in the evidence shows batch ingestion, ingestion at scale, or any way to check the status or progress of background operations. 'honcho doctor' only verifies connection and workspace health, which is an adjacent control and earns no credit. Missing for 10: documented batch/bulk message ingestion endpoint, evidence of ingestion at scale, API or CLI to check status of background deriver/memory operations, and independent corroboration.",
+    "rationale": "Honcho documents asynchronous background processing: messages are stored, Honcho reasons over them in the background, and a separate deriver service runs alongside the API. That covers the async-ingestion core only thinly. `honcho doctor` checks connection and workspace health, which is a different thing from tracking background memory operations, so it earns no credit here. Missing for 10: documented batch ingestion endpoints, an API or CLI for checking the status of background or deriver jobs, evidence of performance at scale, and independent corroboration.",
     "evidenceIds": [
       "honcho-gh-1",
       "honcho-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can ingest at scale with async or batch processing and check the status of background memory operations",
+      "citations": [
+        {
+          "evidenceId": "honcho-gh-1",
+          "quote": "Store messages and events, let Honcho reason in the background"
+        },
+        {
+          "evidenceId": "honcho-docs-10",
+          "quote": "honcho start runs API, deriver, Postgres, and Redis via Docker."
+        }
+      ]
+    },
     "productId": "honcho",
     "storyId": "async-batch-processing"
   }

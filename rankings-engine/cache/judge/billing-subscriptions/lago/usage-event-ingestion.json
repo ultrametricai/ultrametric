@@ -1,18 +1,35 @@
 {
-  "hash": "3c577891281038e6d1ecff95a98d88732dc6d1f874e4045b8d07c5d52f2638cb",
+  "hash": "7293b81166ef98f3bd6e1a50247caf23cc19aba143dc0fc6368860aa2c565021",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Lago's docs show a usage-event ingestion pipeline via POST /api/v1/events, with an AI-request pricing example in the repo. They also document deduplication so that an event arriving twice is billed once, which covers idempotent ingestion. However, nothing in the pack shows backdated events or high-volume throughput, so two qualifiers of the story are unevidenced. Missing for 10: documented backdating/historical-timestamp support, evidence of high-volume or batch ingestion at scale, independent hands-on corroboration of the ingestion pipeline.",
+    "rationale": "Lago documents event ingestion through a POST /api/v1/events endpoint, and its own docs state it deduplicates events so a duplicate is billed once, which covers idempotent ingestion. Nothing in the pack shows backdated or historical timestamps, or any high-volume or streaming throughput, so only about half the story is evidenced. Missing for 10: backdating/timestamp support for late events, evidence of high-volume streaming ingestion (batch endpoints, throughput limits), explicit token/compute-second metering examples, independent hands-on corroboration.",
     "evidenceIds": [
       "lago-docs-2",
       "lago-docs-18",
-      "lago-docs-17",
-      "lago-docs-14",
-      "lago-gh-1"
+      "lago-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream high-volume usage events — API calls, tokens, compute-seconds — into a metering pipeline with idempotent ingestion and backdating support",
+      "citations": [
+        {
+          "evidenceId": "lago-docs-2",
+          "quote": "Lago uses it for deduplication: if the same event arrives twice, it is billed once."
+        },
+        {
+          "evidenceId": "lago-docs-18",
+          "quote": "Lago turns usage into invoices. You send events describing what your customers consumed"
+        },
+        {
+          "evidenceId": "lago-docs-17",
+          "quote": "$ curl -X POST \"$LAGO_URL/api/v1/events\" \\"
+        }
+      ]
+    },
     "productId": "lago",
     "storyId": "usage-event-ingestion"
   }

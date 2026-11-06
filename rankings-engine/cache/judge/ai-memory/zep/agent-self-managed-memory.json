@@ -1,25 +1,52 @@
 {
-  "hash": "5682e7836ba00487e0e4d637d6d358b9dbfc226a17fc22b8a88f123414b39c6e",
+  "hash": "32fd5c4fbfb1399a02304276815c43ccc2f9615ee2f1b1e39f9a4142922387bc",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "zep",
-    "storyId": "agent-self-managed-memory",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep exposes the core memory operations as callable APIs. Messages and data are added and ingested into the Context Graph via `thread.add_messages`, which can also return context mid-turn. Hybrid semantic plus BM25 graph search is available, and edges and nodes can be deleted via `client.graph.edge.delete`. Agents reach these through framework integrations that support Context Graph search and through the Memory MCP Server, which connects MCP clients to their memory. Missing for 10: an explicit agent-invoked update/edit operation (fact changes appear to be handled automatically via temporal invalidation), documentation of which tools the MCP server exposes, and independent hands-on corroboration.",
+    "rationale": "Zep documents API calls an agent could invoke to add memory (thread.add_messages ingests into the graph), search it (hybrid semantic plus BM25 graph search), and delete it (edge and node delete). It also offers a Memory MCP Server and framework integrations that give agents direct access to their memory and Context Graph search. However, no update operation is evidenced, and the specific tool set exposed to agents through MCP or the integrations is not documented in the pack. Missing for 10: a documented update/edit memory operation, an explicit list of agent-invocable add/search/update/delete tools in the MCP server or integrations, and hands-on corroboration of agents self-managing memory mid-conversation.",
     "evidenceIds": [
       "zep-docs-20",
-      "zep-docs-48",
-      "zep-docs-49",
-      "zep-docs-9",
       "zep-docs-22",
-      "zep-docs-10",
       "zep-docs-21",
       "zep-docs-13",
-      "zep-docs-6",
+      "zep-docs-42",
       "zep-docs-51",
-      "zep-docs-52"
-    ]
+      "zep-docs-49"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can manage its own memory mid-conversation — adding, searching, updating, and deleting memories through tools or API calls it invokes itself",
+      "citations": [
+        {
+          "evidenceId": "zep-docs-20",
+          "quote": "Chat messages are added to threads using `thread.add_messages`, which both adds those messages to the thread history and ingests those messages into the user-level knowledge graph."
+        },
+        {
+          "evidenceId": "zep-docs-22",
+          "quote": "Zep graph search combines semantic similarity with BM25 full-text search."
+        },
+        {
+          "evidenceId": "zep-docs-21",
+          "quote": "client.graph.edge.delete(uuid_=\"your_edge_uuid\")"
+        },
+        {
+          "evidenceId": "zep-docs-13",
+          "quote": "Deleting a node will also delete all edges connected to that node."
+        },
+        {
+          "evidenceId": "zep-docs-42",
+          "quote": "The Memory MCP Server lets an end user connect an [MCP](https://modelcontextprotocol.io) client (Claude, ChatGPT, Claude Code, Codex, Cursor, and others) to their own agent memory in Zep."
+        },
+        {
+          "evidenceId": "zep-docs-51",
+          "quote": "Zep integrations for agent frameworks support agent memory, Context Graph search, and context placement."
+        }
+      ]
+    },
+    "productId": "zep",
+    "storyId": "agent-self-managed-memory"
   }
 }

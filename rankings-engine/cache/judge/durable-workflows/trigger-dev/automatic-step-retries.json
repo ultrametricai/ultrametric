@@ -1,17 +1,35 @@
 {
-  "hash": "8744e00c1b2922beb9f636bdf1fa45d8e5467db699fd806393743233b8218ce9",
+  "hash": "4f4d2d1b2fff8ee0c0f8da14a428662866e8dd647c75740be4acf713f28d2a12",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs show tasks retrying automatically with configurable exponential backoff (e.g. 10 attempts), and the GitHub README lists retries as a core primitive. A community comment mentions `retry.onThrow` for block-level retries, suggesting step-level granularity. However, the timeout evidence only says there are 'no timeouts' rather than describing configurable per-step timeouts, and failure policies are not shown beyond the retry behavior itself. Missing for 10: configurable per-step timeouts, documented failure policies (e.g. abort/skip/dead-letter conditions), explicit per-step retry configuration docs, hands-on corroboration of retry behavior.",
+    "rationale": "Trigger.dev documents automatic task retries with configurable count and exponential backoff, and its repo lists retries as a core feature. A community comment mentions a `retry.onThrow` helper, which hints at finer-grained retry. However, the evidence shows retries at the task level, not per step, and the timeout evidence only says tasks have 'no timeouts' rather than offering configurable timeouts. Missing for 10: per-step automatic retry semantics, configurable per-step timeouts, documented failure policies (e.g. abort/skip/dead-letter behavior), and hands-on corroboration that no try/catch scaffolding is needed.",
     "evidenceIds": [
       "trigger-dev-docs-4",
-      "trigger-dev-docs-24",
       "trigger-dev-gh-1",
       "trigger-dev-comm-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, every step retries automatically with configurable backoff, timeouts, and failure policies — no try/catch scaffolding",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-4",
+          "quote": "This task will retry 10 times with exponential backoff."
+        },
+        {
+          "evidenceId": "trigger-dev-gh-1",
+          "quote": "Build rock solid agents and AI applications using our durable tasks, retries, queues and idempotency."
+        },
+        {
+          "evidenceId": "trigger-dev-comm-11",
+          "quote": "await retry.onThrow feel like a developer friendly default 'safe' approach"
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "automatic-step-retries"
   }

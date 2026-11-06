@@ -1,23 +1,48 @@
 {
-  "hash": "96fc973e237b7919ba2d473f8c0cf8e66eab83af7726920dfa2b32cb938a584e",
+  "hash": "e0fc454316e08041f6e3a85ae942e719482c2ba5aaa08b0bad14ccb4f898812a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Paxos documents a Payments product for accepting PYUSD, USDC and USDP via on-chain transfers, with auto-conversion to fiat, USD settlement, refunds and reconciliation. Its v2 API supports creating deposit addresses. Settlement can be confirmed programmatically by polling Get/List Transfers or through registrable webhooks with retries. However, the evidence shows no checkout or payment-request object: nothing creates a payment with an amount, presents a hosted flow, or matches a deposit to a specific order. Deposit-address creation is only evidenced in the sandbox guide, not the payments guide. Missing for 10: a documented create-payment/checkout endpoint with amount and order binding, a hosted or embeddable customer payment flow, payment-specific status events, and independent or hands-on corroboration.",
+    "rationale": "Paxos documents its own stablecoin payment acceptance: buyers pay PYUSD, USDC or USDP via on-chain transfers to deposit addresses, with auto-conversion and USD settlement to a bank. Developers can confirm settlement programmatically by polling the transfer endpoints or through registrable webhooks. However, the evidence shows no explicit 'create payment' or checkout object and no hosted checkout flow, so the create and present steps rest on deposit-address mechanics only implied by the sandbox docs. missing for 10: documented payment-intent/checkout creation endpoint, hosted checkout or payment-request presentation flow, explicit payments-specific API reference for deposit address creation, independent hands-on corroboration.",
     "evidenceIds": [
       "paxos-docs-12",
       "paxos-docs-13",
       "paxos-docs-14",
-      "paxos-docs-15",
-      "paxos-docs-57",
       "paxos-docs-50",
       "paxos-docs-36",
       "paxos-docs-60",
       "paxos-docs-16",
-      "paxos-docs-27"
+      "paxos-docs-57"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can accept a stablecoin payment from a customer through a documented checkout or payment API — create the payment, present the address or flow, and confirm settlement programmatically",
+      "citations": [
+        {
+          "evidenceId": "paxos-docs-12",
+          "quote": "Accept PYUSD, USDC and USDP payments via on-chain transfers."
+        },
+        {
+          "evidenceId": "paxos-docs-50",
+          "quote": "When you create a deposit address in Sandbox, the generated address can be used to transfer test assets from a testnet or devnet wallet to the Paxos platform."
+        },
+        {
+          "evidenceId": "paxos-docs-36",
+          "quote": "In the polling workflow, this endpoint can be called to monitor transfer status changes."
+        },
+        {
+          "evidenceId": "paxos-docs-16",
+          "quote": "Paxos Webhooks allow you to register your own endpoints to receive asynchronous events driven by the Paxos Platform."
+        },
+        {
+          "evidenceId": "paxos-docs-14",
+          "quote": "Settle USD directly to your bank account."
+        }
+      ]
+    },
     "productId": "paxos",
     "storyId": "accept-stablecoin-checkout"
   }

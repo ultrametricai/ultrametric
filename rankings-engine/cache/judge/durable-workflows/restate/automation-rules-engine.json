@@ -1,19 +1,41 @@
 {
-  "hash": "0ed8f1072b8f5422ff395a39e5b3063e1a903294dd09b6306c09fb957955a1ee",
+  "hash": "03cadeb39cd53365bc5cef8158432eac9988a0a8deb7a227a4a299e11186063a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Restate can run handler code automatically in response to events: any handler can act as a durable webhook endpoint with exactly-once processing, handlers can be invoked from Kafka topics for event processing, and durable timers support cron-like scheduling. However, the 'rules' are imperative handler code rather than a declarative rule or trigger configuration layer, and the Kafka subscription setup is only mentioned briefly. Missing for 10: declarative rule/condition definitions for triggers, in-depth documentation of event-subscription configuration, independent or hands-on corroboration of event-triggered automation.",
+    "rationale": "Restate itself can trigger handler code when events arrive. Handlers can be invoked through Kafka topics, any handler can serve as a durable webhook endpoint, and incoming events are persisted and processed exactly once. However, the trigger logic lives in developer-written handler code, not in user-definable rules, and the Kafka subscription mechanics are only thinly evidenced. Missing for 10: a declarative rule or condition definition for event-to-action mappings, detailed docs on event subscription setup and filtering, independent or hands-on corroboration.",
     "evidenceIds": [
       "restate-docs-28",
+      "restate-docs-84",
       "restate-docs-38",
       "restate-docs-37",
-      "restate-docs-84",
-      "restate-docs-29",
       "restate-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-28",
+          "quote": "There are three ways to invoke a handler: over HTTP, using typed clients, or through Kafka topics."
+        },
+        {
+          "evidenceId": "restate-docs-84",
+          "quote": "Restate eliminates this complexity by providing **lightweight, transactional event processing** with zero consumer management and built-in state."
+        },
+        {
+          "evidenceId": "restate-docs-38",
+          "quote": "Any handler can be a durable webhook endpoint. No need to do anything special or extra!"
+        },
+        {
+          "evidenceId": "restate-docs-37",
+          "quote": "Restate persists all incoming events, and ensures that they are processed exactly once, across failures and restarts"
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "automation-rules-engine"
   }

@@ -1,16 +1,30 @@
 {
-  "hash": "2ad5b83757f2c20a3401f8373c8851b7d929620bfc12204d466829418c6576ab",
+  "hash": "ba7bbfe6f9a78bce8ac3f46a15115653ca02346e54cc1b0c0e7680b21c95338c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Inngest's versioning docs say you can deploy changes to functions without explicit version markers or complex migration logic. Step memoization, which checkpoints results and resumes from the last successful step, implies in-flight runs can survive code changes. However, the pack never says in-flight runs keep running on the version they started with, and never explains how determinism is preserved when steps are added, removed or reordered. missing for 10: explicit evidence that in-flight runs complete on their original code version, documented handling of step changes and determinism on redeploy, independent or hands-on corroboration.",
+    "rationale": "Inngest has a first-party versioning doc saying developers can deploy function changes without explicit version markers or migration logic, and step memoization lets runs resume from checkpoints. The pack does not show how in-flight runs behave when code changes, whether they finish on their original version or get memoized steps reconciled against new code. Missing for 10: explicit documentation that in-flight runs complete on the version they started, details on handling step changes and determinism across deploys, independent or hands-on corroboration.",
     "evidenceIds": [
       "inngest-docs-19",
-      "inngest-docs-2",
-      "inngest-docs-26"
+      "inngest-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I deploy new workflow code while in-flight runs finish on the version they started with — versioning without breaking determinism",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-19",
+          "quote": "Inngest enables developers to deploy changes to functions without explicit version markers or complex migration logic."
+        },
+        {
+          "evidenceId": "inngest-docs-2",
+          "quote": "Put side effects, API calls, sleeps, waits, and function invocations in steps so Inngest can memoize results, retry failures independently, and resume long-running work from the last successful checkpoint."
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "safe-workflow-versioning"
   }

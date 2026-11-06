@@ -1,15 +1,30 @@
 {
-  "hash": "86aec1f915224a12f73a1229c1d977cfb2c6a756f29156e35314bad21aa90a7b",
+  "hash": "a4c0bc66e70506c7e9d8ebaee484f98d51a8cfa3b50100d7953a17538758a03c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Microsoft Graph documents createUploadSession, which uploads byte ranges of a file in sequential requests and explicitly lets the transfer resume if the connection drops. The docs also note that the single-call PUT is capped at 250 MB, which makes upload sessions the documented route for big files. Missing for 10: independent or hands-on corroboration of resume reliability in practice, and evidence on session details such as chunk-size rules or session expiry.",
+    "rationale": "Microsoft Graph's createUploadSession docs describe uploading a file in byte ranges over sequential requests, and say the transfer can resume if the connection drops. That covers every element of the story. The simple PUT path is capped at 250 MB, so upload sessions are the documented route for big files. Missing for 10: no independent or hands-on confirmation that resume works in practice, and no evidenced detail on resume mechanics (session status query, expiry, fragment-size rules).",
     "evidenceIds": [
       "onedrive-docs-12",
       "onedrive-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, big files upload reliably — documented chunked/resumable upload sessions that survive a dropped connection",
+      "citations": [
+        {
+          "evidenceId": "onedrive-docs-12",
+          "quote": "An upload session allows your app to upload ranges of the file in sequential API requests. It also enables the transfer to resume if the connection is dropped during the upload."
+        },
+        {
+          "evidenceId": "onedrive-docs-18",
+          "quote": "This method only supports files up to 250 MB in size."
+        }
+      ]
+    },
     "productId": "onedrive",
     "storyId": "large-file-resumable-upload"
   }

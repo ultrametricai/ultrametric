@@ -1,17 +1,41 @@
 {
-  "hash": "13da9f7f779d4c110b25bc4c80d1643d896ba3f7a8f622815ebf90257e3f302c",
+  "hash": "d66f15500503805db92e0b3de201be99bfba45f694f4a9a87d9e158baeb68b14",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ROCm is AMD's documented AI stack and lists vLLM and SGLang among its inference recipes. The MI325X appears in ROCm's GPU spec table (CDNA3, gfx942, 256 GiB), which places the part inside that serving ecosystem. Nothing in the pack covers low-precision formats, and the inference recipes are not explicitly tied to the MI325X. Missing for 10: documented FP8/FP4 support for the MI325X, MI325X-specific vLLM/SGLang inference guides or validation, llama.cpp support, and independent hands-on corroboration that LLM serving works on this part.",
+    "rationale": "ROCm's own docs present a documented inference path, with vLLM and SGLang recipes, on a platform optimized for AMD Instinct GPUs, and the MI325X appears in the ROCm GPU spec table as gfx942. That establishes a vendor-documented serving stack for this part. However, nothing in the pack documents FP8 or FP4 low-precision support, and the recipes are not shown to be MI325X-specific. missing for 10: documented FP8/FP4 format support on MI325X, MI325X-specific inference recipes or benchmarks, evidence for llama.cpp, independent or hands-on corroboration of the serving stack working on this part.",
     "evidenceIds": [
       "amd-mi325x-docs-1",
+      "amd-mi325x-docs-2",
       "amd-mi325x-docs-4",
       "amd-mi325x-docs-5",
       "amd-mi325x-docs-22"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, this GPU has a documented LLM inference story — low-precision formats (FP8/FP4) and supported serving stacks (TensorRT-LLM, vLLM, ROCm, llama.cpp) for this part",
+      "citations": [
+        {
+          "evidenceId": "amd-mi325x-docs-5",
+          "quote": "Inference — vLLM — SGLang"
+        },
+        {
+          "evidenceId": "amd-mi325x-docs-4",
+          "quote": "Full-stack documentation and recipes to deploy AI workloads on AMD GPUs using popular ROCm-enabled frameworks."
+        },
+        {
+          "evidenceId": "amd-mi325x-docs-2",
+          "quote": "optimized for AMD Instinct™, AMD Radeon™, and AMD Ryzen™ AI devices."
+        },
+        {
+          "evidenceId": "amd-mi325x-docs-22",
+          "quote": "MI325X row: Name: MI325X; Architecture: CDNA3; LLVM target name: gfx942"
+        }
+      ]
+    },
     "productId": "amd-mi325x",
     "storyId": "llm-inference-stack"
   }

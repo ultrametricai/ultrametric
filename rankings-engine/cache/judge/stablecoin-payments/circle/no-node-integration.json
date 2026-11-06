@@ -1,24 +1,46 @@
 {
-  "hash": "3c7372fed111b2fe2241e180d4f0a19e5d3ad7e5bd4e46af95cd66e5a711484c",
+  "hash": "bef088b1c72de76d6a3f454158603947b0889a5b4562b77dbe20b4383311930b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Circle's docs describe integrating through REST APIs or Web and Mobile SDKs (Android and iOS) without managing raw private keys, with gas sponsorship via Gas Station or USDC paymasters and a chain-abstracted Gateway balance. Per-product OpenAPI specs and Bridge Kit, an SDK that moves USDC between chains in a few lines, further hide chain mechanics. Missing for 10: an explicit statement that developers never run nodes or RPC infrastructure, evidence of server-side client libraries across common languages (only Web/Android/iOS SDKs and Bridge Kit are cited), and independent or hands-on corroboration; some flows such as CCTP attestation retrieval still expose chain-level steps.",
+    "rationale": "Circle's docs show a conventional integration model: REST APIs or Web and Mobile SDKs, Circle-managed keys via MPC or passkeys, Gas Station fee sponsorship and a USDC paymaster, and chain-abstracted balances through Gateway. Developers therefore avoid key management, native-token gas handling and much of the cross-chain mechanics. However, the documented client libraries are only Web, Android and iOS SDKs plus the Bridge Kit SDK, and node operation is never explicitly stated as abstracted. missing for 10: explicit documentation that no node/RPC infrastructure is needed, server-side client libraries across common languages (e.g. Node, Python, Go), independent or hands-on corroboration of the abstraction.",
     "evidenceIds": [
-      "circle-docs-14",
       "circle-docs-15",
-      "circle-docs-2",
+      "circle-docs-14",
       "circle-docs-18",
       "circle-docs-3",
       "circle-docs-31",
-      "circle-docs-17",
-      "circle-docs-25",
-      "circle-docs-47",
-      "circle-docs-48",
-      "circle-docs-49"
+      "circle-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I never operate blockchain infrastructure — the platform abstracts nodes, gas, and chain mechanics behind a conventional REST API with client libraries in my language",
+      "citations": [
+        {
+          "evidenceId": "circle-docs-15",
+          "quote": "You integrate using REST APIs or Web and Mobile SDKs (Android and iOS)."
+        },
+        {
+          "evidenceId": "circle-docs-14",
+          "quote": "You don't manage raw private keys. Circle secures keys with MPC or passkeys depending on wallet product; you get APIs to create wallets, sign transactions, and authorize actions."
+        },
+        {
+          "evidenceId": "circle-docs-18",
+          "quote": "Developers can sponsor network fees for the end-user, removing the need for end-users to hold native tokens in their wallets."
+        },
+        {
+          "evidenceId": "circle-docs-31",
+          "quote": "Circle Gateway allows you to create a chain-abstracted USDC balance and transfer it instantly to any supported destination chain."
+        },
+        {
+          "evidenceId": "circle-docs-17",
+          "quote": "Bridge Kit is a lightweight SDK that uses CCTP as its protocol provider, letting you transfer USDC between blockchains in just a few lines of code."
+        }
+      ]
+    },
     "productId": "circle",
     "storyId": "no-node-integration"
   }

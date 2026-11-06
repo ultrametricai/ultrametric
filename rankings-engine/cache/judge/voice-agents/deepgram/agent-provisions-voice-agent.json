@@ -1,23 +1,37 @@
 {
-  "hash": "ca281592b9bd6d0667e2378e1472aa08e9643d759d051067c5cc5f71452577bf",
+  "hash": "51a1903602e5e2bf3151cb97d382042987b2d00e2fe0c6103f6d16e42433bb24",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Agent creation is API-driven: Reusable Agent Configurations persist the agent block through the API and return a UUID. A built-in MCP server in the dg CLI gives coding agents direct access to Deepgram APIs, and an OpenAPI spec and llms.txt are published. Telephony, however, is documented only as a Twilio bridge your own server runs: the number is dialed through Twilio and audio is relayed to the WebSocket. There is no Deepgram API, CLI or MCP operation for attaching a number or placing an outbound call. Missing for 10: first-party number provisioning/attachment via API/CLI/MCP, a programmatic outbound call-placement endpoint, evidence that the CLI/MCP exposes voice-agent provisioning (the CLI is described only for transcription, TTS, analysis and account management), and hands-on corroboration of a dashboard-free end-to-end flow.",
+    "rationale": "Deepgram documents API-based creation of persisted agent configurations (UUID returned via the Console API), and the dg CLI ships a built-in MCP server for AI coding tools, so the agent-creation step can be done programmatically. However, the phone side relies on Twilio: Twilio streams audio to your server, which bridges it to the Voice Agent WebSocket, and nothing shows Deepgram itself attaching a number or placing a call. Missing for 10: first-party API/CLI/MCP number provisioning and attachment, a documented programmatic outbound-call trigger, evidence that the CLI/MCP covers voice agent provisioning, and hands-on corroboration of an end-to-end dashboard-free flow.",
     "evidenceIds": [
       "deepgram-docs-4",
       "deepgram-docs-21",
-      "deepgram-docs-5",
-      "deepgram-docs-18",
-      "deepgram-docs-19",
-      "deepgram-docs-12",
       "deepgram-docs-13",
-      "deepgram-docs-30",
-      "deepgram-probe-3",
-      "deepgram-probe-4"
+      "deepgram-docs-5",
+      "deepgram-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my coding agent can provision a complete voice agent end to end — create the agent, attach a number, and place a call — through the API, CLI, or MCP without touching the dashboard",
+      "citations": [
+        {
+          "evidenceId": "deepgram-docs-4",
+          "quote": "Reusable Agent Configurations allow you to define and persist the agent block of your Settings message using the Deepgram API. Once created, you receive a UUID that can be passed in place of the full agent object"
+        },
+        {
+          "evidenceId": "deepgram-docs-13",
+          "quote": "The dg CLI includes a built-in MCP (Model Context Protocol) server that gives AI coding tools direct access to Deepgram APIs."
+        },
+        {
+          "evidenceId": "deepgram-docs-5",
+          "quote": "Telephony: connect voice agents to phone networks for inbound and outbound calls."
+        }
+      ]
+    },
     "productId": "deepgram",
     "storyId": "agent-provisions-voice-agent"
   }

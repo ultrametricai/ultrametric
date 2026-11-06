@@ -1,19 +1,36 @@
 {
-  "hash": "48a5e01679975154ed7b6363fa5250150a21d733eb2f1ea4d382abcf5467ce64",
+  "hash": "1873323de973762b514199dcf06fb6c1222d1ff52bb4a8dc54927c0e2628918d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "DBOS runs locally as a library: there is no separate orchestration server, only Postgres is needed, and the app starts with `python3 main.py` after `dbos init`. Optional local Conductor/Console can be run with Docker Compose. For testing, the docs only say workflows are ordinary Python functions you can test with pytest or unittest, so there are no dedicated testing utilities. missing for 10: dedicated workflow test harness, time-skipping for sleeps/timeouts, built-in step mocking, a single command that also provisions Postgres, and independent hands-on corroboration of the local/testing experience.",
+    "rationale": "Running locally is simple: DBOS is a library that needs only Postgres, with no separate orchestration server, and the app starts with `python3 main.py`. For testing, the docs only say workflows are ordinary Python functions that can be tested with pytest or unittest. That is generic framework support, not dedicated DBOS testing utilities, and nothing covers time skipping or step mocking. Missing for 10: dedicated workflow testing utilities, time-skipping support, a built-in step-mocking API, and independent hands-on corroboration of the local developer experience.",
     "evidenceIds": [
       "dbos-docs-2",
       "dbos-docs-3",
-      "dbos-docs-24",
       "dbos-docs-9",
-      "dbos-docs-34",
-      "dbos-docs-20"
+      "dbos-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, one command runs the whole engine locally, and testing utilities let me unit-test workflows with time skipping and mocked steps",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-2",
+          "quote": "There's no separate orchestration server and no infrastructure required besides Postgres."
+        },
+        {
+          "evidenceId": "dbos-docs-3",
+          "quote": "restart it with `python3 main.py` and watch it seamlessly recover from where it left off."
+        },
+        {
+          "evidenceId": "dbos-docs-9",
+          "quote": "Because DBOS workflows, steps, and transactions are ordinary Python functions, you can unit test them using any Python testing framework, like pytest or unittest."
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "local-dev-testing-loop"
   }

@@ -1,11 +1,11 @@
 {
-  "hash": "da447af867cc28d8c95ea8647a681b94b3342b6156e552390c58623b8bf61c96",
+  "hash": "64de1c980b7ec33eea7cf73a8533ec07be88c078c22fe8ec2bb9ca3a20d5cb64",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Hatchet documents per-key concurrency limits defined with CEL expressions, such as premium users running 10 workflows at once while others run one. It also supports shared concurrency rules that cap several workflows together per user, and queue-depth strategies (CANCEL_QUEUED_EXCEPT_NEWEST/OLDEST) per concurrency key. A dedicated Rate Limits docs page exists, so the core of keeping one hot customer from starving the rest is delivered. missing for 10: substantive evidence of how rate limits work (only the page title is cited), explicit evidence of per-tenant isolation beyond per-key, and independent or hands-on corroboration of fairness under load.",
+    "rationale": "Hatchet documents concurrency limits per key using CEL expressions, such as giving premium-tier users 10 concurrent workflows and others one. It also supports shared concurrency rules across workflows, like capping workflow_a and workflow_b at 10 runs per user, and queue-depth strategies per concurrency key. Rate limiting is only evidenced by a 'Rate Limits' doc page title with no described per-key or per-tenant behavior, and per-tenant isolation is only implied through per-user keys. missing for 10: documented rate-limit semantics (per workflow/key/tenant), explicit per-tenant fairness/limits, independent or hands-on corroboration of noisy-neighbor protection.",
     "evidenceIds": [
       "hatchet-docs-5",
       "hatchet-docs-6",
@@ -14,6 +14,29 @@
       "hatchet-docs-28",
       "hatchet-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I cap concurrency and set rate limits per workflow, per key, or per tenant so one hot customer can't starve the rest",
+      "citations": [
+        {
+          "evidenceId": "hatchet-docs-5",
+          "quote": "set concurrency limits on a per-key basis using a CEL expression. For example, let premium-tier users run 10 workflows simultaneously while other users run one"
+        },
+        {
+          "evidenceId": "hatchet-docs-6",
+          "quote": "create concurrency rules that many tasks and workflows consume simultaneously, e.g. limiting `workflow_a` and `workflow_b` to 10 concurrent runs per user total"
+        },
+        {
+          "evidenceId": "hatchet-docs-18",
+          "quote": "configure the queue depth for each concurrency key"
+        },
+        {
+          "evidenceId": "hatchet-docs-29",
+          "quote": "Rate Limits"
+        }
+      ]
+    },
     "productId": "hatchet",
     "storyId": "concurrency-rate-controls"
   }

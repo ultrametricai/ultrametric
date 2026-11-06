@@ -1,21 +1,46 @@
 {
-  "hash": "42da7775c77dc932dba976d3cac78771ce40dc9342830586da55951309273077",
+  "hash": "b2a722b5d294eb434d1496cfbdd5cec5b748d9655db0ea47dde6d6d2418dff1f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "For a GPU, the relevant public API is its compute stack. AMD documents an open-source ROCm stack that lists the RX 9070 XT (gfx1201) as supported, and that stack exposes programmable APIs: hip* CUDA-equivalent libraries, hipRAND with C/C++/Python wrappers, hipBLASLt GEMM APIs, and the rocprofiler SDK. The ROCm docs also serve an llms.txt for AI-native consumption, but no OpenAPI spec exists, which is expected for hardware rather than a REST service. Missing for 10: direct citation of the core HIP runtime/device-management API reference, and hands-on or independent corroboration of programmatic use on the RX 9070 XT.",
+    "rationale": "AMD's first-party ROCm stack officially supports the RX 9070 XT (gfx1201) and documents programmatic GPU APIs: HIP libraries offering CUDA-equivalent APIs, hipRAND with C, C++ and Python API wrappers, and hipBLASLt's GEMM APIs. That is a genuine documented public interface for driving this kind of product. The evidence is mostly library overviews rather than API references, and the OpenAPI probe found no web API, which matters little for a GPU. missing for 10: evidence of API reference documentation, per-library confirmation of RDNA4/gfx1201 support for the HIP libraries, independent or hands-on corroboration of driving the card programmatically.",
     "evidenceIds": [
-      "amd-rx-9070-xt-docs-19",
-      "amd-rx-9070-xt-docs-34",
       "amd-rx-9070-xt-docs-52",
       "amd-rx-9070-xt-docs-55",
       "amd-rx-9070-xt-docs-62",
-      "amd-rx-9070-xt-docs-41",
-      "amd-rx-9070-xt-docs-3",
-      "amd-rx-9070-xt-probe-1"
+      "amd-rx-9070-xt-docs-34",
+      "amd-rx-9070-xt-docs-19",
+      "amd-rx-9070-xt-docs-53"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "amd-rx-9070-xt-docs-52",
+          "quote": "Libraries prefixed with `hip*` are portable wrappers that implement NVIDIA CUDA-equivalent APIs, allowing CUDA applications to be ported to AMD GPUs with minimal code changes."
+        },
+        {
+          "evidenceId": "amd-rx-9070-xt-docs-55",
+          "quote": "It uses rocRAND in a ROCm environment and provides C, C++, and Python API wrappers."
+        },
+        {
+          "evidenceId": "amd-rx-9070-xt-docs-62",
+          "quote": "hipBLASLt is a library that provides General Matrix-Matrix (GEMM) operations with flexible APIs and extends functionality beyond the traditional BLAS library."
+        },
+        {
+          "evidenceId": "amd-rx-9070-xt-docs-34",
+          "quote": "ROCm™ 7.2.1 supports the latest Radeon™ 9000 Series (RDNA™ 4) and select 7000 Series (RDNA™ 3) GPUs"
+        },
+        {
+          "evidenceId": "amd-rx-9070-xt-docs-19",
+          "quote": "AMD Radeon RX 9070 XT (gfx1201)"
+        }
+      ]
+    },
     "productId": "amd-rx-9070-xt",
     "storyId": "agentic-public-api"
   }

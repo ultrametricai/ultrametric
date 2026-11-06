@@ -1,16 +1,34 @@
 {
-  "hash": "39096c053de7b5e5ff3c64e89acf4be6ec9a84b3d92b34db2e1cd48e4fe9c025",
+  "hash": "2f422ece2f31f3eec18945cb2438568e802c9fb6573ca7007e49aa685445a759",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "high",
-    "rationale": "Checkout.com documents first-class idempotent retries via the `Cko-Idempotency-Key` header. It covers every money-moving endpoint (/payments, authorizations, captures, refunds, voids, cancellations, payment-contexts, /transfers), with keys cached on 2xx responses and a configurable idempotency window, so network-failure retries won't create duplicate charges. Missing for 10: idempotency is limited to the listed endpoints rather than any API request, and there is no independent or hands-on corroboration of retry behavior.",
+    "rationale": "Checkout.com's docs describe first-party idempotency through the `Cko-Idempotency-Key` header, aimed at retrying after network errors or timeouts. It covers the charge-creating and money-moving endpoints (/payments, authorizations, captures, refunds, voids, transfers), so the core goal of preventing duplicate charges is met. However, support is limited to an explicit endpoint list rather than any API request, and keys are cached only on 2xx responses. Missing for 10: idempotency on all API endpoints (not just the listed payment/transfer routes), and independent or hands-on corroboration of retry behavior.",
     "evidenceIds": [
       "cko-supp-idempotency",
-      "checkout-com-docs-7",
-      "checkout-com-docs-49"
+      "checkout-com-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can safely retry any API request using idempotency keys so network failures never create duplicate charges",
+      "citations": [
+        {
+          "evidenceId": "cko-supp-idempotency",
+          "quote": "The following endpoints from our API support idempotent requests, so you can safely retry them without the risk of a duplicate request: /payment-contexts, /payments, /payments/{id}/authorizations, /payments/{id}/cancellations, /payments/{id}/captures, /payments/{id}/refunds, /payments/{id}/voids, /transfers"
+        },
+        {
+          "evidenceId": "cko-supp-idempotency",
+          "quote": "provide a unique key in the `Cko-Idempotency-Key` HTTP header. This key is cached in our system if the request returns a `2xx` response code"
+        },
+        {
+          "evidenceId": "checkout-com-docs-7",
+          "quote": "Occasionally, you may need to retry a request due to a disrupted API call. For example, if you encounter a network error or timeout."
+        }
+      ]
+    },
     "productId": "checkout-com",
     "storyId": "idempotent-api-retries"
   }

@@ -1,18 +1,40 @@
 {
-  "hash": "f5ddc1ec9d98688d77634d7d90065e064c4b4062cf0f8f0bba7030fe9e9c36c2",
+  "hash": "470657c3d325927ef8eeead9c64deee5ff25cb98b084e3260977badfb9e8ef2a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "OpenClaw's Swarm tool orchestrates many sub-agents from a Code Mode script. It uses `Promise.all`-style fan-out with bounded concurrency, structured results and live progress, and sub-agents parallelize slow work, so batch work across many items is a documented first-party capability. However, it is framed as agent fan-out rather than a dedicated bulk-operation feature (e.g., select-many-and-apply), and its depth for item-level batch actions is unproven. Missing for 10: explicit bulk/batch operation semantics over item sets, documentation of item-level batch actions, and independent hands-on corroboration of large-scale bulk runs.",
+    "rationale": "OpenClaw's built-in Swarm tool orchestrates many sub-agents from a Code Mode script, with bounded fan-out, structured results, and live progress. That lets work be fanned out across many items at once, and sub-agents add parallel background runs. However, this is general parallel orchestration rather than a documented bulk-operation feature for acting on many items, such as batch edits or bulk messages. missing for 10: documented bulk/batch operations over specific item sets (selection, apply-to-all, per-item error handling), examples of bulk actions on real items, independent or hands-on corroboration.",
     "evidenceIds": [
-      "openclaw-docs-21",
       "openclaw-docs-50",
+      "openclaw-docs-21",
       "openclaw-docs-80",
-      "openclaw-docs-20",
-      "openclaw-docs-56"
+      "openclaw-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "openclaw-docs-50",
+          "quote": "Swarm orchestrates many sub-agents from a Code Mode script."
+        },
+        {
+          "evidenceId": "openclaw-docs-21",
+          "quote": "Use normal JavaScript control flow such as `Promise.all`, `while`, and `if` to fan out work, collect results, and make decisions."
+        },
+        {
+          "evidenceId": "openclaw-docs-80",
+          "quote": "Orchestrate concurrent sub-agents from Code Mode scripts with structured results, bounded fan-out, and live progress"
+        },
+        {
+          "evidenceId": "openclaw-docs-20",
+          "quote": "Parallelize research, long tasks, and slow tool work without blocking the main run."
+        }
+      ]
+    },
     "productId": "openclaw",
     "storyId": "automation-bulk-operations"
   }

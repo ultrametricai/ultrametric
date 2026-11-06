@@ -1,19 +1,36 @@
 {
-  "hash": "1b3638b29c5defe2dd457a0a836721de00590a795bb47696058ca1e49e0d0831",
+  "hash": "e79525973a614aaa77582b8918e7a8352c38ae79b3a87e02490ee1655cffdf7b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Webhook ingestion is well documented: Inngest supports any number of unique webhook URLs per third-party service. Event-triggered runs are implied by child runs \"triggered by another run (via event, invoke, or defer)\" and by users describing it as a trigger solution where you \"event everything.\" However, the pack has no explicit documentation of declarative event triggers on functions, of queue-sourced triggers, or of one event fanning out to many functions. Missing for 10: explicit docs on declarative event-trigger configuration, queue-sourced triggers, one-event-to-many-functions fan-out, and hands-on corroboration of fan-out.",
+    "rationale": "Inngest documents event-triggered function runs: events can trigger runs, and rate-limited events 'do not trigger functions to start'. It also documents first-party webhook consumer URLs for third-party services such as Stripe and GitHub. The evidence does not show declarative trigger configuration, external queues as a trigger source, or one event fanning out to many functions. missing for 10: explicit fan-out of one event to multiple functions, declarative trigger definition docs, queue-sourced triggers, independent corroboration of event-trigger behavior",
     "evidenceIds": [
-      "inngest-docs-11",
       "inngest-docs-30",
+      "inngest-docs-11",
       "inngest-docs-4",
-      "inngest-docs-24",
-      "inngest-comm-1",
-      "inngest-comm-10"
+      "inngest-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, events from my app, webhooks, or queues trigger workflows declaratively, and one event can fan out to many functions",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-30",
+          "quote": "Inngest enables you to create any number of unique URLs which act as webhook consumers. You can create a webhook for each third party service that you use (e.g. Stripe, Github, Clerk)"
+        },
+        {
+          "evidenceId": "inngest-docs-4",
+          "quote": "Any run triggered by another run (via event, invoke, or defer) inherits its parent's sessions."
+        },
+        {
+          "evidenceId": "inngest-docs-13",
+          "quote": "Events that exceed the rate limit are skipped and do not trigger functions to start."
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "event-driven-triggers"
   }

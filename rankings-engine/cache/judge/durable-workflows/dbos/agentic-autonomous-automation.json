@@ -1,22 +1,42 @@
 {
-  "hash": "144e150297653b0b475caeeead4dc0292549cf3a2e9dc73a5ad0da0c2aea6796",
+  "hash": "584124365d1c82e77ec65d868afddec7815fd8c24955cd9fc79c723b980ec8bb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "DBOS documents starting workflows in the background (DBOS.start_workflow), cron-scheduled workflows that can be created, paused and resumed at runtime, and queues with managed concurrency. Interrupted workflows recover automatically, including via Conductor failover to a healthy executor, and agent workflows can wait hours or days without supervision. Community users report running production pipelines on it, such as an exactly-once Kafka event pipeline and workflows with tens of thousands of steps. Missing for 10: independent hands-on corroboration of scheduled or background runs specifically, and setup requires writing annotated code rather than configuring automations directly.",
+    "rationale": "DBOS itself runs workflows in the background via DBOS.start_workflow and on cron schedules that can be created, paused, resumed, and deleted at runtime. Durable checkpointing and Conductor's automatic recovery keep these automations running without supervision through crashes and restarts. Missing for 10: setup requires writing annotated code rather than configuring automations directly, and there is no independent hands-on corroboration of scheduled or background automations specifically.",
     "evidenceIds": [
       "dbos-docs-5",
       "dbos-docs-7",
-      "dbos-docs-6",
       "dbos-docs-25",
       "dbos-docs-31",
-      "dbos-docs-12",
-      "dbos-docs-11",
-      "dbos-comm-15",
-      "dbos-comm-9"
+      "dbos-docs-6",
+      "dbos-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-5",
+          "quote": "You can use DBOS.start_workflow to start a workflow in the background."
+        },
+        {
+          "evidenceId": "dbos-docs-7",
+          "quote": "You can schedule DBOS workflows to run on a cron schedule. Schedules are stored in the database and can be created, paused, resumed, and deleted at runtime."
+        },
+        {
+          "evidenceId": "dbos-docs-25",
+          "quote": "If a workflow is interrupted for any reason, DBOS automatically recovers its execution from the last completed step."
+        },
+        {
+          "evidenceId": "dbos-docs-31",
+          "quote": "Conductor automatically detects when a workflow is interrupted (for example, if its executor disconnects or crashes) and recovers the workflow to another healthy executor."
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "agentic-autonomous-automation"
   }

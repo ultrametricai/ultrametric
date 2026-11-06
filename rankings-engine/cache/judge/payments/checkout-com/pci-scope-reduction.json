@@ -1,19 +1,40 @@
 {
-  "hash": "287244a21c150b4f732b487fd1c327156da8efca1f4298f72c3fbb2f971ba0ed",
+  "hash": "9bbe00dde8e4cbbf7d961efc02bc14f30b3bfcfef980dc44aadb382bfe22688f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Checkout.com documents token-based payment requests alongside client-side public keys, and it offers hosted and low-code options (Hosted Payment Page, Flow components, Mobile SDK). These are marketed as avoiding 'confusing compliance' and helping you 'stay compliant', which implies card data is captured off the merchant's servers. However, the evidence never explicitly says card data never touches merchant servers or names a reduced PCI DSS scope such as SAQ A. Missing for 10: an explicit PCI DSS scope-reduction statement (e.g., SAQ A eligibility), documentation of the client-side tokenization flow, and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Checkout.com documents paying with a token instead of raw card details. It also offers client-side public keys, a Hosted Payment Page and Flow components, which it markets as removing 'confusing compliance' and helping merchants 'stay compliant'. That implies a tokenized, low-PCI-scope integration path, but the pack never explicitly states that card data bypasses merchant servers or how far PCI scope is reduced. missing for 10: explicit documentation that card data never touches merchant servers, PCI DSS scope/SAQ-level guidance, client-side tokenization docs (e.g. Frames/tokens endpoint), independent corroboration.",
     "evidenceIds": [
       "checkout-com-docs-18",
-      "cko-supp-api-keys",
-      "checkout-com-docs-38",
       "checkout-com-docs-39",
-      "checkout-com-docs-4",
-      "checkout-com-docs-40"
+      "checkout-com-docs-38",
+      "cko-supp-api-keys"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can keep my systems out of most of PCI DSS scope because card data is tokenized and never touches my servers",
+      "citations": [
+        {
+          "evidenceId": "checkout-com-docs-18",
+          "quote": "Request a payment using a token, a network token"
+        },
+        {
+          "evidenceId": "checkout-com-docs-39",
+          "quote": "No heavy lifting or confusing compliance."
+        },
+        {
+          "evidenceId": "checkout-com-docs-38",
+          "quote": "helps you boost conversions, stay compliant"
+        },
+        {
+          "evidenceId": "cko-supp-api-keys",
+          "quote": "public keys for client-side channels"
+        }
+      ]
+    },
     "productId": "checkout-com",
     "storyId": "pci-scope-reduction"
   }

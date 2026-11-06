@@ -1,19 +1,38 @@
 {
-  "hash": "9a4bc39ea2bd8380348d7a1257891f9c577c1c12629b334cf640b3b8bbb670ff",
+  "hash": "2c54f2b31adcf94df403033da1afe9464a2249d5d067a83440390c764cbf9532",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "zep",
-    "storyId": "prompt-ready-context-block",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep's docs describe a Context Block that `scope=\"auto\"` dynamically composes from edges, nodes, episodes, observations and thread summaries into a single ready-to-use block. It can be fetched with `thread.get_user_context()` or returned directly from `thread.add_messages(return_context=True)`, and sub-200ms retrieval is claimed. That covers the one-call, prompt-ready core of the story. Missing for 10: any evidence of token budgeting or size limits on the context block, and independent or hands-on corroboration of block assembly.",
+    "rationale": "Zep documents a prompt-ready Context Block that can be retrieved in one call. It comes from `thread.get_user_context()`, from `return_context=True` on `thread.add_messages()`, or from graph search with `scope=\"auto\"`, which composes the most relevant edges, nodes, episodes, observations and thread summaries into a single ready-to-use block. Nothing in the evidence shows that the block can be capped to a caller-specified token budget, which is a named part of the story. Missing for 10: a documented token-budget or max-token parameter for the context block, and independent hands-on corroboration of context-block retrieval.",
     "evidenceIds": [
       "zep-docs-10",
       "zep-docs-26",
       "zep-docs-49",
       "zep-docs-18",
       "zep-docs-34"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can retrieve a token-budgeted, prompt-ready context block assembled from relevant memories in one call",
+      "citations": [
+        {
+          "evidenceId": "zep-docs-10",
+          "quote": "set scope=\"auto\" and let Zep dynamically compose the most relevant context across edges, nodes, episodes, observations, and thread summaries into a single ready-to-use block."
+        },
+        {
+          "evidenceId": "zep-docs-26",
+          "quote": "You can request the Context Block directly in the response to the `thread.add_messages()` call. This optimization eliminates the need for a separate `thread.get_user_context()` call."
+        },
+        {
+          "evidenceId": "zep-docs-49",
+          "quote": "Zep will perform a user graph search right after persisting the data and return the context relevant to the recently added messages."
+        }
+      ]
+    },
+    "productId": "zep",
+    "storyId": "prompt-ready-context-block"
   }
 }

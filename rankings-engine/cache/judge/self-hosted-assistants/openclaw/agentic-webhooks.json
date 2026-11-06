@@ -1,19 +1,32 @@
 {
-  "hash": "a82a0b472f91bd2940d316d62179a40d141c75758e3d0a14628ad7b15f2eb594",
+  "hash": "e196729347460cb27eea91c27269c57a3e1b75138c4bbee79659a27d9c887f03",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "openclaw",
-    "storyId": "agentic-webhooks",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The docs show webhook plumbing in both directions. The built-in scheduler can deliver automation job output to a webhook, and Gateway HTTP hooks plus Gmail PubSub triggers let external services wake the agent or submit a turn. However, outbound webhooks appear limited to scheduled-job output rather than a general event-subscription system. Missing for 10: a general event catalog and subscription mechanism (e.g. message received, run completed, tool events), webhook signing/retry/delivery guarantees, and independent or hands-on corroboration.",
+    "rationale": "OpenClaw's built-in scheduler can deliver automation job output to a webhook. That is a documented outbound HTTP callback, but it covers only scheduled-job output, not a general event-subscription system. The Gateway HTTP hooks are inbound (external services wake the agent), so they do not count as subscribing to events. Missing for 10: general event types to subscribe to (e.g., messages, agent runs, tool calls), webhook registration/management API, payload schema, signing/retry semantics, independent corroboration.",
     "evidenceIds": [
       "openclaw-docs-27",
       "openclaw-docs-59",
-      "openclaw-docs-28",
-      "openclaw-docs-73",
       "openclaw-docs-74"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "openclaw-docs-59",
+          "quote": "The scheduler persists jobs, wakes the agent at the right time, and can deliver output to a chat channel, a webhook, or nowhere."
+        },
+        {
+          "evidenceId": "openclaw-docs-74",
+          "quote": "Automations: scheduled jobs, webhooks, and Gmail PubSub triggers for the Gateway scheduler"
+        }
+      ]
+    },
+    "productId": "openclaw",
+    "storyId": "agentic-webhooks"
   }
 }

@@ -1,24 +1,48 @@
 {
-  "hash": "13e43c37a65c7e03461944a75651e606da0570ea1ee75b1178eb0d3fb0530f42",
+  "hash": "eb4e475c451555f90b990ec34974980f191b1a48c774cdb7677a1a111cbd5345",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs explicitly position Temporal for durable agent loops that call LLMs and tools and resume exactly where they left off after a failure. The OpenAI Agents SDK integration runs model calls as Activities that retry durably, are not repeated on replay, and survive Worker restarts. Activities are automatically retried, and a cookbook covers durable Claude tool-calling loops. Community users corroborate the general retry and durable-execution model, though not specifically for agent workloads. missing for 10: independent or hands-on corroboration of LLM agent loops running on Temporal.",
+    "rationale": "Temporal's docs describe running long-lived agent loops that call LLMs and tools as Workflows. In the OpenAI Agents SDK integration, model calls run as Activities, so they retry durably, are not repeated during replay, and survive Worker restarts. Automatic Activity retries and crash-resumption back this up, along with a cookbook for a durable Claude tool-calling loop. missing for 10: independent or hands-on corroboration that agent loops specifically survive mid-run crashes, and explicit first-party wording that tool calls (not just model calls) are checkpointed Activities.",
     "evidenceIds": [
       "temporal-docs-9",
-      "temporal-docs-41",
       "temporal-docs-25",
       "temporal-docs-47",
       "temporal-docs-33",
-      "temporal-docs-48",
+      "temporal-docs-41",
       "temporal-docs-4",
       "temporal-docs-1",
-      "temporal-docs-3",
-      "temporal-comm-7",
-      "temporal-comm-9"
+      "temporal-docs-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an agent builder, I run LLM agent loops as durable workflows — model and tool calls as checkpointed, retried steps that survive crashes mid-run",
+      "citations": [
+        {
+          "evidenceId": "temporal-docs-9",
+          "quote": "Long-running, stateful agent loops that call LLMs and tools, wait on humans, and pick up exactly where they left off after a failure."
+        },
+        {
+          "evidenceId": "temporal-docs-25",
+          "quote": "model calls are executed as Activities, so they retry durably and are not repeated during Workflow replay. Your agents survive Worker restarts and can run for extended periods without losing state."
+        },
+        {
+          "evidenceId": "temporal-docs-47",
+          "quote": "Temporal's integration with the OpenAI Agents SDK for Python lets you run agents as Temporal Workflows."
+        },
+        {
+          "evidenceId": "temporal-docs-33",
+          "quote": "Build a durable agentic loop in Python with Claude tool calling and Temporal."
+        },
+        {
+          "evidenceId": "temporal-docs-4",
+          "quote": "Temporal's default behavior is to automatically retry an Activity that fails, so transient or intermittent failures require no action on your part."
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "durable-agent-loops"
   }

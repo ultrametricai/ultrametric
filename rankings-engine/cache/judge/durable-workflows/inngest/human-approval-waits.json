@@ -1,18 +1,41 @@
 {
-  "hash": "dd1e7460a0e8d13261b32b27ae74eaf99dc3b28612b3c528a2aa5a1a54eb4dd9",
+  "hash": "ee215cf9eb77b2aafa3c7d2323ec661e9cb6a11ca8120e4826c202d9b1adabf7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Inngest documents step.waitForEvent() for pausing a run until a specific event arrives, with a timeout that returns null if no event comes in. It has a dedicated human-in-the-loop guide for pausing for approval and then resuming or aborting. Its durable-agents docs state that a run waiting hours for human approval suspends entirely, holds zero resources, and resumes when the approval arrives. Missing for 10: independent or hands-on corroboration of long (multi-day) waits resuming promptly.",
+    "rationale": "Inngest documents step.waitForEvent() to pause a run until a specific event arrives, with a timeout that resolves null. It also has a dedicated human-in-the-loop pattern for pausing on approval and then resuming or aborting. The durable-agents docs state a workflow waiting three hours for human approval suspends with zero resources and resumes when the approval arrives. Missing for 10: explicit documentation of maximum wait duration covering multi-day waits, and independent or hands-on corroboration of long-duration approval waits.",
     "evidenceIds": [
       "inngest-docs-18",
       "inngest-docs-32",
       "inngest-docs-33",
       "inngest-docs-34",
-      "inngest-docs-2"
+      "inngest-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a backend developer, a workflow pauses for human approval or input for hours or days and resumes the moment the response arrives",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-32",
+          "quote": "You can pause a Function's run until a given event is received."
+        },
+        {
+          "evidenceId": "inngest-docs-33",
+          "quote": "If the agent needs to wait three hours for a human to approve something, it suspends entirely, holding zero resources, and resumes when the approval arrives."
+        },
+        {
+          "evidenceId": "inngest-docs-34",
+          "quote": "Use step.waitForEvent() to pause agent execution for human approval, then resume or abort based on the response."
+        },
+        {
+          "evidenceId": "inngest-docs-18",
+          "quote": "It returns a Promise that is resolved with the received event or null if the event is not received within the timeout."
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "human-approval-waits"
   }

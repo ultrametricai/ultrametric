@@ -1,20 +1,45 @@
 {
-  "hash": "51c2c83947285015ece52d03181aaad0d1df29e6c50443dab5858fbab800ee1a",
+  "hash": "57b8f76bfcaf81114ce56298511686982cc5d1be08791191315120347b442a88",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "OpenClaw documents a sandbox backend for tool execution \"to reduce blast radius,\" with modes, scopes, workspace-access controls, and images. Exec is bounded by whatever the selected host or sandbox filesystem permits, and the architecture is framed as a trusted gateway with untrusted execution and deterministic policy. Hardened per-tenant container cells and a `security audit` command add further containment. A community comment says the default posture is full, root-like access, but that criticizes defaults rather than showing the sandbox fails. missing for 10: detailed documentation of per-tool policies or permission modes, independent hands-on corroboration that the sandbox contains risky runs, evidence of secure-by-default sandboxing.",
+    "rationale": "OpenClaw documents its own sandbox backend that runs tool execution to reduce blast radius, with modes, scopes, workspace access and images. The exec tool is bounded by the selected sandbox filesystem, and the architecture is framed as untrusted execution under deterministic policy. One community comment that access is full by default reflects configuration defaults, not a concrete failure of sandboxing, so it lowers confidence rather than creating a dispute. missing for 10: detailed documentation of per-tool policies/allowlists and permission modes, evidence that sandboxing is on by default rather than opt-in, VM-level isolation details, independent or hands-on corroboration that the sandbox contains risky runs.",
     "evidenceIds": [
       "openclaw-docs-13",
       "openclaw-docs-84",
       "openclaw-docs-67",
       "openclaw-docs-111",
-      "openclaw-docs-49",
-      "openclaw-docs-12",
-      "openclaw-comm-10"
+      "openclaw-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security engineer, risky tool runs are containable — container/VM sandboxing, tool policies, or permission modes that limit what the agent can touch",
+      "citations": [
+        {
+          "evidenceId": "openclaw-docs-13",
+          "quote": "OpenClaw can run tool execution inside a sandbox backend to reduce blast radius."
+        },
+        {
+          "evidenceId": "openclaw-docs-84",
+          "quote": "How OpenClaw sandboxing works: modes, scopes, workspace access, and images"
+        },
+        {
+          "evidenceId": "openclaw-docs-67",
+          "quote": "commands can create, edit, or delete files wherever the selected host or sandbox filesystem permits."
+        },
+        {
+          "evidenceId": "openclaw-docs-111",
+          "quote": "a trusted gateway, untrusted execution, deterministic policy, and versioned state"
+        },
+        {
+          "evidenceId": "openclaw-docs-12",
+          "quote": "one command tells you if you have drifted: `openclaw security audit`"
+        }
+      ]
+    },
     "productId": "openclaw",
     "storyId": "sandboxed-tool-execution"
   }

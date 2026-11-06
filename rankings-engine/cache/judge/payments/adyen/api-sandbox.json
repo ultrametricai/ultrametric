@@ -1,17 +1,41 @@
 {
-  "hash": "ef6b4bd66433310b641386ade811e07cdf13b348848a78c4bbf827c729242801",
+  "hash": "9ff8c783bf39a1c0a411beaa86ea4e4bb1af621edc9998875e034b57e26a0fa8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Adyen documents a dedicated test environment with test credentials for exercising the full integration before going live (adyen-docs-6, adyen-docs-18). The agent-facing surfaces are split the same way: the MCP server runs with `--env=TEST` versus `--env=LIVE`, and the Product Feed API has separate test and live base URLs, so AI-driven work can target the sandbox rather than production. Missing for 10: an explicit documented statement that test data is isolated from live data, and independent or hands-on confirmation of the sandbox experience.",
+    "confidence": "medium",
+    "rationale": "Adyen documents a dedicated test environment for testing full client- and server-side integrations with test credentials before going live. Its agent-facing surfaces target that environment explicitly: the MCP server runs with `--env=TEST` versus `--env=LIVE`, and the Product Feed API has separate test and live base URLs. Missing for 10: an explicit statement that test-environment data is fully isolated from production accounts and data, detail on simulating specific outcomes in the test environment, and independent or hands-on corroboration.",
     "evidenceIds": [
       "adyen-docs-6",
       "adyen-docs-18",
       "adyen-supp-mcp-tools",
-      "adyen-supp-agentic-feed"
+      "adyen-supp-agentic-feed",
+      "adyen-docs-44"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "adyen-docs-6",
+          "quote": "We recommend testing your full integration, including the client-side and server-side parts, in your test environment before accepting live payments."
+        },
+        {
+          "evidenceId": "adyen-docs-18",
+          "quote": "Test the different types of transactions with Adyen that your integration handles using test credentials."
+        },
+        {
+          "evidenceId": "adyen-supp-mcp-tools",
+          "quote": "runs locally via `npx -y @adyen/mcp --env=TEST` (or `--env=LIVE --livePrefix=YOUR_PREFIX_URL`)"
+        },
+        {
+          "evidenceId": "adyen-supp-agentic-feed",
+          "quote": "Base URLs: commerce-suite-test.adyen.com and commerce-suite-live.adyen.com"
+        }
+      ]
+    },
     "productId": "adyen",
     "storyId": "api-sandbox"
   }

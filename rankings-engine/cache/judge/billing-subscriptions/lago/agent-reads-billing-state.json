@@ -1,23 +1,38 @@
 {
-  "hash": "5dcb4056ea83c9546c56de7df9c80efca94f543fc3473d7c139cc456b3328410",
+  "hash": "4bcee7f2f55afee7d919c98c06d99e2d8915d9c7641f00135fcf5f4aef00a47f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Lago documents an official Rust MCP server that gives AI assistants like Claude direct access to its billing data. Its OpenAPI 3.1 schema is explicitly positioned for exposing billing actions to an AI agent, and a probe confirms the schema is live. Related agent tooling, including the Dunning Agent reading twelve months of invoices and payments and the overdue-invoice filters, covers the delinquent-accounts and customer-invoices parts of the story. Missing for 10: explicit evidence that agents can query MRR or upcoming renewals, a list of the MCP tools/resources exposed, and independent or hands-on corroboration of agent querying.",
+    "rationale": "Lago documents an official MCP server that gives AI assistants like Claude direct access to its billing data. It also documents an in-product AI agent that works in plain language and a Dunning Agent that reads twelve months of invoices and payments, so an agent can query billing state directly. The docs do not show which specific questions are answerable through these agent interfaces: MRR and upcoming renewals are not tied to agent access, and overdue-invoice filtering is described only as a platform feature. missing for 10: documented MCP tools or queries for MRR, delinquent accounts and upcoming renewals, an explicit customer-invoice lookup via the agent, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "lago-docs-9",
       "lago-docs-26",
+      "lago-docs-9",
       "lago-probe-4",
-      "lago-docs-16",
-      "lago-probe-3",
+      "lago-docs-28",
       "lago-docs-10",
-      "lago-docs-25",
-      "lago-docs-13",
-      "lago-docs-15",
-      "lago-docs-28"
+      "lago-docs-16"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, an agent can answer questions about my billing state — MRR, delinquent accounts, upcoming renewals, a customer's invoices — by querying the platform directly",
+      "citations": [
+        {
+          "evidenceId": "lago-docs-26",
+          "quote": "The Lago MCP Server (Model Context Protocol) is written in Rust and provides AI assistants (like Claude) with direct access to Lago's billing data."
+        },
+        {
+          "evidenceId": "lago-docs-10",
+          "quote": "The Dunning Agent reads the account first: twelve months of invoices and payments, the disputes, the provider status."
+        },
+        {
+          "evidenceId": "lago-docs-28",
+          "quote": "With our AI agent, you manage billing by describing what you need in plain language."
+        }
+      ]
+    },
     "productId": "lago",
     "storyId": "agent-reads-billing-state"
   }

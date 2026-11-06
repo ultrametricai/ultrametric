@@ -1,20 +1,41 @@
 {
-  "hash": "9058f099e9dc97004990ca624d9f0f298afe76a91a1ae08092175233714b597d",
+  "hash": "24b049c3a92cd6316901a47ad549b1ba0b04cc8fee66e6d50b597aa5e22269e1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "OpenClaw documents a built-in `exec` tool that runs shell commands in the workspace. The docs call it a mutating shell surface that can create, edit, or delete files wherever the host or sandbox filesystem permits, with stdin modes and TTY support, plus optional sandbox backends. Hands-on community reports corroborate a real exec surface: one user had it set up a VM and configure Prometheus and Grafana, and another notes it has full access by default. Missing for 10: no evidence of a dedicated structured file-edit/patch tool beyond shell-based edits.",
+    "rationale": "OpenClaw documents a first-party `exec` tool that runs shell commands in the workspace and can create, edit, or delete files wherever the host or sandbox filesystem permits. It also supports stdin modes and TTY, and an optional sandbox backend. Hands-on community reports back this up: one user had it spin up a VM and configure Prometheus and Grafana, and another notes it has full access by default. missing for 10: a documented dedicated file-edit tool separate from shell exec, and detail on per-command approval controls.",
     "evidenceIds": [
-      "openclaw-docs-19",
       "openclaw-docs-67",
       "openclaw-docs-112",
       "openclaw-docs-13",
-      "openclaw-docs-84",
       "openclaw-comm-8",
       "openclaw-comm-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a power user, the assistant can run commands and edit files on my machine — a real exec surface, not just chat about what to do",
+      "citations": [
+        {
+          "evidenceId": "openclaw-docs-67",
+          "quote": "Run shell commands in the workspace. `exec` is a mutating shell surface: commands can create, edit, or delete files wherever the selected host or sandbox filesystem permits."
+        },
+        {
+          "evidenceId": "openclaw-docs-112",
+          "quote": "Exec tool usage, stdin modes, and TTY support"
+        },
+        {
+          "evidenceId": "openclaw-docs-13",
+          "quote": "OpenClaw can run tool execution inside a sandbox backend to reduce blast radius."
+        },
+        {
+          "evidenceId": "openclaw-comm-8",
+          "quote": "spinning up a VM and configuring Prometheus, Grafana, collectors for WiFi/network gear, and dashboards"
+        }
+      ]
+    },
     "productId": "openclaw",
     "storyId": "shell-file-execution"
   }

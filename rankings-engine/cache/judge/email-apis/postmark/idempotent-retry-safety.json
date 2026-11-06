@@ -1,12 +1,18 @@
 {
-  "hash": "c045d4f20492f6d7d9cc273ca0708d1547ce54b05850e797aa5b7952bc91c545",
+  "hash": "a9c57d3cabdb087d7f48b55d980165f565403871ad5a81ad0584d8aa51002c93",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents idempotency keys or duplicate-suppression semantics on Postmark's send endpoints (/email, /email/batch, /email/withTemplate). The only 'idempotency pattern' mentioned (postmark-docs-10) is part of webhook receiver setup, which protects against reprocessing incoming events, not against double-sending on retry. The 'retry' API (postmark-docs-47) applies to inbound message processing, not outbound sends.",
+    "rationale": "The evidence pack documents no idempotency key or duplicate-suppression semantics for the send endpoints (/email, /email/batch, /email/withTemplate). The only 'idempotency pattern' mentioned is in a webhook-receiver guide covering Basic Auth, IP allowlisting and Express routes, which is consumer-side event handling, not send-side protection. 'Retry a failed inbound message' concerns inbound processing, not outbound sends.",
     "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can retry a failed send safely — idempotency keys or documented duplicate-suppression semantics guarantee a network timeout never double-sends a receipt",
+      "citations": []
+    },
     "productId": "postmark",
     "storyId": "idempotent-retry-safety"
   }

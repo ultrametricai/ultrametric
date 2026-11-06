@@ -1,19 +1,41 @@
 {
-  "hash": "a799483214dd474d33b54b1c8ade76114e940d81e4ab313f7ea530dd6ab04aea",
+  "hash": "fc12ccedb395f1097aaa77c5660f949cf074b35b6f486b258791d16b59556cae",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "zep",
-    "storyId": "memory-deletion-erasure",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Zep's docs cover all three deletion levels. Single facts can be removed with `client.graph.edge.delete(uuid_=...)`. Deleting a node (per-entity) also removes all of its connected edges. Deleting a user removes all their threads and thread artifacts in one API call, which the docs present explicitly as the Right To Be Forgotten mechanism. Missing for 10: independent or hands-on corroboration that deletion actually purges data, and explicit confirmation that user deletion also erases the user's Context Graph nodes and edges (the docs mention only threads and thread artifacts).",
+    "rationale": "Zep's docs cover all three granularities. A single fact (edge) can be deleted via client.graph.edge.delete, deleting an entity node also deletes all its connected edges, and deleting a User removes all threads and artifacts in one API call, which Zep explicitly frames for Right To Be Forgotten compliance. missing for 10: independent or hands-on corroboration that erasure is complete, explicit confirmation that user deletion purges the user's Context Graph data.",
     "evidenceIds": [
       "zep-docs-21",
-      "zep-docs-50",
       "zep-docs-13",
       "zep-docs-5",
       "zep-docs-35"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform-engineer, I can delete a user's memories on demand — single memory, per-entity, or full erasure — to satisfy privacy requirements",
+      "citations": [
+        {
+          "evidenceId": "zep-docs-21",
+          "quote": "Here's how to delete an edge from a graph: client.graph.edge.delete(uuid_=\"your_edge_uuid\")"
+        },
+        {
+          "evidenceId": "zep-docs-13",
+          "quote": "Deleting a node will also delete all edges connected to that node."
+        },
+        {
+          "evidenceId": "zep-docs-5",
+          "quote": "Deleting a User will delete all Threads and thread artifacts associated with that User with a single API call, making it easy to handle Right To Be Forgotten requests."
+        },
+        {
+          "evidenceId": "zep-docs-35",
+          "quote": "This single-operation approach makes it simple to handle Right To Be Forgotten (RTBF) requests and comply with privacy regulations."
+        }
+      ]
+    },
+    "productId": "zep",
+    "storyId": "memory-deletion-erasure"
   }
 }

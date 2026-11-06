@@ -1,20 +1,46 @@
 {
-  "hash": "27853062d457e775f3ede504932dabb331baf442fdc9feebab5208a61aa4a80e",
+  "hash": "40729ab84c01b42ec3106fcb80f1cb98b3ea8d5139f7055c0830afb678d89c51",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Temporal workflows are written as ordinary code: an independent evaluator describes \"long-running business logic as ordinary code (Workflows)\", Activities are \"a normal function or method\", and there is a TypeScript SDK walkthrough. Automatic checkpointing is documented through resume-exactly-where-left-off execution and replay that does not repeat completed Activities. A user notes the trade-off is that workflow code must be fully deterministic. Missing for 10: an explicit first-party statement contrasting code-first authoring with YAML or a DSL, a documented list of supported language SDKs beyond scattered mentions, and first-party docs on the determinism constraints of workflow code.",
+    "confidence": "medium",
+    "rationale": "Temporal workflows are authored as code through language SDKs such as TypeScript and Python, with Activities as normal functions. Completed Activity results are not re-run during replay, so execution resumes where it left off after crashes. A hands-on user confirms it models business logic as ordinary code but notes it requires full determinism. missing for 10: an explicit first-party statement that Workflows are plain code rather than a DSL, first-party documentation of the checkpoint/event-history mechanism, and documented scope of the determinism constraints on workflow code.",
     "evidenceIds": [
       "temporal-comm-1",
       "temporal-docs-3",
       "temporal-docs-14",
-      "temporal-docs-1",
       "temporal-docs-25",
-      "temporal-comm-7",
-      "temporal-comm-2"
+      "temporal-docs-1",
+      "temporal-comm-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a backend developer, I write workflows as ordinary code in my language — steps with automatic checkpointing — not YAML or a proprietary DSL",
+      "citations": [
+        {
+          "evidenceId": "temporal-comm-1",
+          "quote": "It models long-running business logic as ordinary code (Workflows) with side effects in Activities, handled by the Temporal runtime."
+        },
+        {
+          "evidenceId": "temporal-docs-3",
+          "quote": "An Activity is a normal function or method that executes a single, well-defined action"
+        },
+        {
+          "evidenceId": "temporal-docs-25",
+          "quote": "model calls are executed as Activities, so they retry durably and are not repeated during Workflow replay."
+        },
+        {
+          "evidenceId": "temporal-docs-1",
+          "quote": "guaranteeing that applications resume exactly where they left off after crashes, network failures, or infrastructure outages"
+        },
+        {
+          "evidenceId": "temporal-docs-14",
+          "quote": "a short walkthrough of how to use the Temporal primitives (Activities, Workflows, and Workers) to build and run a Temporal application"
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "code-first-workflows"
   }

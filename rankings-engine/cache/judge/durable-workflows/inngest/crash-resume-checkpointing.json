@@ -1,21 +1,42 @@
 {
-  "hash": "35c1384c7327bf94460ef43019cef52fad104bdf33bc33030a1d0fdf456ee84e",
+  "hash": "ac927bcfe82e505d19cd8bebbde2912ee33c8c3dcd1da8764a11910adbd96ee8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Inngest's docs say steps are memoized and long-running work resumes from the last successful checkpoint, with state persistence handled by the platform. They give an explicit example: if the process dies at step 7 of 12, it picks up at step 7, not step 1. Versioning docs say function changes can be deployed without migration logic. Missing for 10: independent or hands-on corroboration of crash/deploy recovery, and explicit documentation of resume behavior during in-flight deploys and infrastructure-level failures.",
+    "confidence": "high",
+    "rationale": "Inngest's first-party docs say step results are memoized and long-running work resumes from the last successful checkpoint, with Inngest handling durability and state persistence. They also state that if a process dies at step 7 of 12, execution picks up at step 7. Missing for 10: explicit documentation of how in-flight runs behave across a deploy (only a general versioning claim), and independent or hands-on corroboration of crash recovery.",
     "evidenceIds": [
       "inngest-docs-2",
       "inngest-docs-26",
+      "inngest-docs-25",
       "inngest-docs-21",
       "inngest-docs-33",
-      "inngest-docs-1",
-      "inngest-docs-25",
-      "inngest-docs-19",
-      "inngest-docs-15"
+      "inngest-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a backend developer, a workflow interrupted by a process crash, deploy, or infrastructure failure resumes from its last completed step with state intact",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-26",
+          "quote": "Put side effects, API calls, sleeps, waits, and function invocations in steps so Inngest can memoize results, retry failures independently, and resume long-running work from the last successful checkpoint"
+        },
+        {
+          "evidenceId": "inngest-docs-25",
+          "quote": "Inngest handles execution durability, state persistence, retries, and flow control for you"
+        },
+        {
+          "evidenceId": "inngest-docs-33",
+          "quote": "If the process dies at step 7 of 12, the agent picks up at step 7 — not step 1."
+        },
+        {
+          "evidenceId": "inngest-docs-19",
+          "quote": "Inngest enables developers to deploy changes to functions without explicit version markers or complex migration logic."
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "crash-resume-checkpointing"
   }

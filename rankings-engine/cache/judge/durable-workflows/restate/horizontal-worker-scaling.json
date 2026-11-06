@@ -1,21 +1,46 @@
 {
-  "hash": "f2ee8612dd199faf5137a22ca0422b51c76686cfd21e110c7aee8258418a44de",
+  "hash": "b67ca15023288e0e16cbaad10f2eb6e1fdff023907f44f29b29c74239b325095",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Restate's server proxies all invocations to services you deploy as containers, Kubernetes pods, or Lambda functions. Its durable execution resumes completed steps after infrastructure crashes, so losing a worker does not lose progress, and the server itself can run as a multi-node cluster. Scaling by adding workers is only implied, though: the closest evidence is \"scale tools independently\" and serverless deployment, and no doc describes how tasks are load-balanced across a worker fleet. Missing for 10: explicit documentation of load-balancing invocations across multiple worker instances, throughput-scaling evidence or benchmarks, and independent hands-on corroboration of fleet scaling and worker-failure handover.",
+    "rationale": "Restate documents a multi-node cluster server, recovery of in-progress invocations after infrastructure crashes, and services that can be scaled independently as containers or Kubernetes pods. That covers worker-loss tolerance and implies horizontal scale-out, but no evidence describes how the server distributes tasks across a fleet of service workers or shows throughput scaling as workers are added. Missing for 10: explicit load-balancing of invocations across worker instances, documented throughput scaling from adding workers, independent or hands-on corroboration of fleet-level failover.",
     "evidenceIds": [
+      "restate-docs-34",
       "restate-docs-7",
-      "restate-docs-33",
-      "restate-docs-1",
-      "restate-docs-82",
-      "restate-docs-13",
       "restate-docs-55",
-      "restate-comm-9",
-      "restate-docs-21"
+      "restate-docs-82",
+      "restate-docs-1",
+      "restate-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, throughput scales by adding workers — the platform load-balances tasks across the fleet and tolerates worker loss",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-34",
+          "quote": "Restate is distributed as a single binary that implements all features required to run a single- or multi-node cluster"
+        },
+        {
+          "evidenceId": "restate-docs-55",
+          "quote": "Deploy complex tool logic as separate durable services. Scale tools independently, use any language, and get end-to-end durability."
+        },
+        {
+          "evidenceId": "restate-docs-82",
+          "quote": "Automatically retry transient errors like infrastructure crashes and network failures"
+        },
+        {
+          "evidenceId": "restate-docs-1",
+          "quote": "Code automatically stores completed steps and resumes from where it left off when recovering from failures."
+        },
+        {
+          "evidenceId": "restate-docs-33",
+          "quote": "The Restate Server will proxy all requests for these services."
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "horizontal-worker-scaling"
   }

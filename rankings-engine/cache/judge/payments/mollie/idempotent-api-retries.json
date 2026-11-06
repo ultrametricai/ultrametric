@@ -1,16 +1,31 @@
 {
-  "hash": "79cf4d0af98f2ddc0a09a16814811d597415a7ba3776ce91827603ca35d46f8b",
+  "hash": "be81a0664e5b6f720c5931070bbb49d392184401dda20747caff013fb8013946",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Mollie documents an Idempotency-Key header that can be sent with every API request, and a second request with the same key is treated as a duplicate. The docs explicitly name where retries risk double charges without it: recurring payments, subscriptions and partial refunds. missing for 10: documentation of key retention window and replayed-response semantics, independent or hands-on corroboration that retries are deduplicated in practice.",
+    "rationale": "Mollie documents an Idempotency-Key header that can be sent with every API request, so a repeated request with the same key is treated as a duplicate and ignored. The docs name the double-charge risks it prevents: recurring payments, subscriptions and partial refunds. Missing for 10: details on what response a duplicate request returns and how long keys are retained, plus independent or hands-on corroboration.",
     "evidenceIds": [
       "mollie-docs-20",
       "mollie-supp-idempotency",
       "mollie-docs-40"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can safely retry any API request using idempotency keys so network failures never create duplicate charges",
+      "citations": [
+        {
+          "evidenceId": "mollie-docs-20",
+          "quote": "you can send a unique value with every API request via the Idempotency-Key header. If two requests come in with the same value, the second request is considered a duplicate that can be ignored."
+        },
+        {
+          "evidenceId": "mollie-supp-idempotency",
+          "quote": "recurring payments (\"can lead to double charges\"), subscriptions (\"double charges during the entire duration of both subscriptions\"), and partial refunds (\"executing the refund twice may lead to two separate partial refunds\")"
+        }
+      ]
+    },
     "productId": "mollie",
     "storyId": "idempotent-api-retries"
   }

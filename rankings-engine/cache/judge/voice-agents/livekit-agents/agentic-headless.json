@@ -1,15 +1,14 @@
 {
-  "hash": "a4bd0e367d638ccd3a893169c1fbd692bbbd5ee561ae510bf09d430d289dde3a",
+  "hash": "0cd7834d2dbffb930d7d887e9926f49a91663eb7fb48222798e66d8c27243513",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Agents are plain Python/Node.js programs that join rooms as programmatic participants, so they run headlessly by design. Behavioral tests and LLM-driven simulations plug into pytest/Vitest suites, which fits CI. Hands-on probes show the official `lk` CLI runs without a key, `livekit-server --dev` boots with no account, and `pip install livekit-agents` imports with no key, so an unattended CI environment is feasible. Missing for 10: explicit CI pipeline documentation or examples (e.g. GitHub Actions), documented non-interactive CLI deploy/automation commands, and independent reports of CI usage.",
+    "rationale": "LiveKit Agents runs as plain Python/Node.js programs that join rooms as programmatic participants, with no UI involved. Its behavioral tests plug into pytest or Vitest suites, and agent simulations run end-to-end conversations. Hands-on probes show the CLI, a dev-mode server and the pip package all running with no account or key, which suits unattended automation, but CI pipeline usage is only implied, not explicitly documented. Missing for 10: explicit first-party docs on running agents or tests in CI pipelines (e.g. GitHub Actions examples, CI flags or env configuration), documented non-interactive/headless CLI automation workflows, independent corroboration of CI usage.",
     "evidenceIds": [
       "livekit-agents-docs-1",
       "livekit-agents-docs-8",
-      "livekit-agents-docs-20",
       "livekit-agents-docs-9",
       "livekit-agents-docs-10",
       "livekit-agents-gh-4",
@@ -18,6 +17,33 @@
       "livekit-agents-probe-rt-2",
       "livekit-agents-probe-rt-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "livekit-agents-docs-1",
+          "quote": "The Agents framework lets you add any Python or Node.js program to LiveKit rooms as full realtime participants."
+        },
+        {
+          "evidenceId": "livekit-agents-docs-9",
+          "quote": "They integrate with your existing test suite using pytest (Python) or Vitest (Node.js)"
+        },
+        {
+          "evidenceId": "livekit-agents-docs-10",
+          "quote": "Agent simulations run end-to-end conversations between your agent and an LLM-driven user, then evaluate the results across the full interaction."
+        },
+        {
+          "evidenceId": "livekit-agents-probe-rt-2",
+          "quote": "`livekit-server --dev` (brew-installed, Apache-2.0 OSS) booted on this machine with NO account or key"
+        },
+        {
+          "evidenceId": "livekit-agents-probe-rt-1",
+          "quote": "`lk --version` printed `lk version 2.18.6` after a plain `brew install livekit-cli` — the official CLI runs keylessly."
+        }
+      ]
+    },
     "productId": "livekit-agents",
     "storyId": "agentic-headless"
   }

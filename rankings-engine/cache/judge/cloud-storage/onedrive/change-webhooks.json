@@ -1,16 +1,30 @@
 {
-  "hash": "e1944baef09a4e8444b46d9c01bbca90b37c6de2134330eb0f788cd9295ad815",
+  "hash": "196e1045035fcbca9403d6102572b5375e548edaa28ffc9d43a8c94078a16864",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Microsoft Graph documents change notifications that alert applications when a resource they care about is created, updated, or deleted [onedrive-docs-7], and delta queries for tracking driveItem changes [onedrive-docs-6, onedrive-docs-21]. This establishes a first-party push mechanism. However, the evidence does not explicitly tie notifications to driveItem/OneDrive resources and says nothing about how deliveries are verified or retried. Missing for 10: explicit evidence that change notifications fire for OneDrive driveItems, documented endpoint validation/signature verification, documented retry/delivery semantics, hands-on corroboration.",
+    "rationale": "Microsoft Graph, which the docs present as the single API for OneDrive files, documents change notifications that alert applications when a resource is created, updated or deleted. The evidence does not tie these notifications explicitly to driveItems, and it says nothing about verification or retry. Delta query is pull-based change tracking, not push delivery, so it earns no credit here. Missing for 10: explicit driveItem/OneDrive subscription docs, webhook validation/verification handshake, retry/delivery semantics, independent or hands-on corroboration.",
     "evidenceIds": [
       "onedrive-docs-7",
-      "onedrive-docs-6",
-      "onedrive-docs-21"
+      "onedrive-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, file events push to me — documented webhooks/change notifications fire when content changes, with verification and retry semantics spelled out",
+      "citations": [
+        {
+          "evidenceId": "onedrive-docs-7",
+          "quote": "Change notifications enable applications to receive alerts when a Microsoft Graph resource they're interested in changes; that is, created, updated, or deleted."
+        },
+        {
+          "evidenceId": "onedrive-docs-1",
+          "quote": "with Microsoft Graph, you can use a single API to work with them."
+        }
+      ]
+    },
     "productId": "onedrive",
     "storyId": "change-webhooks"
   }

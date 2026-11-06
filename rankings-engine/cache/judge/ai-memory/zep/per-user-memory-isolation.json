@@ -1,24 +1,45 @@
 {
-  "hash": "f0961c1fcb6234dffd14e7d0eecb51e303b59bdf3b4d75c0d65cf1560eb44324",
+  "hash": "8da7295d650ae2399277c23a74014adc1812803afc6b7f78816e732726c7523f",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "zep",
-    "storyId": "per-user-memory-isolation",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep gives each user their own Context Graph: messages are ingested into the user-level graph, and Zep users mirror your app's users. ABAC policies attached to API keys and UserGroups limit which context each agent and Memory MCP user can reach, and zepctl administers separate projects, which suggests application-level separation. Missing for 10: an explicit per-agent memory namespace (as opposed to access policies), documented project-level isolation guarantees, and independent or hands-on confirmation that retrieval never crosses tenant boundaries.",
+    "rationale": "Zep documents per-user scoping: each app user maps to a Zep user, and messages are ingested into that user's own Context Graph. ABAC policies on API keys and UserGroups limit which context each agent and Memory MCP user can reach. However, the evidence never explicitly guarantees that retrieval cannot cross tenants, and per-application or per-project scoping is not described. Missing for 10: explicit documentation of tenant isolation guarantees in search and retrieval, application- or project-level memory scoping, and independent or hands-on corroboration that no cross-tenant leakage occurs.",
     "evidenceIds": [
       "zep-docs-19",
       "zep-docs-20",
       "zep-docs-48",
-      "zep-docs-5",
       "zep-docs-38",
       "zep-docs-25",
-      "zep-docs-31",
-      "zep-docs-54",
-      "zep-docs-7",
-      "zep-docs-52"
-    ]
+      "zep-docs-12",
+      "zep-docs-5",
+      "zep-docs-34"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can scope memories per user, agent, or application so one tenant's memories never leak into another's retrieval",
+      "citations": [
+        {
+          "evidenceId": "zep-docs-19",
+          "quote": "Whenever users are created in your application, you need to trigger the creation of a Zep user."
+        },
+        {
+          "evidenceId": "zep-docs-48",
+          "quote": "ingests them into the user's Context Graph"
+        },
+        {
+          "evidenceId": "zep-docs-38",
+          "quote": "Limit which actions and context each agent and Memory MCP user can reach with ABAC policies attached to API keys and UserGroups."
+        },
+        {
+          "evidenceId": "zep-docs-25",
+          "quote": "Use policies when you need least-privilege access to context for agents and Memory MCP users."
+        }
+      ]
+    },
+    "productId": "zep",
+    "storyId": "per-user-memory-isolation"
   }
 }

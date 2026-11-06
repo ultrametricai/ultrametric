@@ -1,16 +1,30 @@
 {
-  "hash": "6d08df07830f5711ac9e2913b3592bd9a67ac2a03e7efce8e1eceea00cd9db45",
+  "hash": "f232233968da9df9d27839753e160859a241f7d6f17c5583bf8707d8a4367081",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "DBOS queues provide flow control that limits how many workflows run at once (concurrency caps) and how often workflows are started (rate limits), which covers per-queue and per-workflow throttling. Nothing in the evidence shows per-key or per-tenant partitioning, which is the part of the story that stops one hot customer from starving the rest. A Hatchet co-founder's concern about global rate-limit coordination is skepticism, not a concrete failure, so it lowers confidence only. Missing for 10: per-key or per-tenant concurrency and rate-limit partitioning, detailed docs on limit configuration, and independent hands-on corroboration of fairness under load.",
+    "rationale": "DBOS's own docs describe queues that provide flow control, limiting both how many workflows run at once (concurrency) and how often they start (rate limiting). That covers the core capping capability at the queue level. Nothing in the evidence shows per-key or per-tenant partitioning, so the noisy-neighbor isolation the story asks for is not demonstrated. Missing for 10: documented per-key/per-tenant concurrency and rate limits, configuration details or examples, independent or hands-on corroboration.",
     "evidenceIds": [
       "dbos-docs-6",
-      "dbos-docs-26",
-      "dbos-gh-1"
+      "dbos-docs-26"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I cap concurrency and set rate limits per workflow, per key, or per tenant so one hot customer can't starve the rest",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-6",
+          "quote": "Queues provide flow control, letting you manage how many workflows run at once or how often workflows are started."
+        },
+        {
+          "evidenceId": "dbos-docs-26",
+          "quote": "You can use queues to run many workflows at once with managed concurrency."
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "concurrency-rate-controls"
   }

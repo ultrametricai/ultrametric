@@ -1,21 +1,36 @@
 {
-  "hash": "f6f52d3d21bf2934d0f955e1f26c64b2324a673aa25a0922b2aa11b76f689ba2",
+  "hash": "30f71a196606cd6285d46fa2ea6fbaf176443f62097b628f4863680cd00d155c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "RevenueCat documents a REST API, authenticated with secret keys, that covers some lifecycle actions: refunding purchases and granting promotional entitlements (docs-19), and importing purchases via `POST /receipts` (docs-21). New subscriptions are created through the SDK's `purchase(package:)` call routed to the app stores (docs-14), not through a server-side create endpoint. The MCP server and AI toolkit manage configuration such as products and entitlements, not individual customer subscriptions (docs-8, docs-9). Missing for 10: documented API endpoints to update a subscription's plan or price, to pause, and to cancel; a published OpenAPI spec (the probe returned 404); and hands-on corroboration that the full lifecycle can be run without the dashboard.",
+    "rationale": "RevenueCat documents its own API surface for parts of the lifecycle. The SDK's `purchase(package:)` and the `POST /receipts` REST endpoint start subscriptions, and secret-key server endpoints handle refunds and promotional entitlements. Nothing in the evidence shows API operations to update, pause, or cancel a subscription, so most of the full lifecycle is unproven. missing for 10: documented API endpoints for updating, pausing, and cancelling subscriptions; an OpenAPI spec (probe returned 404); hands-on corroboration of end-to-end lifecycle management without the dashboard.",
     "evidenceIds": [
+      "revenuecat-docs-14",
       "revenuecat-docs-19",
       "revenuecat-docs-21",
-      "revenuecat-docs-14",
-      "revenuecat-docs-5",
-      "revenuecat-docs-15",
-      "revenuecat-gh-4",
-      "revenuecat-docs-9",
-      "revenuecat-probe-3"
+      "revenuecat-docs-15"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can create, update, pause, and cancel subscriptions through a documented API — the full lifecycle without touching a dashboard",
+      "citations": [
+        {
+          "evidenceId": "revenuecat-docs-14",
+          "quote": "The SDK has a simple method, `purchase(package:)`, that takes a package from the fetched Offering and purchases the underlying product with Apple, Google, or Amazon."
+        },
+        {
+          "evidenceId": "revenuecat-docs-19",
+          "quote": "there are various endpoints that can be used for refunding purchases, granting promotional entitlements, and other sensitive actions that can only be done via a Secret API key from your server."
+        },
+        {
+          "evidenceId": "revenuecat-docs-21",
+          "quote": "A server side import involves sending all of the Apple receipts and/or purchase tokens to RevenueCat via the `POST /receipts` REST API endpoint."
+        }
+      ]
+    },
     "productId": "revenuecat",
     "storyId": "subscription-crud-api"
   }

@@ -1,22 +1,39 @@
 {
-  "hash": "262a79e5606cb2703f997717b3d6f0367e8bd30beb389846df9d957a1f9f0e76",
+  "hash": "e9ef6eca70e9b4505c144da0a24012994120a081b54417179647910b159da647",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "cfo-ai",
-    "storyId": "metrics-out-to-warehouse",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "cfo.ai documents two ways to get model data out. A Page can be downloaded as an Excel workbook with its formulas, and an official MCP server at api.cfo.ai/mcp lets clients read the financial Model (Pages, Tables, Variables). However, the MCP server issues no API keys, and every client must sign in via OAuth as a person, which is a poor fit for unattended warehouse pipelines. No REST/OpenAPI spec was found, and Snowflake and database connections are inbound only. Missing for 10: a documented REST/data export API or warehouse write-back, service/machine credentials for automated pulls, scheduled or bulk export of metrics, forecasts and scenarios, and independent corroboration.",
+    "rationale": "cfo.ai documents two of its own ways to get Model outputs out: a manual Excel download of a Page, and an MCP server through which an agent can read the financial Model. Neither is a warehouse-oriented export or general data API. Snowflake and Postgres appear only as inbound sources, and no OpenAPI spec was found. The MCP server also issues no API keys, since every client signs in as a person through OAuth, which limits unattended pipelines. Missing for 10: a documented REST/data API or scheduled export of metrics, forecasts and scenario results; a warehouse write-back or destination connector; service/API-key auth for automated pipelines; independent or hands-on corroboration.",
     "evidenceIds": [
       "cfo-ai-docs-8",
-      "cfo-ai-docs-10",
       "cfo-ai-docs-21",
+      "cfo-ai-docs-10",
       "cfo-ai-docs-24",
-      "cfo-ai-docs-25",
-      "cfo-ai-docs-42",
       "cfo-ai-probe-2",
-      "cfo-ai-probe-3"
-    ]
+      "cfo-ai-docs-31"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pull model outputs (metrics, forecasts, scenario results) into a warehouse or internal tool through a documented export or API",
+      "citations": [
+        {
+          "evidenceId": "cfo-ai-docs-8",
+          "quote": "Download a Page as an Excel workbook that keeps its formulas."
+        },
+        {
+          "evidenceId": "cfo-ai-docs-21",
+          "quote": "an agent can read a company's financial Model"
+        },
+        {
+          "evidenceId": "cfo-ai-docs-10",
+          "quote": "AI clients such as Claude Code and Codex can work on your Model through the cfo.ai MCP server."
+        }
+      ]
+    },
+    "productId": "cfo-ai",
+    "storyId": "metrics-out-to-warehouse"
   }
 }

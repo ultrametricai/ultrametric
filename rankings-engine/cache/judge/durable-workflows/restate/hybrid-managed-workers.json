@@ -1,19 +1,40 @@
 {
-  "hash": "9998dbd2eab512b78636937ddaf6629dcdceaf4a9da2dc06d5a57885f7cf355f",
+  "hash": "92a2d5a9c1305fb19e543749b9b8ba12c1ae7cfad3dec129e13989b9540c10c9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Restate splits the orchestration server (durable journal and invocation routing) from user services. Those services run in your own infrastructure as containers, serverless functions, VMs, or Kubernetes pods [restate-docs-7], and the vendor confirms it does not host user code [restate-comm-9]. Restate Cloud offers a vendor-managed server, while BYOC runs a managed Restate region inside your own cloud account so data can stay in your environment [restate-docs-14]; only Restate needs network access to your services, and request identity lets services verify calls come from your Restate instance [restate-docs-33, restate-docs-12]. Missing for 10: detailed BYOC documentation on what the vendor manages versus what stays in your account, network and connectivity requirements between the managed control plane and private workers, and independent hands-on corroboration of the BYOC model.",
+    "rationale": "Restate splits orchestration from execution. The Restate Server holds the journal and orchestration, while services run in your own infrastructure as containers, Lambdas, VMs or Kubernetes pods. A vendor-managed option exists as Restate Cloud or BYOC, a managed region in your own cloud account. However, the claim that data stays inside your network rests only on a one-line BYOC mention: with Restate Cloud the journal and state live with the vendor, and the vendor server must reach your services. Missing for 10: detailed BYOC docs on data residency and network boundaries, private connectivity between the managed control plane and self-hosted workers, independent corroboration of BYOC deployments.",
     "evidenceIds": [
       "restate-docs-7",
       "restate-docs-14",
-      "restate-docs-70",
       "restate-comm-9",
-      "restate-docs-33",
-      "restate-docs-12"
+      "restate-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I run workers in my own infrastructure while the vendor manages the orchestration control plane — code and data stay inside my network",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-7",
+          "quote": "Services run in your infrastructure as containers, serverless functions, VMs, or Kubernetes pods"
+        },
+        {
+          "evidenceId": "restate-docs-14",
+          "quote": "You can use Restate Cloud, run a managed Restate region in your cloud account with Restate BYOC, or operate Restate yourself."
+        },
+        {
+          "evidenceId": "restate-comm-9",
+          "quote": "the restate server does handle the durable execution journal / orchestration, while the user code runs in a separate process, we don't host the code ourselves at the moment"
+        },
+        {
+          "evidenceId": "restate-docs-33",
+          "quote": "Only Restate needs to be able to make requests to your services. The Restate Server will proxy all requests for these services."
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "hybrid-managed-workers"
   }

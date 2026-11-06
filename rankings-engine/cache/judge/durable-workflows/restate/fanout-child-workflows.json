@@ -1,20 +1,42 @@
 {
-  "hash": "2480a4e172424755841acd7ff6c195c349c9adc0b503006ed017bb2b3b9ee780",
+  "hash": "733811f8bdaecca926d25033b5e8d438963f44d7d50210424c79899c3959d0a1",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Restate documents fan-out/fan-in, where work is spread across multiple agents and the results combined, with failed branches retried independently (restate-docs-52). It also documents parallel execution with automatic coordination (restate-docs-50) and orchestrators that dynamically plan and dispatch tasks to workers (restate-docs-54). Durable sync/async service calls with exactly-once semantics (restate-docs-3, restate-docs-56) act as child-workflow invocations, and racing with cancellation (restate-docs-57) adds further composition options. Missing for 10: generic (non-AI) workflow docs for parallel and fan-out primitives, explicit child-workflow semantics, dynamic batch-size handling detail, and independent or hands-on corroboration.",
+    "rationale": "Restate's own docs cover parallel execution and fan-out/fan-in: multiple steps run in parallel, results are combined, and failed branches are retried independently. An orchestrator can dynamically dispatch tasks to workers, and durable sync/async service calls let one handler invoke others. However, this is framed mainly as AI-agent patterns, and the docs never explicitly describe child workflows or fan-out over dynamically sized batches. missing for 10: explicit child/sub-workflow documentation, explicit fan-out/fan-in over dynamic batch sizes in general (non-AI) workflow docs, independent or hands-on corroboration of parallel/fan-in composition.",
     "evidenceIds": [
-      "restate-docs-50",
       "restate-docs-52",
+      "restate-docs-50",
       "restate-docs-54",
       "restate-docs-3",
       "restate-docs-56",
-      "restate-docs-57",
-      "restate-docs-51"
+      "restate-docs-57"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, I compose workflows from parallel steps, fan-out/fan-in over dynamic batches, and child workflows without hand-rolling coordination",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-52",
+          "quote": "Fan out work to multiple agents, then combine the results. Failed agents are retried independently while successful results are preserved."
+        },
+        {
+          "evidenceId": "restate-docs-50",
+          "quote": "Execute multiple tool calls in parallel with automatic recovery and coordination."
+        },
+        {
+          "evidenceId": "restate-docs-54",
+          "quote": "An orchestrator agent dynamically plans tasks and dispatches them to worker agents. Plans and results are durably persisted."
+        },
+        {
+          "evidenceId": "restate-docs-3",
+          "quote": "Call services sync or async with guaranteed execution and exactly-once semantics."
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "fanout-child-workflows"
   }

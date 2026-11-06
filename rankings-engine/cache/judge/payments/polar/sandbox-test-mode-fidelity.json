@@ -1,18 +1,40 @@
 {
-  "hash": "a1b218fb8beca9fada34d64c7c2fef57f04444d2b196aa5c1813723266b4d269",
+  "hash": "9b62c2ea1083e78057431f657070e14bb95dbf85347aef3e8265b3d520efa806",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Polar documents a dedicated, fully isolated sandbox server, separate from production, that covers the complete customer funnel including checkout. Test payments use Stripe's test card numbers (e.g. 4242…), and a sandbox MCP endpoint plus `polar listen` support local webhook testing. Declines and disputes are not explicitly covered: Stripe's test card set implies decline cards, but no doc shows simulating disputes or chargebacks in sandbox. Missing for 10: explicit documentation of decline/dispute test scenarios, evidence that sandbox behavior mirrors production, independent or hands-on corroboration.",
+    "rationale": "Polar documents a dedicated sandbox server, fully isolated from production, that covers the complete customer funnel including checkout, with test payments via Stripe's test card numbers (e.g. 4242 4242 4242 4242). Local webhook forwarding via `polar listen` supports integration testing. However, the evidence never shows test cards or flows for declines, failed renewals or disputes/chargebacks, and does not establish that the sandbox mirrors production. Missing for 10: documented decline/dispute test scenarios, explicit production-parity guarantees, independent hands-on corroboration.",
     "evidenceIds": [
       "polar-docs-20",
       "polar-supp-sandbox",
       "polar-docs-35",
-      "polar-docs-37",
-      "polar-supp-mcp"
+      "polar-docs-37"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can build and test the entire payment flow in a sandbox or test mode that mirrors production, with test cards for every scenario including declines and disputes",
+      "citations": [
+        {
+          "evidenceId": "polar-docs-20",
+          "quote": "The sandbox environment allows you to experience the complete customer funnel, including checkout. You can perform test payments using Stripe's test card numbers."
+        },
+        {
+          "evidenceId": "polar-supp-sandbox",
+          "quote": "It's a dedicated server, completely isolated from the production instance where you can do all the experiments you want"
+        },
+        {
+          "evidenceId": "polar-docs-35",
+          "quote": "To test Polar or work on your integration without worrying about actual money processing or breaking your live organization, you can use our sandbox environment."
+        },
+        {
+          "evidenceId": "polar-docs-37",
+          "quote": "polar listen http://localhost:3000/"
+        }
+      ]
+    },
     "productId": "polar",
     "storyId": "sandbox-test-mode-fidelity"
   }

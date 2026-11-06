@@ -1,19 +1,36 @@
 {
-  "hash": "4f5fd70df9dcbeb90d416d166dc1f6c0d9e2f5058c764cfd0fe0895b4930bf9f",
+  "hash": "4bc2e16e2b7246a01c2f1e3a93b41c67b1a232b33898608609d7aeb159f6936a",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "mem0",
-    "storyId": "per-user-memory-isolation",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Mem0's entity-scoped memory docs say the Platform API separates memories by user, agent, and app, and can also scope by session so memories 'land exactly where they belong'. The quickstart shows user_id scoping on add calls. The self-hosted bundle adds per-user API keys and a request audit log. Missing for 10: documentation that isolation is enforced at retrieval (rather than relying on the caller passing the right IDs), details on how search filters by scope, and independent or hands-on confirmation that scoped retrieval never leaks across tenants.",
+    "rationale": "Mem0's own docs state that its Platform API separates memories by user, agent, app, and session (mem0-docs-9, mem0-docs-30), and the quickstart shows the user_id parameter (mem0-docs-35), so the scoping core of the story is directly documented. The evidence does not show that retrieval is strictly isolated, so the 'never leak' guarantee is unproven. Missing for 10: an explicit isolation or no-leak guarantee for search, documentation that scoping filters are enforced rather than optional, and independent or hands-on corroboration of tenant isolation.",
     "evidenceIds": [
       "mem0-docs-9",
       "mem0-docs-30",
-      "mem0-docs-35",
-      "mem0-docs-5",
-      "mem0-docs-22"
-    ]
+      "mem0-docs-35"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can scope memories per user, agent, or application so one tenant's memories never leak into another's retrieval",
+      "citations": [
+        {
+          "evidenceId": "mem0-docs-9",
+          "quote": "Mem0's Platform API lets you separate memories for different users, agents, and apps."
+        },
+        {
+          "evidenceId": "mem0-docs-30",
+          "quote": "Scope conversations by user, agent, app, and session so memories land exactly where they belong."
+        },
+        {
+          "evidenceId": "mem0-docs-35",
+          "quote": "client.add(messages, user_id=\"user123\")"
+        }
+      ]
+    },
+    "productId": "mem0",
+    "storyId": "per-user-memory-isolation"
   }
 }

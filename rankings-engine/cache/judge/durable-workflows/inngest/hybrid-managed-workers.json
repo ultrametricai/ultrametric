@@ -1,17 +1,40 @@
 {
-  "hash": "c0b440b2f968d37c8aa3c30a72c4936af5c4efd65b34991c0bf039cd9c750509",
+  "hash": "32366c508bb743fe7cdf34551893d27c9c63311312f1170e6b50952086110cf0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Inngest's model matches the split the story asks for: your functions are deployed to your own infrastructure and synced to the managed Inngest Platform, which runs the orchestration. A community user confirms Inngest does no compute of its own and runs on yours. However, Inngest persists execution state on its side, so data does not truly stay inside your network; the bring-your-own-key encryption middleware only mitigates this by encrypting that data. Missing for 10: documented guarantee that payloads and step state never leave the customer network, private networking or outbound-only worker connectivity docs, and independent hands-on corroboration of the hybrid data-residency setup.",
+    "rationale": "Inngest's own docs say you deploy your functions to your own infrastructure and sync them with the hosted Inngest Platform, which manages orchestration, and a community user confirms Inngest runs on your compute. However, Inngest persists step state and execution data on its side. Its only documented data-control measure is optional bring-your-own-key encryption middleware, so 'data stays inside my network' is only partly met. Missing for 10: explicit evidence that payloads and state never leave the customer network, documented network isolation or private connectivity for workers, and hands-on corroboration of a hybrid deployment.",
     "evidenceIds": [
       "inngest-gh-1",
       "inngest-comm-6",
       "inngest-docs-10",
       "inngest-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I run workers in my own infrastructure while the vendor manages the orchestration control plane — code and data stay inside my network",
+      "citations": [
+        {
+          "evidenceId": "inngest-gh-1",
+          "quote": "Deploy your functions to your own infrastructure. Sync your application's functions with the Inngest Platform or a self-hosted Inngest server."
+        },
+        {
+          "evidenceId": "inngest-comm-6",
+          "quote": "Inngest, as far as I know, does not do its own compute, it piggybacks on your own"
+        },
+        {
+          "evidenceId": "inngest-docs-10",
+          "quote": "For an added layer of encryption and control of your data, install encryption middleware and bring your own encryption key."
+        },
+        {
+          "evidenceId": "inngest-docs-1",
+          "quote": "Inngest handles execution durability, state persistence, retries, and flow control for you."
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "hybrid-managed-workers"
   }

@@ -1,17 +1,40 @@
 {
-  "hash": "01de28a446a5bf6729da9e0b42196ba5d5c96b1c75a1aa46949ff431df67fb1d",
+  "hash": "b467aabf47fd8d06caaababfa75060c0961f589330c4377def0021d1f142f36c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Checkout.com documents refunds through its API. There is a 'Refund a payment' guide (with- and without-reference variants), an idempotent /payments/{id}/refunds endpoint, and the MCP server can issue refunds. The evidence never shows refunds being issued from the Dashboard UI, and never explicitly distinguishes full from partial amounts. missing for 10: evidence of Dashboard-based refund issuance, explicit documentation of partial vs full refund amounts, independent or hands-on corroboration.",
+    "rationale": "Checkout.com documents API refunds: a /payments/{id}/refunds endpoint with idempotent retries, dedicated refund-a-payment docs pages, and refund issuance through its MCP server. The evidence never shows refunds issued from the Dashboard, and never distinguishes full from partial refund amounts, so only part of the story is evidenced. Missing for 10: Dashboard refund workflow, documented partial-amount refunds, independent or hands-on corroboration.",
     "evidenceIds": [
+      "cko-supp-idempotency",
       "checkout-com-docs-21",
       "checkout-com-docs-55",
-      "cko-supp-idempotency",
       "cko-supp-mcp-server"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a finance-ops user, I can issue full or partial refunds from both the dashboard and the API",
+      "citations": [
+        {
+          "evidenceId": "cko-supp-idempotency",
+          "quote": "/payments/{id}/refunds"
+        },
+        {
+          "evidenceId": "checkout-com-docs-21",
+          "quote": "Refund a payment without a reference"
+        },
+        {
+          "evidenceId": "checkout-com-docs-55",
+          "quote": "Refund a payment with a reference"
+        },
+        {
+          "evidenceId": "cko-supp-mcp-server",
+          "quote": "Query payment statuses, issue refunds, void payments, and create and manage payment links"
+        }
+      ]
+    },
     "productId": "checkout-com",
     "storyId": "refunds-full-partial"
   }

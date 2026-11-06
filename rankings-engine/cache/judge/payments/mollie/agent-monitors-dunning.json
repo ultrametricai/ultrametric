@@ -1,23 +1,41 @@
 {
-  "hash": "ce7aff2b2c0bb3f778e350e41b00de3d2ca4396d56ad4e686a196b93dabe3076",
+  "hash": "dcb72e72fcfc4a0f067b359c1c94ebe9a4d8cd980cae8db611450d0495f37a1d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Mollie documents the monitoring half of this story. Webhooks push real-time payment status updates, next-gen webhooks let you subscribe to specific event types, and a Webhook Events API lets you audit past events. The Payments, Subscriptions and Webhooks APIs are also exposed to agents through an official hosted MCP server. For retries, an agent can create new recurring charges and use the documented Idempotency-Key header to avoid double charges, and Payment Links can be attached to unpaid invoices to share with customers. Missing for 10: no documented failed-payment events or statuses specifically, no built-in smart retry or dunning schedule, no first-party dunning outreach (Mollie does not send reminder emails), and no independent or hands-on corroboration.",
+    "rationale": "Mollie documents real-time payment status webhooks, event-type webhook subscriptions, a Webhook Events API, and an MCP server exposing the Payments, Subscriptions and Payment Links APIs. An agent could use these to detect payment status changes and send payment links for unpaid invoices. However, nothing documents failed-payment events specifically, a payment retry mechanism, or any dunning workflow; the Idempotency-Key covers safe request retries, not retrying failed charges. missing for 10: explicit failed-payment event/status documentation, documented failed-charge retry capability, dunning/outreach automation, independent or hands-on corroboration.",
     "evidenceIds": [
       "mollie-docs-16",
       "mollie-docs-31",
       "mollie-supp-webhooks-nextgen",
-      "mollie-docs-32",
       "mollie-supp-mcp-server",
-      "mollie-supp-idempotency",
-      "mollie-docs-24",
-      "mollie-docs-25",
-      "mollie-docs-23",
-      "mollie-docs-22"
+      "mollie-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent monitor failed payments via API and webhooks and drive retries and dunning outreach",
+      "citations": [
+        {
+          "evidenceId": "mollie-docs-31",
+          "quote": "Webhooks are used to process real-time status updates, for example when a payment is paid. It is a URL Mollie will call with the ID of the updated object."
+        },
+        {
+          "evidenceId": "mollie-supp-webhooks-nextgen",
+          "quote": "Updated Webhooks API allowing you to permanently subscribe to specific event types"
+        },
+        {
+          "evidenceId": "mollie-supp-mcp-server",
+          "quote": "Currently, the following APIs are available: Balances API, Captures API, Customers API, Invoices API, Mandates API, Methods API, Payments API, Payment Links API, Settlements API, Subscriptions API, Terminals API, Webhooks API, Webhook Events API."
+        },
+        {
+          "evidenceId": "mollie-docs-23",
+          "quote": "The payment link can for example be attached to an unpaid invoice or shared via email or chat applications."
+        }
+      ]
+    },
     "productId": "mollie",
     "storyId": "agent-monitors-dunning"
   }

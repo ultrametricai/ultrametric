@@ -1,18 +1,36 @@
 {
-  "hash": "d0d92fe00d9eee2a8720dc555cf1740720ae8f7d3732d628cdfd877bb29eb280",
+  "hash": "18f2d13469ce29d6003ef1057164186a1b0e1b1cad55caf54de3c766c8f89fb3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "DBOS documents that workflows can durably wait hours or days for a notification via DBOS.recv(timeout_seconds=...) and survive server restarts and upgrades while waiting, because state is checkpointed to Postgres (dbos-docs-12, dbos-docs-28, dbos-docs-39, dbos-docs-4). However, DBOS runs as a library inside your own application process, and nothing in the pack shows that a waiting workflow releases its server, connection, or billable compute. Missing for 10: a documented durable sleep primitive, evidence of waits lasting weeks to months, evidence that waiting consumes no running server, connection, or compute, and independent hands-on corroboration.",
+    "rationale": "DBOS documents durable long waits: `DBOS.recv(timeout_seconds=...)` lets a workflow wait hours or days for a notification, and the wait survives server restarts and upgrades because state is checkpointed in Postgres. However, DBOS runs as a library inside your own process, and nothing in the evidence shows that a waiting workflow releases its server, connection, or billable compute. missing for 10: an explicit durable sleep primitive, evidence of waits lasting weeks to months, documentation that waiting workflows hold no running server, connection, or compute, and independent corroboration.",
     "evidenceIds": [
       "dbos-docs-12",
       "dbos-docs-28",
       "dbos-docs-39",
-      "dbos-docs-4",
-      "dbos-docs-2"
+      "dbos-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, a workflow can sleep or wait for days to months without holding a server, connection, or billable compute",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-28",
+          "quote": "you can add a line of code to your agent that tells it to wait hours or days for a notification"
+        },
+        {
+          "evidenceId": "dbos-docs-12",
+          "quote": "the agent must be able to reliably wait for a long time (during which the server might be restarted, software might be upgraded, etc.)"
+        },
+        {
+          "evidenceId": "dbos-docs-39",
+          "quote": "We'll see how to build agents that can wait hours or days for human input to arrive (surviving process restarts)."
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "long-sleeps-without-compute"
   }

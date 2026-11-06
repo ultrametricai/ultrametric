@@ -1,18 +1,33 @@
 {
-  "hash": "0a8c3b8f9d52cf13f5a324c1193a7b5d660620a99cd189fdced815f8d3b6703f",
+  "hash": "5c033fc87f02dc1ac3444819eac9cb3d4949ac52dd2956f6aa6d3b64c173ea0c",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "mem0",
-    "storyId": "temporal-fact-memory",
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Mem0 documents an expiration_date field: once that date passes, a memory stops surfacing in search but is not deleted. This gives a manually set 'valid until' cutoff that separates current from expired facts. There is no evidence of true temporal reasoning, such as recording when a fact became valid or automatically invalidating facts that are superseded or contradicted. Missing for 10: valid-from/valid-to timestamps on facts or graph edges, automatic invalidation of outdated facts when new information conflicts, point-in-time (as-of) queries over memory history, independent or hands-on corroboration.",
+    "rationale": "Mem0 documents its own expiration_date on a memory: once the date passes, the memory stops surfacing in search but is not deleted. That gives a manually set 'invalid-after' timestamp separating current from expired facts. Nothing shows facts carrying valid-from times, automatic invalidation of superseded facts, or querying what was true at a past time. Missing for 10: valid-from/valid-to tracking on facts or graph edges, automatic invalidation when contradicting facts arrive, point-in-time temporal queries, independent or hands-on corroboration.",
     "evidenceIds": [
       "mem0-docs-11",
       "mem0-docs-19",
       "mem0-docs-37",
       "mem0-docs-50"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ml-engineer, I can track when facts became valid or invalid (temporal reasoning) so the memory distinguishes current from outdated information",
+      "citations": [
+        {
+          "evidenceId": "mem0-docs-11",
+          "quote": "Set an expiration_date on a memory and Mem0 stops surfacing it once that date passes"
+        },
+        {
+          "evidenceId": "mem0-docs-50",
+          "quote": "Set an expiration date on a Mem0 memory and it stops surfacing in search once that date passes. Nothing is deleted. Works on Platform and Open Source."
+        }
+      ]
+    },
+    "productId": "mem0",
+    "storyId": "temporal-fact-memory"
   }
 }

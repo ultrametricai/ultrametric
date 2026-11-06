@@ -1,21 +1,42 @@
 {
-  "hash": "2c7c12195c90105a5d724a8191e02f3887e5299428ca76b5e75c2c12ac23d7bf",
+  "hash": "0b7f8fb15bb92b26a823348360b8e21f729e758ba1d964655da826fb9dd814e6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The GPU is driven programmatically through NVIDIA's documented public CUDA platform. The CUDA Toolkit provides a runtime library, a compiler and accelerated libraries (docs-3), and lets you write kernels in Python (cuTile) or C++ (CUDA Tile) (docs-4, docs-19). Higher-level documented APIs such as RAPIDS/cuML/cuDF (docs-2, docs-34, docs-36) and the Video Codec SDK (docs-39) also target the card. A community critic notes that as an SM120 part it lacks tmem/tcgen05 and is under-supported by the main libraries, which focus on SM100 (comm-6); this narrows the depth of library coverage. missing for 10: RTX PRO 6000-specific API/driver or management documentation (the CUDA docs are generic), hands-on corroboration of programmatic use, and confirmation of full library support for SM120.",
+    "rationale": "For a GPU, the documented public programming interface is NVIDIA's first-party CUDA stack. The evidence shows the CUDA Toolkit ships a runtime library and compiler, plus cuTile Python and CUDA Tile C++ for writing kernels, along with product-specific SDKs such as RTX Neural Shaders and the Video Codec SDK. Together these let a user programmatically drive the RTX PRO 6000's compute, encode and rendering hardware. The OpenAPI probe 404s do not count against it, since a GPU is not driven via a REST spec. missing for 10: API reference depth (function-level docs) not shown in evidence, no hands-on or independent corroboration of driving the card via these APIs, no machine-readable API spec or agent-oriented docs beyond a developer-portal llms.txt",
     "evidenceIds": [
       "nvidia-rtx-pro-6000-docs-3",
       "nvidia-rtx-pro-6000-docs-4",
       "nvidia-rtx-pro-6000-docs-19",
-      "nvidia-rtx-pro-6000-docs-2",
-      "nvidia-rtx-pro-6000-docs-34",
-      "nvidia-rtx-pro-6000-docs-36",
+      "nvidia-rtx-pro-6000-docs-5",
       "nvidia-rtx-pro-6000-docs-39",
-      "nvidia-rtx-pro-6000-comm-6"
+      "nvidia-rtx-pro-6000-probe-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "nvidia-rtx-pro-6000-docs-3",
+          "quote": "The toolkit includes GPU-accelerated libraries, debugging and optimization tools, a C/C++ compiler, and a runtime library."
+        },
+        {
+          "evidenceId": "nvidia-rtx-pro-6000-docs-4",
+          "quote": "cuTile Python is an expression of the CUDA Tile programming model in Python. It is built on top of the CUDA Tile IR specification and allows you to write tile kernels in Python."
+        },
+        {
+          "evidenceId": "nvidia-rtx-pro-6000-docs-5",
+          "quote": "The RTX Neural Shaders SDK lets developers train shader data on an RTX PRO workstation and accelerate neural representations with NVIDIA Tensor Cores at runtime."
+        },
+        {
+          "evidenceId": "nvidia-rtx-pro-6000-docs-39",
+          "quote": "NVIDIA GPUs hardware-accelerated video encoder (NVENC), provides video encoding for H.264, HEVC (H.265) and AV1 codecs."
+        }
+      ]
+    },
     "productId": "nvidia-rtx-pro-6000",
     "storyId": "agentic-public-api"
   }

@@ -1,11 +1,11 @@
 {
-  "hash": "cb5eaffacf8d8c06dd300bf54ae79db9adf99b4925505384ae948761982263dd",
+  "hash": "1e34d71c5abe365cc078b024062d68b3759e01d77290dbecde99bf849551ab85",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Paxos documents registrable webhook endpoints for asynchronous platform events, configured with event types, auth and rate limits. Orchestration (mint/redeem) webhooks fire on top-level and granular status transitions, with 24-hour retries, a List Events API for recovering missed deliveries, and a Dashboard test feature. Missing for 10: cryptographic payload signing (only API-key/OAuth endpoint authentication is documented), an explicit event catalog naming payment-confirmed, payout-settled and conversion-executed events, and independent or hands-on corroboration.",
+    "rationale": "Paxos documents registrable webhook endpoints that receive asynchronous platform events. Each webhook is configured with event types and API Key or OAuth endpoint auth, with 24-hour retries and a List Events API for recovering failed deliveries. Orchestration webhooks fire on status transitions for mint/redeem (conversion plus transfer/withdrawal) flows, so state can be tracked without polling. However, payload signing is not evidenced; auth is API key/OAuth to your endpoint rather than signed payloads. Specific payment-confirmed, payout-settled and conversion-executed event types are not enumerated. Missing for 10: documented payload signature verification, an explicit catalog of payment/payout/conversion event types, independent hands-on corroboration.",
     "evidenceIds": [
       "paxos-docs-16",
       "paxos-docs-17",
@@ -14,8 +14,32 @@
       "paxos-docs-27",
       "paxos-docs-28",
       "paxos-docs-29",
-      "paxos-docs-52"
+      "paxos-docs-8",
+      "paxos-docs-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, money movement emits signed webhooks — payment confirmed, payout settled, conversion executed — so my system tracks state without polling chains or dashboards",
+      "citations": [
+        {
+          "evidenceId": "paxos-docs-16",
+          "quote": "Paxos Webhooks allow you to register your own endpoints to receive asynchronous events driven by the Paxos Platform."
+        },
+        {
+          "evidenceId": "paxos-docs-24",
+          "quote": "Secure the endpoint using either API key or OAuth-based authentication."
+        },
+        {
+          "evidenceId": "paxos-docs-26",
+          "quote": "There are two families of orchestration webhook events: a high-level family that fires once per top-level status transition, and a granular family that fires at each sub-state change."
+        },
+        {
+          "evidenceId": "paxos-docs-27",
+          "quote": "Paxos will continue retry attempts for up to **24 hours** from the initial attempt, unless delivery succeeds."
+        }
+      ]
+    },
     "productId": "paxos",
     "storyId": "payment-webhooks"
   }

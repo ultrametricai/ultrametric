@@ -1,23 +1,48 @@
 {
-  "hash": "f0a3cbbd0a8e004ee624807af0871cb657f4be318f7e49d60b0d132d3c2c57d2",
+  "hash": "ab745331649e23e66e584a7cca53b4ec18fd666c744a9119b08fb243b845502e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Restate retries by default, with infinite retries and exponential backoff (restate-docs-30). The docs say `ctx.run` retry behavior can be customized (restate-docs-19), terminal errors stop retries (restate-docs-22, restate-docs-77), and durable timers support timeouts (restate-docs-29). The vendor pitches this as removing defensive code (restate-docs-27), and compensation handlers cover failure rollback (restate-docs-59). Missing for 10: the specific configurable retry parameters (the backoff/max-attempts snippet is truncated), details on invocation-level retry policies beyond `ctx.run`, and independent or hands-on corroboration.",
+    "rationale": "Restate's docs say it retries automatically with exponential backoff by default. Retries for `ctx.run` steps can be customized, terminal errors act as a failure policy that stops retries, and durable timers can set timeouts, so the core of the story is delivered without defensive try/catch code. However, the retry-customization docs are truncated, so the specific backoff and timeout knobs are not shown, and nothing independent confirms the behavior. missing for 10: documented specifics of configurable backoff parameters (intervals, max attempts, max duration), explicit per-step timeout configuration, independent or hands-on corroboration of retry behavior.",
     "evidenceIds": [
       "restate-docs-30",
       "restate-docs-19",
+      "restate-docs-18",
       "restate-docs-22",
       "restate-docs-77",
       "restate-docs-29",
-      "restate-docs-15",
-      "restate-docs-82",
       "restate-docs-27",
-      "restate-docs-18",
-      "restate-docs-59"
+      "restate-docs-82"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, every step retries automatically with configurable backoff, timeouts, and failure policies — no try/catch scaffolding",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-30",
+          "quote": "By default, Restate does infinite retries with an exponential backoff strategy."
+        },
+        {
+          "evidenceId": "restate-docs-19",
+          "quote": "You can customize how `ctx.run` retries via:"
+        },
+        {
+          "evidenceId": "restate-docs-22",
+          "quote": "For failures for which you do not want retries, but instead want the invocation to end and the error message to be propagated back to the caller, you can throw a **terminal error**."
+        },
+        {
+          "evidenceId": "restate-docs-29",
+          "quote": "Restate provides durable, fault-tolerant timers that allow you to: Sleep... Send delayed messages... Set timeouts"
+        },
+        {
+          "evidenceId": "restate-docs-27",
+          "quote": "Stop spending time on defensive code and infrastructure plumbing."
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "automatic-step-retries"
   }

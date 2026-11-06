@@ -1,16 +1,31 @@
 {
-  "hash": "959db07977ebd894cfbfd84e4563f24644726bf3c5fc709d80c6d5ac9193e112",
+  "hash": "437e3da4781f57821da6125d51bb2e4316ab40e64589ee0222047cb178a9857c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "SendGrid's Inbound Parse webhook is documented to parse the contents and attachments of incoming email and POST that data to a URL of your choice. A community user also reports using SendGrid inbound, noting a hiccup with its SPF/DKIM checks, which corroborates the feature exists rather than contradicting it. Missing for 10: explicit evidence of the MX-record setup step, explicit mention of parsed headers in the payload, and an API retrieval option beyond the webhook.",
+    "rationale": "SendGrid's own Inbound Parse webhook parses incoming email contents and attachments and posts them to a URL of your choice, which directly covers the core of the story. The pack gives only a single doc sentence, though: it never mentions pointing MX records at SendGrid or delivering parsed headers, so coverage is partial. A community note mentions an inbound SPF/DKIM check hiccup but does not contradict the capability. Missing for 10: documented MX record setup, explicit header fields in the parsed payload, API retrieval alternative, independent hands-on corroboration of inbound parsing.",
     "evidenceIds": [
       "sendgrid-docs-8",
       "sendgrid-docs-25",
       "sendgrid-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can receive email — point MX records at the service and get parsed messages (headers, body, attachments) delivered to my webhook or API",
+      "citations": [
+        {
+          "evidenceId": "sendgrid-docs-8",
+          "quote": "The Inbound Parse webhook parses the contents and attachments for incoming email to a email server, then send that data to a URL of your choice."
+        },
+        {
+          "evidenceId": "sendgrid-docs-25",
+          "quote": "Configure the inbound parse webhook"
+        }
+      ]
+    },
     "productId": "sendgrid",
     "storyId": "inbound-parse"
   }

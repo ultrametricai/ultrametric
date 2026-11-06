@@ -1,18 +1,39 @@
 {
-  "hash": "8d25c3d003f3bf757e1f5c9bd908a7b8aff532e79adc7796dbf0c7c8361fad2d",
+  "hash": "9276fa3b5a2ffe6ee89e65f8985259f7f37c591bca1d34750640c8cd3c73d600",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Polar documents signed webhook deliveries following the Standard Webhooks spec (older secrets use Polar HMAC). Its SDKs include built-in signature validation and typed payloads, and the docs mention delivery monitoring, which roughly covers event logs. They also document a `polar listen` local forwarding tool and a Customer State webhook event. The evidence never mentions automatic webhook retries or replay; the documented retry schedule is for failed subscription charges (dunning), not webhook deliveries. Missing for 10: documented automatic webhook delivery retries, event replay/redelivery, detailed event-log documentation, independent or hands-on corroboration.",
+    "rationale": "Polar documents signed webhook deliveries: they follow the Standard Webhooks spec (older secrets use Polar HMAC), and the SDKs include built-in signature validation. Delivery monitoring is also documented, which partly covers event logs. The cited retry schedule applies to failed subscription charges, not webhook deliveries, so it does not count toward webhook retries, and the local `polar listen` forwarder is not a replay feature. Missing for 10: documented automatic webhook delivery retries, a documented replay/redelivery capability, detail on per-delivery event logs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "polar-supp-webhooks",
       "polar-docs-22",
-      "polar-docs-21",
-      "polar-docs-37",
-      "polar-docs-34"
+      "polar-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on signed webhook deliveries with automatic retries, event logs, and replay to keep my system consistent with payment state",
+      "citations": [
+        {
+          "evidenceId": "polar-supp-webhooks",
+          "quote": "Secrets generated on or after 8 September 2026, 00:00 UTC follow Standard Webhooks. Older secrets use Polar HMAC."
+        },
+        {
+          "evidenceId": "polar-supp-webhooks",
+          "quote": "Built-in webhook signature validation"
+        },
+        {
+          "evidenceId": "polar-supp-webhooks",
+          "quote": "with documented delivery monitoring"
+        },
+        {
+          "evidenceId": "polar-docs-22",
+          "quote": "Our TypeScript & Python SDKs come with a built-in helper function to easily validate and parse the webhook event"
+        }
+      ]
+    },
     "productId": "polar",
     "storyId": "webhook-delivery-reliability"
   }

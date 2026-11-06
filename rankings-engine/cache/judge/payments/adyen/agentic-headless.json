@@ -1,22 +1,45 @@
 {
-  "hash": "813d63c5b4e33f01cd7f2c5bf5c54874140fd00b60c3f8b09e92bbad535885e3",
+  "hash": "eac719b478c34daf28ff6da1bead64f1c96912cad4172507d34b984486836abd",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Adyen is API-first, so it runs headlessly by design. Server-side Checkout API calls drive payments, a separate test environment with test credentials supports automated testing, and idempotency keys allow safe retries. Scoped API credentials and webhooks support unattended operation, and the MCP server runs non-interactively via `npx` with the API key supplied through an environment variable. missing for 10: explicit CI/pipeline integration guidance, an official non-MCP CLI for scripted automation, independent hands-on corroboration of headless/CI use",
+    "rationale": "Adyen is API-first: server-to-server Checkout API calls, API-key auth, a separate test environment with test credentials, and idempotent retries all support unattended automation. Its MCP server also runs non-interactively via npx, with the API key passed through an environment variable. However, nothing in the evidence documents CI usage itself, such as a CLI, pipeline integration, or headless test-run guidance, so coverage of the story is only partial. missing for 10: an official CLI or documented CI/pipeline workflow, explicit headless or automated test-run guidance, and independent hands-on corroboration of CI automation.",
     "evidenceIds": [
-      "adyen-docs-1",
       "adyen-docs-2",
-      "adyen-docs-6",
       "adyen-docs-18",
-      "adyen-docs-4",
       "adyen-docs-25",
-      "adyen-supp-api-credential-scoping",
-      "adyen-docs-3",
-      "adyen-supp-mcp-tools"
+      "adyen-supp-mcp-tools",
+      "adyen-supp-api-credential-scoping"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "adyen-docs-2",
+          "quote": "Your server makes three Checkout API requests: /paymentMethods, /payments, and /payments/details."
+        },
+        {
+          "evidenceId": "adyen-supp-mcp-tools",
+          "quote": "runs locally via `npx -y @adyen/mcp --env=TEST`"
+        },
+        {
+          "evidenceId": "adyen-supp-mcp-tools",
+          "quote": "the API key is passed via the ADYEN_API_KEY environment variable"
+        },
+        {
+          "evidenceId": "adyen-docs-18",
+          "quote": "Test the different types of transactions with Adyen that your integration handles using test credentials."
+        },
+        {
+          "evidenceId": "adyen-docs-25",
+          "quote": "The Adyen API supports idempotency, allowing you to retry a request multiple times while only performing the action once."
+        }
+      ]
+    },
     "productId": "adyen",
     "storyId": "agentic-headless"
   }

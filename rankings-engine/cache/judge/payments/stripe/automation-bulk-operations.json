@@ -1,16 +1,34 @@
 {
-  "hash": "c6086fa1dc1719049672de64df42533254972fb80e5a111f734ca9e6bfb63d5f",
+  "hash": "91b9eb089816a6c6ba1fc236d7ed1e09bca5e0cad896273b5f52f7d0261fd322",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe documents a real first-party bulk mechanism: the v2 Product Catalog Import API accepts CSV feeds up to 4 GB in upsert or replace mode, reports completion through webhooks, and returns a per-row error CSV. Two narrower bulk behaviors are also documented: report runs that produce downloadable CSVs, and token billing that can apply updated prices to all customers automatically. However, these are confined to specific products (catalog imports are also region-limited) rather than a general bulk-operation facility. missing for 10: general-purpose batch create/update/delete across core resources (customers, subscriptions, refunds, invoices), bulk actions exposed through the MCP/CLI agent tooling, independent or hands-on corroboration.",
+    "rationale": "Stripe documents a real bulk capability: the v2 Product Catalog Import API ingests whole product, inventory, and pricing catalogs as CSV files (upsert or replace, up to 4 GB). Results come back through terminal webhooks and a per-row error CSV. That support is confined to Agentic Commerce Suite catalogs in listed regions, and 'bulk-fulfill' relies on a List endpoint rather than a true batch-write operation. missing for 10: general-purpose batch write/update across core objects (customers, subscriptions, refunds, invoices), bulk actions through MCP or CLI, documentation of bulk operations outside product catalogs, independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-supp-acs-catalog-import",
-      "stripe-supp-analytics-ai",
-      "stripe-supp-token-billing"
+      "stripe-supp-acs-orders-attribution"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "stripe-supp-acs-catalog-import",
+          "quote": "Agentic Commerce Suite ingests full product catalogs as bulk CSV imports via the v2 Product Catalog Import API"
+        },
+        {
+          "evidenceId": "stripe-supp-acs-catalog-import",
+          "quote": "The maximum file size is 4 GB"
+        },
+        {
+          "evidenceId": "stripe-supp-acs-orders-attribution",
+          "quote": "Sellers can bulk-fulfill via the List CheckoutSessions endpoint"
+        }
+      ]
+    },
     "productId": "stripe",
     "storyId": "automation-bulk-operations"
   }

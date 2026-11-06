@@ -1,17 +1,35 @@
 {
-  "hash": "6857e5fb0ab3ffb5309a1cf548d0f2ee19faa9e646220282403a6f7669e54134",
+  "hash": "21a4d33ac2373abb312137d9f482069c645f71449b2ccdf65d0021540f6fe038",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "First-party docs show domains can be added and verified via the dashboard, the API (a dedicated verify-domain endpoint), the CLI, or the MCP server. The llms.txt explicitly ties domain verification to SPF/DKIM/DMARC, and per-domain DKIM keys are generated. missing for 10: explicit documentation of the exact generated DNS record values returned by the API, an explicit verification-status field or polling via the API, and independent or hands-on corroboration of the end-to-end flow.",
+    "rationale": "Resend's own docs say you can add and verify a domain through the API, CLI or MCP server, and llms.txt says verification covers SPF/DKIM/DMARC. The verify-domain reference also mentions domains getting their own DKIM keys, which implies Resend generates the records. However, the pack never shows the exact DNS record values being returned, and never shows verification status being readable via the API. Missing for 10: documented output of the generated SPF/DKIM/DMARC record values, an API field or endpoint exposing per-record verification status, hands-on corroboration of the end-to-end flow.",
     "evidenceIds": [
       "resend-docs-5",
       "resend-docs-31",
-      "resend-docs-20",
-      "resend-docs-24"
+      "resend-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can authenticate my sending domain end to end — the product generates the exact SPF/DKIM/DMARC DNS records, verifies them, and exposes verification status via the API",
+      "citations": [
+        {
+          "evidenceId": "resend-docs-5",
+          "quote": "You can add and verify a domain you own in four ways: in the Domains Dashboard page, using the Resend API, with a Resend CLI command, or with the Resend MCP server"
+        },
+        {
+          "evidenceId": "resend-docs-31",
+          "quote": "verify domains (SPF/DKIM/DMARC)"
+        },
+        {
+          "evidenceId": "resend-docs-20",
+          "quote": "transfers the domain into your account as a brand-new domain with its own DKIM keys"
+        }
+      ]
+    },
     "productId": "resend",
     "storyId": "guided-domain-auth"
   }

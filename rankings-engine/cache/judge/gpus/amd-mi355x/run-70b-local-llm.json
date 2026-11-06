@@ -1,18 +1,35 @@
 {
-  "hash": "fcb9e3c16e4c3c36fc1ea56e142827d31c8a641d95de92684eba745817d30547",
+  "hash": "286b2bf964daa259bb45efe0e1bfaaf66e889d2663c78e1b4c140b9c1f47e3c0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "AMD publishes 288GB HBM3E and 8TB/s of bandwidth for the MI355X, plus MXFP4/MXFP6 low-precision datatype support. An independent architecture review confirms the same 288GB at 8TB/s and notes it helps where competing GPUs run out of VRAM, which comfortably covers a quantized 70B model on one GPU or node. AMD's docs also provide vLLM and SGLang inference recipes. missing for 10: a hands-on benchmark of a 70B-class quantized model on a single MI355X (the only community benchmark covers a much larger model on 8 GPUs)",
+    "rationale": "AMD publishes 288GB HBM3E at 8TB/s with MXFP4/MXFP6 low-precision support, and an independent architecture analysis confirms the same capacity and bandwidth. That is far more than a quantized 70B model needs on a single GPU, and ROCm documents vLLM and SGLang for serving it. missing for 10: no hands-on benchmark of a 70B-class quantized model on a single MI355X (the community benchmarks cover an 8-GPU setup on a different model), and no first-party 70B single-node inference recipe or throughput figures.",
     "evidenceIds": [
       "amd-mi355x-docs-17",
-      "amd-mi355x-docs-16",
       "amd-mi355x-comm-4",
-      "amd-mi355x-docs-3",
-      "amd-mi355x-comm-6"
+      "amd-mi355x-docs-29"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can run a 70B-class quantized LLM on this GPU — published VRAM capacity and memory bandwidth that make local or single-node inference practical",
+      "citations": [
+        {
+          "evidenceId": "amd-mi355x-docs-17",
+          "quote": "288GB HBM3E memory, 8TB/s bandwidth, and expanded MXFP6 and MXFP4 datatype support"
+        },
+        {
+          "evidenceId": "amd-mi355x-comm-4",
+          "quote": "MI355X offers 288 GB of HBM3E at 8 TB/s versus B200's 180 GB at 7.7 TB/s, which helps when competing models run out of VRAM."
+        },
+        {
+          "evidenceId": "amd-mi355x-docs-29",
+          "quote": "Inference: vLLM, SGLang"
+        }
+      ]
+    },
     "productId": "amd-mi355x",
     "storyId": "run-70b-local-llm"
   }

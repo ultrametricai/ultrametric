@@ -1,19 +1,41 @@
 {
-  "hash": "fa7a775a509c8dbdbde80c5722fe0e028f25ee376af5c574aa4ef2a37cef1e66",
+  "hash": "1318355c72cefc45c7ae6bdda95d337bf1611817059736eec179039b4e17c76c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Mollie is API-first: every core resource (payments, subscriptions, refunds, balances, webhooks) is driven through its own API. Scoped API keys and advanced tokens suit unattended automation, and an isolated test mode, selectable by test key or `testmode` parameter, plus Idempotency-Key retries make CI runs safe. Test-mode checkout and state simulation are documented as walk-through flows rather than clearly programmatic ones, and there is no CLI or CI guidance. missing for 10: an official CLI or documented CI/headless recipes, fully programmatic (non-interactive) test payment state transitions, independent hands-on corroboration.",
+    "rationale": "Mollie is API-first. Its documented Payments API, scoped API keys and tokens, and a test mode isolated from live data let automation and CI pipelines drive it without a UI. Idempotency keys support safe retries in automated runs. However, nothing documents a CLI, CI-specific guidance, or a fully non-interactive way to simulate payment outcomes, and test checkout is a walk-through page. Missing for 10: an official CLI or headless runner, explicit CI/CD integration docs, programmatic (non-browser) payment-state simulation for tests, and independent hands-on corroboration.",
     "evidenceIds": [
-      "mollie-docs-22",
-      "mollie-supp-auth-scopes",
       "mollie-supp-testing",
-      "mollie-docs-18",
+      "mollie-supp-auth-scopes",
+      "mollie-docs-22",
       "mollie-supp-idempotency",
-      "mollie-docs-16"
+      "mollie-docs-18"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "mollie-supp-testing",
+          "quote": "You can access the `test` mode of the Mollie API in two ways: by using the Test API key, or... by providing the `testmode` parameter in your API request."
+        },
+        {
+          "evidenceId": "mollie-docs-18",
+          "quote": "Any payments or other resources you create in test mode are completely isolated from your live mode data."
+        },
+        {
+          "evidenceId": "mollie-docs-22",
+          "quote": "The Payments API is at the heart of the Mollie API. It allows you to create and manage payments."
+        },
+        {
+          "evidenceId": "mollie-supp-idempotency",
+          "quote": "If two requests come in with the same value, the second request is considered a duplicate that can be ignored."
+        }
+      ]
+    },
     "productId": "mollie",
     "storyId": "agentic-headless"
   }

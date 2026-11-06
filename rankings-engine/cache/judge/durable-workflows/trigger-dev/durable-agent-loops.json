@@ -1,20 +1,46 @@
 {
-  "hash": "360898b59bc1fd1340968a4d2359f79b2f289b9fbaaf47bad67d8f4be922851b",
+  "hash": "06bc24f08e5bbfa27015fc828a4ab8e5950fa123e0007c1c07da4fa40b2cf974",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Trigger.dev positions itself as a platform for durable AI agents, citing durable tasks, retries, queues and idempotency (gh-1). It documents multi-turn AI chat agents that survive refreshes, deploys and crashes (docs-13), and uses checkpoint-resume so normal TypeScript runs durably (docs-38). It also offers configurable exponential-backoff retries (docs-4) and agent tool calls that pause for approval while the run stays alive (docs-22). Missing for 10: explicit evidence that individual model and tool calls are checkpointed or memoized and retried as separate steps (retries appear task-level), and independent hands-on corroboration of crash recovery mid-agent-loop.",
+    "rationale": "Trigger.dev documents durable, checkpoint-resume task execution with automatic retries. Its AI chat agents are described as durable tasks that survive refreshes, deploys and crashes, and tool calls can pause for approval while the run stays alive. Retries are documented at the task level, though, and no evidence shows individual model or tool calls being checkpointed or memoized as separate steps that resume mid-loop after a crash. missing for 10: documented per-step checkpointing of individual model/tool calls, step-level retry semantics within an agent loop, independent hands-on corroboration of crash recovery mid-run.",
     "evidenceIds": [
-      "trigger-dev-gh-1",
-      "trigger-dev-docs-13",
       "trigger-dev-docs-38",
+      "trigger-dev-docs-13",
       "trigger-dev-docs-4",
+      "trigger-dev-gh-1",
       "trigger-dev-docs-22",
-      "trigger-dev-docs-2",
-      "trigger-dev-comm-4"
+      "trigger-dev-docs-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an agent builder, I run LLM agent loops as durable workflows — model and tool calls as checkpointed, retried steps that survive crashes mid-run",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-38",
+          "quote": "Trigger.dev uses checkpoint-resume to run normal TypeScript with no determinism constraints"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-13",
+          "quote": "Durable multi-turn AI chats — one Trigger.dev task per conversation, surviving refreshes, deploys, and crashes."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-4",
+          "quote": "This task will retry 10 times with exponential backoff."
+        },
+        {
+          "evidenceId": "trigger-dev-gh-1",
+          "quote": "Build rock solid agents and AI applications using our durable tasks, retries, queues and idempotency."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-22",
+          "quote": "needsApproval: true, // pauses for human approval; the run stays alive"
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "durable-agent-loops"
   }

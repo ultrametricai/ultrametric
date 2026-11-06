@@ -1,16 +1,31 @@
 {
-  "hash": "ea168716bc8e7a4a339fccf8ade6646d8c6741757030376573050e93e134ce56",
+  "hash": "91b2d010a633fac9504bb51cf26fc21920de0b56b11ec36552edad8fa78f43f5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Flagright documents batch endpoints for creating consumer and business users. The consumer batch response returns `successful`, `failed` and `failedRecords` counts, so a developer can see which records failed and resubmit only those. Evidence covers only user imports, not transactions, and shows no import-tracking or resume mechanism. Missing for 10: a batch transaction import endpoint, batch job status/progress tracking, documented resume or idempotent retry semantics for partial failures, and independent corroboration.",
+    "rationale": "Flagright documents batch endpoints for consumer and business users. The consumer batch response reports `successful`, `failed` and `failedRecords` counts, which lets a developer see partial failures and resubmit only the failed records. The pack does not show a batch transaction import, a persistent import-job status or progress API, or a documented resume or checkpoint mechanism. missing for 10: batch transaction import evidence, trackable import job status/progress, documented resume-from-failure workflow, independent corroboration.",
     "evidenceIds": [
       "flagright-docs-18",
       "flagright-docs-19",
       "flagright-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can track bulk customer and transaction imports and resume after partial failure",
+      "citations": [
+        {
+          "evidenceId": "flagright-docs-18",
+          "quote": "`successful` (double, required) `failed` (double, required) `failedRecords`"
+        },
+        {
+          "evidenceId": "flagright-docs-19",
+          "quote": "Batch create business users POST https://sandbox.api.flagright.com/batch/business/users"
+        }
+      ]
+    },
     "productId": "flagright",
     "storyId": "bulk-import-status"
   }

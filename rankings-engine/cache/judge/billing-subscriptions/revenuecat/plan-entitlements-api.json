@@ -1,20 +1,46 @@
 {
-  "hash": "af8e61092a83e78fda5fdb826437119f40589ec7db9053fab147bb7791a2c39d",
+  "hash": "1d45c0d8172f2533d586fb29797c57bfcdd8387c2d53f8bdd510628b8cf9dfdb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "RevenueCat models access as Entitlements tied to Products, so apps don't hard-code product identifiers (revenuecat-docs-1, revenuecat-docs-8). Apps check access at runtime through the SDK's CustomerInfo object and getCustomerInfo() (revenuecat-docs-3, revenuecat-docs-13, revenuecat-gh-1), and server-side endpoints can grant entitlements (revenuecat-docs-19). Missing for 10: modeling of numeric limits or quotas (not just boolean access), an explicit statement that CustomerInfo exposes active entitlements, documentation of a server-side REST entitlement check, and independent or hands-on corroboration.",
+    "rationale": "RevenueCat documents entitlements that gate a user's access to content based on their purchases and abstract away product identifiers. Entitlements are configured alongside Products and Offerings, and the SDK retrieves the customer's purchase and subscription state at runtime via the CustomerInfo object and `getCustomerInfo()`. However, the evidence shows feature-access gating only, not modeling of numeric limits or quotas. It also never shows a direct entitlement-check call on CustomerInfo or a REST read endpoint for entitlements. missing for 10: modeling of usage limits/quotas as entitlements, an explicit documented entitlement-check API/SDK call, REST API runtime entitlement lookup, independent corroboration.",
     "evidenceIds": [
       "revenuecat-docs-1",
       "revenuecat-docs-8",
       "revenuecat-docs-3",
       "revenuecat-docs-13",
       "revenuecat-gh-1",
-      "revenuecat-docs-19",
-      "revenuecat-docs-9"
+      "revenuecat-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, features and limits are modeled as entitlements attached to plans, and my application can check a customer's entitlements at runtime via API or SDK",
+      "citations": [
+        {
+          "evidenceId": "revenuecat-docs-1",
+          "quote": "Entitlements are used to ensure a user has appropriate access to content based on their purchases, without having to manage all of the product identifiers in your app code."
+        },
+        {
+          "evidenceId": "revenuecat-docs-8",
+          "quote": "Set up subscriptions, including projects, apps, Products, Entitlements, Offerings, and Packages"
+        },
+        {
+          "evidenceId": "revenuecat-docs-3",
+          "quote": "The CustomerInfo object contains all of the purchase and subscription data available about a customer."
+        },
+        {
+          "evidenceId": "revenuecat-docs-13",
+          "quote": "The latest information can always be retrieved by calling `getCustomerInfo()`"
+        },
+        {
+          "evidenceId": "revenuecat-gh-1",
+          "quote": "Fetch products, make purchases, and check subscription status with our native SDKs."
+        }
+      ]
+    },
     "productId": "revenuecat",
     "storyId": "plan-entitlements-api"
   }

@@ -1,18 +1,36 @@
 {
-  "hash": "127c1bbad9f4874eee79630c85392b4cf437f45c3d5aeadee35ba81d8cac62f6",
+  "hash": "01ee2c98c99053b2679020880ff6f0daef7dbc1f978c6315346ea6162bdc907a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Metronome documents a dedicated /ingest endpoint (plus Segment) for usage events, high-volume ingestion of up to 110,000 events per second without pre-aggregation, and built-in idempotency for safely retrying requests. An event explorer for inspecting the pipeline and a usage-event design guide round out the developer story. Missing for 10: any evidence of backdating or late-arriving event support, and independent or hands-on corroboration of throughput and idempotency claims.",
+    "rationale": "Metronome documents its own /ingest endpoint for usage events, rated at up to 110,000 events per second without pre-aggregation. It also documents built-in idempotency mechanisms for safe retries. Backdating of late or historical events is not evidenced anywhere in the pack, and idempotency is described for the API generally rather than for ingestion specifically. missing for 10: documented backdating/late-arriving event support, ingest-specific idempotency (transaction ID dedup) details, independent or hands-on corroboration of throughput.",
     "evidenceIds": [
       "metronome-docs-1",
       "metronome-docs-2",
       "metronome-docs-21",
-      "metronome-docs-12",
-      "metronome-docs-15"
+      "metronome-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream high-volume usage events — API calls, tokens, compute-seconds — into a metering pipeline with idempotent ingestion and backdating support",
+      "citations": [
+        {
+          "evidenceId": "metronome-docs-1",
+          "quote": "Send usage events to Metronome through the /ingest endpoint or by connecting Metronome to Segment."
+        },
+        {
+          "evidenceId": "metronome-docs-2",
+          "quote": "Metronome's infrastructure supports up to 110,000 events per second (6.6 million events per minute) without requiring pre-aggregation or rollups."
+        },
+        {
+          "evidenceId": "metronome-docs-21",
+          "quote": "Metronome provides built-in idempotency mechanisms so you can safely retry requests without introducing extraneous data."
+        }
+      ]
+    },
     "productId": "metronome",
     "storyId": "usage-event-ingestion"
   }

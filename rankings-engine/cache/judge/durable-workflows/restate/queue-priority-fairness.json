@@ -1,17 +1,35 @@
 {
-  "hash": "2192991cf3a78f5b184656d709e3973b332be3737ab6845ea0868b92864101f0",
+  "hash": "a1c51398e0806fd679e397f25cc9b0f31c049291bb59dace415a93eae4e3dc76",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Restate's flow control lets you shape traffic with concurrency limits per scope. The docs explicitly frame this as a way to \"keep scheduling fair\" instead of letting invocations run unbounded, which plausibly covers tenant-level fairness when scopes map to tenants. Nothing in the evidence shows priorities that can be assigned to individual runs. missing for 10: per-run priority assignment, explicit multi-tenant fair-queuing semantics (e.g. weighted or round-robin across tenants), detailed scheduling docs, independent or hands-on corroboration.",
+    "rationale": "Restate's flow control lets you set concurrency limits per scope and explicitly claims to 'keep scheduling fair'. That is a first-party way to stop one scope (for example, a tenant) from monopolizing execution, rather than relying on unbounded FIFO. Missing for 10: any documented per-run priority assignment, explicit per-tenant fair-queuing semantics (how a scope maps to a tenant and how fairness is enforced), and independent or hands-on corroboration.",
     "evidenceIds": [
       "restate-docs-4",
       "restate-docs-32",
-      "restate-docs-67",
-      "restate-docs-11"
+      "restate-docs-67"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I assign priorities to runs and get fair scheduling across tenants instead of a single FIFO queue",
+      "citations": [
+        {
+          "evidenceId": "restate-docs-4",
+          "quote": "Shape traffic with concurrency limits per scope to control cost, protect downstream services, and keep scheduling fair."
+        },
+        {
+          "evidenceId": "restate-docs-32",
+          "quote": "Flow control lets you shape the traffic flowing through Restate instead of letting invocations run unbounded."
+        },
+        {
+          "evidenceId": "restate-docs-67",
+          "quote": "Shape and limit concurrent invocations with scope"
+        }
+      ]
+    },
     "productId": "restate",
     "storyId": "queue-priority-fairness"
   }

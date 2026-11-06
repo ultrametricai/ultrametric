@@ -1,19 +1,32 @@
 {
-  "hash": "d650c69239da9f1c7d4bea2f5198add13dc2dd4008363735c4c8b78ad53a10d1",
+  "hash": "cc98ee4d6fb385bd344c07cf8c88dd3533cca8135e9755ce24058d1c153666a5",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "circle",
-    "storyId": "accept-stablecoin-checkout",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Circle documents building blocks for accepting stablecoin payments: wallet-creation APIs that can serve as receiving addresses, webhooks that POST on resource state changes for programmatic confirmation, and idempotency keys. The x402 seller flow returns 402 until a valid USDC payment is attached, but it is aimed at charging AI agents per request rather than at customer checkout. A developer must assemble these pieces rather than use a dedicated customer checkout or payment-intent API. Missing for 10: a documented customer-facing checkout/payment-creation API, a hosted payment page or address-presentation flow for end customers, explicit payment-settlement confirmation docs, and independent or hands-on corroboration.",
+    "rationale": "Circle documents its own way to accept USDC payments: an x402 seller flow where your endpoint returns 402 Payment Required and serves the resource once a valid payment is attached. Generic webhooks also POST state changes to your endpoint. However, this flow is scoped to AI agents paying per request; nothing in the evidence shows a general customer checkout or payment-intent API that creates a payment, presents a deposit address, and confirms settlement. Missing for 10: a documented create-payment/checkout endpoint for human customers, a payment-address or hosted-flow presentation step, explicit payment-settlement confirmation events or status APIs, and hands-on corroboration.",
     "evidenceIds": [
-      "circle-docs-14",
-      "circle-docs-15",
-      "circle-docs-10",
       "circle-docs-21",
-      "circle-docs-25"
-    ]
+      "circle-docs-10",
+      "circle-docs-22"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can accept a stablecoin payment from a customer through a documented checkout or payment API — create the payment, present the address or flow, and confirm settlement programmatically",
+      "citations": [
+        {
+          "evidenceId": "circle-docs-21",
+          "quote": "Make your API charge AI agents per request in USDC over x402: your endpoint returns 402 Payment Required when a request is unpaid, and serves the resource when a valid payment is attached."
+        },
+        {
+          "evidenceId": "circle-docs-10",
+          "quote": "When a resource changes state, Circle sends an HTTP POST to the endpoint you configure so your application can react."
+        }
+      ]
+    },
+    "productId": "circle",
+    "storyId": "accept-stablecoin-checkout"
   }
 }

@@ -1,17 +1,40 @@
 {
-  "hash": "28214e31dc92fa05707d73fdbd6e7249781447f22a1e7e0b2c4daa26a6152b72",
+  "hash": "ce041a3ac2da3b5d4a7c9d4ba2af1d5c405448a523200d2f9dc95817699a0b7d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "dLocal documents Smart Fields for merchants that are not fully PCI DSS compliant to collect card data securely, plus a hosted Checkout Redirect. Saved cards are charged by `card_id` token, and merchants can rely on dLocal's PCI Level 1 status and complete the relevant SAQ, which delivers the core scope-reduction story. Missing for 10: an explicit statement that raw card data never reaches merchant servers, detail on Smart Fields tokenization mechanics and which SAQ type applies, and independent or hands-on corroboration.",
+    "rationale": "dLocal's docs say merchants that are not fully PCI DSS compliant should collect card data through Smart Fields or use Checkout Redirect, and can then rely on dLocal's PCI Level 1 status and complete the relevant SAQ. Saved cards are charged by `card_id`, a token-style reference. The evidence never explicitly says raw card data bypasses merchant servers or which reduced SAQ applies, so scope reduction is implied rather than fully documented. missing for 10: an explicit statement that card data never touches merchant servers when using Smart Fields, documentation of the reduced SAQ type (e.g., SAQ A/A-EP), detail on how Smart Fields tokenizes cards, and independent or hands-on corroboration.",
     "evidenceIds": [
       "dlocal-docs-10",
+      "dlocal-docs-24",
       "dlocal-docs-11",
-      "dlocal-docs-12",
-      "dlocal-docs-24"
+      "dlocal-docs-12"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can keep my systems out of most of PCI DSS scope because card data is tokenized and never touches my servers",
+      "citations": [
+        {
+          "evidenceId": "dlocal-docs-10",
+          "quote": "If your business is not Full PCI DSS compliant, you need to securely collect the card information using Smart Fields."
+        },
+        {
+          "evidenceId": "dlocal-docs-24",
+          "quote": "if you are using dLocal you will rely on our PCI Level 1 status and complete the relevant SAQ."
+        },
+        {
+          "evidenceId": "dlocal-docs-11",
+          "quote": "For recurring payments, first save the card, and then use the `card_id` to charge the card."
+        },
+        {
+          "evidenceId": "dlocal-docs-12",
+          "quote": "you can process payments safely and simply with a ready-to-use design and front end. Learn more about Checkout Redirect."
+        }
+      ]
+    },
     "productId": "dlocal",
     "storyId": "pci-scope-reduction"
   }

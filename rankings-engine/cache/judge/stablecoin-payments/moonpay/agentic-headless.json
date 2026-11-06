@@ -1,21 +1,43 @@
 {
-  "hash": "30c3074100a6f285edabcafd6f3d3324b9967f00788e8fc18dc479020e401655",
+  "hash": "ced6fbb5fe448b3adf99fc436280bee119f9b511da0799309cdeeffc9a4f39e5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MoonPay documents API-driven paths that suit unattended use: a quotes endpoint, a Customer API for submitting KYC, server-side Platform API calls with a forwarded accessToken, and OpenAPI-generated clients. Its test mode and sandbox use testnet chains and simulated payments, which fits automated testing. However, its 'headless' buy flow still runs as frames mounted in a browser UI, and auth/MFA and card capture need customer interaction, so fully unattended or CI execution is not documented. Missing for 10: explicit CI/headless automation guidance, a documented fully server-side transaction path without browser frames, non-interactive auth for automated runs, and hands-on corroboration.",
+    "rationale": "MoonPay provides server-side API access, so a backend can call the Platform API with a forwarded access token. It also offers a sandbox-style test mode, with testnet blockchains and simulated payments, for automated integration testing. However, its 'headless' buy frame still runs in the browser, and customer flows such as MFA login and KYC need user interaction, so fully unattended CI automation is not documented. Missing for 10: CI- or pipeline-specific documentation, a CLI or non-interactive auth flow for unattended runs, end-to-end headless transaction execution without browser frames, and independent hands-on corroboration.",
     "evidenceIds": [
-      "moonpay-docs-14",
       "moonpay-docs-58",
+      "moonpay-docs-13",
+      "moonpay-docs-60",
       "moonpay-docs-61",
       "moonpay-docs-52",
-      "moonpay-docs-13",
-      "moonpay-docs-46",
-      "moonpay-docs-60",
-      "moonpay-docs-44"
+      "moonpay-docs-67",
+      "moonpay-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "moonpay-docs-58",
+          "quote": "forward the accessToken to your own backend and call the MoonPay Platform API server-side on that customer's behalf."
+        },
+        {
+          "evidenceId": "moonpay-docs-13",
+          "quote": "MoonPay provides a test mode for integration development and testing. Test mode uses testnet blockchains and simulated payments. No real assets are transferred."
+        },
+        {
+          "evidenceId": "moonpay-docs-60",
+          "quote": "The frame renders no visible UI — it drives the buy pipeline in the background and emits events you handle from your own purchase screen."
+        },
+        {
+          "evidenceId": "moonpay-docs-61",
+          "quote": "The API-driven path: capture KYC data in your own screens and submit it with the Customer API."
+        }
+      ]
+    },
     "productId": "moonpay",
     "storyId": "agentic-headless"
   }

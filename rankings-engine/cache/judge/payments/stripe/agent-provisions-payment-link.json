@@ -1,21 +1,42 @@
 {
-  "hash": "bd2a82bdf136f1f2e0a089993823a38499fb44c8f93dd6f3ada09e9f1712b8c3",
+  "hash": "c67106609585b3a78b72d640c75d6be5c1ede4c105d98b0f03be7870ec38a049",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Stripe's hosted MCP server exposes `stripe_api_write`, and its documented supported methods explicitly include creating and updating products, prices, and payment links. An agent can therefore chain all three creates in one session. A live probe confirms the OAuth-gated MCP endpoint, and the docs add agent-ready sandboxes, restricted keys scoped for agents, and idempotency keys for safe retries. Missing for 10: independent or hands-on corroboration of the end-to-end product→price→payment link flow completed by an agent in a single session.",
+    "rationale": "Stripe's hosted MCP server documents a generic `stripe_api_write` tool, and its supported-method list explicitly covers creating products, prices and payment links. An agent can therefore provision all three objects through the API within one OAuth-authenticated session, and a probe confirms the remote MCP server is live and OAuth-gated. Agents can also obtain an anonymous sandbox with working API keys via the CLI, so the flow can run without touching live mode. Missing for 10: a documented end-to-end walkthrough chaining product → price → payment link in one agent session, and independent hands-on corroboration of that flow.",
     "evidenceIds": [
       "stripe-supp-mcp-tools",
-      "stripe-probe-6",
       "stripe-docs-13",
       "stripe-docs-4",
+      "stripe-probe-6",
       "stripe-docs-16",
-      "stripe-supp-restricted-keys-agents",
-      "stripe-docs-25",
       "stripe-supp-workbench-shell"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an ai-native user, I can have an agent provision a new product, price, and payment link via the API in a single session",
+      "citations": [
+        {
+          "evidenceId": "stripe-supp-mcp-tools",
+          "quote": "`stripe_api_write` (\"Write data with any Stripe API POST, PATCH, PUT and DELETE method\")"
+        },
+        {
+          "evidenceId": "stripe-supp-mcp-tools",
+          "quote": "products/prices/payment links (create/update)"
+        },
+        {
+          "evidenceId": "stripe-docs-13",
+          "quote": "The Stripe Model Context Protocol (MCP) server provides tools that AI agents can use to interact with the Stripe API"
+        },
+        {
+          "evidenceId": "stripe-docs-16",
+          "quote": "Coding agents should install the Stripe CLI (npm i -g @stripe/cli) and run the command stripe sandbox create --help to provision an anonymous Stripe sandbox with working API keys."
+        }
+      ]
+    },
     "productId": "stripe",
     "storyId": "agent-provisions-payment-link"
   }

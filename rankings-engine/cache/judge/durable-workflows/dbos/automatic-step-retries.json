@@ -1,19 +1,18 @@
 {
-  "hash": "c4dd6b318509ce9a4e8b7ebdd64819c558289208d169346fb5830564c70c64fe",
+  "hash": "79b2fbb1ff284b6a4843d3ac1bb97cafb60110d2eea7234d5c26dd17b262ab9b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows DBOS automatically recovers interrupted workflows from the last completed checkpointed step, and states that agents preserve progress across transient API failures. That gives some automatic, annotation-driven resilience without hand-written recovery code. However, nothing in the pack documents per-step retry policies, configurable backoff, step timeouts (only a `recv` wait timeout appears), or failure policies. Missing for 10: documented automatic step retries with configurable max attempts and backoff, per-step timeouts, configurable failure policies, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "dbos-docs-4",
-      "dbos-docs-23",
-      "dbos-docs-25",
-      "dbos-docs-30",
-      "dbos-docs-28",
-      "dbos-docs-1"
-    ],
+    "rationale": "The evidence documents crash recovery: DBOS resumes interrupted workflows from the last completed checkpointed step. That is a related but different capability from automatic per-step retries with configurable backoff, timeouts, and failure policies. The only timeout in the pack is DBOS.recv's message-wait timeout, which is a messaging control, not a step retry or timeout policy, so the documented step-retry capability is absent.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a backend developer, every step retries automatically with configurable backoff, timeouts, and failure policies — no try/catch scaffolding",
+      "citations": []
+    },
     "productId": "dbos",
     "storyId": "automatic-step-retries"
   }

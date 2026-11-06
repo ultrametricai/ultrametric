@@ -1,24 +1,42 @@
 {
-  "hash": "009752295ae50548ec49805b9c813434435f8ce257add494254b7ea0dec4e3a3",
+  "hash": "4255c6a99392217a3073256592ab57d1e9eb5ab731e34ad0b3afecd96d821f42",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Square documents the pieces an agent would use: registrable webhook event notifications with signature validation, a Payments API with card-on-file charging and idempotency keys for safe retries, Invoices and Subscriptions APIs, and an official MCP server whose catalog covers payments and invoices. None of the evidence specifically shows failed-payment events, built-in retry schedules, or dunning or reminder outreach, so the core monitor-retry-dunning loop is only implied. Missing for 10: documented failed-payment webhook events, native retry/dunning logic, automated payment-reminder outreach, independent or hands-on corroboration of an agent driving recovery.",
+    "rationale": "Square documents its own webhooks ('Subscribe to Event Notifications'), Payments, Invoices and Subscriptions APIs, and an official MCP server whose make_api_request tool lets an agent call the payments, invoices and customers services. So an agent could watch payment activity and act through the API. Nothing in the evidence shows failed-payment events, automated retry logic, or dunning workflows; the retry and outreach parts would have to be built by the agent. missing for 10: documented failed/declined payment webhook events, built-in or API-driven payment retry, dunning/outreach capability, hands-on corroboration.",
     "evidenceIds": [
       "square-docs-19",
-      "square-docs-20",
       "square-docs-39",
-      "square-docs-5",
-      "square-docs-9",
-      "square-docs-22",
       "square-docs-18",
       "square-docs-23",
       "square-supp-mcp-tools",
-      "square-supp-mcp-remote",
-      "square-supp-llms-agent-guidance"
+      "square-docs-44"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent monitor failed payments via API and webhooks and drive retries and dunning outreach",
+      "citations": [
+        {
+          "evidenceId": "square-docs-19",
+          "quote": "Subscribe to Event Notifications"
+        },
+        {
+          "evidenceId": "square-supp-mcp-tools",
+          "quote": "Execute API calls to Square"
+        },
+        {
+          "evidenceId": "square-docs-18",
+          "quote": "Invoices API"
+        },
+        {
+          "evidenceId": "square-docs-23",
+          "quote": "Subscriptions API"
+        }
+      ]
+    },
     "productId": "square",
     "storyId": "agent-monitors-dunning"
   }

@@ -1,19 +1,36 @@
 {
-  "hash": "cd519d8e23a4caa4850fc982edb90f6ba8ffa1e57cb2b9742d656e444d89b8d0",
+  "hash": "6282f8a446f4c3885dde646b29f3d1a9b08566cee5b8cd56419703f83ff8d048",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Checkout.com documents webhooks for payment lifecycle events, with HMAC signatures, management via API, and resend. Its MCP server lets an agent query payment statuses and create payment links, so an agent can monitor failed payments. However, retries depend on the agent re-requesting payments with stored tokens or instruments; the idempotency docs cover safe network retries, not decline-recovery retry logic. No dunning or recovery-outreach capability is documented beyond payment links that could be sent to customers. missing for 10: native failed-payment retry scheduling/smart retries, built-in dunning outreach workflows, explicit documentation of failed-payment webhook events, independent or hands-on corroboration.",
+    "rationale": "Checkout.com documents webhooks for payment lifecycle events, configurable via the Dashboard or API, and an MCP server that lets an agent query payment statuses. That covers the monitoring part of the story. Retries are only documented as idempotent re-requests after network errors or timeouts, not as managed retry logic for declined payments. Dunning outreach is not documented at all. missing for 10: native failed-payment retry/smart-retry scheduling, dunning workflows or customer outreach, explicit failed/declined payment event documentation, independent corroboration.",
     "evidenceIds": [
       "cko-supp-webhooks",
-      "checkout-com-docs-12",
       "cko-supp-mcp-server",
-      "cko-supp-mcp-endpoints",
-      "checkout-com-docs-18",
-      "checkout-com-docs-41"
+      "cko-supp-idempotency",
+      "checkout-com-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent monitor failed payments via API and webhooks and drive retries and dunning outreach",
+      "citations": [
+        {
+          "evidenceId": "cko-supp-webhooks",
+          "quote": "Webhooks are automated messages that Checkout.com sends your server when events related to your account occur. For example, payment lifecycle activity, changes to balances, or progress on disputes."
+        },
+        {
+          "evidenceId": "cko-supp-mcp-server",
+          "quote": "Manage payment operations. Query payment statuses, issue refunds, void payments, and create and manage payment links"
+        },
+        {
+          "evidenceId": "cko-supp-idempotency",
+          "quote": "The following endpoints from our API support idempotent requests, so you can safely retry them without the risk of a duplicate request"
+        }
+      ]
+    },
     "productId": "checkout-com",
     "storyId": "agent-monitors-dunning"
   }

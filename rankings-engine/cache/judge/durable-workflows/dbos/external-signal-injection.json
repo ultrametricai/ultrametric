@@ -1,19 +1,41 @@
 {
-  "hash": "f98ba64f3ff317e18c327f7d81d4946e378e2ddef7c53ccaacbd503351eab396",
+  "hash": "177ae541ad83feca92066042c173725cba879ae6c0942fe44874ab71ad756ff6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "DBOS documents sending messages to a specific running workflow via DBOS.send(), with optional topics queued per receiver, and the workflow waits durably with DBOS.recv(timeout) for human-in-the-loop signals. DBOSClient lets external code or another DBOS application interact with the app, which covers the API-call and cross-workflow cases. Missing for 10: an explicit example of DBOSClient sending a message from an API or webhook handler, evidence of an event-publishing primitive beyond messages, and independent or hands-on corroboration.",
+    "rationale": "DBOS documents sending messages to a specific running workflow with DBOS.send(), with optional per-topic queuing, and receiving them inside the workflow via DBOS.recv() with a timeout for human-in-the-loop waits. DBOSClient lets external code or another DBOS application interact with the running app, which covers the outside-caller paths in the story. Missing for 10: an explicit API/webhook-triggered send example in the evidence, and independent or hands-on corroboration of the messaging feature.",
     "evidenceIds": [
       "dbos-docs-8",
       "dbos-docs-27",
       "dbos-docs-28",
       "dbos-docs-42",
-      "dbos-docs-12",
       "dbos-docs-39"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a backend developer, I send signals, events, or messages into a specific running workflow from outside — an API call, webhook, or another workflow",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-8",
+          "quote": "You can send messages to a specific workflow. This is useful for signaling a workflow or sending notifications to it while it's running."
+        },
+        {
+          "evidenceId": "dbos-docs-27",
+          "quote": "You can call `DBOS.send()` to send a message to a workflow. Messages can optionally be associated with a topic and are queued on the receiver per topic."
+        },
+        {
+          "evidenceId": "dbos-docs-42",
+          "quote": "DBOSClient provides a programmatic way to interact with your DBOS application from external code or from another DBOS application."
+        },
+        {
+          "evidenceId": "dbos-docs-28",
+          "quote": "approval: Optional[HumanResponseRequest] = DBOS.recv(timeout_seconds=TIMEOUT)"
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "external-signal-injection"
   }

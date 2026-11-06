@@ -1,18 +1,41 @@
 {
-  "hash": "711e7b0040c571273dba4b7d9b3e8b097595b83094d31b1042c7cc14942b9c80",
+  "hash": "69cb47207581e6613f6f16e37939575a8f4e0257e9b98b39f107c08780d61138",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "dLocal sends signed notifications to a merchant URL on every payment status change, so an agent can monitor failed payments through webhooks and the API. Saved-card `card_id` charges and wallet enrollment IDs let an agent re-attempt charges. However, there is no documented retry logic, smart-retry scheduling, or dunning or customer-outreach capability, so the agent would have to build retries and dunning itself. Missing for 10: documented automatic or configurable payment retries, dunning workflows or customer outreach, failed-payment-specific reporting or querying, and independent or hands-on corroboration.",
+    "rationale": "dLocal documents webhook notifications sent to a merchant-specified URL for every payment status change, with signature verification. An agent could use these, plus API charges against a saved card_id or enrollment ID, to watch for failed payments and re-charge manually. There is no documented retry scheduling or dunning outreach, so the agent would have to build those itself. Missing for 10: native smart retry/retry scheduling, dunning email/outreach workflows, explicit failed-payment query/filter API docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "dlocal-docs-17",
       "dlocal-docs-18",
       "dlocal-docs-11",
       "dlocal-docs-15",
-      "dlocal-docs-6"
+      "dlocal-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent monitor failed payments via API and webhooks and drive retries and dunning outreach",
+      "citations": [
+        {
+          "evidenceId": "dlocal-docs-17",
+          "quote": "Notifications will be sent to the notification URL specified by the merchant for every change in payment status."
+        },
+        {
+          "evidenceId": "dlocal-docs-18",
+          "quote": "By verifying this signature, you'll confirm that the notification was not modified during transmission."
+        },
+        {
+          "evidenceId": "dlocal-docs-11",
+          "quote": "For recurring payments, first save the card, and then use the `card_id` to charge the card."
+        },
+        {
+          "evidenceId": "dlocal-docs-23",
+          "quote": "The dLocal MCP server acts as a bridge between your AI agent and dLocal's systems."
+        }
+      ]
+    },
     "productId": "dlocal",
     "storyId": "agent-monitors-dunning"
   }

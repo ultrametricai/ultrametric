@@ -1,20 +1,46 @@
 {
-  "hash": "9bc1bd12e0cfbbcb2de006e193433bdc44967a7a3d6f16e70a87147a48c94099",
+  "hash": "9b8e755f24553f3f84bd150d9a28759849b090b8ec8249da0c0ad402dc4e36ee",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Inngest pauses a running function with step.waitForEvent() until a given event arrives, then resumes it, and documents this pattern for human approval. Events can enter from outside through unique webhook URLs, the REST API (which covers events), or other runs that send events. missing for 10: explicit documentation in the pack of how an event is correlated to a specific running instance (match/filter expressions), and independent or hands-on corroboration of signaling running workflows.",
+    "rationale": "Inngest documents step.waitForEvent(), which pauses a running function until a matching event arrives and is used for human-approval resumes. External events can come in through webhook URLs and the REST API. However, the pack never shows how an event is correlated to one specific run, and never documents a workflow-to-workflow signal into an already-running run. missing for 10: documented per-run correlation/match semantics for targeting a specific running workflow, explicit evidence of sending events from the REST API or another workflow into a waiting run, independent hands-on corroboration.",
     "evidenceIds": [
       "inngest-docs-18",
       "inngest-docs-32",
       "inngest-docs-34",
       "inngest-docs-33",
       "inngest-docs-11",
-      "inngest-docs-7",
-      "inngest-docs-4"
+      "inngest-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, I send signals, events, or messages into a specific running workflow from outside — an API call, webhook, or another workflow",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-32",
+          "quote": "You can pause a Function's run until a given event is received."
+        },
+        {
+          "evidenceId": "inngest-docs-18",
+          "quote": "Use step.waitForEvent() to wait for a particular event to be received before continuing."
+        },
+        {
+          "evidenceId": "inngest-docs-34",
+          "quote": "Use step.waitForEvent() to pause agent execution for human approval, then resume or abort based on the response."
+        },
+        {
+          "evidenceId": "inngest-docs-11",
+          "quote": "Inngest enables you to create any number of unique URLs which act as webhook consumers."
+        },
+        {
+          "evidenceId": "inngest-docs-7",
+          "quote": "The Inngest REST API lets you interact with events, function runs, environments, and more programmatically."
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "external-signal-injection"
   }

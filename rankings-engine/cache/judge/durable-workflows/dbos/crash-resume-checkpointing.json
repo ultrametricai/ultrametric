@@ -1,11 +1,11 @@
 {
-  "hash": "e8398c82541b6ac118cf13f17b69100a73570697d439839f8ea1bb4be86f9840",
+  "hash": "12d8bbb2b73790fdf8a46d19a7add122427b109bdd06a7cff14fe02effed9763",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "DBOS's docs repeatedly state that it checkpoints workflow and step state to Postgres and automatically recovers interrupted workflows from the last completed step after crashes, restarts, or interruptions. Conductor also moves interrupted workflows to healthy executors, and patching/versioning cover code changes across deploys. Community discussion confirms the step-logging design, with one caveat: durability is only as strong as the Postgres configuration, such as synchronous replication. Missing for 10: independent hands-on corroboration of crash/deploy recovery, beyond vendor docs and co-founder statements.",
+    "rationale": "DBOS's core documented capability is checkpointing workflow and step state to Postgres and automatically recovering interrupted workflows from the last completed step after crashes, restarts, or interruptions. Conductor also recovers workflows from crashed executors onto healthy ones, and patching/versioning support safe recovery across code deploys. A community note confirms durability is bounded by the underlying Postgres configuration, which is a caveat rather than a contradiction. Missing for 10: independent hands-on corroboration of crash/deploy recovery (community evidence is mainly co-founder explanation), and explicit guarantees when Postgres replication loses acknowledged writes.",
     "evidenceIds": [
       "dbos-docs-4",
       "dbos-docs-23",
@@ -18,6 +18,33 @@
       "dbos-comm-13",
       "dbos-comm-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a backend developer, a workflow interrupted by a process crash, deploy, or infrastructure failure resumes from its last completed step with state intact",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-4",
+          "quote": "DBOS checkpoints the state of your workflows and steps to its system database. If your program crashes or is interrupted, DBOS uses this checkpointed state to recover each of your workflows from its last completed step."
+        },
+        {
+          "evidenceId": "dbos-docs-23",
+          "quote": "When failures occur, whether from crashes, interruptions, or restarts, DBOS uses those checkpoints to recover each of your workflows from the last completed step."
+        },
+        {
+          "evidenceId": "dbos-docs-31",
+          "quote": "Conductor automatically detects when a workflow is interrupted (for example, if its executor disconnects or crashes) and recovers the workflow to another healthy executor."
+        },
+        {
+          "evidenceId": "dbos-docs-25",
+          "quote": "If a workflow is interrupted for any reason, DBOS automatically recovers its execution from the last completed step."
+        },
+        {
+          "evidenceId": "dbos-docs-10",
+          "quote": "DBOS supports two strategies for safely upgrading workflow code: patching and versioning."
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "crash-resume-checkpointing"
   }

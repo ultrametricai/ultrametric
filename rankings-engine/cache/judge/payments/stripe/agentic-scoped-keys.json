@@ -1,20 +1,42 @@
 {
-  "hash": "6573f1d49fd51a503cdcccc7a2480bca813917ecb225a73bd2af5ae9d059d10d",
+  "hash": "a24508694925972fe4b5382bf0b7e8899df7777c4df1582e4cbf455db14383d6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Stripe documents restricted API keys with per-resource Read/Write/None permissions. It explicitly recommends them for AI agents (\"Use RAK permissions to limit what an agent can do\"). MCP access also supports OAuth with per-session revocation, separate live/sandbox governance, and connected-account scoping via RAKs. The live probe confirms the OAuth-gated MCP endpoint. Missing for 10: independent or hands-on corroboration that scoped keys restrict agent actions as documented.",
+    "rationale": "Stripe documents restricted API keys (RAKs) with per-resource Read/Write/None permissions and explicitly recommends them when giving a key to an AI agent. It also supports agent-scoped use: OAuth sessions for MCP with per-session revoke, separate live and sandbox controls, and restricted keys limited to specific connected-account permissions. missing for 10: independent or hands-on corroboration that agent-scoped RAKs work as described.",
     "evidenceIds": [
       "stripe-supp-restricted-keys-agents",
       "stripe-docs-67",
       "stripe-docs-58",
-      "stripe-supp-mcp-sessions-governance",
       "stripe-supp-mcp-connected-accounts",
-      "stripe-supp-analytics-ai",
-      "stripe-probe-6"
+      "stripe-supp-mcp-sessions-governance",
+      "stripe-supp-analytics-ai"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "stripe-supp-restricted-keys-agents",
+          "quote": "Stripe recommends always using RAKs instead of unrestricted secret keys, especially when giving a key to an AI agent. Use RAK permissions to limit what an agent can do in your account."
+        },
+        {
+          "evidenceId": "stripe-docs-67",
+          "quote": "a RAK can do only what you give it permission to do."
+        },
+        {
+          "evidenceId": "stripe-supp-mcp-connected-accounts",
+          "quote": "authenticate with a restricted API key for your platform and grant only the connected-account permissions that your agent needs."
+        },
+        {
+          "evidenceId": "stripe-supp-mcp-sessions-governance",
+          "quote": "OAuth lets you grant and revoke access without sharing an API key with the client"
+        }
+      ]
+    },
     "productId": "stripe",
     "storyId": "agentic-scoped-keys"
   }

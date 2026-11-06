@@ -1,17 +1,40 @@
 {
-  "hash": "89a46b1475dace2efa25926457118153a93d618c8435e3ee1b73d994f8b0cb8a",
+  "hash": "06cda3f9f9bcf268a1dce8ad492ebced32b93995756076d662d7b2b149678208",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Salv documents ingesting persons and transactions through the addPerson and addTransaction endpoints and a CSV bulk upload, and says counterparties are monitored alongside customers. That covers ingesting transactions with customer and counterparty context. Nothing in the evidence describes validation error responses, rejection semantics, idempotent retries or other ways to recover from rejected input. Missing for 10: documented validation/rejection error responses, idempotency or retry guidance for failed ingestion, explicit counterparty identifier fields in the transaction schema, independent corroboration.",
+    "rationale": "Salv documents transaction ingestion through an addTransaction API endpoint and CSV bulk upload, alongside person (customer) ingestion. Its monitoring explicitly covers counterparties, which implies transactions carry counterparty data. Nothing in the pack documents validation errors, rejection responses, or how to correct and resubmit rejected input. Missing for 10: documented transaction schema showing customer/counterparty identifier fields, documented rejection/validation error responses and a recovery or retry path, independent hands-on corroboration.",
     "evidenceIds": [
       "salv-docs-1",
       "salv-docs-2",
       "salv-docs-27",
       "salv-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can ingest transactions with customer and counterparty identifiers and recover from rejected input",
+      "citations": [
+        {
+          "evidenceId": "salv-docs-2",
+          "quote": "Configure client application to upload new persons and transactions automatically using addPerson endpoint and addTransaction endpoint."
+        },
+        {
+          "evidenceId": "salv-docs-1",
+          "quote": "Upload historical persons and transactions data using CSV data upload endpoint."
+        },
+        {
+          "evidenceId": "salv-docs-27",
+          "quote": "Counterparties are monitored too, so a customer who looks clean but pays a suspicious counterparty still surfaces."
+        },
+        {
+          "evidenceId": "salv-docs-8",
+          "quote": "A request to this endpoint will only update or add attributes which are provided in the request."
+        }
+      ]
+    },
     "productId": "salv",
     "storyId": "transaction-ingestion"
   }

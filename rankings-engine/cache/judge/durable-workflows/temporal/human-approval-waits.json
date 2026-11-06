@@ -1,19 +1,45 @@
 {
-  "hash": "24b8ad31ef0e99e924ef112c2863666dc0e6d4f50dacd029ace9617891b6a011",
+  "hash": "82cae960ce0daa38b6f51cf905da66e6524d8ee4f4eca59a4efa6e88016925f3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Temporal's docs explicitly say a Workflow resumes automatically after a multi-day wait for a human to approve a step, and that agent loops can wait on humans and pick up where they left off. The mechanism is Signals and Updates: Workflows act as stateful services with message handlers, and clients can signal a running execution. missing for 10: explicit documentation that a waiting Workflow wakes immediately when the signal arrives (e.g., a wait-condition or signal-await example), independent or hands-on corroboration of human-approval workflows.",
+    "rationale": "Temporal's docs say a Workflow resumes automatically after \"a multi-day wait for a human to approve a step\". Workflows act as stateful services that receive Signals and Updates through message handlers, and clients can signal a running Workflow Execution, which together deliver the human input that resumes a paused workflow. Missing for 10: explicit documentation of the wait-until-signal mechanism (e.g., an await-condition example showing immediate resumption on arrival), and independent or hands-on corroboration of multi-day human-approval waits.",
     "evidenceIds": [
       "temporal-docs-41",
       "temporal-docs-9",
       "temporal-docs-6",
       "temporal-docs-38",
-      "temporal-docs-50",
-      "temporal-comm-1"
+      "temporal-docs-50"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a backend developer, a workflow pauses for human approval or input for hours or days and resumes the moment the response arrives",
+      "citations": [
+        {
+          "evidenceId": "temporal-docs-41",
+          "quote": "a Workflow resumes automatically after a crash, a network timeout, or a multi-day wait for a human to approve a step"
+        },
+        {
+          "evidenceId": "temporal-docs-9",
+          "quote": "Long-running, stateful agent loops that call LLMs and tools, wait on humans, and pick up exactly where they left off after a failure."
+        },
+        {
+          "evidenceId": "temporal-docs-38",
+          "quote": "Workflows can be thought of as stateful web services that can receive messages. The Workflow can have message handlers, akin to endpoints"
+        },
+        {
+          "evidenceId": "temporal-docs-6",
+          "quote": "Temporal supports three types of messages: Signals, Queries, and Updates"
+        },
+        {
+          "evidenceId": "temporal-docs-50",
+          "quote": "Signal a Workflow Execution"
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "human-approval-waits"
   }

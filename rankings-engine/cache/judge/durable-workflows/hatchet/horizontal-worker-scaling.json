@@ -1,21 +1,41 @@
 {
-  "hash": "ef2c00f1581382339b881e64530e3f4a9348a411a6508fe529cffc58056cf78c",
+  "hash": "a7850ba0bf552755ae02d8ea8774adb50ce07846470694d97ea046407472925b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Hatchet is a distributed task queue whose separate control plane schedules tasks and coordinates execution across independently running workers, and the founder describes scaling with many workers pulling from a backlog. Automatic retries and durability suggest failed work can be recovered, but no evidence shows explicit load-balancing or reassignment of tasks when a worker is lost. missing for 10: documented worker load-balancing or assignment strategy, explicit worker-failure detection and task reassignment (heartbeats/timeouts), horizontal-scaling guidance or benchmarks, independent hands-on corroboration.",
+    "rationale": "Hatchet is documented as a distributed task queue whose control plane schedules tasks and coordinates execution across separately running workers, with automatic retries and durability. That supports scaling out by adding workers, but the evidence never describes the load-balancing mechanism or what happens to in-flight tasks when a worker dies. Missing for 10: explicit docs on load-balancing or assigning tasks across a worker fleet, documented reassignment or timeout of tasks on worker loss, and independent benchmarks of throughput scaling with worker count.",
     "evidenceIds": [
       "hatchet-docs-8",
-      "hatchet-docs-17",
-      "hatchet-comm-6",
-      "hatchet-comm-11",
+      "hatchet-probe-1",
       "hatchet-gh-1",
       "hatchet-gh-2",
-      "hatchet-docs-25",
-      "hatchet-probe-1"
+      "hatchet-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, throughput scales by adding workers — the platform load-balances tasks across the fleet and tolerates worker loss",
+      "citations": [
+        {
+          "evidenceId": "hatchet-docs-8",
+          "quote": "the central orchestration system that manages workflows, schedules tasks, and coordinates worker execution"
+        },
+        {
+          "evidenceId": "hatchet-probe-1",
+          "quote": "Hatchet is a distributed task queue and workflow engine for modern applications"
+        },
+        {
+          "evidenceId": "hatchet-gh-1",
+          "quote": "Hatchet provides a full platform for queuing, automatic retries, durability, real-time monitoring, alerting, and logging."
+        },
+        {
+          "evidenceId": "hatchet-comm-6",
+          "quote": "Hatchet is a separate service which runs independently of your workers"
+        }
+      ]
+    },
     "productId": "hatchet",
     "storyId": "horizontal-worker-scaling"
   }

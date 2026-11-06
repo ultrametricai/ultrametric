@@ -1,22 +1,45 @@
 {
-  "hash": "47c743bad7c9a4e3a3906e2fadc134d1dc956584fd8d780c7948545e652d8b76",
+  "hash": "616218520fb6671f772e0141ffd9cefd7286e52ac81895e8aca9a3c48143513d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Trigger.dev claims elastic, managed auto-scaling with nothing to provision and says it processes millions of tasks. Throughput is raised through queue concurrency limits and purchasable extra concurrency, and checkpoint-resume plus retries give some resilience; users report scaling effortlessly. However, the evidence never documents adding workers to a fleet, load-balancing across workers, or explicit tolerance of worker loss. Missing for 10: documented worker-fleet horizontal scaling (e.g. for self-hosted), load-balancing semantics across workers, explicit worker-failure/run-reassignment behavior, independent scale benchmarks.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Trigger.dev's own docs claim elastic, managed auto-scaling 'with nothing to provision' and processing millions of tasks. Durable tasks are said to survive crashes, and retries with exponential backoff are documented. That covers the scaling core only at a marketing-claim level. Missing for 10: documentation of adding workers to raise throughput (including on self-hosted fleets), explicit load-balancing of tasks across workers, explicit recovery semantics when a worker is lost, and independent or hands-on corroboration of scaling behavior.",
     "evidenceIds": [
       "trigger-dev-docs-2",
       "trigger-dev-docs-39",
       "trigger-dev-docs-38",
-      "trigger-dev-docs-8",
-      "trigger-dev-docs-21",
-      "trigger-dev-docs-4",
       "trigger-dev-docs-13",
-      "trigger-dev-comm-17",
-      "trigger-dev-comm-9"
+      "trigger-dev-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, throughput scales by adding workers — the platform load-balances tasks across the fleet and tolerates worker loss",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-2",
+          "quote": "No timeouts, elastic scaling"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-39",
+          "quote": "Trigger.dev is a managed compute platform where those same jobs get durability, observability, and auto-scaling with nothing to provision."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-38",
+          "quote": "processing millions of tasks for thousands of teams on managed infrastructure"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-13",
+          "quote": "surviving refreshes, deploys, and crashes"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-4",
+          "quote": "This task will retry 10 times with exponential backoff."
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "horizontal-worker-scaling"
   }

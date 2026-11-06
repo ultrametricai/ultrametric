@@ -1,20 +1,41 @@
 {
-  "hash": "00ece980233f6189b945e978d885c5897d2154befe6e124202af39731bff708d",
+  "hash": "04ecb0be238339d50e684919bfe61035e10f48ed1e8733ae3cdb53124981845b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "DBOS has a dedicated human-in-the-loop guide. A workflow blocks on `DBOS.recv(timeout_seconds=...)` for hours or days, survives restarts and upgrades while waiting, and resumes when `DBOS.send()` delivers the response, which DBOSClient can do from external code. An agent-inbox example shows workflows waiting on human input across process restarts and being surfaced for approval. Missing for 10: independent or hands-on corroboration of long-wait human-in-the-loop resumption in practice.",
+    "rationale": "DBOS documents a human-in-the-loop pattern built on its own workflow messaging. A workflow calls DBOS.recv with a timeout to wait hours or days for a notification, surviving restarts and upgrades in the meantime. External code delivers the response with DBOS.send to that specific workflow, and an agent-inbox example shows how to track the workflows awaiting approval. missing for 10: independent or hands-on corroboration of long human waits resuming promptly when the message arrives.",
     "evidenceIds": [
       "dbos-docs-12",
       "dbos-docs-28",
       "dbos-docs-39",
       "dbos-docs-8",
-      "dbos-docs-27",
-      "dbos-docs-42",
-      "dbos-docs-4"
+      "dbos-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a backend developer, a workflow pauses for human approval or input for hours or days and resumes the moment the response arrives",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-12",
+          "quote": "a human might take hours or days to respond to an agent, so the agent must be able to reliably wait for a long time (during which the server might be restarted, software might be upgraded, etc.)."
+        },
+        {
+          "evidenceId": "dbos-docs-28",
+          "quote": "you can add a line of code to your agent that tells it to wait hours or days for a notification: approval: Optional[HumanResponseRequest] = DBOS.recv(timeout_seconds=TIMEOUT)"
+        },
+        {
+          "evidenceId": "dbos-docs-39",
+          "quote": "We'll see how to build agents that can wait hours or days for human input to arrive (surviving process restarts)."
+        },
+        {
+          "evidenceId": "dbos-docs-27",
+          "quote": "You can call `DBOS.send()` to send a message to a workflow."
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "human-approval-waits"
   }

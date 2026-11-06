@@ -1,19 +1,31 @@
 {
-  "hash": "e03f7c83a65aab658ae6396cca5036af192653c0f47b23568407378c21337e7b",
+  "hash": "cf0283e04a6fa1eb65d196b7901550598cb661263ab910b45a693b4d1f943cea",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "SES receipt rules can store inbound mail in S3, publish it to SNS, send it to WorkMail, bounce it, or trigger Lambda, so rule-based inbound processing exists. A community user still had to write a Lambda to parse each message and forward it to an HTTP endpoint, so POSTing to endpoints needs custom glue code. Missing for 10: evidence of matching rules on recipient or address pattern, native forwarding to other email addresses, a direct webhook/HTTP POST action, and independent corroboration of per-rule routing to different endpoints.",
+    "rationale": "SES documents its own inbound receipt rules, which can store mail in S3, publish it to an SNS topic, deliver it to WorkMail, send bounces, or trigger Lambda functions. That covers the store and route-to-action parts of the story. The evidence does not show rules matching on recipient or address patterns, direct forwarding to another mailbox, or a native HTTP POST to an arbitrary endpoint; one community user needed a custom Lambda to forward mail to their HTTP endpoint. Missing for 10: documented recipient/pattern matching conditions, native forwarding action, direct HTTP POST/webhook delivery per rule, independent hands-on corroboration of rule routing.",
     "evidenceIds": [
-      "amazon-ses-docs-7",
       "amazon-ses-docs-24",
       "amazon-ses-docs-6",
-      "amazon-ses-docs-33",
-      "amazon-ses-comm-2",
-      "amazon-ses-comm-5"
+      "amazon-ses-docs-33"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can route inbound mail with rules — match on recipient or pattern and forward, store, or POST to different endpoints",
+      "citations": [
+        {
+          "evidenceId": "amazon-ses-docs-24",
+          "quote": "Receipt rules can do advanced processing such as deliver incoming mail to an Amazon S3 bucket, publish it to an Amazon SNS topic, send it to Amazon WorkMail, or automatically send bounce messages."
+        },
+        {
+          "evidenceId": "amazon-ses-docs-6",
+          "quote": "Take action on your received emails by triggering AWS Lambda functions."
+        }
+      ]
+    },
     "productId": "amazon-ses",
     "storyId": "inbound-routing-rules"
   }

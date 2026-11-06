@@ -1,19 +1,41 @@
 {
-  "hash": "f099c0dfdf50661aecbee2f908b1f1410d7126a54897b0b82cb68d87c46da6b7",
+  "hash": "9870f4b199564803d653595c6320cef7da7ce457a5309da8ba5d25fd12d494e2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Trigger.dev documents writing workflows as plain async TypeScript rather than a DSL (docs-2, docs-40), and says it uses checkpoint-resume to run normal TypeScript with no determinism constraints (docs-38). A community user confirms moving from n8n's GUI to code in the IDE (comm-2). Automatic retries complement durability (docs-4), but the language is limited to TypeScript/JavaScript, with Python only via a build extension (docs-43). Missing for 10: detailed documentation of step-level checkpointing semantics (what is persisted and when), first-class support beyond TS/JS, and independent hands-on corroboration of checkpoint-resume behavior.",
+    "rationale": "Trigger.dev documents writing workflows as plain async TypeScript rather than YAML or a DSL. Its checkpoint-resume model runs normal TypeScript with no determinism constraints, and a hands-on user confirms moving from n8n's GUI to code in an IDE. However, per-step automatic checkpointing is not documented: the evidence describes checkpoint-resume around pauses, not memoized step boundaries. Language support is also limited to TypeScript/JavaScript, with Python only via a build extension. missing for 10: documented step-level automatic checkpointing/memoization of individual steps, first-class support for languages beyond TypeScript/JavaScript, independent corroboration of checkpoint behavior.",
     "evidenceIds": [
       "trigger-dev-docs-2",
       "trigger-dev-docs-38",
       "trigger-dev-docs-43",
-      "trigger-dev-docs-40",
-      "trigger-dev-docs-4",
-      "trigger-dev-comm-2"
+      "trigger-dev-comm-2",
+      "trigger-dev-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, I write workflows as ordinary code in my language — steps with automatic checkpointing — not YAML or a proprietary DSL",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-2",
+          "quote": "lets you write reliable workflows in plain async code"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-38",
+          "quote": "Trigger.dev uses checkpoint-resume to run normal TypeScript with no determinism constraints"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-43",
+          "quote": "Language | TypeScript/JavaScript (Node.js and Bun); Python via build extension"
+        },
+        {
+          "evidenceId": "trigger-dev-comm-2",
+          "quote": "I moved from n8n to trigger.dev a month ago. Maintaining all the workflows in GUI was just too time consuming and difficult"
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "code-first-workflows"
   }

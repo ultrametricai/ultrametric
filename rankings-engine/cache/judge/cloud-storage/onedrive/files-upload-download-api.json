@@ -1,21 +1,50 @@
 {
-  "hash": "84e7ad7c0d2b0aeae74450322cd6418522a96fd90913a881472b3b5f28206cd4",
+  "hash": "79d745579483872fb3e5a9d241bd6c90bef7db4d975bd68f5bf600fe291a9603",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Microsoft Graph documents a real REST file API for OneDrive: driveItems are addressable by ID or path (drive/items/{item-id}, /drive/root:/path), uploads work via single-call PUT content (up to 250 MB) or resumable upload sessions, and items can be enumerated through search and delta queries. This clearly delivers the programmatic, non-desktop file workflow at the core of the story. Missing for 10: explicit documented endpoints for download, move, delete and list-children (move appears only as a user-facing feature in the overview), and independent hands-on corroboration of API file operations.",
+    "rationale": "Microsoft Graph documents REST endpoints for OneDrive driveItems. Items can be addressed by ID or path, uploaded via a single PUT (up to 250 MB) or a resumable upload session, and searched or delta-tracked across a folder hierarchy. However, the pack has no documented endpoint for download, direct folder listing, move, or delete. The only mention of moving files describes a user-facing feature, not an API call. Missing for 10: documented download/content-GET endpoint, list-children endpoint, move (PATCH parentReference) endpoint, delete endpoint, independent hands-on corroboration of API file operations.",
     "evidenceIds": [
       "onedrive-docs-1",
       "onedrive-docs-5",
       "onedrive-docs-12",
       "onedrive-docs-18",
       "onedrive-docs-14",
-      "onedrive-docs-21",
-      "onedrive-docs-6",
-      "onedrive-comm-8"
+      "onedrive-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, files move through a real API — upload, download, list, move, and delete over documented REST endpoints, not just a desktop client",
+      "citations": [
+        {
+          "evidenceId": "onedrive-docs-1",
+          "quote": "with Microsoft Graph, you can use a single API to work with them"
+        },
+        {
+          "evidenceId": "onedrive-docs-5",
+          "quote": "By the driveItem unique identifier using drive/items/{item-id} By file system path using /drive/root:/path/to/file"
+        },
+        {
+          "evidenceId": "onedrive-docs-18",
+          "quote": "Provide the contents of a new file or update the contents of an existing file in a single API call. This method only supports files up to 250 MB in size."
+        },
+        {
+          "evidenceId": "onedrive-docs-12",
+          "quote": "An upload session allows your app to upload ranges of the file in sequential API requests. It also enables the transfer to resume if the connection is dropped during the upload."
+        },
+        {
+          "evidenceId": "onedrive-docs-14",
+          "quote": "Search the hierarchy of items for items matching a query. You can search within a folder hierarchy, a whole drive, or files shared with the current user."
+        },
+        {
+          "evidenceId": "onedrive-docs-21",
+          "quote": "Track changes in a driveItem and its children over time."
+        }
+      ]
+    },
     "productId": "onedrive",
     "storyId": "files-upload-download-api"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "ac5845155902258fa31494c31fbcfbdfa0eae17fd64fdf2040aaea695283a737",
+  "hash": "15e21598d902b31cc2abf6ec1d703ecf833b6820adbfafccfd910b4a8c7ecf09",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Checkout.com documents outbound webhooks for payment lifecycle, balance and dispute events, with HMAC signatures and configuration through the Dashboard or API. It also has a documented 'Resend webhooks' page for replay and an Amazon EventBridge delivery option. The pack does not evidence automatic delivery retries: the retry doc covers idempotent API requests, not webhook redelivery. Nor does it evidence a browsable delivery/event log; 'Manage webhooks in the Dashboard' is only a page title. Missing for 10: documented automatic webhook retry policy, webhook delivery/event logs, depth on the resend/replay mechanics, independent or hands-on corroboration.",
+    "rationale": "Checkout.com documents HMAC-signed webhooks for payment lifecycle events. They can be managed via the Dashboard or API, can be resent (a replay mechanism), and can be delivered to Amazon EventBridge. The evidence does not cover automatic delivery retries or a browsable event or delivery log. The idempotency retry docs concern client API request retries, not webhook redelivery. Missing for 10: documented automatic webhook retry policy/schedule, event/delivery log visibility, details of the resend/replay flow, independent or hands-on corroboration.",
     "evidenceIds": [
       "cko-supp-webhooks",
       "checkout-com-docs-11",
       "checkout-com-docs-12",
       "checkout-com-docs-51"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on signed webhook deliveries with automatic retries, event logs, and replay to keep my system consistent with payment state",
+      "citations": [
+        {
+          "evidenceId": "cko-supp-webhooks",
+          "quote": "Webhooks are automated messages that Checkout.com sends your server when events related to your account occur. For example, payment lifecycle activity, changes to balances, or progress on disputes."
+        },
+        {
+          "evidenceId": "cko-supp-webhooks",
+          "quote": "Signatures use HMAC; webhook config is manageable \"using the Dashboard or the API\", with documented sub-pages for configuring the webhook server, managing webhooks via API, resending webhooks, and receiving events in Amazon EventBridge."
+        },
+        {
+          "evidenceId": "checkout-com-docs-12",
+          "quote": "Resend webhooks"
+        }
+      ]
+    },
     "productId": "checkout-com",
     "storyId": "webhook-delivery-reliability"
   }

@@ -1,19 +1,35 @@
 {
-  "hash": "abb2b953088d5eeb94f99b75f34049a00f9c34fae7d86399d89ec42e98c03be8",
+  "hash": "7b8937ea462b967d5a9bf6bc4ea78bead169d3c05a030f917aa5355052cf5630",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Open WebUI's Computer docs describe a per-chat tool approval mode. In 'auto' mode nothing changes on disk and no command runs until the user approves, and pending actions appear as Allow/Deny tool cards. RBAC roles add a baseline trust layer for users. However, the core platform's Tools, Functions and Pipelines execute arbitrary Python directly on the server, with no documented isolation. missing for 10: container/VM sandboxing of tool or code execution, granular per-tool allow/deny policies, containment for server-side plugins, independent or hands-on corroboration of the approval modes.",
+    "rationale": "Open WebUI documents a per-chat tool approval mode. In the default 'auto' mode the AI can explore, but nothing changes on disk and no command runs until the user approves, with Allow/Deny tool cards for pending actions. That is a first-party permission mode limiting what the agent can touch, though the docs also note plugins execute arbitrary Python on the server. missing for 10: documented container/VM sandboxing of tool execution, finer-grained tool policies (per-tool allow/deny lists), independent or hands-on corroboration.",
     "evidenceIds": [
       "open-webui-docs-37",
       "open-webui-docs-61",
-      "open-webui-docs-13",
-      "open-webui-docs-47",
-      "open-webui-docs-55",
-      "open-webui-docs-25"
+      "open-webui-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a security engineer, risky tool runs are containable — container/VM sandboxing, tool policies, or permission modes that limit what the agent can touch",
+      "citations": [
+        {
+          "evidenceId": "open-webui-docs-37",
+          "quote": "Every chat has a tool approval mode, set from the + menu in the chat input"
+        },
+        {
+          "evidenceId": "open-webui-docs-61",
+          "quote": "auto is the everyday setting: the AI can explore freely, but nothing changes on disk and no command runs until you say so."
+        },
+        {
+          "evidenceId": "open-webui-docs-13",
+          "quote": "the pending approval that's blocking it, rendered as tool cards with Allow / Deny buttons."
+        }
+      ]
+    },
     "productId": "open-webui",
     "storyId": "sandboxed-tool-execution"
   }

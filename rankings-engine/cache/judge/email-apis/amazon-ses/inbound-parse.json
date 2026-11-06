@@ -1,20 +1,42 @@
 {
-  "hash": "9275e230c3511bdd003f7a65396c454204766cec818cbfa094f1d73f13fe5220",
+  "hash": "eda02625ba020e45262b1c5fafc9685ba8e79f8fbaa1ab225c80b3507c68a010",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "SES receives inbound mail and uses receipt rules to store it in S3, publish it to SNS, or trigger Lambda functions. That supports use cases like support-ticket creation from incoming email. However, a community user reports having to write a Lambda to dissect each email and forward it to their HTTP endpoint, so parsed webhook delivery requires custom glue code. Missing for 10: native parsing into headers/body/attachments, direct webhook/HTTP delivery of parsed payloads, explicit MX-record setup documentation in the evidence.",
+    "rationale": "SES has first-party inbound email receiving. Receipt rules can deliver incoming mail to S3, publish it to an SNS topic or trigger Lambda, and the docs cite apps that create support tickets from incoming emails. However, nothing shows SES parsing messages into headers, body and attachments, or posting directly to a developer's webhook. A community user had to write a Lambda function to dissect each email and forward it to an HTTP endpoint, which counts as a user-side workaround, not product capability. missing for 10: documented MX-record setup, built-in parsing of headers/body/attachments, direct webhook/HTTP delivery of parsed payloads, independent hands-on corroboration of a native parsed-webhook flow.",
     "evidenceIds": [
       "amazon-ses-docs-6",
       "amazon-ses-docs-7",
       "amazon-ses-docs-24",
       "amazon-ses-docs-32",
       "amazon-ses-docs-33",
-      "amazon-ses-comm-2",
       "amazon-ses-comm-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can receive email — point MX records at the service and get parsed messages (headers, body, attachments) delivered to my webhook or API",
+      "citations": [
+        {
+          "evidenceId": "amazon-ses-docs-24",
+          "quote": "Receipt rules can do advanced processing such as deliver incoming mail to an Amazon S3 bucket, publish it to an Amazon SNS topic, send it to Amazon WorkMail, or automatically send bounce messages."
+        },
+        {
+          "evidenceId": "amazon-ses-docs-6",
+          "quote": "Take action on your received emails by triggering AWS Lambda functions."
+        },
+        {
+          "evidenceId": "amazon-ses-docs-33",
+          "quote": "applications that generate customer support tickets from incoming emails"
+        },
+        {
+          "evidenceId": "amazon-ses-comm-5",
+          "quote": "Another great thing SES has is the ability to receive emails not just send."
+        }
+      ]
+    },
     "productId": "amazon-ses",
     "storyId": "inbound-parse"
   }

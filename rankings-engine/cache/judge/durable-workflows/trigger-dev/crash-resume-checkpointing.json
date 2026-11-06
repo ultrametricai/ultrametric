@@ -1,11 +1,11 @@
 {
-  "hash": "33235e0232fc78dfb7e42470ece3ff82d515d7ff6583489f528a44e0abb98e90",
+  "hash": "85c6d48ca5b9f79c0c8ae43c8300cd189744948e5195d3ff0300fe1bab14dcb0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Trigger.dev documents checkpoint-resume for durable tasks (docs-38, gh-1, docs-39), and docs-7 locks in-flight runs to their code version across deploys. Survival of crashes and deploys is explicitly claimed only for the AI-chat feature (docs-13). Otherwise the documented recovery mechanism is retries with exponential backoff (docs-4), and nothing shows a generic task resuming from its last completed step with state intact after a process or infrastructure failure. Community wish-list comments asking for wait/resume are old requests, not concrete failures, so they lower confidence rather than create a dispute. Missing for 10: explicit documentation of step-level resume after crash or infrastructure failure for general tasks, detail on how state is persisted, and independent hands-on corroboration of recovery.",
+    "rationale": "Trigger.dev documents its own durability mechanisms: checkpoint-resume execution, durable tasks, runs locked to their code version across deploys, and AI chat tasks that survive deploys and crashes. However, the evidence never states that a general task interrupted by a process crash or infrastructure failure resumes from its last completed step with state intact, and the retry docs describe re-running the task rather than resuming it. missing for 10: explicit documentation that general tasks resume from the last completed step after a crash or infra failure, details on how state is persisted on resume, independent or hands-on corroboration of crash recovery.",
     "evidenceIds": [
       "trigger-dev-docs-38",
       "trigger-dev-docs-13",
@@ -14,6 +14,29 @@
       "trigger-dev-docs-39",
       "trigger-dev-docs-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, a workflow interrupted by a process crash, deploy, or infrastructure failure resumes from its last completed step with state intact",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-38",
+          "quote": "Trigger.dev uses checkpoint-resume to run normal TypeScript with no determinism constraints"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-13",
+          "quote": "Durable multi-turn AI chats — one Trigger.dev task per conversation, surviving refreshes, deploys, and crashes."
+        },
+        {
+          "evidenceId": "trigger-dev-docs-7",
+          "quote": "Once locked it won't change versions, even if you deploy new versions."
+        },
+        {
+          "evidenceId": "trigger-dev-gh-1",
+          "quote": "Build rock solid agents and AI applications using our durable tasks, retries, queues and idempotency."
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "crash-resume-checkpointing"
   }

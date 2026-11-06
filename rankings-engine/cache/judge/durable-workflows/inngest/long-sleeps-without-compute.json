@@ -1,19 +1,40 @@
 {
-  "hash": "9fae46c59dbd73cec7ec7a39211110bb1a2dbdcb5a1547655481e68076cba8b1",
+  "hash": "2efa43c6e7f52b8b720c681d050cd2a4e80f592cb9aceb93e675f350dbd4a86f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Inngest documents putting sleeps and waits in steps that resume from checkpoints, and `step.waitForEvent()` with a timeout to pause a run. The durable-agents docs state that a waiting run 'suspends entirely, holding zero resources, and resumes when the approval arrives.' The community note that Inngest runs on your own compute concerns active step execution and does not contradict suspended waits. Missing for 10: explicit evidence of sleep/wait durations of days to months (the only example is three hours), dedicated `step.sleep` documentation, and independent or hands-on corroboration that long waits incur no billable compute.",
+    "rationale": "Inngest documents putting sleeps and waits in durable steps that resume from checkpoints. step.waitForEvent() pauses a run until an event arrives or a timeout passes. Its durable-agents doc says a waiting run 'suspends entirely, holding zero resources, and resumes' when the approval arrives. However, the only documented wait duration is three hours, so days-to-months horizons and the billing impact of a suspended run are not evidenced. missing for 10: documented maximum sleep/wait durations covering days to months, explicit statement that suspended runs incur no billable compute or held connections, independent or hands-on corroboration of long sleeps",
     "evidenceIds": [
-      "inngest-docs-2",
       "inngest-docs-26",
-      "inngest-docs-18",
-      "inngest-docs-32",
       "inngest-docs-33",
-      "inngest-docs-34"
+      "inngest-docs-18",
+      "inngest-docs-32"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, a workflow can sleep or wait for days to months without holding a server, connection, or billable compute",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-33",
+          "quote": "If the agent needs to wait three hours for a human to approve something, it suspends entirely, holding zero resources, and resumes when the approval arrives."
+        },
+        {
+          "evidenceId": "inngest-docs-26",
+          "quote": "Put side effects, API calls, sleeps, waits, and function invocations in steps so Inngest can memoize results, retry failures independently, and resume long-running work from the last successful checkpoint"
+        },
+        {
+          "evidenceId": "inngest-docs-32",
+          "quote": "You can pause a Function's run until a given event is received."
+        },
+        {
+          "evidenceId": "inngest-docs-18",
+          "quote": "It returns a Promise that is resolved with the received event or null if the event is not received within the timeout."
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "long-sleeps-without-compute"
   }

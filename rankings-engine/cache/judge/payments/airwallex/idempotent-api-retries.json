@@ -1,12 +1,18 @@
 {
-  "hash": "100fe73cead9191af8320e88cf73b6952db3b7e65b1e73d39be7bec59689ae9d",
+  "hash": "cbdb662563229cefe6a6ed0639829ba17b2b09f78f37a8db545b65862adf9880",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Idempotent API retries are a fair question for a payments API, but nothing in the evidence pack documents idempotency keys or safe request retries on Airwallex's API. The only retry-related material covers deduplicating inbound webhook events by their stable event ID. That is an adjacent feature for event delivery, not protection against duplicate charges from retried outbound requests, so it earns no credit.",
+    "rationale": "The evidence pack never mentions idempotency keys, request IDs, or safe retry semantics for outbound API requests. The only deduplication evidence covers inbound webhook events: each has a stable id so receivers can ignore retries. That is a different capability from making API calls idempotent to prevent duplicate charges.",
     "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can safely retry any API request using idempotency keys so network failures never create duplicate charges",
+      "citations": []
+    },
     "productId": "airwallex",
     "storyId": "idempotent-api-retries"
   }

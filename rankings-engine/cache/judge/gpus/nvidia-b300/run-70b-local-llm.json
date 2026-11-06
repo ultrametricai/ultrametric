@@ -1,18 +1,36 @@
 {
-  "hash": "b202be0d308c6adba0824cf6c3011488edbc21d3b4ca157d1dc0f6881853eac0",
+  "hash": "043298700fe200f6827cbdeec6bcf45bea25b65936b8638d02416b2745c0937c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "NVIDIA documents 288 GB of HBM per B300 GPU (2.3 TB across 8 GPUs in DGX B300), which comfortably holds a quantized 70B-class model on a single GPU. NVIDIA also positions the platform for LLM inference with 144 PFLOPS FP4, so single-node inference is clearly supported. The community comment about home power draw concerns local deployment practicality, not whether the capability exists. missing for 10: published per-GPU memory bandwidth figure, hands-on or independent 70B quantized inference benchmarks.",
+    "rationale": "NVIDIA documents 288 GB of memory per B300 GPU (2.3 TB per 8-GPU DGX node) and 144 PFLOPS of FP4 inference. That capacity fits a quantized 70B model on a single GPU, and the docs explicitly position the system for LLM inference. However, the story also asks for published memory bandwidth, and no bandwidth figure appears in the evidence. 'Local' use is also questionable: a community comment doubts the server would run at home given its power draw. missing for 10: published memory-bandwidth spec, hands-on or benchmark evidence of 70B quantized inference, independent corroboration of practicality outside data-center settings.",
     "evidenceIds": [
       "nvidia-b300-docs-3",
       "nvidia-b300-docs-1",
       "nvidia-b300-docs-2",
-      "nvidia-b300-docs-4",
       "nvidia-b300-comm-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run a 70B-class quantized LLM on this GPU — published VRAM capacity and memory bandwidth that make local or single-node inference practical",
+      "citations": [
+        {
+          "evidenceId": "nvidia-b300-docs-3",
+          "quote": "GPU memory 8 x 288 GB = 2.3 TB total"
+        },
+        {
+          "evidenceId": "nvidia-b300-docs-1",
+          "quote": "DGX B300 provides enterprises with a single platform to accelerate large language model (LLM) inference and training."
+        },
+        {
+          "evidenceId": "nvidia-b300-docs-2",
+          "quote": "144 PFLOPS FP4 inference"
+        }
+      ]
+    },
     "productId": "nvidia-b300",
     "storyId": "run-70b-local-llm"
   }

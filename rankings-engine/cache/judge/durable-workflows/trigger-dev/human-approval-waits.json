@@ -1,18 +1,40 @@
 {
-  "hash": "dd15f99fb021e4e5e34cac15535bfa1fd2e7dfad39c6a9287b834d9db673398d",
+  "hash": "2b676a693ac8b0ed3989f6c572995fcedf6937b93fe47e8602f8393a4ba92f85",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Trigger.dev documents waitpoint tokens that pause task runs until the token is completed, explicitly for approval workflows and waiting on external confirmation. A `needsApproval` tool flag pauses for human approval while the run stays alive, and checkpoint-resume with no timeouts supports long waits. Community wish-list comments asking for wait/resume read as feature requests rather than reported failures, so they do not create a dispute. Missing for 10: explicit documentation that waits can last hours or days (e.g., token timeout limits), detail on how quickly runs resume once completed, and independent hands-on corroboration.",
+    "rationale": "Trigger.dev documents waitpoint tokens that pause task runs until the token is completed, explicitly for approval workflows. It also shows a needsApproval tool flag that pauses for human approval while the run stays alive, backed by checkpoint-resume and no timeouts. The core human-in-the-loop pause is first-party, but the evidence never states that pauses can last hours or days, or that resumption is immediate when the response arrives. missing for 10: explicit documentation of multi-hour/multi-day wait durations, evidence of immediate resume latency on token completion, independent or hands-on corroboration of the approval flow.",
     "evidenceIds": [
       "trigger-dev-docs-6",
-      "trigger-dev-docs-31",
       "trigger-dev-docs-22",
       "trigger-dev-docs-38",
       "trigger-dev-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a backend developer, a workflow pauses for human approval or input for hours or days and resumes the moment the response arrives",
+      "citations": [
+        {
+          "evidenceId": "trigger-dev-docs-6",
+          "quote": "Waitpoint tokens pause task runs until you complete the token. They're commonly used for approval workflows and other scenarios where you need to wait for external confirmation"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-22",
+          "quote": "needsApproval: true, // pauses for human approval; the run stays alive"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-38",
+          "quote": "Trigger.dev uses checkpoint-resume to run normal TypeScript with no determinism constraints"
+        },
+        {
+          "evidenceId": "trigger-dev-docs-23",
+          "quote": "you can write code that runs for a long time here, there are no timeouts"
+        }
+      ]
+    },
     "productId": "trigger-dev",
     "storyId": "human-approval-waits"
   }

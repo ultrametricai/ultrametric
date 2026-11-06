@@ -1,16 +1,35 @@
 {
-  "hash": "468795339af34d8cdfe9916bfee6d101c8eb5785a05c87ab010332a0da18a69b",
+  "hash": "95fbe9ef1ba5c6d98e72db026b7532cdb907c086707983222dfe0cb0058f369a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Inngest documents concurrency limits that can be scoped with keys, applying the limit to each unique value such as a user ID, which supports per-tenant caps. It also documents hard rate limits on function run starts, and its docs list concurrency, throttling and rate limiting as built-in flow control. missing for 10: explicit evidence that rate limits can be keyed per tenant, explicit documentation of per-function versus per-key scoping and of fairness that stops a hot tenant from starving others, independent or hands-on corroboration.",
+    "rationale": "Inngest's own docs cover keyed concurrency limits, where a limit applies to each unique key value such as a user ID. That enables per-tenant caps. They also document function-level rate limiting as a hard cap on run starts within a time period, and the docs overview lists concurrency, throttling and rate limiting as managed capabilities. Missing for 10: explicit evidence that rate limits can be keyed per tenant (the rate-limit doc shows only function-level limits), documentation of fairness or anti-starvation behaviour across tenants, and independent or hands-on corroboration.",
     "evidenceIds": [
       "inngest-docs-12",
       "inngest-docs-13",
       "inngest-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, I cap concurrency and set rate limits per workflow, per key, or per tenant so one hot customer can't starve the rest",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-12",
+          "quote": "Step concurrency can be optionally configured using \"keys\" which applies the limit to each unique value of the key (ex. user id)."
+        },
+        {
+          "evidenceId": "inngest-docs-13",
+          "quote": "Rate limiting is a hard limit on how many function runs can start within a time period."
+        },
+        {
+          "evidenceId": "inngest-docs-24",
+          "quote": "We handle the backend infra, queueing, scaling, concurrency, throttling, rate limiting, and observability for you."
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "concurrency-rate-controls"
   }

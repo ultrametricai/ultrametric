@@ -1,22 +1,46 @@
 {
-  "hash": "0c02693389b31d5774a8949e8c5cae548a3675b66774b683d83106c34a651fb5",
+  "hash": "fbc6d8e65e946c0ec8d4f77aa5005de6a86632e41d7fad436e4952c2830cc381",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BVNK exposes a conventional REST API (e.g. POST /payment/v1/rules, POST /payment/v2/payins/simulation) with Hawk auth. The platform itself generates unique blockchain addresses for payments and handles conversion and settlement. It also reports on-chain confirmations via webhooks, so developers interact with endpoints rather than chain infrastructure. However, the evidence never shows client libraries or SDKs in any language; the only tooling noted is a CLI. Node and gas abstraction is implied rather than stated. missing for 10: documented language client libraries/SDKs, explicit statement that gas fees and node operation are handled by the platform, independent or hands-on corroboration.",
+    "rationale": "BVNK documents a conventional REST API (e.g. POST /payment/v1/rules) where the platform generates blockchain addresses, manages conversion and settlement, and reports on-chain confirmations via webhooks, so developers do not run nodes or handle chain mechanics themselves. The evidence pack shows no language client libraries or SDKs (only a separate agent-wallet CLI) and never mentions gas handling. missing for 10: language-specific client libraries/SDKs, explicit gas/fee abstraction documentation, independent hands-on corroboration.",
     "evidenceIds": [
-      "bvnk-docs-23",
-      "bvnk-docs-22",
-      "bvnk-docs-29",
       "bvnk-docs-26",
       "bvnk-docs-33",
-      "bvnk-docs-10",
+      "bvnk-docs-38",
       "bvnk-docs-45",
-      "bvnk-docs-25",
-      "bvnk-probe-1"
+      "bvnk-docs-13",
+      "bvnk-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I never operate blockchain infrastructure — the platform abstracts nodes, gas, and chain mechanics behind a conventional REST API with client libraries in my language",
+      "citations": [
+        {
+          "evidenceId": "bvnk-docs-26",
+          "quote": "For every payment, BVNK generates a live quote to be accepted by the customer and a unique blockchain address for the payment to be made to."
+        },
+        {
+          "evidenceId": "bvnk-docs-33",
+          "quote": "whilst BVNK manages the conversion and settlement to your accounts"
+        },
+        {
+          "evidenceId": "bvnk-docs-38",
+          "quote": "To create a rule that links a fiat virtual account to a crypto blockchain address, send the POST /payment/v1/rules request"
+        },
+        {
+          "evidenceId": "bvnk-docs-45",
+          "quote": "triggered when a new channel transaction is confirmed on chain, and the transaction has been processed."
+        },
+        {
+          "evidenceId": "bvnk-docs-25",
+          "quote": "On BVNK, you can create and manage both crypto and fiat wallets through the Portal or API."
+        }
+      ]
+    },
     "productId": "bvnk",
     "storyId": "no-node-integration"
   }

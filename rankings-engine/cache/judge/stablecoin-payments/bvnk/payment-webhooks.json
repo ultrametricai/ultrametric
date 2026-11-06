@@ -1,21 +1,42 @@
 {
-  "hash": "3c0553dc5b7ee540b17e018774d27bce5dbcbb391e95d0b64ced095df0ac3881",
+  "hash": "1345a56fd9701e3b494e12295edbd1b155a4d17bfe258d429b91c514db0b5a94",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "BVNK documents registrable outbound HTTP POST webhooks for account events such as pay-ins and payouts (bvnk-docs-40). Signatures can be verified with BVNK's webhook signature validator (bvnk-docs-21, bvnk-docs-30, bvnk-docs-42). Specific events are documented, including channel transaction confirmed on chain, late crypto transactions and wallet status changes. Missing for 10: an explicitly named conversion-executed/transfer webhook event, a specifically documented payout-settled event type, and independent or hands-on corroboration.",
+    "rationale": "BVNK documents registrable webhooks: HTTP POSTs to a URL you provide for events such as pay-ins and payouts. It also documents signature validation and a specific channel-transaction-confirmed event, which covers signed payment-confirmation notifications. Conversion-executed events are not evidenced, and payout settlement is covered only by a generic mention of payouts. Missing for 10: a documented conversion/transfer-executed webhook event, a specific payout-settled event schema, and independent or hands-on corroboration.",
     "evidenceIds": [
       "bvnk-docs-40",
       "bvnk-docs-2",
-      "bvnk-docs-21",
       "bvnk-docs-30",
       "bvnk-docs-42",
       "bvnk-docs-45",
-      "bvnk-docs-46",
-      "bvnk-docs-49"
+      "bvnk-docs-46"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, money movement emits signed webhooks — payment confirmed, payout settled, conversion executed — so my system tracks state without polling chains or dashboards",
+      "citations": [
+        {
+          "evidenceId": "bvnk-docs-40",
+          "quote": "When something happens in your BVNK account, such as a pay-in or a payout, the platform sends an HTTP POST request to a URL you provide with the event details in real time."
+        },
+        {
+          "evidenceId": "bvnk-docs-30",
+          "quote": "The BVNK Webhook Signature Validator is a client-side tool that helps developers verify webhook signatures from BVNK's payment processing system."
+        },
+        {
+          "evidenceId": "bvnk-docs-42",
+          "quote": "Compare your generated signatures against signatures received from BVNK."
+        },
+        {
+          "evidenceId": "bvnk-docs-45",
+          "quote": "triggered when a new channel transaction is confirmed on chain, and the transaction has been processed."
+        }
+      ]
+    },
     "productId": "bvnk",
     "storyId": "payment-webhooks"
   }

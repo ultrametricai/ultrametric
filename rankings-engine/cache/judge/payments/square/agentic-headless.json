@@ -1,22 +1,44 @@
 {
-  "hash": "5994949594b975ae04d8a04f09b4e764791f3d0cfbd5ef1cc927b1511c36f9c9",
+  "hash": "21f7b786c331c786734a99bb206cc92276902cabc9035d5a4248ca206e5b27b7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Square can be driven without a UI through its own token-authenticated SDK and APIs. A personal access token suits unattended production use, and the docs also cover a Sandbox environment, idempotency keys and a locally runnable `npx square-mcp-server start` configured via env vars (SANDBOX, DISALLOW_WRITES, SQUARE_VERSION). However, nothing in the pack documents CI-specific usage, a first-party CLI or headless automation guidance. missing for 10: official CLI or documented CI/pipeline integration guidance, an OpenAPI spec for automation tooling (probe 404), independent or hands-on corroboration of headless/CI use.",
+    "rationale": "Square is API-first. It can be driven entirely programmatically without a UI: the TypeScript SDK authenticates with a token, personal access tokens are documented as suitable for production, there is a Sandbox environment for testing, writes accept idempotency keys, and the local MCP server runs via npx with env-var controls (SANDBOX, DISALLOW_WRITES, version pinning). These are the building blocks of headless automation, but nothing explicitly documents CI usage. missing for 10: official CLI, documented CI/CD pipeline guidance or examples, published OpenAPI spec (probe 404), independent corroboration of headless/CI use.",
     "evidenceIds": [
       "square-gh-3",
-      "square-gh-1",
+      "square-gh-4",
       "square-docs-50",
       "square-docs-40",
-      "square-docs-21",
-      "square-docs-22",
       "square-supp-mcp-tools",
       "square-docs-45",
-      "square-supp-llms-agent-guidance"
+      "square-supp-llms-agent-guidance",
+      "square-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "square-gh-3",
+          "quote": "const client = new SquareClient({ token: \"YOUR_TOKEN\" });"
+        },
+        {
+          "evidenceId": "square-docs-50",
+          "quote": "For custom integrations that only access your own Square account, personal access tokens are suitable for production use."
+        },
+        {
+          "evidenceId": "square-supp-mcp-tools",
+          "quote": "Local mode runs via `npx square-mcp-server start` with documented env controls including SANDBOX=true"
+        },
+        {
+          "evidenceId": "square-supp-llms-agent-guidance",
+          "quote": "every write endpoint accepts an idempotency key"
+        }
+      ]
+    },
     "productId": "square",
     "storyId": "agentic-headless"
   }

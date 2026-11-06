@@ -1,23 +1,44 @@
 {
-  "hash": "64c8416af5ed44bbc78a7728f6ded8d4beb54e8c928c57d11eabebdba1ab7942",
+  "hash": "65542f6ff7635b00116e5bd8f34211ea155edfc9483625ba3ee4bf357598613b",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "zep",
-    "storyId": "long-term-memory-add-search",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Zep's `thread.add_messages` stores chat messages in the thread history and also ingests them into the user-level Context Graph, so memory persists beyond any single thread (session). The docs describe retrieving that memory with graph search that combines semantic similarity and BM25, plus Context Block retrieval, including returning context directly from `add_messages` via `return_context=True`. missing for 10: independent hands-on corroboration of recall quality across sessions; the community items describe design intent rather than measured retrieval results.",
+    "rationale": "Zep documents adding conversation messages with thread.add_messages, which ingests them into a user-level Context Graph. It also documents graph search that combines semantic similarity with BM25 to retrieve that context later, including context returned right after ingestion. Because the graph is per user rather than per thread, memory persists across sessions. Missing for 10: independent hands-on corroboration of recall quality, and explicit documentation that memory from one thread is retrieved in a later, separate session (this is only implied by the user-level graph design).",
     "evidenceIds": [
       "zep-docs-20",
       "zep-docs-48",
-      "zep-docs-9",
       "zep-docs-22",
       "zep-docs-10",
-      "zep-docs-18",
       "zep-docs-49",
       "zep-docs-24",
       "zep-comm-5"
-    ]
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can add memories from conversations and retrieve them later with semantic search, so context persists across sessions",
+      "citations": [
+        {
+          "evidenceId": "zep-docs-20",
+          "quote": "Chat messages are added to threads using `thread.add_messages`, which both adds those messages to the thread history and ingests those messages into the user-level knowledge graph."
+        },
+        {
+          "evidenceId": "zep-docs-22",
+          "quote": "Zep graph search combines semantic similarity with BM25 full-text search. Semantic search finds conceptual matches, and full-text search finds exact terms."
+        },
+        {
+          "evidenceId": "zep-docs-49",
+          "quote": "Zep will perform a user graph search right after persisting the data and return the context relevant to the recently added messages."
+        },
+        {
+          "evidenceId": "zep-docs-24",
+          "quote": "The integrations persist conversation turns and retrieve data from the user's Context Graph."
+        }
+      ]
+    },
+    "productId": "zep",
+    "storyId": "long-term-memory-add-search"
   }
 }

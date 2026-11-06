@@ -1,17 +1,30 @@
 {
-  "hash": "8190241ed2866260d03118d32a4cac18d26e1034be59822f3288aa851989330e",
+  "hash": "21f8bc4d4169bc7fdbbacb11e9f0e9486b2c4f9b1090ce9f4f509b4feee73687",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Inngest documents keyed concurrency limits applied per unique key value such as a user ID. It also documents rate limiting and built-in flow control, throttling and concurrency handling. Together these support per-tenant isolation rather than one shared FIFO queue. The pack has no evidence of assigning priorities to runs, and fairness is only implied by the per-key limits rather than described as a fair-queuing scheduler. Missing for 10: run prioritization, explicit fair-queuing or tenant-fairness documentation, independent or hands-on corroboration.",
+    "rationale": "Inngest documents keyed concurrency, which applies limits per unique key value such as a user ID. That gives per-tenant isolation, so one tenant cannot monopolize execution, and it is backed by broader flow-control and throttling claims. The pack never documents assigning priorities to runs or a fair-queuing scheduler explicitly. Missing for 10: run priority assignment, explicit fair scheduling across tenants versus FIFO, detailed docs on scheduling semantics, independent or hands-on corroboration.",
     "evidenceIds": [
       "inngest-docs-12",
-      "inngest-docs-13",
-      "inngest-docs-24",
-      "inngest-docs-1"
+      "inngest-docs-24"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I assign priorities to runs and get fair scheduling across tenants instead of a single FIFO queue",
+      "citations": [
+        {
+          "evidenceId": "inngest-docs-12",
+          "quote": "Step concurrency can be optionally configured using \"keys\" which applies the limit to each unique value of the key (ex. user id)."
+        },
+        {
+          "evidenceId": "inngest-docs-24",
+          "quote": "We handle the backend infra, queueing, scaling, concurrency, throttling, rate limiting, and observability for you."
+        }
+      ]
+    },
     "productId": "inngest",
     "storyId": "queue-priority-fairness"
   }

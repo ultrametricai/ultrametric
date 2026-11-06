@@ -1,23 +1,46 @@
 {
-  "hash": "23a7adc7560df6fff29724a432bb9da04b2961fe1dfd5c5702f262958f3e30ec",
+  "hash": "eb8271ec41dd9c0482dc0a36d068219928c8b5be7be4e4a99a48b36e93df1cc8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "PayPal is an API-first service built for headless use. Apps authenticate machine-to-machine by exchanging a client ID and secret for an access token, then call REST APIs (Invoicing, Disputes, Payouts) programmatically from backend systems. A self-contained sandbox suits automated testing, and the local MCP server runs non-interactively via `npx -y @paypal/mcp` configured purely by environment variables (PAYPAL_ACCESS_TOKEN, PAYPAL_ENVIRONMENT=SANDBOX|PRODUCTION). Missing for 10: explicit CI/pipeline documentation or examples, an official general-purpose CLI, and independent hands-on corroboration of headless/CI use.",
+    "rationale": "PayPal's own docs show non-interactive, headless operation: a client ID and secret are exchanged for an access token to call the REST APIs, and the MCP server runs locally via npx using only environment variables. A self-contained sandbox supports automated testing without real transactions. However, nothing in the evidence documents CI pipeline usage, and there is no official CLI, so the CI part of the story is only implied. missing for 10: explicit CI/CD integration documentation or examples, an official headless CLI, independent or hands-on corroboration of automated CI runs",
     "evidenceIds": [
       "paypal-docs-1",
-      "paypal-docs-4",
-      "paypal-docs-7",
-      "paypal-docs-26",
-      "paypal-docs-11",
-      "paypal-docs-16",
-      "paypal-docs-54",
       "paypal-supp-remote-mcp",
-      "paypal-supp-toolkit-frameworks",
-      "paypal-supp-llm-support"
+      "paypal-docs-11",
+      "paypal-docs-4",
+      "paypal-docs-26",
+      "paypal-supp-toolkit-frameworks"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "paypal-docs-1",
+          "quote": "Exchange your client ID and client secret for an access token. The access token authenticates your app when calling PayPal REST APIs."
+        },
+        {
+          "evidenceId": "paypal-supp-remote-mcp",
+          "quote": "local via `npx -y @paypal/mcp --tools=all` (PAYPAL_ACCESS_TOKEN + PAYPAL_ENVIRONMENT=SANDBOX|PRODUCTION)"
+        },
+        {
+          "evidenceId": "paypal-docs-11",
+          "quote": "The PayPal sandbox is a self-contained, virtual testing environment that simulates the live PayPal production environment."
+        },
+        {
+          "evidenceId": "paypal-docs-4",
+          "quote": "The Invoicing REST API helps you create, update, send, and manage invoices programmatically from your backend systems."
+        },
+        {
+          "evidenceId": "paypal-docs-26",
+          "quote": "Disputes API: A programmatic interface that enables you to automate dispute management actions directly from your systems."
+        }
+      ]
+    },
     "productId": "paypal",
     "storyId": "agentic-headless"
   }

@@ -1,21 +1,41 @@
 {
-  "hash": "101fe7e809327867594692c59d2a0a177b3b230cea758fbb9908f8b1e015a9bd",
+  "hash": "6d2f17914005f2d98cc9247b80f23b1a65254bf13890cf1212be352b0503ada2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Temporal's docs explicitly promise crash-proof execution: apps resume exactly where they left off after crashes, network failures, or infrastructure outages. They also say Activity results are not repeated during Workflow replay, so workflows survive Worker restarts without losing state, and Worker Versioning (Pinned/Auto-Upgrade) addresses resuming across deploys. Community users broadly endorse the durable-execution model, though none describes a specific crash-recovery test. Missing for 10: independent hands-on evidence of crash or deploy recovery, and detailed docs in the pack on the event-history/replay mechanics that restore state.",
+    "rationale": "Temporal's first-party docs state that applications resume exactly where they left off after crashes, network failures, or infrastructure outages. They also say Workflows resume automatically after a crash, and that work survives Worker restarts without losing state because completed Activities are not repeated during replay. A user report independently describes it as a durable-execution tool. Missing for 10: hands-on or independent corroboration of crash-and-resume behaviour specifically, and explicit documentation of resuming across a code deploy (worker versioning is mentioned only as a config concept).",
     "evidenceIds": [
       "temporal-docs-1",
       "temporal-docs-41",
       "temporal-docs-25",
       "temporal-docs-9",
-      "temporal-docs-7",
-      "temporal-docs-18",
-      "temporal-comm-9",
-      "temporal-comm-7"
+      "temporal-comm-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a backend developer, a workflow interrupted by a process crash, deploy, or infrastructure failure resumes from its last completed step with state intact",
+      "citations": [
+        {
+          "evidenceId": "temporal-docs-1",
+          "quote": "Temporal delivers crash-proof execution by guaranteeing that applications resume exactly where they left off after crashes, network failures, or infrastructure outages"
+        },
+        {
+          "evidenceId": "temporal-docs-41",
+          "quote": "a Workflow resumes automatically after a crash, a network timeout, or a multi-day wait for a human to approve a step"
+        },
+        {
+          "evidenceId": "temporal-docs-25",
+          "quote": "model calls are executed as Activities, so they retry durably and are not repeated during Workflow replay. Your agents survive Worker restarts and can run for extended periods without losing state."
+        },
+        {
+          "evidenceId": "temporal-comm-9",
+          "quote": "It's an awesome tool for durable execution"
+        }
+      ]
+    },
     "productId": "temporal",
     "storyId": "crash-resume-checkpointing"
   }

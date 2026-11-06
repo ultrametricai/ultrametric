@@ -1,18 +1,36 @@
 {
-  "hash": "47f85fa2253b58bcf07c614a98835b0c1526e98caceb87d9d60ec257bbee4f67",
+  "hash": "f958baa9788ef9274854d38291f96696ef4bccccb808cd0efae3a0ccd120e519",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lago documents a webhook system built for reliability: HMAC signatures, automatic retries (3 attempts on non-2xx responses or network errors), and a log view to inspect and retry events. Its versioning policy also implies a growing set of webhook event types. However, the pack never shows that the specific subscription state changes in the story emit events, so coverage of the full lifecycle is only implied. Missing for 10: an explicit list of subscription lifecycle webhook events (renewal, upgrade/downgrade, payment failure, cancellation), evidence of delivery guarantees beyond 3 retries, and independent or hands-on corroboration.",
+    "rationale": "Lago documents its own outbound webhooks with reliability features: HMAC signatures, automatic retries on non-2xx responses or network errors (3 attempts), and a log for inspecting and retrying events. The pack never lists which subscription events fire, so coverage of renewal, upgrade, payment failure and cancellation is unproven. Missing for 10: an enumerated list of subscription lifecycle webhook event types (renewal, upgrade/downgrade, payment failure, cancellation), registration or endpoint configuration details, and independent or hands-on corroboration of delivery reliability.",
     "evidenceIds": [
-      "lago-docs-7",
       "lago-docs-21",
       "lago-docs-22",
-      "lago-docs-8",
-      "lago-docs-4"
+      "lago-docs-7",
+      "lago-docs-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, every subscription state change — renewal, upgrade, payment failure, cancellation — emits a webhook or event my systems can act on reliably",
+      "citations": [
+        {
+          "evidenceId": "lago-docs-21",
+          "quote": "If you return an error (other than a 2xx's HTTP response) or if there is a network issue, the webhook will be sent again. Lago will try to send the webhook 3 times."
+        },
+        {
+          "evidenceId": "lago-docs-22",
+          "quote": "This allows you to take a closer look at the generated events, detect possible errors, and retry them."
+        },
+        {
+          "evidenceId": "lago-docs-7",
+          "quote": "The second is `HMAC`, which features a shorter payload header and no size restrictions."
+        }
+      ]
+    },
     "productId": "lago",
     "storyId": "lifecycle-event-stream"
   }

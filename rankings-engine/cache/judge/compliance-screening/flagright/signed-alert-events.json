@@ -1,17 +1,36 @@
 {
-  "hash": "353b9b671f029a9a756e0a525ec027199b043ec4348849ebe06a3331ada9e990",
+  "hash": "571d5d759d52ce9644c0c24a52ef96e1c3bea8b8adc1ee655d45cbf453dc6a92",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Flagright documents HTTPS webhook delivery with an `X-Flagright-Signature` header on each event and secret rolling with an overlap window, which covers verifying event authenticity. Retries are documented for up to 3 days, but nothing in the pack shows a unique event ID, idempotency key, or deduplication guidance for retried deliveries, so only half the story is evidenced. Missing for 10: documented event ID or idempotency field for deduplicating retries, signature verification algorithm and replay/timestamp details, independent or hands-on corroboration.",
+    "rationale": "Flagright documents signed webhook events using an `X-Flagright-Signature` header and supports secret rolling with the previous secret kept active, so developers can verify event authenticity. It also documents retries for up to 3 days, but nothing in the evidence shows a unique event ID, idempotency key or other mechanism for deduplicating those retried deliveries. Missing for 10: a documented event ID or idempotency key for deduplicating retried webhooks, signature-verification algorithm details (timestamp or replay tolerance), independent or hands-on corroboration.",
     "evidenceIds": [
-      "flagright-docs-5",
-      "flagright-docs-8",
       "flagright-docs-9",
-      "flagright-docs-10"
+      "flagright-docs-10",
+      "flagright-docs-8",
+      "flagright-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can verify alert-event authenticity and deduplicate retried notifications",
+      "citations": [
+        {
+          "evidenceId": "flagright-docs-9",
+          "quote": "Flagright signs the webhook events it sends to your endpoints by including a signature in each event's `X-Flagright-Signature` header."
+        },
+        {
+          "evidenceId": "flagright-docs-10",
+          "quote": "when you roll an endpoint's secret from the Flagright Console, and choose to keep the previous secret active for some period of time"
+        },
+        {
+          "evidenceId": "flagright-docs-8",
+          "quote": "Flagright webhooks have built-in retry methods for 3xx, 4xx, or 5xx response status codes. We will retry for up to 3 days"
+        }
+      ]
+    },
     "productId": "flagright",
     "storyId": "signed-alert-events"
   }

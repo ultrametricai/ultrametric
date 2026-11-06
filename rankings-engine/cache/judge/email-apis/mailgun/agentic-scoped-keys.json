@@ -1,16 +1,25 @@
 {
-  "hash": "5b078b519f8b46fb66be469a5bcb7b2c5d09ea64f505425364e24663fe8309b5",
+  "hash": "1fd93d04331183e1e8f36df2091f9cdfb8a0c746e0f2b754c339a12604731010",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Mailgun documents Domain Sending Keys, API keys restricted to POST on /messages and /messages.mime for a single domain. That gives a genuine least-privilege credential for a send-only agent. No other scope granularity is evidenced, so an agent doing the broader MCP tasks (stats, domain management, DNS troubleshooting) would apparently need a full-privilege key. Missing for 10: scopes beyond send-only (e.g., read-only analytics or per-resource permissions), guidance on credentials for MCP or agent use, key expiry/rotation controls, independent or hands-on corroboration.",
+    "rationale": "Mailgun's own docs describe Domain Sending Keys, which are API keys restricted to sending messages on the /messages and /messages.mime endpoints for a single domain. That is a real first-party least-privilege credential an agent could use, but it covers only one narrow scope. missing for 10: configurable permission scopes beyond send-only (e.g., read-only analytics, domain management), role-based or custom-scoped API keys, agent- or MCP-specific credential guidance, key expiry/rotation documentation, independent or hands-on corroboration.",
     "evidenceIds": [
-      "mailgun-docs-17",
-      "mailgun-docs-30",
-      "mailgun-docs-4"
+      "mailgun-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "mailgun-docs-17",
+          "quote": "Domain Sending Keys are API keys that only allow sending messages via a POST call on /messages and /messages.mime endpoints for the domain in which they are created for."
+        }
+      ]
+    },
     "productId": "mailgun",
     "storyId": "agentic-scoped-keys"
   }

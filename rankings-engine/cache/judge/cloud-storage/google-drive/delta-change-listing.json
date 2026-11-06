@@ -1,14 +1,35 @@
 {
-  "hash": "69773ed98a31be51360da71708e37b59f261a693c968896482328ab06a0b4725",
+  "hash": "04394563e91102a1cb23ab7f2ce1e3464a5ad798ab8e91ca2c4332cf2771f8dd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The Drive API v3 reference documents a dedicated `changes` resource (\"A change to a file or shared drive\"), which is the product's own change-feed surface for incremental sync instead of re-listing files. The evidence is only a single one-line reference entry, so how incremental retrieval actually works is not shown. Push notifications are a separate webhook capability and are not credited here. Missing for 10: documentation of the cursor/page-token mechanism (start token, next-token semantics), proof that only deltas since the last call are returned, coverage of deletions and shared-drive scope, and any hands-on or independent corroboration.",
+    "rationale": "The Drive API's own reference includes a `changes` resource, described as \"A change to a file or shared drive,\" which points to a first-party change feed. Push notifications that alert when watched resources change support a delta-driven sync pattern. However, the pack does not document the cursor/page-token mechanics, the list-changes call, or that it returns only changes since the last call, so the delta-sync capability is only implied. Missing for 10: documented cursor/start-page-token semantics, an explicit list-changes-since-token endpoint description, guidance on avoiding full re-crawls, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "google-drive-docs-35"
+      "google-drive-docs-35",
+      "google-drive-docs-9",
+      "google-drive-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can sync efficiently — a cursor/delta endpoint returns only what changed since my last call instead of forcing a full re-crawl",
+      "citations": [
+        {
+          "evidenceId": "google-drive-docs-35",
+          "quote": "A change to a file or shared drive."
+        },
+        {
+          "evidenceId": "google-drive-docs-9",
+          "quote": "The Google Drive API provides push notifications that let you monitor changes in resources."
+        },
+        {
+          "evidenceId": "google-drive-docs-19",
+          "quote": "Whenever a watched resource changes, the Google Drive API notifies your application."
+        }
+      ]
+    },
     "productId": "google-drive",
     "storyId": "delta-change-listing"
   }

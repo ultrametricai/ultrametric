@@ -1,14 +1,25 @@
 {
-  "hash": "641439502553bd5f3ff12b455ec87b0795e857c0988c612624f768fa38f8fdcc",
+  "hash": "9f1e88cf3c30db1b7e82dca9701c6cb269bb4234f0b19162549b6f0d790d5dc1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "EBANX's own API error-code docs list a 'Lock for preventing customer to be billed twice for the same transaction', so it has a first-party duplicate-charge guard. The evidence does not show a documented idempotency-key mechanism or explicit safe-retry semantics. missing for 10: documented idempotency key parameter/header, explicit guidance that any request can be safely retried, coverage across all endpoints (payouts, refunds, captures), independent or hands-on corroboration.",
+    "rationale": "The only on-topic evidence is an API error code describing a lock that prevents a customer from being billed twice for the same transaction. That indicates EBANX has its own duplicate-charge protection, but it is a single thin mention inside an error-code table. Missing for 10: documented idempotency-key header or parameter semantics, guidance on safely retrying any API request (not just payments), behavior and response on replayed requests, and independent or hands-on corroboration.",
     "evidenceIds": [
       "ebanx-docs-27"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can safely retry any API request using idempotency keys so network failures never create duplicate charges",
+      "citations": [
+        {
+          "evidenceId": "ebanx-docs-27",
+          "quote": "Lock for preventing customer to be billed twice for the same transaction."
+        }
+      ]
+    },
     "productId": "ebanx",
     "storyId": "idempotent-api-retries"
   }

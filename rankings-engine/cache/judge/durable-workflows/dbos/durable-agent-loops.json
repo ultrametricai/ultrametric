@@ -1,23 +1,48 @@
 {
-  "hash": "6f31a56387d4e19592c77c49b935eb02c6a022ca3db66b9fbdb30863bac95258",
+  "hash": "ae52df346370dc7cd6ba97acbcc830ce801e88b33db362871b8a261fecb5f9aa",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "DBOS's docs directly target this story. Agents built with the OpenAI Agents SDK or Vercel AI become durable workflows with drop-in runners or a few annotations (dbos-docs-15, dbos-docs-30, dbos-docs-40). Each step is checkpointed to Postgres, so a crash mid-agent replays completed steps and resumes from the last completed one (dbos-docs-38, dbos-docs-36, dbos-docs-4, dbos-docs-11); the co-founder's HN explanation of per-step output logging supports this (dbos-comm-13). missing for 10: explicit documentation of per-step retry policies for model and tool calls, independent hands-on corroboration of crash recovery specifically for agent loops.",
+    "rationale": "DBOS's own docs describe running agents as durable workflows whose steps are checkpointed to Postgres. They state explicitly that if the process crashes mid-agent, completed steps are replayed from checkpoints and the agent resumes where it left off. Drop-in integrations for the OpenAI Agents SDK and Vercel AI preserve progress across transient API failures and restarts. Missing for 10: explicit documentation of configurable automatic retry policies for model/tool steps, and independent hands-on corroboration of agent-loop crash recovery (community praise is generic, not agent-specific).",
     "evidenceIds": [
-      "dbos-docs-15",
-      "dbos-docs-30",
       "dbos-docs-38",
+      "dbos-docs-30",
+      "dbos-docs-15",
       "dbos-docs-36",
-      "dbos-docs-40",
-      "dbos-docs-11",
       "dbos-docs-4",
-      "dbos-docs-25",
-      "dbos-docs-13",
-      "dbos-comm-13"
+      "dbos-docs-11",
+      "dbos-docs-40",
+      "dbos-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an agent builder, I run LLM agent loops as durable workflows — model and tool calls as checkpointed, retried steps that survive crashes mid-run",
+      "citations": [
+        {
+          "evidenceId": "dbos-docs-38",
+          "quote": "If your process crashes mid-agent, DBOS replays the completed steps from their checkpoints and the agent resumes exactly where it left off."
+        },
+        {
+          "evidenceId": "dbos-docs-30",
+          "quote": "you can build reliable agents that preserve progress across transient API failures, application errors, and restarts"
+        },
+        {
+          "evidenceId": "dbos-docs-36",
+          "quote": "Because every task is checkpointed, your agent can recover from any failure mid-flight without re-running work that already succeeded."
+        },
+        {
+          "evidenceId": "dbos-docs-4",
+          "quote": "DBOS checkpoints the state of your workflows and steps to its system database. If your program crashes or is interrupted, DBOS uses this checkpointed state to recover each of your workflows from its last completed step."
+        },
+        {
+          "evidenceId": "dbos-docs-15",
+          "quote": "Use DBOSRunner.run and DBOSRunner.run_sync as drop-in replacements for Runner.run and Runner.run_sync."
+        }
+      ]
+    },
     "productId": "dbos",
     "storyId": "durable-agent-loops"
   }

@@ -1,17 +1,35 @@
 {
-  "hash": "530938846566d6d47bf5e77666ca3dbcbac2bf872f2c9cbeefc966068d6c75fb",
+  "hash": "955221f1b5e84457395a5a910ce0eaaf501e32dad2b0195c5116e421e857fd80",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Mollie documents two scope-reducing integrations: Mollie Components/Mollie JS, which add card-holder data fields to your own checkout \"in a way that is fully PCI-DSS SAQ-A compliant,\" and Mollie-hosted checkout pages, where the customer completes payment off your servers. Together these deliver the core story of keeping card data off merchant systems. missing for 10: explicit documentation of the tokenization mechanism (card token flow), independent or hands-on corroboration of the SAQ-A scope reduction.",
+    "rationale": "Mollie documents two scope-reduction paths: Mollie Components (Mollie JS), which add card-holder data fields to your own checkout in a way described as \"fully PCI-DSS SAQ-A compliant\", and hosted Mollie Checkout pages where the customer completes payment on Mollie's side. SAQ-A eligibility implies card data stays off the merchant's servers, but the pack never explicitly describes tokenization or states that card data bypasses merchant systems. missing for 10: explicit documentation of the card tokenization mechanism, an explicit statement that raw card data never reaches merchant servers, independent or hands-on corroboration of the SAQ-A scope reduction.",
     "evidenceIds": [
       "mollie-docs-4",
       "mollie-supp-hosted-checkout",
-      "mollie-docs-21",
-      "mollie-docs-3"
+      "mollie-docs-21"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can keep my systems out of most of PCI DSS scope because card data is tokenized and never touches my servers",
+      "citations": [
+        {
+          "evidenceId": "mollie-docs-4",
+          "quote": "Mollie JS is a set of Javascript APIs that allow you to add the fields needed for credit card holder data to your own checkout, in a way that is fully PCI-DSS SAQ-A compliant."
+        },
+        {
+          "evidenceId": "mollie-supp-hosted-checkout",
+          "quote": "Mollie Components (embeddable card components for PCI scope reduction)"
+        },
+        {
+          "evidenceId": "mollie-docs-21",
+          "quote": "These hosted payment pages allow your customer to select their payment method of choice and to complete the payment."
+        }
+      ]
+    },
     "productId": "mollie",
     "storyId": "pci-scope-reduction"
   }

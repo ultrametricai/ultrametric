@@ -1,17 +1,18 @@
 {
-  "hash": "3bdc031c5181d02065fb842082a9da785489652a58837adf36b734896f59530e",
+  "hash": "28d722551cee6ccf31d61c5975ee5342a5b8f1ef6a7cd3e3ccd835a6e21ffee4",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only relevant evidence is that DBOS queues provide flow control over how many workflows run at once or how often they start. That amounts to concurrency and rate limiting, which can throttle a noisy stream but does not collapse it. Cron scheduling and per-topic message queues are adjacent primitives, but none of the evidence shows events being merged into fewer runs. Missing for 10: explicit debounce, batching of multiple events into one run, delayed or deferred workflow start, deduplication of rapid triggers, and any hands-on corroboration.",
-    "evidenceIds": [
-      "dbos-docs-6",
-      "dbos-docs-26",
-      "dbos-docs-7",
-      "dbos-docs-27"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents no debounce, batching, or delayed-start capability that collapses noisy event streams into fewer runs. Queue flow control, which limits how many workflows run or how often they start, is a related throttling control. It does not merge or coalesce triggers, and cron schedules are a separate recurring-trigger feature.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a backend developer, I debounce, batch, or delay triggers so noisy event streams collapse into the runs I actually want",
+      "citations": []
+    },
     "productId": "dbos",
     "storyId": "debounce-batching-controls"
   }

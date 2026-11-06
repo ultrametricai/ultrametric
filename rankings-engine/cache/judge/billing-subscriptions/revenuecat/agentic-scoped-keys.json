@@ -1,16 +1,31 @@
 {
-  "hash": "1deac59d65d8ff48029102d9b7cc37eda0eb69ab8335e7cdc182aae4d7ceee49",
+  "hash": "78bea355363e0e06e4d82254f26f2507311fb4a4a821a9e2a0d1d85d6fd6fe30",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "RevenueCat authenticates SDK and REST API requests with API keys and separates them into public keys and confidential secret (sk_) keys. Sensitive actions such as refunds and granting promotional entitlements are restricted to secret keys. That gives a coarse public/secret privilege split, but nothing shows fine-grained, per-permission or per-project scoping, or credentials issued specifically for agents such as the MCP server. Missing for 10: granular permission scopes on secret keys, read-only vs write key options, agent/MCP-specific credential issuance, key rotation/expiry controls, independent corroboration.",
+    "confidence": "low",
+    "rationale": "RevenueCat documents two API key types: public keys and confidential secret `sk_` keys. Sensitive actions such as refunds and granting entitlements require a secret key. This gives a coarse, fixed privilege split, but nothing shows configurable per-key scopes or credentials issued for an agent. missing for 10: configurable permission scopes per key (e.g. read-only or per-resource), agent-specific credential issuance, key rotation/revocation docs, independent corroboration.",
     "evidenceIds": [
-      "revenuecat-docs-5",
       "revenuecat-docs-15",
-      "revenuecat-docs-19"
+      "revenuecat-docs-19",
+      "revenuecat-docs-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "revenuecat-docs-15",
+          "quote": "There are two types of API keys: - **Public** API keys ... - **Secret** API keys, prefixed `sk_`, should be kept confidential"
+        },
+        {
+          "evidenceId": "revenuecat-docs-19",
+          "quote": "other sensitive actions that can only be done via a Secret API key from your server"
+        }
+      ]
+    },
     "productId": "revenuecat",
     "storyId": "agentic-scoped-keys"
   }
