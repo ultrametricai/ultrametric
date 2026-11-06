@@ -1,17 +1,40 @@
 {
-  "hash": "531c21b1cdf5123fb367b0a6c33a80639835e7823fcf9305bf63a4117f9ba2b7",
+  "hash": "49f0c181a64379eac0c747d3ff1f6a70cf194857daa1586ecd504271ffc88f2f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "ADK documents local testing tools: a dev web UI, `adk run`, `adk eval` test files, and a local Docker deploy. None of the evidence describes a sandbox environment, mocked tools, or any isolation that keeps tests away from production data or systems. Local development and eval harnesses are adjacent testing features, not a documented sandbox, and tool confirmation (HITL) is a separate guard control, not isolation.",
-    "evidenceIds": [],
+    "rationale": "ADK documents its own pre-deployment test surface: the `adk api_server` and the ADK Web dev UI are explicitly not for production, and `adk eval` runs eval sets locally. This gives a separate local test environment from production deployments. The docs also state it is not a hosted sandbox and still calls real model APIs. Nothing shows data isolation, so tools can still reach real systems; the HITL tool-confirmation flow is an adjacent guard, not sandbox isolation. Missing for 10: a hosted or isolated sandbox environment, documented separation from production data or connected services, mock or stub tool backends, and independent corroboration.",
+    "evidenceIds": [
+      "google-adk-local-testing-20261106",
+      "google-adk-gh-3",
+      "google-adk-gh-13",
+      "google-adk-docs-21",
+      "google-adk-swagger-docs-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "google-adk-local-testing-20261106",
+          "quote": "Use the API server in ADK to expose your agents through a REST API for programmatic testing"
+        },
+        {
+          "evidenceId": "google-adk-local-testing-20261106",
+          "quote": "not meant for use in production deployments"
+        },
+        {
+          "evidenceId": "google-adk-gh-3",
+          "quote": "A built-in development UI to help you test, evaluate, debug, and showcase your agent(s)."
+        },
+        {
+          "evidenceId": "google-adk-docs-21",
+          "quote": "It's most effective during active agent development, serving as a form of unit testing."
+        }
+      ]
     },
     "productId": "google-adk",
     "storyId": "api-sandbox"

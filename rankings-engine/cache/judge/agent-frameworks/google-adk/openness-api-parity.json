@@ -1,12 +1,15 @@
 {
-  "hash": "d677302c0b5e16f38f1b5331d9ab5138ed6c341c0b37c49e263dafbfcdef4d8e",
+  "hash": "92b361d8bb9671741f025b336ad9bf9b67d30a307339bb3b750f9aba4ba9356b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ADK is code-first: agent logic, tools and orchestration are defined in Python. Its CLI covers the main things the built-in dev UI is used for: running (`adk run`), evaluating (`adk eval`) and deploying (`adk deploy`) agents. However, nothing in the evidence states UI/API parity or documents an HTTP API that mirrors the dev UI's debugging features, so full parity is unproven. Missing for 10: an explicit API/UI parity statement, a documented programmatic equivalent for the dev UI's debug/inspection features, and independent corroboration.",
+    "rationale": "ADK is code-first, so agent logic, tools and orchestration are defined in code. It also ships its own REST API server (`adk api_server`) with a published OpenAPI 3.1 spec and Swagger UI, alongside CLI commands for run, eval and deploy that mirror the dev web UI's test, evaluate and debug roles. However, no evidence states that the REST API matches the web UI feature for feature, and the Go server lacks the /docs endpoint. Missing for 10: an explicit API-to-UI parity statement or mapping, documentation of the running server's own /openapi.json, and independent or hands-on confirmation that every web UI action is reachable programmatically.",
     "evidenceIds": [
+      "google-adk-openapi-spec-20261106",
+      "google-adk-swagger-docs-20261106",
+      "google-adk-local-testing-20261106",
       "google-adk-gh-17",
       "google-adk-gh-3",
       "google-adk-gh-12",
@@ -19,20 +22,20 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "google-adk-local-testing-20261106",
+          "quote": "Use the API server in ADK to expose your agents through a REST API for programmatic testing"
+        },
+        {
+          "evidenceId": "google-adk-openapi-spec-20261106",
+          "quote": "ADK publishes a downloadable OpenAPI 3.1 document (info title \"ADK REST API Reference\") for the ADK API server"
+        },
+        {
           "evidenceId": "google-adk-gh-17",
           "quote": "Code-First Development: Define agent logic, tools, and orchestration directly in Python for ultimate flexibility, testability, and versioning."
         },
         {
           "evidenceId": "google-adk-gh-3",
           "quote": "A built-in development UI to help you test, evaluate, debug, and showcase your agent(s)."
-        },
-        {
-          "evidenceId": "google-adk-gh-12",
-          "quote": "adk run path/to/my_agent"
-        },
-        {
-          "evidenceId": "google-adk-gh-20",
-          "quote": "adk deploy cloud_run --with_ui <agent-folder>"
         }
       ]
     },

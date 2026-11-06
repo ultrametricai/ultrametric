@@ -17386,7 +17386,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "A probe confirms Poke publishes an llms.txt at https://poke.com/llms.txt (HTTP 200), so an agent can be pointed at a first-party agent-oriented index. However, the probe shows only a truncated product description, so the file's depth and coverage are unverified. Other agent-oriented formats were also not found: /docs.md and every OpenAPI candidate path returned 404. Missing for 10: evidence that llms.txt comprehensively indexes the docs (API, MCP, recipes), markdown versions of the doc pages, a machine-readable OpenAPI spec, and independent or hands-on corroboration of agents successfully using these docs.",
+    "rationale": "A probe confirms Poke publishes an llms.txt at poke.com/llms.txt (HTTP 200) with an agent-readable product summary, so an agent can be pointed at it. However, the only evidence is a truncated snippet, the markdown docs variant (docs.md) returns 404, and there is no machine-readable OpenAPI spec, so the depth of the agent-oriented docs is unproven. missing for 10: evidence that llms.txt links to or covers the full docs, markdown/agent-readable versions of doc pages (docs.md 404), a machine-readable API spec (openapi 404), and independent or hands-on corroboration of agents using these docs.",
     "evidenceIds": [
       "poke-probe-1",
       "poke-probe-2",
@@ -17410,7 +17410,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Poke is an AI assistant that reads connected data from integrations and email through conversation, and it can turn user data, including spreadsheet images, into tables and charts. That supports AI-driven analysis of the user's own data inside the product. However, the evidence never explicitly documents insight generation or proactive suggestions beyond the llms.txt tagline describing Poke as a 'proactive AI assistant'. missing for 10: explicit documentation of AI-generated insights or recommendations drawn from user data, details of proactive suggestion behavior, independent or hands-on corroboration.",
+    "rationale": "Poke is an AI assistant that reaches the user's data through connected integrations and natural conversation. It can create tables and charts from described or shared data, and it reads and searches email. However, no evidence explicitly documents it generating analytic insights or proactive suggestions from that data. Missing for 10: explicit documentation of AI-generated insights or recommendations derived from user data, examples of proactive suggestions, independent or hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-7",
       "poke-docs-21",
@@ -17428,11 +17428,11 @@
         },
         {
           "evidenceId": "poke-docs-21",
-          "quote": "Poke can now create tables and charts to help you visualize data. Describe what you want to see, or share images of existing data (like spreadsheets) for Poke to extract and visualize."
+          "quote": "Poke can now create tables and charts to help you visualize data."
         },
         {
           "evidenceId": "poke-docs-23",
-          "quote": "Email Management - Read, search, and draft emails without leaving your messages"
+          "quote": "Read, search, and draft emails without leaving your messages"
         },
         {
           "evidenceId": "poke-probe-1",
@@ -17447,13 +17447,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Poke documents its own automation capability. Recipes let users \"set up automations and integrations\", external services can trigger Poke via its API, and Poke describes itself as a proactive assistant. The depth of background autonomy is thin: the docs do not show recurring schedules, how autonomous runs are configured or monitored, or how background execution behaves. missing for 10: documented recurring/scheduled background runs, details on configuring and monitoring autonomous automations, independent or hands-on corroboration.",
+    "rationale": "Poke's own docs say Recipes let users \"set up automations\", and external services like GitHub, CI/CD or monitoring tools can trigger Poke via its API. llms.txt also calls it a \"proactive\" assistant. However, the evidence never shows these automations running autonomously in the background on recurring schedules or standing rules, and reminders are a one-off action rather than a recurring schedule. missing for 10: documented background or scheduled recurring automation execution, details of how automations run without user prompting, independent or hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-28",
       "poke-docs-2",
       "poke-docs-32",
-      "poke-probe-1",
-      "poke-docs-25"
+      "poke-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -17485,7 +17484,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Poke is itself an AI assistant that users message to delegate tasks. Its docs show it acting across connected apps, drafting emails, scheduling meetings, setting reminders, building and deploying websites, and creating charts. Missing for 10: independent or hands-on corroboration that delegated tasks complete reliably.",
+    "rationale": "Poke is itself an AI assistant. Users delegate tasks to it through natural conversation in their messaging apps, and its docs describe it taking actions across connected apps: drafting emails, scheduling meetings, setting reminders, deploying websites and bringing in humans for errands. missing for 10: independent or hands-on corroboration of task delegation working in practice.",
     "evidenceIds": [
       "poke-docs-26",
       "poke-docs-7",
@@ -17493,9 +17492,7 @@
       "poke-docs-24",
       "poke-docs-25",
       "poke-docs-11",
-      "poke-docs-21",
-      "poke-docs-10",
-      "poke-probe-1"
+      "poke-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -17531,10 +17528,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Poke's own API lets scripts, automation tools and CI/CD pipelines send messages to and trigger Poke programmatically, so it can be driven headlessly from CI. The evidence only covers one-way message triggering, plus a CLI used for login and MCP tunneling; it does not show a full non-interactive agent run in a pipeline. missing for 10: documented headless/CI execution mode returning results to the pipeline, non-interactive auth/token setup for CI, OpenAPI spec (probes 404), independent or hands-on corroboration.",
+    "rationale": "Poke's own documented API lets scripts, automation tools and CI/CD pipelines send messages that trigger the assistant without the chat UI, and a CLI (npx poke) exists. However, the API is a single inbound-message endpoint, and the CLI covers login, MCP tunneling and recipe setup rather than running tasks headlessly. missing for 10: documented headless task execution with results returned to the caller, a CI-oriented CLI mode or examples, a machine-readable API spec or sandbox, and independent hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-1",
       "poke-docs-2",
+      "poke-api-deprecation-20261106",
       "poke-docs-6"
     ],
     "support": {
@@ -17559,7 +17557,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Poke's docs say it supports MCP servers 'to extend Poke with custom tools and data sources'. They document a CLI command to add a remote MCP server and a tunnel for local MCP servers, and note that 'any MCP-compatible server' can be connected directly when no Recipe exists. missing for 10: independent or hands-on corroboration that connected MCP tools work in practice.",
+    "rationale": "Poke's docs say it supports adding MCP servers to extend it with custom tools. A CLI command (`npx poke@latest mcp add <url>`) adds a remote server, and a tunnel command exposes a local one. The integrations docs say any MCP-compatible server can be connected directly, and Poke sends a per-user `X-Poke-User-Id` header on every request to the server. Missing for 10: independent or hands-on corroboration that connected MCP tools work reliably in practice.",
     "evidenceIds": [
       "poke-docs-3",
       "poke-docs-16",
@@ -17597,7 +17595,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is itself an AI assistant/agent, so serving an official MCP server for other agents to connect to is a different product role. All MCP evidence is client-side: Poke connects to and consumes external MCP servers (`mcp add`, `tunnel`, recipes). The probe's 'official MCP server' label points to that same client-side documentation, and nothing shows Poke itself running as an MCP server.",
+    "rationale": "Poke is itself an AI assistant/agent, so it sits in the MCP client role. All MCP evidence (poke-docs-3, -4, -16, -35) describes Poke connecting to and consuming external MCP servers, which belongs to the MCP-client story and is not credited here. The probe pointing to /docs/mcp-servers refers to that same client-side page, and nothing documents Poke exposing its own MCP server or endpoint.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17612,14 +17610,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Poke is an AI assistant that runs inside messaging apps. Its docs say it performs actions across connected apps and services \"through natural conversation\", and that users can set reminders \"naturally\" and describe the charts they want, so natural-language commands are the product's primary interface. missing for 10: independent hands-on corroboration of natural-language task execution across integrations.",
+    "rationale": "Poke is an AI assistant operated through conversation in messaging apps. Its docs say it performs actions across connected apps \"through natural conversation\", manages reminders \"naturally\", and builds charts from plain descriptions. missing for 10: independent or hands-on corroboration of natural-language operation quality.",
     "evidenceIds": [
       "poke-docs-7",
       "poke-docs-19",
       "poke-docs-26",
       "poke-docs-25",
-      "poke-docs-21",
-      "poke-docs-23"
+      "poke-docs-21"
     ],
     "support": {
       "relation": "direct",
@@ -17627,7 +17624,7 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
-          "evidenceId": "poke-docs-7",
+          "evidenceId": "poke-docs-19",
           "quote": "Once connected, Poke can access information and perform actions across apps and services through natural conversation."
         },
         {
@@ -17648,10 +17645,10 @@
   {
     "productId": "poke",
     "storyId": "agentic-official-cli",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Poke's own docs show an official npm-distributed CLI (`npx poke@latest`) with login, tunnel, and mcp add subcommands, plus a --recipe flag that returns a recipe link and QR code in the terminal. The evidence consists of command snippets scattered across MCP and recipe docs rather than a dedicated CLI reference. Missing for 10: a comprehensive CLI reference covering all commands and options, and independent or hands-on corroboration of CLI use.",
+    "rationale": "Poke documents an official npm-distributed CLI (`npx poke@latest`) with `login`, `tunnel`, `mcp add`, and a `--recipe` flag that returns a recipe link and QR code in the terminal. Its documented scope is narrow, limited to MCP server and recipe developer workflows rather than general assistant use from the terminal. missing for 10: a dedicated CLI reference documenting all commands, CLI-based messaging or task execution (the documented messaging path is the HTTP API), and independent or hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-4",
       "poke-docs-6",
@@ -17660,7 +17657,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can use an official CLI",
       "citations": [
         {
@@ -17688,10 +17685,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Poke documents a public API at poke.com/docs/api for sending messages programmatically from apps, scripts and automation tools, so external services can trigger and drive the assistant. The evidence shows only a message-sending surface, and probes found no OpenAPI or Swagger spec, so the API's breadth and machine-readable documentation are unproven. Missing for 10: documented endpoint, auth and response reference, an OpenAPI spec, API coverage beyond sending messages (e.g. reading results or managing state), and independent hands-on corroboration.",
+    "rationale": "Poke documents a public API, but it is a single versioned endpoint (POST /api/v1/inbound/api-message, bearer auth) for sending messages into Poke from apps, scripts and automation tools. Users can drive the conversational assistant programmatically, but the surface is narrow and thinly specified. Missing for 10: broader API surface beyond inbound messaging, machine-readable OpenAPI spec (all probed paths 404), interactive reference, sandbox, stability/sunset policy, independent hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-1",
       "poke-docs-2",
+      "poke-api-deprecation-20261106",
       "poke-probe-3"
     ],
     "support": {
@@ -17706,6 +17704,10 @@
         {
           "evidenceId": "poke-docs-2",
           "quote": "Services like GitHub, CI/CD pipelines, or monitoring tools can trigger Poke when something happens."
+        },
+        {
+          "evidenceId": "poke-api-deprecation-20261106",
+          "quote": "Poke's API is a single documented endpoint on a versioned path (POST https://poke.com/api/v1/inbound/api-message, bearer auth)"
         }
       ]
     }
@@ -17716,10 +17718,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke documents an API for sending messages, a CLI login, and an X-Poke-User-Id header on MCP requests. None of the evidence shows issuing scoped, least-privilege, or permission-limited API credentials for an agent. The axis applies because Poke exposes a programmatic API, but the capability is not evidenced.",
+    "rationale": "Poke documents bearer-authenticated API keys (V1 pk_ keys and V2 keys created in Kitchen). Nothing in the evidence shows those keys can be scoped, permission-limited, or issued per agent with least privilege. Plain API keys are an adjacent control, not scoped credentials, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": []
@@ -17731,7 +17733,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke documents an HTTP API for sending messages and an `npx poke` CLI for logging in, tunneling MCP servers and creating recipes, but nothing in the evidence describes an official SDK or client library. The API and CLI are adjacent building blocks, not SDKs, and probes found no OpenAPI spec either. Because a product with a public API could reasonably ship SDKs, the axis applies and the absence of evidence means \"none\".",
+    "rationale": "Poke documents a single REST endpoint for sending messages and an `npx poke` CLI for tunneling MCP servers and creating recipes. Neither is an official SDK or client library; a raw API and a CLI are adjacent capabilities, not SDKs. The evidence never mentions any language SDK, package, or client library for building against Poke.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17746,7 +17748,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke documents an inbound API that lets external services like GitHub or CI/CD send messages to Poke. That is the reverse direction of this story. Nothing in the evidence shows registrable outbound HTTP callbacks that would let a programmatic consumer subscribe to Poke events. MCP integrations and recipes are adjacent features, not webhooks.",
+    "rationale": "The evidence only documents inbound mechanisms: an API endpoint that external services such as GitHub or CI pipelines call to message Poke, plus a deprecated inbound-sms webhook endpoint. Nothing shows registrable outbound HTTP callbacks that let a programmatic consumer subscribe to Poke events. Inbound triggers are an adjacent capability and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17760,8 +17762,8 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Poke has a public API, so an interactive API reference is a fair question for this product. The evidence only shows a descriptive API docs page (poke-docs-1) and CLI command snippets; nothing shows an interactive reference or runnable 'try it' examples. Probes for OpenAPI/Swagger specs all returned 404 (poke-probe-3).",
+    "confidence": "high",
+    "rationale": "Poke does offer a documented API, so an interactive API reference is a fair question for this product. However, the API docs page is described as having 'no interactive reference (static highlighted examples)' and no sandbox. The probes also found no OpenAPI or Swagger spec at any candidate path, so there is no runnable, explorable reference.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17775,8 +17777,8 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Poke documents a programmatic API for sending messages, so a machine-readable API spec is a fair question for this product. However, no OpenAPI or equivalent spec is documented, and probes of the standard OpenAPI/Swagger paths all returned 404. The llms.txt file is LLM-oriented site documentation, not a machine-readable API specification, so it earns no credit here.",
+    "confidence": "high",
+    "rationale": "Poke has a documented programmatic API, so the story applies. However, probes of all candidate OpenAPI/Swagger paths returned 404, and the API docs summary explicitly states no machine-readable spec is published. llms.txt is a general LLM-readable overview, not an API specification, so it does not count.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17790,8 +17792,8 @@
     "storyId": "api-sandbox",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Poke exposes an API, a CLI and MCP integrations, so asking whether it offers a sandbox or test environment is a fair question for this product. The evidence shows no sandbox, test mode, or isolated non-production environment. The only nearby item is the `poke tunnel` command for exposing a local dev MCP server, which is a development tunnel and does not isolate testing from real accounts or integration data. That makes it an adjacent feature, not the capability itself.",
+    "confidence": "high",
+    "rationale": "Poke is an AI assistant with a public API and MCP integrations, so a test sandbox is a fair thing to ask of it. The API documentation review explicitly states that no sandbox is published. The local-dev MCP tunnel only exposes a developer's own server; it does not give an isolated test environment separate from a user's production data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17803,16 +17805,29 @@
   {
     "productId": "poke",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Poke documents a programmatic API for sending messages and a CLI, so a versioned-API axis applies. Nothing in the evidence shows API versioning or a deprecation policy. The CLI's use of 'poke@latest' is a package tag, not API versioning, and no OpenAPI spec was found.",
-    "evidenceIds": [],
+    "rationale": "Poke's API sits on a versioned path (/api/v1/...), and its docs record one concrete deprecation, the legacy inbound-sms webhook endpoint, with a migration path to V2 API keys. That is a single dated deprecation notice, not a published deprecation policy. The API is also a single endpoint. Missing for 10: a published deprecation/sunset policy with timelines, a stability or versioning commitment, a machine-readable spec (openapi.json returns 404), and independent corroboration.",
+    "evidenceIds": [
+      "poke-api-deprecation-20261106",
+      "poke-probe-3",
+      "poke-docs-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "poke-api-deprecation-20261106",
+          "quote": "Poke's API is a single documented endpoint on a versioned path (POST https://poke.com/api/v1/inbound/api-message, bearer auth)"
+        },
+        {
+          "evidenceId": "poke-api-deprecation-20261106",
+          "quote": "the legacy inbound-sms webhook endpoint \"is deprecated\""
+        }
+      ]
     }
   },
   {
@@ -17821,7 +17836,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Poke's docs describe a browsable directory at poke.com/recipes that lists first-party and approved third-party recipes, including prebuilt ones for services like Linear and Webflow. Users connect these integrations to Poke and can manage them (disconnect, refresh), and can add any MCP-compatible server directly if a service isn't listed. Missing for 10: independent or hands-on corroboration of the directory and add flow, and detailed documentation of the directory's breadth and step-by-step install UX.",
+    "rationale": "Poke's docs describe a browsable directory at poke.com/recipes listing first-party and approved third-party recipes, with prebuilt connectors for popular services such as Linear and Webflow. Connecting these lets Poke act across those apps, and any MCP-compatible server can be added directly when no recipe exists. missing for 10: step-by-step documentation of the install/add flow from the directory, independent or hands-on corroboration of the directory experience.",
     "evidenceIds": [
       "poke-docs-18",
       "poke-docs-7",
@@ -17829,8 +17844,7 @@
       "poke-docs-15",
       "poke-docs-28",
       "poke-docs-35",
-      "poke-docs-33",
-      "poke-docs-34"
+      "poke-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -17850,10 +17864,6 @@
           "quote": "You'll find prebuilt recipes for popular services: Linear - Automate issue and project management"
         },
         {
-          "evidenceId": "poke-docs-28",
-          "quote": "All new and existing users can use Poke Recipes to easily set up automations and integrations, as well as share their set-ups with others."
-        },
-        {
           "evidenceId": "poke-docs-35",
           "quote": "If the service you want isn't available as a Recipe, you can connect any MCP-compatible server directly"
         }
@@ -17866,7 +17876,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke's docs describe acting across connected apps through conversation and sending messages through an API. None of the evidence documents bulk or batch operations applied to many items at once. Working across different apps is not the same as acting on many items in one operation, so the cross-app claims earn no credit here.",
+    "rationale": "Bulk operations are a fair axis for an AI assistant that acts on emails, calendars and integrated apps, so the story applies. The evidence only shows that Poke can 'perform actions across apps and services through natural conversation' and read, search or draft emails. Nothing documents acting on many items at once (batch archive, bulk edit, mass updates), and the single-message API endpoint is not a bulk capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17879,13 +17889,13 @@
     "productId": "poke",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Poke documents event-driven triggering: external services such as GitHub, CI/CD or monitoring tools can call its API to trigger Poke when something happens. Recipes are described as a way to set up automations. There is no documented rule builder for defining conditions and the actions that follow automatically. missing for 10: explicit user-defined trigger/condition/action rule configuration, documentation of native event sources beyond inbound API calls, independent or hands-on corroboration.",
+    "rationale": "Poke's docs say external services such as GitHub, CI/CD or monitoring tools can trigger Poke when something happens, and that Recipes let users set up automations. Neither source shows how a user defines rules (conditions → actions) or which event types are supported, so only part of the story is evidenced. Missing for 10: a documented rule or trigger-definition interface, a list of supported event sources and conditions, examples of automatic actions fired by events, and independent or hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-2",
-      "poke-docs-1",
-      "poke-docs-28"
+      "poke-docs-28",
+      "poke-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -17899,10 +17909,6 @@
         {
           "evidenceId": "poke-docs-28",
           "quote": "All new and existing users can use Poke Recipes to easily set up automations and integrations"
-        },
-        {
-          "evidenceId": "poke-docs-1",
-          "quote": "The Poke API allows you to send messages programmatically from your applications, scripts, and automation tools."
         }
       ]
     }
@@ -17913,13 +17919,30 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document scheduling recurring jobs or workflows. Reminders are not shown to repeat, and calendar scheduling books meetings rather than jobs. Recipes are described as 'automations' with no schedule trigger, and the API is triggered by external events, so these are adjacent features rather than a recurring-schedule capability.",
-    "evidenceIds": [],
+    "rationale": "The evidence pack documents no capability for scheduling recurring jobs or workflows. Reminders are listed without any mention of recurrence, and a one-off reminder is not a recurring schedule. Recipes are described as setting up 'automations and integrations', and the API lets external services trigger Poke on events, but neither describes time-based recurring execution, so both are adjacent features rather than this capability.",
+    "evidenceIds": [
+      "poke-docs-25",
+      "poke-docs-28",
+      "poke-docs-2"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "poke-docs-25",
+          "quote": "Reminders - Set and manage reminders naturally"
+        },
+        {
+          "evidenceId": "poke-docs-28",
+          "quote": "All new and existing users can use Poke Recipes to easily set up automations and integrations, as well as share their set-ups with others."
+        },
+        {
+          "evidenceId": "poke-docs-2",
+          "quote": "Services like GitHub, CI/CD pipelines, or monitoring tools can trigger Poke when something happens."
+        }
+      ]
     }
   },
   {
@@ -17928,7 +17951,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke documents creating, publishing, and sharing Recipes for automations, so this axis applies. The evidence pack never mentions version history, a review workflow, or rollback for those automations. Publishing a recipe and disconnecting an integration are adjacent controls and earn no credit toward versioning or rollback.",
+    "rationale": "Poke ships automations via Recipes, so this axis applies. The evidence only shows creating, publishing, sharing and connecting or disconnecting recipes and integrations. Nothing documents version history, change review, or rollback for a user's automations, and the API's versioned endpoint path is a different capability that does not transfer to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17940,34 +17963,16 @@
   {
     "productId": "poke",
     "storyId": "autonomous-background-tasks",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Poke's docs show it taking on delegated tasks. It brings in real people for reservations, calls and orders, builds and deploys websites, and performs actions across connected apps through conversation, all inside an asynchronous messaging assistant. Nothing documents an explicit autonomous background-run mode or a review step before results are finalized. missing for 10: documented autonomous background execution of multi-step tasks, progress/status tracking, an explicit hand-back-for-review workflow, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "poke-docs-10",
-      "poke-docs-11",
-      "poke-docs-7",
-      "poke-probe-1"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Poke performing discrete actions in conversation: drafting emails, scheduling, creating and deploying websites, and handing tasks to real people. Nothing documents the assistant itself working autonomously in the background on a delegated multi-step task and then returning results for the user's review. Website deployment and human-handled tasks are adjacent features, not this capability.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a power-user, I can delegate a multi-step task that the assistant works on autonomously in the background and returns for my review",
-      "citations": [
-        {
-          "evidenceId": "poke-docs-10",
-          "quote": "Poke can now bring in real people to take on tasks with a human touch - restaurant reservations, phone calls, placing orders, booking rides, and more."
-        },
-        {
-          "evidenceId": "poke-docs-11",
-          "quote": "Poke can also create and deploy websites for you at yourname.poke.com."
-        },
-        {
-          "evidenceId": "poke-docs-7",
-          "quote": "Once connected, Poke can access information and perform actions across apps and services through natural conversation."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -17976,7 +17981,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is an AI assistant, so operating a web browser on the user's behalf is a fair axis, but nothing in the evidence documents browser automation. The nearby items do not qualify: app integrations, MCP tool extensions, human taskers for reservations or orders, and a 'Send to Poke' right-click for selected webpage text are adjacent features, not the assistant itself browsing and completing tasks on websites.",
+    "rationale": "Poke is an AI assistant, so browser-operating agent capability is a fair question for it. Nothing in the evidence shows Poke driving a web browser to research or complete tasks on websites. The 'Send to Poke' right-click action only sends text into Poke, app integrations and MCP tools are different capabilities, and human taskers handling bookings or orders is not browser automation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17991,7 +17996,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is a messaging-based assistant, so letting it see and operate local applications is a fair question for this kind of product. The evidence shows only cloud app integrations via connectors and MCP. The MCP tunnel to a localhost server is a developer building block a user could use to build such tooling, not a computer-use capability Poke itself provides. Nothing documents Poke viewing the screen or controlling desktop applications.",
+    "rationale": "Computer use is a fair question for an AI assistant, but nothing in the evidence shows Poke seeing or operating applications on the user's own computer. Its integrations act on cloud services through APIs, and the local MCP tunnel is a developer building block for custom tools, not native screen control or desktop-app operation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18006,7 +18011,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Poke's own docs show email integration (read, search, draft) and calendar integration (schedule, check availability), with a general integrations system so Poke can access app information in conversation. No evidence names a cloud drive connector, and generic MCP extensibility is only a building block, not a documented drive connector. missing for 10: documented cloud drive connector (e.g. file search across a drive), evidence that connected data is searched and cited in answers, independent or hands-on corroboration.",
+    "rationale": "Poke's docs show first-party email (read, search, draft) and calendar (scheduling, availability) capabilities. They also describe integrations that let Poke access information across connected apps through conversation. However, no cloud-drive connector is evidenced; custom MCP servers are only a building block for one. Missing for 10: a documented cloud drive connector (e.g., Google Drive/Dropbox) with search, explicit evidence that connected content is retrieved and grounded into answers, and independent or hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-23",
       "poke-docs-24",
@@ -18039,7 +18044,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Poke's own docs show it can generate some artifacts: tables and charts that visualize data, plus websites it creates and deploys at yourname.poke.com. That is a thin, glancing match to creating files. Nothing shows document or presentation creation, iterative editing, or export. missing for 10: document creation, presentation/slide creation, iterative editing workflow, file export formats/download, independent or hands-on corroboration.",
+    "rationale": "Poke's own docs show it can generate some artifacts: tables and charts from a description or a shared spreadsheet image, and websites it deploys at yourname.poke.com. Nothing documents creating documents or presentations, iterating on edits, or exporting files. missing for 10: document creation, presentation creation, iterative editing of files, file export/download formats, independent or hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-21",
       "poke-docs-11"
@@ -18064,16 +18069,15 @@
     "productId": "poke",
     "storyId": "custom-bots",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Poke's Recipes let users build shareable set-ups: published recipes get a share link, and the set-up can bundle MCP-backed custom tools and data sources, a prefilled first message, and the context Poke needs from the user. These are shareable configurations of the single Poke assistant, not distinct custom assistants with their own persona or system instructions. missing for 10: true per-assistant custom instructions/persona, uploaded knowledge bases (beyond MCP data sources), evidence that a shared recipe behaves as a separate assistant, independent hands-on corroboration.",
+    "rationale": "Poke has no documented custom-assistant builder, but its own Recipes feature lets power-users create and share setups. A recipe can bundle MCP tools and data sources, set what context Poke needs from the user and a prefilled first message, and be published with a share link. This is a shareable configured Poke rather than a separate assistant with its own persona. Missing for 10: distinct custom assistants or personas, explicit custom system instructions, uploaded knowledge files or documents beyond MCP data sources, and independent or hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-28",
       "poke-docs-17",
       "poke-docs-40",
       "poke-docs-3",
-      "poke-docs-38",
-      "poke-docs-18"
+      "poke-docs-38"
     ],
     "support": {
       "relation": "direct",
@@ -18105,7 +18109,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Poke's release notes say it can create tables and charts from described data or from images of spreadsheets, which covers the chart-output part of the story. Nothing in the evidence shows the assistant writing or running code, computing answers through execution, or producing downloadable files. Missing for 10: documented code execution on user data, computed analysis results, downloadable file outputs, independent or hands-on corroboration.",
+    "rationale": "Poke's release notes document a first-party ability to create tables and charts from described data or from shared images of spreadsheets, which covers the chart-output part of the story. Nothing shows the assistant writing or running code, computing answers through execution, or producing downloadable files. Missing for 10: documented code execution on user data, computed-answer analysis, downloadable file outputs, details on supported file inputs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-21"
     ],
@@ -18127,7 +18131,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is a messaging-based AI assistant, so a deep research capability is a fair question for it. The evidence pack documents email search, integrations, MCP extensions, charts and website creation. None of it mentions an autonomous multi-source research run or cited reports.",
+    "rationale": "Poke is an AI assistant, so a deep research capability is a fair question to ask of it. The evidence pack never mentions autonomous multi-source web research, research runs, or cited reports. It covers only messaging channels, integrations, MCP extensibility, website creation, charts and human-task delegation, none of which is this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18142,7 +18146,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is documented as an AI assistant that lives in messaging channels (Apple Messages, Telegram, WhatsApp, RCS). The pack shows no official desktop app, OS-level shortcuts, or screen access. The 'Send to Poke' right-click flow is an example of using the programmatic API, a developer building block rather than a first-party desktop app, so it earns no credit.",
+    "rationale": "Poke is documented as an assistant that lives in messaging channels (Apple Messages, Telegram, WhatsApp, RCS). The pack contains no evidence of an official desktop app, OS-level shortcuts, or screen access. The only related item is a right-click \"Send to Poke\" example on the API page, which describes an API-based automation rather than a first-party desktop app, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18157,7 +18161,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Exporting chat history and account data is a fair question for a consumer AI assistant, so the axis applies. The evidence pack documents no export capability. Account merging and disconnecting integrations are related account controls, but they are not data export and earn no credit.",
+    "rationale": "Data export is a fair trust-control question for a consumer AI assistant, so the axis applies. The evidence pack never documents exporting chat history or account data. Account merging, which keeps Memory, Recipes and Integrations, and disconnecting integrations are adjacent controls, not an export capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18172,7 +18176,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only relevant evidence is a release note saying users can share images of existing data, such as spreadsheets, for Poke to extract and visualize. That is a narrow, first-party form of data analysis, delivered through images rather than native file uploads. Missing for 10: uploading documents, PDFs and native spreadsheet files, analysis beyond extraction and visualization, evidence of accuracy, and independent or hands-on corroboration.",
+    "rationale": "The only on-topic evidence is a release note saying users can share images of existing data, such as spreadsheets, for Poke to extract and turn into tables and charts. That is a narrow, image-based form of file analysis. Nothing documents uploading document files, spreadsheet files, or PDFs, or describes how accurate the analysis is. Missing for 10: direct upload of documents, spreadsheets, and PDFs; analysis of native file contents; evidence of accuracy; independent or hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-21"
     ],
@@ -18194,7 +18198,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is a general AI assistant, so generating and editing images from prompts is a fair question for it. The evidence never documents image generation or editing. The closest item, creating tables and charts and extracting data from shared images, is an adjacent data-visualization feature, not prompt-based image generation or editing, so it earns no credit.",
+    "rationale": "Poke is a general AI assistant, so generating and editing images from prompts is a fair question for this kind of product. The evidence pack documents no image generation or image editing. The closest feature is creating tables and charts from descriptions or from shared images, which is data visualization rather than prompt-based image creation or editing, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18209,7 +18213,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Poke's release notes document that users can share images of existing data, such as spreadsheets, so Poke can extract and visualize them. That is first-party image-input support, but it is described only for data extraction feeding table and chart creation. missing for 10: documented general interpretation of screenshots and photos beyond spreadsheet data, evidence of accuracy, and independent or hands-on corroboration.",
+    "rationale": "Poke's release notes say users can share images of existing data, such as spreadsheets, so Poke can extract and visualize it. That is first-party evidence that it reads image content, but only within the charting feature. Nothing in the pack covers general screenshot or photo understanding, or how accurately it interprets images. Missing for 10: documented general-purpose screenshot/photo interpretation, coverage of non-data images, evidence of accuracy, independent or hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-21"
     ],
@@ -18231,7 +18235,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is the merging-accounts doc, which names \"Poke's Memory\" as a persistent account-level asset alongside Recipes and Integrations. That shows a first-party memory feature exists, but nothing documents what it stores or how it is applied in later chats. Missing for 10: documentation of what Memory captures from prior chats, evidence it is recalled and applied in new conversations, user controls to view or edit memory, and independent or hands-on corroboration.",
+    "rationale": "The only evidence of this capability is the account-merging doc, which mentions that Poke has a 'Memory' that persists with an account. That implies Poke keeps persistent memory, but nothing documents what it remembers from previous chats or how it applies that in new conversations. Missing for 10: documentation of how Memory captures context from past conversations, evidence it is applied in new chats, user controls to view or edit memory, and independent or hands-on corroboration.",
     "evidenceIds": [
       "poke-docs-20"
     ],
@@ -18253,7 +18257,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Mobile apps are a fair question for an AI assistant product, so the axis applies. However, the evidence shows Poke is delivered only through third-party messaging platforms (Apple Messages, Telegram, WhatsApp, RCS), which are host-platform channels rather than official Poke apps. No first-party iOS or Android app is documented.",
+    "rationale": "Mobile apps are a fair question for a consumer AI assistant, so the axis applies. The evidence shows only that Poke runs inside third-party messaging channels (Apple Messages, Telegram, WhatsApp, RCS). Those are host-platform surfaces, not official Poke iOS or Android apps, and the pack documents no Poke-built mobile app on either platform.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18266,16 +18270,17 @@
     "productId": "poke",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Poke documents its own API for sending messages programmatically, which reaches its conversational core (anything you could ask Poke by text). A CLI also covers some setup tasks: login, adding MCP servers, tunnels and recipe creation. There is no evidence that account, subscription, integration management or Kitchen/payout actions are exposed programmatically, and no OpenAPI spec was found. missing for 10: documented API coverage of integration connect/disconnect, subscription/credits, recipe publishing and payouts, memory and account management; a published API reference/OpenAPI spec; independent corroboration of parity.",
+    "rationale": "Poke documents its own API, but it is a single inbound-message endpoint for sending messages programmatically. Because Poke is conversational, that message channel reaches some assistant actions. The CLI adds MCP server registration and recipe creation, but most UI surfaces (integration connect/disconnect, Kitchen payouts, account merging, credit purchases) have no documented API equivalent, and no OpenAPI spec exists. Missing for 10: documented API coverage of integrations, recipes, account and billing management; a machine-readable API spec; evidence of UI–API parity.",
     "evidenceIds": [
       "poke-docs-1",
-      "poke-docs-2",
-      "poke-docs-6",
+      "poke-api-deprecation-20261106",
       "poke-docs-16",
       "poke-docs-38",
-      "poke-probe-3"
+      "poke-probe-3",
+      "poke-docs-33",
+      "poke-docs-39"
     ],
     "support": {
       "relation": "direct",
@@ -18303,7 +18308,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export is a fair question for a consumer AI assistant that stores memory, recipes and integrations, but the evidence pack never documents any export capability or open-format download. Account merging and disconnecting integrations are adjacent features, not export, and earn no credit.",
+    "rationale": "Data export is a fair question for a consumer AI assistant, but the evidence pack documents no data export, download, or account-deletion capability. Account merging and disconnecting integrations are adjacent features, not exporting your data in open formats so you can leave.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18318,7 +18323,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether the source is published under an open license is a fair question for any software product, so the axis applies. Nothing in the evidence says Poke's source is public or openly licensed. The pack documents only a hosted assistant, an API, a CLI invoked via npx, and MCP integrations; a leaked system prompt is not open-licensed source.",
+    "rationale": "Being able to read a product's source under an open license is a fair question for any software product, including a hosted AI assistant, so the axis applies. Nothing in the evidence pack mentions an open-source license, a public repository, or published source code for Poke. The `npx poke` CLI and the MCP tooling are distribution and integration mechanisms, not evidence that the source is open.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18333,7 +18338,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is a hosted AI assistant that runs on Apple Messages, Telegram, WhatsApp and RCS, and self-hosting is a fair question for this kind of product, but nothing in the evidence shows the core product can be deployed on user infrastructure. The `npx poke tunnel` command only exposes a user's own local MCP server to the hosted Poke service. That is an adjacent capability, not self-hosting Poke itself.",
+    "rationale": "Poke is documented only as a hosted assistant that runs in Apple Messages, Telegram, WhatsApp, and RCS, with usage-based credits. Nothing in the pack shows a downloadable, open-source, or on-premises deployment of the core product. The `npx poke tunnel` command only exposes a user's local MCP server to the hosted Poke service. That is an adjacent capability and does not count as self-hosting Poke itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18348,7 +18353,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a way for users to set persistent custom instructions or preferences that shape every response. The only related item is a passing mention that account merging keeps Poke's 'Memory' (poke-docs-20), which does not say users can define standing instructions. Recipe-level inputContext (poke-docs-40) is a per-recipe setup field for recipe creators, an adjacent feature that earns no credit.",
+    "rationale": "The evidence pack does not document any user-settable custom instructions or persistent preferences that shape Poke's responses. The only related item is a passing mention that account merging keeps \"Poke's Memory,\" which shows a memory feature exists but says nothing about configuring instructions. Recipe-level inputContext and prefilled first messages are per-recipe setup fields, an adjacent feature that earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -18363,7 +18368,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is a hosted AI assistant service, so choosing where data is stored (region or residency) is a fair question for it. Nothing in the evidence pack mentions storage regions, residency options or data location controls. The Telegram/WhatsApp regional availability note concerns messaging-channel access, not where data is stored, so it does not count.",
+    "rationale": "Poke is a cloud AI assistant service that stores user memory, integrations and messages, so data-residency choice is a fair question for it. Nothing in the evidence pack mentions storage regions, residency options or choosing where data is stored. The docs cover only messaging channels, integrations, MCP, recipes and billing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18378,7 +18383,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is an AI assistant that processes user emails, calendars, and messages, so a training opt-out is a fair question for it. The evidence pack has no documented training-data opt-out or data-use policy. The only related item is disconnecting integrations, which is an adjacent control and is not credited.",
+    "rationale": "Poke is an AI assistant that handles user data, so a training opt-out is a fair question for it. However, nothing in the evidence pack mentions training-data use, an opt-out control, or a data-use policy. The cited items cover integrations, MCP, recipes, pricing, account merging and disconnecting integrations, none of which addresses preventing data from being used for model training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18393,7 +18398,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is a consumer AI assistant that holds user memory, messages and connected-app data, so data retention and deletion is an applicable axis. The evidence pack documents no retention settings, memory deletion, or account or data deletion controls. Disconnecting an integration and merging accounts are adjacent features, not retention or deletion controls.",
+    "rationale": "Data retention and deletion controls are a fair question for an AI assistant that holds memory and connected-app data. The evidence pack documents no retention settings, data or memory deletion, or account deletion. Only adjacent features appear: disconnecting integrations and merging accounts, which keeps Memory from one account. Neither is user control over retention or deletion of data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18408,7 +18413,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a consumer AI assistant like Poke, but the evidence pack never mentions telemetry, analytics or usage-tracking controls, or any opt-out setting. The X-Poke-User-Id header and the 'Disconnect from Poke' integration control are related features, not telemetry opt-outs, so they earn no credit.",
+    "rationale": "Telemetry opt-out is a fair privacy question for a consumer AI assistant like Poke, so the axis applies. Nothing in the evidence pack documents any setting to opt out of telemetry, analytics, or usage tracking. The X-Poke-User-Id header and the usage/credit docs concern identification and billing, not tracking opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18423,7 +18428,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is an AI assistant, so grouping chats and files into a project or space with shared context and instructions is a fair question for it. The evidence covers integrations, recipes, MCP servers and account memory (merged on account merge), but nothing documents a project or space feature for organizing related chats and files. Recipe 'inputContext' is a setup field for a shared automation, not a shared workspace, so it earns no credit here.",
+    "rationale": "Poke is an AI assistant, so grouping chats and files into a project or space with shared context and instructions is a fair question for it. The evidence pack documents no such feature. Account-level Memory, Recipes with inputContext, and Integrations are adjacent features, not project or space organization.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18435,28 +18440,16 @@
   {
     "productId": "poke",
     "storyId": "scheduled-tasks",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Poke documents its own 'Reminders' feature for setting things up naturally, and says Recipes let users 'set up automations'. That is thin, glancing support for time-triggered work that comes back to the user. The evidence never says reminders or automations run actual tasks on a recurring or one-off schedule and return results; the API triggers are event-driven, not scheduled. Missing for 10: documented recurring scheduling, one-off scheduled task execution beyond reminders, evidence that scheduled tasks run autonomously and deliver results, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "poke-docs-25",
-      "poke-docs-28"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack does not document scheduling a task to run automatically, either one-off or recurring, and then report results back. 'Reminders' (poke-docs-25) are a scheduled-notification feature, not scheduled task execution. 'Recipes … set up automations' (poke-docs-28) never mentions time-based or recurring runs, and API triggers from external services (poke-docs-2) would need a user-side scheduler such as cron, so none of these earn credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a power-user, I can schedule recurring or one-off tasks that run automatically and come back to me with results",
-      "citations": [
-        {
-          "evidenceId": "poke-docs-25",
-          "quote": "Reminders - Set and manage reminders naturally"
-        },
-        {
-          "evidenceId": "poke-docs-28",
-          "quote": "All new and existing users can use Poke Recipes to easily set up automations and integrations"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -18465,7 +18458,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is a consumer AI assistant, so whether a user can opt out of model training on their conversations is a fair question to ask of it. Nothing in the evidence pack covers training data use, privacy settings, or an opt-out control. The account-merging, integration-disconnect, and prompt-leak items do not address this story.",
+    "rationale": "Poke is a consumer AI assistant, so a control over whether conversations are used for model training is a fair question for this kind of product. The evidence pack never mentions training-data use, an opt-out setting, or a data-retention policy. The integration disconnect, account merging and memory items are about other features and do not address model training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18480,7 +18473,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is an AI assistant, so real-time voice conversation is a fair axis, but the evidence only describes text-based messaging on Apple Messages, Telegram, WhatsApp and RCS. The 'phone calls' release note refers to real people handling tasks for the user, not voice conversation with the assistant. Nothing documents live voice interaction.",
+    "rationale": "Poke is a messaging-based AI assistant, so real-time voice conversation is a fair axis for it. The evidence only shows text messaging on Apple Messages, Telegram, WhatsApp and RCS. The one phone-call mention refers to real people carrying out tasks on the user's behalf, not a live voice conversation with the assistant, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18495,7 +18488,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is a messaging-based AI assistant, so web-grounded answers with source citations is a fair question for it. The evidence pack never documents web search, live web results, or citations back to sources. The 'Send to Poke' webpage text selection and the MCP or integration extensibility are adjacent features or building blocks, not this capability.",
+    "rationale": "Poke is an AI assistant, so web-grounded answers with source citations is a fair axis. The evidence pack never documents web search, live web retrieval or citations to sources. The 'Send to Poke' selected-text feature and the generic MCP/integration extensibility are adjacent building blocks, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18510,7 +18503,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poke is a personal AI assistant SaaS, and such products can plausibly offer team or organization workspaces, so this axis applies. The evidence pack documents no organization workspace, member management, role permissions, or org-level data policies. Merging personal accounts and disconnecting integrations are individual-user features, not team-admin controls.",
+    "rationale": "Poke is a messaging-based AI assistant. An organization workspace with admin controls is a plausible capability for this kind of product, so the axis applies, but the evidence pack documents no team or org workspace, member management, role permissions, or org-level data policies. Merging personal accounts and connecting or disconnecting individual integrations are adjacent per-user features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

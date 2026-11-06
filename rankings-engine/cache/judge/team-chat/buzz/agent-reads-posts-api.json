@@ -1,20 +1,19 @@
 {
-  "hash": "f8aee74f290e4aa754a638c58552bbd9f4ec00b7e7d6c68363ae36f776fb4c07",
+  "hash": "5d2140a371254145c85d06b1ebdb740f6f64910ff3c571d09559da0da6463d95",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Agents can read and post channel messages through Buzz's own interfaces: the Buzz CLI used by the buzz-acp harness, and the documented NIP-29/NIP-42 relay protocol. Each agent has its own keypair and its own channel memberships, so access is scoped per agent. However, credentials are Nostr keypairs rather than scoped API tokens; token auth was even removed from the admin API. There is also no OpenAPI or REST message API in evidence, and probes returned 404. missing for 10: scoped API tokens with per-permission scopes, a documented REST/OpenAPI message read/post API, independent hands-on corroboration.",
+    "rationale": "Agents can read and post channel messages through Buzz's own surfaces: the Nostr relay protocol (NIP-29 groups with NIP-42 auth) and the official CLI, which the ACP harness and managed skill use for messaging. Each agent gets its own keypair, channel memberships and audit trail. Credentials are per-agent Nostr keypairs scoped by channel membership rather than permission-scoped API tokens, and there is no machine-readable API spec. Missing for 10: documented fine-grained token or permission scopes beyond channel membership, an HTTP/REST message API spec, and independent hands-on corroboration of agent read/post.",
     "evidenceIds": [
       "buzz-gh-4",
       "buzz-gh-3",
       "buzz-docs-10",
-      "buzz-supp-nostr-open-protocol",
+      "buzz-docs-19",
       "buzz-supp-managed-skill",
       "buzz-supp-acp-harness",
-      "buzz-supp-nip-aa-agent-auth",
-      "buzz-probe-2"
+      "buzz-supp-nostr-open-protocol"
     ],
     "support": {
       "relation": "direct",
@@ -30,12 +29,12 @@
           "quote": "The harness listens for @mentions on the relay, prompts your agent, and the agent replies using the Buzz CLI."
         },
         {
-          "evidenceId": "buzz-gh-3",
-          "quote": "Agents search six months of history and post the threads, not vibes."
+          "evidenceId": "buzz-docs-19",
+          "quote": "Third-party Nostr clients connect directly to `buzz-relay` using NIP-29 and NIP-42 authentication."
         },
         {
-          "evidenceId": "buzz-supp-nostr-open-protocol",
-          "quote": "Third-party Nostr clients connect directly to buzz-relay using NIP-29 and NIP-42 authentication"
+          "evidenceId": "buzz-gh-3",
+          "quote": "Agents search six months of history and post the threads, not vibes."
         }
       ]
     },

@@ -7687,12 +7687,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Hands-on probes confirm Morph publishes an llms.txt at docs.morphllm.com/llms.txt (HTTP 200). Its docs pages are also served as agent-readable Markdown (.md) that direct agents to the full documentation index in llms.txt. Many cited doc URLs are .md variants, so an agent can be pointed directly at them. missing for 10: no evidence of a full-content llms-full.txt variant, and no machine-readable OpenAPI spec (all probed paths 404).",
+    "rationale": "Probes confirm a live llms.txt at docs.morphllm.com/llms.txt (HTTP 200) and markdown versions of doc pages such as introduction.md, which point agents to the full documentation index. The llms.txt also links a machine-readable model and pricing feed, and many doc pages are served as .md. Missing for 10: no evidence of an llms-full.txt bundle, and no independent or community report of agents actually consuming these docs.",
     "evidenceIds": [
       "morph-probe-1",
       "morph-probe-2",
-      "morph-docs-3",
-      "morph-docs-9"
+      "morph-models-feed-20261106",
+      "morph-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -7706,6 +7706,10 @@
         {
           "evidenceId": "morph-probe-2",
           "quote": "Fetch the complete documentation index at: https://docs.morphllm.com/llms.txt"
+        },
+        {
+          "evidenceId": "morph-models-feed-20261106",
+          "quote": "For machine-readable models, limits and these list prices, fetch https://www.morphllm.com/api/models/json?prices=list"
         }
       ]
     }
@@ -7716,10 +7720,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an inference API for coding agents. Its docs cover Fast Apply edits, WarpGrep search, Compact compression and Reflex text classifiers, but nothing shows the product surfacing AI-generated insights or suggestions about a user's own data. Reflexes, which label turns for things like frustration or loops and can compare canary results, are classification primitives a developer would wire into their own system. They are not an in-product insights feature, so they earn no credit.",
+    "rationale": "Morph is an inference and API platform. It could plausibly surface AI insights about a user's own usage or traffic, so the axis applies. The evidence shows only developer building blocks: Reflex classifiers that label turns (e.g. user frustration, stuck-in-a-loop) and canaries that compare Reflex results across providers. None of this is documented as in-product AI-generated insights or suggestions drawn from the user's data, so these items are adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": []
@@ -7731,10 +7735,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an inference API offering edit, search, compaction and classification tools. Its evidence never documents a way to define or schedule automations that run on their own. The standby service tier is described as suited to batch and background workloads, but it is only a discounted priority tier for API calls the user sends, not a product-run automation. Reflex training jobs and canary traffic trials are likewise one-off API operations, not recurring autonomous automations.",
+    "rationale": "Morph is an inference and tooling API (Fast Apply, WarpGrep, Compact, Reflexes, dedicated endpoints). The evidence never documents a way for users to define or schedule automations that run on their own in the background. The 'standby' service tier is only a discounted, deprioritized request class for batch or background traffic the user sends themselves. The Kimi K3 canary is a traffic-splitting migration aid. Neither is a background automation capability, so neither earns credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": []
@@ -7746,7 +7750,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph's documented offering is an API platform: chat models, Fast Apply, WarpGrep, Compact and Reflexes, consumed by external agents such as Claude Code or Codex, or through its MCP server. A built-in assistant is a plausible feature for a developer platform, so the axis applies, but nothing in the evidence shows an in-product AI assistant that users can delegate tasks to. Supplying tools to other agents is adjacent and earns no credit here.",
+    "rationale": "Morph is an inference and API platform. A built-in assistant, for example in its dashboard or docs, is a plausible feature for this kind of product, so the axis applies. The evidence only describes APIs, models, tools exposed to external agents (MCP, edit_file) and an API 'Try it' runner. None of these is a built-in AI assistant users can delegate tasks to inside Morph.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7761,12 +7765,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Morph is an API-first service that runs programmatically without a UI. The docs show OpenAI-SDK access, a standby tier built for batch and background workloads, and job-based Reflex training you can poll. A community user confirms scripted use through a CLI tool. However, nothing documents running Morph in CI pipelines, so the CI half of the story is only implied by API access. missing for 10: documented CI pipeline integration (e.g. GitHub Actions or CI recipes), an official headless CLI or runner, and independent corroboration of CI automation use.",
+    "rationale": "Morph is an API-first service: any OpenAI SDK can call it programmatically with an API key, and its Standby tier is explicitly built for batch and background workloads, so headless automated use is inherent. However, nothing in the evidence documents CI usage specifically, and there is no first-party CLI or pipeline integration. missing for 10: a documented CI/pipeline integration guide, a first-party headless CLI or runner, and independent hands-on corroboration of CI automation.",
     "evidenceIds": [
       "morph-docs-17",
       "morph-docs-13",
       "morph-docs-20",
-      "morph-comm-5"
+      "morph-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7775,7 +7779,7 @@
       "citations": [
         {
           "evidenceId": "morph-docs-17",
-          "quote": "Point any OpenAI SDK at https://api.morphllm.com/v1."
+          "quote": "Point any OpenAI SDK at https://api.morphllm.com/v1. One API key covers the open-weight chat models and the specialized tools"
         },
         {
           "evidenceId": "morph-docs-13",
@@ -7784,10 +7788,6 @@
         {
           "evidenceId": "morph-docs-20",
           "quote": "Create a job, poll until it finishes, then classify text against it."
-        },
-        {
-          "evidenceId": "morph-comm-5",
-          "quote": "This uses an OpenAI-compatible endpoint, so got this working with my llm.datasette.io CLI tool"
         }
       ]
     }
@@ -7798,7 +7798,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an inference API and tooling platform. Such a product could plausibly let users attach external MCP servers as tools, so this axis applies. The evidence only documents Morph's own MCP server, which is the server role and lets other agents such as Claude Code use Morph's tools. Nothing shows Morph acting as an MCP client that consumes third-party MCP servers.",
+    "rationale": "Morph is an inference and tooling API. An API of this kind could plausibly let callers attach external MCP servers as tools, so the axis applies. The evidence only documents Morph's own MCP server, which exposes Morph's tools (edit_file, codebase_search) to clients like Claude Code. That is the server role, not consuming third-party MCP servers. No evidence shows Morph itself connecting to or using tools from user-supplied MCP servers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7812,13 +7812,12 @@
     "storyId": "agentic-mcp-server",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Morph, an API platform rather than an agent, documents an official MCP server at its guides/mcp page. The server lets AI tools such as Claude Code connect to Morph's file editing and expose tools like `codebase_search` and `github_codebase_search`, and the quickstart tells users to install the Morph MCP for Claude Code. Missing for 10: detailed setup/config steps and full tool list in evidence, independent or hands-on corroboration of the MCP server working.",
+    "confidence": "medium",
+    "rationale": "Morph documents its own first-party MCP server in a dedicated guide. The guide connects AI tools such as Claude Code to Morph's fast file editing and exposes named tools like `codebase_search` and `github_codebase_search`, and a probe confirms the official MCP documentation page exists. missing for 10: independent or hands-on corroboration of the MCP server working, documented setup/auth/transport details in the evidence.",
     "evidenceIds": [
       "morph-docs-9",
       "morph-docs-5",
       "morph-docs-22",
-      "morph-docs-10",
       "morph-probe-4"
     ],
     "support": {
@@ -7848,16 +7847,38 @@
   {
     "productId": "morph",
     "storyId": "agentic-nl-commands",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Morph is an API and model platform, so a natural-language way to operate it is a fair question to ask. The evidence shows no such capability: no assistant, console, or command interface that runs account, endpoint, or configuration actions from plain-language requests. The MCP server and coding-agent integrations expose Morph's editing and search tools to external agents, which is a different capability and earns no credit here.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Morph's own official MCP server exposes its file-editing and code-search tools to AI clients such as Claude Code. A user can therefore drive Morph's core capabilities through natural-language requests to an agent, but only via a third-party host agent. Morph has no native natural-language interface of its own, and the MCP tools cover edits and search rather than operating the wider product. missing for 10: a native natural-language command interface, natural-language control of account, endpoint, credit and Reflex management, documentation of NL-driven workflows beyond edit/search tools, independent hands-on corroboration",
+    "evidenceIds": [
+      "morph-docs-9",
+      "morph-docs-22",
+      "morph-docs-5",
+      "morph-probe-4"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "morph-docs-9",
+          "quote": "Connect your favorite AI tools to Morph's blazing-fast file editing via Model Context Protocol."
+        },
+        {
+          "evidenceId": "morph-docs-22",
+          "quote": "`codebase_search` - Semantic code search via Warp-Grep"
+        },
+        {
+          "evidenceId": "morph-docs-5",
+          "quote": "Install the Morph MCP so Claude Code can read it"
+        },
+        {
+          "evidenceId": "morph-probe-4",
+          "quote": "official MCP server documented at https://docs.morphllm.com/guides/mcp"
+        }
+      ]
     }
   },
   {
@@ -7866,7 +7887,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an API platform, so an official CLI is a fair thing to ask about, but the evidence documents only an OpenAI-compatible API, SDK components and an MCP server. The only CLI mentioned is a third-party tool (llm.datasette.io) that a user hooked up to the endpoint, which is a user-side workaround and earns no credit.",
+    "rationale": "The evidence pack documents an OpenAI/Anthropic-compatible API, an official MCP server, an OpenAPI spec and a docs playground, but no official Morph CLI. The only CLI mention is a community member using the third-party llm.datasette.io tool against the OpenAI-compatible endpoint. That is a user-side workaround and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7881,15 +7902,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Morph is an API-first product. Its docs describe an OpenAI-compatible public API at https://api.morphllm.com/v1 plus a native Anthropic Messages endpoint at /v1/messages. One API key covers the chat models and the specialized tools, and documented job flows include creating, polling and classifying with Reflexes. A community user independently confirms driving it through the OpenAI-compatible endpoint, and an llms.txt index exists. Missing for 10: a machine-readable OpenAPI/Swagger spec, since all probed paths returned 404.",
+    "rationale": "Morph is an API-first product. Its public API is documented: an OpenAI-compatible base URL at api.morphllm.com/v1, native Anthropic Messages at /v1/messages, and a downloadable OpenAPI 3.1 spec covering 14 paths with live Try-it runners. A community user independently got the OpenAI-compatible endpoint working with their own CLI tool. The OpenAPI probe 404s were at other candidate paths, which does not contradict the spec served from the api-reference path. Missing for 10: a standalone API versioning policy and an API changelog.",
     "evidenceIds": [
       "morph-docs-17",
       "morph-docs-7",
-      "morph-docs-16",
-      "morph-docs-20",
-      "morph-comm-5",
+      "morph-openapi-spec-20261106",
+      "morph-api-playground-20261106",
+      "morph-router-deprecations-20261106",
       "morph-probe-1",
-      "morph-probe-3"
+      "morph-comm-5",
+      "morph-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -7898,23 +7920,23 @@
       "citations": [
         {
           "evidenceId": "morph-docs-17",
-          "quote": "Point any OpenAI SDK at https://api.morphllm.com/v1. One API key covers the open-weight chat models and the specialized tools: Fast Apply for edits, WarpGrep for search, Compact for compression, Reflexes for classification."
+          "quote": "Point any OpenAI SDK at https://api.morphllm.com/v1. One API key covers the open-weight chat models and the specialized tools"
         },
         {
           "evidenceId": "morph-docs-7",
           "quote": "Claude Code speaks the Anthropic Messages API, which Morph serves natively at `/v1/messages`."
         },
         {
-          "evidenceId": "morph-docs-20",
-          "quote": "Create a job, poll until it finishes, then classify text against it."
+          "evidenceId": "morph-openapi-spec-20261106",
+          "quote": "Morph publishes a downloadable OpenAPI 3.1.0 document (info title \"Morph API\") covering the public surface at api.morphllm.com"
+        },
+        {
+          "evidenceId": "morph-api-playground-20261106",
+          "quote": "The Mintlify API reference renders a live \"Try it\" runner per endpoint"
         },
         {
           "evidenceId": "morph-comm-5",
           "quote": "This uses an OpenAI-compatible endpoint, so got this working with my llm.datasette.io CLI tool"
-        },
-        {
-          "evidenceId": "morph-probe-1",
-          "quote": "# Morph API Documentation"
         }
       ]
     }
@@ -7925,7 +7947,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an API platform, so issuing scoped, least-privilege agent credentials is a fair question to ask of it. The evidence only describes a single API key that covers all models and tools. Nothing shows per-key scopes, permission restrictions or agent-specific credentials.",
+    "rationale": "Morph is an API platform, so scoped agent credentials are a fair question to ask. The evidence describes only a single bearer API key that 'covers' all models and tools, with no documented per-key scopes, permission restrictions, or least-privilege key issuance. The OpenAPI mention of 'credits and budgets' is a spending control, not credential scoping, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7937,40 +7959,16 @@
   {
     "productId": "morph",
     "storyId": "agentic-sdks",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph's own docs officially support building with existing SDKs. Any OpenAI SDK can point at its OpenAI-compatible endpoint, the Anthropic Messages API is served natively, and the docs have an 'sdk/components' section. A community user confirmed the OpenAI-compatible endpoint works with an existing client tool. However, no Morph-published SDK package is evidenced, so this rests on third-party SDK compatibility. Missing for 10: a first-party Morph SDK package (e.g. npm/pip) with language coverage, an OpenAPI spec (probes returned 404), SDK reference docs.",
-    "evidenceIds": [
-      "morph-docs-17",
-      "morph-docs-18",
-      "morph-docs-7",
-      "morph-docs-23",
-      "morph-comm-5",
-      "morph-probe-1"
-    ],
+    "rationale": "The evidence shows Morph exposes OpenAI- and Anthropic-compatible endpoints, so users can point the third-party OpenAI SDK at Morph's base URL. It also publishes an OpenAPI document. Neither is a first-party Morph SDK: the evidence never names or documents an official Morph client library or package, so drop-in compatibility with another vendor's SDK is an adjacent building block and earns no credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can build against official SDKs",
-      "citations": [
-        {
-          "evidenceId": "morph-docs-17",
-          "quote": "Point any OpenAI SDK at https://api.morphllm.com/v1. One API key covers the open-weight chat models and the specialized tools"
-        },
-        {
-          "evidenceId": "morph-docs-18",
-          "quote": "existing OpenAI code only needs a new `model` string"
-        },
-        {
-          "evidenceId": "morph-docs-7",
-          "quote": "Claude Code speaks the Anthropic Messages API, which Morph serves natively at `/v1/messages`."
-        },
-        {
-          "evidenceId": "morph-comm-5",
-          "quote": "This uses an OpenAI-compatible endpoint, so got this working with my llm.datasette.io CLI tool"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -7979,7 +7977,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an API platform, so webhooks are a fair question, but the evidence pack never documents registrable outbound HTTP callbacks. The only asynchronous workflow described, Reflex training, uses a create-then-poll pattern instead of event delivery.",
+    "rationale": "Morph is an API platform, so webhook event subscriptions are a fair axis, but the evidence pack documents no registrable outbound HTTP callbacks. The one async workflow, Reflex training jobs, is polling-based ('create a job, poll until it finishes'), and the OpenAPI summary lists no webhook paths.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7991,31 +7989,56 @@
   {
     "productId": "morph",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The evidence shows static API documentation, including an llms.txt index and markdown pages, but nothing documents an interactive API reference with runnable request examples, and every OpenAPI spec probe returned 404. A community post mentions a morphllm.com playground with a provided example. That is an adjacent demo tool, not an interactive API reference, so it earns no credit here.",
-    "evidenceIds": [],
+    "rationale": "Morph's Mintlify API reference renders a live \"Try it\" runner for each endpoint, generated from a published OpenAPI 3.1.0 document. Runs execute against production api.morphllm.com with the user's bearer key, which delivers an interactive reference with runnable examples. missing for 10: independent or hands-on corroboration that the Try-it runners work, confirmation that every one of the 14 spec paths has a runner, and a sandbox or test mode (runs hit production with a real key).",
+    "evidenceIds": [
+      "morph-api-playground-20261106",
+      "morph-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "morph-api-playground-20261106",
+          "quote": "The Mintlify API reference renders a live \"Try it\" runner per endpoint (System One, Apply/chat completions, Compact, models, dedicated endpoints, credits), generated from the OpenAPI document"
+        },
+        {
+          "evidenceId": "morph-openapi-spec-20261106",
+          "quote": "Morph publishes a downloadable OpenAPI 3.1.0 document (info title \"Morph API\") covering the public surface at api.morphllm.com"
+        }
+      ]
     }
   },
   {
     "productId": "morph",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Morph is an API service, so offering a downloadable OpenAPI spec is a fair question. However, the probe found every candidate OpenAPI/Swagger path returning 404. The llms.txt and markdown docs are LLM-readable documentation, not an API spec, and being OpenAI-compatible borrows another vendor's schema rather than publishing Morph's own.",
-    "evidenceIds": [],
+    "rationale": "Morph's docs say it publishes a downloadable OpenAPI 3.1.0 document (\"Morph API\") at docs.morphllm.com/api-reference/openapi.json, covering 14 paths for inference, Fast Apply, Compact, models, dedicated endpoints and credits. The API reference's \"Try it\" runner is generated from it. The probe's 404s were at other guessed paths (/openapi.json, /swagger.json), so they do not contradict the spec. Missing for 10: discoverability (llms.txt has no spec section and the standard paths 404), and independent or hands-on confirmation that the api-reference path serves the file.",
+    "evidenceIds": [
+      "morph-openapi-spec-20261106",
+      "morph-api-playground-20261106",
+      "morph-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "morph-openapi-spec-20261106",
+          "quote": "Morph publishes a downloadable OpenAPI 3.1.0 document (info title \"Morph API\") covering the public surface at api.morphllm.com"
+        },
+        {
+          "evidenceId": "morph-api-playground-20261106",
+          "quote": "The Mintlify API reference renders a live \"Try it\" runner per endpoint (System One, Apply/chat completions, Compact, models, dedicated endpoints, credits), generated from the OpenAPI document"
+        }
+      ]
     }
   },
   {
@@ -8024,7 +8047,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an API platform, so a sandbox or test environment is a fair question for it, but the evidence documents no sandbox, test mode, or isolated non-production environment. The canary feature does the opposite: it routes a slice of real production traffic to a new model. Standby tier, dedicated endpoints and a community mention of a web playground are adjacent features, not a documented sandbox isolated from production data.",
+    "rationale": "Morph is an API service, so a sandbox or test environment is a fair question, but the evidence documents none. The API reference 'Try it' runner executes against the production base URL with the user's key. The Kimi K3 canary deliberately sends a slice of real production traffic, which is the opposite of isolating tests from production.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8036,16 +8059,32 @@
   {
     "productId": "morph",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows a `/v1` base URL, but that only mirrors OpenAI-compatible routing. Nothing in the pack documents an API versioning scheme, version lifecycle, or deprecation/sunset policy, so there is no evidence the product delivers this story. Probes found no OpenAPI spec, and the docs index mentions no changelog or deprecation page.",
-    "evidenceIds": [],
+    "rationale": "Morph's APIs are path-versioned (/v1, /api/v1) with dated model snapshots. Its docs give an endpoint-level deprecation notice for the legacy router endpoints, with a backward-compatibility commitment and a migration target. That is a single feature-specific notice, not a general deprecation policy. Missing for 10: a standalone versioning/deprecation policy document, an API changelog, defined sunset timelines or notice periods, and independent corroboration.",
+    "evidenceIds": [
+      "morph-router-deprecations-20261106",
+      "morph-docs-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "morph-router-deprecations-20261106",
+          "quote": "Paths are versioned (/v1, /api/v1) and models carry dated snapshots"
+        },
+        {
+          "evidenceId": "morph-router-deprecations-20261106",
+          "quote": "The provider endpoints will be removed in a future release"
+        },
+        {
+          "evidenceId": "morph-docs-1",
+          "quote": "Point any OpenAI SDK at `https://api.morphllm.com/v1`."
+        }
+      ]
     }
   },
   {
@@ -8054,13 +8093,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no batch endpoint, multi-item request format, or bulk-apply operation. The closest item is the `standby` service tier, which is a discounted, deprioritized pricing option for individual requests that are 'built for batch and background workloads'. That is an adjacent capacity and pricing control, not a capability for acting on many items at once, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Bulk operations are a fair question for an inference API platform, so the axis applies. The pack documents no batch endpoint or other way to submit or act on many items in one operation. The 'standby' service tier is only a discounted, deprioritized way to send individual requests, which makes it adjacent rather than a bulk-operations capability.",
+    "evidenceIds": [
+      "morph-docs-13"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "morph-docs-13",
+          "quote": "Built for batch and background workloads where a retry costs nothing."
+        }
+      ]
     }
   },
   {
@@ -8069,7 +8115,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an API platform, so event-driven automation rules are a fair question to ask of it, but the evidence shows no rule engine or event-triggered action feature. Reflexes only label text, which is a developer building block. The canary migration compares Reflex results before you switch rather than automatically triggering actions when events occur.",
+    "rationale": "Morph is an inference API platform, so event-triggered automation rules are a fair question for it. The evidence documents no user-definable rules that fire actions on events. Reflexes are text classifiers that label turns, and the canary 'gated by Reflexes' compares results before the user switches providers. Both are adjacent classification features, not an automation-rule engine.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8084,7 +8130,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an LLM API platform, so recurring job scheduling is a fair question for it, but the evidence pack documents no scheduler, cron, or recurring workflow feature. The standby service tier is a cheaper priority level for individual batch and background requests, not a recurring schedule. Reflex training jobs are one-off jobs that you create and then poll.",
+    "rationale": "Morph is an inference API platform, so recurring job scheduling is a fair question to ask of it. The evidence never documents any cron, schedule, or recurring-workflow feature. The standby service tier only lowers the price and priority of individual batch or background requests, and Reflex training is a one-off job you create and poll; neither runs anything on a recurring schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8099,7 +8145,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an AI inference and tooling platform (chat models, Fast Apply, WarpGrep, Compact, Reflexes), so versioning, reviewing, and rolling back automations is a fair question for it, but the evidence documents no such feature. The canary docs describe gating a provider migration on a slice of production traffic, which is related but is not versioning or rollback of user automations, so it earns no credit.",
+    "rationale": "Morph is an inference and tooling API with model gateway, Fast Apply, Compact, Reflexes and MCP. It is the kind of developer platform where buyers could reasonably ask about workflow versioning, so the axis applies. However, the evidence documents no user-defined automations that can be versioned, reviewed or rolled back. The canary traffic trials, dated model snapshots and versioned API paths concern provider migration and API stability, not the user's automations, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8114,7 +8160,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no stated availability or uptime SLA for any paid, enterprise, or dedicated tier. Dedicated endpoints reserve capacity and the standby tier describes deprioritization, but neither states an availability commitment. These are adjacent features, not an SLA.",
+    "rationale": "Morph is a paid API service, so an availability SLA is a fair question to ask of it. The pack contains no stated uptime or availability SLA for any tier. Dedicated endpoints reserving capacity and the standby service tier are related capacity features, not an availability commitment, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8129,7 +8175,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Morph documents a `service_tier: \"standby\"` option at half price, explicitly \"built for batch and background workloads.\" That covers the documented-discount half of the story. However, standby is a deprioritized tier on ordinary requests that returns a fast 429 when a region is busy, not an asynchronous batch-job API where you submit and later poll. Missing for 10: an asynchronous batch-job submission and retrieval workflow (job creation, polling, result files), and independent or hands-on corroboration of the standby discount.",
+    "rationale": "Morph documents a `service_tier: \"standby\"` option that runs requests on spare capacity at half price and is explicitly \"built for batch and background workloads\", so a documented 50% discount for batch-style traffic exists. However, standby is a deprioritized per-request tier that returns a fast 429 when busy, not an asynchronous job API where you submit work and collect results later. Missing for 10: an async batch job submission API (job IDs, polling or result retrieval, bulk file input), queued completion guarantees instead of 429 shedding, and independent or hands-on corroboration of the discount.",
     "evidenceIds": [
       "morph-docs-13"
     ],
@@ -8153,17 +8199,15 @@
     "productId": "morph",
     "storyId": "coding-agent-integrations",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Morph publishes first-party integration guides for coding agents. A coding-agents guide covers Claude Code via the native /v1/messages endpoint and Codex with an edit_file tool, and an MCP guide connects AI tools to Fast Apply and Warp-Grep. A goose author also reports using Morph in practice. No first-party guide for agent frameworks (e.g. LangChain-style SDKs) appears in the evidence, so the story is only partly covered. missing for 10: documented first-party guides for agent frameworks, guides beyond Claude Code/Codex/MCP clients, independent hands-on corroboration of the guides themselves",
+    "rationale": "Morph has a first-party coding-agents guide. It covers Claude Code through its native `/v1/messages` Anthropic endpoint and Codex through an `edit_file` tool backed by morph-v3-fast, and an MCP guide connects AI tools to Morph's editing and search. However, no evidence shows integration guides for agent frameworks. Missing for 10: documented guides for agent frameworks (e.g., orchestration SDKs), breadth beyond Claude Code/Codex, independent hands-on corroboration of the guides.",
     "evidenceIds": [
       "morph-docs-7",
       "morph-docs-21",
       "morph-docs-9",
       "morph-docs-5",
-      "morph-probe-4",
-      "morph-docs-17",
-      "morph-comm-1"
+      "morph-probe-4"
     ],
     "support": {
       "relation": "direct",
@@ -8181,10 +8225,6 @@
         {
           "evidenceId": "morph-docs-9",
           "quote": "Connect your favorite AI tools to Morph's blazing-fast file editing via Model Context Protocol."
-        },
-        {
-          "evidenceId": "morph-docs-5",
-          "quote": "Install the Morph MCP so Claude Code can read it"
         }
       ]
     }
@@ -8195,10 +8235,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph documents serving open-weight chat models, including Kimi K3 through its OpenAI-compatible endpoint. Nothing in the evidence describes how quickly it adds newly released open-weight models, such as a day-zero launch policy, a release cadence or a model changelog. Hosting some open-weight models is related to the story but does not show timely availability of new releases.",
+    "rationale": "Morph documents that it serves open-weight chat models, such as Kimi K3, and publishes a machine-readable model feed. Nothing in the evidence describes how quickly newly released open-weight models are added after their public release: no release-cadence commitment, launch-day availability claim, or changelog of model additions. Having a model catalog is a different capability from fast onboarding of new releases, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an ml-engineer, I can get newly released open-weight models on the platform quickly after their public release",
       "citations": []
@@ -8210,10 +8250,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Morph documents Dedicated Endpoints: you reserve model capacity by choosing a model and plan, Morph provisions and operates it, and you connect through a dedicated endpoint URL. That separates the workload from the shared serverless API. Autoscaling is never mentioned, and the docs don't describe GPU hardware choices or isolation guarantees. missing for 10: documented autoscaling on dedicated endpoints, explicit GPU hardware/capacity details, an explicit statement of isolation from the shared serverless pool, independent or hands-on corroboration.",
+    "rationale": "Morph documents dedicated endpoints: you pick a model and plan, Morph provisions and operates the reserved capacity, and you connect through the endpoint's own URL. Endpoint management also appears in the published OpenAPI surface. That covers the core of reserved, isolated capacity, but the evidence never mentions autoscaling or states that traffic is separated from the shared pool. Missing for 10: documented autoscaling behavior, explicit GPU/hardware selection details, explicit statement of traffic isolation from the shared serverless pool, independent or hands-on corroboration.",
     "evidenceIds": [
       "morph-docs-15",
-      "morph-docs-23"
+      "morph-docs-23",
+      "morph-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8225,8 +8266,8 @@
           "quote": "Reserve model capacity by choosing a model and plan. Morph provisions and operates it; once ready, connect an OpenAI client using the endpoint's URL and served model name."
         },
         {
-          "evidenceId": "morph-docs-15",
-          "quote": "Reserve model capacity by choosing a model and plan. Morph provisions and operates it"
+          "evidenceId": "morph-openapi-spec-20261106",
+          "quote": "dedicated endpoint management"
         }
       ]
     }
@@ -8234,28 +8275,16 @@
   {
     "productId": "morph",
     "storyId": "documented-rate-limits",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Morph's docs confirm that rate limits exist and apply equally to the Anthropic Messages endpoint. They also describe a standby tier that returns fast 429s when a region is busy. However, no rate-limit values or tier-based scaling are shown. missing for 10: published per-tier rate-limit numbers (RPM/TPM), documentation of how limits scale across free/paid/enterprise or dedicated plans, independent corroboration.",
-    "evidenceIds": [
-      "morph-docs-16",
-      "morph-docs-13"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack never publishes actual rate-limit values or explains how limits scale across usage tiers. One item notes that the Anthropic Messages endpoint shares the 'same ... rate limits' without stating them, and the standby 429 behavior, dedicated capacity and model-feed context limits are adjacent features rather than documented rate-limit tiers.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a developer, I can read documented rate limits and how they scale across usage tiers before I hit them in production",
-      "citations": [
-        {
-          "evidenceId": "morph-docs-16",
-          "quote": "Anthropic Messages supports the same open source chat models, token billing, and rate limits."
-        },
-        {
-          "evidenceId": "morph-docs-13",
-          "quote": "when a region is busy they shed a fast `429` instead of waiting"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -8264,15 +8293,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Morph documents a standard OpenAI-compatible chat-completions endpoint: you point any OpenAI SDK at its base URL, and existing OpenAI code needs only a new model string. It also natively serves the Anthropic Messages API and documents moving agents off Anthropic/OpenAI. A community user independently confirms the OpenAI-compatible endpoint worked with a third-party CLI tool. missing for 10: documented parity of chat-completions parameters such as tool calling and streaming, and explicit evidence of switching mid-workflow within a single agent session.",
+    "rationale": "Morph documents an OpenAI-compatible chat-completions endpoint: you point any OpenAI SDK at its base URL, and existing OpenAI code only needs a new `model` string. It also serves the Anthropic Messages API natively, and an independent user got the OpenAI-compatible endpoint working with a third-party CLI. Missing for 10: explicit evidence of switching providers mid-workflow within a single agent session, and documentation of parity for tool calling and parameters across providers.",
     "evidenceIds": [
-      "morph-docs-1",
+      "morph-docs-17",
       "morph-docs-18",
       "morph-docs-7",
       "morph-docs-16",
       "morph-docs-3",
-      "morph-comm-5",
-      "morph-probe-1"
+      "morph-probe-1",
+      "morph-comm-5"
     ],
     "support": {
       "relation": "direct",
@@ -8280,12 +8309,12 @@
       "subject": "As an AI-native user, I can have an agent switch to or away from this provider mid-workflow because it speaks the standard chat-completions API without provider-specific code changes",
       "citations": [
         {
-          "evidenceId": "morph-docs-1",
-          "quote": "Point any OpenAI SDK at `https://api.morphllm.com/v1`."
-        },
-        {
           "evidenceId": "morph-docs-18",
           "quote": "Kimi K3 serves 1M context through the standard chat completions endpoint, so existing OpenAI code only needs a new `model` string"
+        },
+        {
+          "evidenceId": "morph-docs-17",
+          "quote": "Point any OpenAI SDK at https://api.morphllm.com/v1."
         },
         {
           "evidenceId": "morph-docs-7",
@@ -8304,7 +8333,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an OpenAI-compatible inference API, so offering embeddings and reranking endpoints is a fair question for it. The evidence pack only documents chat models, Fast Apply, WarpGrep search, Compact, and Reflexes classifiers, and never mentions an embeddings or rerank endpoint. WarpGrep's semantic code search is an adjacent feature, not an embedding or reranking API for retrieval pipelines.",
+    "rationale": "Morph is an OpenAI-compatible inference API, so embeddings and reranking are a fair question for it. However, no evidence documents an embeddings or rerank endpoint or model. The published OpenAPI surface lists inference, Fast Apply, Compact, System One, model listing, dedicated endpoints and credits, with no embeddings. Warp-Grep semantic code search is an adjacent feature, not an embeddings or rerank API for a developer's own retrieval pipeline.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8319,11 +8348,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Morph's own Reflexes feature lets a user send labeled examples, train a custom text classifier (about 30 seconds), and then classify against it on the same API, so training on your own data and serving the result in place is documented. It is limited to small classifiers: nothing shows fine-tuning a selectable base model such as the open-weight chat models, and dedicated endpoints only reserve capacity for existing models. Missing for 10: fine-tuning of supported base or chat models, base-model selection, serving fine-tuned weights via chat or dedicated endpoints, and independent or hands-on corroboration.",
+    "rationale": "Morph's custom Reflexes let you send your own labeled examples, train a small text classifier in about 30 seconds, and then classify text against it on Morph. That is training on your own data with serving on the same platform. It is limited to small classifiers, though: nothing shows fine-tuning a selectable base chat model and serving it, and dedicated endpoints only reserve capacity for existing models. Missing for 10: fine-tuning of supported base/chat models, choice of base model, serving fine-tuned models via chat endpoints or dedicated endpoints, independent corroboration.",
     "evidenceIds": [
       "morph-docs-20",
-      "morph-docs-6",
-      "morph-docs-23"
+      "morph-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -8345,16 +8373,16 @@
     "productId": "morph",
     "storyId": "low-latency-serving",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Morph's own docs claim high throughput for its specialized models: Fast Apply at 10,500 tok/s, Compact at 33,000 tok/s, and ~90ms classifiers. It also documents speed-relevant serving features: prefix caching on by default and dedicated reserved-capacity endpoints. However, nothing documents time-to-first-token or throughput for the general open-weight chat models, and all figures are vendor claims without independent benchmarks. Missing for 10: documented time-to-first-token figures, throughput/latency numbers for general chat generation (e.g. Kimi K3), and independent or hands-on corroboration of the speed claims.",
+    "rationale": "Morph documents high-throughput generation for its specialized models: Fast Apply at 10,500+ tok/s, Compact at 33,000 tok/s, and Reflex classifiers labeling a turn in ~90ms. Prefix caching is on for every open source model, and dedicated endpoints let you reserve capacity. The throughput numbers cover the specialized tools rather than general chat generation, and nothing quantifies time-to-first-token. Missing for 10: documented TTFT or latency figures for the general chat models (e.g. Kimi K3), throughput figures for general chat generation, and independent or hands-on corroboration of the speed claims.",
     "evidenceIds": [
       "morph-docs-11",
       "morph-docs-12",
       "morph-docs-19",
       "morph-docs-14",
       "morph-docs-23",
-      "morph-docs-21",
+      "morph-docs-8",
       "morph-gh-2"
     ],
     "support": {
@@ -8391,7 +8419,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Morph's docs publish concrete speed figures: Fast Apply at 10,500 tok/s, Compact at 33,000 tok/s, and Reflex classifiers at about 90ms per turn. These are headline numbers only, with no methodology, benchmark reports or load-testing guidance, and the GitHub demos cite a different 4,500+ tokens/sec figure. Missing for 10: benchmark methodology or reproducible results, load-testing guides, latency percentiles, independent corroboration of the throughput claims.",
+    "rationale": "Morph's own docs publish concrete throughput and latency figures: Fast Apply at 10,500 tok/s, Compact at 33,000 tok/s, and Reflex classifiers at ~90ms. Its demos repo cites 4,500+ tokens/sec. These are headline numbers only, with no benchmark methodology, comparative benchmarks, or load-testing guidance showing how they were measured. missing for 10: published benchmark methodology or reproducible benchmark results, load-testing guides, latency percentiles/TTFT figures, independent or hands-on corroboration of the speed numbers.",
     "evidenceIds": [
       "morph-docs-11",
       "morph-docs-12",
@@ -8429,7 +8457,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph hosts open-weight chat models and specialized models through an API, so a deprecation policy for hosted models is a fair question for this product. The evidence pack has no documented deprecation policy, notice period or model-retirement schedule. The community remark that only an older model is listed on OpenRouter says nothing about deprecation notice.",
+    "rationale": "The only deprecation evidence covers legacy router API endpoints, not hosted models. It promises backward compatibility and removal \"in a future release\" but gives no dated notice period. The pack states that no standalone versioning policy document or changelog exists. Dated model snapshots and the model catalog feed are adjacent features; neither is a documented model-removal policy with advance notice.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8441,16 +8469,33 @@
   {
     "productId": "morph",
     "storyId": "models-endpoint-discovery",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Morph documents an OpenAI-compatible base URL (https://api.morphllm.com/v1) with chat completions and /v1/messages, but no evidence documents a GET /v1/models or equivalent endpoint for enumerating the live model catalog programmatically. OpenAI SDK compatibility alone does not establish that a models-listing endpoint exists, and the OpenAPI probes all returned 404.",
-    "evidenceIds": [],
+    "rationale": "Morph's published OpenAPI document includes a model-listing endpoint, and the API reference renders a live 'Try it' runner for it against production. A separate machine-readable model feed also lists per-model ids, limits and pricing. But no evidence confirms the exact GET /v1/models path, an OpenAI-compatible response shape, or that the listing reflects the live catalog, and the feed is a website JSON rather than an API endpoint. missing for 10: explicit documentation of a GET /v1/models path and its response schema, confirmation that the listing is live and complete (including Reflex/tool models), independent or hands-on corroboration of agent enumeration.",
+    "evidenceIds": [
+      "morph-openapi-spec-20261106",
+      "morph-api-playground-20261106",
+      "morph-models-feed-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can have an agent enumerate the live model catalog programmatically via a documented GET /v1/models-style endpoint",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "morph-openapi-spec-20261106",
+          "quote": "OpenAI- and Anthropic-compatible inference, Fast Apply, Compact, System One, model listing, dedicated endpoint management, credits and budgets (14 paths under /v1 and /api/v1)"
+        },
+        {
+          "evidenceId": "morph-api-playground-20261106",
+          "quote": "The Mintlify API reference renders a live \"Try it\" runner per endpoint (System One, Apply/chat completions, Compact, models, dedicated endpoints, credits), generated from the OpenAPI document"
+        },
+        {
+          "evidenceId": "morph-models-feed-20261106",
+          "quote": "For machine-readable models, limits and these list prices, fetch https://www.morphllm.com/api/models/json?prices=list"
+        }
+      ]
     }
   },
   {
@@ -8459,7 +8504,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is a model-serving API platform, so offering vision, audio, or image-generation models is a fair question for it. The evidence documents only open-weight text chat models, text classifiers (Reflexes), code editing (Fast Apply), compression, and search, with no mention of vision, audio, or image-generation endpoints.",
+    "rationale": "Morph is an inference platform serving open-weight chat models through OpenAI- and Anthropic-compatible endpoints, so asking about multimodal models is fair. The evidence only documents text chat models, text classifiers (Reflexes), and code tools (Fast Apply, WarpGrep, Compact). The model catalog lists a 'modalities' field, but nothing shows any vision, audio, or image-generation model is actually offered.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8474,12 +8519,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Morph's docs say one API key covers its open-weight chat models on a shared, token-billed endpoint, with prefix caching on 'every open source model.' Kimi K3 is the only model actually named, so the catalog's breadth is unproven. missing for 10: an evidenced model list showing Llama, Qwen, DeepSeek, GPT-OSS or peer families, any proof the catalog is broad and current, and independent corroboration of the model selection.",
+    "rationale": "Morph's docs say one API key covers its open-weight chat models on shared, token-billed endpoints, with prefix caching on every open source model, but Kimi K3 is the only model family named. Nothing shows the breadth the story asks for. Missing for 10: evidence of Llama, Qwen, DeepSeek, GPT-OSS or other named families in the catalog; a documented list showing catalog breadth and currency; independent corroboration of the serverless model lineup.",
     "evidenceIds": [
       "morph-docs-17",
       "morph-docs-18",
       "morph-docs-14",
-      "morph-docs-16"
+      "morph-docs-16",
+      "morph-models-feed-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8492,7 +8538,7 @@
         },
         {
           "evidenceId": "morph-docs-18",
-          "quote": "Kimi K3 serves 1M context through the standard chat completions endpoint, so existing OpenAI code only needs a new `model` string"
+          "quote": "Kimi K3 serves 1M context through the standard chat completions endpoint"
         },
         {
           "evidenceId": "morph-docs-14",
@@ -8511,10 +8557,9 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Morph's docs say to point any OpenAI SDK at https://api.morphllm.com/v1 with one API key, and say existing OpenAI code only needs a new model string. The llms.txt probe confirms the endpoint is OpenAI-compatible, and a community user independently got it working through an OpenAI-compatible client. Missing for 10: detailed documentation of which OpenAI API parameters and features are compatible, and acknowledgment that a model-name change is also required beyond the base URL and key.",
+    "rationale": "Morph's docs say to point any OpenAI SDK at https://api.morphllm.com/v1 with one API key. They add that existing OpenAI code needs only a new model string, and llms.txt states the API is OpenAI-compatible. A community user independently got the OpenAI-compatible endpoint working with their own CLI tool. missing for 10: an explicit code snippet showing only base_url and api_key changed in an SDK client, and a documented list of which OpenAI endpoint parameters are or are not supported.",
     "evidenceIds": [
       "morph-docs-17",
-      "morph-docs-1",
       "morph-docs-18",
       "morph-probe-1",
       "morph-comm-5",
@@ -8539,7 +8584,7 @@
         },
         {
           "evidenceId": "morph-docs-23",
-          "quote": "connect an OpenAI client using the endpoint's URL and served model name"
+          "quote": "once ready, connect an OpenAI client using the endpoint's URL and served model name."
         }
       ]
     }
@@ -8548,16 +8593,15 @@
     "productId": "morph",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Morph is API-first: one API key covers the chat models and every specialized tool (Fast Apply, WarpGrep, Compact, Reflexes), and even custom Reflex training runs through API jobs. However, no evidence claims full UI-to-API parity. Dedicated-endpoint provisioning reads as a plan-selection flow with no documented API, and no OpenAPI spec was found (all probe paths returned 404). missing for 10: an explicit API-parity statement, documented API for account/key/billing and dedicated-endpoint provisioning, a published OpenAPI spec, independent corroboration of parity.",
+    "rationale": "Morph is API-first. Its published OpenAPI 3.1 document covers inference, Fast Apply, Compact, model listing, and account-level operations such as dedicated endpoint management, credits and budgets. Custom Reflex training also runs fully through API jobs, so much of the dashboard surface appears to be programmable. Nothing states explicit UI-to-API parity, and gaps remain for UI functions such as API-key, team and billing management. Missing for 10: an explicit parity commitment, API coverage of key/team/billing administration, and independent corroboration that every dashboard action has an API equivalent.",
     "evidenceIds": [
-      "morph-docs-17",
+      "morph-openapi-spec-20261106",
       "morph-docs-20",
-      "morph-docs-19",
       "morph-docs-23",
-      "morph-probe-3",
-      "morph-probe-1"
+      "morph-api-playground-20261106",
+      "morph-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -8565,16 +8609,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "morph-docs-17",
-          "quote": "One API key covers the open-weight chat models and the specialized tools: Fast Apply for edits, WarpGrep for search, Compact for compression, Reflexes for classification."
+          "evidenceId": "morph-openapi-spec-20261106",
+          "quote": "covering the public surface at api.morphllm.com: OpenAI- and Anthropic-compatible inference, Fast Apply, Compact, System One, model listing, dedicated endpoint management, credits and budgets"
         },
         {
           "evidenceId": "morph-docs-20",
-          "quote": "Send labeled examples, get back a text classifier. Create a job, poll until it finishes, then classify text against it."
+          "quote": "Create a job, poll until it finishes, then classify text against it."
         },
         {
-          "evidenceId": "morph-docs-19",
-          "quote": "Eleven ship ready to use; pass the name as `model`."
+          "evidenceId": "morph-docs-17",
+          "quote": "One API key covers the open-weight chat models and the specialized tools"
         }
       ]
     }
@@ -8585,7 +8629,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an API platform that holds user artifacts such as custom-trained Reflex classifiers and request data, so data export is a fair question for it. The evidence shows OpenAI- and Anthropic-compatible endpoints that keep switching costs low, and a guide for migrating onto Morph, but nothing documents exporting user data or trained models in open formats. API compatibility is an adjacent portability trait, not a documented export capability.",
+    "rationale": "Morph is a hosted API service, so a data-export story is a fair question for it. The evidence pack documents no way to export account data, such as stored Reflex training sets, trained classifiers, usage logs or chat history, in open formats. OpenAI- and Anthropic-compatible endpoints and the migration guides lower switching cost, but that is adjacent portability, not a data-export capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8600,7 +8644,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is available under an open license is a fair question for an API platform like Morph, so the axis applies. The evidence does not show Morph's own source published under any license. The only GitHub item is a demos repo that calls Morph's API, with no license stated. The 'open-weight' and 'open source model' mentions refer to third-party models Morph hosts, not Morph's own code.",
+    "rationale": "Whether a product's source is published under an open license is a fair question for a hosted API platform like Morph, so the axis applies. The evidence never shows Morph's own source code released under an open license. Mentions of 'open-weight' and 'open source' models refer to third-party models Morph serves. The morph-demos GitHub repo is example code that calls Morph's API, with no license stated.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8615,7 +8659,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is documented as a hosted API at api.morphllm.com. Even its dedicated endpoints are provisioned and operated by Morph, not self-hosted by the customer. Nothing in the evidence describes deploying the core models or service on user-controlled infrastructure; the local Warp-Grep search is an adjacent feature, not a self-hosted core product.",
+    "rationale": "Morph is documented only as a hosted API at api.morphllm.com. Its dedicated endpoints are explicitly provisioned and operated by Morph, so they are managed capacity rather than self-hosting. Serving open-weight models and running WarpGrep for local search do not amount to self-hosting the core product, and nothing in the pack shows a deployable or on-prem distribution.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8630,7 +8674,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a hosted model API like Morph, so the axis applies. The pack has no documented way to choose a storage or processing region. The standby doc only says requests shed 429s 'when a region is busy', which implies multiple regions but gives no user control. Dedicated endpoints are chosen by model and plan, not by region.",
+    "rationale": "Morph is a hosted inference API, so data residency is a fair question, but nothing in the evidence shows users can pick a storage or processing region. The standby docs only mention that a busy region sheds 429s. Dedicated endpoints are chosen by model and plan, with no region option.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8645,7 +8689,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "The only relevant evidence is a community post quoting Morph's privacy policy. The quoted policy says the Enterprise tier does not use submitted code for anything beyond the immediate request, while the Free tier may use code for training. The commenter also suspects paying non-enterprise users may be trained on. So no-training protection appears tied to the Enterprise tier rather than being an option every user can switch on. missing for 10: first-party privacy or data-use documentation in the pack, a user-controllable opt-out for non-enterprise tiers, clarity on paid non-enterprise tiers, and coverage of non-code data such as chat prompts.",
+    "rationale": "The only on-topic evidence is a community post quoting Morph's privacy policy. Per that quote, Free Tier code data may be used for training, while the Enterprise Tier uses submitted data only to process the immediate request. So keeping data out of training appears to depend on buying Enterprise rather than a user-controlled opt-out, and the user asking for clarification suggests paid non-enterprise tiers may be trained on. Missing for 10: first-party documentation of a training opt-out, a self-serve no-training setting for all tiers, clarity on paid non-enterprise tiers, and independent confirmation.",
     "evidenceIds": [
       "morph-comm-6"
     ],
@@ -8667,10 +8711,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented user-facing control over data retention or deletion, such as retention settings, deletion APIs, or a zero-retention toggle. The only relevant item is a community quote of the privacy policy describing tier-based training and usage terms (free tier may train on code; enterprise processes only the immediate request). That is a plan-level policy, not a retention or deletion control the user can exercise.",
+    "rationale": "The pack documents no user-facing retention settings, deletion API, or data-deletion workflow for Morph. The only related item is a community quote of the privacy policy describing tier-based data use (free tier may train, enterprise tier processes only the immediate request). That is a fixed policy tied to the plan, not a control the user exercises over retention or deletion, so it counts only as an adjacent feature.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can control data retention and deletion",
       "citations": []
@@ -8682,10 +8726,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an API service, so opting out of telemetry and usage tracking is a fair question to ask of it. The pack documents no opt-out control, setting or flag for telemetry or usage tracking. The only related item is a community quote of the privacy policy saying training use differs by plan (free tier may train on code, enterprise does not). That is a tier-based data-use difference, not a user-facing opt-out, so it earns no credit.",
+    "rationale": "Morph is an API service, so a telemetry and usage-tracking opt-out is a fair question to ask of it. The pack documents no opt-out control. The only privacy-related item is a community quote of tiered training-data policy (free tier may train on code, enterprise does not), which is a plan difference about training use, not a user opt-out of telemetry.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
       "citations": []
@@ -8694,16 +8738,16 @@
   {
     "productId": "morph",
     "storyId": "prompt-caching-support",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Morph's own docs say prefix caching is enabled automatically for every open-source model, with no configuration and no cache-write surcharge, so the capability exists first-party. The docs quoted here do not state the actual benefit the story asks for (lower latency or a cached-token discount on repeated context), and caching is limited to open-source models. missing for 10: explicit documentation of cached-token pricing discounts or latency reduction on cache hits, coverage beyond open-source models (e.g., the specialized tools), cache behavior details such as TTL or minimum prefix length, and independent or hands-on corroboration.",
+    "rationale": "Morph's caching docs say prefix caching is on by default for every open-source model, with no configuration and no cache-write surcharge. That directly delivers the story's core capability on repeated context. missing for 10: explicit cached-token pricing or discount figures, documented latency improvements, coverage beyond open-source models, independent or hands-on corroboration.",
     "evidenceIds": [
       "morph-docs-14"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an ml-engineer, I can benefit from prompt/prefix caching that reduces latency or cost on repeated context",
       "citations": [
         {
@@ -8719,7 +8763,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is an inference API platform, so serving custom weights is a fair question. However, the evidence shows no way to upload your own model weights or LoRA adapters. Dedicated endpoints let you reserve capacity for a model Morph provisions and operates. Custom Reflexes train small text classifiers from labeled examples. Neither is uploading or serving user-supplied weights or adapters.",
+    "rationale": "Morph is an inference API platform, so bringing your own weights is a fair question. The pack shows no way to upload custom model weights or LoRA adapters. Dedicated endpoints only reserve capacity for a model Morph offers ('choosing a model and plan'), and custom Reflexes train small classifiers from labeled examples, which is an adjacent feature rather than serving user-supplied weights.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8731,16 +8775,23 @@
   {
     "productId": "morph",
     "storyId": "spend-controls-budgets",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Morph is a paid, token-billed LLM API platform, so spending caps and budget alerts are a fair axis. The evidence pack documents no spending cap, budget limit, or billing alert. Rate limits, half-price standby requests, prefix caching and dedicated capacity are adjacent cost or throughput controls, not caps that bound a bill.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only on-topic evidence is the OpenAPI document listing \"credits and budgets\" among the API's surfaces. That suggests a first-party budget capability, but nothing describes hard spending caps, alert thresholds, or whether a runaway workload is actually stopped. Rate limits and standby 429s are adjacent controls and earn no credit. Missing for 10: documented hard spending-cap enforcement, budget alert/notification behavior, details of the budget endpoints, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "morph-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a founder, I can set spending caps or budget alerts so a runaway workload cannot generate an unbounded bill",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "morph-openapi-spec-20261106",
+          "quote": "credits and budgets (14 paths under /v1 and /api/v1)"
+        }
+      ]
     }
   },
   {
@@ -8749,7 +8800,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph is a hosted API platform serving production traffic, so a public status page with incident history is a fair question to ask of it. Nothing in the evidence pack mentions a status page, uptime reporting, or incident history. The standby 429 behavior and dedicated endpoints are adjacent reliability features, not a status page, so they earn no credit.",
+    "rationale": "A public status page with incident history is a fair question for a hosted inference API platform like Morph, so the axis applies. Nothing in the evidence pack mentions a status page, uptime reporting or incident history. The standby 429 behavior and dedicated endpoints are adjacent reliability features, not a status page, and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8764,7 +8815,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Morph exposes an OpenAI-compatible chat completions endpoint and natively serves the Anthropic Messages API. No item documents token-by-token streaming or SSE delivery. API compatibility alone does not show that streaming is supported, so it earns no credit for this applicable axis.",
+    "rationale": "The evidence shows Morph exposes OpenAI-compatible chat completions and the Anthropic Messages API. No evidence item mentions streaming, SSE, or token-by-token delivery. API compatibility alone does not document streaming, so this applicable inference-API axis has no direct support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8779,7 +8830,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Morph serves open-weight chat models through an OpenAI-compatible API, so structured-output enforcement is a fair question for it. However, no evidence item mentions JSON schema enforcement, response_format, grammar-constrained decoding, or structured outputs. OpenAI SDK compatibility alone does not show that schema-constrained responses are supported.",
+    "rationale": "Morph serves open-weight chat models through OpenAI- and Anthropic-compatible endpoints, so structured-output enforcement is a fair question for it. However, nothing in the evidence documents JSON-schema response formats, grammar-constrained decoding, or a strict structured-output mode. API compatibility alone does not show that schema enforcement is supported.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8794,12 +8845,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Morph's own docs describe running production agents and Claude Code on its open-weight models (Kimi K3) through native OpenAI-compatible and Anthropic Messages endpoints, which implies tool-calling agent loops work. However, the pack never explicitly documents function/tool-calling support, its fidelity, or parallel or multi-step tool use. missing for 10: explicit tool-calling documentation, parallel tool call support, multi-step tool loop guarantees, independent or hands-on evidence of faithful tool calling on open models.",
+    "rationale": "Morph documents running production agents, including Claude Code over its native Anthropic Messages endpoint, on its open-weight models such as Kimi K3, which implies working agent tool loops. However, no evidence explicitly documents function/tool-calling support, its fidelity, or parallel tool calls. Missing for 10: explicit tool/function-calling documentation, parallel tool call support, multi-step tool-use reliability evidence, independent hands-on corroboration of agent loops on open models.",
     "evidenceIds": [
       "morph-docs-3",
       "morph-docs-7",
-      "morph-docs-18",
-      "morph-docs-16"
+      "morph-docs-16",
+      "morph-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -8815,10 +8866,6 @@
           "quote": "Claude Code speaks the Anthropic Messages API, which Morph serves natively at `/v1/messages`."
         },
         {
-          "evidenceId": "morph-docs-18",
-          "quote": "Kimi K3 serves 1M context through the standard chat completions endpoint, so existing OpenAI code only needs a new `model` string"
-        },
-        {
           "evidenceId": "morph-docs-16",
           "quote": "Anthropic Messages supports the same open source chat models, token billing, and rate limits."
         }
@@ -8828,16 +8875,37 @@
   {
     "productId": "morph",
     "storyId": "transparent-token-pricing",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence shows Morph bills by token and offers pricing modifiers (half-price standby tier, no cache-write surcharge), but no item publishes actual per-token prices for any hosted model, let alone every model. Without a visible price list, nothing shows a founder can see costs without talking to sales.",
-    "evidenceIds": [],
+    "rationale": "Morph documents a public, machine-readable model catalog with per-model list prices, linked from its llms.txt and requiring no sales contact. It also documents token billing and a half-price standby tier. However, the evidence does not show that prices are quoted per token for every hosted model, and no human-readable pricing table is evidenced. missing for 10: explicit per-token price figures, confirmation that every hosted model (including specialized tools like Fast Apply, Compact and Reflexes) has a published price, a human-readable pricing page, independent corroboration.",
+    "evidenceIds": [
+      "morph-models-feed-20261106",
+      "morph-docs-16",
+      "morph-docs-13"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a founder, I can see public per-token prices for every hosted model without talking to sales",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "morph-models-feed-20261106",
+          "quote": "For machine-readable models, limits and these list prices, fetch https://www.morphllm.com/api/models/json?prices=list"
+        },
+        {
+          "evidenceId": "morph-models-feed-20261106",
+          "quote": "per-model ids, context limits, modalities, pricing; schema-versioned"
+        },
+        {
+          "evidenceId": "morph-docs-16",
+          "quote": "Anthropic Messages supports the same open source chat models, token billing, and rate limits."
+        },
+        {
+          "evidenceId": "morph-docs-13",
+          "quote": "Send `service_tier: \"standby\"` and pay half price."
+        }
+      ]
     }
   },
   {

@@ -1,17 +1,34 @@
 {
-  "hash": "71aa5baf63318c9bf75f8380bf87af4c6a2551bf45b9f11d3a91e91d6b91f05b",
+  "hash": "3fdc6fad046c7aa5286d4431b034e812b3b8ae6d4dd79ef1d6b2575c62f5480a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence shows only general developer building blocks: a REST API with cursor-paginated list endpoints, cached query responses, multi-language SDKs and an llms.txt docs index. There is no documented agent-facing query surface, such as an MCP server or agent tool, for answering billing-state questions. Nor is there evidence of read endpoints for MRR, delinquent accounts, upcoming renewals or a customer's invoices, so the API is a primitive a developer would need to build the capability on, not the capability itself.",
-    "evidenceIds": [],
+    "rationale": "Orb runs a hosted first-party MCP server that exposes 100+ API operations as tools, covering customers, subscriptions, invoices and credits. That lets an agent query the platform directly to look into a customer's invoices and subscription state, and access is scope-controlled for read-only use. The docs do not show that MRR, delinquent-account, or upcoming-renewal queries are available as agent tools. Missing for 10: documented MRR or revenue metrics exposed via the MCP server or API, explicit delinquent/past-due account queries, upcoming-renewal queries, and hands-on corroboration of agent billing Q&A.",
+    "evidenceIds": [
+      "orb-mcp-server-20261106",
+      "orb-test-mode-isolation-20261106",
+      "orb-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, an agent can answer questions about my billing state — MRR, delinquent accounts, upcoming renewals, a customer's invoices — by querying the platform directly",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "orb-mcp-server-20261106",
+          "quote": "It exposes 100+ Orb API operations as tools, covering customers, subscriptions, plans and prices, billable metrics, invoices, credits, alerts, licenses, event search and price evaluation"
+        },
+        {
+          "evidenceId": "orb-mcp-server-20261106",
+          "quote": "You can ask an agent to look into a customer's bill, check why usage isn't showing up, model a price change, or make a subscription change"
+        },
+        {
+          "evidenceId": "orb-mcp-server-20261106",
+          "quote": "Each scope covers one area of Orb... and can be set to **none**, **read** or **write**"
+        }
+      ]
     },
     "productId": "orb",
     "storyId": "agent-reads-billing-state"

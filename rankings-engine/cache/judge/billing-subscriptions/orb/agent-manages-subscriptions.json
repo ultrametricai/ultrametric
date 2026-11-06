@@ -1,38 +1,43 @@
 {
-  "hash": "302bd9d70fcabd8ec50b5cf09b338392cbd8500d8a3b59a1d21b5b2014ec4681",
+  "hash": "1e72650f333eef0f63093dfee8b6799dcdcf0d4eb7cece0c978a3d84ef6e4cc9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Orb's own API and SDKs let an agent create subscriptions and edit subscription pricing programmatically, with idempotency for safe retries. However, nothing in the evidence documents scoped or restricted API permissions. Applying a credit and changing a plan via the API are not explicitly shown. missing for 10: scoped/least-privilege API keys or permissions, an explicit API endpoint for applying credits, explicit API-driven plan change, independent hands-on corroboration of agent use.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Orb's hosted first-party MCP server exposes 100+ API operations covering subscriptions, plans and credits, so an agent can make subscription changes. It acts with the connected key's permissions, and key scopes are set per area to none, read or write. The API itself also documents subscription creation, plan changes and edits, and test-mode keys isolate experimentation from live billing data. Missing for 10: independent or hands-on corroboration of an agent performing these operations under scoped keys, and an explicit documented credit-grant endpoint (credits are covered only within the MCP tool listing).",
     "evidenceIds": [
+      "orb-mcp-server-20261106",
       "orb-docs-8",
       "orb-docs-31",
-      "orb-docs-27",
-      "orb-docs-25",
-      "orb-docs-32"
+      "orb-docs-32",
+      "orb-test-mode-isolation-20261106",
+      "orb-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, an agent can operate my billing — create a subscription, apply a credit, change a plan — through a programmatic surface with scoped permissions",
       "citations": [
+        {
+          "evidenceId": "orb-mcp-server-20261106",
+          "quote": "It exposes 100+ Orb API operations as tools, covering customers, subscriptions, plans and prices, billable metrics, invoices, credits, alerts, licenses, event search and price evaluation"
+        },
+        {
+          "evidenceId": "orb-mcp-server-20261106",
+          "quote": "Each scope covers one area of Orb... and can be set to **none**, **read** or **write**"
+        },
         {
           "evidenceId": "orb-docs-8",
           "quote": "You can create a subscription either from the Orb UI or via the subscription creation API endpoint."
         },
         {
-          "evidenceId": "orb-docs-31",
-          "quote": "Subscription Edits let you change a single subscription's pricing configuration directly from Orb's web interface or via the API"
+          "evidenceId": "orb-docs-32",
+          "quote": "When you change plans, the subscription ID remains the same, but Orb maintains a complete audit trail of every plan assignment."
         },
         {
-          "evidenceId": "orb-docs-27",
-          "quote": "Orb's SDK is available in Python, TypeScript, Go, Java, Kotlin, and Ruby."
-        },
-        {
-          "evidenceId": "orb-docs-25",
-          "quote": "Orb's API supports idempotency, to allow safe request retries without duplicating actions."
+          "evidenceId": "orb-test-mode-isolation-20261106",
+          "quote": "To try things out without touching live billing data, create the key in **test mode**."
         }
       ]
     },

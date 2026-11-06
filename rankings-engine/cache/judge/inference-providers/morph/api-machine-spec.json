@@ -1,17 +1,30 @@
 {
-  "hash": "b9de2d3bebf1b0a4d890924d638234a629faf0000d1adb0588be78a290b27939",
+  "hash": "6f8b1dd6f0e58ce8335662a958ad753af70b1e27b464bbac36e80749b91155ab",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Morph is an API service, so offering a downloadable OpenAPI spec is a fair question. However, the probe found every candidate OpenAPI/Swagger path returning 404. The llms.txt and markdown docs are LLM-readable documentation, not an API spec, and being OpenAI-compatible borrows another vendor's schema rather than publishing Morph's own.",
-    "evidenceIds": [],
+    "rationale": "Morph's docs say it publishes a downloadable OpenAPI 3.1.0 document (\"Morph API\") at docs.morphllm.com/api-reference/openapi.json, covering 14 paths for inference, Fast Apply, Compact, models, dedicated endpoints and credits. The API reference's \"Try it\" runner is generated from it. The probe's 404s were at other guessed paths (/openapi.json, /swagger.json), so they do not contradict the spec. Missing for 10: discoverability (llms.txt has no spec section and the standard paths 404), and independent or hands-on confirmation that the api-reference path serves the file.",
+    "evidenceIds": [
+      "morph-openapi-spec-20261106",
+      "morph-api-playground-20261106",
+      "morph-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "morph-openapi-spec-20261106",
+          "quote": "Morph publishes a downloadable OpenAPI 3.1.0 document (info title \"Morph API\") covering the public surface at api.morphllm.com"
+        },
+        {
+          "evidenceId": "morph-api-playground-20261106",
+          "quote": "The Mintlify API reference renders a live \"Try it\" runner per endpoint (System One, Apply/chat completions, Compact, models, dedicated endpoints, credits), generated from the OpenAPI document"
+        }
+      ]
     },
     "productId": "morph",
     "storyId": "api-machine-spec"

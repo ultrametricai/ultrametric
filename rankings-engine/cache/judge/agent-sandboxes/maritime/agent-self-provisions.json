@@ -1,25 +1,28 @@
 {
-  "hash": "a8a9701cc4f6458f14c13415636e633eda7393d96d9b25cef796eb93cea359ea",
+  "hash": "6b3e9cf5a717bdc3210553a08bd04d8bb3d466b6c0211ac50a7c00547f5f970b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Maritime documents a CLI designed for other AI agents to operate non-interactively (JSON output, env-var auth), idempotent SDK provisioning of VM-backed agents, and per-user Linux computers a model can drive. That covers provisioning and agent-driven operation of an isolated environment. The rest of the loop is weak or absent: there is no explicit code-execution endpoint, results can only be read indirectly through the Files API, and teardown is not documented. missing for 10: a documented exec/run-code call with returned output, a documented teardown/delete operation, an end-to-end agent-run lifecycle example, and independent or hands-on corroboration.",
+    "rationale": "Maritime documents agent-operable provisioning: an idempotent SDK `provision` call, a CLI built for AI agents with `--json` output, and non-interactive key auth. It also offers per-user Linux computers driven by a model and a Files API for reading an agent's disk. However, there is no documented execute-code-and-return-output primitive, and no teardown or delete step, so the full lifecycle is not shown without a human. Missing for 10: explicit code-execution API returning stdout or results, documented sandbox teardown/delete, an end-to-end autonomous lifecycle example, and independent hands-on corroboration.",
     "evidenceIds": [
+      "maritime-docs-45",
       "maritime-docs-22",
       "maritime-docs-23",
-      "maritime-docs-9",
-      "maritime-docs-2",
       "maritime-docs-5",
       "maritime-docs-40",
-      "maritime-docs-50"
+      "maritime-docs-28"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As an ai-native user, my agent can provision its own sandbox, execute code, read the results, and tear it down — end to end without a human",
       "citations": [
+        {
+          "evidenceId": "maritime-docs-45",
+          "quote": "provision is idempotent on it: it returns the existing agent if there is one, else creates a new one."
+        },
         {
           "evidenceId": "maritime-docs-22",
           "quote": "The Maritime CLI is built to be operated by other AI agents, not just humans: machine-readable output on every command, stable exit codes, and a live self-describing contract."
@@ -29,16 +32,12 @@
           "quote": "Authenticate with an env var, never interactively."
         },
         {
-          "evidenceId": "maritime-docs-2",
-          "quote": "`provision` is **idempotent** on it: it returns the existing agent if there is one, else creates a new one."
-        },
-        {
-          "evidenceId": "maritime-docs-50",
-          "quote": "Agents are getting a real Linux desktop they can drive: screenshot, mouse, keyboard, and a live view you can take over."
-        },
-        {
           "evidenceId": "maritime-docs-40",
-          "quote": "eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps."
+          "quote": "The Maritime Files API: eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps."
+        },
+        {
+          "evidenceId": "maritime-docs-5",
+          "quote": "A persistent Linux desktop (XFCE, Chromium, LibreOffice) for each of _your_ end users, driven by _your_ model."
         }
       ]
     },

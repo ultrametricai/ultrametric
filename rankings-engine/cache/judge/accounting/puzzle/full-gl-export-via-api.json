@@ -1,17 +1,36 @@
 {
-  "hash": "3eeaa576bc3592c23444bb5eb22b9ecbcc54e0a9d3d680d55e33258c1d4bbef5",
+  "hash": "a783df828b9a3211582bfefda7d6bda6c603256e8130b7024f2bf0f2a487900a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Puzzle documents a full general-ledger export in Excel, CSV and PDF, but only as a user export, not through an API. Its API is described only in general terms (embedded accounting, platform-to-platform integrations), with no documented general-ledger or trial-balance endpoints, and the OpenAPI probe found nothing. The MCP connector to Claude and the manual export are adjacent features, not a documented developer API for pulling the ledger and trial balance.",
-    "evidenceIds": [],
+    "rationale": "Puzzle documents a REST API with a published OpenAPI 3.0.3 spec and a ReadMe reference that includes a balances endpoint. Its MCP integration exposes trial balance, journal entries, transactions and ledger account tools, so ledger data is reachable programmatically in structured form. However, no documented REST endpoint is evidenced for pulling the full general ledger, and API access is request-gated. The full-GL CSV/Excel export is an in-app export, not an API feature. Missing for 10: an explicitly documented REST endpoint for the full general ledger and trial balance, documented open-format (e.g. CSV) output via the API, self-serve API access, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "puzzle-openapi-spec-20261106",
+      "puzzle-api-tryit-20261106",
+      "puzzle-mcp-tools-20261106",
+      "puzzle-docs-42",
+      "puzzle-sandbox-server-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can pull the full general ledger and trial balance through a documented API in open formats",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "puzzle-openapi-spec-20261106",
+          "quote": "Puzzle publishes a machine-readable OpenAPI 3.0.3 document (info title \"Puzzle Api\", server https://app.puzzle.io/rest/v0) on its app domain"
+        },
+        {
+          "evidenceId": "puzzle-mcp-tools-20261106",
+          "quote": "tools covering trial balance, cash activity, transactions, journal entries, chart of accounts"
+        },
+        {
+          "evidenceId": "puzzle-docs-42",
+          "quote": "Our API was originally architected for deep platform-to-platform integrations."
+        }
+      ]
     },
     "productId": "puzzle",
     "storyId": "full-gl-export-via-api"

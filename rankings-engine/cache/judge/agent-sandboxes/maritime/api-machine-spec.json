@@ -1,17 +1,31 @@
 {
-  "hash": "d630d8c14eda843f99aee1cc81f4ff1c67c6b56c272457c3406e11ab1d290a98",
+  "hash": "4d8e438f1064eee7969a8b3252de941d8fef2ea8864957ea28cd0b97b78aac3c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Maritime documents a RESTful API, but the evidence never mentions a downloadable OpenAPI or equivalent spec, and the probe found every candidate OpenAPI/Swagger path returning 404. The CLI's \"live self-describing contract\" and the llms.txt file are adjacent features, not a machine-readable API specification, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Maritime serves a live OpenAPI 3.1 document at https://api.maritime.sh/openapi.json. The vendor llms.txt advertises it as the full REST API, and Swagger UI loads it. The probe 404s were on the marketing origin (maritime.sh), not the API origin, so they do not contradict this. Missing for 10: the spec is the raw FastAPI output mixed with internal host-events paths, it is unversioned (0.1.0, no deprecation policy), and no independent hands-on download confirms it.",
+    "evidenceIds": [
+      "maritime-openapi-spec-20261106",
+      "maritime-swagger-ui-20261106",
+      "maritime-docs-36",
+      "maritime-changelog-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "maritime-openapi-spec-20261106",
+          "quote": "Maritime serves a live OpenAPI 3.1 document at the API origin (info title \"Maritime API\"), advertised in the vendor llms.txt as \"The full REST API, bearer mk_ key\"."
+        },
+        {
+          "evidenceId": "maritime-swagger-ui-20261106",
+          "quote": "The API origin hosts Swagger UI over the live spec (\"Maritime API - Swagger UI\", loading /openapi.json)"
+        }
+      ]
     },
     "productId": "maritime",
     "storyId": "api-machine-spec"
