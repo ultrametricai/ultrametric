@@ -147,10 +147,15 @@ describe('loadApiQualityRepairCoverage (wave-ledger registry)', () => {
         { product: 'acme', arena: 'widgets', storyId: 'api-versioning-policy' },
       ] }))
       fs.writeFileSync(path.join(dir, '2026-11-06-api-quality-broken.json'), 'not json')
+      // Parsed-but-non-object roots must be skipped, not crash the scan (PR #636 review).
+      fs.writeFileSync(path.join(dir, '2026-11-06-api-quality-null.json'), 'null')
+      fs.writeFileSync(path.join(dir, '2026-11-06-api-quality-array.json'), '[1,2]')
+      fs.writeFileSync(path.join(dir, '2026-11-06-api-quality-primitive.json'), '42')
       const coverage = loadApiQualityRepairCoverage(dir)
       expect(coverage.get('widgets/acme')).toEqual(new Set(['api-machine-spec', 'api-sandbox']))
       expect(coverage.get('widgets/other')).toEqual(new Set(['api-machine-spec']))
       expect(coverage.has('widgets/missing')).toBe(false)
+      expect(coverage.size).toBe(2)
     } finally {
       fs.rmSync(dir, { recursive: true, force: true })
     }

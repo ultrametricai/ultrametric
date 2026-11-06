@@ -166,7 +166,16 @@ export function loadApiQualityRepairCoverage(
     let parsed: unknown
     try {
       parsed = JSON.parse(fs.readFileSync(path.join(reportsDir, name), 'utf8'))
-    } catch { continue }
+    } catch {
+      console.warn(`staleness-scan: skipping unparseable api-quality ledger ${name}`)
+      continue
+    }
+    // Parsed-but-non-object shapes (null, arrays, primitives) are as unusable as parse
+    // failures; accessing .cells on them must not crash the scan.
+    if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+      console.warn(`staleness-scan: skipping malformed api-quality ledger ${name} (non-object root)`)
+      continue
+    }
     const cells = (parsed as { cells?: Array<{ arena?: string; product?: string; storyId?: string }> }).cells
     if (!Array.isArray(cells)) continue
     for (const cell of cells) {
