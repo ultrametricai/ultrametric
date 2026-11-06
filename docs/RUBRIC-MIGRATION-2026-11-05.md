@@ -81,8 +81,8 @@ against `2026-11-04-v6-preview.json`.
 | 4 | ai-support-agents, browser-agents, data-pipelines, desktop-os, device-agents, domain-registrars, equity-management, error-tracking, game-engines, infra-as-code, local-llm-runtimes, mcp-infrastructure, robotics-platforms | 4,943 | merged (PR #616) |
 | 5 | agent-frameworks, agent-skills, ai-search-apis, ai-video, compliance-automation, data-warehouses, design-tools, identity-verification, marketplace-payments, mobile-payments, notes-knowledge, startup-law-firms | 4,774 | merged (PR #618) |
 | 6 | ai-memory, billing-subscriptions, cloud-storage, compliance-screening, durable-workflows, ecommerce-platforms, email-apis, fp-a, gpus, payments, self-hosted-assistants, stablecoin-payments, voice-agents | 4,941 | merged (PR #619) |
-| 7 | agent-sandboxes, banking-as-a-service, banking-data-apis, llm-evals-observability, meeting-ai, product-feedback, screen-sharing, security-keys, security-scanners, serverless-databases, software-factory, tax-automation | 4,778 | this PR |
-| 8 | ai-research-agents, auth-platforms, authenticator-apps, code-hosting, document-extraction, email, mobile-dev, observability, project-management, search-infra, vector-databases, virtual-mailboxes, workflow-automation | 4,911 | queued |
+| 7 | agent-sandboxes, banking-as-a-service, banking-data-apis, llm-evals-observability, meeting-ai, product-feedback, screen-sharing, security-keys, security-scanners, serverless-databases, software-factory, tax-automation | 4,778 | merged (PR #620) |
+| 8 | ai-research-agents, auth-platforms, authenticator-apps, code-hosting, document-extraction, email, mobile-dev, observability, project-management, search-infra, vector-databases, virtual-mailboxes, workflow-automation | 4,911 | this PR |
 | 9 | accounting, agentic-commerce, ai-code-review, api-platforms, backend-as-a-service, business-phone, feature-flags, file-converters, package-managers, processors, product-analytics, startup-immigration, team-chat | 4,913 | queued |
 
 Later waves may be re-chunked as evidence packs grow; each wave PR states its final arena
@@ -435,3 +435,44 @@ re-adjudicating them is a maintainer call outside this wave's convention.
 Spend: about $62 batched plus correction rounds (software-factory needed 23 resume runs
 across two retry rounds; its stubborn cells repeatedly failed the verbatim-quote rule
 before converging). Wave total about $82; cumulative about $537.
+
+## Wave 8 (2026-11-06)
+
+4,911 cells re-judged across the thirteen arenas. 960 verdict flips: 897 down, 22 up, 41
+lateral relabels, plus 587 quality-only moves (net -319). Fleet transition profile:
+
+`full→partial` 464 · `partial→none` 431 · `na→none` 28 · `none→partial` 14 ·
+`none→na` 12 · `partial→full` 7 · `full→none` 2 · other 2
+
+| arena | cells | flips | down / up / lateral | quality-only (net) |
+|---|---|---|---|---|
+| ai-research-agents | 258 | 30 | 27 / 0 / 3 | 24 (-5) |
+| auth-platforms | 280 | 80 | 77 / 2 / 1 | 44 (-21) |
+| authenticator-apps | 440 | 89 | 80 / 2 / 7 | 32 (-10) |
+| code-hosting | 360 | 52 | 50 / 2 / 0 | 33 (-14) |
+| document-extraction | 318 | 101 | 99 / 0 / 2 | 55 (-33) |
+| email | 378 | 75 | 66 / 9 / 0 | 54 (-30) |
+| mobile-dev | 414 | 44 | 23 / 0 / 21 | 39 (-18) |
+| observability | 324 | 96 | 95 / 1 / 0 | 51 (-45) |
+| project-management | 581 | 67 | 63 / 2 / 2 | 57 (-35) |
+| search-infra | 265 | 69 | 66 / 2 / 1 | 36 (-18) |
+| vector-databases | 477 | 84 | 82 / 1 / 1 | 66 (-33) |
+| virtual-mailboxes | 200 | 18 | 14 / 1 / 3 | 15 (-9) |
+| workflow-automation | 616 | 155 | 155 / 0 / 0 | 81 (-48) |
+
+Protected cells: workflow-automation carries the two AFK human adjudications from the
+09-30 worklist. The same re-application mechanic ran
+(`reapply-protected-adjudications.ts`), and the fresh v6 judge independently reached both
+adjudicated grades exactly (agentic-mcp-client none q0, agentic-nl-commands partial q5),
+so the preservation changed nothing; the worklist records the agreement.
+
+Own-row audit (afk, workflow-automation, Ultrametric's own product; document-only): zero
+favorable moves, 8 unfavorable kept, rank unchanged at #11 of 11, last in its arena.
+
+Notable rank moves, all pure-rubric: tailscale #4 → #1 in mobile-dev (working-copy
+#1 → #2), sentry #2 → #1 over grafana in observability, helixdb #2 → #1 in
+vector-databases (qdrant #5 → #3, lancedb #4 → #6), auth0 #5 → #3 in auth-platforms,
+temporal #7 → #5 and n8n #6 → #8 in workflow-automation.
+
+Spend: about $63 batched plus correction rounds (workflow-automation needed nine resume
+runs). Wave total about $77; cumulative about $614.
