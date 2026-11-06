@@ -1,17 +1,34 @@
 {
-  "hash": "06713b54edbac0364309d5272730c6ab46df55cdb923968cc49714b3dda30d24",
+  "hash": "feea8965eea61cb6b585a1eb20194019a1fbadfb983d8aeae20436457cbf52d4",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence never documents a sandbox or test environment that is isolated from production data. The LangGraph CLI runs an Agent Server locally with its own managed database for checkpointing, and the docs recommend a database-backed checkpointer for production. That is a local-development feature, not a documented sandbox guarantee, so it counts only as adjacent support. Nothing shows that agent runs or tool calls are kept away from production data during testing.",
-    "evidenceIds": [],
+    "rationale": "LangGraph's own docs describe two isolated local test environments: `langgraph dev` (in-memory state) and `langgraph up` (a production-like local Docker stack with its own PostgreSQL/Redis), with production deployment as a separate later step. This is true environment isolation, not merely a dry-run mode, so tests do not touch production data. missing for 10: independent or hands-on corroboration of the isolation, evidence of a hosted sandbox or staging deployment tier, and explicit documentation guaranteeing separation from production data stores.",
+    "evidenceIds": [
+      "langgraph-local-dev-testing-20261105",
+      "langgraph-docs-30",
+      "langgraph-docs-23"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langgraph-local-dev-testing-20261105",
+          "quote": "`langgraph up`: A production-like testing environment for validation"
+        },
+        {
+          "evidenceId": "langgraph-local-dev-testing-20261105",
+          "quote": "`langgraph dev`: A lightweight development server for rapid iteration"
+        },
+        {
+          "evidenceId": "langgraph-docs-30",
+          "quote": "includes supporting services such as a managed database for checkpointing and storage"
+        }
+      ]
     },
     "productId": "langgraph",
     "storyId": "api-sandbox"

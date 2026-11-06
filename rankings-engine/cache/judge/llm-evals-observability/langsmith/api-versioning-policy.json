@@ -1,17 +1,33 @@
 {
-  "hash": "a08b29d65ffdc165f4c16a02f10d283c21e735dbed3cbbb3e58587473a2eb718",
+  "hash": "c368f7de28cb25db01d7954506dbf45aa14d00d4b412a4e67ed6991cc730984c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith is a SaaS platform with an API, so API versioning and deprecation policy is a fair axis. The evidence only shows that an API exists (trace filter/export via the API) and that SDKs exist. Nothing documents API version identifiers, version guarantees, or a deprecation or sunset policy, and the OpenAPI probe paths all returned 404.",
-    "evidenceIds": [],
+    "rationale": "LangSmith's API is path-versioned (/api/v1, /api/v2). The Cloud changelog announces deprecations with explicit sunset dates and migration targets, and the self-hosted release policy states that breaking changes only land in a new major version. Missing for 10: a standalone formal deprecation policy for the Cloud API with guaranteed minimum notice windows, and independent or hands-on corroboration that deprecations are honored as documented.",
+    "evidenceIds": [
+      "langsmith-api-deprecations-20261105",
+      "langsmith-openapi-spec-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langsmith-api-deprecations-20261105",
+          "quote": "The `POST /api/v1/runs/group` endpoint is now deprecated and will be sunset on January 31, 2027. Use `POST /api/v2/threads/query` to query threads instead. The endpoint continues to work until then."
+        },
+        {
+          "evidenceId": "langsmith-api-deprecations-20261105",
+          "quote": "Breaking changes only land in a new major version"
+        },
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "paths under /api/v1/"
+        }
+      ]
     },
     "productId": "langsmith",
     "storyId": "api-versioning-policy"

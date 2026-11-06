@@ -1,23 +1,21 @@
 {
-  "hash": "66d4e564bfcab420c8e7f14458e7e132c197c0a481d3864b787e5f7ad0df22a4",
+  "hash": "b6eca8bb64112389f52873e03870a6a3737fd48451156c410ebdf32ec343c1dc",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LangSmith documents grouping into threads (\"Inspect threads and runs in the Messages, Turns, and Details views\") and agent-run tracing via SDKs, decorators and OpenTelemetry. Hands-on community evidence confirms step-by-step traces through agent graphs with per-step inputs and outputs. One commenter says it \"only shows the LLM inferences\" outside LangChain, but this is a vague integration complaint and is not treated as a concrete counter-example. missing for 10: explicit first-party documentation of the nested span/run-tree hierarchy, documented details on how runs are assigned to sessions/threads, independent corroboration for non-LangChain stacks.",
+    "rationale": "LangSmith documents tracing of agent runs and inspecting threads and runs in Messages, Turns, and Details views. A threads query API (`POST /api/v2/threads/query`) supports thread grouping, and a hands-on user describes inspecting inputs and outputs for each step of a graph trace. However, no first-party evidence explicitly describes parent/child nested span hierarchies, and one community comment claims it only shows LLM inferences. Missing for 10: first-party documentation of nested span/run hierarchy for multi-step agents, explicit documentation of session grouping beyond threads, and corroboration resolving the conflicting community report about step-level visibility.",
     "evidenceIds": [
-      "langsmith-docs-34",
       "langsmith-docs-1",
-      "langsmith-docs-24",
-      "langsmith-docs-38",
-      "langsmith-docs-11",
+      "langsmith-docs-34",
+      "langsmith-api-deprecations-20261105",
       "langsmith-comm-4-refresh-cd52bf16f9e52787",
-      "langsmith-comm-2-refresh-c22006912c3d93cf"
+      "langsmith-docs-38"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can trace multi-step agent runs as nested spans grouped into sessions or threads",
       "citations": [
         {
@@ -27,6 +25,10 @@
         {
           "evidenceId": "langsmith-docs-1",
           "quote": "Traces are the record of what your agents did in production."
+        },
+        {
+          "evidenceId": "langsmith-api-deprecations-20261105",
+          "quote": "Use `POST /api/v2/threads/query` to query threads instead."
         },
         {
           "evidenceId": "langsmith-comm-4-refresh-cd52bf16f9e52787",

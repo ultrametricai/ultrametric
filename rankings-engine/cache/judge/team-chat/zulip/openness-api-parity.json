@@ -1,13 +1,14 @@
 {
-  "hash": "7d9ebab806db87a2f66d4babb0eb77e462b550bdbb122a69c4e32faf29972bd7",
+  "hash": "bb225e0c45fb56f57b7486a8e97b26eedde8dd40d0e118c2834d258160b7f830",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Zulip documents its own REST API, including a 'Send a message' endpoint, and a bot framework built on it, so programmatic access is first-party. However, nothing in the evidence shows the API covers everything the UI does. The probes found no OpenAPI spec at the tested paths, which leaves coverage unverifiable rather than contradicted. Missing for 10: an explicit API/UI parity claim, an endpoint inventory covering channels, topics, search, admin and export, a machine-readable API spec, and independent hands-on corroboration of full parity.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Zulip has its own documented REST API, described by a complete OpenAPI 3.0.1 spec and versioned through a feature-level changelog. It also has a bot framework, so programmatic access is clearly first-party. However, the pack only shows a few concrete endpoints (e.g., send a message) and nothing states that the API matches what the UI can do. Missing for 10: explicit documentation that every UI action is available via the API, an endpoint inventory covering admin, settings, channel and topic management, and independent hands-on confirmation of parity.",
     "evidenceIds": [
-      "zulip-docs-5",
+      "zulip-openapi-spec-20261105",
+      "zulip-api-feature-levels-20261105",
       "zulip-docs-28",
       "zulip-docs-12"
     ],
@@ -16,6 +17,14 @@
       "coverage": "partial",
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
+        {
+          "evidenceId": "zulip-openapi-spec-20261105",
+          "quote": "The zulip/zulip repository ships a complete OpenAPI 3.0.1 description of the API, info title \"Zulip REST API\", at zerver/openapi/zulip.yaml."
+        },
+        {
+          "evidenceId": "zulip-api-feature-levels-20261105",
+          "quote": "Every API change is logged under a numbered feature level (e.g. \"Feature level 513\" for Zulip 13.0), which clients read from server responses to determine the API format in use."
+        },
         {
           "evidenceId": "zulip-docs-28",
           "quote": "[Send a message](/api/send-message)"

@@ -1,17 +1,35 @@
 {
-  "hash": "62df94fa48b50550dcff0321c0dea5beb9927c1389d866213a7d5e26b3c84697",
+  "hash": "6e697b681dae6ab91e3641c1ede717aed036eb100d8cffbc15ef582965168b4e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Semgrep AppSec Platform documents an API for listing deployments, projects and findings, so a downloadable API spec is a fair question for this product. However, the pack contains no evidence of an OpenAPI or equivalent spec, and the probe found all candidate OpenAPI/Swagger paths returning 404. llms.txt and SARIF output are adjacent features, not a machine-readable API spec, so they earn no credit.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Semgrep's API docs landing page offers a direct download of an OpenAPI 3.0.3 spec (public_v1.openapi.yaml) covering the /api/v1 endpoints. The OpenAPI-driven reference with per-endpoint playgrounds and a versioning and deprecation policy corroborates that the spec is maintained. The probe's 404s were on docs.semgrep.dev guess paths, not the documented semgrep.dev/api/v1 URL, so they do not contradict this. Missing for 10: independent or hands-on confirmation of fetching the spec at the documented URL; v2 endpoints are only Experimental and not evidenced in the spec.",
+    "evidenceIds": [
+      "semgrep-openapi-spec-20261105",
+      "semgrep-api-playground-20261105",
+      "semgrep-deprecation-policy-20261105",
+      "semgrep-docs-17"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "semgrep-openapi-spec-20261105",
+          "quote": "This API is documented in the OpenAPI format. Download OpenAPI specification: Download"
+        },
+        {
+          "evidenceId": "semgrep-openapi-spec-20261105",
+          "quote": "which serves the OpenAPI 3.0.3 document (info title \"Semgrep Web App\") covering the /api/v1 endpoints"
+        },
+        {
+          "evidenceId": "semgrep-api-playground-20261105",
+          "quote": "The OpenAPI-driven API reference renders a live \"Try it\" API playground per endpoint"
+        }
+      ]
     },
     "productId": "semgrep",
     "storyId": "api-machine-spec"

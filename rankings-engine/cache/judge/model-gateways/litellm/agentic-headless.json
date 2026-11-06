@@ -1,17 +1,17 @@
 {
-  "hash": "347669978b951dc778fe96797ad970cff26bb709477afa8cec3d709cde7837de",
+  "hash": "130bb075d79830a7150aa2fbc748cce6f25a17e12ad3dd1354f8f0156565bb56",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "LiteLLM is a programmatic Python library and a self-hosted proxy with a documented official CLI (worker-process flags) and a Docker image, so it can run headlessly for automation. MCP tools can also be called with curl without an LLM. However, nothing in the evidence documents CI usage specifically. Missing for 10: documented CI/CD usage guidance (e.g., CI pipeline examples), non-interactive config/auth guidance for automation, independent hands-on corroboration of CI runs.",
+    "rationale": "LiteLLM is a code-driven SDK (completion()) plus a self-hosted proxy. It has an official CLI with worker flags and a docker image, and offers curl-callable MCP REST endpoints, so it can run headlessly without any UI. Its documented mock_response mode lets automated tests run without calling LLM APIs, which supports CI use. missing for 10: explicit CI/CD integration docs (e.g. GitHub Actions or pipeline recipes), documented non-interactive config/bootstrap for ephemeral CI runs, independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "litellm-probe-4",
       "litellm-docs-13",
       "litellm-docs-1",
-      "litellm-docs-5",
       "litellm-comm-6",
+      "litellm-mock-requests-20261105",
       "litellm-docs-33"
     ],
     "support": {
@@ -28,16 +28,16 @@
           "quote": "The number of worker processes to spin up (uvicorn, gunicorn, or Granian --workers)."
         },
         {
-          "evidenceId": "litellm-docs-1",
-          "quote": "Call any provider using the same completion() interface, with no API to re-learn for each one"
-        },
-        {
-          "evidenceId": "litellm-docs-5",
-          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
+          "evidenceId": "litellm-mock-requests-20261105",
+          "quote": "For testing purposes, you can use `completion()` with `mock_response` to mock calling the completion endpoint"
         },
         {
           "evidenceId": "litellm-docs-33",
           "quote": "call tools with curl without an LLM"
+        },
+        {
+          "evidenceId": "litellm-comm-6",
+          "quote": "running LiteLLM as a proxy in their homelab via the litellm/litellm docker image"
         }
       ]
     },

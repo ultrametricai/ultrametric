@@ -1,28 +1,38 @@
 {
-  "hash": "a2620da4596669c443d66c282c35645a478c8ad60616e741e5b60f7de3e24162",
+  "hash": "9a410faa19be2e1f9227cf8be2eb87649cadd8aea834a60e06773f2241ebb989",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "LangSmith's docs say traces can be filtered, exported, shared, and compared via the API, and it ships official Python, TypeScript, Go, and Java SDKs. However, the pack never shows an API reference or the breadth of what can be driven programmatically, and probes found no OpenAPI spec at the common paths. Missing for 10: a documented public API reference covering datasets, evaluations, alerts, and dashboards; a discoverable OpenAPI/Swagger spec; independent hands-on corroboration of API-driven usage.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "LangSmith publishes a full OpenAPI 3.1 spec for its REST API under /api/v1 and /api/v2. The API host serves interactive Swagger UI and ReDoc, and the docs site adds a runnable REST reference with path versioning and dated deprecation notices. The probe's 404s hit other docs-site paths, not the documented spec locations, so they do not contradict this. Missing for 10: independent or hands-on corroboration that the published spec and endpoints work as documented.",
     "evidenceIds": [
+      "langsmith-openapi-spec-20261105",
+      "langsmith-swagger-ui-20261105",
+      "langsmith-api-deprecations-20261105",
       "langsmith-docs-2",
-      "langsmith-docs-24",
-      "langsmith-probe-3"
+      "langsmith-docs-24"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "langsmith-docs-2",
-          "quote": "Filter, export, share, and compare traces via the UI or API."
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The LangSmith API is used to programmatically create and manage LangSmith resources"
         },
         {
-          "evidenceId": "langsmith-docs-24",
-          "quote": "integrate LangSmith with any agent stack using our Python, Typescript, Go, or Java SDKs."
+          "evidenceId": "langsmith-swagger-ui-20261105",
+          "quote": "The API host itself serves an interactive Swagger UI (page title \"LangSmith - Swagger UI\", loading /openapi.json), with ReDoc live at /redoc."
+        },
+        {
+          "evidenceId": "langsmith-api-deprecations-20261105",
+          "quote": "The API is path-versioned (/api/v1, /api/v2)"
+        },
+        {
+          "evidenceId": "langsmith-docs-2",
+          "quote": "Filter, export, share, and compare traces via the UI or API."
         }
       ]
     },

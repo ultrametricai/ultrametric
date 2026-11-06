@@ -1,19 +1,17 @@
 {
-  "hash": "e8f91d176527bb9c54ff11d037638cb180289344d21b451f38e42b2a391e45e1",
+  "hash": "1b8fc499d7deae236dd5a3d6fe7595cfe086f19f09069a33622ad12f4dc9ef1c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "LangGraph is driven programmatically through its documented library API: the Graph API for defining state, nodes and edges, the `stream`/`astream` methods for execution, and `Command` for resuming interrupted runs. The LangGraph CLI also runs a local Agent Server that \"exposes all API endpoints for runs, threads, assistants,\" giving a documented HTTP surface. missing for 10: an OpenAPI/endpoint reference for the Agent Server HTTP API (the probe found none at the checked docs paths), and independent hands-on corroboration of driving the server API in production.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "LangGraph's Agent Server publishes an OpenAPI 3.1 spec covering Assistants, Threads, Runs, Crons, Store, A2A and MCP endpoints, and every server ships an interactive /docs reference. The CLI runs a local server that exposes all API endpoints, and the control-plane API documents path versioning. The probe's 404s on generic OpenAPI paths do not contradict this, because the spec is served at its own documented path. missing for 10: a documented deprecation/sunset policy for the data-plane API, independent hands-on corroboration of driving the API.",
     "evidenceIds": [
+      "langgraph-agent-server-openapi-20261105",
+      "langgraph-api-playground-20261105",
       "langgraph-docs-30",
-      "langgraph-docs-37",
-      "langgraph-docs-18",
-      "langgraph-docs-27",
-      "langgraph-docs-5",
-      "langgraph-docs-6",
-      "langgraph-probe-3"
+      "langgraph-api-versioning-20261105",
+      "langgraph-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -21,20 +19,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "docs.langchain.com publishes the Agent Server (LangGraph Platform runtime) OpenAPI 3.1 document"
+        },
+        {
           "evidenceId": "langgraph-docs-30",
-          "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
+          "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc."
         },
         {
-          "evidenceId": "langgraph-docs-18",
-          "quote": "LangGraph graphs expose the stream (sync) and astream (async) methods to yield streamed outputs as iterators."
+          "evidenceId": "langgraph-api-playground-20261105",
+          "quote": "every deployed or locally run Agent Server ships a built-in interactive API docs endpoint"
         },
         {
-          "evidenceId": "langgraph-docs-27",
-          "quote": "LangGraph models agent workflows as graphs. You define the behavior of your agents using three key components: State, Nodes, Edges."
-        },
-        {
-          "evidenceId": "langgraph-docs-5",
-          "quote": "you resume execution by re-invoking the graph using Command, which then becomes the return value of the interrupt() call from inside the node"
+          "evidenceId": "langgraph-api-versioning-20261105",
+          "quote": "Each endpoint path is prefixed with a version (e.g. `v1`, `v2`)"
         }
       ]
     },

@@ -1,24 +1,33 @@
 {
-  "hash": "ed1393c947b6dece59112f9fe42c14340785925e0c3bfbed64ad7cd0f48d2cae",
+  "hash": "24dfe015555773ee74d614bebdf1c6d8d21b24d1503954e87f2135c91af209cb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Semgrep documents a first-party AppSec Platform API, but the documented scope covers only listing deployments, gathering findings and listing projects. That is mostly read-oriented access rather than full programmatic control of the product, and the OpenAPI probe found no machine-readable spec at the common docs paths. missing for 10: documented write/control endpoints (e.g., triggering scans, triaging findings, managing rules/policies via API), a published OpenAPI/machine-readable spec, auth/usage detail in evidence, independent hands-on corroboration of API use.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Semgrep AppSec Platform has a documented public REST API for listing deployments, findings and projects. It ships a downloadable OpenAPI 3.0.3 spec, per-endpoint 'Try it' playground pages with cURL examples, path versioning, and a formal deprecation policy with 180-day notice. The probe's 404s on docs-domain OpenAPI paths do not contradict this, because the spec is hosted at semgrep.dev/api/v1. Missing for 10: evidence that the API can drive actions such as triggering scans (not just reading results), and independent or hands-on corroboration of API use.",
     "evidenceIds": [
       "semgrep-docs-17",
-      "semgrep-docs-59",
-      "semgrep-probe-2"
+      "semgrep-openapi-spec-20261105",
+      "semgrep-api-playground-20261105",
+      "semgrep-deprecation-policy-20261105"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
           "evidenceId": "semgrep-docs-17",
           "quote": "Semgrep AppSec Platform provides an API that enables you to list deployments, gather findings created by Semgrep AppSec Platform, and list projects."
+        },
+        {
+          "evidenceId": "semgrep-openapi-spec-20261105",
+          "quote": "This API is documented in the OpenAPI format. Download OpenAPI specification: Download"
+        },
+        {
+          "evidenceId": "semgrep-deprecation-policy-20261105",
+          "quote": "stable endpoints receive at least 180 days’ notice before a breaking change or a removal"
         }
       ]
     },

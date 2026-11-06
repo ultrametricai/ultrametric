@@ -1,17 +1,34 @@
 {
-  "hash": "56c5e8f3f86bc712ad8002914e29f9f241c4fbf716e25886105417e7523eaffb",
+  "hash": "e54f5cfa64770a731440a91a9bd57f68d6f11d4a566bce581d022f4cd84e561f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence confirms Semgrep AppSec Platform exposes an API for listing deployments, findings and projects. Nothing in the pack shows API versioning or a documented deprecation policy, and the OpenAPI probe returned 404 on every candidate path. An API for a SaaS security platform makes this a fair axis, so the absence of evidence yields none rather than na.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Semgrep documents a path-versioned API (/api/v1, with v2 endpoints tagged Experimental) and a dedicated API Deprecation Policy. The policy guarantees at least 180 days' notice before breaking changes or removals, returns 410 Gone with a pointer to the replacement, defines what counts as a breaking change, and is paired with an API Changelog. It also publishes a downloadable OpenAPI 3.0.3 spec for the /api/v1 endpoints. missing for 10: independent or hands-on corroboration that the deprecation policy is honored in practice.",
+    "evidenceIds": [
+      "semgrep-deprecation-policy-20261105",
+      "semgrep-openapi-spec-20261105",
+      "semgrep-docs-17"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "semgrep-deprecation-policy-20261105",
+          "quote": "stable endpoints receive at least 180 days’ notice before a breaking change or a removal"
+        },
+        {
+          "evidenceId": "semgrep-deprecation-policy-20261105",
+          "quote": "the API is path-versioned (/api/v1, with v2 endpoints tagged Experimental) with an API Changelog page alongside"
+        },
+        {
+          "evidenceId": "semgrep-openapi-spec-20261105",
+          "quote": "This API is documented in the OpenAPI format. Download OpenAPI specification: Download"
+        }
+      ]
     },
     "productId": "semgrep",
     "storyId": "api-versioning-policy"
