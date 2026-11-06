@@ -139,6 +139,13 @@ ITEMS = {
          'https://glama.ai/mcp/reference/get-mcp-server-by-id',
          ['This endpoint is deprecated. Please use'],
          'Versioning is practiced and machine-readable: /v1 path versioning, a deprecation banner on the endpoint page ("This endpoint is deprecated. Please use GET /v1/servers/:namespace/:slug instead."), the matching "deprecated": true flag in the OpenAPI document, and deprecatedAt fields in the data model. No standalone versioning or changelog policy page exists (glama.ai/changelog answers 404).'),
+        # Review counter-check (PR #641 P1): the hosting pipeline deploys existing MCP
+        # servers; no OpenAPI-to-MCP or code-to-MCP conversion feature exists.
+        ('glama-hosting-scope-20261106', 'claimed-docs',
+         'https://glama.ai/mcp/hosting',
+         ['Best for MCP servers you are actively developing in-house',
+          'Browse /mcp/servers and pick a server'],
+         'Scope of Glama hosting: every documented deployment path starts from an existing MCP server. The three paths are picking a community server from the directory ("Browse /mcp/servers and pick a server"), connecting a GitHub repository ("Best for MCP servers you are actively developing in-house"), or shipping a Dockerfile/npm/PyPI artifact. The hosting page contains no openapi, convert, or scaffold mention; the only OpenAPI artifact on the site is the directory API\'s own description, published "for generating a client", not for generating servers.'),
     ],
     ('model-gateways', 'requesty'): [
         ('requesty-openapi-spec-20261106', 'claimed-docs',
@@ -269,7 +276,7 @@ REMOVALS: dict = {}
 UPDATES: dict = {}
 
 # Hand-recorded counter-check/probe rows a scheduled refresh must not clobber.
-PRESERVE_IDS: set = set()
+PRESERVE_IDS: set = {'glama-hosting-scope-20261106'}
 
 # Fail-closed probe negatives (none this wave).
 NEGATIVE_CHECKS: dict = {}
