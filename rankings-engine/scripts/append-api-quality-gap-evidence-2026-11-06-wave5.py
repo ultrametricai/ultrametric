@@ -291,11 +291,18 @@ NEGATIVE_CHECKS = {
         ('https://api.cline.bot/api/v1/openapi.json', {401}),
         'https://docs.cline.bot/openapi.json',
     ],
-    # llmconsensus.io must NOT serve a spec: today it fails TLS entirely (status 0); any
-    # 200 means the link came back to life and the counter-check must be re-derived.
-    'consensus-spec-link-dead-20261106': [
-        ('https://llmconsensus.io/openapi.json', {0, 403, 404, 421, 526}),
-    ],
+}
+
+# Fail-closed TLS-mismatch checks (PR #634 review): the asserted failure class is a
+# certificate verification failure for the requested host, not any connection failure.
+# Verified two ways on every run: curl must fail with a TLS-verification exit class
+# (60, or 51 on older curl), and the presented certificate's subject/SAN must not cover
+# the requested host (and must name the recorded unrelated host). DNS outages, timeouts,
+# or an HTTP answer all exit inconclusive with nothing written.
+# id -> (host, url, required_san_fragment_not_matching, recorded_wrong_name)
+TLS_MISMATCH_CHECKS = {
+    'consensus-spec-link-dead-20261106': (
+        'llmconsensus.io', 'https://llmconsensus.io/openapi.json', 'odoo18.cyberpol.org'),
 }
 
 # Fail-closed recorded POST probes: id -> (url, json payload, expected status, response
@@ -343,6 +350,29 @@ def verify_absent(checks):
                 'no longer holds - inconclusive, nothing written. Re-derive the counter-check.')
 
 
+def verify_tls_mismatch(host, url, recorded_wrong_name):
+    r = subprocess.run(['curl', '-s', '--max-time', '30', '-A', UA, url, '-o', '/dev/null'],
+                       capture_output=True, text=True, timeout=60)
+    if r.returncode not in (51, 60):
+        raise SystemExit(
+            f'{url}: curl exit {r.returncode}, expected a TLS certificate-verification failure '
+            '(60, or 51 on older curl). A success means the link came back to life; any other '
+            'failure class (DNS, connect, timeout) is not the recorded state - inconclusive, '
+            'nothing written. Re-derive the counter-check.')
+    s = subprocess.run(f'echo | openssl s_client -connect {host}:443 -servername {host} 2>/dev/null '
+                       '| openssl x509 -noout -subject -ext subjectAltName 2>/dev/null',
+                       shell=True, capture_output=True, text=True, timeout=60)
+    cert = s.stdout
+    if not cert.strip():
+        raise SystemExit(f'{host}: could not read the presented certificate - inconclusive, nothing written.')
+    if host in cert:
+        raise SystemExit(f'{host}: the presented certificate now covers the host; the mismatch no '
+                         'longer holds - re-derive the counter-check.')
+    if recorded_wrong_name not in cert:
+        raise SystemExit(f'{host}: the presented certificate no longer names {recorded_wrong_name!r} '
+                         f'(got: {cert.strip()!r}); the recorded state drifted - re-derive the counter-check.')
+
+
 def verify_post(url, payload, expected_status, markers):
     r = subprocess.run(
         ['curl', '-s', '--max-time', '45', '-A', UA, '-X', 'POST',
@@ -375,6 +405,8 @@ def main() -> None:
                 verify_absent(NEGATIVE_CHECKS[iid])
             if iid in POST_CHECKS:
                 verify_post(*POST_CHECKS[iid])
+            if iid in TLS_MISMATCH_CHECKS:
+                verify_tls_mismatch(*TLS_MISMATCH_CHECKS[iid])
             if iid in have:
                 print(f'{iid}: already present, skipping')
                 continue
