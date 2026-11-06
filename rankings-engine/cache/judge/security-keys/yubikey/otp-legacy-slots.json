@@ -1,20 +1,20 @@
 {
-  "hash": "9d1a4ef026e65680b1f895b5657352fc012917ed3c27fe33b7540c95be7c8f6b",
+  "hash": "fb052a3a12db6e8192b28c448dc8a7f0ee7829ed084e66cce5456f3f18f021f9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Yubico documents the key's own legacy OTP support. OATH shared secrets are stored and processed in the secure element, Yubico OTP works as a plain typed string, the iOS SDK requests HOTP, and the ykman CLI manages OATH/OTP slots. The story's 'or' phrasing is satisfied by these OATH/OTP slots even without challenge-response evidence. missing for 10: explicit TOTP documentation, any evidence of challenge-response mode, in-depth slot-configuration docs, independent or hands-on corroboration of OATH/OTP use.",
+    "rationale": "First-party docs show the YubiKey ships its own legacy OTP capabilities. These are an OATH application whose shared secrets are stored and processed in the secure element, configurable OATH/OTP slots via ykman, HOTP and Yubico OTP retrievable over NFC, and Yubico OTP that types as a plain string without client software. TOTP is never named explicitly, and nothing documents challenge-response, so the story's coverage is only partial. missing for 10: explicit TOTP documentation, challenge-response mode evidence, independent hands-on corroboration of OTP/OATH use with non-WebAuthn services.",
     "evidenceIds": [
       "yubikey-docs-7",
-      "yubikey-docs-10",
       "yubikey-docs-21",
-      "yubikey-probe-rt-1"
+      "yubikey-probe-rt-1",
+      "yubikey-docs-10"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a power user, the key covers legacy one-time-password schemes — TOTP/HOTP slots or challenge-response — for services that still lack WebAuthn",
       "citations": [
         {
@@ -22,16 +22,16 @@
           "quote": "the shared secrets are stored and processed in the YubiKey's secure element"
         },
         {
-          "evidenceId": "yubikey-docs-10",
-          "quote": "No client software needed. The OTP is just a string. If you can send a password, you can send an OTP."
-        },
-        {
           "evidenceId": "yubikey-docs-21",
-          "quote": "provides the APIs to request an OTP (Yubico OTP or HOTP) from the NFC YubiKeys"
+          "quote": "provides the APIs to request an OTP (Yubico OTP or HOTP) from the NFC YubiKeys using a NFC-enabled iOS device"
         },
         {
           "evidenceId": "yubikey-probe-rt-1",
           "quote": "Full scriptable device management: enable applications, PINs, PIV/OATH/OTP slots, device info."
+        },
+        {
+          "evidenceId": "yubikey-docs-10",
+          "quote": "No client software needed. The OTP is just a string. If you can send a password, you can send an OTP."
         }
       ]
     },

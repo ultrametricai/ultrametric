@@ -1,22 +1,24 @@
 {
-  "hash": "00748ef86e09fbd1e65553b8b4194927c9e0f122391e2614e28dc67d563be1de",
+  "hash": "549b538c4bac4d081e1a5951193e74e8b7dbb49e60dd851926a18b68a4e2f384",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 9,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "high",
-    "rationale": "A live probe confirms Consensus serves an llms.txt at https://consensus.app/llms.txt (HTTP 200). It also publishes llms-full.txt and a machine-readable /.well-known/pricing.md. These files carry agent-oriented content, such as MCP versus REST parameter guidance, that an agent can be pointed at directly. Missing for 10: per-page markdown versions of the docs (the probe of a .md doc page returned 404), and no independent corroboration of agents actually consuming these files.",
+    "rationale": "Consensus serves a live llms.txt (HTTP 200) plus llms-full.txt and a .well-known/pricing.md, which give an agent a machine-readable entry point covering the product, its features, filters, and the REST/MCP surface. The agent-oriented doc set is incomplete, though: per-page markdown docs return 404, docs.consensus.app is Cloudflare-walled, and the OpenAPI spec linked from llms.txt points to a host failing TLS. missing for 10: reachable agent-readable developer docs, a working machine-readable OpenAPI contract linked from llms.txt, markdown versions of doc pages, independent hands-on corroboration of agents consuming these files.",
     "evidenceIds": [
       "consensus-probe-1",
+      "consensus-docs-29",
       "consensus-docs-35",
       "consensus-docs-36",
-      "consensus-docs-29",
       "consensus-docs-17",
-      "consensus-probe-2"
+      "consensus-probe-2",
+      "consensus-agent-surface-20261106",
+      "consensus-spec-link-dead-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
@@ -28,12 +30,12 @@
           "quote": "Power agent workflows that need citable scientific sources via the REST API or MCP server"
         },
         {
-          "evidenceId": "consensus-docs-36",
-          "quote": "pass `exclude_preprints=true` (MCP) or `excludePreprints=true` (REST API) to filter to peer-reviewed papers only."
-        },
-        {
           "evidenceId": "consensus-docs-29",
           "quote": "API and agent ready: a REST API and an MCP server expose the same retrieval and synthesis surface that powers the web app"
+        },
+        {
+          "evidenceId": "consensus-agent-surface-20261106",
+          "quote": "The developer docs site (docs.consensus.app) is Cloudflare-walled throughout."
         }
       ]
     },

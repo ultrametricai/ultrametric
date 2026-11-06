@@ -1,17 +1,17 @@
 {
-  "hash": "000586d908e48cb154edca6e2ba2dce376d85fc1bd416b6ad57363ccbe74e45f",
+  "hash": "f3433b8a6d2223695eedaf68c2d2833a0b1a992dcd4bf06485e21f9d2e9cb49f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Nitrokey ships an official command-line tool, nitropy, and a Python SDK. A runtime probe confirmed nitropy installs from PyPI and runs non-interactively. A community user also reports running a Nitrokey HSM on a code-signing server, which suggests unattended use. However, there is no documentation of CI pipelines or unattended device operation, and the touch-confirmation feature on the Nitrokey 3 implies a physical presence step that may limit fully headless use. Missing for 10: documented CI/headless workflows, non-interactive PIN and touch handling for automation, and hands-on corroboration beyond a version check.",
+    "rationale": "Nitrokey ships an official nitropy CLI that installs non-interactively from PyPI and runs headlessly (verified via uvx). The NetHSM offers a REST API with an OpenAPI spec and a Docker test image intended for testing and development, which together make scripted, headless automation plausible. However, nothing documents CI usage explicitly, and the USB keys rely on local protocols with touch confirmation on Nitrokey 3, which limits unattended operation. Missing for 10: explicit CI/headless automation documentation, non-interactive operation guidance for the USB keys, and hands-on CI pipeline corroboration.",
     "evidenceIds": [
       "nitrokey-probe-rt-1",
       "nitrokey-probe-4",
-      "nitrokey-docs-14",
-      "nitrokey-comm-1",
-      "nitrokey-docs-6"
+      "nitrokey-nethsm-openapi-20261106",
+      "nitrokey-nethsm-test-image-20261106",
+      "nitrokey-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -23,12 +23,12 @@
           "quote": "Nitrokey's official nitropy CLI installs keylessly from PyPI and identifies itself"
         },
         {
-          "evidenceId": "nitrokey-probe-rt-1",
-          "quote": "The official Python SDK also resolves on PyPI (nitrokey 0.4.2)."
+          "evidenceId": "nitrokey-nethsm-test-image-20261106",
+          "quote": "The test image is designed for testing and development purposes"
         },
         {
-          "evidenceId": "nitrokey-comm-1",
-          "quote": "Used the original Nitrokey HSM model on a code-signing server project."
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "Nitrokey's NetHSM exposes a REST API described by a downloadable OpenAPI 3.0.0 document"
         }
       ]
     },

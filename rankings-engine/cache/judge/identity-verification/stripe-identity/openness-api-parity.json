@@ -1,18 +1,19 @@
 {
-  "hash": "df0f2f992d305dff7559a4ab054a7519cd3e213d0daa899f44bbdee29d62ac5d",
+  "hash": "b6330e30b840a1ee9d463655306b10cb6f9d6933fd6ee10b56d543ff389a18b6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe Identity has a documented API for creating and tracking verification sessions, retrieving results programmatically, and receiving webhook events. The docs themselves say only \"most\" verification details are accessible programmatically, and Dashboard-side features (reusable Flows, manual status overrides, blocklisting in review tools) are never shown to have API equivalents, so full parity is unproven. Missing for 10: documented API equivalents for review tools (status override, blocklist) and Flow configuration, an explicit statement of API/UI parity, a published OpenAPI spec (probe returned 404), and independent hands-on corroboration.",
+    "rationale": "Stripe Identity has a full API for creating and tracking verification sessions, retrieving results with a secret key, and receiving webhooks. Its surface is also machine-readable through the platform OpenAPI spec and an official MCP server. But the docs say only \"most\" verification details are programmatically accessible, and the review tools (status override, blocklist) appear as manual review features with no documented API equivalents, so full UI parity is not shown. Missing for 10: evidence that dashboard review actions (override status, add to blocklist) and flow configuration are available via API; explicit documentation of complete API/UI parity; independent hands-on corroboration.",
     "evidenceIds": [
       "stripe-identity-docs-5",
       "stripe-identity-docs-7",
       "stripe-identity-docs-13",
       "stripe-identity-docs-15",
       "stripe-identity-docs-10",
-      "stripe-identity-docs-8"
+      "stripe-identity-docs-12",
+      "stripe-identity-spec-resources-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -28,8 +29,12 @@
           "quote": "This API tracks a verification, from initial creation through the entire verification process, and shows verification results upon completion."
         },
         {
-          "evidenceId": "stripe-identity-docs-15",
-          "quote": "Stripe generates events every time a session changes status."
+          "evidenceId": "stripe-identity-docs-5",
+          "quote": "curl https://api.stripe.com/v1/identity/verification_sessions"
+        },
+        {
+          "evidenceId": "stripe-identity-spec-resources-20261106",
+          "quote": "the Identity API is machine-readable through the platform spec"
         }
       ]
     },

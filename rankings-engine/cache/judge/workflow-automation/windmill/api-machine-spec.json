@@ -1,17 +1,35 @@
 {
-  "hash": "eee92918809f4f8f895a9e2d8ec07f20fb948911e0347fd725d01ea0310a26f9",
+  "hash": "f2be051a7cefa6f723c86dfdc7015e2e535d5c1eb1a9eac7ca0a9fc5fea580d2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Windmill is a developer platform with an HTTP API, so a downloadable OpenAPI spec is a fair question. However, the evidence pack contains no documentation of a published API spec, and the probe found 404s at every candidate OpenAPI/Swagger path on windmill.dev. The llms.txt file, the markdown docs, the CLI and the MCP server are related agent-facing features but are not a machine-readable API specification, so they earn no credit here.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Windmill serves a live OpenAPI 3.0.3 document at app.windmill.dev/api/openapi.json and keeps a versioned source-of-truth openapi.yaml in its official GitHub repo, with a vendor-hosted Scalar reference that renders the spec. The probe's 404s were on www.windmill.dev marketing paths, a different host, so they do not contradict the app-domain spec. Missing for 10: independent hands-on confirmation of downloading the app-domain spec, and the deployed copy can lag the source spec by some releases.",
+    "evidenceIds": [
+      "windmill-openapi-cloud-20261106",
+      "windmill-openapi-source-20261106",
+      "windmill-scalar-reference-20261106",
+      "windmill-release-lifecycle-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "windmill-openapi-cloud-20261106",
+          "quote": "Windmill's cloud instance serves its OpenAPI 3.0.3 document live at /api/openapi.json (info title \"Windmill API\")"
+        },
+        {
+          "evidenceId": "windmill-openapi-source-20261106",
+          "quote": "The source-of-truth spec lives in the official windmill-labs/windmill repository (backend/windmill-api/openapi.yaml), versioned with each release."
+        },
+        {
+          "evidenceId": "windmill-scalar-reference-20261106",
+          "quote": "Windmill vendor-hosts a Scalar API Reference at app.windmill.dev/openapi.html rendering the live spec"
+        }
+      ]
     },
     "productId": "windmill",
     "storyId": "api-machine-spec"

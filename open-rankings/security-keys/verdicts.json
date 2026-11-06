@@ -2071,7 +2071,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows a documented enterprise API an agent could use for ordering, assignment or pre-registration of keys. The OpenAPI probe found every candidate path returning 404. The only related item is a docs page titled \"Nitrokey Provisioning for Entra ID\", with no detail on any programmatic interface. The nitropy CLI and Python SDK talk to local devices, which is a developer building block rather than fleet provisioning through enterprise APIs.",
+    "rationale": "The evidence shows no documented enterprise API for ordering, assigning, or pre-registering Nitrokey security keys. The vendor states the USB keys 'have local protocols and no REST API', and OpenAPI probes on docs.nitrokey.com all return 404. The NetHSM REST API covers a separate HSM appliance rather than key fleet provisioning, nitropy is a local device CLI, and 'Nitrokey Provisioning for Entra ID' appears only as a doc title with no API or ordering/assignment workflow described.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2083,16 +2083,25 @@
   {
     "productId": "nitrokey",
     "storyId": "agent-key-audit",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows an official nitropy CLI, described as a 'Command line tool to interact with Nitrokey devices', and a Python SDK on PyPI. None of the evidence documents reading device state such as serial number, firmware version, enabled applications or stored credentials. A generic device-interaction CLI is an adjacent building block, not documented support for programmatic state readout or fleet auditing.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Nitrokey ships an official CLI, nitropy, and a Python SDK for programmatic interaction with its USB keys, so an agent has a first-party path to query devices. However, nothing in the evidence shows which state can actually be read: serial, firmware version, enabled applications or stored credentials are not documented. The NetHSM REST API covers a different product and is explicitly not available for the USB keys. Missing for 10: documented commands or SDK calls returning serial, firmware version, enabled applications and stored-credential inventory; structured or machine-readable output; fleet-scale or multi-device enumeration; hands-on corroboration.",
+    "evidenceIds": [
+      "nitrokey-probe-rt-1",
+      "nitrokey-docs-14",
+      "nitrokey-probe-4"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, an agent can read a key's state programmatically — serial, firmware version, enabled applications, stored credentials — to audit security posture across a fleet",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "nitrokey-probe-rt-1",
+          "quote": "'Command line tool to interact with Nitrokey devices' / 0.13.0. The official Python SDK also resolves on PyPI (nitrokey 0.4.2)."
+        }
+      ]
     }
   },
   {
@@ -2101,7 +2110,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Nitrokey publishes a public documentation site, so offering llms.txt or agent-oriented docs is a fair question and the axis applies. Probes found no such resource: llms.txt and the markdown docs variant both returned HTTP 404. Nothing in the pack shows agent-oriented documentation of any kind.",
+    "rationale": "Nitrokey publishes public documentation, so offering llms.txt or agent-oriented docs is a fair question for this product. Direct probes found no llms.txt and no markdown doc variants (both HTTP 404). The NetHSM OpenAPI/Swagger spec is a machine-readable API description, which is adjacent material and not agent-oriented documentation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2116,7 +2125,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security key and HSM product line for FIDO2, OTP, OpenPGP, PIV and encrypted storage. Generating AI insights and suggestions from user data inside the product is outside what this kind of authentication hardware does. Nothing in the evidence shows it ships any such capability, so this is a wrong-axis story.",
+    "rationale": "Nitrokey makes hardware security keys and HSMs (FIDO2, OpenPGP, PIV, OTP, and the NetHSM appliance). Generating AI insights from user data inside the product is a category error for devices that exist to protect keys and credentials. Nothing in the evidence shows Nitrokey ships any AI insight capability that would make the axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2131,7 +2140,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security key and HSM product line covering FIDO2, OTP, OpenPGP and PIV. Autonomous background automations are a category error for a hardware authentication token, and nothing in the evidence shows Nitrokey ships such a capability. The nitropy CLI and Python SDK are device-management tools that could at most serve as building blocks, not a product automation feature.",
+    "rationale": "Nitrokey makes hardware security keys and HSMs for authentication, signing and encryption. User-configured autonomous background automations are outside this product category, and nothing in the evidence shows Nitrokey ships such a feature. The nitropy CLI and the NetHSM REST API are developer building blocks, not an automation capability, so they do not make the axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2146,7 +2155,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security key and HSM family: FIDO2, OTP, OpenPGP smart card, PIV and encrypted storage, plus the nitropy CLI for managing devices. A built-in, task-delegating AI assistant is outside this product category, and nothing in the evidence shows the product or its companion tools shipping one, so the axis does not apply.",
+    "rationale": "Nitrokey is a hardware security key and HSM product (FIDO2, OpenPGP, PIV, OTP, NetHSM). A built-in AI assistant that takes delegated tasks is outside this product category, and nothing in the evidence shows Nitrokey ships any assistant capability, so the axis does not apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2161,13 +2170,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Nitrokey ships an official command-line tool, nitropy, and a Python SDK. A runtime probe confirmed nitropy installs from PyPI and runs non-interactively. A community user also reports running a Nitrokey HSM on a code-signing server, which suggests unattended use. However, there is no documentation of CI pipelines or unattended device operation, and the touch-confirmation feature on the Nitrokey 3 implies a physical presence step that may limit fully headless use. Missing for 10: documented CI/headless workflows, non-interactive PIN and touch handling for automation, and hands-on corroboration beyond a version check.",
+    "rationale": "Nitrokey ships an official nitropy CLI that installs non-interactively from PyPI and runs headlessly (verified via uvx). The NetHSM offers a REST API with an OpenAPI spec and a Docker test image intended for testing and development, which together make scripted, headless automation plausible. However, nothing documents CI usage explicitly, and the USB keys rely on local protocols with touch confirmation on Nitrokey 3, which limits unattended operation. Missing for 10: explicit CI/headless automation documentation, non-interactive operation guidance for the USB keys, and hands-on CI pipeline corroboration.",
     "evidenceIds": [
       "nitrokey-probe-rt-1",
       "nitrokey-probe-4",
-      "nitrokey-docs-14",
-      "nitrokey-comm-1",
-      "nitrokey-docs-6"
+      "nitrokey-nethsm-openapi-20261106",
+      "nitrokey-nethsm-test-image-20261106",
+      "nitrokey-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -2179,12 +2188,12 @@
           "quote": "Nitrokey's official nitropy CLI installs keylessly from PyPI and identifies itself"
         },
         {
-          "evidenceId": "nitrokey-probe-rt-1",
-          "quote": "The official Python SDK also resolves on PyPI (nitrokey 0.4.2)."
+          "evidenceId": "nitrokey-nethsm-test-image-20261106",
+          "quote": "The test image is designed for testing and development purposes"
         },
         {
-          "evidenceId": "nitrokey-comm-1",
-          "quote": "Used the original Nitrokey HSM model on a code-signing server project."
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "Nitrokey's NetHSM exposes a REST API described by a downloadable OpenAPI 3.0.0 document"
         }
       ]
     }
@@ -2195,7 +2204,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Nitrokey is a hardware security key (FIDO2, OpenPGP card, PIV, OTP) with a device-management CLI. It is not an AI agent or tool-consuming host, so acting as an MCP client is outside its product category. Nothing in the evidence shows it consuming MCP servers.",
+    "rationale": "Nitrokey makes hardware security keys and HSMs (FIDO2, OpenPGP, PIV, NetHSM), not an AI agent or assistant. Acting as an MCP client that plugs in servers and calls their tools is a category error for this product type, and nothing in the evidence shows it ships such a capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2210,7 +2219,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security key vendor with an official CLI (nitropy) and a Python SDK, so shipping an official MCP server is plausible and the axis applies. Nothing in the evidence pack mentions an MCP server or any agent-connection endpoint. The CLI, the SDK, and failed probes for llms.txt and OpenAPI are not MCP support.",
+    "rationale": "Nitrokey is not itself an agent. It ships an official CLI (nitropy), a Python SDK and a NetHSM REST API, so an official MCP server is a plausible capability and the axis applies. Nothing in the evidence pack mentions an MCP server or MCP endpoint, and the CLI, SDK and REST API are developer building blocks, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2225,7 +2234,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey ships companion software, including the official nitropy CLI and a Python SDK, so a natural-language interface is a fair question for this product. However, nothing in the evidence shows any natural-language command interface. A conventional CLI is an adjacent control, not natural-language operation, and the docs probes for llms.txt and OpenAPI returned 404.",
+    "rationale": "Nitrokey ships device-management software, the nitropy CLI and the NetHSM REST API, so a natural-language command interface is a fair question for this product. However, nothing in the evidence shows the product accepting natural-language commands. The nitropy CLI and the NetHSM OpenAPI/REST interface are structured interfaces, which are only adjacent building blocks and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2240,7 +2249,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Nitrokey documents an official CLI, nitropy. A runtime probe confirmed it installs from PyPI (pynitrokey) and identifies itself as 'Command line tool to interact with Nitrokey devices', version 0.13.0. missing for 10: in-depth evidence of command coverage beyond the docs page title, documented scriptable or machine-readable output suited to AI or agent workflows.",
+    "rationale": "Nitrokey ships an official CLI, nitropy, with a dedicated first-party documentation page. A runtime probe confirmed it installs from PyPI and identifies itself as 'Command line tool to interact with Nitrokey devices' (v0.13.0). Missing for 10: documented command coverage and depth, machine-readable or agent-friendly output modes, independent community corroboration of CLI use.",
     "evidenceIds": [
       "nitrokey-docs-14",
       "nitrokey-probe-4",
@@ -2252,12 +2261,12 @@
       "subject": "As an AI-native user, I can use an official CLI",
       "citations": [
         {
-          "evidenceId": "nitrokey-probe-4",
-          "quote": "official CLI documented at https://docs.nitrokey.com/software/nitropy/"
+          "evidenceId": "nitrokey-probe-rt-1",
+          "quote": "Nitrokey's official nitropy CLI installs keylessly from PyPI and identifies itself"
         },
         {
-          "evidenceId": "nitrokey-probe-rt-1",
-          "quote": "Nitrokey's official nitropy CLI installs keylessly from PyPI and identifies itself — `uvx --from pynitrokey nitropy version` → 'Command line tool to interact with Nitrokey devices' / 0.13.0."
+          "evidenceId": "nitrokey-probe-4",
+          "quote": "official CLI documented at https://docs.nitrokey.com/software/nitropy/"
         },
         {
           "evidenceId": "nitrokey-docs-14",
@@ -2270,15 +2279,15 @@
     "productId": "nitrokey",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security key, so its programmatic surface is device-level rather than a web API. It ships an official Python SDK on PyPI (nitrokey 0.4.2) and a documented nitropy CLI, and a hands-on user praises its dev tools, documentation and OpenSC integration. However, no API reference for the SDK is shown, no OpenAPI spec exists (probes 404), and a user reports attestation certs cannot be exported via PKCS#11 and require a custom vendor shell. missing for 10: documented SDK/API reference evidence, complete coverage through standard interfaces (e.g. PKCS#11 attestation export), independent corroboration of driving Nitrokey 3 programmatically via the SDK",
+    "rationale": "Nitrokey documents a public REST API for its NetHSM appliance: an OpenAPI 3.0.0 spec, vendor-hosted Swagger UI linked from the docs, a URL-versioned /api/v1, and a test container image. That API covers only NetHSM; the Nitrokey USB keys use local protocols and have no REST API, and are driven through the nitropy CLI and a PyPI Python SDK whose API documentation is not shown. Missing for 10: a documented public API for the USB key line, documentation of the Python SDK's API surface, a versioning/deprecation policy, and independent hands-on corroboration of driving NetHSM through the API.",
     "evidenceIds": [
-      "nitrokey-probe-rt-1",
-      "nitrokey-probe-4",
-      "nitrokey-docs-14",
-      "nitrokey-comm-1",
-      "nitrokey-comm-2"
+      "nitrokey-nethsm-openapi-20261106",
+      "nitrokey-nethsm-swagger-20261106",
+      "nitrokey-nethsm-test-image-20261106",
+      "nitrokey-nethsm-releases-20261106",
+      "nitrokey-probe-rt-1"
     ],
     "support": {
       "relation": "direct",
@@ -2286,16 +2295,24 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "nitrokey-probe-rt-1",
-          "quote": "The official Python SDK also resolves on PyPI (nitrokey 0.4.2)."
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "Nitrokey's NetHSM exposes a REST API described by a downloadable OpenAPI 3.0.0 document"
         },
         {
-          "evidenceId": "nitrokey-probe-4",
-          "quote": "official CLI documented at https://docs.nitrokey.com/software/nitropy/"
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "the Nitrokey USB keys have local protocols and no REST API"
         },
         {
-          "evidenceId": "nitrokey-comm-1",
-          "quote": "dev tools and documentation are top notch, integration with OpenSC is very good"
+          "evidenceId": "nitrokey-nethsm-swagger-20261106",
+          "quote": "docs.nitrokey.com deep-links individual operations into it as \"API documentation\""
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-test-image-20261106",
+          "quote": "The test image is designed for testing and development purposes"
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-releases-20261106",
+          "quote": "The NetHSM API is URL-versioned"
         }
       ]
     }
@@ -2303,10 +2320,10 @@
   {
     "productId": "nitrokey",
     "storyId": "agentic-scoped-keys",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security key and HSM product with a local CLI (nitropy). It has no hosted API service whose credentials could be issued or scoped for an agent, so this story is a category error for the product type. Nothing in the evidence shows a scoped API-token issuance capability that would make the axis apply.",
+    "rationale": "The axis applies because Nitrokey ships an API product: NetHSM exposes a REST API with an OpenAPI spec. However, nothing in the pack documents issuing scoped, role-limited or least-privilege API credentials for that API or for any agent. The USB keys' authentication features (FIDO2, OTP, PIV, OpenPGP) are user-login capabilities, not scoped API credential issuance.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2321,10 +2338,9 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "A runtime probe confirms an official Nitrokey Python SDK is published on PyPI (nitrokey 0.4.2). The official nitropy CLI ships alongside it as the pynitrokey package. Evidence of what the SDK covers is thin: there are no first-party SDK API docs, it supports only one language, and the low version number suggests it is still maturing. missing for 10: documented SDK API reference, multi-language SDK coverage, hands-on corroboration of building against the SDK, stability/maturity evidence.",
+    "rationale": "A runtime probe confirms an official Nitrokey Python SDK is published on PyPI (nitrokey 0.4.2), so the product ships its own SDK. But the evidence is a single resolution check, with no SDK documentation, examples or coverage details. The nitropy CLI and the NetHSM OpenAPI spec are adjacent tools, not SDKs. Missing for 10: documented SDK reference and guides, multi-language SDK coverage, evidence of API surface and stability (version 0.4.x), independent or hands-on corroboration of building against it.",
     "evidenceIds": [
-      "nitrokey-probe-rt-1",
-      "nitrokey-docs-14"
+      "nitrokey-probe-rt-1"
     ],
     "support": {
       "relation": "direct",
@@ -2341,10 +2357,10 @@
   {
     "productId": "nitrokey",
     "storyId": "agentic-webhooks",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey is a line of offline USB/NFC hardware security keys (FIDO2, OTP, OpenPGP, PIV) with a local CLI (nitropy). It is not a hosted service that emits events, so subscribing to events via outbound webhooks is a category error for this kind of product. Nothing in the evidence shows it ships any webhook capability that would make the axis apply.",
+    "rationale": "Nitrokey's line includes the NetHSM appliance, which exposes a REST API, so event subscriptions via outbound callbacks are a fair question and the axis applies. Nothing in the evidence documents registrable webhooks or any outbound HTTP event callbacks for the NetHSM, the nitropy CLI, or the USB keys. A request/response REST API is not an event-subscription mechanism.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2356,61 +2372,121 @@
   {
     "productId": "nitrokey",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Nitrokey ships an official CLI (nitropy) and a Python SDK, so an API reference is a fair question for this product. However, the evidence shows no interactive API reference or runnable examples, and the OpenAPI/Swagger probes all returned 404. A CLI and an SDK on PyPI are developer building blocks, not an interactive, runnable API reference.",
-    "evidenceIds": [],
+    "rationale": "Nitrokey hosts an interactive Swagger UI over the live NetHSM OpenAPI spec on its public demo instance, and docs.nitrokey.com deep-links operations into it, so an interactive API reference exists. Runnable use is limited: it covers NetHSM only, and no demo credentials are published, so executing calls against the demo is not documented as turnkey. missing for 10: documented runnable/try-it examples with published demo credentials, coverage beyond NetHSM, independent or hands-on corroboration of executing calls.",
+    "evidenceIds": [
+      "nitrokey-nethsm-swagger-20261106",
+      "nitrokey-nethsm-openapi-20261106",
+      "nitrokey-nethsm-test-image-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "nitrokey-nethsm-swagger-20261106",
+          "quote": "The NetHSM demo instance vendor-hosts Swagger UI over the live spec, and docs.nitrokey.com deep-links individual operations into it as \"API documentation\""
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-test-image-20261106",
+          "quote": "A public demo instance (nethsmdemo.nitrokey.com) also answers the API live; no demo credentials are published in the docs."
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "Nitrokey's NetHSM exposes a REST API described by a downloadable OpenAPI 3.0.0 document"
+        }
+      ]
     }
   },
   {
     "productId": "nitrokey",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Nitrokey ships an official CLI and Python SDK, so publishing a machine-readable interface spec is a fair question for this product. However, probes of every candidate OpenAPI/Swagger path on its docs site returned 404, and no evidence shows any downloadable API spec or equivalent. The CLI and SDK are adjacent tooling, not a spec.",
-    "evidenceIds": [],
+    "rationale": "Nitrokey publishes a downloadable OpenAPI 3.0.0 document for its NetHSM REST API, plus vendor-hosted Swagger UI that the docs deep-link to as API documentation. The spec covers only the NetHSM appliance: the USB keys have no REST API, and the standard docs-site OpenAPI paths return 404. It is also served only from a demo instance, with no versioning or deprecation policy. missing for 10: a machine-readable spec covering the Nitrokey USB-key product line (or an equivalent protocol schema), a spec published at a stable docs/canonical location rather than only a demo instance, a documented versioning/deprecation policy, and independent hands-on corroboration of using the spec.",
+    "evidenceIds": [
+      "nitrokey-nethsm-openapi-20261106",
+      "nitrokey-nethsm-swagger-20261106",
+      "nitrokey-probe-3",
+      "nitrokey-nethsm-releases-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "Nitrokey's NetHSM exposes a REST API described by a downloadable OpenAPI 3.0.0 document"
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-swagger-20261106",
+          "quote": "The NetHSM demo instance vendor-hosts Swagger UI over the live spec"
+        }
+      ]
     }
   },
   {
     "productId": "nitrokey",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Nitrokey ships a developer CLI, a Python SDK and open-source firmware, so a test or emulated-device mode is a fair question for this kind of product. The evidence pack documents no sandbox, simulator or test environment that keeps testing away from production keys or data. Open-source firmware and the CLI are only developer building blocks, not a sandbox capability.",
-    "evidenceIds": [],
+    "rationale": "Nitrokey's NetHSM documents a dedicated test container image for testing and development, separate from production. It also runs a public demo instance that answers the API live, so a user can exercise the API without touching production data. missing for 10: independent or hands-on corroboration of the test image, published demo-instance credentials, a sandbox for the USB key product line (scope is NetHSM only), and deeper documentation of what the test image changes versus production.",
+    "evidenceIds": [
+      "nitrokey-nethsm-test-image-20261106",
+      "nitrokey-nethsm-openapi-20261106",
+      "nitrokey-nethsm-swagger-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "nitrokey-nethsm-test-image-20261106",
+          "quote": "The test image is designed for testing and development purposes"
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-test-image-20261106",
+          "quote": "Do not use the test image under any circumstances for production data and use cases."
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-test-image-20261106",
+          "quote": "A public demo instance (nethsmdemo.nitrokey.com) also answers the API live"
+        }
+      ]
     }
   },
   {
     "productId": "nitrokey",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Nitrokey ships versioned artifacts: the nitropy CLI 0.13.0, the Python SDK 0.4.2 and tagged firmware releases (v1.8.3). Nothing in the evidence describes a versioned API contract or any documented deprecation policy, and the OpenAPI probes all returned 404. Package version numbers alone are adjacent to this story and do not deliver it.",
-    "evidenceIds": [],
+    "rationale": "Nitrokey's NetHSM exposes a REST API with an OpenAPI 3.0.0 spec and URL-based versioning (/api/v1), and the repository publishes dated release notes per firmware version. The evidence states explicitly that there is no prose versioning or deprecation policy, so only half the story is delivered, and the USB keys have no REST API at all. Missing for 10: a documented deprecation policy, any versioning or compatibility guarantees, API versioning beyond NetHSM, and independent corroboration.",
+    "evidenceIds": [
+      "nitrokey-nethsm-releases-20261106",
+      "nitrokey-nethsm-openapi-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "nitrokey-nethsm-releases-20261106",
+          "quote": "The NetHSM API is URL-versioned (servers /api/{version}, pinned to v1)"
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "URL-versioned servers /api/v1"
+        }
+      ]
     }
   },
   {
@@ -2419,7 +2495,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack has no first-party documentation of registration-time device attestation, such as FIDO2 attestation certificates, AAGUIDs or metadata, that a relying party could verify to admit only genuine, approved Nitrokey models. The one community mention of attestation certs concerns exporting HSM key attestation through a vendor shell. That is a different capability and does not show enrollment-time model enforcement.",
+    "rationale": "Attestation verification at registration is a fair question for a hardware security key. Nothing in the pack documents FIDO2/WebAuthn registration attestation, attestation certificates for Nitrokey 3 keys, or a way to restrict enrollment to approved models. The only attestation mention is a community remark that Nitrokey HSM attestation certs need a vendor shell to export. That concerns HSM key attestation, not enforcing genuine models at enrollment, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2434,7 +2510,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey ships an official CLI (nitropy) and an Entra ID provisioning guide, so bulk operations, such as provisioning or managing many devices or credentials at once, is a fair question for this product. However, no evidence documents any bulk or batch capability. The CLI's existence and the provisioning guide title do not show multi-item operations.",
+    "rationale": "Bulk operations are a fair question for a product line that includes a CLI (nitropy), a NetHSM REST API, and enterprise provisioning. However, the evidence never documents a bulk or batch capability, such as acting on many keys, devices or credentials at once. The CLI and REST API are only building blocks a user could script around, and the 'Provisioning for Entra ID' item is a bare title with no bulk details, so none of this earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2449,7 +2525,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey makes hardware security keys and HSMs for authentication, OpenPGP, PIV and FIDO2. A user-definable engine for event-triggered automation rules is not something this kind of product offers or that buyers would compare it on, so the story is a category error. Touch confirmation and the nitropy CLI are device-interaction features, not automation rules, so they do not make the axis apply.",
+    "rationale": "Nitrokey makes hardware security keys and HSM appliances: FIDO2, OTP, OpenPGP, PIV, and a NetHSM REST API. A user-defined, event-triggered automation rules engine is a workflow-automation axis that falls outside this product category. Nothing in the evidence shows Nitrokey shipping any rules or trigger capability, so the axis does not apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2464,7 +2540,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Nitrokey is a hardware security key covering FIDO2, OTP, OpenPGP, PIV and HSM functions. Scheduling recurring jobs or workflows is outside that product category. Nothing in the evidence shows the device or its nitropy CLI offering any scheduling capability, and running nitropy from a host scheduler would be a host-platform workaround, not a Nitrokey feature.",
+    "rationale": "Nitrokey makes hardware security keys and HSMs for authentication, signing and encryption, so scheduling recurring jobs or workflows is outside its product category. Nothing in the evidence (nitropy CLI, NetHSM REST API) shows a scheduling capability that would make this axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2479,7 +2555,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Nitrokey is a hardware security key and HSM product line, not a platform for building user automations, so versioning, reviewing and rolling back automations is a category error for this kind of product. Tagged firmware releases and the nitropy CLI are a different capability and do not make the axis applicable.",
+    "rationale": "Nitrokey makes hardware security keys and HSMs (FIDO2, OpenPGP, PIV, NetHSM). It has no user-authored automations or workflows, so versioning, reviewing and rolling back automations is a category error for this product type. Firmware releases and NetHSM API versioning concern device firmware and API stability, not user automations, so they do not make the axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2494,7 +2570,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies to a hardware security key vendor, but the pack has no vendor documentation on registering a backup key or on what can and cannot be recovered if a key is lost. The only related item is a community remark about offline escrow of HSM key material, which is not vendor-documented lockout-recovery guidance for this story, so it earns no credit.",
+    "rationale": "The evidence pack contains no vendor documentation on registering a backup key or on what is and is not recoverable when a Nitrokey is lost. The feature pages only list capabilities such as FIDO2, OpenPGP, PIV and firmware update. A single community comment praises offline encrypted key escrow on the separate Nitrokey HSM product, but that is community evidence about an adjacent HSM backup feature, not a vendor-documented lockout-recovery strategy.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2509,7 +2585,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is the docs index entry \"Nitrokey Provisioning for Entra ID\". It points to a first-party provisioning capability for an enterprise directory, which bears on pre-registration, but only the title is shown and nothing about scale or depth. The nitropy CLI is a general device tool and counts only as a developer building block for scripting bulk setup, so it earns no credit. Missing for 10: documented bulk/mass configuration workflows, detail on how Entra ID pre-registration works at scale, lifecycle tracking or inventory of issued keys (assignment, revocation, retirement), and independent or hands-on corroboration of fleet provisioning.",
+    "rationale": "The only evidence is a documentation entry titled \"Nitrokey Provisioning for Entra ID\". It suggests a first-party organizational provisioning (pre-registration) workflow, but the pack gives no details on scope or scale. The nitropy CLI could be scripted for bulk setup, but that is a developer building block and earns no credit. missing for 10: documented bulk/batch configuration of many keys, lifecycle tracking or inventory of issued keys, details of the Entra ID provisioning flow, independent or hands-on corroboration of fleet-scale use.",
     "evidenceIds": [
       "nitrokey-docs-18"
     ],
@@ -2529,12 +2605,11 @@
     "productId": "nitrokey",
     "storyId": "certified-hardened-models",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Nitrokey's own shop page says the Nitrokey 3 includes a Common Criteria EAL 6+ certified secure element. That is a component-level certification, not evidence that the whole device is FIPS 140 validated or CC certified. Nothing in the pack documents water or crush resistance, and one hands-on user calls a Nitrokey U2F key flimsy. missing for 10: device-level FIPS 140 validation or Common Criteria product certification, documented water/crush resistance or other durability ratings, independent corroboration of certification status.",
+    "rationale": "Nitrokey documents that the Nitrokey 3 includes a 'Common Criteria EAL 6+ certified secure element'. That covers the certification half of the story, but only at the chip level, not as a certified device model. The pack has no FIPS 140 validation and no documented water or crush resistance; one community user also describes the U2F key as feeling flimsy. Missing for 10: device-level FIPS 140 or Common Criteria certification, documented water/crush durability ratings, and independent corroboration.",
     "evidenceIds": [
-      "nitrokey-docs-16",
-      "nitrokey-comm-3"
+      "nitrokey-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -2554,7 +2629,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Nitrokey has an official, documented CLI (nitropy). A runtime probe shows it installs from PyPI and describes itself as a 'Command line tool to interact with Nitrokey devices', so the core of the story is the product's own capability. The pack does not document which operations it supports (enabling applications, setting PINs, managing slots, reading device state) or whether it is scriptable, so its depth is unproven. missing for 10: documented subcommands for enabling/disabling applications, PIN setting/changing, slot management, device-state/status readout, evidence of scriptable/non-interactive output, independent hands-on corroboration",
+    "rationale": "Nitrokey ships an official, scriptable CLI, nitropy. A runtime probe confirms it installs from PyPI and identifies itself as a 'Command line tool to interact with Nitrokey devices', and it has a dedicated docs page. However, the evidence never documents the specific management operations the story names. Missing for 10: documented commands for enabling or disabling applications, setting or changing PINs, managing slots, reading device state or status, and hands-on corroboration of scripted management.",
     "evidenceIds": [
       "nitrokey-probe-rt-1",
       "nitrokey-probe-4",
@@ -2572,10 +2647,6 @@
         {
           "evidenceId": "nitrokey-probe-4",
           "quote": "official CLI documented at https://docs.nitrokey.com/software/nitropy/"
-        },
-        {
-          "evidenceId": "nitrokey-docs-14",
-          "quote": "nitropy - Nitrokey Documentation"
         }
       ]
     }
@@ -2586,11 +2657,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence only hints at port coverage. A shop page for the 'Nitrokey 3A NFC' (nk3an) points to a USB-A model, and a community user reports ordering and receiving a 'Nitrokey 3C NFC', which points to a USB-C model. The earlier complaint about waiting for Type-C appears to be superseded. Nothing in the pack documents keychain or low-profile nano form factors. missing for 10: explicit first-party documentation of USB-C vs USB-A connector variants, any evidence of nano/low-profile models, any evidence of keychain form factors, a lineup/form-factor comparison page",
+    "rationale": "The evidence glancingly suggests both port types. A community report mentions ordering a 'Nitrokey 3C NFC' (USB-C), and the vendor shop listing is for the 'Nitrokey 3A NFC' (USB-A), with a community note that Nitrokey ships a complete, standard USB plug. No first-party spec page details the connectors, and nothing addresses keychain or low-profile nano form factors. Missing for 10: first-party documentation of USB-C and USB-A models, evidence of a nano or low-profile form factor, evidence of keychain carry design, independent corroboration of the lineup's breadth.",
     "evidenceIds": [
-      "nitrokey-docs-4",
-      "nitrokey-docs-16",
-      "nitrokey-comm-6"
+      "nitrokey-comm-6",
+      "nitrokey-comm-4",
+      "nitrokey-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -2599,11 +2670,11 @@
       "citations": [
         {
           "evidenceId": "nitrokey-comm-6",
-          "quote": "I ordered a Nitrokey 3C NFC 2 years ago, never heard from them until a week ago where they said they shipped it."
+          "quote": "I ordered a Nitrokey 3C NFC 2 years ago"
         },
         {
-          "evidenceId": "nitrokey-docs-16",
-          "quote": "The Nitrokey 3 combines the features of previous Nitrokey models"
+          "evidenceId": "nitrokey-comm-4",
+          "quote": "Nitrokey contains a complete and standard compliant USB plug"
         }
       ]
     }
@@ -2614,7 +2685,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence confirms Nitrokey 3 supports FIDO2 and ships an official CLI (nitropy). However, nothing documents listing or deleting resident passkeys, or reporting remaining credential capacity. A CLI that interacts with devices is a building block, not evidence of this capability, so the applicable axis is unevidenced.",
+    "rationale": "Listing and deleting passkeys and seeing credential capacity is a fair question for a FIDO2 security key, so the axis applies. Nothing in the evidence shows Nitrokey doing it. The pack confirms FIDO2 support and an official nitropy CLI that 'interacts with Nitrokey devices', but no item documents listing or deleting resident credentials or reporting how many passkey slots remain.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2629,28 +2700,21 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Nitrokey's own docs show the key working across several operating systems: Windows login, Linux PAM and Android. They also name example services such as Google, Facebook, Office 365, Nextcloud and Entra ID. However, the pack contains no published compatibility catalog of supported services and nothing on browser support. missing for 10: a published service compatibility catalog/list, browser compatibility documentation, macOS coverage, independent hands-on cross-platform corroboration.",
+    "rationale": "Nitrokey's own docs show use across several operating systems: Windows login, Linux PAM and Android/NitroPhone. They also name example services such as Google, Facebook, Microsoft/Office 365, Nextcloud, Thunderbird and OpenVPN. These are scattered feature pages and examples, not a dedicated compatibility catalog, and nothing covers browser compatibility. Missing for 10: a published compatibility catalog of supported services, documented browser compatibility, macOS/iOS coverage, independent hands-on confirmation of cross-OS use.",
     "evidenceIds": [
-      "nitrokey-docs-2",
-      "nitrokey-docs-4",
       "nitrokey-docs-5",
       "nitrokey-docs-8",
       "nitrokey-docs-19",
-      "nitrokey-docs-18"
+      "nitrokey-docs-2",
+      "nitrokey-docs-4",
+      "nitrokey-docs-17",
+      "nitrokey-docs-15"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As a power user, the key works across my operating systems and browsers, with a published compatibility catalog of supported services",
       "citations": [
-        {
-          "evidenceId": "nitrokey-docs-2",
-          "quote": "Login to websites (e.g. Google, Facebook) using secure One Time Passwords (OTP), U2F or ordinary static passwords."
-        },
-        {
-          "evidenceId": "nitrokey-docs-4",
-          "quote": "use Nitrokey for passwordless login instead"
-        },
         {
           "evidenceId": "nitrokey-docs-5",
           "quote": "Windows Login and S/MIME Email Encryption with Active Directory"
@@ -2662,6 +2726,14 @@
         {
           "evidenceId": "nitrokey-docs-19",
           "quote": "Android / NitroPhone"
+        },
+        {
+          "evidenceId": "nitrokey-docs-2",
+          "quote": "Login to websites (e.g. Google, Facebook) using secure One Time Passwords (OTP), U2F or ordinary static passwords."
+        },
+        {
+          "evidenceId": "nitrokey-docs-4",
+          "quote": "Forget your password to log in to Microsoft services (e.g. Office 365) and Nextcloud and use Nitrokey for passwordless login instead."
         }
       ]
     }
@@ -2672,7 +2744,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security key vendor, so an enterprise service that ships keys directly to employees is a fair question for this product. The evidence pack contains no documentation of a direct-to-employee delivery service, nor any API or console for ordering and tracking shipments. The 'Nitrokey Provisioning for Entra ID' doc title covers credential provisioning, a different capability from shipping logistics, so it earns no credit here.",
+    "rationale": "Shipping keys directly to distributed employees through an API or console is a fair question for a hardware security-key vendor, so the axis applies. The pack has no evidence of an enterprise delivery or drop-ship service. The 'Nitrokey Provisioning for Entra ID' doc title concerns credential enrollment, not logistics, and the NetHSM REST API covers the HSM appliance, not key fulfillment.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2687,10 +2759,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Nitrokey's own materials say the Nitrokey 3 supports FIDO2 and can be used for passwordless login to Microsoft services and Nextcloud, which points toward resident-key support. However, nothing in the evidence explicitly mentions discoverable or resident credentials, passkeys, or username-less sign-in. Missing for 10: explicit documentation of discoverable/resident credential storage, username-less WebAuthn sign-in flow, credential capacity/management details, independent hands-on corroboration.",
+    "rationale": "Nitrokey documents FIDO2 support on the Nitrokey 3 and markets passwordless login to Microsoft services and Nextcloud. This implies the key can hold device-bound credentials, but the evidence never explicitly mentions discoverable/resident credentials or usernameless sign-in. missing for 10: explicit documentation of resident/discoverable credential storage, usernameless WebAuthn flow, credential capacity/management, independent or hands-on corroboration.",
     "evidenceIds": [
-      "nitrokey-docs-4",
-      "nitrokey-docs-16"
+      "nitrokey-docs-16",
+      "nitrokey-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -2698,12 +2770,12 @@
       "subject": "As a security engineer, the key stores discoverable FIDO2 credentials (resident keys / device-bound passkeys) so users can sign in to WebAuthn services without typing a username",
       "citations": [
         {
-          "evidenceId": "nitrokey-docs-4",
-          "quote": "use Nitrokey for passwordless login instead"
-        },
-        {
           "evidenceId": "nitrokey-docs-16",
           "quote": "The Nitrokey 3 combines the features of previous Nitrokey models: FIDO2"
+        },
+        {
+          "evidenceId": "nitrokey-docs-4",
+          "quote": "use Nitrokey for passwordless login instead"
         }
       ]
     }
@@ -2714,12 +2786,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Nitrokey documents how fixes reach devices: there is a dedicated Nitrokey 3 firmware-update guide, tagged and installable open-source firmware releases (v1.8.3), and the nitropy CLI. Field updatability is also a listed product feature. Nothing in the pack covers a security-advisory channel or a lookup of which models or firmware versions are affected, so only the update-delivery part of the story is evidenced. Missing for 10: published security advisories, affected-model/version lookup, a documented vulnerability-response process, and independent corroboration of update handling.",
+    "rationale": "Nitrokey documents how fixes reach devices: a dedicated Nitrokey 3 firmware-update guide, tagged installable firmware releases on GitHub (v1.8.3), firmware updates listed as a product feature, and dated per-version release notes for NetHSM. The pack has no security advisories, no affected-model lookup, and no stated vulnerability-response process. missing for 10: published security advisories, affected-model/version lookup, documented vulnerability disclosure and response process, independent corroboration of update delivery.",
     "evidenceIds": [
       "nitrokey-docs-13",
       "nitrokey-probe-rt-2",
       "nitrokey-docs-16",
-      "nitrokey-docs-14"
+      "nitrokey-nethsm-releases-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -2727,16 +2799,20 @@
       "subject": "As a security engineer, the vendor has a clear firmware update and vulnerability-response story — advisories, affected-model lookup, and how fixes reach devices",
       "citations": [
         {
-          "evidenceId": "nitrokey-probe-rt-2",
-          "quote": "Nitrokey 3 firmware is open source in Rust WITH tagged, installable releases"
-        },
-        {
           "evidenceId": "nitrokey-docs-13",
           "quote": "Firmware Update"
         },
         {
+          "evidenceId": "nitrokey-probe-rt-2",
+          "quote": "Nitrokey 3 firmware is open source in Rust WITH tagged, installable releases"
+        },
+        {
           "evidenceId": "nitrokey-docs-16",
           "quote": "firmware updates"
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-releases-20261106",
+          "quote": "the official Nitrokey/nethsm repository publishes dated release notes per firmware version"
         }
       ]
     }
@@ -2747,13 +2823,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Nitrokey's official docs have per-use-case instruction sections, such as Two Factor Authentication, General Instructions, Entra ID provisioning, Windows Login and Thunderbird. This suggests documented guidance for registering the key with accounts and services. However, the pack only shows section titles, not walkthrough content, and no guided setup app is evidenced; nitropy is a general CLI, not a setup wizard. Missing for 10: evidence of step-by-step first-time account registration instructions, a guided setup app or wizard, and independent or hands-on confirmation that setup is easy to follow.",
+    "rationale": "Nitrokey's own documentation has sections titled 'General Instructions', 'Two Factor Authentication' and 'Nitrokey Provisioning for Entra ID', which suggests first-party setup guidance for registering the key with services. The pack only shows these headings, so the depth and step-by-step quality of the guidance is unproven. missing for 10: evidence of actual step-by-step account-registration walkthroughs, a guided setup app or wizard (nitropy is only shown as a CLI), coverage of common consumer accounts like Google, and independent or hands-on corroboration that setup is easy.",
     "evidenceIds": [
-      "nitrokey-docs-9",
       "nitrokey-docs-10",
-      "nitrokey-docs-18",
-      "nitrokey-docs-2",
-      "nitrokey-docs-5"
+      "nitrokey-docs-9",
+      "nitrokey-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -2761,20 +2835,16 @@
       "subject": "As a power user, first-time setup is guided — clear instructions or a setup app walk me through registering the key with my accounts",
       "citations": [
         {
-          "evidenceId": "nitrokey-docs-9",
-          "quote": "Two Factor Authentication"
-        },
-        {
           "evidenceId": "nitrokey-docs-10",
           "quote": "General Instructions"
         },
         {
-          "evidenceId": "nitrokey-docs-18",
-          "quote": "Nitrokey Provisioning for Entra ID"
+          "evidenceId": "nitrokey-docs-9",
+          "quote": "Two Factor Authentication"
         },
         {
-          "evidenceId": "nitrokey-docs-2",
-          "quote": "Login to websites (e.g. Google, Facebook) using secure One Time Passwords (OTP), U2F or ordinary static passwords."
+          "evidenceId": "nitrokey-docs-18",
+          "quote": "Nitrokey Provisioning for Entra ID"
         }
       ]
     }
@@ -2785,7 +2855,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Nitrokey documents its own 'Touch Confirmation (Nitrokey 3 only)' feature for OpenPGP card operations, and lists FIDO2 SSH keys. Requiring a physical touch for sensitive cryptographic operations is the core mechanism of this story. The evidence is only a section heading, though, and nothing shows it being used to gate automated or agent-initiated actions. missing for 10: details on which operations can require touch and how it is configured, any documented use as an approval gate for agent or automated workflows (e.g. agent git signing or SSH), touch support across other applets and models, and independent or hands-on corroboration.",
+    "rationale": "Nitrokey's own OpenPGP-card documentation lists a 'Touch Confirmation (Nitrokey 3 only)' feature, and FIDO2 SSH keys are documented, so a physical touch can gate cryptographic operations such as signing and SSH authentication that an automated process would need. The evidence is only a section heading, though, with no detail on how touch is enforced or how it fits agent workflows. missing for 10: documented detail of touch-confirmation behavior and configuration, any guidance on using touch as an approval gate for automated or agent-initiated actions, independent or hands-on corroboration, support beyond Nitrokey 3.",
     "evidenceIds": [
       "nitrokey-docs-6",
       "nitrokey-docs-1"
@@ -2809,20 +2879,21 @@
   {
     "productId": "nitrokey",
     "storyId": "hardware-backed-ssh",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Nitrokey's own docs list an \"SSH Keys\" page under the FIDO2 feature section, and the product page says it handles SSH login using certificates. The OpenPGP docs also list on-device key generation and touch confirmation, and PIV is a documented feature. The evidence is mostly headings, though, so it does not show an end-to-end setup where SSH server access actually requires a physical touch. Touch confirmation is documented only for OpenPGP and only on the Nitrokey 3. Missing for 10: detailed docs on FIDO2 sk-ssh key generation and touch enforcement, an explicit PIV-to-SSH workflow, confirmation that touch is required for each SSH authentication, and independent or hands-on corroboration.",
+    "rationale": "Nitrokey's own docs list \"SSH Keys\" under its FIDO2 features, and the product page advertises SSH login using certificates. The OpenPGP card docs add on-device key generation and touch confirmation on the Nitrokey 3, and PIV is a documented feature. The evidence is mostly section headings, though, and none of it explicitly ties the touch requirement to SSH authentication. missing for 10: detailed sk-ssh/ed25519-sk setup documentation, explicit statement that SSH auth requires touch for FIDO2 and PIV keys, documented PIV-based SSH workflow, independent hands-on corroboration.",
     "evidenceIds": [
       "nitrokey-docs-1",
       "nitrokey-docs-3",
       "nitrokey-docs-6",
       "nitrokey-docs-7",
-      "nitrokey-docs-11"
+      "nitrokey-docs-11",
+      "nitrokey-docs-16"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, my SSH keys can be hardware-backed on the device — via FIDO2 sk-ssh keys, PIV, or OpenPGP — so server access requires a physical touch",
       "citations": [
         {
@@ -2853,8 +2924,8 @@
     "storyId": "idp-policy-integration",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Nitrokey's own docs cover Entra ID provisioning, passwordless login to Microsoft services such as Office 365, and U2F login to Google, so the key does work with some of the named identity providers. The evidence for each is little more than a page title or a one-line product claim, and enforcing hardware-key policies would be an identity-provider feature, not Nitrokey's. Missing for 10: any Okta integration evidence, Google Workspace admin-level (not just consumer Google login) integration, documented policy enforcement requiring hardware keys, depth beyond page titles, independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Nitrokey documents its own Entra ID provisioning, passwordless login to Microsoft services such as Office 365, and U2F/OTP login to Google, so it does work with two of the named IdPs. The evidence is mostly titles and one-line claims, and policy enforcement requiring hardware keys is not documented as a Nitrokey capability. missing for 10: Okta integration evidence, Google Workspace admin-level integration (only consumer Google login is shown), documented policy enforcement requiring hardware-key authentication, in-depth Entra provisioning docs, independent corroboration.",
     "evidenceIds": [
       "nitrokey-docs-18",
       "nitrokey-docs-4",
@@ -2877,6 +2948,10 @@
         {
           "evidenceId": "nitrokey-docs-2",
           "quote": "Login to websites (e.g. Google, Facebook) using secure One Time Passwords (OTP), U2F or ordinary static passwords."
+        },
+        {
+          "evidenceId": "nitrokey-docs-5",
+          "quote": "Windows Login and S/MIME Email Encryption with Active Directory"
         }
       ]
     }
@@ -2887,10 +2962,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows an NFC-branded Nitrokey 3 model with FIDO2 and passwordless login, plus a docs section titled 'Android / NitroPhone'. That suggests the key can be tapped on a phone, but no item explicitly documents NFC authentication in mobile browsers or apps. missing for 10: explicit documentation of NFC tap-to-authenticate on phones, confirmation that mobile browsers and apps (Android/iOS) are supported, hands-on or independent corroboration of NFC use on mobile.",
+    "rationale": "The evidence only hints at this story. The product line includes NFC models (the 'Nitrokey 3A NFC' shop listing and a community mention of a 'Nitrokey 3C NFC'), it ships FIDO2, and the docs have an 'Android / NitroPhone' section. Nothing documents tapping the key on a phone over NFC to sign in through mobile browsers or apps. Missing for 10: explicit documentation of NFC tap-to-authenticate on phones, mobile browser/app compatibility details (Android/iOS), and hands-on or independent confirmation that NFC login works on mobile.",
     "evidenceIds": [
       "nitrokey-docs-16",
-      "nitrokey-docs-4",
       "nitrokey-docs-19",
       "nitrokey-comm-6"
     ],
@@ -2900,12 +2974,12 @@
       "subject": "As a power user, I can tap the key on my phone over NFC to authenticate in mobile browsers and apps",
       "citations": [
         {
-          "evidenceId": "nitrokey-docs-16",
-          "quote": "The Nitrokey 3 combines the features of previous Nitrokey models: FIDO2, one-time passwords"
-        },
-        {
           "evidenceId": "nitrokey-docs-19",
           "quote": "Android / NitroPhone"
+        },
+        {
+          "evidenceId": "nitrokey-docs-16",
+          "quote": "The Nitrokey 3 combines the features of previous Nitrokey models: FIDO2"
         },
         {
           "evidenceId": "nitrokey-comm-6",
@@ -2920,10 +2994,9 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "A runtime probe confirms an official Python SDK published on PyPI (nitrokey 0.4.2), alongside the official nitropy CLI. That gives developers a first-party library for integrating the key into desktop apps, and a community user praises Nitrokey's dev tools and documentation. Nothing in the pack shows SDK documentation, supported languages beyond Python, or any mobile (Android/iOS) SDK. Missing for 10: mobile SDKs, SDK API documentation, multi-language desktop SDKs, hands-on corroboration of app integration via the SDK.",
+    "rationale": "Nitrokey publishes an official Python SDK on PyPI (nitrokey 0.4.2) alongside the nitropy CLI, so developers can integrate the keys into their own software, and a community report praises the dev tools and documentation for the Nitrokey HSM. The evidence covers only a Python package; there are no documented SDK APIs, language bindings, or mobile (Android/iOS) SDK. The NetHSM REST API is explicitly scoped to the appliance, not the USB keys, so it is not credited. Missing for 10: documented SDK API reference, mobile SDKs for Android/iOS, multi-language desktop bindings, hands-on corroboration of app integration.",
     "evidenceIds": [
       "nitrokey-probe-rt-1",
-      "nitrokey-docs-14",
       "nitrokey-comm-1"
     ],
     "support": {
@@ -2937,7 +3010,7 @@
         },
         {
           "evidenceId": "nitrokey-comm-1",
-          "quote": "dev tools and documentation are top notch"
+          "quote": "dev tools and documentation are top notch, integration with OpenSC is very good."
         }
       ]
     }
@@ -2948,7 +3021,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Nitrokey publishes the Nitrokey 3 firmware as fully open source Rust code, dual-licensed under Apache 2.0 and MIT, with tagged installable releases, so it can be inspected rather than taken on trust. However, a community user reports that the applet in the original Nitrokey HSM is not free or open source, so openness does not extend across the whole product line. The Common Criteria EAL 6+ certification covers the secure element chip, not an independent audit of Nitrokey's firmware. Missing for 10: open firmware across all Nitrokey models (the HSM applet is closed), an independent third-party audit of the firmware, and evidence of reproducible builds or verification that shipped binaries match the source.",
+    "rationale": "Nitrokey's own GitHub repo states the Nitrokey 3 firmware is fully open source (Rust, Trussed framework, dual Apache 2.0/MIT) and ships tagged, installable releases, so the core of the story holds for the Nitrokey 3 line. Openness is not shown across the whole product family, though: a hands-on user reports the Nitrokey HSM's on-device applet is not free/open source. The pack also has no evidence of an independent firmware audit. missing for 10: open-source firmware evidenced across all Nitrokey devices (the HSM applet is reported closed), independent third-party firmware audit reports, reproducible-build or verification evidence that shipped binaries match the published source.",
     "evidenceIds": [
       "nitrokey-gh-1",
       "nitrokey-gh-2",
@@ -2972,6 +3045,10 @@
         {
           "evidenceId": "nitrokey-probe-rt-2",
           "quote": "Nitrokey 3 firmware is open source in Rust WITH tagged, installable releases"
+        },
+        {
+          "evidenceId": "nitrokey-comm-1",
+          "quote": "The applet running inside is not free/open source"
         }
       ]
     }
@@ -2980,13 +3057,14 @@
     "productId": "nitrokey",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Nitrokey ships its own programmatic surfaces: the official nitropy CLI ('Command line tool to interact with Nitrokey devices') and an official Python SDK on PyPI, documented on its docs site. These give device management through code rather than a GUI, but nothing shows they cover everything the graphical app can do, and there is no HTTP/OpenAPI spec. missing for 10: documented parity between the CLI/SDK and the GUI app, an API reference showing feature coverage, independent hands-on confirmation of full programmatic control.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Nitrokey's NetHSM has a documented REST API with a vendor-hosted OpenAPI 3.0 spec and Swagger UI, and the USB keys can be driven programmatically through the official nitropy CLI and Python SDK. However, the docs state the USB keys have no REST API, and no evidence shows the API matches everything the UI can do. missing for 10: documented API/UI feature parity, a REST API for the Nitrokey USB key line, independent corroboration of API completeness.",
     "evidenceIds": [
+      "nitrokey-nethsm-openapi-20261106",
+      "nitrokey-nethsm-swagger-20261106",
       "nitrokey-probe-rt-1",
-      "nitrokey-probe-4",
-      "nitrokey-docs-14"
+      "nitrokey-probe-4"
     ],
     "support": {
       "relation": "direct",
@@ -2994,16 +3072,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "Nitrokey's NetHSM exposes a REST API described by a downloadable OpenAPI 3.0.0 document"
+        },
+        {
+          "evidenceId": "nitrokey-nethsm-openapi-20261106",
+          "quote": "the Nitrokey USB keys have local protocols and no REST API"
+        },
+        {
           "evidenceId": "nitrokey-probe-rt-1",
           "quote": "Command line tool to interact with Nitrokey devices"
-        },
-        {
-          "evidenceId": "nitrokey-probe-rt-1",
-          "quote": "The official Python SDK also resolves on PyPI (nitrokey 0.4.2)."
-        },
-        {
-          "evidenceId": "nitrokey-probe-4",
-          "quote": "official CLI documented at https://docs.nitrokey.com/software/nitropy/"
         }
       ]
     }
@@ -3014,7 +3092,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability is a fair question for a hardware security key, for example whether stored keys, OTP secrets or passwords can be exported or backed up. The pack documents no export of user data in open formats. The open-source firmware and the nitropy CLI are adjacent openness traits, not a data-export capability. The community-mentioned HSM key escrow paper backup is a single anecdote about a different model, with no open-format detail.",
+    "rationale": "Exporting the data a product holds is a fair question for hardware security keys and HSMs, which store user credentials and key material, so the axis applies. The pack documents no capability to export all user data in open formats. The only nearby items are an AES-encrypted key-escrow backup on the older Nitrokey HSM and a community report that attestation certs can't be exported via PKCS#11 and use a non-standard container format. Open-source firmware and the nitropy CLI are adjacent openness features, not data export.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3029,7 +3107,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "The Nitrokey 3 firmware repository says it is fully open source and dual licensed under Apache 2.0 and MIT. A runtime probe confirms the Rust source has tagged, installable releases. One community report notes that the Nitrokey HSM's internal applet is not free/open source, so openness does not cover every product line. Missing for 10: open-source coverage of the Nitrokey HSM applet, and evidenced license terms for other components such as nitropy.",
+    "rationale": "The official Nitrokey 3 firmware repository on GitHub states it is fully open source. It is written in Rust, dual licensed under Apache 2.0 and MIT, and has tagged public releases, so a user can read the source under an open license. A community report says the original Nitrokey HSM applet is not free/open source, which limits this to the Nitrokey 3 firmware rather than the whole product line. Missing for 10: open-source coverage across all Nitrokey products (the HSM applet is reported closed), and independent corroboration of the licensing beyond the vendor repository.",
     "evidenceIds": [
       "nitrokey-gh-1",
       "nitrokey-gh-3",
@@ -3051,8 +3129,8 @@
           "quote": "All software, unless otherwise noted, is dual licensed under Apache 2.0 and MIT license."
         },
         {
-          "evidenceId": "nitrokey-probe-rt-2",
-          "quote": "Nitrokey 3 firmware is open source in Rust WITH tagged, installable releases"
+          "evidenceId": "nitrokey-gh-2",
+          "quote": "The Nitrokey 3 firmware is written in Rust."
         }
       ]
     }
@@ -3060,16 +3138,30 @@
   {
     "productId": "nitrokey",
     "storyId": "openness-self-host",
-    "verdict": "na",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security key: its core product is a physical device that already runs locally, with no hosted service to self-host. Self-hosting is therefore a category error for this product type. The open-source Rust firmware and installable releases concern openness and updatability, not running a hosted service yourself, so they do not make the self-hosting axis applicable.",
-    "evidenceIds": [],
+    "rationale": "Nitrokey's NetHSM ships a container image (docker.io/nitrokey/nethsm:testing) that users can run on their own infrastructure, so a self-hostable server form of the product exists. The docs restrict that image to testing and development and forbid production use. The USB keys are local devices with fully open-source firmware and installable tagged releases, which is user-controlled rather than vendor-hosted. Missing for 10: a documented production-grade self-hosted deployment (container or on-prem install guide for production NetHSM), and hands-on or independent corroboration of self-hosting.",
+    "evidenceIds": [
+      "nitrokey-nethsm-test-image-20261106",
+      "nitrokey-nethsm-openapi-20261106",
+      "nitrokey-gh-1",
+      "nitrokey-probe-rt-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can self-host the core product",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "nitrokey-nethsm-test-image-20261106",
+          "quote": "The test image is designed for testing and development purposes"
+        },
+        {
+          "evidenceId": "nitrokey-gh-1",
+          "quote": "This software is fully open source."
+        }
+      ]
     }
   },
   {
@@ -3078,7 +3170,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Nitrokey documents an OpenPGP smart card function with on-device key generation. Its OpenPGP-card docs include a Thunderbird section, which covers the encrypted-email part of the story. Nothing in the pack mentions git commit signing, and the docs evidence is mostly section headings. missing for 10: documented git commit signing workflow, in-depth OpenPGP email setup detail, independent hands-on corroboration of OpenPGP use.",
+    "rationale": "Nitrokey 3 is documented as an OpenPGP smart card that can generate keys on the device. Its OpenPGP-card docs include a Thunderbird section, which covers encrypted email. Git commit signing is never mentioned, and the evidence consists only of section titles. missing for 10: documented git commit signing workflow, in-depth OpenPGP email setup docs beyond a section title, independent hands-on corroboration",
     "evidenceIds": [
       "nitrokey-docs-16",
       "nitrokey-docs-7",
@@ -3110,7 +3202,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Nitrokey's own product pages say the key supports one-time passwords for website login, and that the Nitrokey 3 includes one-time passwords among its features, so the core capability is documented. The evidence is only marketing-level, so the depth of support is unproven. Missing for 10: explicit TOTP vs HOTP support, slot count/configuration docs, challenge-response mode, setup documentation, and independent hands-on corroboration.",
+    "rationale": "Nitrokey's own product pages say the keys log in to websites using one-time passwords, and that the Nitrokey 3 combines features including 'one-time passwords', so the OTP capability is first-party. The evidence is only marketing one-liners: it never names TOTP or HOTP, describes slots or setup, or mentions challenge-response. Missing for 10: explicit TOTP/HOTP slot documentation, challenge-response support, setup/usage docs, independent hands-on corroboration.",
     "evidenceIds": [
       "nitrokey-docs-2",
       "nitrokey-docs-16",
@@ -3138,7 +3230,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack confirms FIDO2 support and passwordless login, but no item documents a FIDO2 PIN, client PIN, or built-in biometric for on-device user verification. The only related control is OpenPGP touch confirmation, which is a user-presence check, not user verification, so it earns no credit.",
+    "rationale": "The evidence shows Nitrokey 3 supports FIDO2 and passwordless Microsoft login, but no item documents a FIDO2 PIN, a built-in biometric, or any other on-device user verification that would stop a stolen key from authenticating. The only related control is OpenPGP touch confirmation, which proves user presence rather than verification, so it is adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3153,14 +3245,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Nitrokey has a dedicated PIV documentation page, markets certificate-based login to computers and network services, and documents Windows Login with Active Directory, OpenVPN, PAM and on-device key generation. However, those login and VPN guides sit under the OpenPGP-card feature rather than PIV, and the evidence is mostly section titles. Code signing appears only in a community report about the separate Nitrokey HSM, not the PIV key. Missing for 10: substantive PIV-specific docs for workstation/VPN login, code-signing evidence on the key itself, explicit non-exportable-key guarantees, and independent hands-on corroboration of PIV use.",
+    "rationale": "Nitrokey documents a PIV feature page and certificate-based login to computers and network services. Its docs also list Windows Login with Active Directory, OpenVPN and on-device key generation, so the core smart-card login story is present. However, the PIV evidence is only a page title, and Windows login and VPN are documented under the OpenPGP card feature rather than PIV. Missing for 10: substantive PIV documentation showing workstation sign-in and VPN via PIV, any code-signing evidence for the USB key (the only code-signing report concerns the separate Nitrokey HSM), explicit non-exportability guarantees, and independent hands-on corroboration.",
     "evidenceIds": [
       "nitrokey-docs-11",
       "nitrokey-docs-3",
       "nitrokey-docs-5",
       "nitrokey-docs-15",
-      "nitrokey-docs-7",
-      "nitrokey-docs-8"
+      "nitrokey-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -3196,7 +3287,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security key and HSM product line, and its documented features (FIDO2, OpenPGP, PIV, OTP, on-device keygen, encrypted mobile storage) all keep data on the physical device. It offers no hosted or cloud storage service, so choosing a storage region or residency is a category error for this kind of product. Nothing in the evidence shows a cloud-hosted data service that would make the axis applicable.",
+    "rationale": "Nitrokey makes hardware security keys and a self-hosted NetHSM appliance. Keys and data live on the physical device the user holds, not in a vendor-hosted cloud, so choosing a storage region or residency is a cloud-service axis that does not fit this kind of product. Nothing in the evidence shows Nitrokey offers a hosted data-storage service with region selection that would make the axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3211,7 +3302,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security token: FIDO2, OTP, OpenPGP card, PIV and encrypted storage, with open-source firmware and a local CLI. It is not a hosted data-processing or AI service, so an opt-out from AI model training is a category error for this kind of product. Nothing in the evidence shows Nitrokey collecting user data for AI training or offering any related control that would make the axis apply.",
+    "rationale": "Nitrokey makes hardware security keys and HSM appliances (FIDO2, OpenPGP card, PIV, OTP, NetHSM) that hold keys on the device, not a data-collecting service. Whether user data is used to train AI models is not a fair question for this kind of product, so the axis does not apply. Nothing in the evidence shows Nitrokey collecting user content or offering AI features that would make the axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3226,7 +3317,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Controlling retention and deletion of stored credentials and keys, such as wiping or factory-resetting the device, is a fair question for a hardware security key. However, nothing in the evidence pack documents any deletion, reset or retention control. The pack covers authentication features, open-source firmware and the nitropy CLI, and the HSM key-escrow backup mention concerns backup, not deletion.",
+    "rationale": "Data retention and deletion is a fair privacy-posture question for a security-key and HSM vendor, for example credential deletion, factory reset, or retention of stored data. However, the evidence pack documents no such controls. Items on on-device key generation, encrypted storage, and offline key escrow are adjacent features, not retention or deletion controls.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3241,7 +3332,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a hardware key that ships companion software such as the nitropy CLI, so the axis applies. However, nothing in the evidence mentions telemetry, usage tracking, or any setting to disable them. The open-source firmware and licensing items are related but different facts and do not document an opt-out capability.",
+    "rationale": "Telemetry opt-out is a fair question for Nitrokey because it ships software (the nitropy CLI, firmware and an SDK), so the axis applies. Nothing in the evidence documents telemetry, usage tracking or any way to turn them off. The open-source firmware and licensing items are adjacent and do not show an opt-out control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3256,11 +3347,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Nitrokey's own materials say the key does FIDO2 and supports U2F login to websites, naming Google. They also claim Microsoft services login (passwordless, e.g. Office 365), so the core second-factor capability is documented for two of the four named service groups. missing for 10: documented support for GitHub, documented support for password-manager services, Microsoft as a second factor rather than passwordless only, independent or hands-on corroboration of cross-service WebAuthn use.",
+    "rationale": "Nitrokey's own materials say the key supports U2F/FIDO2 login to websites, naming Google, and passwordless login to Microsoft services such as Office 365. The evidence is short marketing copy, and half of the named services are never shown. Missing for 10: evidence for GitHub, evidence for password managers (e.g. Bitwarden or 1Password as relying parties), in-depth per-service setup docs, independent hands-on corroboration of cross-service use.",
     "evidenceIds": [
       "nitrokey-docs-2",
       "nitrokey-docs-4",
-      "nitrokey-docs-16"
+      "nitrokey-docs-16",
+      "nitrokey-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -5688,11 +5780,12 @@
     "productId": "yubikey",
     "storyId": "agent-fleet-provisioning",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Yubico documents a public YubiEnterprise 'YubiKey as a Service' REST API for fleet delivery, inventory and shipment management, so an agent can programmatically handle the ordering and shipment part of provisioning. The pack does not show that this API covers user assignment or pre-registration (e.g., enrolling keys against an IdP before shipping), and only a single probe item supports it. ykman and the SDKs are device-level building blocks, not enterprise provisioning. Missing for 10: documented API support for key-to-user assignment and pre-registration/enrollment, endpoint-level detail of the API, and independent or hands-on corroboration of end-to-end agent-driven provisioning.",
+    "rationale": "Yubico documents a public YubiEnterprise 'YubiKey as a Service' REST API for fleet delivery, inventory, and shipment management, so the ordering and fulfillment part of provisioning can be driven programmatically. The evidence does not show API-driven user assignment or FIDO pre-registration, and the probe found no machine-readable OpenAPI spec. ykman only configures individual devices and is not fleet provisioning. Missing for 10: documented API support for assigning keys to users, documented pre-registration (pre-enrolled credential) workflows via API, a machine-readable spec, and hands-on or independent corroboration of end-to-end agent-driven provisioning.",
     "evidenceIds": [
-      "yubikey-probe-rt-2"
+      "yubikey-probe-rt-2",
+      "yubikey-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -5716,12 +5809,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico's official ykman CLI is documented as scriptable and covers device info, enabled applications and PIV/OATH/OTP slots, and Yubico's docs name ykman as a way to read firmware version, so the core read-state capability exists. However, the evidence never explicitly shows reading serial numbers, enumerating stored credentials, or machine-readable output suited to fleet audit. The YubiEnterprise REST API covers delivery, inventory and shipments, not live device state. Missing for 10: explicit serial and stored-credential enumeration docs, structured (e.g. JSON) output, a fleet-wide device-state audit surface, and independent hands-on corroboration.",
+    "rationale": "Yubico's official ykman CLI is documented as scriptable device management covering device info, enabled applications and PIV/OATH/OTP slots, and Yubico docs name ykman as a way to read firmware version, so an agent can query a single key's state. Fleet-wide auditing is not shown: the YubiEnterprise REST API covers delivery, inventory and shipment, not live device state. missing for 10: explicit serial-number readout, documented enumeration of stored credentials, machine-readable (e.g. JSON) output for agents, fleet-level aggregation of device state, hands-on corroboration.",
     "evidenceIds": [
       "yubikey-probe-rt-1",
       "yubikey-docs-15",
       "yubikey-docs-4",
-      "yubikey-docs-19"
+      "yubikey-docs-19",
+      "yubikey-probe-rt-2"
     ],
     "support": {
       "relation": "direct",
@@ -5749,8 +5843,12 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Yubico publishes extensive developer documentation, so publishing llms.txt or agent-oriented docs is a fair question and the axis applies. However, probes found no llms.txt on any Yubico host (all return HTTP 404). Appending .md returns HTTP 300 rather than markdown, so the docs are human-oriented HTML only.",
-    "evidenceIds": [],
+    "rationale": "Yubico runs public developer documentation portals, so whether that documentation is agent-consumable is a fair question for this product. The evidence shows it is not: llms.txt returns HTTP 404 on docs.yubico.com, developers.yubico.com and www.yubico.com. Appending .md to pages yields no markdown, and the docs are described as human-oriented HTML only.",
+    "evidenceIds": [
+      "yubikey-probe-1",
+      "yubikey-probe-2",
+      "yubikey-probe-rt-4"
+    ],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -5764,7 +5862,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "YubiKey is a hardware authentication token that stores keys in a secure element and performs cryptographic operations. It has no user-data workspace from which AI insights could be generated, so this AI-insights axis is a category error for this kind of product. Nothing in the evidence shows any AI or insight feature that would make the axis apply.",
+    "rationale": "YubiKey is a hardware authentication device that stores secrets and performs cryptographic operations. It is not a data product where users keep data to analyze, so AI-generated insights from user data is a category error for this product type. Nothing in the evidence shows any AI or insight feature that would make the axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5779,7 +5877,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "YubiKey is a hardware authentication token, and its documented design requires user presence (a physical touch) for cryptographic operations. Background autonomous automations are not a capability axis for this kind of product. The scriptable ykman CLI and SDKs are developer building blocks for integrating the key, not a product feature for setting up automations, so they do not make the axis applicable.",
+    "rationale": "YubiKey is a hardware authentication device, so autonomous background automations are outside its product category. The evidence shows only a scriptable CLI, SDKs and a fleet-management REST API. Those are developer building blocks, not a shipped capability for setting up autonomous automations, so they do not make the axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5794,7 +5892,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "YubiKey is a hardware authentication token, used through a touch, a PIN and standard protocols such as FIDO2, PIV and OpenPGP. A built-in AI assistant to delegate tasks to is a category error for this kind of product. Nothing in the evidence shows Yubico ships any AI assistant, so the axis does not become applicable.",
+    "rationale": "YubiKey is a hardware authentication device that performs FIDO2, PIV, OpenPGP and OTP operations gated by touch and PIN. A built-in AI assistant you delegate tasks to is a category error for this kind of product, and nothing in the evidence shows Yubico ships one. The ykman CLI, the SDKs and the fleet REST API are management and developer tools, not an assistant.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5809,13 +5907,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico ships an official, keylessly installable CLI (ykman) with fully scriptable device management, so the device can be driven headlessly from scripts. However, FIDO2 cryptographic operations require a physical touch for user presence, and CI use needs a physically attached key; touch can reportedly be disabled only for some modes. Missing for 10: documented CI or headless-runner guidance, an evidenced way to perform crypto operations without physical presence, and hands-on CI corroboration.",
+    "rationale": "Yubico ships its own CLI, ykman, documented for command-line configuration. A runtime probe confirms it installs non-interactively from public registries and offers scriptable device management. However, the evidence shows FIDO2 cryptographic operations require a physical touch, and there is no documented headless or CI workflow for a physical hardware key, so unattended automation is only partly evidenced. Missing for 10: documented CI/headless usage guidance, a non-interactive path for touch-gated operations, and independent corroboration of automated pipelines.",
     "evidenceIds": [
       "yubikey-docs-4",
       "yubikey-probe-rt-1",
       "yubikey-probe-4",
-      "yubikey-docs-6",
-      "yubikey-comm-10"
+      "yubikey-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -5831,12 +5928,8 @@
           "quote": "Full scriptable device management: enable applications, PINs, PIV/OATH/OTP slots, device info."
         },
         {
-          "evidenceId": "yubikey-docs-6",
-          "quote": "FIDO2 also requires user presence (a touch on your YubiKey) for cryptographic operations"
-        },
-        {
-          "evidenceId": "yubikey-comm-10",
-          "quote": "you can just turn it off for most modes."
+          "evidenceId": "yubikey-probe-4",
+          "quote": "official CLI documented at https://developers.yubico.com/yubikey-manager/"
         }
       ]
     }
@@ -5847,7 +5940,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "YubiKey is a hardware authentication device, not an AI agent or tool-using host application, so acting as an MCP client is a category error for this kind of product. Nothing in the evidence shows it ships any MCP-client capability that would make the axis apply.",
+    "rationale": "YubiKey is a hardware authentication device: a smartcard with FIDO2, PIV, OpenPGP and OTP applets, plus SDKs and a management CLI. Acting as an MCP client that consumes other servers' tools is a capability of AI agents and assistants, so this axis does not apply. Nothing in the evidence shows YubiKey shipping any such client capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5862,7 +5955,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "YubiKey is a hardware product backed by an ecosystem of SDKs, the ykman CLI, and the YubiEnterprise REST API, so an official MCP server is a fair question to ask. The evidence shows no MCP server exists: the runtime probe reports no MCP endpoint and that mcp.yubico.com does not resolve. The CLI, SDKs and REST API are only building blocks a developer could use to build one, so they earn no credit.",
+    "rationale": "YubiKey is a hardware/security platform, not an agent, so an official MCP server is a fair question. It also has programmatic surfaces (the YubiEnterprise REST API, ykman, SDKs) that could plausibly be exposed this way. A runtime probe found no MCP endpoint (mcp.yubico.com does not resolve), and nothing in the pack documents an official MCP server. The CLI and SDKs are only building blocks and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5877,7 +5970,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Operating a security key's management software through natural-language commands is a fair axis for this product type, but the evidence shows no natural-language interface. The only documented operating surfaces are the ykman CLI with structured subcommands, the Yubico Authenticator GUI, SDKs, and a fleet REST API. Probes also found no llms.txt or MCP endpoint, and a scriptable CLI or SDK is not natural-language operation.",
+    "rationale": "The evidence pack documents no natural-language command interface, assistant, or first-party MCP endpoint for YubiKey; the probe explicitly notes that no MCP endpoint exists. The ykman CLI and SDKs are scriptable building blocks an agent could drive, not a product-provided natural-language capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5892,7 +5985,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Yubico ships an official CLI, ykman (YubiKey Manager), documented on its developer site as the way to configure a YubiKey from the command line. A runtime probe confirmed it installs keylessly from public registries, reports version 5.9.2, and offers scriptable device management across applications, PINs, PIV/OATH/OTP slots and device info. Missing for 10: documented machine-readable (e.g. JSON) output or agent-oriented usage guidance for the CLI.",
+    "rationale": "Yubico ships an official CLI, ykman (YubiKey Manager), documented as a way to configure the YubiKey from the command line. A runtime probe confirmed it installs keylessly from public registries (uvx, Homebrew), reports version 5.9.2, and offers scriptable device management for applications, PINs, PIV/OATH/OTP slots and device info. Missing for 10: evidence of agent-oriented features such as machine-readable/JSON output, and independent community corroboration of CLI use.",
     "evidenceIds": [
       "yubikey-docs-4",
       "yubikey-probe-4",
@@ -5927,19 +6020,18 @@
     "productId": "yubikey",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Yubico documents public programmatic interfaces for driving the YubiKey: a .NET SDK, Android and iOS YubiKit libraries, the python-fido2 library and the scriptable ykman CLI. There is also a public YubiEnterprise REST API, but it covers only fleet delivery, inventory and shipments, not operating the key itself. Device-level control goes through local SDKs that need physical presence (a touch), and the docs are human-oriented HTML only. Missing for 10: a network/REST API for device operations, a machine-readable spec (OpenAPI probes 404), agent-friendly docs (no llms.txt or markdown), and hands-on corroboration of agent-driven API use.",
+    "rationale": "Yubico documents its own public programmatic surfaces. These are the YubiEnterprise REST API (live public docs at console.yubico.com/apidocs/), the YubiCloud OTP validation HTTP API with a versioned protocol spec, and first-party SDKs (.NET, Android, iOS, python-fido2) that expose APIs for driving the key from code. The coverage is fragmented, though: the REST API handles fleet delivery and inventory rather than device operations, the OTP API is prose-only, and on-device control goes through local SDKs rather than one unified API. Missing for 10: a machine-readable API spec (OpenAPI paths all 404), a single documented API covering device operations end to end, a sandbox with test credentials, and independent hands-on corroboration of agent-driven API use.",
     "evidenceIds": [
+      "yubikey-probe-rt-2",
+      "yubikey-otp-protocol-20261106",
+      "yubikey-otp-version-history-20261106",
       "yubikey-docs-19",
-      "yubikey-docs-20",
       "yubikey-docs-21",
       "yubikey-docs-13",
-      "yubikey-docs-6",
-      "yubikey-probe-rt-1",
-      "yubikey-probe-rt-2",
       "yubikey-probe-3",
-      "yubikey-probe-rt-4"
+      "yubikey-webauthn-demo-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5947,24 +6039,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
+          "evidenceId": "yubikey-probe-rt-2",
+          "quote": "the YubiEnterprise 'YubiKey as a Service' REST API documentation is live and public at console.yubico.com/apidocs/"
+        },
+        {
+          "evidenceId": "yubikey-otp-protocol-20261106",
+          "quote": "Validation Protocol Version 2.0... All requests are HTTP GET requests"
+        },
+        {
           "evidenceId": "yubikey-docs-19",
           "quote": "The SDK allows you to integrate the YubiKey and its applications into your .NET-based application or library."
         },
         {
           "evidenceId": "yubikey-docs-21",
           "quote": "provides the APIs to request an OTP (Yubico OTP or HOTP) from the NFC YubiKeys using a NFC-enabled iOS device"
-        },
-        {
-          "evidenceId": "yubikey-docs-13",
-          "quote": "Provides library functionality for communicating with a FIDO device over USB as well as verifying attestation and assertion signatures."
-        },
-        {
-          "evidenceId": "yubikey-probe-rt-2",
-          "quote": "the YubiEnterprise 'YubiKey as a Service' REST API documentation is live and public at console.yubico.com/apidocs/"
-        },
-        {
-          "evidenceId": "yubikey-probe-rt-1",
-          "quote": "Full scriptable device management: enable applications, PINs, PIV/OATH/OTP slots, device info."
         }
       ]
     }
@@ -5975,7 +6063,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "YubiKey has a programmatic surface (the ykman CLI and the YubiEnterprise REST API), so asking whether it can issue scoped, least-privilege API credentials for an agent is a fair question. The evidence pack never documents scoped API tokens, permission scopes, or agent-specific credential issuance. Hardware-bound keys (PIV, FIDO2, SSH) are an adjacent authentication capability, not scoped API credentials, and earn no credit.",
+    "rationale": "Yubico exposes programmatic surfaces, including the YubiEnterprise REST API and YubiCloud OTP Client IDs, so scoped API credentials are a fair question for this product. However, no evidence shows any ability to issue scoped or least-privilege API tokens for an agent. Hardware-stored keys (PIV, SSH, OATH) and the ykman CLI are adjacent building blocks, not a documented credential-scoping feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5990,15 +6078,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Yubico publishes multiple official SDKs: a .NET SDK, the YubiKit Android and iOS libraries, python-fido2, and java-webauthn-server. Its docs also describe mobile and desktop SDKs for integrating hardware security into apps, and a runtime probe confirms python-fido2 resolves on public PyPI. Missing for 10: independent community or hands-on corroboration of building with the SDKs (beyond the registry check).",
+    "rationale": "Yubico documents a broad set of official first-party SDKs: the .NET YubiKey SDK, YubiKit for Android and iOS, python-fido2, and java-webauthn-server. A runtime probe confirms python-fido2 resolves on PyPI as fido2 2.2.1. missing for 10: independent hands-on corroboration of building with the SDKs.",
     "evidenceIds": [
       "yubikey-docs-2",
       "yubikey-docs-19",
       "yubikey-docs-20",
       "yubikey-docs-21",
-      "yubikey-docs-22",
-      "yubikey-docs-12",
       "yubikey-docs-13",
+      "yubikey-docs-12",
       "yubikey-probe-rt-3"
     ],
     "support": {
@@ -6035,7 +6122,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Yubico offers a programmatic service surface: the YubiEnterprise REST API for fleet delivery, inventory and shipment management. Event webhooks are therefore a fair question for this product. However, nothing in the evidence documents registrable outbound HTTP callbacks or event subscriptions. The REST API, the ykman CLI and the SDKs are request-driven building blocks, not webhook delivery.",
+    "rationale": "Yubico ships programmatic surfaces, including the YubiEnterprise REST API for fleet, inventory and shipment management and the YubiCloud OTP validation API, so event webhooks are a fair question here. However, nothing in the evidence documents registrable outbound HTTP callbacks or any event-subscription mechanism. The documented APIs are request/response only, and SDKs and the ykman CLI are building blocks, not webhooks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6050,10 +6137,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a live, public REST API documentation page for YubiEnterprise (console.yubico.com/apidocs/), but nothing shows it is interactive or offers runnable examples. Probes for OpenAPI/Swagger specs on docs.yubico.com all returned 404, and the docs are described as human-oriented HTML only. A static API reference is an adjacent feature, not the interactive, runnable reference this story asks for.",
+    "rationale": "Yubico publishes APIs (the YubiCloud OTP validation API and the YubiEnterprise REST API), so this axis applies. However, the evidence shows the OTP reference is a prose specification whose pages \"carry no runner\". No machine-readable OpenAPI spec exists, and the YubiEnterprise apidocs page is verified only by its title, with nothing showing it is interactive or has runnable examples. The demo.yubico.com site is a browser demo for registering and testing keys, not an interactive API reference, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": []
@@ -6065,7 +6152,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "This axis applies because Yubico exposes a programmatic REST surface: the YubiEnterprise API docs are public at console.yubico.com/apidocs/. However, no evidence shows a downloadable OpenAPI or equivalent machine-readable spec. Every probed OpenAPI/Swagger path on docs.yubico.com returned 404, and Yubico's docs are described as human-oriented HTML only.",
+    "rationale": "Yubico does have web APIs, including the YubiCloud OTP validation API and the YubiEnterprise REST API documented at console.yubico.com/apidocs/, so the axis applies. However, every OpenAPI/Swagger path probed returned 404, and the OTP API is documented only as a prose protocol; the evidence states no machine-readable spec exists for any Yubico API. Nothing shows the YubiEnterprise apidocs page offers a downloadable spec.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6080,7 +6167,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The sandbox axis applies because Yubico ships programmatic surfaces, including the YubiEnterprise REST API for fleet delivery, inventory and shipments, plus SDKs. A test or sandbox environment for such a service is a fair buyer question. However, nothing in the evidence documents a sandbox, test tenant or non-production environment. SDKs and the ykman CLI are developer building blocks, not a sandbox.",
+    "rationale": "Yubico ships programmatic surfaces, the YubiCloud OTP validation API and the YubiEnterprise REST API, so a sandbox environment is a fair question here. The evidence explicitly says demo.yubico.com is a browser demo for registering and testing keys, 'not an API sandbox with test credentials', and that YubiCloud OTP offers only production Client IDs. The documented local development setup is a user-side arrangement, not a vendor-provided sandbox, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6092,16 +6179,28 @@
   {
     "productId": "yubikey",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Yubico ships programmatic surfaces, including SDKs, the ykman CLI and the YubiEnterprise REST API, so this axis applies. However, nothing in the evidence documents API versioning or a deprecation policy. Package release numbers (ykman 5.9.2, fido2 2.2.1) and firmware versions are not a versioned API with a published deprecation or sunset policy.",
-    "evidenceIds": [],
+    "rationale": "Yubico's YubiCloud OTP validation API is URL-versioned (/wsapi/2.0/verify). Its spec includes a version changelog stating that 2.0 is not backwards compatible with 1.x and that both versions can be served side by side, so the product's own documentation covers API versioning for that protocol. However, the evidence explicitly says no portal-wide versioning or deprecation policy exists, and the YubiEnterprise REST API and SDKs show no documented versioning or deprecation terms. Missing for 10: a documented deprecation policy (timelines, sunset notices), versioning across the other APIs (YubiEnterprise REST, SDKs), and independent corroboration.",
+    "evidenceIds": [
+      "yubikey-otp-version-history-20261106",
+      "yubikey-otp-protocol-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "yubikey-otp-version-history-20261106",
+          "quote": "version 2.0 is not backwards compatible with version 1.1 or version 1.0. However, because version 2.0 use a different URL than version 1.x, the server may support both version 1.x and version 2.0 clients at the same time."
+        },
+        {
+          "evidenceId": "yubikey-otp-protocol-20261106",
+          "quote": "Validation Protocol Version 2.0... All requests are HTTP GET requests"
+        }
+      ]
     }
   },
   {
@@ -6110,11 +6209,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico documents attestation for YubiKeys. PIV attestation certificates prove a key was generated on the device, and its python-fido2 library verifies FIDO attestation signatures. That covers genuineness checks at registration in principle. The evidence does not show how to restrict enrollment to approved key models, for example through model identifiers, metadata, or allowlist policy in the WebAuthn server library. Missing for 10: documented model allowlisting or enforcement at WebAuthn registration, FIDO attestation trust-root and metadata guidance, and independent hands-on corroboration.",
+    "rationale": "Yubico's own python-fido2 library documents verifying attestation signatures. PIV attestation docs describe a certificate proving a key was generated on the device, so the core of verifying genuine-device attestation at registration is covered. However, nothing documents enforcing an allowlist of approved key models, such as AAGUID or metadata checks, at enrollment. Missing for 10: documented model/AAGUID allowlist enforcement at registration, FIDO metadata or attestation-root verification guidance, attestation policy in the WebAuthn server library, independent hands-on corroboration.",
     "evidenceIds": [
+      "yubikey-docs-13",
       "yubikey-docs-11",
       "yubikey-docs-18",
-      "yubikey-docs-13",
       "yubikey-docs-12"
     ],
     "support": {
@@ -6123,16 +6222,16 @@
       "subject": "As a security engineer, I can verify device attestation at registration to enforce that only genuine, approved key models are enrolled",
       "citations": [
         {
+          "evidenceId": "yubikey-docs-13",
+          "quote": "Provides library functionality for communicating with a FIDO device over USB as well as verifying attestation and assertion signatures."
+        },
+        {
           "evidenceId": "yubikey-docs-11",
           "quote": "The concept of attestation is used to show that a certain asymmetric key has been generated on device and not imported."
         },
         {
           "evidenceId": "yubikey-docs-18",
           "quote": "This certificate should be used for the purpose of verifying that the key was generated in device."
-        },
-        {
-          "evidenceId": "yubikey-docs-13",
-          "quote": "Provides library functionality for communicating with a FIDO device over USB as well as verifying attestation and assertion signatures."
         }
       ]
     }
@@ -6143,7 +6242,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a security-key product with management tooling such as CLI and fleet APIs, so the axis applies. However, no evidence documents a native bulk or multi-item operation. ykman is described as scriptable per-device management, which is a building block for user-side scripting. The YubiEnterprise REST API covers fleet delivery, inventory and shipments, but nothing shows bulk actions across many keys or accounts. Community users describe manually going through each account one by one.",
+    "rationale": "Bulk operations are a fair axis for a hardware-key product, for example mass enrollment, fleet configuration, or credential replacement. The evidence pack documents no capability that acts on many items at once. ykman offers per-device scriptable management, and the YubiEnterprise REST API covers fleet delivery, inventory and shipments, but neither is described as performing bulk actions. Looping a script over devices would be a user-side workaround or developer building block, which earns no credit. Community reports confirm users must replace keys account-by-account manually.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6155,10 +6254,10 @@
   {
     "productId": "yubikey",
     "storyId": "automation-rules-engine",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "YubiKey is a hardware authentication device, so an event-triggered automation rules engine falls outside its product category. The evidence shows only a scriptable CLI (ykman), SDKs and a fleet-delivery REST API. These are developer building blocks for device management and authentication, not a user-definable rule or trigger capability, so they do not make the axis applicable.",
+    "rationale": "YubiKey's ecosystem includes a scriptable CLI and a YubiEnterprise fleet REST API, so event-driven automation is a plausible axis, but nothing in the evidence shows a rules engine, triggers, or event-based actions. The ykman CLI and SDKs are developer building blocks that could be used to construct automation, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6172,8 +6271,8 @@
     "storyId": "automation-scheduled-jobs",
     "verdict": "na",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "YubiKey is a hardware authentication device. Scheduling recurring jobs or workflows is outside what this kind of product does, so the axis does not apply. The scriptable ykman CLI and the YubiEnterprise fleet REST API are device-management and building-block surfaces, not a scheduler, and the pack shows no first-party scheduling capability that would make the axis apply.",
+    "confidence": "high",
+    "rationale": "YubiKey is a hardware authentication device with SDKs, a configuration CLI, and a fleet-delivery API. Scheduling recurring jobs or workflows is outside this product category, and nothing in the evidence shows it shipping such a capability. The ykman CLI and the YubiEnterprise API cover device configuration and fleet logistics, not recurring job scheduling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6188,7 +6287,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "YubiKey is a hardware authentication device. It has no automation or workflow layer that could be versioned, reviewed, or rolled back, so this story is a category error for this kind of product. The scriptable ykman CLI and the SDKs are building blocks a user could script around, not a product-native automation versioning capability, so they do not make the axis apply.",
+    "rationale": "YubiKey is a hardware authentication device. Versioning, reviewing and rolling back user-built automations is not a capability this kind of product would ship, so the axis does not apply. The scriptable ykman CLI and the URL-versioned OTP protocol are user-side scripting and API versioning. Neither is a product feature for managing automation versions, so neither makes this axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6203,7 +6302,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack shows Yubico documenting a lockout-recovery strategy: no vendor guidance on registering a backup key, and no explanation of what can and cannot be recovered after a key is lost. The only related material is non-exportable key generation (an adjacent property, not recovery guidance) and community users describing their own redundant-key practices (a user-side workaround), and neither counts toward this story.",
+    "rationale": "The story requires vendor-documented lockout-recovery guidance: registering a backup key and stating what is and is not recoverable after loss. No Yubico documentation in the pack covers this. Community comments about keeping redundant keys describe user-side practice, not vendor documentation, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6218,11 +6317,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico's YubiEnterprise 'YubiKey as a Service' REST API is publicly documented as the programmatic surface for fleet delivery, inventory and shipment management, which covers part of lifecycle tracking. The official ykman CLI offers fully scriptable device configuration (applications, PINs, PIV/OATH/OTP slots) that can drive bulk setup. The evidence only names these surfaces in probe summaries and never describes pre-registration of credentials, and community posts note there is no easy way to know which accounts a key is enrolled with. Missing for 10: any evidence of pre-registration/pre-enrolled credentials, a documented first-party bulk-provisioning workflow beyond scripting ykman, detail on how issued keys are tracked and revoked, and independent hands-on corroboration of fleet use.",
+    "rationale": "Yubico documents a public YubiEnterprise 'YubiKey as a Service' REST API for fleet delivery, inventory and shipment management. That covers part of lifecycle tracking. Its official ykman CLI provides fully scriptable device configuration (applications, PINs, PIV/OATH/OTP slots), which can be automated toward bulk configuration. The evidence is probe-level summaries rather than in-depth admin docs, and community users describe manual per-account replacement and no record of where a key was enrolled. Missing for 10: documented pre-registration/enrollment of keys on users' behalf, a first-party bulk-provisioning workflow beyond per-device CLI scripting, detailed lifecycle states (assignment, revocation, retirement), and independent hands-on corroboration of fleet management.",
     "evidenceIds": [
       "yubikey-probe-rt-2",
       "yubikey-probe-rt-1",
-      "yubikey-docs-4"
+      "yubikey-docs-4",
+      "yubikey-comm-2",
+      "yubikey-comm-7"
     ],
     "support": {
       "relation": "direct",
@@ -6250,7 +6351,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Certified models and durability are a fair question for a hardware security key, so the axis applies. However, nothing in the evidence pack mentions FIPS 140 validation, Common Criteria certification, or documented water or crush resistance. The only durability-related items are community remarks about USB port wear, which do not document ruggedness.",
+    "rationale": "Certification and ruggedness are fair questions for a hardware security key, so the axis applies. However, nothing in the evidence pack mentions FIPS 140 validation, Common Criteria certification, or documented water or crush resistance. The pack only covers protocols, SDKs, the CLI and community comments about firmware and USB port wear, none of which address certified models or durability ratings.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6263,9 +6364,9 @@
     "productId": "yubikey",
     "storyId": "cli-key-management",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Yubico ships an official CLI, ykman (YubiKey Manager), documented as the way to \"configure your YubiKey via the command line.\" A runtime probe confirms it installs from public registries and covers scriptable management of applications, PINs, PIV/OATH/OTP slots and device info. The firmware docs separately name ykman as a way to read device state. Missing for 10: in-depth first-party command documentation for each listed operation (enabling applications, setting PINs, managing slots) in the evidence, and hands-on runs of those operations rather than just the version check.",
+    "rationale": "Yubico ships an official CLI, ykman (YubiKey Manager), documented as a way to configure the YubiKey from the command line. A runtime probe confirms it installs from public registries, identifies itself, and offers scriptable management of applications, PINs, PIV/OATH/OTP slots and device info. Firmware docs also point to ykman for reading device state. missing for 10: in-depth first-party command reference excerpts for each operation (enabling applications, setting PINs, managing slots) and independent community corroboration of scripted ykman use.",
     "evidenceIds": [
       "yubikey-docs-4",
       "yubikey-probe-4",
@@ -6298,7 +6399,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents the YubiKey lineup's connector options (USB-C vs USB-A) or its form factors (keychain vs nano). The only nearby items are a generic mention of 'USB and NFC-enabled YubiKeys' in an SDK context and a community remark that Yubico hardware is compact, and neither establishes the specific ports and carry styles this story asks about.",
+    "rationale": "Form-factor coverage is a fair question for a hardware security key, so the axis applies. However, nothing in the evidence pack documents USB-C versus USB-A models or keychain versus nano form factors. The only nearby items are a community remark that Yubico hardware is compact and an SDK note that USB and NFC keys are supported; neither describes the port or carry-style lineup, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6313,7 +6414,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes ykman as covering applications, PINs, PIV/OATH/OTP slots and device info, but nothing documents listing or deleting resident FIDO2 passkeys, or reporting how many credential slots remain. python-fido2 and the SDKs are developer building blocks, and passkey marketing is adjacent, so neither earns credit for this story.",
+    "rationale": "The axis applies to a hardware passkey authenticator, but the pack never documents listing or deleting resident FIDO2 credentials, or reporting remaining credential capacity. The ykman CLI evidence covers applications, PINs, PIV/OATH/OTP slots and device info only. python-fido2 and the SDKs are developer building blocks, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6328,12 +6429,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows some platform-agnostic behavior: OTP needs no client software, the key works with Android and iOS devices over USB and NFC, and it protects access to computers and online accounts. However, nothing documents explicit OS or browser support matrices, and no published compatibility catalog of supported services appears anywhere in the pack. missing for 10: published catalog of supported services, documented OS/browser compatibility matrix, independent hands-on corroboration of cross-platform/browser use.",
+    "rationale": "The evidence gives only indirect signs of cross-platform operation. OTP needs no client software and works anywhere a password can be typed, and Yubico documents YubiKey support over USB and NFC on Android and over NFC on iOS. Nothing explicitly covers desktop OS or browser compatibility, and no compatibility catalog of supported services appears anywhere. Missing for 10: published catalog of supported services, explicit OS/browser compatibility matrix, independent hands-on corroboration of cross-OS/browser use.",
     "evidenceIds": [
       "yubikey-docs-10",
       "yubikey-docs-20",
       "yubikey-docs-21",
-      "yubikey-docs-28"
+      "yubikey-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -6349,8 +6450,8 @@
           "quote": "Both USB and NFC-enabled YubiKeys are supported."
         },
         {
-          "evidenceId": "yubikey-docs-28",
-          "quote": "YubiKeys are hardware authentication devices that protect user access to computers, networks, and online accounts and services"
+          "evidenceId": "yubikey-docs-21",
+          "quote": "The library supports NFC-enabled YubiKeys and provides the APIs to request an OTP (Yubico OTP or HOTP) from the NFC YubiKeys using a NFC-enabled iOS device."
         }
       ]
     }
@@ -6361,7 +6462,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "A runtime probe confirms that Yubico's YubiEnterprise 'YubiKey as a Service' REST API documentation is live at console.yubico.com/apidocs/, described as the programmatic surface for fleet delivery, inventory, and shipment management. That is first-party, but only the page title was verified; nothing documents the depth of the shipping workflow itself. Missing for 10: first-party detail on direct-to-employee shipping (addresses, tracking, international reach), documentation of console-based ordering beyond the console URL, and independent or hands-on corroboration that delivery works end to end.",
+    "rationale": "A runtime probe confirms Yubico's own YubiEnterprise 'YubiKey as a Service' REST API docs are public at console.yubico.com/apidocs, described as the programmatic surface for fleet delivery, inventory, and shipment management. This is first-party, so it counts toward the story, but only the page title was verified and the depth of the delivery workflow is not shown. missing for 10: explicit documentation of direct-to-employee shipping to distributed addresses, details of the console-driven ordering workflow, specific API endpoints for shipments, independent or hands-on corroboration.",
     "evidenceIds": [
       "yubikey-probe-rt-2"
     ],
@@ -6383,7 +6484,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico's own materials position the YubiKey as a hardware-backed passkey authenticator for passwordless login, with firmware 5.8 adding CTAP 2.3 and 'smoother passkey UX'. That points directly at the story's capability. However, the evidence is tagline-level: it never explicitly describes on-device discoverable/resident credential storage or a username-less WebAuthn sign-in flow. missing for 10: explicit documentation of discoverable/resident credential storage on the key, documentation of the usernameless sign-in flow, resident-credential capacity/management details, independent hands-on corroboration.",
+    "rationale": "Yubico positions the YubiKey itself as a hardware-backed passkey authenticator for passwordless login, and its 5.8 firmware brings smoother passkey UX. That implies device-bound discoverable credentials, but nothing in the pack explicitly documents resident-key storage or a username-less sign-in flow. missing for 10: explicit documentation of discoverable/resident credential storage, username-less WebAuthn sign-in flow, credential capacity/management details, independent hands-on corroboration",
     "evidenceIds": [
       "yubikey-docs-27",
       "yubikey-docs-28",
@@ -6415,14 +6516,14 @@
     "storyId": "firmware-update-policy",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "Yubico's own docs only show how to find a device's firmware version with Yubico Authenticator or ykman, which supports checking whether a key is an affected model. Community reports say firmware cannot be upgraded, so fixes reach users through replacement devices (e.g., free ROCA replacements) or mitigations, not updates. Missing for 10: first-party security advisory pages, a documented affected-model/serial lookup tied to advisories, an official replacement or remediation policy, and documented fix-delivery timelines.",
+    "confidence": "medium",
+    "rationale": "Yubico's own docs show how to find a device's firmware version with Yubico Authenticator or ykman, which supports checking whether a key is affected. Community reports describe the fix path: firmware is not upgradable, so remediation comes through offered mitigations or free hardware replacements, as happened with ROCA. Missing for 10: first-party security advisories or a vulnerability-response policy, a documented mapping of affected models and firmware versions, and first-party documentation of the replacement/remediation process.",
     "evidenceIds": [
       "yubikey-docs-15",
       "yubikey-docs-25",
       "yubikey-comm-3",
-      "yubikey-comm-5",
-      "yubikey-comm-4"
+      "yubikey-comm-4",
+      "yubikey-comm-5"
     ],
     "support": {
       "relation": "direct",
@@ -6450,7 +6551,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented guided first-time setup, setup wizard, or end-user walkthrough for registering a YubiKey with accounts. The available docs are developer guides (passkey backends, SDKs, SSH/PIV/PGP), the ykman configuration CLI, and a passing mention of the Yubico Authenticator GUI for checking firmware version. Community feedback says novices can miss key guidance, such as setting a PIN before enrolling, which suggests setup is not well guided.",
+    "rationale": "The evidence pack has no guided first-time setup flow, setup wizard, or end-user instructions for registering the key with accounts. What it does contain is adjacent: the ykman CLI and Yubico Authenticator handle device configuration and firmware checks, and demo.yubico.com is a developer-oriented browser demo for testing registration, not a walkthrough for enrolling with your own accounts. A community report (comm-13) also notes novices can miss the right guidance and enroll keys without a PIN.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6465,11 +6566,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "YubiKey's own FIDO2 implementation requires user presence (a physical touch) for cryptographic operations, including FIDO2-backed SSH keys. Any automated action routed through those keys therefore cannot complete without a human touch, and a community comment confirms the touch-to-sign model resists remote abuse. Nothing documents framing or configuring this as an approval gate for agent-initiated or automated actions, so applying it to agent workflows depends on integrating through signing or SSH. missing for 10: documented agent or automation approval workflows, per-action policy for requiring touch on sensitive operations, independent hands-on corroboration of use as an agent approval step.",
+    "rationale": "YubiKey's own documentation says FIDO2 operations require a physical touch (user presence), with optional PIN verification. For example, the SSH keys it guards need a touch for each cryptographic operation, and community users confirm that touch-to-sign cannot be triggered remotely. Using this as an approval gate for agent-initiated actions, though, depends on routing those actions through touch-gated operations like SSH or signing, or on custom SDK integration. Missing for 10: documented agent or automation approval workflows, guidance for gating arbitrary sensitive actions (beyond SSH and signing) on a touch, and independent hands-on corroboration in AI-agent contexts.",
     "evidenceIds": [
       "yubikey-docs-6",
-      "yubikey-docs-24",
-      "yubikey-comm-10"
+      "yubikey-docs-5",
+      "yubikey-comm-10",
+      "yubikey-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -6479,10 +6581,6 @@
         {
           "evidenceId": "yubikey-docs-6",
           "quote": "FIDO2 also requires user presence (a touch on your YubiKey) for cryptographic operations, and can optionally enforce user verification (PIN entry)."
-        },
-        {
-          "evidenceId": "yubikey-docs-24",
-          "quote": "This guide shows how to generate and use SSH keys directly on your FIDO2 security key with OpenSSH."
         },
         {
           "evidenceId": "yubikey-comm-10",
@@ -6495,9 +6593,9 @@
     "productId": "yubikey",
     "storyId": "hardware-backed-ssh",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Yubico documents generating SSH keys directly on the YubiKey's FIDO2 application with OpenSSH. The private key never leaves the hardware, and FIDO2 requires user presence (a touch) for cryptographic operations. Hardware-backed private keys are also documented for PIV (via PKCS#11) and OpenPGP, and community reports corroborate ed25519 FIDO SSH keys, PIV and GPG smartcard use. Missing for 10: explicit documentation of SSH-specific touch policies for the PIV and OpenPGP paths.",
+    "rationale": "Yubico's first-party SSH guide explains how to generate SSH keys directly on the FIDO2 YubiKey with OpenSSH. The private key never leaves the hardware, and a touch (user presence) is required for cryptographic operations. PIV and OpenPGP are documented as on-device private-key signing via PKCS#11 and smartcard interfaces, and community reports corroborate ed25519 FIDO SSH keys and touch-to-sign. Missing for 10: explicit documentation of SSH usage and touch policy for the PIV and OpenPGP paths specifically.",
     "evidenceIds": [
       "yubikey-docs-5",
       "yubikey-docs-6",
@@ -6506,8 +6604,8 @@
       "yubikey-docs-8",
       "yubikey-docs-9",
       "yubikey-comm-14",
-      "yubikey-comm-16",
-      "yubikey-comm-10"
+      "yubikey-comm-10",
+      "yubikey-comm-16"
     ],
     "support": {
       "relation": "direct",
@@ -6547,10 +6645,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never names Okta, Entra ID or Google Workspace, and it does not document any IdP integration or policy requiring hardware-key authentication. It only offers generic FIDO2/WebAuthn and phishing-resistant MFA claims, relying-party developer SDKs, and PIV attestation. Those are building blocks or adjacent features, not documented IdP integration, and policy enforcement would sit with the IdP, which is a host-platform capability.",
+    "rationale": "Nothing in the evidence pack mentions Okta, Entra ID, Google Workspace, or any identity-provider integration, and nothing shows admin policy enforcement requiring hardware-key authentication. The pack documents only general FIDO2/WebAuthn, passkey, PIV and OTP capabilities, plus developer SDKs and attestation primitives. Those are building blocks or adjacent features, not this story's capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an IT admin, the key integrates with my identity provider — Okta, Entra ID, Google Workspace — and I can enforce policies requiring hardware-key authentication",
       "citations": []
@@ -6562,7 +6660,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico's own mobile SDK docs confirm that NFC-enabled YubiKeys work with phones. On Android, YubiKit supports NFC keys and provides a FIDO2/WebAuthn client with WebView integration. On iOS, the library can request an OTP from an NFC YubiKey using an NFC-enabled device. However, in-app support depends on app developers integrating these SDKs, and native mobile-browser passkey authentication over NFC is not documented. missing for 10: documented NFC FIDO2/passkey authentication in mobile browsers (Safari/Chrome), iOS NFC FIDO2 rather than OTP only, hands-on or community corroboration of tap-to-phone use.",
+    "rationale": "Yubico's own docs confirm NFC-enabled YubiKeys exist and work with phones. YubiKit Android supports NFC keys and includes a FIDO2/WebAuthn client with WebView integration, and YubiKit iOS reads OTPs from NFC keys on NFC-enabled iOS devices. However, this support is shown only through app SDKs; nothing documents tap-to-authenticate in mobile browsers like Safari or Chrome, or FIDO2/passkey over NFC on iOS. Missing for 10: documented NFC passkey/WebAuthn login in mobile browsers, iOS FIDO2-over-NFC evidence, hands-on or independent corroboration of NFC phone use.",
     "evidenceIds": [
       "yubikey-docs-20",
       "yubikey-docs-21",
@@ -6575,7 +6673,7 @@
       "citations": [
         {
           "evidenceId": "yubikey-docs-20",
-          "quote": "YubiKit is an Android library provided by Yubico to enable YubiKey support in Android apps. Both USB and NFC-enabled YubiKeys are supported."
+          "quote": "Both USB and NFC-enabled YubiKeys are supported."
         },
         {
           "evidenceId": "yubikey-docs-21",
@@ -6594,7 +6692,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Yubico documents official SDKs for the platforms the story names. For mobile there is YubiKit for Android (USB and NFC) and YubiKit for iOS. For desktop there is the .NET SDK and the python-fido2 library, and the developer portal states that both mobile and desktop SDKs exist so developers can integrate hardware security into their apps. A runtime probe confirms python-fido2 is published on PyPI. Missing for 10: independent community or hands-on corroboration that apps were actually built with these SDKs, and the iOS SDK's cited capability is narrow (NFC OTP requests).",
+    "rationale": "Yubico documents official mobile SDKs for Android (YubiKit Android, USB and NFC, with high-level FIDO2 UI components) and iOS (YubiKit iOS). It also documents desktop SDKs: the .NET YubiKey SDK and python-fido2, and the latter resolves on PyPI per a runtime probe. Missing for 10: independent hands-on developer corroboration of the mobile and desktop SDKs; the iOS SDK evidence is thin, covering only NFC OTP.",
     "evidenceIds": [
       "yubikey-docs-2",
       "yubikey-docs-19",
@@ -6624,6 +6722,10 @@
         {
           "evidenceId": "yubikey-docs-21",
           "quote": "The library supports NFC-enabled YubiKeys and provides the APIs to request an OTP (Yubico OTP or HOTP) from the NFC YubiKeys using a NFC-enabled iOS device."
+        },
+        {
+          "evidenceId": "yubikey-docs-13",
+          "quote": "Provides library functionality for communicating with a FIDO device over USB as well as verifying attestation and assertion signatures."
         }
       ]
     }
@@ -6634,7 +6736,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Firmware openness is a fair question for a hardware security key, so the axis applies. The pack contains no evidence that YubiKey firmware is open source or independently audited. The only on-topic item calls the YubiKey 'just a proprietary smartcard', and the firmware-version docs and non-upgradability comments say nothing about openness or audits. Yubico's host-side SDKs and CLI are not device firmware, so they do not count toward this story.",
+    "rationale": "Firmware openness is a fair question for a hardware security key. The pack shows nothing indicating that YubiKey firmware is open source or independently audited. The evidence covers only client SDKs, libraries and the ykman CLI, which are not firmware, and community comments describe the device as a \"proprietary smartcard\" with non-upgradable firmware.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6647,15 +6749,16 @@
     "productId": "yubikey",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico ships its own programmatic surfaces for the key: the official ykman CLI offers scriptable device management (applications, PINs, PIV/OATH/OTP slots, device info), and the .NET SDK integrates the key and its applications into code. The docs name the GUI and ykman as alternatives for at least one task (reading firmware version), but nothing states that every UI action is available programmatically. missing for 10: explicit documentation of API/CLI parity with the Yubico Authenticator GUI, a machine-readable API spec (OpenAPI probes 404), and independent hands-on confirmation that all GUI functions can be scripted.",
+    "rationale": "Yubico ships its own programmatic surfaces for the key: the ykman CLI, described as offering full scriptable device management (applications, PINs, PIV/OATH/OTP slots, device info), plus .NET, Android, iOS and Python SDKs. Both the Authenticator GUI and ykman can read device info, but nothing documents a feature-for-feature match between the GUI and the programmatic interfaces. The fleet REST API covers only delivery, inventory and shipment, and no machine-readable API spec exists. Missing for 10: an explicit statement or evidence of UI-to-API parity, a machine-readable API spec (OpenAPI/llms.txt), and independent hands-on corroboration that every GUI action is scriptable.",
     "evidenceIds": [
       "yubikey-probe-rt-1",
       "yubikey-docs-4",
       "yubikey-docs-25",
       "yubikey-docs-19",
-      "yubikey-probe-4",
+      "yubikey-docs-2",
+      "yubikey-probe-rt-2",
       "yubikey-probe-3"
     ],
     "support": {
@@ -6688,7 +6791,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Leaving with your data is a fair question for a credential-storing hardware authenticator, so the axis applies. The evidence shows no data-export capability. It documents the opposite: private keys and OATH secrets are generated and kept on the device and 'cannot be exported or extracted'. Community reports describe leaving or replacing a key as manually re-enrolling every account. Use of open standards (OpenPGP, PIV/PKCS#11, FIDO2) reduces lock-in but is an adjacent feature, not an export path.",
+    "rationale": "Data portability is a fair question for a device that stores user credentials and secrets, so the axis applies. The evidence documents no data-export capability. It instead says private keys are generated on the hardware 'where it cannot be exported or extracted.' Community reports say leaving requires manually re-enrolling every account. Support for open standards (OpenPGP, PIV, FIDO2) reduces protocol lock-in, but that is an adjacent feature, not export of the user's data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6703,7 +6806,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Source openness is a fair question for a hardware security key and its software, but nothing in the evidence shows YubiKey source published under an open license. The SDKs, ykman and python-fido2 are documented as installable tools and libraries, with no mention of a license or a public source repository, and one community comment calls the device 'a proprietary smartcard'.",
+    "rationale": "Reading the source under an open license is a fair question for a hardware security key and its firmware and software. The pack documents SDKs and a CLI installable from PyPI, but nothing states that any source is published or names an open license. The only evidence about openness describes the YubiKey as a proprietary smartcard, so this is unmet, not disputed.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6718,7 +6821,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The YubiKey's core product is a physical hardware authentication device that the user owns and holds locally, so self-hosting, a deployment axis for hosted software or services, is a category error here. Self-hostable libraries such as java-webauthn-server are developer building blocks rather than the core product, and the YubiEnterprise API is a separate fleet-delivery service, so neither makes the axis applicable.",
+    "rationale": "YubiKey's core product is a physical hardware authentication device, so self-hosting it is a category error rather than an unmet capability. The evidence shows only hosted adjuncts (the YubiCloud OTP validation API and the YubiEnterprise console) and developer libraries such as java-webauthn-server. None of these documents a self-hostable deployment of the core product, so the axis does not flip to applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6730,10 +6833,10 @@
   {
     "productId": "yubikey",
     "storyId": "openpgp-onkey",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Yubico's own PGP docs say the YubiKey runs OpenPGP sign and encrypt operations with a private key stored on the device. Community users confirm it works as a GPG/OpenPGP smart card (e.g. with pass). The pack never documents git commit signing or encrypted-email workflows themselves, so those use cases are only implied by generic OpenPGP sign/encrypt support. missing for 10: documented git commit-signing setup, documented encrypted-email (e.g. GPG mail client) workflow, independent hands-on corroboration of those use cases.",
+    "rationale": "Yubico's own PGP docs say the YubiKey's OpenPGP function performs RSA or ECC sign and encrypt operations with a private key stored on the device. Community users confirm it works as a GPG smart card where cheaper FIDO keys do not. Git signing and email encryption are standard uses of these OpenPGP operations, but the pack does not walk through either one. Missing for 10: explicit git commit-signing documentation, explicit encrypted-email (e.g., GPG mail client) guidance, and hands-on corroboration of those specific workflows.",
     "evidenceIds": [
       "yubikey-docs-9",
       "yubikey-docs-26",
@@ -6742,7 +6845,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can keep OpenPGP keys on the device and use them for git commit signing and encrypted email",
       "citations": [
         {
@@ -6752,6 +6855,10 @@
         {
           "evidenceId": "yubikey-comm-14",
           "quote": "Yubikeys are the only ones I've found that support both FIDO2/WebAuthn as well as GPG smart card functionality for use with pass(1)."
+        },
+        {
+          "evidenceId": "yubikey-comm-15",
+          "quote": "Unfortunately SoloKey doesn't work as an OpenPGP smart card, which means it's not a real substitute for a Yubikey."
         }
       ]
     }
@@ -6759,19 +6866,19 @@
   {
     "productId": "yubikey",
     "storyId": "otp-legacy-slots",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Yubico documents the key's own legacy OTP support. OATH shared secrets are stored and processed in the secure element, Yubico OTP works as a plain typed string, the iOS SDK requests HOTP, and the ykman CLI manages OATH/OTP slots. The story's 'or' phrasing is satisfied by these OATH/OTP slots even without challenge-response evidence. missing for 10: explicit TOTP documentation, any evidence of challenge-response mode, in-depth slot-configuration docs, independent or hands-on corroboration of OATH/OTP use.",
+    "rationale": "First-party docs show the YubiKey ships its own legacy OTP capabilities. These are an OATH application whose shared secrets are stored and processed in the secure element, configurable OATH/OTP slots via ykman, HOTP and Yubico OTP retrievable over NFC, and Yubico OTP that types as a plain string without client software. TOTP is never named explicitly, and nothing documents challenge-response, so the story's coverage is only partial. missing for 10: explicit TOTP documentation, challenge-response mode evidence, independent hands-on corroboration of OTP/OATH use with non-WebAuthn services.",
     "evidenceIds": [
       "yubikey-docs-7",
-      "yubikey-docs-10",
       "yubikey-docs-21",
-      "yubikey-probe-rt-1"
+      "yubikey-probe-rt-1",
+      "yubikey-docs-10"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a power user, the key covers legacy one-time-password schemes — TOTP/HOTP slots or challenge-response — for services that still lack WebAuthn",
       "citations": [
         {
@@ -6779,16 +6886,16 @@
           "quote": "the shared secrets are stored and processed in the YubiKey's secure element"
         },
         {
-          "evidenceId": "yubikey-docs-10",
-          "quote": "No client software needed. The OTP is just a string. If you can send a password, you can send an OTP."
-        },
-        {
           "evidenceId": "yubikey-docs-21",
-          "quote": "provides the APIs to request an OTP (Yubico OTP or HOTP) from the NFC YubiKeys"
+          "quote": "provides the APIs to request an OTP (Yubico OTP or HOTP) from the NFC YubiKeys using a NFC-enabled iOS device"
         },
         {
           "evidenceId": "yubikey-probe-rt-1",
           "quote": "Full scriptable device management: enable applications, PINs, PIV/OATH/OTP slots, device info."
+        },
+        {
+          "evidenceId": "yubikey-docs-10",
+          "quote": "No client software needed. The OTP is just a string. If you can send a password, you can send an OTP."
         }
       ]
     }
@@ -6799,7 +6906,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Yubico's FIDO2 docs state the key can enforce user verification via PIN entry in addition to touch. ykman manages PINs, and a community report confirms a FIDO2 PIN can be set, though keys ship without one and must be re-enrolled after setting it. Missing for 10: in-depth first-party FIDO2 PIN/UV documentation beyond the SSH guide, any evidence of a built-in biometric option, and evidence that UV can be forced at the key level rather than left optional and off by default.",
+    "rationale": "Yubico documents that FIDO2 on the YubiKey can enforce user verification via PIN entry on top of touch-based user presence. The ykman CLI manages PINs, and community users confirm setting a FIDO2 PIN before enrolling, which satisfies the 'PIN or biometric' requirement. Missing for 10: a dedicated first-party FIDO2 PIN/UV reference (evidence is one line in an SSH guide), any evidence of a built-in biometric option, and documentation of enforcing UV by default (the community notes the key ships with no PIN set).",
     "evidenceIds": [
       "yubikey-docs-6",
       "yubikey-probe-rt-1",
@@ -6820,7 +6927,7 @@
         },
         {
           "evidenceId": "yubikey-comm-13",
-          "quote": "you need to unenroll everywhere, set a PIN, and enroll again."
+          "quote": "you need to unenroll everywhere, set a PIN, and enroll again"
         }
       ]
     }
@@ -6831,7 +6938,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Yubico's PIV docs confirm the YubiKey works as a smart card for RSA/ECC sign and encrypt operations through PKCS#11, with keys stored on the device. PIV attestation shows keys are generated on the device rather than imported, ykman manages the PIV slots, and a community user confirms it works as a PIV smartcard. The specific scenarios in the story are not documented as such. Missing for 10: explicit docs for certificate-based workstation sign-in, VPN authentication and code-signing workflows, and independent hands-on corroboration of those deployments.",
+    "rationale": "Yubico documents a PIV application that performs RSA/ECC sign and encrypt operations with a private key stored on the YubiKey through PKCS#11. PIV attestation proves keys were generated on the device rather than imported, ykman manages the PIV slots, and a community member confirms it works as a PIV smart card. However, the specific use cases in the story (workstation sign-in, VPN and code signing) are not documented in the pack. Missing for 10: documented smart-card workstation logon, VPN certificate authentication, code-signing workflows, and hands-on corroboration of these scenarios.",
     "evidenceIds": [
       "yubikey-docs-8",
       "yubikey-docs-11",
@@ -6870,7 +6977,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "YubiKey stores secrets on the device's secure element, and Yubico also runs a cloud service (YubiEnterprise 'YubiKey as a Service' console and API), so a residency question is fair for this product. However, nothing in the evidence documents choosing a storage region or data residency for any Yubico-hosted data. On-device key storage is a different capability from selecting a hosting region and earns no credit here.",
+    "rationale": "YubiKey ships cloud services alongside the hardware, namely YubiCloud OTP validation and the YubiEnterprise console and API, so data residency is a fair question to ask. The evidence documents no way to choose a storage region or residency for those services. Secrets being kept on the device's secure element is a related security property, not a user-selectable region, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6885,7 +6992,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "YubiKey is a hardware authentication device. Secrets are generated and stored on the key's secure element, and the product does not ingest user content into any model-bearing service, so an AI-training opt-out is a category error for this kind of product. Nothing in the evidence shows Yubico collecting user data for AI training or offering any related control, so the axis does not apply.",
+    "rationale": "YubiKey is a hardware authentication device that stores keys and secrets on its secure element. It does not ingest or process user content in a way that could feed AI model training, so an AI-training opt-out is a category error for this product type. Nothing in the evidence shows Yubico offering any AI-training-related data control that would make the axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6900,7 +7007,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair question for a hardware key that stores credentials and secrets, so the axis applies. However, the evidence pack never documents a way to delete, reset, or set retention for data on the YubiKey. The ykman probe lists slot, PIN and application management without mentioning deletion or reset, and community comments about unenrolling refer to individual online services, not the product.",
+    "rationale": "Data retention and deletion is a fair question for a hardware key, since it stores credentials and secrets on the device. However, nothing in the evidence documents controls for deleting stored credentials, resetting applications, or setting retention. The ykman probe lists slot and PIN management but never mentions deletion or reset, and community comments about unenrolling refer to accounts on other services, not a YubiKey capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6915,7 +7022,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "YubiKey ships companion software (the ykman CLI, Yubico Authenticator, SDKs), so whether telemetry can be disabled is a fair privacy question for this product. The evidence pack never mentions telemetry, usage tracking, or any opt-out control. Absence of evidence for an applicable capability is \"none\".",
+    "rationale": "Telemetry opt-out is a fair question for YubiKey, since it ships companion software (ykman CLI, Yubico Authenticator, SDKs) that could collect usage data. Nothing in the evidence pack mentions telemetry, usage tracking, or any opt-out control, so the axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6930,11 +7037,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Yubico documents the YubiKey as a phishing-resistant MFA device for online accounts, with CTAP 2.3 and passkey support, and community users confirm it works as a FIDO2/WebAuthn key enrolled across multiple services. However, no evidence names Google, GitHub, Microsoft or password managers as compatible services, and U2F is not explicitly mentioned. missing for 10: explicit compatibility with Google, GitHub, Microsoft and password managers, explicit U2F mention, hands-on corroboration on those named services.",
+    "rationale": "Yubico documents the YubiKey as a phishing-resistant MFA and passkey device for online accounts and services, with FIDO2/CTAP 2.3 support. Community users confirm FIDO2/WebAuthn works and describe enrolling keys across many accounts. However, nothing in the pack names Google, GitHub, Microsoft or any password manager, and U2F is not mentioned explicitly. Missing for 10: evidence of compatibility with Google, GitHub, Microsoft and password managers, explicit U2F support, and independent hands-on reports of cross-service use.",
     "evidenceIds": [
       "yubikey-docs-28",
-      "yubikey-docs-3",
       "yubikey-docs-27",
+      "yubikey-docs-3",
       "yubikey-comm-14",
       "yubikey-comm-13"
     ],
@@ -6948,12 +7055,16 @@
           "quote": "YubiKeys are hardware authentication devices that protect user access to computers, networks, and online accounts and services through phishing-resistant multi-factor authentication and passwordless login."
         },
         {
-          "evidenceId": "yubikey-comm-14",
-          "quote": "Yubikeys are the only ones I've found that support both FIDO2/WebAuthn as well as GPG smart card functionality"
-        },
-        {
           "evidenceId": "yubikey-docs-3",
           "quote": "YubiKey 5.8 is here — hardware signing, CTAP 2.3, and smoother passkey UX."
+        },
+        {
+          "evidenceId": "yubikey-comm-14",
+          "quote": "So far, Yubikeys are the only ones I've found that support both FIDO2/WebAuthn as well as GPG smart card functionality"
+        },
+        {
+          "evidenceId": "yubikey-comm-13",
+          "quote": "you already enrolled keys without a PIN and now discover that you need to unenroll everywhere, set a PIN, and enroll again."
         }
       ]
     }

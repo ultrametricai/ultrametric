@@ -5,10 +5,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows 1Password stores one-time passwords and offers a CLI, SDKs, Connect, and service accounts for programmatic item access. But no item shows the CLI or any API returning a current TOTP code for an automated 2FA login. General item-management and OTP-storage features are adjacent capabilities and do not establish this story.",
+    "rationale": "The evidence shows that 1Password stores one-time passwords and offers a CLI, SDKs and a Connect REST API for managing items. No evidence item documents generating or returning a current TOTP code through any of these surfaces, such as a CLI flag or an API/SDK OTP field. Storage plus general item access is adjacent support, not the story's capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, an agent can fetch a current TOTP code programmatically — via CLI or API — to complete a 2FA login inside an automated workflow",
       "citations": []
@@ -20,12 +20,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "1Password ships its own programmatic surfaces for vault access. The op CLI integrates with the local desktop app and can list vault items, Connect Servers expose items via a private REST API, and the SDKs read secrets programmatically. An agent can therefore query secrets without screen-scraping. However, the evidence does not show agent retrieval of one-time codes, Connect is aimed at company infrastructure rather than a local desktop endpoint, and the official Environments MCP server explicitly does not return secrets to the agent. missing for 10: documented agent retrieval of TOTP/one-time codes via a programmatic surface, a local agent-facing endpoint (e.g. MCP) that actually returns vault secrets, independent or hands-on corroboration of agent use.",
+    "rationale": "1Password ships its own programmatic vault surfaces that avoid screen-scraping. The op CLI integrates with the local desktop app and can list vault items. Connect Servers expose items and vaults over a private REST API, and SDKs programmatically read secrets. However, the evidence never shows an agent pulling one-time codes through these surfaces. Connect is framed as infrastructure for company apps rather than a local endpoint for a personal agent, and the Environments MCP server explicitly avoids returning secrets to the agent. Missing for 10: documented retrieval of OTP/2FA codes via CLI/API/SDK, a documented local (desktop-app-backed) endpoint designed for agent queries, and independent hands-on corroboration of agent use.",
     "evidenceIds": [
       "1password-docs-1",
       "1password-docs-2",
       "1password-docs-4",
       "1password-docs-7",
+      "1password-docs-26",
       "1password-probe-rt-1",
       "1password-probe-rt-3"
     ],
@@ -59,14 +60,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "1Password's SDKs explicitly offer programmatic item management. The CLI, Connect REST API and Service Accounts provide documented machine surfaces for vault items, so an agent can plausibly store credentials. The evidence never shows explicit create or update operations, and storing one-time passwords is documented only as a user-app feature. missing for 10: explicit documented create/update item calls (the CLI reference shown only covers `op item list`), programmatic TOTP-secret seeding, confirmation that Connect/Service Accounts allow writes, hands-on or independent corroboration.",
+    "rationale": "1Password's SDKs document programmatic item management, and Connect exposes vault items through a REST API, so an agent has first-party surfaces for working with vault entries. However, no evidence explicitly shows create or update operations, and nothing shows seeding TOTP secrets programmatically; the one-time-password docs cover app use, and the CLI example is only a list command. Missing for 10: explicit create/update item operations in CLI/SDK/Connect docs, programmatic TOTP field seeding, hands-on corroboration of agent-driven writes.",
     "evidenceIds": [
       "1password-docs-8",
       "1password-docs-26",
       "1password-docs-4",
-      "1password-docs-5",
       "1password-docs-2",
-      "1password-probe-rt-3"
+      "1password-connect-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -84,10 +84,6 @@
         {
           "evidenceId": "1password-docs-4",
           "quote": "1Password Connect Servers allow you to securely access your 1Password items and vaults in your company's apps and cloud infrastructure using a private REST API."
-        },
-        {
-          "evidenceId": "1password-docs-5",
-          "quote": "1Password Service Accounts help automate secrets management in your applications and infrastructure"
         }
       ]
     }
@@ -98,11 +94,12 @@
     "verdict": "full",
     "quality": 10,
     "confidence": "high",
-    "rationale": "Hands-on probes confirm that 1Password serves llms.txt on both its developer docs site and its support site. The developer site also serves llms-full.txt and a markdown mirror of every docs page. On top of that, there is a public, keyless docs MCP server and a dedicated ai-readable-docs page, so every part of pointing an agent at llms.txt or agent-oriented docs is covered by verified runtime evidence.",
+    "rationale": "Runtime probes confirm 1password.dev serves llms.txt and llms-full.txt, every docs page has a real .md mirror, and support.1password.com serves its own llms.txt of support guides. A public, keyless docs MCP server at 1password.dev/mcp completed a full initialize handshake, and the probed page is titled ai-readable-docs, so agents have several first-party, independently verified ways to consume the docs.",
     "evidenceIds": [
       "1password-probe-1",
       "1password-probe-rt-2",
-      "1password-probe-rt-1"
+      "1password-probe-rt-1",
+      "1password-events-versioning-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -130,7 +127,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents AI-generated insights or suggestions inside 1Password. Watchtower's security alerts and the password generator's suggested passwords are rule-based features, not AI. The MCP servers, llms.txt files and CLI let external agents work with 1Password, which is adjacent to this story and earns no credit. A password manager could plausibly ship in-product AI insights, so the axis applies and the verdict is none rather than na.",
+    "rationale": "The evidence shows no AI-generated insights or suggestions inside 1Password. Watchtower's security alerts and the password generator are rule-based features, not AI, so they are adjacent at best. The MCP servers and llms.txt serve external agents and docs consumers, not in-product AI insights over the user's data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -145,7 +142,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "1Password documents primitives that let external systems such as CI/CD pipelines, apps and scripts access secrets non-interactively: Service Accounts, Connect, the Credential Broker, SDKs and the CLI. These are building blocks that other tools run. None of the evidence shows 1Password itself letting a user define automations or recurring background tasks that it executes. Secrets automation for machine workflows is adjacent, not the story's capability.",
+    "rationale": "The evidence shows only developer building blocks: service accounts, the scriptable op CLI, SDKs and the Credential Broker give external CI/CD or scripts access to secrets. Nothing shows 1Password itself letting a user define, schedule or run autonomous background automations. A user's own pipelines calling these primitives do not count as the product delivering the capability.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -160,7 +157,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair question for a password manager, but the evidence shows no in-product assistant that users can delegate tasks to. What it does show is adjacent: MCP servers that let external agents such as Claude Code or Cursor connect to 1Password, llms.txt docs, a CLI and SDKs. These serve outside agents and developers rather than being an assistant built into 1Password.",
+    "rationale": "A built-in AI assistant is a fair axis for a consumer and business SaaS product like 1Password, but the evidence pack never documents an in-product assistant that users can delegate tasks to. The MCP servers, llms.txt files and CLI/SDK surfaces let external agents connect to 1Password, which is adjacent to this story rather than an assistant built into the product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -175,13 +172,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "1Password documents machine-oriented, non-interactive access built for automation. The Credential Broker gives CI/CD and other machine workflows short-lived access to secrets, Service Accounts automate secrets management, and Connect Servers expose a private REST API for apps and infrastructure. The scriptable op CLI underpins these surfaces. Missing for 10: explicit documentation of the CLI authenticating headlessly in a CI runner (the CLI docs shown emphasize Touch ID or Windows Hello sign-in), and independent or hands-on corroboration of CI usage.",
+    "rationale": "1Password documents non-interactive automation surfaces built for machine workflows. The Credential Broker gives CI/CD short-lived access to secrets, Service Accounts automate secrets management without extra services, Connect Servers expose a private REST API for infrastructure, and the scriptable op CLI is packaged for installation. missing for 10: independent or hands-on corroboration of a CI run, documentation of specific CI-platform integrations or headless sign-in flow details in the pack.",
     "evidenceIds": [
       "1password-docs-3",
       "1password-docs-5",
       "1password-docs-4",
       "1password-probe-rt-3",
-      "1password-docs-2"
+      "1password-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -213,7 +210,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "1Password is a password and secrets manager, not an agent or assistant that consumes tools, so acting as an MCP client is outside its product category. The evidence shows only the opposite role: 1Password publishes MCP servers (the Developer docs MCP and the Environments MCP Server) for other clients such as Claude Code and Cursor to connect to. That server-side evidence does not make this client-side story applicable, and nothing shows 1Password itself loading or using third-party MCP servers.",
+    "rationale": "1Password is a password and secrets manager, not an AI agent or assistant, so acting as an MCP client that plugs in external MCP servers to use their tools is outside its product role. The pack shows 1Password publishes its own MCP servers (the docs MCP and the Environments MCP Server), but that is the server role. It does not show 1Password consuming other servers' tools, so it does not make this client-side axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -228,7 +225,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "1Password is a SaaS/developer platform rather than an agent, so the official MCP server question applies. It ships two first-party MCP servers. The Environments MCP Server lets MCP clients such as Claude Code, Codex, Cursor and Kiro manage Environments. A public docs MCP server at 1password.dev/mcp completed a keyless initialize handshake in a runtime probe. missing for 10: the Environments MCP Server is still Beta and is scoped to Environments (not general vault items), and there is no independent community or hands-on corroboration of agent use beyond the probe.",
+    "rationale": "1Password documents an official Environments MCP Server that MCP clients such as Claude Code, Codex, Cursor and Kiro can use to manage 1Password Environments. A runtime probe also confirmed a second official public docs MCP server completing a full initialize handshake. missing for 10: the Environments MCP Server is labeled Beta and limited in scope to Environments (it does not return secrets or cover general vault items), and there is little detailed setup or configuration documentation in the pack.",
     "evidenceIds": [
       "1password-docs-27",
       "1password-probe-2",
@@ -260,7 +257,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows 1Password accepting natural-language commands itself; its documented operating surfaces are the op CLI, the SDKs and REST APIs. The official Environments MCP server lets third-party agents manage Environments, which is a separate MCP-server capability where the agent client, not 1Password, interprets the language. It is adjacent support and earns no credit here.",
+    "rationale": "The evidence shows no built-in natural-language interface, assistant, or conversational command mode in 1Password itself. The documented surfaces are a structured CLI (e.g. `op item list --vault Private`), SDKs, REST APIs, and MCP servers. The Environments MCP Server lets external agents such as Claude Code manage Environments, but that is an MCP-server capability used through a third-party agent host, so it is adjacent and belongs to a different story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -273,14 +270,15 @@
     "productId": "1password",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "1Password ships an official CLI (`op`) with first-party get-started and reference docs, such as `op item list --vault Private`. A runtime probe independently confirms it is packaged in Homebrew as the 1password-cli cask (v2.39.0) and is the scriptable surface behind service accounts and secrets automation. missing for 10: explicit documentation of agent-oriented CLI usage (e.g. machine-readable output or non-interactive agent workflows).",
+    "rationale": "1Password ships an official CLI (`op`). It has first-party get-started and reference docs, including commands like `op item list`, and is packaged in Homebrew as the 1password-cli cask (v2.39.0). It is described as the scriptable surface behind service accounts, Connect, and secrets automation, and its docs have LLM-readable .md mirrors. missing for 10: independent community or hands-on corroboration of CLI use in agent workflows, documentation of agent-oriented CLI features such as machine-readable output.",
     "evidenceIds": [
       "1password-docs-1",
       "1password-docs-2",
       "1password-probe-3",
-      "1password-probe-rt-3"
+      "1password-probe-rt-3",
+      "1password-probe-rt-2"
     ],
     "support": {
       "relation": "direct",
@@ -296,12 +294,12 @@
           "quote": "op item list --vault Private"
         },
         {
-          "evidenceId": "1password-probe-3",
-          "quote": "official CLI documented at https://www.1password.dev/cli/get-started"
-        },
-        {
           "evidenceId": "1password-probe-rt-3",
           "quote": "the official op CLI is packaged in Homebrew as the 1password-cli cask ('Command-line interface for 1Password', v2.39.0) — the scriptable surface behind service accounts, Connect, and secrets automation."
+        },
+        {
+          "evidenceId": "1password-probe-rt-2",
+          "quote": "https://www.1password.dev/cli/get-started.md returns markdown '# Get started with 1Password CLI'"
         }
       ]
     }
@@ -312,14 +310,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "1Password documents several programmatic surfaces: a REST API through Connect Servers, an Events API for account activity, and official SDKs in Go, JavaScript and Python for managing items, backed by a public SDK repo on GitHub. Together these let a user drive the product through documented interfaces. Missing for 10: no hands-on or independent evidence of actual API calls, and the item-management REST API runs only through a self-hosted Connect Server ('private REST API') rather than a hosted public endpoint.",
+    "rationale": "1Password documents two REST APIs with downloadable OpenAPI specs and interactive reference playgrounds. The Connect Server API manages items and vaults, and the Events API handles audit and activity data, with documented path versioning and a changelog. These are backed by SDKs in Go, JavaScript and Python that let integrations programmatically manage items. missing for 10: independent or hands-on corroboration of API use, a general hosted REST API (Connect requires deploying your own server and is described as a private REST API), and an account-wide or Connect API deprecation policy.",
     "evidenceIds": [
       "1password-docs-4",
+      "1password-connect-openapi-20261106",
+      "1password-events-openapi-20261106",
+      "1password-api-playground-20261106",
+      "1password-events-versioning-20261106",
       "1password-docs-6",
-      "1password-docs-8",
       "1password-docs-26",
-      "1password-gh-1",
-      "1password-docs-5"
+      "1password-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -331,20 +331,20 @@
           "quote": "1Password Connect Servers allow you to securely access your 1Password items and vaults in your company's apps and cloud infrastructure using a private REST API."
         },
         {
-          "evidenceId": "1password-docs-6",
-          "quote": "The 1Password Events API allows you to retrieve information about activity in your 1Password Business account"
+          "evidenceId": "1password-connect-openapi-20261106",
+          "quote": "The 1Password Connect Server API likewise ships a downloadable OpenAPI document (3.0.2, version 1.8.1), linked from the Connect API reference as the specification file."
+        },
+        {
+          "evidenceId": "1password-events-openapi-20261106",
+          "quote": "1Password publishes the Events API as a downloadable OpenAPI 3.0.0 document (semver 1.4.1)"
+        },
+        {
+          "evidenceId": "1password-api-playground-20261106",
+          "quote": "The Events API and Connect API references run the Mintlify interactive playground"
         },
         {
           "evidenceId": "1password-docs-26",
           "quote": "1Password SDKs allow you to build integrations that programmatically interact with 1Password using Go, JavaScript, or Python."
-        },
-        {
-          "evidenceId": "1password-docs-8",
-          "quote": "Automate item management: Programmatically manage items in your 1Password account."
-        },
-        {
-          "evidenceId": "1password-gh-1",
-          "quote": "Build integrations that programmatically interact with 1Password."
         }
       ]
     }
@@ -355,7 +355,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "1Password documents first-party machine-identity credentials: Service Accounts for automation, and a Credential Broker that gives machine workflows short-lived access to secrets without managing service account tokens. Short-lived access is a form of least privilege. However, the evidence never shows vault- or permission-level scoping of these credentials, and never frames them as agent-specific. missing for 10: documented per-vault/per-permission scoping of service account or broker credentials, explicit agent-oriented credential issuance, independent or hands-on corroboration.",
+    "rationale": "1Password documents its own machine-credential mechanisms. Service Accounts automate secrets access for applications, and the Credential Broker gives machine workflows short-lived access to secrets, which is a time-bounded form of least privilege. The pack never documents how these credentials are scoped (for example per-vault or read-only permissions) or that they are aimed at AI agents. missing for 10: documented per-vault/per-permission scoping of service account or Connect tokens, explicit agent-targeted credential issuance, independent or hands-on corroboration.",
     "evidenceIds": [
       "1password-docs-3",
       "1password-docs-5",
@@ -383,7 +383,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "1Password documents official SDKs in Go, JavaScript, and Python for building programmatic integrations, covering both loading secrets and managing items. An official GitHub repository for the JS SDK corroborates that the SDKs exist. missing for 10: independent hands-on corroboration of SDK usage depth (e.g., community reports or runtime probe of SDK functionality).",
+    "rationale": "1Password documents official SDKs in Go, JavaScript, and Python. The docs cover loading secrets via secret references and programmatic item management, and an official GitHub repo (onepassword-sdk-js) corroborates the SDK. Missing for 10: independent or hands-on corroboration of building against the SDKs, and depth on per-language coverage.",
     "evidenceIds": [
       "1password-docs-26",
       "1password-docs-7",
@@ -404,10 +404,6 @@
           "quote": "Automate item management: Programmatically manage items in your 1Password account."
         },
         {
-          "evidenceId": "1password-docs-7",
-          "quote": "Load secrets into your code with secret references or read environment variables from 1Password Environments."
-        },
-        {
           "evidenceId": "1password-gh-1",
           "quote": "Build integrations that programmatically interact with 1Password."
         }
@@ -420,7 +416,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair question for a SaaS secrets platform like 1Password, so the axis applies. The pack shows no registrable outbound HTTP callbacks. The Events API only retrieves activity for forwarding to a SIEM, which is a pull model rather than webhook subscriptions, so it is an adjacent feature and earns no credit.",
+    "rationale": "The evidence documents an Events API that lets you retrieve account activity, for example by polling POST /api/v2/auditevents, and forward it to a SIEM. That is a pull API, not registrable outbound HTTP webhook callbacks, so it is only an adjacent capability. Nothing in the pack shows 1Password letting a programmatic consumer subscribe to pushed events.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -432,31 +428,61 @@
   {
     "productId": "1password",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence shows a CLI reference with example commands, REST-based Connect and Events APIs, SDKs, llms.txt and markdown mirrors, and a public docs MCP server. None of it documents an interactive API reference, such as a try-it console or explorer, where examples can be run in place. Static example commands and AI-readable docs are adjacent features, not the interactive, runnable reference this story asks for.",
-    "evidenceIds": [],
+    "rationale": "1Password's Events API and Connect API references use the Mintlify interactive playground, with a \"Try it\" panel beside each endpoint and generated cURL samples. Both are rendered from downloadable OpenAPI specs. That is first-party, runnable, interactive reference for those surfaces. However, the CLI and SDK docs are prose and code only, so coverage is limited to two API surfaces. missing for 10: interactive/runnable reference for the Service Accounts, CLI and SDK surfaces; independent or hands-on corroboration that the playground works.",
+    "evidenceIds": [
+      "1password-api-playground-20261106",
+      "1password-events-openapi-20261106",
+      "1password-connect-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "1password-api-playground-20261106",
+          "quote": "The Events API and Connect API references run the Mintlify interactive playground (\"Try it\" renders next to the endpoint, e.g. POST /api/v2/auditevents, with generated cURL samples)."
+        },
+        {
+          "evidenceId": "1password-events-openapi-20261106",
+          "quote": "1Password publishes the Events API as a downloadable OpenAPI 3.0.0 document (semver 1.4.1), linked from the Events API reference"
+        },
+        {
+          "evidenceId": "1password-connect-openapi-20261106",
+          "quote": "The 1Password Connect Server API likewise ships a downloadable OpenAPI document (3.0.2, version 1.8.1), linked from the Connect API reference as the specification file."
+        }
+      ]
     }
   },
   {
     "productId": "1password",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence documents REST APIs (Connect Server, Events API), SDKs, a CLI, llms.txt docs and MCP servers, but nothing shows a downloadable OpenAPI or equivalent machine-readable API spec. LLM-readable docs and MCP servers are adjacent features, not an API specification.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "1Password publishes downloadable OpenAPI documents for its two REST surfaces: the Events API (OpenAPI 3.0.0, v1.4.1) and the Connect Server API (OpenAPI 3.0.2, v1.8.1). Both are linked from their API references, which render interactive playgrounds from these specs. The CLI, SDK and Service Accounts surfaces are CLI/SDK-native and have no specs. missing for 10: independent or hands-on corroboration that the spec files download and validate, and spec coverage beyond the Events and Connect surfaces.",
+    "evidenceIds": [
+      "1password-events-openapi-20261106",
+      "1password-connect-openapi-20261106",
+      "1password-api-playground-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "1password-events-openapi-20261106",
+          "quote": "1Password publishes the Events API as a downloadable OpenAPI 3.0.0 document (semver 1.4.1), linked from the Events API reference"
+        },
+        {
+          "evidenceId": "1password-connect-openapi-20261106",
+          "quote": "The 1Password Connect Server API likewise ships a downloadable OpenAPI document (3.0.2, version 1.8.1), linked from the Connect API reference as the specification file."
+        }
+      ]
     }
   },
   {
@@ -465,7 +491,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for a SaaS secrets platform with APIs, CLI, and SDKs, so the axis applies. However, the evidence pack documents no sandbox, test account, or developer environment isolated from production data. Separate vaults, service accounts, and '1Password Environments' are adjacent features (scoping and organizing secrets), not a documented sandbox for safe testing, so they earn no credit.",
+    "rationale": "1Password has developer APIs (Connect, Events, Service Accounts, SDKs), so a sandbox or test environment is a fair question for it. The evidence pack documents no sandbox, test account or isolated non-production environment. The interactive API playground and the Environments MCP Server's 'without returning secrets to the agent' behavior are related features, not sandbox isolation from production data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -477,16 +503,33 @@
   {
     "productId": "1password",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "1Password clearly ships programmatic surfaces: the Connect REST API, Events API, SDKs, CLI and MCP servers. However, nothing in the evidence documents API versioning (such as versioned endpoints) or a deprecation policy. The CLI package version (v2.39.0) and the MCP serverInfo version are release numbers, not a documented API versioning and deprecation commitment, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "1Password documents URL-path versioning for the Events API (V1 and V2), with a continued-support commitment for V1, a changelog and semver'd OpenAPI specs; the Connect API also ships a semver'd spec. However, the evidence explicitly says this is an Events-API-specific policy and that no account-wide or Connect-API deprecation policy exists. Missing for 10: formal deprecation policy with timelines/sunset notices, deprecation coverage for Connect, CLI and SDK surfaces, independent corroboration.",
+    "evidenceIds": [
+      "1password-events-versioning-20261106",
+      "1password-events-openapi-20261106",
+      "1password-connect-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "1password-events-versioning-20261106",
+          "quote": "The Events API supports both V1 and V2 endpoints... V1 endpoints remain fully supported for existing integrations that don't require the additional MSP account and user type information"
+        },
+        {
+          "evidenceId": "1password-events-openapi-20261106",
+          "quote": "1Password publishes the Events API as a downloadable OpenAPI 3.0.0 document (semver 1.4.1)"
+        },
+        {
+          "evidenceId": "1password-connect-openapi-20261106",
+          "quote": "The 1Password Connect Server API likewise ships a downloadable OpenAPI document (3.0.2, version 1.8.1)"
+        }
+      ]
     }
   },
   {
@@ -495,7 +538,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents the 1Password mobile app locking itself behind biometrics or a PIN. The only biometric mention is signing in to the CLI with Touch ID or Windows Hello through the desktop app, which is a different surface and does not show that a borrowed phone would keep codes protected. App locking is a fair axis for a password and OTP manager, so the missing evidence makes this none rather than na.",
+    "rationale": "The evidence pack never documents the 1Password mobile app locking itself behind biometrics or a PIN. The only biometric mention is the CLI signing in with Touch ID or Windows Hello through the desktop app integration. That is a different surface and says nothing about app lock on a phone.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -507,38 +550,16 @@
   {
     "productId": "1password",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "1Password's own documented bulk capabilities are import from CSV and other apps, export, and the CLI's `op item list --vault` command, which reads across many items. The SDKs also advertise programmatic item management. These cover bulk transfer and listing only; general multi-item operations like batch edit, move or delete are not documented, and scripting them through the CLI or SDK is a developer building block. Missing for 10: documented batch edit/move/delete commands or APIs, bulk operations exposed to AI agents, and hands-on or independent corroboration.",
-    "evidenceIds": [
-      "1password-docs-16",
-      "1password-docs-15",
-      "1password-docs-2",
-      "1password-docs-8"
-    ],
+    "rationale": "The evidence pack does not document a bulk operation that acts on many items at once, such as batch edit, move, delete or share. The CLI's `op item list` only lists items, and the SDK's \"programmatically manage items\" is a developer building block someone could use to script bulk changes. CSV import and export are migration features, not bulk operations across existing items, so none of these earn credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": [
-        {
-          "evidenceId": "1password-docs-16",
-          "quote": "You can import data into 1Password from many different browsers and applications, including applications that export data in the comma-separated values (CSV) file format"
-        },
-        {
-          "evidenceId": "1password-docs-15",
-          "quote": "You can export your information from the 1Password apps if you want to move it to a different app."
-        },
-        {
-          "evidenceId": "1password-docs-2",
-          "quote": "op item list --vault Private"
-        },
-        {
-          "evidenceId": "1password-docs-8",
-          "quote": "Automate item management: Programmatically manage items in your 1Password account."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -547,7 +568,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows a first-party rule engine where users define event-triggered automatic actions. The Events API only lets you retrieve activity for a SIEM. The CLI, SDKs, Connect and service accounts are developer building blocks for scripting, and Watchtower only flags issues; none of these is a user-defined trigger-action rule capability.",
+    "rationale": "Event-triggered automation rules are a fair question for a password and secrets platform, so the axis applies. The pack contains no documented user-definable rule or trigger-action feature. The Events API only lets you retrieve activity data to send to a SIEM, which is a developer building block. Watchtower's breach and weak-password alerts are fixed built-in checks, not user-defined rules, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -562,7 +583,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Recurring scheduling is a fair automation question for a secrets platform, but the evidence never shows 1Password defining or running scheduled or recurring jobs. Service accounts, Connect, the Credential Broker and the CLI only let externally scheduled CI/CD or machine workflows fetch secrets. That makes them adjacent building blocks for one-off access, not a recurring scheduler the product provides.",
+    "rationale": "A secrets and credentials platform could plausibly offer recurring jobs such as scheduled secret rotation, so the axis applies. The evidence shows only automation building blocks: service accounts, CI/CD secret access, the CLI, SDKs and the Connect REST API. These let external schedulers call 1Password, but nothing documents a first-party way to schedule recurring jobs or workflows.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -577,7 +598,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "1Password ships automation surfaces (CLI, service accounts, Connect, SDKs), so asking whether those automations can be versioned and rolled back is a fair question. The evidence pack has nothing on versioning, reviewing, or rolling back automation definitions. The Events API and SDK item management are adjacent features, not versioning or rollback of automations.",
+    "rationale": "1Password ships automation surfaces such as service accounts, the op CLI, Connect, and SDKs, so asking about automation versioning is a fair question. However, nothing in the pack shows a way to version, review, or roll back user automations. Events API URL-path versioning is API version management, not user automation history, so it is only adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -589,26 +610,21 @@
   {
     "productId": "1password",
     "storyId": "breach-alerting",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "1Password's Watchtower feature is documented as telling users about breaches, weak passwords, duplicate (reused) items, and other security problems with saved items, which covers the core of the story. The release notes add that Watchtower flags logins that could be upgraded to passkeys, showing it actively surfaces security issues. Missing for 10: detailed documentation of exposed-password detection and how proactive alerts are delivered, independent or hands-on corroboration.",
+    "rationale": "1Password's Watchtower is documented as flagging breaches, weak passwords, and duplicate (reused) items among saved logins, which covers the core of this story. The only source is one first-party sentence, though. It does not document proactive warnings, and it does not separately confirm detection of individually exposed or compromised passwords. Missing for 10: documented proactive alerts or notifications when a breach occurs, explicit detection of exposed or compromised individual passwords, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "1password-docs-18",
-      "1password-docs-13"
+      "1password-docs-18"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a power user, the app warns me when a service I use is breached or a stored credential is weak, reused, or exposed",
       "citations": [
         {
           "evidenceId": "1password-docs-18",
           "quote": "Watchtower tells you about breaches, weak passwords, duplicate items, and other security problems with the items you have saved in 1Password."
-        },
-        {
-          "evidenceId": "1password-docs-13",
-          "quote": "opening Watchtower in 1Password, which now flags all of your existing logins that could be updated with a passkey"
         }
       ]
     }
@@ -619,7 +635,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "1Password's own docs clearly show the browser extension creating, saving and signing in with passkeys. For TOTP, the docs only say 1Password stores one-time passwords and lets you access them quickly; nothing states the extension autofills those codes at login. Missing for 10: explicit documentation of TOTP autofill in the browser extension, independent or hands-on corroboration of passkey and TOTP autofill during login.",
+    "rationale": "First-party docs clearly show the 1Password browser extension creating and signing in with passkeys. For TOTP, the docs only show storing and quickly accessing one-time passwords, not the extension autofilling them during login. Missing for 10: explicit evidence that the browser extension autofills TOTP codes into login forms, and independent or hands-on corroboration of passkey and TOTP autofill.",
     "evidenceIds": [
       "1password-docs-12",
       "1password-docs-14",
@@ -637,7 +653,7 @@
         },
         {
           "evidenceId": "1password-docs-14",
-          "quote": "You can use 1Password to save the passkeys you create for your accounts and sign in to websites with passkeys in your browser."
+          "quote": "sign in to websites with passkeys in your browser"
         },
         {
           "evidenceId": "1password-docs-20",
@@ -656,7 +672,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "1Password documents bulk import from other applications via CSV and, on iOS/iPadOS 26+, directly from apps supporting the Credential Exchange standard. It also stores one-time passwords. However, nothing in the evidence says these imports carry TOTP secrets from authenticator apps specifically. missing for 10: explicit support for importing OTP/TOTP seeds from authenticator apps (e.g., Google Authenticator, Authy), documentation of which authenticator formats are accepted, hands-on corroboration that tokens survive import.",
+    "rationale": "1Password documents its own bulk import from many applications, including CSV exports and direct import on iOS/iPadOS 26 from apps that support the Credential Exchange standard. It also stores one-time passwords. However, no evidence says that authenticator apps are supported import sources or that TOTP seeds come across in bulk. missing for 10: explicit documentation of importing TOTP secrets from authenticator apps (e.g., named sources or a migration flow), confirmation that CSV/Credential Exchange imports carry OTP fields, independent hands-on corroboration.",
     "evidenceIds": [
       "1password-docs-16",
       "1password-docs-17",
@@ -674,11 +690,11 @@
         },
         {
           "evidenceId": "1password-docs-17",
-          "quote": "you can import data directly from apps that support the Credential Exchange standard"
+          "quote": "If you use 1Password on iOS or iPadOS 26 or later, you can import data directly from apps that support the Credential Exchange standard."
         },
         {
           "evidenceId": "1password-docs-20",
-          "quote": "Learn how to use 1Password to store and quickly access your one-time passwords"
+          "quote": "Learn how to use 1Password to store and quickly access your one-time passwords when you turn on two-step verification for a website."
         }
       ]
     }
@@ -687,16 +703,15 @@
     "productId": "1password",
     "storyId": "desktop-app",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Evidence implies a 1Password desktop app. The CLI integrates with 'your 1Password app' using Touch ID or Windows Hello, Git signing is configured 'from the 1Password app', and a user reports desktop and mobile apps 'work great'. OTP storage is documented but never tied to the desktop app, and community comments question how first-class it is (Electron rather than native, an older 'no Linux client' complaint). Missing for 10: first-party desktop app documentation, explicit evidence of one-time codes and vault browsing on desktop, and platform coverage details.",
+    "rationale": "The pack shows a 1Password desktop app exists. The CLI integrates with 'your 1Password app' using Touch ID or Windows Hello, the SSH and Git features run 'from the 1Password app', and users describe desktop apps that 'work great' (Electron-based). One-time-password storage and access is documented, but not specifically on the desktop, and there is no first-party desktop app documentation. An old comment about a missing Linux client points to a platform gap, not a contradiction. Missing for 10: first-party desktop app docs, explicit evidence that OTP codes are shown in the desktop app, and confirmed coverage across desktop operating systems.",
     "evidenceIds": [
       "1password-docs-1",
       "1password-docs-11",
       "1password-docs-20",
       "1password-comm-9",
       "1password-comm-10",
-      "1password-comm-8",
       "1password-comm-3"
     ],
     "support": {
@@ -729,10 +744,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "1Password documents storing one-time passwords and offers export, CSV import, and Credential Exchange import on iOS 26+. However, nothing in the evidence describes a guided, one-step flow that moves all tokens to a new phone. Import/export between apps is an adjacent capability, not the device-migration experience the story asks for.",
+    "rationale": "The evidence shows 1Password can store one-time passwords and import or export data to and from other apps. Nothing in the pack documents a guided step that transfers all tokens when moving to a new phone. Import, export and Credential Exchange cover migrating between different apps, not device-to-device phone migration, so they are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an everyday user, moving to a new phone transfers all my tokens in one guided step",
       "citations": []
@@ -744,7 +759,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "End-to-end encrypted backup is a fair question for a password manager, so the axis applies. However, the evidence pack contains nothing about end-to-end encryption of backups or sync, vendor-held versus user-held keys, or a documented encryption design. The export and import docs describe moving data between apps, not encrypted backups, so they do not count toward this story.",
+    "rationale": "Encrypted sync and backup is a fair axis for a password manager, so the story applies. Nothing in the evidence pack covers end-to-end encryption of backups, keys the vendor never holds, or a published encryption design. The export/import docs and the CLI, Connect and SDK material are about other capabilities and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -759,7 +774,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows that 1Password can store one-time passwords and can export or import data. None of it documents a recovery path for restoring accounts or tokens on a new device after a phone is lost, such as sync, account recovery or backup restore. Export and import are documented for moving data to another app, which assumes access to the original device, so that is an adjacent feature rather than the story's capability.",
+    "rationale": "The evidence shows that 1Password can store one-time passwords and can export data to move it to a different app. It never documents a recovery path or cross-device sync that restores stored tokens on a new device after a phone is lost. Export for migrating to another app and Apple Watch lookup are adjacent features, not the documented restore path this story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -774,7 +789,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "1Password documents storing one-time passwords and accessing them on an Apple Watch, iOS/iPadOS, and desktop and mobile apps, so the tokens are clearly multi-device. However, no item explicitly documents that tokens sync automatically across phone, tablet, and computer at the same time. Missing for 10: explicit first-party documentation of automatic cross-device sync for OTP tokens, and independent hands-on confirmation of real-time sync.",
+    "rationale": "1Password documents storing one-time passwords and offers apps on several devices: iOS/iPadOS, Apple Watch, desktop and browser. A user also reports that its desktop and mobile apps all work. However, no evidence item explicitly states that tokens sync automatically across phone, tablet and computer at the same time, so cross-device availability is only implied. Missing for 10: explicit first-party documentation of automatic multi-device sync of OTP tokens, confirmation of simultaneous availability on phone, tablet and computer, and independent hands-on corroboration of sync behavior.",
     "evidenceIds": [
       "1password-docs-20",
       "1password-docs-19",
@@ -788,7 +803,7 @@
       "citations": [
         {
           "evidenceId": "1password-docs-20",
-          "quote": "Learn how to use 1Password to store and quickly access your one-time passwords"
+          "quote": "Learn how to use 1Password to store and quickly access your one-time passwords when you turn on two-step verification for a website."
         },
         {
           "evidenceId": "1password-docs-19",
@@ -811,10 +826,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "1Password documents storing and accessing one-time passwords for two-step verification. Nothing in the evidence mentions Steam Guard codes, HOTP counter-based tokens, custom periods or custom digit lengths. Basic TOTP storage is an adjacent capability and does not show that non-standard tokens are supported.",
+    "rationale": "The evidence shows only that 1Password stores and displays standard one-time passwords (docs-20, docs-19). Nothing in the pack mentions Steam Guard codes, HOTP counter-based tokens, or custom periods and digit lengths. Basic TOTP support is a related capability, not the non-standard token support this story asks for, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a power user, non-standard tokens work too — Steam Guard, HOTP counters, custom periods and digit lengths",
       "citations": []
@@ -826,7 +841,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "1Password documents storing and accessing one-time passwords, including on Apple Watch. Nothing in the evidence shows TOTP codes being generated fully offline or viewable without a vendor account. Community comments point the other way: they say local, non-cloud vault storage is gone, which suggests an account and sync are expected.",
+    "rationale": "1Password documents storing and viewing one-time passwords, but nothing in the evidence shows codes generating offline or being viewable without a 1Password account. Community comments point the other way, noting the loss of local, non-cloud vault storage. Basic TOTP storage is adjacent to, not evidence of, offline account-free generation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -839,9 +854,9 @@
     "productId": "1password",
     "storyId": "open-format-export",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "1Password documents its own export feature for moving data to a different app, and it stores one-time passwords. However, the evidence never states that the export includes TOTP secrets, and never names an open, readable export format. Missing for 10: confirmation that TOTP seeds are included in exports, a documented open/readable export format (e.g. CSV or otpauth URIs), and independent or hands-on corroboration of a clean migration to another app.",
+    "rationale": "1Password documents its own export feature for moving data to a different app, and it stores one-time passwords, so first-party portability exists. The evidence does not show that TOTP secrets are included in the export or what the export format is. missing for 10: explicit confirmation that TOTP seeds are included in exports, documented open/readable export format (e.g. CSV/JSON) details, independent or hands-on corroboration of migrating TOTP to another app.",
     "evidenceIds": [
       "1password-docs-15",
       "1password-docs-20"
@@ -868,7 +883,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a password manager's client apps are open source is a fair question for this kind of product, so the axis applies. Nothing in the evidence shows that 1Password's desktop, mobile or browser client source is published for inspection. The only GitHub item is a JavaScript SDK for building integrations, which is not the client code that handles user secrets, so it earns no credit here.",
+    "rationale": "Nothing in the evidence pack says 1Password's client apps (desktop, mobile, browser extension) are open source or available for community code review. The only GitHub item is the JavaScript SDK repository, which is a developer building block for integrations, not the client code that handles user secrets.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -883,13 +898,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "1Password ships its own programmatic surfaces: the op CLI, SDKs for programmatic item management, Connect's private REST API for items and vaults, and an Events API for account activity. Nothing in the evidence claims or shows parity with the UI, and many UI features (Watchtower, passkeys, import/export, browser autofill) have no documented API equivalent. missing for 10: documented API/UI parity statement, API coverage of Watchtower/passkeys/import-export/account admin, independent corroboration of breadth.",
+    "rationale": "1Password documents several programmatic surfaces of its own: the op CLI, SDKs for programmatic item management, the Connect REST API for items and vaults, and the Events API for activity data. Together these cover core item and vault operations, but nothing in the evidence claims or shows parity with the UI. Many UI features (Watchtower, passkey creation, import/export, browser autofill) appear only as app features, and the OpenAPI specs cover only the Events and Connect surfaces. missing for 10: documented UI/API parity, API coverage of Watchtower/passkeys/import-export/sharing/account admin, independent hands-on corroboration of breadth.",
     "evidenceIds": [
       "1password-docs-8",
       "1password-docs-4",
-      "1password-docs-26",
       "1password-docs-2",
+      "1password-docs-26",
       "1password-docs-6",
+      "1password-connect-openapi-20261106",
       "1password-probe-rt-3"
     ],
     "support": {
@@ -903,15 +919,15 @@
         },
         {
           "evidenceId": "1password-docs-4",
-          "quote": "1Password Connect Servers allow you to securely access your 1Password items and vaults in your company's apps and cloud infrastructure using a private REST API."
+          "quote": "securely access your 1Password items and vaults in your company's apps and cloud infrastructure using a private REST API"
         },
         {
           "evidenceId": "1password-docs-26",
           "quote": "1Password SDKs allow you to build integrations that programmatically interact with 1Password using Go, JavaScript, or Python."
         },
         {
-          "evidenceId": "1password-docs-6",
-          "quote": "The 1Password Events API allows you to retrieve information about activity in your 1Password Business account"
+          "evidenceId": "1password-docs-2",
+          "quote": "op item list --vault Private"
         }
       ]
     }
@@ -922,7 +938,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "1Password documents its own export feature in its apps, explicitly for moving your information to a different app, which covers the core of the 'leave' story. The evidence never names the export formats or says all data types are included; CSV and the Credential Exchange standard appear only on the import side, and the CLI's item listing is a building block, so neither earns credit here. Missing for 10: documented open export formats (e.g., CSV/JSON/CXF), confirmation that all data types (attachments, passkeys, etc.) are exportable, independent or hands-on corroboration of a complete export.",
+    "rationale": "1Password's own support docs say you can export your information from the 1Password apps to move it to a different app, so the leave-and-migrate core is a first-party capability. The pack never says which formats that export produces or whether it covers all data. CSV and Credential Exchange are only documented for import, and CLI/SDK item access is a building block rather than an export feature, so neither is credited. Missing for 10: documented open export formats (e.g. CSV/JSON), confirmation that the export covers all item types and attachments, and independent or hands-on corroboration of a complete export.",
     "evidenceIds": [
       "1password-docs-15"
     ],
@@ -944,7 +960,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a password manager's source is published under an open license is a fair question for this kind of product, so the axis applies. The evidence pack never mentions an open-source license or a public repository for the 1Password apps. The only GitHub item is an SDK repo for building integrations, with no license stated, and that is not the product's own source.",
+    "rationale": "Open-source availability is a fair question for a password manager, so the axis applies. Nothing in the evidence shows 1Password's own source is published under an open license. The only GitHub item is an SDK repository for building integrations, and the evidence does not state its license. An SDK is a developer building block, not the product's source, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -959,7 +975,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a password manager, but the evidence pack shows no self-hostable deployment of the core 1Password vault or service. Connect Servers only expose 1Password items to your own apps through a private REST API. That is an adjacent integration component, not a self-hosted core product, so it earns no credit. Community comments lamenting the loss of local vault storage are consistent with this absence.",
+    "rationale": "Self-hosting is a fair question for a password manager, but nothing in the evidence shows 1Password can be run on your own infrastructure. Connect Servers expose a private REST API to your apps and infrastructure, which is an access bridge rather than a self-hosted core product. A community comment says the product no longer offers local vault storage.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -974,7 +990,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents admin-enforced org-wide policies: no app-lock requirements, no export restrictions, no master-password strength rules pushed to members' apps. The nearest items are the Events API, which only retrieves activity for SIEM monitoring, and user-initiated export, which is the opposite of restricting it; neither is policy enforcement.",
+    "rationale": "The evidence pack has no documentation of admin-enforced org-wide policies such as required app lock, export restrictions, or master password strength requirements. The export doc only says users can export their own data, and the Events API only reports account activity to a SIEM. Neither enforces policy, so this applicable axis has no supporting evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -987,9 +1003,9 @@
     "productId": "1password",
     "storyId": "passkey-cross-ecosystem",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "1Password's own docs show it creates, saves and signs in with passkeys through its browser extension, so passkeys live in the 1Password vault rather than a platform vendor's keychain. However, the evidence never states that passkeys sync across iOS, Android, Windows, Linux and multiple browsers. missing for 10: explicit documentation of cross-device/cross-OS passkey sync, per-platform passkey support (iOS, Android, Windows, Linux), independent or hands-on corroboration of cross-ecosystem passkey use.",
+    "rationale": "1Password documents saving, creating, managing and signing in with passkeys through its browser extension, so passkeys live in 1Password rather than in one platform vendor's store. The pack does not document passkeys syncing across iOS, Android, Windows and Linux, so cross-ecosystem reach is only implied. missing for 10: explicit documentation of passkey sync and use on iOS, Android, Windows and Linux; native-app (non-browser) passkey use on mobile; independent hands-on corroboration of cross-platform passkey sync.",
     "evidenceIds": [
       "1password-docs-12",
       "1password-docs-14"
@@ -1015,8 +1031,8 @@
     "storyId": "passkey-storage-signin",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "First-party release notes and support docs say 1Password can create, save, and manage passkeys and sign in with them on websites and apps from the browser extension. Watchtower also flags logins that could be upgraded to passkeys, so this goes beyond TOTP storage. Missing for 10: independent or hands-on corroboration of passkey sign-in, and documentation of passkey sign-in in native apps outside the browser extension (e.g., mobile system-level autofill).",
+    "confidence": "medium",
+    "rationale": "First-party docs say 1Password saves the passkeys you create and lets you sign in with them on websites and apps from the browser extension. Watchtower also flags logins that could be upgraded to a passkey, so passkey support goes beyond TOTP storage. Missing for 10: independent or hands-on corroboration, and documentation of passkey sign-in in native apps outside the browser extension (e.g. mobile OS autofill).",
     "evidenceIds": [
       "1password-docs-12",
       "1password-docs-14",
@@ -1048,7 +1064,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Admin-enforced sign-in security is a fair question for a business password manager, so the axis applies. However, the evidence pack contains nothing about push-based sign-in, number matching, location context, or admin-enforced MFA policies. Passkey support, one-time password storage and system-authentication CLI sign-in are related features but not this capability.",
+    "rationale": "A business password manager could plausibly offer push-based sign-in with phishing defenses and admin-enforced MFA policies, so this story applies to 1Password. However, the evidence pack documents no push sign-in, number matching, location context, or admin MFA enforcement. Touch ID/Windows Hello CLI sign-in, passkey storage and stored OTPs are adjacent features, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1063,7 +1079,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a cloud password manager, so this axis applies. However, nothing in the evidence pack documents choosing a storage region or data residency. Community comments about local vault storage concern local versus cloud storage, not region selection, so they earn no credit.",
+    "rationale": "Choosing a storage region is a fair question for a cloud password manager, but the evidence pack never mentions data residency or region selection. Connect Servers run in a company's own infrastructure, but they only provide API access to items and vaults, not a choice of where data is stored, so they get no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1078,7 +1094,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a vendor uses customer data for AI training is a fair privacy question for a cloud password manager, so the axis applies. Nothing in the evidence pack addresses an AI-training opt-out, a no-training policy, or any related data-use control. The Environments MCP Server not returning secrets to agents is a different capability and does not count here.",
+    "rationale": "Whether user data is excluded from AI model training is a fair privacy question for a password manager, so the axis applies. Nothing in the evidence pack addresses AI training, data-use policies, or any opt-out control. The llms.txt files, MCP servers, and CLI items concern AI-readable docs and agent integrations, not training data use.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1093,7 +1109,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any 1Password control over data retention periods, account deletion, or data purge. The closest items cover export for moving data to another app and generic programmatic item management; neither explicitly describes retention or deletion controls, so they are adjacent rather than direct support.",
+    "rationale": "The evidence pack has no documentation of retention settings, deletion controls, account or data purging, or retention windows. Export and import [docs-15, docs-16] concern data portability, and generic SDK item management [docs-8] never mentions deletion or retention, so neither counts toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1108,7 +1124,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a password manager and its CLI, so the axis applies. However, nothing in the evidence pack mentions telemetry, usage analytics, or any setting or flag to disable usage tracking.",
+    "rationale": "Opting out of telemetry is a fair question for a password manager and its CLI/SDK tooling, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out setting for 1Password's apps, CLI, or SDKs. The Events API covers account activity reporting to a SIEM, which is a different feature and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1123,7 +1139,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Publishing independent security audits is a fair question for a password manager, so the axis applies. Nothing in the evidence pack mentions third-party audits, penetration test reports, or reviews of the app or its sync protocol. The items cover the CLI, SDKs, SSH, passkeys, Watchtower and import/export, none of which address independent audits.",
+    "rationale": "The evidence pack contains nothing about independent third-party security audits, penetration test reports, or sync-protocol assessments published by 1Password. The items cover the CLI, SDKs, Connect, Events API, passkeys and Watchtower, none of which address audit publication. The axis applies to a password manager, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1138,7 +1154,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "1Password's own docs say it can store and quickly access one-time passwords when you turn on two-step verification for a website, and those codes are also viewable on Apple Watch. That covers the core TOTP-generation part of the story, but no evidence documents the QR-code scanning setup step. The Wi-Fi QR codes mention is a different feature and does not count. missing for 10: documented QR-code scanning to add a TOTP secret, evidence of immediate code generation after setup, independent or hands-on corroboration.",
+    "rationale": "1Password's own docs say it can store and quickly access one-time passwords when you turn on two-step verification for a website, and its Apple Watch docs confirm one-time passwords can be viewed there. However, the pack never mentions scanning a QR code to set up an account or how quickly codes start generating. Missing for 10: explicit documentation of QR-code scanning for TOTP setup, a description of the setup flow from scan to generated code, and independent or hands-on corroboration.",
     "evidenceIds": [
       "1password-docs-20",
       "1password-docs-19"
@@ -1165,13 +1181,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting the sync server is a fair question for a password manager, but nothing in the evidence shows 1Password lets you run its sync backend on your own infrastructure. Connect Servers are an adjacent feature: they give your apps API access to items and vaults, not a replacement for the sync service. Community comments also note the loss of local vault storage, which points away from secrets staying entirely inside your perimeter.",
-    "evidenceIds": [],
+    "rationale": "The evidence pack documents no self-hostable sync server that keeps every secret inside the customer's perimeter. 1Password Connect Servers only provide private REST API access to 1Password items and vaults for your apps and infrastructure, which is an adjacent capability, not a self-hosted replacement for 1Password's sync backend. Community comments also note the loss of local vault storage.",
+    "evidenceIds": [
+      "1password-docs-4"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an IT admin, I can self-host the sync server on my own infrastructure and keep every secret inside my perimeter",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "1password-docs-4",
+          "quote": "1Password Connect Servers allow you to securely access your 1Password items and vaults in your company's apps and cloud infrastructure using a private REST API."
+        }
+      ]
     }
   },
   {
@@ -1180,7 +1203,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows 1Password stores one-time passwords and has vaults, but nothing documents shared team vaults, sharing TOTP logins with teammates, or per-member access control. Vault references only cover CLI listing and Connect access for company apps, which is adjacent, not team sharing with member-level permissions.",
+    "rationale": "The evidence shows 1Password can store one-time passwords (docs-20) and that vaults exist as a CLI scoping concept (docs-2). Nothing in the pack documents sharing vaults or collections across a team, or granting per-member access to them. TOTP storage and vault listing are adjacent features, not the team-sharing and access-control capability the story asks for, so the axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1195,12 +1218,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "1Password documents storing and quickly accessing one-time passwords. Its CLI shows items grouped into vaults, and the browser extension lets users \"find what you need\", which loosely implies search and grouping. Evidence for organizing dozens of TOTP codes specifically is thin. Missing for 10: explicit search documentation for OTP items, documented folder/tag/vault organization in the apps, service icons, and any hands-on or community corroboration of quick two-tap access at scale.",
+    "rationale": "1Password documents storing and quickly accessing one-time passwords, and says its browser extension helps you \"find what you need\". Its CLI can also list items by vault, which hints at vault-based grouping. There is no explicit evidence of OTP-focused search, folders or tags in the apps, or service icons for organizing many tokens. Missing for 10: documented in-app search across OTP items, folder/tag/group organization in the apps, service icons, and hands-on corroboration of managing dozens of tokens quickly.",
     "evidenceIds": [
       "1password-docs-20",
-      "1password-docs-2",
       "1password-docs-21",
-      "1password-docs-19"
+      "1password-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -1212,16 +1234,12 @@
           "quote": "Learn how to use 1Password to store and quickly access your one-time passwords"
         },
         {
-          "evidenceId": "1password-docs-2",
-          "quote": "op item list --vault Private"
-        },
-        {
           "evidenceId": "1password-docs-21",
           "quote": "find what you need – all without leaving your browser"
         },
         {
-          "evidenceId": "1password-docs-19",
-          "quote": "Use 1Password on your Apple Watch to quickly look up information: credit card numbers and PINs, one-time passwords"
+          "evidenceId": "1password-docs-2",
+          "quote": "op item list --vault Private"
         }
       ]
     }
@@ -1230,13 +1248,12 @@
     "productId": "1password",
     "storyId": "watch-codes",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "1Password's own support docs say users can open 1Password on Apple Watch to look up one-time passwords, which directly delivers reading codes from a smartwatch instead of the phone. missing for 10: evidence for smartwatches other than Apple Watch (e.g., Wear OS), and independent or hands-on corroboration of the watch OTP experience.",
+    "rationale": "1Password's own support docs say its Apple Watch app lets you quickly look up one-time passwords, which directly covers reading codes from a smartwatch. Only first-party docs back this, with no detail on setup or offline behavior. Missing for 10: support for watches other than Apple Watch, detail on how codes are viewed or refreshed on the watch, and independent or hands-on corroboration.",
     "evidenceIds": [
       "1password-docs-19",
-      "1password-docs-24",
-      "1password-docs-20"
+      "1password-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -3499,25 +3516,25 @@
   {
     "productId": "bitwarden",
     "storyId": "agent-code-retrieval",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Bitwarden's official CLI can be authenticated non-interactively with a personal API key for automated workflows. Its `bw serve` mode exposes the vault as a local REST API that an agent can query for TOTP codes. A hands-on user report independently confirms the CLI outputs current TOTP codes, and the integrated authenticator generates the rotating 30-second codes. Missing for 10: a first-party doc quote showing the specific TOTP retrieval command or endpoint, and documentation of an end-to-end automated 2FA login flow.",
+    "rationale": "Bitwarden's own CLI can return current TOTP codes: a runtime probe says `bw serve` exposes the vault as a local REST API that an agent can query for TOTP codes, and a hands-on user report says `bw list` printed current TOTP codes. The personal API key is documented as suitable for headless CLI authentication in automated workflows. Coverage is not complete, because no first-party doc in the pack documents a dedicated TOTP-retrieval command or endpoint, and the only hands-on evidence is an incidental bulk dump rather than a targeted fetch. missing for 10: first-party documentation of a specific TOTP-fetch CLI command or Vault Management API endpoint, end-to-end evidence of an agent completing a 2FA login with the fetched code, and independent corroboration of TOTP retrieval through `bw serve`.",
     "evidenceIds": [
-      "bitwarden-docs-1",
-      "bitwarden-docs-7",
-      "bitwarden-docs-9",
       "bitwarden-probe-rt-1",
-      "bitwarden-comm-13"
+      "bitwarden-comm-13",
+      "bitwarden-docs-9",
+      "bitwarden-docs-7",
+      "bitwarden-docs-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, an agent can fetch a current TOTP code programmatically — via CLI or API — to complete a 2FA login inside an automated workflow",
       "citations": [
         {
           "evidenceId": "bitwarden-probe-rt-1",
-          "quote": "the CLI whose documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items"
+          "quote": "the CLI whose documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items."
         },
         {
           "evidenceId": "bitwarden-comm-13",
@@ -3529,7 +3546,7 @@
         },
         {
           "evidenceId": "bitwarden-docs-1",
-          "quote": "it automatically produces the time-based one-time passwords (TOTPs), six-digit codes using SHA-1 that rotate every 30 seconds"
+          "quote": "it automatically produces the time-based one-time passwords (TOTPs)"
         }
       ]
     }
@@ -3538,15 +3555,15 @@
     "productId": "bitwarden",
     "storyId": "agent-local-endpoint",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "Bitwarden's official CLI has a documented `bw serve` mode that exposes the vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items, so no screen-scraping is needed. A community report confirms the CLI returns passwords and current TOTP codes programmatically, and a first-party MCP server also completed a local stdio handshake. missing for 10: a verbatim first-party doc excerpt describing the `bw serve` endpoints, and hands-on evidence of an agent querying the local endpoint (the runtime probe only confirmed install and version).",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Bitwarden's official CLI has a documented `bw serve` mode that exposes the vault as a local RESTful Vault Management API. An agent can query it for TOTP codes and vault items, and it is described by its own OpenAPI document and Swagger UI. The official MCP server, which completed a live stdio handshake, adds a second local programmatic surface, so no screen-scraping is needed. missing for 10: a hands-on runtime query of the `bw serve` endpoint returning codes or secrets (the probe only verified that the CLI installs and prints its version).",
     "evidenceIds": [
       "bitwarden-probe-rt-1",
+      "bitwarden-public-api-oas-20261106",
+      "bitwarden-swagger-ui-20261106",
       "bitwarden-docs-7",
-      "bitwarden-comm-13",
-      "bitwarden-probe-rt-2",
-      "bitwarden-docs-9"
+      "bitwarden-probe-rt-2"
     ],
     "support": {
       "relation": "direct",
@@ -3555,19 +3572,15 @@
       "citations": [
         {
           "evidenceId": "bitwarden-probe-rt-1",
-          "quote": "the CLI whose documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items."
+          "quote": "documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items"
+        },
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "The Vault Management API page embeds its own OpenAPI document for the CLI's `bw serve` local server."
         },
         {
           "evidenceId": "bitwarden-docs-7",
           "quote": "The Bitwarden command-line interface (CLI) is a powerful, fully-featured tool for accessing and managing your vault."
-        },
-        {
-          "evidenceId": "bitwarden-comm-13",
-          "quote": "it listed everything including passwords and current totp codes in plaintext"
-        },
-        {
-          "evidenceId": "bitwarden-probe-rt-2",
-          "quote": "Bitwarden's OFFICIAL MCP server completed a FULL keyless stdio initialize handshake"
         }
       ]
     }
@@ -3578,13 +3591,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bitwarden documents its own programmatic vault surfaces: a CLI described as 'fully-featured' for 'accessing and managing your vault', a `bw serve` local REST Vault Management API, personal API keys for automated workflows, and an official MCP server that completed a live handshake. However, the evidence only shows querying TOTP codes and items; it never explicitly documents creating or editing items or seeding TOTP secrets programmatically. missing for 10: explicit documentation of item create/edit operations via CLI/REST/MCP, programmatic TOTP-secret seeding, evidence of which MCP tools are write-capable, hands-on corroboration of agent-driven writes",
+    "rationale": "Bitwarden documents its own programmatic vault surfaces. The official CLI is described as a fully-featured tool for \"accessing and managing your vault\", personal API keys are positioned for automated workflows, `bw serve` exposes the vault as a local Vault Management REST API with an OpenAPI document, and an official MCP server completed a live handshake. However, the evidence only shows querying of items and TOTP codes; creating or editing entries and seeding TOTP secrets programmatically are never explicitly documented. Missing for 10: explicit documentation of item create/edit commands or endpoints, programmatic TOTP-secret seeding, documented MCP-server write tools, and hands-on corroboration of agent-driven writes.",
     "evidenceIds": [
       "bitwarden-docs-7",
-      "bitwarden-probe-rt-1",
       "bitwarden-docs-9",
+      "bitwarden-probe-rt-1",
       "bitwarden-probe-rt-2",
-      "bitwarden-probe-3"
+      "bitwarden-public-api-oas-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -3596,16 +3609,16 @@
           "quote": "The Bitwarden command-line interface (CLI) is a powerful, fully-featured tool for accessing and managing your vault."
         },
         {
-          "evidenceId": "bitwarden-probe-rt-1",
-          "quote": "exposes the whole vault as a local RESTful API (Vault Management API)"
-        },
-        {
           "evidenceId": "bitwarden-docs-9",
           "quote": "Using the personal API key for CLI authentication is suitable for automated workflows"
         },
         {
-          "evidenceId": "bitwarden-probe-rt-2",
-          "quote": "Bitwarden's OFFICIAL MCP server completed a FULL keyless stdio initialize handshake"
+          "evidenceId": "bitwarden-probe-rt-1",
+          "quote": "documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items"
+        },
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "The Vault Management API page embeds its own OpenAPI document for the CLI's `bw serve` local server."
         }
       ]
     }
@@ -3616,7 +3629,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Runtime probes confirm Bitwarden serves a live llms.txt at bitwarden.com/llms.txt (HTTP 200). Its help pages also ship per-page markdown mirrors (e.g. /help/cli.md), which gives agents machine-readable docs. missing for 10: evidence of the llms.txt's breadth/coverage beyond its header, and first-party or independent documentation describing the agent-oriented docs offering.",
+    "rationale": "Probes confirm that bitwarden.com serves a live llms.txt (HTTP 200). They also show that help pages ship per-page markdown mirrors (e.g., /help/cli.md), so an agent can be pointed at agent-oriented docs directly. Missing for 10: independent or hands-on corroboration of how well agents actually consume these docs, and any first-party documentation describing the llms.txt or markdown-mirror offering.",
     "evidenceIds": [
       "bitwarden-probe-1",
       "bitwarden-probe-rt-3"
@@ -3632,7 +3645,7 @@
         },
         {
           "evidenceId": "bitwarden-probe-rt-3",
-          "quote": "help pages ship real per-page .md mirrors — https://bitwarden.com/help/cli.md returns markdown starting '# Password Manager CLI'"
+          "quote": "help pages ship real per-page .md mirrors — https://bitwarden.com/help/cli.md returns markdown starting '# Password Manager CLI'."
         }
       ]
     }
@@ -3643,7 +3656,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An AI-insights feature is a fair thing to ask of a password manager, so the axis applies. However, no evidence shows Bitwarden generating AI insights or suggestions from vault data inside the product. Its vault health reports (reused or weak passwords) are deterministic local checks, not AI, and the official MCP server and the `bw serve` API only let external agents read the vault, which is a developer building block rather than in-product AI.",
+    "rationale": "An in-product AI insights feature is a fair question for a password manager, but the evidence shows none. Vault health reports such as Reused and Weak Passwords are rule-based security reports run locally, not AI-generated insights. The official MCP server and CLI let external agents query the vault, which makes them developer building blocks rather than AI inside the product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3658,7 +3671,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bitwarden documents developer building blocks: a CLI, a personal API key 'suitable for automated workflows', `bw serve` exposing a local REST API, and an official MCP server. A user could build background automations from these, but nothing in the pack shows Bitwarden itself letting users set up, schedule, or run autonomous background automations. Automatic TOTP rotation and autofill are adjacent behaviors, not user-configurable automations.",
+    "rationale": "Bitwarden documents developer building blocks: a CLI, a personal API key \"suitable for automated workflows,\" a `bw serve` local REST API, and an MCP server. None of these is a product feature for creating automations that run on their own in the background; a user would have to build and schedule them with external tooling. Built-in behaviors such as TOTP rotation and authenticator sync are fixed features, not user-configured automations.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3673,7 +3686,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A password manager could plausibly ship a built-in AI assistant, so the axis applies. Nothing in the evidence documents one. The official MCP server and the `bw serve` CLI API let external agents reach the vault, which is a building block for outside agents rather than an assistant inside the product, so they earn no credit.",
+    "rationale": "A password manager could plausibly ship a built-in AI assistant, so this story applies to Bitwarden. However, nothing in the evidence pack documents an in-product AI assistant that users can delegate tasks to. The official MCP server, the CLI's `bw serve` API and llms.txt let external agents reach the vault. Those are developer building blocks and agent-facing interfaces, not a built-in assistant, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3686,15 +3699,15 @@
     "productId": "bitwarden",
     "storyId": "agentic-headless",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Bitwarden documents a fully-featured CLI for managing the vault and a personal API key for CLI authentication that it calls suitable for automated workflows. A runtime probe confirmed the CLI installs keylessly from npm and offers a `bw serve` local REST mode, and a community member describes hands-on headless CLI use. missing for 10: explicit CI-pipeline integration documentation (e.g., CI runner recipes or an official action) in the evidence.",
+    "rationale": "Bitwarden ships an official, fully-featured CLI, and a personal API key for CLI authentication that the docs describe as suitable for automated workflows. The CLI also offers a documented `bw serve` local REST API, and a runtime probe confirmed it installs keylessly from npm. Together these support headless, non-interactive use. Missing for 10: CI-specific documentation (e.g. pipeline/GitHub Actions integration or non-interactive vault-unlock guidance) and independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "bitwarden-docs-7",
       "bitwarden-docs-9",
       "bitwarden-probe-rt-1",
       "bitwarden-probe-4",
-      "bitwarden-comm-13"
+      "bitwarden-public-api-oas-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -3702,12 +3715,12 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "bitwarden-docs-7",
-          "quote": "The Bitwarden command-line interface (CLI) is a powerful, fully-featured tool for accessing and managing your vault."
-        },
-        {
           "evidenceId": "bitwarden-docs-9",
           "quote": "Using the personal API key for CLI authentication is suitable for automated workflows"
+        },
+        {
+          "evidenceId": "bitwarden-docs-7",
+          "quote": "The Bitwarden command-line interface (CLI) is a powerful, fully-featured tool for accessing and managing your vault."
         },
         {
           "evidenceId": "bitwarden-probe-rt-1",
@@ -3721,8 +3734,8 @@
     "storyId": "agentic-mcp-client",
     "verdict": "na",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bitwarden is a password manager, not an AI agent or assistant that consumes tools, so being an MCP client that plugs in other MCP servers is outside its product category. The evidence shows only the opposite role: an official Bitwarden MCP server that exposes the vault to agents. That server-side capability belongs to a different story and does not make this client-side axis applicable.",
+    "confidence": "high",
+    "rationale": "Bitwarden is a password manager, not an AI agent or assistant, so acting as an MCP client that consumes other servers' tools does not fit this kind of product. The evidence shows only that Bitwarden publishes its own official MCP server (the server role), which is a separate story. Nothing shows Bitwarden can connect to or plug in external MCP servers, so the exception does not apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3735,9 +3748,9 @@
     "productId": "bitwarden",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "high",
-    "rationale": "Bitwarden publishes a first-party MCP server (bitwarden/mcp-server, GPL-3.0, on npm). A runtime probe confirmed it completes a full keyless stdio initialize handshake via `npx -y @bitwarden/mcp-server`, returning serverInfo \"Bitwarden MCP Server\" 2026.7.0. Missing for 10: in-depth first-party documentation of the server's exposed tools, scope and auth setup in the pack, and evidence of an agent actually performing vault operations through it beyond the handshake.",
+    "rationale": "Bitwarden has an official, first-party MCP server (bitwarden/mcp-server). A runtime probe confirmed `npx -y @bitwarden/mcp-server` completed a full stdio initialize handshake and identified itself as 'Bitwarden MCP Server' 2026.7.0, so an agent can connect to it. The evidence stops at the handshake and the repo pointer, with no documentation of the exposed tools or how authentication works. Missing for 10: documented tool surface and capabilities, auth/vault-unlock setup guidance for agents, independent or community hands-on corroboration of real agent workflows.",
     "evidenceIds": [
       "bitwarden-probe-3",
       "bitwarden-probe-rt-2"
@@ -3761,16 +3774,28 @@
   {
     "productId": "bitwarden",
     "storyId": "agentic-nl-commands",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Natural-language operation is a fair axis for a password manager, but the evidence shows no built-in natural-language command interface or assistant in Bitwarden itself. The official MCP server and the CLI's `bw serve` REST mode are programmatic surfaces that an external AI agent could use. They belong to the MCP and CLI/API stories and give no credit here, since the natural-language layer would come from a third-party agent.",
-    "evidenceIds": [],
+    "rationale": "Bitwarden has no built-in natural-language command interface. It does ship a first-party, verified MCP server (bitwarden/mcp-server on npm, handshake confirmed), which lets an AI assistant operate the vault from natural-language requests. The NL layer comes from the external AI client, and the evidence does not show which vault operations the MCP server exposes. missing for 10: native in-product natural-language command interface, documentation of the MCP server's tool coverage for vault operations, hands-on or independent evidence of NL-driven vault management working end to end.",
+    "evidenceIds": [
+      "bitwarden-probe-3",
+      "bitwarden-probe-rt-2"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "bitwarden-probe-3",
+          "quote": "official MCP server documented at https://github.com/bitwarden/mcp-server"
+        },
+        {
+          "evidenceId": "bitwarden-probe-rt-2",
+          "quote": "Bitwarden's OFFICIAL MCP server completed a FULL keyless stdio initialize handshake"
+        }
+      ]
     }
   },
   {
@@ -3779,14 +3804,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Bitwarden ships an official, fully-featured `bw` CLI for accessing and managing the vault, with personal API key authentication documented for automated workflows. A runtime probe confirmed it installs from npm and runs, and that its `bw serve` mode exposes the vault as a local REST API an agent can query; a community user also reports using it hands-on. missing for 10: in-pack documentation of the CLI's command reference and machine-readable/structured output options for agent use.",
+    "rationale": "Bitwarden ships an official, first-party `bw` CLI that its docs describe as fully featured for managing the vault. It supports personal-API-key authentication for automated workflows, and a runtime probe confirmed it installs from npm (@bitwarden/cli) and runs, including a `bw serve` local REST mode an agent can query. A community user's hands-on report of running `bw list` corroborates real-world use. Missing for 10: no documented agent-oriented details in the evidence, such as structured or JSON output guarantees or non-interactive and scripting guidance beyond API-key auth.",
     "evidenceIds": [
       "bitwarden-docs-7",
-      "bitwarden-docs-9",
       "bitwarden-probe-4",
       "bitwarden-probe-rt-1",
-      "bitwarden-probe-rt-3",
-      "bitwarden-comm-13"
+      "bitwarden-docs-9",
+      "bitwarden-comm-13",
+      "bitwarden-probe-rt-3"
     ],
     "support": {
       "relation": "direct",
@@ -3798,12 +3823,12 @@
           "quote": "The Bitwarden command-line interface (CLI) is a powerful, fully-featured tool for accessing and managing your vault."
         },
         {
-          "evidenceId": "bitwarden-docs-9",
-          "quote": "Using the personal API key for CLI authentication is suitable for automated workflows"
-        },
-        {
           "evidenceId": "bitwarden-probe-rt-1",
           "quote": "the official bw CLI installs keylessly from npm (@bitwarden/cli, registry latest 2026.8.0) and prints its version"
+        },
+        {
+          "evidenceId": "bitwarden-docs-9",
+          "quote": "Using the personal API key for CLI authentication is suitable for automated workflows"
         },
         {
           "evidenceId": "bitwarden-probe-4",
@@ -3815,19 +3840,21 @@
   {
     "productId": "bitwarden",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Bitwarden documents a Public API, but it is scoped to organization administration (members, collections, groups, event logs, policies). Vault items are reachable programmatically only through the CLI's local `bw serve` RESTful Vault Management API, authenticated with a personal API key. Because the hosted public API covers only part of the product, this is direct support with partial coverage rather than full delivery. missing for 10: a hosted public API covering vault items for individual users (the Public API is organization-admin only and vault access requires running a local CLI server), a discoverable OpenAPI spec (all probed openapi/swagger paths returned 404), and independent hands-on corroboration of driving the API end-to-end.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Bitwarden documents an OAS3-compliant Public API with a published swagger.json, a vendor-hosted Swagger UI and a stated backwards-compatibility policy. For vault items, it documents a separate Vault Management API, a local RESTful API served by `bw serve` in the official CLI, which has its own OpenAPI document. Together these let an agent drive both organization administration and vault contents through documented APIs. Missing for 10: vault item access through a hosted public API (the cloud Public API covers only organization members, collections, groups, event logs and policies, while vault access needs the local `bw serve` server), and independent or hands-on corroboration of real API calls (the probe only confirmed the CLI installs, and the root-level openapi.json paths returned 404).",
     "evidenceIds": [
       "bitwarden-docs-8",
+      "bitwarden-public-api-oas-20261106",
+      "bitwarden-swagger-ui-20261106",
+      "bitwarden-api-compat-policy-20261106",
       "bitwarden-probe-rt-1",
-      "bitwarden-docs-9",
-      "bitwarden-probe-2"
+      "bitwarden-docs-9"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
@@ -3835,12 +3862,20 @@
           "quote": "The Bitwarden Public API provides organizations a suite of tools for managing members, collections, groups, event logs, and policies."
         },
         {
-          "evidenceId": "bitwarden-probe-rt-1",
-          "quote": "the CLI whose documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items."
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "is compatible with the OpenAPI Specification (OAS3) and publishes a compliant swagger.json definition file"
         },
         {
-          "evidenceId": "bitwarden-docs-9",
-          "quote": "Using the personal API key for CLI authentication is suitable for automated workflows"
+          "evidenceId": "bitwarden-swagger-ui-20261106",
+          "quote": "bitwarden.com/help/api/ vendor-hosts Swagger UI over the Public API's embedded OpenAPI 3.0.4 document"
+        },
+        {
+          "evidenceId": "bitwarden-api-compat-policy-20261106",
+          "quote": "we aim to provide backwards compatibility to the API indefinitely through semantic versioning"
+        },
+        {
+          "evidenceId": "bitwarden-probe-rt-1",
+          "quote": "documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API)"
         }
       ]
     }
@@ -3851,7 +3886,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bitwarden documents a personal API key for CLI authentication in automated workflows and an organization Public API. Neither is shown to issue scoped or least-privilege credentials for an agent. The runtime probe says `bw serve` exposes the whole vault, which is the opposite of scoping, so these are adjacent credential mechanisms rather than the scoped-credential capability the story asks for.",
+    "rationale": "The evidence shows only unscoped automation credentials. A personal API key handles CLI authentication for automated workflows, and `bw serve` exposes the whole vault as a local API, which is the opposite of least privilege. Nothing documents issuing credentials limited to particular items, collections, or permissions for an agent, so this is an adjacent feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3866,7 +3901,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents a CLI, an organization Public API, a `bw serve` local REST API and an official MCP server, but no first-party documentation of an official SDK a developer can build against. The only SDK reference is a community aside about an 'SDK relicensing controversy', which shows no usable SDK capability. The CLI, REST API and MCP server are different integration surfaces, not SDKs, so they earn no credit here.",
+    "rationale": "The pack documents no official SDK (no client libraries, language bindings, or SDK reference docs) that a developer can build against. It shows only adjacent surfaces: the Public API with an OpenAPI/Swagger spec, the CLI with `bw serve`, and an official MCP server. These are APIs and tools rather than SDKs. The only SDK reference is a passing community remark about a relicensing controversy, which does not document a buildable SDK.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3881,7 +3916,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack shows registrable outbound HTTP webhook callbacks for Bitwarden events. The Public API's event logs, the CLI's `bw serve` local REST API, and the MCP server are pull-based or adjacent interfaces, not event subscriptions. A password-manager SaaS with an event system could plausibly ship webhooks, so the axis applies and the absence of evidence means none.",
+    "rationale": "The evidence pack documents a Public API that covers event logs, the CLI's `bw serve` local REST API, and an official MCP server. All of these are request/response interfaces a consumer must call or poll. Nothing documents registrable outbound HTTP callbacks (webhooks) for subscribing to events, so this applicable axis has no supporting evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3893,31 +3928,60 @@
   {
     "productId": "bitwarden",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Bitwarden documents a Public API for organization management and a local Vault Management API through `bw serve`. However, nothing in the evidence shows an interactive API reference with runnable, try-it examples. The OpenAPI/Swagger probe returned 404 on every candidate path, and the API docs, CLI and llms.txt mirrors are adjacent features rather than the capability itself.",
-    "evidenceIds": [],
+    "rationale": "Bitwarden hosts its own Swagger UI over a compliant OpenAPI 3.0.4 document for the Public API at bitwarden.com/help/api/, with a parallel Swagger UI for the Vault Management API. That gives users an interactive, explorable API reference with an in-browser console. However, the runnable console mounts client-side and was not observed working hands-on, and no curated runnable code examples are documented. missing for 10: hands-on confirmation that the try-it console executes requests, documented runnable example snippets beyond the raw Swagger UI, independent corroboration.",
+    "evidenceIds": [
+      "bitwarden-swagger-ui-20261106",
+      "bitwarden-public-api-oas-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "Explore the OpenAPI Specification using the Swagger UI:"
+        },
+        {
+          "evidenceId": "bitwarden-swagger-ui-20261106",
+          "quote": "bitwarden.com/help/api/ vendor-hosts Swagger UI over the Public API's embedded OpenAPI 3.0.4 document"
+        },
+        {
+          "evidenceId": "bitwarden-swagger-ui-20261106",
+          "quote": "the runnable console renders in-browser rather than in the served HTML"
+        }
+      ]
     }
   },
   {
     "productId": "bitwarden",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Bitwarden documents a Public API and a local REST API via `bw serve`, but nothing in the evidence shows a downloadable OpenAPI or equivalent spec. The probe found all common OpenAPI and Swagger paths returning 404. The llms.txt file, markdown doc mirrors, CLI and MCP server are adjacent features, not a machine-readable API spec.",
-    "evidenceIds": [],
+    "rationale": "Bitwarden documents that its Public (Organization) API is OAS3-compatible and publishes a compliant swagger.json definition file. The vendor hosts Swagger UI over an embedded OpenAPI 3.0.4 document at bitwarden.com/help/api/, and the Vault Management API for `bw serve` has its own embedded OpenAPI document. The probe's 404s on guessed root paths do not contradict the documented locations, but no direct downloadable spec URL was confirmed hands-on, and the spec is embedded client-side now that the standalone api.bitwarden.com/docs host is retired. missing for 10: a hands-on-verified direct download URL for the raw spec file, independent corroboration of retrieving the spec.",
+    "evidenceIds": [
+      "bitwarden-public-api-oas-20261106",
+      "bitwarden-swagger-ui-20261106",
+      "bitwarden-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "is compatible with the OpenAPI Specification (OAS3) and publishes a compliant swagger.json definition file"
+        },
+        {
+          "evidenceId": "bitwarden-swagger-ui-20261106",
+          "quote": "bitwarden.com/help/api/ vendor-hosts Swagger UI over the Public API's embedded OpenAPI 3.0.4 document (info title \"Bitwarden Public API\")"
+        }
+      ]
     }
   },
   {
@@ -3926,7 +3990,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for a SaaS password manager with a CLI, Public API and MCP server, so the axis applies. However, the evidence pack documents no sandbox, test, or non-production environment. Self-hosting on a Linux server is a deployment option, not a documented sandbox; using it as a test instance would be a user-side workaround and earns no credit.",
+    "rationale": "A sandbox or test environment is a fair question for a SaaS product with public APIs, a CLI, and an MCP server, so the axis applies. The evidence pack documents no sandbox, test tenant, or dry-run mode. Self-hosting on your own Linux server is only a user-side workaround for building a separate environment, not a product-provided sandbox, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3938,16 +4002,28 @@
   {
     "productId": "bitwarden",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Bitwarden documents a Public API and a CLI with a local REST mode, so the axis applies. However, nothing in the evidence describes API versioning or any deprecation policy. Package release numbers for the CLI and MCP server are software versions, not a versioned-API contract with documented deprecation terms, and no OpenAPI spec was found.",
-    "evidenceIds": [],
+    "rationale": "Bitwarden documents an explicit API compatibility policy: it aims for indefinite backwards compatibility through semantic versioning and signals breaking changes by incrementing the major version. It also publishes OpenAPI specs for the Public and Vault Management APIs. However, the policy operates at the release-cycle level, with no per-request version pinning (no version header or URL versioning) and no stated deprecation timeline or sunset process. Missing for 10: per-request API version pinning, a formal deprecation/sunset timeline with notice periods, independent corroboration of the policy in practice.",
+    "evidenceIds": [
+      "bitwarden-api-compat-policy-20261106",
+      "bitwarden-public-api-oas-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "bitwarden-api-compat-policy-20261106",
+          "quote": "As a practice, we aim to provide backwards compatibility to the API indefinitely through semantic versioning. However, if we add enhancements that make it difficult or impossible to maintain backwards compatibility to all prior versions, we will indicate that by incrementing the major version number."
+        },
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "is compatible with the OpenAPI Specification (OAS3) and publishes a compliant swagger.json definition file"
+        }
+      ]
     }
   },
   {
@@ -3956,7 +4032,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Locking an authenticator or password app behind biometrics or a PIN is a fair axis for this kind of product, but no evidence item documents a Bitwarden biometric or PIN unlock. The only related mention is a community wish for fingerprint auth on Linux, which merely implies the feature exists on other platforms and is not affirmative evidence of an app-lock capability.",
+    "rationale": "App-lock via biometrics or PIN is a fair question for a password manager and authenticator, so the axis applies. However, no evidence item documents Bitwarden's app or vault locking behind biometrics or a PIN. The only nearby item is a community wish for fingerprint auth on Linux (bitwarden-comm-11), which only hints that fingerprint unlock exists elsewhere. It does not document a mobile app lock protecting codes, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3970,13 +4046,14 @@
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Bitwarden's own docs show bulk import and export of vault data, which moves many items at once without manual entry. The CLI and `bw serve` REST API also expose the whole vault for scripted management. No evidence documents native bulk edit, move, or delete of selected items, so per-item scripting with the CLI is a building block rather than a bulk-operations feature. Missing for 10: documented bulk edit/move/delete across selected items, bulk operations via MCP/API, hands-on corroboration of bulk workflows.",
+    "confidence": "low",
+    "rationale": "Bitwarden documents its own whole-vault bulk operations: importing many items at once from other managers or exports, and exporting the entire vault. A hands-on report also shows `bw list` returning every item at once. No documented bulk edit, move, delete or share action across selected items appears in the evidence, so arbitrary bulk changes would need scripting the CLI or `bw serve` API, which earns no credit. missing for 10: documented bulk edit/move/delete/share operations across selected items, agent-facing bulk commands in the CLI/API/MCP server, independent corroboration of bulk workflows.",
     "evidenceIds": [
       "bitwarden-docs-6",
+      "bitwarden-docs-15",
       "bitwarden-docs-5",
-      "bitwarden-docs-7",
-      "bitwarden-probe-rt-1"
+      "bitwarden-comm-13",
+      "bitwarden-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -3992,8 +4069,8 @@
           "quote": "Export your vault data, including logins and notes, to back up important information or transfer to a new Bitwarden vault."
         },
         {
-          "evidenceId": "bitwarden-docs-7",
-          "quote": "The Bitwarden command-line interface (CLI) is a powerful, fully-featured tool for accessing and managing your vault."
+          "evidenceId": "bitwarden-comm-13",
+          "quote": "I ran 'bw list', assuming it would list names, but it listed everything including passwords and current totp codes in plaintext."
         }
       ]
     }
@@ -4004,10 +4081,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows automation building blocks: a CLI, a personal API key for automated workflows, a Public API that exposes event logs, the `bw serve` local REST API, and an official MCP server. None of it documents a user-defined rule or trigger system that runs actions automatically when events occur. Built-in autofill on site visit is a fixed behavior rather than configurable rules, and the API and CLI primitives only let a developer build such automation externally, so they earn no credit.",
+    "rationale": "Event-triggered automation rules are a fair capability for a password manager, but the evidence documents no user-defined rule or trigger feature. Built-in behaviors such as autofill and TOTP rotation are fixed, not user rules. The CLI, personal API key, Public API event logs and MCP server are developer building blocks someone could use to build automation, not a product-provided rules engine, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": []
@@ -4019,7 +4096,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring automation, such as periodic exports, backups, or reports, is a fair question for a password manager. However, nothing in the evidence shows Bitwarden offering any built-in scheduler or recurring-job feature. The CLI and the personal API key 'suitable for automated workflows' are building blocks a user would have to drive from an external scheduler like cron. Rotating TOTP codes are not a user-schedulable job, so none of this counts.",
+    "rationale": "Scheduling recurring jobs is a fair automation axis for a password and secrets manager, for example scheduled exports or rotations, but the evidence documents no Bitwarden scheduler. The CLI, the personal API key for 'automated workflows', and `bw serve` are only building blocks a user could drive from external cron-style tooling. TOTP codes rotating every 30 seconds is an adjacent feature, not user-scheduled jobs.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4034,7 +4111,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bitwarden is a password manager and secrets vault. It does not host or define user automations, so versioning, reviewing and rolling back automations is outside its product category. Its CLI, personal API key, Public API and MCP server are access surfaces that external scripts or agents call. Any automation logic lives in the user's own tooling, and nothing in the evidence shows Bitwarden storing, versioning or rolling back automation definitions.",
+    "rationale": "Bitwarden is a password manager. It has no user-authored automation or workflow artifacts, so versioning, reviewing, and rolling back automations is outside its product category. The CLI, the APIs, the API backward-compatibility policy, and vault export cover access, interface versioning, and data backup, not automation version control, so they do not make this axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4049,7 +4126,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bitwarden's own vault health reports cover part of this story: they evaluate vault security and include named Reused Passwords and Weak Passwords reports run locally on the client. The evidence shows these as reports the user runs, not proactive warnings, and it never mentions breached-service or exposed-password detection. Missing for 10: evidence of breached-website or exposed-password (breach database) detection, proactive alerts or notifications rather than on-demand reports, and independent or hands-on corroboration.",
+    "rationale": "Bitwarden documents vault health reports, including Reused Passwords and Weak Passwords reports run locally on the client, which covers the weak and reused parts of the story. The evidence describes on-demand reports rather than proactive warnings, and it never mentions breached-service or exposed-password detection. Missing for 10: evidence of breach/exposed-credential reporting, proactive alerting rather than manually run reports, and independent or hands-on corroboration.",
     "evidenceIds": [
       "bitwarden-docs-17",
       "bitwarden-docs-11"
@@ -4074,9 +4151,9 @@
     "productId": "bitwarden",
     "storyId": "browser-extension-autofill",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Bitwarden's docs say the browser extension autofills saved passkeys, and that the integrated authenticator automatically generates TOTP codes. The extension also enters matching credentials into login fields. However, no evidence explicitly says the extension fills the TOTP code into the login's 2FA step rather than just generating it. Missing for 10: explicit documentation of TOTP autofill or copy during browser login, and independent hands-on corroboration of passkey and TOTP autofill in the extension.",
+    "rationale": "Bitwarden documents that its browser extension autofills saved passkeys, and that its integrated authenticator generates TOTP codes. However, no evidence shows the extension actually fills TOTP codes into login fields; the general autofill doc covers only credentials. One user's vague report of never getting TOTP working is not a concrete contradiction. Missing for 10: documented browser-extension autofill or copy of TOTP codes during login, independent or hands-on corroboration of passkey and TOTP autofill.",
     "evidenceIds": [
       "bitwarden-docs-4",
       "bitwarden-docs-1",
@@ -4106,9 +4183,9 @@
     "productId": "bitwarden",
     "storyId": "competitor-import",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Bitwarden's Authenticator import/export docs list import paths from other authenticator apps: Google Authenticator via QR code, LastPass Authenticator via JSON export, and 2FAS via .2fas backup file. That directly replaces re-enrolling each account by hand. missing for 10: independent or hands-on corroboration of the import working, explicit confirmation that all accounts transfer in bulk in one pass, and detail on supported formats beyond these three.",
+    "rationale": "Bitwarden's own Authenticator import/export docs list imports from other authenticator apps: Google Authenticator via QR code, LastPass Authenticator JSON exports, and 2FAS backup files. That directly addresses moving tokens without re-enrolling each account. The evidence is short doc excerpts, though, so the bulk scope and any import limits are implied rather than spelled out. Missing for 10: explicit documentation of bulk/multi-account import behavior and limits, independent or hands-on corroboration of a successful migration.",
     "evidenceIds": [
       "bitwarden-docs-3",
       "bitwarden-docs-14"
@@ -4135,7 +4212,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a Bitwarden desktop application. Computer-side access appears only through the browser extension and the CLI (including `bw serve` exposing TOTP codes), which are separate surfaces, not a first-class desktop app. The Linux fingerprint comment does not establish one either.",
+    "rationale": "The evidence pack documents a browser extension, mobile apps, a CLI and an integrated TOTP generator, but no first-party desktop application. The CLI and browser extension do run on a computer, but they are different surfaces from a first-class desktop app, so they earn no credit here. A community wish for fingerprint auth on Linux does not affirmatively establish a desktop app.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4150,7 +4227,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bitwarden documents its own mechanism for carrying tokens across devices: TOTP codes live in the synced vault, and the Authenticator app can be connected to Password Manager so codes stay synchronized. It also documents importing tokens from other authenticators, such as Google Authenticator via QR code and 2FAS backup files. Nothing describes a dedicated, guided new-phone migration that moves all tokens in one step, so delivery of the story's 'one guided step' is only implied. Missing for 10: an explicit guided device-migration flow, documentation that every token transfers to a new phone in one step, and hands-on corroboration of a phone switch.",
+    "rationale": "Bitwarden's own Authenticator-to-Password-Manager sync keeps verification codes synchronized across Bitwarden apps, and the vault stores TOTP seeds, so tokens can follow you to a new phone. Authenticator import/export also exists, but the evidence never describes a guided, one-step phone-migration flow. missing for 10: a documented guided new-phone transfer flow, explicit confirmation that all tokens arrive in one step, independent or hands-on corroboration of migration.",
     "evidenceIds": [
       "bitwarden-docs-2",
       "bitwarden-docs-1",
@@ -4166,8 +4243,12 @@
           "quote": "Connect Authenticator with Password Manager to sync your verification codes. Once activated, the Bitwarden apps stay synchronized with any codes you add or edit"
         },
         {
+          "evidenceId": "bitwarden-docs-1",
+          "quote": "it automatically produces the time-based one-time passwords (TOTPs), six-digit codes using SHA-1 that rotate every 30 seconds"
+        },
+        {
           "evidenceId": "bitwarden-docs-14",
-          "quote": "Google Authenticator (QR code): Import from Google Authenticator using a QR code"
+          "quote": "2FAS (.2fas): Import a 2FAS backup file"
         }
       ]
     }
@@ -4178,7 +4259,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Bitwarden's own docs show vault export for backup and mention importing from 'encrypted exports', so encrypted backups exist as a first-party capability. A community comment calls it an 'e2ee password manager', but no documentation confirms the vendor never holds the key or describes the encryption design. Missing for 10: documented zero-knowledge/vendor-never-holds-key guarantee for backups, published encryption design documentation (key derivation, ciphers), and evidence that exports are end-to-end encrypted rather than merely password-protected.",
+    "rationale": "Bitwarden's docs describe exporting the vault to back up data and importing from 'encrypted exports', so encrypted backups exist. A community user also calls it an e2ee password manager. The pack never documents that the vendor never holds the key, and it never shows the encryption design. Missing for 10: first-party zero-knowledge/key-custody documentation, a published encryption design (key derivation and ciphers), proof that exports and sync are end-to-end encrypted with user-held keys, and independent corroboration.",
     "evidenceIds": [
       "bitwarden-docs-5",
       "bitwarden-docs-6",
@@ -4210,7 +4291,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Bitwarden documents syncing Authenticator verification codes with the Password Manager vault, which keeps the apps synchronized with any codes you add or edit. It also documents exporting vault data as a backup or to transfer it to a new vault, and an authenticator import/export path. Together these give a documented way to keep tokens off a single phone, but no evidence shows an explicit lost-phone, new-device restore walkthrough. missing for 10: explicit documented new-device token restoration flow, guidance for recovering after losing the device, independent or hands-on corroboration of a successful restore.",
+    "rationale": "Bitwarden documents syncing Authenticator verification codes with Password Manager, which keeps tokens in the account rather than on one phone. It also documents vault export for backup and import to transfer data. However, the evidence never walks through restoring tokens on a replacement device after a phone is lost. missing for 10: explicit lost-device/new-device restore walkthrough for authenticator tokens, confirmation that synced codes repopulate a fresh install, independent hands-on corroboration of recovery.",
     "evidenceIds": [
       "bitwarden-docs-2",
       "bitwarden-docs-1",
@@ -4229,10 +4310,6 @@
         {
           "evidenceId": "bitwarden-docs-5",
           "quote": "Export your vault data, including logins and notes, to back up important information or transfer to a new Bitwarden vault."
-        },
-        {
-          "evidenceId": "bitwarden-docs-14",
-          "quote": "2FAS (.2fas): Import a 2FAS backup file"
         }
       ]
     }
@@ -4240,31 +4317,26 @@
   {
     "productId": "bitwarden",
     "storyId": "multi-device-sync",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Bitwarden's integrated authenticator generates TOTP codes inside the vault, and its TOTP sync docs say that once Authenticator is connected to Password Manager, the Bitwarden apps stay synchronized with any codes you add or edit. The docs also describe the mobile apps and browser extension as access points for vault items, so codes follow the vault across clients. missing for 10: explicit documentation naming simultaneous phone, tablet and computer availability; independent hands-on corroboration that token sync works reliably.",
+    "rationale": "Bitwarden documents automatic syncing of verification codes once Authenticator is connected to Password Manager, so codes you add or edit stay synchronized across the Bitwarden apps. The integrated vault authenticator generates TOTPs from the synced vault. However, the evidence never explicitly confirms simultaneous availability on phone, tablet and computer, and sync must be activated first. missing for 10: explicit documentation of simultaneous multi-device (phone/tablet/desktop) TOTP availability, independent hands-on corroboration of reliable automatic cross-device sync.",
     "evidenceIds": [
       "bitwarden-docs-2",
-      "bitwarden-docs-1",
-      "bitwarden-docs-4"
+      "bitwarden-docs-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an everyday user, my tokens are available on my phone, tablet, and computer at the same time, kept in sync automatically",
       "citations": [
         {
           "evidenceId": "bitwarden-docs-2",
-          "quote": "Once activated, the Bitwarden apps stay synchronized with any codes you add or edit"
+          "quote": "Connect Authenticator with Password Manager to sync your verification codes. Once activated, the Bitwarden apps stay synchronized with any codes you add or edit"
         },
         {
           "evidenceId": "bitwarden-docs-1",
           "quote": "it automatically produces the time-based one-time passwords (TOTPs), six-digit codes using SHA-1 that rotate every 30 seconds"
-        },
-        {
-          "evidenceId": "bitwarden-docs-4",
-          "quote": "use the browser extension or mobile apps to autofill them across the apps and websites you use every day"
         }
       ]
     }
@@ -4275,7 +4347,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes Bitwarden's integrated authenticator producing only standard TOTPs: six-digit, SHA-1 codes that rotate every 30 seconds. Nothing in the pack documents Steam Guard codes, HOTP counter-based tokens, or configurable periods and digit lengths. The axis clearly applies to a password manager with a built-in authenticator, so the lack of evidence makes this \"none\".",
+    "rationale": "The only evidence on Bitwarden's integrated authenticator describes standard TOTP: six-digit, SHA-1 codes that rotate every 30 seconds. Nothing in the pack documents Steam Guard codes, HOTP counter-based tokens, or configurable periods and digit lengths. A TOTP authenticator could reasonably offer these, so the axis applies, but there is no supporting evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4290,7 +4362,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Bitwarden generates TOTP codes in its integrated authenticator and that a separate Authenticator app can optionally be connected to Password Manager for sync. Nothing documents that codes are generated with no network connection, or that they can be viewed without a Bitwarden account. Treating sync as 'optional' is an inference, not documented offline or account-free operation, so it earns no credit.",
+    "rationale": "The evidence shows Bitwarden generates TOTP codes in its integrated authenticator and that a separate Authenticator app can import codes and optionally sync with Password Manager. Nothing documents that codes are generated fully offline or that they can be viewed without a vendor account. Self-hosting and the CLI are adjacent and still assume a vault account, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4305,7 +4377,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Bitwarden documents its own vault export of logins and notes for backup or transfer. However, the evidence never states that TOTP secrets are included, what format the export uses, or that it targets non-Bitwarden apps; the stated purpose is transfer to a new Bitwarden vault. The authenticator import/export page excerpts only describe imports, and the CLI evidence shows current TOTP codes (not secrets). Missing for 10: explicit confirmation that TOTP seeds are exported, a documented open/readable export format (e.g., JSON/CSV/otpauth URIs), documented migration to other authenticator apps, and independent hands-on corroboration.",
+    "rationale": "Bitwarden documents its own vault export of logins and notes for backup or transfer, which is the product's own portability mechanism. The quoted text does not say that TOTP secrets are included, that the format is open and readable, or that the export works with apps other than Bitwarden. Its stated purpose is transfer to a new Bitwarden vault, and the authenticator import/export page quotes only import paths. Missing for 10: explicit confirmation that TOTP seeds are included in exports, a documented open/plaintext format (e.g., otpauth URIs, CSV/JSON), a documented export path from the Authenticator app, and hands-on evidence of migrating to a non-Bitwarden app.",
     "evidenceIds": [
       "bitwarden-docs-5",
       "bitwarden-docs-16"
@@ -4328,11 +4400,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bitwarden calls itself an open source password manager, and community comments back this up: one user picks it specifically because its clients are not closed source, and another notes it relicensed back to a Free/Open license after the SDK controversy. The pack has no first-party documentation of the client app repositories, their licenses, or how the TOTP/seed-handling code can be inspected, so full coverage is not shown. missing for 10: first-party docs naming the client app source repos and licenses, evidence that the seed/TOTP-handling code (e.g. the Authenticator and SDK) is public, and independent audit or community-review evidence.",
+    "rationale": "Bitwarden describes itself as an open source password manager, and community users say they chose it because its clients are not closed source; a commenter also thanks Bitwarden for relicensing back to a Free/Open license after the SDK controversy. The evidence is a vendor tagline plus community remarks, with no first-party docs on client repositories, licenses or review. Missing for 10: first-party documentation of client source repositories and their licenses, evidence that the TOTP/seed-handling code specifically is public, and independent audit or community-review evidence.",
     "evidenceIds": [
       "bitwarden-probe-1",
+      "bitwarden-probe-rt-3",
       "bitwarden-comm-15",
-      "bitwarden-comm-3"
+      "bitwarden-comm-3",
+      "bitwarden-comm-1"
     ],
     "support": {
       "relation": "direct",
@@ -4360,14 +4434,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Bitwarden offers a substantial programmatic surface. Its CLI is described as \"fully-featured\" for vault management, `bw serve` exposes the vault as a local REST API, the Public API covers organization admin (members, collections, groups, event logs, policies), and there is an official MCP server. None of the evidence states that the API matches everything the UI can do. The Public API is limited to org-management areas, and no OpenAPI spec was found at the probed paths. missing for 10: an explicit documented UI/API parity claim, API coverage of client-side features such as vault health reports, a published OpenAPI/machine-readable spec, and independent hands-on corroboration of full parity.",
+    "rationale": "Bitwarden exposes much of its functionality programmatically. The CLI is described as \"fully-featured\" for vault management, `bw serve` exposes the vault as a local RESTful Vault Management API, and the Public API covers organization admin (members, collections, groups, event logs, policies) with an OpenAPI/Swagger definition. However, nothing documents that every UI action is reachable through an API, and the Public API's scope is explicitly limited to organization management. Missing for 10: an explicit UI-to-API parity statement or coverage matrix, an API for UI-only features (e.g., vault health reports run locally on the client, import/export via API), and independent hands-on confirmation of parity.",
     "evidenceIds": [
       "bitwarden-docs-7",
       "bitwarden-docs-8",
-      "bitwarden-docs-9",
       "bitwarden-probe-rt-1",
-      "bitwarden-probe-rt-2",
-      "bitwarden-probe-2"
+      "bitwarden-public-api-oas-20261106",
+      "bitwarden-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -4385,6 +4458,10 @@
         {
           "evidenceId": "bitwarden-probe-rt-1",
           "quote": "documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API)"
+        },
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "The Vault Management API page embeds its own OpenAPI document for the CLI's `bw serve` local server."
         }
       ]
     }
@@ -4395,7 +4472,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bitwarden documents its own vault export feature covering logins and notes, and a community report confirms export and re-import works in practice. However, the evidence never names the export formats, so the open-format requirement is unproven, and the docs frame export mainly as moving to another Bitwarden vault rather than leaving. missing for 10: documented open export formats (e.g. CSV/JSON), evidence that the export covers all data types (attachments, passkeys, authenticator codes), evidence of migrating to a non-Bitwarden destination.",
+    "rationale": "Bitwarden documents a first-party vault export covering logins and notes, and a community report confirms export exists as a real workflow. The pack never names the export formats, though, and frames the export as a backup or a transfer to another Bitwarden vault, so whether the data is portable in open formats to other tools is unproven. Missing for 10: documented open export formats (e.g. CSV/JSON), evidence that the export covers all data (attachments, passkeys, TOTP seeds, org data), independent hands-on corroboration of leaving to a non-Bitwarden tool.",
     "evidenceIds": [
       "bitwarden-docs-5",
       "bitwarden-docs-16",
@@ -4423,13 +4500,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Bitwarden describes itself as an open source password manager in its llms.txt, and a first-party repository (bitwarden/mcp-server) is published under GPL-3.0. Community reports also confirm Bitwarden relicensed back to a Free/Open License after the SDK relicensing controversy. However, no first-party evidence names the source repositories or licenses for the core clients and server. missing for 10: first-party documentation linking the core client and server source repositories with their specific open licenses, clarity on whether the SDK and all components are fully open-licensed after the relicensing controversy, and hands-on verification of browsing the main product source.",
+    "rationale": "Bitwarden describes itself as an 'open source password manager', and community comments confirm it relicensed back to a free/open license after the SDK controversy. The only concrete license evidence is for a first-party component, the GPL-3.0 MCP server repo. That controversy was resolved, so it is not a dispute. Missing for 10: first-party documentation linking the main client and server source repositories with their licenses, explicit confirmation that the SDK and clients are now under an OSI-approved license, and hands-on verification of reading the core product source.",
     "evidenceIds": [
       "bitwarden-probe-1",
-      "bitwarden-probe-rt-3",
       "bitwarden-probe-rt-2",
       "bitwarden-comm-3",
-      "bitwarden-comm-1"
+      "bitwarden-comm-4",
+      "bitwarden-comm-15"
     ],
     "support": {
       "relation": "direct",
@@ -4457,9 +4534,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Bitwarden's own documentation provides a walkthrough to install and deploy Bitwarden on your own Linux server, which directly covers self-hosting the core product. The evidence is a single thin doc snippet, so depth and parity with the cloud service are not shown. Missing for 10: details on self-hosted feature parity and licensing requirements, other deployment targets beyond Linux, and independent or hands-on corroboration of a working self-hosted deployment.",
+    "rationale": "Bitwarden's own docs give a procedure to install and deploy Bitwarden on your own Linux server. The Public API docs also reference a self-hosted instance URL (your.domain.com/api/docs/), which confirms self-hosted deployments are a supported first-party mode. Missing for 10: deployment depth in the pack (requirements, Docker/other platforms, feature parity versus cloud), and independent or hands-on corroboration of self-hosting.",
     "evidenceIds": [
-      "bitwarden-docs-10"
+      "bitwarden-docs-10",
+      "bitwarden-public-api-oas-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4469,6 +4547,10 @@
         {
           "evidenceId": "bitwarden-docs-10",
           "quote": "This article will walk you through the procedure to install and deploy Bitwarden to your own Linux server."
+        },
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "the self-hosted URL (your.domain.com/api/docs/)"
         }
       ]
     }
@@ -4479,7 +4561,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only relevant evidence is the Public API doc, which says organizations can manage \"policies\" through it. That confirms Bitwarden has an org-level policy capability, but the pack never names the specific policies in the story. missing for 10: documented app-lock/vault-timeout enforcement policy, export-restriction policy, master-password-strength requirement policy, evidence that policies apply across every member's client apps, independent or hands-on corroboration.",
+    "rationale": "The only on-topic evidence is that Bitwarden's Public API gives organizations tools for managing policies, which implies a first-party org policy capability. Nothing documents which policies exist or how they are enforced on members' apps. Missing for 10: documented app-lock/vault-timeout policy, documented vault-export restriction policy, documented master-password strength requirement policy, evidence of enforcement across every member's client, independent or hands-on corroboration.",
     "evidenceIds": [
       "bitwarden-docs-8"
     ],
@@ -4501,7 +4583,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Bitwarden documents saving passkeys in its own vault and autofilling them through both its browser extension and its mobile apps, which supports passkeys that are not tied to a single platform vendor. The evidence never names specific operating systems, never states passkey support on the Windows or Linux desktop apps, and never describes cross-device passkey sync explicitly. Missing for 10: explicit per-platform passkey coverage (iOS, Android, Windows, Linux), desktop-app passkey support, explicit cross-device passkey sync documentation, independent or hands-on corroboration.",
+    "rationale": "Bitwarden documents storing passkeys in its own vault and autofilling them through the browser extension and mobile apps. Because passkeys live in the Bitwarden vault rather than a platform vendor's keychain, they can be used across those clients. However, the evidence never names the specific ecosystems (iOS, Android, Windows, Linux) or describes desktop-app passkey support. Missing for 10: explicit per-platform passkey support for iOS, Android, Windows and Linux; desktop-app passkey usage; any independent or hands-on corroboration of cross-ecosystem passkey sync.",
     "evidenceIds": [
       "bitwarden-docs-4",
       "bitwarden-probe-1"
@@ -4526,9 +4608,9 @@
     "productId": "bitwarden",
     "storyId": "passkey-storage-signin",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Bitwarden's own docs say passkeys can be saved in the vault and autofilled through the browser extension or mobile apps across websites and apps, which is passkey sign-in beyond its separate TOTP authenticator. Its llms.txt also describes the product as a manager for 'passwords, passkeys, and secrets'. missing for 10: independent or hands-on corroboration of passkey sign-in, and detailed documentation of per-platform passkey creation and sign-in flows (support is a single summary sentence).",
+    "rationale": "Bitwarden's own docs say users can save passkeys in the vault and autofill them on websites and apps through the browser extension and mobile apps. Its llms.txt also lists passkeys alongside passwords as a core managed credential type. Missing for 10: detailed documentation of the passkey creation and sign-in flow, platform coverage details (which OS and app integrations are supported), and independent or hands-on confirmation that passkey sign-in works.",
     "evidenceIds": [
       "bitwarden-docs-4",
       "bitwarden-probe-1"
@@ -4555,7 +4637,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Push-based sign-in with phishing defenses is a fair question for a password manager and authenticator product, so the axis applies. However, the evidence documents only TOTP code generation, code sync and import, and passkey storage. Nothing covers push approvals, number matching, location context, or admin-enforced MFA policies; the Public API's general 'policies' management is an adjacent capability, not this one.",
+    "rationale": "Push-based sign-in with phishing defenses is a fair question for a password manager and authenticator, so the axis applies. However, the evidence pack documents only TOTP code generation, sync, import and export. Nothing shows push approvals, number matching, location context, or admin-enforced MFA policies for push sign-in. The Public API's general 'policies' management is a different capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4570,9 +4652,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bitwarden documents installing and deploying the product on your own Linux server. This is a first-party way to control where vault data physically resides. The pack has no evidence of choosing a hosted cloud region or of formal data-residency guarantees. missing for 10: selectable cloud hosting regions (e.g. US/EU), documented data-residency commitments, independent corroboration of the self-hosting experience.",
+    "rationale": "Bitwarden documents deploying itself on your own Linux server, which lets you decide where vault data physically lives, and its API docs reference a self-hosted domain alongside the cloud. However, nothing in the evidence shows a choice of cloud hosting region, so residency control is only shown through self-hosting. Missing for 10: documented cloud region/residency selection, any residency or compliance guarantees, independent or hands-on corroboration.",
     "evidenceIds": [
-      "bitwarden-docs-10"
+      "bitwarden-docs-10",
+      "bitwarden-public-api-oas-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4582,6 +4665,10 @@
         {
           "evidenceId": "bitwarden-docs-10",
           "quote": "This article will walk you through the procedure to install and deploy Bitwarden to your own Linux server."
+        },
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "the self-hosted URL (your.domain.com/api/docs/)"
         }
       ]
     }
@@ -4592,7 +4679,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Privacy posture around AI training is a fair question for a password manager, so the axis applies. Nothing in the evidence pack covers AI-training data use, a training opt-out, or a no-training policy. Self-hosting and locally run vault reports are adjacent privacy features, not this capability.",
+    "rationale": "Whether user data is excluded from AI model training is a fair privacy question for a cloud password manager, so the axis applies. However, nothing in the evidence pack mentions an AI-training opt-out, a no-training policy, or any data-use commitment about AI. Locally run vault reports and self-hosting are adjacent privacy features, not a documented control over AI training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4604,16 +4691,33 @@
   {
     "productId": "bitwarden",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The pack has no documentation of retention policies, item or account deletion, or purge controls. Vault export, import, CLI vault management and self-hosting are adjacent capabilities and do not show that users can control retention or deletion. A single community remark mentions a support suggestion to 'delete account', but it is anecdotal and not first-party documentation of a deletion control.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Bitwarden ships first-party self-hosting, which lets a user keep vault data on their own server. A community report shows the vendor recommending account deletion, so a delete-account path exists. Export supports taking data out before deleting. None of the evidence documents retention settings or a deletion workflow in depth. Missing for 10: documented retention policies or controls, first-party docs on account and item deletion (including purge timing for deleted data), and independent corroboration of deletion behavior.",
+    "evidenceIds": [
+      "bitwarden-docs-10",
+      "bitwarden-comm-2",
+      "bitwarden-docs-5"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can control data retention and deletion",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "bitwarden-docs-10",
+          "quote": "This article will walk you through the procedure to install and deploy Bitwarden to your own Linux server."
+        },
+        {
+          "evidenceId": "bitwarden-comm-2",
+          "quote": "their fix suggestion was 'export data, delete account, recreate, re-import.'"
+        },
+        {
+          "evidenceId": "bitwarden-docs-5",
+          "quote": "Export your vault data, including logins and notes, to back up important information or transfer to a new Bitwarden vault."
+        }
+      ]
     }
   },
   {
@@ -4622,7 +4726,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a password manager, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out. Locally run vault reports and self-hosting are adjacent privacy features, not a telemetry control, so they earn no credit.",
+    "rationale": "Telemetry and usage-tracking opt-out is a fair privacy question for a password manager, so the axis applies. However, the evidence pack contains nothing about telemetry settings or usage-tracking controls. Self-hosting and locally run vault reports are adjacent features, not a documented opt-out, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4637,7 +4741,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Publishing independent security audits is a fair question for a password manager, so the axis applies. Nothing in the evidence pack mentions third-party audits, penetration tests, or assessments of the apps or the sync protocol. Open-source licensing, local vault health reports and community comments on supply-chain incidents are not published independent audits, so they earn no credit.",
+    "rationale": "Publishing independent security audits is a fair question for a password manager, so the axis applies. However, nothing in the evidence pack mentions third-party audits, penetration tests or audit reports covering the app or its sync protocol. The pack covers TOTP, import/export, CLI, APIs, an MCP server and vault health reports, none of which are independent audits, and the community items do not address audits either.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4652,11 +4756,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bitwarden's integrated authenticator documents automatic TOTP generation (six-digit, SHA-1, 30-second rotation), and its Authenticator documents QR-code scanning, but only for importing a Google Authenticator export, not for scanning a new account's setup QR. One community user's vague report of never getting TOTP working is not concrete enough to dispute the documented capability. Missing for 10: explicit documentation of scanning a new account's setup QR code, hands-on corroboration of the scan-to-code flow.",
+    "rationale": "Bitwarden's integrated authenticator documents automatic TOTP generation, and its authenticator import supports reading a Google Authenticator QR code. However, no evidence documents scanning a new account's setup QR code to start generating codes right away; the QR flow shown is a migration import. missing for 10: explicit documentation of scanning a site's setup QR code to add a new account, hands-on or independent corroboration of that flow.",
     "evidenceIds": [
       "bitwarden-docs-1",
       "bitwarden-docs-3",
-      "bitwarden-docs-2"
+      "bitwarden-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -4677,21 +4781,26 @@
   {
     "productId": "bitwarden",
     "storyId": "self-host-sync-server",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Bitwarden's own documentation provides a walkthrough to install and deploy Bitwarden on your own Linux server, which directly delivers the self-hosted sync server at the core of this story. Keeping all secrets inside the perimeter follows from self-hosting but is not spelled out. missing for 10: explicit documentation that no vault data or telemetry leaves the self-hosted perimeter, detail on deployment architecture and requirements, independent or hands-on corroboration of a self-hosted deployment.",
+    "rationale": "Bitwarden's own docs give a procedure to install and deploy Bitwarden on your own Linux server, and the Public API docs refer to a self-hosted deployment URL, so the core self-hosting capability is first-party. The pack does not document that every secret stays inside the perimeter, so the second half of the story is unproven and full credit is not warranted. missing for 10: documentation that a self-hosted instance keeps all vault data and secrets on-premises with no external dependency (e.g. cloud licensing or relay services), deployment depth beyond a single Linux install line, and independent hands-on corroboration of a self-hosted sync server.",
     "evidenceIds": [
-      "bitwarden-docs-10"
+      "bitwarden-docs-10",
+      "bitwarden-public-api-oas-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an IT admin, I can self-host the sync server on my own infrastructure and keep every secret inside my perimeter",
       "citations": [
         {
           "evidenceId": "bitwarden-docs-10",
           "quote": "This article will walk you through the procedure to install and deploy Bitwarden to your own Linux server."
+        },
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "the self-hosted URL (your.domain.com/api/docs/)"
         }
       ]
     }
@@ -4700,14 +4809,13 @@
     "productId": "bitwarden",
     "storyId": "team-shared-vaults",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Bitwarden documents organization collections, members and groups (via the Public API) and an integrated TOTP authenticator, and a team user reports that shared accounts include 2FA. However, no first-party doc explicitly describes sharing TOTP-bearing logins through collections or how per-member permissions work. Missing for 10: first-party documentation of collection sharing with per-member/group permission levels, explicit docs that TOTP seeds travel with shared items, and hands-on admin corroboration.",
+    "rationale": "Bitwarden documents organization collections, members and groups (managed via the Public API) and an integrated TOTP generator for logins. A paying team user confirms that account sharing works, including 2FA. However, the evidence never documents per-member or per-collection permission levels, nor shows that TOTP seeds sync to collection members. Missing for 10: first-party documentation of collection sharing with granular per-member permissions (e.g., read-only or hidden passwords), explicit docs that shared items carry TOTP to members.",
     "evidenceIds": [
       "bitwarden-docs-8",
       "bitwarden-docs-1",
-      "bitwarden-comm-8",
-      "bitwarden-docs-11"
+      "bitwarden-comm-8"
     ],
     "support": {
       "relation": "direct",
@@ -4719,12 +4827,12 @@
           "quote": "The Bitwarden Public API provides organizations a suite of tools for managing members, collections, groups, event logs, and policies."
         },
         {
-          "evidenceId": "bitwarden-comm-8",
-          "quote": "The killer feature for me has been safer account sharing, including 2FA."
+          "evidenceId": "bitwarden-docs-1",
+          "quote": "it automatically produces the time-based one-time passwords (TOTPs), six-digit codes using SHA-1 that rotate every 30 seconds"
         },
         {
-          "evidenceId": "bitwarden-docs-1",
-          "quote": "it automatically produces the time-based one-time passwords (TOTPs)"
+          "evidenceId": "bitwarden-comm-8",
+          "quote": "The killer feature for me has been safer account sharing, including 2FA."
         }
       ]
     }
@@ -4735,7 +4843,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents Bitwarden's integrated TOTP generation, authenticator sync and importing codes from other apps. Nothing in the pack shows search, folders or groups, or service icons for organizing TOTP tokens. The Public API's 'collections, groups' refers to organization member management, an adjacent feature that does not count toward this story.",
+    "rationale": "The evidence shows Bitwarden generates TOTP codes, syncs them between apps and imports them from other authenticators. Nothing in the pack documents searching codes, sorting them into folders or groups, or showing service icons. The Public API's 'collections, groups' refers to organization member management, an adjacent feature that does not organize tokens, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4750,7 +4858,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bitwarden generates TOTP codes and syncs them between its Authenticator and Password Manager apps, so a smartwatch surface is a fair question for it. However, nothing in the evidence mentions a smartwatch, Apple Watch, Wear OS or any other wearable app or companion. Phone and browser TOTP support is a different surface and earns no credit for this story.",
+    "rationale": "Bitwarden ships TOTP generation and an Authenticator app that syncs codes, so a smartwatch surface is a fair question for this kind of product. However, nothing in the evidence mentions a smartwatch app, watch complication, or wearable access to codes. The TOTP evidence covers only the integrated authenticator, sync between apps, the CLI and the local API, none of which put codes on a watch.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

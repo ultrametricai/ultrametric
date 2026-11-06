@@ -1,17 +1,29 @@
 {
-  "hash": "3a18697270103a988da1c85d9e847666faf6a0b27424934612781a9b112f2242",
+  "hash": "af52579be68010a9020882737776f75f63fcb2efc355c0dcaa44944a5055cf24",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Bitwarden documents a Public API and a CLI with a local REST mode, so the axis applies. However, nothing in the evidence describes API versioning or any deprecation policy. Package release numbers for the CLI and MCP server are software versions, not a versioned-API contract with documented deprecation terms, and no OpenAPI spec was found.",
-    "evidenceIds": [],
+    "rationale": "Bitwarden documents an explicit API compatibility policy: it aims for indefinite backwards compatibility through semantic versioning and signals breaking changes by incrementing the major version. It also publishes OpenAPI specs for the Public and Vault Management APIs. However, the policy operates at the release-cycle level, with no per-request version pinning (no version header or URL versioning) and no stated deprecation timeline or sunset process. Missing for 10: per-request API version pinning, a formal deprecation/sunset timeline with notice periods, independent corroboration of the policy in practice.",
+    "evidenceIds": [
+      "bitwarden-api-compat-policy-20261106",
+      "bitwarden-public-api-oas-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "bitwarden-api-compat-policy-20261106",
+          "quote": "As a practice, we aim to provide backwards compatibility to the API indefinitely through semantic versioning. However, if we add enhancements that make it difficult or impossible to maintain backwards compatibility to all prior versions, we will indicate that by incrementing the major version number."
+        },
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "is compatible with the OpenAPI Specification (OAS3) and publishes a compliant swagger.json definition file"
+        }
+      ]
     },
     "productId": "bitwarden",
     "storyId": "api-versioning-policy"
