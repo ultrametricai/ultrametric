@@ -7452,7 +7452,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery once documented a Vercel AI SDK integration that aggregated tools across servers, with Smithery handling OAuth and connections. Its own shutdown notice says that on October 31, 2026 the Smithery API, Connect, Toolbox, CLI and SDKs stopped working and the docs tree was removed, so that integration no longer functions. No adapters for LangChain, CrewAI, or the OpenAI or Anthropic SDKs are evidenced at all.",
+    "rationale": "Smithery once documented a Vercel AI SDK integration, which handled OAuth, token refresh and aggregation of tools across servers on top of its hosted Connect service. However, Smithery's own shutdown notice says Connect and its SDKs stopped working on 2026-10-31, and the docs tree was removed. No adapters for LangChain, CrewAI, OpenAI or Anthropic SDKs were ever evidenced, so no working, documented framework adapter is delivered today.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7467,7 +7467,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Agent-readable documentation is a fair axis for an MCP registry and connection platform, but the probes found no llms.txt (HTTP 404) and no docs.md (HTTP 404), and the shutdown notice says the docs tree has been removed. Context7 is a third-party server listed in the registry, not Smithery's own agent-oriented docs, and the CLI is a tool surface rather than documentation, so neither earns credit here.",
+    "rationale": "Agent-readable docs are a fair question for an MCP registry and platform, so the axis applies. Probes found no such surface: smithery.ai/llms.txt and /docs.md both return 404, and the docs tree was removed after the 2026-10-31 shutdown. Listed servers such as Context7 serve other vendors' docs, and the agent-facing CLI is a different capability, so neither counts toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7482,7 +7482,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery is an MCP registry and connection-management platform, and a SaaS product of this kind could plausibly offer AI-generated insights from user data, so the axis applies. The evidence pack documents only connection brokering, OAuth handling, publishing, triggers, a CLI and a registry. Nothing shows the product itself generating insights or suggestions from a user's data. Third-party MCP servers listed in the registry (e.g. Exa for research) are other vendors' tools, not a Smithery insight feature, so they earn no credit.",
+    "rationale": "Smithery is an MCP registry and connection-management platform. A platform like this could plausibly offer AI-generated insights on a user's data, so the axis applies. Nothing in the evidence shows Smithery itself producing insights or suggestions from user data: the docs cover OAuth and connection proxying, publishing, triggers, namespaces and CLI tool calls, and the hosted services shut down on 2026-10-31.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7497,7 +7497,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery is an MCP registry and connection platform, so background automations are a fair question for it, but the evidence documents no feature for setting up autonomous or scheduled automations. Triggers only let MCP servers push upstream events to consumers. That is a developer building block, not a user-configurable automation runner, and the hosted connection services were shut down on 2026-10-31.",
+    "rationale": "Smithery's evidence covers an MCP registry, connection and credential management, and a CLI. Nothing shows a user-facing way to set up automations that run on their own in the background, whether scheduled or recurring. Triggers only let MCP servers surface upstream events for consumers to build on, which is a developer building block rather than an automation feature. The hosted connection services were also shut down on 2026-10-31.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7512,7 +7512,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery is an MCP registry and connection-management platform, so a built-in assistant is a plausible feature to ask about and the axis applies. Nothing in the evidence shows an in-product AI assistant that users can delegate tasks to. The docs cover connecting external agents to MCP servers, the CLI, tokens and the registry, which are infrastructure for other agents rather than a built-in assistant.",
+    "rationale": "Smithery is an MCP registry and connection platform, so a built-in assistant is a fair question for this kind of product, but nothing in the evidence shows one inside it. The CLI, REST connection layer, and service tokens are infrastructure for external agents to call tools, not a product-native assistant that users delegate tasks to.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7527,11 +7527,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Smithery's own maintained CLI offers scriptable commands (mcp search/add/list/remove, tool list/find/get/call), so it can plausibly be driven from automation. However, nothing documents headless or CI use. The 2026-10-31 shutdown also ended API keys, the hosted Connect services and the service-tied CLI versions, which limits what unattended runs can do beyond querying the public registry. Missing for 10: explicit headless/CI documentation, non-interactive auth for CI after API keys were shut down, confirmation that tool-call commands work post-shutdown, and independent or hands-on corroboration of CI usage.",
+    "rationale": "Smithery's official, maintained CLI provides scriptable command-line operations (registry search/add/list/remove and tool list/find/get/call), which makes non-interactive automation plausible. However, nothing documents headless or CI use specifically. The hosted REST API, Connect and service-tied CLI versions were also shut down on 2026-10-31, which narrows what automation can reach. Missing for 10: explicit headless/CI documentation, documented non-interactive auth for pipelines, a still-supported programmatic API surface, and hands-on corroboration of CI usage.",
     "evidenceIds": [
       "smithery-gh-1",
       "smithery-gh-2",
-      "smithery-api-shutdown-20261106"
+      "smithery-api-shutdown-20261106",
+      "smithery-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -7559,12 +7560,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Smithery's maintained CLI documents registering MCP servers (`smithery mcp add <url>`) and calling their tools (`smithery tool call`), so the product itself can plug in MCP servers and use their tools. However, the hosted Connect/Toolbox service that brokered connections, OAuth and token refresh was shut down on 2026-10-31, and the service-tied CLI and SDK versions were deprecated, so the current depth of the tool-calling path is unproven. Missing for 10: confirmed post-shutdown connection and auth handling for added servers, hands-on corroboration that tool calls work against the public registry, and current first-party docs (the docs tree was removed).",
+    "rationale": "Smithery's own CLI documents adding MCP servers ('smithery mcp add <url>') and calling their tools ('smithery tool call'), and its Connect docs describe connecting to MCP servers and aggregating their tools. However, the hosted Connect/API services, along with the service-tied CLI and SDK versions, were shut down on 2026-10-31. That leaves only the maintained CLI's commands as current documentation, with no hands-on proof they work against the public registry. missing for 10: a live hosted connection/tool-calling service after shutdown, hands-on corroboration that the post-shutdown CLI's tool calls work, and in-depth current docs.",
     "evidenceIds": [
       "smithery-gh-1",
       "smithery-gh-2",
-      "smithery-api-shutdown-20261106",
-      "smithery-docs-14"
+      "smithery-docs-1",
+      "smithery-docs-14",
+      "smithery-api-shutdown-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7573,15 +7575,19 @@
       "citations": [
         {
           "evidenceId": "smithery-gh-1",
-          "quote": "Smithery CLI connects your agents to thousands of skills and MCP servers directly from the command line."
-        },
-        {
-          "evidenceId": "smithery-gh-1",
           "quote": "smithery mcp add <url>"
         },
         {
           "evidenceId": "smithery-gh-2",
           "quote": "smithery tool call <connection> <tool> [args]"
+        },
+        {
+          "evidenceId": "smithery-docs-14",
+          "quote": "Connect to multiple servers and aggregate their tools"
+        },
+        {
+          "evidenceId": "smithery-api-shutdown-20261106",
+          "quote": "Smithery API, Connect, and Toolbox"
         }
       ]
     }
@@ -7592,7 +7598,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official MCP server is a fair axis for an MCP registry/connection platform, but the evidence does not show Smithery exposing its own MCP endpoint that agents can connect to. The /docs/use/connect page describes a REST interface for reaching third-party MCP servers, and Uplink only proxies a user's own server. The probe's bare assertion of an 'official MCP server' points at that same REST/Connect page, and Smithery's own shutdown notice says Connect and Toolbox stopped working on October 31, 2026.",
+    "rationale": "Smithery is an MCP registry and connection platform, so asking whether it ships its own official MCP server is a fair question. The evidence does not show one. The page the probe flags (docs/use/connect) actually describes \"a simple REST interface for connecting to MCP servers,\" which is a REST gateway to third-party servers, not a first-party Smithery MCP server. Uplink exposes the user's own server, and the CLI is a command-line tool, so neither qualifies. The hosted Connect and Toolbox services were also shut down on 2026-10-31, leaving only a non-proxied public registry.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7607,7 +7613,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes Smithery's REST interface, typed SDKs, and a CLI that uses structured commands such as `smithery mcp search [term]` and `smithery tool call <connection> <tool> [args]`. Nothing shows a natural-language interface for operating Smithery itself. Agents can call MCP tools through the platform, but that is a building block for other agents, not natural-language control of the product. The hosted services were also shut down on 2026-10-31.",
+    "rationale": "The evidence shows Smithery offers a structured CLI (smithery mcp search/add/list, smithery tool find/call) and APIs that let agents reach MCP servers, but nothing documents operating Smithery itself through natural-language commands. Those CLI commands are fixed syntax with keyword search terms, and supplying tools to agents is a developer building block rather than a natural-language interface to the product, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7622,12 +7628,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "An official Smithery CLI exists and is still maintained under the acquirer's arcadeai-labs org (npm smithery@latest). It documents registry commands (search/add/list/remove), tool commands, and a Skills surface for connecting agents from the command line. However, the shutdown notice says the service-tied CLI versions stopped working with the hosted connection services on 2026-10-31, so connection-dependent commands such as tool call are of uncertain function and the surviving CLI covers mainly the public registry. missing for 10: confirmed working connection/tool-call commands after the shutdown, first-party docs (the docs tree was removed), hands-on or independent corroboration of the current CLI.",
+    "rationale": "An official Smithery CLI exists and is maintained under the acquirer's arcadeai-labs org (npm smithery@latest), with documented registry, tool and skills commands. However, the October 31, 2026 shutdown stopped the hosted connection services, accounts and API keys, and deprecated the service-tied CLI versions, so the continuing CLI works only against the public registry. Connection-dependent commands such as tool call are left on uncertain footing. Missing for 10: confirmation that connection and tool commands still work after the shutdown, first-party docs (the docs tree was removed), and independent hands-on corroboration of current CLI use.",
     "evidenceIds": [
       "smithery-gh-1",
       "smithery-gh-2",
-      "smithery-gh-3",
-      "smithery-api-shutdown-20261106"
+      "smithery-api-shutdown-20261106",
+      "smithery-registry-undocumented-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7639,12 +7645,12 @@
           "quote": "Smithery CLI connects your agents to thousands of skills and MCP servers directly from the command line."
         },
         {
-          "evidenceId": "smithery-gh-2",
-          "quote": "smithery tool list [connection], smithery tool find [query], smithery tool get <connection> <tool>, smithery tool call <connection> <tool> [args]"
+          "evidenceId": "smithery-api-shutdown-20261106",
+          "quote": "The CLI itself continues under the acquirer's org (github.com/arcadeai-labs/smithery-cli, npm smithery@latest) against the public registry; the shutdown covers the hosted services and the service-tied versions."
         },
         {
-          "evidenceId": "smithery-api-shutdown-20261106",
-          "quote": "The CLI itself continues under the acquirer's org (github.com/arcadeai-labs/smithery-cli, npm smithery@latest) against the public registry"
+          "evidenceId": "smithery-registry-undocumented-20261106",
+          "quote": "The maintained CLI commands are the only documented discovery surface against the public registry."
         }
       ]
     }
@@ -7654,13 +7660,9 @@
     "storyId": "agentic-public-api",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Archived docs once described a REST interface for connecting to MCP servers. Smithery's own shutdown notice says the \"Smithery API, Connect, and Toolbox\" and \"Smithery accounts and API keys\" stopped working on October 31, 2026, and that there is no longer a documented API surface. Probes for an OpenAPI spec all return 404. The surviving CLI is a command-line tool, not a documented public API, so it earns no credit for this story.",
-    "evidenceIds": [
-      "smithery-api-shutdown-20261106",
-      "smithery-docs-1",
-      "smithery-probe-3"
-    ],
+    "confidence": "medium",
+    "rationale": "Archived docs describe a Smithery REST interface, but the vendor's own shutdown notice says the Smithery API, API keys, and SDKs stopped working on 2026-10-31 and the docs tree was removed. The surviving registry.smithery.ai JSON endpoint is undocumented, with no docs or OpenAPI spec. The maintained CLI is a different surface from a public API, so no documented public API currently exists to drive the product.",
+    "evidenceIds": [],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -7673,12 +7675,12 @@
     "storyId": "agentic-scoped-keys",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Smithery's archived docs did describe scoped service tokens that let agents list and call tools only on connections matching given metadata. However, Smithery's own shutdown notice says that 'Smithery accounts and API keys' and the 'Smithery API, Connect, and Toolbox' stopped working on October 31, 2026, so the product no longer issues any credentials. What remains is a public, non-proxied registry with no current way to issue scoped credentials for an agent.",
+    "confidence": "high",
+    "rationale": "Archived pre-shutdown docs described service tokens scoped to specific namespaces, connections and metadata, which would have met this story. Smithery's own shutdown notice says that 'Smithery accounts and API keys' and the hosted API stopped working on October 31, 2026. Only a public, non-proxied registry and the CLI remain, and neither is documented as issuing scoped credentials, so the product no longer delivers this capability.",
     "evidenceIds": [
-      "smithery-api-shutdown-20261106",
       "smithery-docs-6",
-      "smithery-docs-7"
+      "smithery-docs-7",
+      "smithery-api-shutdown-20261106"
     ],
     "support": {
       "relation": "absent",
@@ -7692,9 +7694,12 @@
     "storyId": "agentic-sdks",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Archived docs once described typed TypeScript SDKs generated for each published server and a Vercel AI SDK integration. Smithery's own shutdown notice says \"The Smithery CLI and SDKs\" stopped working on October 31, 2026, with those versions deprecated and the docs tree removed. Only the CLI continues under the acquirer's org, and a CLI is not an SDK, so there is no current official SDK to build against.",
-    "evidenceIds": [],
+    "confidence": "high",
+    "rationale": "Archived docs once described a typed TypeScript SDK generated per published server and a Vercel AI SDK integration. Smithery's own shutdown notice says \"The Smithery CLI and SDKs\" stopped working on October 31, 2026, with those versions marked deprecated and the docs tree removed. No working official SDK remains to build against; only the CLI continues under the acquirer's org.",
+    "evidenceIds": [
+      "smithery-api-shutdown-20261106",
+      "smithery-docs-16"
+    ],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -7708,8 +7713,12 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery's Triggers docs once described consumers activating event subscriptions through Smithery, with the MCP server POSTing events straight to the consumer. Two things undercut this. First, Smithery itself only proxied the subscribe call and was not in the delivery path. Second, the first-party shutdown notice says the Smithery API, Connect and SDKs stopped working on 2026-10-31 and the docs tree was removed, so the product no longer offers a working webhook subscription capability.",
-    "evidenceIds": [],
+    "rationale": "Smithery once documented 'Triggers', where it proxied a consumer's subscribe call to an MCP server and the server, not Smithery, POSTed events to the consumer. Smithery's own shutdown notice says the Smithery API, Connect and accounts stopped working on 2026-10-31, leaving only a public non-proxied registry with no documented API surface. So the product no longer offers a webhook subscription a programmatic consumer can register against, and even before shutdown Smithery was not the party delivering the callbacks.",
+    "evidenceIds": [
+      "smithery-docs-12",
+      "smithery-docs-25",
+      "smithery-api-shutdown-20261106"
+    ],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -7722,8 +7731,8 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the pack documents an interactive API reference with runnable examples. The OpenAPI/Swagger probes all returned 404, and the shutdown notice says the docs tree is removed and there is no longer a documented API surface to explore. The server-page \"try\" feature lets users try MCP servers, which is a different capability from exploring an API reference.",
+    "confidence": "high",
+    "rationale": "An interactive API reference is a fair question for an API-bearing platform like Smithery, but nothing in the evidence shows one. Probes found no OpenAPI or Swagger spec, the docs tree is removed, and the documented Smithery API shut down on 2026-10-31. The live registry endpoint is undocumented, and the server-page 'try' feature concerns trying MCP servers, not a runnable API reference.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7738,7 +7747,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Smithery is a platform that offered a REST interface, so a downloadable API spec is a fair question to ask of it. Every probed OpenAPI/Swagger path returned 404, and the shutdown notice says there is no longer a documented API surface to specify. Generated per-server TypeScript SDKs and server-card JSON are related artifacts, not a machine-readable spec of Smithery's own API, so they earn no credit.",
+    "rationale": "Smithery has no downloadable OpenAPI or equivalent spec for its own API. Probes found every candidate OpenAPI and Swagger path returning 404, including the registry's /openapi.json, and the documented API was shut down on 2026-10-31. The per-server generated TypeScript SDKs and server-card JSON describe individual MCP servers, not Smithery's API, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7753,7 +7762,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no sandbox or test environment isolated from production data. Uplink lets a developer test an unpublished MCP server against a real agent, which is pre-publish testing rather than isolation. Token scoping and namespaces are access-control features, not a sandbox. The shutdown notice also states there is no longer a documented API surface to sandbox.",
+    "rationale": "Smithery is an MCP registry and connection platform, so a sandbox or test environment is a fair question for it, but the evidence documents no such environment. Uplink's 'test it against a real agent before publishing' is about testing an unpublished server, not isolating work from production data. Namespaces and scoped tokens are adjacent access controls, and the shutdown notice says there is no longer a documented API surface to sandbox.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7767,8 +7776,8 @@
     "storyId": "api-versioning-policy",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Smithery is an API-bearing platform, so the axis applies, but the evidence pack documents no API versioning scheme and no deprecation policy. The only related item is a shutdown notice that marked then-current versions deprecated, and it states there is no longer a documented API surface to version. That is a one-off service shutdown, not a published deprecation policy.",
+    "confidence": "high",
+    "rationale": "Nothing in the pack shows Smithery documenting API versioning or a deprecation policy. The only deprecation evidence is a one-off shutdown notice that ended the API, CLI and SDK service versions on 2026-10-31. The remaining registry endpoint is undocumented, with no docs or OpenAPI surface, so there is no versioned API contract to rely on.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7783,7 +7792,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for an MCP registry and connection platform, but the evidence shows no documented batch or bulk capability. The CLI commands (mcp add/remove, tool call) operate on one item at a time. Aggregating tools from multiple servers is a related but different feature, not bulk operations.",
+    "rationale": "Bulk operations are a fair question for an MCP registry and connection platform, but the evidence documents only single-item actions. The CLI commands act on one item at a time (smithery mcp add <url>, smithery tool call <connection> <tool>). Aggregating tools from multiple servers is an adjacent feature, not a documented operation that acts on many items at once.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7798,7 +7807,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery's documented Triggers let an MCP server surface upstream events, which the server POSTs directly to the consumer. That is an event-subscription building block. There is no documented way for a user to define rules that automatically run actions when those events fire; the consumer would have to build that logic. The shutdown notice also says the hosted Connect services through which triggers are activated stopped working on October 31, 2026.",
+    "rationale": "Smithery's documented Triggers let an MCP server surface upstream events and POST them to a consumer after the consumer activates a trigger. That is an event-delivery building block, not a user-defined rule engine that runs actions automatically. The proxied trigger path also sat on the Connect services that shut down on 2026-10-31.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7813,7 +7822,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs or workflows is a fair question for an MCP connection and registry platform, but nothing in the evidence shows Smithery offering cron, scheduled, or recurring execution. The documented Triggers feature is event-driven: it proxies upstream event subscriptions. That is an adjacent capability, not a recurring schedule, so it earns no credit. The hosted services were also shut down on 2026-10-31.",
+    "rationale": "Smithery is an MCP registry and connection platform, so a recurring-schedule capability is a fair question for it. The evidence documents no cron, scheduled job, or recurring workflow feature. Triggers (smithery-docs-12, smithery-docs-25) only proxy event subscriptions from upstream services, a different event-driven feature that is not a recurring schedule, and the hosted services have since shut down.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7828,7 +7837,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery is an MCP registry and connection platform. Versioning or rolling back user configurations is a plausible question for such a platform, so the axis applies. Nothing in the evidence shows versioning, review, or rollback of automations, connections, or published servers. Triggers, namespaces, and CLI add/remove commands are adjacent features and give no version history or rollback.",
+    "rationale": "Smithery is an MCP registry and connection platform, and such a platform could plausibly offer versioning, review and rollback of deployed servers or trigger-based automations, so the axis applies. The pack only documents connections, triggers, publishing, namespaces and CLI registry/tool commands. Nothing shows versioning, review workflows, or rollback of automations or server deployments.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7841,9 +7850,9 @@
     "productId": "smithery",
     "storyId": "browser-inspector-playground",
     "verdict": "partial",
-    "quality": 2,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Smithery's own docs say each published server gets a dedicated server page where users can 'discover, try, and install' it. That is only a thin hint of a browser-based way to exercise tools. The October 31, 2026 shutdown of the proxied Connect/API services, leaving only a non-proxied registry, makes it doubtful this still works. The CLI's 'smithery tool call' is a terminal surface, not a browser inspector, so it earns no credit here. Missing for 10: explicit documentation of a browser inspector/playground that lists and invokes tools, evidence it survives the service shutdown, hands-on corroboration.",
+    "rationale": "Smithery's docs say published servers get a dedicated server page where users can \"discover, try, and install\" the MCP. That is a glancing, first-party hint at in-browser trial of a server, but nothing describes an inspector or playground for calling tools. The CLI's `smithery tool call` is a command-line surface, not a browser one, so it earns no credit here. The October 2026 shutdown of Smithery's hosted Connect services also leaves it unclear whether any in-browser trial still works. Missing for 10: an explicitly documented browser-based inspector or playground for invoking tools, details of how tool calls are run and shown in the browser, confirmation it survived the shutdown, and hands-on corroboration.",
     "evidenceIds": [
       "smithery-docs-23",
       "smithery-api-shutdown-20261106"
@@ -7866,7 +7875,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery proxied tool calls through its Connect/Toolbox services, so an audit log of tool calls is a fair question for this product. However, nothing in the evidence documents call logging, audit trails, or replay. The shutdown notice also says Smithery is now a non-proxied registry, so no tool calls pass through it at all.",
+    "rationale": "Smithery was a hosted MCP connection gateway that proxied tool calls, so an audit log of those calls is a fair question for this product. The evidence pack never documents a tool-call log, audit trail, or replay capability. Token scoping, credential storage and CLI tool-call commands are adjacent features, not logging. The hosted connection services also shut down on 2026-10-31, leaving only a non-proxied registry.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7881,12 +7890,8 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery documented Triggers: consumers activate a trigger through Smithery, which proxies the subscribe call, and the server then POSTs events directly to the consumer. However, Smithery's own shutdown notice says its Connect and API services, accounts, API keys, and service-tied SDKs stopped working on October 31, 2026, and only a non-proxied public registry remains. The Smithery-mediated trigger subscription path is therefore no longer delivered.",
-    "evidenceIds": [
-      "smithery-docs-12",
-      "smithery-docs-25",
-      "smithery-api-shutdown-20261106"
-    ],
+    "rationale": "Smithery once documented Triggers: a consumer activated a trigger through Smithery, the subscribe call was proxied to the MCP server, and the server POSTed events directly to the consumer. However, the subscribe path ran through Smithery's hosted connection services ('Smithery API, Connect, and Toolbox'), and Smithery's own notice says these stopped working on 2026-10-31, with the docs tree removed. Smithery now remains only a non-proxied public registry, so there is no current way to subscribe an agent to downstream events through it.",
+    "evidenceIds": [],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -7900,7 +7905,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack describes Smithery's pricing, a free tier, or usage limits for prototyping connections. The pack documents connection features, but it also states that the hosted connection services and accounts were shut down on October 31, 2026. A free-tier pricing question is still a fair one for a SaaS connection platform, so the axis applies and the lack of evidence makes this none rather than na.",
+    "rationale": "Nothing in the evidence pack describes Smithery's pricing, a free tier, or usage limits for prototyping connections before paying. The hosted connection services, accounts and API keys were shut down on 2026-10-31, so there is no current paid or free plan to evaluate. The AGPL license on the CLI repository is an open-source license, not a documented free tier of the product, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7915,7 +7920,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack shows no Smithery capability for generating a hosted MCP server from an OpenAPI definition or from custom code without protocol work. The documented build paths assume you already have a working MCP server: publishing one deployed elsewhere by URL, distributing a stdio MCPB bundle, or exposing a running server via Uplink. Those are distribution and proxy features, not conversion or no-plumbing hosting, and the October 2026 shutdown leaves Smithery only as a public, non-proxied registry.",
+    "rationale": "The evidence shows Smithery can publish an MCP server you have already deployed elsewhere (via its URL), distribute local stdio bundles, and expose a locally running server via Uplink. Nothing shows it converting an OpenAPI definition or custom code into a hosted MCP server. The 'no protocol plumbing' claim (smithery-docs-1) is about consumers connecting to servers, which is a different story, and the hosted services were shut down on 2026-10-31.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7930,11 +7935,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The maintained Smithery CLI says it connects agents to \"thousands of skills and MCP servers\", and Smithery remains a public MCP registry, so a deep catalog is still reachable. However, the hosted connection services (API, Connect, Toolbox, accounts and keys) shut down on 2026-10-31, and the registry is now explicitly non-proxied, so the platform no longer hosts or brokers access to those integrations. Missing for 10: hosted or proxied access to the catalog after shutdown, managed OAuth for integrations post-shutdown, and independent verification of catalog size or depth.",
+    "rationale": "The maintained Smithery CLI says it connects agents to \"thousands of skills and MCP servers\", and a live public registry still lists third-party servers such as Exa, Context7 and Browserbase. However, Smithery shut down its hosted connection services (API, Connect, Toolbox, managed OAuth) on 2026-10-31, so the catalog is now a non-proxied registry rather than integrations reachable through the hosted platform. Missing for 10: hosted or proxied access to the catalog after the shutdown, managed OAuth for third-party integrations, documented registry API, and independent verification of the catalog's size.",
     "evidenceIds": [
       "smithery-gh-1",
+      "smithery-gh-2",
       "smithery-api-shutdown-20261106",
-      "smithery-docs-21"
+      "smithery-registry-undocumented-20261106",
+      "smithery-docs-17",
+      "smithery-docs-18",
+      "smithery-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -7950,8 +7959,12 @@
           "quote": "Smithery will remain as a public (non-proxied) MCP registry."
         },
         {
-          "evidenceId": "smithery-docs-21",
-          "quote": "Smithery maintains OAuth apps for popular integrations."
+          "evidenceId": "smithery-registry-undocumented-20261106",
+          "quote": "registry.smithery.ai/servers answers live JSON listing registry servers"
+        },
+        {
+          "evidenceId": "smithery-docs-17",
+          "quote": "Exa - Search the live web, access LinkedIn profiles, do deep research, and more"
         }
       ]
     }
@@ -7962,12 +7975,8 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery's archived docs described Uplink, which exposed an MCP server running on any machine as a regular Smithery connection without hosting it. However, Smithery's own shutdown notice says the Connect service and connection management stopped working on October 31, 2026, and Smithery now remains only a public, non-proxied registry. The product therefore no longer offers managed remote connections for local servers, so the documented capability is discontinued rather than delivered.",
-    "evidenceIds": [
-      "smithery-docs-4",
-      "smithery-docs-20",
-      "smithery-api-shutdown-20261106"
-    ],
+    "rationale": "Archived docs once described Uplink, which exposed an MCP server 'running on any machine as a regular Smithery connection' so a team could run a private tool without hosting it. Smithery's own shutdown notice says the Connect and API connection-management services stopped working on October 31, 2026, leaving only a public, non-proxied registry. With no managed connection layer left, the product no longer delivers this bridge, and both sides of the evidence are first-party docs, so this is not a cross-tier dispute.",
+    "evidenceIds": [],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -7981,8 +7990,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Archived Smithery docs once described platform-run OAuth with zero OAuth configuration, encrypted write-only credential storage, and automatic token refresh that falls back to an auth_required status. However, Smithery's own shutdown notice says the Smithery API, Connect, accounts and API keys stopped working on October 31, 2026, and Smithery now remains only a public, non-proxied MCP registry. No current product delivers OAuth flows, credential vaulting or token refresh, so the axis applies but is not delivered.",
-    "evidenceIds": [],
+    "rationale": "Archived docs once described Smithery running OAuth flows (with OAuth apps it maintained), storing credentials in encrypted write-only storage, and refreshing tokens automatically. Smithery's own shutdown notice says the API, Connect, accounts, and API keys stopped working on October 31, 2026, and that it remains only a non-proxied public registry. The product therefore no longer delivers managed OAuth, credential vaulting, or token refresh.",
+    "evidenceIds": [
+      "smithery-api-shutdown-20261106"
+    ],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -7995,8 +8006,8 @@
     "storyId": "one-endpoint-hosted-connection",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Archived docs described Smithery handling MCP connections for you through a REST interface (Connect). Smithery's own shutdown notice says the Smithery API, Connect and Toolbox stopped working on 2026-10-31, and that Smithery now remains only a public, non-proxied registry. No hosted endpoint is currently documented that a developer's MCP client can point at to reach downstream tools; listing third-party URLs in a registry is an adjacent capability, not Smithery hosting the connection.",
+    "confidence": "high",
+    "rationale": "Archived docs once described Smithery handling hosted MCP connections, including OAuth, token refresh and aggregated tools. Smithery's own shutdown notice says the Smithery API, Connect and Toolbox stopped working on 2026-10-31, and that Smithery remains only a public, non-proxied registry. No hosted remote server URL is currently offered for clients to point at, so the capability is no longer delivered.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8010,8 +8021,8 @@
     "storyId": "openness-api-parity",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Smithery's own shutdown notice says the Smithery API, Connect, Toolbox, accounts and API keys stopped working on October 31, 2026, and that no documented API surface remains. Even the archived docs only described a REST interface for connecting to MCP servers, never API parity with the UI. The surviving CLI only covers registry and tool commands against the public registry, which is not a full API equivalent of the UI.",
+    "confidence": "medium",
+    "rationale": "The archived docs described a REST interface for connecting to MCP servers, but they never claimed that everything in the UI could be done through the API. Smithery's own shutdown notice says the Smithery API, accounts and API keys stopped working on 2026-10-31 and the docs tree was removed. What remains is an undocumented registry JSON endpoint and a CLI, neither of which shows UI parity, so there is no current evidence the product delivers this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8026,7 +8037,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery is a hosted MCP connection and registry service, so data export and portability is a fair axis. However, nothing in the evidence documents any export of account data, connections, credentials or metadata in open formats. The shutdown notice says accounts and API keys stopped working but describes no export path, and credential storage is documented as write-only.",
+    "rationale": "Data export is a fair question for a hosted MCP connection and registry platform, so the axis applies. However, the evidence documents no feature for exporting a user's connections, credentials, namespaces or other account data in open formats. The AGPL-licensed CLI and the undocumented public registry JSON listing are adjacent: one is a code license and the other is public catalog data, not user data export. The shutdown notice says accounts stopped working but describes no export path.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8039,12 +8050,12 @@
     "productId": "smithery",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The evidence shows a public GitHub repository for the official Smithery CLI, now maintained under the arcadeai-labs org, so at least part of the product's source can be read. No evidence states an open-source license, and the registry and hosted platform code are not shown as public. missing for 10: a documented open license (e.g. MIT/Apache) for the repository, public source for the registry and platform beyond the CLI, independent corroboration of the licensing terms.",
+    "quality": 5,
+    "confidence": "high",
+    "rationale": "Smithery's official CLI is published as a public GitHub repository under AGPL-3.0, so part of the product's source is readable under an open license. The evidence explicitly says the registry and hosted platform code are not public, so only the CLI surface is open. Missing for 10: open-source registry and platform code, independent corroboration beyond the license file.",
     "evidenceIds": [
-      "smithery-gh-1",
-      "smithery-gh-3"
+      "smithery-cli-agpl-license-20261106",
+      "smithery-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -8052,12 +8063,12 @@
       "subject": "As an AI-native user, I can read the product's source under an open license",
       "citations": [
         {
-          "evidenceId": "smithery-gh-1",
-          "quote": "The official Smithery CLI (repository now under the acquirer's arcadeai-labs org; installed via npm install -g smithery@latest)"
+          "evidenceId": "smithery-cli-agpl-license-20261106",
+          "quote": "The official Smithery CLI repository (arcadeai-labs/smithery-cli) is licensed under the GNU Affero General Public License v3.0"
         },
         {
-          "evidenceId": "smithery-gh-1",
-          "quote": "The repository and npm package are live and maintained after the 2026-10-31 shutdown of Smithery's hosted connection services"
+          "evidenceId": "smithery-cli-agpl-license-20261106",
+          "quote": "The open license covers the CLI repository; the registry and hosted platform code are not public."
         }
       ]
     }
@@ -8067,8 +8078,8 @@
     "storyId": "openness-self-host",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a hosted MCP registry and connection platform, so the axis applies. Nothing in the evidence shows Smithery's core registry or connection service can be deployed on your own infrastructure. Uplink only exposes a user's own MCP server through Smithery's hosted service, and the open-source CLI is a client for the registry, not a self-hostable copy of it.",
+    "confidence": "high",
+    "rationale": "Self-hosting is a fair question for a registry and connection platform, but the evidence says the registry and hosted platform code are not public, so the core product cannot be self-hosted. Only the CLI client is open source (AGPL-3.0), and Uplink only exposes a user's own MCP server through Smithery's hosted service. Neither is a way to self-host Smithery itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8083,12 +8094,8 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Archived docs describe per-user service tokens scoped to connections by `metadata.userId`, which would have matched this story. However, Smithery's own shutdown notice says the Smithery API, Connect, accounts and API keys stopped working on 2026-10-31, leaving only a public non-proxied registry. So the product no longer provides per-end-user connected accounts or scoped tokens.",
-    "evidenceIds": [
-      "smithery-api-shutdown-20261106",
-      "smithery-docs-7",
-      "smithery-docs-6"
-    ],
+    "rationale": "Archived docs once described per-user service tokens scoped to connections whose metadata.userId matched a given user, along with managed OAuth credentials. Smithery's own shutdown notice says the Smithery API, Connect, accounts and API keys stopped working on October 31, 2026, leaving only a public, non-proxied registry. The product therefore no longer delivers per-end-user connected accounts or scoped tokens.",
+    "evidenceIds": [],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -8102,7 +8109,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery is a hosted MCP connection and credential service, now a public registry, so data residency is a fair question for it. The evidence pack never mentions choosing a storage region or residency; the only storage evidence is encrypted, write-only credential storage, which is a different capability.",
+    "rationale": "Smithery is a hosted MCP connection and registry platform that stored credentials, so data residency is a fair question for it. However, nothing in the evidence documents choosing a storage region or data residency. Encrypted credential storage and namespaces are adjacent features, not region selection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8117,7 +8124,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery is an MCP registry and connection service that handles user credentials and tool traffic, so a policy on using customer data for AI training is a fair question for it. However, nothing in the evidence pack covers training data use, opt-outs, or data-retention policy. Encrypted credential storage and token scoping are adjacent security controls, not a training opt-out.",
+    "rationale": "Smithery is a SaaS MCP registry and connection platform that handled user credentials and tool calls, so a data-training opt-out or no-training policy is a fair question for it. The evidence pack has no statement about AI training use of customer data and no opt-out control. Encrypted credential storage and scoped service tokens are adjacent security features, not a training-data protection, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8132,7 +8139,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery is a hosted MCP connection platform and registry, so retention and deletion controls are a fair question to ask of it. The evidence pack documents no retention settings, data-deletion controls, or account/data purge capability. Encrypted write-only credential storage and the CLI's `mcp remove` command are adjacent features, not retention or deletion controls.",
+    "rationale": "Smithery is a hosted MCP connection platform that stored credentials and connection data, so data retention and deletion controls are a fair question for it. The pack documents no retention settings, deletion workflows, or data-export or erasure controls. Encrypted write-only credential storage and the CLI's 'mcp remove' command (which removes a server from a client config) are adjacent features, not retention or deletion controls.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8147,7 +8154,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for an MCP registry, hosted service and CLI, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics collection, or any opt-out setting or environment variable for the Smithery CLI or services. The credential-storage and token-scoping items are adjacent security controls, not telemetry opt-out, so they earn no credit.",
+    "rationale": "Smithery is an MCP registry and platform with an official CLI, so telemetry opt-out is a fair question for this kind of product. However, nothing in the evidence pack mentions telemetry, usage tracking, analytics, or any opt-out control for the CLI or the hosted services. The only privacy-adjacent items cover credential storage and token scoping, which are different capabilities.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8162,14 +8169,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Smithery's docs describe a real publishing flow. You can publish a deployed server via its public HTTPS URL, local stdio servers are distributed as MCPB bundles, and each server gets a dedicated page where users discover and install it, with a manual server-card fallback when scanning fails. However, Smithery's own shutdown notice says accounts, API keys, the CLI/SDKs and the docs tree stopped working on 2026-10-31, leaving only a public non-proxied registry. Whether developers can still publish is therefore unclear. Missing for 10: evidence that publishing still works after the shutdown (accounts are gone), a documented current publishing path for the remaining public registry, and independent hands-on corroboration of the publish-to-install flow.",
+    "rationale": "Smithery's build docs describe publishing your own MCP server. You can publish by URL, ship local stdio servers as MCPB bundles, supply a static server card when scanning fails, and get a dedicated server page for discovery and installation. The CLI offers registry search and add. However, the October 31, 2026 shutdown removed the docs tree and stopped Smithery accounts and API keys, so it is unclear whether new servers can still be published, even though the registry remains public. Missing for 10: confirmation that publishing still works after the shutdown, a documented post-shutdown publishing flow, and independent or hands-on corroboration of publishing.",
     "evidenceIds": [
       "smithery-docs-9",
       "smithery-docs-10",
       "smithery-docs-11",
       "smithery-docs-23",
       "smithery-docs-24",
-      "smithery-docs-8",
+      "smithery-gh-1",
       "smithery-api-shutdown-20261106"
     ],
     "support": {
@@ -8183,11 +8190,11 @@
         },
         {
           "evidenceId": "smithery-docs-23",
-          "quote": "Distribution — Get a dedicated server page where users can discover, try, and install your MCP from any client"
+          "quote": "Get a dedicated server page where users can discover, try, and install your MCP from any client"
         },
         {
           "evidenceId": "smithery-docs-10",
-          "quote": "For local stdio servers — Smithery distributes a pre-built MCPB bundle that clients download and run locally."
+          "quote": "Smithery distributes a pre-built MCPB bundle that clients download and run locally."
         },
         {
           "evidenceId": "smithery-api-shutdown-20261106",
@@ -8202,7 +8209,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Smithery has an official, still-maintained CLI (npm smithery@latest), but its documented commands cover only registry search and add/list/remove of MCP servers plus tool calls. That delivers the 'install into agents' step and nothing else. Publishing is documented only as a web URL flow, and the shutdown notice says Smithery accounts, API keys and the service-tied CLI versions stopped working. Missing for 10: a CLI authentication/login command, a CLI build or stage step, a CLI publish/push/deploy command, and any documented end-to-end publish workflow from the CLI after the shutdown.",
+    "rationale": "The official, maintained Smithery CLI documents only the consumption side of the story: connecting agents to registry servers (smithery mcp add/list/remove) and calling tools. Publishing is documented only as a web URL flow, and the shutdown notice says the service-tied CLI versions stopped working. missing for 10: CLI authentication/login command, CLI build or stage of a server, CLI publish/push to the registry or deployment, and independent hands-on corroboration of the end-to-end workflow.",
     "evidenceIds": [
       "smithery-gh-1",
       "smithery-gh-2",
@@ -8231,7 +8238,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery is an MCP server registry, so comparing servers by quality signals is a fair question for it. The evidence covers only server pages, search, and publishing flows (smithery-docs-23, smithery-gh-1). Nothing documents usage counts, health or liveness checks, quality scores, or verification badges. The community security scan of 'top 100' servers is third-party analysis, not a signal Smithery publishes, so it earns no credit.",
+    "rationale": "Smithery is an MCP server registry, so published quality signals are a fair question to ask of it. Nothing in the evidence documents usage counts, health or liveness checks, scores, or verification badges. The registry probe shows entries carrying only qualifiedName, displayName and description. The security scan of top servers was run by an independent community member, not published by Smithery.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8246,10 +8253,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Smithery's maintained official CLI provides programmatic registry discovery (`smithery mcp search [term]`, `smithery tool find [query]`) against the public registry, which survives the shutdown. However, the shutdown notice says the Smithery API was discontinued and there is no longer a documented API surface, and probes found no OpenAPI spec or llms.txt. Discovery is therefore available only through the CLI, not a documented registry API. Missing for 10: a documented registry/catalog HTTP API, an API spec, independent hands-on corroboration of programmatic search, and clarity on whether tool-level discovery still works without the shut-down connection services.",
+    "rationale": "Smithery's maintained official CLI documents registry discovery commands (`smithery mcp search`, `smithery tool find`) that an agent can run programmatically against the public registry. However, the documented Smithery API was shut down on 2026-10-31. The live registry.smithery.ai/servers JSON endpoint still answers but is undocumented, with no docs or OpenAPI spec (both 404). Missing for 10: a documented HTTP registry API, an OpenAPI/spec for the registry endpoint, confirmation that tool-level discovery works without the shut-down connection services, and independent hands-on corroboration.",
     "evidenceIds": [
       "smithery-gh-1",
       "smithery-gh-2",
+      "smithery-registry-undocumented-20261106",
       "smithery-api-shutdown-20261106",
       "smithery-probe-3"
     ],
@@ -8267,6 +8275,10 @@
           "quote": "smithery tool find [query]"
         },
         {
+          "evidenceId": "smithery-registry-undocumented-20261106",
+          "quote": "The maintained CLI commands are the only documented discovery surface against the public registry."
+        },
+        {
           "evidenceId": "smithery-api-shutdown-20261106",
           "quote": "Smithery will remain as a public (non-proxied) MCP registry."
         }
@@ -8277,9 +8289,9 @@
     "productId": "smithery",
     "storyId": "runtime-tool-search",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Smithery's maintained CLI gives agents on-demand tool discovery and invocation (`smithery tool find [query]`, `tool get`, `tool call`) instead of preloading every definition. That is runtime search-and-load, but the evidence never describes it as in-context meta-tools or quantifies any context savings. Hosted 'Connect, and Toolbox' services shut down on 2026-10-31, so it is unclear whether connection-based tool calls still work. Missing for 10: documented meta-tools exposed to the agent (e.g. an MCP search/load tool), evidence of context-reduction behavior, clear post-shutdown status of connection-based tool loading, and independent hands-on corroboration.",
+    "rationale": "Smithery's maintained CLI gives agents commands to find and call tools on demand (`smithery tool find`, `tool get`, `tool call`, `mcp search`), so discovery happens at runtime rather than through preloaded definitions. However, this is a CLI command surface, not documented in-context meta-tools. The October 2026 shutdown of the hosted Connect/Toolbox services also leaves it unclear whether connection-backed tool loading still works. Missing for 10: documented MCP meta-tools (search/load tools) exposed to the agent, explicit evidence of context-window savings, confirmed post-shutdown working of connection-based tool get/call, and hands-on corroboration.",
     "evidenceIds": [
       "smithery-gh-2",
       "smithery-gh-1",
@@ -8292,7 +8304,7 @@
       "citations": [
         {
           "evidenceId": "smithery-gh-2",
-          "quote": "smithery tool list [connection], smithery tool find [query], smithery tool get <connection> <tool>, smithery tool call <connection> <tool> [args]"
+          "quote": "smithery tool find [query], smithery tool get <connection> <tool>, smithery tool call <connection> <tool> [args]"
         },
         {
           "evidenceId": "smithery-gh-1",
@@ -8307,7 +8319,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the pack documents Smithery scanning or inspecting listed servers for malicious or vulnerable behavior. The 'automatic scanning' in the publish docs extracts server metadata (with a static server-card fallback), which is a different feature from security vetting. An independent scan found injection-style findings in 22 of the top 100 listed servers, which is consistent with no platform-side security vetting.",
+    "rationale": "Nothing in the pack shows Smithery scanning or inspecting listed servers for malicious or vulnerable behavior. The 'automatic scanning' in its publish docs is metadata discovery for server cards, which is an adjacent feature, not security vetting. The community scan of the top 100 servers was run by an independent party, not by the platform, and it found injection issues in listed servers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8320,15 +8332,15 @@
     "productId": "smithery",
     "storyId": "server-metadata-inspection",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Smithery documents a dedicated server page for discovering and trying each listed server. It scans server metadata, with a static server-card fallback, and it captures tool schemas (a typed SDK is generated from them). It also distinguishes local stdio (MCPB bundle) from URL-hosted servers, and it remains a public registry after the hosted-service shutdown. However, no evidence shows that tools, input schemas, transport or hosting attributes are actually displayed for inspection before connecting; the CLI's `tool get` works on an existing connection. Missing for 10: explicit documentation that server pages expose per-tool input schemas, transport type and hosting attributes before connecting, plus independent or hands-on corroboration of that pre-connection inspection view.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Smithery documents a dedicated server page where users can discover and try a server before installing it. Its publishing flow scans servers for metadata, with a static server-card fallback, and it distinguishes local stdio bundles from hosted URL servers, which implies pre-connection metadata about transport and hosting. However, the tool-inspection CLI commands (tool list/get) operate on a connection, and the live registry listing only exposes name, displayName and description. Missing for 10: explicit documentation that tools and input schemas are viewable before connecting, a documented transport/hosting attribute display, an inspect command or documented registry endpoint that works without a connection, and independent hands-on corroboration.",
     "evidenceIds": [
       "smithery-docs-23",
       "smithery-docs-11",
       "smithery-docs-10",
-      "smithery-docs-16",
-      "smithery-api-shutdown-20261106"
+      "smithery-gh-2",
+      "smithery-registry-undocumented-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8346,10 +8358,6 @@
         {
           "evidenceId": "smithery-docs-10",
           "quote": "For local stdio servers — Smithery distributes a pre-built MCPB bundle that clients download and run locally."
-        },
-        {
-          "evidenceId": "smithery-docs-16",
-          "quote": "Every MCP server published on Smithery gets a typed TypeScript SDK generated from its tool and trigger schemas."
         }
       ]
     }
@@ -8358,16 +8366,15 @@
     "productId": "smithery",
     "storyId": "server-registry-search",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Smithery remains a public MCP registry after the hosted-service shutdown. Its maintained CLI documents searching \"thousands of skills and MCP servers\" (smithery mcp search) and finding tools by query (smithery tool find), and each published server gets a discovery page. Capability-oriented browsing is only implied by keyword search plus descriptive listings, so coverage is partial. missing for 10: documented capability/category filtering or faceted browse, first-party docs for the web browse UI post-shutdown, independent hands-on corroboration of search quality and catalog scale.",
+    "rationale": "Smithery provides its own discovery capability. The maintained CLI offers `smithery mcp search [term]` and `smithery tool find [query]` against a registry described as \"thousands of skills and MCP servers,\" and the public registry stays live after the 2026-10-31 shutdown. Coverage is still partial, not complete. Search is keyword-only, with no documented capability-based filtering or faceting. Tool-level browsing appears tied to connections, which cuts against discovering tools \"before wiring anything.\" The registry's HTTP endpoint is undocumented, and the docs and server-page surfaces were removed with the shutdown. Missing for 10: documented capability or category filtering, documented tool browsing without a connection, a documented registry API or browse UI after shutdown, and independent hands-on corroboration of search quality.",
     "evidenceIds": [
       "smithery-gh-1",
       "smithery-gh-2",
-      "smithery-docs-23",
       "smithery-api-shutdown-20261106",
-      "smithery-docs-17",
-      "smithery-comm-1"
+      "smithery-registry-undocumented-20261106",
+      "smithery-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -8379,16 +8386,20 @@
           "quote": "Smithery CLI connects your agents to thousands of skills and MCP servers directly from the command line."
         },
         {
+          "evidenceId": "smithery-gh-1",
+          "quote": "smithery mcp search [term]"
+        },
+        {
           "evidenceId": "smithery-gh-2",
           "quote": "smithery tool find [query]"
         },
         {
-          "evidenceId": "smithery-docs-23",
-          "quote": "Get a dedicated server page where users can discover, try, and install your MCP from any client"
-        },
-        {
           "evidenceId": "smithery-api-shutdown-20261106",
           "quote": "Smithery will remain as a public (non-proxied) MCP registry."
+        },
+        {
+          "evidenceId": "smithery-registry-undocumented-20261106",
+          "quote": "The maintained CLI commands are the only documented discovery surface against the public registry."
         }
       ]
     }
@@ -8399,8 +8410,12 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Archived docs described service tokens scoped to list and call tools on connections matching namespace and metadata filters. That was connection-level scoping, not per-tool allowlisting. The October 31, 2026 shutdown notice says the Smithery API, Connect, Toolbox, accounts and API keys stopped working, and Smithery remains only as a public, non-proxied registry. No current documented capability restricts which servers or individual tools an agent may call.",
-    "evidenceIds": [],
+    "rationale": "Archived token-scoping docs describe service tokens that limit an agent to listing and calling tools on connections in a namespace matching metadata, which is server- or connection-level scoping. No per-tool allowlist was ever documented. Smithery's own shutdown notice says the API, Connect, accounts and API keys stopped working on 2026-10-31, and it now remains only as a public, non-proxied registry, so no gateway access control is currently delivered.",
+    "evidenceIds": [
+      "smithery-docs-6",
+      "smithery-docs-7",
+      "smithery-api-shutdown-20261106"
+    ],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -8414,7 +8429,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "The evidence pack does not document pricing per tool call or per connection, and it does not document rate limits. The docs cover connection handling, OAuth, token scoping, publishing and the CLI, but none of them mention pricing or rate limits. The hosted connection services were also shut down on 2026-10-31.",
+    "rationale": "Pricing and rate limits are a fair question for a hosted MCP connection platform, so the axis applies. Nothing in the evidence pack documents per-call or per-connection pricing, plan tiers, or rate limits. The hosted connection services were shut down on 2026-10-31 and the docs tree has been removed.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8429,7 +8444,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Usage analytics is a fair question for an MCP registry and connection platform. However, nothing in the evidence pack documents dashboards or metrics for call volumes, users, errors, or cost on consumed or published servers. The pack covers connections, publishing, token scoping, namespaces and the CLI, and the hosted services were shut down on 2026-10-31.",
+    "rationale": "Smithery is an MCP registry, hosting and connection platform, so usage analytics is a fair axis, but nothing in the evidence documents dashboards or metrics for call volumes, users, errors or cost. The October 2026 shutdown of the hosted connection services also leaves only a public registry and CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8444,7 +8459,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Smithery's docs describe managed OAuth in which Smithery maintains the OAuth apps and no client IDs or secrets are configured. Nothing shows customers can bring their own OAuth app credentials or apply their own branding to the authorization flow. The hosted connection services were also shut down on October 31, 2026, so no current auth flow exists to white-label.",
+    "rationale": "Smithery's docs say it handles OAuth with its own managed apps ('Smithery maintains OAuth apps for popular integrations', 'No redirect URIs, client IDs, or secrets to configure'). Nothing in the pack documents bring-your-own OAuth client credentials or custom branding of the authorization flow. The documented hosted Connect service was also shut down on 2026-10-31.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

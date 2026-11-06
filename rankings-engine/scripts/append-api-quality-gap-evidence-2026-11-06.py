@@ -218,6 +218,22 @@ ITEMS = {
          'LocalAI documents a built-in interactive explorer on every server: "Swagger UI — The full interactive API documentation is available without authentication at /swagger/index.html. Requests sent to protected endpoints from Swagger still require credentials." The same "API Discovery & Instructions" page documents the unauthenticated discovery endpoints (/.well-known/localai.json, /api/instructions, and the /swagger tree).'),
     ],
     ('mcp-infrastructure', 'smithery'): [
+        # PR #627 review round 2 (P1 registry-programmatic-api): the live registry
+        # endpoint answers JSON but is undocumented; recorded as a preserved counter-check
+        # so the judge grades CLI-only discovery against the explicit absence of a
+        # documented registry API.
+        ('smithery-registry-undocumented-20261106', 'probe',
+         'https://registry.smithery.ai/servers',
+         ['"qualifiedName"'],
+         'PROBE registry check (recorded 2026-11-06, rankings-engine/scripts/append-api-quality-gap-evidence-2026-11-06.py): registry.smithery.ai/servers answers live JSON listing registry servers (entries carry "qualifiedName", "displayName", "description"), but the endpoint is undocumented: the registry root, /docs, and /openapi.json all answer 404, the smithery.ai docs tree is removed, and the documented Smithery API shut down on 2026-10-31. The maintained CLI commands are the only documented discovery surface against the public registry.'),
+        # PR #627 review round 2 (P1 openness-open-license): the official CLI repository
+        # carries an explicit open license; appended verbatim so the credit rests on the
+        # license text instead of an unlicensed-public-repo inference.
+        ('smithery-cli-agpl-license-20261106', 'github',
+         'https://raw.githubusercontent.com/arcadeai-labs/smithery-cli/main/LICENSE',
+         ['GNU AFFERO GENERAL PUBLIC LICENSE',
+          'Version 3, 19 November 2007'],
+         'The official Smithery CLI repository (arcadeai-labs/smithery-cli) is licensed under the GNU Affero General Public License v3.0: the LICENSE file opens "GNU AFFERO GENERAL PUBLIC LICENSE, Version 3, 19 November 2007", and GitHub\'s license metadata reads AGPL-3.0. The open license covers the CLI repository; the registry and hosted platform code are not public.'),
         ('smithery-api-shutdown-20261106', 'claimed-docs',
          'https://smithery.ai/future',
          ['Smithery will remain as a public (non-proxied) MCP registry.',
@@ -312,6 +328,12 @@ REMOVALS: dict = {}
 #   fragment of it.
 UPDATES = {
     ('voice-agents', 'pipecat'): [
+        # PR #627 review round 2 (P1 openness-full-export): the portability sentence is
+        # scoped so bot-code portability cannot read as a data-export surface.
+        ('pipecat-docs-32',
+         'https://docs.pipecat.ai/pipecat/deployment/running-bots-locally.md',
+         ['the same bot file portable across the development runner'],
+         'The deployment docs state the property "that makes the same bot file portable across the development runner, Pipecat Cloud, and most production self-hosting setups." This is portability of the user\'s own bot code file across runtimes; it is not an export of Pipecat Cloud-held data (agents, secrets, builds, session or organization data), for which no export surface is documented.'),
         ('pipecat-dev-runner-20261106',
          'https://docs.pipecat.ai/pipecat/deployment/running-bots-locally.md',
          ['Pipecat ships a built-in development runner',
@@ -344,7 +366,8 @@ UPDATES = {
 }
 
 # Hand-recorded counter-check rows that a scheduled refresh must not clobber.
-PRESERVE_IDS = {'cerebras-playground-disabled-20261106', 'pinecone-playground-disabled-20261106'}
+PRESERVE_IDS = {'cerebras-playground-disabled-20261106', 'pinecone-playground-disabled-20261106',
+                'smithery-registry-undocumented-20261106'}
 
 _fetch_cache: dict = {}
 

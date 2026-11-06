@@ -1,18 +1,17 @@
 {
-  "hash": "789a1575d0dffbdc4dfcfd45bc9cee520f26fcc6e1da756952203364fbb4c354",
+  "hash": "980bb2c3f0df8fd9835380f56ecfec599aaa5c51bd8e516109f1ab8598dbc833",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat's official CLI ran keylessly and non-interactively in a runtime probe, and it exposes `eval` (behavioral evals against the real agent) and `cloud` (deploy). A Cloud REST API with an OpenAPI spec also supports programmatic automation, so headless operation is real. No evidence documents CI usage itself, such as CI recipes, non-interactive flags, exit codes for eval pass/fail, or pipeline examples. missing for 10: documented CI/CD integration guide, explicit headless/non-interactive run mode docs, eval exit-code/CI reporting, independent reports of CI usage",
+    "rationale": "Pipecat ships its own scriptable surfaces that suit automation. The official CLI ran keylessly via uvx and exposes init, cloud deploy and eval commands. Pipecat Evals runs described conversations against the real agent and reports whether expectations hold, and the Cloud REST API (OpenAPI spec) manages agents, builds and secrets programmatically. However, no documentation explicitly covers headless or CI use, and the dev runner is local-only and serves a UI. Missing for 10: explicit headless/CI usage docs (e.g. CI pipeline examples, non-interactive flags, exit codes for evals), independent corroboration of running in CI.",
     "evidenceIds": [
       "pipecat-probe-rt-1",
-      "pipecat-probe-rt-2",
       "pipecat-docs-8",
       "pipecat-docs-25",
       "pipecat-cloud-openapi-20261106",
-      "pipecat-spec-download-20261106"
+      "pipecat-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -21,11 +20,15 @@
       "citations": [
         {
           "evidenceId": "pipecat-probe-rt-1",
-          "quote": "the official Pipecat CLI (pypi pipecat-ai[cli]) ran keylessly via uvx — `pipecat --help` lists init (project scaffolding), cloud (deploy to Pipecat Cloud), eval (behavioral evals)"
+          "quote": "the official Pipecat CLI (pypi pipecat-ai[cli]) ran keylessly via uvx"
+        },
+        {
+          "evidenceId": "pipecat-docs-8",
+          "quote": "Pipecat Evals is the framework's built-in system for testing agent behavior."
         },
         {
           "evidenceId": "pipecat-docs-25",
-          "quote": "You describe a conversation and the behavior you expect, and Pipecat runs it against your real agent (the same pipeline, the same services, the same code) and tells you whether the expectation still holds."
+          "quote": "Pipecat runs it against your real agent (the same pipeline, the same services, the same code) and tells you whether the expectation still holds."
         },
         {
           "evidenceId": "pipecat-cloud-openapi-20261106",
