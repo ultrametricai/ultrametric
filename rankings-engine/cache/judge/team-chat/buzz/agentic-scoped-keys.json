@@ -1,19 +1,36 @@
 {
-  "hash": "7bcd571c3b6c99b545e860c2cc29584ebcdc6d651ba576d2455e88972d51239a",
+  "hash": "84ad1665a1862f48cd83cb3ad40498d1ac71dc857dd3376385ec8e8d02ae86d9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Buzz has its own per-agent credentials: each agent gets a separate Nostr keypair (\"Mint a separate keypair for each\") with \"their own channel memberships, and their own audit trail.\" Access is scoped through channel membership. NIP-AA ties agent access to the owner's membership, so revoking the owner cuts off the agent automatically, and the git helper reuses the agent's keypair instead of a separate PAT. However, the scoping is membership-based rather than true least-privilege grants; community comments note channel-based scoping but do not contradict it. missing for 10: fine-grained capability/permission scopes per agent credential (e.g., read-only or per-action limits), credential expiry/rotation controls, independent hands-on corroboration of scoping in practice.",
+    "rationale": "Buzz lets you mint a separate Nostr keypair per agent as its own credential, distinct from the owner's. Access is scoped through the agent's own channel memberships and audit trail, and NIP-AA ties agent access to the owner's membership so revocation cascades automatically. Community skepticism about the permission model is speculative, not a concrete failure, so it does not create a dispute. missing for 10: fine-grained capability or permission scopes attached to an agent credential (e.g. read-only or per-action limits), expiry or rotation controls, documented least-privilege configuration beyond channel membership, independent hands-on corroboration.",
     "evidenceIds": [
       "buzz-gh-4",
       "buzz-supp-acp-harness",
       "buzz-supp-nip-aa-agent-auth",
-      "buzz-supp-git-nostr-credentials",
-      "buzz-supp-owned-agent-guardrails",
-      "buzz-comm-5"
+      "buzz-supp-git-nostr-credentials"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "buzz-gh-4",
+          "quote": "Agents have their own keys, their own channel memberships, and their own audit trail."
+        },
+        {
+          "evidenceId": "buzz-supp-acp-harness",
+          "quote": "Running multiple agents? Mint a separate keypair for each."
+        },
+        {
+          "evidenceId": "buzz-supp-nip-aa-agent-auth",
+          "quote": "If the owner's membership is later revoked, the agent's next connection attempt fails automatically — no separate cleanup required."
+        }
+      ]
+    },
     "productId": "buzz",
     "storyId": "agentic-scoped-keys"
   }

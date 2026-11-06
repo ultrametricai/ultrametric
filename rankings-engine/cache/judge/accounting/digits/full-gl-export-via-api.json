@@ -1,19 +1,40 @@
 {
-  "hash": "74d82a10e39928bc3311fb5c442a42538356e530905b3f396972293dfdb07cb0",
+  "hash": "8d90634327cac18846f75587cbc40b3da3bc5537b72c25939a43e37efc85e916",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The documented Digits Connect API reference lists a trial balance generation endpoint, ledger entry queries, and a full Chart of Accounts fetch. It sits behind OAuth 2.0 with a `ledger:read` scope and is described by an OpenAPI 3.0 spec with typed, consistent schemas. The probe's 404s hit only guessed paths like `openapi.json`, not the documented `/openapi` URL, so they don't contradict the spec claim. Missing for 10: explicit evidence of a complete general-ledger bulk export (versus paginated entry queries), explicit open export formats such as CSV or JSON beyond implied typed responses, a successful probe of the OpenAPI spec, and independent or hands-on corroboration.",
+    "rationale": "Digits' documented Connect API reference includes a trial balance generation endpoint, ledger entry queries, and full chart-of-accounts retrieval. It is described by an OpenAPI 3.0 spec with typed, consistent schemas and sits behind OAuth scopes such as ledger:read. However, a complete general-ledger export is not explicitly documented; only ledger entry queries are mentioned, and response formats such as JSON or CSV are implied rather than stated. The probe found no spec at common openapi.json paths, although the docs point to /openapi, so this does not contradict the claim. Missing for 10: an explicitly documented full-GL bulk export endpoint, stated open output formats (JSON/CSV) for ledger and trial-balance responses, and independent or hands-on corroboration of pulling these reports.",
     "evidenceIds": [
       "digits-supp-api-reference",
-      "digits-supp-connect-api",
       "digits-supp-openapi-llms",
-      "digits-supp-oauth",
-      "digits-docs-5",
-      "digits-probe-3"
+      "digits-supp-connect-api",
+      "digits-supp-oauth"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pull the full general ledger and trial balance through a documented API in open formats",
+      "citations": [
+        {
+          "evidenceId": "digits-supp-api-reference",
+          "quote": "Fetch the full Chart of Accounts from the Ledger"
+        },
+        {
+          "evidenceId": "digits-supp-openapi-llms",
+          "quote": "The Digits Connect API provides a complete OpenAPI 3.0 specification that describes all available endpoints, request parameters, response schemas, and authentication requirements."
+        },
+        {
+          "evidenceId": "digits-supp-connect-api",
+          "quote": "The Digits Connect API gives you programmatic access to the AGL® — our AI-native general ledger."
+        },
+        {
+          "evidenceId": "digits-supp-oauth",
+          "quote": "source:sync ledger:read documents:write"
+        }
+      ]
+    },
     "productId": "digits",
     "storyId": "full-gl-export-via-api"
   }

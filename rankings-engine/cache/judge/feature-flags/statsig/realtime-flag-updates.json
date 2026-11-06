@@ -1,17 +1,31 @@
 {
-  "hash": "e1c3938463f5c654f756e82f4fec8cbe4118531437e004a7d2d6ebb8da07a71e",
+  "hash": "7dc982849d79a2f46de1333e9f9225b778b724deb36b2525eb701c062f095328",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Statsig's docs say feature gates toggle behavior 'in real time' and offer an 'emergency disable switch' that 'immediately' turns off a code branch (statsig-docs-1, statsig-docs-2). The founders also describe 'realtime targeted config' (statsig-comm-4). However, the pack never explains how changes reach SDKs, and docs-39 says SDKs evaluate locally from state cached at initialization, so propagation latency to already-connected SDKs is unevidenced. Missing for 10: documented streaming or polling mechanism, stated propagation latency or polling interval, explanation of how already-initialized SDKs pick up changes, and hands-on corroboration that a kill switch takes effect within seconds.",
+    "confidence": "low",
+    "rationale": "Statsig's docs say gates toggle product behavior \"in real time\" and can serve as an emergency disable switch that \"immediately\" turns off a code branch, so the kill-switch capability is first-party. However, nothing explains how changes reach connected SDKs (streaming vs. polling) or how fast. SDKs evaluating locally after initialization implies cached config whose refresh behavior is undocumented here. Missing for 10: documented streaming or polling propagation mechanism, stated propagation latency in seconds, SDK config refresh intervals, independent or hands-on confirmation that the kill switch takes effect promptly.",
     "evidenceIds": [
       "statsig-docs-1",
       "statsig-docs-2",
-      "statsig-docs-39",
-      "statsig-comm-4"
+      "statsig-docs-39"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, flag changes propagate to connected SDKs in seconds via streaming or fast polling — a kill switch actually kills",
+      "citations": [
+        {
+          "evidenceId": "statsig-docs-1",
+          "quote": "allow you to toggle the behavior of your product in real time without deploying new code"
+        },
+        {
+          "evidenceId": "statsig-docs-2",
+          "quote": "Have an emergency disable switch that lets you immediately turn off a particular code branch for users in production"
+        }
+      ]
+    },
     "productId": "statsig",
     "storyId": "realtime-flag-updates"
   }

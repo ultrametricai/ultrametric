@@ -1,11 +1,11 @@
 {
-  "hash": "43823f9080e3f6b218f99ceeb0f4267dc5532865755c2859aa04d6d744ea02a6",
+  "hash": "91dd648aebd48042c1d0e14e7758cc4b82387f83deeb4ab039b88de7190cdf5a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Supabase's own CLI covers the headless path: `supabase init` and `supabase start` run the entire stack, Auth included, locally or in CI, and `supabase start` builds the database from migration .sql files. Schema and RLS policies are plain SQL that fit in those migrations. For agent-driven provisioning, the MCP server exposes `create_project` and `apply_migration`, can be authenticated in CI with a personal access token, and the Management API OpenAPI spec is published. Community comments calling local development and migrations a weakness are not a concrete counter-example to this capability. Missing for 10: documented headless configuration of auth providers and settings from the CLI, an end-to-end scripted bootstrap example, and independent hands-on corroboration of agent-driven setup.",
+    "rationale": "Supabase's own CLI covers the headless core of this story. `supabase init` and `supabase start` stand up the full local stack, including Auth, on a machine or in CI. `supabase start` builds the database from migration .sql files, so schema and RLS policies (written as SQL `create policy` statements) can be scripted. The MCP server adds agent-callable `apply_migration` and `create_project` tools. However, the evidence never documents configuring auth providers or settings from the CLI, or pushing migrations to a hosted project in a script. Missing for 10: documented CLI or config-file auth configuration, documented CLI migration push or hosted project provisioning commands, independent hands-on corroboration of a fully scripted agent-driven setup.",
     "evidenceIds": [
       "supabase-docs-2",
       "supabase-docs-21",
@@ -13,11 +13,31 @@
       "supabase-comm-9",
       "supabase-docs-15",
       "supabase-supp-mcp-tool-groups",
-      "supabase-supp-mcp-agent-security",
-      "supabase-supp-mcp-config-params",
-      "supabase-supp-llms-agent-resources",
-      "supabase-docs-52"
+      "supabase-supp-ai-tools-stack"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent stand up a new backend — schema, auth, and policies — headlessly from the CLI in a script",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-21",
+          "quote": "The Supabase CLI enables you to run the entire Supabase stack locally, on your machine or in a CI environment."
+        },
+        {
+          "evidenceId": "supabase-docs-2",
+          "quote": "`supabase init` to create a new local project"
+        },
+        {
+          "evidenceId": "supabase-docs-15",
+          "quote": "create policy \"Individuals can view their own todos.\"\non todos for select\nto authenticated\nusing ( (select auth.uid()) = user_id );"
+        },
+        {
+          "evidenceId": "supabase-supp-ai-tools-stack",
+          "quote": "Once connected, your agent can call tools to query data, run migrations, deploy Edge Functions, and more."
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "agent-provisions-backend"
   }

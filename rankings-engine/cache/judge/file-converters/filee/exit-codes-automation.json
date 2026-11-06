@@ -1,17 +1,31 @@
 {
-  "hash": "b54ddd6168c9385a40933bff00264f1a0ea71f667ce3ca08c83f23afd3177977",
+  "hash": "de99ce3a4b6a4ed1d68e14a6b2f8ded5bc08fd7f2cf762688df2c8f302d86a60",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Filee's documented CLI (`filee convert ... --to/--preset`) has distinct exit codes: 0 when nothing failed, 1 when some files failed, 2 for wrong arguments or a missing input, and 3 when there is nothing to convert. A `--json` flag prints machine-readable results for scripts, so a pipeline can tell success from failure without parsing prose. Missing for 10: independent or hands-on corroboration that the exit codes and JSON behave as documented, and detail on logging beyond the JSON result (e.g., stderr or log-file behavior and per-file error schema).",
+    "rationale": "Filee's own CLI documents distinct exit codes: 0 (nothing failed), 1 (some files failed), 2 (wrong arguments or missing input) and 3 (nothing to convert). It also offers a --json flag that prints results for scripts, so a pipeline can tell success from failure without parsing prose. The 'logs' half of the story is only implied by the --json result output, and the evidence is vendor docs only. Missing for 10: documented logging behavior (log files, log levels, stderr diagnostics), a documented --json output schema with per-file error details, and independent or hands-on corroboration of the exit-code behavior.",
     "evidenceIds": [
       "filee-docs-26",
       "filee-docs-25",
-      "filee-probe-3",
-      "filee-docs-6"
+      "filee-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, the tool returns meaningful exit codes and logs, so a pipeline can tell success from failure without parsing prose",
+      "citations": [
+        {
+          "evidenceId": "filee-docs-26",
+          "quote": "\"--json\" prints the result for scripts; exit codes are 0 (nothing failed), 1 (some files failed), 2 (wrong arguments or a missing input) and 3 (nothing to convert)."
+        },
+        {
+          "evidenceId": "filee-docs-25",
+          "quote": "\"filee convert <files, wildcards or folders> --to <format>\" (or \"--preset <preset>\") converts with the app's engines and presets"
+        }
+      ]
+    },
     "productId": "filee",
     "storyId": "exit-codes-automation"
   }

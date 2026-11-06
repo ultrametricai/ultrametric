@@ -1,20 +1,44 @@
 {
-  "hash": "2914ae8e3f8e9275f6323b1724ba4c107375a0cdb081a7a864eb7a1c15aeee2b",
+  "hash": "458fb2854e8bd983c75caff4432896204bfdddadf069aa64a2c2dd082d86f597",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "The official docs show that a single `nix-shell` or `nix develop` in a project builds or downloads every declared dependency and drops you into a shell with the environment set up, and binary caches avoid rebuilding from source. A community user independently confirms that `nix-shell --run` reliably ensures the correct dependencies across a team, though initial setup was not user-friendly. Missing for 10: Nix itself must first be installed with a separate installer command, and there is no evidence of lockfile pinning (e.g. flake.lock) guaranteeing identical installs across clones.",
+    "rationale": "Nix's own docs say `nix-shell` builds or downloads a project's declared dependencies and starts a shell with all required environment variables set. `nix develop` does the same for a derivation's build environment. A hands-on community report confirms `nix-shell --run` reliably ensures a team has all the correct dependencies, matching the one-command bootstrap of a fresh clone. Missing for 10: the documented steps assume Nix is already installed (a separate curl installer step), and there is no explicit evidence of a lockfile-pinned fresh-clone workflow (e.g. flake.lock).",
     "evidenceIds": [
       "nix-docs-2",
       "nix-docs-3",
       "nix-docs-34",
+      "nix-docs-57",
+      "nix-docs-59",
       "nix-docs-36",
-      "nix-docs-42",
-      "nix-docs-11",
-      "nix-comm-7"
+      "nix-comm-7",
+      "nix-docs-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can bootstrap a fresh clone with one command that installs everything the project declares",
+      "citations": [
+        {
+          "evidenceId": "nix-docs-2",
+          "quote": "the command `nix-shell` will build or download those dependencies if they’re not already in your Nix store, and then start a Bash shell in which all necessary environment variables (such as compiler search paths) are set."
+        },
+        {
+          "evidenceId": "nix-docs-3",
+          "quote": "`nix develop` - run a bash shell that provides the build environment of a derivation"
+        },
+        {
+          "evidenceId": "nix-docs-34",
+          "quote": "Nix is extremely useful for developers as it makes it easy to automatically set up the build environment for a package."
+        },
+        {
+          "evidenceId": "nix-comm-7",
+          "quote": "you can do `nix-shell --run \"<some command>\"`, and it will make sure you have all of the correct dependencies."
+        }
+      ]
+    },
     "productId": "nix",
     "storyId": "single-command-bootstrap"
   }

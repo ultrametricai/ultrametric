@@ -1,17 +1,37 @@
 {
-  "hash": "5045ff352bd2026853108b8bc666fa5e552fa26b6ca178fb74433f2afab6c175",
+  "hash": "57f598ef4978f60f6821b765687ed157dbcdbdb31f78f3f601be7400cd01bdf9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
-    "confidence": "high",
-    "rationale": "Stripe documents restricted API keys (RAKs) as the recommended key type to give AI agents. It says to use RAK permissions to limit what an agent can do in your account, instead of unrestricted secret keys. Per-resource granularity is shown by the catalog-import case: a restricted key without Product Catalog Imports write permission gets a 403. Shared payment tokens and Link one-time credentials are payment-method scoping rather than API credentials, so they are not credited here. Missing for 10: a documented permission catalog and any expiry or rotation controls for agent keys, and independent or hands-on corroboration of least-privilege enforcement.",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Stripe's docs recommend restricted API keys (RAKs) specifically for keys given to AI agents. RAK permissions limit what an agent can do in the account, and the seller-catalog docs show per-resource permissions enforced with 403 errors. Shared payment tokens add scoped, expiring, revocable payment grants for agent purchases. missing for 10: in-depth documentation of RAK permission granularity, key expiry and rotation for agents, and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-agentic-commerce-docs-7",
       "stripe-agentic-commerce-docs-23",
       "stripe-agentic-commerce-docs-34",
-      "stripe-ac-supp-seller-catalog-feed"
+      "stripe-ac-supp-seller-catalog-feed",
+      "stripe-ac-supp-spt-limits"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-7",
+          "quote": "RAKs are the recommended type of key for API keys you give to AI agents."
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-23",
+          "quote": "Stripe recommends always using RAKs instead of unrestricted secret keys, especially when giving a key to an AI agent. Use RAK permissions to limit what an agent can do in your account."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-seller-catalog-feed",
+          "quote": "Without this permission, API requests return a `403` error"
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "agentic-scoped-keys"
   }

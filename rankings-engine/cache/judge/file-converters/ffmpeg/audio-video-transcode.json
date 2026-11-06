@@ -1,22 +1,46 @@
 {
-  "hash": "47a86e14c6d2252f5570f1cf1ff71fa976fa9c8c70cd8aa3668435624759af7c",
+  "hash": "e297725336d33aad6b68563431fc5200cdda030a731f1294a5a1fe9a673865ce",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "FFmpeg's official docs show format conversion (ffmpeg -i input.mp4 output.avi), explicit video bitrate control (-b:v 64k), and resizing via the scale filter in a filtergraph. Community users independently describe it as an indispensable transcoding multitool and report choosing specific encoders such as h264_nvenc. One user reported color information lost on Apple .mov files, an edge-case limitation rather than a contradiction. Missing for 10: explicit first-party documentation of codec selection (e.g. -c:v/-c:a; encoder choice appears only in community reports), and evidence of audio bitrate control.",
+    "rationale": "FFmpeg's official docs show format conversion (`ffmpeg -i input.mp4 output.avi`), an explicit output bitrate option (`-b:v 64k`), and resizing through the scale filter. Encoder choice is supported by the documented H264/HEVC Vulkan encoding and by community use of h264_nvenc, and users independently call it an indispensable transcoding multitool. Missing for 10: a first-party documented codec-selection flag (e.g. -c:v) in the evidence, and an explicit resolution command example rather than only a description of the scale filter.",
     "evidenceIds": [
       "ffmpeg-docs-1",
-      "ffmpeg-docs-2",
       "ffmpeg-docs-4",
       "ffmpeg-docs-8",
-      "ffmpeg-docs-13",
-      "ffmpeg-comm-5",
-      "ffmpeg-comm-6",
+      "ffmpeg-docs-12",
       "ffmpeg-comm-15",
-      "ffmpeg-comm-13"
+      "ffmpeg-comm-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a power user, audio and video transcode between formats with control over codec, bitrate, and resolution",
+      "citations": [
+        {
+          "evidenceId": "ffmpeg-docs-1",
+          "quote": "Converting video and audio has never been so easy. $ ffmpeg -i input.mp4 output.avi"
+        },
+        {
+          "evidenceId": "ffmpeg-docs-4",
+          "quote": "Set the video bitrate of the output file to 64 kbit/s: ffmpeg -i input.avi -b:v 64k -bufsize 64k output.mp4"
+        },
+        {
+          "evidenceId": "ffmpeg-docs-8",
+          "quote": "followed by resizing (using the scale filter)"
+        },
+        {
+          "evidenceId": "ffmpeg-docs-12",
+          "quote": "Support for Vulkan encoding, with H264 and HEVC was merged."
+        },
+        {
+          "evidenceId": "ffmpeg-comm-15",
+          "quote": "On Windows with Nvidia, h264_nvenc gives about an 8x boost"
+        }
+      ]
+    },
     "productId": "ffmpeg",
     "storyId": "audio-video-transcode"
   }

@@ -1,19 +1,41 @@
 {
-  "hash": "eb3916870adcdea2be92d88cf920d40fe1072947aff04755e518ca07a9c213fc",
+  "hash": "2531b982f25b784f684d0b65065193e49d9cc1bb3ba94bf6f467c1dc4163a617",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "x402 Bazaar is Coinbase's own documented discovery catalog. Sellers built on the CDP SDK are listed automatically after a successful settled payment and surfaced to agents through CDP APIs, the Bazaar MCP server and Amazon Bedrock AgentCore, and a runtime probe confirmed the keyless discovery index returns real listings. However, it is not a merchant feed or import API: there is explicitly no registration form or API call, so the merchant cannot push or curate a catalog. It only indexes individual payment-gated HTTP endpoints rather than a general product catalog, and listings drop after 30 days without a settlement. Missing for 10: a documented merchant-side feed/import API for pushing catalog data, support for product catalogs beyond payable endpoints, listing control independent of settlement activity, and independent seller-side corroboration of getting discovered.",
+    "rationale": "Sellers who build with the CDP SDK x402 building blocks are indexed automatically into the x402 Bazaar. The Bazaar exposes their payable endpoints to agents through CDP APIs, the Bazaar MCP server and Amazon Bedrock AgentCore, and a runtime probe confirmed live public listings. However, this is implicit indexing of individual endpoints rather than a documented feed or import API for a merchant catalog, and it only happens after a settled payment, with listings removed after 30 days without settlement. Missing for 10: an explicit catalog feed/import API for merchants, control over listing without a prior settled payment, product-catalog (not just endpoint) metadata publishing, independent corroboration of the seller-side listing flow.",
     "evidenceIds": [
       "coinbase-x402-docs-5",
+      "coinbase-x402-supp-6",
       "coinbase-x402-docs-23",
       "coinbase-x402-supp-5",
-      "coinbase-x402-supp-6",
-      "coinbase-x402-docs-14",
       "coinbase-x402-probe-rt-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a merchant, I can publish my product or service catalog into agent surfaces through a documented feed or import API so AI agents can discover what I sell",
+      "citations": [
+        {
+          "evidenceId": "coinbase-x402-docs-5",
+          "quote": "When you build with the CDP SDK's x402 building blocks, x402 Bazaar support is enabled automatically. There is no registration form or separate API call."
+        },
+        {
+          "evidenceId": "coinbase-x402-docs-23",
+          "quote": "Getting discovered makes your endpoint available to tens of thousands of agents through CDP APIs, the Bazaar MCP server, and Amazon Bedrock AgentCore"
+        },
+        {
+          "evidenceId": "coinbase-x402-supp-6",
+          "quote": "Every validated endpoint is eligible for indexing in the CDP Bazaar after a successful settled payment."
+        },
+        {
+          "evidenceId": "coinbase-x402-supp-5",
+          "quote": "The x402 Bazaar is a catalog of payment-gated services discovered by the CDP Facilitator."
+        }
+      ]
+    },
     "productId": "coinbase-x402",
     "storyId": "catalog-feed-publish"
   }

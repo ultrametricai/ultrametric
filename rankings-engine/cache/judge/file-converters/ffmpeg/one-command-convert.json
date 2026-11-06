@@ -1,11 +1,11 @@
 {
-  "hash": "1da52d030afd5a7b98e70bd41e22fa3449df44784e6839806c77ad1a738d3fec",
+  "hash": "f8a072aa90edcb63032b3034c8fd012ba52a284cb31ae7e81dfd83c2a7b4befc",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "FFmpeg's official docs show conversion as a single command (`ffmpeg -i input.mp4 output.avi`), with further one-line examples for bitrate and frame rate, and the CLI is documented at ffmpeg.html. Community users run it from batch-file wrappers and automated pipelines, which corroborates scripted use. Complex commands bring shell-escaping friction. missing for 10: evidence of CI-specific behavior (non-interactive overwrite flags, exit-code semantics), documented guidance on avoiding shell-escaping pitfalls for complex commands in scripts.",
+    "rationale": "FFmpeg's own docs show a one-line conversion (`ffmpeg -i input.mp4 output.avi`) and further one-line variants, and the CLI reference is at ffmpeg.html. Community users wrap it in batch files and automated pipelines, which shows it works from scripts, though shell escaping can be painful for complex commands. Missing for 10: explicit evidence of CI usage (exit codes, non-interactive flags) and smoother scripting for complex filter commands.",
     "evidenceIds": [
       "ffmpeg-docs-1",
       "ffmpeg-docs-4",
@@ -15,6 +15,29 @@
       "ffmpeg-comm-3",
       "ffmpeg-comm-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, a documented command converts a file in one line, usable from scripts and CI",
+      "citations": [
+        {
+          "evidenceId": "ffmpeg-docs-1",
+          "quote": "Converting video and audio has never been so easy. $ ffmpeg -i input.mp4 output.avi"
+        },
+        {
+          "evidenceId": "ffmpeg-docs-5",
+          "quote": "Force the frame rate of the output file to 24 fps: ffmpeg -i input.avi -r 24 output.mp4"
+        },
+        {
+          "evidenceId": "ffmpeg-probe-4",
+          "quote": "official CLI documented at https://ffmpeg.org/ffmpeg.html"
+        },
+        {
+          "evidenceId": "ffmpeg-comm-14",
+          "quote": "they wrote a batch file wrapper for in/out points and file paths"
+        }
+      ]
+    },
     "productId": "ffmpeg",
     "storyId": "one-command-convert"
   }

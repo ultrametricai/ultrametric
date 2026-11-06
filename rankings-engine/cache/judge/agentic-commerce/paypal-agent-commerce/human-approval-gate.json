@@ -1,17 +1,29 @@
 {
-  "hash": "1d8a2c3a8215ebc6fd4177ece44147a671244d22c272ceadd6250f8cc328f9e1",
+  "hash": "4bacabb0b56c18877e0bf3f657715bcfdcae32244e1c09455249de50942407a8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "PayPal's ACP path uses a delegated, one-time-use Braintree token. It is bound to the merchant ID and carries configurable amount and time restrictions, and checkout is triggered via requestCheckout()/Instant Checkout, which amounts to a scoped per-purchase credential rather than open-ended agent spending. The UCP path likewise relies on a single-use Google Pay token. However, no evidence documents an explicit buyer confirmation step, signed mandate, or consent record that PayPal itself enforces before funds move, and the toolkit's 'keep human oversight' line is advisory guidance, not a control. Missing for 10: documented buyer-facing confirmation/consent step before payment, signed mandate or approval record, approval thresholds for sensitive spend in the agent toolkit, independent or hands-on corroboration.",
+    "rationale": "The ACP path uses a delegated payment credential: a single-use token bound to the merchant ID with configurable amount and time restrictions. This gives each purchase a bounded authorization, which works somewhat like a mandate. However, the evidence never documents a buyer-facing confirmation step or explicit per-purchase consent before funds move. The restrictions are described as merchant-configurable, and the toolkit's 'keep human oversight' line is guidance, not an enforced control. missing for 10: documented user approval or confirmation step before payment, user-signed mandate semantics, per-purchase consent enforcement across Agent Toolkit/Store Sync/UCP paths, independent or hands-on corroboration.",
     "evidenceIds": [
-      "paypal-ac-supp-acp-chatgpt",
-      "paypal-ac-supp-ucp-googlepay",
-      "paypal-ac-supp-agent-ready",
-      "paypal-ac-supp-agent-toolkit"
+      "paypal-ac-supp-acp-chatgpt"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, sensitive agent spending requires my documented approval — a confirmation step, signed mandate, or per-purchase consent — before money moves",
+      "citations": [
+        {
+          "evidenceId": "paypal-ac-supp-acp-chatgpt",
+          "quote": "is a one-time-use token that you can process using your existing Braintree integration"
+        },
+        {
+          "evidenceId": "paypal-ac-supp-acp-chatgpt",
+          "quote": "bound to your merchant ID and includes amount and time restrictions that you can configure."
+        }
+      ]
+    },
     "productId": "paypal-agent-commerce",
     "storyId": "human-approval-gate"
   }

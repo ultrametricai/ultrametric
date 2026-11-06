@@ -1,19 +1,36 @@
 {
-  "hash": "73bbda8ea14b954320c3dd0ffe4beaf3390267f38948313f878d6a17bccff65b",
+  "hash": "b281089e89efc525f0775d50f34ce74e660eb8e46e5d7df80a455610448da45e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Appwrite's own CLI uses a project config file whose top-level resource arrays can be split into separate JSON files with `includes`. It runs headlessly in CI and can generate types from the database schema, which points to a config-as-code workflow for schema. However, no evidence explicitly says table or column definitions are pushed via the CLI, and nothing describes versioned, ordered migrations. The 'One-Click migrations' feature is platform-to-platform data migration, and Prisma/Drizzle migrations on the dedicated PostgreSQL are user-side tooling, so neither earns credit here. Missing for 10: explicit docs that the CLI pushes or deploys database schema, versioned migration files with ordering or rollback, a documented CI schema-deployment workflow, and hands-on corroboration.",
+    "rationale": "Appwrite's official CLI manages project resources from a JSON config that can be split into separate files with the `includes` field. That config can be kept in version control, and the docs say the CLI runs non-interactively on CI servers. The evidence never says schema (tables, columns, indexes) changes are pushed as ordered, versioned migrations, so only a thin declarative-config path is evidenced. The 'One-Click migrations' feature moves data between platforms and is not schema versioning. Missing for 10: explicit documentation that database schema lives in the CLI config and is applied/pushed via the CLI, ordered or versioned migration files, rollback/diff semantics, and hands-on or independent corroboration of CI-driven schema deploys.",
     "evidenceIds": [
       "appwrite-docs-13",
       "appwrite-docs-42",
-      "appwrite-docs-67",
       "appwrite-docs-12",
-      "appwrite-docs-55",
-      "appwrite-docs-41"
+      "appwrite-docs-55"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can manage schema changes as version-controlled migrations applied via the CLI or CI",
+      "citations": [
+        {
+          "evidenceId": "appwrite-docs-13",
+          "quote": "you can split top-level resource arrays into separate JSON files with the `includes` field."
+        },
+        {
+          "evidenceId": "appwrite-docs-42",
+          "quote": "This is especially useful when you want to automate tasks on a continuous integration server."
+        },
+        {
+          "evidenceId": "appwrite-docs-12",
+          "quote": "This includes creating and managing projects, managing resources (rows, files, users)"
+        }
+      ]
+    },
     "productId": "appwrite",
     "storyId": "versioned-migrations"
   }

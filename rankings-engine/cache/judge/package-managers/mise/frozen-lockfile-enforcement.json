@@ -1,16 +1,30 @@
 {
-  "hash": "dd0daa8122fdc5cfbc5d6cad5bca8b6e30d881ecd48b703427e7c17187d1f3ff",
+  "hash": "9bd0aad611a8071e15f3823b6afc1da62665deca5bfafcb44596614e806b39cc",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "mise's CI docs recommend committing a lockfile and running `mise install --locked` for reproducible installs, which is a frozen-lockfile mode. `mise lock` tooling (e.g. `--bump --dry-run`) is also documented for managing the lockfile. missing for 10: explicit documentation that `--locked` fails the install when mise.toml and the lockfile disagree, details of the mismatch and error behavior, independent or hands-on corroboration.",
+    "rationale": "mise documents its own locked install mode: commit a lockfile and run `mise install --locked` so every CI job installs the same versions. That is a first-party frozen-lockfile capability. The evidence never says the command fails when mise.toml and mise.lock disagree, so the enforcement behavior the story requires is only implied. Missing for 10: documented failure/exit behavior on manifest–lockfile mismatch, details of what --locked checks, independent or hands-on corroboration.",
     "evidenceIds": [
       "mise-docs-70",
-      "mise-docs-35",
-      "mise-docs-60"
+      "mise-docs-95"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can enforce a frozen/immutable lockfile mode that fails the install when the manifest and lockfile disagree",
+      "citations": [
+        {
+          "evidenceId": "mise-docs-70",
+          "quote": "For reproducible installs, commit a [lockfile](/dev-tools/mise-lock.html) and run `mise install --locked`."
+        },
+        {
+          "evidenceId": "mise-docs-95",
+          "quote": "Commit a lockfile and install with `mise install --locked`. Every job then installs the same versions"
+        }
+      ]
+    },
     "productId": "mise",
     "storyId": "frozen-lockfile-enforcement"
   }

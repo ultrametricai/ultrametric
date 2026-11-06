@@ -1,18 +1,40 @@
 {
-  "hash": "0f1b1b204b383e715224416b4c7c1682cfdb85e45293538d5d20705efed404a2",
+  "hash": "cd3d648209f01449b949ae1ea67ff8d05809e0f870bb5d5db02f3b4aad316dd0",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Unleash Edge is documented as a lightweight caching layer and read replica that serves thousands of connected SDKs, built for scalability and resilience. It connects to upstream with backend tokens, and targeting data is processed inside the Edge node and never sent upstream, so SDK traffic stays in the customer's network. missing for 10: explicit documentation that flags keep being served while the upstream vendor is unreachable (only implied by 'resilience'), clarity on whether Edge requires the Enterprise tier, and independent or hands-on corroboration.",
+    "rationale": "Unleash documents its own relay, Unleash Edge, as a caching layer for resilience. It acts as a read replica serving thousands of SDKs without loading the primary instance, and it keeps targeting PII inside the Edge node rather than sending it upstream. That covers the core of a self-hosted relay. However, the evidence never explicitly states that flags keep being served when the upstream is unreachable, nor that all SDK traffic stays inside the customer network. Missing for 10: explicit documentation of offline/upstream-outage serving behavior, explicit in-network SDK traffic/deployment topology docs, independent or hands-on corroboration.",
     "evidenceIds": [
-      "unleash-docs-5",
       "unleash-docs-28",
+      "unleash-docs-5",
       "unleash-docs-35",
-      "unleash-docs-34",
-      "unleash-docs-23"
+      "unleash-docs-34"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, I can run a relay/edge proxy so flags stay served when the vendor is unreachable and SDK traffic stays inside my network",
+      "citations": [
+        {
+          "evidenceId": "unleash-docs-28",
+          "quote": "Unleash Enterprise Edge is a lightweight caching layer designed to improve scalability, performance, and resilience."
+        },
+        {
+          "evidenceId": "unleash-docs-5",
+          "quote": "functioning as a read replica that can handle thousands of connected SDKs without increasing the read load on your primary Unleash instance"
+        },
+        {
+          "evidenceId": "unleash-docs-35",
+          "quote": "user data (PII) used for targeting rules (like user IDs, emails, or IPs) is processed within the Edge node and never sent to the Unleash Cloud or your upstream instance"
+        },
+        {
+          "evidenceId": "unleash-docs-34",
+          "quote": "Backend tokens for connecting backend SDKs or Unleash Edge to Unleash."
+        }
+      ]
+    },
     "productId": "unleash",
     "storyId": "relay-edge-proxy"
   }

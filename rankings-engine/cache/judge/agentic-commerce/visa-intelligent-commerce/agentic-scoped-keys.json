@@ -1,11 +1,11 @@
 {
-  "hash": "c2c8d94a61fafcc64a43a32daf4ec0c1167338a42b6a858cfb8dd33ef6bf43e3",
+  "hash": "5e7d48fceb1da9d4592b773fe74d469951303b530038999bd38a6b93b89a692c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Visa Intelligent Commerce documents its own agent-specific credentials: agent payment tokens are provisioned per user, and credential retrieval is bound to an authenticated instruction. That instruction is scoped by merchant name, URL and amount, with a decline threshold, an expiry (effectiveUntilTime) and cancellation, and network-level controls enforce the limits at authorization. However, these are scoped payment credentials, not scoped API keys or permission scopes for the agent's access to Visa's APIs, and the product is flagged as still in development. Missing for 10: scoped/least-privilege API keys or OAuth scopes for agent access to the platform APIs, a key rotation/revocation console for agent API credentials, production maturity, and independent hands-on corroboration.",
+    "rationale": "Visa Intelligent Commerce issues agent-specific payment tokens and scopes their use to a passkey-authenticated instruction. Each credential request must declare the merchant and amount, mandates carry a decline threshold and an expiry, and VisaNet enforces merchant and amount controls at authorization. These are least-privilege payment credentials rather than scoped API keys for the platform's own APIs, and the docs flag the product as still in development. Missing for 10: scoped or least-privilege API keys or OAuth scopes for agents calling Visa APIs, an explicit credential revocation and rotation workflow beyond cancelling a purchase intent, independent hands-on corroboration, and production maturity.",
     "evidenceIds": [
       "visa-ic-supp-1",
       "visa-ic-supp-2",
@@ -14,6 +14,29 @@
       "visa-intelligent-commerce-docs-12",
       "visa-intelligent-commerce-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "visa-intelligent-commerce-docs-12",
+          "quote": "Provisioning and life cycle management of agent-specific payment tokens that can be used by agents to make secure transactions on behalf of the user"
+        },
+        {
+          "evidenceId": "visa-ic-supp-2",
+          "quote": "The Visa Intelligent Commerce platform will validate that these requests match the authenticated user instruction and set network level controls."
+        },
+        {
+          "evidenceId": "visa-ic-supp-3",
+          "quote": "Your agent can cancel a purchase intent when the customer chooses to not make the purchase."
+        },
+        {
+          "evidenceId": "visa-intelligent-commerce-docs-13",
+          "quote": "New controls to ensure that payment credential requests match the user’s authenticated instructions"
+        }
+      ]
+    },
     "productId": "visa-intelligent-commerce",
     "storyId": "agentic-scoped-keys"
   }

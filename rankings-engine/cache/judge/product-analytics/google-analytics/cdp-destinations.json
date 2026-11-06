@@ -1,17 +1,40 @@
 {
-  "hash": "ff7cd2fe44f3fdf86830cda02bf3b2a0a9348ca5c26911cfb5d0ee8f35939556",
+  "hash": "8b8b1473d701471c829c8a3cc0280dd782c4d997940f9f1adf79e434929f1c3b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "GA4's own documented outbound paths are first-party Google only. The Admin API exposes googleAdsLinks and bigQueryLinks resources, and GA4 exports raw events to BigQuery daily and continuously through the day. That gives limited routing of event data to an ad platform and a warehouse, not general streaming to third-party destinations. Onward export from BigQuery to external storage is a BigQuery feature, not GA4's, so it earns no credit. missing for 10: third-party event forwarding/destinations (CRM, non-Google ad platforms), registrable outbound webhooks, real-time per-event streaming to arbitrary endpoints, independent corroboration.",
+    "rationale": "GA4 itself documents exporting all raw events to BigQuery, with continuous intra-day export, and provides first-party links to Google Ads and other Google advertising tools. Onward delivery is limited to Google-owned destinations, and getting data from BigQuery to external storage is a BigQuery capability, not a GA4 one. Missing for 10: forwarding to third-party CRMs or non-Google ad platforms, registrable outbound webhooks, true per-event streaming to arbitrary destinations, and detail beyond a resource name for how events flow through the Google Ads link.",
     "evidenceIds": [
-      "google-analytics-docs-20",
       "google-analytics-docs-31",
       "google-analytics-docs-33",
+      "google-analytics-docs-20",
       "google-analytics-docs-38"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can stream events onward to third-party destinations (CRM, ad platforms, webhooks) from the analytics platform",
+      "citations": [
+        {
+          "evidenceId": "google-analytics-docs-31",
+          "quote": "You can export all of your raw events from Google Analytics properties ... to BigQuery"
+        },
+        {
+          "evidenceId": "google-analytics-docs-33",
+          "quote": "Data is also exported continuously throughout the day."
+        },
+        {
+          "evidenceId": "google-analytics-docs-20",
+          "quote": "REST Resource: v1beta.properties.googleAdsLinks"
+        },
+        {
+          "evidenceId": "google-analytics-docs-38",
+          "quote": "Take action to optimize marketing performance with integrations across Google’s advertising and publisher tools."
+        }
+      ]
+    },
     "productId": "google-analytics",
     "storyId": "cdp-destinations"
   }

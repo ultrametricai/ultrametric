@@ -1,20 +1,45 @@
 {
-  "hash": "41f63c69ffe4e3056ed2d9764ad92b59b8e00bbaaf73d523fe2d006f4383b161",
+  "hash": "4df58dba145dbb0b6266e5f040c8f04b83e1d49c584e52f25ee66db2f857d421",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "UCP is a versioned, openly published protocol. Evidence shows dated spec releases (2026-08-25, 2026-04-08), a live API-version header on Shopify's MCP server, and a public GitHub org hosting the spec and reference implementations. Profiles declare protocol versions and are negotiated, and the CLI's `--input-schema` fetches each merchant's live input schema. Validation is only implicit: runtime rejection of invalid profiles is evidenced, but the AI Toolkit's schema validation covers GraphQL/Liquid/Extensions, not UCP. Missing for 10: a dedicated UCP conformance test suite or validator, a published machine-readable schema artifact (OpenAPI probes 404), and independent corroboration of conformance tooling.",
+    "rationale": "UCP is a versioned open protocol. A probe confirms dated spec releases and an API-version header, the spec and reference implementations are public on GitHub, profiles declare the protocol version, and the CLI's `--input-schema` fetches live input schemas. The only validation tooling evidenced is the AI Toolkit's GraphQL/Liquid/Extensions schema checks, which are adjacent, and server-side profile negotiation errors, which are not a conformance tool. missing for 10: a UCP conformance test suite or payload validator, independent corroboration of schema-based validation for UCP payloads.",
     "evidenceIds": [
       "shopify-ucp-probe-rt-5",
       "shopify-ucp-probe-rt-1",
       "shopify-ucp-supp-ucp-governance",
       "shopify-ucp-supp-agent-profiles",
-      "shopify-ucp-supp-storefront-catalog",
-      "shopify-ucp-probe-rt-4",
-      "shopify-ucp-probe-3"
+      "shopify-ucp-supp-storefront-catalog"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can build against a versioned commerce protocol with a published schema and conformance or validation tooling",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-probe-rt-5",
+          "quote": "https://ucp.dev/llms.txt serves the versioned specification index"
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-1",
+          "quote": "header x-shopify-ucp-mcp-api-version: 2026-08-25"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-ucp-governance",
+          "quote": "The complete technical specification, documentation, and reference implementations are hosted in our public GitHub repository."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-agent-profiles",
+          "quote": "a platform profile is a JSON document that describes the protocol version and capabilities the platform supports"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-storefront-catalog",
+          "quote": "Use `--input-schema` against any of these commands to fetch the merchant's live input schema before composing a payload."
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "checkout-spec-versioned"
   }

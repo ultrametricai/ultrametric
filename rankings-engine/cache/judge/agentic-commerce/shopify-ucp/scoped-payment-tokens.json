@@ -1,18 +1,36 @@
 {
-  "hash": "2d0210f351bfec19af7e3d00391aa1031d54704ed4da16c4e06ba9d33303a7dc",
+  "hash": "46d1561db300e356feac3663645a8fc047ba7638bd376c75ed790aaf61d1a96d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Shopify's agent surface is built on UCP. The UCP spec describes AP2 payment mandates and verifiable credentials that let agents \"transact on behalf of users with pre-defined, verifiable boundaries,\" with signed payment authorizations \"mathematically tied to the specific state of the cart.\" That implies scoped, cart- and merchant-bound credentials rather than a raw card. However, Shopify's own checkout docs only show negotiated payment handlers (e.g. com.google.pay) and a requirement that a \"payment credential has been collected.\" They never document AP2 mandate support, user-set amount caps, or credential expiry. Missing for 10: Shopify-documented support for AP2 mandates in its checkout, explicit amount-limit and expiry controls on the payment credential, explicit merchant-restriction configuration, and any hands-on evidence of a scoped-credential checkout.",
+    "rationale": "The UCP protocol that Shopify's agent surface is built on documents AP2 payment mandates and verifiable credentials. These let agents transact within pre-defined, verifiable boundaries using signed authorizations tied to a specific cart state, which implies amount and merchant scoping. However, Shopify's own checkout docs only describe collecting a payment credential and advertise handlers like Google Pay, with no explicit Shopify-side AP2 mandate support. missing for 10: Shopify-documented support for AP2 mandates in its checkout, explicit amount-limit, expiry and merchant-restriction controls, a user-facing flow for issuing a scoped credential to an agent, hands-on or independent corroboration.",
     "evidenceIds": [
       "shopify-ucp-docs-18",
       "shopify-ucp-docs-31",
       "shopify-ucp-supp-ucp-governance",
-      "shopify-ucp-supp-checkout-mcp",
-      "shopify-ucp-supp-ucp-journey"
+      "shopify-ucp-supp-checkout-mcp"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can hand my agent a scoped, limited-use payment credential — amount limits, expiry, merchant restrictions — instead of a raw card number",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-docs-18",
+          "quote": "Allows autonomous AI agents to transact on behalf of users with pre-defined, verifiable boundaries."
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-31",
+          "quote": "allows Platforms to provide cryptographically signed payment authorizations that are mathematically tied to the specific state of the cart"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-ucp-governance",
+          "quote": "secure payment (AP2) via payment mandates and verifiable credentials"
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "scoped-payment-tokens"
   }

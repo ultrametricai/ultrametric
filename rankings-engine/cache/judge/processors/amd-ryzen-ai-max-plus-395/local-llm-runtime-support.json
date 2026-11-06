@@ -1,21 +1,47 @@
 {
-  "hash": "0eeabaa0d86c7f1c021883e3d961148ddf4945d7e575c502b1ab6161e418f92d",
+  "hash": "3cf438bacfee707b90de1c37b784f9a38590f84e5fb905b416c98f9615d0f914",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "AMD's Ryzen AI Software docs cover the main runtimes for this silicon. ONNX Runtime runs on the NPU via the Vitis AI EP and on the iGPU via DirectML. OGA supports NPU-only and hybrid NPU+iGPU modes, and llama.cpp provides GPU-only acceleration through the Lemonade SDK. Community owners independently report running large models with llama.cpp on the 395. Missing for 10: no MLX support (not evidenced), and the docs address Ryzen AI 300-series hardware generally rather than naming the Max+ 395 specifically.",
+    "rationale": "AMD's Ryzen AI Software stack documents ONNX Runtime with the Vitis AI EP for the NPU, the DirectML EP for the iGPU, OGA NPU-only and hybrid modes, llama.cpp for GPU-only acceleration, and whisper.cpp NPU offload. Community hands-on reports confirm llama.cpp running large models on Strix Halo (Framework Desktop 128GB). Missing for 10: a support matrix that explicitly names the Max+ 395 SKU (the docs refer to Ryzen AI and AI 300 Series generally), and documentation of a CPU-specific runtime path.",
     "evidenceIds": [
       "amd-ryzen-ai-max-plus-395-docs-1",
-      "amd-ryzen-ai-max-plus-395-docs-4",
       "amd-ryzen-ai-max-plus-395-docs-10",
       "amd-ryzen-ai-max-plus-395-docs-18",
       "amd-ryzen-ai-max-plus-395-docs-21",
-      "amd-ryzen-ai-max-plus-395-docs-14",
+      "amd-ryzen-ai-max-plus-395-docs-4",
       "amd-ryzen-ai-max-plus-395-docs-28",
       "amd-ryzen-ai-max-plus-395-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, mainstream local-AI runtimes target this silicon — llama.cpp, MLX, ONNX Runtime, or the vendor's own AI software stack document support for its CPU, GPU, or NPU",
+      "citations": [
+        {
+          "evidenceId": "amd-ryzen-ai-max-plus-395-docs-1",
+          "quote": "run them directly on laptops powered by Ryzen AI using ONNX Runtime and the Vitis™ AI Execution Provider (EP)"
+        },
+        {
+          "evidenceId": "amd-ryzen-ai-max-plus-395-docs-10",
+          "quote": "NPU-only and hybrid execution modes, which utilize both the NPU and integrated GPU (iGPU), are supported by ONNXRuntime GenAI (OGA). GPU-only acceleration is enabled through llama.cpp."
+        },
+        {
+          "evidenceId": "amd-ryzen-ai-max-plus-395-docs-18",
+          "quote": "the ONNX Runtime DirectML EP (`DmlExecutionProvider`) is used to run the model on the AMD Ryzen AI GPU"
+        },
+        {
+          "evidenceId": "amd-ryzen-ai-max-plus-395-docs-28",
+          "quote": "On AMD Ryzen AI 300 Series systems, Whisper can fully offload the encoder to the NPU"
+        },
+        {
+          "evidenceId": "amd-ryzen-ai-max-plus-395-comm-6",
+          "quote": "Own a framework desktop 128gb."
+        }
+      ]
+    },
     "productId": "amd-ryzen-ai-max-plus-395",
     "storyId": "local-llm-runtime-support"
   }

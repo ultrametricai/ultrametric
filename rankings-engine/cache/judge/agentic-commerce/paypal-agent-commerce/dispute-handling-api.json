@@ -1,18 +1,40 @@
 {
-  "hash": "afab4efd5f6f885df5dc1a01696bde56afe4e249313bf26dbdd90d21e2948c21",
+  "hash": "eece010b9c726a3edb370441d6d1473f0511295a7092ee6d2a34325010b4219e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "PayPal's agent toolkit exposes first-party dispute tools: list_disputes and get_dispute for status, and accept_dispute_claim for one outcome path. The REST API overview lists a disputes API on the same rails, so dispute handling via API is documented for PayPal-processed agent orders. However, nothing in the evidence shows evidence submission or contesting a dispute. Chargebacks on Braintree-processed ACP/UCP agent transactions are not addressed, and no dispute-specific webhook events or outcome tracking are shown. Missing for 10: documented evidence-submission/contest endpoints, chargeback handling for Braintree Agent Ready (ACP/UCP) transactions, dispute outcome/resolution lifecycle and dispute webhook events, independent or hands-on corroboration.",
+    "rationale": "PayPal's own agent toolkit exposes dispute tools: list_disputes, get_dispute and accept_dispute_claim, which resolves a dispute in favor of the buyer. Its REST API portal also lists a disputes API, so developers can retrieve dispute status and accept claims programmatically. However, nothing documents submitting evidence or contesting a chargeback, and nothing ties disputes to agent-originated transactions (e.g., Braintree Agent Ready/ACP/UCP payments). Missing for 10: documented evidence-submission/contest endpoint, outcome/resolution tracking beyond accepting a claim, explicit dispute handling for Braintree-processed agent transactions, independent or hands-on corroboration.",
     "evidenceIds": [
       "paypal-ac-supp-refund-dispute-tools",
       "paypal-ac-supp-agent-toolkit",
       "paypal-ac-supp-rest-overview",
-      "paypal-agent-commerce-docs-10",
-      "paypal-ac-probe-rt-2"
+      "paypal-agent-commerce-docs-10"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, disputes and chargebacks on agent transactions can be handled via API — evidence submission, status, outcomes",
+      "citations": [
+        {
+          "evidenceId": "paypal-ac-supp-refund-dispute-tools",
+          "quote": "accept_dispute_claim (\"Accept a dispute claim, resolving it in favor of the buyer.\")"
+        },
+        {
+          "evidenceId": "paypal-ac-supp-refund-dispute-tools",
+          "quote": "disputes via list_disputes (\"Retrieve a summary of all disputes with optional filtering\"), get_dispute"
+        },
+        {
+          "evidenceId": "paypal-agent-commerce-docs-10",
+          "quote": "Integrate with PayPal APIs to access orders, invoices, subscriptions, shipment tracking, transaction details, and dispute management through pre-built functions."
+        },
+        {
+          "evidenceId": "paypal-ac-supp-rest-overview",
+          "quote": "REST APIs, including orders, payments, subscriptions, invoicing, and disputes"
+        }
+      ]
+    },
     "productId": "paypal-agent-commerce",
     "storyId": "dispute-handling-api"
   }

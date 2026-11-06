@@ -1,24 +1,50 @@
 {
-  "hash": "cffe690c6aa0ce5b9e6ae2ef98cfa8961bc31a415adbbe07841477b3f0c4e19e",
+  "hash": "cd01a83c40e39fbe6649c7a32f2d5246137c9a523fcbb1f094deafbba10b5dad",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Homebrew lets a project declare dependencies in a Brewfile and install them with `brew bundle install`. The documented `brew bundle check || brew bundle install` idiom implies `check` returns a non-zero exit status when dependencies are unsatisfied, and `NONINTERACTIVE=1` plus no-sudo installs support unattended use. However, the evidence never documents exit codes or error output for failed installs, and the update path is thin: community reports describe `brew upgrade` upgrading far more than requested, which makes agent-driven updates less predictable. Missing for 10: explicit exit-code and error-reporting documentation, a documented non-interactive update or upgrade flow for Brewfile dependencies, and independent hands-on corroboration of agent or CI use.",
+    "rationale": "Homebrew documents project dependencies in a Brewfile, installed with one command, usable in scripts and CI such as GitHub Actions. The `brew bundle check || brew bundle install` pattern shows exit status can drive scripted control flow, and NONINTERACTIVE=1 and `--yes` support unattended runs. Missing for 10: explicit documentation of exit-code semantics and failure/error output for install and upgrade, documented non-interactive updating of Brewfile dependencies, and independent hands-on corroboration of agent/CI reliability.",
     "evidenceIds": [
       "homebrew-docs-1",
-      "homebrew-docs-3",
-      "homebrew-docs-14",
-      "homebrew-docs-26",
       "homebrew-docs-30",
-      "homebrew-docs-31",
+      "homebrew-docs-65",
+      "homebrew-docs-14",
+      "homebrew-docs-67",
+      "homebrew-docs-68",
       "homebrew-docs-35",
-      "homebrew-docs-6",
-      "homebrew-docs-8",
-      "homebrew-comm-1",
-      "homebrew-comm-2"
+      "homebrew-docs-51",
+      "homebrew-docs-50",
+      "homebrew-docs-46"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent install and update project dependencies non-interactively, with clear exit codes and errors when something fails",
+      "citations": [
+        {
+          "evidenceId": "homebrew-docs-65",
+          "quote": "You can use this behaviour in scripts like so: brew bundle check || brew bundle install"
+        },
+        {
+          "evidenceId": "homebrew-docs-68",
+          "quote": "one command can set up project dependencies across these environments and in continuous-integration services such as GitHub Actions."
+        },
+        {
+          "evidenceId": "homebrew-docs-35",
+          "quote": "prepend `NONINTERACTIVE=1` to the installation command"
+        },
+        {
+          "evidenceId": "homebrew-docs-51",
+          "quote": "Use this from administrative scripts when the desktop user manages Homebrew, for example `brew as-console-user install --yes` formula."
+        },
+        {
+          "evidenceId": "homebrew-docs-30",
+          "quote": "this will take instructions from the Brewfile to run brew install ruby and install Ruby if needed"
+        }
+      ]
+    },
     "productId": "homebrew",
     "storyId": "agent-headless-dependency-install"
   }

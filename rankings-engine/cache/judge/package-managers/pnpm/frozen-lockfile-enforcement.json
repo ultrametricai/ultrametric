@@ -1,16 +1,35 @@
 {
-  "hash": "e9deaf429bb323877ac31e01cad1fdd06d68aea205b00f5804c755a897a09527",
+  "hash": "43b210e96409b89e4b3d40851e9a629d237e7a454c6f5a75e5bd329c86f29b9b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "pnpm docs state that it switches to frozen-lockfile mode automatically when it detects CI, and that installation fails in CI if the lockfile is present but needs an update. Docs also refer to 'frozen installs' validating the lockfile, so the core enforcement-and-fail behavior is documented. Missing for 10: an explicitly documented flag or setting to force frozen mode outside CI, and independent or hands-on corroboration of the failure behavior.",
+    "rationale": "pnpm documents a frozen-lockfile mode that turns on automatically in CI. In that mode, installation fails when the lockfile is present but needs an update, which is the core fail-on-mismatch behavior. However, the evidence only shows this as automatic CI detection, not as a platform-engineer-controlled flag or setting that can be enforced in any environment. Missing for 10: a documented explicit frozen-lockfile flag/config for enforcement outside CI auto-detection, detail on the manifest-vs-lockfile mismatch error behavior, and independent/hands-on corroboration.",
     "evidenceIds": [
       "pnpm-docs-13",
       "pnpm-docs-34",
       "pnpm-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can enforce a frozen/immutable lockfile mode that fails the install when the manifest and lockfile disagree",
+      "citations": [
+        {
+          "evidenceId": "pnpm-docs-13",
+          "quote": "When pnpm detects that it is running in CI, it switches to frozen-lockfile mode automatically."
+        },
+        {
+          "evidenceId": "pnpm-docs-34",
+          "quote": "In a CI environment, installation fails if a lockfile is present but needs an update."
+        },
+        {
+          "evidenceId": "pnpm-docs-23",
+          "quote": "The lockfile is left untouched, so frozen installs still validate"
+        }
+      ]
+    },
     "productId": "pnpm",
     "storyId": "frozen-lockfile-enforcement"
   }

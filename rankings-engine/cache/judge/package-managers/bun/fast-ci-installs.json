@@ -1,21 +1,44 @@
 {
-  "hash": "b7ad22a557af8f0bf80995c9cd9e05c459697a78e9aed850c7c1306a3c7e67ef",
+  "hash": "4b8781f571a72a83f90e8210884d095490726eb1d178f249c09448266fccab60",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Bun documents a global package cache at ~/.bun/install/cache with hardlinking into node_modules, an offline mode that never touches the network and errors on uncached dependencies, and --frozen-lockfile for reproducible installs. It also claims installs up to 25-30x faster than npm, and community users report large install speedups on Windows. However, the pack contains no documented CI cache-save/restore recipe, so platform engineers must work out the cache-path wiring themselves. missing for 10: an explicit documented CI cache-restore setup (e.g., a CI cache config keyed on bun.lock), independent hands-on corroboration of CI install speed and offline installs.",
+    "rationale": "Bun documents a relocatable global install cache via `BUN_INSTALL_CACHE_DIR`, a mode that never touches the network and errors if a dependency is not cached, `--frozen-lockfile` for reproducible installs, and large install-speed claims. Together these give the building blocks for fast, offline-capable CI installs. However, no CI-specific cache-restore setup (e.g., a documented save/restore cache step or recipe) appears in the evidence. missing for 10: a documented CI cache-restore recipe/workflow, independent hands-on corroboration of CI speed and offline install behavior.",
     "evidenceIds": [
+      "bun-docs-64",
       "bun-docs-12",
-      "bun-docs-25",
       "bun-docs-5",
       "bun-docs-20",
       "bun-docs-35",
       "bun-docs-1",
       "bun-docs-29",
-      "bun-comm-6"
+      "bun-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can make CI installs fast with a documented cache-restore setup and offline-capable installs",
+      "citations": [
+        {
+          "evidenceId": "bun-docs-64",
+          "quote": "Bun stores every package downloaded from the registry in a global cache at `~/.bun/install/cache`, or the path set by the `BUN_INSTALL_CACHE_DIR` environment variable."
+        },
+        {
+          "evidenceId": "bun-docs-5",
+          "quote": "Never touch the network (registry, tarball URLs, git); a required dependency that is not cached is an error"
+        },
+        {
+          "evidenceId": "bun-docs-35",
+          "quote": "For reproducible installs, use `--frozen-lockfile`. Bun installs the exact versions specified in the lockfile and does not update it."
+        },
+        {
+          "evidenceId": "bun-docs-1",
+          "quote": "Switch from `npm install` to `bun install` in any Node.js project to make your installations up to 25x faster."
+        }
+      ]
+    },
     "productId": "bun",
     "storyId": "fast-ci-installs"
   }

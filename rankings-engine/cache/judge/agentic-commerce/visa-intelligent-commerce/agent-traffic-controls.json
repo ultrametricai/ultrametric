@@ -1,21 +1,37 @@
 {
-  "hash": "f8ad8fce777745ce4ae35f043a17fcbae3334b2019c2401f47a718afbd091afc",
+  "hash": "793abe65f43454dbbe3e67e6b96c4535396e3250aec0e96177c129c033dddd59",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Visa's Trusted Agent Protocol gives merchants their own documented way to tell signed, credentialed agents from anonymous bots. It uses RFC 9421 signatures checked against Visa's public keys, can reject replayed or expired signatures, and ships a reference cdn-proxy and agent-registry for verifying agents at the site edge. That supports gating traffic by agent legitimacy at browsing and payment steps. The evidence stops at verification, though: nothing shows a merchant-facing policy layer for allow/deny lists of specific agents or agent platforms, and rate-limiting is not mentioned anywhere. Missing for 10: per-agent and per-platform allow/deny policy controls, rate-limiting of agent traffic, a managed merchant dashboard or API for these policies, and independent or hands-on corroboration.",
+    "rationale": "Visa's Trusted Agent Protocol lets merchants cryptographically verify signed agent requests against Visa's public keys and tell credentialed agents apart from anonymous bots. That gives merchants a first-party basis to admit verified agents and turn away unverified ones, and servers can reject replayed or expired signatures. There is no documented merchant-facing control for rate-limiting, or for allow/deny lists covering specific agents or agent platforms. missing for 10: per-agent and per-platform allow/deny policy configuration, rate-limiting controls, documented controls scoped to catalog versus checkout, and independent or hands-on corroboration.",
     "evidenceIds": [
       "visa-intelligent-commerce-gh-2",
       "visa-intelligent-commerce-gh-4",
-      "visa-intelligent-commerce-gh-5",
       "visa-ic-supp-6",
-      "visa-ic-supp-9",
       "visa-intelligent-commerce-docs-15",
-      "visa-intelligent-commerce-docs-16",
-      "visa-ic-probe-rt-1"
+      "visa-ic-supp-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a merchant, I can rate-limit, allow, or deny specific agents and agent platforms accessing my catalog and checkout",
+      "citations": [
+        {
+          "evidenceId": "visa-intelligent-commerce-gh-2",
+          "quote": "This allows you to confidently welcome agent-driven commerce while protecting your site from harmful bots."
+        },
+        {
+          "evidenceId": "visa-intelligent-commerce-gh-4",
+          "quote": "Instantly distinguish a legitimate, credentialed agent from an anonymous bot."
+        },
+        {
+          "evidenceId": "visa-ic-supp-6",
+          "quote": "Servers are able to reject reused or expired signatures, thereby preventing replay attacks."
+        }
+      ]
+    },
     "productId": "visa-intelligent-commerce",
     "storyId": "agent-traffic-controls"
   }

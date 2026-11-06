@@ -1,19 +1,36 @@
 {
-  "hash": "1b767aac94c01140d765d8802b0ca08de20a8a4659d8207a48a9767de89bcaae",
+  "hash": "4268ab5271f83a8b05ff800673018e0600b47d8e171bf50bfdfb862d8fb860a4",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "CloudConvert documents a v2 API in which a job chains import, convert and export tasks (cloudconvert-docs-5). Task status is visible in real time through the Socket API (cloudconvert-docs-22), and official SDKs, a Job Builder and a sandbox support development (cloudconvert-docs-1, cloudconvert-docs-2, cloudconvert-docs-3). The pack's only explicit import/export example is S3, though Signed URLs let files be converted on demand via URL parameters (cloudconvert-docs-21). Missing for 10: explicit documentation of direct-upload and import-from-URL tasks, a documented export/download URL for the output file, and independent or hands-on corroboration.",
+    "rationale": "CloudConvert's documented API v2 runs conversions as jobs made of tasks: import from an S3 bucket, convert, then export back to S3. Socket.io provides real-time task updates, so job status is visible, and official SDKs and signed URLs support on-demand conversion. The evidence does not explicitly show the specific input modes the story names (direct upload or arbitrary URL import), nor the output being handed back as a downloadable file rather than exported to S3. missing for 10: explicit documentation of direct file-upload and URL import tasks, explicit documentation of returning or downloading the output file (beyond S3 export), independent or hands-on corroboration of the job workflow.",
     "evidenceIds": [
       "cloudconvert-docs-5",
       "cloudconvert-docs-22",
-      "cloudconvert-docs-1",
       "cloudconvert-docs-21",
-      "cloudconvert-docs-2",
-      "cloudconvert-docs-3"
+      "cloudconvert-docs-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, a documented API takes an upload or URL, runs the conversion as a job with visible status, and returns the output file",
+      "citations": [
+        {
+          "evidenceId": "cloudconvert-docs-5",
+          "quote": "the first task of a job could import a file from an S3 bucket. The second task could convert this file... the final task of the job could export the file back to an S3 bucket."
+        },
+        {
+          "evidenceId": "cloudconvert-docs-22",
+          "quote": "Socket API: Real-time task updates using Socket.io."
+        },
+        {
+          "evidenceId": "cloudconvert-docs-21",
+          "quote": "Signed URLs: Convert files on demand using URL query parameters."
+        }
+      ]
+    },
     "productId": "cloudconvert",
     "storyId": "rest-convert-job"
   }

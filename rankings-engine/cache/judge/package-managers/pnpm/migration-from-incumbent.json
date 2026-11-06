@@ -1,20 +1,42 @@
 {
-  "hash": "63e823e66e9ffe536de70ea0a0df1c5d5e8e576cbdb75ed2e28e4f3ecf2a9280",
+  "hash": "a037574f6a4c9655328b607d97d8d0200d3352dd9b1f466fa814c19ef12ad63c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "pnpm's docs say it is a drop-in npm replacement that can be pointed at any existing project with \"no migration, no rewrites, no lockfile gymnastics\". Community users report migrating large yarn and lerna/npm monorepos, though one needed the --shamefully-hoist workaround. The evidence shows no dedicated import or conversion command, and no migration guide for converting an existing lockfile or config. Missing for 10: documented lockfile import/conversion tooling (e.g. from package-lock.json or yarn.lock), a step-by-step migration guide from npm/yarn, and documented handling of compatibility issues like hoisting during migration.",
+    "rationale": "pnpm's docs say it is a drop-in npm replacement that works on existing projects with no migration. Its own conversion behavior is documented: `pnpm install` auto-creates `pnpm-workspace.yaml` from existing workspace patterns, and a `hoisted` nodeLinker mimics npm/Yarn Classic layouts. Community reports of successful yarn/Lerna/npm migrations corroborate this, though some needed `--shamefully-hoist`. missing for 10: documented lockfile import/conversion from npm or yarn lockfiles, a dedicated migration guide or command, documented handling of incumbent-specific config beyond workspace patterns.",
     "evidenceIds": [
-      "pnpm-docs-1",
-      "pnpm-docs-2",
       "pnpm-docs-17",
-      "pnpm-comm-10",
-      "pnpm-comm-14",
-      "pnpm-comm-12",
-      "pnpm-comm-17"
+      "pnpm-docs-46",
+      "pnpm-docs-45",
+      "pnpm-comm-8-refresh-847c72efd642874f",
+      "pnpm-comm-12-refresh-be2a935608d8e2c0",
+      "pnpm-comm-16-refresh-1ab6854306afd120"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a switcher, I can migrate an existing project from the incumbent tool with documented import or conversion tooling",
+      "citations": [
+        {
+          "evidenceId": "pnpm-docs-17",
+          "quote": "pnpm is a drop-in replacement for npm. Point it at any existing project — no migration, no rewrites, no lockfile gymnastics."
+        },
+        {
+          "evidenceId": "pnpm-docs-46",
+          "quote": "When such a repository has no `pnpm-workspace.yaml`, `pnpm install` creates one with the same patterns and links the listed projects on that same install"
+        },
+        {
+          "evidenceId": "pnpm-docs-45",
+          "quote": "set the nodeLinker setting to `hoisted`. This will instruct pnpm to create a node_modules directory that is similar to those created by npm and Yarn Classic."
+        },
+        {
+          "evidenceId": "pnpm-comm-8-refresh-847c72efd642874f",
+          "quote": "I migrated a large project from yarn to pnpm and the speed difference is insane, both in local development and CI."
+        }
+      ]
+    },
     "productId": "pnpm",
     "storyId": "migration-from-incumbent"
   }

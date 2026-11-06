@@ -1,19 +1,36 @@
 {
-  "hash": "a1549d962e264bed783f79968ce9e1c747c579949ffdd2e3ed9a97d7e44e0212",
+  "hash": "f438745154096121bfb331add1eca2e3d822dc76f333d96a1e61d0b4af952515",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Bun's docs say it does not run dependency lifecycle scripts such as `postinstall` by default, and you allow them per package via `trustedDependencies` (bun-docs-19, bun-docs-53, bun-docs-4). Related controls include `bun audit` with auto-fix (bun-docs-6, bun-docs-7) and `--frozen-lockfile` for reproducible installs (bun-docs-35). Missing for 10: no evidence of a minimum release age setting, and no independent or hands-on confirmation that script blocking works.",
+    "rationale": "Bun's docs say it blocks dependency lifecycle scripts such as `postinstall` by default, explicitly as a security measure. A `trustedDependencies` allowlist opts specific packages back in, and `bun audit` checks installed packages against npm advisories. missing for 10: a documented minimum-release-age (package cooldown) setting, broader configurable malicious-package policies, and independent or hands-on corroboration of the script-blocking behavior.",
     "evidenceIds": [
       "bun-docs-19",
       "bun-docs-53",
       "bun-docs-4",
-      "bun-docs-6",
-      "bun-docs-7",
-      "bun-docs-35"
+      "bun-docs-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform-engineer, I can turn on protections against malicious packages, such as blocking lifecycle scripts or enforcing a minimum release age",
+      "citations": [
+        {
+          "evidenceId": "bun-docs-19",
+          "quote": "Bun does not execute arbitrary lifecycle scripts like `postinstall` for installed dependencies. Executing arbitrary scripts represents a potential security risk."
+        },
+        {
+          "evidenceId": "bun-docs-4",
+          "quote": "To tell Bun to allow lifecycle scripts for a particular package, add the package to `trustedDependencies` in your package.json."
+        },
+        {
+          "evidenceId": "bun-docs-53",
+          "quote": "Unlike other npm clients, Bun does not execute arbitrary lifecycle scripts like `postinstall` for installed dependencies."
+        }
+      ]
+    },
     "productId": "bun",
     "storyId": "supply-chain-protections"
   }

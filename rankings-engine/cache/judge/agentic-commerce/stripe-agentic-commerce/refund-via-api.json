@@ -1,17 +1,35 @@
 {
-  "hash": "6530a3a668e43a866686f690f74e57e8f3acaad42be36d611b147d8e28031817",
+  "hash": "6fce9951aa85bfd5425f8c9366f3f200d7e3ee7dc9fefb3936640407a75f4c76",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The machine-payments docs say agent payments land in the Stripe balance with refunds available through the standard Refunds API and Dashboard. Agent orders flow through standard Stripe rails (checkout.session.completed events, PaymentIntents with agent_details, x402 payments recorded as PaymentIntents), so they are refundable objects. The MCP server also names refunds as agent write actions that require human approval. However, the ACS seller and agent checkout docs never describe refund initiation or status tracking for agent-placed orders. Missing for 10: explicit ACS refund flow documentation, refund status webhooks or tracking for agent orders, refund handling in the custom ACP/third-party-processor integration, and independent or hands-on corroboration.",
+    "rationale": "The machine-payments docs say refunds on agent payments go through the standard Refunds API and Dashboard. Agent-placed ACS orders also run on standard Stripe rails, as PaymentIntents tagged per agent. Refunds initiated by agents through the MCP server need human approval, so they are not fully programmatic. Missing for 10: refund flows documented specifically for ACS/ACP agent checkout orders, refund status tracking or refund webhooks for agent orders, and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-ac-supp-machine-payments",
-      "stripe-ac-supp-order-attribution",
       "stripe-ac-supp-mcp-approval",
-      "stripe-agentic-commerce-docs-33"
+      "stripe-ac-supp-order-attribution"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, refunds on agent-placed orders can be initiated and tracked programmatically",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-machine-payments",
+          "quote": "with refunds available through the standard Refunds API and Dashboard per the features table"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-mcp-approval",
+          "quote": "Stripe requires human confirmation before it takes certain `stripe_api_write` actions, such as refunds and outbound payments."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-order-attribution",
+          "quote": "Each order generates a unique `checkout.session.completed` event."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "refund-via-api"
   }

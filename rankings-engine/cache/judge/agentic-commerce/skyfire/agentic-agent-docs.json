@@ -1,17 +1,31 @@
 {
-  "hash": "475d47d1afff4a20b34300207f3a73ba5d39fb035465bf1d16fe6e61807f01a6",
+  "hash": "b59344840f633fe5871352fdea723b6c53d8ac796b001d4f62bde4d85151084d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Hands-on probes confirm https://docs.skyfire.xyz/llms.txt returns HTTP 200 without a key, and a re-recorded probe shows the same. It carries a structured Skyfire Developer Portal index. The docs pages are also served as raw markdown (.md URLs), which an agent can consume directly. Missing for 10: evidence of llms.txt content depth or coverage (e.g. an llms-full.txt), first-party docs describing the agent-oriented docs offering, and a machine-readable OpenAPI spec (all probed paths 404).",
+    "rationale": "Two live probes confirm Skyfire serves an llms.txt at docs.skyfire.xyz (HTTP 200, keyless) describing the developer portal, and its doc pages are published as .md URLs, so an agent can be pointed at agent-oriented docs directly. missing for 10: no machine-readable OpenAPI spec (all candidate paths 404), and the full contents and coverage of the llms.txt are not evidenced beyond its header.",
     "evidenceIds": [
       "skyfire-probe-1",
       "skyfire-probe-rt-1",
-      "skyfire-probe-2",
-      "skyfire-docs-6"
+      "skyfire-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "skyfire-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.skyfire.xyz/llms.txt # Skyfire Developer Portal Documentation"
+        },
+        {
+          "evidenceId": "skyfire-probe-rt-1",
+          "quote": "docs.skyfire.xyz serves llms.txt keylessly ('# Skyfire Developer Portal Documentation... the open identity and payments layer for AI agents')"
+        }
+      ]
+    },
     "productId": "skyfire",
     "storyId": "agentic-agent-docs"
   }

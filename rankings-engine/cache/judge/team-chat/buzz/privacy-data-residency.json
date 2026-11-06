@@ -1,19 +1,46 @@
 {
-  "hash": "f2e2012660c424b41f104019de199e5da7f8c54315c9a5be190014162682c2d2",
+  "hash": "708da14f46cc57882693f8f06df48dad2fac84ec51ad566ff4b0405a8503f122",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Buzz is self-hostable: you can run your own relay on a single node or VPS, or install the first-party Helm chart, which can point at your own external Postgres, Redis and S3-compatible storage. That lets a user decide where their data physically lives (\"that place is yours\"). It is not an explicit residency feature, though: nothing documents region selection for operator-hosted instances or makes any data-residency guarantee. Missing for 10: region/residency selection for hosted workspaces, explicit data-residency documentation, independent corroboration of self-hosted residency control.",
+    "rationale": "Buzz ships its own self-hosting distributions: a single-node/VPS compose bundle and a live Helm chart on GHCR whose production profile uses external managed Postgres/Redis/S3. Operators can therefore place their relay and its data wherever they deploy it. The evidence never describes region or residency selection as a feature, and there is no documented region choice for operator-hosted shared infrastructure. Missing for 10: an explicit residency/region selection feature, a region picker for hosted workspaces, and documentation or independent corroboration framing self-hosting as data-residency control.",
     "evidenceIds": [
-      "buzz-docs-1",
       "buzz-docs-2",
+      "buzz-docs-1",
+      "buzz-supp-helm-chart",
       "buzz-docs-11",
       "buzz-docs-12",
-      "buzz-supp-helm-chart",
       "buzz-probe-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": [
+        {
+          "evidenceId": "buzz-docs-2",
+          "quote": "Run your own relay for one community, or let an operator host thousands on shared infrastructure — same OSS codebase, same URL-is-your-workspace experience either way."
+        },
+        {
+          "evidenceId": "buzz-docs-1",
+          "quote": "The project lives in one place, and that place is yours."
+        },
+        {
+          "evidenceId": "buzz-supp-helm-chart",
+          "quote": "Production (default): External managed Postgres/Redis/S3, secrets.existingSecret:, no chart-side autogen, HA-capable (replicaCount ≥ 2)"
+        },
+        {
+          "evidenceId": "buzz-docs-11",
+          "quote": "This is the single-node/VPS deployment bundle."
+        },
+        {
+          "evidenceId": "buzz-docs-12",
+          "quote": "No external services required."
+        }
+      ]
+    },
     "productId": "buzz",
     "storyId": "privacy-data-residency"
   }

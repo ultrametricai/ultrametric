@@ -1,22 +1,49 @@
 {
-  "hash": "b15dbf89f82e07cbdcb0cf4b320708ce6b7473a6998b32854c20497f4de78469",
+  "hash": "bd5fd548a0e6171085b8c1d75f0a01a3d1d68e27a9c02833cdfae048aa138413",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Shopify documents the full agent purchase chain: create_checkout from a cart, complete_checkout (\"Submit payment and place the order\") once a payment credential is collected, and post-purchase order state via get_order and order webhooks. However, direct completion is restricted to Token-tier \"trusted agents\" whose token is granted purchase permission, and the default documented path hands the buyer off to the merchant storefront via continue_url for payment. Delegated payment credentials appear only as negotiated payment_handlers (e.g., com.google.pay) and as AP2 mandates in the UCP spec. missing for 10: generally available direct checkout completion without trusted-tier gating, Shopify-specific documentation of how a delegated payment credential is minted and passed, hands-on verification beyond cart creation (no checkout or payment probed), self-serve order webhook registration.",
+    "rationale": "Shopify's Checkout MCP documents creating checkout sessions from carts and a complete_checkout tool that will \"Submit payment and place the order\". Orders can then be read via get_order or webhooks. However, direct completion is limited to trusted Token-tier agents whose token is granted purchase permission; the default path hands the buyer off to the merchant for payment, and escalations force a buyer handoff. Delegated payment credentials are described mainly at the UCP/AP2 spec level rather than as a concrete Shopify flow. missing for 10: self-serve access to agent-completed checkout without a trusted-tier grant, concrete Shopify-side documentation of the delegated payment credential flow (AP2 mandates or payment handler token exchange), hands-on evidence of a completed checkout and confirmed order (the probe stopped at cart creation).",
     "evidenceIds": [
       "shopify-ucp-supp-checkout-mcp",
       "shopify-ucp-supp-ucp-journey",
       "shopify-ucp-supp-trust-tiers",
       "shopify-ucp-supp-buyer-handoff",
+      "shopify-ucp-docs-31",
+      "shopify-ucp-docs-18",
       "shopify-ucp-supp-order-mcp",
       "shopify-ucp-supp-order-webhooks",
-      "shopify-ucp-docs-18",
-      "shopify-ucp-docs-31",
       "shopify-ucp-probe-rt-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can complete a purchase end-to-end — checkout session, delegated payment credential, confirmed order",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-supp-checkout-mcp",
+          "quote": "Submit payment and place the order."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-ucp-journey",
+          "quote": "Trusted agents can complete checkouts directly"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-trust-tiers",
+          "quote": "When the token is granted permission to complete purchases"
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-31",
+          "quote": "allows Platforms to provide cryptographically signed payment authorizations that are mathematically tied to the specific state of the cart"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-order-mcp",
+          "quote": "The Order MCP server enables AI agents to fetch the current state of an order placed through their agent, including line items, fulfillment events, and post-purchase adjustments"
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "agent-checkout-complete"
   }

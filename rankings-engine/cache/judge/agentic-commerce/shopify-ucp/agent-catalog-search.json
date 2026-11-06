@@ -1,21 +1,43 @@
 {
-  "hash": "c10ecf0717d535cf0864fcbcec3afea0d8309b5a94a138966978752c947bec53",
+  "hash": "a6140e3efbf42a10335cfbe01543ef53a3dca007c74b01afa18ddb82a008c1e8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The Global Catalog MCP server lets agents search products across the entire Shopify ecosystem, with offers from multiple merchants clustered by UPID. Access only requires a self-published agent profile URL, and an Anonymous trust tier exists, so no private partnership is needed. Runtime probes confirmed a keyless handshake with the catalog endpoint and a successful CLI search plus cart creation using a self-generated local profile. A raw call without a hosted profile returned an error, which matches the documented identity requirement. Missing for 10: hands-on proof of a successful cross-merchant Global Catalog search result (probes confirmed only the handshake and a search plus cart on a single Shopify-run store), and confirmation of Anonymous-tier rate limits adequate for real use.",
+    "rationale": "Shopify's Global Catalog MCP server lets agents search products across multiple merchants, and the documented Anonymous/Signed tiers plus a self-generated UCP profile mean no partnership is needed. Probes confirm a keyless handshake and a keyless CLI catalog search using a self-generated local profile. The one documented gate is that every search request must carry an agent profile URL, which is self-service. Missing for 10: a hands-on, keyless, cross-merchant search_catalog result returned through a self-hosted profile (the probe search ran on one merchant's store), and published Anonymous-tier rate-limit figures.",
     "evidenceIds": [
       "shopify-ucp-supp-global-catalog",
-      "shopify-ucp-docs-3",
+      "shopify-ucp-docs-21",
       "shopify-ucp-supp-trust-tiers",
-      "shopify-ucp-docs-20",
       "shopify-ucp-probe-rt-1",
       "shopify-ucp-probe-rt-3",
       "shopify-ucp-probe-rt-4",
-      "shopify-ucp-supp-storefront-catalog"
+      "shopify-ucp-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, my agent can programmatically search products or services across merchants — keylessly or with self-service credentials, no private partnership required",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-docs-21",
+          "quote": "The Global Catalog MCP server enables AI agents to search and discover products across the entire Shopify ecosystem, helping buyers find products from multiple merchants."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-trust-tiers",
+          "quote": "UCP traffic to Shopify's MCP servers is classified into three tiers based on how your agent identifies itself"
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-3",
+          "quote": "@shopify/ucp-cli with a self-generated local profile searched the live catalog"
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-1",
+          "quote": "a keyless JSON-RPC initialize POST to https://catalog.shopify.com/api/ucp/mcp completed a FULL handshake"
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "agent-catalog-search"
   }

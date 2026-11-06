@@ -1,21 +1,47 @@
 {
-  "hash": "f3cb1df1a556a6366a0ba73f885da60c686c6645c2f82d32d0b2df23f0fe943d",
+  "hash": "12c65c4ccb00ddc1f228922076cb4361bd0d033390c9a773bfdaadb930c535bb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Visa documents agent-specific network tokens, not raw card numbers, provisioned per user (visa-ic-supp-1). They are bound to a passkey-authenticated purchase-intent mandate with a declineThreshold amount cap and an effectiveUntilTime expiry (visa-ic-supp-3). Credential retrieval must declare the merchant and amount, and VisaNet enforces at authorization that the request comes from the intended merchant for the correct amount; intents can be cancelled (visa-ic-supp-2, visa-ic-supp-5). Missing for 10: independent or hands-on corroboration that these controls are enforced in production, and general availability rather than the documented 'in the process of development and deployment' status.",
+    "rationale": "Visa Intelligent Commerce documents agent-specific network tokens in place of raw card numbers. Purchase-intent mandates carry a declineThreshold amount and an effectiveUntilTime expiry. Credential retrieval must declare merchant and amount, and VisaNet enforces that authorizations come from the intended merchant for the correct amount. missing for 10: independent or hands-on corroboration that the limits are enforced in production, and general availability (docs say the product is 'in the process of development and deployment').",
     "evidenceIds": [
       "visa-ic-supp-1",
       "visa-ic-supp-2",
       "visa-ic-supp-3",
       "visa-ic-supp-5",
       "visa-intelligent-commerce-docs-3",
-      "visa-intelligent-commerce-docs-4",
       "visa-intelligent-commerce-docs-12",
       "visa-intelligent-commerce-docs-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can hand my agent a scoped, limited-use payment credential — amount limits, expiry, merchant restrictions — instead of a raw card number",
+      "citations": [
+        {
+          "evidenceId": "visa-ic-supp-1",
+          "quote": "A new pass-through payment token, specific to agents, that is intended for use at Visa-accepting merchant locations."
+        },
+        {
+          "evidenceId": "visa-ic-supp-3",
+          "quote": "required mandates fields declineThreshold (amount, currencyCode), effectiveUntilTime, mandateId, and description"
+        },
+        {
+          "evidenceId": "visa-ic-supp-2",
+          "quote": "When authorization requests are received by VisaNet, controls will be enforce to ensure that the request originates from the intended merchant for the correct amount."
+        },
+        {
+          "evidenceId": "visa-ic-supp-5",
+          "quote": "required fields include \"merchantInformation.merchantName\", the merchant descriptor URL, and \"orderInformation.amountDetail.totalAmount\""
+        },
+        {
+          "evidenceId": "visa-intelligent-commerce-docs-3",
+          "quote": "Capture consumer consent, set spending limits, and manage mandates for agent-initiated payments."
+        }
+      ]
+    },
     "productId": "visa-intelligent-commerce",
     "storyId": "scoped-payment-tokens"
   }

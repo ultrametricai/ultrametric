@@ -1,22 +1,47 @@
 {
-  "hash": "e93c6aa2357ffc028a65939fe3da13638839295ec3618ab561a102908bef3a85",
+  "hash": "dc5bb39800bf7031789b819fb4c252d856577f03a867650eb6d255c7650b2635",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "The delegated-credential portion is richly documented. There are card enrollment and tokenization APIs (POST /acp/v1/tokens), a passkey-authenticated purchase-intent mandate (POST /acp/v1/instructions) and merchant/amount-scoped credential retrieval (POST /acp/v1/instructions/{id}/credentials). TAP signs the agent's checkout interaction with the merchant. However, Visa does not provide a checkout-session object itself, order confirmation rests on a single thin claim ('Confirm payment outcomes and trigger post-purchase actions'), and the product carries an explicit 'in the process of development and deployment' caveat. Missing for 10: a first-party checkout-session API, a documented order-confirmation/payment-outcome API, production availability beyond sandbox, and hands-on or independent evidence of a completed end-to-end agent purchase.",
+    "rationale": "Visa Intelligent Commerce documents the delegated-credential core well. An agent creates a purchase-intent mandate (POST /acp/v1/instructions) that the user approves with a passkey, then retrieves an agent-specific token scoped to that instruction, merchant and amount; VisaNet enforces these at authorization, and the product claims it can confirm payment outcomes. However, Visa does not provide a checkout-session object, order confirmation rests on a single marketing line, the product is flagged as still in development and deployment, and no hands-on run shows a full purchase. Missing for 10: a documented checkout-session construct, a detailed order-confirmation or payment-outcome API, and independent hands-on evidence of a completed agent purchase.",
     "evidenceIds": [
-      "visa-ic-supp-1",
-      "visa-ic-supp-2",
       "visa-ic-supp-3",
-      "visa-ic-supp-4",
       "visa-ic-supp-5",
-      "visa-ic-supp-7",
+      "visa-ic-supp-2",
+      "visa-ic-supp-1",
       "visa-intelligent-commerce-docs-5",
-      "visa-intelligent-commerce-gh-3",
-      "visa-ic-supp-10"
+      "visa-ic-supp-7",
+      "visa-ic-supp-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can complete a purchase end-to-end — checkout session, delegated payment credential, confirmed order",
+      "citations": [
+        {
+          "evidenceId": "visa-ic-supp-5",
+          "quote": "During checkout, your agents display a list of the customer's tokenized cards."
+        },
+        {
+          "evidenceId": "visa-ic-supp-1",
+          "quote": "A new pass-through payment token, specific to agents, that is intended for use at Visa-accepting merchant locations."
+        },
+        {
+          "evidenceId": "visa-ic-supp-2",
+          "quote": "The agent requests the user to authenticate the Payment Instruction using their Passkey and provides that instruction to the Visa Intelligent Commerce platform."
+        },
+        {
+          "evidenceId": "visa-intelligent-commerce-docs-5",
+          "quote": "Confirm payment outcomes and trigger post-purchase actions in real-time."
+        },
+        {
+          "evidenceId": "visa-ic-supp-1",
+          "quote": "This product is in the process of development and deployment."
+        }
+      ]
+    },
     "productId": "visa-intelligent-commerce",
     "storyId": "agent-checkout-complete"
   }

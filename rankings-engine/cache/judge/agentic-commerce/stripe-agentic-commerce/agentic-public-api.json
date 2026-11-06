@@ -1,25 +1,54 @@
 {
-  "hash": "e9fc632de65b7b266a4369e9d403bfe7409c607f020b307c75d4aa96342d62e5",
+  "hash": "7371f3d13e501793edfbe55c662412639913c1455f480e89da811e61f4153ad4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Stripe documents real public API surfaces for agentic commerce. These include the v2 Product Catalog Import API with webhooks and 403 permission semantics, an SPT create call with usage_limits and revocation, the List CheckoutSessions endpoint for bulk fulfillment, and HTTP 402 machine-payment flows. Agents get programmatic access through a live hosted MCP server, restricted API keys and keyless sandbox provisioning. missing for 10: much of ACS (the agent-side embedded checkout and the custom checkout endpoint) is private preview or waitlist-gated; no OpenAPI spec was found at the probed paths; community feedback says the MPP docs are sparse on end-to-end object semantics.",
+    "rationale": "Stripe documents programmatic API surfaces across Agentic Commerce. These include the v2 Product Catalog Import API with permission-scoped restricted keys, List CheckoutSessions for bulk fulfillment, SPT creation with usage_limits and revocation, the Refunds API, and state-transition webhooks. A hosted MCP server exposes the Stripe API to agents, and a live runtime probe confirmed it responds behind OAuth. missing for 10: no machine-readable OpenAPI spec found at the probed paths, key ACS endpoints gated behind private preview or waitlist, community reports that the MPP docs are sparse on end-to-end object semantics, no independent hands-on API usage reports.",
     "evidenceIds": [
       "stripe-ac-supp-seller-catalog-feed",
       "stripe-ac-supp-order-attribution",
       "stripe-ac-supp-spt-limits",
-      "stripe-ac-supp-acp-custom-checkout",
-      "stripe-ac-supp-embedded-checkout-oca",
       "stripe-ac-supp-machine-payments",
       "stripe-agentic-commerce-docs-21",
       "stripe-agentic-commerce-docs-23",
-      "stripe-agentic-commerce-docs-35",
       "stripe-ac-probe-rt-1",
       "stripe-agentic-commerce-probe-3",
-      "stripe-agentic-commerce-comm-10"
+      "stripe-agentic-commerce-comm-10",
+      "stripe-ac-supp-embedded-checkout-oca"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-seller-catalog-feed",
+          "quote": "uploaded via the v2 Product Catalog Import API to a presigned URL"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-seller-catalog-feed",
+          "quote": "Without this permission, API requests return a `403` error"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-order-attribution",
+          "quote": "via the List CheckoutSessions endpoint"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-spt-limits",
+          "quote": "Set usage limits, including currency, maximum amount, and expiration window"
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-21",
+          "quote": "The Stripe Model Context Protocol (MCP) server provides tools that AI agents can use to interact with the Stripe API"
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-23",
+          "quote": "Use RAK permissions to limit what an agent can do in your account."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "agentic-public-api"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "10eb200acaf8650cfb129b45e12c9f7f19fa288c834ddd106ba125f661463396",
+  "hash": "a7c17e15f583b814784597c760072e5f9a0f4e82f461a05e26225400dd2e286b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "uv's docs describe `uv.lock` as a cross-platform lockfile with exact information about a project's dependencies, which is the core of reproducible installs across machines. `uv add` keeps the lockfile updated, and `--upgrade-package` changes one package while leaving the rest of the lockfile intact. However, the pack never shows the actual install-from-lockfile step, and nothing independent confirms identical results across machines. Missing for 10: documented install/sync-from-lockfile command (e.g. frozen/locked mode that fails on drift), hands-on or independent corroboration of identical versions across machines.",
+    "rationale": "uv's own docs describe `uv.lock` as a cross-platform lockfile with exact dependency information. They also say `uv add` updates both the lockfile and the project environment, and that targeted upgrades keep the rest of the lockfile intact, which together support reproducible resolutions across machines. The pack never documents a command that installs an environment strictly from the lockfile, and nothing confirms identical installs across machines. missing for 10: documented lockfile-only install/sync command (e.g. frozen/locked mode), enforcement that installs fail if the lockfile is stale, independent hands-on corroboration of identical versions across machines",
     "evidenceIds": [
       "uv-docs-17",
       "uv-docs-2",
       "uv-docs-9",
       "uv-docs-39"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can install dependencies from a lockfile and get the exact same resolved versions on every machine",
+      "citations": [
+        {
+          "evidenceId": "uv-docs-17",
+          "quote": "`uv.lock` is a cross-platform lockfile that contains exact information about your project's dependencies."
+        },
+        {
+          "evidenceId": "uv-docs-2",
+          "quote": "This will also update the lockfile and project environment"
+        },
+        {
+          "evidenceId": "uv-docs-9",
+          "quote": "while keeping the rest of the lockfile intact"
+        }
+      ]
+    },
     "productId": "uv",
     "storyId": "lockfile-reproducible-install"
   }

@@ -1,24 +1,44 @@
 {
-  "hash": "0c9a9ad4e3d1f252f9c32f1210b1d11e6e9855103bd7d54fa6fb2317f21674ae",
+  "hash": "f8aee74f290e4aa754a638c58552bbd9f4ec00b7e7d6c68363ae36f776fb4c07",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Agents can read and post channel messages through Buzz's own interfaces. The relay speaks NIP-29/NIP-42 directly to clients, the official CLI and the buzz-acp harness let agents listen for @mentions and reply, and the managed buzz-cli skill covers messaging and channels. Each agent gets its own keypair, channel memberships and audit trail, and NIP-AA makes agent access depend on the owner's membership. However, credentials are Nostr keypairs scoped by channel membership rather than scoped API tokens: no permission scopes such as read-only versus post are documented, token auth was deliberately removed from the admin API, and there is no REST/OpenAPI message API. Missing for 10: scoped tokens or per-capability permission scopes, a documented HTTP/REST message read/post API (OpenAPI probes 404), and independent hands-on corroboration.",
+    "rationale": "Agents can read and post channel messages through Buzz's own interfaces: the Buzz CLI used by the buzz-acp harness, and the documented NIP-29/NIP-42 relay protocol. Each agent has its own keypair and its own channel memberships, so access is scoped per agent. However, credentials are Nostr keypairs rather than scoped API tokens; token auth was even removed from the admin API. There is also no OpenAPI or REST message API in evidence, and probes returned 404. missing for 10: scoped API tokens with per-permission scopes, a documented REST/OpenAPI message read/post API, independent hands-on corroboration.",
     "evidenceIds": [
       "buzz-gh-4",
       "buzz-gh-3",
       "buzz-docs-10",
-      "buzz-supp-acp-harness",
       "buzz-supp-nostr-open-protocol",
       "buzz-supp-managed-skill",
+      "buzz-supp-acp-harness",
       "buzz-supp-nip-aa-agent-auth",
-      "buzz-supp-admin-api",
-      "buzz-probe-2",
-      "buzz-probe-4",
-      "buzz-comm-5"
+      "buzz-probe-2"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent read and post channel messages through the official API using scoped tokens",
+      "citations": [
+        {
+          "evidenceId": "buzz-gh-4",
+          "quote": "Agents have their own keys, their own channel memberships, and their own audit trail."
+        },
+        {
+          "evidenceId": "buzz-docs-10",
+          "quote": "The harness listens for @mentions on the relay, prompts your agent, and the agent replies using the Buzz CLI."
+        },
+        {
+          "evidenceId": "buzz-gh-3",
+          "quote": "Agents search six months of history and post the threads, not vibes."
+        },
+        {
+          "evidenceId": "buzz-supp-nostr-open-protocol",
+          "quote": "Third-party Nostr clients connect directly to buzz-relay using NIP-29 and NIP-42 authentication"
+        }
+      ]
+    },
     "productId": "buzz",
     "storyId": "agent-reads-posts-api"
   }

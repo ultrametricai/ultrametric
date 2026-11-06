@@ -1,19 +1,37 @@
 {
-  "hash": "b2bc15d66307850e7ceb7ef9fc6f0550531aaac8c461d95179998205d91681b5",
+  "hash": "50b9a1b74e9c2f5d32935dc3cfe4df7115048d9a78f7f90efc95ae0b5752d279",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "The Connect API offers write access through batch transaction sync with idempotent external_id writes and granular OAuth scopes. The AGL then categorizes and books those transactions, and the product mentions 'transaction flagging & smart reviews' and surfaced exceptions, which loosely resembles review. However, the agent sends raw transactions rather than drafting and posting journal entries. The MCP server is explicitly read-only, and the only documented draft/submit/approve workflow is for bills, not journal entries. missing for 10: a documented journal-entry create/post endpoint, a draft or pending state routed to an accountant review queue, an approval flow for agent-created entries, and hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "The Digits Connect API documents write access to the ledger: batch transaction sync, idempotent via external_id, that turns raw financial data into categorized ledger entries, so an agent could push entries programmatically. Nothing shows a manual journal-entry endpoint, a draft/unposted state, or a review queue for API-written entries. The MCP server is explicitly read-only, and the bills submit/approve workflow covers bills, not journal entries. Missing for 10: a documented journal-entry draft/post endpoint, a pending-review queue or approval state for API-created entries routed to an accountant, an agent/MCP write path, and hands-on corroboration.",
     "evidenceIds": [
       "digits-supp-api-reference",
+      "digits-docs-1",
       "digits-supp-connect-api",
-      "digits-supp-oauth",
       "digits-supp-bookkeeping",
-      "digits-supp-agentic-close",
       "digits-supp-mcp-server"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent draft and post journal entries via the API and leave them in a review queue for my accountant",
+      "citations": [
+        {
+          "evidenceId": "digits-supp-api-reference",
+          "quote": "Idempotence and deduplication is handled via the external_id field"
+        },
+        {
+          "evidenceId": "digits-docs-1",
+          "quote": "Send raw financial data and get clean, categorized, deduplicated entries!"
+        },
+        {
+          "evidenceId": "digits-supp-bookkeeping",
+          "quote": "Digits AI learns your business to provide 24/7 bookkeeping with transaction flagging & smart reviews"
+        }
+      ]
+    },
     "productId": "digits",
     "storyId": "agent-posts-journal-entries"
   }

@@ -1,16 +1,35 @@
 {
-  "hash": "6bead81b8f0e982afba69682844c52d733f7c0c4ba1d02bab78f0ac7d00e7fc8",
+  "hash": "1ead85834b8ef06780f648b720ee61da8c7099b09e07fa594dd6baed29b2c76d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "On the ACP path, the delegated credential is a one-time-use Braintree token rather than raw card data. It is bound to the merchant ID and carries configurable amount and time restrictions. The UCP path likewise passes a single-use Braintree token. However, these are documented from the merchant's integration side, and the restrictions are configured by the merchant, not issued or scoped by the user for their own agent. Missing for 10: user-facing issuance of scoped credentials to the user's own agent, user-set spending limits and expiry, multi-merchant restriction controls, and hands-on or independent corroboration.",
+    "rationale": "PayPal's ACP path documents a delegated Braintree token that is single-use, bound to a merchant ID, and carries configurable amount and time restrictions, so all three scope dimensions exist. The UCP path also returns a Braintree single-use token. However, the docs are written for merchants consuming the token. They do not show an end user creating or configuring a scoped credential to hand to their own agent. Missing for 10: user-facing controls to issue and configure limits, multi-use or limited-use credentials beyond one-time tokens, independent or hands-on corroboration.",
     "evidenceIds": [
       "paypal-ac-supp-acp-chatgpt",
-      "paypal-ac-supp-agent-ready",
-      "paypal-ac-supp-ucp-googlepay"
+      "paypal-ac-supp-ucp-googlepay",
+      "paypal-ac-supp-agent-ready"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can hand my agent a scoped, limited-use payment credential — amount limits, expiry, merchant restrictions — instead of a raw card number",
+      "citations": [
+        {
+          "evidenceId": "paypal-ac-supp-acp-chatgpt",
+          "quote": "bound to your merchant ID and includes amount and time restrictions that you can configure."
+        },
+        {
+          "evidenceId": "paypal-ac-supp-acp-chatgpt",
+          "quote": "is a one-time-use token that you can process using your existing Braintree integration"
+        },
+        {
+          "evidenceId": "paypal-ac-supp-ucp-googlepay",
+          "quote": "the payment payload includes the Braintree single-use token in the `credential.token` field"
+        }
+      ]
+    },
     "productId": "paypal-agent-commerce",
     "storyId": "scoped-payment-tokens"
   }

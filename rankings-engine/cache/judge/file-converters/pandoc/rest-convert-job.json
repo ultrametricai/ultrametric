@@ -1,17 +1,32 @@
 {
-  "hash": "aadb196649780dd5badb56dad6d1bc2e983fbf31ded4bba13eb819a9afa81e96",
+  "hash": "318a9e8bb420ffc0452af19e73112374f0554913e6854ab78faed92084621536",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Pandoc's own docs mention an HTTP server mode (pandoc-server) that can be compiled in, and the converter can fetch input from a URL and write an output file, so a first-party conversion API exists. The evidence for it is only a single thin line. Nothing shows an async job model with visible status, and the pack documents no request/response contract (the OpenAPI probe found nothing). missing for 10: documented server API endpoints for upload/URL input, job-based execution with status polling, documented return of the output file, independent corroboration of the server mode.",
+    "confidence": "low",
+    "rationale": "Pandoc's own docs mention an HTTP server mode (pandoc-server) that can be compiled in, so a first-party API for conversion exists. Its request shape, upload handling and output delivery are not documented in the pack, and there is no job or status model. URL fetching is documented only for the CLI, and probes found no OpenAPI spec. Missing for 10: documented server API endpoints, upload/URL input via the API, asynchronous job execution with visible status, returning the output file as a downloadable result, and hands-on corroboration.",
     "evidenceIds": [
       "pandoc-docs-30",
       "pandoc-docs-11",
-      "pandoc-docs-7",
+      "pandoc-docs-17",
       "pandoc-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, a documented API takes an upload or URL, runs the conversion as a job with visible status, and returns the output file",
+      "citations": [
+        {
+          "evidenceId": "pandoc-docs-30",
+          "quote": "server: compile in support for running in HTTP server mode when the executable is renamed (or symlinked as) pandoc-server."
+        },
+        {
+          "evidenceId": "pandoc-docs-11",
+          "quote": "Instead of an input file, an absolute URI may be given. In this case pandoc will fetch the content using HTTP"
+        }
+      ]
+    },
     "productId": "pandoc",
     "storyId": "rest-convert-job"
   }

@@ -1,19 +1,35 @@
 {
-  "hash": "7b9d3073f0a0ca248e487e2d1a970d0e22666867dd595da4793eb3581c7f0603",
+  "hash": "79bb88fa0385ff1a16fb25d912f727cc5667e13f531687cfbc936b594b5b9386",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Nix documents transparent binary caching that skips source builds by fetching pre-built binaries, and notes that dependencies are only built or downloaded if they are not already in the local store. A community report describes builds being done once and shared across devs and CI. Easy transfer of environments between computers hints at offline reuse, but there is no documented CI cache-restore recipe and no explicit offline install mode. Missing for 10: a documented CI cache save/restore setup, explicit offline-capable install documentation, and independent hands-on CI timing evidence.",
+    "rationale": "Nix's own docs say it can skip source builds by pulling pre-built binaries from a binary cache, and a community user reports builds being shared across devs and CI. That covers the fast-install core of the story. No CI-specific cache-restore guide or offline install mode is documented; the closest item, transfer of environments between computers, is only adjacent. Missing for 10: documented CI cache-restore setup, documented offline-capable installs, independent CI speed benchmarks.",
     "evidenceIds": [
       "nix-docs-36",
       "nix-docs-52",
-      "nix-docs-2",
-      "nix-docs-53",
-      "nix-docs-30",
       "nix-comm-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can make CI installs fast with a documented cache-restore setup and offline-capable installs",
+      "citations": [
+        {
+          "evidenceId": "nix-docs-36",
+          "quote": "Nix can automatically skip building from source and instead use a binary cache, a web server that provides pre-built binaries."
+        },
+        {
+          "evidenceId": "nix-docs-52",
+          "quote": "Transparent build caching using binary caches"
+        },
+        {
+          "evidenceId": "nix-comm-9",
+          "quote": "Everything is only built once, on a large set of specialized remote builders, then shared among all of our devs, CI, and deployment infrastructure."
+        }
+      ]
+    },
     "productId": "nix",
     "storyId": "fast-ci-installs"
   }

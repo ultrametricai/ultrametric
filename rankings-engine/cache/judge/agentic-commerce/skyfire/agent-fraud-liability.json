@@ -1,19 +1,41 @@
 {
-  "hash": "409163ee78b91937c8a00166643dc05a05b6aeb593ce2a53af05ea39d0ff926c",
+  "hash": "ac1160da3a087202be937f7296cdbb846317c5ae23f7a5bf94c9c00e6f69c2e4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Skyfire's payments-settlement docs explicitly state who bears non-payment risk: sellers are guaranteed payment up to a pay token's committed amount, and in-flight tokens are honored after a buyer account is deactivated. The docs also cover charge timing windows, card-consent spending ceilings, and that agentic purchases are never anonymous to the merchant. However, nothing in the pack documents chargeback or dispute handling, fraud liability allocation, or refund rules for agent-initiated transactions. missing for 10: documented chargeback/dispute process, fraud liability allocation (especially for card-based agentic purchases), refund/reversal rules, independent corroboration.",
+    "rationale": "Skyfire's payments-settlement docs state who bears non-payment risk: sellers are guaranteed payment up to a pay token's committed amount, and in-flight tokens are honored even after the buyer account is deactivated. Card purchases are bounded by a cardholder-approved ceiling and always carry agent identity. There is no documentation of chargeback or dispute handling, refunds, or fraud-liability allocation. missing for 10: chargeback/dispute rules, fraud liability allocation (e.g. for compromised agents or unauthorized purchases), refund policy for agent transactions, independent corroboration.",
     "evidenceIds": [
       "skyfire-supp-4",
       "skyfire-docs-22",
       "skyfire-docs-30",
       "skyfire-supp-6",
-      "skyfire-supp-5",
       "skyfire-supp-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a merchant, the fraud, liability, and chargeback rules for agent-initiated transactions are documented so I know who bears the risk",
+      "citations": [
+        {
+          "evidenceId": "skyfire-docs-22",
+          "quote": "Sellers do not carry buyer non-payment risk for charges within a valid token."
+        },
+        {
+          "evidenceId": "skyfire-docs-30",
+          "quote": "Skyfire enforces this obligation to guarantee settlement: when a seller charges a valid `pay` or `kya-pay` token for a service it delivered, the seller is guaranteed to be paid"
+        },
+        {
+          "evidenceId": "skyfire-supp-6",
+          "quote": "New token creation stops at deactivation, but in-flight tokens are honored so sellers are paid for services they were legitimately asked to deliver."
+        },
+        {
+          "evidenceId": "skyfire-supp-7",
+          "quote": "The agent/agent platform can never spend more than the cardholder approved."
+        }
+      ]
+    },
     "productId": "skyfire",
     "storyId": "agent-fraud-liability"
   }

@@ -1,17 +1,36 @@
 {
-  "hash": "8bc641de57766129f3b01fe2a5fd680d7982af80cb9eea7960db8194201af8f9",
+  "hash": "25cfe448fa3b5fc36c577b50ca41fc69c69f925ff21301bf89682a6fc29e6b28",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Refund tracking on agent-placed orders is documented. Order webhooks fire on committed changes that explicitly include refunds and returns, and Order MCP's get_order returns post-purchase adjustments. However, webhook subscriptions are not self-serve: they require contacting a Shopify partner manager. get_order is limited to Token-tier agents. No documented agent-facing API or CLI command initiates a refund; the only return-related mention is a generic 'manage returns' line for a separate storefront MCP surface. Missing for 10: programmatic refund initiation, self-serve webhook registration, refund-specific payload documentation, hands-on corroboration of refund events.",
+    "rationale": "Refunds on agent-placed orders can be tracked programmatically. Shopify pushes signed, retried order webhooks on committed changes, explicitly including refunds, and Token-tier agents can call get_order to read post-purchase adjustments. Nothing in the pack documents an agent or developer API for initiating a refund, and webhook subscriptions are not self-serve: they must be set up through a partner manager. Missing for 10: a documented programmatic refund-initiation tool or API, self-serve webhook registration, and independent hands-on corroboration of refund tracking.",
     "evidenceIds": [
       "shopify-ucp-supp-order-webhooks",
       "shopify-ucp-docs-26",
       "shopify-ucp-supp-order-mcp",
-      "shopify-ucp-docs-7"
+      "shopify-ucp-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, refunds on agent-placed orders can be initiated and tracked programmatically",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-docs-26",
+          "quote": "Shopify pushes UCP-shaped order webhooks to your registered endpoint whenever an order placed through your agent has a committed change (fulfillment progress, refunds, returns, exchanges, order edits, or cancellations)."
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-25",
+          "quote": "The Order MCP server enables AI agents to fetch the current state of an order placed through their agent, including line items, fulfillment events, and post-purchase adjustments."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-order-webhooks",
+          "quote": "Failed deliveries are retried up to 8 times over 4 hours with exponential backoff."
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "refund-via-api"
   }

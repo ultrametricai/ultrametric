@@ -1,17 +1,32 @@
 {
-  "hash": "7e79ca3bd4596be3d2c1b727e8bd61dbb430895805de7c9e0e09c7ad25ccb249",
+  "hash": "3b2404ac78685c2c25407c30acee89e139354029995d293a314ea5e8b0474e17",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "uv's docs say it is \"disk-space efficient, with a global cache for dependency deduplication\" (uv-docs-33) and that it caches aggressively so dependencies are not re-downloaded or rebuilt (uv-docs-25). A community user also reports uv fixed cache disk-space problems on a shared server (uv-comm-7). One user reports uvx sometimes re-downloading dependencies another tool had just fetched (uv-comm-4); this is an anecdotal caveat, not a concrete contradiction of deduplication, so it lowers confidence only. Missing for 10: explicit documentation that the store is content-addressable, details of how cached packages are linked into each project's environment (e.g., hardlinks) so one copy serves all projects, and independent hands-on confirmation of cross-project single storage.",
+    "rationale": "uv's own docs state it is 'Disk-space efficient, with a global cache for dependency deduplication' and that it caches aggressively to avoid re-downloading dependencies, which is direct but thin support for a shared store. A community report of moving to uv when pip's cache was eating disk space on a quota-limited server adds mild corroboration. One user's report that uvx sometimes re-downloads dependencies is anecdotal and does not concretely contradict on-disk deduplication. missing for 10: documentation that the store is content-addressable, evidence that projects link to (rather than copy) the cached packages so each version exists once on disk, and an in-depth cache-design reference beyond a one-line feature claim.",
     "evidenceIds": [
       "uv-docs-33",
+      "uv-docs-76",
       "uv-docs-25",
-      "uv-comm-7",
-      "uv-comm-4"
+      "uv-comm-13-refresh-6a0768649b388f9d"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on a shared content-addressable store so the same dependency version is stored once on disk across all projects",
+      "citations": [
+        {
+          "evidenceId": "uv-docs-76",
+          "quote": "Disk-space efficient, with a global cache for dependency deduplication."
+        },
+        {
+          "evidenceId": "uv-docs-25",
+          "quote": "uv uses aggressive caching to avoid re-downloading (and re-building) dependencies that have already been accessed in prior runs."
+        }
+      ]
+    },
     "productId": "uv",
     "storyId": "content-addressed-store-disk-efficiency"
   }

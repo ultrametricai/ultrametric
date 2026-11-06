@@ -1,19 +1,41 @@
 {
-  "hash": "8513fa4bb182559eaf6383fa9800f5e7f863a68ffb9a0a8050c6a334346705ce",
+  "hash": "4cd0b0fb50a74facb1d837102d1e7a1f072422177eaf53307de48fc15eb3052f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Supabase documents agent least-privilege controls on its MCP connection: project_ref scoping, read_only mode running as a read-only Postgres user, and feature-group allowlists. Its docs also prescribe approving only project-scoped, read-only tools for unattended agents, and the publishable key is limited by RLS. However, the docs themselves say PATs for agents must currently be granted all scopes, with fine-grained scopes only promised for the future, and the API-key model is a coarse publishable/secret split. Scoping is therefore mostly connection-level rather than true per-agent scoped credentials. missing for 10: fine-grained scoped PATs/tokens issuable per agent, per-agent credentials beyond the two-tier publishable/secret key model, independent corroboration of the scoping working in practice.",
+    "rationale": "Supabase documents ways to scope what an agent can do. The MCP connection can be limited to one project (`project_ref`), to read-only Postgres access (`read_only`), and to selected tool groups (`features`), and the publishable key reaches only what RLS allows. However, the agent's actual credential (a PAT) cannot be least-privilege yet: the docs say 'for now all scopes are required.' So the scoping comes from connection parameters, not from the credential itself. Missing for 10: fine-grained PAT/credential scopes, per-agent credential issuance and revocation, independent hands-on corroboration.",
     "evidenceIds": [
       "supabase-supp-mcp-config-params",
       "supabase-supp-mcp-agent-security",
-      "supabase-docs-53",
       "supabase-supp-api-key-model",
-      "supabase-docs-43",
-      "supabase-supp-llms-agent-resources"
+      "supabase-docs-53",
+      "supabase-docs-43"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "supabase-supp-mcp-config-params",
+          "quote": "`read_only=true` — Execute all queries as a read-only Postgres user; `project_ref=<id>` — Scope to a specific project (disables account tools); `features=<groups>` — Enable only specific tool groups"
+        },
+        {
+          "evidenceId": "supabase-supp-mcp-agent-security",
+          "quote": "you can create a personal access token (PAT) with the necessary scopes and pass it as a header to the MCP server"
+        },
+        {
+          "evidenceId": "supabase-supp-mcp-agent-security",
+          "quote": "In the future, the MCP server will support more fine-grained scopes, but for now all scopes are required"
+        },
+        {
+          "evidenceId": "supabase-docs-43",
+          "quote": "Publishable key | Anyone can read it, so it only reaches what Row Level Security allows"
+        }
+      ]
+    },
     "productId": "supabase",
     "storyId": "agentic-scoped-keys"
   }

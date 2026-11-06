@@ -1,18 +1,42 @@
 {
-  "hash": "57a302845d8ecb19c2e239fe324f0409d63555d45b75f7ebd30870690343fc9c",
+  "hash": "280a9c9a8f880cad4e68f94e89f60ec75a31ce0f0421c626c4567ef8f4e99108",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "mise is a local CLI tool, so its programmatic surface is the documented CLI reference (mise-probe-4), which offers machine-readable output such as `--json` (mise-docs-35). A first-party MCP server also lets AI assistants inspect tools, tasks, env and config and run tasks (mise-docs-74). However, there is no documented HTTP/REST or library API: OpenAPI probes all returned 404 (mise-probe-3), so driving mise programmatically means shelling out to the CLI or using MCP. Missing for 10: a documented public HTTP/library API or schema, consistent JSON output documented across commands, and independent corroboration of programmatic use.",
+    "rationale": "mise exposes its own documented programmatic surfaces: a full CLI reference with machine-readable output on some commands (e.g. `--json`), and a first-party `mise mcp` server that lets AI assistants read project state and run tasks. However, the OpenAPI probe found no HTTP/REST API or schema, so this is a CLI- and MCP-driven interface rather than a conventional public API. missing for 10: a documented HTTP/REST or library API with a published schema (OpenAPI probe returned 404 on all candidate paths), evidence of consistent JSON output across commands, independent corroboration of agents driving mise programmatically.",
     "evidenceIds": [
       "mise-probe-4",
-      "mise-docs-35",
+      "mise-docs-100",
       "mise-docs-74",
-      "mise-probe-3",
-      "mise-probe-1"
+      "mise-docs-35",
+      "mise-docs-101",
+      "mise-probe-3"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "mise-probe-4",
+          "quote": "official CLI documented at https://mise.jdx.dev/cli/"
+        },
+        {
+          "evidenceId": "mise-docs-100",
+          "quote": "`mise mcp` runs a Model Context Protocol server that lets an AI assistant read a project's tools, tasks, environment variables and config files, and run its tasks."
+        },
+        {
+          "evidenceId": "mise-docs-35",
+          "quote": "MISE_SAFE=1 mise lock --bump --dry-run --json"
+        },
+        {
+          "evidenceId": "mise-docs-101",
+          "quote": "`-C --cd <DIR>` — Run as if mise were started in DIR"
+        }
+      ]
+    },
     "productId": "mise",
     "storyId": "agentic-public-api"
   }

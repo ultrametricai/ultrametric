@@ -1,21 +1,41 @@
 {
-  "hash": "06f03d6bee666a6a082f098d3ab903a8e181f9f87816fa11da9599d5e31364e4",
+  "hash": "d1f61d8d9f4000a2fcb0a9168c1c801f8b8cff1d3fa0fdd5ce1c46e7b15653e7",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "GrowthBook documents a full REST API and an official MCP server that lets AI tools such as Claude and Cursor make authenticated REST calls, guided by GrowthBook Agent Skills. Its results engine produces decision-relevant statistics such as Chance to Win, with above 95% flagged as a clear winner, so an agent has both an access path and the signals needed to recommend ship or rollback. missing for 10: explicit documentation that the REST API/MCP exposes experiment results and analysis (not just configuration), any documented ship/rollback recommendation workflow, a reachable OpenAPI spec (probe paths returned 404), and independent hands-on corroboration of agents summarizing results.",
+    "rationale": "GrowthBook documents a results endpoint (`GET /v1/experiments/{id}/results`) and an official MCP server that makes authenticated REST API calls, so an AI agent can programmatically pull experiment analysis. Chance-to-Win output gives the agent a basis for ship/rollback recommendations. Reading experiment configuration is only implied by the general \"full REST API\" claim, and no specific config endpoint is cited, so coverage is incomplete. missing for 10: an explicitly documented endpoint or MCP tool for reading experiment configuration, documented MCP or agent-skill workflows for summarizing results or recommending ship/rollback, and hands-on or independent corroboration that the results API works (the runtime probe only exercised feature flags).",
     "evidenceIds": [
+      "growthbook-docs-71",
       "growthbook-docs-12",
-      "growthbook-docs-13",
       "growthbook-docs-21",
-      "growthbook-probe-3",
-      "growthbook-docs-24",
-      "growthbook-docs-30",
-      "growthbook-docs-48",
-      "growthbook-docs-8"
+      "growthbook-docs-13",
+      "growthbook-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI agent, I can read experiment configurations and results programmatically to summarize outcomes and recommend ship/rollback decisions",
+      "citations": [
+        {
+          "evidenceId": "growthbook-docs-71",
+          "quote": "Get results for an experiment (`GET /v1/experiments/{id}/results`) to pull the latest analysis into your own reporting."
+        },
+        {
+          "evidenceId": "growthbook-docs-21",
+          "quote": "The official GrowthBook MCP server is a thin bridge: it loads GrowthBook Agent Skills (workflows and guardrails) and makes authenticated calls to the GrowthBook REST API."
+        },
+        {
+          "evidenceId": "growthbook-docs-12",
+          "quote": "GrowthBook offers a full REST API for interacting with the application."
+        },
+        {
+          "evidenceId": "growthbook-docs-30",
+          "quote": "Chance to Win tells you the probability that the variation is better. Anything above 95% ... is highlighted green indicating a very clear winner."
+        }
+      ]
+    },
     "productId": "growthbook",
     "storyId": "agent-experiment-analysis"
   }

@@ -1,22 +1,57 @@
 {
-  "hash": "7f0b199ca249d643c13dd6647807f131b1ec782cc3c5c732db117382696a805e",
+  "hash": "47e27df721e25acb53dc16a892c25dbf92337779df936009b5387f9c677b2616",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "uv records exact dependency versions in a cross-platform `uv.lock` that `uv add` updates. Upgrades are opt-in via `--upgrade-package`, which keeps the rest of the lockfile intact. Python versions are pinned per project with `uv python pin`, which CI tooling respects, and tool versions can be pinned (`uvx ruff@0.6.0`), with tool upgrades respecting install-time constraints. Missing for 10: explicit evidence of per-project tool pinning (`uv tool` environments are global/isolated; per-project tools are only implied via `uv run ruff`), documented lock-enforcement modes for install/sync, independent hands-on corroboration that pins are honored.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "uv delivers per-project package and Python pinning. Dependencies with version constraints are recorded in pyproject.toml and an exact cross-platform uv.lock, upgrades keep the rest of the lockfile intact, and `uv python pin` writes a .python-version that is then respected. Tool pinning (`uvx tool@version`, `uv tool install` honoring version specifiers and constraints on upgrade) is documented, but tools are installed globally or run in environments isolated from the project, so per-project tool pins are not shown. Missing for 10: documented per-project pinning of tools, and independent hands-on corroboration that lockfile pins are honored on sync/install.",
     "evidenceIds": [
       "uv-docs-17",
-      "uv-docs-2",
+      "uv-docs-70",
       "uv-docs-9",
-      "uv-docs-39",
       "uv-gh-1",
       "uv-docs-50",
       "uv-docs-41",
+      "uv-docs-73",
       "uv-docs-23",
-      "uv-docs-16"
+      "uv-docs-7"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pin exact versions of packages and tools per project and have the manager respect those pins",
+      "citations": [
+        {
+          "evidenceId": "uv-docs-17",
+          "quote": "`uv.lock` is a cross-platform lockfile that contains exact information about your project's dependencies."
+        },
+        {
+          "evidenceId": "uv-docs-70",
+          "quote": "You can also specify version constraints or alternative sources"
+        },
+        {
+          "evidenceId": "uv-docs-9",
+          "quote": "The `--upgrade-package` flag will attempt to update the specified package to the latest compatible version, while keeping the rest of the lockfile intact."
+        },
+        {
+          "evidenceId": "uv-gh-1",
+          "quote": "Pinned `.python-version` to `3.11`"
+        },
+        {
+          "evidenceId": "uv-docs-50",
+          "quote": "This will respect the Python version pinned in the project."
+        },
+        {
+          "evidenceId": "uv-docs-73",
+          "quote": "`uv tool install` will also respect the `{package}@{version}` and `{package}@latest` specifiers"
+        },
+        {
+          "evidenceId": "uv-docs-23",
+          "quote": "Tool upgrades will respect the version constraints provided when installing the tool."
+        }
+      ]
+    },
     "productId": "uv",
     "storyId": "version-pinning-per-project"
   }

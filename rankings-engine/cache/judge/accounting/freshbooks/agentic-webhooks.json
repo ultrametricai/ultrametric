@@ -1,15 +1,34 @@
 {
-  "hash": "8f2eb5aaedf61996a40c6362c7cd38569a7925f4ec0d7e89fc0ba21aa70049dc",
+  "hash": "824ce37733ac823c31a7fc9ccf2502196cac281f0e5ddebc60366090b8e843fa",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
-    "confidence": "medium",
-    "rationale": "FreshBooks' API docs have a dedicated Webhook Callbacks page. It describes subscribing to real-time event notifications (e.g. registering a callback for invoice.create), a verification handshake at registration, and HMAC signature verification using the verification code as the secret. The docs also state candidly that delivery timing is not guaranteed and can range from seconds to minutes. Missing for 10: independent or hands-on corroboration that webhook delivery works in practice.",
+    "confidence": "high",
+    "rationale": "FreshBooks documents registrable webhook callbacks. A developer registers a callback URL for specific events such as invoice.create, and FreshBooks sends real-time HTTP POST notifications to it. Registration uses a verification handshake, and deliveries carry HMAC signatures so the receiver can confirm they came from FreshBooks. Missing for 10: guaranteed delivery latency (the docs say it can range from seconds to minutes), independent or hands-on corroboration.",
     "evidenceIds": [
       "freshbooks-supp-webhooks",
       "freshbooks-docs-14"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "freshbooks-supp-webhooks",
+          "quote": "You can subscribe to FreshBooks Webhooks to receive real-time notifications... you can register a callback for the invoice.create method."
+        },
+        {
+          "evidenceId": "freshbooks-supp-webhooks",
+          "quote": "we will automatically send an HTTP POST request containing a unique verification code"
+        },
+        {
+          "evidenceId": "freshbooks-supp-webhooks",
+          "quote": "to calculate signatures used to verify webhooks are from FreshBooks"
+        }
+      ]
+    },
     "productId": "freshbooks",
     "storyId": "agentic-webhooks"
   }

@@ -1,23 +1,47 @@
 {
-  "hash": "1a00cbee313de28b01d2b64c6e3798d5221ccfc33dc41ae96b713f1990b8e3c3",
+  "hash": "75b5c0aac2278bc0a8072f08ae5974d9e31ccffba2b39e04a7bcd2aa985dc58d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Discord documents a REST API that accepts either a bot token or an OAuth2 bearer token, and OAuth2 grants permissions by scope. The Gateway delivers guild events over WebSocket, and webhooks and apps can post messages into channels, which together cover an agent reading and posting through official APIs. missing for 10: explicit documentation of message read/create endpoints, detail on how bot permissions or OAuth2 scopes restrict channel message access, independent or hands-on corroboration.",
+    "rationale": "Discord documents an official REST API that apps authenticate to with a bot token or an OAuth2 bearer token. It also documents sending messages into channels (webhooks) and a Gateway for receiving server events, so an agent integration is plausible on first-party primitives. However, the evidence never explicitly documents reading channel message history, and token scoping is only implied by a single OAuth2 scope description, not shown for message read/post permissions. Missing for 10: explicit documentation of reading channel messages via API, documented message-related OAuth2 scopes or bot permission scoping, independent or hands-on corroboration of an agent workflow.",
     "evidenceIds": [
-      "discord-docs-35",
       "discord-docs-4",
-      "discord-docs-17",
+      "discord-docs-35",
+      "discord-docs-56",
+      "discord-docs-10",
       "discord-docs-18",
       "discord-docs-27",
-      "discord-docs-10",
-      "discord-docs-20",
-      "discord-docs-56",
-      "discord-docs-5",
       "discord-docs-41"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ai-native user, I can have an agent read and post channel messages through the official API using scoped tokens",
+      "citations": [
+        {
+          "evidenceId": "discord-docs-4",
+          "quote": "Authenticating with the Discord API can be done in one of two ways: 1. Using a bot token... 2. Using an OAuth2 bearer token"
+        },
+        {
+          "evidenceId": "discord-docs-35",
+          "quote": "The Discord API is a REST API that allows you to interact with Discord data from your own applications."
+        },
+        {
+          "evidenceId": "discord-docs-56",
+          "quote": "Send messages into Discord channels or receive event notifications from Discord delivered to your app over HTTP."
+        },
+        {
+          "evidenceId": "discord-docs-10",
+          "quote": "The Gateway API lets apps open secure WebSocket connections with Discord to receive events about actions that take place in a server/guild"
+        },
+        {
+          "evidenceId": "discord-docs-27",
+          "quote": "allows /users/@me/connections to return linked third-party accounts"
+        }
+      ]
+    },
     "productId": "discord",
     "storyId": "agent-reads-posts-api"
   }

@@ -1,17 +1,35 @@
 {
-  "hash": "ca8cafefa1ef932a20b0facb141262f78fc0119810e01d27403343a23c92815b",
+  "hash": "3281099b7eda0efffdeefc4856fddb28b2bce498ee21ee7d4e3ae3df2cf8591f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Within ACS, agents are known, registered counterparties. Sellers pick a specific agent and review its terms, and the agent must accept an approval request. An OCA connection authorized by both parties is required before data access. Orders are tagged with the originating agent, filterable by agent name, and expose `agent_details` (private preview). This gives merchants a registered-profile way to recognize which approved agent drove a transaction. However, nothing documents cryptographic signatures, trust tiers, or a way to tell trusted agents from anonymous bots hitting the merchant's own site or API outside Stripe-routed checkout. Missing for 10: cryptographic agent signatures/verification, trust tiers or reputation levels, bot-vs-agent traffic classification beyond Stripe-routed orders, generally available (non-preview) agent identity fields, independent corroboration.",
+    "rationale": "Stripe's Agentic Commerce Suite routes agent traffic only through registered agents. Sellers pick an agent in the Dashboard and review its terms, the agent must accept an approval request, and an OCA (agent–seller connection) is required before agentic flows are authorized. Completed orders are then tagged and filterable by originating agent, with an agent_details field in private preview. However, nothing documents cryptographic agent signatures, trust tiers, or a way to verify agent identity on arbitrary traffic so merchants can tell it apart from anonymous bots. Missing for 10: verifiable agent signatures or credentials, trust-tier classification, a mechanism for separating anonymous bot traffic, GA status beyond private preview, independent corroboration.",
     "evidenceIds": [
       "stripe-ac-supp-seller-catalog-feed",
       "stripe-ac-supp-embedded-checkout-oca",
-      "stripe-ac-supp-order-attribution",
-      "stripe-ac-supp-acp-custom-checkout"
+      "stripe-ac-supp-order-attribution"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a merchant, agents identify themselves verifiably — registered profiles, signatures, or trust tiers — so I can tell trusted agent traffic from anonymous bots",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-seller-catalog-feed",
+          "quote": "Find the agent you want to sell through and review its terms"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-embedded-checkout-oca",
+          "quote": "An OCA is a required connection between your agent and a seller that enables agentic commerce flows. Only a seller can initiate an OCA request"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-order-attribution",
+          "quote": "where they’re tagged with the originating agent"
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "agent-identity-tiers"
   }

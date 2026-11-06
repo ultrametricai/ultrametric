@@ -1,18 +1,41 @@
 {
-  "hash": "c3af5eb594539b95d326736f9bcff0f1791af9991bef3b324bd35d77a7b8a6a0",
+  "hash": "2236e1c3a6652f757e1b1fe1b8085eeb9eb1fa0b7bd0d4c67580c4bd5c0b1af5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Nix's docs describe a single Nix store where `nix-shell` only builds or downloads dependencies that are not already present, which implies reuse across projects. Packages are added to the store under different paths, so multiple versions can coexist without overwriting each other, and a garbage collector removes unused ones. A community report adds that things are 'only built once' and then shared. Missing for 10: explicit documentation that store paths are content-addressed/hashed, explicit confirmation of on-disk deduplication across projects, and independent hands-on corroboration of disk-space savings.",
+    "rationale": "Nix's docs describe a single Nix store that commands reuse. `nix-shell` only builds or downloads dependencies \"if they're not already in your Nix store\", and new versions are added at distinct paths, so a dependency already present is reused across projects. A community comment on hashed store directories implies hash-addressed paths, but the docs never call the store content-addressable or state that identical versions are deduplicated on disk. missing for 10: explicit first-party documentation of content-addressed store paths, explicit statement that identical dependencies are stored once across projects, hands-on corroboration of disk deduplication.",
     "evidenceIds": [
       "nix-docs-2",
-      "nix-docs-49",
       "nix-docs-50",
-      "nix-docs-6",
+      "nix-docs-49",
+      "nix-comm-15",
       "nix-comm-9"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on a shared content-addressable store so the same dependency version is stored once on disk across all projects",
+      "citations": [
+        {
+          "evidenceId": "nix-docs-2",
+          "quote": "the command `nix-shell` will build or download those dependencies if they’re not already in your Nix store"
+        },
+        {
+          "evidenceId": "nix-docs-50",
+          "quote": "Since package management operations never overwrite packages in the Nix store but just add new versions in different paths, they are atomic."
+        },
+        {
+          "evidenceId": "nix-docs-49",
+          "quote": "You can have multiple versions or variants of a package installed at the same time."
+        },
+        {
+          "evidenceId": "nix-comm-15",
+          "quote": "Hashed store directories are unreadable compared to something like /Programs/Python/3.15.0/."
+        }
+      ]
+    },
     "productId": "nix",
     "storyId": "content-addressed-store-disk-efficiency"
   }

@@ -1,19 +1,37 @@
 {
-  "hash": "ec08116beb062f90f250e28bf2b9cb86450c916ebf247827cfcb897b2244170d",
+  "hash": "7a22c8f78b3416093ac8e5c6e11bc10c1687793128c34486cfdc36c02b593741",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Link CLI documents per-purchase consent before money moves: the agent creates a spend request, \"Customers approve each request on the Link website or in the mobile app,\" and only then receives a one-time-use credential. SPTs act as scoped mandates with max_amount, currency, expiry and revocation. The MCP server separately requires human confirmation, via an approval token that expires after 24h, before outbound payments and refunds. The community note that MPP itself has no authorization layer marks a gap on that rail; it does not contradict Link's approval flow. Missing for 10: independent hands-on corroboration of the approval step, and a documented human-consent gate for MPP/x402 machine payments and the ACS embedded checkout flow.",
+    "rationale": "Link CLI documents a per-purchase consent gate: the agent creates a spend request, the customer approves it on the Link website or mobile app, and only then does Link return a one-time-use credential. Separately, the Stripe MCP server requires human confirmation via an approval URL before outbound payments and refunds. Missing for 10: independent or hands-on corroboration that the approval gate works, and any documented human-approval step for direct MPP/x402 machine payments or the embedded ACS checkout flow, beyond scoped SPT usage limits.",
     "evidenceIds": [
-      "stripe-ac-supp-link-wallet",
-      "stripe-agentic-commerce-docs-28",
       "stripe-agentic-commerce-docs-30",
-      "stripe-ac-supp-spt-limits",
+      "stripe-agentic-commerce-docs-28",
+      "stripe-ac-supp-link-wallet",
       "stripe-ac-supp-mcp-approval",
-      "stripe-agentic-commerce-comm-8"
+      "stripe-ac-supp-spt-limits"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, sensitive agent spending requires my documented approval — a confirmation step, signed mandate, or per-purchase consent — before money moves",
+      "citations": [
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-30",
+          "quote": "Creates a spend request for a specific purchase. The customer approves it, and Link returns a one-time-use payment credential your agent uses to pay."
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-28",
+          "quote": "Customers approve each request on the Link website or in the mobile app."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-mcp-approval",
+          "quote": "To prevent agents from making mistakes, Stripe requires human confirmation before it takes certain `stripe_api_write` actions, such as refunds and outbound payments."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "human-approval-gate"
   }

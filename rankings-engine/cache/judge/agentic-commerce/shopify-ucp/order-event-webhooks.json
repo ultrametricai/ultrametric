@@ -1,18 +1,40 @@
 {
-  "hash": "c487dfb91824079e1cfacd68255fa40dc6db8104f1f4f857be7e997d6a5cbfcd",
+  "hash": "23c8d7d04a30c9313009d694ed46ef728c19a64d6027dd7c368c91234eb84820",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "high",
-    "rationale": "Shopify documents UCP-shaped order webhooks pushed to a registered endpoint. They fire whenever an agent-placed order has a committed change: fulfillment progress, refunds, returns, edits, or cancellations. Deliveries carry full-state payloads, HMAC-SHA256 signatures, and up to 8 retries over 4 hours. However, there is no self-serve subscription API: the endpoint and topic scoping must be registered by contacting a Shopify partner manager, and the profile webhook_url field is not honored. Missing for 10: programmatic self-serve subscription, an explicit order-created event, scope beyond orders placed through your own agent, and hands-on verification of webhook delivery.",
+    "rationale": "Shopify pushes signed, retried UCP order webhooks to a registered endpoint for orders placed through the agent. Covered changes include fulfillment progress, order edits and cancellations, and the docs name webhooks as the primary update channel. However, there is no self-serve subscription API: delivery URLs and topics are registered server-side through a Shopify partner manager, and the profile webhook_url field is not honored. Missing for 10: self-serve programmatic subscription and registration, an explicitly documented order-created event, and independent or hands-on corroboration of delivery.",
     "evidenceIds": [
       "shopify-ucp-supp-order-webhooks",
       "shopify-ucp-docs-26",
-      "shopify-ucp-docs-8",
       "shopify-ucp-supp-order-mcp",
       "shopify-ucp-supp-ucp-journey"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, my agent or backend can subscribe to order lifecycle events — created, updated, fulfilled, canceled — pushed programmatically",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-docs-26",
+          "quote": "Shopify pushes UCP-shaped order webhooks to your registered endpoint whenever an order placed through your agent has a committed change (fulfillment progress, refunds, returns, exchanges, order edits, or cancellations)."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-order-webhooks",
+          "quote": "Failed deliveries are retried up to 8 times over 4 hours with exponential backoff."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-order-webhooks",
+          "quote": "There's no self-serve subscription API today: your delivery URL and topic scoping are registered server-side. To set up or update an order webhook subscription, contact your Shopify partner manager."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-order-mcp",
+          "quote": "Use webhooks as the primary update channel."
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "order-event-webhooks"
   }

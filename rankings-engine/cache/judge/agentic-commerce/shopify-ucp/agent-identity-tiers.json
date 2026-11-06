@@ -1,20 +1,46 @@
 {
-  "hash": "5087e41b7fa2da08cb256da42a1a4f3eebcaf99ae92a6410f3396cb481712016",
+  "hash": "486bef2b6bd0b56e75cd52939e51d62b855bbd60e41c0df09e6245dca1d49842",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Shopify documents a three-tier identification model (Token, Signed, Anonymous) for UCP traffic. Signed agents use RFC 9421 HTTP Message Signatures (ECDSA P-256), verified against keys in the agent's hosted well-known UCP profile, and stronger tiers unlock higher rate limits and sensitive tools such as complete_checkout and Order MCP. A runtime probe confirmed the catalog rejects requests without a hosted agent profile (invalid_profile_url). Missing for 10: no evidence of merchant-facing visibility or controls showing which agent or tier generated traffic or orders (classification is enforced Shopify-side), and no hands-on corroboration of signature or token tier verification beyond the profile-URL gate.",
+    "rationale": "Shopify documents a three-tier identification scheme (Token, Signed, Anonymous) for UCP traffic. The Signed tier uses RFC 9421 HTTP message signatures verified against the agent's published well-known UCP profile, and stronger tiers unlock higher rate limits and sensitive tools such as complete_checkout and Order MCP. A runtime probe confirmed that requests without a hosted agent profile are rejected with invalid_profile_url. Missing for 10: documentation of merchant-facing visibility or reporting that shows a store owner which tier or agent sent given traffic, and merchant-configurable policies per trust tier.",
     "evidenceIds": [
       "shopify-ucp-supp-trust-tiers",
-      "shopify-ucp-supp-agent-profiles",
       "shopify-ucp-supp-global-catalog",
+      "shopify-ucp-probe-rt-4",
       "shopify-ucp-supp-order-mcp",
       "shopify-ucp-supp-checkout-mcp",
-      "shopify-ucp-probe-rt-4",
       "shopify-ucp-docs-20"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a merchant, agents identify themselves verifiably — registered profiles, signatures, or trust tiers — so I can tell trusted agent traffic from anonymous bots",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-supp-trust-tiers",
+          "quote": "UCP traffic to Shopify's MCP servers is classified into three tiers based on how your agent identifies itself"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-trust-tiers",
+          "quote": "Stronger identification means higher rate limits and access to more sensitive tools."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-global-catalog",
+          "quote": "Every request must include a `meta.ucp-agent.profile` URL pointing to your agent's UCP profile"
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-4",
+          "quote": "returned the structured error invalid_profile_url, matching the documented requirement that agents identify themselves via a hosted profile before acting"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-order-mcp",
+          "quote": "Order MCP is available only to Token-tier agents."
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "agent-identity-tiers"
   }

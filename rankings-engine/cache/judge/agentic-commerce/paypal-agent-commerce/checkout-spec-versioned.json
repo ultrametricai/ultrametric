@@ -1,18 +1,37 @@
 {
-  "hash": "66dcc4d36fc48c168d4854b093c871d9f323e05c17d3785c00fa542d03d8829a",
+  "hash": "901b5d3e38bf3f922429e7f92fe757722cc7baf9668d1ea524299dfbdd164b3d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "PayPal documents builds against published commerce protocols. The ACP path tells developers to \"Follow the ACP agentic checkout specification,\" and the UCP path defines the checkout-complete payload with a `credential.token` field. PayPal's own v1 cart API also has a published reference covering the PayPalCart object, response codes and validation_issues. However, these issues are business-logic errors returned at runtime, not conformance tooling. The general sandbox is a test environment rather than a protocol validator, and the evidence shows no schema files or explicit versioning policy for the protocols. Missing for 10: conformance/validation test suite or schema validator, explicitly published machine-readable schemas, documented protocol versioning policy, independent corroboration.",
+    "rationale": "PayPal documents a v1 agentic-commerce cart API: a merchant-hosted reverse API built around a PayPalCart object, with validation_issues in responses. It also supports building against the external ACP and UCP specifications. The evidence never shows a published, versioned schema artifact or any conformance or validation tooling; the general sandbox is a testing environment, not a protocol conformance suite. Missing for 10: published machine-readable protocol schema, explicit versioning policy, conformance/validation test tooling, independent corroboration.",
     "evidenceIds": [
-      "paypal-ac-supp-acp-chatgpt",
-      "paypal-ac-supp-ucp-googlepay",
-      "paypal-ac-supp-cart-reverse-api",
       "paypal-ac-supp-getcart",
-      "paypal-ac-supp-agent-ready"
+      "paypal-ac-supp-cart-reverse-api",
+      "paypal-agent-commerce-docs-11",
+      "paypal-ac-supp-acp-chatgpt",
+      "paypal-ac-supp-ucp-googlepay"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can build against a versioned commerce protocol with a published schema and conformance or validation tooling",
+      "citations": [
+        {
+          "evidenceId": "paypal-ac-supp-getcart",
+          "quote": "Together with create cart, this is the crawled surface of PayPal's agentic-commerce v1 cart API"
+        },
+        {
+          "evidenceId": "paypal-agent-commerce-docs-11",
+          "quote": "Creates a new cart with the provided PayPalCart object."
+        },
+        {
+          "evidenceId": "paypal-ac-supp-acp-chatgpt",
+          "quote": "Follow the ACP agentic checkout specification to manage checkout sessions"
+        }
+      ]
+    },
     "productId": "paypal-agent-commerce",
     "storyId": "checkout-spec-versioned"
   }

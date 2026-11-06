@@ -1,17 +1,40 @@
 {
-  "hash": "44a8d07e606f008be2288279166ec97ba3b9de7aaab9f05cbdc4b23e4ec6e234",
+  "hash": "91fbb3fc3d47dc8bab5203a9cbee7f7eef0aa1a052ac1ea61f65412f5818b8a3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The docs name specific webhook events across the agentic commerce flows, so the core of subscribing to events is clearly delivered. These include v2.commerce.product_catalog.imports succeeded/succeeded_with_errors/failed for catalog indexing, checkout.session.completed per agent order, delegated_checkout.requested_session.completed for embedded checkout, and per-transition SPT events such as shared_payment.issued_token.used. Missing for 10: documentation in the pack of how endpoints are registered and subscribed, signature verification and retry/delivery semantics, and independent or hands-on corroboration of webhook delivery.",
+    "rationale": "Stripe Agentic Commerce documents first-party webhook events across its surface. These include catalog import results, per-order `checkout.session.completed` events, the `delegated_checkout.requested_session.completed` event for embedded checkout, and SPT state-transition events such as `shared_payment.issued_token.used`, which a programmatic consumer can receive. missing for 10: documentation of endpoint registration and subscription mechanics, signature verification and retry semantics, and independent or hands-on corroboration of webhook delivery.",
     "evidenceIds": [
       "stripe-ac-supp-seller-catalog-feed",
       "stripe-ac-supp-order-attribution",
       "stripe-ac-supp-embedded-checkout-oca",
       "stripe-ac-supp-spt-limits"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-order-attribution",
+          "quote": "Stripe sends `checkout.session.completed` after the agent completes an order. Each order generates a unique `checkout.session.completed` event."
+        },
+        {
+          "evidenceId": "stripe-ac-supp-spt-limits",
+          "quote": "You receive this event when the seller uses the SPT"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-seller-catalog-feed",
+          "quote": "indexing completes via v2.commerce.product_catalog.imports succeeded / succeeded_with_errors / failed webhooks with a per-row error CSV"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-embedded-checkout-oca",
+          "quote": "completion signalled by the `delegated_checkout.requested_session.completed` webhook"
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "agentic-webhooks"
   }

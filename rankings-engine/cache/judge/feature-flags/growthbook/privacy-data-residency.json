@@ -1,19 +1,41 @@
 {
-  "hash": "944ad3b7c5a8e3b418a9ede91871f019a444ba254680770182f5ba06f6b25bce",
+  "hash": "9823875ed89dd8e4c67998c088ead313b6bea93380b5d9cde8a702b266f298d7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "GrowthBook has no documented cloud region picker, but you can control where data lives in other ways. You can self-host the whole stack (MongoDB, API, front-end) on your own infrastructure via Docker Compose. Experiment analysis queries your own warehouse rather than ingesting events. The SDK keeps targeting attribute values in local memory and never sends them to GrowthBook. Missing for 10: documented region/residency selection for GrowthBook Cloud (e.g. EU/US hosting), explicit data-residency or compliance documentation, independent corroboration.",
+    "rationale": "GrowthBook documents self-hosting on your own infrastructure, so you control where application data lives. It is also warehouse-native: experiment data stays in your own warehouse, and targeting attribute values never leave the SDK. A hands-on probe confirmed the official Docker self-host works, but there is no evidence of choosing a storage region or residency for the cloud SaaS. Missing for 10: cloud region/residency selection (e.g. EU/US hosting), documented data-residency commitments for GrowthBook Cloud.",
     "evidenceIds": [
       "growthbook-docs-10",
-      "growthbook-docs-35",
-      "growthbook-gh-3",
-      "growthbook-comm-5",
+      "growthbook-probe-rt-2",
       "growthbook-docs-18",
-      "growthbook-comm-1"
+      "growthbook-comm-6-refresh-03ca0c6a606b8232",
+      "growthbook-comm-1-refresh-c446c2244098bb86"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": [
+        {
+          "evidenceId": "growthbook-docs-10",
+          "quote": "Run GrowthBook on your own infrastructure with Docker Compose, including MongoDB, the API, and the front-end."
+        },
+        {
+          "evidenceId": "growthbook-docs-18",
+          "quote": "The actual values of targeting attributes (e.g., user IDs, emails) are never sent to GrowthBook. They are only stored in memory locally within the SDK."
+        },
+        {
+          "evidenceId": "growthbook-comm-6-refresh-03ca0c6a606b8232",
+          "quote": "GrowthBook (like Eppo) connects to your existing data warehouse and supports any metric you can express as a query."
+        },
+        {
+          "evidenceId": "growthbook-probe-rt-2",
+          "quote": "the official growthbook/growthbook docker image booted against mongo"
+        }
+      ]
+    },
     "productId": "growthbook",
     "storyId": "privacy-data-residency"
   }

@@ -1,19 +1,41 @@
 {
-  "hash": "967799fe622f0a9478a848184d33816413f64fb16c42d175acded916feda1386",
+  "hash": "89f1a5d03257e022e972d7b3feec0f9798682a41caee3b019ea15fea6148fdf4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "mise handles many items in one command: a single `mise install` installs every tool declared in config, `mise lock --bump --dry-run --json` bumps tool versions in one pass with machine-readable output, `mise bootstrap` applies packages, dotfiles, repos and services together, and dependency-only tasks group other tasks and run prerequisites in parallel. However, none of this is documented as a general bulk-operation capability; it is implied from config-driven commands. missing for 10: explicit docs on bulk/batch selection across arbitrary items (e.g., upgrade or uninstall many tools by pattern), bulk operations exposed through the MCP server for AI agents, independent or hands-on corroboration.",
+    "rationale": "mise documents several of its own multi-item operations. `mise use node@24 python@3.14` installs and records several tools in one command, `mise install` installs every tool declared in config, dependency-only tasks run many prerequisite tasks in parallel, and `mise bootstrap` applies a whole machine's packages, dotfiles, repos and services at once. It does not document a general-purpose bulk-operation facility, so this is partial. Missing for 10: a documented bulk upgrade/uninstall across all tools (only `mise upgrade node` is shown), a selector or filter for acting on arbitrary item sets, and independent hands-on corroboration of bulk workflows.",
     "evidenceIds": [
-      "mise-docs-34",
-      "mise-docs-35",
+      "mise-docs-82",
+      "mise-docs-92",
+      "mise-docs-95",
       "mise-docs-49",
-      "mise-docs-11",
-      "mise-docs-76",
-      "mise-docs-40"
+      "mise-docs-84"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "mise-docs-82",
+          "quote": "mise use node@24 python@3.14 ... This installs both tools and records the version requests in the project's config"
+        },
+        {
+          "evidenceId": "mise-docs-92",
+          "quote": "A task with only `depends` runs other tasks. The prerequisites can run in parallel"
+        },
+        {
+          "evidenceId": "mise-docs-95",
+          "quote": "Commit a lockfile and install with `mise install --locked`. Every job then installs the same versions"
+        },
+        {
+          "evidenceId": "mise-docs-49",
+          "quote": "mise bootstrap sets up a whole machine from the same config: OS packages, dotfiles, repos, services, macOS defaults, and services, then your tools."
+        }
+      ]
+    },
     "productId": "mise",
     "storyId": "automation-bulk-operations"
   }

@@ -1,27 +1,47 @@
 {
-  "hash": "bc911cf59fb96b4c8356cc905b571453b0a92169076ea749a0a39c716f63d2a3",
+  "hash": "d9f53ce8f142405f5b67d87cd2145b7af137b3939242677e075d4708f5790dd6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Shopify documents several official MCP servers for agents: Global Catalog, Storefront Catalog, Cart, Checkout and Order MCP, served over UCP at catalog.shopify.com and each shop's /api/ucp/mcp endpoint. Runtime probes confirmed live JSON-RPC initialize handshakes on both the global and storefront endpoints, a real keyless cart created through the CLI, and the documented profile gate rejecting an unprofiled request. Missing for 10: no hands-on verification of the authenticated Checkout/Order MCP tools (Token-tier only), and the earlier /api/mcp catalog/cart tools were removed, showing surface churn.",
+    "rationale": "Shopify documents first-party MCP servers for agents: Global Catalog, Storefront Catalog, Cart, Checkout and Order MCP. Runtime probes confirm live JSON-RPC handshakes at catalog.shopify.com/api/ucp/mcp and at a storefront's /api/ucp/mcp endpoint, and a real cart was created through the protocol. missing for 10: ungated access to the full tool set (Order MCP and complete_checkout are Token-tier only, and agents must host a UCP profile), independent third-party corroboration beyond vendor docs and probes.",
     "evidenceIds": [
-      "shopify-ucp-supp-ucp-journey",
-      "shopify-ucp-supp-global-catalog",
-      "shopify-ucp-supp-storefront-catalog",
-      "shopify-ucp-supp-cart-mcp",
-      "shopify-ucp-supp-checkout-mcp",
-      "shopify-ucp-supp-order-mcp",
-      "shopify-ucp-supp-trust-tiers",
       "shopify-ucp-docs-11",
-      "shopify-ucp-docs-34",
-      "shopify-ucp-probe-4",
+      "shopify-ucp-docs-21",
+      "shopify-ucp-docs-23",
       "shopify-ucp-probe-rt-1",
       "shopify-ucp-probe-rt-2",
       "shopify-ucp-probe-rt-3",
-      "shopify-ucp-probe-rt-4"
+      "shopify-ucp-supp-trust-tiers"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-docs-11",
+          "quote": "Connect any AI assistant to real-time commerce data from Shopify stores with Model Context Protocol (MCP) servers"
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-21",
+          "quote": "The Global Catalog MCP server enables AI agents to search and discover products across the entire Shopify ecosystem, helping buyers find products from multiple merchants."
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-23",
+          "quote": "The Cart MCP server enables AI agents to build and iterate on a cart before the buyer commits to purchase."
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-1",
+          "quote": "a keyless JSON-RPC initialize POST to https://catalog.shopify.com/api/ucp/mcp completed a FULL handshake"
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-2",
+          "quote": "a keyless JSON-RPC initialize POST to https://hardware.shopify.com/api/ucp/mcp completed a FULL handshake"
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "agentic-mcp-server"
   }

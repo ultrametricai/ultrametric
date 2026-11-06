@@ -1,21 +1,42 @@
 {
-  "hash": "cc167ccffd5cd36d993e4132d25da99f34c33fbbede9d9205825a18ebe46b5dc",
+  "hash": "c0908adc157ebb9df5111b626839ffadd4087d83304bdda2cceb143d40eb64cb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Shopify documents Cart MCP tools (create_cart, get_cart, update_cart, cancel_cart) as JSON-RPC calls against each merchant's /api/ucp/mcp endpoint under the openly published UCP spec, and create_checkout can convert a cart into a checkout session. A runtime probe created a real cart keylessly on Shopify's hardware store via the UCP CLI and got back a live Cart gid. missing for 10: hands-on corroboration of the update_cart path (only cart creation was exercised live).",
+    "rationale": "Shopify's Cart MCP documents create_cart, get_cart, update_cart and cancel_cart as JSON-RPC calls against each merchant's /api/ucp/mcp endpoint under the open UCP spec, and create_checkout converts a cart into a checkout session. A runtime probe created a real cart keylessly on Shopify's hardware store via `ucp cart create`. Missing for 10: hands-on corroboration of update_cart (only cart creation was exercised in the probe).",
     "evidenceIds": [
       "shopify-ucp-supp-cart-mcp",
       "shopify-ucp-docs-23",
-      "shopify-ucp-docs-5",
       "shopify-ucp-supp-checkout-mcp",
       "shopify-ucp-probe-rt-3",
-      "shopify-ucp-probe-rt-2",
-      "shopify-ucp-probe-rt-5",
-      "shopify-ucp-docs-34"
+      "shopify-ucp-docs-32",
+      "shopify-ucp-probe-rt-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, my agent can create and update a cart or order draft through a documented protocol call",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-supp-cart-mcp",
+          "quote": "create_cart / get_cart / update_cart / cancel_cart run as JSON-RPC against the merchant's /api/ucp/mcp endpoint"
+        },
+        {
+          "evidenceId": "shopify-ucp-docs-23",
+          "quote": "The Cart MCP server enables AI agents to build and iterate on a cart before the buyer commits to purchase."
+        },
+        {
+          "evidenceId": "shopify-ucp-probe-rt-3",
+          "quote": "ucp cart create returned a live gid://shopify/Cart/ id plus the documented next steps (ucp checkout create from the cart id)"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-checkout-mcp",
+          "quote": "the server loads the referenced cart and inherits its `line_items`, `context`, `buyer`, and associated attribution metadata"
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "agent-cart-create"
   }

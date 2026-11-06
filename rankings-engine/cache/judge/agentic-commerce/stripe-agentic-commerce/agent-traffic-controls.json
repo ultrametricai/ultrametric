@@ -1,15 +1,38 @@
 {
-  "hash": "c4c7777e6f27333b0c66be3a247f42409e699c9d5a2a4181e4e0bbd2966a3c35",
+  "hash": "759977a44d11575fd7128926f2693bdedc3656bb0b043cff528f2eb5a6f31492",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Merchants explicitly opt in per agent: they find the agent, review its terms, and send an approval request. OCAs can only be initiated by the seller, authorize data access between agent and seller, and can be terminated by either party at any time, which amounts to per-agent allow and deny/revoke for catalog and checkout access. There is no evidence of merchant-side rate-limiting or throttling of agent traffic, and ACS is in private preview. Missing for 10: merchant-configurable rate limits per agent or platform, granular per-agent controls beyond the connect/terminate agreement, and independent or hands-on corroboration.",
+    "rationale": "Stripe documents a seller-controlled allow model. Sellers pick which agents to sell through and only the seller can initiate an Order Connection Agreement (OCA), which authorizes data access. Either party can terminate an OCA at any time, so sellers can effectively allow or revoke specific agents. Nothing documents rate-limiting agent access to the catalog or checkout. Missing for 10: per-agent rate-limiting controls, explicit deny/block controls at the agent-platform level, and independent or hands-on corroboration (ACS is in private preview).",
     "evidenceIds": [
       "stripe-ac-supp-seller-catalog-feed",
       "stripe-ac-supp-embedded-checkout-oca"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a merchant, I can rate-limit, allow, or deny specific agents and agent platforms accessing my catalog and checkout",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-seller-catalog-feed",
+          "quote": "Find the agent you want to sell through and review its terms"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-embedded-checkout-oca",
+          "quote": "Only a seller can initiate an OCA request"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-embedded-checkout-oca",
+          "quote": "After both parties confirm the OCA, it authorizes data access between your agent and the seller"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-embedded-checkout-oca",
+          "quote": "Either party can terminate an OCA at any time."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "agent-traffic-controls"
   }

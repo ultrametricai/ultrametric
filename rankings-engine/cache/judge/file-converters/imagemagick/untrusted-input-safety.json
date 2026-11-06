@@ -1,18 +1,37 @@
 {
-  "hash": "4fabd7fbb6fd300269ad590c3b75b47f08b8935e081cc22aa886eceed6cd3228",
+  "hash": "f71e21ad79148589ef32151becf0dc992236dd79ccf55a8abf7591a159d0f0a5",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "ImageMagick ships configurable security policies (Open, Limited, Secure, Websafe as of 7.1.1-16). Community reports confirm policy.xml can disable script-like coders such as MSL, MVG, URL and EPHEMERAL. That protection is opt-in, though: the ImageTragick RCE came from a delegate executing a user-controlled system/wget call, and SVG/MVG input is still parsed by interpreter-like logic unless the operator locks it down. missing for 10: safe-by-default handling of script/macro formats, first-party documentation of what each policy blocks, and independent evidence that the hardened policies prevent execution.",
+    "rationale": "ImageMagick ships its own security-policy mechanism (selectable Open, Limited, Secure and Websafe policies via policy.xml) that can disable script-like coders such as MVG and MSL and the URL delegates. Community evidence shows that without such configuration these inputs are interpreted: the ImageTragick RCE came from a URL delegate passing user input into a shell call, and SVG/MVG are processed by logic resembling a small command interpreter. Safe handling of untrusted input therefore depends on operators hardening the policy, not on inert-by-default behavior. missing for 10: documented guarantee that scripts/macros are treated as content by default, first-party docs detailing which coders the Secure/Websafe policies block, independent corroboration that the hardened policies prevent execution.",
     "evidenceIds": [
-      "imagemagick-docs-9",
       "imagemagick-gh-26",
-      "imagemagick-comm-4",
+      "imagemagick-docs-9",
       "imagemagick-comm-5",
+      "imagemagick-comm-4",
       "imagemagick-comm-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ops lead, the converter treats untrusted input safely: scripts and macros are read as content, never executed",
+      "citations": [
+        {
+          "evidenceId": "imagemagick-gh-26",
+          "quote": "you can choose and customize one of these security policies: Open, Limited, Secure, and Websafe."
+        },
+        {
+          "evidenceId": "imagemagick-docs-9",
+          "quote": "Tailor security policies to suit your server environment."
+        },
+        {
+          "evidenceId": "imagemagick-comm-5",
+          "quote": "use policy.xml to disable the EPHEMERAL, URL, HTTPS, MVG and MSL coders"
+        }
+      ]
+    },
     "productId": "imagemagick",
     "storyId": "untrusted-input-safety"
   }

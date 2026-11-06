@@ -1,21 +1,42 @@
 {
-  "hash": "ad84c9d2db22053aae10660a30532aabe477aefbf18053c617280b55cbf119a8",
+  "hash": "40f20c6de761d155a383cf895316c8d4aec072d158d2fbe9b66b585035c85918",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "supabase",
-    "storyId": "agent-branch-migrations",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Supabase branching creates separate environments, including per-PR preview environments, for testing database schema changes without touching production. The official MCP server lets an agent drive this end to end: it exposes `create_branch`, `merge_branch`, `reset_branch`, `rebase_branch` and `apply_migration`, and the MCP security docs recommend branching for testing changes safely before merging. A local CLI stack with its own MCP endpoint offers another isolated sandbox. Missing for 10: the MCP branching tool group is labeled experimental, and there is no hands-on or independent corroboration of an agent completing the branch-test-merge workflow.",
+    "rationale": "Supabase documents branches as separate environments for testing schema changes without affecting production, including isolated preview environments per pull request. Its MCP server gives agents branching tools (create_branch, merge_branch, reset_branch, rebase_branch) alongside apply_migration and execute_sql, and the MCP security guidance recommends branching so agents can test changes safely before merging. Missing for 10: the agent branching tool group is labeled experimental, there is no hands-on or independent corroboration of agent-driven branch workflows, and how an agent validates changes within a branch is only implied.",
     "evidenceIds": [
       "supabase-docs-17",
       "supabase-docs-50",
       "supabase-supp-mcp-tool-groups",
       "supabase-supp-mcp-agent-security",
-      "supabase-supp-mcp-config-params",
-      "supabase-supp-ai-tools-stack",
-      "supabase-docs-21"
-    ]
+      "supabase-supp-mcp-config-params"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an ai-native user, I can let an agent create and test schema changes in an isolated branch or preview environment before production",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-17",
+          "quote": "You can use these branching environments to create and test changes like new configurations, database schemas, or features without affecting your production setup."
+        },
+        {
+          "evidenceId": "supabase-docs-50",
+          "quote": "Branching takes this further, adding isolated preview environments for each pull request."
+        },
+        {
+          "evidenceId": "supabase-supp-mcp-tool-groups",
+          "quote": "experimental Branching (`create_branch`/`list_branches`/`delete_branch`, `merge_branch`/`reset_branch`/`rebase_branch`)"
+        },
+        {
+          "evidenceId": "supabase-supp-mcp-agent-security",
+          "quote": "test changes in a safe environment before merging them to production"
+        }
+      ]
+    },
+    "productId": "supabase",
+    "storyId": "agent-branch-migrations"
   }
 }

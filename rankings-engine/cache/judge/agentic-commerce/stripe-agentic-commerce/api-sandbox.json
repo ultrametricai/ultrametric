@@ -1,16 +1,30 @@
 {
-  "hash": "de19883637f87bf0fd5ce06f9ff8e1fc39f761b68a05351c7780ce714d262e55",
+  "hash": "b1651507f6fb459296d2a76261700a951ebc57a69a32e44d475467584e27dbfe",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe documents an agent-first sandbox path: coding agents run `stripe sandbox create` to provision an anonymous Stripe sandbox with working API keys and no account registration, which keeps testing off production data. MPP adds `mppx validate` for end-to-end conformance testing of discovery, challenges, errors and the payment flow. missing for 10: explicit documentation that ACS checkout, SPT and Link CLI flows run inside sandboxes; description of sandbox data isolation and limits; independent or hands-on corroboration of sandbox use.",
+    "rationale": "Stripe's own docs give coding agents a sandbox path: running `stripe sandbox create` provisions an anonymous Stripe sandbox with working API keys and no account registration. The evidence does not show that agentic-commerce flows work inside that sandbox, including ACS checkout, shared payment tokens, Link CLI spend requests and catalog imports. It also never states explicitly that the sandbox is isolated from production data. The `mppx validate` conformance check is a validation tool, not an isolated environment, so it is not counted as sandbox support. missing for 10: documentation that ACS, SPT and Link CLI flows run in sandbox/test mode, an explicit statement that sandbox data is separated from production, and independent or hands-on corroboration of sandbox use.",
     "evidenceIds": [
       "stripe-agentic-commerce-docs-24",
-      "stripe-agentic-commerce-docs-35",
-      "stripe-ac-supp-mpp-agent-build"
+      "stripe-agentic-commerce-docs-35"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-35",
+          "quote": "run the command `stripe sandbox create --help` to provision an anonymous Stripe sandbox with working API keys. No account registration required."
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-24",
+          "quote": "Coding agents should install the Stripe CLI (npm i -g @stripe/cli) and run the command stripe sandbox create --help to provision an anonymous Stripe sandbox with working API keys."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "api-sandbox"
   }

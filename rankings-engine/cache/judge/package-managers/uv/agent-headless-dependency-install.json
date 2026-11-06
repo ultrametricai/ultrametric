@@ -1,20 +1,37 @@
 {
-  "hash": "98b047cca3f3c38821b6fff3c754e2d63daee67a22e44af4f3cca7d90cd2fed4",
+  "hash": "c816b7625618b09a3dc307dbf2ac457ec1dd70ab3210183e34e2f8684d5335a4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "uv documents scriptable single-command dependency operations: `uv add` updates pyproject, lockfile and environment, `uv lock --upgrade-package` upgrades a package, `uv remove` removes one, and there is an official CI action and a documented CLI reference. Together these strongly imply non-interactive, agent-drivable install and update. However, nothing in the pack documents exit-code semantics or error-message clarity, which is half of the story. missing for 10: documented exit codes on failure, evidence of clear and actionable error output, explicit non-interactive/no-prompt guarantees, independent hands-on corroboration of agent or CI failure handling.",
+    "rationale": "uv's own CLI documents scriptable commands for installing and updating dependencies: `uv add` updates pyproject.toml, the lockfile and the environment, and `uv lock --upgrade-package` updates a package. Its documented GitHub Actions integration implies these run in unattended CI. The evidence never documents a non-interactive mode, exit-code semantics or error-reporting format, and one community report describes troubleshooting as diagnostic black boxes. missing for 10: documented exit codes, documented error output/structured failure reporting, explicit non-interactive/no-prompt guarantees, hands-on corroboration of agent-driven use.",
     "evidenceIds": [
       "uv-docs-2",
       "uv-docs-9",
       "uv-docs-39",
-      "uv-docs-38",
       "uv-docs-10",
-      "uv-docs-28",
       "uv-probe-4"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent install and update project dependencies non-interactively, with clear exit codes and errors when something fails",
+      "citations": [
+        {
+          "evidenceId": "uv-docs-2",
+          "quote": "You can add dependencies to your `pyproject.toml` with the `uv add` command. This will also update the lockfile and project environment"
+        },
+        {
+          "evidenceId": "uv-docs-9",
+          "quote": "The `--upgrade-package` flag will attempt to update the specified package to the latest compatible version, while keeping the rest of the lockfile intact."
+        },
+        {
+          "evidenceId": "uv-docs-10",
+          "quote": "we recommend the official `astral-sh/setup-uv` action, which installs uv, adds it to PATH, (optionally) persists the cache, and more"
+        }
+      ]
+    },
     "productId": "uv",
     "storyId": "agent-headless-dependency-install"
   }

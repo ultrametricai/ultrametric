@@ -1,20 +1,42 @@
 {
-  "hash": "ba8a38c70562cfcda2430b04ff8b8feb5537fec60cb09cbb5d101cd7ec3bb98f",
+  "hash": "1cfa0b0aa5d350cfbf95a3d0143735a3f42684f204a2b0e0ec969554ae350c75",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Bun documents CLI-driven, non-interactive dependency management. That covers `bun install`, `bun add`, and `bun update`, where interactive selection is opt-in via `--interactive`. It also offers `--frozen-lockfile` for reproducible installs and an offline mode where an uncached dependency 'is an error'. However, the evidence never documents exit codes or how errors are structured for machine consumption. A community report of install crashes also suggests failures are not always clean. Missing for 10: documented exit-code semantics, machine-readable error output, independent hands-on corroboration of agent/CI non-interactive use.",
+    "rationale": "Bun documents CLI commands an agent can run to install and update dependencies (`bun install`, `bun add`, `bun update`). Interactive selection is opt-in via `--interactive`, and `--frozen-lockfile` gives reproducible installs. The docs say only that an uncached dependency in offline mode 'is an error'; they never describe exit codes or a structured error contract, and community reports mention install crashes that need manual cleanup. Missing for 10: documented exit-code semantics, machine-readable error output, explicit non-interactive/CI mode guarantees, independent hands-on corroboration of agent-driven use.",
     "evidenceIds": [
       "bun-docs-42",
       "bun-docs-43",
-      "bun-docs-40",
       "bun-docs-35",
-      "bun-docs-5",
       "bun-docs-20",
-      "bun-comm-7"
+      "bun-docs-40",
+      "bun-comm-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent install and update project dependencies non-interactively, with clear exit codes and errors when something fails",
+      "citations": [
+        {
+          "evidenceId": "bun-docs-42",
+          "quote": "`bun update` (alias `bun up`) updates every dependency, direct and transitive, to the newest version allowed by the ranges that request it."
+        },
+        {
+          "evidenceId": "bun-docs-43",
+          "quote": "Use the `--interactive` flag to choose which packages to update"
+        },
+        {
+          "evidenceId": "bun-docs-35",
+          "quote": "For reproducible installs, use `--frozen-lockfile`. Bun installs the exact versions specified in the lockfile and does not update it."
+        },
+        {
+          "evidenceId": "bun-docs-20",
+          "quote": "a required dependency that is not cached is an error"
+        }
+      ]
+    },
     "productId": "bun",
     "storyId": "agent-headless-dependency-install"
   }

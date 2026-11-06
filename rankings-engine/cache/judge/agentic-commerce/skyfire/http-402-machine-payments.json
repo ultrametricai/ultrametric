@@ -1,11 +1,11 @@
 {
-  "hash": "1e3f4f64cd9b92c1c1cd6cc31918c09f4df6ddf48e576c498a9acda72c3242f7",
+  "hash": "681c3c12fa22ac1b6aea5f63113692928a55acb093a586ad01a51594d140cc56",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Skyfire documents a seller-side way to monetize a service without a checkout UI. Sellers register a priced service, buyer agents present `pay`/`kya-pay` tokens in a `kyapay-token` header, and the seller calls the Charge Token API after delivery, charging repeatedly until the committed balance runs out with guaranteed settlement. However, nothing shows an HTTP 402 payment-required challenge that the seller's API returns to agents; the only 402 in evidence is Skyfire's own API rejecting overcharges. Seller services also require Skyfire approval. missing for 10: a documented HTTP 402 challenge/response flow for seller APIs, explicit per-call metering guidance, independent or hands-on corroboration of seller monetization.",
+    "rationale": "Skyfire documents its own seller-side flow for agent payments with no checkout UI. A developer creates a priced service, and buyer agents pass a pay or kya-pay token in the `kyapay-token` header. The seller then charges that token through the Charge Token API, repeatedly until its balance runs out, with settlement guaranteed. The mechanism is Skyfire's proprietary token-and-charge API rather than an HTTP 402 challenge from the seller's endpoint. The only 402 in the evidence is the error returned when a charge exceeds the token's balance. Seller services also require Skyfire's approval. Missing for 10: a documented HTTP 402 Payment Required challenge/response flow for seller APIs, explicit per-call metering or pricing docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "skyfire-docs-3",
       "skyfire-docs-4",
@@ -13,9 +13,35 @@
       "skyfire-supp-1",
       "skyfire-supp-4",
       "skyfire-supp-5",
-      "skyfire-supp-8",
-      "skyfire-docs-30"
+      "skyfire-supp-8"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can monetize an API or service with HTTP 402 machine payments that agents pay per call without a checkout UI",
+      "citations": [
+        {
+          "evidenceId": "skyfire-docs-4",
+          "quote": "Use this API after delivering a service, tool, or resource to collect payment from a buyer-issued token."
+        },
+        {
+          "evidenceId": "skyfire-supp-5",
+          "quote": "Tokens may be charged multiple times until their balance is exhausted."
+        },
+        {
+          "evidenceId": "skyfire-docs-7",
+          "quote": "how tokens must be passed (the `kyapay-token` header), and when a payment token is required versus identity only"
+        },
+        {
+          "evidenceId": "skyfire-docs-3",
+          "quote": "Click Create Service and provide details like: name, type, pricing, identity requirements, etc. Submit for approval."
+        },
+        {
+          "evidenceId": "skyfire-supp-1",
+          "quote": "For paid services, the seller charges the token and Skyfire moves the funds between the buyer's and seller's wallets."
+        }
+      ]
+    },
     "productId": "skyfire",
     "storyId": "http-402-machine-payments"
   }

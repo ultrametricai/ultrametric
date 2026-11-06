@@ -1,24 +1,48 @@
 {
-  "hash": "d44c99068ec3f1087ec815869c1321865ee724a77d7ce9ea61202c54202c1834",
+  "hash": "48b8110549f53ae6cdeacad422fc865e09164a7d269d19e50c0285119d6fb949",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Bun is documented as an npm-compatible drop-in replacement for npm, yarn and pnpm. `bun add` installs packages, the global cache stores packages downloaded from the registry, and `bun info` and `bun audit` talk directly to the npm registry and its advisory endpoint, so developers get the npm ecosystem through Bun. Caveats are that dependency lifecycle scripts (e.g. postinstall) are blocked unless the package is listed in `trustedDependencies`, and one community report describes install crashes tied to old lockfiles or node_modules. Missing for 10: explicit evidence of the registry's breadth and active maintenance, independent corroboration that arbitrary npm packages install cleanly, and frictionless handling of packages that need lifecycle scripts.",
+    "rationale": "Bun's own package manager is documented as npm-compatible. It installs from and queries the npm registry (`bun info displays package metadata from the npm registry`, a global cache of registry downloads) and works as a drop-in replacement for npm, yarn and pnpm, so the core of the story is delivered through npm access. However, the evidence never states the registry's size or maintenance activity, and community notes on native addons (node-gyp) are only a commenter's belief, so the 'install almost anything' breadth is implied rather than shown. missing for 10: explicit evidence of the registry's scale and active maintenance, documented compatibility for packages with lifecycle scripts or native addons (postinstall is blocked by default without trustedDependencies), independent hands-on corroboration that arbitrary npm packages install successfully.",
     "evidenceIds": [
       "bun-docs-26",
       "bun-docs-31",
-      "bun-docs-17",
-      "bun-docs-40",
       "bun-docs-49",
       "bun-docs-12",
-      "bun-docs-6",
+      "bun-docs-17",
+      "bun-docs-40",
       "bun-docs-4",
-      "bun-docs-19",
-      "bun-comm-2",
-      "bun-comm-7"
+      "bun-docs-19"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can install almost anything I need from a large, actively maintained package registry or repository",
+      "citations": [
+        {
+          "evidenceId": "bun-docs-26",
+          "quote": "The `bun` CLI contains a Node.js-compatible package manager designed to be a dramatically faster replacement for `npm`, `yarn`, and `pnpm`."
+        },
+        {
+          "evidenceId": "bun-docs-49",
+          "quote": "`bun info` displays package metadata from the npm registry."
+        },
+        {
+          "evidenceId": "bun-docs-12",
+          "quote": "Bun stores every package downloaded from the registry in a global cache at `~/.bun/install/cache`"
+        },
+        {
+          "evidenceId": "bun-docs-31",
+          "quote": "npm-compatible, up to 30× faster."
+        },
+        {
+          "evidenceId": "bun-docs-4",
+          "quote": "To tell Bun to allow lifecycle scripts for a particular package, add the package to `trustedDependencies` in your package.json."
+        }
+      ]
+    },
     "productId": "bun",
     "storyId": "registry-breadth"
   }

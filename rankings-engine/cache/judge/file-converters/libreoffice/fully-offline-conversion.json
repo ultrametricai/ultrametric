@@ -1,17 +1,35 @@
 {
-  "hash": "d2ddd51701c95f18b226ffa51c18431147f039558bf6401d5fbcb53a2b8e85e5",
+  "hash": "cdb1b02f5b05f9dc9f5708d2c7aae8c37728630cd052657f22cd32c0776e6055",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The official CLI documents local, headless conversion: `--convert-to pdf` writes output to a local `--outdir` from files on disk. A community user confirms running it in Docker to generate PDFs and normalize formats, which supports that conversion runs on the user's own machine. However, nothing in the pack is a vendor statement that files are never uploaded, which is half of the story as written. Missing for 10: an explicit vendor statement that files are never uploaded or transmitted, and documentation or independent verification of no network activity during conversion.",
+    "rationale": "LibreOffice's own docs show a local command-line conversion (`--convert-to pdf ... --outdir /home/user`) that runs headless, and a community user confirms running it in Docker to generate PDFs, so conversion clearly runs on the user's machine. The pack contains no vendor statement that files are never uploaded, which is half of the story. Missing for 10: an explicit vendor statement that files are never uploaded, and documentation that conversion makes no network calls.",
     "evidenceIds": [
       "libreoffice-docs-1",
       "libreoffice-docs-2",
-      "libreoffice-probe-1",
       "libreoffice-comm-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a power user, conversion runs entirely on my machine, and the vendor states that files are never uploaded",
+      "citations": [
+        {
+          "evidenceId": "libreoffice-docs-1",
+          "quote": "--convert-to pdf:writer_pdf_Export --outdir /home/user *.doc"
+        },
+        {
+          "evidenceId": "libreoffice-docs-2",
+          "quote": "Starts in \"headless mode\" which allows using the application without user interface."
+        },
+        {
+          "evidenceId": "libreoffice-comm-1",
+          "quote": "Also runs it in Docker to generate PDFs from templates and normalize document formats."
+        }
+      ]
+    },
     "productId": "libreoffice",
     "storyId": "fully-offline-conversion"
   }

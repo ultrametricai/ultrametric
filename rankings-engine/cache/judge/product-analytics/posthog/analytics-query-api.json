@@ -1,21 +1,45 @@
 {
-  "hash": "f9dc0d33bc7de1fe8f2afbce67b1684a80a25750515a0c8212d273dbfb7807ca",
+  "hash": "1c343665b53d9c91834b83a9b65e173286965dd69d922f673a306359251470d3",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "high",
-    "rationale": "PostHog documents a programmatic query API: POST /api/projects/:project_id/query/ with HogQLQuery SQL, authenticated by a Query Read-scoped personal API key, with keyset pagination on timestamp. That covers both analytical queries and pulling event rows back. Batch exports, OpenAPI-specced saved Endpoints, a public openapi.json and `posthog-cli api` SQL access round this out. The docs themselves state that /query is not a supported export mechanism and that OFFSET pagination is rejected for API keys, so bulk raw pulls must go through scheduled batch exports to destinations. missing for 10: a documented bulk raw-event pull over the API itself (bulk export is destination-based), independent or hands-on corroboration of query API usage.",
+    "rationale": "PostHog documents a programmatic SQL query API: POST to /api/projects/:project_id/query/ with a HogQLQuery, authenticated by a Query Read personal API key. The CLI also runs SQL queries, and saved Endpoints publish OpenAPI specs, so analytical querying over an API is clearly delivered. Pulling raw event data back is limited: the docs state /query \"is not a supported export mechanism\", OFFSET pagination returns HTTP 400 for personal API keys (keyset pagination on timestamp is required instead), and bulk exports are pushed to scheduled batch-export destinations rather than returned through the query API. Missing for 10: a supported API-based bulk export of raw events, standard pagination for programmatic event retrieval, and independent hands-on corroboration of the query API.",
     "evidenceIds": [
       "posthog-supp-query-endpoint",
-      "posthog-docs-44",
-      "posthog-supp-endpoints-openapi",
-      "posthog-docs-45",
-      "posthog-probe-3",
       "posthog-supp-cli-agent-first",
-      "posthog-docs-17",
-      "posthog-docs-8"
+      "posthog-supp-endpoints-openapi",
+      "posthog-docs-44",
+      "posthog-docs-17"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run analytical queries and pull raw event data back through a documented query/export API",
+      "citations": [
+        {
+          "evidenceId": "posthog-supp-query-endpoint",
+          "quote": "To create a query, you make a `POST` request to the `/api/projects/:project_id/query/` endpoint"
+        },
+        {
+          "evidenceId": "posthog-supp-query-endpoint",
+          "quote": "The `/query` endpoint is intended for ad-hoc analytics and embedded use cases. It is not a supported export mechanism"
+        },
+        {
+          "evidenceId": "posthog-supp-cli-agent-first",
+          "quote": "Use `posthog-cli api` to access PostHog's API and MCP tool catalog from shell-friendly commands, including running SQL queries against your data"
+        },
+        {
+          "evidenceId": "posthog-docs-44",
+          "quote": "Batch exports give you a platform to schedule data exports to supported destinations."
+        },
+        {
+          "evidenceId": "posthog-supp-endpoints-openapi",
+          "quote": "Each endpoint exposes an OpenAPI 3.0 spec that you can use to generate typed SDK clients for your preferred language"
+        }
+      ]
+    },
     "productId": "posthog",
     "storyId": "analytics-query-api"
   }

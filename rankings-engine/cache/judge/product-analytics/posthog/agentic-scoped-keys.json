@@ -1,18 +1,36 @@
 {
-  "hash": "fe459263d38a41064c800e626fc1e9007cbeaadfa5509cd71b8b365fd5e972cf",
+  "hash": "eb43e2e585ace409b72fe477e29f2d18536a056145658028a6f5c6275f873b97",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "PostHog documents personal API keys that are scoped by construction: per-resource scopes, project-level access limits, individual revocation and admin auditing with last-used timestamps. Its CLI docs tell users to create agent keys with only the scopes a command needs, and it offers OAuth for delegated scoped access. A live probe confirms the OAuth-gated MCP server publishes 150 granular read/write scopes, and per-session MCP tool scoping adds a further least-privilege layer. Missing for 10: independent/community hands-on corroboration of scoped-key use for agents.",
+    "rationale": "PostHog's documented personal API keys can be created in multiples, each with its own scopes, project or org access scope, and individual revocation. The docs recommend selecting only the scopes required, and the CLI docs tell agents to use an MCP Server preset or grant only the scopes a command needs. A live probe confirms the MCP endpoint is OAuth-gated and publishes 150 granular read/write scopes. Missing for 10: independent community or hands-on corroboration of scoped agent keys in practice, and no evidence of dedicated non-personal agent/service-account credentials or key expiry controls.",
     "evidenceIds": [
       "posthog-supp-scoped-keys",
       "posthog-supp-cli-agent-first",
       "posthog-probe-6",
-      "posthog-supp-mcp-scoping",
-      "posthog-supp-query-endpoint"
+      "posthog-supp-mcp-scoping"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "posthog-supp-scoped-keys",
+          "quote": "You can create multiple, give them different scopes, and each can be invalidated individually... Choose the scopes for your key. We recommended selecting only the scopes required for the API endpoints you really need."
+        },
+        {
+          "evidenceId": "posthog-supp-cli-agent-first",
+          "quote": "For broad agent workflows, create a personal API key with the MCP Server preset. For narrower automation, grant only the scopes needed for the specific command."
+        },
+        {
+          "evidenceId": "posthog-probe-6",
+          "quote": "a live, OAuth-gated remote MCP server per the MCP authorization spec, with per-resource read/write scopes."
+        }
+      ]
+    },
     "productId": "posthog",
     "storyId": "agentic-scoped-keys"
   }

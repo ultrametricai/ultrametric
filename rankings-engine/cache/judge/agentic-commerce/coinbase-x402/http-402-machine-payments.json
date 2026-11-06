@@ -1,25 +1,44 @@
 {
-  "hash": "c55818b630fe29384396ea695693532b49990216743accf41015a5e8629916a2",
+  "hash": "f4b2b00683c219911e09809ccebf3d29f309ab2c2b5b00de0802abbe26cb9d78",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 9,
+    "quality": 10,
     "confidence": "high",
-    "rationale": "x402 is built for exactly this story. The docs say one line of code makes the server answer unpaid requests with HTTP 402, and the client signs a payment and retries. The CDP Facilitator verifies and settles the payment, with fixed, usage-based (upto) and batch pricing, and the docs explicitly say this works \"without checkout pages, subscriptions, or separate billing integrations\". Independent operators (124 endpoints at httpay.xyz, the Apiosk gateway) and a live probe of real payable Bazaar listings plus the published npm SDK corroborate it. Missing for 10: evidence that per-call verification latency is acceptable for sub-cent micropayments; one operator settles only after delivering the response to avoid it, which shifts trust to the server.",
+    "rationale": "x402 is built for exactly this story. Sellers add a line of code so unpaid requests get an HTTP 402, and agents sign a payment and retry per request, 'without checkout pages, subscriptions, or separate billing integrations.' A hosted facilitator handles verification and settlement. Independent operators confirm server-side per-request monetization (httpay.xyz with 124 endpoints, Apiosk), and a runtime probe found live payable listings on Base.",
     "evidenceIds": [
       "coinbase-x402-docs-1",
       "coinbase-x402-supp-1",
-      "coinbase-x402-supp-2",
-      "coinbase-x402-supp-3",
+      "coinbase-x402-docs-2",
       "coinbase-x402-docs-8",
       "coinbase-x402-docs-17",
-      "coinbase-x402-supp-10",
-      "coinbase-x402-comm-4",
       "coinbase-x402-comm-10",
       "coinbase-x402-comm-11",
-      "coinbase-x402-probe-rt-1",
-      "coinbase-x402-probe-rt-2"
+      "coinbase-x402-probe-rt-1"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can monetize an API or service with HTTP 402 machine payments that agents pay per call without a checkout UI",
+      "citations": [
+        {
+          "evidenceId": "coinbase-x402-docs-1",
+          "quote": "Add one line of code to require payment for each incoming request. If a request arrives without payment, the server responds with HTTP 402, prompting the client to pay and retry."
+        },
+        {
+          "evidenceId": "coinbase-x402-supp-1",
+          "quote": "x402 is an open standard for adding per-request payments to HTTP, so APIs and services can charge without checkout pages, subscriptions, or separate billing integrations."
+        },
+        {
+          "evidenceId": "coinbase-x402-docs-17",
+          "quote": "AI agent pays instantly with stablecoins No signups or approvals required"
+        },
+        {
+          "evidenceId": "coinbase-x402-comm-11",
+          "quote": "a gateway that enforces per-request x402 payments so API providers can monetize without accounts or keys."
+        }
+      ]
+    },
     "productId": "coinbase-x402",
     "storyId": "http-402-machine-payments"
   }

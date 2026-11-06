@@ -1,23 +1,43 @@
 {
-  "hash": "9c4a76efbf38d03bb33deaab1d4a022a7a7bbad98c900adecf73b6f471751813",
+  "hash": "324affc76dba6d4c7e2e8f89c438a4a8dd8058422e7c4c25e89b3e74775b6c10",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "`bun install` works as a one-command install in any project with a package.json. It covers all workspaces in a monorepo and installs from the lockfile, with `--frozen-lockfile` for exact reproducible versions. It also migrates existing npm, yarn and pnpm lockfiles automatically. Community users report that isolated installs make monorepo installs more reliable, though some hit install crashes that required deleting lockfiles and node_modules. Missing for 10: dependency lifecycle scripts such as postinstall do not run by default unless listed in `trustedDependencies`, the install-crash reports are unresolved, and there is no independent hands-on confirmation of a clean fresh-clone bootstrap.",
+    "rationale": "`bun install` is documented to install all `dependencies`, `devDependencies` and `optionalDependencies`, plus `peerDependencies` by default, from `package.json`. It covers workspaces in a monorepo, and `--frozen-lockfile` installs the exact locked versions for a reproducible bootstrap. Dependency lifecycle scripts like `postinstall` do not run unless the package is listed in `trustedDependencies`, and community reports note occasional install crashes on Windows. Missing for 10: dependency lifecycle scripts running by default without `trustedDependencies` configuration, independent hands-on confirmation of clean fresh-clone bootstraps.",
     "evidenceIds": [
+      "bun-docs-56",
       "bun-docs-17",
-      "bun-docs-26",
-      "bun-docs-38",
       "bun-docs-35",
-      "bun-docs-52",
       "bun-docs-36",
-      "bun-docs-19",
+      "bun-docs-53",
       "bun-docs-4",
-      "bun-comm-6",
-      "bun-comm-7"
+      "bun-comm-13"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can bootstrap a fresh clone with one command that installs everything the project declares",
+      "citations": [
+        {
+          "evidenceId": "bun-docs-56",
+          "quote": "Installs all `dependencies`, `devDependencies`, and `optionalDependencies`. Bun installs `peerDependencies` by default."
+        },
+        {
+          "evidenceId": "bun-docs-17",
+          "quote": "if your project has a `package.json`, you can use `bun install`."
+        },
+        {
+          "evidenceId": "bun-docs-35",
+          "quote": "For reproducible installs, use `--frozen-lockfile`. Bun installs the exact versions specified in the lockfile and does not update it."
+        },
+        {
+          "evidenceId": "bun-docs-36",
+          "quote": "Bun supports [`workspaces`](https://docs.npmjs.com/cli/v9/using-npm/workspaces?v=true#description) in `package.json`."
+        }
+      ]
+    },
     "productId": "bun",
     "storyId": "single-command-bootstrap"
   }

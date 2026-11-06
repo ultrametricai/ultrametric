@@ -1,20 +1,55 @@
 {
-  "hash": "f7cb61be24d495e9d8c009cc2770874707735704fb46b5203f89444dbc6b280c",
+  "hash": "89dfc7357b1827582aebc36f462e7f6bd4f6930a3ab657454aaca933e4cf99dd",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs describe running the whole platform (MongoDB, API, front-end) on your own infrastructure via Docker Compose. A self-hosted Proxy can sit next to your app, and SDKs evaluate flags locally without sending attribute values to GrowthBook. Community users confirm running the self-hosted, open-source version in production. Missing for 10: first-party documentation of the open-source license and whether paid-tier features (e.g. SSO, approval workflows, audit logs) are included in the self-hosted distribution.",
+    "rationale": "GrowthBook documents an official Docker Compose self-host (MongoDB, API, front-end) and calls itself open source. A hands-on probe booted the official image and completed a keyless flag create-and-evaluate loop with no account or license. Evaluation data stays local: the SDKs evaluate in memory and never send attribute values to GrowthBook, and a self-hosted Proxy can cache payloads on your own infrastructure. Missing for 10: clarity on whether paid-tier capabilities (SSO/SCIM, audit logs, approval workflows) are included in the open-source self-hosted distribution, and a documented non-Docker install path.",
     "evidenceIds": [
       "growthbook-docs-10",
       "growthbook-docs-35",
-      "growthbook-docs-11",
+      "growthbook-docs-69",
+      "growthbook-gh-9",
+      "growthbook-docs-55",
+      "growthbook-probe-rt-2",
       "growthbook-docs-18",
+      "growthbook-comm-6",
+      "growthbook-docs-11",
       "growthbook-comm-1",
-      "growthbook-comm-5",
-      "growthbook-comm-6"
+      "growthbook-comm-5"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, I can self-host the full flag platform from an open-source distribution, keeping evaluation data on my infrastructure",
+      "citations": [
+        {
+          "evidenceId": "growthbook-docs-10",
+          "quote": "Run GrowthBook on your own infrastructure with Docker Compose, including MongoDB, the API, and the front-end."
+        },
+        {
+          "evidenceId": "growthbook-gh-9",
+          "quote": "Open Source Feature Flags, Experimentation, and Product Analytics"
+        },
+        {
+          "evidenceId": "growthbook-probe-rt-2",
+          "quote": "a real flag create-and-evaluate loop with no account or license."
+        },
+        {
+          "evidenceId": "growthbook-docs-18",
+          "quote": "The actual values of targeting attributes (e.g., user IDs, emails) are never sent to GrowthBook. They are only stored in memory locally within the SDK."
+        },
+        {
+          "evidenceId": "growthbook-docs-11",
+          "quote": "Run the GrowthBook Proxy next to your app to cache SDK payloads, reduce latency, and keep serving flags if the API is down."
+        },
+        {
+          "evidenceId": "growthbook-comm-1",
+          "quote": "We have used the self-hosted version a few months in my company now, and are very happy about it."
+        }
+      ]
+    },
     "productId": "growthbook",
     "storyId": "self-host-open-source"
   }

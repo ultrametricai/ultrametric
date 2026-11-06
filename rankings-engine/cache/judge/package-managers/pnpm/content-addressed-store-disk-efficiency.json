@@ -1,20 +1,42 @@
 {
-  "hash": "b54737043fb8648bffbc1e889036133e49b9bfe481941bf1bf0137ffb84a982e",
+  "hash": "461b7d504c931c12cf6c8b0bb2125954f3f4cba7f8a6ffc6de157fea3ba0f11a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs state that node_modules files are hard links to a single content-addressable store, so 'a hundred projects on the same version cost you one copy on disk.' Community users independently report dramatically reduced disk usage and a smaller cache, and praise `pnpm store prune` for store maintenance. Missing for 10: in-depth evidence on configuring the store (location/store-dir) and on how hard-linking behaves across separate drives or filesystems.",
+    "rationale": "pnpm's own docs say node_modules files are hard-linked from a single content-addressable store, so a hundred projects on the same version cost one copy on disk, and updates add only changed files to the store. Community users corroborate dramatic disk savings and fast installs across projects because packages are already on disk. Missing for 10: documentation of store location and configuration (including cross-filesystem behavior), and independent measurement confirming single-copy storage across projects rather than general disk-savings anecdotes.",
     "evidenceIds": [
       "pnpm-docs-15",
       "pnpm-docs-28",
-      "pnpm-docs-38",
-      "pnpm-docs-10",
+      "pnpm-docs-43",
       "pnpm-comm-4",
-      "pnpm-comm-5",
+      "pnpm-comm-16-refresh-1ab6854306afd120",
       "pnpm-comm-11"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can rely on a shared content-addressable store so the same dependency version is stored once on disk across all projects",
+      "citations": [
+        {
+          "evidenceId": "pnpm-docs-15",
+          "quote": "Files inside node_modules are hard-linked from a single content-addressable store. A hundred projects on the same version cost you one copy on disk."
+        },
+        {
+          "evidenceId": "pnpm-docs-28",
+          "quote": "The files in the node_modules directories are hard links to the same files in the content-addressable store."
+        },
+        {
+          "evidenceId": "pnpm-docs-43",
+          "quote": "`pnpm update` will only add 1 new file to the store, instead of cloning the entire dependency just for the singular change."
+        },
+        {
+          "evidenceId": "pnpm-comm-16-refresh-1ab6854306afd120",
+          "quote": "Installs across multiple projects are fast because packages are already on disk."
+        }
+      ]
+    },
     "productId": "pnpm",
     "storyId": "content-addressed-store-disk-efficiency"
   }

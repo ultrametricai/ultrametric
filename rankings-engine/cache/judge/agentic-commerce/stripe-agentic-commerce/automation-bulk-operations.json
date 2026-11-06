@@ -1,16 +1,31 @@
 {
-  "hash": "5915b8c75a489277a62f818f4c2bac2e0348ef574bf125442ca76b4adb3319c1",
+  "hash": "6c66cb87b9bbe54c872c9a07206e4b5e7af84532070883c75f515220da17721c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Sellers get a documented bulk catalog pipeline. A CSV feed where \"each row is a product or variant\" (up to 4 GB) is uploaded through the v2 Product Catalog Import API, with replace-mode deletion semantics, per-row error CSVs and succeeded/succeeded_with_errors/failed webhooks. The docs also describe bulk fulfilling agent orders through the List CheckoutSessions endpoint instead of handling each order individually. Missing for 10: bulk operations on the agent/buyer side (Link CLI spend requests are per-purchase and each needs human approval), any batch tooling in the MCP server, detail on how bulk fulfillment works beyond listing sessions, and independent or hands-on corroboration.",
+    "rationale": "Stripe documents its own batch capabilities on the seller side. A CSV catalog feed, where each row is a product or variant, is uploaded through the Product Catalog Import API, with replace-mode semantics, per-row error reporting and import-status webhooks. The docs also explicitly say sellers can \"bulk fulfill orders\" via the List CheckoutSessions endpoint. Bulk actions on the agent side are not evidenced: Link CLI spend requests are created per specific purchase and approved individually. Missing for 10: agent-driven bulk operations (e.g. via MCP or Link CLI), multi-item batch purchases or refunds, detailed bulk-fulfillment docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-ac-supp-seller-catalog-feed",
       "stripe-ac-supp-order-attribution",
-      "stripe-agentic-commerce-docs-14"
+      "stripe-agentic-commerce-docs-30"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-seller-catalog-feed",
+          "quote": "Format your feed as a CSV where each row is a product or variant"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-order-attribution",
+          "quote": "Instead of fulfilling each order individually, bulk fulfill orders"
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "automation-bulk-operations"
   }

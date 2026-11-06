@@ -1,17 +1,35 @@
 {
-  "hash": "d2db401440e2df4a9f8ccb14b404b8ec0015579ca27ea710bd747db2ed5fadd9",
+  "hash": "3aa6a88a230fe6b0a24f819b3754d1d2a1485319cbfb6bfea5237954ceaec20b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Shopify's own docs show agent credentials minted from Dev Dashboard client credentials as short-lived JWTs with a 60-minute TTL. The tokens carry scopes: get_order requires the `read_global_api_orders` scope, and complete_checkout works only when the token is granted permission to complete purchases. Tiered identification (Token/Signed/Anonymous) gates access to more sensitive tools, and AP2 adds pre-defined, verifiable transaction boundaries. Missing for 10: documentation of how a user selects or restricts scopes when issuing a credential, a full scope catalog, revocation and per-agent credential management, and independent or hands-on corroboration of scoped token issuance.",
+    "rationale": "Shopify documents agent access tokens minted from Dev Dashboard client credentials as short-lived JWTs. These carry discrete scopes and permissions: Order MCP needs the `read_global_api_orders` scope, and complete_checkout requires a token granted purchase permission. That shows the product itself issues scoped, least-privilege credentials for agents, but the self-serve flow for choosing or narrowing scopes is not described. Missing for 10: documented self-serve scope selection when issuing credentials, a full scope catalog, revocation/rotation controls, and independent or hands-on corroboration of issuing scoped tokens.",
     "evidenceIds": [
       "shopify-ucp-supp-checkout-mcp",
       "shopify-ucp-supp-order-mcp",
-      "shopify-ucp-supp-trust-tiers",
-      "shopify-ucp-docs-18"
+      "shopify-ucp-supp-trust-tiers"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "shopify-ucp-supp-checkout-mcp",
+          "quote": "JWT tokens created from Dev Dashboard credentials have a 60-minute TTL"
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-order-mcp",
+          "quote": "`get_order` requires a Global API JWT with the `read_global_api_orders` scope, which Signed-tier and Anonymous-tier agents can't obtain."
+        },
+        {
+          "evidenceId": "shopify-ucp-supp-trust-tiers",
+          "quote": "When the token is granted permission to complete purchases"
+        }
+      ]
+    },
     "productId": "shopify-ucp",
     "storyId": "agentic-scoped-keys"
   }

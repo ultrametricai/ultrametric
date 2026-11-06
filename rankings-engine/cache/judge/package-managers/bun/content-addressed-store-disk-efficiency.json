@@ -1,15 +1,31 @@
 {
-  "hash": "b022d84ce024e078057fd0f06b98b862f0ba019802fb9c51d5a07dfde439e8fb",
+  "hash": "deba4298749ff54d444f8d7c6d53e80c38ee5c53f3ae730a52d6809f8186dc0b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Bun's docs say every downloaded package is kept in a global cache at `~/.bun/install/cache` [bun-docs-12]. On Linux and Windows, Bun hardlinks packages from that cache into each project's `node_modules`, so a package's contents exist in only one place on disk [bun-docs-25]. Missing for 10: no documentation that the store is content-addressable (keyed by content hash rather than name/version), macOS on-disk behavior is not described in the evidence, and no independent or hands-on confirmation of cross-project disk deduplication.",
+    "rationale": "Bun documents a global cache at `~/.bun/install/cache`, configurable via `BUN_INSTALL_CACHE_DIR`. On Linux and Windows it hardlinks packages into each project's `node_modules`, so package contents exist in a single location on disk. That covers the core of storing a dependency version once across projects. However, the docs never describe the store as content-addressable, and the single-copy guarantee is only stated for Linux and Windows. missing for 10: explicit content-addressable storage design, documented single-copy behavior on macOS, independent or hands-on corroboration of disk deduplication across projects.",
     "evidenceIds": [
       "bun-docs-12",
+      "bun-docs-64",
       "bun-docs-25"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on a shared content-addressable store so the same dependency version is stored once on disk across all projects",
+      "citations": [
+        {
+          "evidenceId": "bun-docs-64",
+          "quote": "Bun stores every package downloaded from the registry in a global cache at `~/.bun/install/cache`, or the path set by the `BUN_INSTALL_CACHE_DIR` environment variable."
+        },
+        {
+          "evidenceId": "bun-docs-25",
+          "quote": "On Linux and Windows, Bun uses hardlinks to \"copy\" a module into a project's `node_modules` directory, so the contents of the package only exist in a single location on disk."
+        }
+      ]
+    },
     "productId": "bun",
     "storyId": "content-addressed-store-disk-efficiency"
   }

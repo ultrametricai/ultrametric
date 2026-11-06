@@ -1,20 +1,38 @@
 {
-  "hash": "b8632da834ba13aa537f69fd89b71e9c8c30be587d792f0b6aa0bfffd3b7d21c",
+  "hash": "d3e40edb1e6c2fc41e2e93eabc65200c0d1b4a1d64d167f448a9759d7d92fe89",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The x402 Bazaar exposes a public, keyless discovery API, plus a Bazaar MCP server and an OpenAPI client, returning machine-readable listings for payment-gated resources. A live probe confirmed the listings carry USDC price amounts, asset contracts, network, scheme and timeout. Each resource's 402 response also quotes the price and payment requirements, which act as a programmatic checkout path. Coverage is limited to x402 API resources: product variants and stock or availability data are not evidenced, and the only freshness signal is removal after 30 days without settlement. missing for 10: product variants, explicit availability/stock fields, conventional checkout links, and coverage beyond x402-gated resources.",
+    "rationale": "x402 Bazaar is a public, keyless discovery API listing payment-gated services. A runtime probe confirmed it returns machine-readable listings with USDC prices, asset contracts, network, scheme and timeout. The 402 payment-required response also quotes the price for each request. However, it covers pay-per-request API resources rather than general products, and has no documented availability, product-variant or checkout-link fields. Missing for 10: explicit availability/stock data, product variants, checkout links, coverage of non-API products and services.",
     "evidenceIds": [
       "coinbase-x402-supp-5",
-      "coinbase-x402-docs-6",
       "coinbase-x402-probe-rt-1",
-      "coinbase-x402-supp-6",
+      "coinbase-x402-docs-6",
       "coinbase-x402-supp-1",
       "coinbase-x402-docs-22",
-      "coinbase-x402-docs-14"
+      "coinbase-x402-supp-6"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can read machine-readable offer data — price, availability, variants, checkout links — for any listed product or service",
+      "citations": [
+        {
+          "evidenceId": "coinbase-x402-supp-5",
+          "quote": "The x402 Bazaar is a catalog of payment-gated services discovered by the CDP Facilitator."
+        },
+        {
+          "evidenceId": "coinbase-x402-probe-rt-1",
+          "quote": "returned real payable-service listings (USDC amounts, asset contracts, network eip155:8453/Base, scheme exact, maxTimeoutSeconds) with no CDP API key"
+        },
+        {
+          "evidenceId": "coinbase-x402-docs-22",
+          "quote": "Search and list resources with a generated OpenAPI client."
+        }
+      ]
+    },
     "productId": "coinbase-x402",
     "storyId": "structured-offer-data"
   }

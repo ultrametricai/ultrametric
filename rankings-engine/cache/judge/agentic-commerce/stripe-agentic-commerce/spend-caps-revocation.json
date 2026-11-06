@@ -1,19 +1,41 @@
 {
-  "hash": "c451ed788441f90f81cfc0c31c7754cfec43175b9f4e4aa6926d580a8aef0159",
+  "hash": "8ca564a55248ad24cac3cc4a845c829af0bf23a70f912439969a0941c4783e7a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe documents spend limits and revocation at the shared payment token level: the issuing agent sets currency, maximum amount and expiration, and can revoke the SPT at any time so the seller can't charge it, with webhooks for state changes. Link CLI also requires the customer to approve every spend request, and RAK permissions can restrict what an agent does in an account. These controls are per-token or per-request, though, not a standing per-agent budget that a user can set and then revoke for that agent in one action. Missing for 10: user-configurable aggregate per-agent spend caps and usage quotas, a single control to instantly revoke an agent's entire payment authority, independent or hands-on corroboration.",
+    "rationale": "Stripe documents per-credential controls rather than per-agent ones. Shared payment tokens carry usage limits (currency, maximum amount, expiration window) and can be revoked at any time so a seller can't charge them. Link CLI spends are gated by customer approval of each one-time-use credential. However, these limits are set per token by the issuing agent, not as an aggregate cap the user sets on a given agent, and revocation targets a single token rather than an agent's whole payment authority. Restricted API key permissions scope what an agent can do in an account but are not spend caps. Missing for 10: user-configurable per-agent aggregate spend caps, recurring usage/rate limits per agent, a single control to revoke all of an agent's payment authority, independent hands-on corroboration.",
     "evidenceIds": [
       "stripe-ac-supp-spt-limits",
-      "stripe-agentic-commerce-docs-4",
       "stripe-ac-supp-acp-custom-checkout",
       "stripe-ac-supp-link-wallet",
       "stripe-agentic-commerce-docs-30",
       "stripe-agentic-commerce-docs-23"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can set per-agent spend caps and usage limits and revoke an agent's payment authority instantly",
+      "citations": [
+        {
+          "evidenceId": "stripe-ac-supp-spt-limits",
+          "quote": "Set usage limits, including currency, maximum amount, and expiration window"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-spt-limits",
+          "quote": "Revoke the SPT at any time to prevent the seller from using it to create a payment"
+        },
+        {
+          "evidenceId": "stripe-ac-supp-spt-limits",
+          "quote": "Sellers can’t create a payment with a revoked SPT."
+        },
+        {
+          "evidenceId": "stripe-agentic-commerce-docs-30",
+          "quote": "Creates a spend request for a specific purchase. The customer approves it, and Link returns a one-time-use payment credential your agent uses to pay."
+        }
+      ]
+    },
     "productId": "stripe-agentic-commerce",
     "storyId": "spend-caps-revocation"
   }

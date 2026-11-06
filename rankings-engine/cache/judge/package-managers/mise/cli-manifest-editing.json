@@ -1,19 +1,46 @@
 {
-  "hash": "ab68a4caa750f4f363cdea75ea7c5d6140e0a6ef09682d9dd76b96d55f8937c8",
+  "hash": "b4af5d8eccf5cf09565bcf13e064ecacfc1e95d8288304eaed0043ef53f2b209",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "mise's dependencies are the tools declared in mise.toml. `mise use` installs a tool and records it in config (mise-docs-2, mise-docs-16, mise-docs-31), unlike `mise exec`, which explicitly does not touch project configuration (mise-docs-66). A committed lockfile exists (mise-docs-70), and `mise lock --bump --dry-run --json` gives an agent a machine-readable, previewable way to bump locked versions (mise-docs-35). missing for 10: any documented CLI command for removing a tool from the manifest, explicit evidence that `mise use` also rewrites the lockfile, a documented upgrade command that updates both manifest and lockfile together, and independent or hands-on corroboration.",
+    "rationale": "mise documents CLI commands that change the tool manifest. `mise use` installs a tool and records it in mise.toml, `mise upgrade` upgrades within the configured request, `--pin` writes the resolved version, and `mise lock --bump --dry-run --json` updates the lockfile with a dry-run preview. Nothing in the evidence shows a CLI command for removing a tool, or that `mise use`/`mise upgrade` also rewrite the lockfile. Missing for 10: documented remove command, explicit evidence that add/upgrade keep the lockfile in sync, independent hands-on corroboration.",
     "evidenceIds": [
-      "mise-docs-2",
-      "mise-docs-16",
-      "mise-docs-31",
-      "mise-docs-66",
+      "mise-docs-78",
+      "mise-docs-82",
+      "mise-docs-84",
+      "mise-docs-85",
       "mise-docs-35",
       "mise-docs-70"
     ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can add, remove, and upgrade dependencies through CLI commands that safely rewrite the manifest and lockfile, so an agent never hand-edits them",
+      "citations": [
+        {
+          "evidenceId": "mise-docs-78",
+          "quote": "`mise use` installs Node.js 24 if needed and records the request in a new `mise.toml`"
+        },
+        {
+          "evidenceId": "mise-docs-82",
+          "quote": "This installs both tools and records the version requests in the project's config"
+        },
+        {
+          "evidenceId": "mise-docs-84",
+          "quote": "Upgrade within the configured request `mise upgrade node`"
+        },
+        {
+          "evidenceId": "mise-docs-85",
+          "quote": "Add `--pin` to write the resolved version instead"
+        },
+        {
+          "evidenceId": "mise-docs-35",
+          "quote": "MISE_SAFE=1 mise lock --bump --dry-run --json"
+        }
+      ]
+    },
     "productId": "mise",
     "storyId": "cli-manifest-editing"
   }
