@@ -1473,15 +1473,14 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fellow automatically produces suggested AI action items for every meeting. Action items carry assignees and due dates and can be listed, filtered by owner scope, and marked complete or archived, which gives a trackable collection. However, no evidence shows the AI automatically assigns owners from the conversation, and the items are only 'suggested', so the automatic owner part of the story is unproven. missing for 10: evidence that owners are auto-assigned from the conversation, confirmation that suggested items become tracked without manual acceptance, independent/hands-on corroboration of extraction accuracy.",
+    "rationale": "Fellow's own docs say it automatically produces 'suggested AI action items' for every meeting. Its action items carry assignees and due dates, and they can be listed, filtered by assignee, and marked complete, so they are collected and trackable. However, the docs never say the AI-extracted items are automatically assigned to owners; 'suggested' implies a user must review them. missing for 10: explicit documentation that extracted action items are auto-assigned to owners without manual review, a description of the in-app central action-item tracker, independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-23",
       "fellow-docs-52",
       "fellow-docs-34",
+      "fellow-docs-5",
       "fellow-docs-45",
-      "fellow-docs-19",
-      "fellow-docs-43",
-      "fellow-docs-5"
+      "fellow-docs-43"
     ],
     "support": {
       "relation": "direct",
@@ -1513,14 +1512,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow documents a REST API that lists action items with filters and incremental change windows, plus registrable webhooks that POST when an AI note is generated. An agent could use these to pick up each meeting's action items and push them to a tracker, which fits the story's API/webhook path. The evidence shows no native Linear, Jira or Asana automation, so the filing step depends on external agent or glue code. missing for 10: native Linear/Jira/Asana integration or automation, documented webhook event catalog/payloads for action-item creation, independent or hands-on corroboration of an end-to-end tracker sync.",
+    "rationale": "Fellow documents a REST API that lists action items, with scope filters and an updated_at change window, plus registrable webhooks that POST to your URL when an AI note is generated. An agent or integration can therefore pull each meeting's action items and push them to a tracker. However, Fellow ships no native Linear/Jira/Asana sync and no in-product rules engine, so the integrator must build the receiving and filing logic. Missing for 10: native project-tracker integrations or automations, a documented action-item-created webhook event, any first-party example of filing into Linear/Jira/Asana, and independent hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-5",
       "fellow-docs-45",
       "fellow-docs-68",
       "fellow-docs-46",
       "fellow-docs-70",
-      "fellow-docs-23",
+      "fellow-webhooks-scope-20261106",
       "fellow-docs-26"
     ],
     "support": {
@@ -1551,13 +1550,12 @@
     "productId": "fellow",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms Fellow publishes an llms.txt at developers.fellow.ai/llms.txt (HTTP 200) describing its API docs, and the reference pages are served as .md files, so an agent can be pointed at agent-readable docs. Missing for 10: evidence of how complete or deep the llms.txt is (e.g. no llms-full.txt), a Fellow-hosted machine-readable OpenAPI spec (the standard OpenAPI paths return 404 and the spec only lives on ReadMe's registry), and independent corroboration of agents successfully using these docs.",
+    "rationale": "A live probe returned HTTP 200 for https://developers.fellow.ai/llms.txt with a Fellow Documentation index. The ReadMe-hosted reference also publishes per-page .md mirrors, so an agent can be pointed at machine-readable docs directly. missing for 10: evidence of the llms.txt's full content coverage (e.g. an llms-full.txt or agent-specific usage guidance).",
     "evidenceIds": [
       "fellow-probe-1",
-      "fellow-probe-2",
-      "fellow-openapi-spec-20261106",
+      "fellow-tryit-20261106",
       "fellow-docs-34"
     ],
     "support": {
@@ -1570,8 +1568,8 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://developers.fellow.ai/llms.txt # Fellow Documentation"
         },
         {
-          "evidenceId": "fellow-probe-1",
-          "quote": "Fellow’s API provides access to meeting notes and transcripts, making it easy to build custom"
+          "evidenceId": "fellow-tryit-20261106",
+          "quote": "with llms.txt and per-page .md mirrors"
         }
       ]
     }
@@ -1579,10 +1577,10 @@
   {
     "productId": "fellow",
     "storyId": "agentic-ai-insights",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Fellow's own feature page says users automatically receive AI meeting summaries, suggested AI action items, decisions, and topic-based minutes for every meeting, which are AI-generated insights and suggestions inside the product. The pricing page also lists AI summary, AI action items, and \"Ask Fellow\". The MCP server and the API-to-LLM pipeline happen in external tools, so they are not credited here. missing for 10: in-depth documentation of in-product AI insights such as how \"Ask Fellow\" works, insights spanning multiple meetings, and independent or hands-on corroboration.",
+    "rationale": "Fellow's own docs say it generates AI meeting summaries, suggested AI action items, decisions and topic-based minutes for every meeting, which are AI suggestions drawn from the user's data inside the product. Broader in-product insight is thin: 'Ask Fellow' appears only as a pricing-page label with no description. The MCP-based Q&A runs in external AI tools, so it is not credited as an in-product capability. missing for 10: documented in-product cross-meeting insights or Q&A (Ask Fellow is undescribed), proactive suggestions beyond per-meeting summaries and action items, independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-23",
       "fellow-docs-52",
@@ -1591,16 +1589,12 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": [
         {
           "evidenceId": "fellow-docs-23",
           "quote": "You automatically receive a clear meeting summary, suggested AI action items, decisions, and topic-based minutes for every meeting."
-        },
-        {
-          "evidenceId": "fellow-docs-52",
-          "quote": "AI meeting summary"
         },
         {
           "evidenceId": "fellow-docs-53",
@@ -1619,7 +1613,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no user-configurable automation feature, such as a workflow builder, scheduled agent or trigger-action rules, that runs autonomously in the background. Fellow's automatic meeting summaries are fixed built-in behavior, not automations the user sets up. The webhooks and REST API are developer building blocks a developer could use to build their own automations, so they earn no credit for this story.",
+    "rationale": "Fellow documents webhooks and a REST API, but these are developer building blocks: the integrator supplies the receiving endpoint and all action logic. The evidence explicitly states no in-product rules engine or trigger-action configuration is documented. Automatic meeting summaries are core product behavior, not user-configured background automations, so the story is unsupported.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1632,9 +1626,9 @@
     "productId": "fellow",
     "storyId": "agentic-builtin-assistant",
     "verdict": "partial",
-    "quality": 2,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "The only evidence of an AI assistant built into Fellow itself is a bare \"Ask Fellow\" line on the pricing page. That suggests an in-product assistant, but nothing describes what it does or shows it can take on tasks. The MCP server evidence covers external chatbots (Claude, ChatGPT, Cursor) querying Fellow data, so it is not a built-in assistant and is not credited. Automatic AI summaries and action items are generated outputs, not user-delegated tasks. Missing for 10: any documentation of Ask Fellow's capabilities, evidence that users can delegate tasks (not just ask questions) to it, examples of it acting inside the product, and independent or hands-on corroboration.",
+    "rationale": "The only first-party evidence of an in-product assistant is an \"Ask Fellow\" line item on the pricing page, with no description of what it can do. The detailed Q&A capability (\"Ask anything about your meetings\") belongs to the MCP server, which serves external chatbots like Claude or ChatGPT, so it is not credited as a built-in assistant. Automatic summaries and suggested action items are AI features, but they are not task delegation. Missing for 10: documentation of what Ask Fellow does, evidence that it can take delegated tasks or actions rather than only answer questions, any description of its scope or workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-53"
     ],
@@ -1656,17 +1650,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow has no headless binary or CLI, but its own Developer API supports non-interactive automation: API-key authentication, REST endpoints for listing, writing and uploading, background processing with status polling, and webhooks, so scripts or CI jobs can drive it without the UI. missing for 10: an official CLI or headless runner, CI-specific documentation or examples, a sandbox or test workspace, a published OpenAPI spec at a stable vendor path, and independent hands-on corroboration of CI use.",
+    "rationale": "Fellow documents an API-key-authenticated REST Developer API that scripts can drive without the UI: reading transcripts and notes, writing note agendas, managing action items, uploading recordings and polling their processing status. That supports headless automation, though nothing addresses CI pipelines specifically. Missing for 10: an official CLI or CI integration/docs, a sandbox or test workspace for non-production runs, a published OpenAPI download path or changelog, and independent hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-1",
-      "fellow-docs-2",
-      "fellow-docs-16",
-      "fellow-docs-37",
+      "fellow-docs-15",
+      "fellow-docs-56",
       "fellow-docs-62",
       "fellow-docs-38",
-      "fellow-docs-70",
-      "fellow-help-api-20261106",
-      "fellow-openapi-spec-20261106"
+      "fellow-docs-64",
+      "fellow-help-api-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1675,23 +1667,23 @@
       "citations": [
         {
           "evidenceId": "fellow-docs-1",
-          "quote": "all available through standard REST calls"
+          "quote": "The Developer API opens that data to you: transcripts, structured notes, and more, all available through standard REST calls."
         },
         {
-          "evidenceId": "fellow-docs-2",
-          "quote": "All API requests must include a valid API key in the Authorization header."
+          "evidenceId": "fellow-docs-15",
+          "quote": "Include your API key in the `X-API-KEY` header of every request"
+        },
+        {
+          "evidenceId": "fellow-docs-56",
+          "quote": "You can have multiple API keys, and we recommend generating a different one for each application"
         },
         {
           "evidenceId": "fellow-docs-62",
-          "quote": "Fellow processes the recording in the background"
+          "quote": "After submitting the media file's URL, Fellow processes the recording in the background"
         },
         {
           "evidenceId": "fellow-docs-38",
-          "quote": "confirm whether processing is still in progress, completed successfully, or failed"
-        },
-        {
-          "evidenceId": "fellow-help-api-20261106",
-          "quote": "The API is available on any Fellow workspace with a paid plan"
+          "quote": "confirm whether processing is still in progress, completed successfully, or failed."
         }
       ]
     }
@@ -1702,7 +1694,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow has its own AI assistant (Ask Fellow), so letting users connect external MCP servers is a fair question for this kind of product. The evidence only documents Fellow acting as an MCP server that outside chatbots like Claude or Cursor connect to. That is the opposite role and earns no credit for plugging MCP servers into Fellow, and nothing shows Fellow consuming external MCP tools.",
+    "rationale": "Fellow has a built-in AI assistant (Ask Fellow), so acting as an MCP client is a fair question for this product. The evidence only documents Fellow as an MCP server that external assistants like Claude, ChatGPT or Cursor connect to. Nothing shows Fellow itself can plug in third-party MCP servers or call their tools, and the server-side role does not transfer to this client-side story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1717,15 +1709,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Fellow documents an official MCP Server, also called the MCP Connector, that lets AI assistants such as Claude, ChatGPT and Cursor query meeting recaps, notes and action items without code. It works with any connector-capable AI tool, and admins can enable it, restrict which tools are available, revoke connections and see last-used timestamps, with access limited to each user's existing Fellow permissions. missing for 10: independent or hands-on corroboration of connecting an agent, documented connection details (endpoint URL, auth flow, full tool list).",
+    "rationale": "Fellow documents an official, first-party MCP Server. Users can connect AI assistants such as Claude, ChatGPT, or Cursor, or any connector-capable tool, to query meeting recaps, notes, and action items, with admin governance over enablement, tool access, and revocation. Missing for 10: independent or hands-on corroboration of a working connection, and detailed setup and tool-list documentation in the pack.",
     "evidenceIds": [
       "fellow-docs-18",
       "fellow-docs-26",
+      "fellow-docs-73",
       "fellow-docs-9",
       "fellow-docs-10",
       "fellow-docs-50",
       "fellow-docs-49",
-      "fellow-docs-32",
       "fellow-probe-3"
     ],
     "support": {
@@ -1742,12 +1734,8 @@
           "quote": "Your favorite AI chatbot like Claude, ChatGPT, or Cursor can now tap directly into your meeting recaps, notes, and action items"
         },
         {
-          "evidenceId": "fellow-docs-9",
-          "quote": "Fellow’s MCP Connector works with any AI tool that supports connectors, so you're never locked into one platform"
-        },
-        {
-          "evidenceId": "fellow-docs-10",
-          "quote": "As a workspace admin, you decide which MCP tools your members’ AI assistants can use."
+          "evidenceId": "fellow-docs-73",
+          "quote": "Fellow's MCP Connector works with any AI tool that supports connectors, so you're never locked into one platform"
         },
         {
           "evidenceId": "fellow-docs-50",
@@ -1762,7 +1750,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow documents natural-language interaction with its data. Its official MCP Server lets users \"ask your AI Assistant about your meetings, without needing to write any code\" from Claude, ChatGPT or Cursor, and the pricing page lists an \"Ask Fellow\" feature. The evidence only shows natural-language questions and retrieval, though, not natural-language commands that operate the product (e.g. creating notes, completing action items, starting recordings). missing for 10: documented natural-language commands that take actions in Fellow, a described native in-product natural-language interface (\"Ask Fellow\" is only named), independent or hands-on corroboration.",
+    "rationale": "Fellow's official MCP Server lets users ask questions about their meetings in plain language through AI assistants such as Claude, ChatGPT or Cursor, without writing code. The pricing page also lists an \"Ask Fellow\" feature. The evidence only shows natural-language querying of meeting data, not issuing commands that operate the product. missing for 10: evidence of natural-language commands that perform actions (e.g., editing notes, completing action items, controlling recording), in-product details of Ask Fellow, independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-18",
       "fellow-docs-32",
@@ -1800,7 +1788,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a meeting-notes SaaS with a developer platform, so the axis applies. The evidence documents only a REST Developer API, webhooks and an MCP server, with no first-party command-line tool. Those are adjacent developer building blocks and do not count as a CLI.",
+    "rationale": "Fellow is a SaaS meeting-notes platform, so an official CLI is a fair question to ask of it. The evidence documents a REST Developer API, webhooks, an MCP server and a ReadMe 'Try It!' panel, but no official command-line tool. A REST API is only a developer building block and an MCP server is a separate capability, so neither counts toward a CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1815,19 +1803,20 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Fellow documents a public REST Developer API with API-key authentication, cursor-based pagination, and an OpenAPI 3.1 spec. The API both reads data (recordings, transcripts, notes, action items) and writes it (agenda append, prepend, find-replace and write; action-item completion and archiving; recording uploads), so an AI-native user can genuinely drive the product, and an llms.txt is also served. missing for 10: independent or hands-on corroboration, a published API changelog or deprecation policy, a sandbox/test workspace, and access without a paid plan or admin enablement.",
+    "rationale": "Fellow documents a public REST Developer API with API-key auth, cursor pagination, an OpenAPI 3.1 spec and live Try It panels. It supports both reading (notes, recordings, transcripts, action items) and writing (agenda edits, recording uploads, completing or archiving action items), so a user can genuinely drive the product programmatically. Access requires a paid plan and admin enablement. missing for 10: independent or hands-on corroboration of API use, a published deprecation policy or API changelog, a Fellow-branded OpenAPI download path, a sandbox/test workspace.",
     "evidenceIds": [
       "fellow-docs-1",
       "fellow-docs-2",
       "fellow-docs-4",
-      "fellow-docs-5",
-      "fellow-docs-6",
       "fellow-docs-33",
       "fellow-docs-37",
       "fellow-docs-42",
       "fellow-docs-43",
+      "fellow-docs-44",
+      "fellow-docs-59",
       "fellow-openapi-spec-20261106",
       "fellow-help-api-20261106",
+      "fellow-tryit-20261106",
       "fellow-probe-1"
     ],
     "support": {
@@ -1838,10 +1827,6 @@
         {
           "evidenceId": "fellow-docs-1",
           "quote": "The Developer API opens that data to you: transcripts, structured notes, and more, all available through standard REST calls."
-        },
-        {
-          "evidenceId": "fellow-docs-2",
-          "quote": "All API requests must include a valid API key in the Authorization header."
         },
         {
           "evidenceId": "fellow-docs-42",
@@ -1856,12 +1841,12 @@
           "quote": "Upload a recording from a URL. Use this endpoint to bring an existing meeting recording into Fellow."
         },
         {
-          "evidenceId": "fellow-docs-33",
-          "quote": "The Fellow Developer API uses cursor-based pagination for all list endpoints."
+          "evidenceId": "fellow-docs-2",
+          "quote": "All API requests must include a valid API key in the Authorization header."
         },
         {
-          "evidenceId": "fellow-help-api-20261106",
-          "quote": "The API Reference and Developer Guide is available at: https://developers.fellow.ai/"
+          "evidenceId": "fellow-docs-33",
+          "quote": "The Fellow Developer API uses cursor-based pagination for all list endpoints."
         }
       ]
     }
@@ -1872,13 +1857,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Fellow lets users generate multiple named API keys, recommending one per application. It distinguishes User, Workspace and Super Admin keys. For agent access through MCP, admins decide which tools members' AI assistants can use, connections only see data the user already has, and owners can revoke connections and see last-used timestamps. However, nothing shows that an individual API key can be limited to specific scopes, endpoints or read-only access; user keys simply inherit the user's full permissions. Missing for 10: per-key permission scopes (e.g. read-only or resource-limited keys), per-credential rather than workspace-wide MCP tool restrictions, key expiry or rotation controls, and independent or hands-on corroboration.",
+    "rationale": "Fellow lets you create multiple named API keys, one per application, and distinguishes user-level keys from workspace and super-admin keys. Its MCP server is limited to data the user can already access, and admins choose which MCP tools assistants may use and can revoke connections. That gives tiered, revocable agent credentials, but the evidence shows no per-key permission scopes, read-only keys or endpoint-level restriction. missing for 10: per-credential scope/permission selection (e.g., read-only or resource-limited keys), per-key expiry, documented per-key revocation for API keys, independent corroboration.",
     "evidenceIds": [
       "fellow-docs-56",
       "fellow-help-api-20261106",
       "fellow-docs-10",
       "fellow-docs-49",
-      "fellow-docs-50",
+      "fellow-docs-75",
       "fellow-docs-7"
     ],
     "support": {
@@ -1891,6 +1876,10 @@
           "quote": "You can have multiple API keys, and we recommend generating a different one for each application"
         },
         {
+          "evidenceId": "fellow-help-api-20261106",
+          "quote": "admin-visible User API keys and Workspace API keys"
+        },
+        {
           "evidenceId": "fellow-docs-10",
           "quote": "As a workspace admin, you decide which MCP tools your members’ AI assistants can use."
         },
@@ -1899,7 +1888,7 @@
           "quote": "The MCP Server only gives users access to the data they already have access to within Fellow."
         },
         {
-          "evidenceId": "fellow-docs-50",
+          "evidenceId": "fellow-docs-75",
           "quote": "can revoke connections at any time, and see the last-used timestamp for every connection"
         }
       ]
@@ -1911,7 +1900,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a REST Developer API, an OpenAPI 3.1 spec, webhooks and an MCP server, but no official client SDK or library in any language. A raw REST API and spec are developer building blocks, not official SDKs, so they earn no credit for this story.",
+    "rationale": "Fellow documents a REST Developer API, an OpenAPI 3.1 spec, webhooks and an MCP server, but nothing in the evidence mentions an official SDK or client library in any language. The REST endpoints and the spec are building blocks a developer could use to generate or write a client, not an official SDK, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1924,13 +1913,14 @@
     "productId": "fellow",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Fellow's developer docs describe first-party webhooks. Fellow sends an HTTP POST to a URL you specify when events occur, such as an AI note being generated or an action item being completed, so integrations can react in real time without polling. missing for 10: a full event-type catalog, documented registration/subscription management, payload signing/verification, retry/delivery semantics, and independent or hands-on corroboration.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Fellow's first-party docs describe webhooks as registrable outbound HTTP POST callbacks to a URL the integrator specifies. They fire on events such as an AI note being generated or an action item being completed, and require a public HTTPS endpoint, so programmatic consumers can receive them without polling. missing for 10: a documented full event catalog with payload schemas and delivery/retry/signature details, and independent hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-17",
       "fellow-docs-46",
       "fellow-docs-70",
+      "fellow-webhooks-scope-20261106",
       "fellow-docs-3"
     ],
     "support": {
@@ -1949,6 +1939,10 @@
         {
           "evidenceId": "fellow-docs-70",
           "quote": "This enables you to build integrations that react immediately to changes in Fellow, without needing to poll for updates."
+        },
+        {
+          "evidenceId": "fellow-webhooks-scope-20261106",
+          "quote": "A publicly accessible HTTPS endpoint to receive webhook events"
         }
       ]
     }
@@ -1957,13 +1951,14 @@
     "productId": "fellow",
     "storyId": "api-interactive-docs",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Fellow publishes its own API reference at developers.fellow.ai, with per-endpoint pages backed by an OpenAPI 3.1 document on ReadMe's registry. However, no evidence shows the reference is interactive or offers runnable examples, and no sandbox or test workspace is documented for safe experimentation. missing for 10: documented interactive try-it console, runnable code examples, sandbox/test environment, a Fellow-hosted OpenAPI path (probes 404), and independent hands-on corroboration.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Fellow's ReadMe-hosted API reference has a live \"Try It!\" request panel on every endpoint page, backed by an OpenAPI 3.1 document, with llms.txt and per-page .md mirrors. That covers the interactive, runnable core of the story. However, requests run only against a live workspace behind paid-plan and admin-enablement gates, and no sandbox or test workspace is documented, which limits how freely the examples can be run. missing for 10: a sandbox or test environment for running examples without touching live data, runnable access without paid-plan or admin gating, a Fellow-hosted downloadable OpenAPI spec (developers.fellow.ai/openapi.json returns 404), and independent or hands-on corroboration of the Try It experience.",
     "evidenceIds": [
-      "fellow-help-api-20261106",
+      "fellow-tryit-20261106",
       "fellow-openapi-spec-20261106",
-      "fellow-docs-4",
+      "fellow-help-api-20261106",
+      "fellow-probe-1",
       "fellow-probe-2"
     ],
     "support": {
@@ -1972,16 +1967,16 @@
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": [
         {
-          "evidenceId": "fellow-help-api-20261106",
-          "quote": "The API Reference and Developer Guide is available at: https://developers.fellow.ai/"
+          "evidenceId": "fellow-tryit-20261106",
+          "quote": "Fellow's ReadMe-hosted API reference runs a live \"Try It!\" request panel on every endpoint page, with llms.txt and per-page .md mirrors."
         },
         {
           "evidenceId": "fellow-openapi-spec-20261106",
-          "quote": "the ReadMe registry document behind the developers.fellow.ai reference"
+          "quote": "Fellow's Developer API is described by an OpenAPI 3.1 document"
         },
         {
-          "evidenceId": "fellow-docs-4",
-          "quote": "List recordings with optional filters and pagination."
+          "evidenceId": "fellow-help-api-20261106",
+          "quote": "The API Reference and Developer Guide is available at: https://developers.fellow.ai/"
         }
       ]
     }
@@ -1992,11 +1987,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fellow's Developer API is described by a downloadable OpenAPI 3.1 document (\"Fellow Developer API\" v1.0.2, paths under /api/v1/). This is the ReadMe registry document behind the developers.fellow.ai reference. The probe's 404s on guessed Fellow-branded paths do not contradict this, because the spec is served from ReadMe's api-registry endpoint. Missing for 10: a Fellow-branded or conventional discoverable spec URL (openapi.json/swagger.json paths return 404), an API changelog or deprecation policy, and independent hands-on corroboration of the download.",
+    "rationale": "Fellow's Developer API is described by an OpenAPI 3.1 document (\"Fellow Developer API\" v1.0.2). It is retrievable at a stable ReadMe api-registry URL, and llms.txt and per-page .md mirrors support machine consumption. The probes found no Fellow-branded spec path, but that only limits discoverability; it does not contradict the spec's existence. Missing for 10: a discoverable Fellow-branded download link (developers.fellow.ai/openapi.json and similar paths return 404), any published API changelog or deprecation policy alongside the spec, and independent hands-on corroboration of using the spec.",
     "evidenceIds": [
       "fellow-openapi-spec-20261106",
       "fellow-probe-2",
-      "fellow-probe-1"
+      "fellow-probe-1",
+      "fellow-tryit-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -2005,11 +2001,15 @@
       "citations": [
         {
           "evidenceId": "fellow-openapi-spec-20261106",
-          "quote": "Fellow's Developer API is described by an OpenAPI 3.1 document"
+          "quote": "Fellow's Developer API is described by an OpenAPI 3.1 document (\"Fellow Developer API\", version 1.0.2, \"Create custom integrations and workflows with Fellow's meeting data\"; paths under /api/v1/)"
         },
         {
           "evidenceId": "fellow-openapi-spec-20261106",
-          "quote": "the stable download URL is ReadMe's api-registry endpoint rather than a Fellow-branded path"
+          "quote": "the stable URL is ReadMe's api-registry endpoint"
+        },
+        {
+          "evidenceId": "fellow-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://developers.fellow.ai/llms.txt"
         }
       ]
     }
@@ -2019,8 +2019,8 @@
     "storyId": "api-sandbox",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Fellow is a SaaS product with a Developer API, so a sandbox or test environment is a fair question to ask of it. The evidence pack does not document one. The help article on the Developer API explicitly mentions no sandbox or test workspace, and all documented API calls run against the live workspace, with no dry-run or isolated test mode.",
+    "confidence": "high",
+    "rationale": "Fellow is a SaaS platform with a Developer API, so a sandbox or test environment is a fair question to ask of it. The evidence shows no sandbox: the help-center API article mentions no sandbox or test workspace, and the reference's 'Try It!' panel sends requests to the live workspace. Being able to create several API keys is an adjacent feature and does not isolate testing from production data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2035,9 +2035,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Fellow's Developer API is versioned by path (/api/v1, OpenAPI spec version 1.0.2), which covers the versioning half of the story. The same source says there is no published deprecation policy or API changelog, so the reliability-over-time half is unsupported. Missing for 10: documented deprecation policy, API changelog, sunset/notice timelines, independent corroboration.",
+    "rationale": "Fellow's Developer API is versioned by URL path (/api/v1/) and its OpenAPI spec carries a version number (1.0.2). However, the evidence states there is no published deprecation policy or API changelog, and /changelog returns 404. So only the versioning half of the story is delivered, and only thinly. Missing for 10: a documented deprecation policy, a public API changelog, any documented version-lifecycle or sunset guarantees, and independent corroboration.",
     "evidenceIds": [
-      "fellow-openapi-spec-20261106"
+      "fellow-openapi-spec-20261106",
+      "fellow-tryit-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -2046,7 +2047,11 @@
       "citations": [
         {
           "evidenceId": "fellow-openapi-spec-20261106",
-          "quote": "The API carries path versioning only (/api/v1, spec version 1.0.2)"
+          "quote": "the API carries path versioning only (/api/v1, spec version 1.0.2)"
+        },
+        {
+          "evidenceId": "fellow-tryit-20261106",
+          "quote": "Requests run against the live workspace (https://{subdomain}.fellow.app/api/v1/...)"
         }
       ]
     }
@@ -2054,48 +2059,46 @@
   {
     "productId": "fellow",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The Fellow API documents only per-item mutation endpoints, such as marking a single action item complete, archiving one action item, or editing one note's agenda. It also offers paginated list endpoints for reads. These are building blocks a developer could loop over, not a documented bulk or batch operation. The Super Admin API's workspace-wide retrieve/export/delete describes access scope across users rather than a multi-item bulk action, so no first-party bulk-operation capability is evidenced.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Fellow's own docs describe a few multi-item operations. The Super Admin API can retrieve, export, and delete data across the entire workspace, and a list-uploads endpoint checks status across multiple recordings without looking up each one. Every documented write endpoint (mark complete, archive, delete note, agenda edits) acts on a single item, so true batch changes would mean looping over many API calls. missing for 10: documented batch/bulk mutation endpoints (e.g., bulk-complete or bulk-archive action items, bulk note edits), any in-product or MCP bulk-action capability, independent or hands-on corroboration of workspace-wide export/delete.",
+    "evidenceIds": [
+      "fellow-docs-47",
+      "fellow-docs-64",
+      "fellow-docs-33",
+      "fellow-docs-43",
+      "fellow-docs-72"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fellow-docs-47",
+          "quote": "Fellow’s Super Admin API lets designated Enterprise‑plan administrators retrieve, export, and delete data across the entire workspace"
+        },
+        {
+          "evidenceId": "fellow-docs-64",
+          "quote": "monitor progress across multiple recordings in one place. Use it to quickly check what's pending, completed, or failed without looking up each upload individually."
+        }
+      ]
     }
   },
   {
     "productId": "fellow",
     "storyId": "automation-rules-engine",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow's own webhooks fire an HTTP POST to a URL you register whenever an event occurs, such as an AI note being generated or an action item completed. That gives event-triggered automation, but any action logic has to live in the user's own endpoint. missing for 10: a user-definable rule engine or conditional trigger configuration, built-in in-product actions executed on events, documentation of event filtering and conditions, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "fellow-docs-46",
-      "fellow-docs-17",
-      "fellow-docs-70"
-    ],
+    "rationale": "Fellow documents webhooks that POST event notifications to a URL you specify, but the integrator must supply the receiving endpoint and all action logic. The evidence explicitly notes that no in-product rules engine for trigger-action configuration is documented. Webhooks are a developer building block for constructing automation, not a user-definable rule system, so they earn no credit for this story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
-      "citations": [
-        {
-          "evidenceId": "fellow-docs-46",
-          "quote": "When an event happens (like an AI note being generated or an action item being completed), Fellow sends an HTTP POST request to the URL you specify with details about the event."
-        },
-        {
-          "evidenceId": "fellow-docs-17",
-          "quote": "Webhooks allow you to receive real-time notifications when events occur in Fellow."
-        },
-        {
-          "evidenceId": "fellow-docs-70",
-          "quote": "This enables you to build integrations that react immediately to changes in Fellow, without needing to poll for updates."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -2104,7 +2107,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow's evidence covers a REST API, event-driven webhooks and an MCP server, but nothing documents a way to schedule recurring jobs or workflows inside the product. Webhooks fire on events, not on a recurring schedule, and API endpoints are only building blocks a user would have to trigger externally.",
+    "rationale": "Scheduling recurring workflows is a fair axis for an AI meeting-notes platform, but the evidence shows no in-product scheduler or recurring job capability. Fellow offers event-driven webhooks and a REST API that a user would have to drive from their own external scheduler. The docs explicitly note that no in-product rules or trigger-action engine is documented. Webhooks are one-off event reactions, not a recurring schedule, and API building blocks earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2119,7 +2122,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents a REST API, webhooks, an MCP server, and note-editing endpoints, but nothing about versioning, reviewing, or rolling back user-defined automations. API path versioning (/api/v1) and the round-trippable note Markdown are adjacent features, not automation version control. The axis is a fair question for a workflow-capable SaaS tool, so this is \"none\" rather than \"na\".",
+    "rationale": "Fellow documents no in-product automation or rules engine. Its automation surface is webhooks, where the integrator owns the receiving side and all action logic. Nothing in the pack describes versioning, review, or rollback of automations, and API path versioning (/api/v1) concerns the API itself, not user automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2132,14 +2135,14 @@
     "productId": "fellow",
     "storyId": "bot-capture-major-platforms",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Fellow's own pages say it records, transcribes, and summarizes meetings across Zoom, Google Meet, and Microsoft Teams. Users can record with a visible bot or bot-free from the desktop, and can choose when to record, pause, or resume, with org-wide recording policies on top. The evidence is all vendor marketing rather than in-depth docs or hands-on testing. Missing for 10: independent or hands-on corroboration of capture reliability, and detailed docs on per-meeting auto-record and auto-join configuration.",
+    "rationale": "Fellow's own docs say it records, transcribes, and summarizes meetings across Zoom, Google Meet, Microsoft Teams, and Slack huddles, using either a visible bot or botless desktop audio capture. Users can choose when to record, pause, or resume, and admins can set organization-wide recording policies, which covers the \"recording where I want it\" part of the story. Missing for 10: independent or hands-on corroboration of capture reliability on each platform, and detailed per-platform setup or limitation documentation.",
     "evidenceIds": [
       "fellow-docs-51",
       "fellow-docs-20",
       "fellow-docs-27",
-      "fellow-docs-12",
+      "fellow-docs-54",
       "fellow-docs-60"
     ],
     "support": {
@@ -2149,7 +2152,7 @@
       "citations": [
         {
           "evidenceId": "fellow-docs-51",
-          "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles with enterprise-grade security and human-level accuracy."
+          "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles"
         },
         {
           "evidenceId": "fellow-docs-20",
@@ -2160,7 +2163,7 @@
           "quote": "Users choose when to record, pause, or resume capture when part of a conversation needs to stay off the record."
         },
         {
-          "evidenceId": "fellow-docs-12",
+          "evidenceId": "fellow-docs-54",
           "quote": "Set organization-wide policies for how meetings are recorded, accessed, and retained"
         }
       ]
@@ -2172,7 +2175,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fellow's own feature page says teams can record \"with a visible bot or without one,\" capturing audio directly from the desktop across Zoom, Google Meet, Teams, Slack Huddles and in-person meetings. Its pages also say every meeting is transcribed and searchable, which covers the core of the story. missing for 10: in-depth setup docs for the desktop app and how botless capture works, explicit confirmation that external participants see no indicator, and independent or hands-on corroboration beyond marketing pages.",
+    "rationale": "Fellow's own feature page says teams can record without a visible bot by capturing audio directly from the desktop across Zoom, Google Meet, Microsoft Teams, Slack Huddles and in-person meetings. Its documented recording pipeline produces full, searchable transcripts. Missing for 10: in-depth first-party docs on the desktop capture client (setup, supported OSes, how it behaves in a call), explicit confirmation that external participants see no indicator, and independent or hands-on corroboration beyond marketing copy.",
     "evidenceIds": [
       "fellow-docs-20",
       "fellow-docs-11",
@@ -2195,7 +2198,7 @@
         },
         {
           "evidenceId": "fellow-docs-51",
-          "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles"
+          "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles with enterprise-grade security and human-level accuracy."
         }
       ]
     }
@@ -2206,7 +2209,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents connecting a Google or Outlook calendar, or setting per-meeting-type rules for automatic capture. The closest items are organization-wide recording policies and manual record/pause controls. Those are adjacent controls, not calendar-driven per-meeting-type auto-capture rules, so they earn no credit.",
+    "rationale": "The evidence pack never mentions connecting a Google or Outlook calendar, and never mentions per-meeting-type auto-capture rules. The closest items are adjacent: organization-wide recording policies and users manually choosing when to record or pause. Neither shows calendar-driven, per-meeting-type capture rules, and the webhooks scope note confirms no in-product rules engine is documented.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2221,12 +2224,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow documents its own MCP Server for asking an AI assistant natural-language questions about your meetings, scoped to data the user can access. The pricing page also lists an \"Ask Fellow\" feature, and transcripts are searchable. However, the conversational answering runs through third-party chatbots via the connector, and nothing documents source-cited answers or querying the full meeting history from inside Fellow. missing for 10: documentation that answers include sources/citations, a described native in-product Q&A experience (Ask Fellow is only a pricing line item), explicit whole-history cross-meeting coverage, hands-on or independent corroboration.",
+    "rationale": "Fellow documents natural-language questions about meetings through its own MCP server, for example \"What did we decide in last month's standup?\" This depends on an external AI assistant such as Claude or ChatGPT, and the native \"Ask Fellow\" feature appears only as a pricing line item. Missing for 10: answers with source citations or links back to meetings, explicit coverage of the whole meeting history, documentation of how native Ask Fellow works, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "fellow-docs-32",
       "fellow-docs-18",
-      "fellow-docs-8",
       "fellow-docs-26",
-      "fellow-docs-49",
       "fellow-docs-53",
       "fellow-docs-21"
     ],
@@ -2236,28 +2238,16 @@
       "subject": "As a product manager, I can ask questions in natural language across my whole meeting history (\"what did we decide about pricing?\") and get answers with sources",
       "citations": [
         {
+          "evidenceId": "fellow-docs-32",
+          "quote": "Ask anything about your meetings - Get answers to questions like \"What were my action items this week?\" or \"What did we decide in last month's standup?\""
+        },
+        {
           "evidenceId": "fellow-docs-18",
           "quote": "Fellow's Model Context Protocol (MCP) Server allows you to ask your AI Assistant about your meetings, without needing to write any code."
         },
         {
-          "evidenceId": "fellow-docs-8",
-          "quote": "Ask anything about your meetings"
-        },
-        {
-          "evidenceId": "fellow-docs-26",
-          "quote": "Your favorite AI chatbot like Claude, ChatGPT, or Cursor can now tap directly into your meeting recaps, notes, and action items"
-        },
-        {
-          "evidenceId": "fellow-docs-49",
-          "quote": "The MCP Server only gives users access to the data they already have access to within Fellow."
-        },
-        {
           "evidenceId": "fellow-docs-53",
           "quote": "Ask Fellow"
-        },
-        {
-          "evidenceId": "fellow-docs-21",
-          "quote": "Every conversation becomes searchable through a full transcript, giving your team instant access to past context whenever they need it."
         }
       ]
     }
@@ -2268,7 +2258,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow records, transcribes and summarizes meetings, so clipping and sharing a call moment is a fair question for this kind of product. Nothing in the pack documents cutting a soundbite or highlight clip from a recording, or sharing a segment instead of the whole recording. The 'highlights' in Fellow Markdown are note-content formatting, and timestamped transcripts are raw data a developer could build on; neither is a clip-sharing feature.",
+    "rationale": "Fellow records and transcribes calls, so clipping and sharing a moment is a fair axis for this product. However, the evidence pack documents no clip, soundbite or highlight-reel feature, and no way to share part of a recording. The only related items are timestamped transcripts and 'highlights' in Fellow Markdown note content, which are adjacent text features, not cutting or sharing a clip of the call.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2283,9 +2273,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fellow documents recording with a visible bot, which is a form of in-meeting disclosure, and organization-wide policies for how meetings are recorded. Neither is described as a consent or notification mechanism, and the same docs promote bot-less desktop capture. There is no evidence that admins can require the visible bot. missing for 10: participant consent notifications (pre-meeting or email), in-meeting disclosure announcement or banner, admin-enforced mandatory disclosure (e.g., blocking bot-less recording), consent-specific docs, independent corroboration.",
+    "rationale": "Fellow's own docs offer recording 'with a visible bot', which is a form of in-meeting disclosure, and 'organization-wide policies for how meetings are recorded'. Neither is explicitly described as a consent or transparency control, and the botless desktop-capture option cuts against disclosure. Missing for 10: documented participant recording notifications or consent prompts, explicit in-meeting disclosure messages or banners, admin enforcement of disclosure (e.g. forcing a visible bot or blocking silent capture), and independent or hands-on corroboration.",
     "evidenceIds": [
-      "fellow-docs-20",
+      "fellow-docs-11",
       "fellow-docs-12",
       "fellow-docs-54"
     ],
@@ -2295,7 +2285,7 @@
       "subject": "As an IT admin, the product ships real consent features — participant notifications, in-meeting disclosure, or admin-enforced transparency — not just a policy PDF",
       "citations": [
         {
-          "evidenceId": "fellow-docs-20",
+          "evidenceId": "fellow-docs-11",
           "quote": "Fellow gives teams the flexibility to record with a visible bot or without one"
         },
         {
@@ -2311,10 +2301,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions a native CRM integration with HubSpot, Salesforce, or Attio, or any automatic syncing of notes or summaries onto contact or deal records. The only related evidence is the Developer API (notes, transcripts, attendee emails) and outbound webhooks. Those are developer building blocks a team could use to build such a sync, not the capability itself, so they earn no credit.",
+    "rationale": "The evidence pack never mentions a native HubSpot, Salesforce, or Attio integration, and nothing shows notes or summaries being matched to contact or deal records. The Developer API and webhooks are building blocks a developer could use to build such a sync. They are not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a sales lead, meeting notes and summaries sync automatically onto the right contact and deal records in my CRM (HubSpot, Salesforce, Attio)",
       "citations": []
@@ -2326,7 +2316,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents note templates, saved prompts, or meeting-type-specific summary formats in Fellow. The only related material is developer building blocks: API access for passing transcripts to an external LLM for tailored recaps, and endpoints for writing note agendas. These earn no credit toward the product's own templating capability.",
+    "rationale": "The evidence pack never documents custom note templates or saved prompts that shape AI notes per meeting type. The closest items are developer building blocks: API endpoints that write a note's agenda in Fellow Markdown, and a suggestion to pass transcripts to an external LLM for tailored recaps. These earn no credit, and the product page describes one standard summary format applied to every meeting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2341,7 +2331,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents AI meeting summaries, action items, transcripts, and an API that lets developers pass transcripts to an LLM for tailored recaps. None of it shows Fellow itself drafting a follow-up email for review and quick sending. The API route is a developer building block and the summaries are an adjacent feature, so neither earns credit for this story.",
+    "rationale": "The evidence documents automatic meeting summaries, action items and decisions, plus an API for passing transcripts to an LLM. None of it shows Fellow drafting a follow-up email that a user can review and send in a couple of clicks. The API and MCP access are developer building blocks, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2356,16 +2346,15 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fellow documents an official MCP server that lets Claude, ChatGPT, Cursor or any connector-capable AI tool query meeting recaps, notes and action items without writing code. Workspace admins govern it: they enable the server, choose which tools are allowed, see last-used timestamps and can revoke connections. The evidence does not name OAuth as the auth mechanism, and it never explicitly says transcripts are exposed through MCP, so the story is not completely covered. Missing for 10: explicit OAuth documentation for MCP connections, explicit transcript access and a documented search tool via MCP, independent or hands-on corroboration.",
+    "rationale": "Fellow documents an official MCP server that lets Claude, ChatGPT, Cursor or any connector-capable AI tool query meeting recaps, notes and action items with no code. Workspace owners control enablement and can revoke connections. The MCP docs never name OAuth as the auth flow and never say transcripts are exposed through MCP; transcript access is documented only for the REST API. missing for 10: explicit OAuth documentation for MCP connections, explicit transcript/search tool coverage via MCP, independent hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-18",
-      "fellow-probe-3",
       "fellow-docs-26",
       "fellow-docs-73",
       "fellow-docs-32",
-      "fellow-docs-10",
       "fellow-docs-50",
-      "fellow-docs-49"
+      "fellow-docs-49",
+      "fellow-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -2387,10 +2376,6 @@
         {
           "evidenceId": "fellow-docs-50",
           "quote": "Workspace owners decide when the MCP Server is enabled, can revoke connections at any time, and see the last-used timestamp for every connection"
-        },
-        {
-          "evidenceId": "fellow-docs-10",
-          "quote": "As a workspace admin, you decide which MCP tools your members’ AI assistants can use."
         }
       ]
     }
@@ -2398,33 +2383,16 @@
   {
     "productId": "fellow",
     "storyId": "mobile-in-person-capture",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow documents capturing in-person meetings, transcribing them, and making every conversation searchable through a full transcript in the workspace. However, that in-person capture is described only as audio captured directly from the desktop, and no mobile app is evidenced. missing for 10: a documented mobile app for recording in-person conversations, evidence that mobile-captured notes sync into the same searchable workspace, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "fellow-docs-20",
-      "fellow-docs-21",
-      "fellow-docs-78"
-    ],
+    "rationale": "Fellow documents recording in-person meetings, but only by capturing audio from the desktop. Transcripts are searchable, and the pricing page lists audio and video uploads. Nothing in the evidence mentions a mobile app for recording or transcribing conversations, so the story's core mobile-capture requirement is unevidenced and desktop capture is only an adjacent feature.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a founder, I can record and transcribe in-person conversations from a mobile app, and those notes land in the same searchable workspace",
-      "citations": [
-        {
-          "evidenceId": "fellow-docs-20",
-          "quote": "capturing audio directly from the desktop across Zoom, Google Meet, Microsoft Teams, Slack Huddles, and in-person meetings"
-        },
-        {
-          "evidenceId": "fellow-docs-21",
-          "quote": "Every conversation becomes searchable through a full transcript, giving your team instant access to past context whenever they need it."
-        },
-        {
-          "evidenceId": "fellow-docs-78",
-          "quote": "Audio and video uploads"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -2433,7 +2401,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Multilingual transcription and language switching is a fair question for an AI meeting-notes product, but nothing in the evidence pack mentions supported languages, non-English transcription or summaries, or mid-meeting language switching. The evidence covers only generic transcription, summary and accuracy claims, so the verdict is none.",
+    "rationale": "Multilingual transcription and summarization is a fair question for an AI meeting-notes product, so the axis applies. However, the evidence pack contains nothing about supported languages, non-English transcription, or handling language switching within a meeting. Fellow's general transcription and summary claims, such as \"human-level accuracy\", say nothing about languages, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2448,7 +2416,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence says whether Fellow uses meeting data to train AI models, describes an org-level training opt-out, or states a SOC 2 or HIPAA posture. Retention policies, zero-day retention, Super Admin data deletion and a generic \"enterprise-grade security\" line are related controls, not the requested training disclosure, opt-out or compliance attestations, so they earn no credit.",
+    "rationale": "The evidence pack does not document whether meeting data is used to train AI models, offers no org-level training opt-out, and never mentions SOC 2 or HIPAA. Retention policies (including zero-day retention), org-wide recording policies, and the generic 'enterprise-grade security' claim are adjacent controls, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2463,20 +2431,18 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow's own REST API covers a meaningful slice of the UI: listing and reading notes, recordings and transcripts, writing note agendas in a format that round-trips, completing and archiving action items, uploading recordings, plus webhooks and super-admin export and delete. Nothing in the evidence claims API parity with the UI, and many UI capabilities have no documented API surface. Missing for 10: API coverage of recording and bot controls, retention and recording policy settings, keyword tracking, Ask Fellow, workspace and admin settings, action item creation and editing beyond complete/archive, and any vendor statement or independent verification of UI–API parity.",
+    "rationale": "Fellow's own REST API covers the core meeting objects. It can read and write note agendas (with round-tripping Fellow Markdown), list notes, recordings and action items, complete or archive action items, upload recordings, delete notes as super admin, and register webhooks. Nothing documents API parity with the UI, and many UI features show no API equivalent, so only part of the story is delivered. Missing for 10: an explicit UI-parity claim; API coverage of recording, retention and workspace policy settings, keyword tracking, transcript redaction and Ask Fellow; creating or deleting action items and notes for regular users (note deletion is super-admin only); independent corroboration.",
     "evidenceIds": [
       "fellow-docs-1",
-      "fellow-docs-4",
-      "fellow-docs-66",
       "fellow-docs-42",
       "fellow-docs-59",
       "fellow-docs-43",
       "fellow-docs-44",
       "fellow-docs-37",
-      "fellow-docs-46",
-      "fellow-docs-47",
+      "fellow-docs-66",
       "fellow-docs-72",
-      "fellow-openapi-spec-20261106"
+      "fellow-docs-46",
+      "fellow-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -2489,7 +2455,7 @@
         },
         {
           "evidenceId": "fellow-docs-42",
-          "quote": "Write a note's agenda and/or rename the note. Provide `content_fellow_markdown`, `title`, or both."
+          "quote": "Write a note's agenda and/or rename the note."
         },
         {
           "evidenceId": "fellow-docs-59",
@@ -2504,8 +2470,8 @@
           "quote": "Upload a recording from a URL. Use this endpoint to bring an existing meeting recording into Fellow."
         },
         {
-          "evidenceId": "fellow-docs-47",
-          "quote": "Fellow’s Super Admin API lets designated Enterprise‑plan administrators retrieve, export, and delete data across the entire workspace"
+          "evidenceId": "fellow-docs-72",
+          "quote": "Only users with super admin privileges can delete notes through the API."
         }
       ]
     }
@@ -2516,14 +2482,16 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow documents a REST Developer API that exposes notes in Fellow Markdown (GFM plus extensions), diarized transcripts and action items with pagination. Its Super Admin API explicitly supports retrieving and exporting workspace data to back up notes and transcripts. However, bulk export is gated to Enterprise super admins, the API requires a paid plan and can be disabled by admins, and leaving means scripting it yourself against paginated endpoints. Missing for 10: a self-serve bulk export or download-all feature for individual users, documented export of audio/video recordings, open-format export without a paid or Enterprise plan, and independent corroboration that a full export works.",
+    "rationale": "Fellow's own Developer API returns notes, transcripts, recordings metadata and action items over standard REST with cursor pagination. Note content comes as Fellow Markdown, which is GitHub-Flavored Markdown plus extensions. The Super Admin API explicitly supports retrieving, exporting and deleting workspace data for backup, but only on the Enterprise plan, and the API needs a paid plan with admin enablement. Missing for 10: a documented one-click or bulk full-account export, evidence that recordings' audio/video media can be exported, export for non-Enterprise individual users, a documented account-deletion/offboarding path, and independent hands-on corroboration.",
     "evidenceIds": [
-      "fellow-docs-47",
       "fellow-docs-1",
+      "fellow-docs-47",
       "fellow-docs-34",
-      "fellow-docs-61",
+      "fellow-docs-36",
       "fellow-docs-33",
-      "fellow-help-api-20261106"
+      "fellow-docs-66",
+      "fellow-help-api-20261106",
+      "fellow-docs-72"
     ],
     "support": {
       "relation": "direct",
@@ -2531,24 +2499,24 @@
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": [
         {
-          "evidenceId": "fellow-docs-47",
-          "quote": "retrieve, export, and delete data across the entire workspace, making it simple to back up notes and transcripts for legal purposes"
+          "evidenceId": "fellow-docs-1",
+          "quote": "The Developer API opens that data to you: transcripts, structured notes, and more, all available through standard REST calls."
         },
         {
-          "evidenceId": "fellow-docs-1",
-          "quote": "transcripts, structured notes, and more, all available through standard REST calls"
+          "evidenceId": "fellow-docs-47",
+          "quote": "Fellow’s Super Admin API lets designated Enterprise‑plan administrators retrieve, export, and delete data across the entire workspace, making it simple to back up notes and transcripts for legal purposes"
         },
         {
           "evidenceId": "fellow-docs-34",
-          "quote": "It is GitHub-Flavored Markdown plus Fellow extensions"
+          "quote": "Fellow Markdown is the format the API uses for reading and writing note content. It is GitHub-Flavored Markdown plus Fellow extensions"
         },
         {
-          "evidenceId": "fellow-docs-61",
-          "quote": "These must be explicitly requested using the `include` parameter"
+          "evidenceId": "fellow-docs-36",
+          "quote": "Each Recording is associated with a Note, and can contain information such as: Diarized and timestamped transcripts"
         },
         {
-          "evidenceId": "fellow-help-api-20261106",
-          "quote": "The API is available on any Fellow workspace with a paid plan"
+          "evidenceId": "fellow-docs-33",
+          "quote": "The Fellow Developer API uses cursor-based pagination for all list endpoints."
         }
       ]
     }
@@ -2558,8 +2526,8 @@
     "storyId": "openness-open-license",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Whether a product's source is available under an open license is a fair question for any software product, including a SaaS meeting-notes tool, so the axis applies. The evidence pack covers only Fellow's proprietary REST API, webhooks, MCP server and product features. Nothing shows any source code published under an open license.",
+    "confidence": "medium",
+    "rationale": "Whether a product's source is available under an open license is a fair question for a SaaS meeting-notes product, so the axis applies. The evidence pack contains no mention of a source repository or open-source license. The published OpenAPI spec, REST API docs and MCP server describe an API surface, not readable product source, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2574,7 +2542,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow is a SaaS AI meeting-notes product, and self-hosting is a fair openness question for this kind of product, so the axis applies. The evidence documents only cloud capabilities: a REST API, webhooks, a hosted MCP server, retention policies and Super Admin export. None of it mentions a self-hosted, on-premises or open-source deployment of the core product.",
+    "rationale": "Self-hosting is a fair question for a SaaS meeting-notes product, so the axis applies. Every item in the pack describes a vendor-hosted service: requests run against hosted fellow.app workspaces, and the API and MCP connector sit on top of that cloud product. No evidence shows an on-premises or self-hosted deployment option. Retention policies and data export are adjacent controls and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2589,10 +2557,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented pre-meeting feature that surfaces past meetings with the same attendees or generates a brief of open threads before a call. What exists is adjacent only: searchable past transcripts, an MCP server that answers ad-hoc questions about meetings, and API endpoints listing notes (with attendee emails) and action items that a developer could use to build such a brief.",
+    "rationale": "The pack documents searchable transcripts, per-meeting summaries and action items, MCP Q&A through third-party AI assistants, and API access to notes with attendee lists. None of it shows Fellow itself surfacing past meetings with the same attendees or generating a pre-call brief of open threads. These are adjacent features and developer building blocks a user could assemble into prep, not the story's capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a founder, I walk into each meeting prepped — the tool surfaces past meetings with the same people and a brief of open threads before the call",
       "citations": []
@@ -2604,7 +2572,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a SaaS meeting-notes product, so the axis applies. The evidence covers retention policies (including zero-day retention), export and deletion, but never mentions choosing a storage region or residency. Retention controls are an adjacent feature and earn no credit.",
+    "rationale": "Data residency is a fair question for a SaaS meeting-notes product, so the axis applies. Nothing in the evidence pack documents choosing a storage region or residency. The documented privacy controls (configurable retention including zero-day retention, and Super Admin export/delete) are adjacent features and earn no credit toward region selection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2619,7 +2587,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow is an AI meeting-notes service, so a no-training or training opt-out commitment is a fair question to ask of it. The evidence pack never addresses whether customer data is used to train AI models. The nearest items are configurable retention (including zero-day retention), transcript redaction, pausing recording and admin data deletion. These are adjacent privacy controls, not a training opt-out or no-training guarantee, so they earn no credit.",
+    "rationale": "Fellow is an AI meeting-notes product, so a training opt-out is a fair question for it. The evidence pack never mentions whether customer data is used to train AI models, and never documents an opt-out or no-training commitment. Retention policies (including zero-day retention), transcript redaction, pause-recording and admin deletion are adjacent privacy controls, not a training-use control, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2631,10 +2599,10 @@
   {
     "productId": "fellow",
     "storyId": "privacy-retention-controls",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Fellow documents configurable organization-wide retention policies, including zero-day retention. Its Super Admin API lets Enterprise administrators delete data across the workspace, including deleting notes through the API, to meet privacy regulations. Missing for 10: in-depth first-party documentation of how retention policies are configured (retention claims come only from marketing copy), deletion controls for non-super-admin users, and independent or hands-on corroboration.",
+    "rationale": "Fellow's own marketing documents configurable, organization-wide retention policies, including zero-day retention. Its developer docs document deletion of workspace data and notes through the Super Admin API. However, deletion is limited to Enterprise-plan super admins, and the retention controls appear only as homepage claims with no detailed docs. Missing for 10: in-depth first-party documentation of retention policy configuration (durations, scope, how deletion is enforced), deletion controls for ordinary users rather than only Enterprise super admins, and independent or hands-on corroboration that retention and deletion work as claimed.",
     "evidenceIds": [
       "fellow-docs-28",
       "fellow-docs-54",
@@ -2643,7 +2611,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can control data retention and deletion",
       "citations": [
         {
@@ -2656,7 +2624,7 @@
         },
         {
           "evidenceId": "fellow-docs-47",
-          "quote": "Fellow’s Super Admin API lets designated Enterprise‑plan administrators retrieve, export, and delete data across the entire workspace, making it simple to back up notes and transcripts for legal purposes and to erase third‑party data in line with privacy regulations."
+          "quote": "Fellow’s Super Admin API lets designated Enterprise‑plan administrators retrieve, export, and delete data across the entire workspace"
         },
         {
           "evidenceId": "fellow-docs-72",
@@ -2671,7 +2639,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair privacy question for a SaaS meeting-notes product, so the axis applies. The pack has no evidence of a telemetry or usage-tracking opt-out. Recording pause, retention policies and transcript redaction are adjacent data-handling controls, not opt-outs from product telemetry.",
+    "rationale": "Opting out of telemetry is a fair privacy question for a SaaS meeting-notes product, so the axis applies. The evidence pack documents only adjacent privacy controls: data retention policies, pausing recording, transcript redaction, and admin toggles for the MCP server and API. None of these is an opt-out from product telemetry or usage tracking, and \"Keyword tracking\" is a meeting-content feature, not telemetry.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2686,11 +2654,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Fellow's homepage claims configurable organization-wide retention policies, including zero-day retention. Its Super Admin API lets Enterprise admins delete data across the workspace, including deleting notes, to erase data under privacy regulations. However, the retention claim is a thin marketing statement with no admin documentation, and deletion is API-only, so the story is not fully covered. Missing for 10: documented scheduled auto-delete settings specifically for transcripts and recordings, an admin UI for on-demand erasure, explicit confirmation that deletion is permanent/irreversible, and independent or hands-on corroboration.",
+    "rationale": "Fellow's marketing claims configurable retention policies, including zero-day retention, and org-wide control over how meetings are retained. On-demand deletion is documented through the Enterprise Super Admin API, which can delete workspace data and notes to erase third-party data under privacy regulations. Missing for 10: admin docs showing how scheduled auto-deletion of transcripts and recordings is configured (periods, scope), explicit confirmation that deletion is permanent or irreversible, a non-API admin UI for erasure, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-28",
+      "fellow-docs-12",
       "fellow-docs-54",
       "fellow-docs-47",
+      "fellow-docs-14",
       "fellow-docs-72"
     ],
     "support": {
@@ -2703,7 +2673,7 @@
           "quote": "Set configurable retention policies, including zero-day retention, so data is handled according to your organization’s requirements."
         },
         {
-          "evidenceId": "fellow-docs-54",
+          "evidenceId": "fellow-docs-12",
           "quote": "Set organization-wide policies for how meetings are recorded, accessed, and retained"
         },
         {
@@ -2721,9 +2691,9 @@
     "productId": "fellow",
     "storyId": "search-across-meetings",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Fellow's own feature page says every conversation is searchable through a full transcript, and transcripts are diarized and timestamped. Ask Fellow and the MCP server answer questions across past meetings. However, nothing documents a unified search over transcripts, summaries and notes together, or a way to jump to the exact moment in a recording. Missing for 10: documented cross-meeting search spanning summaries and notes, click-to-timestamp playback from search results, independent or hands-on corroboration.",
+    "rationale": "Fellow documents that every conversation is searchable through a full transcript, and that recordings carry timestamped transcripts. Its MCP server lets users ask questions across their meetings. However, nothing documents one unified search across transcripts, summaries and notes, or the ability to jump to the exact moment something was said. Missing for 10: documented cross-meeting search spanning summaries and notes, jump-to-timestamp playback from search results, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-21",
       "fellow-docs-36",
@@ -2756,7 +2726,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fellow's marketing claims admins can set organization-wide policies for how meetings are accessed, and that teams control what they share. That is a thin first-party statement of sharing governance with no documented detail. Super Admin API data export and MCP connection governance are adjacent features and earn no credit here. Missing for 10: documented private-by-default notes, granular link/folder/workspace sharing permissions, admin visibility or reporting into what is shared, in-depth docs, and independent corroboration.",
+    "rationale": "Fellow's marketing page states that admins can set organization-wide policies for how meetings are accessed, while giving teams control over what they share. That is a thin, first-party nod to admin-governed sharing. Nothing documents private-by-default notes, granular link/folder/workspace permission levels, or an admin view of what has been shared; the Super Admin API's export/delete and MCP access-scoping are adjacent features and earn no credit here. missing for 10: private-by-default note behavior, granular link/folder/workspace permission controls, admin visibility/reporting into shared content, in-depth docs or independent corroboration.",
     "evidenceIds": [
       "fellow-docs-54",
       "fellow-docs-12"
@@ -2769,10 +2739,6 @@
         {
           "evidenceId": "fellow-docs-54",
           "quote": "Set organization-wide policies for how meetings are recorded, accessed, and retained, while giving your team control over what they shar"
-        },
-        {
-          "evidenceId": "fellow-docs-12",
-          "quote": "Set organization-wide policies for how meetings are recorded, accessed, and retained"
         }
       ]
     }
@@ -2783,7 +2749,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a native Slack channel integration, a Notion integration, or a Zapier app for pushing notes. Slack appears only as a meeting source (Slack Huddles recording), not as a destination. The REST API and webhooks are developer building blocks someone could use to construct such flows, so they earn no credit here.",
+    "rationale": "The evidence pack documents no native integration that sends Fellow notes into Slack channels, Notion pages, or Zapier. The only Slack evidence covers recording Slack Huddles, which captures meetings rather than delivering notes. The REST API and webhooks are developer building blocks a team could use to build such flows, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2796,9 +2762,9 @@
     "productId": "fellow",
     "storyId": "speaker-identification",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Fellow's own API docs say recordings include \"diarized and timestamped transcripts,\" so speaker separation is a documented first-party capability. Nothing in the evidence shows speakers are matched to real names (for example via calendar attendees or participant identity) rather than generic labels, and there is no evidence on attribution accuracy. missing for 10: real-name speaker matching, evidence of attribution accuracy, user-facing documentation of speaker labeling, independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Fellow's API docs state that recordings include \"Diarized and timestamped transcripts,\" so speaker separation is documented. Nothing in the evidence shows that speakers are matched to real names (for example, attendees or participants) rather than generic labels, which is the core differentiator of this story. missing for 10: documented real-name speaker matching, speaker-label format in transcripts, ability to correct or rename speakers, independent or hands-on corroboration of attribution accuracy.",
     "evidenceIds": [
       "fellow-docs-36",
       "fellow-docs-60"
@@ -2811,10 +2777,6 @@
         {
           "evidenceId": "fellow-docs-36",
           "quote": "Each Recording is associated with a Note, and can contain information such as: Diarized and timestamped transcripts"
-        },
-        {
-          "evidenceId": "fellow-docs-60",
-          "quote": "Diarized and timestamped transcripts"
         }
       ]
     }
@@ -2825,7 +2787,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fellow's own docs say users automatically receive a meeting summary, suggested AI action items, decisions, and topic-based minutes for every meeting. That covers the key points, decisions, and next steps the story asks for, and webhooks fire when an AI note is generated. However, nothing shows the summary arrives right after the meeting or is good enough to share without editing; the action items are only described as 'suggested'. Missing for 10: evidence of post-meeting timing, independent or hands-on corroboration that summaries are share-ready without edits.",
+    "rationale": "Fellow's own docs say every meeting automatically gets a clear summary, AI action items, decisions and topic-based minutes, which covers the structured key points, decisions and next steps. Two parts of the story are not evidenced: how soon after the meeting the summary arrives, and whether it is polished enough to share without editing. The webhook docs mention an 'AI note being generated' event but give no timing, and there is no hands-on or independent evidence of summary quality. Missing for 10: documented delivery timing right after the meeting, evidence the summaries are shareable without editing, independent or hands-on corroboration of summary quality.",
     "evidenceIds": [
       "fellow-docs-23",
       "fellow-docs-77",
@@ -2858,7 +2820,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence never says which transcription models Fellow uses, gives no measured accuracy figures or benchmarks, and lists no known limits such as languages, accents or audio conditions. The only quality statement is the marketing phrase \"human-level accuracy\" (fellow-docs-51), which is the kind of unsubstantiated claim the story wants replaced. Feature mentions like diarized, timestamped transcripts describe transcript output, not how transcription works or how well it performs.",
+    "rationale": "The evidence pack never explains how Fellow's transcription works: there is no named model or provider, no measured accuracy figures or methodology, and no documented limits such as languages, accents, audio conditions or error rates. The only quality statement is the marketing line \"human-level accuracy\". Listing diarized and timestamped transcripts describes output features, not transcription quality, which is exactly the vague 'AI-powered' messaging the story rejects.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2873,19 +2835,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Fellow documents a REST Developer API that returns transcripts (recordings with diarized, timestamped transcripts via the `include` parameter), structured notes and meeting recaps, and action items through paginated list endpoints. Users generate their own named API keys. Two caveats limit the score: the API requires a paid plan and an admin-enabled workspace setting, and workspace-wide access to every meeting needs Enterprise Super Admin keys. Missing for 10: explicit documentation of the summary field in API responses, independent or hands-on corroboration, and access that is not gated by plan or admin.",
+    "rationale": "Fellow documents a REST Developer API with list endpoints for recordings, which carry diarized, timestamped transcripts via the `include` parameter, and for notes and action items, all with cursor pagination. Users can generate their own named API keys. Access requires a paid plan and admin enablement, and workspace-wide 'every meeting' access needs Enterprise Super Admin keys. Missing for 10: an explicitly documented summary field on the API (recordings are only described as 'meeting recaps'), key self-service that isn't gated by admin enablement and paid plan, and independent hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-1",
       "fellow-docs-36",
       "fellow-docs-61",
       "fellow-docs-4",
       "fellow-docs-5",
-      "fellow-docs-45",
       "fellow-docs-66",
-      "fellow-docs-16",
       "fellow-docs-56",
-      "fellow-docs-55",
-      "fellow-docs-33",
+      "fellow-docs-31",
       "fellow-help-api-20261106",
       "fellow-docs-47"
     ],
@@ -2911,8 +2870,8 @@
           "quote": "Generate a new API key for your application, giving it a descriptive name. You can have multiple API keys, and we recommend generating a different one for each application"
         },
         {
-          "evidenceId": "fellow-docs-55",
-          "quote": "pass transcripts to an LLM for tailored recaps and action plans, the API gives you everything you need to make it happen."
+          "evidenceId": "fellow-docs-31",
+          "quote": "pass transcripts to an LLM for tailored recaps and action plans, the API gives you everything you need to make it happen"
         }
       ]
     }
@@ -2923,7 +2882,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack shows that a public fellow.ai/pricing page exists and lists feature names, such as keyword tracking, transcript redaction and AI summaries. It also confirms paid plans and an Enterprise plan exist. However, nothing shows a free tier, any price, which features belong to which tier, or whether basic use avoids a sales contact, so the story's core claims are unevidenced.",
+    "rationale": "The evidence shows a fellow.ai/pricing page exists and lists feature names such as AI meeting summary, transcript redaction and keyword tracking, and it mentions that paid and Enterprise plans exist. Nothing shows a free tier, any tier prices, which features belong to which tier, or whether basic use avoids a 'talk to sales' gate. The page's existence and feature names alone do not show the story's capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

@@ -4476,13 +4476,14 @@
     "productId": "workable",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe confirms Workable serves an llms.txt documentation index at workable.readme.io/llms.txt. Its reference pages are also served as markdown (.md) and point agents to that index, so an agent can be pointed at agent-oriented docs directly. missing for 10: a published machine-readable OpenAPI spec (download disabled, paths return 404), independent hands-on corroboration of agents using the docs.",
+    "rationale": "A live probe confirms Workable serves an llms.txt at its ReadMe docs root (HTTP 200) with a documentation index. Individual reference pages are also available as markdown (.md) and point agents to that index, so an agent can be aimed directly at agent-oriented docs. Missing for 10: a machine-readable OpenAPI spec (all spec paths 404 and download is disabled), and independent or hands-on corroboration of agents actually consuming the llms.txt.",
     "evidenceIds": [
       "workable-probe-1",
       "workable-probe-2",
       "workable-docs-27",
+      "workable-probe-3",
       "workable-tryit-20261106"
     ],
     "support": {
@@ -4492,7 +4493,7 @@
       "citations": [
         {
           "evidenceId": "workable-probe-1",
-          "quote": "HTTP 200 at https://workable.readme.io/llms.txt # Workable Documentation"
+          "quote": "PROBE llms.txt: HTTP 200 at https://workable.readme.io/llms.txt # Workable Documentation"
         },
         {
           "evidenceId": "workable-probe-2",
@@ -4507,11 +4508,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Workable documents in-product AI suggestions: AI-generated candidate recommendations based on your job ad, and the Workable Agent, which screens and qualifies candidates against the spec and returns a shortlist. These are recruiting-specific suggestions. There is no evidence of AI insights generated across your broader account data. missing for 10: AI-driven analytics or insights over your own hiring data (the custom report builder is not described as AI), conversational or ad-hoc querying of your data, detail on how the Agent's qualification reasoning is surfaced, independent or hands-on corroboration.",
+    "rationale": "Workable documents in-product AI suggestions: AI-generated candidate recommendations based on your job ad, AI-assisted candidate search, and the Workable Agent, which screens and qualifies candidates against the spec and returns an interview-ready shortlist. These are recruiting-specific suggestions, though, not general AI insights drawn from your account data. missing for 10: AI-generated insights or analytics over account data (e.g., in reports or pipeline trends), detailed docs on how suggestions are surfaced, independent or hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-9",
-      "workable-docs-15",
-      "workable-docs-8"
+      "workable-docs-8",
+      "workable-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -4539,7 +4540,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Workable documents its own Workable Agent, which autonomously 'runs the top of the funnel - sourcing, screening and qualifying every candidate' and delivers a shortlist. That is a first-party background automation, but the evidence shows nothing about users configuring their own automations, triggers, or recurring schedules. Webhooks, the API and the MCP server are developer building blocks and earn no credit here. Missing for 10: user-configurable automation rules or workflows, trigger or schedule setup, documentation of how the agent runs unattended, independent or hands-on corroboration.",
+    "rationale": "Workable documents its own Workable Agent, which autonomously handles the top of the funnel: it sources, screens and qualifies candidates and then delivers a shortlist. That is product-native background agentic work. However, nothing documents user-configurable automation rules, triggers or recurring schedules. Webhooks and the API are only developer building blocks, and the MCP server is assistant-mediated rather than running in the background, so none of these count. Missing for 10: user-defined automation setup (triggers/rules), recurring schedules, documentation of how the Agent is configured and runs unattended, independent or hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-15"
     ],
@@ -4561,7 +4562,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Workable documents a built-in 'Workable Agent' that takes over top-of-funnel recruiting work (sourcing, screening and qualifying candidates) and returns a shortlist. AI-assisted candidate search and AI recommendations support this further. The evidence is thin marketing copy, and the delegation is limited to the sourcing and screening domain rather than a general in-product assistant. Missing for 10: details on how users assign or steer tasks for the agent, scope beyond sourcing and screening, in-depth first-party docs, independent or hands-on corroboration.",
+    "rationale": "Workable documents a built-in 'Workable Agent' that takes over sourcing, screening and qualifying candidates and returns a shortlist, plus in-product AI candidate search and recommendations. That is real in-product delegation, but it is limited to top-of-funnel recruiting and backed by a single marketing claim. The MCP server only connects external assistants, so it is not credited as a built-in assistant. Missing for 10: a general-purpose in-product assistant or natural-language command surface for delegating arbitrary tasks, in-depth first-party docs on how tasks are assigned to the Agent and controlled, and independent or hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-15",
       "workable-docs-8",
@@ -4579,10 +4580,6 @@
         {
           "evidenceId": "workable-docs-8",
           "quote": "Search yourself or use AI to find qualified candidates that match your specific requirements."
-        },
-        {
-          "evidenceId": "workable-docs-9",
-          "quote": "Receive AI-generated recommendations of qualified candidates based on your job ad from a pool of 400 million profiles."
         }
       ]
     }
@@ -4593,13 +4590,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Workable documents a token-authenticated REST API (v3) that can be called from a terminal, which allows scripted, headless operation of core recruiting data such as jobs and candidates. It also documents an MCP server for programmatic access. However, nothing in the evidence shows CI-oriented tooling, and the docs send integrators to their live account with no test tenant, test keys or test base URL, which limits safe automated pipeline use. Missing for 10: official CLI or CI integration docs, sandbox/test environment for non-production runs, published OpenAPI spec, API changelog/deprecation policy, independent corroboration of CI usage.",
+    "rationale": "Workable documents its own token-authenticated REST API (v3) that offers 'full control over your data'. It can be called from a terminal with scoped tokens for scripted jobs such as bulk candidate migration, which supports non-interactive automation of the SaaS. However, nothing documents a CLI, CI integration, or a safe test environment, and the docs steer integrators to test against their live account. missing for 10: official CLI or CI-specific guidance, test/sandbox tenant or test keys, published machine-readable OpenAPI spec, API changelog/versioning policy, independent hands-on corroboration of headless/CI use.",
     "evidenceIds": [
       "workable-docs-18",
       "workable-live-base-20261106",
       "workable-docs-5",
-      "workable-docs-6",
-      "workable-docs-19",
+      "workable-docs-2",
       "workable-tryit-20261106"
     ],
     "support": {
@@ -4620,8 +4616,8 @@
           "quote": "Returns a collection of your account jobs. Required scope: `r_jobs`. Accessible with all token types."
         },
         {
-          "evidenceId": "workable-docs-19",
-          "quote": "The Workable MCP server provides full programmatic access to the Workable recruiting and HR platform."
+          "evidenceId": "workable-docs-2",
+          "quote": "you can use the API to create all these candidates in Workable."
         }
       ]
     }
@@ -4632,7 +4628,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Workable has its own AI agent, so a buyer could fairly ask whether that agent can connect to external MCP servers; the axis applies. The evidence only documents Workable acting as an MCP server that exposes its platform to other agents. That is the server role, and it does not show Workable connecting to external MCP servers or using their tools.",
+    "rationale": "Workable ships its own AI agent, so asking whether it can plug in external MCP servers is a fair question. The evidence only documents Workable acting as an MCP server, which exposes Workable's tools to outside AI assistants. That is a different role and does not show Workable consuming tools from external MCP servers, so there is no evidence for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4645,13 +4641,14 @@
     "productId": "workable",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Workable documents an official, first-party MCP server on its own developer portal. The docs describe it as giving full programmatic access across the hiring lifecycle, from job management and candidate sourcing to offer approvals, and a probe confirmed the page exists. missing for 10: documented connection/setup steps (auth, transport, endpoint URL), supported agent clients, and independent or hands-on corroboration of an agent actually connecting.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Workable publishes an official MCP server, documented first-party at its developer reference, with a hosted endpoint (mcp.workable.com/mcp), OAuth2 with dynamic client registration, and tools spanning recruiting and HR workflows. An AI-native user can connect an agent directly to it. Missing for 10: independent or hands-on corroboration of agent connection.",
     "evidenceIds": [
       "workable-docs-4",
       "workable-docs-19",
-      "workable-probe-4"
+      "workable-probe-4",
+      "workable-mcp-conversational-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4660,7 +4657,11 @@
       "citations": [
         {
           "evidenceId": "workable-docs-4",
-          "quote": "The Workable MCP server provides full programmatic access to the Workable recruiting and HR platform. It covers the entire hiring lifecycle — from job management and candidate sourcing through offer approvals"
+          "quote": "The Workable MCP server provides full programmatic access to the Workable recruiting and HR platform."
+        },
+        {
+          "evidenceId": "workable-mcp-conversational-20261106",
+          "quote": "Bridges AI assistants directly with the Workable platform"
         },
         {
           "evidenceId": "workable-probe-4",
@@ -4673,14 +4674,14 @@
     "productId": "workable",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Workable documents a first-party MCP server covering the full hiring lifecycle, so users can drive the product through natural language from an AI client. It also offers a Workable Agent that runs sourcing and screening, and AI-assisted candidate search. However, no in-product natural-language command interface is documented, and natural-language operation depends on an external MCP client. missing for 10: native in-app natural-language command/chat interface, documentation of natural-language prompts or examples for operating jobs and candidates, hands-on or independent corroboration.",
+    "rationale": "Workable's official MCP server is documented for conversational, natural-language operation across recruiting (searching jobs, moving candidates through the pipeline, rating, managing offers) and HR self-service, but only through an external AI assistant acting as the MCP client. The Workable Agent automates sourcing and screening, yet no in-product natural-language command surface is documented. Missing for 10: native in-product natural-language command bar, operation without a third-party AI assistant, hands-on or independent corroboration of the conversational workflows.",
     "evidenceIds": [
+      "workable-mcp-conversational-20261106",
       "workable-docs-4",
-      "workable-docs-15",
-      "workable-docs-8",
-      "workable-probe-4"
+      "workable-probe-4",
+      "workable-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -4688,16 +4689,16 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
+          "evidenceId": "workable-mcp-conversational-20261106",
+          "quote": "create or approve leave requests conversationally"
+        },
+        {
+          "evidenceId": "workable-mcp-conversational-20261106",
+          "quote": "Bridges AI assistants directly with the Workable platform"
+        },
+        {
           "evidenceId": "workable-docs-4",
-          "quote": "The Workable MCP server provides full programmatic access to the Workable recruiting and HR platform. It covers the entire hiring lifecycle — from job management and candidate sourcing through offer approvals"
-        },
-        {
-          "evidenceId": "workable-docs-15",
-          "quote": "The Workable Agent runs the top of the funnel - sourcing, screening and qualifying every candidate against the spec - and hands your team an interview-ready shortlist."
-        },
-        {
-          "evidenceId": "workable-docs-8",
-          "quote": "Search yourself or use AI to find qualified candidates that match your specific requirements."
+          "quote": "It covers the entire hiring lifecycle — from job management and candidate sourcing through offer approvals"
         }
       ]
     }
@@ -4708,7 +4709,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents a REST API, webhooks, a ReadMe 'Try It!' runner and an official MCP server, but never mentions an official Workable CLI. The docs' suggestion to test the API by typing a command in a terminal is a generic HTTP call, which is a user-side workaround rather than a first-party CLI. The MCP server belongs to a different story and earns no credit here.",
+    "rationale": "Workable is a SaaS recruiting platform that could plausibly ship an official CLI, so the axis applies, but the evidence pack documents no official command-line tool. The docs only suggest testing the REST API with a terminal command, which is a user-side workaround, and the official MCP server belongs to a separate story and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4723,20 +4724,19 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Workable publishes a documented public REST API (v3) with token authentication, per-endpoint scopes, and broad coverage: jobs, candidates, ratings, offers, stages, requisitions, members, departments and events. The docs also offer an llms.txt index, markdown pages and a live Try It runner, so a user or agent can drive the product programmatically. missing for 10: no published machine-readable OpenAPI spec (download disabled, spec paths 404), no test/sandbox base URL or test keys, no API changelog or deprecation policy, no independent hands-on corroboration.",
+    "rationale": "Workable publishes a documented public REST API (v3, Bearer tokens, scoped permissions). It covers reading and writing jobs, candidates, ratings, offers, members, departments, stages, requisitions and events, plus registrable webhook subscriptions. The ReadMe reference has a live Try It runner and a reachable llms.txt index, so the core story is delivered directly and completely. missing for 10: a downloadable machine-readable OpenAPI spec (spec download disabled, all openapi paths 404), a sandbox/test tenant or test keys, an API changelog/deprecation policy, and independent hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-18",
       "workable-docs-5",
       "workable-docs-6",
       "workable-docs-13",
       "workable-docs-27",
-      "workable-docs-32",
+      "workable-docs-3",
       "workable-docs-2",
       "workable-probe-1",
-      "workable-probe-2",
-      "workable-probe-3",
       "workable-tryit-20261106",
-      "workable-live-base-20261106"
+      "workable-live-base-20261106",
+      "workable-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -4756,12 +4756,12 @@
           "quote": "Creates a rating for a candidate. Required scope: `w_candidates`. Accessible with all token types."
         },
         {
-          "evidenceId": "workable-docs-2",
-          "quote": "you can use the API to create all these candidates in Workable."
-        },
-        {
           "evidenceId": "workable-docs-27",
           "quote": "Invites a member. Required scope: w_members. Accessible with all token types."
+        },
+        {
+          "evidenceId": "workable-docs-2",
+          "quote": "you can use the API to create all these candidates in Workable."
         }
       ]
     }
@@ -4770,17 +4770,16 @@
     "productId": "workable",
     "storyId": "agentic-scoped-keys",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Workable's API uses granular per-endpoint scopes (r_jobs, r_candidates, w_candidates, w_members, w_departments, r_account) across different token types. The docs say a scope like r_account 'can be enabled through the Integrations section found within the Settings menu', so an agent's token can be limited to specific read or write scopes. However, the evidence never fully documents how a token is issued with chosen scopes, and none of it addresses agent- or MCP-specific credentials. missing for 10: an explicit token-creation flow with scope selection, expiry/rotation/revocation controls, agent- or MCP-specific credential scoping, independent hands-on corroboration.",
+    "rationale": "Workable's API uses per-endpoint scopes such as r_jobs, r_candidates, w_candidates and w_members, and supports multiple token types. Scopes are enabled in the Integrations section of Settings, which suggests credentials can be limited to specific read/write permissions. The official MCP server uses OAuth2 with dynamic client registration, but the evidence never describes how a token is generated with a chosen scope subset, nor any agent-specific credential controls. Missing for 10: documented step-by-step issuance of a token with selected scopes, explicit least-privilege or agent-specific credential guidance, scope behavior for MCP OAuth clients, token revocation/expiry details, and independent hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-35",
       "workable-docs-5",
-      "workable-docs-6",
       "workable-docs-13",
       "workable-docs-17",
       "workable-docs-27",
-      "workable-docs-32"
+      "workable-mcp-conversational-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4800,8 +4799,8 @@
           "quote": "Required scope: `r_jobs`. Accessible with account tokens and user tokens."
         },
         {
-          "evidenceId": "workable-docs-27",
-          "quote": "Invites a member. Required scope: w_members. Accessible with all token types."
+          "evidenceId": "workable-docs-13",
+          "quote": "Creates a rating for a candidate. Required scope: `w_candidates`. Accessible with all token types."
         }
       ]
     }
@@ -4812,7 +4811,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Workable documents a REST API (spi/v3), webhooks and an official MCP server, but the pack shows no official SDK or client library in any language. The ReadMe config flag \"api_sdk_snippets\":\"enabled\" only refers to generated code snippets in the docs, and an MCP server is a different capability, so neither counts as an SDK. Since a SaaS platform with a public API could plausibly ship SDKs, the axis applies and the lack of evidence makes this \"none\".",
+    "rationale": "The evidence documents a REST API (spi/v3), a ReadMe 'Try It!' runner with auto-generated code snippets, and an official MCP server, but no official client SDK libraries. Code snippets and a raw REST API are building blocks rather than SDKs, and the MCP server belongs to a separate story. No OpenAPI spec is published either, so even generating an SDK from a spec is not supported.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4827,7 +4826,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Workable documents a webhook subscription endpoint where integrators register their own service to receive event notifications, with an args object to filter which candidate events are delivered. The evidence implies candidate and employee events, which covers the core of the story. missing for 10: a documented full event catalog, payload format, signature verification and retry/delivery semantics, and independent or hands-on corroboration.",
+    "rationale": "Workable documents a webhook subscription endpoint where integrators register their own service to receive event notifications, with an args object for filtering which candidate events are delivered. That meets the requirement for registrable outbound HTTP callbacks a programmatic consumer can receive. Missing for 10: a documented list of event types, payload schema, signature/verification and retry semantics, and independent or hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-3",
       "workable-docs-31"
@@ -4854,7 +4853,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents Workable AI for candidate sourcing, recommendations, and screening (the Workable Agent), plus translation of job posts. None of it shows AI generating job descriptions, outreach sequences, or rejection notes, or matching a recruiter's tone. Translating existing posts and AI candidate matching are adjacent features, not AI-drafted recruiting copy, so the applicable axis is unevidenced.",
+    "rationale": "The evidence pack documents Workable AI for sourcing, screening and candidate recommendations, plus translation of job posts. None of it shows AI generating job descriptions, outreach sequences or rejection notes, let alone in the recruiter's tone. Translation and sourcing are adjacent features and earn no credit for AI-drafted recruiting copy.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4869,7 +4868,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Interview recording, transcription and AI summarization is a fair question for an ATS like Workable. However, the evidence pack documents no interview note-taking, transcription, summary-to-scorecard feature or consent handling. The Workable Agent covers only top-of-funnel sourcing and screening, and the candidate-rating API is an adjacent building block, not this capability.",
+    "rationale": "Interview intelligence is a fair axis for an ATS like Workable, but the evidence pack never mentions interview recording, transcription, AI-generated notes or summaries, scorecard auto-fill, or candidate consent handling. The Workable Agent covers sourcing and screening before interviews, and the rate-candidate API is a developer building block, so neither counts toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4884,7 +4883,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Workable's own marketing documents AI that screens and matches candidates. The Workable Agent sources, screens and qualifies every candidate against the spec and produces a shortlist, and AI recommendations are drawn from job ads. The second half of the story, vendor documentation of how the AI works and what safeguards apply to automated decisions, has no evidence at all. Missing for 10: documentation of how the matching/screening model works, documented safeguards for automated decisions (human review, bias auditing, explainability, candidate notice), independent or hands-on corroboration.",
+    "rationale": "Workable documents its own AI screening and matching: the Workable Agent sources, screens and qualifies every candidate against the spec, and AI recommendations match qualified candidates to the job ad. Nothing in the pack explains how the AI works or what safeguards apply to automated decisions, which is half of the story. Missing for 10: documentation of how the screening/matching models work, safeguards or human-review controls for automated decisions (bias audits, explainability, opt-outs), independent or hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-15",
       "workable-docs-9",
@@ -4914,9 +4913,9 @@
     "productId": "workable",
     "storyId": "api-interactive-docs",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Workable's ReadMe-hosted API reference has the \"Try It!\" request runner and SDK code snippets enabled, so users can browse endpoints and run real requests from the docs. The runner only executes against the caller's live account with a real Bearer token, and no test environment exists, which makes exploration risky. Missing for 10: a sandbox or test base URL/keys/tenant for safe runnable examples, a published or downloadable OpenAPI spec (the download is disabled and all paths return 404), and independent hands-on corroboration of the Try It experience.",
+    "rationale": "Workable's ReadMe-hosted API reference has the \"Try It!\" request runner and SDK code snippets enabled, so users can explore endpoints and run requests from the docs. The runner only executes against the caller's real live account with a Bearer token. No test base URL, test keys or sandbox tenant is documented, and the OpenAPI spec download is explicitly disabled. That makes safe exploration a documented limitation. Missing for 10: sandbox or test environment for runnable examples, a downloadable machine-readable spec, and independent or hands-on corroboration of the runner.",
     "evidenceIds": [
       "workable-tryit-20261106",
       "workable-live-base-20261106",
@@ -4948,11 +4947,8 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "The evidence directly shows that no downloadable machine-readable spec is published. The ReadMe config disables the OpenAPI download, and every probed openapi/swagger path returns 404. llms.txt and markdown docs exist, but they are prose documentation, not an OpenAPI or equivalent spec.",
-    "evidenceIds": [
-      "workable-probe-3",
-      "workable-tryit-20261106"
-    ],
+    "rationale": "Workable's ReadMe-hosted reference explicitly disables OpenAPI spec download (\"show_openapi_download\":\"disabled\"), and every probed OpenAPI/Swagger path returns 404. The llms.txt index, markdown docs pages and MCP server are related surfaces, but none is a machine-readable API spec, so they earn no credit here.",
+    "evidenceIds": [],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -4966,7 +4962,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Workable's API docs point integrators at their live account subdomain, and the Try It! runner runs against the caller's real account with a Bearer token. No test base URL, test keys, or test tenant is documented. A free trial is a separate account offer, not a documented sandbox that keeps testing away from production data.",
+    "rationale": "A sandbox or test environment is a fair question for an API-bearing recruiting SaaS, so the axis applies. The evidence points the other way: the docs tell integrators to test against their live account subdomain, and the Try It! runner executes against the caller's real account. No test base URL, test keys or test tenant is documented. A free trial is a different feature and is not a sandbox isolated from production data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4981,7 +4977,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Workable's API is versioned in its path: the documented example calls `/spi/v3/jobs`. However, the same evidence states that no API changelog or deprecation policy is documented, and `/changelog` returns 404. Only the versioning half of the story is delivered, and only thinly. Missing for 10: a documented deprecation policy, an API changelog, documented version lifecycle and sunset timelines, and independent corroboration.",
+    "rationale": "Workable's API is versioned: the documented base path is /spi/v3/. However, the docs explicitly lack an API changelog (/changelog returns 404) and document no deprecation policy, so only the versioning half of the story is evidenced, and only through the base URL. Missing for 10: a documented deprecation policy, an API changelog or version history, and any explicit versioning docs beyond the v3 path segment.",
     "evidenceIds": [
       "workable-live-base-20261106"
     ],
@@ -5003,7 +4999,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not show Workable's own capability for recruiter-configurable custom questions, knockout/disqualification rules, or compliant EEOC/demographic collection. The 'custom application form' docs describe keeping an external form on your own site and pushing candidates in via the API, which is a developer building block rather than in-product form shaping. The careers-page 'auto-fill applications' and application translation claims are adjacent features that do not address the story.",
+    "rationale": "The evidence pack never documents form-builder capabilities: no custom screening questions, no knockout/disqualification rules, and no EEOC or demographic data collection. The 'custom application form' item describes a workaround in which candidates apply through your own website form and are pushed in via the API, which earns no credit. The careers-page items mention only auto-fill applications and translation, which are adjacent features, not form shaping.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5018,7 +5014,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only evidence is a passing mention that Workable's MCP server covers the hiring lifecycle 'through offer approvals'. That implies the platform has some offer-approval capability. A requisitions endpoint exists, but nothing says requisitions gate job publishing or route through approvers. missing for 10: documented configurable approval chains (multi-step, ordered approvers), approval gating before a job goes live, approval gating before an offer is sent, first-party docs describing approval configuration, independent or hands-on corroboration.",
+    "rationale": "The only on-topic evidence is the MCP server documentation saying the platform's hiring lifecycle extends through \"offer approvals\", which implies Workable has some offer approval step. The requisitions endpoint shows requisitions exist but says nothing about routing job openings through approvals before posting. Missing for 10: documented configurable approval chains (approvers, order, conditions), approval gating for job openings before they go live, evidence that offers are blocked until approved, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-4",
       "workable-docs-29"
@@ -5041,7 +5037,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents no bulk or batch operation, either in the UI or in the API, for acting on many candidates or jobs at once. Migrating a spreadsheet of candidates means calling the per-candidate create endpoint repeatedly, which is a developer building block. Collection endpoints only list items, and posting one job to 200+ boards is a multi-destination publish rather than a bulk action across many items, so neither earns credit.",
+    "rationale": "The evidence documents no bulk-action capability, such as acting on many candidates or jobs in a single operation from the UI, API, or MCP. The closest items do not qualify. Migrating spreadsheet candidates means calling a per-candidate create endpoint repeatedly, which is a developer building block. Posting one job to 200+ boards is a single-item distribution feature. The MCP server's copy, move, and rate actions are not documented as batch operations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5056,13 +5052,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Rules that trigger actions on events are a fair axis for a recruiting platform. The evidence only shows webhook subscriptions that notify an external service when candidate events occur. Those are developer building blocks for constructing automation, not a documented in-product rule engine, so no credit is earned.",
-    "evidenceIds": [],
+    "rationale": "The evidence documents no in-product rule or automation builder where a user defines event-triggered actions. Workable offers webhook subscriptions that notify an external service when candidate events fire. That is a developer building block a user would need to wire up to their own action logic, so it earns no credit toward this story. The MCP server is assistant-mediated, on-demand operation, not rules that trigger actions on events.",
+    "evidenceIds": [
+      "workable-docs-31",
+      "workable-docs-3"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "workable-docs-31",
+          "quote": "You can subscribe to an event and Workable will notify you when it's triggered."
+        },
+        {
+          "evidenceId": "workable-docs-3",
+          "quote": "The args object can be used to further filter which candidate events you want to receive."
+        }
+      ]
     }
   },
   {
@@ -5071,7 +5079,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a way to schedule recurring jobs or workflows in Workable. Webhook subscriptions (workable-docs-31) are event-triggered notifications, not a recurring schedule. The Workable Agent (workable-docs-15) runs sourcing and screening but with no documented schedule or recurrence. The auto-updating job widget is an adjacent feature, and a user could only approximate scheduling with external cron jobs calling the API, which earns no credit.",
+    "rationale": "Scheduling recurring workflows is a fair question for a recruiting SaaS platform, but the evidence pack documents no recurring or scheduled job capability. Webhook subscriptions are event-triggered notifications, not schedules. The MCP server and the Workable Agent are on-demand or assistant-mediated automation, with no cron or recurring schedule described.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5086,7 +5094,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Workable documents automation-adjacent features: webhook subscriptions, an MCP server, and the Workable Agent for sourcing and screening. None of the evidence shows versioning, review, or rollback of automations. Automation governance is a fair question for a recruiting platform with automated workflows, so the axis applies and the lack of evidence makes this \"none\".",
+    "rationale": "Workflow automation, and versioning or rolling it back, is a fair axis for a recruiting platform. The evidence covers webhooks, an MCP server and API endpoints, but nothing documents versioning, review/diff, or rollback of automations. Those are adjacent building blocks, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5101,7 +5109,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bias reduction is a fair question for an ATS like Workable, but the evidence pack never documents structured feedback ordering, demographic-blind or anonymized review, or DEI/EEO funnel reporting. The candidate-rating endpoint and the generic custom report builder are adjacent features and earn no credit toward this story.",
+    "rationale": "Bias reduction is a fair question for an applicant tracking system, so the axis applies. The pack only shows a generic candidate-rating API, a generic custom report builder, and MCP 'rate and review' operations. None of these documents structured feedback ordering, demographic-blind review, or DEI funnel reporting, so they are adjacent at best and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5116,10 +5124,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never describes a unified candidate profile that combines resume, email threads, interview feedback, activity history and consent status in one record. It only shows scattered API endpoints: candidate creation, a rating endpoint, an offer endpoint and an events collection. These are developer building blocks, not documented evidence of the single-record profile the story asks for.",
+    "rationale": "The evidence pack never documents a unified candidate profile that brings resume, email threads, interview feedback, activity history and consent status into one record. What is shown are separate API and MCP operations: creating ratings, retrieving candidate files, listing offers and listing events. These are adjacent building blocks rather than the unified-record capability itself, and email threads and consent status are not mentioned at all.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a recruiter, every candidate has one unified profile — resume, email threads, interview feedback, activity history, and consent status in a single record",
       "citations": []
@@ -5131,15 +5139,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Workable lists a custom report builder (a single pricing-page line) and documents a REST API for pulling data out. That API returns collections of jobs, candidates, events, requisitions and stages and claims to give 'full control over your data', so programmatic extraction is possible. It is a general data API, not a reporting or warehouse export: you would have to build your own pipeline, and nothing shows report output being exportable. missing for 10: scheduled exports, BI/warehouse connectors, a dedicated reporting/analytics API, documentation of report-builder depth or export formats, independent corroboration.",
+    "rationale": "Workable lists a 'Custom report builder' on its pricing page, but only as a single feature label. Data can be pulled out through its documented REST API, which offers read endpoints for jobs, candidates, events, stages and requisitions and is pitched as giving 'full control over your data'. That is a general data API, not a dedicated reporting or warehouse pipeline. Missing for 10: scheduled exports, BI/warehouse connectors, a reporting-specific API or report-export endpoint, any detail on what the report builder can do, and independent corroboration.",
     "evidenceIds": [
       "workable-docs-12",
       "workable-docs-18",
       "workable-docs-6",
-      "workable-docs-5",
       "workable-docs-17",
-      "workable-docs-29",
-      "workable-probe-1"
+      "workable-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -5156,11 +5162,11 @@
         },
         {
           "evidenceId": "workable-docs-6",
-          "quote": "Returns a collection of the job's candidates. Required scope: `r_candidates`."
+          "quote": "Returns a collection of the job's candidates."
         },
         {
           "evidenceId": "workable-docs-17",
-          "quote": "Returns a collection of events. Required scope: `r_jobs`."
+          "quote": "Returns a collection of events."
         }
       ]
     }
@@ -5171,7 +5177,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Referral flows are a fair question for an applicant tracking system, so the axis applies, but the evidence pack never mentions employee referrals, a referral submission flow, or referral status tracking. The candidate-creation API, careers page, and pipeline stages endpoint are developer building blocks or adjacent features, not a referral capability.",
+    "rationale": "Employee referrals are a fair axis for an ATS like Workable, but the evidence pack never documents a referral flow. Nothing shows employees submitting referrals, tracking their status, or seeing where a referral stands. The candidate-create API, stages endpoint, and webhooks are developer building blocks that earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5186,7 +5192,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Workable's pricing page lists a first-party \"Custom report builder\", so the product ships its own reporting capability. Nothing documents which funnel metrics it covers or whether they break down per role and team. The stages, events, and offer API endpoints are developer building blocks and earn no credit. missing for 10: documented stage-conversion reporting, time-to-hire metrics, source-effectiveness reporting, offer-accept rate reporting, per-role/per-team breakdowns, independent or hands-on corroboration.",
+    "rationale": "Workable's pricing page lists a first-party \"Custom report builder\", a reporting capability of the product itself. Nothing documents which funnel metrics it covers or how it slices them. API endpoints for stages, events and offers are developer building blocks and earn no credit. Missing for 10: documented stage-conversion reporting, time-to-hire metrics, source-effectiveness reporting, offer-accept rates, per-role/per-team breakdowns, and independent or hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-12"
     ],
@@ -5208,11 +5214,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Workable documents a branded, mobile-friendly careers page built without coding, with custom layout, colors, fonts and media. It also offers an automatically updating branded job widget you can embed on your existing website, so jobs flow from the ATS to your site. However, nothing documents hosting the careers page itself on your own custom domain, and there is no hands-on evidence of the publish flow. Missing for 10: explicit custom-domain support for the hosted careers page, independent or hands-on corroboration that jobs publish automatically to the page.",
+    "rationale": "Workable documents a no-code, branded, mobile-friendly careers page with custom layout, colors, fonts and media. It also offers an automatically updating branded job-list widget you can embed on your existing website, so jobs reach your own site without engineering work. Mapping the hosted careers page itself to a custom domain is not documented, and that the hosted page auto-publishes ATS jobs is only implied. missing for 10: explicit custom-domain support for the hosted careers page, explicit statement that jobs publish from the ATS to the hosted page, independent or hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-11",
-      "workable-docs-33",
-      "workable-docs-22"
+      "workable-docs-22",
+      "workable-docs-33"
     ],
     "support": {
       "relation": "direct",
@@ -5240,10 +5246,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only related evidence is the /stages endpoint, which returns account-level recruitment pipeline stages defined in recruiting preferences. That is an adjacent pipeline feature, not a per-role interview plan. Nothing in the pack documents question banks, per-interviewer focus areas, or reusable interview plans attached to roles, so this applicable axis is unsupported.",
+    "rationale": "The evidence shows only account-level recruitment pipeline stages exposed via the /stages endpoint and an API to rate candidates. These are adjacent pipeline and scoring features, not a per-role interview plan with question banks or per-interviewer focus areas defined once and reused. Nothing in the pack documents interview kits, scorecards, question banks, or interviewer assignments.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a recruiter, each role carries an interview plan — stages, question banks, and per-interviewer focus areas defined once and reused",
       "citations": []
@@ -5255,7 +5261,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Interview preparation is a fair axis for an ATS like Workable, but the evidence pack never mentions calendar invites, interview kits, scorecards, or feedback reminders. The candidate-rating API endpoint is an adjacent developer primitive, not automatic interviewer preparation, so it earns no credit.",
+    "rationale": "The evidence pack never mentions calendar invites, interview kits, scorecards attached to interviews, or feedback-submission reminders. The only related material is an API endpoint for creating a candidate rating and MCP tools to rate or review candidates. These are adjacent rating features, not automated interviewer preparation, so they earn no credit for this applicable ATS axis.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5270,7 +5276,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Workable's own feature page says one submission posts a job to 200+ job boards at once, which covers the core fan-out. Nothing in the pack names LinkedIn, Indeed or specific aggregators, and nothing covers managing sponsored or paid posts inside the ATS. Missing for 10: named LinkedIn/Indeed/aggregator distribution, sponsored-post management (budgets, promotion, performance) inside the ATS, independent or hands-on corroboration.",
+    "rationale": "Workable's features page documents one-submission multiposting to 200+ job boards, which covers the core fan-out part of the story. Nothing in the evidence covers sponsored or paid post management, and LinkedIn and Indeed are never named. Missing for 10: sponsored/paid-post management inside the ATS, explicit confirmation of LinkedIn, Indeed and aggregator coverage, in-depth docs and independent or hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-7"
     ],
@@ -5292,11 +5298,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows Workable has first-party offer objects: an API endpoint returns a candidate's latest offer, the MCP server's coverage includes offer approvals, and offers can be translated into nine languages. Templating, dynamic fields, approval routing and e-signature are not documented beyond these glancing mentions. missing for 10: templated offer letters with dynamic/merge fields, documented approval routing configuration, built-in e-signature, independent or hands-on corroboration.",
+    "rationale": "Workable's own docs confirm an offer object per candidate. The MCP server description says it covers the hiring lifecycle \"through offer approvals\" and lets users \"manage offers\", and offers can be translated into nine languages. This shows offers are handled in the ATS with some approval step, but depth is thin. missing for 10: templated offer letters with dynamic fields, documented approval routing configuration, built-in e-signature, independent or hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-4",
       "workable-docs-16",
-      "workable-docs-10"
+      "workable-docs-10",
+      "workable-mcp-conversational-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5324,7 +5331,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents no HRIS or payroll integration that carries a signed offer's new-hire data into onboarding. What it does show is developer building blocks: an endpoint that returns a candidate's latest offer, candidate/employee webhook subscriptions, and an MCP server covering hiring 'through offer approvals'. An integrator could use these to build a handoff, but they earn no credit as the product's own offer-to-HRIS/payroll capability.",
+    "rationale": "The evidence shows only developer building blocks: an endpoint to read a candidate's latest offer, webhook subscriptions for candidate and employee events, and an MCP server that mentions HR self-service employee lookups. None of it documents a signed offer automatically flowing into onboarding, or HRIS and payroll integrations carrying new-hire data over without re-entry. Building blocks a developer could use to construct this flow earn no credit, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5339,23 +5346,20 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Workable documents a broad REST API covering jobs, candidates (create, list, rate), offers, members, departments, requisitions, stages, permission sets, events and webhooks. It also documents an MCP server claiming \"full programmatic access\" across the hiring lifecycle. However, no evidence shows API parity for many UI features: several documented endpoints are read-only, and there is no published OpenAPI spec to verify coverage. missing for 10: evidence of API equivalents for UI features such as the careers page builder, custom report builder, multi-job-board posting, translation and AI sourcing/recommendations; write access for stages, offers and permission sets; a published machine-readable spec or independent confirmation of UI–API parity.",
+    "rationale": "Workable documents a broad REST API covering jobs, candidates, ratings, offers, members, departments, requisitions, stages, permission sets and webhooks, plus an official MCP server claiming \"full programmatic access\" across the hiring lifecycle. Several UI features have no documented API equivalent: posting to 200+ job boards, the careers page builder, the custom report builder, translation, and AI sourcing and recommendations. API scopes are also enabled through the Settings UI, and no explicit UI-parity statement or machine-readable spec is published. Missing for 10: documented API/UI parity, API endpoints for job-board distribution, careers page, reporting, translation and AI sourcing, a published OpenAPI spec, and independent hands-on corroboration.",
     "evidenceIds": [
       "workable-docs-18",
       "workable-docs-19",
       "workable-docs-4",
       "workable-docs-5",
-      "workable-docs-6",
       "workable-docs-13",
+      "workable-docs-16",
       "workable-docs-27",
       "workable-docs-32",
       "workable-docs-29",
-      "workable-docs-21",
-      "workable-docs-16",
       "workable-docs-3",
-      "workable-docs-12",
-      "workable-docs-7",
-      "workable-tryit-20261106"
+      "workable-docs-35",
+      "workable-mcp-conversational-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5371,16 +5375,16 @@
           "quote": "It covers the entire hiring lifecycle — from job management and candidate sourcing through offer approvals"
         },
         {
-          "evidenceId": "workable-docs-13",
-          "quote": "Creates a rating for a candidate. Required scope: `w_candidates`. Accessible with all token types."
-        },
-        {
           "evidenceId": "workable-docs-27",
           "quote": "Invites a member. Required scope: w_members. Accessible with all token types."
         },
         {
           "evidenceId": "workable-docs-32",
           "quote": "Merges an existing department with a target one in your account. Required scope: `w_departments`."
+        },
+        {
+          "evidenceId": "workable-docs-13",
+          "quote": "Creates a rating for a candidate. Required scope: `w_candidates`. Accessible with all token types."
         }
       ]
     }
@@ -5388,40 +5392,16 @@
   {
     "productId": "workable",
     "storyId": "openness-full-export",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Workable's own API exposes read endpoints for jobs, candidates, offers, events, stages and requisitions. Responses come back as JSON, and the docs claim the API gives \"full control over your data,\" which supports a programmatic, open-format way to pull data out. However, there is no documented bulk or full-account export, data-portability or offboarding feature, so exporting everything means scripting many paginated API calls. Missing for 10: a documented one-click or bulk full-account export, an explicit list of what data (e.g. resumes, attachments, notes) can be exported, export formats beyond per-endpoint JSON, and independent or hands-on confirmation of a complete migration out.",
-    "evidenceIds": [
-      "workable-docs-18",
-      "workable-docs-5",
-      "workable-docs-6",
-      "workable-docs-16",
-      "workable-docs-17",
-      "workable-probe-1"
-    ],
+    "rationale": "The evidence documents no bulk data export or account-exit feature, such as a full export archive, CSV or JSON dump, or offboarding export. What it does show is read API endpoints (jobs, candidates, offers as JSON) and a generic claim of 'full control over your data'. Those are developer building blocks a user would have to script into an export, so they do not earn credit for this story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
-      "citations": [
-        {
-          "evidenceId": "workable-docs-18",
-          "quote": "We provide you with an API that gives you full control over your data."
-        },
-        {
-          "evidenceId": "workable-docs-6",
-          "quote": "Returns a collection of the job's candidates."
-        },
-        {
-          "evidenceId": "workable-docs-5",
-          "quote": "Returns a collection of your account jobs."
-        },
-        {
-          "evidenceId": "workable-docs-16",
-          "quote": "Calling the `/candidates/:id/offer` endpoint returns a JSON array of the candidate's latest offer."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5430,7 +5410,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-source licensing is a fair question for a SaaS recruiting platform, so the axis applies. Nothing in the evidence shows Workable publishing its source under an open license. The pack covers only a proprietary API, an MCP server and hosted features, and API docs or llms.txt access are not source availability.",
+    "rationale": "Whether a recruiting SaaS publishes its source under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence shows a public repository, source code, or open license. The pack documents only proprietary API, MCP and feature material, and even the OpenAPI spec download is disabled.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5445,7 +5425,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a recruiting SaaS, but nothing in the evidence documents an on-premises or self-hosted deployment of Workable. The docs only describe the vendor-hosted service, reached at '<account subdomain>.workable.com', plus API and MCP access to that hosted platform. API access and data control are adjacent capabilities, not self-hosting, so the axis applies and the verdict is none.",
+    "rationale": "Self-hosting is a fair question for a recruiting/ATS platform, so the axis applies. The evidence only describes Workable as a vendor-hosted service, reached through account subdomains on workable.com and a hosted MCP endpoint, with no self-hosted or on-premises deployment documented.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5460,7 +5440,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Automated interview scheduling is a fair question to ask of an ATS like Workable. However, the evidence pack documents nothing about scheduling interviews, let alone panel or onsite-loop scheduling, interviewer load balancing, room booking, or conflict resolution. The closest items, a stages endpoint, an events endpoint and the Workable Agent handing off an interview-ready shortlist, are adjacent features and do not deliver scheduling.",
+    "rationale": "Interview scheduling is a fair question for an ATS like Workable. However, none of the evidence covers interview scheduling: no automated panel or onsite-loop scheduling, no interviewer load balancing, no room booking, and no conflict resolution. The pack covers job posting, sourcing, the API, webhooks, the MCP server and offers, none of which address this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5475,9 +5455,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is the /stages API reference. It says recruitment pipeline stages are \"defined in recruiting preferences page\", which implies the product itself has configurable pipeline stages. Nothing covers per-job custom stages, drag-to-move candidates, or bulk actions. Missing for 10: custom stages per job, drag-and-drop candidate movement, bulk pipeline actions, first-party pipeline UI docs, independent or hands-on corroboration.",
+    "rationale": "Workable documents recruitment pipeline stages defined on a recruiting preferences page, exposed through the /stages endpoint, and its official MCP server can move candidates through the pipeline. That is a thin but direct sign of configurable pipelines with candidate movement. missing for 10: evidence of custom stages per job (not just account-wide), a drag-to-move UI, bulk actions across the pipeline, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "workable-docs-21"
+      "workable-docs-21",
+      "workable-mcp-conversational-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5487,6 +5468,10 @@
         {
           "evidenceId": "workable-docs-21",
           "quote": "Calling the /stages endpoint will return a collection of the recruitment pipeline stages as defined in recruiting preferences page"
+        },
+        {
+          "evidenceId": "workable-mcp-conversational-20261106",
+          "quote": "copy or relocate them across jobs, move them through the pipeline, rate and review them"
         }
       ]
     }
@@ -5497,7 +5482,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a data-storage region is a fair question for a SaaS recruiting platform like Workable, so the axis applies. However, nothing in the evidence pack mentions data residency, region selection, or storage location. Statements such as \"full control over your data\" describe API access, not where data is stored.",
+    "rationale": "Choosing a data storage region is a fair question for a SaaS recruiting platform like Workable, so the axis applies. Nothing in the evidence pack mentions data residency, region selection, or where data is stored. The API's \"full control over your data\" claim is about programmatic access, not storage location, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5512,7 +5497,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Workable ships AI features, such as AI candidate recommendations and the Workable Agent, so an AI-training opt-out is a fair question for this product. Nothing in the evidence documents a setting, policy, or contractual commitment that keeps customer data out of AI model training. The API claim of 'full control over your data' concerns programmatic data access, not training opt-out, so it earns no credit.",
+    "rationale": "Workable ships AI features (AI candidate recommendations, the Workable Agent, an MCP server), so an AI-training opt-out is a fair question to ask of it. The evidence pack has no documentation of a training opt-out, data-use policy, or AI-training controls. The \"full control over your data\" line describes API access, not model-training use, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5527,7 +5512,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents retention policies, retention periods, candidate data deletion, or purge or erasure controls, whether in the UI or the API. The generic API claim of \"full control over your data\" does not describe a retention or deletion capability. Data retention is a fair axis for a recruiting platform that holds candidate PII, so the absence of evidence is \"none\", not \"na\".",
+    "rationale": "Data retention and deletion controls are a fair question for an ATS that holds candidate personal data, but the evidence pack documents no retention policies, deletion endpoints, or candidate data-erasure features. The generic claim of an API giving 'full control over your data' is about API access, not retention or deletion, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5542,7 +5527,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS recruiting platform, so the axis applies. Nothing in the evidence pack mentions telemetry, analytics or usage-tracking controls, or opt-out settings. The cited items cover API endpoints, webhooks, the MCP server and recruiting features only.",
+    "rationale": "Opting out of telemetry is a fair question for a SaaS recruiting platform, so the axis applies. However, nothing in the evidence pack covers telemetry, usage tracking, analytics opt-out or privacy settings. The items present cover the API, webhooks, the MCP server and recruiting features, none of which address this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5557,7 +5542,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Interview self-scheduling is a fair axis for an ATS like Workable, but nothing in the evidence pack covers candidate self-scheduling, booking links, calendar availability sync, or timezone handling. The pack only covers job posting, sourcing, careers pages, API endpoints, webhooks and the MCP server.",
+    "rationale": "Candidate self-scheduling fits an ATS like Workable, so the axis applies. However, nothing in the evidence pack mentions self-scheduling booking links, calendar sync, or interview scheduling. The pack covers job posting, sourcing, the API, webhooks and the MCP server, none of which is about this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5572,7 +5557,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions a Workable browser extension for capturing prospects from LinkedIn or the web, and it says nothing about deduplication on capture. The passive candidate database, AI recommendations and the candidate-create API are adjacent features or developer building blocks, not this capability.",
+    "rationale": "Nothing in the evidence pack documents a Workable browser extension that captures prospects from LinkedIn or other web pages into the ATS, and no deduplication on capture is described. The pack only covers adjacent features: a passive-candidate search database, AI candidate recommendations, and API endpoints for creating candidates, none of which is the extension capability this story asks about.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5587,10 +5572,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Structured interview scorecards are a fair axis for an ATS like Workable, but the pack has no evidence of them: nothing on defined attributes per stage, per-interviewer rubrics, or cross-candidate scorecard comparison. The only related items are an API endpoint that 'creates a rating for a candidate' and a pipeline stages endpoint. A generic candidate rating is an adjacent feature, not a structured scorecard, so it earns no credit.",
+    "rationale": "The evidence shows only a generic candidate rating endpoint, an MCP ability to \"rate and review\" candidates, and a pipeline stages listing. None of this documents structured scorecards with defined attributes per stage, interviewer-specific rubrics, or cross-candidate comparison. A plain rating is an adjacent feature, not the structured-scorecard capability, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a hiring manager, interviews are scored on structured scorecards — defined attributes per stage, focused rubrics per interviewer, comparable across candidates",
       "citations": []
@@ -5602,10 +5587,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents sourcing features: searching a passive candidate database, AI recommendations from 400M profiles, and an AI agent that sources and screens. None of it shows a talent CRM with prospect pools, personalized email sequences with open/click tracking, or nurture campaigns for future roles. Sourcing search is an adjacent capability, not the CRM the story describes.",
+    "rationale": "The evidence documents sourcing through a searchable passive-candidate database and AI candidate recommendations. That is a different sourcing feature, not a talent CRM. Nothing in the pack documents recruiter-owned prospect pools, personalized email sequences with open or click tracking, or nurture campaigns for future roles.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a recruiter, sourcing lives in a talent CRM — pools of prospects, personalized email sequences with tracking, and nurture campaigns for future roles",
       "citations": []
@@ -5617,7 +5602,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document @mentions, shared candidate notes, team tasks, or visibility rules that scope sensitive feedback in Workable. The closest items, a candidate-rating API endpoint and a permission_sets listing endpoint, are adjacent API primitives, not documented collaboration or feedback-scoping features, so they earn no credit.",
+    "rationale": "The evidence pack documents no in-ATS collaboration features: no @mentions, shared notes, tasks, or visibility rules that scope sensitive feedback. The rating-creation and permission_sets API endpoints are developer building blocks or adjacent controls, not this collaboration capability. Team collaboration is a fair axis for an ATS, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

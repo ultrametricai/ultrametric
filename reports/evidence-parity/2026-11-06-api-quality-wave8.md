@@ -6,17 +6,17 @@ scan signature fix in #636). iterm2 stays deferred (wave-2 ledger) and foreloop 
 excluded pending the maintainer ruling (wave-7 ledger).
 
 `rankings-engine/scripts/append-api-quality-gap-evidence-2026-11-06-wave8.py` appends 46
-live-verified rows fail-closed, backing 33 appended cells (several products carry scoping
-or counter rows beyond their cited cell rows); 14 cells stay absent after checking and
-one cell is verification-blocked (fellow api-interactive-docs, see Reachability). Nine
-fail-closed negative checks replay the asserted 404s (#502 convention). Four counter
-rows are preserved against refresh clobbering: workable's disabled spec download,
-granola's explicit no-sandbox FAQ answer, obsidian's separate-dev-vault guidance, and
-Azure's retired Learn sandbox.
+live-verified rows fail-closed at wave start, plus three in the PR #643 review round (49
+total), backing 34 appended cells (several products carry scoping or counter rows beyond
+their cited cell rows); 14 cells stay absent after checking. Eleven fail-closed negative
+checks replay the asserted 404s (#502 convention). Five counter rows are preserved
+against refresh clobbering: workable's disabled spec download, granola's explicit
+no-sandbox FAQ answer, obsidian's separate-dev-vault guidance, Azure's retired Learn
+sandbox, and fellow's webhooks scope.
 
 | product | arena | flagged cells | evidence rows appended | checked, still absent |
 |---------|-------|--------------:|-----------------------:|---------------------:|
-| workable | applicant-tracking | 4 | 2 | 3 |
+| workable | applicant-tracking | 4 | 3 | 3 |
 | oneleet | compliance-automation | 4 | 4 | 1 |
 | sprinto | compliance-automation | 4 | 2 | 3 |
 | braintrust | llm-evals-observability | 4 | 3 | 1 |
@@ -25,7 +25,7 @@ Azure's retired Learn sandbox.
 | google-cloud | cloud-platforms | 4 | 6 | 0 |
 | onedrive | cloud-storage | 4 | 5 | 0 |
 | unity | game-engines | 4 | 3 | 1 |
-| fellow | meeting-ai | 4 | 2 | 2 |
+| fellow | meeting-ai | 4 | 4 | 2 |
 | granola | meeting-ai | 4 | 4 | 1 |
 | obsidian | notes-knowledge | 4 | 4 | 2 |
 
@@ -59,11 +59,13 @@ Wave-8 specifics:
   services.docs.unity.com is a redirect shell (live host docs.unity.com). Walls
   documented, not circumvented: *.sprinto.com/dev-api/explorer answers CloudFront 403 to
   non-browser clients, and developers.fellow.ai rate-limited the recording run with
-  sustained, UA-independent HTTP 429 for over three hours. The fellow rows therefore
-  cite the reachable surfaces only (the ReadMe api-registry spec document and the
-  help-center article); the Try It! runner observed during the research pass is withheld
-  fail-closed (ledger disposition verification-blocked, to revisit when the host
-  unblocks), and the research-pass 404s are not asserted.
+  sustained, UA-independent HTTP 429 for over three hours, so the fellow cells first
+  shipped citing the reachable surfaces only (the ReadMe api-registry spec document and
+  the help-center article) with the observed Try It! runner withheld fail-closed. The
+  limit cleared during the PR #643 review round: the Try It! and webhooks-scope rows
+  were then appended fail-closed (with 20-second per-host courtesy pacing in the
+  script), the spec excerpt was restored with replayable 404 negatives, and the
+  verification-blocked cell closed as evidence-appended (partial q7).
 
 Scoped re-judges run under the ratified v6 rubric (compliance-automation,
 cloud-platforms, and meeting-ai judged category-wide), then `derive` per touched arena
@@ -84,3 +86,19 @@ grounded in live spec downloads or canonical vendor model repositories, isolated
 environments, and committed deprecation windows, with format, hosting, gating, and
 window-length caveats carried in the cited excerpts. Honest downs ship (21 verdict-level
 downs across the re-rolled rows).
+
+## Review round (PR #643)
+
+One P1 covering two cells, fixed inputs-only. fellow automation-rules-engine had been
+credited on webhook building-block quotes: the preserved webhooks-scope row records that
+the integrator supplies the receiving endpoint and all action logic and no in-product
+rules engine is documented, and the re-judged cell settles at none q0. workable
+agentic-nl-commands had been credited on transferred MCP-access quotes: the appended row
+quotes the vendor's own MCP documentation of conversational operation ("create or
+approve leave requests conversationally", "without leaving your AI interface"), and the
+cell publishes partial q6 citing that direct evidence. The developers.fellow.ai rate
+limit cleared during the round, closing the verification-blocked cell (Try It! row
+appended fail-closed; fellow api-interactive-docs partial q7) and restoring the spec
+excerpt's replayable 404 negatives. The re-roll was pre-audited: fellow
+automation-bulk-operations none to partial q3 is a conceded thin partial (Super Admin
+API workspace-wide export plus recording-status monitoring), and honest downs ship.

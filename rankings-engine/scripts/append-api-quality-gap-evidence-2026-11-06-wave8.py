@@ -91,6 +91,14 @@ ITEMS = {
          ['workable.com/spi/v3/jobs',
           'remember to replace the ‘account subdomain’'],
          'The docs direct integrators to test against their live account: the example call is "https://<account subdomain>.workable.com/spi/v3/jobs" and you can "test it on the spot just by typing the following command in your terminal window (remember to replace the ‘account subdomain’)". v3 appears in the base path only; no test base URL, test keys, test tenant, API changelog (/changelog is 404), or deprecation policy is documented.'),
+        # Review round (PR #643 P1): grounds natural-language operation in the vendor's
+        # own MCP documentation instead of transferred MCP-access credit.
+        ('workable-mcp-conversational-20261106', 'claimed-docs',
+         'https://workable.readme.io/reference/workable-mcp-server.md',
+         ['Bridges AI assistants directly with the Workable platform',
+          'without leaving your AI interface',
+          'create or approve leave requests conversationally'],
+         'Workable\'s official MCP server documents natural-language operation of the platform: it "Bridges AI assistants directly with the Workable platform" for "End-to-end recruiting automation — search jobs, source candidates, copy or relocate them across jobs, move them through the pipeline, rate and review them, retrieve their files, and manage offers without leaving your AI interface" and "HR self-service — look up employees, retrieve their documents, explore the org chart, check time off balances, and create or approve leave requests conversationally" (server https://mcp.workable.com/mcp, OAuth2, dynamic client registration). The conversational surface is assistant-mediated through MCP; no in-product natural-language command bar is documented.'),
     ],
     ('compliance-automation', 'oneleet'): [
         ('oneleet-openapi-spec-20261106', 'claimed-docs',
@@ -258,14 +266,25 @@ ITEMS = {
     ],
     ('meeting-ai', 'fellow'): [
         # developers.fellow.ai answered sustained HTTP 429 rate limits to unauthenticated
-        # clients throughout the recording window (UA-independent, ~3 hours), so the rows
-        # below cite the reachable surfaces only: the ReadMe registry document and the
-        # vendor help-center article. Reference-site-only claims (the ReadMe "Try It!"
-        # runner observed during research) are withheld fail-closed.
+        # clients for ~3 hours of the recording window, so the first two rows cite the
+        # surfaces that stayed reachable (the ReadMe registry document and the vendor
+        # help-center article). The host recovered during the PR #643 review round: the
+        # Try It! row (withheld fail-closed until then) and the webhooks scoping row
+        # were appended once their markers verified live, and the spec excerpt was
+        # restored via UPDATES with the replayable 404 negatives.
         ('fellow-openapi-spec-20261106', 'claimed-docs',
          'https://dash.readme.com/api/v1/api-registry/1lmra9xmsrt82wk',
          ['"openapi":"3.1.0"', '"title":"Fellow Developer API"'],
          'Fellow\'s Developer API is described by an OpenAPI 3.1 document ("Fellow Developer API", version 1.0.2, "Create custom integrations and workflows with Fellow\'s meeting data"; paths under /api/v1/), the ReadMe registry document behind the developers.fellow.ai reference. Caveats: the stable download URL is ReadMe\'s api-registry endpoint rather than a Fellow-branded path, and developers.fellow.ai itself was rate-limiting unauthenticated clients (sustained HTTP 429) when this was recorded, so reference-site claims are grounded in this document and the vendor help article only. The API carries path versioning only (/api/v1, spec version 1.0.2), with no published deprecation policy or API changelog.'),
+        ('fellow-tryit-20261106', 'claimed-docs',
+         'https://developers.fellow.ai/reference/apps_developer_api_api_get_notes',
+         ['Try It!'],
+         'Fellow\'s ReadMe-hosted API reference runs a live "Try It!" request panel on every endpoint page, with llms.txt and per-page .md mirrors. Requests run against the live workspace (https://{subdomain}.fellow.app/api/v1/...) behind the paid-plan and workspace-admin enablement gates recorded in the help-article row. (Recorded after the host\'s rate limit cleared during the PR #643 review round.)'),
+        ('fellow-webhooks-scope-20261106', 'claimed-docs',
+         'https://developers.fellow.ai/reference/webhooks.md',
+         ['A publicly accessible HTTPS endpoint to receive webhook events',
+          'Create a webhook endpoint** in your application'],
+         'Scope of Fellow\'s automation surface: webhooks are event notifications where the integrator supplies the receiving side and all action logic. "Webhooks allow you to receive real-time notifications when events occur in Fellow... Fellow sends an HTTP POST request to the URL you specify", prerequisites include "A publicly accessible HTTPS endpoint to receive webhook events", and the quick start begins "Create a webhook endpoint in your application". No in-product rules engine (trigger-action configuration) is documented; the help-center index has zero automation/rule/trigger articles.'),
         ('fellow-help-api-20261106', 'claimed-docs',
          'https://help.fellow.ai/en/articles/11817206-developer-api',
          ['The API Reference and Developer Guide is available at: https://developers.fellow.ai/',
@@ -314,8 +333,17 @@ ITEMS = {
 # Rows removed after review, (arena, product) -> evidence ids (none at wave start).
 REMOVALS: dict = {}
 
-# Excerpt updates (verify-then-replace; none at wave start).
-UPDATES: dict = {}
+# Excerpt updates (verify-then-replace, ef4d42d8 precedent). The fellow spec excerpt is
+# restored to assert the Fellow-branded-path negatives now that the host's rate limit
+# cleared and the 404s replay fail-closed.
+UPDATES = {
+    ('meeting-ai', 'fellow'): [
+        ('fellow-openapi-spec-20261106',
+         'https://dash.readme.com/api/v1/api-registry/1lmra9xmsrt82wk',
+         ['"openapi":"3.1.0"', '"title":"Fellow Developer API"'],
+         'Fellow\'s Developer API is described by an OpenAPI 3.1 document ("Fellow Developer API", version 1.0.2, "Create custom integrations and workflows with Fellow\'s meeting data"; paths under /api/v1/), the ReadMe registry document behind the developers.fellow.ai reference. Caveats: no Fellow-branded download path exists (developers.fellow.ai/openapi.json and /changelog answer 404; the stable URL is ReadMe\'s api-registry endpoint), and the API carries path versioning only (/api/v1, spec version 1.0.2) with no published deprecation policy or API changelog. (developers.fellow.ai rate-limited unauthenticated clients for part of the recording window; all assertions here were re-verified after it cleared.)'),
+    ],
+}
 
 # Hand-recorded counter-check rows a scheduled refresh must not clobber.
 PRESERVE_IDS: set = {
@@ -323,6 +351,7 @@ PRESERVE_IDS: set = {
     'workable-tryit-20261106',
     'obsidian-dev-vault-20261106',
     'azure-learn-sandbox-retired-20261106',
+    'fellow-webhooks-scope-20261106',
 }
 
 # Fail-closed probe negatives (#502 convention): excerpts that assert dead URLs must
@@ -342,9 +371,10 @@ NEGATIVE_CHECKS = {
     'oneleet-deprecations-20261106': [
         'https://docs.oneleet.com/changelog/',
     ],
-    # fellow: the research run observed developers.fellow.ai/openapi.json and /changelog
-    # answering 404, but the host then rate-limited (sustained 429), so those negatives
-    # cannot be replayed fail-closed and the excerpt does not assert them.
+    'fellow-openapi-spec-20261106': [
+        'https://developers.fellow.ai/openapi.json',
+        'https://developers.fellow.ai/changelog',
+    ],
 }
 
 # Fail-closed recorded POST probes (none this wave).
@@ -355,10 +385,19 @@ TLS_MISMATCH_CHECKS: dict = {}
 
 _fetch_cache: dict = {}
 
+# developers.fellow.ai rate-limits unauthenticated clients after a handful of requests;
+# space ours out rather than burst (courtesy pacing, not circumvention).
+HOST_DELAYS = {'developers.fellow.ai': 20}
+
 
 def fetch(url):
     if url in _fetch_cache:
         return _fetch_cache[url]
+    import time
+    from urllib.parse import urlparse
+    delay = HOST_DELAYS.get(urlparse(url).netloc)
+    if delay:
+        time.sleep(delay)
     r = subprocess.run(
         ['curl', '-sL', '--max-time', '45', '-A', UA, '-w', '\n---META %{http_code}', url],
         capture_output=True, text=True, timeout=90)

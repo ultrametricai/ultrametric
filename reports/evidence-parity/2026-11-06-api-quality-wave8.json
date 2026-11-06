@@ -107,7 +107,7 @@
    "note": "ReadMe-hosted reference with the Try It! runner enabled in the served config; executes against the caller's real account with a Bearer token.",
    "publishedVerdict": {
     "verdict": "partial",
-    "quality": 7
+    "quality": 6
    }
   },
   {
@@ -583,7 +583,7 @@
    "disposition": "evidence-appended",
    "evidenceId": "fellow-openapi-spec-20261106",
    "url": "https://dash.readme.com/api/v1/api-registry/1lmra9xmsrt82wk",
-   "note": "OpenAPI 3.1 document for the Fellow Developer API served from ReadMe's api-registry endpoint. developers.fellow.ai rate-limited unauthenticated clients (sustained UA-independent HTTP 429) during recording, so the row's claims are grounded in the registry document and the help article only; the research run's observed 404s on /openapi.json and /changelog are not asserted (no fail-closed replay possible).",
+   "note": "OpenAPI 3.1 document for the Fellow Developer API served from ReadMe's api-registry endpoint; after the host's rate limit cleared, the Fellow-branded-path negatives (openapi.json, changelog: 404) were re-verified and are replayed fail-closed.",
    "publishedVerdict": {
     "verdict": "full",
     "quality": 7
@@ -593,13 +593,14 @@
    "product": "fellow",
    "arena": "meeting-ai",
    "storyId": "api-interactive-docs",
-   "disposition": "verification-blocked",
+   "disposition": "evidence-appended",
    "url": "https://developers.fellow.ai/reference/apps_developer_api_api_get_notes",
-   "note": "The research pass observed the ReadMe Try It! runner enabled on the reference pages (HTTP 200 at the time), but the host then rate-limited (sustained UA-independent 429 for the rest of the recording window) before a fail-closed evidence row could be recorded. The claim is withheld per the evidence doctrine; the cell publishes on the remaining pack (spec + help rows). Revisit when the host unblocks.",
+   "note": "ReadMe-hosted reference with the live Try It! runner. The host rate-limited the initial recording window (sustained 429) and this cell shipped verification-blocked; the limit cleared during the PR #643 review round and the row was appended fail-closed (with 20s courtesy pacing for this host), closing the block.",
    "publishedVerdict": {
     "verdict": "partial",
-    "quality": 3
-   }
+    "quality": 7
+   },
+   "evidenceId": "fellow-tryit-20261106"
   },
   {
    "product": "fellow",
@@ -772,6 +773,16 @@
   "sideEffectNotes": [
    "honest downs ship (21 verdict-level downs across the re-rolled rows)",
    "no off-axis over-credit requiring an inputs correction was found this wave"
+  ]
+ },
+ "review": {
+  "pr": 643,
+  "findings": [
+   {
+    "finding": "P1 (two cells): fellow automation-rules-engine none -> partial q4 on webhook building-block quotes (integrator supplies all action logic), and workable agentic-nl-commands none -> partial q5 on transferred MCP-access and screening quotes rather than documented natural-language commands",
+    "fix": "inputs only: (1) appended the preserved scoping row fellow-webhooks-scope-20261106 (webhooks are event notifications; prerequisites include the integrator's own HTTPS endpoint; no in-product rules engine documented) and re-judged - the cell settles at none q0; (2) appended workable-mcp-conversational-20261106 quoting the vendor's own MCP documentation of conversational operation ('create or approve leave requests conversationally', 'without leaving your AI interface') - direct evidence, and the cell publishes partial q6 citing it",
+    "outcome": "fellow automation-rules-engine none q0; workable agentic-nl-commands partial q6 grounded in the new on-axis row. Side bonus: the developers.fellow.ai rate limit cleared during the round, so the verification-blocked fellow api-interactive-docs cell was closed properly (Try It! row appended fail-closed with per-host courtesy pacing; now partial q7) and the spec excerpt was restored with replayable 404 negatives. Re-roll pre-audited: fellow automation-bulk-operations none -> partial q3 (Super Admin API workspace-wide export plus recording-status monitoring, conceded thin); honest downs ship (fellow agentic-ai-insights, mobile-in-person-capture, privacy-retention-controls; workable openness-full-export)."
+   }
   ]
  }
 }
