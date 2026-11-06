@@ -15,6 +15,88 @@ MAX_BYTES = 64 * 1024 * 1024
 MAX_FILES = 10000
 
 
+MAX_JUDGE_FAILURE_BYTES = 256 * 1024
+FIELD_LIMITS = {
+    'evidenceId': 256, 'quote': 2000, 'sourceExcerpt': 6000, 'sourceId': 256,
+    'expectedSubject': 512, 'actualSubject': 512, 'rationale': 1000,
+    'verdict': 32, 'quality': 32, 'relation': 32, 'coverage': 32, 'citationCount': 32,
+}
+FAILURE_CODES = {
+    'unknown-evidence-id', 'support-subject', 'direct-support', 'full-coverage',
+    'unknown-support-id', 'support-id-not-cited', 'quote-mismatch', 'question-only',
+    'missing-evidence', 'disputed-tiers', 'zero-quality', 'quality-gap',
+}
+
+
+def validate_judge_failure(data, arena=None):
+    """Strict field allowlist; a diagnostic cannot smuggle arbitrary response metadata."""
+    def require(ok):
+        if not ok:
+            raise ValueError('Invalid judge failure diagnostic')
+
+    def keys(value, required, optional=()):
+        require(isinstance(value, dict) and set(required) <= value.keys()
+                and value.keys() <= set(required) | set(optional))
+
+    def digest(value):
+        require(isinstance(value, str) and re.fullmatch(r'[a-f0-9]{64}', value))
+
+    def bounded(value, limit):
+        keys(value, ('text', 'truncated', 'redacted'))
+        require(isinstance(value['text'], str) and len(value['text']) <= limit
+                and type(value['truncated']) is bool and type(value['redacted']) is bool)
+
+    require(len(data) <= MAX_JUDGE_FAILURE_BYTES)
+    record = json.loads(data)
+    keys(record, ('kind', 'version', 'publicationAuthority', 'exactReplay', 'cell', 'input', 'termination', 'attempts'))
+    require(record['kind'] == 'judge-semantic-failure' and type(record['version']) is int and record['version'] == 1
+            and record['publicationAuthority'] is False and record['exactReplay'] is False)
+    cell = record['cell']
+    keys(cell, ('category', 'productId', 'storyId'))
+    require(isinstance(cell['category'], str) and re.fullmatch(r'[a-z0-9][a-z0-9-]*', cell['category'])
+            and (arena is None or cell['category'] == arena))
+    bounded(cell['productId'], 256)
+    bounded(cell['storyId'], 256)
+    metadata = record['input']
+    keys(metadata, ('hash', 'keyVersion', 'promptVersion', 'model', 'initialPromptHash'))
+    digest(metadata['hash'])
+    digest(metadata['initialPromptHash'])
+    for key in ('keyVersion', 'promptVersion'):
+        require(isinstance(metadata[key], str) and re.fullmatch(r'v[0-9]{1,3}', metadata[key]))
+    bounded(metadata['model'], 256)
+    attempts = record['attempts']
+    require(isinstance(attempts, list) and 1 <= len(attempts) <= 4)
+    require(record['termination'] in ('semantic-exhaustion', 'correction-request-failed'))
+    require(len(attempts) == 4 if record['termination'] == 'semantic-exhaustion' else len(attempts) <= 3)
+    for index, attempt in enumerate(attempts):
+        keys(attempt, ('attempt', 'transport', 'requestPromptHash', 'failure', 'fields'))
+        require(type(attempt['attempt']) is int and attempt['attempt'] == index + 1
+                and attempt['transport'] in (('interactive', 'batch') if index == 0 else ('interactive',)))
+        digest(attempt['requestPromptHash'])
+        failure = attempt['failure']
+        keys(failure, ('code',), ('citationIndex', 'evidenceIdIndex'))
+        require(isinstance(failure['code'], str) and failure['code'] in FAILURE_CODES)
+        for key in ('citationIndex', 'evidenceIdIndex'):
+            if key in failure:
+                require(type(failure[key]) is int and 0 <= failure[key] <= 9007199254740991)
+        fields = attempt['fields']
+        keys(fields, (), FIELD_LIMITS)
+        for key, value in fields.items():
+            bounded(value, FIELD_LIMITS[key])
+    return record
+
+
+def inspect_judge_failure(file):
+    file = Path(file)
+    if file.is_symlink() or any(parent.is_symlink() for parent in file.parents):
+        raise ValueError('Judge failure diagnostic cannot traverse a symlink')
+    if not file.is_file() or file.stat().st_size > MAX_JUDGE_FAILURE_BYTES:
+        raise ValueError('Invalid judge failure diagnostic size or file')
+    # ensure_ascii escapes terminal controls and all Unicode direction/line controls.
+    # This is inspection of a deliberately partial record, not exact model replay.
+    return json.dumps(validate_judge_failure(file.read_bytes()), ensure_ascii=True)
+
+
 def capture(root, baseline, arena, output, report=None):
     root = Path(root).resolve()
     if not re.fullmatch(r'[a-f0-9]{40}', baseline) or not re.fullmatch(r'[a-z0-9][a-z0-9-]*', arena):
@@ -29,6 +111,8 @@ def capture(root, baseline, arena, output, report=None):
     prefixes = [arena_dir + '/evidence/', f'rankings-engine/cache/judge/{arena}/']
     exact = {f'{arena_dir}/{name}.json' for name in ['products', 'stories', 'verdicts']}
     exact.add(f'rankings-engine/cache/refresh-retention/{arena}/decisions.json')
+    failure_name = f'.pa-tmp/judge-failures/{arena}/terminal.json'
+    exact.add(failure_name)
 
     def allowed(name):
         if name in exact:
@@ -52,7 +136,7 @@ def capture(root, baseline, arena, output, report=None):
     tree = git('ls-tree', '-r', '-z', baseline).decode().split('\0')
     for record in filter(None, tree):
         metadata, name = record.split('\t', 1)
-        if not allowed(name):
+        if name == failure_name or not allowed(name):
             continue
         if metadata.split()[0] != '100644':
             raise ValueError(f'Non-regular baseline input: {name}')
@@ -80,7 +164,14 @@ def capture(root, baseline, arena, output, report=None):
             raise ValueError(f'Non-regular candidate input: {name}')
         if file.stat().st_size > MAX_BYTES - size:
             raise ValueError('Refresh diagnostics exceed the capture limit')
-        add('candidate/' + name, file.read_bytes())
+        if name == failure_name:
+            if file.stat().st_size > MAX_JUDGE_FAILURE_BYTES:
+                raise ValueError('Judge failure diagnostic exceeds the capture limit')
+            data = file.read_bytes()
+            validate_judge_failure(data, arena)
+        else:
+            data = file.read_bytes()
+        add('candidate/' + name, data)
     if report:
         report = Path(report)
         if report.is_symlink() or any(parent.is_symlink() for parent in report.parents):
@@ -121,9 +212,17 @@ def capture(root, baseline, arena, output, report=None):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--baseline', required=True)
-    parser.add_argument('--category', required=True)
-    parser.add_argument('--output', required=True)
+    parser.add_argument('--baseline')
+    parser.add_argument('--category')
+    parser.add_argument('--output')
+    parser.add_argument('--inspect-judge-failure', metavar='FILE', help='Keyless bounded inspection; does not call a model or publish')
     parser.add_argument('--report')
     args = parser.parse_args()
-    capture(Path.cwd(), args.baseline, args.category, args.output, args.report)
+    if args.inspect_judge_failure:
+        if any((args.baseline, args.category, args.output, args.report)):
+            parser.error('Inspection cannot be combined with capture')
+        print(inspect_judge_failure(args.inspect_judge_failure))
+    else:
+        if not all((args.baseline, args.category, args.output)):
+            parser.error('Capture requires --baseline, --category and --output')
+        capture(Path.cwd(), args.baseline, args.category, args.output, args.report)

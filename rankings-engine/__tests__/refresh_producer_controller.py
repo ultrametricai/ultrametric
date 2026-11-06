@@ -67,6 +67,96 @@ class DiagnosticTests(unittest.TestCase):
         self.assertFalse(any('.env' in name or '/crawl/' in name or '/other/' in name for name in files))
         self.assertFalse(any(b'secret' in data for data in files.values()))
 
+    def judge_record(self):
+        text = lambda value: {'text': value, 'truncated': False, 'redacted': False}
+        return {
+            'kind': 'judge-semantic-failure', 'version': 1, 'publicationAuthority': False, 'exactReplay': False,
+            'cell': {'category': 'fixture', 'productId': text('product'), 'storyId': text('story')},
+            'input': {'hash': 'a' * 64, 'keyVersion': 'v2', 'promptVersion': 'v6',
+                      'model': text('fixture-model'), 'initialPromptHash': 'b' * 64},
+            'termination': 'semantic-exhaustion',
+            'attempts': [{'attempt': n, 'transport': 'interactive', 'requestPromptHash': 'c' * 64,
+                          'failure': {'code': 'quote-mismatch', 'citationIndex': 0},
+                          'fields': {'quote': text('bad span'), 'sourceId': text('e1'), 'sourceExcerpt': text('source')}}
+                         for n in range(1, 5)],
+        }
+
+    def test_captures_only_exact_terminal_record_for_selected_arena(self):
+        name = '.pa-tmp/judge-failures/fixture/terminal.json'
+        record = self.judge_record()
+        self.write(name, json.dumps(record))
+        for other in ['.pa-tmp/judge-failures/other/terminal.json', '.pa-tmp/judge-failures/fixture/response.json',
+                      '.pa-tmp/judge-failures/fixture/environment.json', '.pa-tmp/judge-failures/fixture/unrelated/terminal.json']:
+            self.write(other, '{"secret":"excluded"}')
+        self.capture()
+        with tarfile.open(self.output) as archive:
+            captured = json.load(archive.extractfile('candidate/' + name))
+            self.assertEqual(captured, record)
+            self.assertFalse(any(b'excluded' in archive.extractfile(m).read() for m in archive.getmembers()))
+            self.assertFalse(any(m.name.startswith('baseline/.pa-tmp') for m in archive.getmembers()))
+        self.assertIs(captured['publicationAuthority'], False)
+        self.assertIs(captured['exactReplay'], False)
+
+    def test_rejects_malformed_oversized_wrong_scope_and_extra_fields(self):
+        name = '.pa-tmp/judge-failures/fixture/terminal.json'
+        for mutation in [lambda r: r.update(publicationAuthority=True), lambda r: r.update(exactReplay=True),
+                         lambda r: r.update(environment={'TOKEN': 'secret'}), lambda r: r.update(system='prompt'),
+                         lambda r: r.update(response='unbounded'), lambda r: r['cell'].update(category='other'),
+                         lambda r: r['input'].update(credentials='secret'), lambda r: r.update(attempts=r['attempts'] * 2),
+                         lambda r: r['attempts'][0]['fields'].update(fullResponse={'text': 'secret'}),
+                         lambda r: r['attempts'][0]['fields']['quote'].update(text='x' * 2001),
+                         lambda r: r['attempts'][0]['failure'].update(citationIndex=-1)]:
+            record = self.judge_record()
+            mutation(record)
+            self.write(name, json.dumps(record))
+            with self.assertRaises(ValueError):
+                self.capture()
+            self.assertFalse(self.output.exists())
+        self.write(name, 'x' * (diagnostics.MAX_JUDGE_FAILURE_BYTES + 1))
+        with self.assertRaisesRegex(ValueError, 'capture limit'):
+            self.capture()
+        self.write(name, '{')
+        with self.assertRaises(ValueError):
+            self.capture()
+        self.assertFalse(self.output.exists())
+
+    def test_judge_record_is_included_in_global_size_and_file_budgets(self):
+        self.write('.pa-tmp/judge-failures/fixture/terminal.json', json.dumps(self.judge_record()))
+        with patch.object(diagnostics, 'MAX_BYTES', 200), self.assertRaisesRegex(ValueError, 'capture limit'):
+            self.capture()
+        with patch.object(diagnostics, 'MAX_FILES', 8), self.assertRaisesRegex(ValueError, 'capture limit'):
+            self.capture()
+        self.assertFalse(self.output.exists())
+
+    def test_judge_record_and_ancestor_symlinks_are_rejected(self):
+        name = '.pa-tmp/judge-failures/fixture/terminal.json'
+        file = self.write(name, json.dumps(self.judge_record()))
+        file.unlink()
+        file.symlink_to(self.root / '.env')
+        with self.assertRaisesRegex(ValueError, 'Symlink'):
+            self.capture()
+        file.unlink()
+        file.parent.rmdir()
+        file.parent.symlink_to(self.root / 'open-rankings/fixture', target_is_directory=True)
+        self.write('open-rankings/fixture/terminal.json', json.dumps(self.judge_record()))
+        with self.assertRaisesRegex(ValueError, 'Symlink'):
+            self.capture()
+        self.assertFalse(self.output.exists())
+
+    def test_keyless_inspection_escapes_control_data_and_rejects_unknown_fields(self):
+        record = self.judge_record()
+        record['attempts'][0]['fields']['quote']['text'] = '\n::error::forged\x1b[31m\u202e'
+        file = self.write('failure.json', json.dumps(record))
+        inspected = diagnostics.inspect_judge_failure(file)
+        self.assertEqual(json.loads(inspected), record)
+        self.assertNotIn('\n', inspected)
+        self.assertNotIn('\x1b', inspected)
+        self.assertNotIn('\u202e', inspected)
+        record['fullResponse'] = 'secret'
+        file.write_text(json.dumps(record))
+        with self.assertRaises(ValueError):
+            diagnostics.inspect_judge_failure(file)
+
     def test_invalid_ids_nonancestor_and_nonjson_fail_without_artifact(self):
         for kwargs in [{'arena': '../fixture'}, {'baseline': 'HEAD'}, {'baseline': 'a' * 40}]:
             with self.subTest(kwargs=kwargs), self.assertRaises((ValueError, subprocess.CalledProcessError)):
@@ -150,6 +240,8 @@ class ProducerOrderingTests(unittest.TestCase):
         self.assertIn('node rankings-engine/scripts/check-refresh-stability.mjs HEAD^ HEAD', workflow)
         self.assertIn('name: story-refresh-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}', workflow)
         self.assertIn('if: failure() &&', workflow)
+        self.assertIn('retention-days: 14', workflow)
+        self.assertEqual(workflow.count('name: Upload failed refresh diagnostics'), 1)
 
 
 if __name__ == '__main__':
