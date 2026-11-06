@@ -93,3 +93,13 @@ had combined workspace API access with general settings: the appended agent-surf
 multiple-named-agents feature is documented, and the re-judged cell settles at none q0.
 The re-rolls were pre-audited: kimi agentic-ai-insights full q7 and image-understanding
 partial q5 ground in the new file-QA row verbatim; honest laterals and downs ship.
+
+A second review round flagged two side-effect kimi cells for crediting the separate API
+platform's surfaces to the assistant. The preserved counter-check row
+kimi-assistant-surface-20261106 records the distinction (kimi.com serves its app shell
+for llms.txt; image/video understanding is documented for the API, not the assistant
+app). Re-judged: agentic-agent-docs settles at none; image-understanding publishes
+partial q4 with the counter row quoted in its own support — the engine weighed the
+assistant's documented file upload, the API-side image support, and the explicit
+counter, and held a reduced partial. Per the #546 convention that verdict stands, with
+both readings carried here.

@@ -251,6 +251,13 @@ ITEMS = {
          ['You can create multiple projects in an organization and multiple API keys in each project',
           'set project budgets and rate limits, manage members, configure an IP whitelist'],
          'Kimi documents key isolation and restriction at the project level: "You can create multiple projects in an organization and multiple API keys in each project", with the console used to "set project budgets and rate limits, manage members, configure an IP whitelist, and review organization and project consumption"; "API usage is tracked separately for each project, so you can monitor and manage spending by project", and each member creates their own key per project. Scope caveat: restrictions attach to projects (budgets, rate limits, IP whitelist, membership), not per-key permission scopes.'),
+        # Review counter-check (PR #644 second round): the assistant app at kimi.com is
+        # a distinct surface from the API platform; cells about assistant capabilities
+        # must not inherit platform evidence.
+        ('kimi-assistant-surface-20261106', 'claimed-docs',
+         'https://www.kimi.com/llms.txt',
+         ['name="kimi-release-version"'],
+         'Scope of the kimi.com assistant surface: kimi.com serves its client-rendered app shell for every path including llms.txt (soft-200; the body is the JS application with a release-version meta tag, no agent-oriented docs file). The real llms.txt at platform.kimi.ai/docs/llms.txt belongs to the separate Kimi API Open Platform. The only assistant capability the citable vendor text documents is file upload with question answering ("The Kimi intelligent assistant can upload files and answer questions based on those files."); image and video understanding are documented for the API surface (the files API and the vision-model guide), not for the assistant app.'),
     ],
     ('government-services', 'irs'): [
         ('irs-ats-20261106', 'claimed-docs',
@@ -316,6 +323,7 @@ UPDATES = {
 PRESERVE_IDS: set = {
     'virtualpostmail-developers-20261106',
     'virtualpostmail-api-gated-20261106',
+    'kimi-assistant-surface-20261106',
 }
 
 # Fail-closed probe negatives (#502 convention): excerpts that assert dead or gated URLs
