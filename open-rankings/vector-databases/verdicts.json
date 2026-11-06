@@ -6560,9 +6560,9 @@
     "productId": "pinecone",
     "storyId": "access-control-rbac",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pinecone's own security docs say it manages API key permissions in the console and uses role-based access controls (RBAC) on resources, alongside service accounts and SSO. That covers the API-key and role parts of the story. Nothing in the pack shows permissions scoped per index or namespace, and the RBAC evidence is thin. Missing for 10: documented per-index/per-namespace (per-collection) permission scoping, detail on role definitions and which operations each role can perform, independent or hands-on corroboration.",
+    "rationale": "Pinecone's security docs describe API key permission management in the console and role-based access controls over resources, with service accounts and SSO listed among its production security features. Nothing in the evidence shows scoping permissions to an individual index or namespace, which is the 'per-collection' part of the story. Missing for 10: documented per-index/per-namespace permission scoping, detail on which roles exist and which operations each role governs, independent or hands-on corroboration.",
     "evidenceIds": [
       "pinecone-docs-13",
       "pinecone-docs-29",
@@ -6579,12 +6579,12 @@
           "quote": "You can manage API key permissions in the Pinecone console... Pinecone uses role-based access controls (RBAC) to manage access to resources."
         },
         {
-          "evidenceId": "pinecone-docs-34",
-          "quote": "Overview of Pinecone security features for production: API keys, SSO, service accounts, audit logs, CMEK encryption, backups, and Private Endpoints."
+          "evidenceId": "pinecone-docs-29",
+          "quote": "Pinecone uses role-based access controls (RBAC) to manage access to resources."
         },
         {
-          "evidenceId": "pinecone-docs-21",
-          "quote": "SSO allows organizations to manage their teams’ access to Pinecone through their identity management solution."
+          "evidenceId": "pinecone-docs-34",
+          "quote": "Overview of Pinecone security features for production: API keys, SSO, service accounts, audit logs, CMEK encryption, backups, and Private Endpoints."
         }
       ]
     }
@@ -6595,11 +6595,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A hands-on probe confirms Pinecone serves an llms.txt at docs.pinecone.io (HTTP 200) describing its official documentation. First-party docs add agent-oriented guidance for Claude Code, Cursor, and other agentic tools, plus an MCP server that lets agents search Pinecone documentation. Missing for 10: no evidence of the llms.txt's depth or completeness, and no llms-full.txt or per-page markdown variants.",
+    "rationale": "A live probe confirms docs.pinecone.io/llms.txt returns HTTP 200 with an official Pinecone docs index, and that index also lists machine-readable OpenAPI specs. The official MCP server additionally lets agents search Pinecone documentation directly, so there are multiple agent-oriented paths into the docs. missing for 10: independent or hands-on corroboration of agents actually consuming llms.txt, evidence of a full-content variant (e.g. llms-full.txt)",
     "evidenceIds": [
       "pinecone-probe-1",
-      "pinecone-docs-5",
-      "pinecone-docs-15"
+      "pinecone-openapi-specs-20261106",
+      "pinecone-docs-15",
+      "pinecone-docs-24",
+      "pinecone-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -6611,8 +6613,8 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://docs.pinecone.io/llms.txt # Pinecone Docs"
         },
         {
-          "evidenceId": "pinecone-docs-5",
-          "quote": "Use Pinecone with Claude Code, Gemini CLI, Cursor, and other agentic tools"
+          "evidenceId": "pinecone-openapi-specs-20261106",
+          "quote": "docs.pinecone.io publishes an \"## OpenAPI Specs\" index listing dated machine-readable specs for every API surface"
         },
         {
           "evidenceId": "pinecone-docs-15",
@@ -6627,7 +6629,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pinecone documents its own AI capability over user data: you can create an assistant that answers questions about proprietary data, and query compiled contexts for grounded, cited answers. This is generated answers to user questions, not proactive insights or suggestions, and the evidence does not show it surfaced inside the console. missing for 10: proactive AI-generated insights or suggestions, evidence of in-console (inside-the-product) delivery, depth of documentation beyond one-line claims, independent or hands-on corroboration.",
+    "rationale": "Pinecone's own docs describe an Assistant that answers questions about your proprietary data and returns grounded, cited answers. A no-code knowledge app is also available in public preview. Together these give users AI-generated answers from their data within Pinecone's product surface, though only as question-and-answer, not proactive insights. Missing for 10: proactive AI-generated insights or suggestions surfaced automatically, evidence that this works inside the console UI rather than via a built app, detailed docs beyond one-line claims, independent or hands-on corroboration.",
     "evidenceIds": [
       "pinecone-docs-2",
       "pinecone-docs-3",
@@ -6659,7 +6661,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has nothing on Pinecone itself offering user-configurable automations, scheduled jobs, triggers, or autonomous background workflows. Backups are documented only as actions you initiate through the SDK, API, or console, with no recurring schedule, so a one-off action does not count as a recurring automation. The MCP server and agent integrations let external agents drive Pinecone, which is adjacent client-driven tooling rather than the product running automations itself.",
+    "rationale": "Background automations, such as scheduled jobs, recurring syncs or triggered workflows, are a fair axis for a managed data platform. However, the evidence documents no Pinecone feature for setting up autonomous or recurring automations. Backups are described as user-initiated actions via SDK, API or console, not a recurring schedule. The MCP server lets external agents act on Pinecone, but it is an integration surface, not a product-run automation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6674,7 +6676,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pinecone's 'Assistant' (pinecone-docs-2, pinecone-docs-3) is a product feature for building question-answering assistants over your own data, not an in-product AI helper you delegate tasks to. Agentic control of indexes comes from external agents through the MCP server or a Claude plugin (pinecone-docs-15, pinecone-docs-26). Those are adjacent features that rely on outside agents, so there is no evidence of a built-in assistant in the console that carries out delegated tasks.",
+    "rationale": "The evidence shows no built-in AI assistant inside Pinecone to which a user can delegate tasks such as managing indexes or data. Pinecone Assistant is a feature for building Q&A assistants over your own data, which is a building block rather than an in-product task delegate. The MCP server and Claude plugin let external agents operate Pinecone, but that is outside the product, not a built-in assistant.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -6686,24 +6688,25 @@
   {
     "productId": "pinecone",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Pinecone is a managed service driven through its own SDK and API. The docs say indexes can be managed from the console 'or stay in the terminal', operations like backups can be done 'using the Pinecone SDK, API', and the security overview lists API keys and service accounts, which together suggest non-interactive automation is possible. There is no explicit documentation of headless/CI usage, a named CLI, or CI pipeline integration. Missing for 10: documented CLI with non-interactive flags, CI/CD integration guides or examples, independent hands-on corroboration of CI automation.",
+    "rationale": "Pinecone is an API-first managed service. Its documentation supports headless use: SDK and API management of indexes and backups, service accounts and API keys for non-interactive auth, a 'stay in the terminal' option, and a dedicated guide on using a Prism-based mock of its public OpenAPI specs 'in unit tests and CI'. The CI mock is limited: no write-then-read or real-search tests, and Pinecone Local is end-of-life, so stateful CI tests must run against a separate real project. missing for 10: first-party CLI documentation for CI pipelines, a stateful local emulator for CI, independent hands-on corroboration of CI automation.",
     "evidenceIds": [
-      "pinecone-docs-16",
+      "pinecone-mock-the-api-20261106",
       "pinecone-docs-12",
       "pinecone-docs-34",
-      "pinecone-docs-14"
+      "pinecone-docs-16",
+      "pinecone-openapi-specs-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "pinecone-docs-16",
-          "quote": "Monitor performance, explore your data, and manage indexes from a clean, fast console — or stay in the terminal. Your call."
+          "evidenceId": "pinecone-mock-the-api-20261106",
+          "quote": "Use it in unit tests and CI to confirm that your code builds valid requests and handles responses and errors, without a Pinecone account or calls to Pinecone."
         },
         {
           "evidenceId": "pinecone-docs-12",
@@ -6711,7 +6714,11 @@
         },
         {
           "evidenceId": "pinecone-docs-34",
-          "quote": "Overview of Pinecone security features for production: API keys, SSO, service accounts, audit logs, CMEK encryption, backups, and Private Endpoints."
+          "quote": "API keys, SSO, service accounts, audit logs"
+        },
+        {
+          "evidenceId": "pinecone-docs-16",
+          "quote": "manage indexes from a clean, fast console — or stay in the terminal"
         }
       ]
     }
@@ -6722,7 +6729,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only Pinecone acting as an MCP server that external agents (Claude, Cursor, Claude Code) connect to. Nothing shows Pinecone, including its Assistant product, acting as an MCP client that can plug in third-party MCP servers and use their tools. The server-side evidence is a different role and does not transfer to this story, and because Pinecone ships an AI assistant product, client-side MCP is a fair question, so the verdict is none rather than na.",
+    "rationale": "Pinecone ships an AI assistant product, so consuming external MCP servers is a fair question to ask of it. However, the evidence only documents Pinecone acting as an MCP server that external agents connect to. That is the opposite role and does not transfer to this MCP-client story. Nothing in the pack shows Pinecone (or Pinecone Assistant) connecting to or using tools from third-party MCP servers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6737,7 +6744,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Pinecone documents an official MCP server (confirmed by a probe of its docs page) that lets MCP-compatible agents such as Claude, Cursor, Antigravity and Claude Code search docs, manage indexes, upsert data and query indexes. missing for 10: independent or hands-on corroboration of the MCP server in use.",
+    "rationale": "Pinecone documents an official MCP server, and a probe confirms the dedicated docs page. Through it, agents can search Pinecone docs, manage indexes, upsert data and query indexes, with named client support for Claude, Cursor, Antigravity and Claude Code. Missing for 10: independent or hands-on corroboration of the MCP server in use.",
     "evidenceIds": [
       "pinecone-docs-15",
       "pinecone-docs-30",
@@ -6750,12 +6757,12 @@
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
       "citations": [
         {
-          "evidenceId": "pinecone-docs-30",
-          "quote": "Connect AI agents to Pinecone through the MCP server to search docs, manage indexes, and query data from Claude, Cursor, Antigravity, or Claude Code."
-        },
-        {
           "evidenceId": "pinecone-docs-15",
           "quote": "Using the MCP server, agents can search Pinecone documentation, manage indexes, upsert data, and query indexes for relevant information."
+        },
+        {
+          "evidenceId": "pinecone-docs-30",
+          "quote": "Connect AI agents to Pinecone through the MCP server to search docs, manage indexes, and query data from Claude, Cursor, Antigravity, or Claude Code."
         },
         {
           "evidenceId": "pinecone-probe-3",
@@ -6770,7 +6777,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pinecone ships an official MCP server and a Claude Code plugin. With these, an agent can take natural-language requests and turn them into Pinecone operations such as managing indexes, upserting data, and querying. The natural-language layer itself comes from third-party agents (Claude, Cursor, etc.); there is no documented native natural-language command interface in the Pinecone console or CLI. Missing for 10: a native natural-language command interface in Pinecone's own console or CLI, hands-on or independent corroboration of natural-language operation, and documentation of which operations are covered and how reliably commands are interpreted.",
+    "rationale": "Pinecone ships an official MCP server and a Claude Code plugin. Through them, MCP-compatible agents can manage indexes, upsert data and query indexes, so users can operate the product with natural language. The language understanding comes from an external agent, though, not a native natural-language command interface. Missing for 10: a native natural-language console or command interface, independent hands-on corroboration of agent-driven operation, and documentation of which operations are reliably covered.",
     "evidenceIds": [
       "pinecone-docs-15",
       "pinecone-docs-30",
@@ -6808,7 +6815,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pinecone's own marketing says you can manage indexes from the console 'or stay in the terminal', which hints at first-party terminal tooling, but nothing names or documents an official CLI. The 'claude plugin install pinecone' command runs inside Claude Code's plugin system, and the Claude Code/Gemini CLI mentions refer to third-party CLIs, so neither is credited. Missing for 10: an explicitly named official Pinecone CLI, CLI install and command documentation, AI-native/agentic CLI workflows, independent or hands-on corroboration.",
+    "rationale": "Pinecone's homepage says users can manage indexes from the console 'or stay in the terminal,' which points to first-party terminal management but never names or documents an official CLI. The Claude Code plugin install and the Gemini CLI integration are host-platform or third-party tooling, so they are not credited as a Pinecone CLI. Missing for 10: a named, documented official Pinecone CLI, its command reference and install instructions, AI-native or agent-oriented CLI workflows, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pinecone-docs-16",
       "pinecone-docs-25"
@@ -6820,11 +6827,11 @@
       "citations": [
         {
           "evidenceId": "pinecone-docs-16",
-          "quote": "manage indexes from a clean, fast console — or stay in the terminal. Your call."
+          "quote": "Monitor performance, explore your data, and manage indexes from a clean, fast console — or stay in the terminal. Your call."
         },
         {
           "evidenceId": "pinecone-docs-25",
-          "quote": "Monitor performance, explore your data, and manage indexes from a clean, fast console — or stay in the terminal."
+          "quote": "manage indexes from a clean, fast console — or stay in the terminal."
         }
       ]
     }
@@ -6833,15 +6840,17 @@
     "productId": "pinecone",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Pinecone documents a public API: an API reference introduction covers the Inference API for embeddings and reranking, and other docs say operations such as backups can be done through the SDK, API, or console. The llms.txt probe confirms official docs for its inference APIs and SDKs. missing for 10: a machine-readable OpenAPI spec (all probed paths returned 404), explicit evidence that the reference covers core data-plane operations such as upsert and query, independent hands-on corroboration of driving it via the API.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Pinecone documents a versioned public REST API covering data plane, control plane, inference, admin and OAuth. Machine-readable OpenAPI 3.0.3 specs are published in the official pinecone-io/pinecone-api repo, and a formal versioning policy guarantees at least 12 months of support per stable version. The 404s at the probed docs-domain OpenAPI paths only reflect where the specs are hosted, not a contradiction. Missing for 10: an interactive in-page API runner (the docs playground is disabled) and independent hands-on corroboration of driving the API end to end.",
     "evidenceIds": [
+      "pinecone-openapi-specs-20261106",
+      "pinecone-data-plane-spec-20261106",
+      "pinecone-api-versioning-20261106",
       "pinecone-docs-14",
       "pinecone-docs-12",
-      "pinecone-probe-1",
-      "pinecone-probe-2",
-      "pinecone-comm-1"
+      "pinecone-playground-disabled-20261106",
+      "pinecone-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -6849,16 +6858,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "pinecone-docs-14",
-          "quote": "Use the Inference API to generate vector embeddings and rerank results using embedding models and reranking models hosted on Pinecone's infrastructure."
+          "evidenceId": "pinecone-openapi-specs-20261106",
+          "quote": "listing dated machine-readable specs for every API surface (data plane, control plane, inference, admin, oauth), hosted in the official pinecone-io/pinecone-api repository"
+        },
+        {
+          "evidenceId": "pinecone-api-versioning-20261106",
+          "quote": "Each stable version remains unchanged and supported for a minimum of 12 months"
         },
         {
           "evidenceId": "pinecone-docs-12",
           "quote": "Create backups of serverless indexes to protect data, copy indexes, or experiment with configurations using the Pinecone SDK, API, or console."
         },
         {
-          "evidenceId": "pinecone-probe-1",
-          "quote": "Official Pinecone documentation for the vector database, Assistant, inference APIs, SDKs"
+          "evidenceId": "pinecone-data-plane-spec-20261106",
+          "quote": "Pinecone's own mock-the-api guide cites this repo as \"Pinecone's public OpenAPI specs\"."
         }
       ]
     }
@@ -6869,7 +6882,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pinecone's security docs say API key permissions can be managed in the console, that RBAC governs access to resources, and that service accounts exist. Together these are a first-party basis for issuing restricted credentials to an agent. The evidence does not show how granular the scopes are or how such a key would be set up for an agent, so least-privilege depth is unproven. Missing for 10: documented scope granularity (per-index, per-namespace, read-only vs. write), agent-specific credential guidance, programmatic or API-based key provisioning, and independent or hands-on corroboration.",
+    "rationale": "Pinecone's security docs say API key permissions can be managed in the console under role-based access control, and they list API keys and service accounts among production security features. That is first-party evidence of scoped credentials, but the pack never shows how granular the scoping is (e.g., read-only or per-index/namespace), how keys are issued programmatically, or any agent-specific least-privilege guidance. missing for 10: documented permission granularity/scope options, programmatic (API/CLI/MCP) key issuance for agents, agent-oriented least-privilege guidance, independent or hands-on corroboration.",
     "evidenceIds": [
       "pinecone-docs-13",
       "pinecone-docs-29",
@@ -6882,15 +6895,11 @@
       "citations": [
         {
           "evidenceId": "pinecone-docs-13",
-          "quote": "You can manage API key permissions in the Pinecone console"
-        },
-        {
-          "evidenceId": "pinecone-docs-29",
-          "quote": "Pinecone uses role-based access controls (RBAC) to manage access to resources."
+          "quote": "You can manage API key permissions in the Pinecone console... Pinecone uses role-based access controls (RBAC) to manage access to resources."
         },
         {
           "evidenceId": "pinecone-docs-34",
-          "quote": "API keys, SSO, service accounts, audit logs"
+          "quote": "Overview of Pinecone security features for production: API keys, SSO, service accounts, audit logs, CMEK encryption, backups, and Private Endpoints."
         }
       ]
     }
@@ -6899,9 +6908,9 @@
     "productId": "pinecone",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Pinecone's own docs refer to an official \"Pinecone SDK\" for operations such as backups, and its llms.txt lists SDKs among the official documentation topics. That confirms first-party SDKs exist, but the pack gives no detail on their scope, languages, or usability. missing for 10: list of supported SDK languages, SDK reference or quickstart documentation, evidence of SDK coverage across the API surface, independent or hands-on corroboration of building with the SDKs.",
+    "rationale": "First-party docs confirm that an official Pinecone SDK exists: backups can be managed \"using the Pinecone SDK, API, or console\", and the official llms.txt lists SDKs among its documented surfaces. That is only a glancing mention, with no detail on the SDKs themselves. The published OpenAPI specs and the mock-API guide are developer building blocks, not SDKs, so they earn no credit here. Missing for 10: which languages are covered, installation and usage documentation, SDK feature coverage across data/control/inference planes, SDK versioning or maintenance details, and independent hands-on corroboration of SDK quality.",
     "evidenceIds": [
       "pinecone-docs-12",
       "pinecone-probe-1"
@@ -6928,7 +6937,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pinecone is a managed vector database and SaaS platform, so outbound event webhooks are a fair axis for it. The evidence pack documents no registrable HTTP callbacks or event subscriptions. The MCP server, the console and audit logs are adjacent features and do not count as webhooks.",
+    "rationale": "Webhook subscriptions are a fair question for a managed vector-database service, so the axis applies. However, nothing in the evidence pack documents registrable outbound HTTP callbacks or event subscriptions. The MCP server, audit logs, console monitoring and OpenAPI specs are separate features and earn no credit toward webhooks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6942,59 +6951,115 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "The pack shows Pinecone has an API reference section (an Inference API introduction page under /reference/api), but nothing shows that reference is interactive or has runnable examples such as a try-it console or executable snippets. The OpenAPI probe found no spec at any candidate path, so there is also no indirect sign of a spec-driven interactive explorer. An API docs page alone is adjacent to this story, not the capability itself.",
-    "evidenceIds": [],
+    "confidence": "high",
+    "rationale": "Pinecone's API reference shows static per-language example requests. A docs probe found the Mintlify playground set to 'simple', with the interactive in-page runner disabled and no 'Try it' control on endpoint pages. The OpenAPI specs and Prism-based local mock are developer building blocks or user-side workarounds, not an interactive reference with runnable examples. Missing for 10: an interactive in-page API explorer, runnable 'Try it' examples against the live API.",
+    "evidenceIds": [
+      "pinecone-playground-disabled-20261106"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pinecone-playground-disabled-20261106",
+          "quote": "per-language example requests with the interactive in-page runner disabled; no \"Try it\" control renders on the endpoint pages"
+        }
+      ]
     }
   },
   {
     "productId": "pinecone",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The probe found no downloadable OpenAPI or Swagger spec: every candidate path returned 404. The llms.txt file is a documentation index, not a machine-readable API spec, so it is only adjacent and earns no credit. The API reference docs describe endpoints but offer no spec download.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Pinecone's llms.txt lists an \"OpenAPI Specs\" index of dated, machine-readable specs for every API surface: data plane, control plane, inference, admin and oauth. The official pinecone-io/pinecone-api GitHub repo serves these as OpenAPI 3.0.3 YAML files, and Pinecone's mock guide calls them its public OpenAPI specs. The probe 404s at conventional docs paths only mean the specs live on GitHub, not that they are unavailable. missing for 10: no spec served at a conventional well-known path on docs.pinecone.io, no independent community corroboration of using the downloaded specs.",
+    "evidenceIds": [
+      "pinecone-openapi-specs-20261106",
+      "pinecone-data-plane-spec-20261106",
+      "pinecone-mock-the-api-20261106",
+      "pinecone-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pinecone-openapi-specs-20261106",
+          "quote": "docs.pinecone.io publishes an \"## OpenAPI Specs\" index listing dated machine-readable specs for every API surface (data plane, control plane, inference, admin, oauth)"
+        },
+        {
+          "evidenceId": "pinecone-data-plane-spec-20261106",
+          "quote": "the 2026-07 Data Plane spec (OpenAPI 3.0.3, info title \"Pinecone Data Plane API\", version 2026-07)"
+        },
+        {
+          "evidenceId": "pinecone-mock-the-api-20261106",
+          "quote": "You can run a local mock of the Pinecone API from Pinecone's public OpenAPI specs using Prism"
+        }
+      ]
     }
   },
   {
     "productId": "pinecone",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for a managed vector database, but the evidence pack documents no dedicated sandbox, test project, or non-production environment mode. The closest items are adjacent features that do not count toward this story: backups that can 'copy indexes, or experiment with configurations', namespace-per-tenant multitenancy, and the free tier. None of these is a documented sandbox that isolates testing from production data.",
-    "evidenceIds": [],
+    "rationale": "Pinecone documents a testing path that avoids production: a local mock built from its public OpenAPI specs for unit tests and CI, with stateful tests directed to a separate project in the account. Index backups can also copy indexes to experiment with configurations. The caveats are significant: the mock checks request and response shapes only, with no write-then-read or real search, and depends on the third-party Prism tool. The Pinecone Local emulator has reached end of life, and the docs playground has no interactive runner. Missing for 10: a first-party stateful sandbox or emulator, a dedicated sandbox environment mode beyond a separate project, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "pinecone-mock-the-api-20261106",
+      "pinecone-data-plane-spec-20261106",
+      "pinecone-docs-12",
+      "pinecone-playground-disabled-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pinecone-mock-the-api-20261106",
+          "quote": "Use it in unit tests and CI to confirm that your code builds valid requests and handles responses and errors, without a Pinecone account or calls to Pinecone."
+        },
+        {
+          "evidenceId": "pinecone-docs-12",
+          "quote": "Create backups of serverless indexes to protect data, copy indexes, or experiment with configurations using the Pinecone SDK, API, or console."
+        }
+      ]
     }
   },
   {
     "productId": "pinecone",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "API versioning and deprecation policies are a fair question for a hosted API product like Pinecone, so the axis applies. However, nothing in the evidence pack mentions API version identifiers, versioned endpoints, release cycles, or a deprecation policy. The API reference item only describes the Inference API's embedding and reranking functions, and the OpenAPI probe returned 404s.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Pinecone has a dedicated API versioning page. It documents date-named (YYYY-MM) quarterly stable versions, selectable per request via the X-Pinecone-Api-Version header, each supported unchanged for at least 12 months, plus an explicit list of what counts as a breaking change. Dated OpenAPI specs from 2024-04 through 2026-07 in the official pinecone-api repository confirm the versions exist. Missing for 10: independent or hands-on corroboration of the policy being honored in practice, and detail on how deprecations are announced or migrated.",
+    "evidenceIds": [
+      "pinecone-api-versioning-20261106",
+      "pinecone-openapi-specs-20261106",
+      "pinecone-data-plane-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pinecone-api-versioning-20261106",
+          "quote": "Pinecone's APIs are versioned to ensure that your applications continue to work as expected as the platform evolves. Versions are named by release date in the format YYYY-MM"
+        },
+        {
+          "evidenceId": "pinecone-api-versioning-20261106",
+          "quote": "Each stable version remains unchanged and supported for a minimum of 12 months"
+        },
+        {
+          "evidenceId": "pinecone-openapi-specs-20261106",
+          "quote": "hosted in the official pinecone-io/pinecone-api repository across versions 2024-04 through 2026-07"
+        }
+      ]
     }
   },
   {
@@ -7003,7 +7068,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a vector database, but the evidence pack never documents batch upserts, bulk import, or bulk delete or update across many records. The MCP server's 'upsert data' and the metadata filters for narrowing search results are adjacent capabilities that do not show operating on many items at once.",
+    "rationale": "Bulk operations are a fair question for a vector database, but the evidence pack never documents batch upsert, bulk delete, bulk import, or any operation applied across many records at once. References to upserting data via MCP, metadata filters on search, and index backups don't establish a bulk-operation capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7018,7 +7083,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation rules, such as database triggers or event hooks, are a fair axis for a managed vector database platform. However, nothing in the evidence shows Pinecone letting users define rules that fire actions on events. Audit logs, the MCP server for agent-driven index management, and on-demand backups are adjacent features, not event-triggered automation, so they earn no credit.",
+    "rationale": "Event-triggered automation rules, such as triggers or webhooks on index or data events, are a fair capability for a managed vector database platform, so the axis applies. The evidence pack documents no such rule or trigger mechanism. Audit logs, backups, and MCP-driven index management are adjacent features that act on request rather than firing automatically on events.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7033,7 +7098,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Recurring scheduled jobs are a plausible capability for a managed data platform like Pinecone (e.g., scheduled backups or imports), so the axis applies. The evidence only shows one-off actions such as creating backups or managing indexes via the console, SDK or MCP. It never mentions a recurring schedule, cron or workflow scheduler.",
+    "rationale": "Scheduling recurring jobs is a fair question for a managed data platform like Pinecone, which could offer scheduled backups, imports or workflows, so the axis applies. The evidence documents only on-demand backups and index management via SDK, API, console and MCP, which are one-off actions rather than a recurring schedule. No scheduler, cron or recurring-workflow capability appears anywhere in the pack.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7045,10 +7110,10 @@
   {
     "productId": "pinecone",
     "storyId": "automation-versioned-workflows",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pinecone is a vector database and retrieval platform. The evidence describes indexes, search, Assistant, inference and an MCP server, but no automations or workflows that could be versioned, reviewed or rolled back, so this axis is a category mismatch. Index backups (pinecone-docs-12) are data-protection snapshots, not automation version control, and earn no credit here.",
+    "rationale": "Pinecone is a retrieval platform that also ships Assistant and no-code knowledge apps, so versioning and rolling back automations is a fair question, but the evidence shows no such capability. Index backups and API versioning are adjacent features: they cover data protection and API stability, not versioning, review, or rollback of user automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7061,9 +7126,9 @@
     "productId": "pinecone",
     "storyId": "backup-restore-snapshots",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Pinecone's docs say you can create backups of serverless indexes through the SDK, API, or console, which covers the backup half of the story. Restoring is only implied by the phrase \"copy indexes\"; no restore workflow is documented. Missing for 10: explicit documentation of restoring an index from a backup, coverage beyond serverless indexes (pod-based indexes or collections), and independent or hands-on corroboration.",
+    "rationale": "Pinecone's own docs describe creating backups of serverless indexes through the SDK, API, or console, which covers the snapshot/backup half of the story. Restore is only implied by the phrase \"copy indexes\" and is not explicitly documented in the evidence. missing for 10: explicit documentation of restoring an index from a backup, coverage beyond serverless indexes (e.g. pod-based collections), independent or hands-on corroboration of the backup/restore workflow.",
     "evidenceIds": [
       "pinecone-docs-12",
       "pinecone-docs-20",
@@ -7090,12 +7155,12 @@
     "storyId": "builtin-full-text-search",
     "verdict": "full",
     "quality": 9,
-    "confidence": "medium",
-    "rationale": "Pinecone's first-party docs describe native full-text search inside the index: BM25 token matching with Lucene query syntax over schema text fields, needing no model. The same index can also serve semantic and sparse-vector search, selected via score_by. A community comment mentions the combined keyword+vector search, but only in general terms. missing for 10: independent hands-on corroboration of full-text/BM25 quality and depth, and documentation of limits such as tokenization or language support.",
+    "confidence": "high",
+    "rationale": "Pinecone's docs say a single index serves full-text search (BM25 token matching with Lucene query syntax over schema text fields, no model required) alongside semantic and sparse-vector search. Results are ranked via score_by text or query_string, so keyword search runs inside the database without a separate engine. A community user also notes the combined keyword+vector search. missing for 10: independent hands-on corroboration of BM25/Lucene full-text quality and limits (tokenization, analyzers, field constraints).",
     "evidenceIds": [
       "pinecone-docs-7",
-      "pinecone-docs-18",
       "pinecone-docs-8",
+      "pinecone-docs-18",
       "pinecone-docs-27",
       "pinecone-comm-1"
     ],
@@ -7105,12 +7170,12 @@
       "subject": "As a developer, I can run keyword/full-text search over documents inside the database without bolting on a separate search engine",
       "citations": [
         {
-          "evidenceId": "pinecone-docs-18",
-          "quote": "Full-text search is BM25 token matching with Lucene query syntax over text fields in your schema... No model required"
-        },
-        {
           "evidenceId": "pinecone-docs-7",
           "quote": "A single index can serve full-text search (BM25 with Lucene queries), semantic search, and sparse-vector search together, often covering what previously required two indexes."
+        },
+        {
+          "evidenceId": "pinecone-docs-18",
+          "quote": "Full-text search is BM25 token matching with Lucene query syntax over text fields in your schema... No model required"
         },
         {
           "evidenceId": "pinecone-docs-8",
@@ -7125,7 +7190,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack contains no documented bulk-import or bulk-export of vectors and metadata in a specified file format. Index backups only protect or copy data inside Pinecone and are not an export, and MCP upserts are not a bulk-import pipeline, so these are adjacent features that earn no credit.",
+    "rationale": "Bulk import and export of vectors and metadata is a fair question for a vector database, but the evidence pack never documents a bulk-import feature, an export path, or supported file formats. Backups that copy indexes inside Pinecone and per-record upsert through the MCP server or data-plane API are adjacent features, not documented bulk import or export.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7140,7 +7205,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Running a database embedded in-process or as a lightweight local instance is a fair deployment-mode question for a vector database. The evidence pack documents only Pinecone's hosted serverless indexes, console and terminal management, and a hosted free tier. Nothing shows an embedded or local instance, and a hosted free tier is a different capability that earns no credit.",
+    "rationale": "Pinecone's docs say its in-memory local emulator, Pinecone Local, reached end of life on October 7, 2026. The documented replacement is a Prism mock of the API built from the OpenAPI specs, and it does not support write-then-read or real search, so it is not a local database instance. No evidence shows an embedded in-process mode or a lightweight local instance for small workloads.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7155,7 +7220,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "low",
-    "rationale": "The only evidence is one 2023 community hands-on report of a 'generous free tier' that held 300k embeddings at about 10% capacity, which directly speaks to prototyping without paying. No first-party pricing or plan documentation is in the pack, and another user from the same period reported being unable to sign up for a starter account because of demand. missing for 10: first-party documentation of free/starter tier limits and features, current corroboration that the free tier is available and covers serverless, inference and assistant features, clarity on signup availability.",
+    "rationale": "The only on-topic evidence is a community report of a generous free tier: one user holds 300k embeddings at about 10% of the free capacity and sees no need to convert to paid. That suggests a meaningful free tier for prototyping, but nothing in the first-party docs describes the free plan, its limits, or whether a credit card is required. Another community comment says starter-account signups were temporarily unavailable due to demand, which is an availability caveat rather than evidence against the tier. Missing for 10: first-party documentation of free/starter plan limits, a no-credit-card signup, current and independent corroboration that the free tier is available.",
     "evidenceIds": [
       "pinecone-comm-4",
       "pinecone-comm-3"
@@ -7178,7 +7243,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scaling beyond one node is a fair question for a managed vector database, so the axis applies. The pack has no evidence of sharding, replicas, pods or distributed deployment. The serverless-index and namespace-per-tenant multitenancy docs cover tenant isolation, a different story, and say nothing about horizontal scaling across nodes.",
+    "rationale": "Scaling a vector database beyond one node is a fair question for Pinecone, but the evidence pack never documents sharding, replicas, pods, or distributed deployment. The closest items describe serverless indexes and one namespace per tenant, which is a multitenancy pattern, not evidence of horizontal scaling across nodes.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7193,7 +7258,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Pinecone documents hybrid search combining keyword (BM25) and semantic signals over a single index. Fusion ranking, however, is described as fusing separate searches with reciprocal rank fusion, and `score_by` ranks by one signal per search. That makes it two approaches (a text-match filter on a dense search, or RRF across multiple searches) rather than a clearly single fused query. A community user corroborates the combined keyword+vector search. missing for 10: documented single-request server-side fusion of dense and sparse/BM25 scores, clarity on whether RRF runs server-side or client-side, hands-on corroboration of fusion ranking quality.",
+    "rationale": "Pinecone documents hybrid search that combines a keyword signal with a semantic signal. One index can serve BM25 full-text, dense, and sparse-vector search, and results can be fused with reciprocal rank fusion. The caveats: `score_by` ranks by a single signal, and fusion is described as merging separate searches rather than one native fused query. A community user does praise the combined keyword+vector search. Missing for 10: evidence of a single native query that fuses dense and BM25/sparse scores server-side, documented fusion weighting/controls, and hands-on corroboration of fusion quality.",
     "evidenceIds": [
       "pinecone-docs-27",
       "pinecone-docs-9",
@@ -7222,10 +7287,6 @@
         {
           "evidenceId": "pinecone-docs-8",
           "quote": "When you search, you rank results via `score_by`: `text` (BM25), `query_string` (Lucene), `dense_vector`, or `sparse_vector`."
-        },
-        {
-          "evidenceId": "pinecone-comm-1",
-          "quote": "there is more than meets the eye with the combined keyword+vector search and handling of filtering"
         }
       ]
     }
@@ -7236,7 +7297,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Tuning index parameters is a fair question for a vector database, but nothing in the evidence shows Pinecone exposing HNSW graph settings, index-type choices, or recall/latency/memory trade-off controls. The only related items are a community remark that Pinecone had HNSW (with no mention of tunable parameters) and backup docs mentioning 'experiment with configurations'. Both are adjacent and do not show the tuning capability itself.",
+    "rationale": "Tuning index parameters is a fair question for a vector database, but the evidence pack never documents user-tunable HNSW settings, selectable index types, or any recall/latency/memory trade-off controls. A community remark that Pinecone had HNSW says nothing about tuning it, and the backup docs' mention of 'experiment with configurations' is an adjacent feature, not parameter tuning.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7251,11 +7312,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pinecone's own Inference API generates vector embeddings with models hosted on Pinecone's infrastructure, so you don't need to run a separate embedding service. The evidence does not show the index embedding text automatically at upsert and query time; it only shows a hosted embedding endpoint you call yourself. missing for 10: documented automatic embedding at ingest and query time (integrated index-level model configuration), configurable or external model providers, a list of supported models, independent or hands-on corroboration.",
+    "rationale": "Pinecone documents its own Inference API, which generates vector embeddings with embedding models hosted on Pinecone's infrastructure, so you don't have to run your own embedding service. The evidence does not show the index itself embedding records automatically at upsert or query time, nor configuring external model providers. Docs-18's note that full-text search needs 'No model required' only implies that other modes use a model. missing for 10: documented integrated embedding at ingest and query inside the index, configurable third-party model providers, list of supported models, independent hands-on corroboration.",
     "evidenceIds": [
       "pinecone-docs-14",
       "pinecone-docs-23",
-      "pinecone-probe-1"
+      "pinecone-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -7267,8 +7328,8 @@
           "quote": "Use the Inference API to generate vector embeddings and rerank results using embedding models and reranking models hosted on Pinecone's infrastructure."
         },
         {
-          "evidenceId": "pinecone-probe-1",
-          "quote": "Official Pinecone documentation for the vector database, Assistant, inference APIs, SDKs"
+          "evidenceId": "pinecone-docs-18",
+          "quote": "Full-text search is BM25 token matching with Lucene query syntax over text fields in your schema... No model required"
         }
       ]
     }
@@ -7279,7 +7340,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosted Kubernetes deployment is a fair axis for a vector database, since many vector databases ship Helm charts or operators, so the story applies. The evidence pack covers only Pinecone's managed serverless service, console, SDKs and MCP server. Nothing mentions a Helm chart, Kubernetes operator or self-hosted deployment.",
+    "rationale": "Deploying on Kubernetes with an official Helm chart or operator is a fair question for a vector database, so the axis applies. The evidence pack describes only Pinecone's managed serverless service, console, SDKs, MCP server and a local API mock, and never mentions a Helm chart, Kubernetes operator or self-hosted production deployment.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7291,32 +7352,45 @@
   {
     "productId": "pinecone",
     "storyId": "live-upserts-freshness",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies to a managed vector database, but the pack never documents continuous upsert/delete behavior, how quickly changes appear in search, or any freshness or consistency guarantees. The only related mention is that MCP agents can \"upsert data\", which comes from the MCP-server story and says nothing about deletes or freshness.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows Pinecone has its own data-plane upsert endpoint, and its MCP server can upsert data, so the write side of the story is the product's own capability. Nothing in the pack documents delete operations, how quickly upserted or deleted records show up in search results, or any freshness/consistency model. Missing for 10: documented delete/update operations, documented freshness or eventual-consistency behavior, evidence of how fast continuous writes become searchable, and hands-on corroboration.",
+    "evidenceIds": [
+      "pinecone-playground-disabled-20261106",
+      "pinecone-docs-15"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can upsert and delete records continuously and have changes reflected in search results quickly, with documented freshness/consistency behavior",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pinecone-playground-disabled-20261106",
+          "quote": "the API reference pages on docs.pinecone.io (data-plane upsert and control-plane create_index checked)"
+        },
+        {
+          "evidenceId": "pinecone-docs-15",
+          "quote": "agents can search Pinecone documentation, manage indexes, upsert data, and query indexes for relevant information"
+        }
+      ]
     }
   },
   {
     "productId": "pinecone",
     "storyId": "managed-cloud-offering",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Pinecone is documented as a hosted service built on serverless indexes, and a community user describes it as \"fully managed.\" Programmatic management is documented through the SDK/API (backups and index copies), the MCP server (\"manage indexes\") and terminal-based index management. missing for 10: an explicit first-party description of index creation/provisioning via API or SDK, details of cloud/region provisioning options, and hands-on corroboration of programmatic provisioning.",
+    "rationale": "Pinecone is a managed cloud service with serverless indexes, which the community explicitly calls 'fully managed'. Provisioning is programmatic: there is a control-plane API with a create_index endpoint and published OpenAPI specs, indexes can be managed via SDK, API, terminal or the MCP server, and backups and index copies can be created via SDK or API. Missing for 10: a dedicated first-party guide on creating and configuring indexes programmatically (cloud/region selection, sizing), and hands-on corroboration of the provisioning workflow.",
     "evidenceIds": [
-      "pinecone-docs-11",
+      "pinecone-comm-8",
+      "pinecone-playground-disabled-20261106",
+      "pinecone-openapi-specs-20261106",
       "pinecone-docs-12",
       "pinecone-docs-15",
-      "pinecone-docs-16",
-      "pinecone-comm-8",
-      "pinecone-docs-14"
+      "pinecone-docs-11",
+      "pinecone-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -7324,8 +7398,16 @@
       "subject": "As a developer, I can use a fully managed cloud version of the database with programmatic provisioning",
       "citations": [
         {
-          "evidenceId": "pinecone-docs-11",
-          "quote": "Implement multitenancy in Pinecone using a **serverless index with one namespace per tenant**."
+          "evidenceId": "pinecone-comm-8",
+          "quote": "That plus being 'fully managed' made it a super compelling product."
+        },
+        {
+          "evidenceId": "pinecone-playground-disabled-20261106",
+          "quote": "control-plane create_index checked"
+        },
+        {
+          "evidenceId": "pinecone-openapi-specs-20261106",
+          "quote": "dated machine-readable specs for every API surface (data plane, control plane, inference, admin, oauth)"
         },
         {
           "evidenceId": "pinecone-docs-12",
@@ -7333,15 +7415,11 @@
         },
         {
           "evidenceId": "pinecone-docs-15",
-          "quote": "Using the MCP server, agents can search Pinecone documentation, manage indexes, upsert data, and query indexes for relevant information."
+          "quote": "agents can search Pinecone documentation, manage indexes, upsert data, and query indexes for relevant information."
         },
         {
           "evidenceId": "pinecone-docs-16",
-          "quote": "manage indexes from a clean, fast console — or stay in the terminal"
-        },
-        {
-          "evidenceId": "pinecone-comm-8",
-          "quote": "That plus being 'fully managed' made it a super compelling product."
+          "quote": "manage indexes from a clean, fast console — or stay in the terminal."
         }
       ]
     }
@@ -7352,7 +7430,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pinecone's docs show native metadata filtering on vector search, with filter expressions using operators like eq, in and gt, so the core capability is first-party. Nothing in the evidence shows that filtered queries keep recall or latency intact, which is half of what the story asks for; one community comment praises its 'handling of filtering' without detail. Missing for 10: documented or benchmarked recall under selective filters, latency figures for filtered queries, full operator reference, independent hands-on corroboration.",
+    "rationale": "Pinecone's own docs show that metadata filter expressions can be added to a vector query, using operators such as eq, in and gt combined with and, to limit results to matching records. A community comment speaks loosely and positively about its 'handling of filtering'. Nothing in the pack shows that filtered search keeps recall or latency intact, which is the story's key qualifier. missing for 10: documentation or benchmarks on recall under selective filters, latency impact of filtering, filter index/pre-filtering design details, independent hands-on corroboration",
     "evidenceIds": [
       "pinecone-docs-10",
       "pinecone-docs-28",
@@ -7369,8 +7447,8 @@
           "quote": "you can then include a metadata filter to limit the search to records matching the filter expression"
         },
         {
-          "evidenceId": "pinecone-docs-28",
-          "quote": "Narrow Pinecone search results by adding metadata filter expressions to your query"
+          "evidenceId": "pinecone-docs-32",
+          "quote": "Narrow Pinecone search results by adding metadata filter expressions to your query, using operators like eq, in, gt, and gt, and for precise retrieval."
         },
         {
           "evidenceId": "pinecone-comm-1",
@@ -7385,10 +7463,9 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pinecone documents a first-party multitenancy pattern: one namespace per tenant in a serverless index. That directly covers the isolation mechanism the story asks for. The evidence pack does not show documented limits (for example, maximum namespaces per index or per-tenant quotas), and nothing shows the approach is cheap at scale. Missing for 10: documented namespace/tenant limits, cost or scale evidence for many tenants, independent or hands-on corroboration of namespace isolation.",
+    "rationale": "Pinecone's own multitenancy guide recommends isolating tenants with one namespace per tenant in a serverless index, so the core isolation mechanism is first-party and documented. The evidence does not show any documented limits, such as maximum namespaces per index, or any claim that this isolation is cheap at scale. Missing for 10: documented namespace/tenant count limits, evidence of cost-efficiency for many tenants, independent or hands-on corroboration of multi-tenant scale.",
     "evidenceIds": [
       "pinecone-docs-11",
-      "pinecone-docs-19",
       "pinecone-docs-33"
     ],
     "support": {
@@ -7411,16 +7488,15 @@
     "productId": "pinecone",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Pinecone documents a real API and SDK surface. Backups are explicitly available \"using the Pinecone SDK, API, or console\", and the marketing page offers managing indexes from the console \"or stay in the terminal\", which implies console/API parity for core operations. Nothing in the pack states that every UI action has an API equivalent: API key permissions are described only as managed \"in the Pinecone console\", and the OpenAPI spec probe returned 404 on all candidate paths. missing for 10: explicit documentation of full UI/API parity, API coverage of console-only admin tasks such as API key permissions and RBAC, a published OpenAPI spec, independent hands-on corroboration.",
+    "rationale": "Pinecone publishes machine-readable OpenAPI specs for every API surface, including data plane, control plane, inference, admin and oauth. Specific operations such as backups are documented as available through the SDK, API, or console, and the site says users can manage indexes from the console 'or stay in the terminal'. No source explicitly states full UI-to-API parity, and some functions (e.g., API key permission management, the no-code knowledge app publishing) are described only in console or UI terms. Missing for 10: an explicit UI/API parity statement, evidence that console-described features (API key permissions, no-code app publishing, monitoring) are API-accessible, and independent hands-on corroboration of parity.",
     "evidenceIds": [
+      "pinecone-openapi-specs-20261106",
+      "pinecone-data-plane-spec-20261106",
       "pinecone-docs-12",
       "pinecone-docs-16",
-      "pinecone-docs-14",
-      "pinecone-docs-15",
-      "pinecone-docs-13",
-      "pinecone-probe-2"
+      "pinecone-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -7428,16 +7504,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "pinecone-openapi-specs-20261106",
+          "quote": "listing dated machine-readable specs for every API surface (data plane, control plane, inference, admin, oauth)"
+        },
+        {
           "evidenceId": "pinecone-docs-12",
-          "quote": "Create backups of serverless indexes to protect data, copy indexes, or experiment with configurations using the Pinecone SDK, API, or console."
+          "quote": "using the Pinecone SDK, API, or console"
         },
         {
           "evidenceId": "pinecone-docs-16",
-          "quote": "Monitor performance, explore your data, and manage indexes from a clean, fast console — or stay in the terminal. Your call."
-        },
-        {
-          "evidenceId": "pinecone-docs-14",
-          "quote": "Use the Inference API to generate vector embeddings and rerank results using embedding models and reranking models hosted on Pinecone's infrastructure."
+          "quote": "manage indexes from a clean, fast console — or stay in the terminal"
         }
       ]
     }
@@ -7448,7 +7524,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export and portability is a fair question for a managed vector database, so the axis applies. The pack only documents backups of serverless indexes for protecting, copying, or experimenting with indexes inside Pinecone. That is an adjacent feature, not an export of all data in open formats to leave the platform. No export tool, open-format dump, or migration path is documented.",
+    "rationale": "Data export applies to a managed vector database, but the evidence pack documents no way to export all data in open formats for migration. The only related item is serverless index backups, used to protect, copy, or experiment with indexes inside Pinecone. That is an adjacent capability, not an export path.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7463,7 +7539,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a vector database's source is available under an open license is a fair question for this kind of product, so the axis applies. Nothing in the pack shows Pinecone publishing its source under any license. The first-party docs cover only managed-service features, and one community comment calls Pinecone 'the one database that is anti-FOSS', which points away from an open codebase rather than toward one.",
+    "rationale": "Pinecone is a managed vector database, and a database could plausibly be open source, so this axis applies. The pack shows no open-licensed source for the product. The public pinecone-io/pinecone-api GitHub repository holds only OpenAPI specs, not the database's source, and a community comment calls Pinecone \"anti-FOSS\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7478,7 +7554,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a vector database, so the axis applies. Nothing in the pack documents a self-hostable or on-prem deployment of Pinecone. The docs describe serverless indexes and models hosted on Pinecone's infrastructure, and community comments describe it as fully managed and the anti-FOSS option, with self-hosting done through alternatives like pgvector or Faiss.",
+    "rationale": "Self-hosting is a fair question for a vector database, but the evidence shows no way to self-host Pinecone's core product. The only local option, Pinecone Local (an in-memory emulator), has reached end of life. The remaining Prism-based mock is a request/response test stub that does not cover real search, so it does not count as self-hosting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7493,7 +7569,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pinecone's own docs mention an official Pinecone SDK, used for example to create backups, and its llms.txt says the official docs cover SDKs. That confirms first-party SDKs exist, but nothing names the languages they ship in. missing for 10: evidence of official Python, TypeScript, Go and Java SDKs, SDK reference documentation per language, independent or hands-on corroboration of SDK quality.",
+    "rationale": "Pinecone's docs confirm an official SDK exists: backups can be created 'using the Pinecone SDK', and llms.txt describes official documentation covering SDKs. Nothing in the pack names which languages those SDKs cover, so the multi-language part of the story is unproven. missing for 10: explicit evidence of official Python, TypeScript, Go, and Java SDKs, SDK reference documentation per language, independent or hands-on corroboration of SDK quality.",
     "evidenceIds": [
       "pinecone-docs-12",
       "pinecone-probe-1"
@@ -7520,7 +7596,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data region and residency is a fair question for a managed vector database like Pinecone, so the axis applies. However, no item in the evidence pack documents choosing a cloud region or a residency location for indexes or data. The security overview lists CMEK, Private Endpoints and audit logs, but these are adjacent privacy controls, not region selection.",
+    "rationale": "Choosing a storage region is a fair question for a managed vector database, but nothing in the evidence pack documents region selection or data-residency controls. The security overview lists API keys, SSO, CMEK, backups and Private Endpoints, which are adjacent controls and do not establish where data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7535,7 +7611,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pinecone is a managed data service that also hosts inference and assistant features, so a no-training data policy or opt-out is a fair question for it. The evidence pack never mentions training on customer data or any opt-out. The security docs cover only RBAC, SSO, audit logs, CMEK, backups and Private Endpoints, which are adjacent controls and do not address training use.",
+    "rationale": "Pinecone is a managed data service that also hosts embedding, reranking and assistant models, so whether customer data trains AI models is a fair privacy question. The evidence pack documents RBAC, SSO, audit logs, CMEK encryption and Private Endpoints, but nothing about a training opt-out or a no-training data-use policy. Those security controls are adjacent features, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7550,7 +7626,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents backups, CMEK encryption, audit logs, RBAC and index management, but nothing about deleting records or namespaces, retention windows, or data purge controls. Backups and encryption are adjacent privacy features, not retention or deletion control, so they earn no credit.",
+    "rationale": "Data retention and deletion is a fair axis for a managed vector database, but the evidence pack has no documentation of deleting records, namespaces or indexes, or of configuring retention policies. Backups, CMEK, audit logs and generic 'manage indexes' mentions are adjacent controls and are not deletion or retention capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7565,7 +7641,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a managed vector database with SDKs, a CLI, and a console, so the axis applies. Nothing in the evidence pack documents disabling telemetry or usage tracking. The security material (RBAC, SSO, audit logs, CMEK, Private Endpoints) covers adjacent controls and earns no credit for this story.",
+    "rationale": "Opting out of telemetry is a fair question for a managed SaaS with SDKs, a CLI and a console, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out for Pinecone. The security docs cover RBAC, SSO, audit logs, CMEK and Private Endpoints, which are adjacent controls and not telemetry opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7580,7 +7656,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no published benchmarks, latency figures, or recall measurements for Pinecone. The only performance-related item is a console 'monitor performance' marketing line, which is an adjacent feature and not a published benchmark. Community comments mention performance concerns but cite no numbers.",
+    "rationale": "The evidence pack contains no published benchmarks, latency figures, or recall measurements from Pinecone. The console's 'Monitor performance' feature is an adjacent monitoring tool, not published numbers backing performance claims. Community comments mention benchmarks only in general terms, not as Pinecone-published data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7595,7 +7671,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Vector quantization or compression is a fair axis for a vector database, so the story applies. The evidence pack has no documentation of quantization, compression settings, or a documented accuracy trade-off for Pinecone. The cited material covers hybrid search, filtering, multitenancy, backups, security and MCP, none of which addresses this story.",
+    "rationale": "Vector quantization or compression is a fair axis for a vector database, so the story applies. However, nothing in the evidence pack mentions quantization, compression, reduced-precision vectors, or a documented accuracy trade-off. The pack covers hybrid search, filtering, multitenancy, backups, security and API specs, none of which address this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7610,7 +7686,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions maintained integrations with RAG or agent frameworks such as LangChain or LlamaIndex. The items that come closest cover the MCP server and agentic coding tools (Claude Code, Cursor, Gemini CLI). Those belong to separate stories and are not framework integrations, so they earn no credit here.",
+    "rationale": "Nothing in the evidence pack documents maintained integrations with RAG or agent frameworks such as LangChain or LlamaIndex. The MCP server and the Claude Code, Cursor and Gemini CLI tooling cover connecting coding agents, which is a separate story and earns no credit here. The axis clearly applies to a vector database, so absence of evidence is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7625,7 +7701,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Replication and high availability with a consistency model is a fair question for a managed vector database like Pinecone, so the axis applies. The evidence pack never mentions cross-node or cross-zone replication, HA, or a consistency model. Backups and index copying are a different capability (data protection, not live replication) and earn no credit.",
+    "rationale": "Pinecone is a managed vector database, so replication across nodes or zones for high availability is a fair question to ask of it. The evidence pack never mentions replicas, multi-zone or multi-region deployment, or a consistency model. Backups and namespace-based multitenancy are adjacent features and do not count as replication.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7637,26 +7713,22 @@
   {
     "productId": "pinecone",
     "storyId": "reranking-integration",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pinecone's API reference says its Inference API can \"rerank results\" using reranking models hosted on Pinecone's own infrastructure. That is a built-in, first-party reranking capability that directly matches the story. Missing for 10: the specific reranking models available, documentation of reranking inside the search/query call itself, parameters such as top-n and rank fields, and any independent or hands-on corroboration.",
+    "rationale": "Pinecone's own Inference API documents reranking of results with reranking models hosted on Pinecone's infrastructure, so it ships a first-party reranking capability. The evidence is a single repeated one-line mention, with no detail on available models or on reranking inside the search/query call. missing for 10: list of available reranking models, documented integration of reranking into the search/query pipeline (e.g., a rerank parameter on search), usage guide/parameters, independent or hands-on corroboration.",
     "evidenceIds": [
       "pinecone-docs-14",
       "pinecone-docs-23"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ml-engineer, I can rerank search results with built-in or first-party-integrated reranking models",
       "citations": [
         {
           "evidenceId": "pinecone-docs-14",
           "quote": "Use the Inference API to generate vector embeddings and rerank results using embedding models and reranking models hosted on Pinecone's infrastructure."
-        },
-        {
-          "evidenceId": "pinecone-docs-23",
-          "quote": "rerank results using embedding models and reranking models hosted on Pinecone’s infrastructure"
         }
       ]
     }
@@ -7667,12 +7739,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pinecone documents metadata filter expressions on queries with operators such as eq, in, gt and and, which covers range comparisons, array/set membership and basic boolean conjunction. Geo filtering and nested boolean logic (or/not, nesting depth) are not evidenced. missing for 10: geo filtering, documented nested boolean logic (or/not combinations), full operator reference, independent hands-on corroboration of complex filters",
+    "rationale": "Pinecone documents metadata filter expressions on queries with operators such as eq, in, gt and and. That covers range comparisons, set/array membership and boolean conjunction, but there is no evidence of geo filtering or of deeply nested or/and logic. missing for 10: geo filtering, documented nested boolean logic (or/not combinations), explicit array-field membership semantics, independent hands-on corroboration of filter expressiveness.",
     "evidenceIds": [
-      "pinecone-docs-10",
-      "pinecone-docs-28",
       "pinecone-docs-32",
-      "pinecone-comm-1"
+      "pinecone-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -7686,10 +7756,6 @@
         {
           "evidenceId": "pinecone-docs-10",
           "quote": "you can then include a metadata filter to limit the search to records matching the filter expression"
-        },
-        {
-          "evidenceId": "pinecone-comm-1",
-          "quote": "there is more than meets the eye with the combined keyword+vector search and handling of filtering"
         }
       ]
     }
@@ -7700,10 +7766,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows that Pinecone offers serverless indexes, for multitenancy and backups, but nothing documents usage-based billing or transparent per-unit costs. The serverless mentions are an adjacent architectural feature, not pricing evidence. The community note about a generous free tier is not usage-based per-unit pricing either, so neither counts as support.",
+    "rationale": "The evidence pack mentions serverless indexes in the multitenancy and backup guides, and a community post praises the free tier. None of it documents usage-based billing, per-unit costs (e.g., per read/write/storage unit), or pricing transparency. Serverless index architecture is an adjacent feature, not evidence of the pricing model the story asks about.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can pay serverless usage-based pricing with transparent per-unit costs instead of provisioning fixed clusters",
       "citations": []
@@ -7715,11 +7781,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pinecone documents dense-vector semantic search, including ranking by `dense_vector` in `score_by`. A community comment notes it offered HNSW (approximate nearest-neighbor) indexing, so the core similarity search is evidenced. However, nothing in the pack documents configurable distance metrics such as cosine, euclidean or dot product, which is half of the story. Missing for 10: documentation of selectable distance metrics, first-party documentation of the ANN algorithm and its tuning, hands-on corroboration of search quality.",
+    "rationale": "Pinecone documents semantic similarity search over embeddings: a single index serves semantic and sparse-vector search, and results can be ranked by `dense_vector` or `sparse_vector`. A community comment corroborates that it offered HNSW-based approximate nearest-neighbor search. However, nothing in the pack shows that the distance metric can be configured. Missing for 10: documented configurable distance metrics (e.g. cosine/euclidean/dot product), explicit first-party ANN algorithm documentation, hands-on corroboration of query quality.",
     "evidenceIds": [
-      "pinecone-docs-8",
       "pinecone-docs-7",
-      "pinecone-docs-1",
+      "pinecone-docs-8",
       "pinecone-comm-8"
     ],
     "support": {
@@ -7728,12 +7793,12 @@
       "subject": "As a developer, I can run approximate nearest-neighbor similarity search over embeddings with configurable distance metrics",
       "citations": [
         {
-          "evidenceId": "pinecone-docs-8",
-          "quote": "When you search, you rank results via `score_by`: `text` (BM25), `query_string` (Lucene), `dense_vector`, or `sparse_vector`."
-        },
-        {
           "evidenceId": "pinecone-docs-7",
           "quote": "A single index can serve full-text search (BM25 with Lucene queries), semantic search, and sparse-vector search together"
+        },
+        {
+          "evidenceId": "pinecone-docs-8",
+          "quote": "When you search, you rank results via `score_by`: `text` (BM25), `query_string` (Lucene), `dense_vector`, or `sparse_vector`."
         },
         {
           "evidenceId": "pinecone-comm-8",

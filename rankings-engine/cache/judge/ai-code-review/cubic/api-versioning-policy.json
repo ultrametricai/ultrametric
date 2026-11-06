@@ -1,17 +1,30 @@
 {
-  "hash": "66a01b04e1f0ba9ee5e07c288c048c0049ebf5b8688da9694e8a82a28c76ca81",
+  "hash": "35883ad70c036a5ad331093b755e49cd31750ec5f029bce9fd15edebde7065b9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "cubic is a SaaS code-review platform that exposes an Analytics API and an MCP server, so API versioning and deprecation policy is a fair question for it. However, no evidence documents API version identifiers, versioned endpoints, or a deprecation or sunset policy, and the OpenAPI probe found no spec at any candidate path. The Analytics API's existence alone does not show versioning or a deprecation commitment.",
-    "evidenceIds": [],
+    "rationale": "cubic's own APIs are path-versioned (/api/v1/organizations, /api/analytics/v1/prs) and have a dated changelog. The only lifecycle commitment documented is narrow: legacy `cak_` Analytics keys keep working but are no longer issued. The evidence explicitly states that no versioning or deprecation policy document exists. Missing for 10: a documented API versioning and deprecation policy (notice periods, sunset timelines, breaking-change rules), and independent or hands-on corroboration of version stability.",
+    "evidenceIds": [
+      "cubic-key-lifecycle-20261106",
+      "cubic-members-api-ref-20261106",
+      "cubic-analytics-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "cubic-key-lifecycle-20261106",
+          "quote": "The API is path-versioned (/api/v1/organizations, /api/analytics/v1/prs) with a dated changelog"
+        },
+        {
+          "evidenceId": "cubic-key-lifecycle-20261106",
+          "quote": "Analytics API keys that start with `cak_` keep working with the Analytics API, but cubic no longer creates them."
+        }
+      ]
     },
     "productId": "cubic",
     "storyId": "api-versioning-policy"

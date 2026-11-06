@@ -1,17 +1,29 @@
 {
-  "hash": "4e0606d9f3b62e15e9f349a033d3b20f4ff575563c0e5cfbf1b35f4506e31af9",
+  "hash": "5dd6aa29437d1b67ad7f23c9b97604a3e2f03a05aad53693bb9a69ce757c14fd",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies to a managed vector database, but the pack never documents continuous upsert/delete behavior, how quickly changes appear in search, or any freshness or consistency guarantees. The only related mention is that MCP agents can \"upsert data\", which comes from the MCP-server story and says nothing about deletes or freshness.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows Pinecone has its own data-plane upsert endpoint, and its MCP server can upsert data, so the write side of the story is the product's own capability. Nothing in the pack documents delete operations, how quickly upserted or deleted records show up in search results, or any freshness/consistency model. Missing for 10: documented delete/update operations, documented freshness or eventual-consistency behavior, evidence of how fast continuous writes become searchable, and hands-on corroboration.",
+    "evidenceIds": [
+      "pinecone-playground-disabled-20261106",
+      "pinecone-docs-15"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can upsert and delete records continuously and have changes reflected in search results quickly, with documented freshness/consistency behavior",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pinecone-playground-disabled-20261106",
+          "quote": "the API reference pages on docs.pinecone.io (data-plane upsert and control-plane create_index checked)"
+        },
+        {
+          "evidenceId": "pinecone-docs-15",
+          "quote": "agents can search Pinecone documentation, manage indexes, upsert data, and query indexes for relevant information"
+        }
+      ]
     },
     "productId": "pinecone",
     "storyId": "live-upserts-freshness"

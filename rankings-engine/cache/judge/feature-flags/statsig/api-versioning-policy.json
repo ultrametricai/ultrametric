@@ -1,17 +1,34 @@
 {
-  "hash": "227c5ceaa767bfb56a06c716d198158c22afacb0526399930048ea98ae94e6df",
+  "hash": "c6b16fbb6cb40de901bbf79d867bec7e6cf225ffaa485f48c54c970ef75b771f",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence documents a Console API and an HTTP API, but none of it mentions API versioning, version pinning, or a deprecation policy. The existence of APIs alone does not show that this story is delivered.",
-    "evidenceIds": [],
+    "rationale": "Statsig explicitly versions the Console API, selected through a `STATSIG-API-VERSION` header, and promises that each version won't break existing usage. It also publishes a versioned OpenAPI spec that it commits to keep up to date. However, no deprecation policy is documented: there are no sunset timelines, notice periods, or support windows for old versions, and the only hint is that the version header 'becomes required in the future.' missing for 10: a documented deprecation/sunset policy with timelines, versioning evidence for the HTTP evaluation API, independent corroboration.",
+    "evidenceIds": [
+      "statsig-api-versioning-20261106",
+      "statsig-console-openapi-20261106",
+      "statsig-openapi-reference-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "statsig-api-versioning-20261106",
+          "quote": "Statsig versions the Console API. Statsig guarantees that each version won't break existing usage; each new version introduces breaking changes."
+        },
+        {
+          "evidenceId": "statsig-api-versioning-20261106",
+          "quote": "Pass the version in the `STATSIG-API-VERSION` field in the header."
+        },
+        {
+          "evidenceId": "statsig-openapi-reference-20261106",
+          "quote": "Statsig keeps the OpenAPI spec for this API version up-to-date."
+        }
+      ]
     },
     "productId": "statsig",
     "storyId": "api-versioning-policy"

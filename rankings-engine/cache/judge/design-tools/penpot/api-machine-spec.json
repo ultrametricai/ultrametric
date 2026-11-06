@@ -1,17 +1,34 @@
 {
-  "hash": "36ebdc22e1f6689162da0974e50220d72f254fe6750b695df565e23375a67647",
+  "hash": "f6a34b1466f884c5c72a10b22a04449061df069ce1cfb51af675e4c9bd7cb5fc",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Penpot documents an API that apps can reach with access tokens, so this axis applies. However, the evidence pack never mentions a downloadable OpenAPI or equivalent machine-readable spec. A probe of the common OpenAPI and Swagger paths on help.penpot.app returned 404 on every one. The API's existence, the plugin API and the MCP server are adjacent capabilities, not a published spec.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Penpot's hosted instance serves a machine-readable OpenAPI 3.0.0 document for its backend RPC API at /api/main/doc/openapi.json. It has 152 paths, is auto-generated from source, and is version-tracked to the release, with a Swagger UI that loads the live spec. The probe 404s were on the help.penpot.app docs host, not the API host, so they do not contradict this. Missing for 10: the help docs link the static reference rather than the OpenAPI document, so the spec is not prominently surfaced; on self-hosted instances it is gated behind the enable-backend-api-doc flag; and there is no independent hands-on corroboration.",
+    "evidenceIds": [
+      "penpot-openapi-spec-20261106",
+      "penpot-swagger-ui-20261106",
+      "penpot-backend-api-docs-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "penpot-openapi-spec-20261106",
+          "quote": "Penpot's hosted SaaS instance serves a machine-readable OpenAPI 3.0.0 document for the backend RPC API (152 paths, server design.penpot.app/api/main/methods)."
+        },
+        {
+          "evidenceId": "penpot-swagger-ui-20261106",
+          "quote": "The hosted instance serves a Swagger UI page (\"MAIN API\") that loads the live OpenAPI document from /api/main/doc/openapi.json."
+        },
+        {
+          "evidenceId": "penpot-backend-api-docs-20261106",
+          "quote": "the backend API documentation, generated automatically from source code, as a guide"
+        }
+      ]
     },
     "productId": "penpot",
     "storyId": "api-machine-spec"

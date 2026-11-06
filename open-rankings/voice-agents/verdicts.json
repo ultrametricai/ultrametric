@@ -7168,7 +7168,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Plugging MCP servers into a voice agent as tool sources is a fair question for a voice-agent framework, but the pack never documents Pipecat acting as an MCP client. The only MCP mention is the context-hub CLI registering itself as an MCP server for coding agents, which is a different role. The Flows function docs cover hand-defined functions, not MCP-sourced toolsets.",
+    "rationale": "MCP client support is a fair question for a voice-agent framework, so the axis applies. The pack never documents Pipecat agents connecting to MCP servers as tool sources. The only MCP mention is the context-hub CLI registering itself as an MCP server for a coding agent, which is the opposite role and does not count here. Flows function calling is an adjacent feature, not MCP tool ingestion.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7183,13 +7183,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Pipecat's own CLI lets a coding agent scaffold a voice agent project (writing AGENTS.md and CLAUDE.md) and deploy it to Pipecat Cloud. A bot can also be run against a Twilio transport from the command line. However, the evidence shows no API, CLI, or MCP step that provisions or attaches a phone number, and none that places an outbound call. Telephony is documented only as the carrier calling your webhook for inbound calls, and the context-hub MCP server is a documentation index, not a provisioning tool. missing for 10: programmatic phone-number provisioning or attachment, an outbound call-placement API/CLI, MCP tools for provisioning, and hands-on end-to-end corroboration.",
+    "rationale": "Pipecat Cloud has a documented REST API that manages agents, including POST /agents to create an agent, and an API that starts agent sessions. The official CLI also offers a cloud deploy command, so the agent-creation step can be done without the dashboard. Telephony, however, works by the carrier (Twilio, Telnyx, etc.) calling the user's webhook, and no Pipecat API, CLI, or MCP path is documented for buying or attaching a phone number or placing an outbound PSTN call. The MCP server (context-hub) is a docs index, not a provisioning tool. missing for 10: programmatic phone-number provisioning/attachment, a documented outbound call-placement API, MCP-based provisioning tools, hands-on corroboration of an end-to-end headless flow",
     "evidenceIds": [
-      "pipecat-docs-16",
+      "pipecat-cloud-openapi-20261106",
+      "pipecat-api-tryit-20261106",
       "pipecat-probe-rt-1",
-      "pipecat-docs-40",
       "pipecat-docs-23",
-      "pipecat-docs-34"
+      "pipecat-docs-38"
     ],
     "support": {
       "relation": "direct",
@@ -7197,16 +7197,20 @@
       "subject": "As an AI-native user, my coding agent can provision a complete voice agent end to end — create the agent, attach a number, and place a call — through the API, CLI, or MCP without touching the dashboard",
       "citations": [
         {
-          "evidenceId": "pipecat-docs-16",
-          "quote": "Install the Pipecat CLI and scaffold the quickstart project (also writes AGENTS.md + CLAUDE.md)"
+          "evidenceId": "pipecat-cloud-openapi-20261106",
+          "quote": "The private API (/v1...) manages agents, secrets, builds, regions, and organization settings."
+        },
+        {
+          "evidenceId": "pipecat-api-tryit-20261106",
+          "quote": "\"Create an Agent\" (POST /agents, https://api.pipecat.daily.co/v1/agents) with generated cURL examples"
         },
         {
           "evidenceId": "pipecat-probe-rt-1",
           "quote": "cloud (deploy to Pipecat Cloud)"
         },
         {
-          "evidenceId": "pipecat-docs-40",
-          "quote": "python bot.py -t twilio -x your-name.ngrok.io"
+          "evidenceId": "pipecat-docs-23",
+          "quote": "the carrier (Twilio, Telnyx, Plivo, Exotel, or your SIP provider) is calling your webhook to tell you there's an inbound call"
         }
       ]
     }
@@ -7217,12 +7221,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A probe confirms a live llms.txt at docs.pipecat.ai (HTTP 200). Pipecat also provides agent-oriented docs: the CLI's context-hub registers a local docs/examples/API index as an MCP server for coding agents, and the quickstart scaffold writes AGENTS.md and CLAUDE.md. missing for 10: independent community corroboration of agents successfully consuming these docs, and any documentation of llms.txt scope or contents beyond its existence.",
+    "rationale": "A probe confirms Pipecat publishes an llms.txt at docs.pipecat.ai, and its docs are served as .md pages. The official CLI also ships a context-hub, which registers as an MCP server with your coding agent and builds a local docs/examples/API index, and a runtime probe confirmed it exists. The quickstart scaffold additionally writes AGENTS.md and CLAUDE.md. missing for 10: independent community or hands-on corroboration of agents actually consuming the llms.txt or context-hub output effectively.",
     "evidenceIds": [
       "pipecat-probe-1",
       "pipecat-docs-11",
       "pipecat-probe-rt-1",
-      "pipecat-docs-16"
+      "pipecat-docs-16",
+      "pipecat-spec-download-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7254,7 +7259,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a framework and cloud platform for building voice agents. It could plausibly offer AI-generated insights over call data such as transcripts or metrics, so this story applies to it. The evidence shows only primitives: metrics collection, transcript capture, audio recording and behavioral evals. None of these is a documented in-product feature that generates AI insights or suggestions from a user's data, so they are developer building blocks or adjacent features.",
+    "rationale": "Pipecat is a voice AI framework with a hosted cloud. Product-level AI insights over a user's data (sessions, transcripts, metrics) is a fair question for this kind of product, so the axis applies. However, the evidence shows only raw building blocks: built-in metrics, transcript collection via turn events, audio recording, the Whisker debugger and behavioral evals. None of these is a documented feature that generates AI insights or suggestions from the user's data inside the product, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7269,10 +7274,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a framework for real-time voice and multimodal agents that react to live user sessions and carrier webhooks. Nothing in the evidence documents user-configurable automations that run autonomously in the background, such as scheduled or recurring jobs or unattended triggers. Mentions of subagents for long-running tools and multi-agent coordination are developer building blocks inside a conversation pipeline, not a background-automation capability, so they earn no credit.",
+    "rationale": "Pipecat is a framework for building real-time voice and multimodal agents, so background automation is a fair axis, but the evidence documents no user-configurable automations, schedules or triggers that run autonomously in the background. The closest items are adjacent: in-conversation handoff to subagents for long-running tools, and inbound carrier webhooks or REST calls that start sessions. These are developer building blocks or conversation features, not a background automation capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": []
@@ -7284,7 +7289,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a framework for building voice agents. A framework's ecosystem could plausibly ship a built-in assistant in its CLI or cloud dashboard, so the axis applies. The pack shows no first-party assistant that users can delegate tasks to. The context-hub MCP server and the generated AGENTS.md/CLAUDE.md files only serve the user's own external coding agent. The voice bots users build are the framework's output, not an assistant inside the product.",
+    "rationale": "Pipecat is a developer framework and cloud platform. Shipping a built-in assistant that users can hand tasks to is plausible for this kind of product, so the axis applies, but the evidence documents none. The context-hub MCP server and the scaffolded AGENTS.md/CLAUDE.md files support the user's own external coding agent, not an assistant inside Pipecat. Subagent handoff and Flows are building blocks for constructing the user's own bots, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7297,15 +7302,15 @@
     "productId": "pipecat",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat is a pip-installable Python framework whose bots launch from the command line. Its official CLI ran keylessly via uvx in a runtime probe and includes an `eval` command that runs behavioral tests against the real agent, which are the building blocks for headless or CI automation. However, no first-party documentation describes running in CI, non-interactive eval exit codes, or pipeline integration. missing for 10: documented CI/headless workflow guidance (e.g., CI pipeline examples, non-interactive eval pass/fail reporting), independent hands-on corroboration of CI usage",
+    "rationale": "Pipecat ships its own scriptable surfaces that suit automation. The official CLI ran keylessly via uvx and exposes init, cloud deploy and eval commands. Pipecat Evals runs described conversations against the real agent and reports whether expectations hold, and the Cloud REST API (OpenAPI spec) manages agents, builds and secrets programmatically. However, no documentation explicitly covers headless or CI use, and the dev runner is local-only and serves a UI. Missing for 10: explicit headless/CI usage docs (e.g. CI pipeline examples, non-interactive flags, exit codes for evals), independent corroboration of running in CI.",
     "evidenceIds": [
       "pipecat-probe-rt-1",
-      "pipecat-probe-rt-2",
+      "pipecat-docs-8",
       "pipecat-docs-25",
-      "pipecat-docs-40",
-      "pipecat-docs-8"
+      "pipecat-cloud-openapi-20261106",
+      "pipecat-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -7317,16 +7322,16 @@
           "quote": "the official Pipecat CLI (pypi pipecat-ai[cli]) ran keylessly via uvx"
         },
         {
+          "evidenceId": "pipecat-docs-8",
+          "quote": "Pipecat Evals is the framework's built-in system for testing agent behavior."
+        },
+        {
           "evidenceId": "pipecat-docs-25",
           "quote": "Pipecat runs it against your real agent (the same pipeline, the same services, the same code) and tells you whether the expectation still holds."
         },
         {
-          "evidenceId": "pipecat-docs-40",
-          "quote": "python bot.py -t twilio -x your-name.ngrok.io"
-        },
-        {
-          "evidenceId": "pipecat-probe-rt-2",
-          "quote": "installs and `import pipecat` succeeds with no key"
+          "evidenceId": "pipecat-cloud-openapi-20261106",
+          "quote": "The private API (/v1...) manages agents, secrets, builds, regions, and organization settings."
         }
       ]
     }
@@ -7337,7 +7342,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is an agent-building framework, so consuming tools from MCP servers is a fair question to ask of it. The pack contains no evidence that Pipecat can connect to MCP servers as a client. The only MCP mention is `pipecat context-hub install`, which registers Pipecat's docs hub as an MCP server for your coding agent; that is the opposite (server) role and does not count here. Flows function-calling for external APIs is an adjacent building block, not MCP client support.",
+    "rationale": "Pipecat is a framework for building voice agents, so plugging in MCP servers as a tool source is a fair question, but the evidence pack never documents an MCP client capability. The only MCP mention is `pipecat context-hub install`, which registers Pipecat's docs hub as an MCP server for the user's coding agent. That is the opposite, server-side role and earns no credit here. Flows functions that call external APIs are a related feature, not MCP tool consumption.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7349,10 +7354,10 @@
   {
     "productId": "pipecat",
     "storyId": "agentic-mcp-server",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Pipecat ships a first-party MCP server: `pipecat context-hub install` registers the hub as an MCP server with your coding agent. The runtime probe confirms the official CLI includes context-hub, a local docs, examples and API index built for coding agents. Its scope is limited to that knowledge index, and the evidence documents no deeper product operations. missing for 10: documentation of the exposed MCP tools/resources, MCP access to Pipecat Cloud or runtime operations, independent hands-on corroboration of agents using the server",
+    "rationale": "Pipecat ships an official MCP server through its CLI: `pipecat context-hub install` registers the hub as an MCP server with the user's coding agent, and a runtime probe confirms the CLI exists. Its documented scope is a local docs/examples/API index for coding agents, not an MCP surface for operating Pipecat Cloud or running bots, so the story is only partly covered. Missing for 10: MCP tools for managing Cloud agents, sessions, deployments, secrets or builds; documented MCP tool list and transport details; independent or hands-on corroboration of an agent connecting through the MCP server.",
     "evidenceIds": [
       "pipecat-docs-11",
       "pipecat-docs-38",
@@ -7360,7 +7365,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
       "citations": [
         {
@@ -7380,7 +7385,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Natural-language operation is a fair axis for a developer framework, but the evidence shows no Pipecat feature that takes natural-language commands to scaffold, deploy, or evaluate projects. The context-hub MCP server and generated AGENTS.md/CLAUDE.md files only give an external coding agent docs and context; the natural-language layer belongs to that third-party agent, which makes this adjacent support only. The voice bots users build are conversational, but that is the end-product being built, not a way to operate Pipecat itself.",
+    "rationale": "Pipecat is a framework for building voice agents, so a natural-language operating interface is a fair question for it, but the evidence documents no way to operate Pipecat itself through natural-language commands. The context-hub MCP server (pipecat-docs-11) and the scaffolded AGENTS.md/CLAUDE.md files (pipecat-docs-16) only supply docs and context to an external coding agent. That makes them adjacent aids, and the conversational bots users build with Pipecat are developer-built output, not a way to operate the product.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7395,7 +7400,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Pipecat ships an official CLI (pipecat-ai[cli]) with documented reference pages. A runtime probe ran it keylessly and found `init`, `cloud`, `eval`, and `context-hub` subcommands. Its AI-native angle is concrete: `pipecat init` writes AGENTS.md and CLAUDE.md, and `context-hub install` registers an MCP server with your coding agent. Missing for 10: independent community or user corroboration of day-to-day CLI use, and in-depth evidence for the cloud deploy subcommand.",
+    "rationale": "Pipecat ships an official CLI (pipecat-ai[cli]) with documented reference pages. A runtime probe confirmed `pipecat --help` lists init, cloud deploy, eval, and context-hub. It has AI-native touches: scaffolding writes AGENTS.md and CLAUDE.md, and `pipecat context-hub install` registers an MCP server with your coding agent. missing for 10: independent community or hands-on corroboration beyond the vendor docs and probes.",
     "evidenceIds": [
       "pipecat-probe-3",
       "pipecat-probe-rt-1",
@@ -7430,39 +7435,31 @@
   {
     "productId": "pipecat",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Pipecat is an open-source Python framework that users drive programmatically through its documented library API, such as processors, the `pipecat.runner.run` runner and Flows functions. It also ships documented client SDKs and an official CLI, and a runtime probe confirms the package installs and imports. However, no network-level public API is evidenced: all OpenAPI/Swagger probe paths returned 404, and no Pipecat Cloud REST API is documented in the pack. Missing for 10: a documented HTTP/REST API with an OpenAPI spec, a dedicated API reference for the programmatic surface, and independent hands-on corroboration of driving the product via API.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Pipecat Cloud publishes a documented public REST API. It ships as a downloadable OpenAPI 3.0 spec with a public API (start sessions, proxy requests) and a private API (manage agents, secrets, builds, regions, org settings), plus a per-endpoint \"Try it\" playground with cURL examples, so an AI-native user can drive the product programmatically. The probe's 404s were only at guessed paths; the spec lives at the documented REST-reference path. missing for 10: independent or hands-on corroboration of actually calling the REST API.",
     "evidenceIds": [
-      "pipecat-docs-42",
-      "pipecat-docs-24",
-      "pipecat-docs-35",
-      "pipecat-probe-3",
-      "pipecat-probe-rt-1",
-      "pipecat-probe-rt-2",
-      "pipecat-probe-2"
+      "pipecat-cloud-openapi-20261106",
+      "pipecat-spec-download-20261106",
+      "pipecat-api-tryit-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "pipecat-docs-42",
-          "quote": "Open source Python framework for building voice and multimodal AI pipelines."
+          "evidenceId": "pipecat-cloud-openapi-20261106",
+          "quote": "The public API (/v1/public, authenticated with a public API key) starts agent sessions and proxies requests to them. The private API (/v1...) manages agents, secrets, builds, regions, and organization settings."
         },
         {
-          "evidenceId": "pipecat-docs-24",
-          "quote": "Pipecat ships a built-in development runner (pipecat.runner.run) that handles the server-side glue most bots need during development"
+          "evidenceId": "pipecat-spec-download-20261106",
+          "quote": "Download the complete spec to generate clients, run mocks, or feed to AI tools."
         },
         {
-          "evidenceId": "pipecat-docs-35",
-          "quote": "Pipecat Clients are a family of SDKs that connect users to your Pipecat agents through web and mobile applications."
-        },
-        {
-          "evidenceId": "pipecat-probe-rt-2",
-          "quote": "pypi pipecat-ai 1.8.1 (BSD-2 OSS) installs and `import pipecat` succeeds with no key"
+          "evidenceId": "pipecat-api-tryit-20261106",
+          "quote": "The Pipecat Cloud REST reference renders a live \"Try it\" API playground per endpoint"
         }
       ]
     }
@@ -7470,31 +7467,41 @@
   {
     "productId": "pipecat",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Pipecat ships a hosted platform (Pipecat Cloud) and a CLI with a `cloud` deploy command, so issuing scoped, least-privilege API credentials is a fair question for this product. However, nothing in the evidence pack documents API keys, token scopes, or permission controls for agents, so the verdict is none rather than na.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Pipecat Cloud's OpenAPI document separates a public API key, limited to starting agent sessions and proxying requests to them, from the private API that manages agents, secrets, builds and organization settings. That is a coarse, two-tier form of restricted credential the product provides itself. There is no evidence of issuing keys with custom scopes, keys tied to a specific agent, or fine-grained least-privilege permissions. Missing for 10: custom or fine-grained key scopes, per-agent credential issuance, a documented key-management workflow (create, rotate, revoke), and independent corroboration.",
+    "evidenceIds": [
+      "pipecat-cloud-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pipecat-cloud-openapi-20261106",
+          "quote": "The public API (/v1/public, authenticated with a public API key) starts agent sessions and proxies requests to them. The private API (/v1...) manages agents, secrets, builds, regions, and organization settings."
+        }
+      ]
     }
   },
   {
     "productId": "pipecat",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Pipecat ships official SDKs: the open-source Python framework, which a runtime probe confirmed installs and imports from PyPI (pipecat-ai 1.8.1), and the Pipecat Clients family of SDKs for web and mobile apps, including pre-built React components. The client docs say these SDKs handle real-time transport, session management, and messaging/events. Missing for 10: the client SDK platforms are not enumerated beyond 'web and mobile', and there is no hands-on or independent evidence for the client SDKs.",
+    "rationale": "Pipecat ships official SDKs: the open-source Python framework (pipecat-ai on PyPI, verified installable by probe) and the Pipecat Clients family of web and mobile SDKs, including prebuilt React components. These are backed by a semver changelog with staged deprecations and a 1.0 migration guide. missing for 10: no official client SDK for the Pipecat Cloud REST API (only a downloadable OpenAPI spec for generating clients), no enumeration of which client SDK languages and platforms exist, no independent hands-on corroboration of the client SDKs.",
     "evidenceIds": [
-      "pipecat-docs-35",
       "pipecat-docs-10",
+      "pipecat-docs-35",
       "pipecat-docs-18",
+      "pipecat-probe-rt-2",
       "pipecat-docs-42",
-      "pipecat-probe-rt-2"
+      "pipecat-semver-changelog-20261106",
+      "pipecat-migration-1-0-20261106",
+      "pipecat-spec-download-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7503,19 +7510,19 @@
       "citations": [
         {
           "evidenceId": "pipecat-docs-35",
-          "quote": "Pipecat Clients are a family of SDKs that connect users to your Pipecat agents through web and mobile applications. They handle real-time audio/video transport, session management, and provide messaging and events for building responsive voice AI interfaces."
+          "quote": "Pipecat Clients are a family of SDKs that connect users to your Pipecat agents through web and mobile applications."
         },
         {
           "evidenceId": "pipecat-probe-rt-2",
-          "quote": "pypi pipecat-ai 1.8.1 (BSD-2 OSS) installs and `import pipecat` succeeds with no key, printing its startup banner"
-        },
-        {
-          "evidenceId": "pipecat-docs-42",
-          "quote": "Open source Python framework for building voice and multimodal AI pipelines."
+          "quote": "pypi pipecat-ai 1.8.1 (BSD-2 OSS) installs and `import pipecat` succeeds with no key"
         },
         {
           "evidenceId": "pipecat-docs-18",
           "quote": "Pre-built React components for voice AI interfaces."
+        },
+        {
+          "evidenceId": "pipecat-semver-changelog-20261106",
+          "quote": "this project adheres to Semantic Versioning"
         }
       ]
     }
@@ -7526,7 +7533,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a framework with a cloud platform like Pipecat, but the evidence shows no registrable outbound HTTP callbacks from Pipecat that a consumer could subscribe to. The only webhook mentions describe telephony carriers (Twilio, Telnyx, etc.) calling the developer's own server, which is a third-party inbound webhook. The client SDK 'messaging and events' and in-process turn events are real-time SDK and pipeline events, not webhooks.",
+    "rationale": "Pipecat (framework plus Pipecat Cloud) could plausibly offer registrable outbound webhooks, so the axis applies. The only webhook evidence is telephony carriers (Twilio, Telnyx, etc.) calling the developer's own webhook for inbound calls. That is a third-party callback into the user's server, not a Pipecat-provided event subscription. In-process turn events and client SDK events are not HTTP callbacks, and the Cloud OpenAPI description lists no webhook registration.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7541,10 +7548,11 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party AI that generates or improves prompts, flows, or test cases from a description. Pipecat instead supplies building blocks for external coding agents: context-hub registers as an MCP server for the user's own coding agent, and scaffolding writes AGENTS.md and CLAUDE.md. Evals require the user to describe conversations themselves, and Flows' metadata auto-derivation is deterministic signature parsing, so neither counts as AI-assisted authoring.",
+    "rationale": "The evidence shows no first-party Pipecat AI that generates or improves prompts, flows, or test cases from a description. What is documented instead supports external coding agents or manual authoring: context-hub is an MCP index for the user's own coding agent, scaffolding writes AGENTS.md/CLAUDE.md, and Evals runs conversations the user describes. Flows derives function metadata from docstrings deterministically, which is not AI authoring. These are adjacent building blocks or user-side workarounds and earn no credit.",
     "evidenceIds": [
       "pipecat-docs-11",
-      "pipecat-docs-16"
+      "pipecat-docs-16",
+      "pipecat-docs-25"
     ],
     "support": {
       "relation": "adjacent",
@@ -7568,7 +7576,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party feature that automatically reviews real calls with AI to score quality, flag failures, or analyze resolution. Pipecat Evals runs scripted test conversations against your agent before deployment and checks expected behavior, which is pre-deployment testing, not review of actual calls. Audio recording, transcript capture and latency metrics are developer building blocks a user could feed into their own analysis, so they earn no credit.",
+    "rationale": "Pipecat documents audio recording, transcript collection, and latency metrics. These are developer building blocks for capturing call data, not an AI that automatically reviews calls. Pipecat Evals runs scripted, developer-described conversations against the agent to check expected behavior, which is pre-deployment testing rather than automatic scoring, failure flagging, or resolution analysis of real calls. No documented post-call AI review capability appears in the evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7580,31 +7588,61 @@
   {
     "productId": "pipecat",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Pipecat's docs include an api-reference section, but the evidence only shows CLI reference pages. The context-hub is a local docs, examples and API index served to coding agents over MCP, which is an adjacent feature, not an interactive reference. The OpenAPI probe returned 404 at every candidate path, and nothing shows an interactive explorer or runnable 'try it' examples inside an API reference.",
-    "evidenceIds": [],
+    "rationale": "Pipecat's docs render a live Mintlify 'Try it' playground for each endpoint of the Pipecat Cloud REST reference, with generated cURL examples and runnable in-page requests, backed by a downloadable OpenAPI 3.0 spec. The interactive, runnable reference is documented only for the Cloud REST API, not for the core Python framework API. missing for 10: interactive runnable examples for the open-source framework API reference, independent or hands-on corroboration that the playground works, evidence of runnable examples beyond generated cURL.",
+    "evidenceIds": [
+      "pipecat-api-tryit-20261106",
+      "pipecat-cloud-openapi-20261106",
+      "pipecat-spec-download-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pipecat-api-tryit-20261106",
+          "quote": "The Pipecat Cloud REST reference renders a live \"Try it\" API playground per endpoint (the Mintlify api.playground runtime)"
+        },
+        {
+          "evidenceId": "pipecat-api-tryit-20261106",
+          "quote": "with generated cURL examples and a runnable in-page request"
+        },
+        {
+          "evidenceId": "pipecat-spec-download-20261106",
+          "quote": "Download the complete spec to generate clients, run mocks, or feed to AI tools."
+        }
+      ]
     }
   },
   {
     "productId": "pipecat",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Pipecat is a framework with a cloud platform, so publishing a machine-readable API spec is a fair question. The probe found no OpenAPI or Swagger document: every candidate path returned 404. The llms.txt file and the context-hub MCP index are docs and agent tooling, not a downloadable API specification, so they earn no credit here.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Pipecat Cloud publishes a machine-readable OpenAPI 3.0.0 document at a documented openapi.json path. The REST reference overview explicitly frames it as a downloadable spec \"to generate clients, run mocks, or feed to AI tools,\" and per-endpoint Try-it pages back it up. The probe's 404s were at generic root paths, not the documented location, so they do not contradict this. missing for 10: independent or hands-on confirmation that the spec at the documented path downloads and parses.",
+    "evidenceIds": [
+      "pipecat-cloud-openapi-20261106",
+      "pipecat-spec-download-20261106",
+      "pipecat-api-tryit-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pipecat-cloud-openapi-20261106",
+          "quote": "The Pipecat Cloud REST API publishes a machine-readable OpenAPI 3.0.0 document (info title \"Pipecat Cloud\")"
+        },
+        {
+          "evidenceId": "pipecat-spec-download-20261106",
+          "quote": "Download the complete spec to generate clients, run mocks, or feed to AI tools."
+        }
+      ]
     }
   },
   {
@@ -7613,7 +7651,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a local development runner (pipecat.runner.run) and Pipecat Evals, but neither is documented as a sandbox environment that isolates tests from production data. Evals explicitly runs against \"your real agent (the same pipeline, the same services, the same code)\", and local inference via ollama is a user-side arrangement. These are adjacent features, not a sandboxed test environment.",
+    "rationale": "Testing in isolation from production is a fair question for a voice-agent framework with a hosted cloud, so the axis applies. The evidence shows no sandbox or test mode. The local development runner runs the agent on the developer's own machine and is explicitly described as not a sandbox. Pipecat Evals run against the real agent and its real services, so they give no isolation from production data. The OpenAPI spec's mention of running mocks is only a developer building block, not a product-provided sandbox, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7625,16 +7663,29 @@
   {
     "productId": "pipecat",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Versioned APIs and a deprecation policy are a fair question for an open-source framework like Pipecat, so the axis applies. The only version-related evidence is a runtime probe showing a numbered PyPI release (1.8.1). The pack contains no documented API versioning scheme, deprecation policy, changelog commitments or migration guarantees, so the verdict is none.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "high",
+    "rationale": "The open-source framework follows Semantic Versioning. Its changelog has explicit Deprecated sections that name removal targets (e.g. removal in 2.0.0), and a 1.0 migration guide confirms deprecations are staged before removal at the major version. However, the Pipecat Cloud REST API is versioned only by URL path (/v1) with no documented deprecation window, so the story is covered only for the framework. Missing for 10: a documented deprecation policy and window for the Cloud REST API, a formal standalone deprecation-policy page with guaranteed timelines, and independent corroboration of deprecation practice.",
+    "evidenceIds": [
+      "pipecat-semver-changelog-20261106",
+      "pipecat-migration-1-0-20261106",
+      "pipecat-cloud-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pipecat-semver-changelog-20261106",
+          "quote": "this project adheres to Semantic Versioning"
+        },
+        {
+          "evidenceId": "pipecat-migration-1-0-20261106",
+          "quote": "Pipecat 1.0 removes many deprecated APIs from the 0.0.x series. If you were already using the non-deprecated replacements, most of these changes won't affect you."
+        }
+      ]
     }
   },
   {
@@ -7643,7 +7694,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a voice-agent framework with a CLI and cloud platform, so the axis applies. The pack never documents a batch or bulk capability, such as acting on many sessions, agents or deployments in one operation. The nearest items are parallel fan-out between subagents and unlimited cloud concurrency, which are related but different features and earn no credit.",
+    "rationale": "Pipecat Cloud exposes a REST API for managing agents, secrets, builds and sessions, so bulk operations are a fair question for this product, but no evidence documents batch or bulk endpoints or multi-item actions. Multi-agent parallel fan-out and unlimited session concurrency are adjacent runtime capabilities, not user-facing bulk operations across items.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7658,7 +7709,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document a facility for defining rules that automatically trigger actions on events. The nearest items are adjacent: turn events used to collect transcripts, built-in barge-in interruption behavior, and Flows functions the LLM calls to move between conversation nodes. These are framework primitives and fixed behaviors, not a documented event-to-action rules capability, so they earn no credit.",
+    "rationale": "The evidence pack documents no rules or automation feature where a user defines triggers that run actions on events. The closest items are adjacent: turn events that a developer uses to collect transcripts, built-in barge-in behavior that cancels work when the user speaks, and Flows functions that move a conversation between nodes. These are developer building blocks or fixed framework behaviors, not user-definable event-triggered rules.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7673,7 +7724,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring workflows is a reasonable question for a voice-agent framework with a cloud deployment platform, for example scheduled outbound calls or periodic evals. However, nothing in the evidence documents cron, recurring schedules or timed triggers. The closest items are inbound carrier webhooks that start telephony sessions, the dev runner, and subagent handoff for long-running tasks; these are adjacent, event-driven or one-off behaviors, not recurring scheduling.",
+    "rationale": "Pipecat is a voice-agent framework with a hosted cloud, and such a platform could plausibly offer scheduled or recurring jobs, so the axis applies. The evidence covers pipelines, Flows, the development runner, evals, telephony webhooks and the Cloud REST API for sessions and agents. None of it documents a scheduler, cron, or any recurring-job capability. Starting sessions on demand via the API is a one-off action, not a recurring schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7688,7 +7739,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a code-first voice-agent framework with a cloud deploy target, so versioning, reviewing, and rolling back bots or flows is a fair question to ask of it. The pack documents no versioning, change review, or rollback for agents or deployments. Pipecat Evals (behavioral testing) and the `pipecat cloud` deploy command are adjacent features and do not deliver this story; tracking the bot code in git would be a user-side workaround.",
+    "rationale": "Pipecat Cloud manages agents and builds, so versioning, reviewing, and rolling back a user's automations is a fair question for this product. The pack documents no such capability. The semver changelog and 1.0 migration guide cover how the framework itself is versioned, not the user's agents or flows. Keeping bot code in a portable file under the user's own source control is a user-side workaround, and no build history or rollback feature for Pipecat Cloud agents is documented.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7703,7 +7754,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Pipecat's own interruptions docs say that on barge-in the bot stops immediately, in-flight work is cancelled, and the pipeline is ready for the new user input. That covers stopping speech and recovering the turn, and Pipecat Cloud adds Krisp filtering against false interruptions. The evidence never shows how conversation context is updated after an interruption, such as truncating the assistant message to what was actually spoken. Missing for 10: documented context updating on interruption, independent or hands-on corroboration of barge-in behavior.",
+    "rationale": "Pipecat's own interruptions docs say that when the user barges in, the bot stops immediately, in-flight work is cancelled, and the pipeline is ready for new input. That covers stopping speech and recovering the turn, and Krisp noise filtering further reduces false interruptions. The docs never say how conversation context is updated after an interruption, such as truncating the unspoken assistant reply, so coverage is partial. Missing for 10: documentation of context updating on interruption, configurable interruption strategies, and independent hands-on corroboration of barge-in quality.",
     "evidenceIds": [
       "pipecat-docs-19",
       "pipecat-docs-2",
@@ -7735,7 +7786,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a voice-agent framework with telephony transports, so outbound call campaigns are a fair question for it. The evidence covers only inbound carrier webhooks and Pipecat Cloud's unlimited concurrency claim. Nothing documents batch outbound dialing, campaign scheduling, or throughput and rate controls, and a concurrency limit on hosting is a different control from campaign pacing.",
+    "rationale": "Pipecat documents telephony transports and inbound carrier webhooks (Twilio, Telnyx, Plivo, SIP), and Pipecat Cloud advertises unlimited concurrency. Nothing in the evidence describes batch outbound call campaigns, campaign scheduling, or dialing throughput controls. Concurrency capacity and inbound call handling are adjacent features, not the campaign capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7750,10 +7801,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat documents its own telephony path: the dev runner terminates telephony WebSockets, `python bot.py -t twilio -x your-name.ngrok.io` runs a bot against a carrier, and Twilio, Telnyx, Plivo, Exotel and SIP are supported. The phone number itself must come from an external carrier, plus an ngrok tunnel. The 'under 5 minutes' quickstart only covers a browser agent, so first live phone call within an hour is not evidenced. Missing for 10: built-in phone number provisioning, a documented phone-call quickstart with a time-to-first-call claim, and hands-on corroboration of a first live call within an hour.",
+    "rationale": "Pipecat documents a fast scaffolded quickstart, but that path targets a browser conversation, not a phone call. Its development runner does terminate telephony WebSockets, and there is a documented Twilio dev command (`-t twilio -x ngrok`), so a phone bot is a documented path. However, the phone number must come from an external carrier (Twilio, Telnyx, Plivo and others), and a tunnel is needed, so the end-to-end phone flow depends on outside tools. Missing for 10: first-party phone number provisioning, a documented phone-specific quickstart with a time-to-first-call claim, and hands-on corroboration of a first live phone call within an hour.",
     "evidenceIds": [
       "pipecat-docs-17",
-      "pipecat-docs-33",
+      "pipecat-docs-34",
+      "pipecat-docs-24",
       "pipecat-docs-40",
       "pipecat-docs-23",
       "pipecat-docs-28",
@@ -7765,8 +7817,12 @@
       "subject": "As a developer, I can build a working phone voice agent — prompt, voice, and phone number — and take my first live call within an hour",
       "citations": [
         {
-          "evidenceId": "pipecat-docs-33",
-          "quote": "terminating telephony WebSockets, and serving a prebuilt UI to talk to your bot"
+          "evidenceId": "pipecat-docs-17",
+          "quote": "Build and run your first Pipecat voice AI bot in under 5 minutes: a simple conversational agent you can talk to in a browser."
+        },
+        {
+          "evidenceId": "pipecat-docs-24",
+          "quote": "creating Daily rooms, accepting WebRTC offers, terminating telephony WebSockets, and serving a prebuilt UI"
         },
         {
           "evidenceId": "pipecat-docs-40",
@@ -7775,10 +7831,6 @@
         {
           "evidenceId": "pipecat-docs-23",
           "quote": "the carrier (Twilio, Telnyx, Plivo, Exotel, or your SIP provider) is calling your webhook to tell you there's an inbound call"
-        },
-        {
-          "evidenceId": "pipecat-docs-17",
-          "quote": "Build and run your first Pipecat voice AI bot in under 5 minutes: a simple conversational agent you can talk to in a browser."
         }
       ]
     }
@@ -7789,7 +7841,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only developer building blocks: built-in metrics that must be enabled in configuration, transcript collection via turn events, and audio recording. Whisker is a pipeline debugger, not an analytics dashboard. Nothing documents ready-made dashboards of call success rates, durations, outcomes or sentiment, in Pipecat or Pipecat Cloud.",
+    "rationale": "The evidence shows only developer building blocks: built-in latency and usage metrics enabled through configuration, transcript collection, audio recording, and the Whisker pipeline debugger. Nothing documents a ready-made analytics dashboard showing call success rates, durations, outcomes or sentiment, in either the framework or Pipecat Cloud. A founder would still have to build that themselves.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7804,7 +7856,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat documents telephony support, including carrier webhooks for Twilio, Telnyx, Plivo and Exotel, plus SIP/PSTN transports. However, nothing in the evidence shows escalating a live call to a human via warm or blind transfer with context passed along. Its 'hand off' language refers to AI subagents and multi-agent specialists, which is a different capability and earns no credit here.",
+    "rationale": "Pipecat is a voice-agent framework with telephony support (carrier webhooks, SIP/PSTN transports), so human escalation via call transfer is a fair question for it. However, no evidence documents warm or blind transfer to a human, or passing context to a human agent. The multi-agent handoff evidence covers agent-to-agent specialists, and Flows functions that call external APIs are developer building blocks; neither counts as this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7817,9 +7869,9 @@
     "productId": "pipecat",
     "storyId": "concurrency-scaling-limits",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat's first-party pricing page states that Pipecat Cloud supports unlimited concurrency and offers different agent profiles for compute needs. That answers the core of the story, but only as a single marketing-level line with no detail on how scaling actually works. missing for 10: detailed docs on concurrency or scaling mechanics (autoscaling behavior, warm capacity, rate of ramp-up, any per-account quotas or soft limits), documentation of self-hosted scaling limits, and independent or hands-on corroboration of many simultaneous calls.",
+    "rationale": "Pipecat Cloud's pricing page states it 'supports unlimited concurrency' and offers different agent profiles for compute needs. That speaks directly to scaling without capacity requests, but it is a single marketing-level line with no detailed limits documentation or hands-on scale evidence. Missing for 10: documented per-account concurrency or rate limits and session-start quotas, autoscaling/warm-capacity behavior docs, independent or hands-on corroboration of many simultaneous calls.",
     "evidenceIds": [
       "pipecat-docs-12",
       "pipecat-docs-26"
@@ -7843,24 +7895,16 @@
   {
     "productId": "pipecat",
     "storyId": "consent-recording-controls",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Pipecat's own AudioBufferProcessor gives a first-party, opt-in way to record user and bot audio during interactions, which is the core of per-call recording control. Nothing in the evidence addresses consent capture, disclosure prompts, or data retention. missing for 10: consent/disclosure workflow (e.g., announcement or opt-in gating), configurable data retention or deletion policies, explicit documentation of per-call recording toggles, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "pipecat-docs-21",
-      "pipecat-docs-3"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows only that Pipecat's AudioBufferProcessor can capture user and bot audio. That is a recording building block, not documented consent or disclosure handling, per-call recording controls, or configurable retention. No evidence covers retention policies or compliance features for call recording in the framework or in Pipecat Cloud.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a founder, I can meet call-recording consent and disclosure obligations with per-call recording controls and configurable data retention",
-      "citations": [
-        {
-          "evidenceId": "pipecat-docs-21",
-          "quote": "Pipecat's AudioBufferProcessor makes it easy to capture high-quality audio recordings of both the user and bot during interactions."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -7869,7 +7913,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a voice-agent framework, so voice cloning with a consent process is a fair question for it. The evidence pack never mentions voice cloning, custom brand voices, or any consent workflow. Swapping among 200+ integrated providers is a general integration feature, not a documented cloning-and-consent capability of Pipecat itself.",
+    "rationale": "Pipecat is a voice-agent framework, so cloning a custom brand voice with a documented consent process is a fair question for it. The pack only shows generic swapping among third-party speech providers. That is an adjacent integration capability, not Pipecat's own voice-cloning feature, and no consent process is documented anywhere.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7884,13 +7928,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Pipecat documents STT latency tuning: it ships measured P99 latency values per supported STT service so turn detection can account for that delay, and it defines a Time To Final Segment metric. Built-in metrics also back its 'ultra-low latency' positioning, but the evidence covers only the speech-to-text slice of the pipeline, not end-to-end voice latency. missing for 10: documented end-to-end voice-to-voice latency numbers, tuning guidance across LLM/TTS/transport stages, published benchmarks that directly substantiate the 'ultra-low latency' claim, independent corroboration of measured latency.",
+    "rationale": "Pipecat documents an STT latency-tuning guide that defines Time To Final Segment and ships measured P99 latency values per supported STT service, plus built-in metrics. That is real tuning guidance behind its \"ultra-low latency\" claim, but it covers only the STT/turn-detection stage, not end-to-end voice-to-voice latency. missing for 10: documented end-to-end (user-stops-speaking to bot-audio) latency numbers, published benchmark figures tied to the ultra-low-latency claim, tuning guidance beyond the STT stage (LLM/TTS/transport), independent or hands-on corroboration of measured latency.",
     "evidenceIds": [
       "pipecat-docs-15",
       "pipecat-docs-20",
       "pipecat-docs-5",
-      "pipecat-docs-42",
-      "pipecat-comm-3"
+      "pipecat-docs-42"
     ],
     "support": {
       "relation": "direct",
@@ -7908,6 +7951,10 @@
         {
           "evidenceId": "pipecat-docs-5",
           "quote": "Pipecat offers built-in metrics for both, which can be enabled with straightforward configuration options."
+        },
+        {
+          "evidenceId": "pipecat-docs-42",
+          "quote": "Orchestrate 150+ AI services with ultra-low latency."
         }
       ]
     }
@@ -7918,7 +7965,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a voice-agent framework with documented telephony support (carrier webhooks for Twilio, Telnyx, Plivo and SIP, plus PSTN transport), so this axis applies. However, nothing in the evidence documents sending DTMF keypresses, navigating IVR menus, or detecting or leaving voicemail. General telephony transport is adjacent and does not count as this capability.",
+    "rationale": "Pipecat is a voice-agent framework with documented telephony support (Twilio, Telnyx, Plivo, Exotel, SIP), so this axis applies. However, the evidence pack never mentions sending DTMF keypresses, navigating IVR menus, or detecting or leaving voicemail. Carrier webhooks and Flows node transitions are adjacent capabilities and do not count as evidence for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7933,7 +7980,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a mechanism for passing dynamic variables or per-caller context into a Pipecat session at call time. Telephony webhooks, the development runner and Flows functions are related features, but none is shown to personalize a conversation with call-time data. The axis clearly applies to a voice-agent framework, so absence of evidence yields none.",
+    "rationale": "Pipecat is an agent-building framework, so injecting call-time variables and per-caller context is a fair question to ask of it. However, the evidence pack never documents passing dynamic variables or caller-specific context into a session or prompt. The Cloud public API is said to start agent sessions, and telephony starts from a carrier webhook, but neither item mentions supplying per-caller data to personalize the conversation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7948,7 +7995,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat ships a hosted Pipecat Cloud offering, so compliance attestations are a fair question, but nothing in the evidence pack mentions HIPAA/BAA, SOC 2, or data-residency options. Self-hosting and local inference (pipecat-probe-rt-2, pipecat-comm-1) are user-side arrangements that might approximate residency control. They are not documented compliance capabilities, so they earn no credit.",
+    "rationale": "The evidence pack never mentions HIPAA, a BAA, SOC 2 attestation, or any documented data-residency guarantee for Pipecat or Pipecat Cloud. The Cloud API's passing mention of managing 'regions' and the framework being self-hostable are not documented compliance capabilities, so neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7963,7 +8010,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Grounding a voice agent on user documents is a fair question for an agent-building framework, but the evidence shows no built-in knowledge base or RAG feature in Pipecat. The context-hub is a local index of Pipecat's own docs and examples for coding agents, not a way to ground your bot on your content. Flows functions that call external systems are only developer building blocks.",
+    "rationale": "Grounding a voice agent on a developer's documents is a fair axis for an agent-building framework like Pipecat, but the evidence pack documents no built-in knowledge base or RAG capability. The context-hub CLI indexes Pipecat's own docs for coding agents, not the user's content for the bot. Flows functions that interface with external APIs are only a building block a developer could use to construct retrieval.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7978,7 +8025,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only building blocks: built-in pipeline metrics (TTFS/latency), and a community-described debugger, Whisker, for inspecting frames in real time. Neither is documented as production call monitoring, and nothing in the pack covers alerts on agent misbehavior or error-rate spikes. These primitives could feed a monitoring stack, but they are not the capability itself.",
+    "rationale": "The evidence shows built-in metrics that can be enabled in config, plus a community-described debugger (Whisker) for live pipeline inspection while debugging. Neither is a documented production call-monitoring capability. Nothing in the pack shows alerting on agent misbehavior or error-rate spikes, so these items are building blocks or adjacent debugging tools rather than the story's capability.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7991,9 +8038,9 @@
     "productId": "pipecat",
     "storyId": "mid-call-tool-calling",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Pipecat Flows documents functions that interface with external systems and APIs mid-conversation, with metadata auto-derived from the function signature. Its site says long-running tools can be handed off to subagents, which implies non-blocking execution, but nothing explicitly shows the agent avoiding dead air or speaking tool results. Missing for 10: explicit evidence of speaking function results, documented dead-air mitigation such as filler speech or async tool calls, core (non-Flows) LLM function-calling docs, and independent or hands-on corroboration.",
+    "rationale": "Pipecat Flows documents functions that interface with external systems and APIs during a conversation, with metadata auto-derived from signatures and docstrings. The site also says long-running tools can be handed off to subagents, which implies the bot can keep talking while work runs, but no mechanism for avoiding dead air is actually documented. Missing for 10: explicit documentation of how tool latency is masked (filler speech or async/non-blocking function results), core-framework function calling outside Flows, and hands-on or independent corroboration.",
     "evidenceIds": [
       "pipecat-docs-22",
       "pipecat-docs-30",
@@ -8026,7 +8073,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Multilingual conversation with mid-call language detection and switching is a fair axis for a voice AI framework like Pipecat. However, nothing in the evidence documents multilingual support, language detection, or language switching. The closest item (pipecat-docs-14) is about swapping service providers, and Smart Turn's mention of 'linguistic signals' is about turn detection, so neither counts toward this story.",
+    "rationale": "Multilingual conversation with mid-call language detection and switching is a fair question for a voice-agent framework, but nothing in the evidence pack documents it. The provider-swapping claim and Smart Turn's \"linguistic signals\" are adjacent features: they are about choosing providers and detecting end of turn, not multilingual detection or switching.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8039,9 +8086,9 @@
     "productId": "pipecat",
     "storyId": "noise-robustness",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The only on-topic evidence is a single line on the Pipecat Cloud pricing page. It lists Krisp-powered noise cancellation that removes background noise and voices causing false interruptions, so it is a product-offered capability, but only thinly evidenced. Missing for 10: documentation on how a developer enables or configures noise suppression or audio filters in the pipeline, evidence it is available in open-source or self-hosted Pipecat beyond Cloud, other filter options, and independent or hands-on corroboration that it keeps the agent coherent on noisy calls.",
+    "rationale": "The only on-topic evidence is one line on the Pipecat Cloud pricing page. It says Pipecat offers Krisp-powered noise elimination that removes background noise and voices causing false interruptions, which is a first-party capability aimed at this story. However, there is no documentation of how a developer enables or configures it, whether it exists in the open-source framework or only in Cloud, or any audio-filter processors. missing for 10: configuration/enablement docs, clarity on OSS vs Cloud availability, other filtering options, hands-on or independent corroboration of call quality improvement.",
     "evidenceIds": [
       "pipecat-docs-36"
     ],
@@ -8061,15 +8108,14 @@
     "productId": "pipecat",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Pipecat is a code-first open-source Python framework, so bot building, pipelines, recording, transcripts and metrics are all configured programmatically. Its official CLI also covers Pipecat Cloud deployment, giving a programmatic path for that cloud action. However, nothing documents parity between the Pipecat Cloud UI and an API, and the OpenAPI probe found no published spec. Missing for 10: a documented Pipecat Cloud management API, an explicit UI/API parity statement, a published OpenAPI spec, and independent corroboration that dashboard actions can be done programmatically.",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Pipecat is a code-first Python framework, and Pipecat Cloud publishes an OpenAPI 3.0 REST API. Its private API manages agents, secrets, builds, regions and organization settings, its public API starts sessions, and an official CLI covers deploy, init and eval. That is broad programmatic coverage, but no evidence explicitly claims or verifies parity with the Cloud dashboard UI. missing for 10: an explicit API/UI parity statement or a mapping of dashboard features to endpoints, and independent hands-on corroboration that every UI action is API-accessible.",
     "evidenceIds": [
-      "pipecat-docs-42",
-      "pipecat-probe-rt-1",
-      "pipecat-probe-rt-2",
-      "pipecat-probe-2",
-      "pipecat-docs-27"
+      "pipecat-cloud-openapi-20261106",
+      "pipecat-spec-download-20261106",
+      "pipecat-api-tryit-20261106",
+      "pipecat-probe-rt-1"
     ],
     "support": {
       "relation": "direct",
@@ -8077,16 +8123,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "pipecat-docs-42",
-          "quote": "Open source Python framework for building voice and multimodal AI pipelines."
+          "evidenceId": "pipecat-cloud-openapi-20261106",
+          "quote": "The private API (/v1...) manages agents, secrets, builds, regions, and organization settings."
+        },
+        {
+          "evidenceId": "pipecat-spec-download-20261106",
+          "quote": "Download the complete spec to generate clients, run mocks, or feed to AI tools."
         },
         {
           "evidenceId": "pipecat-probe-rt-1",
           "quote": "`pipecat --help` lists init (project scaffolding), cloud (deploy to Pipecat Cloud), eval (behavioral evals), and context-hub"
-        },
-        {
-          "evidenceId": "pipecat-docs-27",
-          "quote": "Coordinate voice, video, text, and images in one pipeline, with frame-level control over every step of the conversation."
         }
       ]
     }
@@ -8097,10 +8143,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is an open-source framework with a hosted Pipecat Cloud, so data export and exit is a fair question to ask. The evidence documents no first-party feature for exporting all of a user's data in open formats. AudioBufferProcessor recording and transcript collection are developer building blocks for capturing conversation data, not an export capability. Bot-code portability across the runner, Cloud and self-hosting is an adjacent feature that covers moving code, not exporting data.",
+    "rationale": "Pipecat is an open-source framework with a hosted Pipecat Cloud, so data export is a fair question. However, the docs explicitly state that no export surface exists for Cloud-held data such as agents, secrets, builds, and session or organization data. What the evidence does show is adjacent rather than a documented export capability: bot code portability across runtimes, the BSD-2 self-hostable framework, and audio and transcript capture processors, which are developer building blocks.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -8112,12 +8158,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Pipecat's docs call it an \"Open source Python framework\", and a hands-on probe confirmed the pypi package is BSD-2 licensed OSS that installs and imports. A public GitHub repository (pipecat-ai/pipecat) hosts the code, so the source is readable under a permissive license. missing for 10: a direct citation of the repository's LICENSE file or license text from first-party docs.",
+    "rationale": "Pipecat is documented as an open-source Python framework with a public GitHub repository, and a runtime probe identifies the pip-installable package as BSD-2 licensed OSS, so its source is readable under an open license. missing for 10: a direct citation of the repository's LICENSE file text confirming the BSD-2 terms first-party.",
     "evidenceIds": [
       "pipecat-docs-42",
       "pipecat-probe-rt-2",
       "pipecat-probe-1",
-      "pipecat-gh-1"
+      "pipecat-gh-1",
+      "pipecat-semver-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8145,14 +8192,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Pipecat is an open-source (BSD-2) Python framework that is pip-installable and ran keylessly in a runtime probe. Its docs describe a built-in development runner and say the same bot file is portable to production self-hosting setups, and community users confirm fully local inference via ollama and whisper. missing for 10: a dedicated, in-depth production self-hosting deployment guide (the docs only mention self-hosting setups in passing).",
+    "rationale": "Pipecat's core is a BSD-2 open-source Python framework. A runtime probe confirmed it pip-installs and imports with no key, and the docs say the same bot file is portable to 'most production self-hosting setups'. Community reports confirm running it fully locally with local inference such as Ollama and Whisper. Missing for 10: an in-depth first-party production self-hosting guide in the evidence (the built-in dev runner is explicitly not for production).",
     "evidenceIds": [
       "pipecat-probe-rt-2",
       "pipecat-docs-42",
       "pipecat-docs-32",
-      "pipecat-docs-24",
       "pipecat-comm-1",
-      "pipecat-gh-1"
+      "pipecat-gh-1",
+      "pipecat-dev-runner-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8164,12 +8211,12 @@
           "quote": "the open-source voice-agent framework is real, pip-installable, and self-hostable"
         },
         {
-          "evidenceId": "pipecat-docs-32",
-          "quote": "This is the property that makes the same bot file portable across the development runner, Pipecat Cloud, and most production self-hosting setups."
-        },
-        {
           "evidenceId": "pipecat-docs-42",
           "quote": "Open source Python framework for building voice and multimodal AI pipelines."
+        },
+        {
+          "evidenceId": "pipecat-docs-32",
+          "quote": "that makes the same bot file portable across the development runner, Pipecat Cloud, and most production self-hosting setups."
         },
         {
           "evidenceId": "pipecat-comm-1",
@@ -8184,13 +8231,13 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Pipecat documents running inbound telephony calls: a carrier such as Twilio, Telnyx, Plivo or Exotel calls your webhook, and the dev runner terminates telephony WebSockets. It also lists SIP/PSTN transports. Phone-number provisioning, however, sits with the third-party carrier, and the evidence never shows outbound calling or a platform API for numbers. missing for 10: phone number provisioning via Pipecat's own API, documented outbound call initiation, independent or hands-on corroboration of telephony call flows.",
+    "rationale": "Pipecat documents handling inbound telephony calls: the carrier (Twilio, Telnyx, Plivo, Exotel, or SIP) calls your webhook, and the runner terminates telephony WebSockets over SIP/PSTN transports. Phone numbers are provisioned by those third-party carriers, not by any Pipecat API, and outbound calling is not documented. missing for 10: phone number provisioning through Pipecat's own API, documented outbound call initiation, an API-level call-control reference, independent or hands-on corroboration.",
     "evidenceIds": [
       "pipecat-docs-23",
       "pipecat-docs-13",
-      "pipecat-docs-33",
-      "pipecat-docs-40",
-      "pipecat-docs-28"
+      "pipecat-docs-28",
+      "pipecat-docs-24",
+      "pipecat-docs-40"
     ],
     "support": {
       "relation": "direct",
@@ -8202,16 +8249,16 @@
           "quote": "the carrier (Twilio, Telnyx, Plivo, Exotel, or your SIP provider) is calling your webhook to tell you there's an inbound call"
         },
         {
-          "evidenceId": "pipecat-docs-33",
+          "evidenceId": "pipecat-docs-28",
+          "quote": "Any Transport: WebRTC, SIP, PSTN"
+        },
+        {
+          "evidenceId": "pipecat-docs-24",
           "quote": "terminating telephony WebSockets"
         },
         {
           "evidenceId": "pipecat-docs-40",
           "quote": "python bot.py -t twilio -x your-name.ngrok.io"
-        },
-        {
-          "evidenceId": "pipecat-docs-28",
-          "quote": "Any Transport: WebRTC, SIP, PSTN"
         }
       ]
     }
@@ -8219,16 +8266,33 @@
   {
     "productId": "pipecat",
     "storyId": "privacy-data-residency",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data region or residency is a fair question for Pipecat, since Pipecat Cloud is a hosted platform, but the pack documents no region selection or data-residency control. Pipecat is pip-installable and self-hostable, and bots are portable to self-hosting, so users could pick their own infrastructure. That is a user-side deployment arrangement, not a documented residency feature, so it earns no credit.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The Pipecat Cloud OpenAPI document says the private API manages \"regions\", and the framework is open source and self-hostable with local inference, so users can control where agents run. However, nothing documents region choice as a data-storage or residency control, or which data is kept in which region. Missing for 10: explicit data-residency or region-selection docs for stored data (recordings, transcripts, secrets, session data), a list of available regions, residency or compliance guarantees, and independent corroboration.",
+    "evidenceIds": [
+      "pipecat-cloud-openapi-20261106",
+      "pipecat-probe-rt-2",
+      "pipecat-comm-1"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pipecat-cloud-openapi-20261106",
+          "quote": "The private API (/v1...) manages agents, secrets, builds, regions, and organization settings."
+        },
+        {
+          "evidenceId": "pipecat-probe-rt-2",
+          "quote": "the open-source voice-agent framework is real, pip-installable, and self-hostable."
+        },
+        {
+          "evidenceId": "pipecat-comm-1",
+          "quote": "Local inference is already supported via Pipecat, you can use ollama or any custom OpenAI endpoint."
+        }
+      ]
     }
   },
   {
@@ -8237,7 +8301,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a training opt-out, a no-training data policy, or any training-related data-use control for Pipecat or Pipecat Cloud. Support for self-hosting and local inference through ollama or whisper is an architectural workaround that may keep data local. It is not a documented capability to prevent data from being used for model training, so it earns no credit.",
+    "rationale": "Pipecat has a hosted Pipecat Cloud service, so a training opt-out or no-training policy is a fair question, but the evidence pack contains no documented training opt-out, data-use policy, or no-training commitment. Community notes that local inference via ollama or whisper is possible describe a user-side self-hosting workaround, not a product capability for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8252,7 +8316,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no data retention or deletion controls for Pipecat or Pipecat Cloud, such as retention periods, deletion APIs, or data-purge settings. Audio recording and transcript-capture docs describe collecting data, not controlling its retention. Self-hosting and local inference are deployment choices that only approximate data control, so they earn no credit.",
+    "rationale": "The evidence documents no data retention or deletion controls for Pipecat or Pipecat Cloud, such as retention windows, deletion endpoints, or purge settings. Opt-in audio recording, transcript collection, self-hosting and local inference are developer building blocks or adjacent features, not a retention/deletion capability. The Cloud API's described scope (agents, secrets, builds, regions, organization settings) does not mention retention or deletion of session data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8267,7 +8331,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for an open-source framework that ships a CLI, so the axis applies. The evidence pack never mentions telemetry, usage tracking, or any opt-out setting. The built-in pipeline metrics (which the developer enables) and local-inference support are related features, not a telemetry opt-out, so they earn no credit.",
+    "rationale": "Telemetry opt-out is a fair question for an open-source framework with a hosted cloud and CLI, so the axis applies. The evidence pack documents no telemetry or usage-tracking collection and no opt-out mechanism. The built-in pipeline metrics (docs-5) measure the developer's own bot performance and are an adjacent feature, not a vendor-telemetry opt-out, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8282,13 +8346,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Pipecat documents real-time STT as a pipeline stage. Developers can swap speech providers from 200+ integrations, the docs track per-service STT latency and time to final transcript, and local Whisper STT is reported by the community. Missing for 10: evidence of transcription accuracy, documented control over STT language/model selection or key-term boosting, and hands-on corroboration of transcript quality.",
+    "rationale": "Pipecat documents real-time STT with provider choice: speech services can be swapped among 200+ integrated providers, it ships per-service STT latency values, it measures time to final transcript, and the community reports local Whisper STT. The evidence does not show transcription accuracy or controls for key terms, custom vocabulary, or language models, so only the provider-control part of the story is covered. missing for 10: evidence of transcription accuracy, key-term/custom-vocabulary boosting, STT language/model selection controls, independent hands-on corroboration of transcription quality.",
     "evidenceIds": [
       "pipecat-docs-14",
       "pipecat-docs-15",
       "pipecat-docs-20",
-      "pipecat-comm-1",
-      "pipecat-docs-4"
+      "pipecat-comm-1"
     ],
     "support": {
       "relation": "direct",
@@ -8320,11 +8383,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat documents its own capture features: the AudioBufferProcessor records both user and bot audio, and turn events collect user and assistant messages for saving transcripts. Programmatic access to recordings and transcripts happens inside the developer's pipeline. The evidence shows no hosted store or retrieval API that returns recordings and transcripts for every call, and the OpenAPI probe found no API spec. Developers must persist and serve the data themselves. missing for 10: a documented API or hosted archive for retrieving recordings and transcripts per call, automatic capture across all calls (including Pipecat Cloud), independent or hands-on corroboration.",
+    "rationale": "Pipecat documents its own in-pipeline capture features: AudioBufferProcessor records both user and bot audio, and turn events collect user and assistant messages for transcripts. The developer must store these artifacts and retrieve them per call themselves. The Pipecat Cloud REST API covers agents, secrets, builds and sessions, with no documented endpoint for retrieving recordings or transcripts. Missing for 10: a documented API or storage surface to retrieve recordings and transcripts for every call, automatic per-call persistence, and independent hands-on corroboration.",
     "evidenceIds": [
       "pipecat-docs-3",
       "pipecat-docs-4",
-      "pipecat-probe-2"
+      "pipecat-cloud-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8346,15 +8409,15 @@
     "productId": "pipecat",
     "storyId": "self-host-oss-runtime",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Pipecat is documented as an open-source Python framework. A hands-on probe confirmed the BSD-2 pipecat-ai package installs and imports with no key, and the docs say bot files are portable to most production self-hosting setups, including runs distributed across processes and machines. Missing for 10: a dedicated production self-hosting deployment guide in the evidence (e.g. scaling and orchestration on your own infrastructure), since the documented runner is development-focused.",
+    "rationale": "Pipecat is an open-source (BSD-2) Python framework. A runtime probe confirmed it pip-installs and imports with no key. The docs state bot files are portable to \"most production self-hosting setups\", and agents can run distributed across your own processes and machines. missing for 10: a detailed first-party production self-hosting deployment guide (the built-in dev runner is explicitly not supported for production), and independent hands-on reports of production self-hosted deployments.",
     "evidenceIds": [
-      "pipecat-docs-42",
       "pipecat-probe-rt-2",
+      "pipecat-docs-42",
       "pipecat-docs-32",
       "pipecat-gh-1",
-      "pipecat-docs-24",
+      "pipecat-dev-runner-20261106",
       "pipecat-comm-1"
     ],
     "support": {
@@ -8363,16 +8426,16 @@
       "subject": "As a platform-engineer, I can self-host the voice agent runtime from open-source code on my own infrastructure",
       "citations": [
         {
-          "evidenceId": "pipecat-docs-42",
-          "quote": "Open source Python framework for building voice and multimodal AI pipelines."
-        },
-        {
           "evidenceId": "pipecat-probe-rt-2",
           "quote": "pypi pipecat-ai 1.8.1 (BSD-2 OSS) installs and `import pipecat` succeeds with no key, printing its startup banner — the open-source voice-agent framework is real, pip-installable, and self-hostable."
         },
         {
+          "evidenceId": "pipecat-docs-42",
+          "quote": "Open source Python framework for building voice and multimodal AI pipelines."
+        },
+        {
           "evidenceId": "pipecat-docs-32",
-          "quote": "This is the property that makes the same bot file portable across the development runner, Pipecat Cloud, and most production self-hosting setups."
+          "quote": "that makes the same bot file portable across the development runner, Pipecat Cloud, and most production self-hosting setups."
         },
         {
           "evidenceId": "pipecat-gh-1",
@@ -8384,10 +8447,10 @@
   {
     "productId": "pipecat",
     "storyId": "semantic-turn-detection",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Pipecat documents Smart Turn Detection, which uses a machine learning model to decide when a user has finished speaking. It reads intonation and linguistic cues rather than relying only on a silence timeout, and turn detection also accounts for STT latency. That is model-based end-of-turn detection beyond plain VAD. Missing for 10: hands-on or independent corroboration, documentation of configuration and tuning options, and explicit evidence that it holds up with slow or pausing speakers.",
+    "rationale": "Pipecat documents Smart Turn Detection, an ML model that decides when a user has finished speaking using intonation and linguistic cues. That is first-party model-based end-of-turn detection, and STT-latency-aware turn timing adds to it. However, the evidence never explicitly contrasts it with VAD silence timeouts or shows it preventing the bot from talking over slow or pausing speakers, and the main doc sits under the Pipecat Cloud guides. missing for 10: explicit documentation of behavior on mid-utterance pauses and slow speakers versus VAD-only timeouts, configuration depth (thresholds, self-hosted use outside Cloud), independent or hands-on corroboration of turn-taking accuracy.",
     "evidenceIds": [
       "pipecat-docs-9",
       "pipecat-docs-31",
@@ -8395,7 +8458,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can use model-based end-of-turn detection beyond simple VAD silence timeouts so the agent doesn't talk over slow speakers",
       "citations": [
         {
@@ -8419,11 +8482,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Pipecat ships a built-in evals system: you describe a conversation and the expected behavior, and it runs that against your real agent pipeline (same services, same code) and reports whether the expectation holds. A runtime probe confirms the official CLI exposes an `eval` command for behavioral evals. Missing for 10: detailed docs on simulated-caller and audio-level conversation simulation, and independent or hands-on corroboration of eval runs and results.",
+    "rationale": "Pipecat ships a built-in evals system, Pipecat Evals. You describe a conversation and the expected behavior, and it runs that against your real agent pipeline and reports whether the expectation holds. The official CLI also exposes an `eval` command, confirmed in a runtime probe. Evals run against real services rather than in a sandbox, but the story asks for pre-deployment behavioral testing, not data isolation. Missing for 10: detailed docs on simulated-caller personas, scoring and reporting, and telephony-specific simulation, plus independent hands-on corroboration of an actual eval run.",
     "evidenceIds": [
       "pipecat-docs-8",
       "pipecat-docs-25",
-      "pipecat-probe-rt-1"
+      "pipecat-probe-rt-1",
+      "pipecat-evals-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8451,13 +8515,13 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Pipecat's telephony docs describe bots answering calls from the user's own carrier, explicitly naming Twilio, Telnyx, Plivo, Exotel or 'your SIP provider', and the site lists SIP and PSTN transports. This shows bring-your-own-carrier rather than bundled telephony. The evidence is thin on actual SIP trunk or PBX configuration. missing for 10: documented SIP trunk/PBX setup steps (registration, dial-in/out configuration), explicit guidance on importing existing Twilio/Telnyx numbers, independent or hands-on corroboration of SIP/PBX connectivity.",
+    "rationale": "Pipecat's production telephony docs describe inbound calls arriving from your own carrier (Twilio, Telnyx, Plivo, Exotel, or your SIP provider) via your webhook, and the site lists SIP and PSTN as transports, so you bring your own carrier rather than using bundled telephony. However, connecting a PBX or SIP trunk directly is only mentioned in passing, with no setup docs. missing for 10: documented SIP trunk/PBX configuration steps, explicit guidance on bringing existing Twilio/Telnyx numbers, independent or hands-on corroboration of carrier/SIP integration.",
     "evidenceIds": [
       "pipecat-docs-23",
       "pipecat-docs-13",
       "pipecat-docs-28",
       "pipecat-docs-40",
-      "pipecat-docs-24"
+      "pipecat-docs-33"
     ],
     "support": {
       "relation": "direct",
@@ -8475,10 +8539,6 @@
         {
           "evidenceId": "pipecat-docs-40",
           "quote": "python bot.py -t twilio -x your-name.ngrok.io"
-        },
-        {
-          "evidenceId": "pipecat-docs-24",
-          "quote": "terminating telephony WebSockets"
         }
       ]
     }
@@ -8489,10 +8549,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a voice-agent framework, so post-call structured data extraction is a fair question for it, but the evidence shows no such capability. It only offers developer building blocks: turn events for collecting transcript messages, and Flows functions that call external APIs. The telephony webhook mentioned is the carrier's inbound-call webhook, not an outbound post-call delivery of outcomes, entities or dispositions. These do not count as the capability itself.",
+    "rationale": "Nothing in the evidence shows Pipecat itself extracting structured post-call data (outcomes, entities, dispositions) or delivering it via an API or registrable outbound webhook. What the pack does show are developer building blocks: turn events for collecting transcripts, Flows functions that can call external APIs, and a carrier-side inbound telephony webhook. A developer could build extraction from these, but they are not the capability itself.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can extract structured data from every call — outcomes, entities, dispositions — delivered via API or webhook after the call",
       "citations": []
@@ -8504,7 +8564,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pipecat Cloud has a published pricing page (daily.co/pricing/pipecat-cloud) that describes agent profiles, concurrency and a Krisp add-on, so a pricing structure is publicly documented. The evidence does not show any actual per-minute or usage rates, so cost per call cannot be estimated from what is cited. missing for 10: quoted per-minute/usage rates, a per-profile price breakdown, a cost-per-call estimation method or calculator, independent corroboration.",
+    "rationale": "Pipecat Cloud has a published pricing page on daily.co that describes agent profiles sized to compute needs, unlimited concurrency, and a Krisp noise-cancellation feature. That points to public usage-based pricing for the hosted offering. However, none of the evidence quotes an actual per-minute or per-session rate, so cost per call cannot be estimated from it. Missing for 10: explicit per-minute/usage rates, per-profile prices, a cost-per-call calculator or worked example, and independent confirmation of the pricing.",
     "evidenceIds": [
       "pipecat-docs-26",
       "pipecat-docs-12",
@@ -8532,7 +8592,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat Flows provides multi-step conversation paths with node transitions, but the evidence shows they are defined in Python code: functions and metadata are derived from function signatures and docstrings. Nothing in the pack documents a visual or no-code builder. Whisker gives a live graph of a running pipeline, but it is a debugger, not a flow-design tool, so it is only adjacent.",
+    "rationale": "Pipecat Flows does support multi-step conversations that transition between nodes, but the evidence shows this is built in Python code: function metadata is derived from signatures and docstrings, and Pipecat calls itself an open-source Python framework. Nothing in the pack documents a visual or no-code builder for branching, states, or handoffs. Whisker is a pipeline debugger and visualizer, not a flow designer.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8547,7 +8607,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat's own docs say you can swap speech services among 200+ integrated providers, usually with one line of code, which supports plugging in different TTS providers. However, the evidence never names TTS providers or voice selection, so the voice-choice half of the story is unshown. Missing for 10: an explicit list of TTS providers, documentation of a voice library or per-provider voice selection, and hands-on corroboration of swapping TTS voices.",
+    "rationale": "Pipecat's own docs say developers can swap speech services among 200+ integrated providers, usually with one line of code, which supports plugging in multiple providers. The evidence never names specific TTS providers or describes voice selection, so TTS breadth is implied rather than shown. missing for 10: explicit list of supported TTS providers, documentation of voice selection or a voice library, TTS-specific configuration docs, independent hands-on corroboration of switching TTS voices.",
     "evidenceIds": [
       "pipecat-docs-14",
       "pipecat-docs-42",
@@ -8578,8 +8638,8 @@
     "storyId": "agent-consumes-mcp-tools",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Retell's first-party docs state that a single- or multi-prompt agent can connect to a remote MCP server and call that server's tools during a live voice or chat conversation. That is exactly the story of one integration granting a whole toolset mid-call. Retell's own MCP server (for building agents from Cursor or Claude) is a separate server-side role and is not credited here. Missing for 10: detail on configuration (auth, tool filtering, multiple servers, conversation-flow agent support) and independent or hands-on corroboration.",
+    "confidence": "high",
+    "rationale": "Retell's own docs say a single- or multi-prompt agent can connect to a remote MCP server and call that server's tools during a live voice or chat conversation. That directly delivers MCP servers as tool sources used mid-call. Retell's separate MCP server for building agents from Cursor or Claude is a different capability and is not credited here. Missing for 10: detail on configuration, auth and tool selection or filtering for the connected server; whether node-based conversation-flow agents are supported (only single and multi-prompt agents are named); independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-6",
       "retell-docs-23",
@@ -8605,18 +8665,16 @@
     "productId": "retell",
     "storyId": "agent-provisions-voice-agent",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Retell ships an official MCP server that explicitly creates, updates and publishes agents, a CLI that manages agents and phone numbers, and Node/Python SDKs claiming full voice endpoint coverage. Agent creation and number management are documented, but attaching a number to an agent and placing an outbound call programmatically are not explicitly evidenced. The quick-start does these steps in the dashboard. missing for 10: explicit API/CLI/MCP docs for binding a number to an agent and placing an outbound call, an end-to-end headless provisioning walkthrough, hands-on corroboration.",
+    "rationale": "Retell documents its own programmatic surfaces for most of this flow: an MCP server for building agents, a CLI that manages agents and phone numbers, SDKs claiming full endpoint coverage, and an API endpoint for creating outbound phone calls. However, the step of attaching a number to an agent is only documented as a dashboard action, so the full chain without the dashboard is not shown. missing for 10: explicit API/CLI/MCP documentation for buying, importing, or assigning a number to an agent; evidence that calls can be placed via MCP or CLI; independent or hands-on corroboration of a complete headless run.",
     "evidenceIds": [
-      "retell-docs-4",
       "retell-docs-47",
-      "retell-docs-22",
       "retell-docs-3",
       "retell-docs-2",
-      "retell-docs-21",
-      "retell-probe-3",
-      "retell-probe-4"
+      "retell-docs-22",
+      "retell-api-playground-20261106",
+      "retell-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -8636,6 +8694,10 @@
           "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
         },
         {
+          "evidenceId": "retell-api-playground-20261106",
+          "quote": "\"Create a new outbound phone call\" (POST /v2/create-phone-call)"
+        },
+        {
           "evidenceId": "retell-docs-22",
           "quote": "Retell supports the Model Context Protocol (MCP) so you can build Retell AI voice agents directly from MCP-capable clients (Cursor, Claude Desktop, Claude Code, Codex-style tools, and more)."
         }
@@ -8648,11 +8710,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe confirms Retell serves an llms.txt at docs.retellai.com that describes its voice-agent docs for LLM consumption. Its documentation pages are also published as raw markdown (.md) URLs, which agents can ingest directly. Missing for 10: first-party documentation explaining the llms.txt/agent-docs offering (e.g. an llms-full.txt variant), independent or hands-on corroboration of agents using it.",
+    "rationale": "A live probe found a valid llms.txt at docs.retellai.com/llms.txt (HTTP 200, with a Retell AI docs summary), and the docs pages are served as raw .md files, which is the agent-oriented format this story asks for. The evidence shows these surfaces exist but says little about their depth. Missing for 10: llms.txt content beyond the header, any llms-full.txt or first-party guidance on pointing agents at the docs, and independent hands-on corroboration of an agent consuming them.",
     "evidenceIds": [
       "retell-probe-1",
       "retell-docs-1",
-      "retell-docs-4"
+      "retell-spec-unpublished-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8676,12 +8738,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Retell's in-product AI assistant, Conductor, investigates calls and chats, compares failures to find agent improvements, and explains AI QA trends and low scores. AI QA itself automatically scores calls to surface quality trends and issues, so AI-generated insights and suggestions from the user's own data are documented first-party. Missing for 10: independent or hands-on corroboration of Conductor's insight quality, and deeper documentation of what suggestion outputs look like beyond brief feature summaries.",
+    "rationale": "Retell's Conductor is an in-product AI assistant that investigates calls and chats, compares failures to find agent improvements, and explains AI QA trends. AI QA itself automatically scores calls on hallucination, sentiment and tool usage to surface quality trends and issues. Together these directly deliver AI-generated insights and suggestions from the user's own call data inside the product. Missing for 10: independent or hands-on corroboration of insight quality, and detailed docs on how suggestions are generated and presented beyond page summaries.",
     "evidenceIds": [
       "retell-docs-53",
       "retell-docs-57",
       "retell-docs-59",
       "retell-docs-14",
+      "retell-docs-19",
       "retell-docs-58"
     ],
     "support": {
@@ -8713,13 +8776,14 @@
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Retell's own features run unattended once configured. Deployed voice agents assigned to a phone number handle calls on their own. AI QA automatically evaluates a sampled set of calls against rules the user configures. Per-agent retention policies automatically delete data after a set period. However, the evidence shows no general-purpose automation builder, scheduled or recurring jobs, or event-triggered workflows, and Conductor explicitly proposes changes for human review rather than acting autonomously. missing for 10: general user-defined background automation/workflow builder, recurring scheduled tasks or campaigns, autonomous (non-review-gated) agentic actions, independent corroboration.",
+    "confidence": "medium",
+    "rationale": "Retell documents some self-running, user-configured behaviour. Deployed agents answer calls on their own and can take real actions through function calls. AI QA automatically evaluates sampled calls against rules you configure, and per-agent retention automatically deletes data after a set period. There is no general-purpose automation builder, scheduler or recurring background job runner, and Conductor only proposes changes for you to review before applying. Missing for 10: general user-defined background automations or workflows, scheduled/recurring triggers (e.g. scheduled outbound campaigns), autonomous agent-driven background tasks beyond live calls, and independent corroboration.",
     "evidenceIds": [
       "retell-docs-43",
       "retell-docs-27",
+      "retell-docs-5",
       "retell-docs-32",
-      "retell-docs-1"
+      "retell-docs-54"
     ],
     "support": {
       "relation": "direct",
@@ -8735,8 +8799,8 @@
           "quote": "After the retention period expires, call and chat data associated with that agent is automatically and permanently deleted."
         },
         {
-          "evidenceId": "retell-docs-32",
-          "quote": "Assign your agent to the number in the configuration settings"
+          "evidenceId": "retell-docs-5",
+          "quote": "Function calling lets Retell single or multi-prompt agents take real actions — transfer calls, end calls, book appointments, send SMS, and call external APIs."
         }
       ]
     }
@@ -8747,7 +8811,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Retell ships Conductor, a built-in AI assistant that takes plain-language requests. It can draft agents, edit prompts and flows, run simulation tests, investigate calls and chats, build analytics dashboards, and inspect knowledge bases, AI QA results and contacts, proposing changes for the user to review before applying them. This is well covered across many first-party doc pages. Missing for 10: independent or hands-on corroboration of Conductor's task delegation.",
+    "rationale": "Retell ships Conductor, a built-in AI assistant that takes plain-language requests to draft agents, edit prompts and flows, run simulation tests, investigate calls, inspect knowledge bases and QA results, and build analytics dashboards, with proposed changes reviewed before they are applied. missing for 10: independent or hands-on corroboration of Conductor's delegation quality.",
     "evidenceIds": [
       "retell-docs-53",
       "retell-docs-54",
@@ -8756,8 +8820,7 @@
       "retell-docs-57",
       "retell-docs-58",
       "retell-docs-56",
-      "retell-docs-59",
-      "retell-docs-60"
+      "retell-docs-59"
     ],
     "support": {
       "relation": "direct",
@@ -8787,13 +8850,15 @@
     "productId": "retell",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell ships an official CLI for managing agents, phone numbers and knowledge bases from the terminal, plus Node.js and Python SDKs with API key auth. Together these support scripted, non-dashboard automation, but nothing documents CI pipelines or truly headless runs explicitly. Conductor's simulation tests run inside the product's assistant, not in CI, so they earn no credit here. missing for 10: explicit headless/CI usage documentation, non-interactive CLI auth via environment variables or tokens, CI pipeline examples (e.g. automated agent tests or deploys), independent hands-on corroboration.",
+    "rationale": "Retell ships its own headless control surfaces: an official CLI for managing agents, phone numbers and knowledge bases from the terminal, and official Node.js/Python SDKs with API-key auth and structured errors. Together these allow scripted, non-dashboard automation. Nothing documents CI use specifically, such as non-interactive CLI auth, pipeline examples, or CI-runnable batch tests, so the CI half of the story is only implied. Missing for 10: documented CI/pipeline integration (e.g. GitHub Actions examples), non-interactive CLI auth and exit-code behavior, headless batch-test execution from CI, independent hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-3",
       "retell-docs-21",
       "retell-docs-2",
+      "retell-docs-33",
+      "retell-docs-46",
       "retell-probe-4"
     ],
     "support": {
@@ -8806,12 +8871,12 @@
           "quote": "Install the Retell CLI to manage agents, phone numbers, knowledge bases, and other Retell resources from your terminal with simple commands."
         },
         {
-          "evidenceId": "retell-docs-21",
-          "quote": "The Retell CLI lets you manage Retell resources from your terminal."
+          "evidenceId": "retell-docs-2",
+          "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
         },
         {
-          "evidenceId": "retell-docs-2",
-          "quote": "Official Retell SDKs for Node.js and Python. Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
+          "evidenceId": "retell-docs-21",
+          "quote": "The Retell CLI lets you manage Retell resources from your terminal."
         }
       ]
     }
@@ -8819,10 +8884,10 @@
   {
     "productId": "retell",
     "storyId": "agentic-mcp-client",
-    "verdict": "partial",
-    "quality": 7,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Retell's own docs say a single- or multi-prompt agent can connect to a remote MCP server and call that server's tools during a live voice or chat conversation, which is the core of this story. The evidence documents this only for remote servers and only for single/multi-prompt agents, with no detail on configuration, auth or transport, tool selection, or other agent types such as node-based flows. Retell's own MCP server (used from Cursor or Claude) is the server role and is not credited here. missing for 10: documented support beyond remote servers and single/multi-prompt agents, configuration/auth/tool-filtering details, independent or hands-on corroboration",
+    "rationale": "Retell's first-party docs say a single- or multi-prompt agent can connect to a remote MCP server and call that server's tools during a live voice or chat conversation, which is the core of this story. The separate Retell MCP server for Cursor and Claude is the server role and is not credited here. missing for 10: configuration and authentication details for the MCP connection, support for local (non-remote) MCP servers or for conversation-flow agents, and independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-6",
       "retell-docs-23",
@@ -8830,16 +8895,16 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
       "citations": [
         {
-          "evidenceId": "retell-docs-23",
-          "quote": "Connect your single- or multi-prompt agent to a remote Model Context Protocol (MCP) server, and the agent can call that server's tools during a live call."
-        },
-        {
           "evidenceId": "retell-docs-6",
           "quote": "Connect a Retell single- or multi-prompt agent to a remote MCP server so it can call the server's tools during a live voice or chat conversation."
+        },
+        {
+          "evidenceId": "retell-docs-23",
+          "quote": "Connect your single- or multi-prompt agent to a remote Model Context Protocol (MCP) server, and the agent can call that server's tools during a live call."
         }
       ]
     }
@@ -8850,10 +8915,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Retell documents an official MCP server that lets MCP-capable clients such as Cursor, Claude Desktop and Claude Code build and manage voice agents through Retell APIs. The docs list agent tools for create, update, publish, list and fetch versions, and a probe confirms the dedicated docs page exists. The separate docs on Retell agents calling remote MCP servers are client-side and were not credited. Missing for 10: independent or hands-on corroboration of the server working, and documented setup or auth details and the full tool inventory beyond agent operations.",
+    "rationale": "Retell documents an official MCP server that lets MCP-capable clients such as Cursor, Claude Desktop and Claude Code build and manage voice agents through Retell APIs. It exposes agent tools to create, update, publish, list and fetch versions, and a probe confirms the dedicated docs page. The agent-side MCP connection docs (docs-6/23) describe client behavior and are not credited here. Missing for 10: independent or hands-on corroboration, evidenced setup and auth details (transport, API-key configuration), and documented tool coverage beyond agent management.",
     "evidenceIds": [
       "retell-docs-4",
       "retell-docs-22",
+      "retell-docs-34",
       "retell-docs-47",
       "retell-probe-3"
     ],
@@ -8887,18 +8953,19 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Retell ships Conductor, a first-party AI assistant: you ask in plain language and it builds and refines agents, investigates calls and chats, builds analytics dashboards, inspects knowledge bases, AI QA results and contacts, and runs simulation tests, proposing changes for review before applying them. Its official MCP server also lets MCP clients like Claude manage agents conversationally. missing for 10: independent or hands-on corroboration of Conductor, evidence that deployment tasks like phone-number assignment can be done through natural language",
+    "rationale": "Retell's own Conductor assistant lets users operate the product in plain language across many surfaces. It can build and refine agents, investigate call and chat history, build analytics dashboards, inspect AI QA, knowledge bases and contacts, and run simulation tests, with proposed changes reviewed before applying. An official MCP server also lets MCP clients such as Claude and Cursor manage agents conversationally. missing for 10: independent or hands-on corroboration of Conductor's natural-language operation, and evidence of how reliably it handles complex or multi-step commands.",
     "evidenceIds": [
       "retell-docs-53",
       "retell-docs-54",
+      "retell-docs-30",
       "retell-docs-55",
       "retell-docs-57",
       "retell-docs-58",
-      "retell-docs-30",
-      "retell-docs-56",
       "retell-docs-59",
+      "retell-docs-56",
       "retell-docs-60",
-      "retell-docs-22"
+      "retell-docs-22",
+      "retell-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -8920,6 +8987,10 @@
         {
           "evidenceId": "retell-docs-58",
           "quote": "Ask Conductor to build an analytics dashboard or improve one you already use. Describe what you want to measure, then review its proposed changes before applying them."
+        },
+        {
+          "evidenceId": "retell-docs-22",
+          "quote": "Retell supports the Model Context Protocol (MCP) so you can build Retell AI voice agents directly from MCP-capable clients (Cursor, Claude Desktop, Claude Code, Codex-style tools, and more)."
         }
       ]
     }
@@ -8930,7 +9001,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Retell documents an official CLI for managing agents, phone numbers, knowledge bases and other resources from the terminal, and a probe confirms a dedicated CLI docs page exists. The evidence is limited to summary-level descriptions. missing for 10: detailed command reference or install specifics, documented AI-native/agent-oriented CLI features (e.g., machine-readable output, non-interactive auth), independent hands-on corroboration.",
+    "rationale": "Retell documents an official CLI for managing agents, phone numbers, knowledge bases and other resources from the terminal, and a probe confirms the CLI docs page exists. Command-level depth, agent- or scripting-oriented features, and any independent hands-on use are not evidenced. missing for 10: detailed command reference and auth/output-format documentation (e.g. JSON/scriptable output for AI workflows), independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-3",
       "retell-docs-21",
@@ -8962,15 +9033,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Retell documents a public API. It has an API reference section (for example the clone-voice endpoint) and official Node.js and Python SDKs with API key auth and full voice and chat endpoint coverage, and its MCP server and CLI also manage resources via Retell APIs. missing for 10: a machine-readable OpenAPI spec (all probed paths returned 404), broader API reference evidence beyond a single endpoint page, independent hands-on corroboration of API usage.",
+    "rationale": "Retell documents a versioned public REST API (for example POST /v2/create-phone-call) with an interactive \"Try it\" reference, official Node.js and Python SDKs claiming full voice and chat endpoint coverage, and a dated deprecation-notices page tracking API breaking changes. missing for 10: a publicly served OpenAPI spec (the internal \"openapi-final\" document returns 404 at every probed URL), independent or hands-on corroboration of API use.",
     "evidenceIds": [
       "retell-docs-2",
       "retell-docs-33",
       "retell-docs-46",
-      "retell-docs-8",
-      "retell-docs-28",
-      "retell-docs-4",
-      "retell-docs-47",
+      "retell-api-playground-20261106",
+      "retell-deprecation-notices-20261106",
+      "retell-spec-unpublished-20261106",
       "retell-probe-2"
     ],
     "support": {
@@ -8983,20 +9053,12 @@
           "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
         },
         {
-          "evidenceId": "retell-docs-8",
-          "quote": "Clone a voice from audio files"
+          "evidenceId": "retell-api-playground-20261106",
+          "quote": "The Mintlify-hosted API reference runs the interactive playground (\"playground\":{\"display\":\"interactive\"}) with a \"Try it\" runner per endpoint, e.g. \"Create a new outbound phone call\" (POST /v2/create-phone-call)"
         },
         {
-          "evidenceId": "retell-docs-28",
-          "quote": "Audio files to use for voice cloning. Up to 25 files allowed."
-        },
-        {
-          "evidenceId": "retell-docs-4",
-          "quote": "build and manage voice agents from MCP-capable clients like Cursor, Claude Desktop, and Claude Code via Retell APIs"
-        },
-        {
-          "evidenceId": "retell-docs-47",
-          "quote": "Agents: create, update, publish, list, and fetch agent versions."
+          "evidenceId": "retell-deprecation-notices-20261106",
+          "quote": "Retell publishes a dated deprecation-notices page tracking \"Retell API, SDK, and billing deprecations and breaking changes\""
         }
       ]
     }
@@ -9007,7 +9069,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence only says Retell's SDKs use API key auth. Nothing in the pack shows keys can be scoped, permission-limited, or issued per agent with least privilege. Credential scoping is a fair question for an API-driven SaaS platform, so the axis applies and the absence of evidence yields none.",
+    "rationale": "Retell's SDKs, CLI and MCP server authenticate with API keys, but nothing in the evidence shows keys can be scoped to specific resources or permissions, or issued per agent with least privilege. For a SaaS API platform this axis applies, so the absence of evidence is \"none\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9022,11 +9084,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Retell documents official Node.js and Python SDKs. They are typed clients with API key auth, structured errors, full TypeScript support, and claimed full coverage of the voice and chat endpoints. That clearly delivers the ability to build against official SDKs. Missing for 10: independent or hands-on corroboration of SDK quality and coverage, and SDKs for languages beyond Node.js and Python.",
+    "rationale": "Retell documents official, typed SDKs for Node.js and Python with API-key auth, structured errors, full TypeScript autocomplete, and full voice and chat endpoint coverage. The API reference shows per-language SDK examples, and SDK breaking changes are tracked on a dated deprecation-notices page. Missing for 10: independent or hands-on corroboration of SDK quality, and official SDKs beyond Node.js and Python.",
     "evidenceIds": [
       "retell-docs-2",
       "retell-docs-33",
-      "retell-docs-46"
+      "retell-docs-46",
+      "retell-api-playground-20261106",
+      "retell-deprecation-notices-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9051,10 +9115,10 @@
   {
     "productId": "retell",
     "storyId": "agentic-webhooks",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Retell's first-party docs describe webhooks that push real-time account events (call_started, call_ended, call_analyzed) to your own server, so integrations can react without polling. This is a genuine outbound HTTP callback that a programmatic consumer can receive. missing for 10: documented steps for registering a webhook URL and filtering events, signature verification and retry/delivery-guarantee details, independent or hands-on corroboration.",
+    "rationale": "Retell's own docs describe first-party webhooks that push call_started, call_ended and call_analyzed events to your server in real time, so a program can react without polling. The pack does not document how a consumer registers or subscribes an endpoint, or how deliveries are signed and retried, so coverage is partial rather than complete. missing for 10: documented endpoint registration/subscription mechanism (account vs per-agent URL configuration), event-type filtering, signature verification and retry/delivery guarantees, independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-12",
       "retell-docs-24",
@@ -9062,7 +9126,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
       "citations": [
         {
@@ -9085,8 +9149,8 @@
     "storyId": "ai-assisted-agent-authoring",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Retell's built-in AI assistant, Conductor, drafts a whole agent from a plain-English description. It also edits prompts, settings and conversation flows on request, proposing changes for review before they apply, and it can run simulation tests that play scenarios against the agent. Missing for 10: explicit documentation that Conductor generates reusable test cases from a description (the docs only say it runs simulation scenarios), and any independent or hands-on corroboration.",
+    "confidence": "high",
+    "rationale": "Retell's built-in AI assistant, Conductor, drafts an agent from a plain-English description and edits prompts, settings and conversation flows on request, with changes proposed for review before applying. It can also run simulation tests that play scenarios against the agent. missing for 10: explicit documentation that Conductor generates reusable graded test cases from a description (evidence only shows it running simulation scenarios), and independent or hands-on corroboration of Conductor's authoring quality.",
     "evidenceIds": [
       "retell-docs-30",
       "retell-docs-53",
@@ -9123,7 +9187,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Retell's AI QA automatically evaluates calls against configured rules and metrics. It scores hallucination, knowledge base accuracy, latency, sentiment and tool usage, and built-in call success scoring covers resolution outcomes. Conductor can then examine low-scoring calls and compare failures. Missing for 10: independent or hands-on corroboration, evaluation of all calls rather than a sampled set, and explicit documentation of resolution analysis beyond call-success scoring.",
+    "rationale": "Retell's AI QA automatically evaluates a sampled set of calls against configured rules and metrics, scoring hallucination, knowledge-base accuracy, latency, sentiment and tool usage. Built-in call-success scoring covers resolution, and Conductor examines failures and the calls behind low scores. missing for 10: independent or hands-on corroboration, explicit documentation of resolution analysis beyond call-success scoring, and coverage of all calls rather than a sampled set.",
     "evidenceIds": [
       "retell-docs-14",
       "retell-docs-43",
@@ -9146,7 +9210,7 @@
         },
         {
           "evidenceId": "retell-docs-19",
-          "quote": "Built-in call success and sentiment scoring"
+          "quote": "Built-in call success and sentiment scoring, plus custom fields synced to your CRM."
         },
         {
           "evidenceId": "retell-docs-59",
@@ -9154,7 +9218,7 @@
         },
         {
           "evidenceId": "retell-docs-57",
-          "quote": "compare failures to find agent improvements"
+          "quote": "Filter conversations, inspect transcripts and tool calls, and compare failures to find agent improvements."
         }
       ]
     }
@@ -9162,16 +9226,28 @@
   {
     "productId": "retell",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The evidence shows Retell has API reference pages, such as the clone-voice endpoint page that documents its parameters. Nothing shows that the reference is interactive or offers runnable examples, such as a try-it console or live request execution. The OpenAPI spec probe also returned 404 on every candidate path, so a static reference page is an adjacent feature, not the capability this story asks for.",
-    "evidenceIds": [],
+    "rationale": "Retell's Mintlify-hosted API reference runs an interactive playground with a \"Try it\" runner per endpoint, for example POST /v2/create-phone-call, plus per-language SDK examples. That directly delivers an explorable reference with runnable examples. missing for 10: independent or hands-on corroboration that the Try-it runner works across endpoints, and broader first-party documentation beyond the single example endpoint.",
+    "evidenceIds": [
+      "retell-api-playground-20261106",
+      "retell-docs-8"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "retell-api-playground-20261106",
+          "quote": "The Mintlify-hosted API reference runs the interactive playground (\"playground\":{\"display\":\"interactive\"}) with a \"Try it\" runner per endpoint"
+        },
+        {
+          "evidenceId": "retell-api-playground-20261106",
+          "quote": "alongside per-language SDK examples"
+        }
+      ]
     }
   },
   {
@@ -9179,8 +9255,8 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence contains no downloadable OpenAPI or equivalent machine-readable API spec. A probe found every common OpenAPI/Swagger path returned 404. The llms.txt file, the typed SDKs and the human-readable API reference pages are adjacent artifacts, not a machine-readable API spec, so they earn no credit.",
+    "confidence": "high",
+    "rationale": "Retell's API reference is generated from an internal OpenAPI document (\"openapi-final\"), but probes found it is not served at any public URL. Every candidate spec path returns 404, llms.txt lists no spec, and the SDKs ship no spec file. The interactive playground, typed SDKs, CLI and MCP server are adjacent features, not a downloadable machine-readable spec.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9194,29 +9270,53 @@
     "storyId": "api-sandbox",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows no isolated sandbox environment, test mode, or separate workspace that keeps testing apart from production data. Conductor's simulation tests (\"check changes without making real phone calls\") and the dashboard's free web-call Test button are simulation and dry-run style testing against your agent. They are an adjacent capability, not documented sandbox isolation of production data.",
-    "evidenceIds": [],
+    "confidence": "high",
+    "rationale": "Retell documents test surfaces: LLM Playground, simulation and batch tests, web-call testing, and draft/staging agent version tags. Its own docs state these run inside the same production workspace and API key space, with no isolated environment or separate test data store, and staging tags are 'not a separate sandbox environment.' Simulation is dry-run testing, not sandbox isolation from production data, so it is an adjacent feature and earns no credit.",
+    "evidenceIds": [
+      "retell-test-surfaces-20261106",
+      "retell-staging-tags-20261106",
+      "retell-docs-55"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "retell-docs-55",
+          "quote": "Conductor can run simulation tests that play out a scenario against your agent and show how it responds. This lets you check changes without making real phone calls."
+        },
+        {
+          "evidenceId": "retell-staging-tags-20261106",
+          "quote": "Each agent starts with `prod` and `staging` tags"
+        }
+      ]
     }
   },
   {
     "productId": "retell",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no documentation of API versioning (such as versioned endpoints or version headers) and no published deprecation policy. The only versioning mentioned is agent versions managed via the MCP server, which versions agent configurations rather than the API itself. That is an adjacent feature and earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Retell's API is path-versioned (/v2). It publishes a dated deprecation-notices page covering API, SDK, and billing breaking changes, with RSS, workspace notification recipients, migration deadlines, and impacted endpoints. However, no forward-looking minimum-notice commitment is stated as policy, so this is a notices log rather than a formal deprecation policy. Missing for 10: a stated deprecation policy with a guaranteed minimum notice period, explicit version-support lifecycle docs, independent corroboration.",
+    "evidenceIds": [
+      "retell-deprecation-notices-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "retell-deprecation-notices-20261106",
+          "quote": "Retell publishes a dated deprecation-notices page tracking \"Retell API, SDK, and billing deprecations and breaking changes\" with RSS subscription, configurable workspace notification recipients, migration deadlines and impacted endpoints"
+        },
+        {
+          "evidenceId": "retell-deprecation-notices-20261106",
+          "quote": "The API is path-versioned (/v2)"
+        }
+      ]
     }
   },
   {
@@ -9225,7 +9325,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a voice-agent platform, for example batch calls or bulk edits to agents and numbers. The evidence pack documents no such capability. The CLI, SDKs and MCP server manage resources individually. Per-agent automatic data retention, AI QA sampling of calls and uploading up to 25 voice-clone audio files are adjacent features, not bulk operations across many items.",
+    "rationale": "The pack documents no product-level bulk operations, such as batch-creating, updating, deleting or launching actions across many agents, calls or contacts at once. The adjacent evidence does not qualify for this story. Batch testing of graded test cases is a testing feature, per-agent data retention is an automatic deletion policy, and the 25-file voice-clone upload and Conductor's conversation filtering are not bulk operations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9240,7 +9340,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party rules engine where a user defines event-to-action rules that run automatically. Webhooks (call_started, call_ended, call_analyzed) only push events to your own server, so any rule logic must be built by the developer. That makes them a building block, not the capability itself. Function calling is invoked by the agent's model mid-conversation, and per-agent data retention is a fixed deletion policy; both are adjacent features, not user-defined event-triggered automation.",
+    "rationale": "The evidence pack documents no first-party rules engine where a user defines event-to-action rules. Webhooks (call_started, call_ended, call_analyzed) only push events to the user's own server, so the user would have to build the rule logic themselves. That makes them a developer building block. Function calling is LLM-driven tool use during calls, and data retention and AI QA are fixed automatic behaviors, not user-defined event rules, so all three are adjacent features that earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -9255,7 +9355,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs, such as recurring outbound call campaigns or workflows, is a fair question for a voice-agent platform. However, no evidence shows Retell offers recurring schedules. Webhooks are event-driven, data-retention auto-deletion is an adjacent compliance setting, and function calling acts only within a live call. None of these is a user-defined recurring schedule.",
+    "rationale": "Scheduling recurring jobs, such as campaigns or periodic call workflows, is a fair question for a voice-agent platform, so the axis applies. The pack documents no recurring scheduler, cron, or scheduled workflow feature. Automatic data-retention deletion and AI QA sampling are adjacent automatic behaviors, not user-defined recurring schedules, and one-off outbound call creation does not count as a recurring schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9268,10 +9368,11 @@
     "productId": "retell",
     "storyId": "automation-versioned-workflows",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell's MCP server documents agent versions: agents can be published and their versions listed and fetched. Conductor proposes edits to prompts, settings, and flows that you review before applying them, which covers versioning and review. missing for 10: any documented rollback or restore-to-previous-version capability, version diffing or history UI docs, and independent or hands-on corroboration.",
+    "rationale": "Retell documents agent versioning: new versions start as editable drafts, and `prod` and `staging` tags point at specific versions. Agent versions can be created, published, listed and fetched via MCP, and Conductor proposes edits for review before they are applied. Rollback is only implied by re-pointing a tag such as prod at an earlier version (e.g. V2 while V3 is tested), and is never documented as an explicit operation. Missing for 10: an explicit documented rollback/revert workflow, version diff or change-history review, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "retell-staging-tags-20261106",
       "retell-docs-47",
       "retell-docs-54",
       "retell-docs-53"
@@ -9282,16 +9383,20 @@
       "subject": "As an AI-native user, I can version, review, and roll back my automations",
       "citations": [
         {
+          "evidenceId": "retell-staging-tags-20261106",
+          "quote": "Each agent starts with `prod` and `staging` tags"
+        },
+        {
+          "evidenceId": "retell-staging-tags-20261106",
+          "quote": "A new version starts as a draft, which you can edit and test"
+        },
+        {
           "evidenceId": "retell-docs-47",
           "quote": "Agents: create, update, publish, list, and fetch agent versions."
         },
         {
           "evidenceId": "retell-docs-54",
           "quote": "It proposes edits for you to review before applying them."
-        },
-        {
-          "evidenceId": "retell-docs-53",
-          "quote": "review proposed changes before applying them"
         }
       ]
     }
@@ -9302,7 +9407,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Barge-in handling is a fair question for a voice-agent platform, but nothing in the evidence pack documents interruption handling. There is no mention of stopping speech, updating context, or recovering the turn when a caller cuts in. The transcription-mode endpointing settings and the generic 'call handling' claim are adjacent latency and turn-detection controls, not barge-in support.",
+    "rationale": "Barge-in handling is a fair question for a voice-agent platform like Retell, but the evidence pack never documents interruption handling: stopping speech, updating context, or recovering the turn. The transcription-mode and endpointing settings tune latency against accuracy for speech recognition; that is an adjacent turn-detection control, not barge-in handling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9317,10 +9422,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents batch outbound call campaigns or scheduling. The only related material is account-level concurrency: a reserved inbound concurrency setting that caps outbound calls, a default quota of 20 concurrent calls, and outbound IVR digit pressing. These are adjacent controls, not a campaign feature with scheduling and throughput settings, so they earn no credit.",
+    "rationale": "The evidence pack documents only single outbound calls via POST /v2/create-phone-call and account-level concurrency quotas, including reserved inbound concurrency that caps outbound traffic. Neither shows a batch outbound campaign feature with scheduling or per-campaign throughput controls. The 'batch testing' mention is about test simulations, not call campaigns, and the single-call API and concurrency caps are only building blocks or adjacent controls.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a founder, I can run batch outbound call campaigns with scheduling and throughput controls",
       "citations": []
@@ -9330,17 +9435,17 @@
     "productId": "retell",
     "storyId": "build-phone-agent-fast",
     "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Retell's official quick-start promises a first phone agent in 15 minutes. It walks through account creation, template or Conductor-generated prompt, a free dashboard test call, phone number deployment and a live call. Voice and LLM selection are part of basic agent settings, and free trial credits remove the need for a payment method. Missing for 10: independent hands-on corroboration of the time-to-first-live-call, and more detailed documentation of the phone-number purchase step.",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Retell's official quick start promises a first phone agent in 15 minutes. It covers creating an account, picking or generating an agent from a prompt, choosing a voice in basic settings, testing via a free web call, assigning the agent to a phone number and making a call, with $10 of free trial credits. That covers prompt, voice, phone number and a live call well within an hour. Missing for 10: independent or hands-on corroboration of the setup-time claim, and detail on acquiring the phone number (purchase step and cost) beyond assigning the agent to it.",
     "evidenceIds": [
       "retell-docs-1",
-      "retell-docs-20",
       "retell-docs-30",
-      "retell-docs-32",
       "retell-docs-61",
-      "retell-docs-26",
-      "retell-docs-45"
+      "retell-docs-20",
+      "retell-docs-32",
+      "retell-docs-45",
+      "retell-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -9352,16 +9457,16 @@
           "quote": "Build your first Retell AI phone agent in 15 minutes: create an account, pick a template, test in the dashboard, deploy to a phone number, and make a call."
         },
         {
+          "evidenceId": "retell-docs-30",
+          "quote": "click **Generate from prompt** (marked Suggested) to let [Conductor](/conductor/create-agent) draft an agent from a plain-English description of your use case"
+        },
+        {
           "evidenceId": "retell-docs-61",
           "quote": "Three settings decide how your agent sounds and behaves before you write a word of prompt: the language model, the voice, and who speaks first."
         },
         {
           "evidenceId": "retell-docs-32",
           "quote": "Assign your agent to the number in the configuration settings"
-        },
-        {
-          "evidenceId": "retell-docs-26",
-          "quote": "Define your whole agent with one prompt."
         },
         {
           "evidenceId": "retell-docs-45",
@@ -9376,12 +9481,13 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Retell ships a built-in Analytics dashboard that charts call and chat metrics such as success rate, latency, cost and concurrency, with filters and breakdowns. It also has built-in call success and sentiment scoring, and AI QA surfaces sentiment trends, so a founder gets dashboards without building them. Missing for 10: call duration metrics are not explicitly documented in the dashboard, outcome breakdowns beyond success rate are not shown, sentiment is not confirmed as a dashboard chart, and there is no independent or hands-on corroboration.",
+    "rationale": "Retell ships a built-in Analytics dashboard that charts call and chat data, including success rate, latency, cost and concurrency, with filters and breakdowns. It also has built-in call success and sentiment scoring and AI QA sentiment trends, so a founder does not need to build their own dashboards. However, call durations are never explicitly shown as a dashboard metric, and outcome and sentiment reporting is only implied rather than documented as a dashboard chart. missing for 10: explicit call-duration metrics in dashboards, documented outcome and sentiment charts within the analytics dashboard, independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-13",
       "retell-docs-42",
       "retell-docs-19",
-      "retell-docs-14"
+      "retell-docs-14",
+      "retell-docs-58"
     ],
     "support": {
       "relation": "direct",
@@ -9413,7 +9519,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell documents a first-party Transfer Call tool that routes a live call to a human using cold (blind), warm, and agentic warm transfer modes, and function calling explicitly includes transferring calls. The pack does not explicitly document passing context, such as a summary, SIP headers, or metadata, to the human on transfer; the SIP-header evidence belongs to the separate End Call tool. Missing for 10: documented context or summary handoff to the receiving human, detailed transfer configuration docs, and independent hands-on corroboration.",
+    "rationale": "Retell documents a first-party Transfer Call tool that routes live calls to a human with cold (blind), warm, and agentic warm transfer modes, and function calling lists transfer as a built-in action. The pack never explicitly documents passing context (summary, metadata, or headers) to the receiving human; SIP header passing appears only for the End Call tool. Missing for 10: explicit documentation of context handoff during transfer, configuration depth for warm-transfer briefing, and independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-63",
       "retell-docs-5"
@@ -9440,7 +9546,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Retell documents its concurrency model: Pay-As-You-Go workspaces get a default quota of 20 concurrent calls, and a reserved inbound concurrency setting caps outbound calls at the limit minus the reserved amount. The analytics dashboard also tracks concurrency. However, nothing in the evidence shows how to raise the limit beyond 20, or whether scaling to many simultaneous calls is self-serve rather than a request to the vendor. missing for 10: documented self-serve concurrency increase or auto-scaling path, limits for non-PAYG tiers, independent evidence of high-concurrency operation.",
+    "rationale": "Retell has a dedicated concurrency page that documents a default quota of 20 concurrent calls for Pay-As-You-Go workspaces and a reserved inbound concurrency setting that caps outbound calls. The analytics dashboard also tracks concurrency. However, nothing in the pack shows how to raise the quota self-serve, so scaling to many simultaneous calls without asking for capacity is unproven. Missing for 10: a documented self-serve or automatic way to raise the concurrency limit beyond the default, documented upper scale limits, and independent or hands-on corroboration of high-concurrency operation.",
     "evidenceIds": [
       "retell-docs-51",
       "retell-docs-41",
@@ -9461,10 +9567,6 @@
           "quote": "When `reserved_inbound_concurrency` is configured, outbound calls can use at most your concurrency limit minus the reserved amount."
         },
         {
-          "evidenceId": "retell-docs-11",
-          "quote": "Reserved inbound concurrency protects inbound calls from being crowded out by outbound traffic."
-        },
-        {
           "evidenceId": "retell-docs-13",
           "quote": "track call and chat metrics like success rate, latency, cost, and concurrency"
         }
@@ -9475,9 +9577,9 @@
     "productId": "retell",
     "storyId": "consent-recording-controls",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Retell documents per-agent data retention that automatically and permanently deletes call and chat data, including transcripts, recordings, and logs, after a set period for compliance. This covers the retention half of the story. The pack has no evidence of per-call recording on/off controls or of consent or disclosure features. Missing for 10: per-call recording toggle or opt-out controls, recording-consent or disclosure announcement capability, per-call (rather than per-agent) retention granularity, independent corroboration.",
+    "rationale": "Retell documents configurable per-agent data retention that automatically and permanently deletes transcripts, recordings, and logs after a set period for compliance. That covers the retention half of the story. The evidence never mentions per-call recording on/off controls, consent prompts, or disclosure features, so the recording-consent half is unevidenced. Retention is also set per agent rather than per call. Missing for 10: per-call recording controls, consent/disclosure announcement capability, per-call retention granularity, independent corroboration.",
     "evidenceIds": [
       "retell-docs-15",
       "retell-docs-27",
@@ -9489,12 +9591,12 @@
       "subject": "As a founder, I can meet call-recording consent and disclosure obligations with per-call recording controls and configurable data retention",
       "citations": [
         {
-          "evidenceId": "retell-docs-27",
-          "quote": "Retell allows you to configure a data retention period per agent. After the retention period expires, call and chat data associated with that agent is automatically and permanently deleted."
-        },
-        {
           "evidenceId": "retell-docs-15",
           "quote": "Configure per-agent data retention to automatically delete call and chat data — transcripts, recordings, and logs — after a set period for compliance."
+        },
+        {
+          "evidenceId": "retell-docs-27",
+          "quote": "After the retention period expires, call and chat data associated with that agent is automatically and permanently deleted."
         }
       ]
     }
@@ -9505,7 +9607,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Retell's docs cover cloning a brand-specific voice and attaching it to agents: there is a clone-voice API that accepts up to 25 audio files, and an \"Add custom voice\" option in the agent voice selector. However, nothing in the pack documents a consent or speaker-verification process, which is an explicit part of the story. Missing for 10: a documented consent/verification process for cloned voices, and independent or hands-on corroboration of clone quality.",
+    "rationale": "Retell documents its own voice cloning: you can train or import a clone for a brand-specific sound, add it from the agent's voice selector, or call a clone-voice API that accepts up to 25 audio files. Nothing in the evidence describes a consent process for cloning someone's voice, which is an explicit part of the story. Missing for 10: documented consent/verification process for voice cloning, independent or hands-on corroboration of clone quality.",
     "evidenceIds": [
       "retell-docs-7",
       "retell-docs-8",
@@ -9536,9 +9638,9 @@
     "productId": "retell",
     "storyId": "documented-latency-numbers",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Retell documents latency tuning guidance for transcription mode: you can optimize for speed using interim results with low endpointing, or for accuracy with higher endpointing. Its analytics dashboard and AI QA also measure latency. However, the pack contains no published end-to-end voice latency numbers or benchmarks backing speed claims, and the tuning guidance covers only the transcription stage. Missing for 10: documented end-to-end latency figures or benchmarks, tuning guidance beyond transcription (LLM, TTS, network/telephony), independent latency corroboration.",
+    "rationale": "Retell documents one latency-tuning lever: transcription mode, which trades latency against accuracy through interim results and endpointing settings. It also measures latency in its analytics dashboard and AI QA scoring. The pack contains no published end-to-end voice latency figures (e.g., ms response times) and no broader tuning guide covering LLM, TTS, telephony or turn-taking, so the speed claims are only thinly backed. Missing for 10: published end-to-end latency benchmarks or numbers, holistic latency tuning guidance beyond transcription mode, independent latency measurements.",
     "evidenceIds": [
       "retell-docs-9",
       "retell-docs-39",
@@ -9552,12 +9654,12 @@
       "subject": "As a platform-engineer, I can see documented end-to-end voice latency numbers or tuning guidance backing the platform's speed claims",
       "citations": [
         {
-          "evidenceId": "retell-docs-48",
-          "quote": "optimize for speed: uses the latest interim results with a low endpointing setting... optimize for accuracy: uses the results with a higher endpointing setting"
-        },
-        {
           "evidenceId": "retell-docs-39",
           "quote": "Real time transcription is often a trade off between latency and accuracy."
+        },
+        {
+          "evidenceId": "retell-docs-48",
+          "quote": "optimize for speed: uses the latest interim results with a low endpointing setting... optimize for accuracy: uses the results with a higher endpointing setting"
         },
         {
           "evidenceId": "retell-docs-13",
@@ -9572,7 +9674,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Retell documents a Press Digit tool that lets single- and multi-prompt agents press keypad digits to navigate DTMF IVR menus during outbound calls. That covers the DTMF and IVR parts of the story. Nothing in the evidence pack covers voicemail detection or leaving a voicemail. missing for 10: voicemail detection, leaving voicemail messages, DTMF/IVR support beyond outbound calls, independent or hands-on corroboration of IVR navigation",
+    "rationale": "Retell documents a first-party Press Digit tool that lets single- and multi-prompt agents send DTMF keypad digits to navigate IVR menus on outbound calls. That covers the DTMF and IVR half of the story. Nothing in the evidence pack documents voicemail detection or leaving a voicemail. Missing for 10: voicemail detection, leaving voicemail messages, depth on DTMF configuration, independent or hands-on corroboration of IVR navigation.",
     "evidenceIds": [
       "retell-docs-65"
     ],
@@ -9594,7 +9696,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of dynamic variables or of passing per-caller context into a call at creation time. The closest items are custom functions that call your API mid-call and Conductor's contact inspection. Both are adjacent features, not call-time variable injection.",
+    "rationale": "Nothing in the evidence pack documents dynamic variables, prompt templating, or passing per-caller context into a conversation at call time. The nearby evidence covers other capabilities and does not transfer to this story: mid-call custom functions, Conductor's contact-field inspection, and the create-phone-call endpoint, which is described without any variable parameters.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9609,7 +9711,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions HIPAA/BAA support, SOC 2 attestation, or data-residency options. The only compliance-related evidence is per-agent data retention with automatic deletion, which is an adjacent control and does not earn credit for this story. Compliance certifications are a fair question for a hosted voice-AI platform, so the axis applies and the absence of evidence yields none.",
+    "rationale": "Compliance certifications and data residency are a fair question for a hosted voice-AI platform, but the evidence pack never mentions HIPAA, a BAA, SOC 2, or data-residency options. The only related item is per-agent data retention with automatic deletion, which is an adjacent control rather than the requested certifications or residency choice, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9621,10 +9723,10 @@
   {
     "productId": "retell",
     "storyId": "knowledge-base-grounding",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Retell's docs describe a built-in knowledge base: you can crawl a website or upload documents for the agent to retrieve from. The CLI manages knowledge bases, Conductor inspects their sources and indexing status, and AI QA scores knowledge-base accuracy. However, the evidence is mostly one-line overview mentions, with no dedicated knowledge-base documentation showing how retrieval grounds answers. missing for 10: a dedicated knowledge-base/RAG doc covering supported file types, chunking, and retrieval configuration; detail on how grounding works at answer time; independent or hands-on corroboration that answers come from uploaded content.",
+    "rationale": "Retell documents a built-in knowledge base: agents ship with one, and you can crawl a website or upload documents for the agent to retrieve from. Knowledge bases are also managed via the CLI and inspected by Conductor, including indexing status, and AI QA scores knowledge base accuracy. Evidence is limited to short overview statements, so missing for 10: a dedicated knowledge-base doc covering supported file types, chunking/retrieval configuration and API endpoints, plus independent or hands-on corroboration that answers are grounded in uploaded content.",
     "evidenceIds": [
       "retell-docs-17",
       "retell-docs-18",
@@ -9634,7 +9736,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can ground the agent on my documents with a built-in knowledge base or RAG so it answers from my content",
       "citations": [
         {
@@ -9662,12 +9764,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Retell documents its own monitoring: an analytics dashboard tracking success rate, latency, cost and concurrency, plus AI QA that scores a sampled set of calls on hallucination, latency and tool usage to surface quality issues. Nothing in the evidence documents alerting on agent misbehavior or error-rate spikes. Webhooks (call_started/call_ended/call_analyzed) are only building blocks for a user-built alert pipeline, so they earn no credit. Missing for 10: native threshold-based alerting or notifications, real-time live-call monitoring (dashboard is charted over time), error-rate spike detection, independent corroboration.",
+    "rationale": "Retell documents its own production-monitoring features. The Analytics dashboard tracks success rate, latency, cost and concurrency. AI QA scores sampled calls for hallucination, latency and tool usage to surface quality issues. Real-time call_started, call_ended and call_analyzed webhooks report call activity as it happens. However, nothing documents threshold-based alerting when agents misbehave or error rates spike; users would have to build that themselves on top of the webhooks. Missing for 10: native alerting/notification rules on error-rate or QA-score thresholds, an explicit live in-progress call monitoring view, and independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-13",
       "retell-docs-42",
       "retell-docs-14",
       "retell-docs-43",
+      "retell-docs-52",
+      "retell-docs-12",
       "retell-docs-57"
     ],
     "support": {
@@ -9684,12 +9788,12 @@
           "quote": "AI QA scores Retell calls on hallucination, knowledge base accuracy, latency, sentiment, and tool usage to surface quality trends and issues."
         },
         {
-          "evidenceId": "retell-docs-43",
-          "quote": "AI QA automatically evaluates a sampled set of your calls against rules and metrics you configure."
+          "evidenceId": "retell-docs-52",
+          "quote": "call_started, call_ended, and call_analyzed events delivered to your server so you can react to call activity without polling."
         },
         {
-          "evidenceId": "retell-docs-42",
-          "quote": "The Analytics dashboard charts your call and chat data so you can see how your agents are performing over time."
+          "evidenceId": "retell-docs-12",
+          "quote": "Webhooks allow your application to receive real-time notifications about events that occur in your Retell AI account."
         }
       ]
     }
@@ -9698,9 +9802,9 @@
     "productId": "retell",
     "storyId": "mid-call-tool-calling",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell documents calling external APIs mid-call. It supports custom functions with configurable URL, method, headers, parameters and responses, plus tool calls to remote MCP servers during live calls. Nothing in the pack shows how latency or silence is handled while a function runs, such as filler speech or speak-during-execution. Missing for 10: documented dead-air mitigation during tool execution, independent or hands-on corroboration of mid-call function calls speaking results smoothly.",
+    "rationale": "Retell documents custom functions that call your API mid-call, with configurable URL, method, headers, parameters and responses. Function calling can call external APIs, and agents can call remote MCP server tools during a live call. Nothing in the evidence covers how the agent avoids dead air while a tool runs, so that part of the story is unproven. Missing for 10: documented filler speech or latency handling during tool execution, evidence of how tool results are spoken back, and independent hands-on corroboration of smooth mid-call tool use.",
     "evidenceIds": [
       "retell-docs-66",
       "retell-docs-5",
@@ -9733,7 +9837,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents multilingual conversations, language detection, or mid-call language switching. The voice, transcription-mode and basic-settings docs never mention languages. The only related item is a community quote in which the founder calls multilingual support a roadmap item, which shows the capability was not shipped at the time.",
+    "rationale": "Multilingual conversations and mid-call language switching are a fair question for a voice-agent platform, so the axis applies. However, no documentation item in the pack mentions language settings, language detection, or language switching. The only related item is a community quote where the founder calls multilingual support 'in our roadmap', which is not evidence of a shipped capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9748,7 +9852,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Noise suppression is a fair axis for a voice-agent platform, but the evidence pack never mentions noise cancellation, denoising, or audio filtering. The transcription-mode setting (speed vs. accuracy, endpointing) is an adjacent control, not noise suppression.",
+    "rationale": "Retell is a voice-agent platform, so noise suppression and audio filtering are a fair axis, but the evidence pack never documents a noise-cancellation, background-noise, or audio-filtering setting. The closest item is transcription mode (interim vs. context-aware results, endpointing). That is a latency/accuracy trade-off, which is adjacent to this story and does not count as noise suppression.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9763,14 +9867,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Retell has a broad programmatic surface. Its official SDKs claim full voice and chat endpoint coverage, the CLI manages agents, phone numbers and knowledge bases, the MCP server covers agent lifecycle operations, and some UI actions like voice cloning have API references. However, no document claims API–UI parity, and several dashboard features have no evidenced API equivalent: Conductor, analytics dashboards, AI QA configuration and data-retention settings. The OpenAPI probe also returned 404 on every candidate path. Missing for 10: an explicit API/UI parity statement, API coverage for analytics dashboards, AI QA, Conductor and retention settings, a published OpenAPI spec, and independent hands-on corroboration.",
+    "rationale": "Retell documents a broad programmatic surface: SDKs claiming full voice and chat endpoint coverage, a CLI for agents, phone numbers and knowledge bases, an MCP server for agent create/update/publish, and API endpoints that mirror dashboard actions such as voice cloning. However, no source states that the API matches the UI, and several UI features have no documented API equivalent. The OpenAPI spec is also not publicly served. missing for 10: an explicit API/UI parity statement, documented API equivalents for Conductor, analytics dashboards and AI QA configuration, a publicly published OpenAPI spec, and independent or hands-on corroboration of parity.",
     "evidenceIds": [
       "retell-docs-2",
       "retell-docs-3",
-      "retell-docs-4",
       "retell-docs-47",
       "retell-docs-8",
-      "retell-probe-2"
+      "retell-docs-37",
+      "retell-api-playground-20261106",
+      "retell-spec-unpublished-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9779,11 +9884,11 @@
       "citations": [
         {
           "evidenceId": "retell-docs-2",
-          "quote": "full voice and chat endpoint coverage"
+          "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
         },
         {
           "evidenceId": "retell-docs-3",
-          "quote": "manage agents, phone numbers, knowledge bases, and other Retell resources from your terminal"
+          "quote": "manage agents, phone numbers, knowledge bases, and other Retell resources from your terminal with simple commands"
         },
         {
           "evidenceId": "retell-docs-47",
@@ -9802,7 +9907,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no data-export feature and no open export formats for calls, transcripts, recordings, agents or knowledge bases. Data-retention auto-deletion, webhooks and SDK/API access are adjacent controls or developer building blocks rather than a bulk export capability, so they earn no credit.",
+    "rationale": "Data export is a fair question for a SaaS voice-agent platform, so the axis applies. The pack documents no bulk or full-account export of agents, transcripts, recordings or knowledge bases in open formats. What it does show is adjacent: per-agent data-retention deletion, SDK, CLI and MCP list/fetch operations, and call-event webhooks. These are developer building blocks or a different feature, not an export-and-leave capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9817,7 +9922,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a voice-agent platform publishes its source under an open license is a fair openness question, so the axis applies. Nothing in the evidence shows Retell AI's source is available under any license: the docs cover a hosted platform, SDKs, a CLI and an MCP server, with no mention of source code or licensing. A community thread treats open-source projects as alternatives to Retell, which suggests Retell itself is not open source.",
+    "rationale": "Retell AI is a hosted voice-agent SaaS, and whether its source is open is a fair question for this kind of product, so the axis applies. Nothing in the evidence shows the platform's source published under an open license. The SDKs, CLI and MCP server are documented as official tools, but no repository or license is cited for them, and they do not stand in for the product's source.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9832,7 +9937,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a voice-agent platform, but the evidence shows Retell only as a hosted, account-based service with pay-as-you-go pricing. Bring-your-own SIP telephony and connecting to remote MCP servers are adjacent integrations, not self-hosting the core product. No documentation of on-prem or self-hosted deployment exists in the pack.",
+    "rationale": "Self-hosting is a fair question for a voice-AI platform, but the evidence pack never documents a self-hosted or on-prem deployment of Retell. Every item describes the hosted Retell workspace, accessed through the dashboard, API, SDKs, CLI, or MCP. Bring-your-own telephony via SIP trunking is an adjacent integration feature, not self-hosting of the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9845,18 +9950,17 @@
     "productId": "retell",
     "storyId": "phone-number-provisioning",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell's own CLI manages phone numbers, numbers can be imported via SIP trunking, the SDKs claim full voice endpoint coverage, and the concurrency docs confirm the platform handles both inbound and outbound calls. However, no specific API endpoint is documented for buying or provisioning numbers or for placing outbound calls programmatically, and number deployment is shown mainly through the dashboard. Missing for 10: documented phone-number provisioning API endpoint, documented create-outbound-call API, explicit API-driven inbound call routing, hands-on corroboration.",
+    "rationale": "Retell documents an outbound-call API endpoint (POST /v2/create-phone-call). Phone numbers can be managed via the official CLI or imported from Twilio, Telnyx or Vonage. Inbound handling is implied by assigning agents to numbers and by reserved inbound concurrency. missing for 10: an explicitly documented API endpoint for buying or provisioning numbers, documented API configuration of inbound call routing, independent hands-on corroboration.",
     "evidenceIds": [
+      "retell-api-playground-20261106",
       "retell-docs-3",
-      "retell-docs-2",
       "retell-docs-10",
       "retell-docs-49",
       "retell-docs-11",
-      "retell-docs-41",
-      "retell-docs-65",
-      "retell-docs-1"
+      "retell-docs-32",
+      "retell-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -9864,20 +9968,20 @@
       "subject": "As a developer, I can provision phone numbers and run both inbound and outbound calls through the platform's API",
       "citations": [
         {
-          "evidenceId": "retell-docs-3",
-          "quote": "Install the Retell CLI to manage agents, phone numbers, knowledge bases, and other Retell resources from your terminal with simple commands."
+          "evidenceId": "retell-api-playground-20261106",
+          "quote": "\"Create a new outbound phone call\" (POST /v2/create-phone-call)"
         },
         {
-          "evidenceId": "retell-docs-2",
-          "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
+          "evidenceId": "retell-docs-3",
+          "quote": "Install the Retell CLI to manage agents, phone numbers, knowledge bases, and other Retell resources from your terminal with simple commands."
         },
         {
           "evidenceId": "retell-docs-49",
           "quote": "You set up a SIP trunk, configure your number to point to it, and import that number to Retell."
         },
         {
-          "evidenceId": "retell-docs-41",
-          "quote": "When `reserved_inbound_concurrency` is configured, outbound calls can use at most your concurrency limit minus the reserved amount."
+          "evidenceId": "retell-docs-11",
+          "quote": "Reserved inbound concurrency protects inbound calls from being crowded out by outbound traffic."
         }
       ]
     }
@@ -9888,7 +9992,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a hosted voice-agent SaaS like Retell, so the axis applies. The pack never documents choosing a storage region or residency. Per-agent data retention controls how long data is kept, not where it is stored, so it is an adjacent control and earns no credit.",
+    "rationale": "Data residency and region selection is a fair question for a hosted voice-agent SaaS, but the evidence pack has nothing on choosing a storage region or residency. The only related material is per-agent data retention and automatic deletion, which is an adjacent control and does not let users choose where data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9903,7 +10007,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Retell AI is an AI voice-agent platform, so a training opt-out is a fair question to ask of it. The evidence pack contains no documented policy or setting that excludes customer data from model training. The per-agent data retention and auto-deletion feature is an adjacent control: it limits how long data is stored, not whether it is used for training, so it earns no credit.",
+    "rationale": "Preventing customer data from being used for model training is a fair privacy question for a voice-AI SaaS platform, so the axis applies. However, the evidence pack contains no training opt-out, no no-training commitment, and no data-use policy. The per-agent data retention feature (automatic deletion of call and chat data) is an adjacent control, not a training-use prevention capability, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9916,9 +10020,9 @@
     "productId": "retell",
     "storyId": "privacy-retention-controls",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell documents its own per-agent data retention period. After the period expires, call and chat data (transcripts, recordings, logs) is automatically and permanently deleted, which directly covers retention control and scheduled deletion. The evidence does not show on-demand deletion of specific records or an account, nor API or CLI control of retention, so the deletion half of the story is only partly covered. Missing for 10: documented on-demand or manual deletion of individual calls, chats or account data; API or programmatic control of retention settings; independent or hands-on corroboration of the retention feature.",
+    "rationale": "Retell documents per-agent data retention periods: call and chat data, including transcripts, recordings, and logs, is automatically and permanently deleted when the period expires. That covers configurable retention well. The deletion side is only documented as time-based auto-expiry, with no evidence of user-initiated, on-demand deletion of specific records. missing for 10: on-demand/manual deletion of individual calls or chats (via API or dashboard), account- or workspace-level deletion controls, details on which retention periods can be set, and independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-15",
       "retell-docs-27",
@@ -9946,7 +10050,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Retell AI is a SaaS voice-agent platform with a CLI and SDKs, so a telemetry or usage-tracking opt-out is a fair question to ask. The evidence pack documents no such control. The per-agent data retention setting is a different feature: it automatically deletes call and chat data, and does not let users opt out of telemetry or usage tracking.",
+    "rationale": "Telemetry opt-out is a fair question for a SaaS platform that ships a CLI, SDKs and a dashboard, but the evidence pack never documents any telemetry or usage-tracking opt-out. Per-agent data retention, which auto-deletes call and chat data, is an adjacent privacy control rather than a way to opt out of tracking, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9961,7 +10065,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Retell documents real-time transcription with a configurable mode: 'optimize for speed' uses interim results with low endpointing, and 'optimize for accuracy' uses higher endpointing. That gives developers some control over the accuracy/latency trade-off. However, the evidence shows no choice of STT provider, STT model selection, or key-term boosting; the agent language-model setting is for the LLM, not transcription. missing for 10: STT provider selection, transcription model/language model control, custom keyword/key-term boosting, independent accuracy corroboration",
+    "rationale": "Retell documents its own real-time transcription mode setting. Developers can trade latency for accuracy, choosing interim results with low endpointing for speed or higher-endpointing, context-aware results for accuracy. That is a direct transcription-accuracy control, but the evidence never shows selecting the STT provider, choosing a transcription language model, or adding key-term/keyword boosting; the agent LLM setting is a different feature. Missing for 10: STT provider selection, transcription model choice, custom vocabulary/key-term boosting, independent evidence of transcription accuracy.",
     "evidenceIds": [
       "retell-docs-9",
       "retell-docs-39",
@@ -9978,7 +10082,7 @@
         },
         {
           "evidenceId": "retell-docs-48",
-          "quote": "optimize for speed: uses the latest interim results with a low endpointing setting... optimize for accuracy: uses the results with a higher endpointing setting"
+          "quote": "optimize for accuracy: uses the results with a higher endpointing setting"
         }
       ]
     }
@@ -9989,12 +10093,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Retell stores call transcripts and recordings, and it offers programmatic access through SDKs with 'full voice and chat endpoint coverage' and through call_ended and call_analyzed webhooks delivered to your server. However, no evidence explicitly shows an API or webhook payload that returns the recording file or full transcript for each call. missing for 10: a documented get-call or list-calls endpoint returning recording URLs and transcripts, confirmation that webhook payloads include transcript and recording data, and independent or hands-on corroboration.",
+    "rationale": "Retell's docs show that it stores per-call transcripts and recordings (the data-retention docs name both). Its webhooks push call_ended and call_analyzed events to your server, and its SDKs claim full voice endpoint coverage, so programmatic call-data access is documented. No item explicitly documents an API endpoint or webhook payload that returns the recording file or full transcript for every call. Missing for 10: an explicit get-call or list-calls API returning recording URLs and transcripts, documented webhook payload contents including transcript and recording, and independent or hands-on corroboration of retrieval.",
     "evidenceIds": [
-      "retell-docs-52",
-      "retell-docs-2",
       "retell-docs-15",
-      "retell-docs-12"
+      "retell-docs-52",
+      "retell-docs-24",
+      "retell-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -10002,16 +10106,20 @@
       "subject": "As a platform-engineer, I can retrieve full call recordings and transcripts programmatically for every call",
       "citations": [
         {
+          "evidenceId": "retell-docs-15",
+          "quote": "automatically delete call and chat data — transcripts, recordings, and logs"
+        },
+        {
           "evidenceId": "retell-docs-52",
           "quote": "call_started, call_ended, and call_analyzed events delivered to your server so you can react to call activity without polling"
         },
         {
-          "evidenceId": "retell-docs-2",
-          "quote": "Typed clients with API key auth, structured errors, and full voice and chat endpoint coverage."
+          "evidenceId": "retell-docs-24",
+          "quote": "webhooks push data to your application as events happen"
         },
         {
-          "evidenceId": "retell-docs-15",
-          "quote": "automatically delete call and chat data — transcripts, recordings, and logs — after a set period for compliance"
+          "evidenceId": "retell-docs-2",
+          "quote": "full voice and chat endpoint coverage"
         }
       ]
     }
@@ -10022,7 +10130,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting a voice agent runtime is a fair question for a voice-agent platform, but the evidence pack contains no documentation of open-source code or self-hosted deployment for Retell. Retell is described only as a hosted, pay-as-you-go platform. Bring-your-own telephony via SIP trunking is an adjacent feature, not self-hosting of the runtime. A community remark that Retell uses LiveKit concerns Retell's underlying media stack, not a Retell open-source release.",
+    "rationale": "Self-hosting an open-source runtime is a fair question for a voice-agent platform, so the axis applies. The evidence pack only describes Retell as a hosted, pay-as-you-go service reached through its dashboard, APIs, SDKs, CLI and MCP server, with no open-source runtime or self-hosted deployment documented. Bring-your-own telephony via SIP trunking connects your carrier to the hosted service and does not count as self-hosting the agent runtime.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -10037,46 +10145,48 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only related evidence is Retell's transcription-mode endpointing setting: a low or higher endpointing value traded against latency. That is a tunable silence threshold, which is an adjacent control rather than the model-based end-of-turn detection the story asks for. Missing for 10: any documented model-based or semantic turn-detection capability, configuration for handling slow speakers beyond endpointing thresholds, and hands-on corroboration that the agent avoids talking over users.",
-    "evidenceIds": [
-      "retell-docs-48"
-    ],
+    "rationale": "Model-based turn-taking is a fair question for a voice-agent platform, but the evidence pack never documents a semantic or model-based end-of-turn detector. The closest item is the transcription-mode doc, which only offers a lower or higher 'endpointing setting' to trade speed against accuracy. That is an adjacent silence-threshold control, not model-based end-of-turn detection.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can use model-based end-of-turn detection beyond simple VAD silence timeouts so the agent doesn't talk over slow speakers",
-      "citations": [
-        {
-          "evidenceId": "retell-docs-48",
-          "quote": "optimize for accuracy: uses the results with a higher endpointing setting"
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "retell",
     "storyId": "simulated-agent-testing",
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "Retell's own Conductor can run simulation tests that play a scenario against an agent so changes can be checked without real phone calls. The dashboard Test button also starts a free web call that needs no phone number. AI QA, however, scores calls after they happen and sampled live traffic, so it is not a pre-deployment eval harness; simulation is documented only through one thin Conductor mention. Missing for 10: documented batch or regression test suites with pass/fail eval criteria, programmatic (API/SDK/CLI) simulation runs, details on scenario/persona configuration, and independent or hands-on corroboration of the simulation feature.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Retell documents several pre-production test surfaces: an LLM Playground with tool-call inspection, simulation and batch testing with graded test cases, free browser web-call testing that needs no phone number, and Conductor-run simulation tests that check changes without real phone calls. Draft and staging version tags let you test a new version while production stays on another. Missing for 10: no independent or hands-on corroboration of the simulation/eval features, and testing runs in the production workspace at production rates rather than an isolated sandbox.",
     "evidenceIds": [
+      "retell-test-surfaces-20261106",
       "retell-docs-55",
       "retell-docs-20",
-      "retell-docs-31"
+      "retell-staging-tags-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can test agents with simulated conversations or evals before putting them on real phone calls",
       "citations": [
+        {
+          "evidenceId": "retell-test-surfaces-20261106",
+          "quote": "an LLM Playground with tool-call inspection, simulation/batch testing with graded test cases, browser web-call testing without a phone number, and phone-call testing"
+        },
         {
           "evidenceId": "retell-docs-55",
           "quote": "Conductor can run simulation tests that play out a scenario against your agent and show how it responds. This lets you check changes without making real phone calls."
         },
         {
           "evidenceId": "retell-docs-20",
-          "quote": "Click the \"Test\" button to start a web call with your agent... This step is free and doesn't need a phone number or payment method."
+          "quote": "This step is free and doesn't need a phone number or payment method."
+        },
+        {
+          "evidenceId": "retell-staging-tags-20261106",
+          "quote": "A new version starts as a draft, which you can edit and test"
         }
       ]
     }
@@ -10085,9 +10195,9 @@
     "productId": "retell",
     "storyId": "sip-trunk-byoc",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Retell's first-party custom-telephony guide documents both paths in the story: elastic SIP trunking to your own provider, and importing numbers from Twilio, Telnyx and Vonage. It also describes the setup flow (set up a SIP trunk, point the number at it, import it to Retell), and imported numbers work with features like Send SMS. missing for 10: independent or hands-on corroboration of BYO carrier/PBX SIP trunking in practice.",
+    "rationale": "Retell's custom-telephony docs describe integrating with your own telephony provider through elastic SIP trunking, or by importing numbers from Twilio, Telnyx and Vonage. The setup flow is documented: set up a SIP trunk, point the number at it, and import it into Retell. Imported numbers are also used by other features such as Send SMS, so you are not locked to bundled telephony. Missing for 10: independent or hands-on corroboration, and detailed evidence on PBX-specific configuration (authentication, inbound/outbound routing details).",
     "evidenceIds": [
       "retell-docs-10",
       "retell-docs-40",
@@ -10120,12 +10230,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell documents its own post-call analysis: built-in call success and sentiment scoring plus custom fields. It also documents a call_analyzed webhook event delivered to your server after the call, which covers delivery of outcomes via webhook. However, structured extraction of entities and dispositions rests on a single thin line about custom fields, and no evidence ties the extracted fields to the webhook or API payload. Missing for 10: documented schema for custom extraction fields (entities, dispositions), explicit confirmation that call_analyzed payloads or the API return those fields, API retrieval of analysis results, independent or hands-on corroboration.",
+    "rationale": "Retell documents built-in post-call analysis: call success and sentiment scoring, plus custom fields synced to a CRM. It also offers a call_analyzed webhook event pushed to your server after the call, which covers the delivery path for structured post-call data. However, the evidence does not show how extraction schemas are defined or what the payload contains. missing for 10: documentation of configurable extraction schemas for entities and dispositions, call_analyzed payload contents, API retrieval of the analysis fields, independent or hands-on corroboration.",
     "evidenceIds": [
       "retell-docs-19",
       "retell-docs-52",
-      "retell-docs-12",
-      "retell-docs-24"
+      "retell-docs-24",
+      "retell-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -10138,11 +10248,11 @@
         },
         {
           "evidenceId": "retell-docs-52",
-          "quote": "call_started, call_ended, and call_analyzed events delivered to your server so you can react to call activity without polling"
+          "quote": "call_started, call_ended, and call_analyzed events delivered to your server so you can react to call activity without polling."
         },
         {
           "evidenceId": "retell-docs-24",
-          "quote": "webhooks push data to your application as events happen"
+          "quote": "webhooks push data to your application as events happen, making your integrations more efficient and responsive."
         }
       ]
     }
@@ -10153,14 +10263,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell's pricing page documents usage-based, pay-as-you-go pricing with no contract and a calculator that shows an approximate monthly cost, so a founder can estimate spend before committing. However, no first-party evidence states the actual per-minute rates or offers a per-call cost estimate; the only concrete rate (17¢/min) comes from a community commenter, and the founder notes that costs vary by voice provider. missing for 10: first-party published per-minute rate breakdown (LLM/voice/telephony components), an explicit per-call cost estimate rather than a monthly approximation, independent corroboration of current rates.",
+    "rationale": "Retell's pricing page advertises pay-as-you-go usage pricing starting at $0 and includes a calculator that shows an approximate monthly cost from adjustable parameters. New accounts also get $10 in free trial credits with no payment method, so a founder can try it before committing. A community commenter cites a per-minute rate of 17¢/min, and the founder notes costs vary by voice provider, but the first-party evidence quotes no actual per-minute rates and no per-call estimator. Missing for 10: first-party published per-minute rate figures, an explicit per-call cost estimate (the calculator is framed as monthly), and a documented breakdown of component costs (LLM/TTS/telephony).",
     "evidenceIds": [
       "retell-docs-16",
-      "retell-docs-29",
       "retell-docs-50",
+      "retell-docs-29",
       "retell-docs-45",
-      "retell-comm-10",
-      "retell-comm-13"
+      "retell-comm-13",
+      "retell-comm-10"
     ],
     "support": {
       "relation": "direct",
@@ -10176,12 +10286,12 @@
           "quote": "Adjust key parameters to see an approximate monthly cost for your Retell AI voice agents."
         },
         {
-          "evidenceId": "retell-docs-50",
-          "quote": "Most voice AI platforms require annual contracts before you write a single line of code. Retell starts at $0, pay only for what you use."
-        },
-        {
           "evidenceId": "retell-docs-45",
           "quote": "New accounts start with \\$10 in free trial credits, no payment method required."
+        },
+        {
+          "evidenceId": "retell-comm-13",
+          "quote": "A commenter noted per-minute pricing (17¢/min) could be exploited"
         }
       ]
     }
@@ -10192,7 +10302,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell's docs describe drag-and-drop, node-based conversation flows as one of its agent types, and a Transfer Call tool routes calls to a human with cold, warm and agentic warm modes. Conductor can also edit a conversation flow in plain language. The visual builder itself is documented only in a single line, and branching logic, state handling and in-flow handoff nodes are implied by \"node-based\" rather than spelled out. missing for 10: explicit documentation of branching or conditional edges in the flow builder, state or node semantics, handoff nodes within flows, independent or hands-on corroboration of the visual builder.",
+    "rationale": "Retell's docs describe a drag-and-drop, node-based flow builder as one of its two agent types, and Conductor can edit conversation flows in plain language. Call handoffs to humans are documented through the Transfer Call tool, but that tool is described for single- and multi-prompt agents rather than shown inside the visual flow builder. Branching conditions and state transitions within the visual builder are only implied by the 'node-based' wording, not explicitly documented. Missing for 10: explicit documentation of branching/conditional edges and state handling in the visual builder, evidence that handoffs are configurable as flow nodes, and independent or hands-on corroboration of the no-code builder.",
     "evidenceIds": [
       "retell-docs-25",
       "retell-docs-17",
@@ -10218,7 +10328,7 @@
         },
         {
           "evidenceId": "retell-docs-63",
-          "quote": "route calls to a human, with cold, warm, and agentic warm transfer modes"
+          "quote": "Add the Transfer Call tool to a Retell single or multi-prompt agent to route calls to a human, with cold, warm, and agentic warm transfer modes."
         }
       ]
     }
@@ -10227,14 +10337,13 @@
     "productId": "retell",
     "storyId": "voice-library-choice",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Retell's own docs show a voice selector where developers can search and add ElevenLabs community voices, import voice clones, or train clones via the API. A founder comment says OpenAI TTS, Deepgram, and ElevenLabs are available at different prices, which suggests multiple TTS providers, but no first-party doc describes choosing among or plugging in providers. missing for 10: first-party documentation of multi-provider TTS selection or plug-in, documentation of the size of the built-in voice library, independent hands-on corroboration of voice breadth.",
+    "rationale": "Retell documents a voice selector with an \"Add custom voice\" option for searching ElevenLabs community voices, plus importing or training voice clones. Multi-provider TTS is evidenced only by a founder comment naming OpenAI TTS, Deepgram and ElevenLabs, not by first-party docs. missing for 10: first-party documentation of the supported TTS providers and how to switch between them, evidence of the size or breadth of the built-in voice library, independent hands-on corroboration of provider choice.",
     "evidenceIds": [
       "retell-docs-7",
       "retell-docs-38",
       "retell-docs-37",
-      "retell-docs-28",
       "retell-docs-61",
       "retell-comm-10"
     ],
@@ -10245,15 +10354,11 @@
       "citations": [
         {
           "evidenceId": "retell-docs-7",
-          "quote": "Add custom voices to your Retell agent — search ElevenLabs community voices, import a voice clone, or train a clone for a unique brand-specific sound."
+          "quote": "search ElevenLabs community voices, import a voice clone, or train a clone for a unique brand-specific sound"
         },
         {
           "evidenceId": "retell-docs-38",
           "quote": "In the voice selector, you can click \"Add custom voice\" to search and add publicly available community voices."
-        },
-        {
-          "evidenceId": "retell-docs-28",
-          "quote": "Audio files to use for voice cloning. Up to 25 files allowed."
         },
         {
           "evidenceId": "retell-comm-10",

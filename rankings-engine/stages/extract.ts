@@ -107,11 +107,30 @@ Personas must be drawn from: developer, designer, switcher, power-user.
 Sources are labeled "=== SOURCE <key> ===" in the materials below; use that exact key. Besides site/docs/changelog/github, a source may be labeled extra-0, extra-1, etc. (additional vendor pages) — use the matching extra-N key, not "docs" or "site", when a quote comes from one of those.
 Return JSON: {"stories":[{"persona":"...","title":"As a ..., I can ...","quote":"...","sourceKey":"site|docs|changelog|github|extra-N"}]}`
 
-export function validateExtractionSources(extraction: Extraction, sources: Record<string, string>): void {
-  for (const story of extraction.stories) {
+// Drops pure navigation lines (list items or lone lines that are nothing but a markdown
+// link) from the text offered to the extraction prompt. Some vendors front-load a sidebar
+// tree of 20k+ characters on every docs page (zoho.com/invoice/api/v3/: ~25k of link list
+// before the first prose sentence), so under the fair per-source budget the prose never
+// reached the prompt and documented capabilities extracted as nothing (the Zoho Invoice
+// public-API false zero, PR #628 review). Only the prompt window is filtered: quote
+// validation still runs against the full crawled source, so accepted quotes remain
+// verbatim substrings of the cached page.
+export function stripNavLinkLines(text: string): string {
+  return text
+    .split('\n')
+    .filter((line) => !/^\s*(?:[*+-]\s+)?\[[^\]]*\]\([^)]*\)\s*$/.test(line))
+    .join('\n')
+}
+
+export function validateExtractionSources(extraction: Extraction, sources: Record<string, string>, context = 'Extraction'): void {
+  for (const [index, story] of extraction.stories.entries()) {
     const source = sources[story.sourceKey]
-    if (!source || !sourceText(source).includes(sourceText(story.quote)) || questionOnly(story.quote)) {
-      throw new Error(`Extraction lacks an affirmative verbatim quotation from source ${story.sourceKey}: ${JSON.stringify(story.quote)}`)
+    const reason = !source ? 'source is missing or empty'
+      : !sourceText(source).includes(sourceText(story.quote)) ? 'quote is not a case-sensitive substring after whitespace normalization'
+      : questionOnly(story.quote) ? 'quote is question-only'
+      : undefined
+    if (reason) {
+      throw new Error(`${context}: story ${index + 1} lacks an affirmative verbatim quotation from source ${story.sourceKey}: ${reason}`)
     }
   }
 }
@@ -144,18 +163,28 @@ export async function runExtract({ category, product }: { category?: string; pro
       const perSourceCap = Math.max(1, Math.floor(60_000 / files.length))
       const parts = files.map((f) => {
         const key = f.replace(/\.md$/, '')
-        const body = fs.readFileSync(path.join(crawlDir, f), 'utf8').slice(0, perSourceCap)
+        const body = stripNavLinkLines(fs.readFileSync(path.join(crawlDir, f), 'utf8')).slice(0, perSourceCap)
         return `=== SOURCE ${key} ===\n${body}`
       })
       const corpus = parts.join('\n\n')
+      const context = `extract: ${cat.id}/${p.id}`
+      // Source-invalid, shape-valid replies use llmJson's existing bounded correction
+      // loop. Keep the same source checks at the write boundary below as well.
+      const schema = ExtractionSchema.superRefine((value, ctx) => {
+        try {
+          validateExtractionSources(value, sources, context)
+        } catch (error) {
+          ctx.addIssue({ code: 'custom', message: (error as Error).message })
+        }
+      })
 
       const extraction = await llmJson({
-        schema: ExtractionSchema,
+        schema,
         system: SYSTEM,
         prompt: `Product: ${p.name} (${p.vendor})\n\nMaterials:\n\n${corpus}`,
         maxTokens: 8192,
       })
-      validateExtractionSources(extraction, sources)
+      validateExtractionSources(extraction, sources, context)
 
       const evidenceFile = path.join(dataDir, 'evidence', `${p.id}.json`)
       const existing = fs.existsSync(evidenceFile) ? readJson(EvidenceSchema.array(), evidenceFile) : []

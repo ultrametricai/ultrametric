@@ -1,17 +1,29 @@
 {
-  "hash": "a164d036bce9baaa93ca8c59216c796017deeffeb4a715ac90bff22b0aa99a20",
+  "hash": "5b4a80933b2b3cf2889550da0135a4804b7d2669b8f131a115ac07aa263a5155",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "LocalAI documents an OpenAI-compatible API, plus Anthropic Messages and Open Responses support. None of the evidence shows LocalAI publishing its own downloadable OpenAPI or equivalent spec. Probes of the standard OpenAPI and Swagger paths on localai.io all returned 404. Compatibility with OpenAI's API is adjacent at best and does not count as a LocalAI-provided machine-readable spec.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "The official LocalAI repository ships a full Swagger 2.0 spec ('LocalAI API') at swagger/swagger.json, with a YAML twin, covering the /v1 OpenAI-compatible and LocalAI-specific endpoints. Every server also exposes an unauthenticated Swagger UI at /swagger/index.html, advertised via /.well-known/localai.json. The probe 404s are for openapi paths on the localai.io marketing site, not the server or repo, so they do not contradict this. Missing for 10: a documented raw-spec download URL on the running server (only the UI page is documented), and independent hands-on corroboration that the spec is complete and current.",
+    "evidenceIds": [
+      "localai-swagger-spec-20261106",
+      "localai-swagger-ui-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "localai-swagger-spec-20261106",
+          "quote": "The official mudler/LocalAI repository ships a full Swagger 2.0 specification of the REST API (info title \"LocalAI API\", description \"The LocalAI Rest API.\") at swagger/swagger.json (with a YAML twin)"
+        },
+        {
+          "evidenceId": "localai-swagger-ui-20261106",
+          "quote": "The full interactive API documentation is available without authentication at /swagger/index.html."
+        }
+      ]
     },
     "productId": "localai",
     "storyId": "api-machine-spec"
