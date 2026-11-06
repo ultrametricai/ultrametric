@@ -76,3 +76,20 @@ by asking") and both cells now publish as fulls on direct vendor text; and a-she
 automation-rules-engine had gone to partial on the .profile startup hook alone (the
 fellow-webhooks building-block class) — the scoped context row settles it at none.
 Eleven thin partials conceded and documented in the ledger JSON; honest downs ship.
+
+## Review round (PR #644)
+
+Three P1s on side-effect thin partials, all fixed inputs-only with direct vendor
+evidence. kimi agentic-scoped-keys had been credited on key-creation quotes: the
+appended org-hierarchy row documents the actual restriction mechanisms (per-project
+budgets, rate limits, IP whitelist, membership, per-project usage tracking; the
+project-level-not-per-key scope rides in the excerpt), and the cell publishes partial q5
+citing them. kimi file-upload-analysis had been credited on a model-settings quote: the
+appended guide row quotes the vendor directly ("The Kimi intelligent assistant can
+upload files and answer questions based on those files. The Kimi API offers the same
+functionality."), and the cell publishes partial q6. anythingllm multiple-named-agents
+had combined workspace API access with general settings: the appended agent-surface rows
+(@agent chat sessions; no-code Agent Flows and code skills) carry the caveat that no
+multiple-named-agents feature is documented, and the re-judged cell settles at none q0.
+The re-rolls were pre-audited: kimi agentic-ai-insights full q7 and image-understanding
+partial q5 ground in the new file-QA row verbatim; honest laterals and downs ship.

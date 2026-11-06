@@ -197,6 +197,16 @@ ITEMS = {
          'https://docs.anythingllm.com/changelog/overview',
          ['Desktop Changelog Overview'],
          'The API is /v1 path-versioned and the vendor maintains dated per-version changelogs (v1.6.0 through v1.19.0 in the docs nav, matching GitHub releases). Caveats: these are app-release changelogs rather than API-contract changelogs, and no deprecation or backwards-compatibility policy is published.'),
+        # Review round (PR #644 P1): grounds the agent surface in the vendor's own agent
+        # documentation instead of workspace-settings credit.
+        ('anythingllm-agent-directive-20261106', 'claimed-docs',
+         'https://docs.anythingllm.com/agent/overview',
+         ['@agent directive at the start of your chat to start an agentic chat session'],
+         'AnythingLLM documents an in-product agent: "you can still choose to use the @agent directive at the start of your chat to start an agentic chat session", with setup, tool-selection, and usage guides. Scope: one agent surface per chat session; no multiple-named-agents feature is documented.'),
+        ('anythingllm-agent-flows-20261106', 'claimed-docs',
+         'https://docs.anythingllm.com/agent-flows/overview',
+         ['Agent Flows are a no-code way to build agentic skills'],
+         'Agents are user-configurable through two documented paths: "Agent Flows are a no-code way to build agentic skills. Using a visual interface, you can build \\"flows\\" that can be used in your agents", and "Agent skills: Code way to build agentic skills. Built for power users and developers." Scope: flows and skills customize what the agent can do; the docs do not describe running multiple separately configured, named agents.'),
     ],
     ('local-llm-runtimes', 'runanywhere'): [
         ('runanywhere-openapi-20261106', 'claimed-docs',
@@ -230,6 +240,17 @@ ITEMS = {
          'https://platform.kimi.ai/docs/models.md',
          ['## Deprecated Models', 'Deprecation expected in late December 2026.'],
          'The API is /v1 path-versioned (OpenAI- and Anthropic-compatible bases) and the platform publishes a dated model deprecation table with migration guidance covering API model IDs ("## Deprecated Models"; e.g. "No longer available to newly registered users; users registered before November 1 can continue using it. Deprecation expected in late December 2026."), and the Admin API spec itself is date-versioned. Caveats: no API changelog page and no standalone deprecation-policy document (the platform docs host also soft-200s unknown paths, so these absences are grounded in the full llms.txt index).'),
+        # Review round (PR #644 P1s): direct evidence for the file-upload flow and the
+        # key hierarchy's actual restriction mechanisms.
+        ('kimi-file-qa-20261106', 'claimed-docs',
+         'https://platform.kimi.ai/docs/guide/use-kimi-api-for-file-based-qa.md',
+         ['The Kimi intelligent assistant can upload files and answer questions based on those files. The Kimi API offers the same functionality.'],
+         '"The Kimi intelligent assistant can upload files and answer questions based on those files. The Kimi API offers the same functionality." The guide walks through uploading files, extracting their contents, and adding them to conversations for single-file or multi-file question answering, and the files API uploads "for text content extraction, image understanding, or video understanding" (pdf, doc, txt and more).'),
+        ('kimi-key-hierarchy-20261106', 'claimed-docs',
+         'https://platform.kimi.ai/docs/guide/org-best-practice.md',
+         ['You can create multiple projects in an organization and multiple API keys in each project',
+          'set project budgets and rate limits, manage members, configure an IP whitelist'],
+         'Kimi documents key isolation and restriction at the project level: "You can create multiple projects in an organization and multiple API keys in each project", with the console used to "set project budgets and rate limits, manage members, configure an IP whitelist, and review organization and project consumption"; "API usage is tracked separately for each project, so you can monitor and manage spending by project", and each member creates their own key per project. Scope caveat: restrictions attach to projects (budgets, rate limits, IP whitelist, membership), not per-key permission scopes.'),
     ],
     ('government-services', 'irs'): [
         ('irs-ats-20261106', 'claimed-docs',

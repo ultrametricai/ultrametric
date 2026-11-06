@@ -1,14 +1,15 @@
 {
-  "hash": "0cf58dc03d44912478636967397f14040ca1c975f38571395ab180d85bde3e98",
+  "hash": "97b05ec91fe3184de0a44098bcef3dfe96b006e396d2032e0f23bb5d8450611b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Kimi documents issuing API keys (up to 5 in the Kimi Code Console), and its Admin API manages projects and inference API keys programmatically. That gives some basis for separate per-agent or per-project credentials. However, nothing in the evidence shows that a key can be restricted in permissions, endpoints, models or spend, so least-privilege scoping is not established. Missing for 10: documented per-key permission scopes or restrictions, explicit project-level key isolation, per-key budget or rate limits, agent-specific credential guidance, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Kimi's API Platform lets you create multiple API keys inside isolated projects. Each project carries its own budget, rate limits, IP whitelist and membership, and the Admin API manages inference keys programmatically, so you can confine an agent's credential to a narrowly bounded project. Restrictions attach to projects rather than to individual keys, and the docs never claim per-key permission scopes. missing for 10: per-key permission/endpoint scopes, agent-specific credential issuance (e.g., short-lived or delegated tokens), independent hands-on corroboration.",
     "evidenceIds": [
-      "kimi-docs-11",
-      "kimi-admin-openapi-20261106"
+      "kimi-key-hierarchy-20261106",
+      "kimi-admin-openapi-20261106",
+      "kimi-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -16,12 +17,20 @@
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": [
         {
-          "evidenceId": "kimi-docs-11",
-          "quote": "Kimi members can create and manage API Keys in the Kimi Code Console (up to 5 keys; each is shown only once upon creation—please keep it safe)."
+          "evidenceId": "kimi-key-hierarchy-20261106",
+          "quote": "You can create multiple projects in an organization and multiple API keys in each project"
+        },
+        {
+          "evidenceId": "kimi-key-hierarchy-20261106",
+          "quote": "set project budgets and rate limits, manage members, configure an IP whitelist, and review organization and project consumption"
         },
         {
           "evidenceId": "kimi-admin-openapi-20261106",
           "quote": "The Kimi Admin API lets organization administrators manage members, invitations, projects, and inference API keys programmatically"
+        },
+        {
+          "evidenceId": "kimi-docs-11",
+          "quote": "Kimi members can create and manage API Keys in the Kimi Code Console"
         }
       ]
     },
