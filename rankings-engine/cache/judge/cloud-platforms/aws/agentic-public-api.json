@@ -1,34 +1,38 @@
 {
-  "hash": "bab4dc4fa0c53a521ac6c78f46366751de0405708d68b4a765cf6430302356f8",
+  "hash": "da1a95691374a97df76dd5fa9af0353117975034ef341b336c37fdd5b85ab937",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "AWS documents programmatic control: the Cost Explorer API reference supports programmatic queries, and the official CLI can run commands equivalent to the Management Console and automate them through scripts. However, the pack documents a public API reference for only one service, and the probe found no machine-readable OpenAPI spec at the candidate paths, so complete API coverage across the product is not shown. Missing for 10: evidence of documented public API references across core services (EC2, S3, Lambda, etc.), a discoverable machine-readable API spec (OpenAPI paths all 404), and independent or hands-on corroboration of driving AWS via its API.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "AWS documents public, per-service versioned APIs, such as the EC2 Query API with date-stamped versions and the Cost Explorer API. It also publishes machine-readable Smithy models for all public API services, and its CLI covers functionality equivalent to the console, so an AI-native user can drive the product programmatically. Missing for 10: an OpenAPI-format spec (probes 404; the models are Smithy/botocore JSON on GitHub), and independent hands-on corroboration of API-driven agent workflows.",
     "evidenceIds": [
+      "aws-api-models-20261106",
+      "aws-api-version-20261106",
       "aws-docs-16",
       "aws-docs-42",
-      "aws-docs-1",
-      "aws-probe-5",
       "aws-probe-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "aws-api-models-20261106",
+          "quote": "for all public AWS API services"
+        },
+        {
+          "evidenceId": "aws-api-version-20261106",
+          "quote": "**Version**: The API version to use. For the Amazon EC2 API, the version is 2016-11-15."
+        },
         {
           "evidenceId": "aws-docs-16",
           "quote": "You can use the Cost Explorer API to programmatically query your cost and usage data."
         },
         {
           "evidenceId": "aws-docs-42",
-          "quote": "the AWS CLI enables you to start running commands that implement functionality equivalent to that provided by the browser-based AWS Management Console from the command prompt in your terminal program"
-        },
-        {
-          "evidenceId": "aws-docs-1",
-          "quote": "you can control multiple AWS services from the command line and automate them through scripts."
+          "quote": "the AWS CLI enables you to start running commands that implement functionality equivalent to that provided by the browser-based AWS Management Console"
         }
       ]
     },

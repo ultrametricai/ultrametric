@@ -1,17 +1,24 @@
 {
-  "hash": "df0e952caa37dfec1771ef007f4e5160432ebda16063025cbcf9f1c5a9b8772a",
+  "hash": "d8e2eb54a9dbc1ae844cabde3d5efca2c4fe20f3105d0517dc2f30eaae7fd636",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no AWS sandbox or test environment isolated from production data. What it does show are adjacent building blocks: CloudFormation/CDK stacks that can be created and deleted, IAM permission policies, and Free Tier credits for experimenting without charges. Free Tier is about cost, not isolation from production data, and AgentCore's laptop-to-production note does not describe a sandbox.",
-    "evidenceIds": [],
+    "rationale": "AWS ships its own local emulator, DynamoDB Local, which documents developing and testing applications without accessing the live DynamoDB service. That is genuine isolated-sandbox support, not a dry-run, but it covers only one service. The evidence notes that the Free Tier gives credits on a real account rather than an isolated test environment, and the platform-wide emulator (LocalStack) is third-party, so neither earns credit. Missing for 10: a platform-wide sandbox or test environment covering services beyond DynamoDB, documented isolation of test data from production accounts, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "aws-dynamodb-local-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "aws-dynamodb-local-20261106",
+          "quote": "With the downloadable version of Amazon DynamoDB, you can develop and test applications without accessing the DynamoDB web service."
+        }
+      ]
     },
     "productId": "aws",
     "storyId": "api-sandbox"

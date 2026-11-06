@@ -1,21 +1,28 @@
 {
-  "hash": "7439f33e62e78a21d620650acd07ed3cda8b7c519278e3056e6e49b73a8cecd3",
+  "hash": "0775f0f5184a8debcdc9f84a93f201f33d8d6872444d0febda7cfb97773cf72b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe confirms a root llms.txt at docs.aws.amazon.com (HTTP 200) that describes itself as giving LLMs structured access to AWS service documentation. Service-level llms.txt files also exist (e.g. the Resource Groups user guide), so an agent can be pointed at agent-oriented docs directly. Missing for 10: the probed .md path returned 404, so per-page markdown versions are unverified, and there is no independent or hands-on report of agents actually using these files.",
+    "rationale": "A probe confirms a live llms.txt at docs.aws.amazon.com (HTTP 200) that describes itself as structured access to AWS documentation for large language models. Per-service llms.txt files exist (for example, the Resource Groups user guide), and individual doc pages are served as .md files (DynamoDB Local, service lifecycle, EC2 Query-Requests), so an agent can be pointed at machine-friendly docs. Missing for 10: independent or hands-on corroboration of agents consuming these docs, first-party guidance on how to use llms.txt with agents, and the root-level .md probe returned 404.",
     "evidenceIds": [
       "aws-probe-1",
+      "aws-docs-36",
       "aws-docs-49",
-      "aws-docs-36"
+      "aws-service-lifecycle-20261106",
+      "aws-dynamodb-local-20261106",
+      "aws-api-version-20261106"
     ],
     "support": {
       "relation": "direct",
       "coverage": "complete",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
+        {
+          "evidenceId": "aws-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.aws.amazon.com/llms.txt # Amazon Web Services (AWS) Documentation"
+        },
         {
           "evidenceId": "aws-probe-1",
           "quote": "This file provides structured access to AWS service documentation for large"

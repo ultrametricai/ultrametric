@@ -1,17 +1,29 @@
 {
-  "hash": "455d83d3c52c7840afc5dcecfc812c0f71bd23e37599cde05b88820e63edcfb7",
+  "hash": "f9e54b854e78836685545f9a7b153dda1f6a57c15ad064afb5fac412206e8c51",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Granola documents a RESTful API with scoped API keys, but nothing in the evidence pack mentions API versioning, version identifiers, or a deprecation policy. The OpenAPI probe also returned 404 on every candidate path. The axis applies because Granola ships a public API, so this lack of evidence is 'none', not 'na'.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "high",
+    "rationale": "Granola's public REST API is path-versioned at /v1 and ships a dated, semantically versioned changelog (v1.0.0–v1.6.0) that lists endpoint and response changes per release. The docs explicitly publish no deprecation window or backward-compatibility commitment, so only half the story is delivered. Missing for 10: documented deprecation policy or sunset window, backward-compatibility guarantees, independent corroboration of version stability.",
+    "evidenceIds": [
+      "granola-changelog-20261106",
+      "granola-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "granola-changelog-20261106",
+          "quote": "The API is /v1 path-versioned with a dated, semantically versioned API changelog (v1.0.0 through v1.6.0, each entry listing endpoint and response changes"
+        },
+        {
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "/v1 endpoints for notes, transcripts, folders, spaces, audit, webhook-endpoints, and legal holds"
+        }
+      ]
     },
     "productId": "granola",
     "storyId": "api-versioning-policy"

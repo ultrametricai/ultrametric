@@ -1473,16 +1473,14 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fellow automatically produces suggested AI action items for every meeting. Action items carry assignees and due dates, and they are collected in a queryable list where they can be filtered by assignee, marked complete, or archived. The docs do not say the AI assigns owners from the conversation, and \"suggested\" implies the user still has to review each item. missing for 10: explicit evidence that owners are auto-extracted from the conversation, documentation of an in-app action-item tracking view beyond the API, independent or hands-on corroboration.",
+    "rationale": "Fellow's own docs say it automatically produces 'suggested AI action items' for every meeting. Its action items carry assignees and due dates, and they can be listed, filtered by assignee, and marked complete, so they are collected and trackable. However, the docs never say the AI-extracted items are automatically assigned to owners; 'suggested' implies a user must review them. missing for 10: explicit documentation that extracted action items are auto-assigned to owners without manual review, a description of the in-app central action-item tracker, independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-23",
       "fellow-docs-52",
       "fellow-docs-34",
       "fellow-docs-5",
       "fellow-docs-45",
-      "fellow-docs-19",
-      "fellow-docs-43",
-      "fellow-docs-44"
+      "fellow-docs-43"
     ],
     "support": {
       "relation": "direct",
@@ -1498,11 +1496,7 @@
           "quote": "action items with assignees and due dates"
         },
         {
-          "evidenceId": "fellow-docs-5",
-          "quote": "List action items with optional filters and pagination."
-        },
-        {
-          "evidenceId": "fellow-docs-19",
+          "evidenceId": "fellow-docs-45",
           "quote": "assigned_to_me: Only action items assigned to the authenticated user"
         },
         {
@@ -1518,13 +1512,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow's own Developer API lists action items with filters and change-window pagination. Its registrable webhooks POST to a URL you specify when events such as AI note generation occur, so an agent can be triggered after each meeting and pull that meeting's action items to file elsewhere. However, the evidence shows no native Linear, Jira or Asana automation, and the agent must do the tracker-side filing itself. missing for 10: native project-tracker integrations or automations, documented webhook event catalog/payloads (e.g. an action-item-created event), any hands-on or independent corroboration of an end-to-end tracker sync.",
+    "rationale": "Fellow documents a REST API that lists action items, with scope filters and an updated_at change window, plus registrable webhooks that POST to your URL when an AI note is generated. An agent or integration can therefore pull each meeting's action items and push them to a tracker. However, Fellow ships no native Linear/Jira/Asana sync and no in-product rules engine, so the integrator must build the receiving and filing logic. Missing for 10: native project-tracker integrations or automations, a documented action-item-created webhook event, any first-party example of filing into Linear/Jira/Asana, and independent hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-5",
       "fellow-docs-45",
       "fellow-docs-68",
       "fellow-docs-46",
       "fellow-docs-70",
+      "fellow-webhooks-scope-20261106",
       "fellow-docs-26"
     ],
     "support": {
@@ -1541,12 +1536,12 @@
           "quote": "When an event happens (like an AI note being generated or an action item being completed), Fellow sends an HTTP POST request to the URL you specify with details about the event."
         },
         {
-          "evidenceId": "fellow-docs-70",
-          "quote": "This enables you to build integrations that react immediately to changes in Fellow, without needing to poll for updates."
-        },
-        {
           "evidenceId": "fellow-docs-68",
           "quote": "To page through a window of changes, combine `updated_at_start` with `order_by: updated_at_asc`."
+        },
+        {
+          "evidenceId": "fellow-docs-70",
+          "quote": "This enables you to build integrations that react immediately to changes in Fellow, without needing to poll for updates."
         }
       ]
     }
@@ -1555,11 +1550,13 @@
     "productId": "fellow",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "A probe confirms Fellow publishes a live llms.txt at developers.fellow.ai/llms.txt (HTTP 200, titled \"Fellow Documentation\"), describing its API for meeting notes and transcripts, so an agent can be pointed directly at it. That satisfies the story as written. Missing for 10: no evidence of a fuller llms-full.txt or other expanded agent-oriented doc bundle, no machine-readable OpenAPI spec (all probed paths returned 404), and no hands-on or independent confirmation of an agent consuming the docs successfully.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "A live probe returned HTTP 200 for https://developers.fellow.ai/llms.txt with a Fellow Documentation index. The ReadMe-hosted reference also publishes per-page .md mirrors, so an agent can be pointed at machine-readable docs directly. missing for 10: evidence of the llms.txt's full content coverage (e.g. an llms-full.txt or agent-specific usage guidance).",
     "evidenceIds": [
-      "fellow-probe-1"
+      "fellow-probe-1",
+      "fellow-tryit-20261106",
+      "fellow-docs-34"
     ],
     "support": {
       "relation": "direct",
@@ -1569,6 +1566,10 @@
         {
           "evidenceId": "fellow-probe-1",
           "quote": "PROBE llms.txt: HTTP 200 at https://developers.fellow.ai/llms.txt # Fellow Documentation"
+        },
+        {
+          "evidenceId": "fellow-tryit-20261106",
+          "quote": "with llms.txt and per-page .md mirrors"
         }
       ]
     }
@@ -1579,12 +1580,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Fellow's own docs say the product automatically generates AI meeting summaries, suggested AI action items, decisions, and topic-based minutes inside the product, which covers in-product AI suggestions from the user's meeting data. Broader insight generation across data is thin: 'Ask Fellow' appears only as a pricing line item, and the richer Q&A runs through external AI assistants via MCP rather than inside Fellow. missing for 10: documented in-product cross-meeting insights or Q&A (Ask Fellow details), proactive insights beyond per-meeting recaps, independent or hands-on corroboration of AI output quality.",
+    "rationale": "Fellow's own docs say it generates AI meeting summaries, suggested AI action items, decisions and topic-based minutes for every meeting, which are AI suggestions drawn from the user's data inside the product. Broader in-product insight is thin: 'Ask Fellow' appears only as a pricing-page label with no description. The MCP-based Q&A runs in external AI tools, so it is not credited as an in-product capability. missing for 10: documented in-product cross-meeting insights or Q&A (Ask Fellow is undescribed), proactive suggestions beyond per-meeting summaries and action items, independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-23",
-      "fellow-docs-51",
       "fellow-docs-52",
-      "fellow-docs-53"
+      "fellow-docs-53",
+      "fellow-docs-51"
     ],
     "support": {
       "relation": "direct",
@@ -1596,12 +1597,12 @@
           "quote": "You automatically receive a clear meeting summary, suggested AI action items, decisions, and topic-based minutes for every meeting."
         },
         {
-          "evidenceId": "fellow-docs-51",
-          "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles"
-        },
-        {
           "evidenceId": "fellow-docs-53",
           "quote": "Ask Fellow"
+        },
+        {
+          "evidenceId": "fellow-docs-51",
+          "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles"
         }
       ]
     }
@@ -1612,7 +1613,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no user-configurable automation or background-agent feature in Fellow. Automatic meeting summaries are fixed built-in behavior, not automations a user sets up. Webhooks, the REST API and background upload processing are developer building blocks or one-off actions that could be used to construct automations, which earns no credit for this story.",
+    "rationale": "Fellow documents webhooks and a REST API, but these are developer building blocks: the integrator supplies the receiving endpoint and all action logic. The evidence explicitly states no in-product rules engine or trigger-action configuration is documented. Automatic meeting summaries are core product behavior, not user-configured background automations, so the story is unsupported.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1627,10 +1628,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fellow's pricing page lists a built-in 'Ask Fellow' feature, and the product automatically produces AI summaries, action items and decisions for meetings, which points to an in-product AI assistant. The evidence never describes what users can delegate to it. The MCP server serves external assistants such as Claude or ChatGPT, so it is not credited here. Missing for 10: documentation of what tasks Ask Fellow can perform, evidence of delegating actions rather than asking questions, and hands-on or independent corroboration.",
+    "rationale": "The only first-party evidence of an in-product assistant is an \"Ask Fellow\" line item on the pricing page, with no description of what it can do. The detailed Q&A capability (\"Ask anything about your meetings\") belongs to the MCP server, which serves external chatbots like Claude or ChatGPT, so it is not credited as a built-in assistant. Automatic summaries and suggested action items are AI features, but they are not task delegation. Missing for 10: documentation of what Ask Fellow does, evidence that it can take delegated tasks or actions rather than only answer questions, any description of its scope or workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "fellow-docs-53",
-      "fellow-docs-23"
+      "fellow-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -1640,10 +1640,6 @@
         {
           "evidenceId": "fellow-docs-53",
           "quote": "Ask Fellow"
-        },
-        {
-          "evidenceId": "fellow-docs-23",
-          "quote": "You automatically receive a clear meeting summary, suggested AI action items, decisions, and topic-based minutes for every meeting."
         }
       ]
     }
@@ -1654,17 +1650,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow offers headless, non-interactive automation through its own REST Developer API. Access uses API keys, with one key recommended per application. Scripts can upload recordings, poll processing status, read transcripts and notes, write agendas, and update action items without the UI. Super Admin keys can act across the whole workspace. There is no CLI, no CI-specific guidance, and no published OpenAPI spec (all probed paths returned 404), so CI use rests on raw REST calls. Missing for 10: an official CLI or headless runner, documented CI/pipeline integration examples, a machine-readable OpenAPI spec, and independent hands-on corroboration.",
+    "rationale": "Fellow documents an API-key-authenticated REST Developer API that scripts can drive without the UI: reading transcripts and notes, writing note agendas, managing action items, uploading recordings and polling their processing status. That supports headless automation, though nothing addresses CI pipelines specifically. Missing for 10: an official CLI or CI integration/docs, a sandbox or test workspace for non-production runs, a published OpenAPI download path or changelog, and independent hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-1",
       "fellow-docs-15",
       "fellow-docs-56",
-      "fellow-docs-37",
+      "fellow-docs-62",
       "fellow-docs-38",
-      "fellow-docs-42",
-      "fellow-docs-43",
-      "fellow-docs-7",
-      "fellow-probe-2"
+      "fellow-docs-64",
+      "fellow-help-api-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1676,24 +1670,20 @@
           "quote": "The Developer API opens that data to you: transcripts, structured notes, and more, all available through standard REST calls."
         },
         {
+          "evidenceId": "fellow-docs-15",
+          "quote": "Include your API key in the `X-API-KEY` header of every request"
+        },
+        {
           "evidenceId": "fellow-docs-56",
           "quote": "You can have multiple API keys, and we recommend generating a different one for each application"
         },
         {
-          "evidenceId": "fellow-docs-37",
-          "quote": "Upload a recording from a URL. Use this endpoint to bring an existing meeting recording into Fellow."
+          "evidenceId": "fellow-docs-62",
+          "quote": "After submitting the media file's URL, Fellow processes the recording in the background"
         },
         {
           "evidenceId": "fellow-docs-38",
-          "quote": "confirm whether processing is still in progress, completed successfully, or failed"
-        },
-        {
-          "evidenceId": "fellow-docs-42",
-          "quote": "Write a note's agenda and/or rename the note."
-        },
-        {
-          "evidenceId": "fellow-docs-7",
-          "quote": "Super Admin API keys can make requests on behalf of any user in the workspace using the `X-On-Behalf-Of` header."
+          "quote": "confirm whether processing is still in progress, completed successfully, or failed."
         }
       ]
     }
@@ -1704,7 +1694,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow has an AI assistant ('Ask Fellow'), so a buyer could reasonably ask whether it can act as an MCP client. However, every MCP item in the evidence describes Fellow as an MCP server that external assistants like Claude, ChatGPT, or Cursor connect to. Nothing shows Fellow itself connecting to or using tools from third-party MCP servers, and server-side evidence does not transfer to this client story.",
+    "rationale": "Fellow has a built-in AI assistant (Ask Fellow), so acting as an MCP client is a fair question for this product. The evidence only documents Fellow as an MCP server that external assistants like Claude, ChatGPT or Cursor connect to. Nothing shows Fellow itself can plug in third-party MCP servers or call their tools, and the server-side role does not transfer to this client-side story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1719,15 +1709,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Fellow documents an official MCP Server across its developer docs, help center, and feature page. Per those docs, AI assistants such as Claude, ChatGPT, or Cursor connect to it to query meeting recaps, notes, and action items, with admin-controlled tool permissions, connection revocation, and per-user data scoping. Missing for 10: independent or hands-on corroboration of a working connection, and documented specifics of the exposed tool inventory and connection/auth setup steps.",
+    "rationale": "Fellow documents an official, first-party MCP Server. Users can connect AI assistants such as Claude, ChatGPT, or Cursor, or any connector-capable tool, to query meeting recaps, notes, and action items, with admin governance over enablement, tool access, and revocation. Missing for 10: independent or hands-on corroboration of a working connection, and detailed setup and tool-list documentation in the pack.",
     "evidenceIds": [
       "fellow-docs-18",
       "fellow-docs-26",
+      "fellow-docs-73",
       "fellow-docs-9",
       "fellow-docs-10",
       "fellow-docs-50",
       "fellow-docs-49",
-      "fellow-docs-32",
       "fellow-probe-3"
     ],
     "support": {
@@ -1744,12 +1734,8 @@
           "quote": "Your favorite AI chatbot like Claude, ChatGPT, or Cursor can now tap directly into your meeting recaps, notes, and action items"
         },
         {
-          "evidenceId": "fellow-docs-9",
-          "quote": "Fellow’s MCP Connector works with any AI tool that supports connectors, so you're never locked into one platform"
-        },
-        {
-          "evidenceId": "fellow-docs-10",
-          "quote": "As a workspace admin, you decide which MCP tools your members’ AI assistants can use."
+          "evidenceId": "fellow-docs-73",
+          "quote": "Fellow's MCP Connector works with any AI tool that supports connectors, so you're never locked into one platform"
         },
         {
           "evidenceId": "fellow-docs-50",
@@ -1764,13 +1750,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow's first-party MCP server lets users ask their AI assistant natural-language questions about meetings, such as \"What were my action items this week?\", with no code required. An \"Ask Fellow\" feature is also listed on the pricing page. The evidence shows natural-language querying, not natural-language commands that operate the product, such as creating or editing notes or completing action items. missing for 10: documented natural-language actions or commands (not just Q&A), in-product detail on Ask Fellow, independent or hands-on corroboration.",
+    "rationale": "Fellow's official MCP Server lets users ask questions about their meetings in plain language through AI assistants such as Claude, ChatGPT or Cursor, without writing code. The pricing page also lists an \"Ask Fellow\" feature. The evidence only shows natural-language querying of meeting data, not issuing commands that operate the product. missing for 10: evidence of natural-language commands that perform actions (e.g., editing notes, completing action items, controlling recording), in-product details of Ask Fellow, independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-18",
       "fellow-docs-32",
       "fellow-docs-26",
-      "fellow-docs-53",
-      "fellow-docs-10"
+      "fellow-docs-9",
+      "fellow-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -1802,7 +1788,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow is a SaaS meeting-notes platform, so an official CLI is a fair axis to ask about. The evidence pack documents a REST Developer API, webhooks, and an official MCP server, but no official command-line tool. Those are adjacent building blocks or other features and earn no credit for this story.",
+    "rationale": "Fellow is a SaaS meeting-notes platform, so an official CLI is a fair question to ask of it. The evidence documents a REST Developer API, webhooks, an MCP server and a ReadMe 'Try It!' panel, but no official command-line tool. A REST API is only a developer building block and an MCP server is a separate capability, so neither counts toward a CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1815,22 +1801,23 @@
     "productId": "fellow",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Fellow documents a public REST Developer API with API-key authentication, cursor-based pagination, and both read and write endpoints. Agents can list recordings, notes and action items, upload recordings and track their status, edit note agendas in Fellow Markdown, and complete or archive action items, which is enough to drive the product programmatically. missing for 10: independent or hands-on corroboration of the API, and a machine-readable OpenAPI spec (all probed OpenAPI paths returned 404).",
+    "rationale": "Fellow documents a public REST Developer API with API-key auth, cursor pagination, an OpenAPI 3.1 spec and live Try It panels. It supports both reading (notes, recordings, transcripts, action items) and writing (agenda edits, recording uploads, completing or archiving action items), so a user can genuinely drive the product programmatically. Access requires a paid plan and admin enablement. missing for 10: independent or hands-on corroboration of API use, a published deprecation policy or API changelog, a Fellow-branded OpenAPI download path, a sandbox/test workspace.",
     "evidenceIds": [
       "fellow-docs-1",
       "fellow-docs-2",
       "fellow-docs-4",
-      "fellow-docs-5",
       "fellow-docs-33",
       "fellow-docs-37",
       "fellow-docs-42",
       "fellow-docs-43",
       "fellow-docs-44",
       "fellow-docs-59",
-      "fellow-probe-1",
-      "fellow-probe-2"
+      "fellow-openapi-spec-20261106",
+      "fellow-help-api-20261106",
+      "fellow-tryit-20261106",
+      "fellow-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -1840,10 +1827,6 @@
         {
           "evidenceId": "fellow-docs-1",
           "quote": "The Developer API opens that data to you: transcripts, structured notes, and more, all available through standard REST calls."
-        },
-        {
-          "evidenceId": "fellow-docs-2",
-          "quote": "All API requests must include a valid API key in the Authorization header."
         },
         {
           "evidenceId": "fellow-docs-42",
@@ -1858,6 +1841,10 @@
           "quote": "Upload a recording from a URL. Use this endpoint to bring an existing meeting recording into Fellow."
         },
         {
+          "evidenceId": "fellow-docs-2",
+          "quote": "All API requests must include a valid API key in the Authorization header."
+        },
+        {
           "evidenceId": "fellow-docs-33",
           "quote": "The Fellow Developer API uses cursor-based pagination for all list endpoints."
         }
@@ -1867,16 +1854,44 @@
   {
     "productId": "fellow",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Fellow documents API keys sent in a header and recommends a separate named key per application. However, nothing shows these keys can be limited by scope, permission, or resource. Keys simply act with the authenticated user's access, and the only other credential tier is broader Super Admin keys. Admin control over which MCP tools members' assistants can use is a separate MCP governance feature, not scoped API credentials, so it earns no credit here.",
-    "evidenceIds": [],
+    "rationale": "Fellow lets you create multiple named API keys, one per application, and distinguishes user-level keys from workspace and super-admin keys. Its MCP server is limited to data the user can already access, and admins choose which MCP tools assistants may use and can revoke connections. That gives tiered, revocable agent credentials, but the evidence shows no per-key permission scopes, read-only keys or endpoint-level restriction. missing for 10: per-credential scope/permission selection (e.g., read-only or resource-limited keys), per-key expiry, documented per-key revocation for API keys, independent corroboration.",
+    "evidenceIds": [
+      "fellow-docs-56",
+      "fellow-help-api-20261106",
+      "fellow-docs-10",
+      "fellow-docs-49",
+      "fellow-docs-75",
+      "fellow-docs-7"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fellow-docs-56",
+          "quote": "You can have multiple API keys, and we recommend generating a different one for each application"
+        },
+        {
+          "evidenceId": "fellow-help-api-20261106",
+          "quote": "admin-visible User API keys and Workspace API keys"
+        },
+        {
+          "evidenceId": "fellow-docs-10",
+          "quote": "As a workspace admin, you decide which MCP tools your members’ AI assistants can use."
+        },
+        {
+          "evidenceId": "fellow-docs-49",
+          "quote": "The MCP Server only gives users access to the data they already have access to within Fellow."
+        },
+        {
+          "evidenceId": "fellow-docs-75",
+          "quote": "can revoke connections at any time, and see the last-used timestamp for every connection"
+        }
+      ]
     }
   },
   {
@@ -1885,7 +1900,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow documents a REST Developer API, webhooks, and an MCP server, but nothing in the evidence mentions an official SDK or client library in any language. Raw REST endpoints are a developer building block, not an official SDK, and the OpenAPI spec probe returned 404, so there is no published spec to generate clients from.",
+    "rationale": "Fellow documents a REST Developer API, an OpenAPI 3.1 spec, webhooks and an MCP server, but nothing in the evidence mentions an official SDK or client library in any language. The REST endpoints and the spec are building blocks a developer could use to generate or write a client, not an official SDK, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1898,13 +1913,14 @@
     "productId": "fellow",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "Fellow's first-party Developer API docs describe webhooks as real-time notifications delivered by HTTP POST to a URL the user specifies. Named events include an AI note being generated and an action item being completed, so a programmatic consumer can react without polling. That covers both parts of the story: subscribing a URL and receiving event callbacks. Missing for 10: details of how subscriptions are registered or managed (UI vs. API), a full event catalog, delivery guarantees such as signature verification and retries, and independent or hands-on corroboration.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Fellow's first-party docs describe webhooks as registrable outbound HTTP POST callbacks to a URL the integrator specifies. They fire on events such as an AI note being generated or an action item being completed, and require a public HTTPS endpoint, so programmatic consumers can receive them without polling. missing for 10: a documented full event catalog with payload schemas and delivery/retry/signature details, and independent hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-17",
       "fellow-docs-46",
       "fellow-docs-70",
+      "fellow-webhooks-scope-20261106",
       "fellow-docs-3"
     ],
     "support": {
@@ -1923,6 +1939,10 @@
         {
           "evidenceId": "fellow-docs-70",
           "quote": "This enables you to build integrations that react immediately to changes in Fellow, without needing to poll for updates."
+        },
+        {
+          "evidenceId": "fellow-webhooks-scope-20261106",
+          "quote": "A publicly accessible HTTPS endpoint to receive webhook events"
         }
       ]
     }
@@ -1930,31 +1950,68 @@
   {
     "productId": "fellow",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Fellow publishes a per-endpoint Developer API reference covering recordings, action items, notes, authentication, pagination and webhooks. However, nothing in the evidence shows the reference is interactive, such as a 'try it' console or runnable request examples. The OpenAPI probe found no public spec at any candidate path, so a static reference is all that is evidenced, which is adjacent and earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Fellow's ReadMe-hosted API reference has a live \"Try It!\" request panel on every endpoint page, backed by an OpenAPI 3.1 document, with llms.txt and per-page .md mirrors. That covers the interactive, runnable core of the story. However, requests run only against a live workspace behind paid-plan and admin-enablement gates, and no sandbox or test workspace is documented, which limits how freely the examples can be run. missing for 10: a sandbox or test environment for running examples without touching live data, runnable access without paid-plan or admin gating, a Fellow-hosted downloadable OpenAPI spec (developers.fellow.ai/openapi.json returns 404), and independent or hands-on corroboration of the Try It experience.",
+    "evidenceIds": [
+      "fellow-tryit-20261106",
+      "fellow-openapi-spec-20261106",
+      "fellow-help-api-20261106",
+      "fellow-probe-1",
+      "fellow-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fellow-tryit-20261106",
+          "quote": "Fellow's ReadMe-hosted API reference runs a live \"Try It!\" request panel on every endpoint page, with llms.txt and per-page .md mirrors."
+        },
+        {
+          "evidenceId": "fellow-openapi-spec-20261106",
+          "quote": "Fellow's Developer API is described by an OpenAPI 3.1 document"
+        },
+        {
+          "evidenceId": "fellow-help-api-20261106",
+          "quote": "The API Reference and Developer Guide is available at: https://developers.fellow.ai/"
+        }
+      ]
     }
   },
   {
     "productId": "fellow",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Fellow documents a REST Developer API with per-endpoint reference pages, but the evidence never shows a downloadable OpenAPI or equivalent spec. A probe found every common spec path (openapi.json, swagger.json, /api/openapi.json, /.well-known/openapi.json) returning 404. The llms.txt file that does exist is a documentation index, not a machine-readable API specification, so it earns no credit here.",
-    "evidenceIds": [],
+    "rationale": "Fellow's Developer API is described by an OpenAPI 3.1 document (\"Fellow Developer API\" v1.0.2). It is retrievable at a stable ReadMe api-registry URL, and llms.txt and per-page .md mirrors support machine consumption. The probes found no Fellow-branded spec path, but that only limits discoverability; it does not contradict the spec's existence. Missing for 10: a discoverable Fellow-branded download link (developers.fellow.ai/openapi.json and similar paths return 404), any published API changelog or deprecation policy alongside the spec, and independent hands-on corroboration of using the spec.",
+    "evidenceIds": [
+      "fellow-openapi-spec-20261106",
+      "fellow-probe-2",
+      "fellow-probe-1",
+      "fellow-tryit-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fellow-openapi-spec-20261106",
+          "quote": "Fellow's Developer API is described by an OpenAPI 3.1 document (\"Fellow Developer API\", version 1.0.2, \"Create custom integrations and workflows with Fellow's meeting data\"; paths under /api/v1/)"
+        },
+        {
+          "evidenceId": "fellow-openapi-spec-20261106",
+          "quote": "the stable URL is ReadMe's api-registry endpoint"
+        },
+        {
+          "evidenceId": "fellow-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://developers.fellow.ai/llms.txt"
+        }
+      ]
     }
   },
   {
@@ -1962,8 +2019,8 @@
     "storyId": "api-sandbox",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Fellow ships a Developer API, webhooks and an MCP server, so a sandbox or test environment is a fair question for this product. Nothing in the pack documents a sandbox, test workspace, test-mode keys or dry-run mode. The nearest items are related but different: per-application API keys, and a find/replace endpoint that returns a 422 and changes nothing on a bad match. Neither isolates tests from production data.",
+    "confidence": "high",
+    "rationale": "Fellow is a SaaS platform with a Developer API, so a sandbox or test environment is a fair question to ask of it. The evidence shows no sandbox: the help-center API article mentions no sandbox or test workspace, and the reference's 'Try It!' panel sends requests to the live workspace. Being able to create several API keys is an adjacent feature and does not isolate testing from production data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1975,31 +2032,58 @@
   {
     "productId": "fellow",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Fellow ships a documented REST Developer API, so this axis applies. However, nothing in the evidence pack mentions API versioning (such as version paths or headers), changelogs, or a deprecation or sunset policy. The pack covers only authentication, pagination, endpoints, webhooks and MCP.",
-    "evidenceIds": [],
+    "rationale": "Fellow's Developer API is versioned by URL path (/api/v1/) and its OpenAPI spec carries a version number (1.0.2). However, the evidence states there is no published deprecation policy or API changelog, and /changelog returns 404. So only the versioning half of the story is delivered, and only thinly. Missing for 10: a documented deprecation policy, a public API changelog, any documented version-lifecycle or sunset guarantees, and independent corroboration.",
+    "evidenceIds": [
+      "fellow-openapi-spec-20261106",
+      "fellow-tryit-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fellow-openapi-spec-20261106",
+          "quote": "the API carries path versioning only (/api/v1, spec version 1.0.2)"
+        },
+        {
+          "evidenceId": "fellow-tryit-20261106",
+          "quote": "Requests run against the live workspace (https://{subdomain}.fellow.app/api/v1/...)"
+        }
+      ]
     }
   },
   {
     "productId": "fellow",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows no first-party bulk or batch operation for acting on many items at once. Write endpoints work one item at a time (mark a single action item complete, archive one, edit one note's agenda). List endpoints with pagination and the Super Admin workspace-wide export/delete are building blocks a developer could loop over, not a bulk-operation capability. The list-uploads endpoint only reports status for many uploads; it does not act on them.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Fellow's own docs describe a few multi-item operations. The Super Admin API can retrieve, export, and delete data across the entire workspace, and a list-uploads endpoint checks status across multiple recordings without looking up each one. Every documented write endpoint (mark complete, archive, delete note, agenda edits) acts on a single item, so true batch changes would mean looping over many API calls. missing for 10: documented batch/bulk mutation endpoints (e.g., bulk-complete or bulk-archive action items, bulk note edits), any in-product or MCP bulk-action capability, independent or hands-on corroboration of workspace-wide export/delete.",
+    "evidenceIds": [
+      "fellow-docs-47",
+      "fellow-docs-64",
+      "fellow-docs-33",
+      "fellow-docs-43",
+      "fellow-docs-72"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fellow-docs-47",
+          "quote": "Fellow’s Super Admin API lets designated Enterprise‑plan administrators retrieve, export, and delete data across the entire workspace"
+        },
+        {
+          "evidenceId": "fellow-docs-64",
+          "quote": "monitor progress across multiple recordings in one place. Use it to quickly check what's pending, completed, or failed without looking up each upload individually."
+        }
+      ]
     }
   },
   {
@@ -2008,7 +2092,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents webhooks, which send an HTTP POST to a URL when events occur, such as an AI note being generated or an action item being completed. That is an event-delivery building block: the developer must build the rule logic and resulting actions externally. No in-product rules or automation engine is documented for defining conditions that trigger actions inside Fellow, so the webhooks earn no credit here.",
+    "rationale": "Fellow documents webhooks that POST event notifications to a URL you specify, but the integrator must supply the receiving endpoint and all action logic. The evidence explicitly notes that no in-product rules engine for trigger-action configuration is documented. Webhooks are a developer building block for constructing automation, not a user-definable rule system, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -2023,7 +2107,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents a REST API, event-driven webhooks, and an MCP server, but nothing that lets a user define recurring scheduled jobs or workflows inside Fellow. Webhooks fire on events, not on a recurring schedule, and the API endpoints are one-off calls that a user would have to schedule with external tooling. That is a user-side workaround and earns no credit.",
+    "rationale": "Scheduling recurring workflows is a fair axis for an AI meeting-notes platform, but the evidence shows no in-product scheduler or recurring job capability. Fellow offers event-driven webhooks and a REST API that a user would have to drive from their own external scheduler. The docs explicitly note that no in-product rules or trigger-action engine is documented. Webhooks are one-off event reactions, not a recurring schedule, and API building blocks earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2038,7 +2122,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers Fellow's REST API, webhooks, Fellow Markdown note editing, and MCP server governance. None of it documents a user-defined automation feature with version history, review or approval of changes, or rollback to a prior version. Round-tripping note markdown and revoking MCP connections are adjacent features, not automation versioning or rollback.",
+    "rationale": "Fellow documents no in-product automation or rules engine. Its automation surface is webhooks, where the integrator owns the receiving side and all action logic. Nothing in the pack describes versioning, review, or rollback of automations, and API path versioning (/api/v1) concerns the API itself, not user automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2053,12 +2137,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Fellow's own feature pages say it records, transcribes, and summarizes meetings across Zoom, Google Meet, and Microsoft Teams. Users can capture with a visible bot or botless from the desktop, and can choose when to record, pause, or resume, which covers 'recording where I want it'. missing for 10: independent or hands-on corroboration of capture reliability, detailed first-party docs on per-meeting recording controls beyond marketing copy.",
+    "rationale": "Fellow's own docs say it records, transcribes, and summarizes meetings across Zoom, Google Meet, Microsoft Teams, and Slack huddles, using either a visible bot or botless desktop audio capture. Users can choose when to record, pause, or resume, and admins can set organization-wide recording policies, which covers the \"recording where I want it\" part of the story. Missing for 10: independent or hands-on corroboration of capture reliability on each platform, and detailed per-platform setup or limitation documentation.",
     "evidenceIds": [
       "fellow-docs-51",
       "fellow-docs-20",
       "fellow-docs-27",
-      "fellow-docs-12",
+      "fellow-docs-54",
       "fellow-docs-60"
     ],
     "support": {
@@ -2068,7 +2152,7 @@
       "citations": [
         {
           "evidenceId": "fellow-docs-51",
-          "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles with enterprise-grade security and human-level accuracy."
+          "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles"
         },
         {
           "evidenceId": "fellow-docs-20",
@@ -2079,7 +2163,7 @@
           "quote": "Users choose when to record, pause, or resume capture when part of a conversation needs to stay off the record."
         },
         {
-          "evidenceId": "fellow-docs-12",
+          "evidenceId": "fellow-docs-54",
           "quote": "Set organization-wide policies for how meetings are recorded, accessed, and retained"
         }
       ]
@@ -2091,11 +2175,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fellow's feature page says teams can record 'with a visible bot or without one,' capturing audio directly from the desktop across Zoom, Google Meet, Microsoft Teams, Slack Huddles and in-person meetings. Those meetings produce full searchable transcripts. Evidence is marketing-level only. Missing for 10: in-depth docs on how the desktop capture app is set up and works, explicit confirmation that external participants see no indicator, and independent or hands-on corroboration.",
+    "rationale": "Fellow's own feature page says teams can record without a visible bot by capturing audio directly from the desktop across Zoom, Google Meet, Microsoft Teams, Slack Huddles and in-person meetings. Its documented recording pipeline produces full, searchable transcripts. Missing for 10: in-depth first-party docs on the desktop capture client (setup, supported OSes, how it behaves in a call), explicit confirmation that external participants see no indicator, and independent or hands-on corroboration beyond marketing copy.",
     "evidenceIds": [
       "fellow-docs-20",
-      "fellow-docs-76",
       "fellow-docs-11",
+      "fellow-docs-76",
       "fellow-docs-21",
       "fellow-docs-51"
     ],
@@ -2114,7 +2198,7 @@
         },
         {
           "evidenceId": "fellow-docs-51",
-          "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles"
+          "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles with enterprise-grade security and human-level accuracy."
         }
       ]
     }
@@ -2125,10 +2209,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack never mentions connecting a Google or Outlook calendar, and never describes per-meeting-type rules for automatic capture. The closest evidence is organization-wide recording policies and users manually choosing when to record. Those are adjacent controls, not the calendar-driven, per-meeting-type auto-capture rules the story asks for.",
+    "rationale": "The evidence pack never mentions connecting a Google or Outlook calendar, and never mentions per-meeting-type auto-capture rules. The closest items are adjacent: organization-wide recording policies and users manually choosing when to record or pause. Neither shows calendar-driven, per-meeting-type capture rules, and the webhooks scope note confirms no in-product rules engine is documented.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a product manager, I connect Google or Outlook calendar once and control per-meeting-type rules for which meetings get captured automatically",
       "citations": []
@@ -2140,14 +2224,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow documents natural-language questions about meetings, including decision questions like \"What did we decide in last month's standup?\". However, the documented path runs through its first-party MCP Server and an external AI assistant (Claude, ChatGPT, Cursor). The native \"Ask Fellow\" feature appears only as a pricing-page line item, and transcripts are described as searchable. missing for 10: evidence that answers include source citations or links back to meetings, documentation of native in-app Ask Fellow Q&A depth, confirmation of coverage across the entire meeting history, independent or hands-on corroboration.",
+    "rationale": "Fellow documents natural-language questions about meetings through its own MCP server, for example \"What did we decide in last month's standup?\" This depends on an external AI assistant such as Claude or ChatGPT, and the native \"Ask Fellow\" feature appears only as a pricing line item. Missing for 10: answers with source citations or links back to meetings, explicit coverage of the whole meeting history, documentation of how native Ask Fellow works, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-32",
       "fellow-docs-18",
       "fellow-docs-26",
       "fellow-docs-53",
-      "fellow-docs-21",
-      "fellow-docs-49"
+      "fellow-docs-21"
     ],
     "support": {
       "relation": "direct",
@@ -2165,10 +2248,6 @@
         {
           "evidenceId": "fellow-docs-53",
           "quote": "Ask Fellow"
-        },
-        {
-          "evidenceId": "fellow-docs-21",
-          "quote": "Every conversation becomes searchable through a full transcript, giving your team instant access to past context whenever they need it."
         }
       ]
     }
@@ -2179,7 +2258,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow records and transcribes calls, so clipping a moment from a recording is a fair question for this product. The evidence pack documents no clip, soundbite, or moment-sharing feature, though. The 'highlights' in Fellow Markdown are a note-content formatting element, and timestamped transcripts are only a building block, so neither counts toward cutting and sharing a portion of a recording.",
+    "rationale": "Fellow records and transcribes calls, so clipping and sharing a moment is a fair axis for this product. However, the evidence pack documents no clip, soundbite or highlight-reel feature, and no way to share part of a recording. The only related items are timestamped transcripts and 'highlights' in Fellow Markdown note content, which are adjacent text features, not cutting or sharing a clip of the call.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2194,12 +2273,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fellow documents a visible recording bot, which gives some in-meeting presence disclosure, and admin-set organization-wide policies for how meetings are recorded. Neither is explicitly described as a consent mechanism, and Fellow also offers botless desktop capture with no stated disclosure. Missing for 10: participant consent notifications (pre-meeting emails or chat messages), explicit in-meeting recording disclosure or consent prompts, documented admin enforcement of bot visibility or disclosure, independent corroboration.",
+    "rationale": "Fellow's own docs offer recording 'with a visible bot', which is a form of in-meeting disclosure, and 'organization-wide policies for how meetings are recorded'. Neither is explicitly described as a consent or transparency control, and the botless desktop-capture option cuts against disclosure. Missing for 10: documented participant recording notifications or consent prompts, explicit in-meeting disclosure messages or banners, admin enforcement of disclosure (e.g. forcing a visible bot or blocking silent capture), and independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-11",
       "fellow-docs-12",
-      "fellow-docs-54",
-      "fellow-docs-27"
+      "fellow-docs-54"
     ],
     "support": {
       "relation": "direct",
@@ -2213,10 +2291,6 @@
         {
           "evidenceId": "fellow-docs-12",
           "quote": "Set organization-wide policies for how meetings are recorded, accessed, and retained"
-        },
-        {
-          "evidenceId": "fellow-docs-27",
-          "quote": "Users choose when to record, pause, or resume capture when part of a conversation needs to stay off the record."
         }
       ]
     }
@@ -2227,7 +2301,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "CRM sync is a fair question for an AI meeting-notes product, but the evidence pack never mentions a native HubSpot, Salesforce, or Attio integration, or any matching of notes to contact or deal records. The Developer API, webhooks and MCP server are developer building blocks a team could use to build such a sync, not the capability itself, so they earn no credit.",
+    "rationale": "The evidence pack never mentions a native HubSpot, Salesforce, or Attio integration, and nothing shows notes or summaries being matched to contact or deal records. The Developer API and webhooks are building blocks a developer could use to build such a sync. They are not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2242,7 +2316,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes automatic summaries, action items, decisions and topic-based minutes for every meeting. Nothing documents custom note templates or saved prompts tied to meeting types such as discovery calls, 1:1s or standups. The API's agenda-writing endpoints and the suggestion to 'pass transcripts to an LLM for tailored recaps' are developer building blocks or user-side workarounds, not the product's own per-meeting-type templating, so they earn no credit.",
+    "rationale": "The evidence pack never documents custom note templates or saved prompts that shape AI notes per meeting type. The closest items are developer building blocks: API endpoints that write a note's agenda in Fellow Markdown, and a suggestion to pass transcripts to an external LLM for tailored recaps. These earn no credit, and the product page describes one standard summary format applied to every meeting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2257,7 +2331,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents automatic meeting summaries, action items and decisions, but nothing shows Fellow drafting a follow-up email for review and sending. Passing transcripts to an LLM through the API, or querying recaps through the MCP server with an external chatbot, are developer building blocks and user-side workarounds rather than the product's own email-drafting capability.",
+    "rationale": "The evidence documents automatic meeting summaries, action items and decisions, plus an API for passing transcripts to an LLM. None of it shows Fellow drafting a follow-up email that a user can review and send in a couple of clicks. The API and MCP access are developer building blocks, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2272,13 +2346,12 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fellow documents an official MCP server that works with Claude, ChatGPT, Cursor or any connector-capable AI tool. It lets users ask questions about meetings, recaps, notes and action items without writing code, with admin governance over which tools are enabled and which connections are revoked. However, the evidence does not cover every element of the story, so full credit isn't warranted. Missing for 10: explicit documentation that MCP authentication uses OAuth, explicit confirmation that full transcripts are exposed through MCP tools rather than only via the REST API, a documented search tool, and independent or hands-on corroboration.",
+    "rationale": "Fellow documents an official MCP server that lets Claude, ChatGPT, Cursor or any connector-capable AI tool query meeting recaps, notes and action items with no code. Workspace owners control enablement and can revoke connections. The MCP docs never name OAuth as the auth flow and never say transcripts are exposed through MCP; transcript access is documented only for the REST API. missing for 10: explicit OAuth documentation for MCP connections, explicit transcript/search tool coverage via MCP, independent hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-18",
       "fellow-docs-26",
-      "fellow-docs-9",
+      "fellow-docs-73",
       "fellow-docs-32",
-      "fellow-docs-10",
       "fellow-docs-50",
       "fellow-docs-49",
       "fellow-probe-3"
@@ -2297,8 +2370,8 @@
           "quote": "Your favorite AI chatbot like Claude, ChatGPT, or Cursor can now tap directly into your meeting recaps, notes, and action items"
         },
         {
-          "evidenceId": "fellow-docs-9",
-          "quote": "Fellow’s MCP Connector works with any AI tool that supports connectors, so you're never locked into one platform"
+          "evidenceId": "fellow-docs-73",
+          "quote": "Fellow's MCP Connector works with any AI tool that supports connectors, so you're never locked into one platform"
         },
         {
           "evidenceId": "fellow-docs-50",
@@ -2310,34 +2383,16 @@
   {
     "productId": "fellow",
     "storyId": "mobile-in-person-capture",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow documents its own capture of in-person meetings, but via desktop audio capture rather than a mobile app. Transcripts become searchable in the workspace, and audio uploads are supported. Missing for 10: any evidence of a mobile app for recording, mobile in-person capture flow, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "fellow-docs-20",
-      "fellow-docs-21",
-      "fellow-docs-78",
-      "fellow-docs-36"
-    ],
+    "rationale": "Fellow documents recording in-person meetings, but only by capturing audio from the desktop. Transcripts are searchable, and the pricing page lists audio and video uploads. Nothing in the evidence mentions a mobile app for recording or transcribing conversations, so the story's core mobile-capture requirement is unevidenced and desktop capture is only an adjacent feature.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a founder, I can record and transcribe in-person conversations from a mobile app, and those notes land in the same searchable workspace",
-      "citations": [
-        {
-          "evidenceId": "fellow-docs-20",
-          "quote": "capturing audio directly from the desktop across Zoom, Google Meet, Microsoft Teams, Slack Huddles, and in-person meetings"
-        },
-        {
-          "evidenceId": "fellow-docs-21",
-          "quote": "Every conversation becomes searchable through a full transcript, giving your team instant access to past context whenever they need it."
-        },
-        {
-          "evidenceId": "fellow-docs-78",
-          "quote": "Audio and video uploads"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -2346,7 +2401,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow is an AI meeting transcription and summary tool, so multilingual support is a fair question to ask of it. The evidence pack documents transcription, summaries and diarized transcripts but never mentions supported languages, non-English meetings or handling language switching mid-meeting. Absence of evidence for an applicable capability yields none.",
+    "rationale": "Multilingual transcription and summarization is a fair question for an AI meeting-notes product, so the axis applies. However, the evidence pack contains nothing about supported languages, non-English transcription, or handling language switching within a meeting. Fellow's general transcription and summary claims, such as \"human-level accuracy\", say nothing about languages, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2361,7 +2416,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never says whether Fellow uses meeting data to train AI models. It also documents no org-level training opt-out and does not mention SOC 2 or HIPAA. Retention policies (including zero-day retention), org-wide recording policies and a generic 'enterprise-grade security' claim are related controls, not the training-data disclosure, opt-out or compliance posture this story asks for.",
+    "rationale": "The evidence pack does not document whether meeting data is used to train AI models, offers no org-level training opt-out, and never mentions SOC 2 or HIPAA. Retention policies (including zero-day retention), org-wide recording policies, and the generic 'enterprise-grade security' claim are adjacent controls, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2376,7 +2431,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow's own Developer API covers much of the core UI data. It can list and read notes, recordings and transcripts, write, prepend, append and find-replace agenda content in round-tripping Fellow Markdown, mark action items complete or archive them, upload recordings, and let super admins export and delete data. However, nothing documents UI parity, and many UI features have no API equivalent in the evidence: recording and retention policies, keyword tracking, transcript redaction, bot customization, Ask Fellow, and MCP governance. Note deletion is also restricted to super admins. Missing for 10: documented UI/API parity claim, API coverage of workspace settings, recording and retention policies, redaction, keyword tracking and Ask Fellow, creating action items, non-admin note deletion, a published OpenAPI spec (probe returned 404), and independent corroboration.",
+    "rationale": "Fellow's own REST API covers the core meeting objects. It can read and write note agendas (with round-tripping Fellow Markdown), list notes, recordings and action items, complete or archive action items, upload recordings, delete notes as super admin, and register webhooks. Nothing documents API parity with the UI, and many UI features show no API equivalent, so only part of the story is delivered. Missing for 10: an explicit UI-parity claim; API coverage of recording, retention and workspace policy settings, keyword tracking, transcript redaction and Ask Fellow; creating or deleting action items and notes for regular users (note deletion is super-admin only); independent corroboration.",
     "evidenceIds": [
       "fellow-docs-1",
       "fellow-docs-42",
@@ -2384,11 +2439,10 @@
       "fellow-docs-43",
       "fellow-docs-44",
       "fellow-docs-37",
-      "fellow-docs-47",
-      "fellow-docs-72",
       "fellow-docs-66",
-      "fellow-docs-4",
-      "fellow-probe-2"
+      "fellow-docs-72",
+      "fellow-docs-46",
+      "fellow-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -2401,7 +2455,7 @@
         },
         {
           "evidenceId": "fellow-docs-42",
-          "quote": "Write a note's agenda and/or rename the note. Provide `content_fellow_markdown`, `title`, or both."
+          "quote": "Write a note's agenda and/or rename the note."
         },
         {
           "evidenceId": "fellow-docs-59",
@@ -2428,16 +2482,16 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fellow documents its own export path: the Super Admin API can 'retrieve, export, and delete data across the entire workspace' to back up notes and transcripts, and the REST API lists notes, recordings with diarized transcripts, and action items with pagination. Note content comes as GitHub-Flavored Markdown with Fellow extensions. However, workspace-wide export is limited to Enterprise-plan admins and is only reachable through the API, and the Markdown includes proprietary extensions. missing for 10: a self-serve bulk export (UI or archive download) for ordinary users, evidence that all data types including recording media can be exported, confirmation the formats are fully open rather than Fellow-extended Markdown, and independent or hands-on corroboration of a complete export-and-leave workflow.",
+    "rationale": "Fellow's own Developer API returns notes, transcripts, recordings metadata and action items over standard REST with cursor pagination. Note content comes as Fellow Markdown, which is GitHub-Flavored Markdown plus extensions. The Super Admin API explicitly supports retrieving, exporting and deleting workspace data for backup, but only on the Enterprise plan, and the API needs a paid plan with admin enablement. Missing for 10: a documented one-click or bulk full-account export, evidence that recordings' audio/video media can be exported, export for non-Enterprise individual users, a documented account-deletion/offboarding path, and independent hands-on corroboration.",
     "evidenceIds": [
-      "fellow-docs-47",
-      "fellow-docs-14",
       "fellow-docs-1",
+      "fellow-docs-47",
       "fellow-docs-34",
       "fellow-docs-36",
-      "fellow-docs-66",
       "fellow-docs-33",
-      "fellow-docs-61"
+      "fellow-docs-66",
+      "fellow-help-api-20261106",
+      "fellow-docs-72"
     ],
     "support": {
       "relation": "direct",
@@ -2445,12 +2499,12 @@
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": [
         {
-          "evidenceId": "fellow-docs-47",
-          "quote": "Fellow’s Super Admin API lets designated Enterprise‑plan administrators retrieve, export, and delete data across the entire workspace, making it simple to back up notes and transcripts for legal purposes"
-        },
-        {
           "evidenceId": "fellow-docs-1",
           "quote": "The Developer API opens that data to you: transcripts, structured notes, and more, all available through standard REST calls."
+        },
+        {
+          "evidenceId": "fellow-docs-47",
+          "quote": "Fellow’s Super Admin API lets designated Enterprise‑plan administrators retrieve, export, and delete data across the entire workspace, making it simple to back up notes and transcripts for legal purposes"
         },
         {
           "evidenceId": "fellow-docs-34",
@@ -2459,6 +2513,10 @@
         {
           "evidenceId": "fellow-docs-36",
           "quote": "Each Recording is associated with a Note, and can contain information such as: Diarized and timestamped transcripts"
+        },
+        {
+          "evidenceId": "fellow-docs-33",
+          "quote": "The Fellow Developer API uses cursor-based pagination for all list endpoints."
         }
       ]
     }
@@ -2469,7 +2527,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-source availability is a fair question for any software product, including a SaaS meeting-notes tool, so the axis applies. Nothing in the evidence mentions source code, a public repository, or an open license. The pack covers only a proprietary REST API, webhooks, an MCP server and product features, none of which count as readable source.",
+    "rationale": "Whether a product's source is available under an open license is a fair question for a SaaS meeting-notes product, so the axis applies. The evidence pack contains no mention of a source repository or open-source license. The published OpenAPI spec, REST API docs and MCP server describe an API surface, not readable product source, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2484,7 +2542,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a SaaS meeting-notes product, so the axis applies. However, the evidence only documents Fellow's hosted service: a REST API, webhooks, an MCP server, and admin retention and export controls. Nothing shows a self-hosted, on-prem, or deployable version of the core product.",
+    "rationale": "Self-hosting is a fair question for a SaaS meeting-notes product, so the axis applies. Every item in the pack describes a vendor-hosted service: requests run against hosted fellow.app workspaces, and the API and MCP connector sit on top of that cloud product. No evidence shows an on-premises or self-hosted deployment option. Retention policies and data export are adjacent controls and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2499,10 +2557,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented Fellow feature that automatically surfaces past meetings with the same attendees, or generates a pre-call brief of open threads. What exists is adjacent: searchable past transcripts the user must look up, MCP or Ask Fellow question-answering the user must prompt, and API endpoints (notes with attendee emails, action-item filters) a developer could use to build such a brief. None of these is the product's own pre-meeting prep capability.",
+    "rationale": "The pack documents searchable transcripts, per-meeting summaries and action items, MCP Q&A through third-party AI assistants, and API access to notes with attendee lists. None of it shows Fellow itself surfacing past meetings with the same attendees or generating a pre-call brief of open threads. These are adjacent features and developer building blocks a user could assemble into prep, not the story's capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a founder, I walk into each meeting prepped — the tool surfaces past meetings with the same people and a brief of open threads before the call",
       "citations": []
@@ -2514,7 +2572,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a SaaS meeting-notes product like Fellow, so the axis applies. However, the evidence never mentions choosing a storage region or data residency. The related privacy controls it does document (configurable retention policies, zero-day retention, Super Admin export/delete) are adjacent features and earn no credit for region selection.",
+    "rationale": "Data residency is a fair question for a SaaS meeting-notes product, so the axis applies. Nothing in the evidence pack documents choosing a storage region or residency. The documented privacy controls (configurable retention including zero-day retention, and Super Admin export/delete) are adjacent features and earn no credit toward region selection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2529,7 +2587,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow is an AI meeting-notes SaaS, so a training opt-out is a fair question for this kind of product. The evidence pack contains no statement about AI model training or a training opt-out. Retention policies (including zero-day retention), transcript redaction, pausing recording, and admin deletion are adjacent privacy controls, not a documented way to keep data out of model training.",
+    "rationale": "Fellow is an AI meeting-notes product, so a training opt-out is a fair question for it. The evidence pack never mentions whether customer data is used to train AI models, and never documents an opt-out or no-training commitment. Retention policies (including zero-day retention), transcript redaction, pause-recording and admin deletion are adjacent privacy controls, not a training-use control, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2541,21 +2599,19 @@
   {
     "productId": "fellow",
     "storyId": "privacy-retention-controls",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Fellow documents configurable organization-wide retention policies, including zero-day retention. Its Super Admin API can delete data across the workspace, including a note-deletion endpoint, to support privacy-regulation erasure. Both retention control and deletion are first-party capabilities, but API deletion is limited to Enterprise super admins, and the retention policies appear only as marketing-level claims. missing for 10: detailed docs on configuring retention policies (granularity, per-data-type scope), deletion control for non-admin users or plans other than Enterprise, independent or hands-on corroboration.",
+    "rationale": "Fellow's own marketing documents configurable, organization-wide retention policies, including zero-day retention. Its developer docs document deletion of workspace data and notes through the Super Admin API. However, deletion is limited to Enterprise-plan super admins, and the retention controls appear only as homepage claims with no detailed docs. Missing for 10: in-depth first-party documentation of retention policy configuration (durations, scope, how deletion is enforced), deletion controls for ordinary users rather than only Enterprise super admins, and independent or hands-on corroboration that retention and deletion work as claimed.",
     "evidenceIds": [
       "fellow-docs-28",
       "fellow-docs-54",
-      "fellow-docs-12",
       "fellow-docs-47",
-      "fellow-docs-14",
       "fellow-docs-72"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can control data retention and deletion",
       "citations": [
         {
@@ -2568,7 +2624,7 @@
         },
         {
           "evidenceId": "fellow-docs-47",
-          "quote": "Fellow’s Super Admin API lets designated Enterprise‑plan administrators retrieve, export, and delete data across the entire workspace, making it simple to back up notes and transcripts for legal purposes and to erase third‑party data in line with privacy regulations."
+          "quote": "Fellow’s Super Admin API lets designated Enterprise‑plan administrators retrieve, export, and delete data across the entire workspace"
         },
         {
           "evidenceId": "fellow-docs-72",
@@ -2583,7 +2639,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair privacy question for a SaaS meeting-notes product, so the axis applies, but no evidence shows Fellow lets users opt out of telemetry or usage tracking. The nearby controls are different features: pausing recording, retention policies, MCP enablement and the pricing item 'Keyword tracking'. None of them is a telemetry or analytics opt-out.",
+    "rationale": "Opting out of telemetry is a fair privacy question for a SaaS meeting-notes product, so the axis applies. The evidence pack documents only adjacent privacy controls: data retention policies, pausing recording, transcript redaction, and admin toggles for the MCP server and API. None of these is an opt-out from product telemetry or usage tracking, and \"Keyword tracking\" is a meeting-content feature, not telemetry.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2598,11 +2654,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Fellow's marketing claims configurable, organization-wide retention policies, including zero-day retention. The Enterprise Super Admin API documents deleting data across the workspace to erase third-party data under privacy regulations, and a delete-note endpoint is restricted to super admins. However, the retention claim is homepage-level only, and on-demand deletion is shown only through the API. missing for 10: documentation of schedule-based auto-deletion settings (periods, scope covering transcripts and recordings specifically), confirmation that deletion is permanent or irrecoverable, an admin-UI erase path, explicit recording/transcript delete endpoints, and independent or hands-on corroboration.",
+    "rationale": "Fellow's marketing claims configurable retention policies, including zero-day retention, and org-wide control over how meetings are retained. On-demand deletion is documented through the Enterprise Super Admin API, which can delete workspace data and notes to erase third-party data under privacy regulations. Missing for 10: admin docs showing how scheduled auto-deletion of transcripts and recordings is configured (periods, scope), explicit confirmation that deletion is permanent or irreversible, a non-API admin UI for erasure, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-28",
+      "fellow-docs-12",
       "fellow-docs-54",
       "fellow-docs-47",
+      "fellow-docs-14",
       "fellow-docs-72"
     ],
     "support": {
@@ -2615,7 +2673,7 @@
           "quote": "Set configurable retention policies, including zero-day retention, so data is handled according to your organization’s requirements."
         },
         {
-          "evidenceId": "fellow-docs-54",
+          "evidenceId": "fellow-docs-12",
           "quote": "Set organization-wide policies for how meetings are recorded, accessed, and retained"
         },
         {
@@ -2633,13 +2691,13 @@
     "productId": "fellow",
     "storyId": "search-across-meetings",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Fellow's own marketing says every conversation becomes searchable through a full transcript, and its MCP server lets users ask questions across past meetings. The API exposes diarized, timestamped transcripts. However, no evidence shows a unified search across transcripts, summaries and notes, or a way to jump to the exact moment in a recording where something was said. Missing for 10: documented cross-meeting search spanning summaries and notes, jump-to-timestamp playback from search results, hands-on corroboration.",
+    "rationale": "Fellow documents that every conversation is searchable through a full transcript, and that recordings carry timestamped transcripts. Its MCP server lets users ask questions across their meetings. However, nothing documents one unified search across transcripts, summaries and notes, or the ability to jump to the exact moment something was said. Missing for 10: documented cross-meeting search spanning summaries and notes, jump-to-timestamp playback from search results, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-21",
-      "fellow-docs-32",
       "fellow-docs-36",
+      "fellow-docs-32",
       "fellow-docs-53"
     ],
     "support": {
@@ -2657,7 +2715,7 @@
         },
         {
           "evidenceId": "fellow-docs-32",
-          "quote": "Ask anything about your meetings"
+          "quote": "Ask anything about your meetings - Get answers to questions like \"What were my action items this week?\" or \"What did we decide in last month's standup?\""
         }
       ]
     }
@@ -2668,7 +2726,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fellow's homepage says admins can set organization-wide policies for how meetings are accessed, and that users keep control over what they share. That is a first-party but thin claim about sharing governance. Nothing else in the pack documents the specific sharing controls; MCP connection governance and the Super Admin data-export API are separate features and are not credited here. Missing for 10: private-by-default notes, granular link/folder/workspace permission settings, admin visibility or reporting of what is shared, and in-depth docs or independent corroboration.",
+    "rationale": "Fellow's marketing page states that admins can set organization-wide policies for how meetings are accessed, while giving teams control over what they share. That is a thin, first-party nod to admin-governed sharing. Nothing documents private-by-default notes, granular link/folder/workspace permission levels, or an admin view of what has been shared; the Super Admin API's export/delete and MCP access-scoping are adjacent features and earn no credit here. missing for 10: private-by-default note behavior, granular link/folder/workspace permission controls, admin visibility/reporting into shared content, in-depth docs or independent corroboration.",
     "evidenceIds": [
       "fellow-docs-54",
       "fellow-docs-12"
@@ -2681,10 +2739,6 @@
         {
           "evidenceId": "fellow-docs-54",
           "quote": "Set organization-wide policies for how meetings are recorded, accessed, and retained, while giving your team control over what they shar"
-        },
-        {
-          "evidenceId": "fellow-docs-12",
-          "quote": "Set organization-wide policies for how meetings are recorded, accessed, and retained"
         }
       ]
     }
@@ -2695,7 +2749,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no native Slack-channel posting, Notion sync, or Zapier integration for Fellow notes. Slack appears only as a meeting source (recording Slack Huddles), not as a destination for notes. The REST API, webhooks, and MCP server are developer building blocks or adjacent features, so they earn no credit for this story.",
+    "rationale": "The evidence pack documents no native integration that sends Fellow notes into Slack channels, Notion pages, or Zapier. The only Slack evidence covers recording Slack Huddles, which captures meetings rather than delivering notes. The REST API and webhooks are developer building blocks a team could use to build such flows, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2708,9 +2762,9 @@
     "productId": "fellow",
     "storyId": "speaker-identification",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Fellow's developer docs state that Recordings contain diarized, timestamped transcripts, so the product itself separates speakers. Nothing in the pack shows those speakers are matched to real named participants rather than generic labels; attendee emails on notes are only adjacent metadata. Missing for 10: documented mapping of diarized speakers to real participant names, accuracy evidence for speaker attribution, independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Fellow's API docs state that recordings include \"Diarized and timestamped transcripts,\" so speaker separation is documented. Nothing in the evidence shows that speakers are matched to real names (for example, attendees or participants) rather than generic labels, which is the core differentiator of this story. missing for 10: documented real-name speaker matching, speaker-label format in transcripts, ability to correct or rename speakers, independent or hands-on corroboration of attribution accuracy.",
     "evidenceIds": [
       "fellow-docs-36",
       "fellow-docs-60"
@@ -2723,10 +2777,6 @@
         {
           "evidenceId": "fellow-docs-36",
           "quote": "Each Recording is associated with a Note, and can contain information such as: Diarized and timestamped transcripts"
-        },
-        {
-          "evidenceId": "fellow-docs-60",
-          "quote": "Diarized and timestamped transcripts"
         }
       ]
     }
@@ -2737,10 +2787,10 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fellow's own docs say every meeting automatically gets a clear summary, suggested AI action items, decisions, and topic-based minutes, which matches the story's structure of key points, decisions and next steps. However, the 'share without editing' quality bar and the 'right after the meeting' timing are not directly evidenced, so full credit is not justified. missing for 10: independent or hands-on evidence that summaries are accurate and polished enough to share unedited, documented turnaround time after the meeting ends, and documented sharing/distribution of the summary.",
+    "rationale": "Fellow's own docs say every meeting automatically gets a clear summary, AI action items, decisions and topic-based minutes, which covers the structured key points, decisions and next steps. Two parts of the story are not evidenced: how soon after the meeting the summary arrives, and whether it is polished enough to share without editing. The webhook docs mention an 'AI note being generated' event but give no timing, and there is no hands-on or independent evidence of summary quality. Missing for 10: documented delivery timing right after the meeting, evidence the summaries are shareable without editing, independent or hands-on corroboration of summary quality.",
     "evidenceIds": [
       "fellow-docs-23",
-      "fellow-docs-51",
+      "fellow-docs-77",
       "fellow-docs-52",
       "fellow-docs-46"
     ],
@@ -2754,7 +2804,7 @@
           "quote": "You automatically receive a clear meeting summary, suggested AI action items, decisions, and topic-based minutes for every meeting."
         },
         {
-          "evidenceId": "fellow-docs-51",
+          "evidenceId": "fellow-docs-77",
           "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles"
         },
         {
@@ -2767,28 +2817,16 @@
   {
     "productId": "fellow",
     "storyId": "transcription-quality-claims",
-    "verdict": "partial",
-    "quality": 2,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Fellow's own pages offer only a vague accuracy claim ('human-level accuracy') and note that transcripts are diarized and timestamped. Nothing explains how transcription works or substantiates quality beyond that marketing phrase. missing for 10: named ASR models or providers, quantified accuracy metrics (e.g., WER) or benchmarks, documented known limits (languages, accents, audio conditions), independent corroboration.",
-    "evidenceIds": [
-      "fellow-docs-51",
-      "fellow-docs-36"
-    ],
+    "rationale": "The evidence pack never explains how Fellow's transcription works: there is no named model or provider, no measured accuracy figures or methodology, and no documented limits such as languages, accents, audio conditions or error rates. The only quality statement is the marketing line \"human-level accuracy\". Listing diarized and timestamped transcripts describes output features, not transcription quality, which is exactly the vague 'AI-powered' messaging the story rejects.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a product manager, the vendor documents how transcription actually works and its quality (models, accuracy claims, known limits) rather than just saying \"AI-powered\"",
-      "citations": [
-        {
-          "evidenceId": "fellow-docs-51",
-          "quote": "Fellow records, transcribes, and summarizes every meeting across Zoom, Google Meet, Microsoft Teams, and Slack huddles with enterprise-grade security and human-level accuracy."
-        },
-        {
-          "evidenceId": "fellow-docs-36",
-          "quote": "Diarized and timestamped transcripts"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -2796,20 +2834,19 @@
     "storyId": "transcripts-via-api",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Fellow documents a Developer API with REST endpoints to list recordings, which carry diarized, timestamped transcripts on request and represent meeting recaps. It also lists action items and notes with cursor pagination, and users can generate their own named API keys. Missing for 10: an explicitly documented summary field (only implied via 'meeting recap'), clarity on which plans include API key access, a machine-readable OpenAPI spec (probe 404), and independent hands-on corroboration.",
+    "confidence": "high",
+    "rationale": "Fellow documents a REST Developer API with list endpoints for recordings, which carry diarized, timestamped transcripts via the `include` parameter, and for notes and action items, all with cursor pagination. Users can generate their own named API keys. Access requires a paid plan and admin enablement, and workspace-wide 'every meeting' access needs Enterprise Super Admin keys. Missing for 10: an explicitly documented summary field on the API (recordings are only described as 'meeting recaps'), key self-service that isn't gated by admin enablement and paid plan, and independent hands-on corroboration.",
     "evidenceIds": [
       "fellow-docs-1",
-      "fellow-docs-4",
-      "fellow-docs-5",
-      "fellow-docs-16",
-      "fellow-docs-56",
       "fellow-docs-36",
       "fellow-docs-61",
+      "fellow-docs-4",
+      "fellow-docs-5",
       "fellow-docs-66",
-      "fellow-docs-33",
+      "fellow-docs-56",
       "fellow-docs-31",
-      "fellow-probe-1"
+      "fellow-help-api-20261106",
+      "fellow-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -2833,8 +2870,8 @@
           "quote": "Generate a new API key for your application, giving it a descriptive name. You can have multiple API keys, and we recommend generating a different one for each application"
         },
         {
-          "evidenceId": "fellow-docs-4",
-          "quote": "List recordings with optional filters and pagination."
+          "evidenceId": "fellow-docs-31",
+          "quote": "pass transcripts to an LLM for tailored recaps and action plans, the API gives you everything you need to make it happen"
         }
       ]
     }
@@ -2842,40 +2879,16 @@
   {
     "productId": "fellow",
     "storyId": "transparent-pricing-free-tier",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Fellow has a public pricing page that lists features such as AI meeting summary, transcription, action items, Ask Fellow, keyword tracking, transcript redaction and uploads. That suggests tier contents are visible without contacting sales. However, the pack shows no free plan, no prices, and no mapping of features to tiers. An Enterprise plan is referenced, but nothing shows whether it is self-serve or sales-gated. Missing for 10: evidence of a free tier, published per-tier prices, a per-tier feature breakdown, confirmation that basic paid plans are self-serve without talking to sales, and independent corroboration.",
-    "evidenceIds": [
-      "fellow-docs-52",
-      "fellow-docs-53",
-      "fellow-docs-13",
-      "fellow-docs-22",
-      "fellow-docs-78",
-      "fellow-docs-79"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows a fellow.ai/pricing page exists and lists feature names such as AI meeting summary, transcript redaction and keyword tracking, and it mentions that paid and Enterprise plans exist. Nothing shows a free tier, any tier prices, which features belong to which tier, or whether basic use avoids a 'talk to sales' gate. The page's existence and feature names alone do not show the story's capability.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a founder, I can start free and see exactly what each paid tier costs and adds — no \"talk to sales\" wall for basic use",
-      "citations": [
-        {
-          "evidenceId": "fellow-docs-52",
-          "quote": "AI meeting summary"
-        },
-        {
-          "evidenceId": "fellow-docs-13",
-          "quote": "Keyword tracking"
-        },
-        {
-          "evidenceId": "fellow-docs-22",
-          "quote": "Transcript redaction"
-        },
-        {
-          "evidenceId": "fellow-docs-78",
-          "quote": "Audio and video uploads"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -4343,7 +4356,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only evidence of action-item extraction with task creation appears among Granola API use cases, which describe what a developer could build. That is a developer building block, not a native feature that extracts action items with owners and collects them for tracking. A PM in the community reported that action items slipped through and built their own kanban app as a workaround. A user-side workaround earns no credit.",
+    "rationale": "The only evidence of action-item extraction into a tracker is an API use case (docs-53). That is a developer building block for constructing the workflow, not a built-in feature. Nothing documents that Granola's own enhanced notes extract action items with owners or collect them in a trackable place. A PM's community report (comm-7) describes action items slipping through and building their own kanban app as a workaround, which earns no credit.",
     "evidenceIds": [
       "granola-docs-53",
       "granola-comm-7"
@@ -4364,17 +4377,15 @@
     "productId": "granola",
     "storyId": "agent-files-action-items",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola's own API docs name this use case: extracting action items from notes and automatically creating tasks in Linear, Jira, or Todoist. A Zapier integration and an MCP server also let automations and agents act on notes after a meeting. However, the user or a developer must build the pipeline; there is no native tracker integration or webhook trigger, and one community user reports action items slipping through and building their own tool. Missing for 10: native Linear/Jira/Asana integration, documented webhooks or event triggers for new meetings, a published OpenAPI spec (probe 404s), and hands-on corroboration that the tracker flow works.",
+    "rationale": "Granola's own API docs name this exact use case: extracting action items and automatically creating tasks in Linear, Jira or Todoist. Its OpenAPI spec lists webhook-endpoints, and a first-party Zapier integration automates post-meeting steps. However, the tracker-filing logic must be built by the user's agent or integration on top of note access, and the API is gated to Business/Enterprise plans. Missing for 10: a native Linear/Jira/Asana integration that files action items itself, documented details of webhook events firing per meeting, a documented end-to-end tracker workflow or Asana coverage, and independent hands-on corroboration.",
     "evidenceIds": [
       "granola-docs-53",
-      "granola-docs-16",
-      "granola-docs-33",
+      "granola-openapi-spec-20261106",
       "granola-docs-9",
-      "granola-docs-42",
-      "granola-probe-2",
-      "granola-comm-7"
+      "granola-docs-16",
+      "granola-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -4386,16 +4397,12 @@
           "quote": "Extract action items from meeting notes and automatically create tasks in Linear, Jira, Todoist, or your project management tool of choice."
         },
         {
-          "evidenceId": "granola-docs-16",
-          "quote": "The Granola API lets you build custom integrations with programmatic access to meeting notes, transcripts, and AI summaries."
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "/v1 endpoints for notes, transcripts, folders, spaces, audit, webhook-endpoints, and legal holds"
         },
         {
           "evidenceId": "granola-docs-9",
           "quote": "Connect Granola to 8,000+ apps and automate what happens after a meeting"
-        },
-        {
-          "evidenceId": "granola-docs-42",
-          "quote": "Connect Claude, ChatGPT, and other AI tools to your Granola meeting notes via MCP."
         }
       ]
     }
@@ -4406,10 +4413,10 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe confirms Granola publishes an llms.txt at docs.granola.ai that returns HTTP 200 and indexes its docs and help center. The help-center pages are themselves served as markdown (.md) URLs that an agent can fetch directly. missing for 10: independent or hands-on corroboration of agents consuming these docs, evidence of a full-content variant (e.g. llms-full.txt) or other dedicated agent-oriented guidance.",
+    "rationale": "A live probe confirms Granola serves an llms.txt at docs.granola.ai/llms.txt (HTTP 200). It indexes Markdown versions of the help-center pages and advertises a downloadable OpenAPI 3.1 spec, so an agent can be pointed directly at machine-readable docs. Missing for 10: evidence of an llms-full.txt or agent-specific usage guidance, and independent hands-on reports of agents consuming these docs.",
     "evidenceIds": [
       "granola-probe-1",
-      "granola-docs-42"
+      "granola-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4418,11 +4425,11 @@
       "citations": [
         {
           "evidenceId": "granola-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.granola.ai/llms.txt # Granola Docs & Help Center"
+          "quote": "HTTP 200 at https://docs.granola.ai/llms.txt # Granola Docs & Help Center"
         },
         {
-          "evidenceId": "granola-probe-1",
-          "quote": "[Granola Help Center](https://docs.granola.ai/help-center/search.md): Search Granola doc"
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "advertised in the docs llms.txt under \"OpenAPI Specs\""
         }
       ]
     }
@@ -4433,7 +4440,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Granola Chat runs inside the product and lets users ask questions about their meetings and get insights. It works on one meeting, a folder, or all meetings, and can spot patterns across calls. Recipes, pre-meeting briefs and auto-drafted follow-up emails add proactive suggestions. missing for 10: independent hands-on corroboration of Chat's cross-meeting insight quality; one community user also reports AI-extracted action items slipping through.",
+    "rationale": "Granola Chat runs inside the product and lets users ask questions across all meetings, a single meeting, or a folder to get instant insights and spot patterns. Recipes save insight prompts for one-click reuse, and the product proactively offers pre-meeting briefs and auto-drafted follow-up emails. One user independently calls it \"highly capable at summarisation\". Missing for 10: independent or hands-on corroboration of the quality of Chat's cross-meeting insights and suggestions specifically.",
     "evidenceIds": [
       "granola-docs-19",
       "granola-docs-4",
@@ -4441,11 +4448,9 @@
       "granola-docs-6",
       "granola-docs-65",
       "granola-docs-44",
-      "granola-docs-66",
       "granola-docs-45",
       "granola-docs-58",
-      "granola-comm-3",
-      "granola-comm-7"
+      "granola-comm-3"
     ],
     "support": {
       "relation": "direct",
@@ -4469,8 +4474,8 @@
           "quote": "Recipes are reusable prompt templates that help you quickly get insights from your meeting notes without typing the same questions repeatedly."
         },
         {
-          "evidenceId": "granola-docs-66",
-          "quote": "Open your note as you join and you'll see a short brief with open threads, relevant context, and agenda points so you walk in ready."
+          "evidenceId": "granola-docs-44",
+          "quote": "Granola preps you for your meetings overnight. Open your note as you join and you'll see a short brief with open threads, relevant context, and agenda points"
         },
         {
           "evidenceId": "granola-docs-45",
@@ -4485,13 +4490,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Granola documents some background automations that run without the user in the loop. Users can set up HubSpot auto-sync so notes added to folders are saved to CRM records, and an official Zapier integration lets them automate what happens after a meeting. Built-in behaviors also run on their own: overnight pre-meeting briefs, automatic follow-up email drafts and automatic enhanced-note generation. However, there is no general user-defined automation or agent builder: Chat workflows require a review step, and custom agents must be built on the API. Missing for 10: a native configurable automation or trigger builder, user-scheduled recurring agent tasks, and independent hands-on corroboration that the automations run reliably.",
+    "rationale": "Granola documents some user-configurable background automations: an official Zapier integration to \"automate what happens after a meeting\" and HubSpot auto-sync that saves notes added to folders to CRM records. It also runs fixed built-in background jobs such as overnight pre-meeting briefs and automatic follow-up email drafts. However, there is no native automation builder, and Chat workflows require a review step, so they are not autonomous. Missing for 10: a first-party general-purpose automation/trigger builder, documentation of configurable autonomous actions beyond the HubSpot and Zapier integrations, and independent hands-on corroboration.",
     "evidenceIds": [
-      "granola-docs-39",
       "granola-docs-9",
+      "granola-docs-39",
       "granola-docs-44",
       "granola-docs-45",
-      "granola-docs-58"
+      "granola-docs-58",
+      "granola-docs-64"
     ],
     "support": {
       "relation": "direct",
@@ -4499,12 +4505,12 @@
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": [
         {
-          "evidenceId": "granola-docs-39",
-          "quote": "You can set up Granola to automatically save any notes that are added to Granola folders to the relevant contacts, companies, or deals on HubSpot."
-        },
-        {
           "evidenceId": "granola-docs-9",
           "quote": "Connect Granola to 8,000+ apps and automate what happens after a meeting"
+        },
+        {
+          "evidenceId": "granola-docs-39",
+          "quote": "You can set up Granola to automatically save any notes that are added to Granola folders to the relevant contacts, companies, or deals on HubSpot."
         },
         {
           "evidenceId": "granola-docs-44",
@@ -4513,10 +4519,6 @@
         {
           "evidenceId": "granola-docs-45",
           "quote": "After an external meeting, Granola can automatically draft a follow-up email"
-        },
-        {
-          "evidenceId": "granola-docs-58",
-          "quote": "Once Granola has recognised your call has ended, or you stop it manually, it will automatically generate enhanced notes."
         }
       ]
     }
@@ -4525,16 +4527,17 @@
     "productId": "granola",
     "storyId": "agentic-builtin-assistant",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "Granola Chat is a built-in AI assistant. Per its docs, it can complete post-meeting work such as drafting and sending follow-up emails, sending Slack messages, and creating Google Calendar events, with a review step before anything is sent. Users can also save prompts as one-click recipes and query across meetings or folders. Missing for 10: independent or hands-on corroboration that chat delegation works as described, and evidence of delegable actions beyond the few documented email/Slack/calendar workflows.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Granola ships a built-in AI assistant, Granola Chat. It answers questions across meetings, and users can delegate post-meeting tasks to it: drafting and sending follow-up emails and Slack messages, and scheduling Google Calendar events, with a review step before anything is sent. Recipes, automatic follow-up drafts and pre-meeting briefs add more delegated work. Missing for 10: independent or hands-on corroboration of Chat's task delegation (the community evidence covers other features), and breadth of delegable actions beyond email, Slack and calendar.",
     "evidenceIds": [
-      "granola-docs-37",
-      "granola-docs-29",
-      "granola-docs-64",
       "granola-docs-19",
+      "granola-docs-37",
+      "granola-docs-43",
+      "granola-docs-64",
       "granola-docs-63",
-      "granola-docs-65"
+      "granola-docs-65",
+      "granola-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -4546,16 +4549,16 @@
           "quote": "Granola Chat can help you complete the work that comes after a meeting, without switching between your notes and other apps."
         },
         {
-          "evidenceId": "granola-docs-29",
-          "quote": "Ask Chat to: draft and send a follow-up email * draft and send a Slack message * find a time and create a Google Calendar event"
+          "evidenceId": "granola-docs-43",
+          "quote": "Ask Chat to: draft and send a follow-up email, draft and send a Slack message, find a time and create a Google Calendar event"
         },
         {
           "evidenceId": "granola-docs-64",
           "quote": "Use Granola Chat to draft follow-up emails, send Slack messages, and schedule Google Calendar events — with a review step before anything is sent or created."
         },
         {
-          "evidenceId": "granola-docs-65",
-          "quote": "you can save your favorite prompts as recipes and run them with a single click."
+          "evidenceId": "granola-docs-19",
+          "quote": "Granola Chat lets you ask questions about your meetings and get instant insights from your notes or transcripts."
         }
       ]
     }
@@ -4563,16 +4566,35 @@
   {
     "productId": "granola",
     "storyId": "agentic-headless",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows a REST API with non-expiring workspace API keys and an MCP server for reading meeting notes. These are programmatic data-access surfaces, which belong to a separate API/MCP story. Nothing documents running Granola itself headlessly or in a CI pipeline, such as a CLI, headless mode, or server-side capture without the desktop or mobile app. The pack cites no OpenAPI spec (the probe found 404s), and recording and note generation are described only as desktop and mobile app flows.",
-    "evidenceIds": [],
+    "rationale": "Granola ships its own REST API (OpenAPI 3.1, public-api.granola.ai) authenticated by bearer keys, including workspace API keys that don't expire. That supports unattended, scripted access to notes, transcripts and folders from automation. The core product, though, is a desktop or mobile app that captures meeting audio, and nothing shows that capture or note generation can run headlessly. Missing for 10: a headless or CLI mode for the product itself, CI-specific documentation or examples, a sandbox/test environment (the FAQ says 'Not currently'), and independent hands-on corroboration of CI usage.",
+    "evidenceIds": [
+      "granola-docs-28",
+      "granola-docs-33",
+      "granola-openapi-spec-20261106",
+      "granola-playground-20261106",
+      "granola-no-sandbox-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "granola-docs-28",
+          "quote": "Workspace admins on Business and Enterprise plans can also create workspace API keys. These belong to the workspace rather than an individual user, don't expire"
+        },
+        {
+          "evidenceId": "granola-docs-33",
+          "quote": "This RESTful API enables you to integrate Granola with your existing tools"
+        },
+        {
+          "evidenceId": "granola-playground-20261106",
+          "quote": "API keys are rate limited to 25 requests burst capacity with a sustained rate of 5 requests/second."
+        }
+      ]
     }
   },
   {
@@ -4581,7 +4603,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Granola is an AI meeting-notes product with an agentic Chat, so it could plausibly act as an MCP client and the axis applies. The evidence only documents Granola as an MCP server that external AI tools like Claude and ChatGPT connect to, plus built-in Chat actions for Gmail, Slack and Calendar. Neither lets users plug arbitrary MCP servers into Granola, so neither counts toward this client-side story.",
+    "rationale": "Granola has an AI Chat that could plausibly act as an MCP client, so this axis applies. The evidence only documents Granola as an MCP server that external AI tools connect to, which is the opposite role. Chat's built-in email, Slack and Calendar actions are first-party integrations, not user-pluggable MCP servers, so nothing shows users can add MCP servers to Granola.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4596,11 +4618,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Granola documents its own official MCP server, Granola MCP, which lets agents such as Claude and ChatGPT connect to meeting notes to search transcripts, query notes and find past topics. A probe confirms the official MCP documentation page exists. Missing for 10: independent or hands-on corroboration of the MCP connection, and documented setup/auth details and full tool list.",
+    "rationale": "Granola documents a first-party Granola MCP that connects Claude, ChatGPT and other AI tools to your meeting notes, so agents can query notes, search transcripts and find topics from past meetings. The probe also confirms the official MCP server page exists. missing for 10: detailed setup/auth and tool-list documentation in the evidence, independent or hands-on corroboration of agents connecting via the MCP server.",
     "evidenceIds": [
       "granola-docs-42",
       "granola-docs-35",
       "granola-docs-17",
+      "granola-docs-55",
       "granola-probe-3"
     ],
     "support": {
@@ -4627,16 +4650,16 @@
     "productId": "granola",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Granola Chat accepts natural-language requests to query meetings across scopes and to carry out post-meeting actions such as drafting and sending emails or Slack messages and creating calendar events, with a review step before anything is sent. MCP adds natural-language querying from external assistants. The evidence does not show natural language operating the product itself (creating or organizing notes, managing folders, changing settings), so coverage is partial. Missing for 10: natural-language control of core in-app operations (note, folder and settings management), and independent or hands-on corroboration of Chat's command execution.",
+    "rationale": "Granola Chat accepts natural-language requests: users can query all meetings, a single meeting, or a folder, and can ask Chat to draft and send follow-up emails, send Slack messages and create Google Calendar events, with a review step before anything is sent. Recipes save these prompts for reuse. The documented scope is querying notes and post-meeting workflows, not operating the product as a whole, so coverage of 'operate the product' is only partial. Missing for 10: natural-language control of core product functions (organizing folders, sharing, settings, templates, starting or stopping transcription), and independent or hands-on corroboration of Chat's command execution.",
     "evidenceIds": [
       "granola-docs-19",
       "granola-docs-63",
       "granola-docs-64",
-      "granola-docs-43",
+      "granola-docs-29",
       "granola-docs-37",
-      "granola-docs-42"
+      "granola-docs-65"
     ],
     "support": {
       "relation": "direct",
@@ -4656,8 +4679,8 @@
           "quote": "Use Granola Chat to draft follow-up emails, send Slack messages, and schedule Google Calendar events — with a review step before anything is sent or created."
         },
         {
-          "evidenceId": "granola-docs-42",
-          "quote": "Query your notes, search transcripts, and get meeting insights in your favorite AI assistants."
+          "evidenceId": "granola-docs-65",
+          "quote": "you can save your favorite prompts as recipes and run them with a single click."
         }
       ]
     }
@@ -4668,7 +4691,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents an official Granola command-line tool. The pack shows a REST API, an MCP server, Zapier, HubSpot and CSV export, but these are adjacent programmatic-access features or developer building blocks, not a CLI. An official CLI is a fair question for a SaaS note-taking product, so the absence of evidence makes this 'none' rather than 'na'.",
+    "rationale": "An official CLI is a fair question for a SaaS product with a public API and MCP server, so the axis applies. The evidence pack documents a REST API, an OpenAPI spec, an MCP server, and CSV export, but never mentions an official command-line tool. These are adjacent developer building blocks and do not count as a CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4681,16 +4704,18 @@
     "productId": "granola",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Granola documents a public RESTful API that gives programmatic access to meeting notes, transcripts and AI summaries. Access uses user API keys with selectable note-access scopes, plus non-expiring workspace API keys on Business and Enterprise plans. Docs pitch it for building custom AI agents and automations. However, the evidence shows the API mainly reads data rather than controlling the product, and no machine-readable spec was found. Missing for 10: documented write/action endpoints (e.g. creating notes or triggering recordings), a published OpenAPI spec (probes returned 404), endpoint-level reference detail, and independent hands-on corroboration.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Granola documents a public RESTful API with a downloadable OpenAPI 3.1 spec, /v1 endpoints for notes, transcripts, folders, spaces, audit, webhook endpoints and legal holds, a live 'Try it' playground, scoped and workspace API keys, published rate limits and a versioned changelog. The core story is clearly delivered, though access is limited to Business/Enterprise plans and the docs mostly describe reading data rather than controlling every product action. Missing for 10: evidence of write/control endpoints that drive product actions (not just data access), a sandbox or test environment, a published deprecation/back-compat policy, independent hands-on corroboration, and availability beyond Business/Enterprise plans.",
     "evidenceIds": [
       "granola-docs-33",
       "granola-docs-16",
-      "granola-docs-28",
+      "granola-openapi-spec-20261106",
+      "granola-playground-20261106",
       "granola-docs-52",
-      "granola-docs-34",
-      "granola-probe-2"
+      "granola-docs-28",
+      "granola-changelog-20261106",
+      "granola-no-sandbox-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4699,19 +4724,23 @@
       "citations": [
         {
           "evidenceId": "granola-docs-33",
-          "quote": "The Granola API provides programmatic access to your workspace's meeting notes and related data. This RESTful API enables you to integrate Granola with your existing tools"
+          "quote": "This RESTful API enables you to integrate Granola with your existing tools"
         },
         {
-          "evidenceId": "granola-docs-16",
-          "quote": "The Granola API lets you build custom integrations with programmatic access to meeting notes, transcripts, and AI summaries."
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "Granola publishes a downloadable OpenAPI 3.1 document"
+        },
+        {
+          "evidenceId": "granola-playground-20261106",
+          "quote": "API keys are rate limited to 25 requests burst capacity with a sustained rate of 5 requests/second."
         },
         {
           "evidenceId": "granola-docs-52",
           "quote": "When you create an API key, you choose which note access scopes it should include."
         },
         {
-          "evidenceId": "granola-docs-28",
-          "quote": "Workspace admins on Business and Enterprise plans can also create workspace API keys."
+          "evidenceId": "granola-docs-16",
+          "quote": "The Granola API lets you build custom integrations with programmatic access to meeting notes, transcripts, and AI summaries."
         }
       ]
     }
@@ -4719,18 +4748,18 @@
   {
     "productId": "granola",
     "storyId": "agentic-scoped-keys",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola's own API docs say users choose which note-access scopes each API key includes when creating it, which delivers scoped credentials an agent can use. Workspace admins can also create workspace-owned keys. However, the scopes appear limited to note access, and workspace keys are documented as not expiring, which weakens least-privilege hygiene. Missing for 10: detailed scope granularity (e.g., read-only vs. write, per-folder limits), key expiration or rotation controls, and independent or hands-on corroboration.",
+    "rationale": "Granola documents API key creation in which the creator picks which note access scopes the key includes, so scoped credentials for an agent are a first-party feature. Admins can also create workspace keys, but these don't expire, and API keys require a Business or Enterprise plan. Only one line describes the scopes, so how fine-grained least-privilege can be (e.g., read-only vs. write, per-folder) is unproven. Missing for 10: documented scope list and granularity, key expiry/rotation controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "granola-docs-52",
       "granola-docs-28",
-      "granola-docs-34"
+      "granola-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": [
         {
@@ -4739,11 +4768,7 @@
         },
         {
           "evidenceId": "granola-docs-28",
-          "quote": "Workspace admins on Business and Enterprise plans can also create workspace API keys."
-        },
-        {
-          "evidenceId": "granola-docs-34",
-          "quote": "Custom AI agents - Build agents that analyze sentiment across your calls"
+          "quote": "Workspace admins on Business and Enterprise plans can also create workspace API keys. These belong to the workspace rather than an individual user, don't expire"
         }
       ]
     }
@@ -4754,58 +4779,111 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a RESTful Granola API with scoped API keys and an official MCP server, but nothing mentions an official SDK or client library in any language. A raw REST API is a developer building block, not an SDK, and the OpenAPI probe returned 404 on every candidate path, so the docs offer nothing to generate a client from. The axis applies to a SaaS product like this one, so the absence of evidence means none.",
-    "evidenceIds": [],
+    "rationale": "The evidence documents a RESTful API, a downloadable OpenAPI 3.1 spec, and an MCP server, but nowhere mentions an official SDK or client library in any language. A raw REST API and OpenAPI spec are developer building blocks for making your own client, not first-party SDKs, so they earn no credit for this story.",
+    "evidenceIds": [
+      "granola-docs-33",
+      "granola-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can build against official SDKs",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "granola-docs-33",
+          "quote": "This RESTful API enables you to integrate Granola with your existing tools"
+        },
+        {
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "Granola publishes a downloadable OpenAPI 3.1 document"
+        }
+      ]
     }
   },
   {
     "productId": "granola",
     "storyId": "agentic-webhooks",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Granola documents a REST API for pulling notes, an MCP server, and a Zapier integration. None of these is a documented, registrable outbound HTTP webhook that a programmatic consumer can subscribe to for events. Zapier automation is a third-party integration layer, and pull-based API access is a different capability, so neither counts as webhook support.",
-    "evidenceIds": [],
+    "rationale": "Granola's own published OpenAPI 3.1 spec lists a /v1 'webhook-endpoints' resource on its public API, which indicates registrable outbound callbacks. The evidence is only a single listing in the spec summary, and API access is limited to Business and Enterprise plans. Zapier and Slack-style integrations are not counted toward this story. Missing for 10: documented event types and payload schemas, delivery/retry and signature-verification details, a webhook setup guide, and any hands-on or independent confirmation that webhooks fire.",
+    "evidenceIds": [
+      "granola-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "/v1 endpoints for notes, transcripts, folders, spaces, audit, webhook-endpoints, and legal holds"
+        }
+      ]
     }
   },
   {
     "productId": "granola",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Granola documents a RESTful API with API keys and scopes, so an interactive API reference is a fair question for this product. However, nothing in the evidence shows an interactive reference, a try-it console or runnable examples, and the OpenAPI spec probes all returned 404. An API simply existing does not count as an explorable, runnable reference.",
-    "evidenceIds": [],
+    "rationale": "Granola's Mintlify-hosted API reference includes an interactive \"Try it\" playground. It sends live requests to https://public-api.granola.ai and is backed by a downloadable OpenAPI 3.1 spec, so the core story is documented. Running examples requires an API key that only Business or Enterprise members can create, and there is no sandbox, so calls hit real workspace data. missing for 10: runnable access without a paid Business/Enterprise key, a sandbox or test environment for safe experimentation, independent or hands-on corroboration of the playground.",
+    "evidenceIds": [
+      "granola-playground-20261106",
+      "granola-openapi-spec-20261106",
+      "granola-no-sandbox-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "granola-playground-20261106",
+          "quote": "The Mintlify-hosted API reference runs the interactive playground (\"Try it\" button sending live requests to https://public-api.granola.ai with a bearer key)"
+        },
+        {
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "Granola publishes a downloadable OpenAPI 3.1 document"
+        },
+        {
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "Any workspace member on a **Business** or **Enterprise** plan can create API keys."
+        },
+        {
+          "evidenceId": "granola-no-sandbox-20261106",
+          "quote": "Not currently. We recommend testing with a small number of notes in a dedicated test folder."
+        }
+      ]
     }
   },
   {
     "productId": "granola",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Granola documents a RESTful API with scoped API keys, but nothing in the evidence shows a downloadable OpenAPI or equivalent spec. Probes of the common OpenAPI and Swagger paths all returned 404. The llms.txt file is a docs index, not a machine-readable API specification, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Granola's docs publish a downloadable OpenAPI 3.1 document at docs.granola.ai/api-reference/openapi.json. It covers the /v1 endpoints and is listed in llms.txt under \"OpenAPI Specs\". The probe 404s were on different candidate paths, so they do not contradict this, and the spec backs an interactive Mintlify playground. Missing for 10: independent or hands-on confirmation that the spec at the documented path downloads and validates.",
+    "evidenceIds": [
+      "granola-openapi-spec-20261106",
+      "granola-playground-20261106",
+      "granola-probe-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "Granola publishes a downloadable OpenAPI 3.1 document (\"Granola API\", server https://public-api.granola.ai; /v1 endpoints for notes, transcripts, folders, spaces, audit, webhook-endpoints, and legal holds), advertised in the docs llms.txt under \"OpenAPI Specs\"."
+        },
+        {
+          "evidenceId": "granola-playground-20261106",
+          "quote": "This RESTful API enables you to integrate Granola with your existing tools, build custom workflows, and extract insights from your meeting documentation."
+        }
+      ]
     }
   },
   {
@@ -4813,9 +4891,11 @@
     "storyId": "api-sandbox",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Granola offers a REST API, workspace API keys and an MCP server, so a sandbox or test environment is a fair thing to ask for. The evidence never documents a sandbox, test mode or non-production environment. Adjacent features do not count: scoped API keys, separate work and personal workspaces, and Chat's review step before sending are access controls, workspace separation and a pre-send confirmation, not an isolated sandbox.",
-    "evidenceIds": [],
+    "confidence": "high",
+    "rationale": "Granola ships a public REST API, so a sandbox or test environment is a fair question, but its own API FAQ says there is no sandbox (\"Not currently\"). It suggests testing with a dedicated test folder, which is a user-side workaround and earns no credit. The interactive API playground sends live requests to the production endpoint rather than to an isolated environment.",
+    "evidenceIds": [
+      "granola-no-sandbox-20261106"
+    ],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -4826,31 +4906,42 @@
   {
     "productId": "granola",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Granola documents a RESTful API with scoped API keys, but nothing in the evidence pack mentions API versioning, version identifiers, or a deprecation policy. The OpenAPI probe also returned 404 on every candidate path. The axis applies because Granola ships a public API, so this lack of evidence is 'none', not 'na'.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "high",
+    "rationale": "Granola's public REST API is path-versioned at /v1 and ships a dated, semantically versioned changelog (v1.0.0–v1.6.0) that lists endpoint and response changes per release. The docs explicitly publish no deprecation window or backward-compatibility commitment, so only half the story is delivered. Missing for 10: documented deprecation policy or sunset window, backward-compatibility guarantees, independent corroboration of version stability.",
+    "evidenceIds": [
+      "granola-changelog-20261106",
+      "granola-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "granola-changelog-20261106",
+          "quote": "The API is /v1 path-versioned with a dated, semantically versioned API changelog (v1.0.0 through v1.6.0, each entry listing endpoint and response changes"
+        },
+        {
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "/v1 endpoints for notes, transcripts, folders, spaces, audit, webhook-endpoints, and legal holds"
+        }
+      ]
     }
   },
   {
     "productId": "granola",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Granola documents a few product-native actions that span many notes at once: a one-click CSV export of all historical notes, Chat queries run across all meetings or a folder, and a retention policy that auto-deletes transcripts in bulk. There is no documented general bulk-operations capability for selecting many notes and acting on them together. missing for 10: multi-select bulk edit/move/delete/tag of notes, bulk-apply templates or recipes across many notes, API batch endpoints, independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Granola documents some first-party many-item actions. Chat can query all meetings or a whole folder at once, a CSV export covers every note, and notes added to folders sync automatically to HubSpot. There is no evidence of true bulk mutations such as multi-select edit, move, delete or re-templating. The API's list endpoint and workspace keys are only building blocks and are not credited. Missing for 10: bulk edit/move/delete/re-tag of many notes, documented batch API operations, independent or hands-on corroboration of bulk workflows.",
     "evidenceIds": [
-      "granola-docs-30",
-      "granola-docs-48",
       "granola-docs-63",
-      "granola-docs-40",
-      "granola-docs-69"
+      "granola-docs-8",
+      "granola-docs-30",
+      "granola-docs-39"
     ],
     "support": {
       "relation": "direct",
@@ -4858,16 +4949,16 @@
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": [
         {
-          "evidenceId": "granola-docs-30",
-          "quote": "You're able to export historical data from Granola by going to Settings, clicking Profile in the sidebar (under Preferences), and clicking Generate CSV"
-        },
-        {
           "evidenceId": "granola-docs-63",
           "quote": "You can use Chat from your home screen to query all of your meetings, on a single meeting, or in any other set of meetings such as a folder"
         },
         {
-          "evidenceId": "granola-docs-40",
-          "quote": "Granola allows you to automatically delete transcripts after a set period of time."
+          "evidenceId": "granola-docs-8",
+          "quote": "The CSV includes the title, note summary, transcript, and other basic details for each note."
+        },
+        {
+          "evidenceId": "granola-docs-39",
+          "quote": "You can set up Granola to automatically save any notes that are added to Granola folders to the relevant contacts, companies, or deals on HubSpot."
         }
       ]
     }
@@ -4876,15 +4967,15 @@
     "productId": "granola",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Granola documents a few of its own event-driven automations. Notes added to folders can be set to sync automatically to HubSpot records. Follow-up emails are auto-drafted after external meetings. A Zapier integration lets users automate what happens after a meeting. However, there is no native, general-purpose rules engine for defining custom event→action triggers, and arbitrary rule logic would live in Zapier rather than Granola. Missing for 10: a native user-defined rule/trigger builder, documented event types and conditions, webhooks or event subscriptions, and hands-on corroboration.",
+    "rationale": "Granola documents some event-triggered automations of its own: notes added to folders auto-sync to HubSpot records, follow-up emails are drafted automatically after external meetings, and the API exposes webhook-endpoints. Its official Zapier integration lets users automate what happens after a meeting. However, there is no evidence of a native, general-purpose rule builder where users define their own event-to-action rules; most custom logic depends on Zapier or the API. Missing for 10: a native user-defined rules/trigger builder, documentation of the available trigger events and conditions, details on webhook event types, and independent hands-on corroboration.",
     "evidenceIds": [
       "granola-docs-39",
-      "granola-docs-10",
       "granola-docs-9",
       "granola-docs-45",
-      "granola-docs-58"
+      "granola-openapi-spec-20261106",
+      "granola-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -4902,6 +4993,10 @@
         {
           "evidenceId": "granola-docs-45",
           "quote": "After an external meeting, Granola can automatically draft a follow-up email"
+        },
+        {
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "/v1 endpoints for notes, transcripts, folders, spaces, audit, webhook-endpoints, and legal holds"
         }
       ]
     }
@@ -4912,7 +5007,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring workflows is a fair question for an AI meeting-notes product, but the evidence shows no user-configurable recurring job or schedule. Recipes are reusable prompts run on demand with a click. Overnight pre-meeting briefs, post-meeting follow-up drafts, HubSpot folder sync and transcript auto-deletion are fixed built-in or event-triggered behaviors. Zapier automation is a third-party platform, not Granola's own scheduler, so none of these count toward the story.",
+    "rationale": "Scheduling recurring workflows is a fair ask for a meeting-notes product, but the evidence shows no user-configurable schedule for jobs or workflows. Recipes are reusable prompts run on demand with a click. Chat workflows, follow-up email drafts and HubSpot sync are one-off or event-triggered actions, not recurring schedules. Overnight pre-meeting briefs and transcript auto-deletion are fixed built-in behaviors, and Zapier is an external tool; none of these count as user-scheduled jobs.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4927,7 +5022,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Granola documents automation-like features such as recipes, templates, Zapier and HubSpot syncs, and Chat workflows, so versioning and rollback of automations is a fair question for this product. However, nothing in the evidence shows version history, change review, or rollback for those automations. The Chat 'review step before anything is sent' approves a single action rather than reviewing automation changes, and note delete/restore covers notes, not automations; both are adjacent features that earn no credit.",
+    "rationale": "Granola documents automation-like features: recipes, templates, Zapier and HubSpot syncs, and auto-drafted follow-ups. Nothing in the evidence shows these automations can be versioned, have their changes reviewed, or be rolled back to an earlier state. The API changelog versions the vendor's API rather than user automations, the Chat review step approves a single action before it is sent, and note restore applies to deleted notes; all three are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4942,13 +5037,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola documents that it works with Zoom, Google Meet and Teams by capturing computer audio without a bot. Users start transcription from a calendar notification, and it detects call end or can be stopped manually, so capture is user-controlled. Granola transcribes rather than keeps recordings, and the evidence never shows saved audio or video recordings or where they would be stored. missing for 10: evidence of actual audio/video recording retention or storage location, per-platform depth documentation, independent hands-on corroboration of reliable capture across Zoom/Meet/Teams.",
+    "rationale": "Granola's own site says it works with Zoom, Google Meet and Teams by capturing computer audio without a bot. Its docs say it detects when a call ends and starts transcribing from a calendar notification, and it posts a chat message when transcription begins. The 'recording where I want it' part is thin: the evidence only shows transcription and screenshots of shared screens, with no documented audio or video recording or per-meeting recording controls, and nothing independent backs the reliability claim. Missing for 10: audio/video recording retention and control, per-platform capture detail, independent hands-on corroboration of reliable capture across Zoom, Meet and Teams.",
     "evidenceIds": [
       "granola-docs-24",
       "granola-docs-31",
       "granola-docs-68",
       "granola-docs-58",
-      "granola-docs-25"
+      "granola-docs-25",
+      "granola-docs-62"
     ],
     "support": {
       "relation": "direct",
@@ -4980,7 +5076,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola's own docs state it uses your computer audio and so doesn't invite a bot, and that it works across Zoom, Meet, Teams and other apps, which covers the core no-bot capture. However, its transparency docs say Granola posts a message in the meeting chat when it starts transcribing, which conflicts with 'external participants see nothing extra', and the evidence doesn't say whether that message can be turned off. Missing for 10: documentation that the in-meeting chat notice is optional or can be disabled, and independent hands-on confirmation that participants see nothing.",
+    "rationale": "Granola's own docs say it captures your computer's audio rather than inviting a bot, and that it works across Zoom, Meet, Teams and other meeting apps, so the core no-bot, device-side capture is delivered. However, its transparency feature posts a message in the meeting chat when transcription starts, so external participants can see something, and the evidence doesn't say whether this can be turned off. Missing for 10: confirmation that the in-meeting chat notice is optional or off by default, and independent hands-on corroboration that capture is invisible to other participants.",
     "evidenceIds": [
       "granola-docs-31",
       "granola-docs-24",
@@ -5003,6 +5099,10 @@
         {
           "evidenceId": "granola-docs-57",
           "quote": "any audio playing off your computer like a podcast or YouTube video"
+        },
+        {
+          "evidenceId": "granola-docs-25",
+          "quote": "Granola posts a message in your meeting chat when it starts transcribing to let everyone know."
         }
       ]
     }
@@ -5010,33 +5110,16 @@
   {
     "productId": "granola",
     "storyId": "calendar-autojoin-rules",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Granola documents connecting Google Calendar or Outlook to pull meeting events. Its capture flow is notification-driven: clicking the notification opens the note and starts transcribing. There is no evidence of per-meeting-type rules that decide which meetings are captured automatically. Per-call-type templates only shape summaries, not capture, so they earn no credit. missing for 10: per-meeting-type auto-capture rules, any automatic capture without a user click, independent corroboration of the calendar workflow",
-    "evidenceIds": [
-      "granola-docs-56",
-      "granola-docs-49",
-      "granola-docs-68"
-    ],
+    "rationale": "Granola documents a one-time Google Calendar or Outlook connection that shows upcoming meetings. Recording, however, starts when the user clicks a meeting notification, not automatically. Nothing in the evidence shows rules that decide which meeting types get captured; per-call-type templates control note formatting, which is an adjacent feature and not a capture rule.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a product manager, I connect Google or Outlook calendar once and control per-meeting-type rules for which meetings get captured automatically",
-      "citations": [
-        {
-          "evidenceId": "granola-docs-56",
-          "quote": "Connect Google Calendar or Outlook to Granola. See upcoming meetings, create notes from events, and get meeting context."
-        },
-        {
-          "evidenceId": "granola-docs-49",
-          "quote": "Granola offers three ways to sign in, each designed to connect seamlessly with your calendar so we can pull your meeting events."
-        },
-        {
-          "evidenceId": "granola-docs-68",
-          "quote": "Clicking the notification will: Open the URL for the video call from the calendar event; Open your Granola note for that meeting, and start transcribing"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5045,7 +5128,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola's docs show that Granola Chat answers natural-language questions about your meetings, and that it can query all of your meetings from the home screen, a single meeting, or a folder. That covers the cross-history Q&A core. The docs never say Chat answers cite their source meetings or transcript passages. The magnifying-glass source trace belongs to AI-enhanced notes, a separate feature, so it doesn't count here. Missing for 10: documented source citations in Chat answers, independent or hands-on corroboration of cross-history answer quality.",
+    "rationale": "Granola Chat is documented as answering natural-language questions about your meetings, and it can run across all of your meetings from the home screen. That covers the cross-history Q&A core. The docs never say that Chat answers cite their source meetings or transcript passages. The magnifying-glass source tracing is documented only for individual AI-enhanced notes, not for Chat answers. missing for 10: documented source citations in Chat answers, independent or hands-on corroboration of cross-history answer quality.",
     "evidenceIds": [
       "granola-docs-19",
       "granola-docs-63",
@@ -5066,7 +5149,7 @@
         },
         {
           "evidenceId": "granola-docs-4",
-          "quote": "Chat with your meeting notes to recall meeting details, spot patterns across customer calls"
+          "quote": "Chat with your meeting notes to recall meeting details, spot patterns across customer calls, and generate follow-up outputs."
         }
       ]
     }
@@ -5077,7 +5160,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cutting and sharing highlight clips is a fair question for a meeting-recording and notetaker product, so the axis applies. However, the evidence only documents sharing whole notes via a link, CSV exports of transcripts, and screen screenshots attached to notes. Nothing shows the product cutting an audio or video soundbite or sharing a single moment of a call.",
+    "rationale": "Clipping a highlight or soundbite from a call is a fair question for a meeting-recording and notetaker product, so the axis applies. However, the evidence only documents sharing whole notes via link or team folders, CSV export of transcripts, and a magnifying glass that traces a note back to its transcript source. None of this is a clip or soundbite feature, and nothing shows the ability to cut and share a specific moment.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5090,9 +5173,9 @@
     "productId": "granola",
     "storyId": "consent-notification-features",
     "verdict": "full",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola's own transparency docs say it automatically posts a message in the meeting chat when transcription starts, notifying all participants. That is a real in-meeting disclosure mechanism, one of the options the story lists, not just a policy document. The evidence is a single short doc line, so its depth and reach are unproven. missing for 10: admin-enforced or workspace-mandated disclosure settings, detail on which meeting platforms receive the chat notice, independent or hands-on corroboration.",
+    "rationale": "Granola documents a built-in in-meeting disclosure: it posts a message in the meeting chat when transcription starts so all participants know. This sits within a dedicated 'transparency solutions' section of its consent/privacy docs, which is a real product feature rather than a policy document. The evidence is a single short mention. missing for 10: evidence of admin-enforced or workspace-mandated transparency settings, detail on which meeting platforms and modes (e.g., in-person/mobile) get the disclosure, and independent or hands-on corroboration.",
     "evidenceIds": [
       "granola-docs-25"
     ],
@@ -5114,7 +5197,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Granola documents a native HubSpot integration that automatically saves notes added to Granola folders onto the relevant HubSpot contacts, companies, or deals. That covers the core of the story for one CRM, but routing depends on folder setup rather than automatic record matching. Nothing in the evidence shows native Salesforce or Attio sync; the generic Zapier and API options are building blocks, not this capability. Missing for 10: native Salesforce sync, native Attio sync, automatic contact/deal matching without folder setup, independent hands-on corroboration of HubSpot sync.",
+    "rationale": "Granola ships a first-party HubSpot integration that automatically saves notes added to Granola folders onto the relevant HubSpot contacts, companies or deals, which delivers the core of the story for one CRM. Nothing in the evidence shows native Salesforce or Attio sync; Zapier is only a generic automation workaround and earns no credit. Missing for 10: native Salesforce and Attio sync, documentation of how notes are matched to the right contact/deal records, hands-on corroboration of the HubSpot sync, and sync that happens without manually filing notes into folders.",
     "evidenceIds": [
       "granola-docs-39",
       "granola-docs-10",
@@ -5140,11 +5223,12 @@
     "productId": "granola",
     "storyId": "custom-templates-prompts",
     "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Granola's docs describe choosing a built-in template, or creating your own, for specific call types such as 1:1s, interviews or sales pitches. A template is selected during the call via the `/` menu. Recipes also let users save favourite prompts as reusable templates and run them with one click. missing for 10: independent or hands-on corroboration of the templates feature.",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Granola's first-party docs describe choosing or creating custom templates for specific call types such as 1:1s, interviews and sales pitches, applied via the `/` menu during a call. Recipes separately let users save favorite prompts as reusable templates. Missing for 10: no independent or hands-on corroboration; no evidence of automatically applying a template per meeting type, or of a template specific to discovery calls or standups.",
     "evidenceIds": [
       "granola-docs-36",
+      "granola-docs-7",
       "granola-docs-61",
       "granola-docs-6",
       "granola-docs-65"
@@ -5165,10 +5249,6 @@
         {
           "evidenceId": "granola-docs-65",
           "quote": "you can save your favorite prompts as recipes and run them with a single click."
-        },
-        {
-          "evidenceId": "granola-docs-6",
-          "quote": "Recipes are reusable prompt templates that help you quickly get insights from your meeting notes without typing the same questions repeatedly."
         }
       ]
     }
@@ -5179,13 +5259,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Granola's docs describe a dedicated feature that automatically drafts a follow-up email after an external meeting, using the transcript, calendar and past Gmail threads, \"so you can send it in a couple of clicks.\" Granola Chat can also draft and send follow-up emails, with a review step before anything is sent. Missing for 10: independent or hands-on corroboration of draft quality, and documentation of email-client support beyond Gmail.",
+    "rationale": "Granola documents a dedicated follow-up email feature. After an external meeting it automatically drafts a follow-up using context from the transcript, calendar and past Gmail threads, \"so you can send it in a couple of clicks.\" Granola Chat can also draft and send follow-up emails, with a review step before anything is sent. missing for 10: independent or hands-on community corroboration that the drafted emails work well in practice.",
     "evidenceIds": [
       "granola-docs-45",
       "granola-docs-67",
       "granola-docs-64",
       "granola-docs-29",
-      "granola-docs-37"
+      "granola-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -5213,9 +5293,10 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Granola documents an official MCP server that connects Claude, ChatGPT and other AI tools to meeting notes, with search across notes and transcripts, so the core of the story is first-party. The MCP docs in the evidence do not mention OAuth authentication or action-item retrieval; action items appear only in the separate REST API docs, so story coverage is incomplete. Missing for 10: documented OAuth auth flow for the MCP connection, action-item querying via MCP, a list of the MCP tools exposed, independent or hands-on corroboration.",
+    "rationale": "Granola documents an official MCP server that connects Claude, ChatGPT and other AI tools to meeting notes, with search across notes and transcripts. The docs say nothing about the authentication method, and action-item retrieval is only described for the REST API, not for MCP. There is also no hands-on or community confirmation that the MCP connection works. Missing for 10: documented OAuth authentication for the MCP server, explicit action-item querying via MCP, independent or hands-on corroboration.",
     "evidenceIds": [
       "granola-docs-42",
+      "granola-docs-55",
       "granola-docs-35",
       "granola-docs-17",
       "granola-probe-3"
@@ -5244,15 +5325,15 @@
     "productId": "granola",
     "storyId": "mobile-in-person-capture",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola's own mobile app is documented for AI-enhanced notes during in-person meetings, and transcription on mobile is supported in 17 languages. Separately, Chat can query across all meetings, and community users report the mobile and Apple Watch capture works. However, no evidence explicitly states that mobile-captured notes sync into the same workspace where search and Chat operate, so the 'same searchable workspace' half is only implied. missing for 10: explicit documentation that mobile recordings sync into the shared desktop/team workspace and are searchable there, independent hands-on corroboration of in-person mobile transcription quality.",
+    "rationale": "Granola's own iOS and Android apps support AI-enhanced notes for in-person meetings, with transcription in 17 mobile languages, and a beta tester's Apple Watch report corroborates mobile capture. Chat can then query across all meetings. However, no evidence explicitly says mobile-captured notes sync into the same workspace as desktop notes or are searchable there; that is only implied. Missing for 10: explicit documentation that mobile notes land in the shared/desktop workspace, explicit in-workspace search of mobile notes, and independent hands-on corroboration of mobile in-person transcription.",
     "evidenceIds": [
       "granola-docs-15",
       "granola-docs-46",
       "granola-docs-57",
       "granola-docs-63",
-      "granola-docs-35",
+      "granola-docs-47",
       "granola-comm-2"
     ],
     "support": {
@@ -5273,8 +5354,8 @@
           "quote": "You can use Chat from your home screen to query all of your meetings, on a single meeting, or in any other set of meetings such as a folder"
         },
         {
-          "evidenceId": "granola-docs-35",
-          "quote": "search through your meeting notes, find specific topics discussed in past meetings"
+          "evidenceId": "granola-comm-2",
+          "quote": "works like a charm."
         }
       ]
     }
@@ -5285,7 +5366,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola's own docs say it supports multiple languages for both transcription and generated summaries: 31 languages on desktop and 17 on mobile. Nothing in the pack shows it handling language switching within a meeting, so only the many-languages part of the story is evidenced. missing for 10: documented handling of mid-meeting language switching/code-switching, independent or hands-on corroboration of non-English transcription and summary quality.",
+    "rationale": "Granola's own docs say transcription and generated summaries support multiple languages: 31 on desktop and 17 on mobile. That covers the 'many languages' core of the story. Nothing in the pack shows how it handles switching languages mid-meeting, and there is no independent or hands-on check of non-English accuracy. Missing for 10: documented handling of language switching within a meeting, the language list and accuracy details, independent or hands-on corroboration of non-English transcription and summary quality.",
     "evidenceIds": [
       "granola-docs-11",
       "granola-docs-46"
@@ -5312,7 +5393,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Granola has a dedicated model-training doc stating users can opt out of model training in Settings at any time, and documents HIPAA compliance for Enterprise customers. The evidence shows only a Settings-level opt-out with no admin-enforced, org-wide control, and says nothing about SOC 2. missing for 10: org-level enforceable training opt-out (admin policy), explicit statement of what data trains models and the default, SOC 2 attestation, independent corroboration.",
+    "rationale": "Granola has a dedicated model-training doc saying users can opt out of model training in Settings at any time, and it documents HIPAA compliance for Enterprise customers. However, the opt-out is described only as a Settings toggle, with no evidence that admins can enforce it org-wide, and SOC 2 posture is not evidenced. Missing for 10: an admin-enforceable workspace-wide training opt-out, SOC 2 attestation documentation, explicit default training-data policy detail, and independent corroboration.",
     "evidenceIds": [
       "granola-docs-26",
       "granola-docs-70",
@@ -5342,16 +5423,15 @@
     "productId": "granola",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Granola has its own REST API with scoped and workspace API keys, plus an official MCP server, but the documented access covers reading meeting notes, transcripts, and AI summaries. Nothing shows UI actions such as templates, recipes, Chat workflows, folder management, sharing, deletion, or retention settings are exposed programmatically, and no OpenAPI spec was found. missing for 10: evidence of write/mutation endpoints, API coverage of templates/recipes/chat/folders/sharing/settings, a published API reference or OpenAPI spec, independent corroboration of UI parity.",
+    "rationale": "Granola ships a documented REST API with a published OpenAPI 3.1 spec. It covers notes, transcripts, folders, spaces, audit, webhook endpoints and legal holds, and access is scoped by note-access key scopes. However, nothing shows UI parity: Chat, recipes, templates, recording/transcription, follow-up email drafting, sharing and deletion are documented only as UI features. API keys are also limited to Business/Enterprise plans. Missing for 10: evidence that UI actions (chat, recipes, templates, note creation/recording, sharing, deletion, settings) are exposed via the API, an explicit parity commitment, and independent hands-on corroboration.",
     "evidenceIds": [
+      "granola-openapi-spec-20261106",
       "granola-docs-16",
       "granola-docs-33",
-      "granola-docs-28",
       "granola-docs-52",
-      "granola-docs-42",
-      "granola-probe-2"
+      "granola-playground-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5359,20 +5439,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "/v1 endpoints for notes, transcripts, folders, spaces, audit, webhook-endpoints, and legal holds"
+        },
+        {
           "evidenceId": "granola-docs-16",
           "quote": "The Granola API lets you build custom integrations with programmatic access to meeting notes, transcripts, and AI summaries."
         },
         {
-          "evidenceId": "granola-docs-33",
-          "quote": "This RESTful API enables you to integrate Granola with your existing tools"
-        },
-        {
           "evidenceId": "granola-docs-52",
           "quote": "When you create an API key, you choose which note access scopes it should include."
-        },
-        {
-          "evidenceId": "granola-docs-42",
-          "quote": "Query your notes, search transcripts, and get meeting insights in your favorite AI assistants."
         }
       ]
     }
@@ -5383,13 +5459,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola documents a first-party CSV export, an open format, that covers note titles, summaries, transcripts and \"other basic details,\" and explicitly frames it for backups, migration and GDPR data portability. A REST API also gives programmatic access to notes, transcripts and AI summaries. However, the export is described as covering only basic details, so whether it includes *all* data is unproven. Missing for 10: evidence that the export covers screenshots, raw notes, folders, templates and recipes; richer open formats such as Markdown or JSON; and independent or hands-on confirmation of a complete migration.",
+    "rationale": "Granola documents a built-in CSV export, an open format, from Settings. It covers note titles, summaries, transcripts and basic details, and is explicitly positioned for backups, migration and GDPR data portability. A REST API also exposes notes, transcripts and folders, but only on Business/Enterprise plans. Missing for 10: evidence that the export covers ALL data (e.g. captured screen snapshots, folders/spaces structure, templates, recipes, chat history), richer open formats such as Markdown or JSON bulk export on all plans, documented account deletion to complete 'leaving', and independent hands-on corroboration of a full migration.",
     "evidenceIds": [
       "granola-docs-48",
       "granola-docs-8",
       "granola-docs-30",
       "granola-docs-38",
-      "granola-docs-16"
+      "granola-docs-16",
+      "granola-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5420,8 +5497,8 @@
     "storyId": "openness-open-license",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Whether a product's source is available under an open license is a fair question for any software product, including a meeting-notes app like Granola, so the axis applies. Nothing in the evidence pack mentions a public repository, published source code, or an open-source license. The API, MCP server, and CSV export cover data access and integration, not source openness, so they earn no credit here.",
+    "confidence": "medium",
+    "rationale": "Whether a product's source is published under an open license is a fair question for a meeting-notes app, so the axis applies. Nothing in the evidence shows Granola publishing its source code or using an open license. The public API, OpenAPI spec and MCP server are programmatic access to user data, not source availability, and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5436,7 +5513,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a SaaS meeting-notes product, but the evidence shows only cloud services: an API, an MCP server, integrations and CSV export. None of these let a user run the core product on their own infrastructure. One community user explicitly wishes for a self-hosted or local-processing alternative, and another points to separate local tools instead, which suggests Granola offers no such option.",
+    "rationale": "Self-hosting is a fair question for a meeting-notes SaaS, so the axis applies. Nothing in the pack documents a self-hosted or on-prem deployment of Granola; the API, MCP, CSV export and HIPAA material all describe access to Granola's own cloud service. Community posts only express a wish for self-hosted processing or point to other local tools, which earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5451,12 +5528,12 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Granola documents pre-meeting briefs, prepared overnight, that show open threads, relevant context and agenda points when you open the note as you join. Calendar sync supplies the upcoming meetings. The evidence never says the brief surfaces past meetings with the same attendees; 'relevant context' only implies it. missing for 10: explicit documentation that past meetings with the same participants are surfaced before the call, detail on how brief content is sourced, independent or hands-on corroboration of brief quality.",
+    "rationale": "Granola documents pre-meeting briefs, prepared overnight, that show open threads, relevant context and agenda points when you open the note as you join. This directly covers the 'brief of open threads before the call' half of the story. The docs never say the brief surfaces or links past meetings with the same attendees; 'relevant context' and calendar 'meeting context' only imply it. Missing for 10: explicit documentation that prior meetings with the same participants are surfaced before the call, independent or hands-on corroboration of brief quality.",
     "evidenceIds": [
       "granola-docs-44",
       "granola-docs-66",
-      "granola-docs-32",
-      "granola-docs-56"
+      "granola-docs-56",
+      "granola-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -5484,7 +5561,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a cloud meeting-notes SaaS, but the evidence pack never documents choosing a storage region or residency location. The nearby privacy controls (transcript auto-deletion, model-training opt-out, HIPAA for Enterprise) are adjacent features and do not deliver region choice.",
+    "rationale": "Data residency is a fair question for a cloud meeting-notes service, so the axis applies. However, nothing in the evidence pack documents choosing a storage region or data residency. Related privacy controls (transcript auto-deletion, model-training opt-out, HIPAA for Enterprise) are adjacent features and do not deliver region selection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5499,7 +5576,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Granola's own model-training doc says users can opt out of model training in Settings, at any time, which directly lets a user keep their data out of training. The evidence is only two short first-party statements. missing for 10: detail on what the opt-out covers (e.g. third-party model providers, transcripts vs notes), whether it is opt-in or opt-out by default, admin/workspace-wide enforcement, and independent or hands-on corroboration.",
+    "rationale": "Granola's dedicated model-training privacy page says users can opt out of model training in Settings, at any time. That directly delivers the ability to keep their data out of AI training. missing for 10: details on what data the opt-out covers and the default setting, any admin or workspace-level enforcement, and independent or hands-on corroboration that the opt-out works.",
     "evidenceIds": [
       "granola-docs-26",
       "granola-docs-70"
@@ -5523,19 +5600,20 @@
   {
     "productId": "granola",
     "storyId": "privacy-retention-controls",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola documents user-controlled transcript auto-deletion with selectable retention periods (1 day to 1 year), plus permanent deletion and restore of meeting notes, so users control both retention and deletion. Auto-deletion covers transcripts only; notes are explicitly unaffected. Missing for 10: automatic retention policies for notes and summaries, documented account-level or programmatic (API) deletion, independent or hands-on corroboration.",
+    "rationale": "Granola documents its own retention control: transcripts are auto-deleted after a chosen period from 1 day to 1 year. Notes can be permanently deleted or restored. However, auto-deletion explicitly applies only to transcripts, so notes stay unless removed manually. Missing for 10: configurable retention for notes and summaries, documented details of how deletion and legal holds work, independent or hands-on corroboration.",
     "evidenceIds": [
       "granola-docs-12",
       "granola-docs-40",
       "granola-docs-69",
-      "granola-docs-73"
+      "granola-docs-73",
+      "granola-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can control data retention and deletion",
       "citations": [
         {
@@ -5547,12 +5625,12 @@
           "quote": "Choose a retention period from the dropdown: 1 day, 1 week, 1 month, 3 months, 6 months, or 1 year"
         },
         {
-          "evidenceId": "granola-docs-73",
-          "quote": "Delete or restore Granola meeting notes. Permanently remove notes or recover accidentally deleted ones."
-        },
-        {
           "evidenceId": "granola-docs-40",
           "quote": "This applies only to transcripts — your notes are not affected and will remain available."
+        },
+        {
+          "evidenceId": "granola-docs-73",
+          "quote": "Permanently remove notes or recover accidentally deleted ones."
         }
       ]
     }
@@ -5563,20 +5641,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only an opt-out of model training. That is an adjacent privacy control, not an opt-out of telemetry or usage tracking. Nothing in the pack describes disabling analytics, telemetry, or usage tracking, so this applicable axis gets no credit.",
-    "evidenceIds": [
-      "granola-docs-70"
-    ],
+    "rationale": "Telemetry opt-out is a fair question for a desktop and mobile meeting-notes app, so the axis applies. The pack only documents an opt-out of model training (granola-docs-26, granola-docs-70). That is a related but different control: it covers whether your data trains models, not telemetry or usage tracking. The pack has no evidence of a telemetry, analytics or usage-tracking opt-out.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
-      "citations": [
-        {
-          "evidenceId": "granola-docs-70",
-          "quote": "You can opt out of model training at any time."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5585,7 +5656,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola documents scheduled transcript auto-deletion with retention periods from 1 day to 1 year, and documents permanently deleting notes on demand. However, auto-deletion covers transcripts only (notes remain), and nothing shows it is an admin-enforced, workspace-wide policy rather than a per-user setting. missing for 10: evidence of admin-level, workspace-wide enforcement of retention; coverage of recordings and notes in scheduled deletion; detail on how complete permanent erasure is; independent corroboration.",
+    "rationale": "Granola documents scheduled transcript auto-deletion with selectable retention periods from 1 day to 1 year. It also lets users permanently remove notes on demand, which covers the core retention and erasure mechanics. However, the retention setting applies only to transcripts, and nothing shows it as an admin-enforced, workspace-wide policy. Missing for 10: evidence that IT admins can set retention centrally for the whole workspace, retention coverage for notes and recordings/audio (transcripts only), documented guarantees of permanent erasure at the workspace or bulk level, and independent corroboration.",
     "evidenceIds": [
       "granola-docs-12",
       "granola-docs-40",
@@ -5607,7 +5678,7 @@
         },
         {
           "evidenceId": "granola-docs-73",
-          "quote": "Delete or restore Granola meeting notes. Permanently remove notes or recover accidentally deleted ones."
+          "quote": "Permanently remove notes or recover accidentally deleted ones."
         }
       ]
     }
@@ -5618,13 +5689,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Granola Chat can query across all meetings using notes or transcripts, and the official MCP server lets connected AI tools search transcripts. The magnifying glass traces an AI-enhanced note back to its spot in the transcript or raw notes, which is a partial form of jumping to a moment. That trace starts from a generated note, though, not from a search result, and nothing shows timestamped playback. Missing for 10: a documented first-party keyword/full-text search UI across transcripts, summaries and notes; jumping from a search hit to the exact timestamped moment or audio; independent hands-on corroboration.",
+    "rationale": "Granola's own Chat can query all meetings at once, drawing on notes or transcripts, and its MCP lets connected AI tools search notes and transcripts. Separately, the magnifying glass beside each AI note shows where in the transcript or raw notes that point came from. Nothing documents a dedicated cross-meeting search that jumps from a result to the exact timestamped moment. Missing for 10: a documented search interface across transcripts, summaries and notes; jump-to-timestamp or playback from search results; independent or hands-on corroboration.",
     "evidenceIds": [
       "granola-docs-63",
       "granola-docs-19",
+      "granola-docs-27",
       "granola-docs-42",
-      "granola-docs-35",
-      "granola-docs-27"
+      "granola-docs-35"
     ],
     "support": {
       "relation": "direct",
@@ -5640,12 +5711,12 @@
           "quote": "Granola Chat lets you ask questions about your meetings and get instant insights from your notes or transcripts."
         },
         {
-          "evidenceId": "granola-docs-42",
-          "quote": "Query your notes, search transcripts, and get meeting insights in your favorite AI assistants."
-        },
-        {
           "evidenceId": "granola-docs-27",
           "quote": "Use the magnifying glass beside each note to see where in the transcript or raw notes the note came from"
+        },
+        {
+          "evidenceId": "granola-docs-42",
+          "quote": "Query your notes, search transcripts, and get meeting insights in your favorite AI assistants."
         }
       ]
     }
@@ -5654,14 +5725,15 @@
     "productId": "granola",
     "storyId": "sharing-permissions-controls",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Granola documents private-by-default notes: they are never shared unless you share the link or add the note to a team-space folder. It also documents a split between a private 'My notes' space and a workspace team space, plus copy-link sharing. However, team-space folders are simply visible to everyone in the workspace, and nothing shows granular per-link or per-folder permission levels or admin oversight of shared content. Missing for 10: granular link/folder/workspace permission controls (e.g. access levels, restricting link audiences), admin visibility or audit of what's shared, and independent corroboration.",
+    "rationale": "Granola documents private-by-default notes: they are never shared unless you share the link or add them to a team-space folder. It also separates a private 'My notes' space from a workspace-visible team space. However, granular permission levels for links, folders or the workspace are not documented, and admin visibility into what's shared is only hinted at by audit endpoints in the API spec. Missing for 10: granular link/folder permission levels (view/edit, restricted links), an admin console or report showing shared notes, independent corroboration.",
     "evidenceIds": [
       "granola-docs-13",
-      "granola-docs-23",
       "granola-docs-47",
-      "granola-docs-71"
+      "granola-docs-71",
+      "granola-docs-23",
+      "granola-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5673,16 +5745,16 @@
           "quote": "Your notes are never shared with any participants unless you share the link, or add the note to a folder in your team space."
         },
         {
-          "evidenceId": "granola-docs-23",
-          "quote": "Copy link will copy a unique URL link to the meeting notes, which you can send to others."
-        },
-        {
           "evidenceId": "granola-docs-47",
-          "quote": "The Granola sidebar is organized into two spaces: My notes — Your private space... [Your workspace name] — Your team space."
+          "quote": "My notes — Your private space... [Your workspace name] — Your team space."
         },
         {
           "evidenceId": "granola-docs-71",
           "quote": "Folders here are visible to everyone in your workspace."
+        },
+        {
+          "evidenceId": "granola-docs-23",
+          "quote": "Copy link will copy a unique URL link to the meeting notes, which you can send to others."
         }
       ]
     }
@@ -5691,9 +5763,9 @@
     "productId": "granola",
     "storyId": "slack-notion-zapier-push",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Granola documents a first-party Zapier integration connecting notes to 8,000+ apps, and Granola Chat can draft and send Slack messages with a review step. Notion only appears as a use case for building on the Granola API, which is a developer building block rather than a native integration. missing for 10: native Notion page sync, automatic posting of notes to Slack channels (beyond chat-drafted messages with review), independent or hands-on corroboration of the Zapier and Slack flows.",
+    "rationale": "Granola documents a first-party Zapier integration reaching 8,000+ apps. It can also send Slack messages through Granola Chat, with a review step before anything is sent. Notion is mentioned only as a use case to build on the Granola API, which is a developer building block rather than a native Notion integration, and the Slack path is a chat-driven message rather than automatic posting of notes to channels. Missing for 10: native Notion page sync, automatic Slack channel delivery of notes, independent or hands-on corroboration of the Zapier and Slack flows.",
     "evidenceIds": [
       "granola-docs-9",
       "granola-docs-29",
@@ -5712,10 +5784,6 @@
         {
           "evidenceId": "granola-docs-64",
           "quote": "Use Granola Chat to draft follow-up emails, send Slack messages, and schedule Google Calendar events — with a review step before anything is sent or created."
-        },
-        {
-          "evidenceId": "granola-docs-29",
-          "quote": "draft and send a Slack message"
         }
       ]
     }
@@ -5724,9 +5792,9 @@
     "productId": "granola",
     "storyId": "speaker-identification",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola documents its own speaker-tag feature that shows each participant's name above their part of the conversation, going beyond the default 'Me' and 'Them' labels. That directly addresses named attribution, but it is one thin doc mention, and the default labeling is still only Me/Them. Missing for 10: how names are matched to voices (calendar invitees or enrollment), whether it is on by default and which platforms or plans have it, accuracy with many speakers or in-person meetings, and independent or hands-on corroboration that attribution is correct.",
+    "rationale": "Granola's own docs describe speaker tags that show each participant's name above their parts of the conversation. That goes beyond the default 'Me and Them' labels and covers the core of named-speaker attribution. The evidence is a single doc line. It does not explain how names are matched, how accurate diarization is, or whether tags are on by default or work in every context. Missing for 10: documented name-matching mechanism (e.g. calendar attendees), diarization accuracy, availability across desktop/mobile/in-person, independent or hands-on corroboration.",
     "evidenceIds": [
       "granola-docs-14"
     ],
@@ -5748,13 +5816,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Granola automatically generates AI-enhanced notes once a call ends. Its default summarisation adapts to the meeting's format, with templates for call types, a copy-link share option, and source tracing back to the transcript. However, the evidence never explicitly documents decisions or next-steps sections, and a PM hands-on report says action items tended to slip through, which undercuts 'share without editing'. missing for 10: documented key-points/decisions/next-steps structure, evidence that summaries are share-ready without editing, independent corroboration of action-item reliability",
+    "rationale": "Granola's docs say it automatically generates AI-enhanced notes once a call ends, with templates that shape the summary format, source tracing back to the transcript, and a shareable link, which covers the core of a post-meeting summary you can share. The docs never say these notes are organised into key points, decisions and next steps, and nothing shows they are good enough to share without editing; one PM said Granola action items 'tended to slip through', though it is unclear whether that means poor extraction or poor follow-up. missing for 10: documented key-points/decisions/next-steps structure, evidence that summaries are share-ready without editing, independent hands-on corroboration of action-item quality",
     "evidenceIds": [
       "granola-docs-58",
       "granola-docs-36",
       "granola-docs-61",
-      "granola-docs-23",
       "granola-docs-27",
+      "granola-docs-23",
+      "granola-comm-3",
       "granola-comm-7"
     ],
     "support": {
@@ -5784,16 +5853,34 @@
   {
     "productId": "granola",
     "storyId": "transcription-quality-claims",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence pack never names a transcription model or engine, makes no accuracy claims, and documents no known limits such as accents, crosstalk or noise. The nearest material is language coverage (31 desktop and 17 mobile languages), speaker-tag labelling and capture via computer audio. Those describe feature scope rather than how transcription works or how good it is, so they earn no credit for this story.",
-    "evidenceIds": [],
+    "rationale": "Granola's docs give some first-party detail on how transcription works. They state that it captures computer audio rather than sending a bot, that it supports 31 transcription languages on desktop and 17 on mobile, and that it labels speakers as Me/Them by default with optional speaker tags. The docs never name the transcription models and make no accuracy or quality claims. missing for 10: named transcription models/providers, accuracy or WER claims, documented known limits (accents, noise, crosstalk, per-language quality), independent accuracy corroboration.",
+    "evidenceIds": [
+      "granola-docs-31",
+      "granola-docs-46",
+      "granola-docs-11",
+      "granola-docs-14"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a product manager, the vendor documents how transcription actually works and its quality (models, accuracy claims, known limits) rather than just saying \"AI-powered\"",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "granola-docs-31",
+          "quote": "Uses your computer audio, so doesn't invite a bot"
+        },
+        {
+          "evidenceId": "granola-docs-46",
+          "quote": "Granola supports 31 languages on desktop (macOS and Windows) and 17 languages on mobile (iOS and Android)."
+        },
+        {
+          "evidenceId": "granola-docs-14",
+          "quote": "Speaker tags show each participant's name above their parts of the conversation, giving you more detailed attribution than the default Me and Them labels."
+        }
+      ]
     }
   },
   {
@@ -5801,15 +5888,16 @@
     "storyId": "transcripts-via-api",
     "verdict": "partial",
     "quality": 7,
-    "confidence": "medium",
-    "rationale": "Granola documents a RESTful API that gives programmatic access to meeting notes, transcripts and AI summaries. Users create their own API keys and choose note-access scopes, and workspace admins can create non-expiring workspace keys, so a script can pull transcripts and summaries across meetings. Action items are not a documented API field, though: the docs only suggest a script could extract them from notes. Coverage of the full story is therefore partial. Missing for 10: action items as a documented structured API output, a published API reference or OpenAPI spec (probed spec paths returned 404), clear documentation that non-Business/Enterprise users can create self-serve keys covering every meeting, and independent hands-on corroboration of the API.",
+    "confidence": "high",
+    "rationale": "Granola documents a RESTful, OpenAPI-specified /v1 API that gives programmatic access to meeting notes, transcripts, and AI summaries, with an interactive playground and an API changelog. Workspace members can create their own scoped keys, but only on Business or Enterprise plans. Action items are not a documented first-class API field; the docs only describe extracting them from notes as a use case. Missing for 10: a dedicated action-items endpoint or field, self-serve keys on all plans rather than Business/Enterprise only, a guarantee of complete per-meeting coverage (transcripts can be too large to return inline), and independent hands-on corroboration.",
     "evidenceIds": [
       "granola-docs-16",
-      "granola-docs-33",
-      "granola-docs-28",
+      "granola-openapi-spec-20261106",
+      "granola-playground-20261106",
       "granola-docs-52",
+      "granola-docs-28",
       "granola-docs-53",
-      "granola-probe-2"
+      "granola-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5821,16 +5909,12 @@
           "quote": "The Granola API lets you build custom integrations with programmatic access to meeting notes, transcripts, and AI summaries."
         },
         {
-          "evidenceId": "granola-docs-33",
-          "quote": "This RESTful API enables you to integrate Granola with your existing tools"
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "Any workspace member on a **Business** or **Enterprise** plan can create API keys."
         },
         {
           "evidenceId": "granola-docs-52",
           "quote": "When you create an API key, you choose which note access scopes it should include."
-        },
-        {
-          "evidenceId": "granola-docs-28",
-          "quote": "Workspace admins on Business and Enterprise plans can also create workspace API keys."
         },
         {
           "evidenceId": "granola-docs-53",
@@ -5845,11 +5929,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Community reports show a usable free tier, but it is capped ('free for a limited number of notes'). The docs name Business and Enterprise plans, yet nothing in the pack shows tier prices or a feature comparison, and Enterprise capabilities like HIPAA route through sales. missing for 10: published per-tier pricing, a documented comparison of what each paid tier adds, first-party confirmation of the free tier and its limits, and evidence that basic paid tiers are self-serve without sales contact.",
+    "rationale": "A free entry point is suggested only by community reports that Granola is free for a limited number of notes. Docs name Business and Enterprise plans and gate some features to them, such as API keys, while HIPAA requires contacting sales for Enterprise. No published prices or full per-tier feature breakdown appear in the evidence. Missing for 10: documented tier prices, a complete first-party comparison of what each paid tier adds, first-party documentation of the free plan's limits, and evidence that basic paid tiers are self-serve without a sales contact.",
     "evidenceIds": [
       "granola-comm-4",
       "granola-comm-3",
       "granola-docs-28",
+      "granola-openapi-spec-20261106",
       "granola-docs-50"
     ],
     "support": {
@@ -5864,6 +5949,10 @@
         {
           "evidenceId": "granola-docs-28",
           "quote": "Workspace admins on Business and Enterprise plans can also create workspace API keys."
+        },
+        {
+          "evidenceId": "granola-openapi-spec-20261106",
+          "quote": "Any workspace member on a **Business** or **Enterprise** plan can create API keys."
         }
       ]
     }

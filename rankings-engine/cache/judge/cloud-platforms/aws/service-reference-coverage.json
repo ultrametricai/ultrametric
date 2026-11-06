@@ -1,18 +1,18 @@
 {
-  "hash": "339cc25d6a9c9b0be548508c9ef869d4af2a92eb87c4b7d5f02df6da5874eb2f",
+  "hash": "7f5bf424be468b499f44273da4bcd7b6d9ce142b6b191f7c018f83e438107a76",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "AWS documents a single CLI that controls multiple services, can surface documentation inline, and covers functionality equivalent to the console. There is also a dedicated API Reference for a non-flagship service (Cost Explorer) and a structured llms.txt index of service documentation. However, nothing in the evidence shows that every service has a consistent API/CLI reference, and no machine-readable OpenAPI spec was found. missing for 10: evidence of per-service CLI command reference across the whole platform, evidence of consistent API reference coverage beyond a few services, independent corroboration of reference-doc consistency.",
+    "rationale": "AWS publishes machine-readable Smithy models \"for all public AWS API services\", and these models drive the daily releases of its SDKs and CLIs. There are also per-service API reference pages, such as Cost Explorer's API Reference, and an llms.txt index of service documentation. Together this strongly suggests uniform reference coverage beyond the flagship services, but no evidence directly shows that human-readable API/CLI reference docs are complete and consistent for every service. missing for 10: explicit evidence that every service has a complete API and CLI reference page, independent or hands-on corroboration of consistency across non-flagship services, a single platform-wide reference format (the models are Smithy/botocore JSON rather than OpenAPI, and versioning is documented per service).",
     "evidenceIds": [
+      "aws-api-models-20261106",
+      "aws-cloudshell-20261106",
       "aws-docs-1",
-      "aws-docs-4",
-      "aws-docs-42",
       "aws-docs-16",
       "aws-probe-1",
-      "aws-probe-5"
+      "aws-api-version-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -20,16 +20,20 @@
       "subject": "As a developer, every service has a real reference — consistent API/CLI reference docs across the platform, not just the flagship services",
       "citations": [
         {
+          "evidenceId": "aws-api-models-20261106",
+          "quote": "for all public AWS API services"
+        },
+        {
+          "evidenceId": "aws-api-models-20261106",
+          "quote": "At AWS, we use Smithy extensively to model our service APIs and provide the daily releases of the AWS SDKs and CLIs"
+        },
+        {
+          "evidenceId": "aws-cloudshell-20261106",
+          "quote": "the per-service API reference pages themselves are static (request parameters and XML responses, no embedded try-it runner)"
+        },
+        {
           "evidenceId": "aws-docs-1",
-          "quote": "With just one tool to download and configure, you can control multiple AWS services from the command line and automate them through scripts."
-        },
-        {
-          "evidenceId": "aws-docs-4",
-          "quote": "The AWS CLI v2 can prompt you with commands, parameters, resources, documentation, and more when running an 'aws' command."
-        },
-        {
-          "evidenceId": "aws-docs-16",
-          "quote": "You can use the Cost Explorer API to programmatically query your cost and usage data."
+          "quote": "you can control multiple AWS services from the command line and automate them through scripts"
         },
         {
           "evidenceId": "aws-probe-1",

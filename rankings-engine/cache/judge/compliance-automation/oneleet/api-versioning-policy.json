@@ -1,17 +1,33 @@
 {
-  "hash": "6db5c999203393c6cd8d48fe309225ea5907518e889bc2f1568b4819990821ff",
+  "hash": "0e2db395c8461820aa29863cc7125ee5af517e3b6c166d517c00cf4faa79012a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Oneleet is a SaaS platform that exposes an API and MCP server through service keys and OAuth, so versioned APIs with a deprecation policy is a fair question to ask of it. Nothing in the evidence mentions API versioning, version identifiers, changelogs, or a deprecation policy. The OpenAPI probe paths all returned 404.",
-    "evidenceIds": [],
+    "rationale": "Oneleet's public API is URI-versioned under /api/v1/. Its OpenAPI spec marks deprecated fields with migration guidance and separates the public API from internal routes that 'can change without notice'. There is no documented deprecation policy itself: no policy page exists, the changelog returns 404, and no notice window is stated. Missing for 10: a published versioning/deprecation policy page, a stated deprecation notice window, a changelog, and independent corroboration.",
+    "evidenceIds": [
+      "oneleet-deprecations-20261106",
+      "oneleet-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "oneleet-deprecations-20261106",
+          "quote": "all routes are URI-versioned under /api/v1/"
+        },
+        {
+          "evidenceId": "oneleet-deprecations-20261106",
+          "quote": "the spec carries \"deprecated\": true members with migration guidance"
+        },
+        {
+          "evidenceId": "oneleet-openapi-spec-20261106",
+          "quote": "Oneleet serves a downloadable OpenAPI 3.0.3 document for its Public API (157 paths) at the API origin"
+        }
+      ]
     },
     "productId": "oneleet",
     "storyId": "api-versioning-policy"

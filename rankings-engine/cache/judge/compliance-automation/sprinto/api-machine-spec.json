@@ -1,17 +1,30 @@
 {
-  "hash": "26c7a5b3d35f5c7e88b6164ec49efe1b7b8852e14f885dd99c0680a5c36ae082",
+  "hash": "5850de84397a7dbe685afd13b34c9c49cfaa7a09fdb753e39ac6435cbabbf257",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Sprinto is a SaaS compliance platform with API reference pages (Integration Monitoring, Framework Health & Vendor Data APIs), so a downloadable OpenAPI-style spec is a fair question to ask. The evidence shows no such spec: probes of the common OpenAPI and Swagger paths all returned 404. The llms.txt and markdown docs exist but are documentation indexes, not machine-readable API specs.",
-    "evidenceIds": [],
+    "rationale": "Sprinto's Developer API is GraphQL and supports introspection, so its schema can be retrieved in machine-readable form. However, that requires an API key, and no downloadable OpenAPI or Postman artifact exists: the common OpenAPI paths return 404, and OpenAPI fragments appear only embedded in a docs page for the custom-integration sync API. Missing for 10: a public, downloadable spec file (OpenAPI or GraphQL SDL), spec coverage for the full API surface, and independent corroboration that introspection works.",
+    "evidenceIds": [
+      "sprinto-introspection-20261106",
+      "sprinto-playground-20261106",
+      "sprinto-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sprinto-introspection-20261106",
+          "quote": "Introspection allows the API to describe its schema, including available queries, mutations, and response types."
+        },
+        {
+          "evidenceId": "sprinto-playground-20261106",
+          "quote": "You can use the playground to explore the API schema, test queries and mutations, and validate responses in real time."
+        }
+      ]
     },
     "productId": "sprinto",
     "storyId": "api-machine-spec"

@@ -2845,21 +2845,23 @@
   {
     "productId": "braintrust",
     "storyId": "agent-queries-own-traces",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Braintrust documents an official MCP server that lets Claude Code, Cursor, Codex and other MCP clients query production logs and run evals. A probe confirms the MCP server docs exist, and a programmatic API covers experiments, traces and metrics. Missing for 10: explicit documentation that agents can read back aggregated metrics and past eval/experiment results through MCP (the evidence says 'query logs' and 'run evals'), independent hands-on corroboration of agent-driven debugging, and a discoverable OpenAPI spec (the probe returned 404).",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Braintrust ships an official MCP server that lets Claude Code, Cursor, Codex and other MCP clients query production logs and run evals. It also has a REST API, defined by an OpenAPI spec, for programmatic access to projects, experiments and datasets, so agent-driven trace querying for debugging is clearly documented. However, the evidence never explicitly shows an agent querying metrics or reading back eval/experiment results through the MCP server or API; it only shows running evals and managing experiments. missing for 10: explicit documentation that agents can query metrics (latency/cost/score aggregates) and retrieve eval/experiment results via MCP or API, plus independent or hands-on corroboration of agent-driven debugging via the MCP server.",
     "evidenceIds": [
       "braintrust-docs-9",
       "braintrust-docs-25",
+      "braintrust-docs-39",
       "braintrust-probe-4",
       "braintrust-docs-11",
       "braintrust-docs-34",
+      "braintrust-openapi-spec-20261106",
       "braintrust-docs-33"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can have an agent query my traces, metrics, and eval results through an API or MCP server to debug my app",
       "citations": [
         {
@@ -2877,6 +2879,10 @@
         {
           "evidenceId": "braintrust-docs-34",
           "quote": "Create and manage projects, experiments, and datasets; Log traces and metrics"
+        },
+        {
+          "evidenceId": "braintrust-docs-33",
+          "quote": "browse and query logs, sync data, and manage functions without leaving your terminal"
         }
       ]
     }
@@ -2887,11 +2893,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Braintrust documents tracing of agent runs, with spans and tool calls you can inspect. It records application activity as spans and lets you browse traces and individual spans in the UI or CLI. The evidence does not show explicit parent/child span nesting or grouping traces into sessions or threads; the 'trace coding-agent sessions' CLI mention covers a different use case. Missing for 10: explicit documentation of nested span hierarchies, session/thread grouping of multi-turn agent runs, independent hands-on corroboration.",
+    "rationale": "Braintrust documents tracing agent runs as spans, including inspecting every agent trace and tool call, browsing traces and individual spans, and OpenTelemetry-based tracing of your own code. The evidence does not show explicit parent/child nesting or grouping traces into sessions or threads; the CLI's \"trace coding-agent sessions\" covers the developer's own coding agent, not grouping application runs. missing for 10: explicit nested span hierarchy documentation, session/thread grouping of multi-turn agent runs, independent hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-70",
       "braintrust-docs-14",
       "braintrust-docs-42",
+      "braintrust-docs-66",
       "braintrust-docs-22"
     ],
     "support": {
@@ -2912,8 +2919,8 @@
           "quote": "Tracing records what your application does as spans you can inspect in Braintrust."
         },
         {
-          "evidenceId": "braintrust-docs-22",
-          "quote": "Diagnose why one complex trace went wrong"
+          "evidenceId": "braintrust-docs-66",
+          "quote": "Tracing is built on OpenTelemetry, so you trace your own code with the standard OpenTelemetry API."
         }
       ]
     }
@@ -2924,16 +2931,13 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Braintrust documents programmatic dataset creation through its API and SDKs. It also documents running evals from agent clients via its official MCP server and the `bt` CLI, and running experiments programmatically from code. Reading eval results back programmatically is only implied by \"manage experiments\" and log export, and no single documented agent flow ties all three steps together. missing for 10: explicit documentation of an agent reading back experiment/eval results via MCP or API, explicit MCP support for dataset creation, an end-to-end agent workflow example, independent hands-on corroboration",
+    "rationale": "Braintrust documents agent-facing programmatic surfaces: an official MCP server and `bt` CLI let coding agents run evals, and the REST API and SDKs can create datasets and experiments and run evals from code. Reading eval results back programmatically is only implied, by API 'manage' of experiments and experiments being a comparable record, not explicitly documented as an agent workflow. missing for 10: explicit documentation of an agent retrieving experiment scores/results via MCP, CLI or API, an end-to-end agent create-dataset→run-eval→read-results example, and independent hands-on corroboration.",
     "evidenceIds": [
-      "braintrust-docs-41",
-      "braintrust-docs-34",
-      "braintrust-docs-63",
       "braintrust-docs-9",
       "braintrust-docs-33",
-      "braintrust-docs-62",
+      "braintrust-docs-41",
+      "braintrust-docs-63",
       "braintrust-docs-27",
-      "braintrust-docs-35",
       "braintrust-gh-3",
       "braintrust-probe-4"
     ],
@@ -2943,6 +2947,10 @@
       "subject": "As an AI-native user, I can have an agent create a dataset, trigger an eval run programmatically, and read back the results",
       "citations": [
         {
+          "evidenceId": "braintrust-docs-9",
+          "quote": "Query production logs, author prompts and scorers, configure monitoring, and run evals from Claude Code, Cursor, Codex, VS Code, and any other MCP-compatible client."
+        },
+        {
           "evidenceId": "braintrust-docs-41",
           "quote": "You can use it to: Create and manage projects, experiments, and datasets"
         },
@@ -2951,20 +2959,12 @@
           "quote": "Log traces, manage prompts, create datasets, and run evals or experiments right from your code."
         },
         {
-          "evidenceId": "braintrust-docs-9",
-          "quote": "Query production logs, author prompts and scorers, configure monitoring, and run evals from Claude Code, Cursor, Codex, VS Code, and any other MCP-compatible client."
-        },
-        {
           "evidenceId": "braintrust-docs-33",
           "quote": "It lets you authenticate, trace coding-agent sessions, run evals, browse and query logs, sync data, and manage functions without leaving your terminal."
         },
         {
-          "evidenceId": "braintrust-docs-62",
-          "quote": "lets you run experiments programmatically, and lets you integrate evals into your CI/CD pipeline"
-        },
-        {
-          "evidenceId": "braintrust-docs-35",
-          "quote": "Download logs as CSV or JSON, or pull them locally with `bt sync pull`."
+          "evidenceId": "braintrust-docs-27",
+          "quote": "Experiments are the immutable, comparable record of your eval runs. Run them from code or in the UI"
         }
       ]
     }
@@ -2975,14 +2975,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms Braintrust serves an llms.txt at https://www.braintrust.dev/llms.txt (HTTP 200). Docs content is also indexed from an llms-full.txt, and SDK references are published as agent-readable .md pages (Python, TypeScript, Go, Java), so an agent can be pointed directly at agent-oriented docs. missing for 10: independent or hands-on corroboration of agents successfully consuming these docs, and a root /docs.md markdown entry point (probe returned 404).",
+    "rationale": "A live probe confirms Braintrust serves an llms.txt at https://www.braintrust.dev/llms.txt (HTTP 200). The docs also expose llms-full.txt and .md mirrors of every page, giving agents several machine-readable entry points. missing for 10: first-party guidance on how agents should consume these indexes, and the root /docs.md path returns 404.",
     "evidenceIds": [
       "braintrust-probe-1",
-      "braintrust-docs-60",
       "braintrust-docs-59",
+      "braintrust-docs-60",
+      "braintrust-api-playground-20261106",
       "braintrust-docs-38",
-      "braintrust-docs-42",
-      "braintrust-docs-43",
       "braintrust-probe-2"
     ],
     "support": {
@@ -2995,16 +2994,12 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://www.braintrust.dev/llms.txt # Braintrust"
         },
         {
+          "evidenceId": "braintrust-api-playground-20261106",
+          "quote": "alongside .md mirrors of every page and llms.txt/llms-full.txt indexes"
+        },
+        {
           "evidenceId": "braintrust-docs-60",
           "quote": "Trace Anthropic SDK calls, evaluate Claude models, and route them through the Braintrust gateway"
-        },
-        {
-          "evidenceId": "braintrust-docs-59",
-          "quote": "Control who can access your projects, experiments, and data using permission groups scoped to organizations, project groups, projects, and objects"
-        },
-        {
-          "evidenceId": "braintrust-docs-38",
-          "quote": "A function you can use to define an evaluator. This is a convenience wrapper around the `Evaluator` class."
         }
       ]
     }
@@ -3015,14 +3010,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Braintrust ships Loop, an in-product AI agent that investigates logs through natural language. It also ships Patterns, which runs Loop on a schedule to surface recurring problems and trends with a suggested fix, and Topics, which automatically clusters and classifies traces. Together these directly deliver AI-generated insights and suggestions from the user's own data. Missing for 10: independent or hands-on corroboration of the quality of Loop/Patterns insights.",
+    "rationale": "Braintrust ships Loop, an in-product AI agent that investigates logs through natural language and can build scorers, datasets, and dashboards. It also ships Patterns, which runs Loop on a schedule to surface recurring problems with supporting traces and a suggested fix. Topics adds automatic classification of logs. Missing for 10: independent or hands-on corroboration of insight quality, and deeper documentation of how suggestions appear and are acted on in the UI.",
     "evidenceIds": [
       "braintrust-docs-6",
       "braintrust-docs-7",
       "braintrust-docs-18",
+      "braintrust-docs-47",
       "braintrust-docs-21",
-      "braintrust-docs-13",
-      "braintrust-docs-47"
+      "braintrust-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -3038,12 +3033,12 @@
           "quote": "It searches for recurring problems and trends that no scorer already measures, then records each one with the traces that support it and a suggested fix."
         },
         {
-          "evidenceId": "braintrust-docs-21",
-          "quote": "Topics automatically analyze and classify your logs without manual review."
-        },
-        {
           "evidenceId": "braintrust-docs-18",
           "quote": "Ask Braintrust’s AI agent to investigate your data and build scorers, datasets, and dashboards"
+        },
+        {
+          "evidenceId": "braintrust-docs-21",
+          "quote": "Topics automatically analyze and classify your logs without manual review."
         }
       ]
     }
@@ -3052,9 +3047,9 @@
     "productId": "braintrust",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Braintrust ships its own background automations. Patterns runs the Loop agent on the trace backlog on a recurring schedule, online scoring evaluates production traces automatically and asynchronously as they are logged, and Topics continuously classifies traces. These are fixed-purpose features rather than a general, user-defined automation builder; CI/CD eval runs depend on the host CI platform, so they earn no credit. Missing for 10: a general-purpose user-configurable automation/trigger system, documentation of schedule configuration (frequency, triggers, actions), and independent or hands-on corroboration.",
+    "rationale": "Braintrust ships several first-party background automations. Patterns runs its Loop agent over the trace backlog on a schedule, online scoring evaluates production traces asynchronously as they are logged, and Topics continuously classifies traces. These are fixed-purpose background jobs rather than a general, user-defined automation builder, and how much they can be configured is thinly documented. Missing for 10: a general-purpose automation/workflow builder with user-defined triggers and actions, documentation of schedule configuration and controls, and independent or hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-7",
       "braintrust-docs-4",
@@ -3089,15 +3084,15 @@
     "productId": "braintrust",
     "storyId": "agentic-builtin-assistant",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "Braintrust documents Loop, a built-in AI agent that users can ask to investigate logs in natural language and to build scorers, datasets and dashboards. Patterns extends this by running Loop on a schedule to find recurring problems and suggest fixes, which is direct delegation of work to an in-product assistant. Missing for 10: in-depth docs on Loop's task scope, approval and controls, and independent or hands-on confirmation that delegated tasks work as claimed.",
+    "quality": 7,
+    "confidence": "high",
+    "rationale": "Braintrust's own docs describe Loop, a built-in AI agent that investigates logs through natural language and builds scorers, datasets and dashboards. Loop can also generate datasets and run on a schedule through Patterns, so users can clearly hand tasks to it inside the product. missing for 10: in-depth documentation of Loop's task scope, limits and in-UI workflow, independent or hands-on corroboration of Loop's delegated task execution.",
     "evidenceIds": [
       "braintrust-docs-6",
       "braintrust-docs-18",
+      "braintrust-docs-48",
       "braintrust-docs-31",
-      "braintrust-docs-7",
-      "braintrust-docs-48"
+      "braintrust-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -3118,7 +3113,7 @@
         },
         {
           "evidenceId": "braintrust-docs-7",
-          "quote": "Patterns puts Loop to work on your trace backlog on a schedule. It searches for recurring problems and trends that no scorer already measures, then records each one with the traces that support it and a suggested fix."
+          "quote": "Patterns puts Loop to work on your trace backlog on a schedule."
         }
       ]
     }
@@ -3129,14 +3124,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Braintrust documents running evals on every pull request in CI/CD. It also ships the `bt` CLI and a `npx braintrust eval` command that authenticates through a `BRAINTRUST_API_KEY` environment variable, plus a programmatic API, so it can run non-interactively in automation pipelines. missing for 10: a detailed CI setup guide (e.g., an official CI action or pipeline config example), independent or hands-on corroboration of headless CI runs.",
+    "rationale": "Braintrust documents running evals in CI/CD on every pull request and integrating experiments into pipelines. It also provides a headless `bt` CLI and an `npx braintrust eval` command authenticated via the BRAINTRUST_API_KEY env var, plus a full programmatic API, so automation without the UI is clearly supported. missing for 10: concrete CI configuration docs (e.g., a ready-made CI action, exit-code/threshold gating details), independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "braintrust-docs-2",
       "braintrust-docs-27",
       "braintrust-docs-62",
-      "braintrust-gh-3",
       "braintrust-docs-33",
-      "braintrust-docs-11"
+      "braintrust-gh-3",
+      "braintrust-docs-11",
+      "braintrust-docs-69"
     ],
     "support": {
       "relation": "direct",
@@ -3161,7 +3157,7 @@
         },
         {
           "evidenceId": "braintrust-docs-33",
-          "quote": "`bt` is the command-line interface for Braintrust. It lets you authenticate, trace coding-agent sessions, run evals, browse and query logs, sync data, and manage functions without leaving your terminal."
+          "quote": "It lets you authenticate, trace coding-agent sessions, run evals, browse and query logs, sync data, and manage functions without leaving your terminal."
         },
         {
           "evidenceId": "braintrust-docs-11",
@@ -3176,7 +3172,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Braintrust is an observability and eval platform with its own agent (Loop) and playgrounds, so connecting MCP servers as tool sources is a fair question to ask of it. However, the evidence only documents Braintrust's own MCP server, which external clients like Claude Code and Cursor connect to. That is the server role and does not count for this client-side story. Nothing in the pack shows Loop, playgrounds, or prompts consuming tools from user-supplied MCP servers.",
+    "rationale": "The evidence documents Braintrust only as an MCP server that external clients such as Claude Code, Cursor and Codex connect to. Nothing shows Braintrust, its Loop agent or its playgrounds connecting to user-supplied MCP servers to use their tools. That server-side capability belongs to a different story and earns no credit here, while API-managed 'tools' are an adjacent feature rather than MCP client support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3191,7 +3187,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Braintrust documents an official MCP integration page that connects Claude Code, Cursor, Codex, VS Code and any other MCP-compatible client. Through it, agents can query logs, author prompts and scorers, configure monitoring and Topics, and run evals, and a probe confirms the official MCP server page exists. Missing for 10: independent or hands-on corroboration of the MCP server in use, and evidence of setup/auth details and the full tool list.",
+    "rationale": "Braintrust is an observability and eval platform, not an agent itself, so shipping an MCP server is a fair axis. Its first-party docs describe an official MCP integration that connects Claude Code, Cursor, Codex, VS Code and any other MCP-compatible client to query logs, author prompts and scorers, configure monitoring and Topics, and run evals, and a probe independently confirms the official MCP server page exists. missing for 10: details of the tool list and authentication/setup in the evidence, independent or hands-on corroboration of MCP usage.",
     "evidenceIds": [
       "braintrust-docs-9",
       "braintrust-docs-25",
@@ -3222,16 +3218,16 @@
     "productId": "braintrust",
     "storyId": "agentic-nl-commands",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Braintrust ships Loop, its own AI agent. The docs say it lets users investigate logs through natural language instead of writing queries, and that you can ask it to build scorers, datasets, and dashboards. Its official MCP server also lets users query logs, author scorers, and run evals from MCP clients. missing for 10: in-depth documentation of how broadly Loop's natural-language commands cover the full product (e.g., admin/configuration actions), independent or hands-on corroboration of Loop's natural-language operation.",
+    "rationale": "Braintrust ships Loop, a first-party AI agent that lets users investigate logs in natural language instead of writing queries. Users can also ask Loop to build scorers, datasets and dashboards, and Patterns puts Loop to work on the trace backlog on a schedule. Its official MCP server separately lets users query logs, author scorers and run evals through agent clients. Missing for 10: evidence that natural language reaches all product operations (e.g., admin, permissions, deployment configuration), and independent or hands-on corroboration of how well Loop works.",
     "evidenceIds": [
       "braintrust-docs-6",
       "braintrust-docs-18",
-      "braintrust-docs-48",
       "braintrust-docs-5",
+      "braintrust-docs-7",
       "braintrust-docs-9",
-      "braintrust-docs-7"
+      "braintrust-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -3251,8 +3247,8 @@
           "quote": "Build datasets from production logs, user feedback, manual curation, or generate them with Loop."
         },
         {
-          "evidenceId": "braintrust-docs-9",
-          "quote": "Query production logs, author prompts and scorers, configure monitoring, and run evals from Claude Code, Cursor, Codex, VS Code, and any other MCP-compatible client."
+          "evidenceId": "braintrust-docs-7",
+          "quote": "Patterns puts Loop to work on your trace backlog on a schedule."
         }
       ]
     }
@@ -3263,12 +3259,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Braintrust ships and documents an official `bt` CLI. It lets you authenticate, trace coding-agent sessions, run evals, browse and query logs (`bt view logs`), sync data (`bt sync pull`) and manage functions, and it is explicitly positioned for use with coding agents. The probe confirms a CLI quickstart page, and the SDK repo shows `npx braintrust eval` usage. Missing for 10: independent or hands-on corroboration of the CLI's reliability in AI-native workflows.",
+    "rationale": "Braintrust ships an official `bt` CLI. Its docs say it lets you authenticate, trace coding-agent sessions, run evals, browse and query logs, sync data, and manage functions from the terminal, and it is positioned for setting up and running Braintrust with coding agents. Concrete subcommands (`bt view logs`, `bt sync pull`) and a probe confirming the CLI quickstart page corroborate this. Missing for 10: independent hands-on or community corroboration of the CLI in AI-native/agent workflows.",
     "evidenceIds": [
       "braintrust-docs-33",
       "braintrust-docs-8",
-      "braintrust-docs-14",
+      "braintrust-docs-26",
       "braintrust-docs-35",
+      "braintrust-docs-14",
       "braintrust-probe-5",
       "braintrust-gh-3"
     ],
@@ -3288,10 +3285,6 @@
         {
           "evidenceId": "braintrust-docs-35",
           "quote": "pull them locally with `bt sync pull`"
-        },
-        {
-          "evidenceId": "braintrust-probe-5",
-          "quote": "official CLI documented at https://www.braintrust.dev/docs/reference/cli/quickstart"
         }
       ]
     }
@@ -3300,15 +3293,16 @@
     "productId": "braintrust",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Braintrust publishes an API reference stating the API lets you interact with all aspects of the platform programmatically, including managing projects, experiments, datasets, traces, prompts, tools, and scorers, with API-key auth shown in the SDK usage. No OpenAPI spec was found at the standard paths probed, which is a discoverability gap but does not contradict that the API exists. missing for 10: a machine-readable OpenAPI spec at a standard location, independent hands-on corroboration of the REST API, explicit documentation of auth and endpoint details in the evidence.",
+    "rationale": "Braintrust documents a public REST API that covers all aspects of the platform: projects, experiments, datasets, traces, prompts and scorers. The API is defined by a published OpenAPI 3.1.1 spec, has a 'Try it' playground on each endpoint page, and is /v1 path-versioned under a stability policy. The probe 404s at www.braintrust.dev paths do not contradict this, since the spec is served from the docs host and GitHub. Missing for 10: a documented deprecation-notice window for the REST API, and independent hands-on corroboration of API usage.",
     "evidenceIds": [
       "braintrust-docs-11",
       "braintrust-docs-34",
       "braintrust-docs-41",
-      "braintrust-gh-3",
-      "braintrust-probe-3"
+      "braintrust-openapi-spec-20261106",
+      "braintrust-api-playground-20261106",
+      "braintrust-feature-lifecycle-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -3324,8 +3318,8 @@
           "quote": "You can use it to: Create and manage projects, experiments, and datasets; Log traces and metrics; Manage prompts, tools, and scorers"
         },
         {
-          "evidenceId": "braintrust-gh-3",
-          "quote": "BRAINTRUST_API_KEY=<YOUR_API_KEY> npx braintrust eval tutorial.eval.ts"
+          "evidenceId": "braintrust-openapi-spec-20261106",
+          "quote": "The API is defined by an OpenAPI 3.1.1 specification published at braintrust-openapi on GitHub."
         }
       ]
     }
@@ -3336,7 +3330,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Braintrust uses API keys and has permission groups scoped to organizations, projects, and objects. Nothing documents issuing scoped or least-privilege API credentials, such as service accounts or restricted keys, for an agent. Permission groups are an adjacent access-control feature, not scoped agent credentials, so they earn no credit.",
+    "rationale": "The evidence shows Braintrust has API keys and permission groups scoped to organizations, projects and objects. Nothing ties those permissions to issuing scoped or least-privilege API credentials (for example service accounts or restricted keys) for an agent. Permission groups are an adjacent access-control feature, not the credential-scoping capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3351,16 +3345,17 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Braintrust documents official SDKs across Python, TypeScript, Go, and Java, plus a first-party GitHub JavaScript SDK repo with Eval examples. The SDKs cover tracing, prompts, datasets, and evals from code, with auto-instrumentation and drop-in wrappers. missing for 10: independent hands-on corroboration of SDK quality (one community comment calls integration options limited, but gives no concrete SDK failure).",
+    "rationale": "Braintrust ships official SDKs that let users log traces, manage prompts, create datasets and run evals from code. The evidence covers documented TypeScript, Python, Go and Java SDKs, plus a first-party JavaScript SDK repo on GitHub with Eval examples and drop-in wrappers such as wrap_openai. One community comment calls the documentation sparse, but it is general sentiment rather than a concrete SDK failure. Missing for 10: independent or hands-on corroboration of building against the SDKs.",
     "evidenceIds": [
       "braintrust-docs-63",
+      "braintrust-gh-1",
+      "braintrust-gh-3",
       "braintrust-docs-38",
       "braintrust-docs-64",
       "braintrust-docs-42",
       "braintrust-docs-43",
       "braintrust-docs-36",
-      "braintrust-gh-1",
-      "braintrust-gh-3"
+      "braintrust-docs-62"
     ],
     "support": {
       "relation": "direct",
@@ -3370,10 +3365,6 @@
         {
           "evidenceId": "braintrust-docs-63",
           "quote": "Log traces, manage prompts, create datasets, and run evals or experiments right from your code."
-        },
-        {
-          "evidenceId": "braintrust-docs-38",
-          "quote": "A function you can use to define an evaluator. This is a convenience wrapper around the `Evaluator` class."
         },
         {
           "evidenceId": "braintrust-docs-42",
@@ -3386,6 +3377,10 @@
         {
           "evidenceId": "braintrust-docs-36",
           "quote": "Braintrust provides `wrap_openai`, a drop-in wrapper around the OpenAI client that automatically logs all LLM calls to Braintrust."
+        },
+        {
+          "evidenceId": "braintrust-docs-38",
+          "quote": "A function you can use to define an evaluator. This is a convenience wrapper around the `Evaluator` class."
         }
       ]
     }
@@ -3396,7 +3391,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for an observability SaaS platform like Braintrust, but nothing in the evidence documents registrable outbound HTTP callbacks for events. The REST API, MCP server, CLI, and 'configure monitoring' mentions are adjacent capabilities, not event subscriptions, so they earn no credit.",
+    "rationale": "Webhooks are a fair axis for an observability platform like Braintrust, but nothing in the evidence documents registrable outbound HTTP callbacks or event subscriptions. The REST API, CLI, MCP server, online scoring and scheduled Patterns are adjacent features, not webhooks, and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3408,93 +3403,141 @@
   {
     "productId": "braintrust",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Braintrust documents an API reference page describing programmatic access to projects, experiments, datasets, traces, prompts and scorers. Nothing in the evidence shows that reference is interactive (try-it consoles, runnable request examples), and the probe found no public OpenAPI spec at the standard paths. A static API reference is an adjacent feature and earns no credit toward an interactive, runnable reference.",
-    "evidenceIds": [],
+    "rationale": "Braintrust's API reference covers the platform programmatically and is backed by a published OpenAPI 3.1.1 spec. It is Mintlify-hosted, with a \"Try it\" playground container on each endpoint page, but that evidence comes from inspecting served HTML: the runner mounts client-side and no hands-on run is documented. Probes of common OpenAPI paths on the main site returned 404, and per-endpoint code samples are not explicitly shown. Missing for 10: hands-on confirmation that the Try-it runner executes live requests, explicit per-endpoint runnable code samples in multiple languages, independent corroboration of the interactive reference's quality.",
+    "evidenceIds": [
+      "braintrust-api-playground-20261106",
+      "braintrust-openapi-spec-20261106",
+      "braintrust-docs-11",
+      "braintrust-docs-34"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "braintrust-api-playground-20261106",
+          "quote": "The Mintlify-hosted API reference carries a \"Try it\" playground on each endpoint page"
+        },
+        {
+          "evidenceId": "braintrust-openapi-spec-20261106",
+          "quote": "The API is defined by an OpenAPI 3.1.1 specification published at braintrust-openapi on GitHub."
+        },
+        {
+          "evidenceId": "braintrust-docs-11",
+          "quote": "The Braintrust API allows you to interact with all aspects of the Braintrust platform programmatically."
+        }
+      ]
     }
   },
   {
     "productId": "braintrust",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Braintrust documents a REST API reference, but nothing in the evidence describes a downloadable OpenAPI or equivalent machine-readable spec, and probes of common OpenAPI/Swagger paths all returned 404. The llms.txt file is LLM-oriented documentation, not an API specification, so it does not count as an equivalent.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Braintrust publishes a downloadable OpenAPI 3.1.1 spec on its docs host. The spec is also maintained in the vendor's braintrust-openapi GitHub repo in JSON and YAML, and the API reference explicitly names it as the API's definition. The probe's 404s were on the www.braintrust.dev host and the api host, not on the documented docs host, so they do not contradict the claim. Missing for 10: independent or hands-on confirmation that the spec actually downloads from docs.braintrust.dev.",
+    "evidenceIds": [
+      "braintrust-openapi-spec-20261106",
+      "braintrust-api-playground-20261106",
+      "braintrust-docs-11"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "braintrust-openapi-spec-20261106",
+          "quote": "Braintrust publishes a downloadable OpenAPI 3.1.1 document on its docs host"
+        },
+        {
+          "evidenceId": "braintrust-openapi-spec-20261106",
+          "quote": "The API is defined by an OpenAPI 3.1.1 specification published at braintrust-openapi on GitHub."
+        }
+      ]
     }
   },
   {
     "productId": "braintrust",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no sandbox, test-mode, or isolated non-production environment for Braintrust. Playgrounds and offline evals let users iterate on prompts against datasets, but those datasets are often built from production logs, and nothing describes isolation from production data. That is an adjacent capability, not the sandbox environment the story asks for.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Braintrust's own playgrounds and offline evals let users test prompts, models and scorers against curated or inline datasets, separate from live production traffic. CI-integrated experiments are positioned as catching regressions before they reach production. However, nothing documents a dedicated sandbox environment or isolation guarantee, and datasets are often built from production logs. missing for 10: an explicit sandbox or staging environment, documented isolation from production data, separate test-vs-prod projects or keys, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "braintrust-docs-3",
+      "braintrust-docs-27",
+      "braintrust-gh-1",
+      "braintrust-docs-31"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "braintrust-docs-3",
+          "quote": "Playgrounds provide a no-code workspace for rapidly iterating on prompts, models, scorers, and datasets."
+        },
+        {
+          "evidenceId": "braintrust-docs-27",
+          "quote": "integrate into CI/CD to catch regressions before they reach production"
+        },
+        {
+          "evidenceId": "braintrust-docs-31",
+          "quote": "Datasets are versioned collections of test cases that you use to run evaluations and track improvements over time."
+        }
+      ]
     }
   },
   {
     "productId": "braintrust",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Braintrust documents a programmatic API and SDKs, but nothing in the evidence describes API versioning or a deprecation policy. Dataset versioning is a different capability and does not transfer, and the SDK docs paths labeled 'versions/latest' are not evidence of a versioned API contract or a deprecation policy.",
-    "evidenceIds": [],
+    "rationale": "Braintrust's REST API is /v1 path-versioned and is backed by a published OpenAPI 3.1.1 spec. A feature-lifecycle stability policy distinguishes public preview from GA, and dated changelogs label breaking changes explicitly. However, the evidence says outright that no deprecation-notice window is documented for the REST API, so the deprecation-policy half of the story is only loosely covered by the lifecycle labels. Missing for 10: a documented REST API deprecation policy with a notice window or sunset timeline, any evidence of a migration path between API versions, and independent corroboration of versioning practice.",
+    "evidenceIds": [
+      "braintrust-feature-lifecycle-20261106",
+      "braintrust-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "braintrust-feature-lifecycle-20261106",
+          "quote": "the REST API is /v1 path-versioned, and dated changelogs label entries \"**Breaking change**:\" explicitly"
+        },
+        {
+          "evidenceId": "braintrust-feature-lifecycle-20261106",
+          "quote": "A feature is generally available unless its documentation marks it otherwise."
+        },
+        {
+          "evidenceId": "braintrust-openapi-spec-20261106",
+          "quote": "The API is defined by an OpenAPI 3.1.1 specification published at braintrust-openapi on GitHub."
+        }
+      ]
     }
   },
   {
     "productId": "braintrust",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Braintrust documents some operations that act on many items at once: downloading logs in bulk as CSV or JSON, pulling them locally with `bt sync pull`, and Topics automatically classifying every trace. However, the evidence never describes a general bulk-action feature for selecting many items and applying one edit, tag, delete, or move. Missing for 10: documented multi-select bulk edit/tag/delete of logs or dataset rows, bulk actions via API/CLI/MCP, documented limits or scale, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "braintrust-docs-35",
-      "braintrust-docs-21",
-      "braintrust-docs-13"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The pack never documents bulk operations such as multi-select editing, bulk tagging or bulk deletion. The closest evidence covers different capabilities: running evals over datasets, automatic online scoring and Topics classification of every trace, and exporting logs as CSV/JSON or via `bt sync pull`. These are batch evaluation, automated analysis and data export, not user-driven bulk actions, so they earn no credit here.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": [
-        {
-          "evidenceId": "braintrust-docs-35",
-          "quote": "Download logs as CSV or JSON, or pull them locally with `bt sync pull`."
-        },
-        {
-          "evidenceId": "braintrust-docs-21",
-          "quote": "Topics automatically analyze and classify your logs without manual review."
-        },
-        {
-          "evidenceId": "braintrust-docs-13",
-          "quote": "Topics continuously clusters every trace against them."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -3503,9 +3546,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Braintrust documents one first-party event-triggered automation: online scoring runs scorers on production traces automatically as they are logged. There is no evidence of a general rule engine that lets users define conditions and pick actions such as alerts or notifications. CI/CD evals run on the host CI platform, and Patterns runs on a schedule rather than on events, so neither earns credit. missing for 10: user-definable rule/condition configuration, a choice of triggered action types (alerts, webhooks, dataset additions), documentation of automation rules, independent corroboration.",
+    "rationale": "Braintrust's own online scoring runs automatically whenever a production trace is logged. That is a configured, event-triggered action, but the only action documented is scoring, and the evidence shows no general rules engine. Patterns runs on a schedule rather than on events, and CI/CD evals depend on the host CI pipeline, so neither earns credit. Missing for 10: a documented user-defined rule/condition builder, configurable actions beyond scoring (alerts, webhooks, dataset routing), event types beyond trace logging, and independent or hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-4",
+      "braintrust-docs-28",
       "braintrust-docs-49"
     ],
     "support": {
@@ -3530,10 +3574,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Braintrust's own Patterns feature runs its Loop agent over the trace backlog on a schedule, so the product does ship one recurring job. There is no evidence that users can define, configure, or schedule their own arbitrary recurring jobs or workflows, such as scheduled eval runs. Online scoring is triggered as logs arrive rather than on a recurring schedule, and the CI/CD evals run per pull request on the host's pipeline, so neither counts here. Missing for 10: user-defined recurring job or workflow scheduling, control over schedule timing (cron or interval), scheduled eval or experiment runs, independent corroboration.",
+    "rationale": "Braintrust has one documented recurring job of its own: Patterns runs its Loop agent over the trace backlog \"on a schedule\" to find recurring problems. There is no evidence that users can define, configure, or schedule their own recurring jobs or workflows. CI/CD eval runs depend on an external pipeline, and online scoring fires as logs arrive rather than on a schedule, so neither counts. missing for 10: user-definable scheduled jobs (e.g. recurring evals or exports), cron/interval configuration, schedule management via API/CLI/MCP, documentation of Patterns' schedule controls, independent corroboration.",
     "evidenceIds": [
       "braintrust-docs-7",
-      "braintrust-docs-20"
+      "braintrust-docs-20",
+      "braintrust-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -3545,8 +3590,8 @@
           "quote": "Patterns puts Loop to work on your trace backlog on a schedule."
         },
         {
-          "evidenceId": "braintrust-docs-20",
-          "quote": "Patterns puts Loop to work on your trace backlog on a schedule. It searches for recurring problems and trends that no scorer already measures"
+          "evidenceId": "braintrust-docs-47",
+          "quote": "Discover Patterns — Find recurring trace problems and suggested fixes"
         }
       ]
     }
@@ -3557,7 +3602,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Braintrust ships automation-like features, such as online scoring and scheduled Patterns runs, so the axis applies. However, no evidence shows that these automations can be versioned, reviewed as change history, or rolled back. The only versioning evidence covers datasets and immutable experiment records, which are adjacent objects and not automations, so they earn no credit here.",
+    "rationale": "The axis applies, since Braintrust runs automated workflows such as scheduled Patterns, online scoring and CI/CD evals. However, nothing in the evidence shows those automations can be versioned, reviewed as changes, or rolled back. The versioning evidence covers datasets and immutable experiment records, which are different objects, so it does not transfer to automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3572,7 +3617,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Braintrust documents its own way to get trace data out: logs can be downloaded as CSV or JSON, or pulled locally with `bt sync pull`. This is a genuine first-party export, but nothing shows bulk export to blob storage or a data warehouse, so the user must move the files to that destination themselves. Self-hosting keeps data in your own cloud account, which is a residency feature rather than an export pipeline, so it earns no credit. missing for 10: native export or sync to blob storage (S3/GCS/Azure), data-warehouse connectors (Snowflake/BigQuery/etc.), documented bulk dataset export, scheduled or recurring exports, independent corroboration.",
+    "rationale": "Braintrust documents its own export path for traces: logs can be downloaded as CSV or JSON, or pulled locally with `bt sync pull`. That is a direct bulk-export capability, but the only documented destination is local, not blob storage or a data warehouse. Self-hosting keeps data in your own cloud, which is a deployment choice rather than an export, and the API is only a building block. missing for 10: a native export or sink to blob storage (S3/GCS/Azure) or data warehouses (Snowflake/BigQuery), documented bulk export of datasets specifically, scheduled or recurring export, and independent hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-35",
       "braintrust-docs-33"
@@ -3596,21 +3641,21 @@
   {
     "productId": "braintrust",
     "storyId": "ci-eval-gating",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Braintrust's docs show that evals can run in CI. They say to run evals on every pull request, integrate experiments into CI/CD to catch regressions, and run evals from the command line with `npx braintrust eval`. Gating deployments on those results is supported only by a homepage marketing line about blocking bad releases, with no documented mechanism behind it. missing for 10: documented deployment-gating mechanism (score thresholds, failing exit codes, or a CI action that blocks merges/deploys), CI setup docs or examples, independent or hands-on corroboration of CI gating.",
+    "rationale": "Braintrust's docs explicitly position evals as a CI/CD step: run them on every pull request, integrate experiments into CI/CD to catch regressions before production, and run them headlessly with `npx braintrust eval`. Its marketing also claims it can 'Block bad releases before they hit production.' The gating half rests mostly on that claim, with no documented pass/fail mechanics. Missing for 10: documented gating mechanics (score thresholds, non-zero exit codes, or an official CI action/integration example), and independent or hands-on corroboration of CI gating.",
     "evidenceIds": [
       "braintrust-docs-2",
       "braintrust-docs-27",
       "braintrust-docs-62",
-      "braintrust-gh-3",
       "braintrust-docs-69",
+      "braintrust-gh-3",
       "braintrust-docs-33"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can run evals in CI and gate deployments on their results",
       "citations": [
         {
@@ -3623,15 +3668,15 @@
         },
         {
           "evidenceId": "braintrust-docs-62",
-          "quote": "lets you run experiments programmatically, and lets you integrate evals into your CI/CD pipeline"
-        },
-        {
-          "evidenceId": "braintrust-gh-3",
-          "quote": "BRAINTRUST_API_KEY=<YOUR_API_KEY> npx braintrust eval tutorial.eval.ts"
+          "quote": "lets you integrate evals into your CI/CD pipeline"
         },
         {
           "evidenceId": "braintrust-docs-69",
           "quote": "Catch issues early — Block bad releases before they hit production"
+        },
+        {
+          "evidenceId": "braintrust-gh-3",
+          "quote": "BRAINTRUST_API_KEY=<YOUR_API_KEY> npx braintrust eval tutorial.eval.ts"
         }
       ]
     }
@@ -3640,14 +3685,14 @@
     "productId": "braintrust",
     "storyId": "cost-attribution-metadata",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Braintrust's own tracing records token usage and metadata on every request, and the product tracks cost in real time and offers a filterable logs table. That implies cost and usage can be sliced by custom metadata. However, no evidence explicitly documents attributing or aggregating cost by user, session, or feature via metadata keys. Missing for 10: explicit docs on per-user/session/feature cost attribution, metadata-based cost grouping or dashboards, examples of setting user/session metadata, independent corroboration.",
+    "rationale": "Braintrust's docs say every request is logged with token usage and metadata, and that cost is tracked in real time. That lets usage records carry custom metadata, but the evidence never shows cost or usage being grouped or broken down by user, session or feature using that metadata. Missing for 10: explicit docs on attaching user/session/feature IDs as metadata, cost aggregation or dashboards grouped by metadata fields, and independent or hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-1",
+      "braintrust-docs-53",
       "braintrust-docs-70",
-      "braintrust-docs-37",
-      "braintrust-docs-51"
+      "braintrust-docs-37"
     ],
     "support": {
       "relation": "direct",
@@ -3675,11 +3720,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Braintrust's own docs say evals can 'Score outputs with LLMs, code, or humans', the SDK exposes a scorer factory based on trace assertions, and the API and MCP let users manage and author scorers. That establishes code-based scoring as a first-party capability, but the pack never shows an actual user-written custom scorer function: the GitHub example only plugs in the built-in LevenshteinScorer. Custom metrics and classifiers are mentioned, but how to define them is not documented here. missing for 10: an explicit worked example of a user-defined code scorer (function signature and return format), documentation of custom metric definition beyond a single mention, independent or hands-on corroboration of writing custom scorers.",
+    "rationale": "Braintrust documents scoring outputs with code as well as LLMs and humans. Its SDK supports trace-assertion scorers, and its API, MCP server and CLI let you author and manage scorers. However, the pack has no first-party example of a user-written custom scorer function: the GitHub example only plugs in the prebuilt LevenshteinScorer. Missing for 10: documented custom scorer function signature and return format, a worked example of a user-defined code scorer or metric, custom metric aggregation details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-68",
-      "braintrust-docs-50",
       "braintrust-docs-64",
+      "braintrust-docs-50",
       "braintrust-docs-34",
       "braintrust-docs-9",
       "braintrust-gh-1"
@@ -3694,12 +3739,12 @@
           "quote": "Score outputs with LLMs, code, or humans"
         },
         {
-          "evidenceId": "braintrust-docs-50",
-          "quote": "Scorers measure quality with numeric scores, while classifiers assign labels so you can group and analyze results"
-        },
-        {
           "evidenceId": "braintrust-docs-64",
           "quote": "Create an Eval scorer that will evaluate an agent based on assertions on the generated trace."
+        },
+        {
+          "evidenceId": "braintrust-docs-50",
+          "quote": "Scorers measure quality with numeric scores, while classifiers assign labels so you can group and analyze results"
         },
         {
           "evidenceId": "braintrust-docs-34",
@@ -3707,11 +3752,7 @@
         },
         {
           "evidenceId": "braintrust-docs-9",
-          "quote": "author prompts and scorers, configure monitoring, and run evals"
-        },
-        {
-          "evidenceId": "braintrust-gh-1",
-          "quote": "scores: [LevenshteinScorer],"
+          "quote": "author prompts and scorers"
         }
       ]
     }
@@ -3720,15 +3761,14 @@
     "productId": "braintrust",
     "storyId": "custom-dashboards",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Braintrust's docs say its Loop agent can build dashboards, and the product tracks latency, cost, and quality in real time from traces that capture latency and token usage. Beyond that, the custom-dashboard capability is thinly documented. Missing for 10: first-party docs on a custom dashboard/chart builder, explicit error-rate metrics, documented dashboard configuration beyond the Loop agent, and independent or hands-on corroboration.",
+    "rationale": "Braintrust's own docs say its AI agent Loop can build dashboards, and the product claims real-time tracking of latency, cost, and quality from traces that record latency and token usage. However, there is no documentation of how custom dashboards are configured, what chart types exist, or how metrics are selected. Missing for 10: documentation of custom dashboard building and configuration, explicit error-rate metric charting, explicit eval-score dashboard panels, independent or hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-44",
       "braintrust-docs-18",
       "braintrust-docs-70",
-      "braintrust-docs-53",
-      "braintrust-docs-50"
+      "braintrust-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -3755,15 +3795,14 @@
     "storyId": "experiment-comparison",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Braintrust's docs describe Experiments as the immutable, comparable record of eval runs, used to track progress and catch regressions. Playgrounds let users run full evaluations and compare results side by side across prompts and models, and evals can run in CI/CD on every pull request to catch regressions. Missing for 10: in-depth documentation of the experiment diff view (e.g., per-test-case regression highlighting or score deltas between runs), and independent or hands-on corroboration of the comparison workflow.",
+    "confidence": "medium",
+    "rationale": "Braintrust documents experiments as the \"immutable, comparable record of your eval runs\" for tracking progress over time and catching regressions. Playgrounds let users compare results side by side across prompts and models, and evals can run in CI/CD on every pull request to catch regressions. missing for 10: in-depth docs on the experiment-to-experiment diff view (e.g. per-case regression highlighting and score deltas), independent or hands-on corroboration of the comparison workflow.",
     "evidenceIds": [
       "braintrust-docs-27",
-      "braintrust-docs-3",
       "braintrust-docs-55",
+      "braintrust-docs-3",
       "braintrust-docs-46",
-      "braintrust-docs-2",
-      "braintrust-docs-56"
+      "braintrust-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -3780,7 +3819,7 @@
         },
         {
           "evidenceId": "braintrust-docs-46",
-          "quote": "Run your first eval — Compare prompts and models to improve AI quality"
+          "quote": "Compare prompts and models to improve AI quality"
         },
         {
           "evidenceId": "braintrust-docs-2",
@@ -3792,20 +3831,20 @@
   {
     "productId": "braintrust",
     "storyId": "framework-auto-instrumentation",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Braintrust documents first-party integrations for sending traces from AI providers and frameworks. These include `wrap_openai`, a drop-in OpenAI client wrapper that logs all LLM calls automatically, Anthropic SDK tracing, Go `trace/contrib` auto-instrumentation packages, and a no-code Java agent. A community comment that \"integration options are limited\" is general sentiment, not a concrete counter-example. missing for 10: explicit evidence of LangChain and Vercel AI SDK integrations, independent hands-on corroboration of the integrations.",
+    "rationale": "Braintrust documents ready-made instrumentation integrations. These include a drop-in `wrap_openai` wrapper that automatically logs OpenAI SDK calls, Anthropic SDK tracing, Go `trace/contrib` auto-instrumentation, a no-code Java agent, and a general claim of integrations with \"AI providers and frameworks\". However, only the OpenAI SDK among the named examples is concretely evidenced; LangChain and the Vercel AI SDK are never mentioned. A community comment that \"integration options are limited\" is general skepticism, not a concrete counter-example, so it lowers confidence rather than creating a dispute. missing for 10: documented LangChain integration, documented Vercel AI SDK integration, independent/hands-on corroboration of the framework integrations.",
     "evidenceIds": [
       "braintrust-docs-36",
       "braintrust-docs-16",
-      "braintrust-docs-60",
       "braintrust-docs-42",
-      "braintrust-docs-43"
+      "braintrust-docs-43",
+      "braintrust-docs-60"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can instrument my app through existing integrations for frameworks like LangChain, the OpenAI SDK, or the Vercel AI SDK",
       "citations": [
         {
@@ -3817,16 +3856,16 @@
           "quote": "Integrate with AI providers and frameworks to send traces to Braintrust"
         },
         {
-          "evidenceId": "braintrust-docs-60",
-          "quote": "Trace Anthropic SDK calls, evaluate Claude models, and route them through the Braintrust gateway"
-        },
-        {
           "evidenceId": "braintrust-docs-42",
           "quote": "The recommended way to capture AI calls is auto-instrumentation: use the `trace/contrib` packages to instrument supported provider libraries"
         },
         {
           "evidenceId": "braintrust-docs-43",
           "quote": "attach the Braintrust Java Agent at JVM startup and supported clients are traced with no code changes"
+        },
+        {
+          "evidenceId": "braintrust-docs-60",
+          "quote": "Trace Anthropic SDK calls, evaluate Claude models, and route them through the Braintrust gateway"
         }
       ]
     }
@@ -3837,7 +3876,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Braintrust's own docs describe building annotation interfaces for team review and scoring outputs with humans, so first-party human review and labeling exists. Nothing documents routing outputs into annotation queues, assigning reviewers, or how labeled results are managed. Missing for 10: documented annotation queues, a routing mechanism (rules or filters that send traces or outputs to a queue), reviewer assignment and workflow details, and independent or hands-on corroboration.",
+    "rationale": "Braintrust documents its own human-review capability: custom annotation interfaces for reviewing conversations, and scoring outputs with humans. However, nothing in the evidence describes annotation queues, or routing outputs or traces into them for labeling. missing for 10: documented annotation-queue feature, rules or automation for routing outputs into queues, reviewer assignment and labeling workflow details, independent or hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-12",
       "braintrust-docs-68",
@@ -3866,46 +3905,38 @@
   {
     "productId": "braintrust",
     "storyId": "llm-as-judge-scoring",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Braintrust says evals can 'Score outputs with LLMs, code, or humans', and scorers that produce numeric scores are a first-class object. Scorers can be iterated in no-code playgrounds, authored via MCP, and managed through the API, and they can run in experiments or as online scoring on production traces. That covers the core of configurable LLM-based scoring. missing for 10: detailed documentation of LLM-as-a-judge configuration (judge prompt, model choice, scoring rubric/choice mapping), concrete LLM-judge code examples (the GitHub sample uses LevenshteinScorer), independent or hands-on corroboration.",
+    "rationale": "Braintrust's own docs say it scores outputs with LLMs, code, or humans. The docs also show scorers being authored and managed in playgrounds, through the API and over MCP, and run online against production traces. However, no evidence describes how an LLM-as-a-judge scorer is configured (judge prompt, model choice, rubric or choice scores), and the only code example uses a non-LLM Levenshtein scorer. Missing for 10: documented LLM-judge configuration (prompt, model, rubric), an LLM-judge code example, independent hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-68",
       "braintrust-docs-50",
       "braintrust-docs-3",
-      "braintrust-docs-9",
       "braintrust-docs-34",
+      "braintrust-docs-9",
       "braintrust-docs-4"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ML engineer, I can score outputs with configurable LLM-as-a-judge evaluators",
       "citations": [
         {
           "evidenceId": "braintrust-docs-68",
-          "quote": "Measure quality with evals — Score outputs with LLMs, code, or humans"
+          "quote": "Score outputs with LLMs, code, or humans"
         },
         {
           "evidenceId": "braintrust-docs-50",
           "quote": "Scorers measure quality with numeric scores, while classifiers assign labels so you can group and analyze results"
         },
         {
-          "evidenceId": "braintrust-docs-3",
-          "quote": "Playgrounds provide a no-code workspace for rapidly iterating on prompts, models, scorers, and datasets."
-        },
-        {
-          "evidenceId": "braintrust-docs-9",
-          "quote": "Query production logs, author prompts and scorers, configure monitoring, and run evals"
-        },
-        {
           "evidenceId": "braintrust-docs-34",
           "quote": "Manage prompts, tools, and scorers"
         },
         {
-          "evidenceId": "braintrust-docs-4",
-          "quote": "Online scoring evaluates production traces automatically as they’re logged, running asynchronously with no impact on latency."
+          "evidenceId": "braintrust-docs-3",
+          "quote": "Playgrounds provide a no-code workspace for rapidly iterating on prompts, models, scorers, and datasets."
         }
       ]
     }
@@ -3916,7 +3947,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Braintrust's tracing docs describe recording inputs, outputs, model parameters, latency, token usage and metadata. Nothing in the pack mentions images, audio, file attachments or other multimodal payloads in traces. Multimodal capture is a fair axis for an LLM observability platform, so the missing evidence yields none, not na.",
+    "rationale": "The evidence documents general trace capture of inputs, outputs, model parameters, latency, token usage and metadata. Nothing mentions images, audio, file attachments or any other multimodal payload handling inside traces. Generic input/output logging does not establish multimodal capture, so this applicable axis has no supporting evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3931,15 +3962,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Braintrust's docs say datasets are versioned collections of test cases built from production logs, and that a dataset can be used for experiments (offline eval runs) from code, the UI, or CI/CD. The SDK shows an Eval harness that runs a task and scorers over the data. Missing for 10: detailed docs on the trace-to-dataset curation workflow (selecting, filtering and editing traces into a dataset), and independent hands-on confirmation of the logs-to-dataset-to-experiment loop.",
+    "rationale": "Braintrust's own docs say datasets can be built from production logs and that production data becomes versioned evaluation datasets. Those datasets then feed experiments run from code, the UI, the CLI, or CI/CD, with SDK Eval examples showing offline runs. missing for 10: detailed docs on the trace-to-dataset curation steps (e.g., selecting or filtering spans into a dataset), independent hands-on corroboration of the production-to-dataset-to-eval loop.",
     "evidenceIds": [
       "braintrust-docs-31",
       "braintrust-docs-52",
+      "braintrust-docs-56",
       "braintrust-docs-49",
       "braintrust-docs-27",
-      "braintrust-docs-56",
       "braintrust-gh-1",
-      "braintrust-docs-63"
+      "braintrust-gh-3",
+      "braintrust-docs-37"
     ],
     "support": {
       "relation": "direct",
@@ -3975,12 +4007,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Braintrust's first-party docs describe online scoring that automatically evaluates production traces as they are logged. It runs asynchronously with no latency impact and contrasts explicitly with dataset-based experiments. That covers continuous evaluation on live traffic rather than only offline datasets. Missing for 10: configuration details such as sampling rates, filters and which scorers can run online, plus independent or hands-on corroboration of online scoring in production.",
+    "rationale": "Braintrust's own docs describe online scoring, which automatically evaluates production traces as they are logged, runs asynchronously with no latency impact, and is presented as the alternative to running evaluations on datasets. That directly matches continuous evaluation on live traffic rather than offline datasets only. Missing for 10: configuration detail (sampling rates, filtering which traces get scored, which scorer types run online), alerting or monitoring on online scores, and independent or hands-on corroboration beyond brief vendor statements.",
     "evidenceIds": [
       "braintrust-docs-4",
       "braintrust-docs-28",
-      "braintrust-docs-49",
-      "braintrust-docs-50"
+      "braintrust-docs-49"
     ],
     "support": {
       "relation": "direct",
@@ -4001,24 +4032,22 @@
   {
     "productId": "braintrust",
     "storyId": "openness-api-parity",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Braintrust's API docs say the API lets you \"interact with all aspects of the Braintrust platform programmatically,\" and list projects, experiments, datasets, traces, prompts, tools and scorers. The bt CLI, SDKs and official MCP server back this up by covering logs, evals, scorers, Topics and monitoring outside the UI. Parity is asserted by the vendor and not independently verified, and the OpenAPI probe found no spec at common paths. Missing for 10: documented API coverage for Playgrounds, Patterns, annotation interfaces and dashboards; a discoverable OpenAPI spec; independent or hands-on confirmation of full UI parity.",
+    "rationale": "Braintrust documents a REST API, described as covering \"all aspects of the Braintrust platform,\" backed by a published OpenAPI 3.1.1 spec. The API is documented for projects, experiments, datasets, traces, prompts, tools and scorers, and the official SDKs, `bt` CLI and MCP server extend programmatic access. However, the evidence never shows that UI-only surfaces (playgrounds, Loop, Patterns, Topics, custom annotation interfaces, dashboards) are reachable through the API, so full UI parity is claimed but not demonstrated. missing for 10: documented API coverage of playgrounds, Loop/Patterns/Topics, annotation interfaces and dashboards; an explicit UI-to-API parity mapping; independent hands-on corroboration of parity.",
     "evidenceIds": [
       "braintrust-docs-11",
       "braintrust-docs-34",
       "braintrust-docs-41",
+      "braintrust-openapi-spec-20261106",
       "braintrust-docs-33",
       "braintrust-docs-9",
-      "braintrust-docs-25",
-      "braintrust-docs-63",
-      "braintrust-docs-27",
-      "braintrust-probe-3"
+      "braintrust-docs-63"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
@@ -4027,15 +4056,11 @@
         },
         {
           "evidenceId": "braintrust-docs-34",
-          "quote": "Create and manage projects, experiments, and datasets; Log traces and metrics; Manage prompts, tools, and scorers"
+          "quote": "You can use it to: Create and manage projects, experiments, and datasets; Log traces and metrics; Manage prompts, tools, and scorers"
         },
         {
-          "evidenceId": "braintrust-docs-27",
-          "quote": "Run them from code or in the UI"
-        },
-        {
-          "evidenceId": "braintrust-docs-25",
-          "quote": "Query logs, author scorers, configure Topics, and run evals from your editor."
+          "evidenceId": "braintrust-openapi-spec-20261106",
+          "quote": "The API is defined by an OpenAPI 3.1.1 specification published at braintrust-openapi on GitHub."
         },
         {
           "evidenceId": "braintrust-docs-33",
@@ -4050,11 +4075,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Braintrust documents first-party export of logs in open formats: CSV or JSON download, plus `bt sync pull` to pull data locally. Its API and self-hosting option, which keeps experiment logs, traces, datasets, and prompts in your own cloud, add to data ownership. However, export of all data types in open formats is not explicitly documented, so 'export everything and leave' is only partly evidenced. Missing for 10: documented bulk export of datasets, experiments, prompts and scorers in open formats; a documented full-account export or offboarding path; independent or hands-on corroboration.",
+    "rationale": "Braintrust documents exporting logs as CSV or JSON and pulling them locally with `bt sync pull`, which is a real first-party export in open formats. However, nothing in the evidence documents exporting all data, such as datasets, experiments, prompts and scorers, or a full-account offboarding path. The self-hosted option keeps stored data in the customer's own cloud, but that is a deployment choice rather than an export feature, and the general API is only a building block. Missing for 10: documented bulk or full-account export covering datasets, experiments, prompts and scorers; explicit offboarding/data-portability guidance; independent corroboration that exports are complete.",
     "evidenceIds": [
       "braintrust-docs-35",
       "braintrust-docs-33",
-      "braintrust-docs-11",
       "braintrust-docs-57"
     ],
     "support": {
@@ -4068,11 +4092,7 @@
         },
         {
           "evidenceId": "braintrust-docs-33",
-          "quote": "It lets you authenticate, trace coding-agent sessions, run evals, browse and query logs, sync data, and manage functions without leaving your terminal."
-        },
-        {
-          "evidenceId": "braintrust-docs-11",
-          "quote": "The Braintrust API allows you to interact with all aspects of the Braintrust platform programmatically."
+          "quote": "browse and query logs, sync data, and manage functions without leaving your terminal"
         },
         {
           "evidenceId": "braintrust-docs-57",
@@ -4087,7 +4107,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-source licensing is a fair question for an AI observability platform, so the axis applies. The pack never states an open-source license for Braintrust or any of its components. The GitHub items show public SDK example code (braintrust-sdk-javascript) but no license terms, and the self-hosting docs describe customer-run data storage with a Braintrust-managed platform rather than open source code.",
+    "rationale": "The pack shows public GitHub repositories for Braintrust's JavaScript SDK and OpenAPI spec, but none of the evidence names an open-source license for any code. The core platform is not shown as open source: even in self-hosting, Braintrust says it provides the managed UI, authentication and platform updates. Code examples from an SDK repo do not show that the product's source is readable under an open license.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4102,13 +4122,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "high",
-    "rationale": "Braintrust documents a first-party self-hosted deployment, but it is hybrid. Customers run the data-storage infrastructure in their own cloud account and region, while Braintrust still provides the managed UI, authentication and platform updates. So the core product is not fully self-hostable. missing for 10: a fully self-hosted control plane (UI, auth, updates) with no Braintrust-managed dependency, deployment and installation docs, and independent or hands-on corroboration of a self-hosted install.",
+    "rationale": "Braintrust documents its own self-hosted deployment option, but it is a hybrid model. Customers deploy and control the data-storage infrastructure, while Braintrust still provides the managed UI, authentication, and platform updates, so the full core product is not self-hosted. missing for 10: self-hosting of the UI/control plane and authentication, a fully air-gapped or standalone deployment, independent or hands-on corroboration of the self-hosted setup.",
     "evidenceIds": [
       "braintrust-docs-10",
-      "braintrust-docs-24",
       "braintrust-docs-32",
-      "braintrust-docs-40",
-      "braintrust-docs-57"
+      "braintrust-docs-57",
+      "braintrust-docs-40"
     ],
     "support": {
       "relation": "direct",
@@ -4122,10 +4141,6 @@
         {
           "evidenceId": "braintrust-docs-57",
           "quote": "keeping all customer data (experiment logs, traces, datasets, and prompts) within your own cloud account and region"
-        },
-        {
-          "evidenceId": "braintrust-docs-24",
-          "quote": "Braintrust offers a self-hosted deployment option that separates data storage from platform management."
         }
       ]
     }
@@ -4134,9 +4149,9 @@
     "productId": "braintrust",
     "storyId": "otel-native-tracing",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Braintrust's Go SDK documents that tracing is built on OpenTelemetry, so developers instrument their code with the standard OTel API rather than a proprietary one. However, the evidence never documents an OTLP ingest endpoint for sending traces from arbitrary OTel exporters, nor OTLP export of traces back out. Missing for 10: documented OTLP ingest endpoint/configuration, OTLP export or receive capability, OTel support beyond the Go SDK, independent corroboration.",
+    "rationale": "Braintrust's Go SDK documents that its tracing is built on OpenTelemetry, so developers instrument their own code with the standard OpenTelemetry API instead of a proprietary one. However, the pack never documents an OTLP ingestion endpoint, OTLP export of traces out of Braintrust, or OTel support outside the Go SDK. Missing for 10: documented OTLP endpoint for receiving traces, OTLP export or forwarding of traces, OTel support across the other SDKs (Python/TypeScript/Java), and independent or hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-66",
       "braintrust-docs-42"
@@ -4163,7 +4178,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Braintrust is a tracing and observability platform, so masking or redacting sensitive data before traces are stored is a fair question for it. However, the evidence pack documents no masking, redaction or PII-scrubbing capability in the SDK or platform. Self-hosted data storage and permission groups are related controls, not redaction, so they earn no credit.",
+    "rationale": "Redacting sensitive data before it is stored is a fair question for a tracing and observability platform, so the axis applies. Nothing in the evidence documents masking, redaction, or pre-storage scrubbing hooks in the SDK or platform. Self-hosted data storage and permission groups are adjacent data-control features and do not earn credit for redaction.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4175,19 +4190,18 @@
   {
     "productId": "braintrust",
     "storyId": "privacy-data-residency",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Braintrust documents a self-hosted deployment option for data residency. It keeps customer data (experiment logs, traces, datasets, prompts) in the customer's own cloud account and region, while Braintrust manages the UI and platform. Residency choice is therefore achieved only by deploying and running your own data-plane infrastructure. Missing for 10: a documented region selection for the managed/hosted service (e.g. US/EU), specifics on supported clouds and regions, and independent or hands-on corroboration.",
+    "rationale": "Braintrust documents a self-hosted deployment option built for data residency. The data plane runs in your own infrastructure, and all customer data (experiment logs, traces, datasets, and prompts) stays in your own cloud account and region, while Braintrust provides the managed UI, authentication and updates. Missing for 10: region selection on the fully managed hosted service, documentation of supported clouds/regions and deployment prerequisites, independent or hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-10",
       "braintrust-docs-32",
-      "braintrust-docs-57",
-      "braintrust-docs-24"
+      "braintrust-docs-57"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
       "citations": [
         {
@@ -4211,7 +4225,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Braintrust is a SaaS observability and eval platform that stores customer traces and datasets, so whether that data is used for AI training is a fair question. The pack has no statement about training-use policy or an opt-out. The self-hosting option, which keeps data in your own cloud account for residency and compliance, is an adjacent control and does not document that data is excluded from model training.",
+    "rationale": "Braintrust is a SaaS platform that stores customer AI traces and datasets, so a no-training policy or opt-out is a fair question to ask of it. The evidence pack contains no statement or control about excluding customer data from model training. Self-hosting covers data residency and infrastructure control, which is an adjacent capability and not a training-use guarantee.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4226,7 +4240,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents no retention policies, TTLs, or deletion controls for traces, logs, datasets, or experiments. Self-hosting controls where data is stored (residency), and export (CSV/JSON, `bt sync pull`) covers getting data out; neither is a retention or deletion capability, so both are adjacent features that earn no credit.",
+    "rationale": "The evidence pack documents no retention policies, TTLs, or deletion controls for traces, logs, or datasets. Self-hosting gives data residency and control over storage infrastructure. That makes it an adjacent capability (a user-managed infrastructure workaround), not a product feature for setting retention or deleting data. Permission groups, log export, and generic API 'manage' wording do not establish retention or deletion control either.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4241,7 +4255,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of vendor telemetry and usage tracking is a fair question for an observability SaaS with SDKs and a CLI, so the axis applies. The pack documents no setting, environment variable or flag to disable Braintrust's own product or SDK telemetry. The self-hosting option controls where customer trace data is stored, which is a different capability from opting out of usage tracking, so it earns no credit.",
+    "rationale": "Braintrust is an observability platform with SDKs and a CLI, so a buyer could fairly ask whether it lets users opt out of vendor telemetry or usage tracking. The evidence pack documents no such opt-out setting, flag or policy. The self-hosting option, which keeps customer data in your own cloud account, is an adjacent data-residency control and does not let users opt out of telemetry.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4256,7 +4270,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Braintrust documents Playgrounds as a no-code workspace for iterating on prompts across models, scorers, and datasets, with real-time evaluations and side-by-side comparison. That covers the core of the story. However, the evidence never explicitly describes prompt template variables or how they are bound to dataset inputs, and nothing independent corroborates playground use. missing for 10: explicit documentation of prompt variables/templating in the playground, independent or hands-on corroboration of playground iteration against live models.",
+    "rationale": "Braintrust documents Playgrounds as a no-code workspace for iterating on prompts, models, scorers, and datasets. You can run full evaluations in real time and compare results side by side, which covers the core of iterating on prompts against real models. Prompt template variables are never explicitly documented; dataset inputs only imply them, so coverage is partial. missing for 10: explicit documentation of prompt variables/templating in the playground, independent or hands-on corroboration of the playground workflow.",
     "evidenceIds": [
       "braintrust-docs-3",
       "braintrust-docs-54",
@@ -4289,12 +4303,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Braintrust documents first-party prompt management: the API and SDKs can \"manage prompts\", prompts can be authored via MCP, and Playgrounds offer a no-code workspace for iterating on prompts. Nothing in the pack shows prompt version history or a way to push prompt changes to production without a code deploy. The versioning evidence covers datasets only and does not carry over to prompts. missing for 10: documented prompt versioning/history, a mechanism for deploying or promoting prompt versions to production without code changes (e.g. runtime prompt fetching or environments), independent corroboration.",
+    "rationale": "Braintrust's own API and SDK document prompt management: the API covers 'Manage prompts, tools, and scorers' and the SDKs 'manage prompts'. Playgrounds offer no-code prompt iteration, and the MCP integration lets developers author prompts. None of this evidences prompt version history or pushing a prompt change to production without a code deploy; dataset versioning is a different capability and is not credited. Missing for 10: documented prompt versioning/history, runtime fetching of deployed prompts or environment promotion so production updates without shipping code, and independent or hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-34",
       "braintrust-docs-63",
       "braintrust-docs-54",
-      "braintrust-docs-9"
+      "braintrust-docs-39"
     ],
     "support": {
       "relation": "direct",
@@ -4314,7 +4328,7 @@
           "quote": "Playgrounds provide a no-code workspace for rapidly iterating on prompts, models, scorers, and datasets."
         },
         {
-          "evidenceId": "braintrust-docs-9",
+          "evidenceId": "braintrust-docs-39",
           "quote": "Query production logs, author prompts and scorers, configure monitoring, and run evals"
         }
       ]
@@ -4323,10 +4337,10 @@
   {
     "productId": "braintrust",
     "storyId": "python-js-sdk-parity",
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Braintrust documents official Python and TypeScript SDK references, and its SDKs index says they can log traces from code. For Python, `wrap_openai` automatically logs LLM calls. The JS/TS evidence (official SDK repo and TypeScript reference) shows only eval APIs, not tracing or instrumentation in a JS/TS app, so instrumentation in both languages is only partly evidenced. missing for 10: explicit JS/TS tracing/instrumentation documentation (e.g., wrappers or span APIs), independent or hands-on corroboration of instrumenting apps in both languages.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Braintrust documents official SDKs for Python (versioned Python SDK reference, with `wrap_openai` auto-logging LLM calls) and TypeScript (versioned TS SDK reference plus the official braintrustdata JavaScript SDK repo). Its SDK index states the SDKs log traces from code, and Go and Java SDKs exist as well. missing for 10: an explicit JS/TS tracing or wrapper example (the JS evidence shown is eval-focused), independent hands-on corroboration of instrumentation in both languages.",
     "evidenceIds": [
       "braintrust-docs-63",
       "braintrust-docs-36",
@@ -4337,7 +4351,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can instrument apps in both Python and JS/TS with officially supported SDKs",
       "citations": [
         {
@@ -4349,16 +4363,12 @@
           "quote": "Braintrust provides `wrap_openai`, a drop-in wrapper around the OpenAI client that automatically logs all LLM calls to Braintrust."
         },
         {
-          "evidenceId": "braintrust-docs-38",
-          "quote": "A function you can use to define an evaluator. This is a convenience wrapper around the `Evaluator` class."
-        },
-        {
           "evidenceId": "braintrust-docs-64",
           "quote": "Create an Eval scorer that will evaluate an agent based on assertions on the generated trace."
         },
         {
-          "evidenceId": "braintrust-docs-15",
-          "quote": "Add tracing to your AI application to capture LLM calls, application logic, and user feedback"
+          "evidenceId": "braintrust-docs-38",
+          "quote": "A function you can use to define an evaluator. This is a convenience wrapper around the `Evaluator` class."
         }
       ]
     }
@@ -4369,7 +4379,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alerting is a fair axis for an observability platform like Braintrust, but the pack documents no alert rules or thresholds and no notification channels such as Slack, PagerDuty or email. The closest items are real-time tracking of latency, cost and quality, dashboards, and a vague mention of configuring monitoring via MCP. None of these establishes threshold alerts or outbound notifications.",
+    "rationale": "The evidence shows real-time tracking of latency, cost, and quality, plus dashboards and the ability to 'configure monitoring' from MCP clients. Nothing documents threshold-based alerts on error rates, cost spikes, or eval-score drops, or delivery to Slack, PagerDuty, or email. Monitoring dashboards and online scoring are adjacent features, not alerting with notification routing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4384,12 +4394,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Braintrust records token usage for every request and markets real-time cost tracking. Its AI agent can build dashboards, so the core cost and token data exists in the product, but the specific breakdowns the story asks for are not documented. missing for 10: explicit documentation of dashboards breaking down cost and tokens by model and by time period, per-request cost (not only tokens) shown in the UI, and independent or hands-on corroboration.",
+    "rationale": "Braintrust's docs say it records token usage for every request and lets you track cost in real time. Loop, its AI agent, can build dashboards, so the core cost-monitoring capability is first-party. However, the evidence never shows cost or token dashboards broken down by model or by time period. missing for 10: documented cost/token dashboards with per-model and per-time-period breakdowns, explicit per-request cost (not just tokens) display, independent or hands-on corroboration.",
     "evidenceIds": [
       "braintrust-docs-1",
+      "braintrust-docs-53",
       "braintrust-docs-70",
-      "braintrust-docs-18",
-      "braintrust-docs-37"
+      "braintrust-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -4397,7 +4407,7 @@
       "subject": "As a developer, I can see cost and token usage per request, model, and time period in dashboards",
       "citations": [
         {
-          "evidenceId": "braintrust-docs-1",
+          "evidenceId": "braintrust-docs-53",
           "quote": "recording inputs, outputs, model parameters, latency, token usage, and metadata for every request"
         },
         {
@@ -4407,10 +4417,6 @@
         {
           "evidenceId": "braintrust-docs-18",
           "quote": "Ask Braintrust’s AI agent to investigate your data and build scorers, datasets, and dashboards"
-        },
-        {
-          "evidenceId": "braintrust-docs-37",
-          "quote": "The **Logs** page displays all traces from your application in a searchable, filterable table."
         }
       ]
     }
@@ -4421,14 +4427,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Braintrust's instrumentation docs say traces record inputs, outputs, model parameters, latency, token usage and metadata for every request. Capture is via drop-in wrappers such as wrap_openai, Go auto-instrumentation and a Java agent, and traces can be inspected in the Logs UI or with `bt view logs`. The single community comment about limited integration options is general sentiment, not a concrete failure of tracing, so it does not create a dispute. Missing for 10: independent hands-on corroboration that latency and token usage are actually captured.",
+    "rationale": "Braintrust's first-party instrumentation docs say tracing records inputs, outputs, model parameters, latency, token usage and metadata for every request. Capture is documented through drop-in wrappers (wrap_openai), auto-instrumentation in the Go and Java SDKs, and OpenTelemetry, and traces are viewable in the Logs UI and CLI. missing for 10: independent hands-on corroboration that token usage and latency are captured accurately.",
     "evidenceIds": [
       "braintrust-docs-1",
       "braintrust-docs-53",
       "braintrust-docs-36",
       "braintrust-docs-42",
       "braintrust-docs-43",
-      "braintrust-docs-15",
+      "braintrust-docs-66",
       "braintrust-docs-37",
       "braintrust-docs-70"
     ],
@@ -4446,12 +4452,12 @@
           "quote": "Braintrust provides `wrap_openai`, a drop-in wrapper around the OpenAI client that automatically logs all LLM calls to Braintrust."
         },
         {
-          "evidenceId": "braintrust-docs-42",
-          "quote": "The recommended way to capture AI calls is auto-instrumentation: use the `trace/contrib` packages to instrument supported provider libraries"
-        },
-        {
           "evidenceId": "braintrust-docs-43",
           "quote": "attach the Braintrust Java Agent at JVM startup and supported clients are traced with no code changes"
+        },
+        {
+          "evidenceId": "braintrust-docs-70",
+          "quote": "Inspect every agent trace and tool call, search across millions of logs, and track latency, cost, and quality in real time."
         }
       ]
     }

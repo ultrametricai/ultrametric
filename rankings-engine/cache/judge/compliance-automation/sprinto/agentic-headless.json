@@ -1,17 +1,32 @@
 {
-  "hash": "fa9ae7c556aad0091bb9ed6b2d739c6626c3cca788044dc37dfedab8e939e1df",
+  "hash": "a9d4cd3628958652da2621cabdb1be44b746b9263048fc860a26dd74bbff1850",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Sprinto is a SaaS compliance platform, so running it headlessly or in CI is a fair question, but the pack documents no headless mode, CLI, or CI integration. The nearest items are API reference page titles (custom integration push APIs, framework health APIs), inbound webhooks that let external systems send data in, and agent skills installed via npx for coding assistants. These are integration building blocks or adjacent features, not a documented way to run the product's compliance workflows from automation, and the OpenAPI probe returned 404 on every path.",
-    "evidenceIds": [],
+    "rationale": "Sprinto documents its own key-authenticated GraphQL Developer API, including Framework Health and Vendor Data APIs and custom-integration push APIs, plus inbound webhook endpoints. Scripts and pipelines could use these to drive or feed the platform without the UI. Nothing in the evidence describes a CLI, a CI plugin or action, or a documented headless/CI workflow, so automation-in-CI is only implied through the API surface. Missing for 10: an official CLI or CI integration (e.g., GitHub Action or pipeline step), documented headless/CI usage guides, a downloadable API spec (OpenAPI probes returned 404), and hands-on corroboration of CI automation.",
+    "evidenceIds": [
+      "sprinto-introspection-20261106",
+      "sprinto-docs-17",
+      "sprinto-docs-16",
+      "sprinto-docs-48",
+      "sprinto-probe-3"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sprinto-introspection-20261106",
+          "quote": "The Sprinto Developer API is built using GraphQL"
+        },
+        {
+          "evidenceId": "sprinto-docs-48",
+          "quote": "Each webhook generates a unique endpoint URL that receives incoming requests from external services."
+        }
+      ]
     },
     "productId": "sprinto",
     "storyId": "agentic-headless"
