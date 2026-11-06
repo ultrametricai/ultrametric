@@ -1,18 +1,18 @@
 {
-  "hash": "b0c39bfc289003bf6796911b2fb5dcd07c8d1d54fc4ddaefd895989118929816",
+  "hash": "1d4d962b0cc61bf41ed392e352bd890d7542e9e6ced29c103ed3278e0f70ded8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "LiteLLM is built around a documented programmatic interface. Its docs cover a single completion() interface across providers and OpenAI-format responses. They also document a drop-in OpenAI-compatible proxy, REST endpoints for MCP tools callable with curl, and JSON payloads for team and budget management, and a maintainer confirmed the proxy supports streaming and function-calling like the openai-python SDK. missing for 10: no machine-readable OpenAPI/Swagger spec was found (all probed paths returned 404), admin endpoints for keys, teams and users are only thinly evidenced through config/JSON snippets, and there is no independent hands-on verification of the API surface.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "LiteLLM publishes a formal API Stability Policy that defines the proxy's public surface. Every deployed proxy serves a generated OpenAPI spec at /openapi.json and a Swagger UI at its root, and a semver/release-cycle contract backs this up. It also exposes OpenAI-compatible endpoints plus REST endpoints such as /mcp-rest/tools/call that can be driven with curl. missing for 10: a vendor-hosted public spec download (the probe found no hosted openapi.json; the spec exists only on user-deployed proxies), independent hands-on corroboration of the admin/management API endpoints.",
     "evidenceIds": [
-      "litellm-docs-1",
-      "litellm-docs-2",
-      "litellm-gh-1",
+      "litellm-api-stability-policy-20261105",
+      "litellm-openapi-settings-20261105",
+      "litellm-swagger-ui-20261105",
+      "litellm-release-cycle-20261105",
       "litellm-docs-33",
-      "litellm-docs-26",
-      "litellm-docs-8",
+      "litellm-docs-2",
       "litellm-comm-13",
       "litellm-probe-3"
     ],
@@ -22,24 +22,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "litellm-docs-1",
-          "quote": "Call any provider using the same completion() interface, with no API to re-learn for each one"
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "Every endpoint that appears in the proxy's OpenAPI spec is public"
         },
         {
-          "evidenceId": "litellm-docs-2",
-          "quote": "Every response follows the OpenAI Chat Completions format, regardless of provider."
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "The spec is served at `/openapi.json` and rendered as Swagger UI at `/` by default"
         },
         {
-          "evidenceId": "litellm-gh-1",
-          "quote": "Drop-in OpenAI compatibility — swap providers without rewriting your code"
+          "evidenceId": "litellm-swagger-ui-20261105",
+          "quote": "Your Proxy Swagger is available on the root of the Proxy: e.g.: `http://localhost:4000/`"
         },
         {
           "evidenceId": "litellm-docs-33",
           "quote": "call tools with curl without an LLM"
-        },
-        {
-          "evidenceId": "litellm-docs-8",
-          "quote": "Track Spend, and control model access via virtual keys for the proxy"
         }
       ]
     },

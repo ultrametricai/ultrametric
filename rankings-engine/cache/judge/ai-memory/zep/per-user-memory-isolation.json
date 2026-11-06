@@ -1,20 +1,19 @@
 {
-  "hash": "8da7295d650ae2399277c23a74014adc1812803afc6b7f78816e732726c7523f",
+  "hash": "7eb8a05ed379ee71c1dd0f5acca41a95de0d27fdc64055da6d5c9cacd0b7c080",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Zep documents per-user scoping: each app user maps to a Zep user, and messages are ingested into that user's own Context Graph. ABAC policies on API keys and UserGroups limit which context each agent and Memory MCP user can reach. However, the evidence never explicitly guarantees that retrieval cannot cross tenants, and per-application or per-project scoping is not described. Missing for 10: explicit documentation of tenant isolation guarantees in search and retrieval, application- or project-level memory scoping, and independent or hands-on corroboration that no cross-tenant leakage occurs.",
+    "rationale": "Zep documents per-user scoping: messages are ingested into each user's own Context Graph, and retrieval runs a user graph search. ABAC policies on API keys and UserGroups limit which context each agent and Memory MCP user can reach, which gives least-privilege scoping beyond the user level. Missing for 10: an explicit application- or tenant-level memory namespace, any documented guarantee that one tenant's data never appears in another's retrieval, and independent or hands-on corroboration of that isolation.",
     "evidenceIds": [
-      "zep-docs-19",
-      "zep-docs-20",
       "zep-docs-48",
+      "zep-docs-49",
       "zep-docs-38",
       "zep-docs-25",
-      "zep-docs-12",
-      "zep-docs-5",
-      "zep-docs-34"
+      "zep-docs-53",
+      "zep-docs-19",
+      "zep-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -22,20 +21,20 @@
       "subject": "As a developer, I can scope memories per user, agent, or application so one tenant's memories never leak into another's retrieval",
       "citations": [
         {
-          "evidenceId": "zep-docs-19",
-          "quote": "Whenever users are created in your application, you need to trigger the creation of a Zep user."
-        },
-        {
           "evidenceId": "zep-docs-48",
           "quote": "ingests them into the user's Context Graph"
+        },
+        {
+          "evidenceId": "zep-docs-49",
+          "quote": "Zep will perform a user graph search right after persisting the data and return the context relevant to the recently added messages."
         },
         {
           "evidenceId": "zep-docs-38",
           "quote": "Limit which actions and context each agent and Memory MCP user can reach with ABAC policies attached to API keys and UserGroups."
         },
         {
-          "evidenceId": "zep-docs-25",
-          "quote": "Use policies when you need least-privilege access to context for agents and Memory MCP users."
+          "evidenceId": "zep-docs-53",
+          "quote": "connect an MCP client (Claude, ChatGPT, Claude Code, Codex, Cursor, and others) to their own agent memory in Zep"
         }
       ]
     },

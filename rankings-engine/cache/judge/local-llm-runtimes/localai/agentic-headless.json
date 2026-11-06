@@ -1,19 +1,19 @@
 {
-  "hash": "b17c8523725ebdf8e82161df826c2534dfaf2c1323e5b817bf96eb6efb5e665d",
+  "hash": "bb5de3fd936508a90d096f3e43de718dedec37e808b3864c6cebcd5580e72497",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LocalAI clearly runs headlessly. It ships as a single binary or Docker container that serves an OpenAI-compatible API, can be launched from the CLI with a model, and accepts a `--preload-models` flag or env var to set up models without the web UI, so it suits scripted automation. CI use specifically is only implied: the 'tested in CI' claim refers to the vendor's own CI, not a documented pattern for running LocalAI inside a user's pipeline. missing for 10: documented CI-pipeline usage (e.g. GitHub Actions/service-container recipe), a non-interactive or approval-free mode for the `local-ai chat` agent, an OpenAPI spec (probe 404), independent/hands-on corroboration of headless CI runs.",
+    "rationale": "LocalAI runs as a headless server that automation can drive. It has a docker run command, a `local-ai run` CLI, models preloaded at startup via the PRELOAD_MODELS env var or flag, and an OpenAI-compatible API with a shipped Swagger spec. However, nothing documents running it inside a user's CI pipeline: the only 'CI' mention is the vendor's own testing of CPU paths. Missing for 10: documented CI-pipeline usage (e.g. a CI workflow example or service-container recipe), non-interactive scripted mode for `local-ai chat` given its approval gate, and independent hands-on corroboration of headless/CI automation.",
     "evidenceIds": [
       "localai-docs-31",
       "localai-docs-21",
       "localai-docs-12",
-      "localai-docs-32",
       "localai-docs-1",
-      "localai-docs-7",
-      "localai-docs-27"
+      "localai-docs-32",
+      "localai-swagger-spec-20261106",
+      "localai-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -29,12 +29,12 @@
           "quote": "PRELOAD_MODELS (or --preload-models) takes a list in JSON with the same parameter of the API calls of the /models/apply endpoint."
         },
         {
-          "evidenceId": "localai-docs-32",
-          "quote": "One binary with an OpenAI-compatible API in front of it. Point an existing client at it and the calls keep working"
-        },
-        {
           "evidenceId": "localai-docs-21",
           "quote": "local-ai run huggingface://TheBloke/phi-2-GGUF/phi-2.Q8_0.gguf"
+        },
+        {
+          "evidenceId": "localai-docs-32",
+          "quote": "One binary with an OpenAI-compatible API in front of it. Point an existing client at it and the calls keep working"
         }
       ]
     },

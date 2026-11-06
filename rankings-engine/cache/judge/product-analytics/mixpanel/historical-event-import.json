@@ -1,16 +1,16 @@
 {
-  "hash": "81d5499bd697a4decd0a149102cd48cc1916b588afb29d029c11be33248b382e",
+  "hash": "789aa8f5cfb8c584314840e80cb8b5fda5ba72eda8b0d2c494885c87e4b25bb4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Mixpanel's own Warehouse Connectors sync data from Snowflake, BigQuery, Databricks, Redshift, and Postgres into Mixpanel, with Mirror change tracking. That gives a first-party bulk-ingestion path for historical event data once it has been staged in a warehouse. The export APIs run in the wrong direction, and the partner tools (Census, Vendo) are third-party, so neither counts. Missing for 10: a documented bulk import API or file-based upload, direct migration from other analytics tools, explicit handling of historical timestamps and backfill limits, and independent or hands-on corroboration.",
+    "rationale": "Mixpanel documents its own batch ingestion endpoint, Import Events (POST /import), for sending batches of events from servers. It also offers Warehouse Connectors that sync event data from Snowflake, BigQuery, Databricks, Redshift and Postgres, which gives a first-party path for bulk-loading exported data. However, the evidence never says these paths accept historical or backdated events, and there is no documented migration path from another analytics tool. Missing for 10: explicit documentation of historical/backdated timestamp import and its limits, a first-party migration guide or importer for other analytics tools, and independent hands-on corroboration of bulk historical imports.",
     "evidenceIds": [
+      "mixpanel-api-playground-20261105",
+      "mixpanel-ingestion-spec-20261105",
       "mixpanel-docs-24",
-      "mixpanel-docs-6",
-      "mixpanel-intdir-5",
-      "mixpanel-intdir-6"
+      "mixpanel-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -18,12 +18,16 @@
       "subject": "As a developer, I can bulk-import historical events from another analytics tool or a data export into the platform",
       "citations": [
         {
-          "evidenceId": "mixpanel-docs-24",
-          "quote": "With Warehouse Connectors, you can sync data from data warehouses like Snowflake, BigQuery, Databricks, Redshift, and Postgres to Mixpanel."
+          "evidenceId": "mixpanel-api-playground-20261105",
+          "quote": "\"Import Events\" (POST /import, \"Use this API to send batches of events from your servers to Mixpanel\")"
         },
         {
-          "evidenceId": "mixpanel-intdir-5",
-          "quote": "Mixpanel will create and manage the necessary STREAM objects in the \\MIXPANEL\\ schema"
+          "evidenceId": "mixpanel-ingestion-spec-20261105",
+          "quote": "describing \"APIs allowing for event-based tracking and user profile handling\""
+        },
+        {
+          "evidenceId": "mixpanel-docs-24",
+          "quote": "With Warehouse Connectors, you can sync data from data warehouses like Snowflake, BigQuery, Databricks, Redshift, and Postgres to Mixpanel."
         }
       ]
     },

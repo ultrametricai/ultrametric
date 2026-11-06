@@ -1,15 +1,16 @@
 {
-  "hash": "8711b0b5157ab461bf4ca4bb76d9fde78326e718424c80fdd9ba4b4caef10fa6",
+  "hash": "eb3556835b93d9ad1b9f0f2c281c1fd619127252c62d11ce2ba0de632e33c7e4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Smithery's CLI lets an agent search the registry programmatically ('smithery mcp search') and find tools by name or intent ('smithery tool find'), so discovery is the product's own capability. However, the documented REST interface covers connecting to servers, not catalog discovery, and probes found no OpenAPI spec. Missing for 10: a documented registry/catalog HTTP API with endpoints and schemas for server and tool search, an OpenAPI spec, and independent corroboration of programmatic discovery.",
+    "rationale": "Smithery's maintained official CLI documents registry discovery commands (`smithery mcp search`, `smithery tool find`) that an agent can run programmatically against the public registry. However, the documented Smithery API was shut down on 2026-10-31. The live registry.smithery.ai/servers JSON endpoint still answers but is undocumented, with no docs or OpenAPI spec (both 404). Missing for 10: a documented HTTP registry API, an OpenAPI/spec for the registry endpoint, confirmation that tool-level discovery works without the shut-down connection services, and independent hands-on corroboration.",
     "evidenceIds": [
       "smithery-gh-1",
       "smithery-gh-2",
-      "smithery-docs-1",
+      "smithery-registry-undocumented-20261106",
+      "smithery-api-shutdown-20261106",
       "smithery-probe-3"
     ],
     "support": {
@@ -19,11 +20,19 @@
       "citations": [
         {
           "evidenceId": "smithery-gh-1",
-          "quote": "smithery mcp search [term]              # Search the Smithery registry"
+          "quote": "Registry commands: smithery mcp search [term], smithery mcp add <url>, smithery mcp list, smithery mcp remove."
         },
         {
           "evidenceId": "smithery-gh-2",
-          "quote": "smithery tool find [query]             # Search tools by name or intent"
+          "quote": "smithery tool find [query]"
+        },
+        {
+          "evidenceId": "smithery-registry-undocumented-20261106",
+          "quote": "The maintained CLI commands are the only documented discovery surface against the public registry."
+        },
+        {
+          "evidenceId": "smithery-api-shutdown-20261106",
+          "quote": "Smithery will remain as a public (non-proxied) MCP registry."
         }
       ]
     },

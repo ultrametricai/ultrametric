@@ -1,17 +1,29 @@
 {
-  "hash": "05a3c6331d0724b6fbd7bcb334b5e4b1710870c96be9fc14ab57db44899838ab",
+  "hash": "031ee3558ca0a60bb4da75c7ece2f78703daaba8a29a00fc48c9652767e5b8ff",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Statsig has a CRUD Console API and a CLI for managing gates and experiments, which could be scripted for automation. Neither is documented as offering bulk operations across many items at once; these are developer building blocks for building that capability. The multi-gate evaluation and multi-event logging endpoints are runtime batching, and Layers group experiments, but these are adjacent features rather than bulk management operations.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Statsig's API reference documents multi-item calls: one request can evaluate one or more feature gates, or log one or more custom events. That is genuine batch handling, but only for evaluation and event ingestion. The Console API and CLI give CRUD and CI/CD automation but document no bulk edit, archive or update across many gates or experiments, so building that is left to the user. Missing for 10: documented bulk management operations (bulk update/archive/delete of gates and experiments), bulk actions via MCP or CLI, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "statsig-docs-49",
+      "statsig-docs-50"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "statsig-docs-49",
+          "quote": "Evaluates one or more feature gates for a user and returns pass/fail results."
+        },
+        {
+          "evidenceId": "statsig-docs-50",
+          "quote": "Logs one or more custom events for analytics and metric calculation."
+        }
+      ]
     },
     "productId": "statsig",
     "storyId": "automation-bulk-operations"

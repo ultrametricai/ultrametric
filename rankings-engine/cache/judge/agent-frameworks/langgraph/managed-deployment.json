@@ -1,33 +1,39 @@
 {
-  "hash": "fc233ae247b971c5c43e0684bdc6024b8db6480e40df9e537aaa0d12c9ba448e",
+  "hash": "a6aa62ac2847b425982d3be697c8e966c571c423136278aff23a9cd26ea0fb9a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LangGraph's own CLI builds and runs an Agent Server that exposes API endpoints for runs, threads and assistants, with a managed database for checkpointing. The repo also claims production-ready deployment on scalable infrastructure. However, the evidence only documents running that server locally and never shows a hosted, managed runtime you deploy to. A community question asks how to deploy beyond local `langgraph serve`, which is an open question rather than a contradiction. missing for 10: documented managed/hosted runtime deployment flow, evidence of calling a remotely deployed endpoint, independent hands-on corroboration.",
+    "rationale": "LangGraph's Agent Server (documented as the 'LangGraph Platform runtime', titled 'LangSmith Deployment') exposes API endpoints for assistants, threads, runs, crons and store, published as an OpenAPI 3.1 spec. A hosted deployment control plane at api.host.langchain.com, with a versioned Deployments API, supports deploying to a managed runtime. Every deployed Agent Server ships a /docs endpoint, and the documented workflow runs from local dev to production deployment. The community question about deploying beyond `langgraph serve` is only a question, not a contradiction. Missing for 10: step-by-step managed-deployment docs in the pack (the deploy step is only referenced, not detailed), and independent or hands-on corroboration of calling a managed deployment's endpoint.",
     "evidenceIds": [
+      "langgraph-agent-server-openapi-20261105",
+      "langgraph-api-playground-20261105",
       "langgraph-docs-30",
-      "langgraph-docs-37",
-      "langgraph-gh-9",
-      "langgraph-docs-8"
+      "langgraph-local-dev-testing-20261105",
+      "langgraph-api-versioning-20261105",
+      "langgraph-gh-9"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an engineering-lead, I can deploy an agent to a managed runtime and call it as an API endpoint",
       "citations": [
+        {
+          "evidenceId": "langgraph-agent-server-openapi-20261105",
+          "quote": "docs.langchain.com publishes the Agent Server (LangGraph Platform runtime) OpenAPI 3.1 document, info title \"LangSmith Deployment\", covering Assistants"
+        },
+        {
+          "evidenceId": "langgraph-api-playground-20261105",
+          "quote": "every deployed or locally run Agent Server ships a built-in interactive API docs endpoint"
+        },
         {
           "evidenceId": "langgraph-docs-30",
           "quote": "The resulting server exposes all API endpoints for runs, threads, assistants, etc., and includes supporting services such as a managed database for checkpointing and storage."
         },
         {
-          "evidenceId": "langgraph-gh-9",
-          "quote": "Production-ready deployment — Deploy sophisticated agent systems confidently with scalable infrastructure designed to handle the unique challenges of stateful, long-running workflows."
-        },
-        {
-          "evidenceId": "langgraph-docs-8",
-          "quote": "LangGraph offers several benefits when building agents and workflows, including persistence, streaming, and support for debugging as well as deployment."
+          "evidenceId": "langgraph-api-versioning-20261105",
+          "quote": "the endpoint groups are version-labelled (Integrations v1, Deployments v2, Listeners v2)"
         }
       ]
     },

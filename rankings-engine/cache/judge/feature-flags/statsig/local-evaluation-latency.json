@@ -1,19 +1,20 @@
 {
-  "hash": "43b351f400082d706f172702bf9e9591762f04e2a7a9cd573c709d1f8b27af5c",
+  "hash": "7f060d9c21b435f4e43627869d32d6e0976f610539e71acc177f422841fd756a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Statsig's docs say server SDKs evaluate gates without a network request after initialization, typically in under 1ms, and that the SDKs handle caching. That covers the core of local, no-network-per-check evaluation. However, the docs never describe the server SDKs holding a downloaded ruleset in memory (only the client On-Device Eval SDKs are described that way), and they claim sub-millisecond rather than microsecond latency. missing for 10: explicit documentation that server SDKs download and cache the full ruleset locally, a documented microsecond-level latency figure, independent or hands-on corroboration of evaluation performance",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Statsig's docs state directly that after initialization, server SDKs evaluate gates and experiments without a network request, typically in under 1ms. Environment-specific SDK keys determine which rule sets the SDK downloads, and the SDKs handle caching and networking themselves, so flag checks run locally against a downloaded ruleset. Missing for 10: explicit microsecond-level latency figures (docs only say <1ms), documentation of how the cached ruleset is synced or refreshed, and independent or hands-on corroboration.",
     "evidenceIds": [
       "statsig-docs-39",
       "statsig-docs-57",
-      "statsig-docs-55"
+      "statsig-docs-55",
+      "statsig-environments-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a platform engineer, my server SDKs evaluate flags locally from a cached ruleset — microsecond decisions with no network call per flag check",
       "citations": [
         {
@@ -23,6 +24,10 @@
         {
           "evidenceId": "statsig-docs-55",
           "quote": "Statsig handles caching, retry mechanisms, and networking."
+        },
+        {
+          "evidenceId": "statsig-environments-20261106",
+          "quote": "environment-specific SDK keys determining which rule sets download"
         }
       ]
     },

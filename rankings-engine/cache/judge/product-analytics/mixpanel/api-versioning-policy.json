@@ -1,17 +1,30 @@
 {
-  "hash": "be79a6902b626a966ce7e0fb8ed12e62f6c1e3fed2737c180ec8f8b66164e949",
+  "hash": "2ab75e913545799fbe4b59b94655e6c8027bb2836a14681699aaa3520dcd30e9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Mixpanel is a SaaS analytics product with public APIs, so API versioning and a deprecation policy are a fair axis. The evidence documents APIs (Raw Event Export, Engage, Query, Feature Flags, JQL) and an MCP server. However, nothing in the pack mentions API version identifiers, versioned endpoints, or a documented deprecation or sunset policy, and the OpenAPI probe returned 404 on every candidate path.",
-    "evidenceIds": [],
+    "rationale": "Mixpanel documents dated deprecations and sunsets with migration paths, such as the Project Secret auth retirement on March 3, 2027 and the /decide endpoint retirement in the changelog. However, the evidence says there is no single numbered API-version policy and no version headers, so the 'versioned APIs' half of the story is not delivered. Downloadable OpenAPI specs describe the APIs but do not establish versioning. Missing for 10: explicit API versioning (numbered versions or version headers), a single formal published deprecation policy with guaranteed notice windows, independent corroboration.",
+    "evidenceIds": [
+      "mixpanel-auth-deprecation-20261105",
+      "mixpanel-api-sunsets-20261105",
+      "mixpanel-openapi-specs-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "mixpanel-auth-deprecation-20261105",
+          "quote": "This authentication method has been deprecated and will be fully retired on March 3, 2027"
+        },
+        {
+          "evidenceId": "mixpanel-api-sunsets-20261105",
+          "quote": "Starting April 2026, we will be fully retiring the `/decide` endpoint, which was used in older versions of Mixpanel SDKs"
+        }
+      ]
     },
     "productId": "mixpanel",
     "storyId": "api-versioning-policy"

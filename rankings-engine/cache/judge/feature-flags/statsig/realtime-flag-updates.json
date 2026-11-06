@@ -1,15 +1,16 @@
 {
-  "hash": "7dc982849d79a2f46de1333e9f9225b778b724deb36b2525eb701c062f095328",
+  "hash": "92602b3b73201afd025466e074544ff9f33a613a79b3d15502a9e44cfb06fd37",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Statsig's docs say gates toggle product behavior \"in real time\" and can serve as an emergency disable switch that \"immediately\" turns off a code branch, so the kill-switch capability is first-party. However, nothing explains how changes reach connected SDKs (streaming vs. polling) or how fast. SDKs evaluating locally after initialization implies cached config whose refresh behavior is undocumented here. Missing for 10: documented streaming or polling propagation mechanism, stated propagation latency in seconds, SDK config refresh intervals, independent or hands-on confirmation that the kill switch takes effect promptly.",
+    "rationale": "Statsig's docs say feature gates toggle behavior 'in real time without deploying new code' and describe an emergency disable switch that 'immediately' turns off a code branch in production, so the kill-switch capability is first-party. The pack never explains how changes reach connected SDKs (streaming vs. polling, update intervals, propagation latency), and SDKs evaluate locally from cached definitions after initialization, so the 'in seconds' guarantee is unproven. Missing for 10: documented streaming or polling propagation mechanism, stated propagation latency or polling interval, hands-on or independent corroboration that a kill switch reaches live SDKs within seconds.",
     "evidenceIds": [
       "statsig-docs-1",
       "statsig-docs-2",
-      "statsig-docs-39"
+      "statsig-comm-4",
+      "statsig-docs-55"
     ],
     "support": {
       "relation": "direct",
@@ -23,6 +24,10 @@
         {
           "evidenceId": "statsig-docs-2",
           "quote": "Have an emergency disable switch that lets you immediately turn off a particular code branch for users in production"
+        },
+        {
+          "evidenceId": "statsig-comm-4",
+          "quote": "realtime targeted config to reduce code churn"
         }
       ]
     },

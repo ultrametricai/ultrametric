@@ -1,17 +1,35 @@
 {
-  "hash": "4bb9c3ff5dfd6e8e85864b54a83e40ad8edfec5e9ea6b24694e414d28073e8a6",
+  "hash": "25cb2b3cde8eda40e23c9d6633eac1ade3e4acd4fb146f509e93bbe78a2fbea8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The docs describe a Weave Service API with REST endpoints, but nothing in the evidence shows a downloadable OpenAPI or equivalent machine-readable spec. The probe found 404 at every common OpenAPI/Swagger path on docs.wandb.ai. Having a REST API is related to this story but does not deliver a published spec file.",
-    "evidenceIds": [],
+    "rationale": "Weave's trace API host serves a complete, downloadable OpenAPI 3.1.0 document at trace.wandb.ai/openapi.json covering 117 paths, plus Swagger UI and ReDoc views, and the Service API docs name this host as the base URL. The probe 404s were on docs.wandb.ai paths, a different host, so they do not contradict this. Missing for 10: the spec link listed in the docs llms.txt answers 404, so the spec is hard to discover from the docs, and no independent probe confirms the trace.wandb.ai spec directly.",
+    "evidenceIds": [
+      "wandb-weave-openapi-spec-20261105",
+      "wandb-weave-service-api-docs-20261105",
+      "wandb-weave-swagger-ui-20261105",
+      "wandb-weave-docs-15"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "wandb-weave-openapi-spec-20261105",
+          "quote": "The Weave trace API host serves a complete machine-readable OpenAPI 3.1.0 document at the well-known path, covering the full service surface (117 paths, including /call/start and /calls/stream_query)."
+        },
+        {
+          "evidenceId": "wandb-weave-service-api-docs-20261105",
+          "quote": "the working spec download is trace.wandb.ai/openapi.json."
+        },
+        {
+          "evidenceId": "wandb-weave-swagger-ui-20261105",
+          "quote": "The trace API hosts a live Swagger UI that loads /openapi.json"
+        }
+      ]
     },
     "productId": "wandb-weave",
     "storyId": "api-machine-spec"

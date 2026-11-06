@@ -1,17 +1,30 @@
 {
-  "hash": "aa316bdc17834e94993174cbc21a541a11b551af9b6ea5a3f2d45317788b8113",
+  "hash": "db9a181cf4f49732c9f3745df271a13159eed293485cbc8ddd0700a44fda8820",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Statsig documents an HTTP API, a Console CRUD API and per-endpoint API reference pages, but nothing in the evidence shows a downloadable OpenAPI or equivalent spec. The probe found every common OpenAPI/Swagger path returning 404. llms.txt is a docs index rather than an API spec, and the human-readable reference pages do not count as a machine-readable spec.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Statsig publishes a machine-readable OpenAPI 3.0.0 document for its Console API at a versioned public path, and the Console API docs link the spec and commit to keeping it current. The probe 404s were on docs-domain paths, so they do not contradict the api.statsig.com artifact. Missing for 10: no evidenced OpenAPI spec for the HTTP evaluation/event-logging API (only the Console API), and no independent or hands-on corroboration of downloading the spec.",
+    "evidenceIds": [
+      "statsig-console-openapi-20261106",
+      "statsig-openapi-reference-20261106",
+      "statsig-api-versioning-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "statsig-console-openapi-20261106",
+          "quote": "api.statsig.com publishes the Console API's machine-readable OpenAPI 3.0.0 document at the versioned path /openapi/20240601.json"
+        },
+        {
+          "evidenceId": "statsig-openapi-reference-20261106",
+          "quote": "Statsig keeps the OpenAPI spec for this API version up-to-date."
+        }
+      ]
     },
     "productId": "statsig",
     "storyId": "api-machine-spec"

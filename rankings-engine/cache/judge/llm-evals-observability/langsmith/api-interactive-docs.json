@@ -1,17 +1,33 @@
 {
-  "hash": "c7bbd25f066b04b655c691cea51d67b61f8853954ff05371a1103c0b7eff6584",
+  "hash": "f10e14aa2e1e0b4b2dc840aea9c554a4be4a9eb84b8a49072a44b8f8f3216c21",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "LangSmith is an API-bearing SaaS platform, so an interactive API reference is a fair question. The evidence only says traces can be handled 'via the UI or API' and that SDKs exist. Nothing documents an interactive API explorer with runnable examples, and the OpenAPI probe returned 404 on every candidate path.",
-    "evidenceIds": [],
+    "rationale": "LangSmith's API host serves an interactive Swagger UI and ReDoc backed by a published OpenAPI 3.1 spec, and the hosted REST reference on docs.langchain.com renders a runnable \"Try it\" playground for each endpoint, so the story is delivered directly. The probe 404s were at generic docs-site paths, while the spec is documented at a different docs path and on the API host, so they do not contradict it. Missing for 10: independent or hands-on corroboration that the Try-it playground and Swagger UI work as described.",
+    "evidenceIds": [
+      "langsmith-swagger-ui-20261105",
+      "langsmith-openapi-spec-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "langsmith-swagger-ui-20261105",
+          "quote": "The API host itself serves an interactive Swagger UI (page title \"LangSmith - Swagger UI\", loading /openapi.json), with ReDoc live at /redoc."
+        },
+        {
+          "evidenceId": "langsmith-swagger-ui-20261105",
+          "quote": "The hosted REST reference on docs.langchain.com additionally renders a runnable \"Try it\" playground per endpoint (e.g. GET /api/v1/info/health)."
+        },
+        {
+          "evidenceId": "langsmith-openapi-spec-20261105",
+          "quote": "The production API host serves its full machine-readable spec at the well-known path: an OpenAPI 3.1 document with info title \"LangSmith\""
+        }
+      ]
     },
     "productId": "langsmith",
     "storyId": "api-interactive-docs"

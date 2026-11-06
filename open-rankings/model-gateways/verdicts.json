@@ -2430,16 +2430,16 @@
     "productId": "litellm",
     "storyId": "agent-spend-guardrails",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy issues virtual keys that can carry individual spending limits, with max_budget and budget_duration resets, so an agent can get its own capped key. Rate guardrails appear only as an rpm_limit on a team object, so per-key rate limiting is not directly shown. missing for 10: explicit per-key rpm/tpm rate-limit documentation, documented enforcement behavior when a key exceeds its budget or rate (e.g. blocking/rejection), independent or hands-on corroboration of key-level guardrails.",
+    "rationale": "LiteLLM's proxy issues virtual keys with per-key spend tracking and individual spending limits, configured with max_budget and budget_duration. That covers the budget half of giving an agent its own capped key. The rate-guardrail half is only shown as an rpm_limit on a team object, not documented for an individual key. Missing for 10: documented per-key rpm/tpm rate limits, evidence that a key is hard-blocked once its budget is exhausted, any agent-specific key guidance, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "litellm-docs-5",
       "litellm-docs-7",
       "litellm-docs-8",
-      "litellm-docs-25",
       "litellm-docs-35",
+      "litellm-docs-25",
       "litellm-docs-26",
+      "litellm-docs-6",
       "litellm-docs-15"
     ],
     "support": {
@@ -2452,6 +2452,10 @@
           "quote": "Personal budgets: Create virtual keys without team_id for individual spending limits"
         },
         {
+          "evidenceId": "litellm-docs-8",
+          "quote": "Track Spend, and control model access via virtual keys for the proxy"
+        },
+        {
           "evidenceId": "litellm-docs-35",
           "quote": "max_budget: 0 # (float) sets max budget as $0 USD  budget_duration: 30d # (str) frequency of reset"
         },
@@ -2462,10 +2466,6 @@
         {
           "evidenceId": "litellm-docs-15",
           "quote": "See who is driving spend, cap it before it runs"
-        },
-        {
-          "evidenceId": "litellm-docs-5",
-          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
         }
       ]
     }
@@ -2473,22 +2473,22 @@
   {
     "productId": "litellm",
     "storyId": "agent-switches-models-policy",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy/router documents availability-driven policy routing. It retries, then falls back to another model group, so a failing model fails over to a healthy backup. It also offers content-policy fallbacks, load-balancing across deployments, and cooldowns and timeouts. Cost- or capability-based routing rules are only implied by a marketing line about sending each request to 'the model that should handle it'. Missing for 10: documented cost-based routing rules, documented capability-based routing rules, and independent hands-on corroboration of mid-task switching.",
+    "rationale": "LiteLLM's gateway Router has documented routing rules: load-balancing across deployments, retries, cooldowns, and fallbacks to other model groups. A failing model or provider automatically fails over to a healthy backup, and content-policy violations can route to fallback models, so availability-driven switching mid-task is clearly delivered. missing for 10: documented cost-based routing rules, explicit capability-based routing beyond a marketing line, independent or hands-on corroboration of mid-task switching.",
     "evidenceIds": [
       "litellm-docs-4",
       "litellm-docs-22",
-      "litellm-docs-30",
       "litellm-docs-18",
+      "litellm-docs-30",
       "litellm-docs-3",
       "litellm-docs-15",
-      "litellm-comm-12"
+      "litellm-docs-28"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, my agent can switch models mid-task by policy — cost, capability, or availability — through gateway routing rules",
       "citations": [
         {
@@ -2500,12 +2500,12 @@
           "quote": "litellm proxy will loop through all the model_groups specified in `fallbacks=[\"gpt-3.5-turbo\"]`"
         },
         {
-          "evidenceId": "litellm-docs-30",
-          "quote": "Basic reliability logic - cooldowns, fallbacks, timeouts and retries (fixed + exponential backoff) across multiple deployments/providers."
-        },
-        {
           "evidenceId": "litellm-docs-18",
           "quote": "content_policy_fallbacks: For litellm.ContentPolicyViolationError - LiteLLM maps content policy violation errors across providers"
+        },
+        {
+          "evidenceId": "litellm-docs-30",
+          "quote": "Basic reliability logic - cooldowns, fallbacks, timeouts and retries (fixed + exponential backoff) across multiple deployments/providers."
         },
         {
           "evidenceId": "litellm-docs-15",
@@ -2518,9 +2518,9 @@
     "productId": "litellm",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "A hands-on probe found a live llms.txt at docs.litellm.ai/llms.txt (HTTP 200) that indexes the LiteLLM docs, so an agent can be pointed at it directly. Depth beyond that index is unproven, and the markdown docs variant returned 404. missing for 10: per-page markdown docs, first-party documentation describing the llms.txt or agent-oriented docs, llms-full.txt or richer agent-oriented content, independent corroboration",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A live probe confirms LiteLLM serves a populated llms.txt at docs.litellm.ai/llms.txt, which indexes its docs (e.g., the LiteLLM Overview), so an agent can be pointed at it directly. Several doc pages are also sourced as .md URLs, but the generic docs/.md markdown probe returned 404. Missing for 10: consistent markdown variants of every docs page, first-party documentation describing agent-oriented doc usage, independent or hands-on corroboration of agents consuming these docs.",
     "evidenceIds": [
       "litellm-probe-1",
       "litellm-probe-2"
@@ -2543,7 +2543,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LiteLLM is an LLM gateway with an admin UI, spend tracking and logging. Such a product could plausibly offer AI-generated insights on usage data, so the axis applies. However, the evidence documents only raw spend tracking, logging exports, traffic mirroring for evaluation and a memory store. Nothing shows the product itself generating AI insights or suggestions from a user's data.",
+    "rationale": "An LLM gateway with an admin UI and spend/usage data could plausibly offer AI-generated insights, so the axis applies. The evidence only documents spend tracking, logging, caching and routing. None of it describes AI-generated insights or suggestions drawn from the user's data inside the product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2558,7 +2558,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LiteLLM is an LLM gateway and SDK. A platform like this could plausibly offer user-defined background jobs, so the axis applies. However, nothing in the evidence shows users can create autonomous or scheduled automations. Background traffic mirroring, automatic fallbacks, request queueing and budget resets are built-in gateway behaviors, not automations a user sets up, so they earn no credit.",
+    "rationale": "LiteLLM is an LLM gateway and SDK. Nothing in the evidence shows a feature for users to set up recurring or autonomous background automations, such as scheduled jobs, triggers, or agent runs. Traffic mirroring runs a silent model in the background, and budgets reset on a schedule, but these are adjacent internal behaviors, not user-defined automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2573,7 +2573,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LiteLLM is an LLM gateway with an admin UI, so an in-product AI assistant is a plausible capability and the axis applies. Nothing in the evidence shows a built-in assistant users can delegate tasks to. The MCP Gateway, the admin UI and per-user memory are routing and infrastructure building blocks for other people's agents, not an assistant inside the product.",
+    "rationale": "LiteLLM is an LLM gateway/proxy with an admin UI. A built-in assistant is a fair question for this kind of product, so the axis applies. The evidence documents routing, cost tracking, an MCP Gateway and a memory store, but nothing describes an in-product AI assistant that users can delegate tasks to. The MCP Gateway and memory features are adjacent building blocks, not a built-in assistant, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2588,13 +2588,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "LiteLLM is a programmatic Python library and a self-hosted proxy with a documented official CLI (worker-process flags) and a Docker image, so it can run headlessly for automation. MCP tools can also be called with curl without an LLM. However, nothing in the evidence documents CI usage specifically. Missing for 10: documented CI/CD usage guidance (e.g., CI pipeline examples), non-interactive config/auth guidance for automation, independent hands-on corroboration of CI runs.",
+    "rationale": "LiteLLM is a code-driven SDK (completion()) plus a self-hosted proxy. It has an official CLI with worker flags and a docker image, and offers curl-callable MCP REST endpoints, so it can run headlessly without any UI. Its documented mock_response mode lets automated tests run without calling LLM APIs, which supports CI use. missing for 10: explicit CI/CD integration docs (e.g. GitHub Actions or pipeline recipes), documented non-interactive config/bootstrap for ephemeral CI runs, independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "litellm-probe-4",
       "litellm-docs-13",
       "litellm-docs-1",
-      "litellm-docs-5",
       "litellm-comm-6",
+      "litellm-mock-requests-20261105",
       "litellm-docs-33"
     ],
     "support": {
@@ -2611,16 +2611,16 @@
           "quote": "The number of worker processes to spin up (uvicorn, gunicorn, or Granian --workers)."
         },
         {
-          "evidenceId": "litellm-docs-1",
-          "quote": "Call any provider using the same completion() interface, with no API to re-learn for each one"
-        },
-        {
-          "evidenceId": "litellm-docs-5",
-          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
+          "evidenceId": "litellm-mock-requests-20261105",
+          "quote": "For testing purposes, you can use `completion()` with `mock_response` to mock calling the completion endpoint"
         },
         {
           "evidenceId": "litellm-docs-33",
           "quote": "call tools with curl without an LLM"
+        },
+        {
+          "evidenceId": "litellm-comm-6",
+          "quote": "running LiteLLM as a proxy in their homelab via the litellm/litellm docker image"
         }
       ]
     }
@@ -2631,7 +2631,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LiteLLM's own docs describe an MCP Gateway: users add MCP servers through the UI ('Add New MCP Server'), all their tools are exposed behind one fixed endpoint, and tools can be listed and called via REST, so the product connects to and uses MCP server tools. missing for 10: detailed docs on supported transports and setup, explicit evidence that model completions invoke MCP tools in an agent loop, and independent or hands-on corroboration.",
+    "rationale": "LiteLLM's proxy documents an MCP Gateway. Users can register MCP servers through the UI (\"Add New MCP Server\"), expose all their tools behind one fixed endpoint with access controlled per key and team, and call those tools over REST. Missing for 10: documentation of models automatically invoking registered MCP tools inside completion requests, transport and auth configuration details, and independent hands-on corroboration.",
     "evidenceIds": [
       "litellm-docs-14",
       "litellm-docs-27",
@@ -2663,7 +2663,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "LiteLLM Proxy documents its own MCP Gateway, which gives agents one fixed endpoint for all MCP tools with access control by key and team. Admins can register MCP servers in the UI, and tools are also exposed via REST list/call endpoints. However, the evidence shows only an aggregating proxy for third-party MCP servers. It does not show an official LiteLLM MCP server exposing LiteLLM's own capabilities as tools, and nothing confirms agent connections work in practice. missing for 10: official MCP tools for LiteLLM's own functions (spend, keys, models), documented agent/client connection setup and transports, independent or hands-on corroboration.",
+    "rationale": "LiteLLM's own proxy ships a first-party MCP Gateway. It gives agents a fixed MCP endpoint for all registered MCP tools, with access controlled per key and team. MCP servers are added through the admin UI, and REST endpoints can list and call tools. However, the evidence shows it aggregating third-party MCP servers, not exposing LiteLLM's own capabilities as MCP tools. Missing for 10: LiteLLM-native tools exposed over MCP, documented agent-client connection setup (transport, auth config), and independent or hands-on corroboration.",
     "evidenceIds": [
       "litellm-docs-14",
       "litellm-docs-27",
@@ -2695,7 +2695,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows LiteLLM itself being configured or administered through natural-language commands, such as an NL assistant in the admin UI or an agent interface that manages keys, budgets or routing. The completion() interface forwards natural-language prompts to downstream LLMs, and the MCP Gateway proxies other MCP tools to agents. Both are adjacent capabilities, not natural-language operation of the product, so neither earns credit.",
+    "rationale": "Natural-language operation is a fair question for an LLM gateway: it could ship an assistant that manages keys, budgets or routing from plain-English commands. The evidence documents only programmatic and UI control: the completion() API, the CLI, the admin UI and an MCP Gateway that proxies tools for other agents. Forwarding natural-language prompts to LLMs is the product's core function, not a way to operate LiteLLM itself, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2710,7 +2710,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiteLLM documents an official CLI at docs/proxy/cli. The only evidenced use is launching the proxy server with options such as the worker count (--workers), so it is shown as a server-launch tool rather than an AI-native workflow interface. Missing for 10: evidence of CLI commands beyond starting the proxy (e.g. key, model or team management, or direct completion calls), agent-friendly output modes, and independent or hands-on corroboration of the CLI.",
+    "rationale": "LiteLLM documents an official CLI at docs/proxy/cli. The only cited detail is a server-launch flag (worker process count for uvicorn/gunicorn/Granian), so the CLI is evidenced as a way to start the proxy rather than a broad interactive or agent-friendly command surface. Missing for 10: documented CLI commands beyond proxy startup (e.g., key/model/team management, request invocation), machine-readable or agent-oriented output modes, and independent or hands-on corroboration of CLI usage.",
     "evidenceIds": [
       "litellm-probe-4",
       "litellm-docs-13",
@@ -2736,16 +2736,16 @@
     "productId": "litellm",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "LiteLLM is built around a documented programmatic interface. Its docs cover a single completion() interface across providers and OpenAI-format responses. They also document a drop-in OpenAI-compatible proxy, REST endpoints for MCP tools callable with curl, and JSON payloads for team and budget management, and a maintainer confirmed the proxy supports streaming and function-calling like the openai-python SDK. missing for 10: no machine-readable OpenAPI/Swagger spec was found (all probed paths returned 404), admin endpoints for keys, teams and users are only thinly evidenced through config/JSON snippets, and there is no independent hands-on verification of the API surface.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "LiteLLM publishes a formal API Stability Policy that defines the proxy's public surface. Every deployed proxy serves a generated OpenAPI spec at /openapi.json and a Swagger UI at its root, and a semver/release-cycle contract backs this up. It also exposes OpenAI-compatible endpoints plus REST endpoints such as /mcp-rest/tools/call that can be driven with curl. missing for 10: a vendor-hosted public spec download (the probe found no hosted openapi.json; the spec exists only on user-deployed proxies), independent hands-on corroboration of the admin/management API endpoints.",
     "evidenceIds": [
-      "litellm-docs-1",
-      "litellm-docs-2",
-      "litellm-gh-1",
+      "litellm-api-stability-policy-20261105",
+      "litellm-openapi-settings-20261105",
+      "litellm-swagger-ui-20261105",
+      "litellm-release-cycle-20261105",
       "litellm-docs-33",
-      "litellm-docs-26",
-      "litellm-docs-8",
+      "litellm-docs-2",
       "litellm-comm-13",
       "litellm-probe-3"
     ],
@@ -2755,24 +2755,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "litellm-docs-1",
-          "quote": "Call any provider using the same completion() interface, with no API to re-learn for each one"
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "Every endpoint that appears in the proxy's OpenAPI spec is public"
         },
         {
-          "evidenceId": "litellm-docs-2",
-          "quote": "Every response follows the OpenAI Chat Completions format, regardless of provider."
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "The spec is served at `/openapi.json` and rendered as Swagger UI at `/` by default"
         },
         {
-          "evidenceId": "litellm-gh-1",
-          "quote": "Drop-in OpenAI compatibility — swap providers without rewriting your code"
+          "evidenceId": "litellm-swagger-ui-20261105",
+          "quote": "Your Proxy Swagger is available on the root of the Proxy: e.g.: `http://localhost:4000/`"
         },
         {
           "evidenceId": "litellm-docs-33",
           "quote": "call tools with curl without an LLM"
-        },
-        {
-          "evidenceId": "litellm-docs-8",
-          "quote": "Track Spend, and control model access via virtual keys for the proxy"
         }
       ]
     }
@@ -2780,21 +2776,21 @@
   {
     "productId": "litellm",
     "storyId": "agentic-scoped-keys",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy issues virtual keys that can be restricted per key: model access, MCP tool access, spend budgets, and key-scoped guardrails. This lets a user mint a constrained credential for an agent. A community user reported trouble creating tokens for other users, which lowers confidence but is not concrete enough to dispute the documented capability. Missing for 10: documented fine-grained permission scopes beyond model/MCP access, per-key rate limits (the rpm_limit evidence is team-level), agent-specific least-privilege guidance, and independent hands-on corroboration of scoped key issuance.",
+    "rationale": "LiteLLM Proxy issues virtual keys that can restrict which models a key may access. Each key can also carry its own spending budget, and MCP tool access can be controlled by key or team, which together give a scoped, least-privilege credential an agent can use. The community remark about issues creating tokens for other users is vague and not a concrete counter-example, so it lowers confidence rather than creating a dispute. Missing for 10: documented route/endpoint-level permission scoping, key expiry/rotation details, agent-specific identity guidance, and independent hands-on corroboration of key scoping.",
     "evidenceIds": [
       "litellm-docs-8",
-      "litellm-docs-14",
-      "litellm-docs-7",
-      "litellm-docs-37",
       "litellm-docs-5",
-      "litellm-docs-26"
+      "litellm-docs-7",
+      "litellm-docs-14",
+      "litellm-docs-37",
+      "litellm-docs-35"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": [
         {
@@ -2819,20 +2815,20 @@
   {
     "productId": "litellm",
     "storyId": "agentic-sdks",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "LiteLLM is itself an SDK. Its library exposes a single completion() interface across providers and returns OpenAI-format responses. The proxy also works with the openai-python SDK for streaming and function-calling, so developers can build against an official client library. missing for 10: evidence of SDKs in languages beyond the Python library, SDK reference/API docs depth (typed clients, versioning), and independent hands-on corroboration of SDK developer experience.",
+    "rationale": "LiteLLM ships its own library interface: a unified `completion()` call across providers with OpenAI-format responses, a `mock_response` test mode, and a documented semver release cycle with stable-version pinning. That is a first-party SDK surface, but the pack never names it an official SDK, never documents which languages it supports, and the proxy's compatibility relies on the OpenAI SDK rather than LiteLLM's own client libraries. Missing for 10: explicit official SDK documentation, multi-language SDK coverage, an SDK reference for the proxy/admin APIs, and independent hands-on corroboration of the SDK developer experience.",
     "evidenceIds": [
       "litellm-docs-1",
       "litellm-docs-2",
       "litellm-gh-1",
-      "litellm-comm-13",
-      "litellm-comm-14"
+      "litellm-mock-requests-20261105",
+      "litellm-release-cycle-20261105"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": [
         {
@@ -2846,14 +2842,6 @@
         {
           "evidenceId": "litellm-gh-1",
           "quote": "Drop-in OpenAI compatibility — swap providers without rewriting your code"
-        },
-        {
-          "evidenceId": "litellm-comm-13",
-          "quote": "proxy supports streaming and function-calling in the same way as the openai-python SDK"
-        },
-        {
-          "evidenceId": "litellm-comm-14",
-          "quote": "Show HN launch of the original LiteLLM library"
         }
       ]
     }
@@ -2864,7 +2852,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "LiteLLM's proxy logging docs list \"Custom Callbacks - Custom code and API endpoints\" as a destination for proxy input, output and exceptions. That suggests the product itself can push request and exception events to a user-supplied HTTP endpoint, but the evidence is a single list entry with no detail on registration, payloads or event types. Missing for 10: documented webhook registration (URL, auth, retries), defined event types beyond logging (e.g. budget or key events), payload schema, independent or hands-on corroboration.",
+    "rationale": "The only relevant evidence is LiteLLM's proxy logging docs. They list \"Custom Callbacks - Custom code and API endpoints\" among the destinations for proxy input, output and exceptions, which implies outbound delivery of request events to a user-supplied HTTP endpoint. That is one thin mention inside a logging-destination list, not a documented webhook subscription feature. Missing for 10: documented webhook registration (endpoint configuration and event-type selection), event catalog and payload schema, delivery semantics (retries, signing/verification), and any hands-on or independent corroboration.",
     "evidenceIds": [
       "litellm-docs-32",
       "litellm-docs-10"
@@ -2876,11 +2864,7 @@
       "citations": [
         {
           "evidenceId": "litellm-docs-32",
-          "quote": "Custom Callbacks - Custom code and API endpoints"
-        },
-        {
-          "evidenceId": "litellm-docs-10",
-          "quote": "Log Proxy input, output, and exceptions using"
+          "quote": "Log Proxy input, output, and exceptions using: Langfuse OpenTelemetry GCS, s3, Azure (Blob) Buckets AWS SQS Lunary MLflow Deepeval Custom Callbacks - Custom code and API endpoints"
         }
       ]
     }
@@ -2888,31 +2872,67 @@
   {
     "productId": "litellm",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "An interactive API reference is a fair thing to ask of an LLM gateway and SDK, so the axis applies. The pack shows no interactive or runnable API reference: the OpenAI spec probes returned 404 at every candidate path, and llms.txt and the CLI docs are different capabilities. The curl-callable MCP REST endpoints are an adjacent feature, not an interactive reference.",
-    "evidenceIds": [],
+    "rationale": "Every deployed LiteLLM proxy serves its own interactive Swagger UI console at its root, generated from the running proxy's OpenAPI spec, so you can explore and call endpoints interactively. The major caveat is that you must deploy a proxy yourself: there is no vendor-hosted public instance, and the docs-site OpenAPI probes all returned 404. missing for 10: a vendor-hosted public interactive reference, documented runnable example requests within the reference, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "litellm-swagger-ui-20261105",
+      "litellm-api-stability-policy-20261105",
+      "litellm-openapi-settings-20261105",
+      "litellm-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "litellm-swagger-ui-20261105",
+          "quote": "every deployed proxy serves an interactive Swagger UI console at its root"
+        },
+        {
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "The spec is served at `/openapi.json` and rendered as Swagger UI at `/` by default"
+        },
+        {
+          "evidenceId": "litellm-swagger-ui-20261105",
+          "quote": "There is no vendor-hosted public demo instance today"
+        }
+      ]
     }
   },
   {
     "productId": "litellm",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "An API gateway/proxy like LiteLLM could plausibly publish an OpenAPI spec, so the axis applies. The probe found every candidate OpenAPI/Swagger path on the docs site returning 404, and no evidence item documents a downloadable machine-readable spec. OpenAI-format compatibility and llms.txt are adjacent features, not a downloadable API spec.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "high",
+    "rationale": "LiteLLM's proxy generates and serves its own OpenAPI spec at /openapi.json (configurable via OPENAPI_URL, with NO_OPENAPI to disable) and renders Swagger UI at its root, so any deployed proxy exposes a machine-readable spec. However, the vendor publishes no downloadable spec: the probe found 404 on every docs-site OpenAPI path, and the docs confirm there is no vendor-hosted public spec or demo instance, so you must deploy the proxy first. missing for 10: a vendor-hosted, directly downloadable OpenAPI spec without self-deploying, and independent or hands-on corroboration of the served spec.",
+    "evidenceIds": [
+      "litellm-api-stability-policy-20261105",
+      "litellm-openapi-settings-20261105",
+      "litellm-swagger-ui-20261105",
+      "litellm-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "The spec is served at `/openapi.json` and rendered as Swagger UI at `/` by default"
+        },
+        {
+          "evidenceId": "litellm-openapi-settings-20261105",
+          "quote": "The path to the OpenAPI JSON endpoint"
+        },
+        {
+          "evidenceId": "litellm-swagger-ui-20261105",
+          "quote": "Your Proxy Swagger is available on the root of the Proxy"
+        }
+      ]
     }
   },
   {
@@ -2921,10 +2941,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair capability to ask of an LLM gateway, but the evidence pack documents no sandbox, mock, or test mode that keeps work isolated from production. Traffic mirroring (litellm-docs-39) is an adjacent feature: it copies live production traffic to a silent model for evaluation, which is the opposite of isolating tests from production data. Virtual keys and budgets are separate controls and earn no credit here.",
+    "rationale": "The axis applies to an LLM gateway/SDK, but the evidence documents no sandbox environment. The only related feature is a request-level `mock_response` mode, which is a dry-run mock and not an isolated sandbox. The docs say explicitly that it is \"not a hosted sandbox environment; no separate sandbox deployment is documented.\" Traffic mirroring sends production traffic to a silent model, and self-hosting a separate proxy would be a user-side workaround, so neither counts.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
       "citations": []
@@ -2933,16 +2953,37 @@
   {
     "productId": "litellm",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Versioning and deprecation policy are a fair question for an LLM gateway and SDK like LiteLLM, so the axis applies. The evidence covers a unified completion() interface, OpenAI-compatible responses, routing, logging and budgets. Nothing in it documents API versioning, version pinning guarantees or a deprecation policy. A consistent interface across providers is a different capability from versioned APIs with documented deprecation.",
-    "evidenceIds": [],
+    "rationale": "LiteLLM documents a formal API Stability Policy that defines public endpoints as those in the OpenAPI spec and calls out breaking changes in release notes. A Release Cycle page adds semantic versioning, with major bumps reserved for backward-incompatible changes and a recommendation to pin to stable 1.x.x. Together these form a documented versioning-and-deprecation contract, though the deprecation mechanics are thin. Missing for 10: explicit deprecation notice periods or sunset timelines for endpoints, per-endpoint API versioning beyond package semver, independent or hands-on corroboration that the policy is honored.",
+    "evidenceIds": [
+      "litellm-api-stability-policy-20261105",
+      "litellm-release-cycle-20261105",
+      "litellm-openapi-settings-20261105"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "Every endpoint that appears in the proxy's OpenAPI spec is public"
+        },
+        {
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "Breaking changes are called out in a dedicated section of the release notes."
+        },
+        {
+          "evidenceId": "litellm-release-cycle-20261105",
+          "quote": "major bumps \"break backward compatibility (`1.x.x` -> `2.x.x`)\""
+        },
+        {
+          "evidenceId": "litellm-release-cycle-20261105",
+          "quote": "Together with the API Stability Policy this is the documented versioning-and-deprecation contract."
+        }
+      ]
     }
   },
   {
@@ -2951,14 +2992,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "LiteLLM's reliability docs describe configurable fallbacks. After num_retries a failed call falls back to another model group, configured via `fallbacks=[...]`, with the proxy looping through the specified groups. The Router adds cooldowns, timeouts, retries, and specialized content_policy_fallbacks across deployments and providers. missing for 10: independent hands-on corroboration that fallback works reliably in production.",
+    "rationale": "LiteLLM's first-party reliability docs describe configurable fallbacks. When a call fails after num_retries, the proxy loops through the model groups listed in `fallbacks` until it reaches a healthy backup. Content-policy fallbacks and Router-level cooldowns, retries and timeouts across providers are also documented. Missing for 10: independent hands-on corroboration that fallback works in production.",
     "evidenceIds": [
       "litellm-docs-4",
-      "litellm-docs-21",
       "litellm-docs-22",
       "litellm-docs-18",
-      "litellm-docs-28",
-      "litellm-docs-30"
+      "litellm-docs-30",
+      "litellm-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -2976,10 +3016,6 @@
         {
           "evidenceId": "litellm-docs-30",
           "quote": "Basic reliability logic - cooldowns, fallbacks, timeouts and retries (fixed + exponential backoff) across multiple deployments/providers."
-        },
-        {
-          "evidenceId": "litellm-docs-18",
-          "quote": "content_policy_fallbacks: For litellm.ContentPolicyViolationError - LiteLLM maps content policy violation errors across providers"
         }
       ]
     }
@@ -2990,7 +3026,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for an LLM gateway, for example batch completions or bulk key and user management. The evidence pack documents no such capability. Proxy-wide budgets, load balancing, and multi-worker processes are adjacent features, not bulk operations over many items.",
+    "rationale": "Bulk operations are a fair question for an LLM gateway and SDK, for example batch requests or bulk key and user management. The evidence pack documents no batch or bulk-operation capability. Related features such as load-balancing, proxy-wide budgets and fallbacks are adjacent controls that act on traffic or config. They are not user-invoked operations across many items at once, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3003,15 +3039,14 @@
     "productId": "litellm",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "LiteLLM lets users configure specific event-triggered actions. Fallback rules reroute to another model group when a call fails after num_retries or raises a ContentPolicyViolationError, and logging supports custom callbacks that run custom code or hit API endpoints on request/exception events. These are fixed failure-handling and logging hooks, not a general rule engine where users define arbitrary event-to-action rules. Missing for 10: a general user-defined event→action rule engine, documented event types beyond failures and logging, and independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "LiteLLM lets users configure rules that act automatically on specific gateway events. A failed call after num_retries triggers fallback to another model group, content-policy violations can trigger content_policy_fallbacks, and proxy logging can invoke custom callbacks (custom code and API endpoints) on requests and exceptions. These are narrow, reliability- and logging-specific triggers rather than a general rule engine. Missing for 10: a general user-defined event→action rules engine, arbitrary event types and action targets beyond fallback and logging callbacks, and independent or hands-on corroboration.",
     "evidenceIds": [
       "litellm-docs-4",
       "litellm-docs-18",
       "litellm-docs-22",
-      "litellm-docs-32",
-      "litellm-docs-30"
+      "litellm-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -3039,7 +3074,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LiteLLM is an LLM gateway and SDK, and a platform of this kind could plausibly offer scheduled jobs, so the axis applies. The evidence pack does not document any user-defined recurring job or workflow scheduler. The closest items, budget reset frequency (budget_duration: 30d) and request queueing, are adjacent behaviors and do not let users schedule their own recurring jobs.",
+    "rationale": "LiteLLM is an LLM gateway and SDK platform, so a scheduler for recurring jobs or workflows is a plausible capability and the axis applies. The evidence pack documents no feature for scheduling user-defined recurring jobs or workflows. Budget reset frequency (budget_duration) is an adjacent internal reset setting, and request queueing is not scheduling, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3054,7 +3089,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LiteLLM is an LLM gateway and proxy whose configuration (routing, fallbacks, guardrails, MCP access) could plausibly be versioned, so the axis applies. However, the evidence pack documents no versioning, review, or rollback of automations or configs. Traffic mirroring, logging and call_id tracking are adjacent features that do not deliver version history or rollback.",
+    "rationale": "Nothing in the evidence shows LiteLLM letting users version, review, or roll back their own automations, such as configs, routing rules, or workflows. The release-cycle and API-stability docs cover versioning of LiteLLM itself, not user automations, so they are adjacent and earn no credit. Fallbacks are runtime failover, not rollback of an automation definition.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3069,14 +3104,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy documents its own spending limits: personal budgets on virtual keys, a proxy-wide max_budget with a budget_duration reset, and marketing that spend is capped 'before it runs'. Spend tracking covers keys, users and teams, but the evidence only shows a team-level rpm_limit, which is a rate limit rather than a dollar budget. Missing for 10: explicit team-level and user-level max_budget configuration, documentation that limits are hard-enforced (requests rejected once over budget), and independent or hands-on corroboration.",
+    "rationale": "LiteLLM's proxy documents spend limits: `max_budget` with a `budget_duration` reset, personal budgets set through virtual keys, and a vendor claim that you can \"cap it before it runs.\" Team-level and user-level budget configuration and hard blocking when a limit is exceeded are not explicitly shown. The team evidence covers only an `rpm_limit` (a rate limit, not a spend budget), and team/user spend tracking is not the same as a limit. missing for 10: explicit per-team and per-user max_budget documentation, documented hard enforcement behavior (requests rejected once a budget is exceeded), independent or hands-on corroboration.",
     "evidenceIds": [
       "litellm-docs-7",
       "litellm-docs-25",
       "litellm-docs-35",
-      "litellm-docs-15",
-      "litellm-docs-6",
-      "litellm-docs-26"
+      "litellm-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -3098,10 +3131,6 @@
         {
           "evidenceId": "litellm-docs-15",
           "quote": "See who is driving spend, cap it before it runs"
-        },
-        {
-          "evidenceId": "litellm-docs-6",
-          "quote": "Track spend for keys, users, and teams across 100+ LLMs."
         }
       ]
     }
@@ -3109,16 +3138,28 @@
   {
     "productId": "litellm",
     "storyId": "byok",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack shows a self-hosted gateway with virtual keys, spend tracking, and routing across Azure/OpenAI deployments. No item documents supplying your own upstream provider API keys or having the gateway use them for your traffic. Virtual keys are gateway-issued credentials for access control and budgets, a related but different feature, so they earn no credit here.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "LiteLLM is a self-hosted gateway that routes traffic to deployments you configure, such as your own Azure or OpenAI deployments. That implies your traffic runs on credentials you control, but no evidence explicitly documents supplying provider API keys or how the gateway applies them per request. missing for 10: explicit documentation of configuring provider API keys (config or env), per-key, team or request BYOK passthrough, secure key storage details, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "litellm-docs-5",
+      "litellm-docs-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can bring my own provider API keys and have the gateway use them for my traffic",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "litellm-docs-5",
+          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
+        },
+        {
+          "evidenceId": "litellm-docs-3",
+          "quote": "Load-balance across multiple deployments (e.g. Azure/OpenAI)"
+        }
+      ]
     }
   },
   {
@@ -3127,13 +3168,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy documents cost tracking that tracks spend for keys, users, and teams across 100+ LLMs, plus tag-based spend tracking, all centralized in a self-hosted gateway with an admin UI. That delivers the core of the story. missing for 10: explicit documentation of per-model spend breakdowns, detail on how the admin UI presents spend reports, independent or hands-on corroboration that cross-provider spend tracking works as claimed.",
+    "rationale": "LiteLLM's self-hosted proxy documents built-in cost tracking of spend by key, user, and team across 100+ LLMs, plus tag-based spend tracking and an admin UI that centralizes this view. Since the story asks for spend by model, key, team, or user, the documented key, user, and team breakdowns satisfy it. missing for 10: explicit documentation of per-model spend breakdown, independent or hands-on corroboration of the cost-tracking dashboards.",
     "evidenceIds": [
       "litellm-docs-6",
       "litellm-docs-5",
-      "litellm-docs-8",
       "litellm-docs-24",
       "litellm-docs-15",
+      "litellm-docs-8",
       "litellm-docs-12"
     ],
     "support": {
@@ -3166,7 +3207,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented measurement or claim about LiteLLM's own gateway latency overhead on provider calls, such as overhead benchmarks or p50/p99 added-latency figures. The nearby items do not answer this story: caching cuts latency by reusing responses, traffic mirroring avoids slowing the primary request, and worker-process settings are a scaling control. None of these show that the proxy itself adds minimal overhead.",
+    "rationale": "Latency overhead is a fair axis for a self-hosted LLM gateway, but the pack has no documentation, benchmark, or hands-on report quantifying or claiming low overhead for LiteLLM's proxy. Caching ('reduce latency'), traffic mirroring that does not affect the primary request, and worker-count settings are adjacent features or building blocks, not evidence of minimal gateway overhead.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3181,11 +3222,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiteLLM's Router documents load-balancing across multiple deployments, such as Azure and OpenAI, with reliability logic across deployments and providers. The pack never shows how traffic is distributed or what routing strategy is used, so the weight, latency and cost elements of the story are unproven. Missing for 10: documented weight-based, latency-based or cost-based routing strategies, explicit key-level balancing, and independent or hands-on corroboration.",
+    "rationale": "LiteLLM's own Router docs say it load-balances across multiple deployments (e.g. Azure/OpenAI), with cooldowns, retries and fallbacks across deployments and providers. The evidence never names the selection strategies the story asks for (weight, latency or cost), nor key-level balancing. Missing for 10: documented weighted, latency-based or cost-based routing strategies, load-balancing across keys, and independent or hands-on corroboration.",
     "evidenceIds": [
       "litellm-docs-3",
       "litellm-docs-30",
-      "litellm-docs-28"
+      "litellm-docs-28",
+      "litellm-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -3201,8 +3243,8 @@
           "quote": "Basic reliability logic - cooldowns, fallbacks, timeouts and retries (fixed + exponential backoff) across multiple deployments/providers."
         },
         {
-          "evidenceId": "litellm-docs-28",
-          "quote": "Built-in retry / fallback logic across multiple deployments via the [Router](/docs/routing)"
+          "evidenceId": "litellm-docs-15",
+          "quote": "send each request to the model that should handle it"
         }
       ]
     }
@@ -3213,7 +3255,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A model catalog with pricing and context-window metadata is a fair capability to ask of a unified LLM API and gateway, so the axis applies. However, nothing in the evidence pack documents a browsable or queryable model list exposing pricing or context-window data. Spend tracking across 100+ LLMs is a related cost-accounting feature, not a model metadata catalog, so it earns no credit.",
+    "rationale": "The evidence pack documents cost and spend tracking across 100+ LLMs, but nothing describes a browsable or queryable model catalog exposing per-model pricing or context-window metadata. Spend tracking is an adjacent feature, not this capability, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3225,20 +3267,19 @@
   {
     "productId": "litellm",
     "storyId": "openai-compatible-endpoint",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LiteLLM documents a self-hosted LLM Gateway (Proxy) with virtual keys and claims drop-in OpenAI compatibility. A maintainer confirmed the proxy handles streaming and function-calling the same way as the openai-python SDK, so it delivers the core of pointing OpenAI-style clients at the gateway. However, no evidence explicitly documents the migration as written, where existing OpenAI SDK code changes only base_url and api_key. The 'drop-in' claim is framed around swapping providers in the completion() interface rather than redirecting existing clients to the proxy endpoint. Missing for 10: explicit first-party docs showing OpenAI SDK code switched to the proxy by changing only base URL and key, documented coverage of which OpenAI endpoints are served, independent hands-on corroboration of an unmodified-code migration.",
+    "rationale": "LiteLLM's GitHub claims drop-in OpenAI compatibility, letting you swap providers without rewriting code. Its self-hosted proxy issues virtual keys and returns responses in OpenAI Chat Completions format, and a maintainer confirmed the proxy handles streaming and function-calling the same way as the openai-python SDK. missing for 10: explicit first-party docs showing that only the base_url and api_key change in existing OpenAI SDK code, and independent hands-on corroboration of the base-URL swap.",
     "evidenceIds": [
       "litellm-gh-1",
-      "litellm-docs-5",
-      "litellm-docs-8",
       "litellm-docs-2",
+      "litellm-docs-5",
       "litellm-comm-13"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can point existing OpenAI-compatible code at the gateway by changing only the base URL and key",
       "citations": [
         {
@@ -3246,16 +3287,16 @@
           "quote": "Drop-in OpenAI compatibility — swap providers without rewriting your code"
         },
         {
-          "evidenceId": "litellm-docs-5",
-          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
+          "evidenceId": "litellm-docs-2",
+          "quote": "Every response follows the OpenAI Chat Completions format, regardless of provider."
         },
         {
-          "evidenceId": "litellm-docs-8",
-          "quote": "Track Spend, and control model access via virtual keys for the proxy"
+          "evidenceId": "litellm-docs-5",
+          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys"
         },
         {
           "evidenceId": "litellm-comm-13",
-          "quote": "LiteLLM maintainer confirmed proxy supports streaming and function-calling in the same way as the openai-python SDK"
+          "quote": "proxy supports streaming and function-calling in the same way as the openai-python SDK"
         }
       ]
     }
@@ -3264,17 +3305,17 @@
     "productId": "litellm",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "LiteLLM documents programmatic management for several functions the admin UI also covers: creating virtual keys, creating teams with JSON payloads including rate limits, configuring budgets, and calling MCP tools over REST with curl. However, nothing in the evidence claims or shows full UI/API parity. MCP server registration is documented only as a UI flow, and the OpenAPI probes returned 404 at all docs paths. missing for 10: an explicit API-parity statement, API equivalents for UI-only flows such as adding MCP servers, a published OpenAPI spec for the management API, and independent hands-on confirmation of parity.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "LiteLLM's proxy ships an admin UI alongside a documented programmatic surface: an auto-generated OpenAPI spec and Swagger UI on every deployment, and API-driven management of virtual keys, teams, users and budgets. That makes much of the UI's work scriptable, but nothing documents that every UI action has an API equivalent, and some flows are shown only through the UI (e.g., adding MCP servers). Missing for 10: an explicit UI–API parity statement, API documentation for UI-only flows such as MCP server registration, independent or hands-on corroboration of parity.",
     "evidenceIds": [
-      "litellm-docs-5",
-      "litellm-docs-7",
+      "litellm-docs-23",
+      "litellm-api-stability-policy-20261105",
+      "litellm-openapi-settings-20261105",
+      "litellm-swagger-ui-20261105",
+      "litellm-docs-8",
       "litellm-docs-26",
-      "litellm-docs-25",
-      "litellm-docs-33",
-      "litellm-docs-27",
-      "litellm-probe-3"
+      "litellm-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -3282,16 +3323,24 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "litellm-docs-7",
-          "quote": "Create virtual keys without team_id for individual spending limits"
+          "evidenceId": "litellm-docs-23",
+          "quote": "with virtual keys, cost tracking, and an admin UI"
+        },
+        {
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "Every endpoint that appears in the proxy's OpenAPI spec is public"
+        },
+        {
+          "evidenceId": "litellm-swagger-ui-20261105",
+          "quote": "Your Proxy Swagger is available on the root of the Proxy"
+        },
+        {
+          "evidenceId": "litellm-docs-8",
+          "quote": "Track Spend, and control model access via virtual keys for the proxy"
         },
         {
           "evidenceId": "litellm-docs-26",
-          "quote": "\"team_alias\": \"my-new-team_4\", ... \"rpm_limit\": 99"
-        },
-        {
-          "evidenceId": "litellm-docs-33",
-          "quote": "call tools with curl without an LLM"
+          "quote": "\"rpm_limit\": 99"
         }
       ]
     }
@@ -3302,10 +3351,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no feature for exporting all of a user's LiteLLM data (keys, teams, spend records, configuration, logs) in open formats to support leaving the product. Logging request input and output to S3, GCS or OpenTelemetry is observability streaming, an adjacent feature rather than a data-export or exit capability. OpenAI-format compatibility eases switching LLM providers, not leaving LiteLLM itself.",
+    "rationale": "Data portability is a fair question for a self-hosted LLM gateway that stores keys, spend, users and logs, so the axis applies. However, nothing in the pack documents an export of all user/proxy data in open formats. Logging proxy traffic to S3/GCS/OpenTelemetry is a different feature (ongoing telemetry, not a full data export), and OpenAI-format responses and drop-in provider swapping are about API compatibility, not taking your data with you.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -3317,7 +3366,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack includes an item sourced from a GitHub repository (github.com/BerriAI/litellm), but no item states what license the source is under or that it is open source. The only license mention is an enterprise 'one license' line, which points to commercial licensing, not an open license. Without documented open-license terms, the openness story is unevidenced.",
+    "rationale": "The pack has no statement of an open-source license or any license terms for LiteLLM's code. A GitHub repo URL and a self-hosted proxy hint that the source may be public, but they do not show that it is readable under an open license. The only license mention is an enterprise commercial license ('Multi-region deployment under one license'), which is a different matter.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3330,16 +3379,16 @@
     "productId": "litellm",
     "storyId": "openness-self-host",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "LiteLLM's docs describe its core LLM Gateway (Proxy) as self-hosted, with virtual keys, cost tracking and an admin UI, and document a proxy CLI with worker-process configuration. A community user independently confirms running it in a homelab from the litellm/litellm Docker image. Missing for 10: in-depth first-party deployment documentation (Docker/Kubernetes install steps), and explicit evidence of which core features stay free and open when self-hosted versus enterprise-licensed.",
+    "rationale": "LiteLLM's own docs describe a \"Self-hosted LLM Gateway (Proxy)\" with virtual keys, cost tracking and an admin UI, and say every user-deployed proxy serves its own Swagger UI and OpenAPI spec at localhost. A community user independently reports running it in a homelab via the litellm/litellm docker image. missing for 10: first-party installation/deployment guidance (e.g. Docker/Helm setup docs) in the evidence pack.",
     "evidenceIds": [
       "litellm-docs-5",
       "litellm-docs-23",
-      "litellm-docs-13",
-      "litellm-probe-4",
       "litellm-comm-6",
-      "litellm-gh-1"
+      "litellm-swagger-ui-20261105",
+      "litellm-api-stability-policy-20261105",
+      "litellm-release-cycle-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -3355,8 +3404,12 @@
           "quote": "A user described running LiteLLM as a proxy in their homelab via the litellm/litellm docker image for local LLM gateway management"
         },
         {
-          "evidenceId": "litellm-docs-13",
-          "quote": "The number of worker processes to spin up (uvicorn, gunicorn, or Granian --workers)."
+          "evidenceId": "litellm-swagger-ui-20261105",
+          "quote": "the interactive docs exist on any user-deployed proxy"
+        },
+        {
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "There is no vendor-hosted public spec download; every deployed proxy serves its own."
         }
       ]
     }
@@ -3367,7 +3420,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiteLLM is a self-hosted proxy, so the operator decides where it and its data live. Its docs also list multi-region deployment (an enterprise feature) and logging of inputs and outputs to buckets the user picks (GCS, S3, Azure Blob), which together let users place stored data where they choose. Missing for 10: an explicit data-residency or region-selection control documented as such, documentation of where cached or spend data is stored by region, and independent or hands-on confirmation of residency handling.",
+    "rationale": "LiteLLM is a self-hosted gateway, so the operator decides where the proxy and its data run. It also documents multi-region deployment and lets you send logs to storage you choose (GCS, S3, Azure Blob), which together give practical control over where data lives. There is no explicit region-selection or residency-guarantee feature, and multi-region is listed as an enterprise item. Missing for 10: explicit data-residency or region-pinning controls, documentation of where cached and spend data is stored, independent corroboration.",
     "evidenceIds": [
       "litellm-docs-5",
       "litellm-docs-38",
@@ -3399,7 +3452,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An LLM gateway could plausibly offer a documented no-training policy or provider training opt-out controls, so this axis applies. The evidence pack contains no such capability. The closest item (litellm-docs-12) only stops messages and responses from reaching the user's logging provider, which is an adjacent logging control and not a training opt-out.",
+    "rationale": "Training-data controls are a fair question for an LLM gateway, but nothing in the evidence documents a LiteLLM feature or policy that keeps user data out of model training. The closest item, a switch that stops messages and responses being logged to a logging provider (litellm-docs-12), is an adjacent logging control and does not address training use.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3412,9 +3465,9 @@
     "productId": "litellm",
     "storyId": "privacy-retention-controls",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "LiteLLM documents a control that stops message and response content from being logged to the configured logging provider, which limits what content it retains. Request metadata such as spend is still tracked, and nothing documents retention periods, purging, or deletion of stored logs, cache, or user memory. missing for 10: configurable retention periods/TTLs, documented deletion or purge of stored request data, logs, cache entries and user memory, independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "LiteLLM documents a switch that stops prompt messages and responses from being logged to the configured logging provider, while spend metadata is still tracked. That is a direct but narrow control over what content gets retained. No retention periods, purge/deletion APIs, or cache-expiry controls are evidenced. Missing for 10: configurable retention windows, deletion/purge endpoints for logs and stored data, cache TTL/deletion controls, independent corroboration.",
     "evidenceIds": [
       "litellm-docs-12"
     ],
@@ -3436,7 +3489,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any way to disable LiteLLM's own product telemetry or usage tracking. The only related item (litellm-docs-12) describes keeping message content out of the user's own configured logging provider, and it states that spend metadata is still tracked. That is an adjacent logging control, not a telemetry opt-out, so it earns no credit.",
+    "rationale": "The evidence pack does not document any LiteLLM setting for opting out of vendor telemetry or usage tracking. The only related item (litellm-docs-12) is a different control: it stops message and response content from going to the user's own logging provider, and it states that request metadata such as spend is still tracked. That is an adjacent feature, so it earns no credit toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3451,14 +3504,16 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy documents its own virtual keys, per-key and per-team budgets, and team creation. The team payload snippet with team_alias and rpm_limit implies JSON admin API calls, but the evidence never names explicit admin endpoints for generating keys or setting budgets. YAML config and an admin UI cover part of the same ground, and nothing shows gateways or deployments being provisioned programmatically. Missing for 10: explicit documented key/budget admin API endpoints, programmatic gateway/deployment provisioning, a published OpenAPI spec for the admin API, and independent hands-on corroboration.",
+    "rationale": "LiteLLM's self-hosted proxy documents virtual keys with spend tracking, per-key and personal budgets (max_budget, budget_duration), and team objects with rpm limits. Every proxy also serves a public OpenAPI/Swagger admin surface, so key and budget provisioning is plausibly API-driven, but the evidence never shows the actual key or budget management endpoints. Gateway and model or MCP provisioning is shown only through config and the UI. missing for 10: explicitly documented admin API endpoints for key generation and budget management, programmatic provisioning of gateways/deployments (MCP servers are added via the UI), and independent hands-on corroboration of API-driven provisioning.",
     "evidenceIds": [
       "litellm-docs-5",
       "litellm-docs-7",
       "litellm-docs-8",
       "litellm-docs-25",
       "litellm-docs-26",
-      "litellm-docs-35"
+      "litellm-docs-35",
+      "litellm-api-stability-policy-20261105",
+      "litellm-swagger-ui-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -3467,19 +3522,23 @@
       "citations": [
         {
           "evidenceId": "litellm-docs-7",
-          "quote": "Create virtual keys without team_id for individual spending limits"
+          "quote": "Personal budgets: Create virtual keys without team_id for individual spending limits"
         },
         {
           "evidenceId": "litellm-docs-8",
           "quote": "Track Spend, and control model access via virtual keys for the proxy"
         },
         {
-          "evidenceId": "litellm-docs-26",
-          "quote": "\"team_alias\": \"my-new-team_4\", ... \"rpm_limit\": 99"
-        },
-        {
           "evidenceId": "litellm-docs-35",
           "quote": "max_budget: 0 # (float) sets max budget as $0 USD"
+        },
+        {
+          "evidenceId": "litellm-docs-26",
+          "quote": "\"rpm_limit\": 99"
+        },
+        {
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "Every endpoint that appears in the proxy's OpenAPI spec is public"
         }
       ]
     }
@@ -3490,7 +3549,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "LiteLLM's Router documents load-balancing across multiple deployments, request prioritization via queueing, and cooldowns and retries with exponential backoff. Teams can also be given rpm_limit throttles, which together cover the core of smoothing provider rate limits. Evidence is thin on spreading traffic across multiple API keys for the same provider and on provider-aware throttling. missing for 10: explicit documentation of distributing traffic across multiple API keys, rate-limit-aware (tpm/rpm per deployment) routing details, depth on queue behavior and configuration, independent or hands-on corroboration.",
+    "rationale": "LiteLLM's Router documents load-balancing across multiple deployments, request queueing and prioritization, cooldowns, and retries with exponential backoff. The proxy also shows a per-team rpm_limit that throttles request rates. However, the evidence never states that traffic is spread across multiple API keys for the same provider, or that routing reacts to provider rate-limit headers or quotas, so full coverage is not established. missing for 10: explicit multi-API-key spreading for a single provider, rate-limit-aware (rpm/tpm) routing documentation, details of queue behavior under provider 429s, independent or hands-on corroboration.",
     "evidenceIds": [
       "litellm-docs-3",
       "litellm-docs-29",
@@ -3527,13 +3586,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy documents logging request input, output, and exceptions to many destinations (Langfuse, OpenTelemetry, S3, DataDog and others), and it tracks per-request metadata such as spend alongside those logs. Inspecting the logs relies on those downstream tools, and latency and token counts are never shown attached to logged requests. missing for 10: evidence that latency and token counts are recorded per logged request, a first-party view in the admin UI for inspecting logged requests and responses, independent or hands-on corroboration.",
+    "rationale": "LiteLLM's proxy logs request inputs, outputs and exceptions to many logging destinations, assigns each request a call_id, and keeps tracking request metadata such as spend. This links logged requests to cost, but inspection appears to happen mainly in external logging tools. missing for 10: documented per-request latency and token-count fields on logged entries, a first-party UI or view for browsing logged requests and responses, and independent hands-on corroboration.",
     "evidenceIds": [
-      "litellm-docs-32",
       "litellm-docs-10",
+      "litellm-docs-32",
+      "litellm-docs-11",
       "litellm-docs-12",
       "litellm-docs-6",
-      "litellm-docs-11"
+      "litellm-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -3541,20 +3601,20 @@
       "subject": "As a platform engineer, I can inspect logged requests and responses with latency, token counts, and cost attached",
       "citations": [
         {
-          "evidenceId": "litellm-docs-32",
-          "quote": "Log Proxy input, output, and exceptions using: Langfuse OpenTelemetry GCS, s3, Azure (Blob) Buckets"
+          "evidenceId": "litellm-docs-10",
+          "quote": "Log Proxy input, output, and exceptions using: Langfuse, OpenTelemetry, GCS, s3, Azure (Blob) Buckets..."
         },
         {
           "evidenceId": "litellm-docs-12",
-          "quote": "request metadata - e.g. spend, will still be tracked"
-        },
-        {
-          "evidenceId": "litellm-docs-6",
-          "quote": "Track spend for keys, users, and teams across 100+ LLMs."
+          "quote": "request metadata - e.g. spend, will still be tracked."
         },
         {
           "evidenceId": "litellm-docs-11",
           "quote": "LiteLLM generates a unique call_id for each request. This call_id can be used to track the request across the system."
+        },
+        {
+          "evidenceId": "litellm-docs-6",
+          "quote": "Track spend for keys, users, and teams across 100+ LLMs."
         }
       ]
     }
@@ -3565,7 +3625,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LiteLLM's proxy (gateway) docs have a dedicated caching page saying the system stores and reuses LLM responses to save costs and reduce latency, which matches the story directly. The evidence is only a one-line summary, repeated across two items, with no configuration depth. Missing for 10: documented cache backends and configuration (e.g., TTL, invalidation, per-request controls), and independent or hands-on corroboration that caching works at the gateway.",
+    "rationale": "LiteLLM's proxy (gateway) caching docs state that its caching system stores and reuses LLM responses to save costs and reduce latency, which matches the story's gateway, cost and latency elements. The evidence is a single thin first-party statement repeated twice. missing for 10: details on cache backends and configuration (e.g. TTL, cache keys, semantic vs exact-match), per-request cache controls, independent or hands-on corroboration that caching works in practice.",
     "evidenceIds": [
       "litellm-docs-31",
       "litellm-docs-9"
@@ -3591,12 +3651,13 @@
     "storyId": "retry-policies",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "LiteLLM's Router documents built-in retries across deployments and providers, with fixed and exponential backoff, a configurable num_retries setting, and cooldowns and timeouts. Calls that still fail after retries fall back automatically to another model group. Missing for 10: documentation of per-error-type retry policies (which transient errors trigger retries, e.g. rate limits vs timeouts), and independent or hands-on corroboration of retry behavior.",
+    "confidence": "medium",
+    "rationale": "LiteLLM's Router documents built-in retry logic across deployments and providers, with configurable num_retries and fixed or exponential backoff. After retries are exhausted it automatically falls back to backup model groups. Missing for 10: documentation of per-error-type retry policies (e.g., which transient errors trigger a retry and how), and independent or hands-on corroboration that retries behave as claimed.",
     "evidenceIds": [
       "litellm-docs-30",
       "litellm-docs-28",
-      "litellm-docs-4"
+      "litellm-docs-4",
+      "litellm-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -3624,12 +3685,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "A LiteLLM maintainer confirmed the proxy supports streaming the same way the openai-python SDK does. First-party docs show a unified completion() interface and OpenAI-format responses across providers, which implies streaming works uniformly, but no first-party doc in the pack describes streaming itself. Missing for 10: first-party documentation of streaming through the gateway, evidence that token-by-token streaming works for every provider (chunk normalization), independent hands-on corroboration.",
+    "rationale": "A LiteLLM maintainer confirmed that the proxy supports streaming the same way as the openai-python SDK. The docs say every response follows the OpenAI Chat Completions format regardless of provider, and the mock mode notes streaming is included. However, no first-party streaming documentation shows token-by-token streaming working across all providers through the gateway. missing for 10: first-party docs for streaming via the proxy, explicit confirmation of streaming across every provider, independent hands-on corroboration of token-level streaming.",
     "evidenceIds": [
       "litellm-comm-13",
-      "litellm-docs-1",
       "litellm-docs-2",
-      "litellm-docs-17"
+      "litellm-mock-requests-20261105"
     ],
     "support": {
       "relation": "direct",
@@ -3641,12 +3701,12 @@
           "quote": "LiteLLM maintainer confirmed proxy supports streaming and function-calling in the same way as the openai-python SDK"
         },
         {
-          "evidenceId": "litellm-docs-1",
-          "quote": "Call any provider using the same completion() interface, with no API to re-learn for each one"
-        },
-        {
           "evidenceId": "litellm-docs-2",
           "quote": "Every response follows the OpenAI Chat Completions format, regardless of provider."
+        },
+        {
+          "evidenceId": "litellm-mock-requests-20261105",
+          "quote": "streaming included"
         }
       ]
     }
@@ -3657,7 +3717,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Structured JSON-schema output is a fair axis for a multi-provider LLM gateway, but the evidence pack never documents a response_format or json_schema option. The claims of 'consistent output format' and an OpenAI-format response envelope describe the shape of responses, not schema-constrained outputs. The community note on function-calling covers a different capability, so neither counts here.",
+    "rationale": "The evidence pack documents a unified completion() interface and responses normalized to the OpenAI Chat Completions format. Neither one is a documented capability to request JSON-schema structured outputs (such as response_format or json_schema) across providers. 'Consistent output format' refers to response-envelope normalization, not schema-constrained generation, so it does not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3672,12 +3732,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "A LiteLLM maintainer confirmed that function-calling works the same way as in the openai-python SDK. First-party docs say every response follows the OpenAI Chat Completions format regardless of provider, which implies a consistent tool-call schema. However, there is no first-party documentation specific to tool/function calling or how tool schemas are translated per provider. missing for 10: first-party tool/function-calling docs, which providers support tool calls and how request-side tool schemas are translated, independent hands-on corroboration of cross-provider tool-call consistency",
+    "rationale": "A maintainer confirmed that the LiteLLM proxy supports function-calling the same way as the openai-python SDK. The docs say every response follows the OpenAI Chat Completions format regardless of provider. Together these imply a consistent tool-calling schema, but no first-party docs page shows tool-call translation across providers. Missing for 10: first-party documentation of tool/function-call support and schema mapping per provider, a list of which providers support tools, and hands-on corroboration of cross-provider tool calls.",
     "evidenceIds": [
       "litellm-comm-13",
       "litellm-docs-2",
-      "litellm-docs-17",
-      "litellm-docs-1"
+      "litellm-docs-1",
+      "litellm-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -3693,8 +3753,8 @@
           "quote": "Every response follows the OpenAI Chat Completions format, regardless of provider."
         },
         {
-          "evidenceId": "litellm-docs-17",
-          "quote": "Consistent output format regardless of which provider or model you use"
+          "evidenceId": "litellm-docs-1",
+          "quote": "Call any provider using the same completion() interface, with no API to re-learn for each one"
         }
       ]
     }
@@ -3705,7 +3765,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "LiteLLM's proxy logging docs state it can log proxy input, output, and exceptions to many external sinks: OpenTelemetry, Langfuse, DataDog, S3/GCS/Azure buckets, SQS, Langsmith, and custom callbacks to your own API endpoints. Each request gets a call_id for tracking it across the system, and message content can be redacted while spend metadata is still tracked. missing for 10: independent or hands-on corroboration of the export pipeline, and detailed documentation of trace/span structure beyond the OpenTelemetry listing.",
+    "rationale": "LiteLLM's proxy docs say it logs proxy input, output and exceptions to many destinations a developer can own. These include OpenTelemetry, S3/GCS/Azure buckets, DataDog, Langfuse, Langsmith, SQS and custom callbacks to your own API endpoints. Each request also gets a unique call_id for tracing it across the system. missing for 10: independent or hands-on confirmation that the exports work, and deeper documentation of what the trace/span data contains (the OpenTelemetry export is only listed by name).",
     "evidenceIds": [
       "litellm-docs-32",
       "litellm-docs-10",
@@ -3739,13 +3799,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "LiteLLM documents a single completion() interface for any provider, with every response normalized to the OpenAI Chat Completions format across 100+ LLMs. Independent community posts corroborate its use to standardize different AI APIs, and a maintainer confirmed streaming and function-calling work the same way as the openai-python SDK. Missing for 10: independent hands-on verification that provider-specific features behave uniformly across the full provider list (the streaming/function-calling parity claim comes from the maintainer).",
+    "rationale": "LiteLLM's docs show a single completion() interface for any provider, with responses normalized to the OpenAI Chat Completions format. GitHub describes drop-in OpenAI compatibility for swapping providers without code changes. Community launch threads corroborate this: users praise it for standardizing many AI APIs, and the maintainer confirms streaming and function-calling work the same way as the openai-python SDK. missing for 10: independent hands-on verification of per-provider feature parity and edge-case consistency across the full 100+ provider set.",
     "evidenceIds": [
       "litellm-docs-1",
       "litellm-docs-2",
-      "litellm-docs-17",
       "litellm-gh-1",
-      "litellm-probe-1",
+      "litellm-docs-17",
+      "litellm-docs-6",
       "litellm-comm-12",
       "litellm-comm-13",
       "litellm-comm-14"
@@ -3780,7 +3840,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LiteLLM's self-hosted proxy issues virtual keys that it manages itself. Those keys can control model access and track spend. Keys can be team-scoped (the docs contrast team keys with ones created 'without team_id'), and the gateway puts the whole AI stack 'behind one key', which implies provider credentials stay on the gateway. One community comment mentions vague trouble creating tokens for other users; it is not a concrete counter-example, so it lowers confidence only. Missing for 10: an explicit statement that raw provider keys are never exposed to key holders, detailed key-generation API or UI documentation for team and app keys, and independent hands-on corroboration.",
+    "rationale": "LiteLLM's self-hosted proxy documents virtual keys that control model access and track spend per key, user, and team. Keys can be created with or without a team_id, and the vendor frames this as putting the whole AI stack 'behind one key', so callers use gateway keys rather than provider credentials. One community user mentioned unspecified 'issues with creating tokens for other users'; that is too vague to dispute the capability but lowers confidence. Missing for 10: explicit documentation that provider credentials stay hidden from virtual-key holders, detailed key-minting API/UI steps for team- and app-scoped keys, and independent hands-on corroboration.",
     "evidenceIds": [
       "litellm-docs-5",
       "litellm-docs-8",
@@ -3795,12 +3855,12 @@
       "subject": "As a platform engineer, I can mint gateway-managed keys for teams and apps without exposing raw provider keys",
       "citations": [
         {
-          "evidenceId": "litellm-docs-5",
-          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
-        },
-        {
           "evidenceId": "litellm-docs-8",
           "quote": "Track Spend, and control model access via virtual keys for the proxy"
+        },
+        {
+          "evidenceId": "litellm-docs-5",
+          "quote": "Self-hosted LLM Gateway (Proxy) with virtual keys, cost tracking, and an admin UI"
         },
         {
           "evidenceId": "litellm-docs-7",

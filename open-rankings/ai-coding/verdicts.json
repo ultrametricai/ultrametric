@@ -4,8 +4,8 @@
     "storyId": "agentic-agent-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Probes found no llms.txt (HTTP 404) and no markdown versions of the docs (HTTP 404), and no other evidence shows Aider publishes agent-oriented documentation. The /web command, which scrapes a page into markdown for the chat, is an adjacent feature for reading external docs, not agent-oriented docs about Aider itself, so it earns no credit.",
+    "confidence": "high",
+    "rationale": "Direct probes show Aider publishes no llms.txt (HTTP 404) and no markdown/agent-oriented docs variant (HTTP 404 for .html.md). Nothing else in the pack documents agent-oriented documentation. The /web command, which scrapes a page into chat, is a different capability (ingesting arbitrary pages) and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -20,11 +20,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Aider's own `/ask` mode and `AI?` watch-mode comments return AI-generated answers and insights about the user's codebase without editing files. Community users confirm it helps them understand unfamiliar codebases. The 'data' covered is source code only, and insights come only on demand in response to the user's questions. missing for 10: proactive or unprompted insights and suggestions, insights over non-code data, documented depth of analysis or reporting.",
+    "rationale": "Aider lets users get AI answers and analysis about their own data, here the codebase, inside the product. It offers /ask for code-base questions without edits and AI? comments in watch mode, and community users report it helped them understand unfamiliar codebases. This is user-initiated Q&A about code only, not proactive insight or suggestion generation over general user data. Missing for 10: proactive or unprompted AI insights and suggestions, insights over non-code data, and documentation of an insights or suggestions feature beyond ad-hoc Q&A.",
     "evidenceIds": [
       "aider-docs-40",
       "aider-docs-37",
-      "aider-docs-46",
       "aider-comm-1",
       "aider-comm-2"
     ],
@@ -55,35 +54,16 @@
   {
     "productId": "aider",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider has its own headless one-shot mode (`--message` runs one instruction, applies edits, then exits) and a Python scripting API. Its `--watch-files` mode keeps a background watcher running that acts on AI comments in your files. These are one-off or trigger-on-comment actions, not autonomous recurring automations: any scheduling would come from the user's external tools (e.g. cron), and the autonomy 'navigator-mode' is a community add-on, not an Aider feature. missing for 10: built-in recurring or scheduled background automations, autonomous multi-step background runs without per-task user prompts, first-party docs on running Aider as a background service.",
-    "evidenceIds": [
-      "aider-docs-6",
-      "aider-docs-7",
-      "aider-docs-9",
-      "aider-docs-36",
-      "aider-docs-42"
-    ],
+    "rationale": "Aider's documented non-interactive features do not amount to setting up autonomous background automations. `--message` and `coder.run` execute one instruction and then exit. That is a one-off action, not a recurring or scheduled automation, and the Python scripting API is officially unsupported. `--watch-files` only reacts to AI comments the user writes by hand, which makes it an adjacent editor-trigger feature. The 'navigator-mode' autonomy is a third-party community add-on, not part of the product. Any scheduling would have to be a user-side workaround such as cron, which earns no credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
-      "citations": [
-        {
-          "evidenceId": "aider-docs-6",
-          "quote": "Aider takes a `--message` argument, where you can give it a natural language instruction. It will do that one thing, apply the edits to the files and then exit."
-        },
-        {
-          "evidenceId": "aider-docs-9",
-          "quote": "If you run aider with `--watch-files`, it will watch all files in your repo and look for any AI coding instructions you add using your favorite IDE or text editor."
-        },
-        {
-          "evidenceId": "aider-docs-42",
-          "quote": "You can configure aider to run your test suite after each time the AI edits your code using the --test-cmd <test-command> and --auto-test switch."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -92,19 +72,17 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Aider is itself an AI coding assistant. Users delegate natural-language tasks to it inside the chat. It can figure out which files to edit, apply the edits, auto-commit them, and run lint and tests. Delegation also works through /ask, /architect, voice, watch-mode AI! comments and one-shot --message scripting. Community users confirm it delivers on real codebases. Missing for 10: first-party documented autonomous multi-step agent mode (the 'navigator-mode' autonomy is a community add-on, not core Aider).",
+    "rationale": "Aider is itself a built-in AI coding assistant. Its docs show users handing it natural-language tasks in chat, and it can work out which files need editing on its own. It can run one-shot instructions with --message, take tasks from #AI comments in watch mode, use architect/editor mode, take voice requests, and auto-run tests after edits. Community users confirm it delivers on delegated coding tasks. Missing for 10: a first-party autonomous multi-step agent mode (the navigator/autonomy mode is a community add-on), and evidence of consistent output reliability, since users report subtle errors.",
     "evidenceIds": [
       "aider-docs-25",
-      "aider-docs-4",
       "aider-docs-6",
       "aider-docs-36",
-      "aider-docs-40",
-      "aider-docs-39",
       "aider-docs-45",
+      "aider-docs-19",
       "aider-docs-42",
       "aider-comm-3",
-      "aider-comm-8",
-      "aider-comm-17"
+      "aider-comm-17",
+      "aider-comm-6"
     ],
     "support": {
       "relation": "direct",
@@ -137,20 +115,20 @@
   {
     "productId": "aider",
     "storyId": "agentic-headless",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Aider's own docs cover headless operation: the `--message` flag runs one natural-language instruction, applies the edits and exits, and a Python scripting API (`Coder.create`/`coder.run`) runs an instruction and returns. Command-line switches, `.aider.conf.yml` and `AIDER_xxx` environment variables make it configurable for automated pipelines, and `--test-cmd`/`--auto-test` can run tests after each edit. Missing for 10: a documented CI pipeline guide or example (e.g. a GitHub Actions recipe), documented non-interactive confirmation and exit-code behavior for CI, and independent hands-on reports of CI use (the one community comment only says they 'should consider' scripting).",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Aider's own CLI runs headlessly: `--message` executes one natural-language instruction, applies the edits and exits, and options can be set through `AIDER_xxx` environment variables or a config file, which suits automation. Its Python scripting route is explicitly marked unsupported and subject to breaking changes, and no CI-specific guidance appears in the evidence. missing for 10: documented CI integration (e.g. pipeline examples), documented non-interactive confirmation and exit-code behavior for automation, a supported programmatic API, independent hands-on corroboration of CI use.",
     "evidenceIds": [
       "aider-docs-6",
       "aider-docs-33",
-      "aider-docs-7",
       "aider-docs-18",
-      "aider-docs-42"
+      "aider-docs-42",
+      "aider-scripting-unsupported-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -162,16 +140,12 @@
           "quote": "aider --message \"make a script that prints hello\" hello.js"
         },
         {
-          "evidenceId": "aider-docs-7",
-          "quote": "# This will execute one instruction on those files and then return"
-        },
-        {
           "evidenceId": "aider-docs-18",
           "quote": "Or by setting environment variables like `AIDER_xxx`"
         },
         {
-          "evidenceId": "aider-docs-42",
-          "quote": "You can configure aider to run your test suite after each time the AI edits your code using the --test-cmd <test-command> and --auto-test switch."
+          "evidenceId": "aider-scripting-unsupported-20261106",
+          "quote": "The python scripting API is not officially supported or documented, and could change in future releases without providing backwards compatibility."
         }
       ]
     }
@@ -182,7 +156,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider is a coding agent, so acting as an MCP client is a fair question for this kind of product, but nothing in the evidence pack mentions MCP or plugging in external tool servers. The closest items are /web scraping, /run, and /test, which are built-in commands rather than pluggable MCP tools, so they earn no credit here.",
+    "rationale": "Aider is a coding agent, so acting as an MCP client is a fair question for it. Nothing in the evidence pack mentions MCP or any way to register external tool servers. The documented extension points (/web scraping, /run, Python scripting, the community 'navigator-mode' package) are not MCP-client support and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -197,7 +171,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Aider is itself an AI coding agent, which is the MCP client role. Serving tools to other agents through an MCP server is a different product role. Nothing in the evidence shows Aider running as an MCP server, such as an 'mcp serve' mode or a hosted endpoint, so this axis does not apply.",
+    "rationale": "Aider is itself a coding agent, which makes it an MCP client rather than a server. Serving tools to other agents via an official MCP server is a different product role. Nothing in the evidence shows an 'mcp serve' mode or a first-party hosted MCP endpoint, and the only programmatic surface is an unofficial Python scripting API, which does not make this axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -210,22 +184,18 @@
     "productId": "aider",
     "storyId": "agentic-nl-commands",
     "verdict": "full",
-    "quality": 10,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Aider is operated mainly through natural-language instructions. Its docs cover several ways to give them: in chat, through `--message` one-shot instructions, the Python `coder.run()` call, voice commands transcribed as chat input, and AI! and AI? comments in watched files. It can also work out which files need editing from the request alone. Community users independently confirm natural-language prompting works in practice, both for understanding codebases and for comment-triggered edits.",
+    "rationale": "Aider is operated mainly through natural-language instructions. These can be typed in the chat, passed via `--message`, spoken with `/voice`, or written as `AI!`/`AI?` comments in watch mode. Aider can also infer which files to edit from the request alone. Community users confirm it acts on plain prompts. missing for 10: session management (adding files, undo, git, model switching) still relies on explicit slash commands rather than natural language.",
     "evidenceIds": [
       "aider-docs-6",
-      "aider-docs-33",
-      "aider-docs-7",
       "aider-docs-16",
-      "aider-docs-45",
+      "aider-docs-25",
       "aider-docs-36",
       "aider-docs-37",
-      "aider-docs-25",
       "aider-docs-40",
-      "aider-comm-17",
-      "aider-comm-2",
-      "aider-comm-3"
+      "aider-comm-3",
+      "aider-comm-17"
     ],
     "support": {
       "relation": "direct",
@@ -261,7 +231,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Aider is itself an official command-line tool. The docs cover installation, adding files on the aider command line, command-line switches with config-file and env-var equivalents, and non-interactive scripting via `--message`, which runs one instruction and exits. Community users corroborate using it interactively and in scriptable pipelines. Missing for 10: documented machine-readable (e.g. JSON) output or exit-code semantics for agentic automation.",
+    "rationale": "Aider is itself an official command-line tool. It has documented installation, files named on the command line, many command-line switches mirrored in config files and AIDER_xxx environment variables, and a non-interactive `--message` mode that runs one instruction and exits for scripting. Community users corroborate both interactive and scriptable CLI use. The unsupported-scripting note covers only the Python API, not the CLI. Missing for 10: no evidence of structured or machine-readable CLI output (e.g. JSON) for agent consumption.",
     "evidenceIds": [
       "aider-docs-1",
       "aider-docs-3",
@@ -270,17 +240,14 @@
       "aider-docs-18",
       "aider-docs-42",
       "aider-probe-4",
-      "aider-comm-15"
+      "aider-comm-15",
+      "aider-comm-14"
     ],
     "support": {
       "relation": "direct",
       "coverage": "complete",
       "subject": "As an AI-native user, I can use an official CLI",
       "citations": [
-        {
-          "evidenceId": "aider-docs-1",
-          "quote": "Do this by naming them on the aider command line."
-        },
         {
           "evidenceId": "aider-docs-6",
           "quote": "Aider takes a `--message` argument, where you can give it a natural language instruction. It will do that one thing, apply the edits to the files and then exit."
@@ -296,6 +263,10 @@
         {
           "evidenceId": "aider-probe-4",
           "quote": "official CLI documented at https://aider.chat/docs/usage.html"
+        },
+        {
+          "evidenceId": "aider-comm-15",
+          "quote": "I only use Aider interactively, but I really should consider Aider in the 'scriptable' sense more"
         }
       ]
     }
@@ -304,13 +275,13 @@
     "productId": "aider",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Aider documents its own programmatic interfaces: a Python scripting API (`Coder.create(...)` then `coder.run(...)` to execute an instruction and return) and a non-interactive `--message` CLI mode that applies edits and exits. That lets an agent or script drive the product directly. However, there is no network or REST API, and probes for an OpenAPI spec all returned 404, so the API is a thin, single-page, in-process Python interface rather than a fully specified public API. Missing for 10: a full API reference with method and parameter docs, an HTTP/REST or OpenAPI-described endpoint, stability/versioning guarantees for the Python API, and independent hands-on corroboration of programmatic use.",
+    "quality": 3,
+    "confidence": "high",
+    "rationale": "Aider has its own programmatic surface: a Python scripting interface (`Coder.create` / `coder.run`) shown on its scripting page, plus a scriptable CLI `--message` mode. However, the vendor states the Python API is not officially supported or documented and may break without backwards compatibility. Probes found no HTTP API or OpenAPI spec. missing for 10: an officially supported and documented public API, HTTP/remote API surface, machine-readable spec (OpenAPI), API reference docs, versioning/stability commitment, independent corroboration of API-driven use.",
     "evidenceIds": [
       "aider-docs-7",
       "aider-docs-6",
-      "aider-docs-33",
+      "aider-scripting-unsupported-20261106",
       "aider-probe-3"
     ],
     "support": {
@@ -325,6 +296,10 @@
         {
           "evidenceId": "aider-docs-6",
           "quote": "Aider takes a `--message` argument, where you can give it a natural language instruction. It will do that one thing, apply the edits to the files and then exit."
+        },
+        {
+          "evidenceId": "aider-scripting-unsupported-20261106",
+          "quote": "The python scripting API is not officially supported or documented, and could change in future releases without providing backwards compatibility."
         }
       ]
     }
@@ -335,7 +310,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider is a local CLI coding agent. It consumes LLM provider keys and offers no hosted API or service of its own, so issuing scoped, least-privilege API credentials to agents does not fit its product type. Nothing in the evidence shows it ships a credential-issuing capability, and the OpenAPI probes all return 404.",
+    "rationale": "Aider is a local, open-source CLI coding agent with no hosted service, account system, or HTTP API of its own. It consumes LLM-provider API keys rather than issuing credentials, so a story about issuing scoped or least-privilege API credentials is a category error for this product's role. Nothing in the evidence shows Aider shipping any credential-issuance capability that would make the axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -348,12 +323,13 @@
     "productId": "aider",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Aider's own scripting docs show a first-party Python API: `Coder.create(...)` then `coder.run(...)` executes an instruction programmatically. That is a real, product-provided way to build against Aider, though the evidence shows only this one thin Python interface rather than a fully documented SDK. missing for 10: dedicated SDK documentation and API reference, SDKs for languages beyond Python, evidence of stability/versioning guarantees, independent hands-on corroboration of building on the API.",
+    "rationale": "Aider ships its own first-party Python scripting interface (Coder.create / coder.run) that developers can build against. However, the vendor explicitly says this API is not officially supported or documented and may break backwards compatibility, so it falls short of an 'official SDK'. missing for 10: officially supported and versioned SDK, full API reference documentation, backwards-compatibility commitment, SDKs for languages other than Python, independent corroboration of building on it.",
     "evidenceIds": [
       "aider-docs-7",
-      "aider-docs-34"
+      "aider-docs-34",
+      "aider-scripting-unsupported-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -365,12 +341,8 @@
           "quote": "coder = Coder.create(main_model=model, fnames=fnames)"
         },
         {
-          "evidenceId": "aider-docs-7",
-          "quote": "# This will execute one instruction on those files and then return"
-        },
-        {
-          "evidenceId": "aider-docs-34",
-          "quote": "coder.run(\"make a script that prints hello world\")"
+          "evidenceId": "aider-scripting-unsupported-20261106",
+          "quote": "The python scripting API is not officially supported or documented, and could change in future releases without providing backwards compatibility."
         }
       ]
     }
@@ -381,7 +353,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider is a coding agent, and outbound event webhooks are a plausible capability for this kind of product, so the axis applies. The evidence pack documents no registrable outbound HTTP callbacks. `--watch-files` (an inbound file-watching trigger) and the `--message`/Python scripting interface are adjacent features or developer building blocks, not webhook subscriptions, so they earn no credit.",
+    "rationale": "Outbound event callbacks are a fair question for an AI coding agent, so the axis applies. Nothing in the evidence shows Aider offering registrable webhooks. Its programmatic surface is an unsupported Python scripting API with no HTTP API. The --watch-files feature only watches local files for AI comments; it does not send outbound HTTP callbacks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -396,7 +368,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider has no documented capability for always-on agents that run on schedules or autonomous triggers to maintain and fix software. Its `--message` scripting mode does one instruction and exits, so it is a one-off action, not a recurring schedule. `--watch-files` only responds to AI comments a human writes in the code, which is not autonomous maintenance. The 'navigator-mode' autonomy package is a community add-on rather than a first-party feature, and any scheduling would rely on user-side cron workarounds.",
+    "rationale": "Aider documents only one-off, user-initiated runs. `--message` does a single instruction and exits, and the unsupported Python scripting API executes one instruction. `--watch-files` reacts to AI comments a human writes, which is an alternate input method, not an autonomous trigger. Nothing documents built-in scheduling, event triggers, or always-on autonomous maintenance agents; any recurring schedule would need user-side tooling such as cron, and the autonomy 'navigator-mode' is a community third-party add-on.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -410,8 +382,8 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Aider documents a Python scripting API (Coder.create / coder.run) with static code snippets, so an API-reference axis applies. However, nothing in the evidence shows an interactive API reference or runnable in-browser examples, and probes found no OpenAPI or Swagger spec at any candidate path. Static scripting examples are adjacent documentation, not the interactive, runnable reference the story asks for.",
+    "confidence": "high",
+    "rationale": "Aider has a programmatic surface, a Python scripting interface, so an interactive API reference is a fair question for it. The evidence shows no such reference exists: the vendor marks the scripting API as not officially supported or documented, the page explicitly says there is no interactive reference or machine-readable spec, and probes for OpenAPI/Swagger files all return 404. The short scripting snippets on the docs page are static examples, not runnable ones inside an explorable reference.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -424,13 +396,13 @@
     "productId": "aider",
     "storyId": "api-key-auth",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Aider's docs say it works with LLM provider APIs and OpenAI-compatible endpoints rather than an Aider account, which implies API-key-based access, but no evidence item explicitly documents supplying an API key. Config via AIDER_xxx environment variables and switching models with --model are documented, yet key handling itself is not shown. missing for 10: explicit documentation of API key flags or environment variables per provider, confirmation that no Aider account login is required, independent hands-on corroboration of key-based setup",
+    "rationale": "Aider's docs say it works directly against LLM provider APIs, including local models with OpenAI-compatible APIs, and do not mention any vendor account login. This implies API-based access rather than account authentication, but no evidence item explicitly documents supplying an API key. Missing for 10: explicit documentation of API key flags, environment variables or config keys for provider credentials, and independent hands-on confirmation of key-based authentication.",
     "evidenceIds": [
-      "aider-docs-21",
+      "aider-docs-48",
       "aider-docs-35",
-      "aider-docs-18"
+      "aider-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -438,7 +410,7 @@
       "subject": "As a developer, I can authenticate with an API key instead of an account login",
       "citations": [
         {
-          "evidenceId": "aider-docs-21",
+          "evidenceId": "aider-docs-48",
           "quote": "Aider works best with LLM APIs"
         },
         {
@@ -446,8 +418,8 @@
           "quote": "It can also access local models that provide an Open AI compatible API."
         },
         {
-          "evidenceId": "aider-docs-18",
-          "quote": "Or by setting environment variables like `AIDER_xxx`"
+          "evidenceId": "aider-docs-47",
+          "quote": "Or by setting environment variables like AIDER_xxx"
         }
       ]
     }
@@ -457,8 +429,8 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Aider is a local coding agent, and some products of this kind expose an HTTP API with a published spec, so the axis applies. The evidence shows no machine-readable API spec: probes of the usual OpenAPI and Swagger paths all returned 404. The documented Python scripting interface (Coder.create / coder.run) is an API, but it is not a downloadable machine-readable spec and earns no credit here.",
+    "confidence": "high",
+    "rationale": "Aider does have a programmatic surface (an unofficial Python scripting API), so asking for a machine-readable spec is a fair question. However, the vendor documents that there is no HTTP API and no machine-readable spec, and probes of the usual OpenAPI/Swagger paths all returned 404. The only programmatic interface is explicitly marked as not officially supported or documented, so nothing in the pack delivers a downloadable API spec.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -473,7 +445,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox isolation is a fair axis for a coding agent, but the evidence shows no sandbox at all. Aider's `/test`, `/run` and `--auto-test` run commands directly in the user's local environment. Git auto-commits, `/undo` and read-only `/ask` mode are adjacent safety features: they offer reversibility or no-edit modes, not an isolated sandbox that keeps production data out of reach.",
+    "rationale": "Sandboxed testing is a fair question for a coding agent, so the axis applies. The evidence shows /test, /run and --auto-test commands, but these run in the user's local environment with no documented isolation from production data. Git auto-commits, /undo and read-only /ask mode are rollback or no-edit features, not a sandbox environment, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -487,9 +459,12 @@
     "storyId": "api-versioning-policy",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Aider documents a scripting surface: a --message CLI flag and a Python Coder API. Versioning and deprecation of those interfaces is therefore a fair question. However, the evidence pack contains no API versioning scheme or documented deprecation policy, and the OpenAPI probes all returned 404.",
-    "evidenceIds": [],
+    "confidence": "high",
+    "rationale": "Aider's only programmatic surface is its Python scripting interface. The vendor explicitly says it is not officially supported or documented and could change without backwards compatibility. There is no HTTP API, no OpenAPI spec (probes return 404), no versioning commitment and no deprecation policy.",
+    "evidenceIds": [
+      "aider-scripting-unsupported-20261106",
+      "aider-probe-3"
+    ],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -503,7 +478,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Aider builds a concise repository map of the important classes, functions and call signatures, which `/map` prints. `/ask` answers questions about the codebase without editing, and Aider can work out which files need editing from a request. Community users independently report it helped them understand unfamiliar codebases faster than grep or search, including finding which code processes a given URL. Missing for 10: in-depth first-party documentation of how the repo map conveys cross-file relationships and dependencies (the cited docs are brief one-line descriptions).",
+    "rationale": "Aider's docs describe a repository map of the whole git repo that lists the most important classes and functions with their signatures. They also document a /map command to print it, /ask mode for questions about the codebase without editing, and automatic discovery of which files need editing. Community users independently report using it to understand unfamiliar codebases and find which code handles a given input. Missing for 10: in-depth first-party documentation of how the repo map ranks relevance, and any visual or architecture-level overview of how components connect.",
     "evidenceIds": [
       "aider-docs-17",
       "aider-docs-11",
@@ -546,11 +521,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Aider's own docs say it automatically commits every edit with a descriptive commit message and tags the author/committer as \"(aider)\", which covers staging and commit messages. Creating branches and opening pull requests are not documented as agent capabilities. The /git passthrough only lets the user run raw git commands, which is a user-side workaround and earns no credit. One community comment criticizes the quality of the commit messages but does not contradict that the feature exists. Missing for 10: agent-driven branch creation, pull request opening, explicit staging control, independent corroboration of commit-message quality.",
+    "rationale": "Aider's docs say it automatically commits its own edits with descriptive commit messages and marks them with '(aider)' attribution, which covers staging and committing. Branch creation is only reachable by the user running raw git through the /git command, and nothing documents the agent opening pull requests. One community user criticizes commit-message quality, but that is a quality complaint, not a contradiction of the capability. missing for 10: agent-driven branch creation, pull request creation, independent corroboration of commit-message quality.",
     "evidenceIds": [
       "aider-docs-4",
+      "aider-docs-29",
       "aider-docs-32",
-      "aider-docs-30",
+      "aider-docs-5",
       "aider-comm-7"
     ],
     "support": {
@@ -565,6 +541,10 @@
         {
           "evidenceId": "aider-docs-32",
           "quote": "If aider authored the changes in a commit, they will have “(aider)” appended to the git author and git committer name metadata."
+        },
+        {
+          "evidenceId": "aider-docs-5",
+          "quote": "`/git` will let you run raw git commands to do more complex management of your git history."
         }
       ]
     }
@@ -575,7 +555,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Automatic pull-request review is a fair question for an AI coding tool, so the axis applies. The evidence shows only local chat-driven editing, /ask questions, and scripting via --message or the Python API. A user could build a review step from those, but that is a developer building block, not a documented automatic PR review feature. One community comment only muses about adding a review agent after PRs, which is hypothetical, not affirmative support.",
+    "rationale": "Automatic PR review is a fair question for an AI coding tool, so the axis applies. The evidence pack documents no PR-triggered review feature. The `--message` scripting mode, `/ask`, and lint/test hooks are building blocks or adjacent features. The community comment about adding a review step after each PR describes a hypothetical user-built workflow, not a product capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -590,7 +570,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Aider's docs say it lints the files it edits by default, and it can run tests via /test or automatically with --test-cmd/--auto-test. It also accepts requests for test cases, so test writing and lint/test feedback loops are supported. Nothing in the evidence covers resolving merge conflicts or updating dependencies, and the docs only say it lints edited files, not that it fixes the errors it finds. Missing for 10: documented merge-conflict resolution, documented dependency updating, explicit evidence that lint errors are fixed automatically, independent hands-on corroboration.",
+    "rationale": "Aider's own docs cover the lint and test parts of this story. It lints every file it edits, runs your test suite via /test or --auto-test, and voice mode explicitly mentions requesting test cases. Nothing in the evidence shows it resolving merge conflicts or updating dependencies; the generic /git and /run commands are adjacent tools, not those capabilities. missing for 10: merge-conflict resolution, dependency updating, explicit documentation that it auto-fixes lint/test failures, hands-on corroboration.",
     "evidenceIds": [
       "aider-docs-12",
       "aider-docs-13",
@@ -611,12 +591,12 @@
           "quote": "You can configure aider to run your test suite after each time the AI edits your code using the --test-cmd <test-command> and --auto-test switch."
         },
         {
-          "evidenceId": "aider-docs-45",
-          "quote": "Request new features, test cases or bug fixes using your voice and let aider do the work of editing the files in your local git repo."
-        },
-        {
           "evidenceId": "aider-docs-13",
           "quote": "You can run tests with `/test <test-command>`."
+        },
+        {
+          "evidenceId": "aider-docs-45",
+          "quote": "Request new features, test cases or bug fixes using your voice and let aider do the work of editing the files in your local git repo."
         }
       ]
     }
@@ -627,7 +607,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no automatic per-task model selection or routing. Model choice is manual: the user switches with the in-chat /model command. Architect mode pairs two models for planning and editing, but nothing shows Aider choosing the best model itself, so these are adjacent features that earn no credit.",
+    "rationale": "The evidence shows only manual model selection: switching with the in-chat /model command, and an architect/editor mode that uses two different models. Neither is the tool automatically choosing the best model for each task, so they are adjacent controls and earn no credit. Nothing in the pack documents automatic per-task model routing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -641,13 +621,13 @@
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Aider can apply a single natural-language instruction across several files at once: you add multiple files to the chat or pass a file list to the scripting API, and one instruction then runs on all of them. It has no documented dedicated bulk or batch mode, and running across many repos or tasks would rely on user-written loops around --message. missing for 10: an explicit bulk/batch operation feature, documented scale limits for large file sets, and independent hands-on corroboration of bulk edits.",
+    "confidence": "low",
+    "rationale": "Aider lets you add multiple files to the chat via the command line or /add, and then applies one natural-language instruction's edits across those files, including in one-shot --message mode. That amounts to a limited form of multi-item bulk editing. It is not documented as a bulk-operations feature, and running across many items in a loop would need user-side scripting on an unsupported Python API, which earns no credit. Missing for 10: explicit bulk/batch operation documentation, documented scale limits across many files, and hands-on corroboration of large multi-file changes.",
     "evidenceIds": [
       "aider-docs-1",
       "aider-docs-6",
-      "aider-docs-7",
-      "aider-docs-25"
+      "aider-docs-25",
+      "aider-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -655,16 +635,16 @@
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": [
         {
-          "evidenceId": "aider-docs-7",
-          "quote": "# This will execute one instruction on those files and then return"
+          "evidenceId": "aider-docs-1",
+          "quote": "Do this by naming them on the aider command line. Or, you can use the in-chat `/add` command to add files."
         },
         {
           "evidenceId": "aider-docs-6",
           "quote": "It will do that one thing, apply the edits to the files and then exit."
         },
         {
-          "evidenceId": "aider-docs-1",
-          "quote": "Do this by naming them on the aider command line."
+          "evidenceId": "aider-docs-25",
+          "quote": "it will try to figure out which files need to be edited based on your requests."
         }
       ]
     }
@@ -673,14 +653,16 @@
     "productId": "aider",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Aider documents several built-in event-triggered behaviors. `--watch-files` acts when a saved file contains an `AI!` or `AI?` comment, `--auto-test` with `--test-cmd` runs your test suite after each AI edit, and edited files are auto-linted. These are fixed triggers with a configurable command, not a general rule engine where users define their own event→action rules. missing for 10: user-defined arbitrary event/condition rules (a hooks system), triggers beyond file-save comments and post-edit events, documentation of rule composition, independent hands-on corroboration of trigger reliability.",
+    "rationale": "Aider ships a few fixed, built-in event triggers. Watch mode acts on file saves containing AI!/AI? comments, `--auto-test` with a user-supplied `--test-cmd` runs after every AI edit, and it lints and commits automatically after edits. There is no general facility for defining arbitrary event→action rules. Missing for 10: user-definable rules over arbitrary events, configurable trigger conditions beyond the built-in edit/save hooks, a choice of custom actions beyond test/lint commands, and independent corroboration of automation depth.",
     "evidenceIds": [
       "aider-docs-9",
       "aider-docs-36",
+      "aider-docs-37",
       "aider-docs-42",
       "aider-docs-12",
+      "aider-docs-4",
       "aider-comm-17"
     ],
     "support": {
@@ -693,12 +675,12 @@
           "quote": "You can configure aider to run your test suite after each time the AI edits your code using the --test-cmd <test-command> and --auto-test switch."
         },
         {
-          "evidenceId": "aider-docs-36",
-          "quote": "AI! triggers aider to make changes to your code."
-        },
-        {
           "evidenceId": "aider-docs-9",
           "quote": "If you run aider with `--watch-files`, it will watch all files in your repo and look for any AI coding instructions you add using your favorite IDE or text editor."
+        },
+        {
+          "evidenceId": "aider-docs-36",
+          "quote": "AI! triggers aider to make changes to your code."
         },
         {
           "evidenceId": "aider-docs-12",
@@ -713,7 +695,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider's documented automation is limited to one-off runs: `--message` performs a single instruction and exits, `coder.run` executes one instruction, and `--watch-files` reacts to file comments. Nothing in the evidence shows a built-in way to define recurring schedules. Running these one-off commands from an external scheduler like cron would be a user-side workaround, which earns no credit.",
+    "rationale": "Aider documents a one-off `--message` mode that runs a single instruction and exits, an unsupported Python scripting API, and an event-driven `--watch-files` mode. None of these is a recurring schedule or workflow scheduler; running Aider on a schedule would need an external tool like cron, which is a user-side workaround and earns no credit. The axis is fair for an AI coding agent, so absence of evidence makes this \"none\", not \"na\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -728,7 +710,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider's git integration auto-commits and lets users review and `/undo` the AI's code edits. That versions the outputs of AI runs, not the automations themselves. Aider has no documented automation entity, such as a saved script, scheduled job or workflow definition, with its own versioning, review or rollback. Scripting via `--message` or the Python `Coder` API and `.aider.conf.yml` are building blocks; versioning them would be the user's own git workaround.",
+    "rationale": "The evidence shows Aider auto-committing and undoing the code edits it makes, but nothing about versioning, reviewing or rolling back automation definitions themselves. Its scripted runs (`--message`, the Python `Coder` API) and `.aider.conf.yml` config are not versioned or managed by Aider. Git history of AI code edits is an adjacent capability from a different story, and keeping scripts in git would be a user-side workaround, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -743,7 +725,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider is a local CLI and Python-scriptable coding agent that works in your local git repo. It can edit, auto-test (--test-cmd/--auto-test) and run code (/run), but nothing in the evidence shows a hosted cloud agent that builds, tests and demos a feature end-to-end for review. Its one-shot --message scripting is only a building block a user could deploy themselves, and the 'navigator-mode' autonomy is a community add-on, not a first-party cloud capability.",
+    "rationale": "Aider is documented only as a locally run CLI and experimental browser UI that edits code in your local git repo. It does have local test-running features (/test, --auto-test) and one-shot scripting (--message), but nothing in the evidence shows a cloud-hosted agent that autonomously builds, tests, and demos a feature for review. The 'navigator-mode' autonomy is a community add-on, not a first-party capability, and still runs locally.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -757,8 +739,8 @@
     "storyId": "background-cloud-tasks",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Aider is a local CLI coding agent, so background cloud delegation is a fair question for it. The evidence only shows local operation: editing files in your local git repo, and a one-shot `--message` scripting mode that runs locally and exits. There is no documented isolated cloud environment or background task delegation, and the community 'navigator-mode' autonomy is a third-party add-on, not cloud execution.",
+    "confidence": "medium",
+    "rationale": "Background cloud delegation is a fair axis for a coding agent, but every piece of Aider evidence describes it working locally on your own git repo, interactively or as a one-shot `--message` script run. None of it shows a hosted, isolated cloud environment for long-running background tasks. The community 'navigator-mode' autonomy add-on is a third-party PyPI package, not Aider's own capability, and it also runs locally.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -773,7 +755,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Tool-access control is a fair question for a coding agent, so the axis applies. The pack documents user-invoked tools such as /web, /run and /test, plus general configuration via command-line switches, .aider.conf.yml and AIDER_xxx environment variables. Nothing shows a documented way to allow or deny which external tools or integrations the agent may use; generic config options are an adjacent control and earn no credit.",
+    "rationale": "Aider is a coding agent, so controlling which tools and integrations it may access is a fair question for this kind of product. The pack documents tool-like features (/web scraping, /run, /test, /git) and generic configuration via command-line switches, .aider.conf.yml, or AIDER_xxx environment variables. None of the evidence shows an allowlist, permission policy, or admin control that restricts which external tools or integrations the agent can use; generic configuration is only an adjacent control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -788,7 +770,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cross-device session handoff is a fair question for a coding agent, so the axis applies. The evidence shows only a local experimental browser UI working on a local git repo and automatic git commits. Pushing and pulling the repo between machines would be a user-side git workaround, not a product feature, and nothing documents syncing or resuming a task session from another device or browser.",
+    "rationale": "Session continuity across devices is a fair question for a coding agent, but the evidence shows no session sync or handoff. Aider runs locally against a local git repo, and its experimental browser UI also works on the local repo. Auto-commits to git could let a user push and pull work between machines, but that is a user-side workaround, not a documented cross-device continuation capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -803,7 +785,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Persistent memory across sessions is a fair axis for a coding agent like Aider, but the evidence pack does not document any automatic memory building or recall. The repository map (aider-docs-17) and the .aider.conf.yml configuration (aider-docs-18) are adjacent features: one builds codebase context and the other sets options, and neither persists learned knowledge between sessions. Git auto-commits are also adjacent, not agent memory.",
+    "rationale": "Cross-session memory is a fair question for a coding agent like Aider, but nothing in the evidence shows it automatically building or recalling memory between sessions. The repository map, the `.aider.conf.yml` config file and the git auto-commits are adjacent features (codebase context, static settings, change history), not an agent memory that persists and is recalled across sessions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -818,7 +800,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Custom skills are a fair question for a coding agent like Aider, but the pack documents no mechanism for defining or installing them. The built-in commands (/run, /test, /web, /architect), the config file and the Python scripting API are built-in features or developer building blocks, not a custom-skills capability. The community 'navigator-mode' is a third-party add-on for autonomy, not a way to add skills.",
+    "rationale": "Aider is a coding agent, so equipping it with custom skills is a fair axis, but the evidence pack documents no skill, plugin, or extension mechanism for adding specialized capabilities. The closest items are adjacent rather than a skills system: config options, built-in commands like /web and /run, the unsupported Python scripting API, and a community-built 'navigator-mode' package.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -833,7 +815,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A desktop app for visual diff review and side-by-side sessions is a fair question for a coding agent, so the axis applies. The evidence shows only a terminal CLI, an experimental browser UI, and git-commit-based review. None of these is a desktop app with visual diffs or parallel sessions, so they are adjacent at most and earn no credit.",
+    "rationale": "Aider is documented as a terminal CLI with an experimental browser UI. The evidence shows no desktop app, no visual diff review, and no side-by-side sessions. Its change review runs through git commits and history, which is an adjacent workaround rather than the capability itself, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -848,7 +830,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Authenticating through an enterprise identity provider or a cloud platform (such as SSO or cloud-provider credentials for model access) is a fair question for an AI coding CLI, so the axis applies. The evidence pack only documents local models via Ollama, OpenAI-compatible APIs, and configuration through switches, YAML files or environment variables. None of these is an enterprise-identity or cloud-platform authentication capability.",
+    "rationale": "Authenticating through an enterprise identity provider or cloud platform is a fair question for an AI coding assistant, so the axis applies. However, the evidence pack documents no SSO, enterprise identity, or cloud-platform authentication path for Aider. Local-model and OpenAI-compatible API support, and AIDER_xxx environment-variable configuration, are adjacent features rather than enterprise or cloud authentication.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -863,7 +845,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of Aider letting a developer sign in with an existing product subscription plan to power the agent; the documented paths are LLM APIs and local models. The copy/paste-to-web-chat mode is an adjacent manual workflow. It is not subscription sign-in, so it earns no credit.",
+    "rationale": "Nothing in the evidence shows Aider letting a developer sign in with an existing subscription plan, such as a ChatGPT or Claude plan, to power the agent. The closest item is its copy/paste-to-web-chat mode (aider-docs-21). That is a manual workaround, not account sign-in, so it earns no credit. Model access is otherwise described only through LLM APIs and local models.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -878,7 +860,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Connecting a coding agent to workflow tools is a fair question for this kind of product, but the evidence pack documents no Jira, Slack, Google Drive or other connector integration in Aider. The /web command scrapes a single webpage into the chat, which is an adjacent context feature rather than a workflow-tool connector, so it earns no credit.",
+    "rationale": "Connecting a coding agent to workflow tools is a fair question for this kind of product, but the evidence pack documents no Jira, Slack, Google Drive, or other workflow-tool connectors, and no MCP-client support. The closest feature is the generic /web page scraper, which is an adjacent capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -893,7 +875,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider is a coding agent, so account-based free-tier sign-in is a fair axis for it, but the evidence documents no personal-account sign-in or vendor-provided free tier. Local models via Ollama and copy/pasting to a web chat interface do avoid API keys, but they are adjacent workarounds, not sign-in-based free access.",
+    "rationale": "Account sign-in with free-tier access is a fair question for a coding assistant, but the evidence pack never documents Aider offering account login or a bundled free tier. The closest items are local models via Ollama and copy/pasting to an LLM web chat. Both are adjacent workarounds, not sign-in-based free access, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -905,12 +887,12 @@
   {
     "productId": "aider",
     "storyId": "full-codebase-mapping",
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Aider builds its own concise map of the whole git repository, which `/map` can print, and `/ask` answers codebase questions without editing anything. It can also work without files being added, and hands-on users report it did well explaining unfamiliar codebases. However, the map only holds the most important classes, functions and signatures rather than full file contents, and the docs frame automatic file selection around edits, not whole-codebase explanation. missing for 10: documented automatic pulling of full file contents when answering explanatory questions, evidence of end-to-end explanation of an entire large codebase without adding files, documented limits on repo-map depth for big repositories",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Aider automatically builds a concise map of the whole git repository, with key classes, functions and signatures. Users can view it with /map, ask questions about the codebase with /ask, and work without adding any files. Community users report it did a fantastic job explaining unfamiliar codebases. Missing for 10: docs on how the map scales to very large repos, since it is a concise summary of the 'most important' symbols rather than full content; evidence that it pulls in full file contents for deep explanations without /add.",
     "evidenceIds": [
-      "aider-docs-17",
+      "aider-docs-46",
       "aider-docs-41",
       "aider-docs-40",
       "aider-docs-25",
@@ -919,12 +901,12 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can have the agent map and explain an entire unfamiliar codebase without manually selecting context files",
       "citations": [
         {
-          "evidenceId": "aider-docs-17",
-          "quote": "Aider uses a **concise map of your whole git repository** that includes the most important classes and functions along with their types and call signatures."
+          "evidenceId": "aider-docs-46",
+          "quote": "Aider uses a concise map of your whole git repository that includes the most important classes and functions along with their types and call signatures."
         },
         {
           "evidenceId": "aider-docs-41",
@@ -951,7 +933,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Inline completions are a fair axis for an AI coding assistant, but the evidence documents no inline or next-edit suggestions as you type for Aider. Aider works through chat-driven edits, and its --watch-files mode only acts on explicit AI!/AI? comments after a file is saved. That watch mode is an adjacent feature, not as-you-type completion.",
+    "rationale": "Inline completions and next-edit suggestions are a fair axis for an AI coding assistant, but the evidence only documents chat-driven edits and a watch mode that acts on explicit 'AI!' comments when a file is saved. That is an adjacent, comment-triggered editing workflow, not completions or next-edit suggestions offered as you type.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -966,10 +948,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider documents editing files, auto-committing changes, running tests, and one-shot scripted runs via --message. There is no documented way to ingest a tracked issue or to open a pull request. Commits, raw /git commands, and community users wiring Aider into their own PR pipelines are adjacent building blocks or user-side workarounds, not an end-to-end issue-to-PR capability.",
+    "rationale": "Aider edits files, auto-commits changes, and can run tests or one-shot `--message` instructions. Nothing in the evidence shows it reading a tracked issue or opening a pull request. The community mentions of PRs (a user's own scripted pipeline) and of issues (a third party, Dosu, wanting to integrate Aider) are user-side workarounds or external tools, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can turn a tracked issue into a complete pull request end-to-end",
       "citations": []
@@ -981,10 +963,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider is a terminal-based coding agent, so IDE integration is a fair question for it, but the evidence shows no JetBrains plugin, no interactive diff viewer inside the IDE, and no way to share a selected code range as context from the IDE. Its watch-files mode, where you leave AI comments in any editor, is only an adjacent editor-agnostic workaround and earns no credit for this story.",
+    "rationale": "The evidence shows no JetBrains plugin and no in-IDE interactive diff view for Aider. The closest feature is --watch-files, which picks up AI comments saved in any editor. That is an adjacent, editor-agnostic mechanism: it does not show diffs in the IDE or let you share a selected code range as context, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can view interactive diffs and share selected code as context from within my JetBrains IDE",
       "citations": []
@@ -996,7 +978,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "License and public-code matching references are a fair axis for an AI coding assistant, so the story applies. Nothing in the evidence pack shows Aider detecting or surfacing license or public-code matches for suggested code. The '(aider)' git author tagging and commit history only attribute authorship and enable review; they are adjacent features, not code-matching references.",
+    "rationale": "License and public-code matching references are a fair axis for an AI coding assistant, but the evidence pack never mentions Aider offering them. Git commit attribution ('(aider)' in author metadata) shows who made a change, not its license or origin, so it is an adjacent feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1011,10 +993,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider is a coding assistant, so live-app debugging is a fair question to ask of it. The pack documents only adjacent features: `/run` runs a command and shares its output, `/web` scrapes a page into markdown, and screenshots can be added as context. None of these attaches to, inspects, or debugs a live running web application, so they earn no credit.",
+    "rationale": "Debugging a live web app is a fair capability to ask of a coding assistant, so the axis applies. The evidence pack contains nothing showing Aider attaching to, inspecting, or debugging a running web application. The closest features are adjacent: `/run` shares one-off command output, `/web` scrapes a page into markdown, and screenshots can be added to the chat. None of these is live-app debugging.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can debug a live running web application directly from my coding assistant",
       "citations": []
@@ -1024,19 +1006,18 @@
     "productId": "aider",
     "storyId": "local-terminal-agent",
     "verdict": "full",
-    "quality": 10,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Aider is a terminal-first coding agent. The docs cover local installation (pip/aider-install, an install.sh script) and launching it from the command line, where it edits files, commits changes, runs tests and lints. Local models via Ollama are also supported, and community users corroborate using it interactively for real coding work.",
+    "rationale": "Aider is a terminal-based coding agent. It installs locally via pip or a curl script, runs from the command line with files named as arguments, and edits and commits code in your local git repo. It can also use local models via Ollama. Community users confirm hands-on use as a coding agent. missing for 10: independent hands-on corroboration of the install/local-run experience specifically (e.g., platform coverage, setup friction).",
     "evidenceIds": [
+      "aider-docs-1",
       "aider-docs-3",
       "aider-docs-28",
-      "aider-docs-1",
       "aider-docs-4",
       "aider-docs-33",
       "aider-docs-35",
       "aider-probe-4",
-      "aider-comm-15",
-      "aider-comm-1"
+      "aider-comm-8"
     ],
     "support": {
       "relation": "direct",
@@ -1044,8 +1025,8 @@
       "subject": "As a developer, I can run a coding agent locally from my terminal",
       "citations": [
         {
-          "evidenceId": "aider-docs-28",
-          "quote": "curl -LsSf https://aider.chat/install.sh | sh"
+          "evidenceId": "aider-docs-3",
+          "quote": "python -m pip install aider-install"
         },
         {
           "evidenceId": "aider-docs-1",
@@ -1060,8 +1041,8 @@
           "quote": "Aider can work also with local models, for example using Ollama."
         },
         {
-          "evidenceId": "aider-comm-15",
-          "quote": "I only use Aider interactively"
+          "evidenceId": "aider-comm-8",
+          "quote": "Aider is one of my favorite AI agents, especially because it can work with existing codebases."
         }
       ]
     }
@@ -1072,7 +1053,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Aider can add individual files to the chat and builds a map of a single git repository. Nothing documents including multiple separate project directories or repositories in one session. Adding files and a single-repo map are adjacent features, not this capability.",
+    "rationale": "Multi-directory context is a fair axis for a coding assistant, so the story applies. The evidence only shows adding individual files to the chat (/add or command line) and a repo map scoped to a single git repository. Nothing documents including multiple project directories or repositories in one session.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1087,11 +1068,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Aider has no in-IDE chat panel or extension; it runs as a terminal CLI. Its own `--watch-files` mode does let you work from inside your IDE: you write `AI?` comments to get answers and `AI!` comments to request edits, and a community user confirms this works with a normal editor. That is comment-triggered interaction rather than a true conversational chat inside the IDE. Missing for 10: a native IDE plugin or embedded chat panel, back-and-forth conversation within the editor, and documentation on how answers are surfaced in the IDE.",
+    "rationale": "Aider has no documented IDE extension or in-editor chat panel. Its own `--watch-files` mode does let you work from your IDE: you write AI comments in files, `AI?` triggers an answer to your question and `AI!` triggers code changes, and a community user confirms this works with a normal editor. This counts as in-IDE interaction, but it is comment-driven rather than a true chat inside the IDE, and the evidence does not show where answers are displayed. Missing for 10: a native IDE plugin or chat panel, in-editor display of responses, and independent corroboration of the contextual-help workflow inside the IDE.",
     "evidenceIds": [
       "aider-docs-9",
-      "aider-docs-37",
       "aider-docs-36",
+      "aider-docs-37",
       "aider-docs-38",
       "aider-comm-17"
     ],
@@ -1109,6 +1090,10 @@
           "quote": "AI? triggers aider to answer your question."
         },
         {
+          "evidenceId": "aider-docs-38",
+          "quote": "Rather than using /add to add a file inside the aider chat, you can simply put an #AI comment in it and save the file."
+        },
+        {
           "evidenceId": "aider-comm-17",
           "quote": "Aider has a web mode and a 'watch mode', where you can use your normal editor and if you leave a comment like '# make this darker ai!', Aider will step in and apply the change."
         }
@@ -1121,14 +1106,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Aider's docs let you switch models mid-session with the in-chat /model command, run local models via Ollama or any OpenAI-compatible API, and pair two models in architect mode. Community reports show it in use with OpenAI, Anthropic Claude and Gemini models, though one user hit a tokenizer error configuring Claude 3 Opus, which is a setup issue rather than a contradiction. missing for 10: a first-party documented list of supported hosted providers and model-selection syntax in the pack, consistent hands-on evidence that provider configuration works smoothly.",
+    "rationale": "Aider's docs say users can switch models mid-session with the in-chat /model command and can use local models via Ollama or any OpenAI-compatible API; architect mode pairs two different models. Community reports confirm use with OpenAI GPT-4, Anthropic Claude 3 and Gemini 2.5 Pro, though one user hit a tokenizer error with an Anthropic model string. missing for 10: a first-party list of the supported cloud providers (OpenAI/Anthropic/Gemini are evidenced only by community posts), and documentation of provider/model configuration without friction such as the reported tokenizer error.",
     "evidenceIds": [
       "aider-docs-27",
       "aider-docs-35",
-      "aider-docs-39",
+      "aider-docs-19",
       "aider-comm-11",
       "aider-comm-13",
-      "aider-comm-18"
+      "aider-comm-18",
+      "aider-comm-14"
     ],
     "support": {
       "relation": "direct",
@@ -1144,12 +1130,12 @@
           "quote": "Aider can work also with local models, for example using Ollama. It can also access local models that provide an Open AI compatible API."
         },
         {
-          "evidenceId": "aider-comm-13",
-          "quote": "Aider automatically recovers from these errors with exponential backoff retries."
+          "evidenceId": "aider-docs-19",
+          "quote": "Enter architect/editor mode using 2 different models."
         },
         {
-          "evidenceId": "aider-comm-18",
-          "quote": "Gemini 2.5 Pro is your best bet"
+          "evidenceId": "aider-comm-13",
+          "quote": "The Claude APIs seem somewhat unstable, returning HTTP 5xx errors of various sorts. Aider automatically recovers from these errors with exponential backoff retries."
         }
       ]
     }
@@ -1159,8 +1145,8 @@
     "storyId": "multi-platform-task-kickoff",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Launching agent tasks from GitHub, GitLab, Linear, or Slack is a fair question for a coding agent, but the evidence shows no such integration in Aider. Aider is started from a local CLI, an IDE watch mode, or a browser UI. Its `--message` scripting and Python `Coder` API are only building blocks a developer could use to wire up such triggers, so they earn no credit here.",
+    "confidence": "high",
+    "rationale": "Triggering agent tasks from GitHub, GitLab, Linear, or Slack is a fair question for a coding agent, but the evidence pack shows no native integration with any of those platforms. Aider's `--message` one-shot mode and its Python scripting API are developer building blocks that a user could wire into such tools, not the capability itself. The vendor also marks the scripting API as unsupported, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1175,11 +1161,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Aider's own docs say you can add images to the chat as visual context, such as screenshots. It also edits HTML, CSS and JavaScript, so an image-informed build is plausible. Nothing documents or demonstrates turning a sketch or design into a working app, and PDFs are not mentioned. Missing for 10: PDF design input, a documented design-to-app workflow, hands-on evidence that the generated app works.",
+    "rationale": "Aider's own docs say you can add images to the chat as visual context, such as screenshots, alongside its ability to write code in html, css, javascript and other languages. That supports image-informed code generation, but nothing shows it turning a design into a working app. missing for 10: explicit design/sketch-to-working-app workflow documentation, PDF design input support, evidence the generated app actually runs, independent or hands-on corroboration of image-to-app results.",
     "evidenceIds": [
       "aider-docs-22",
-      "aider-docs-23",
-      "aider-docs-25"
+      "aider-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -1200,23 +1185,21 @@
   {
     "productId": "aider",
     "storyId": "natural-language-debugging",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Aider documents natural-language querying of the codebase without edits (/ask). It also lets you share run output and failing test errors from /run and /test with the AI, and lets you request bug fixes by voice. Together these cover debugging and troubleshooting through natural-language interaction, and community users corroborate its strength at answering codebase questions. Missing for 10: a dedicated first-party debugging/troubleshooting workflow guide (e.g., stack-trace diagnosis walkthrough), and independent hands-on corroboration specifically of bug diagnosis and fixing rather than general codebase Q&A.",
+    "rationale": "Aider lets developers ask natural-language questions about the codebase with /ask and AI? comments. It also feeds run and test failures back into the chat via /run and /test, and the docs mention requesting bug fixes; community users report it answers code-tracing questions well. However, no doc describes a dedicated debugging or troubleshooting workflow, and hands-on reports note subtle errors. missing for 10: dedicated debugging/troubleshooting documentation (e.g., stack-trace diagnosis walkthroughs), independent hands-on corroboration of bug diagnosis quality specifically.",
     "evidenceIds": [
       "aider-docs-40",
       "aider-docs-43",
       "aider-docs-13",
-      "aider-docs-42",
-      "aider-docs-45",
       "aider-docs-37",
-      "aider-comm-1",
+      "aider-docs-45",
       "aider-comm-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can debug issues and troubleshoot using natural-language queries",
       "citations": [
         {
@@ -1232,12 +1215,12 @@
           "quote": "If there are test errors, aider expects the command to print them on stdout/stderr and return a non-zero exit code."
         },
         {
-          "evidenceId": "aider-docs-45",
-          "quote": "Request new features, test cases or bug fixes using your voice and let aider do the work of editing the files in your local git repo."
-        },
-        {
           "evidenceId": "aider-docs-37",
           "quote": "AI? triggers aider to answer your question."
+        },
+        {
+          "evidenceId": "aider-docs-45",
+          "quote": "Request new features, test cases or bug fixes using your voice and let aider do the work of editing the files in your local git repo."
         },
         {
           "evidenceId": "aider-comm-2",
@@ -1252,13 +1235,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Aider's docs say users can request new features or bug fixes in natural language and let aider edit the files in their repo. It can work out which files need editing on its own, and it uses a whole-repository map for context. Community users report it delivering on existing codebases, though one notes subtle errors in its output. Missing for 10: explicit documentation of coordinated multi-file edits for a single request, and independent hands-on corroboration of cross-file feature or bug-fix quality.",
+    "rationale": "Aider takes plain-language instructions (typed, via --message, or by voice, including feature requests and bug fixes) and applies the edits to files added to the chat. It can also infer which files need editing, with help from a repo map of the whole codebase. Community users report it working well on existing codebases, though some note subtle errors. Missing for 10: explicit documentation of coordinated edits across multiple files in a single change, and stronger independent evidence of reliable multi-file output quality.",
     "evidenceIds": [
+      "aider-docs-6",
       "aider-docs-45",
       "aider-docs-25",
-      "aider-docs-6",
-      "aider-docs-17",
       "aider-docs-1",
+      "aider-docs-17",
       "aider-comm-3",
       "aider-comm-8",
       "aider-comm-6"
@@ -1269,16 +1252,16 @@
       "subject": "As a developer, I can describe a feature or bug in plain language and have the agent implement or fix it across multiple files",
       "citations": [
         {
+          "evidenceId": "aider-docs-6",
+          "quote": "Aider takes a `--message` argument, where you can give it a natural language instruction. It will do that one thing, apply the edits to the files and then exit."
+        },
+        {
           "evidenceId": "aider-docs-45",
           "quote": "Request new features, test cases or bug fixes using your voice and let aider do the work of editing the files in your local git repo."
         },
         {
           "evidenceId": "aider-docs-25",
           "quote": "You can use aider without adding any files, and it will try to figure out which files need to be edited based on your requests."
-        },
-        {
-          "evidenceId": "aider-docs-6",
-          "quote": "Aider takes a `--message` argument, where you can give it a natural language instruction. It will do that one thing, apply the edits to the files and then exit."
         },
         {
           "evidenceId": "aider-docs-17",
@@ -1291,16 +1274,15 @@
     "productId": "aider",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Aider documents its own programmatic interfaces: a `--message` CLI mode that applies one instruction and exits, and a Python scripting API (`Coder.create` / `coder.run`). Most options can also be set by switch, config file or environment variable. Nothing shows these interfaces reach parity with the interactive chat (/add, /undo, /architect, /voice, /web, the browser UI), and probes found no OpenAPI or HTTP API surface. missing for 10: documented parity of the scripting API with all in-chat commands and modes, a formal API reference or HTTP API spec, independent corroboration of full programmatic coverage.",
+    "rationale": "Aider has its own programmatic surfaces: a Python scripting interface (Coder.create / coder.run), a one-shot `--message` CLI mode, and command-line, config-file and environment-variable options. However, the vendor states the Python API is not officially supported or documented and may break without notice, and there is no HTTP API or spec. Nothing shows that every interactive feature (in-chat commands like /undo, /test, /architect, /voice, or the browser UI) is reachable programmatically. missing for 10: documented parity mapping each UI/in-chat command to an API equivalent, an officially supported and versioned API, an HTTP API or machine-readable spec, independent corroboration of full-feature programmatic use",
     "evidenceIds": [
-      "aider-docs-6",
       "aider-docs-7",
-      "aider-docs-33",
+      "aider-docs-6",
       "aider-docs-18",
-      "aider-probe-3",
-      "aider-comm-15"
+      "aider-scripting-unsupported-20261106",
+      "aider-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -1308,16 +1290,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "aider-docs-7",
+          "quote": "# This will execute one instruction on those files and then return\ncoder.run(\"make a script that prints hello world\")"
+        },
+        {
           "evidenceId": "aider-docs-6",
           "quote": "Aider takes a `--message` argument, where you can give it a natural language instruction. It will do that one thing, apply the edits to the files and then exit."
         },
         {
-          "evidenceId": "aider-docs-7",
-          "quote": "coder = Coder.create(main_model=model, fnames=fnames)"
-        },
-        {
           "evidenceId": "aider-docs-18",
-          "quote": "Aider has many options which can be set with command line switches. Most options can also be set in an `.aider.conf.yml` file... Or by setting environment variables like `AIDER_xxx`"
+          "quote": "Aider has many options which can be set with command line switches."
         }
       ]
     }
@@ -1326,14 +1308,13 @@
     "productId": "aider",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Aider's own documented behaviour stores its output in open, standard formats. Every AI edit is committed to the user's local git repo with descriptive messages and '(aider)' author metadata, and settings live in a plain .aider.conf.yml file or environment variables. Nothing ties that data to the tool, so a user can leave with it. However, no export feature is documented, and nothing covers getting non-code data such as chat history out. Missing for 10: an explicit documented data-export or portability capability, coverage of chat/session history export, and independent or hands-on corroboration of leaving cleanly.",
+    "rationale": "Aider's own documented behavior keeps the user's work in open, portable formats. Every AI edit is committed to the user's local git repo with a descriptive message. Options live in a plain `.aider.conf.yml` file or `AIDER_xxx` environment variables. Nothing locks the user in, but there is no documented export feature. Missing for 10: any documented export of chat/session history or other Aider-held data, an explicit data-portability or exit statement, and independent corroboration.",
     "evidenceIds": [
-      "aider-docs-4",
-      "aider-docs-32",
-      "aider-docs-30",
-      "aider-docs-18"
+      "aider-docs-29",
+      "aider-docs-31",
+      "aider-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -1341,16 +1322,16 @@
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": [
         {
-          "evidenceId": "aider-docs-4",
+          "evidenceId": "aider-docs-29",
           "quote": "Whenever aider edits a file, it commits those changes with a descriptive commit message."
         },
         {
-          "evidenceId": "aider-docs-32",
-          "quote": "If aider authored the changes in a commit, they will have “(aider)” appended to the git author and git committer name metadata."
+          "evidenceId": "aider-docs-31",
+          "quote": "/git will let you run raw git commands to do more complex management of your git history."
         },
         {
-          "evidenceId": "aider-docs-18",
-          "quote": "Most options can also be set in an `.aider.conf.yml` file"
+          "evidenceId": "aider-docs-47",
+          "quote": "Most options can also be set in an .aider.conf.yml file... Or by setting environment variables like AIDER_xxx"
         }
       ]
     }
@@ -1361,7 +1342,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains nothing about Aider's license or a public source repository. Installing via pip or a curl script, and a community user building a 'navigator-mode' extension, do not document that the source is readable under an open license. Openness is a fair axis for a coding tool, so absent evidence the verdict is none, not na.",
+    "rationale": "Whether a coding tool's source is published under an open license is a fair question for this kind of product, so the axis applies. The evidence pack never mentions Aider's license, a public source repository, or open-source status. Install commands (pip, curl) and a community member's PyPI add-on do not show that the source is openly licensed, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1376,12 +1357,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Aider's docs show it installs and runs on the user's own machine (pip/curl installer) against the local git repo. Its own documented local-model support (Ollama or any OpenAI-compatible local API) lets the whole stack run on user infrastructure without a vendor-hosted service. missing for 10: explicit open-source/license or source-availability evidence, documented fully offline/air-gapped deployment guidance, independent hands-on corroboration of self-hosted local-model use.",
+    "rationale": "Aider installs and runs on the user's own machine via pip or an install script and operates on the local git repo. It can also run against local models such as Ollama or any OpenAI-compatible local API, so the whole stack can be self-hosted. missing for 10: evidence that the source is openly licensed or buildable from source, and independent or hands-on corroboration of a fully self-hosted or offline setup.",
     "evidenceIds": [
       "aider-docs-3",
       "aider-docs-28",
       "aider-docs-35",
-      "aider-docs-8",
       "aider-docs-44"
     ],
     "support": {
@@ -1391,7 +1371,7 @@
       "citations": [
         {
           "evidenceId": "aider-docs-3",
-          "quote": "python -m pip install aider-install"
+          "quote": "python -m pip install aider-install\naider-install"
         },
         {
           "evidenceId": "aider-docs-28",
@@ -1414,20 +1394,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider's documented automation is a single-shot `--message` mode and a Python `Coder.run` API that each execute one instruction and exit or return. These are developer building blocks, not a first-party way to launch fleets of parallel autonomous agents that run for hours or days. The community 'navigator-mode' autonomy is a third-party add-on and is not an official capability, so it earns no credit.",
-    "evidenceIds": [
-      "aider-docs-6"
-    ],
+    "rationale": "Aider's documented automation is a single session that runs one instruction via `--message` or `coder.run()` and then exits. Nothing in the evidence shows first-party orchestration of parallel agent fleets or long-running autonomous work lasting hours or days. The community 'navigator-mode' autonomy is a third-party add-on, and running many scripted instances in parallel would be a user-side workaround, so neither earns credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an ai-native user, I can launch fleets of autonomous agents that work in parallel on different tasks for hours or days",
-      "citations": [
-        {
-          "evidenceId": "aider-docs-6",
-          "quote": "It will do that one thing, apply the edits to the files and then exit."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -1436,7 +1409,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider's evidence covers single-session editing, git auto-commits, /undo, and scripting via --message or Coder.run. Nothing documents a native way to run several task attempts in parallel and compare them before choosing one. Scripting is only a developer building block a user could build parallel runs from, and the community comment about agents comparing PR results is hypothetical, so neither earns credit.",
+    "rationale": "Nothing in the pack shows Aider natively running several task attempts in parallel or offering a way to compare them before picking one. The scripting interface (--message, Coder.run) is a developer building block a user could orchestrate externally. The community comment about reviewing and comparing results is a hypothetical user-side workaround, not a product capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1451,7 +1424,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Integrating third-party partner-built agent apps is a fair ecosystem question for a coding agent, but nothing in the evidence documents a plugin system, marketplace, or partner-app integration in Aider. The scripting API and `--message` flag are developer building blocks. The community items describe Aider being embedded in other tools (Dosu) or a user-built PyPI add-on, not a first-party mechanism for integrating partner apps.",
+    "rationale": "An ecosystem of partner-built agent apps is a fair question for a coding agent, but Aider's evidence shows no marketplace, plugin system, or documented way to plug third-party agent apps into its workflows. The only related items do not count: the Python scripting API is an unsupported developer building block, a community-built 'navigator-mode' is a user-side extension, and Dosu's interest runs the other way (embedding Aider in another product).",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1466,7 +1439,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents a project instructions or conventions file that Aider automatically follows for coding standards. The nearest items are adjacent: .aider.conf.yml sets tool options rather than coding conventions, /add puts files into the chat for editing, and --watch-files picks up inline AI comments. None of these is the requested capability.",
+    "rationale": "A project instructions or conventions file is a fair question for a coding agent like Aider, but the evidence pack never documents one. The .aider.conf.yml file only sets command-line options, and the --watch-files feature reacts to inline AI comments; neither is a standing coding-standards file the agent follows. With no direct evidence, the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1481,22 +1454,29 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Aider directly supports the checks half of the story: it lints edited files by default, runs tests via /test or automatically with --test-cmd/--auto-test, and runs code via /run. The diff half is weaker. Aider commits each edit with an '(aider)'-tagged descriptive message so changes can be reviewed in git history, but diff inspection relies on git rather than a documented dedicated diff view. missing for 10: a documented first-party diff inspection/review command or view, explicit pre-merge workflow guidance, and independent or hands-on corroboration of the lint/test checks.",
+    "rationale": "Aider documents checks well: it lints edited files by default, runs tests via /test or automatically with --test-cmd/--auto-test, and runs code with /run. Diff inspection is only indirect: Aider auto-commits each edit so changes can be reviewed in git history or through raw /git commands, with no dedicated diff-review view and nothing tied to a merge gate. missing for 10: a documented first-party diff-inspection command or view, an explicit pre-merge review workflow, and independent hands-on corroboration of the lint/test checks.",
     "evidenceIds": [
+      "aider-docs-4",
+      "aider-docs-30",
+      "aider-docs-5",
       "aider-docs-12",
       "aider-docs-13",
       "aider-docs-42",
-      "aider-docs-43",
-      "aider-docs-29",
-      "aider-docs-30",
-      "aider-docs-31",
-      "aider-docs-32"
+      "aider-docs-14"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As a developer, I can inspect diffs and run checks to catch problems before merging",
       "citations": [
+        {
+          "evidenceId": "aider-docs-4",
+          "quote": "Whenever aider edits a file, it commits those changes with a descriptive commit message. This makes it easy to undo or review aider’s changes."
+        },
+        {
+          "evidenceId": "aider-docs-30",
+          "quote": "Go back in the git history to review the changes that aider made to your code"
+        },
         {
           "evidenceId": "aider-docs-12",
           "quote": "By default, aider will lint any files which it edits."
@@ -1508,14 +1488,6 @@
         {
           "evidenceId": "aider-docs-42",
           "quote": "You can configure aider to run your test suite after each time the AI edits your code using the --test-cmd <test-command> and --auto-test switch."
-        },
-        {
-          "evidenceId": "aider-docs-29",
-          "quote": "Whenever aider edits a file, it commits those changes with a descriptive commit message. This makes it easy to undo or review aider's changes."
-        },
-        {
-          "evidenceId": "aider-docs-30",
-          "quote": "Go back in the git history to review the changes that aider made to your code"
         }
       ]
     }
@@ -1526,7 +1498,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair privacy-posture question for an AI coding tool, so the axis applies. However, the evidence pack documents no region or residency selection for stored data. Aider's support for local models via Ollama or OpenAI-compatible APIs is an adjacent control over where inference happens, not a documented choice of storage region or residency, so it earns no credit.",
+    "rationale": "Data residency is a fair question for AI coding assistants, so the axis applies. The pack contains no documented region or residency selection for Aider. Local-model support via Ollama (aider-docs-35) controls which model processes prompts, not a residency setting, so it is adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1541,7 +1513,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has nothing about training-data use, data retention, telemetry, or any opt-out control in Aider. The only related material is support for local models via Ollama, a model-backend feature rather than a documented training-prevention capability, so it earns no credit here.",
+    "rationale": "Aider is a coding assistant that sends code to LLM providers, so a training-data privacy control is a fair question for it. However, the evidence pack contains no documented training opt-out, data-use policy, or no-training guarantee. The only related evidence is support for local models via Ollama. That is an adjacent model-selection feature relying on an external tool, not a documented control that prevents data being used for training, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1556,7 +1528,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair privacy question for a coding agent, but the evidence pack never documents controls over how long chat history, prompts or logs are kept, or how to delete them. Local-model support via Ollama limits what reaches third parties, which is adjacent rather than retention control. The /undo and git features manage code changes, not user data.",
+    "rationale": "Data retention and deletion is a fair privacy question for a local AI coding assistant, so the axis applies. The pack has no documented controls for retaining or deleting chat history, logs, or data sent to LLM providers. Local-model support via Ollama and git-based /undo are adjacent features, not retention or deletion controls, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1571,7 +1543,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a CLI coding assistant, so the axis applies. Nothing in the evidence pack mentions telemetry, analytics or usage tracking, or any switch to disable them. General config options and local-model support are adjacent features and do not count as a documented telemetry opt-out.",
+    "rationale": "Telemetry opt-out is a fair question for a CLI coding assistant, so the axis applies. The evidence pack never mentions telemetry, analytics or usage tracking, or any switch to disable them. General config options (CLI flags, .aider.conf.yml, AIDER_xxx env vars) and local-model support are adjacent features, not a documented telemetry opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1586,7 +1558,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Configurable cloud environments are a fair question for a coding agent, but the evidence only shows Aider running in the user's local git repo. Its `.aider.conf.yml` and `AIDER_xxx` settings configure Aider's own options, not a reproducible cloud environment with repository dependencies and setup steps. That is an adjacent control and earns no credit.",
+    "rationale": "Configurable cloud execution environments are a fair question for a coding agent, but the evidence shows Aider only as a local CLI working in your local git repo. Nothing documents provisioning a cloud environment, declaring dependencies, or defining setup steps. The `.aider.conf.yml` and `AIDER_xxx` settings configure Aider's own options, not a reproducible repository environment, so they are adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1601,15 +1573,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Aider documents the pieces of this workflow. `/run` executes code and shares its output with the model, which supports reproducing an issue. `/ask` and the repo map support code questions, and community users report it locates relevant code well. `/test` plus `--test-cmd`/`--auto-test` re-run tests after edits to verify fixes. However, there is no documented workflow for narrowing down root causes (such as bisecting, tracing or debugger integration), so coverage of the full story is incomplete. missing for 10: documented root-cause isolation or debugging workflow (debugger/trace/bisect support), explicit end-to-end bug reproduction guidance, independent hands-on corroboration of fix verification.",
+    "rationale": "Aider's own commands cover reproducing and verifying. `/run` executes code and can share the output with the LLM, and `/test` plus `--auto-test` run the test suite after edits. Root-cause narrowing rests only on `/ask` and the repo map, which are general codebase Q&A features, plus community reports of using Aider to understand codebases. missing for 10: a documented debugging or root-cause workflow (e.g. a debugger, tracing or bisect support), explicit docs on reproducing reported issues, and independent hands-on evidence of the fix-verify loop working in practice.",
     "evidenceIds": [
-      "aider-docs-43",
+      "aider-docs-14",
       "aider-docs-13",
       "aider-docs-42",
-      "aider-docs-40",
-      "aider-docs-46",
-      "aider-comm-2",
-      "aider-comm-1"
+      "aider-docs-10",
+      "aider-docs-17",
+      "aider-comm-2"
     ],
     "support": {
       "relation": "direct",
@@ -1617,8 +1588,8 @@
       "subject": "As a developer, I can reproduce issues, narrow down root causes, and verify fixes",
       "citations": [
         {
-          "evidenceId": "aider-docs-43",
-          "quote": "You can use the /run command in the chat to run your code and optionally share the output with aider."
+          "evidenceId": "aider-docs-14",
+          "quote": "You can use the `/run` command in the chat to run your code and optionally share the output with aider."
         },
         {
           "evidenceId": "aider-docs-42",
@@ -1626,11 +1597,11 @@
         },
         {
           "evidenceId": "aider-docs-13",
-          "quote": "You can run tests with `/test <test-command>`."
+          "quote": "If there are test errors, aider expects the command to print them on stdout/stderr and return a non-zero exit code."
         },
         {
-          "evidenceId": "aider-docs-40",
-          "quote": "/ask Ask questions about the code base without editing any files."
+          "evidenceId": "aider-docs-10",
+          "quote": "Ask questions about the code base without editing any files."
         },
         {
           "evidenceId": "aider-comm-2",
@@ -1645,7 +1616,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandboxed execution is a fair question for a coding agent. The evidence pack documents no sandbox or isolation for code, tools, or network access. The closest items are adjacent rather than isolation: git auto-commits and /undo are rollback, /ask is a no-edit mode, and /run executes commands with no stated containment.",
+    "rationale": "Aider is a coding agent, and sandboxed execution is a fair question to ask of one, so the axis applies. Nothing in the evidence pack documents a sandbox or isolated execution environment for code, tools, or network access. The closest items are adjacent controls that are not sandbox isolation: git auto-commits with /undo, ask mode that does not edit files, and /run or /test, which execute commands directly.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1660,7 +1631,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider is a local, single-user CLI coding assistant. Nothing in the evidence shows a team-shared workspace that combines docs and repos into a common source of truth. The repo map, adding files or web pages to a chat, and a local .aider.conf.yml all serve one user's session context, which makes them adjacent features rather than the shared-workspace capability.",
+    "rationale": "Aider is a local CLI coding agent. Its documented context features are adding files to a chat, building a repo map of a single local git repo, and scraping web pages into a session. None of these is a shared team workspace that combines docs and repos into a common source of truth. They are adjacent, single-user session features at most, and no evidence shows any team or shared-workspace capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1675,12 +1646,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Aider's scripting docs describe a `--message` flag that runs one instruction, applies the edits and exits, plus a Python `Coder.create(...).run()` API for programmatic use. Options can also be set through config files or `AIDER_xxx` environment variables, which suits automated workflows. A community comment confirms the 'scriptable' mode exists but gives no hands-on report. Missing for 10: evidence of auto-confirm/no-prompt flags and exit-code or structured-output behavior for CI, and independent hands-on corroboration of scripted runs.",
+    "rationale": "Aider documents a `--message` CLI argument that carries out one natural-language instruction, applies the edits and then exits, with a concrete shell example. Options can also be set through config files or AIDER_xxx environment variables, which suits scripted workflow automation. The Python scripting API is explicitly unsupported, but the CLI path delivers the story on its own. Missing for 10: documented auto-confirm/no-prompt behavior and exit-code or structured-output semantics for scripts, plus hands-on independent corroboration of scripted use (the community mention is only aspirational).",
     "evidenceIds": [
       "aider-docs-6",
       "aider-docs-33",
-      "aider-docs-7",
       "aider-docs-18",
+      "aider-docs-42",
+      "aider-scripting-unsupported-20261106",
       "aider-comm-15"
     ],
     "support": {
@@ -1697,10 +1669,6 @@
           "quote": "aider --message \"make a script that prints hello\" hello.js"
         },
         {
-          "evidenceId": "aider-docs-7",
-          "quote": "# This will execute one instruction on those files and then return"
-        },
-        {
           "evidenceId": "aider-docs-18",
           "quote": "Or by setting environment variables like `AIDER_xxx`"
         }
@@ -1713,7 +1681,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data-use and training opt-out controls are a fair question for an AI coding tool, but the evidence pack never mentions a training opt-out, a privacy policy, or data-retention settings. Support for local models via Ollama is a related way to keep code from third-party providers, not a documented opt-out of model training, so it earns no credit.",
+    "rationale": "Opting out of model training is a fair question for an AI coding assistant, but the evidence pack has no Aider setting, policy, or documentation about training on user code or prompts. Support for local models via Ollama is an adjacent workaround that keeps data local. It is not an opt-out control, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1728,7 +1696,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider's documentation covers a single interactive chat session: the CLI, an experimental browser UI, watch mode, and one-shot scripting via `--message` or `Coder.create`. Nothing in the evidence describes managing several concurrent agent sessions from one unified workspace. Scripting multiple Coder instances is a developer building block, and the community's multi-agent PR-review idea is a user-side workaround, so neither earns credit.",
+    "rationale": "Aider's documentation describes one interactive chat session per invocation: CLI, experimental browser UI, watch mode and one-shot scripting. Nothing documents a unified workspace for managing several agent sessions at once. The community idea of scripting multiple agents to review PRs is a user-side workaround, not a product capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1743,7 +1711,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Aider documents general-purpose capabilities: /ask for code questions, natural-language editing, bug-fix requests, and auto-linting. Nothing in the evidence describes detecting, explaining, or automatically fixing security vulnerabilities. Generic chat-driven editing is an adjacent feature, not a documented security-remediation capability, so it earns no credit.",
+    "rationale": "Aider documents general-purpose capabilities: asking questions about code (/ask), editing files, and auto-linting and testing. Nothing in the evidence mentions detecting, explaining or automatically fixing security vulnerabilities. General Q&A and editing are adjacent features, not a documented security-remediation capability, so the verdict stays at none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

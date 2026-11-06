@@ -1,17 +1,35 @@
 {
-  "hash": "2f874af4da46b8451ed42c66a80e20745010b8f3a39e741f60dbb01ba628b186",
+  "hash": "fa6573e2cf12f08dee81e427dab5bb0bc48c2d16e6a9d4ab7da57bdc322ea1c4",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "An API gateway/proxy like LiteLLM could plausibly publish an OpenAPI spec, so the axis applies. The probe found every candidate OpenAPI/Swagger path on the docs site returning 404, and no evidence item documents a downloadable machine-readable spec. OpenAI-format compatibility and llms.txt are adjacent features, not a downloadable API spec.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "high",
+    "rationale": "LiteLLM's proxy generates and serves its own OpenAPI spec at /openapi.json (configurable via OPENAPI_URL, with NO_OPENAPI to disable) and renders Swagger UI at its root, so any deployed proxy exposes a machine-readable spec. However, the vendor publishes no downloadable spec: the probe found 404 on every docs-site OpenAPI path, and the docs confirm there is no vendor-hosted public spec or demo instance, so you must deploy the proxy first. missing for 10: a vendor-hosted, directly downloadable OpenAPI spec without self-deploying, and independent or hands-on corroboration of the served spec.",
+    "evidenceIds": [
+      "litellm-api-stability-policy-20261105",
+      "litellm-openapi-settings-20261105",
+      "litellm-swagger-ui-20261105",
+      "litellm-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "litellm-api-stability-policy-20261105",
+          "quote": "The spec is served at `/openapi.json` and rendered as Swagger UI at `/` by default"
+        },
+        {
+          "evidenceId": "litellm-openapi-settings-20261105",
+          "quote": "The path to the OpenAPI JSON endpoint"
+        },
+        {
+          "evidenceId": "litellm-swagger-ui-20261105",
+          "quote": "Your Proxy Swagger is available on the root of the Proxy"
+        }
+      ]
     },
     "productId": "litellm",
     "storyId": "api-machine-spec"
