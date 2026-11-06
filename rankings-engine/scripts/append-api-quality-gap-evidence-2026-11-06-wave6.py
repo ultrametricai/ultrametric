@@ -297,7 +297,14 @@ def fetch(url):
         ['curl', '-sL', '--max-time', '45', '-A', UA, '-w', '\n---META %{http_code}', url],
         capture_output=True, text=True, timeout=90)
     body, _, meta = r.stdout.rpartition('\n---META ')
-    _fetch_cache[url] = (int(meta.strip() or 0), body)
+    status = int(meta.strip() or 0)
+    # A non-zero curl exit (partial transfer 18, timeout 28, ...) can still deliver an
+    # HTTP 200 and the marker bytes from a truncated body; that must not pass
+    # verification. Only a clean transfer counts; everything else surfaces as status 0
+    # so verify()/verify_absent() exit inconclusive instead of trusting a torn read.
+    if r.returncode != 0:
+        status = 0
+    _fetch_cache[url] = (status, body)
     return _fetch_cache[url]
 
 
@@ -342,6 +349,8 @@ def verify_post(url, payload, expected_status, markers):
         capture_output=True, text=True, timeout=90)
     body, _, meta = r.stdout.rpartition('\n---META ')
     status = int(meta.strip() or 0)
+    if r.returncode != 0:
+        raise SystemExit(f'POST {url}: curl exit {r.returncode} (incomplete transfer) - inconclusive, nothing written.')
     if status != expected_status:
         raise SystemExit(f'POST {url} answered {status}, expected {expected_status} - inconclusive.')
     for marker in markers:
