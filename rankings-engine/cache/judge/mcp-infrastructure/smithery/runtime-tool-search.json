@@ -1,20 +1,30 @@
 {
-  "hash": "3e02db03b18cd519fb1739510a158e348492dd61353110aff2e390078b6cf0c0",
+  "hash": "72c014a7f9124c08c9a5c87182e1bf427561c4eaad8186429598e2ba250ba4f8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The Smithery CLI once documented `smithery tool find [query]` and `smithery tool call`, which resembled runtime tool search and invocation. However, Smithery's own shutdown notice says the CLI, SDKs, Connect and Toolbox stopped working on October 31, 2026, leaving only a non-proxied registry. With no surviving mechanism for an agent to search and load tools on demand, the current product does not deliver this story.",
+    "rationale": "Smithery's maintained CLI gives agents on-demand tool discovery and invocation (`smithery tool find [query]`, `tool get`, `tool call`) instead of preloading every definition. That is runtime search-and-load, but the evidence never describes it as in-context meta-tools or quantifies any context savings. Hosted 'Connect, and Toolbox' services shut down on 2026-10-31, so it is unclear whether connection-based tool calls still work. Missing for 10: documented meta-tools exposed to the agent (e.g. an MCP search/load tool), evidence of context-reduction behavior, clear post-shutdown status of connection-based tool loading, and independent hands-on corroboration.",
     "evidenceIds": [
       "smithery-gh-2",
+      "smithery-gh-1",
       "smithery-api-shutdown-20261106"
     ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI agent, I can search and load tools at runtime through meta-tools instead of having thousands of tool definitions stuffed into my context",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "smithery-gh-2",
+          "quote": "smithery tool list [connection], smithery tool find [query], smithery tool get <connection> <tool>, smithery tool call <connection> <tool> [args]"
+        },
+        {
+          "evidenceId": "smithery-gh-1",
+          "quote": "Smithery CLI connects your agents to thousands of skills and MCP servers directly from the command line."
+        }
+      ]
     },
     "productId": "smithery",
     "storyId": "runtime-tool-search"

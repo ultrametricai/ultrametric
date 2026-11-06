@@ -297,6 +297,52 @@ del ITEMS[('model-gateways', '__unused__')]
 # Rows removed after review, (arena, product) -> evidence ids (none in this wave).
 REMOVALS: dict = {}
 
+# Excerpt updates after the PR #627 review (the ef4d42d8 carry-limits-into-excerpts
+# precedent): each entry re-verifies live markers fail-closed, then replaces the row's
+# excerpt and refreshes fetchedAt. (arena, product) -> (id, url, markers, new excerpt).
+#
+# - pipecat api-sandbox (P1): the dev-runner and evals rows are narrowed so the cited
+#   rows themselves state that neither surface is a sandbox isolated from production
+#   data.
+# - smithery agentic-official-cli (P1): the review read the CLI as defunct per the
+#   /future shutdown notice, but the official CLI repo (now under the acquirer's
+#   arcadeai-labs org) is live and maintained (npm `smithery@latest`, active command
+#   set, a Skills registry). The two CLI rows and the shutdown row now carry both
+#   lifecycle facts verbatim so the judge grades the full picture, not a silent
+#   fragment of it.
+UPDATES = {
+    ('voice-agents', 'pipecat'): [
+        ('pipecat-dev-runner-20261106',
+         'https://docs.pipecat.ai/pipecat/deployment/running-bots-locally.md',
+         ['Pipecat ships a built-in development runner',
+          'local development tool'],
+         'Pipecat documents a local development runner: "Pipecat ships a built-in development runner (pipecat.runner.run) that handles the server-side glue most bots need during development", serving a prebuilt UI to talk to the bot. "The development runner is a local development tool — it isn\'t built or supported for production use." The runner executes the agent on the developer\'s own machine; it is not a sandbox, and no hosted Pipecat Cloud sandbox or test environment isolated from production data is documented.'),
+        ('pipecat-evals-20261106',
+         'https://docs.pipecat.ai/pipecat/evals/overview.md',
+         ['built-in system for testing agent behavior'],
+         'Pipecat Evals is "the framework\'s built-in system for testing agent behavior": described conversations run "against your real agent (the same pipeline, the same services, the same code)". Evals exercise the real agent and its real services, so they provide no isolation from production data; no hosted sandbox or test mode is documented for Pipecat Cloud.'),
+    ],
+    ('mcp-infrastructure', 'smithery'): [
+        ('smithery-gh-1',
+         'https://raw.githubusercontent.com/arcadeai-labs/smithery-cli/main/README.md',
+         ['Smithery CLI connects your agents to thousands of skills and MCP servers directly from the command line.',
+          'smithery mcp search [term]',
+          'npm install -g smithery@latest'],
+         'The official Smithery CLI (repository now under the acquirer\'s arcadeai-labs org; installed via npm install -g smithery@latest): "Smithery CLI connects your agents to thousands of skills and MCP servers directly from the command line." Registry commands: smithery mcp search [term], smithery mcp add <url>, smithery mcp list, smithery mcp remove. The repository and npm package are live and maintained after the 2026-10-31 shutdown of Smithery\'s hosted connection services (see the shutdown row for what stopped working).'),
+        ('smithery-gh-2',
+         'https://raw.githubusercontent.com/arcadeai-labs/smithery-cli/main/README.md',
+         ['smithery tool find [query]',
+          'smithery tool call <connection> <tool> [args]'],
+         'The maintained Smithery CLI\'s tool commands: smithery tool list [connection], smithery tool find [query], smithery tool get <connection> <tool>, smithery tool call <connection> <tool> [args], plus a Skills surface ("npx skills add <skill>") against the Smithery Skills Registry. These command tables are the live README\'s current documentation, published under the acquirer\'s arcadeai-labs org after the 2026-10-31 service shutdown.'),
+        ('smithery-api-shutdown-20261106',
+         'https://smithery.ai/future',
+         ['Smithery will remain as a public (non-proxied) MCP registry.',
+          'Smithery API, Connect, and Toolbox',
+          'Smithery accounts and API keys'],
+         'Smithery (acquired by Arcade) shut down its connection-management services on October 31, 2026: what stopped working includes "Smithery API, Connect, and Toolbox", "Smithery accounts and API keys", and "The Smithery CLI and SDKs", with then-current versions marked deprecated. "Smithery will remain as a public (non-proxied) MCP registry." The docs tree is removed and there is no longer a documented API surface to specify, explore, sandbox, or version. The CLI itself continues under the acquirer\'s org (github.com/arcadeai-labs/smithery-cli, npm smithery@latest) against the public registry; the shutdown covers the hosted services and the service-tied versions.'),
+    ],
+}
+
 # Hand-recorded counter-check rows that a scheduled refresh must not clobber.
 PRESERVE_IDS = {'cerebras-playground-disabled-20261106', 'pinecone-playground-disabled-20261106'}
 
@@ -325,7 +371,7 @@ def verify(url, markers):
 
 
 def main() -> None:
-    for (arena, pid) in sorted(set(ITEMS) | set(REMOVALS)):
+    for (arena, pid) in sorted(set(ITEMS) | set(REMOVALS) | set(UPDATES)):
         items = ITEMS.get((arena, pid), [])
         ef = os.path.join(ROOT, 'open-rankings', arena, 'evidence', f'{pid}.json')
         with open(ef) as f:
@@ -345,10 +391,19 @@ def main() -> None:
                 row['preserve'] = True
             ev.append(row)
             added += 1
-        if added or removed:
+        updated = 0
+        for iid, url, markers, excerpt in UPDATES.get((arena, pid), []):
+            for e in ev:
+                if e['id'] == iid and e['excerpt'] != excerpt:
+                    verify(url, markers)
+                    e['url'] = url
+                    e['excerpt'] = excerpt
+                    e['fetchedAt'] = NOW
+                    updated += 1
+        if added or removed or updated:
             with open(ef, 'w') as f:
                 f.write(json.dumps(ev, indent=2, ensure_ascii=False) + '\n')
-        print(f'{arena}/{pid}: +{added} / -{removed} evidence items ({len(ev)} total)')
+        print(f'{arena}/{pid}: +{added} / -{removed} / ~{updated} evidence items ({len(ev)} total)')
 
 
 if __name__ == '__main__':

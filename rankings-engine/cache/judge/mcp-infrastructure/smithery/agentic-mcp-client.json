@@ -1,19 +1,35 @@
 {
-  "hash": "4e086a5186f3da2c1cb825977d3b1732a5f769f2db53f95560a6876adc840056",
+  "hash": "b11de3d24b4114bef5a736fab5f3f8251375c493f9ae85f25de88f01175769f7",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Smithery's earlier docs described connecting to MCP servers and calling their tools: a REST Connect interface, `smithery mcp add <url>`, `smithery tool call`, and aggregating tools across servers. Its own shutdown notice says the Smithery API, Connect, Toolbox, CLI and SDKs stopped working on October 31, 2026. Smithery now remains only as a non-proxied registry, which cannot plug in servers or use their tools, so the product no longer delivers this applicable capability.",
+    "rationale": "Smithery's maintained CLI documents registering MCP servers (`smithery mcp add <url>`) and calling their tools (`smithery tool call`), so the product itself can plug in MCP servers and use their tools. However, the hosted Connect/Toolbox service that brokered connections, OAuth and token refresh was shut down on 2026-10-31, and the service-tied CLI and SDK versions were deprecated, so the current depth of the tool-calling path is unproven. Missing for 10: confirmed post-shutdown connection and auth handling for added servers, hands-on corroboration that tool calls work against the public registry, and current first-party docs (the docs tree was removed).",
     "evidenceIds": [
-      "smithery-api-shutdown-20261106"
+      "smithery-gh-1",
+      "smithery-gh-2",
+      "smithery-api-shutdown-20261106",
+      "smithery-docs-14"
     ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "smithery-gh-1",
+          "quote": "Smithery CLI connects your agents to thousands of skills and MCP servers directly from the command line."
+        },
+        {
+          "evidenceId": "smithery-gh-1",
+          "quote": "smithery mcp add <url>"
+        },
+        {
+          "evidenceId": "smithery-gh-2",
+          "quote": "smithery tool call <connection> <tool> [args]"
+        }
+      ]
     },
     "productId": "smithery",
     "storyId": "agentic-mcp-client"

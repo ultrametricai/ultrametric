@@ -7168,7 +7168,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a voice-agent framework, so plugging in MCP servers as tool sources is a fair question for it. However, the evidence pack documents no MCP-client capability for voice agents. The only MCP mention is context-hub registering itself as an MCP server for a coding agent, which is a different role. Flows function calling is an adjacent feature, not MCP tool sourcing.",
+    "rationale": "Pipecat is a voice-agent framework, so plugging MCP servers in as tool sources is a fair question to ask of it. The evidence pack, however, never documents the voice agent consuming MCP servers as tool sources. The only MCP mention is the CLI's context-hub, which registers itself as an MCP server for coding agents. That is a different role and does not show the voice agent loading MCP toolsets mid-call.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7183,12 +7183,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Pipecat Cloud documents a REST API (OpenAPI 3.0) that manages agents, including a POST /agents \"Create an Agent\" endpoint and starting agent sessions. Its official CLI can deploy to Pipecat Cloud, so the agent-creation step can be done programmatically. Telephony, however, depends on an external carrier (Twilio, Telnyx, Plivo, etc.) calling your webhook, and nothing shows Pipecat itself attaching a phone number or placing an outbound call via API, CLI, or MCP. missing for 10: first-party phone-number provisioning/attachment via API/CLI, programmatic outbound call placement, an end-to-end provisioning walkthrough, and independent hands-on corroboration.",
+    "rationale": "Pipecat Cloud documents a REST API with an OpenAPI spec that manages agents, including a Create an Agent endpoint (POST /agents), and public endpoints that start agent sessions. The official CLI also has a `cloud` deploy command, so the agent-creation step can be done without the dashboard. Phone numbers, however, are handled by external carriers (Twilio, Telnyx, etc.) that call the user's webhook, and the pack documents no Pipecat API, CLI or MCP step to attach a number or place an outbound call; the documented MCP (context-hub) is only a local docs index for coding agents. Missing for 10: first-party number provisioning/attachment via API or CLI, documented outbound call placement via API, MCP-based provisioning, end-to-end hands-on corroboration.",
     "evidenceIds": [
       "pipecat-cloud-openapi-20261106",
       "pipecat-api-tryit-20261106",
       "pipecat-probe-rt-1",
-      "pipecat-docs-23"
+      "pipecat-docs-23",
+      "pipecat-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -7206,6 +7207,10 @@
         {
           "evidenceId": "pipecat-probe-rt-1",
           "quote": "cloud (deploy to Pipecat Cloud)"
+        },
+        {
+          "evidenceId": "pipecat-docs-23",
+          "quote": "the carrier (Twilio, Telnyx, Plivo, Exotel, or your SIP provider) is calling your webhook to tell you there's an inbound call"
         }
       ]
     }
@@ -7216,12 +7221,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A probe confirmed that https://docs.pipecat.ai/llms.txt returns HTTP 200 with Pipecat-specific content. Pipecat also ships agent-oriented docs: the quickstart scaffold writes AGENTS.md and CLAUDE.md, and `pipecat context-hub` builds a local docs, examples and API index that registers as an MCP server with your coding agent. missing for 10: independent or community reports of agents actually using llms.txt or context-hub, and evidence of the full llms.txt contents and coverage (the probe excerpt is truncated).",
+    "rationale": "A probe confirms that a live llms.txt is served at docs.pipecat.ai. Pipecat also ships other agent-oriented doc surfaces: `pipecat context-hub` registers a local docs/examples/API index as an MCP server for coding agents (confirmed in a runtime probe), the quickstart scaffold writes AGENTS.md and CLAUDE.md, and the OpenAPI spec is framed as something to 'feed to AI tools'. Missing for 10: independent or community hands-on corroboration of agents consuming llms.txt or the context hub in practice.",
     "evidenceIds": [
       "pipecat-probe-1",
-      "pipecat-docs-16",
       "pipecat-docs-11",
       "pipecat-probe-rt-1",
+      "pipecat-docs-16",
       "pipecat-spec-download-20261106"
     ],
     "support": {
@@ -7231,11 +7236,7 @@
       "citations": [
         {
           "evidenceId": "pipecat-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.pipecat.ai/llms.txt # Pipecat"
-        },
-        {
-          "evidenceId": "pipecat-docs-16",
-          "quote": "Install the Pipecat CLI and scaffold the quickstart project (also writes AGENTS.md + CLAUDE.md)"
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.pipecat.ai/llms.txt"
         },
         {
           "evidenceId": "pipecat-docs-11",
@@ -7244,6 +7245,14 @@
         {
           "evidenceId": "pipecat-probe-rt-1",
           "quote": "context-hub (local docs/examples/API index built for coding agents)"
+        },
+        {
+          "evidenceId": "pipecat-docs-16",
+          "quote": "Install the Pipecat CLI and scaffold the quickstart project (also writes AGENTS.md + CLAUDE.md)"
+        },
+        {
+          "evidenceId": "pipecat-spec-download-20261106",
+          "quote": "Download the complete spec to generate clients, run mocks, or feed to AI tools."
         }
       ]
     }
@@ -7254,7 +7263,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a voice and multimodal agent framework with a hosted cloud. A buyer could fairly ask whether it surfaces AI-generated insights from session data, so the axis applies. The evidence only shows building blocks: built-in metrics, transcript collection, audio recording and the Whisker debugger. None of it documents an in-product feature that generates AI insights or suggestions from a user's data.",
+    "rationale": "Pipecat is a framework for building voice and multimodal AI agents. Its cloud platform could plausibly offer AI-generated insights from user data, so the axis applies. The evidence only shows adjacent features: built-in metrics, transcript collection, audio recording, and the Whisker debugger. None of these is documented as producing AI-generated insights or suggestions inside the product. Building such a bot with the framework would be a developer building block, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7269,10 +7278,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a framework for real-time voice and multimodal agents, so background automation is a fair axis for it. However, the evidence documents no feature for setting up automations that run on their own, such as scheduled or recurring jobs, background triggers, or unattended workflows. The closest items are developer building blocks: handing off to subagents for long-running tools inside a conversation, multi-agent coordination, and carrier webhooks that start inbound call sessions. None of these is a product-level background automation capability.",
+    "rationale": "Pipecat is a framework for building voice and multimodal agents, so background automation is a fair axis, but the evidence documents no scheduled, recurring, or autonomous background automation feature. Subagent handoff for long-running tools and multi-agent coordination happen inside a live conversation pipeline. Carrier webhooks that start telephony sessions are an inbound call trigger, not a user-configurable recurring automation, so neither counts as this capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": []
@@ -7284,7 +7293,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a framework for building voice agents, and a built-in assistant in its CLI, docs, or Cloud dashboard is a fair thing to ask about, so the axis applies. The evidence shows no first-party assistant that users can delegate tasks to. The context-hub MCP index and the generated AGENTS.md/CLAUDE.md files serve external coding agents, and the agents users build are framework output. Neither counts as a built-in assistant.",
+    "rationale": "Pipecat is a framework for building voice AI agents, so an in-product assistant is a fair question, but the evidence documents no built-in AI assistant that users can delegate tasks to. The context-hub MCP server and the AGENTS.md/CLAUDE.md scaffolding only support external coding agents, and the agents developers build with Pipecat are developer building blocks rather than an assistant inside the product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7299,13 +7308,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Pipecat is a pip-installable Python framework with an official CLI (init, cloud deploy, eval) that a runtime probe ran non-interactively and keylessly via uvx. Its Evals framework runs described conversations against the real agent pipeline and reports pass/fail, and Pipecat Cloud exposes a REST API for managing agents and builds, so the automation building blocks are first-party. missing for 10: explicit CI/headless-mode documentation (e.g., CI pipeline integration, exit codes, non-interactive eval runs), and independent corroboration of use in CI.",
+    "rationale": "Pipecat's official CLI ran keylessly and non-interactively in a runtime probe, and it exposes `eval` (behavioral evals against the real agent) and `cloud` (deploy). A Cloud REST API with an OpenAPI spec also supports programmatic automation, so headless operation is real. No evidence documents CI usage itself, such as CI recipes, non-interactive flags, exit codes for eval pass/fail, or pipeline examples. missing for 10: documented CI/CD integration guide, explicit headless/non-interactive run mode docs, eval exit-code/CI reporting, independent reports of CI usage",
     "evidenceIds": [
       "pipecat-probe-rt-1",
+      "pipecat-probe-rt-2",
+      "pipecat-docs-8",
       "pipecat-docs-25",
       "pipecat-cloud-openapi-20261106",
-      "pipecat-docs-40",
-      "pipecat-probe-rt-2"
+      "pipecat-spec-download-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7314,19 +7324,15 @@
       "citations": [
         {
           "evidenceId": "pipecat-probe-rt-1",
-          "quote": "the official Pipecat CLI (pypi pipecat-ai[cli]) ran keylessly via uvx"
+          "quote": "the official Pipecat CLI (pypi pipecat-ai[cli]) ran keylessly via uvx — `pipecat --help` lists init (project scaffolding), cloud (deploy to Pipecat Cloud), eval (behavioral evals)"
         },
         {
           "evidenceId": "pipecat-docs-25",
-          "quote": "Pipecat runs it against your real agent (the same pipeline, the same services, the same code) and tells you whether the expectation still holds."
+          "quote": "You describe a conversation and the behavior you expect, and Pipecat runs it against your real agent (the same pipeline, the same services, the same code) and tells you whether the expectation still holds."
         },
         {
           "evidenceId": "pipecat-cloud-openapi-20261106",
           "quote": "The private API (/v1...) manages agents, secrets, builds, regions, and organization settings."
-        },
-        {
-          "evidenceId": "pipecat-docs-40",
-          "quote": "python bot.py -t twilio -x your-name.ngrok.io"
         }
       ]
     }
@@ -7337,7 +7343,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a framework for building voice AI agents, so consuming tools from MCP servers is a fair question to ask of it. However, nothing in the evidence shows Pipecat agents connecting to MCP servers as a client. The only MCP mention is context-hub, which registers Pipecat's docs index as an MCP server for a coding agent; that is the opposite role. Flows functions that call external APIs are an adjacent feature and earn no credit here.",
+    "rationale": "Pipecat is a voice-agent framework, so letting it consume MCP servers' tools is a fair axis. The pack contains no evidence that Pipecat acts as an MCP client. The only MCP mention is context-hub registering itself as an MCP server with an external coding agent, which is the opposite role and earns no credit. Flows function calling is an adjacent feature, not MCP-client support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7350,9 +7356,9 @@
     "productId": "pipecat",
     "storyId": "agentic-mcp-server",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat is a framework ecosystem, not itself an agent, so the MCP-server axis applies. Its official CLI ships `pipecat context-hub install`, which registers a first-party MCP server with the user's coding agent, and a runtime probe confirms that command exists. That server, however, exposes only a local docs, examples and API index, not operational control of Pipecat agents or Cloud resources. Missing for 10: MCP tools for managing or deploying agents or Cloud resources, detailed documentation of the MCP tool surface, and independent hands-on corroboration of an agent connecting through the server.",
+    "rationale": "Pipecat ships an official MCP server through its CLI: `pipecat context-hub install` registers the hub as an MCP server with your coding agent. However, that server only exposes a local index of docs, examples and the API for coding assistance. Nothing shows MCP tools for operating Pipecat Cloud resources such as agents, sessions, secrets or builds. missing for 10: an MCP server that exposes product actions (e.g. managing Cloud agents or deployments), documentation of its tool list, transport and auth setup, and independent or hands-on corroboration of an agent actually connecting.",
     "evidenceIds": [
       "pipecat-docs-11",
       "pipecat-docs-38",
@@ -7380,7 +7386,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party way to operate Pipecat itself (its CLI, Cloud, or deployments) through natural-language commands. The context-hub MCP server and the scaffolded AGENTS.md/CLAUDE.md files give coding agents documentation and project context, which is adjacent support rather than a natural-language control surface. The conversational bots developers build with Pipecat are what the framework produces, not a way to operate the product.",
+    "rationale": "The evidence shows no first-party way to operate Pipecat itself (deploying agents, managing Cloud resources, running evals) through natural-language commands. The context-hub MCP server is only a local docs, examples and API index for coding agents, and the scaffolded AGENTS.md/CLAUDE.md files are guidance for external agents. Both are adjacent building blocks or user-side workarounds. The voice bots that Pipecat builds understand natural language, but that is the developer's product, not a way to operate Pipecat.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7395,10 +7401,10 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Pipecat ships an official CLI (pypi pipecat-ai[cli]) with documented subcommands. They include `init` for scaffolding, which also writes AGENTS.md and CLAUDE.md, `cloud` for deployment, `eval` for behavioral evals, and `context-hub install`, which registers an MCP server and local index for coding agents. A runtime probe confirms `pipecat --help` runs keylessly and lists these commands. missing for 10: independent community or hands-on corroboration beyond the vendor docs and probe, and deeper documentation of each CLI subcommand's options.",
+    "rationale": "Pipecat ships an official CLI (pypi pipecat-ai[cli]). It has documented reference pages and covers init scaffolding, cloud deploy, evals, and context-hub. It is AI-native: `pipecat init` writes AGENTS.md and CLAUDE.md, and `context-hub install` registers an MCP server with your coding agent. A runtime probe confirmed `pipecat --help` runs keylessly. missing for 10: independent community/hands-on corroboration of AI-native CLI workflows beyond vendor docs and probe.",
     "evidenceIds": [
-      "pipecat-probe-3",
       "pipecat-probe-rt-1",
+      "pipecat-probe-3",
       "pipecat-docs-16",
       "pipecat-docs-34",
       "pipecat-docs-11"
@@ -7408,10 +7414,6 @@
       "coverage": "complete",
       "subject": "As an AI-native user, I can use an official CLI",
       "citations": [
-        {
-          "evidenceId": "pipecat-probe-3",
-          "quote": "official CLI documented at https://docs.pipecat.ai/api-reference/cli/overview"
-        },
         {
           "evidenceId": "pipecat-probe-rt-1",
           "quote": "the official Pipecat CLI (pypi pipecat-ai[cli]) ran keylessly via uvx — `pipecat --help` lists init (project scaffolding), cloud (deploy to Pipecat Cloud), eval (behavioral evals), and context-hub (local docs/examples/API index built for coding agents)."
@@ -7423,6 +7425,10 @@
         {
           "evidenceId": "pipecat-docs-11",
           "quote": "pipecat context-hub install registers the hub as an MCP server with your coding agent and builds the local index"
+        },
+        {
+          "evidenceId": "pipecat-probe-3",
+          "quote": "official CLI documented at https://docs.pipecat.ai/api-reference/cli/overview"
         }
       ]
     }
@@ -7433,12 +7439,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Pipecat Cloud publishes a documented REST API with a downloadable OpenAPI 3.0 spec. Its public API starts and proxies agent sessions, and its private API manages agents, secrets, builds, regions and org settings. The reference includes a per-endpoint 'Try it' playground with cURL examples. The probe 404s only checked other candidate paths and do not contradict the spec's published location. Missing for 10: independent or hands-on corroboration of REST API calls, and a documented API deprecation/versioning window beyond the /v1 path.",
+    "rationale": "Pipecat Cloud publishes a documented REST API with a downloadable OpenAPI 3.0 spec. Its public API starts agent sessions and proxies requests to them, and its private API manages agents, secrets, builds, regions and organization settings. Each endpoint has a live 'Try it' playground, and the OSS framework itself is a pip-installable Python API. The OpenAPI probe 404s only at guessed root paths, while the spec is documented at the rest-reference path, so this is not a contradiction. Missing for 10: hands-on or independent corroboration of driving the Cloud REST API end to end, and a documented deprecation/versioning window for the Cloud REST API beyond the /v1 URL path.",
     "evidenceIds": [
       "pipecat-cloud-openapi-20261106",
       "pipecat-spec-download-20261106",
       "pipecat-api-tryit-20261106",
-      "pipecat-semver-changelog-20261106"
+      "pipecat-probe-rt-2"
     ],
     "support": {
       "relation": "direct",
@@ -7466,7 +7472,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pipecat Cloud's own REST API has two credential tiers. A public API key is limited to the /v1/public surface (starting agent sessions and proxying requests to them). Agent, secret, build and organization management sits on the separate private API. That is a coarse, built-in least-privilege split, but the pack does not document custom scopes, per-agent credentials, or how keys are issued. missing for 10: user-definable fine-grained scopes, per-agent or expiring credential issuance, documented key-management workflow, independent corroboration.",
+    "rationale": "Pipecat Cloud's REST API separates a public API key, which can only start agent sessions and proxy requests to them, from the private API that manages agents, secrets, builds, regions and organization settings. That is a coarse, product-defined form of least-privilege credential, but nothing shows users issuing keys with custom scopes for an agent. Missing for 10: user-definable scopes or permissions per key, documented key issuance and revocation for agents, per-agent credential binding, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pipecat-cloud-openapi-20261106"
     ],
@@ -7488,7 +7494,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Pipecat's core is an official open-source Python SDK (pip-installable, confirmed by a runtime probe). It also ships an official family of client SDKs for web and mobile, plus pre-built React components, all documented first-party. Missing for 10: per-language detail on which client SDK platforms exist, and an official SDK for the Pipecat Cloud REST API (only a downloadable OpenAPI spec for generating your own clients is documented).",
+    "rationale": "Pipecat ships an official open-source Python framework, `pipecat-ai` on PyPI, which a runtime probe confirmed installs and imports without a key. It also documents Pipecat Clients, a family of official SDKs for web and mobile with prebuilt React components, so developers build directly against first-party SDKs. missing for 10: an official client SDK for the Pipecat Cloud REST API (only a downloadable OpenAPI spec for generating clients), hands-on corroboration of the web/mobile client SDKs.",
     "evidenceIds": [
       "pipecat-docs-35",
       "pipecat-docs-10",
@@ -7507,16 +7513,16 @@
           "quote": "Pipecat Clients are a family of SDKs that connect users to your Pipecat agents through web and mobile applications."
         },
         {
+          "evidenceId": "pipecat-docs-18",
+          "quote": "Pre-built React components for voice AI interfaces."
+        },
+        {
           "evidenceId": "pipecat-docs-42",
           "quote": "Open source Python framework for building voice and multimodal AI pipelines."
         },
         {
           "evidenceId": "pipecat-probe-rt-2",
           "quote": "pypi pipecat-ai 1.8.1 (BSD-2 OSS) installs and `import pipecat` succeeds with no key"
-        },
-        {
-          "evidenceId": "pipecat-docs-18",
-          "quote": "Pre-built React components for voice AI interfaces."
         }
       ]
     }
@@ -7527,7 +7533,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence does not show Pipecat or Pipecat Cloud offering registrable outbound HTTP callbacks for event subscription. The only webhook mentions describe telephony carriers (Twilio, Telnyx, etc.) calling the user's own webhook for inbound calls, which is a third-party host capability. Client SDK messaging and events are in-session transport, not webhooks.",
+    "rationale": "Pipecat is a framework with a hosted cloud platform, so outbound event webhooks are a fair axis, but no evidence shows Pipecat or Pipecat Cloud offering registrable outbound HTTP callbacks. The telephony 'webhook' references describe carriers like Twilio calling the developer's endpoint for inbound calls. Turn events and client SDK events are in-process or session messaging, not webhook subscriptions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7542,7 +7548,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party AI that generates or improves prompts, flows, or test cases from a description. The context-hub MCP index and the AGENTS.md/CLAUDE.md scaffolding only support the user's own external coding agent, which is adjacent help rather than the platform's own AI. Pipecat Evals runs conversations the user writes; it does not generate them, and Flows derives function metadata deterministically from docstrings, not via AI authoring.",
+    "rationale": "The evidence pack documents no first-party AI that generates or improves prompts, flows, or test cases from a description. The context-hub MCP index and the AGENTS.md/CLAUDE.md scaffolding only support the user's own external coding agent, which is a user-side workaround. Pipecat Evals runs conversations that the user describes themselves; it does not generate test cases.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7557,10 +7563,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Pipecat using AI to review completed calls, score their quality, flag failures or analyze resolution. Pipecat Evals is a pre-deployment test harness that runs scripted conversations against the agent, not automatic review of real calls. Audio recording, transcript capture and latency metrics are only building blocks a developer could use to build such analysis.",
+    "rationale": "Nothing in the evidence shows Pipecat automatically reviewing real calls with AI to score quality, flag failures, or analyze resolution. Pipecat Evals runs scripted conversations against the agent as behavioral tests rather than analyzing completed calls. Audio recording, transcript capture and metrics are only building blocks a developer could use to construct such analysis, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, the platform's AI reviews my calls for me — scoring quality, flagging failures, and analyzing resolution automatically",
       "citations": []
@@ -7572,7 +7578,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Pipecat's docs render a live Mintlify \"Try it\" playground for each Pipecat Cloud REST endpoint, with generated cURL examples and runnable in-page requests. This is backed by a downloadable OpenAPI 3.0 spec. The probe's 404s on root OpenAPI paths do not contradict this, because the spec lives under the REST reference path. missing for 10: interactive runnable reference for the Python framework API (only the Cloud REST API is shown), independent or hands-on corroboration that the playground works.",
+    "rationale": "Pipecat's docs include a live per-endpoint \"Try it\" playground for the Pipecat Cloud REST API, with generated cURL examples and runnable in-page requests. It is backed by a downloadable OpenAPI 3.0 spec. That directly delivers an interactive API reference with runnable examples, though only for the Cloud REST surface. missing for 10: interactive runnable reference for the Python framework API (not just Cloud REST), independent or hands-on corroboration that the playground works.",
     "evidenceIds": [
       "pipecat-api-tryit-20261106",
       "pipecat-cloud-openapi-20261106",
@@ -7585,7 +7591,7 @@
       "citations": [
         {
           "evidenceId": "pipecat-api-tryit-20261106",
-          "quote": "The Pipecat Cloud REST reference renders a live \"Try it\" API playground per endpoint (the Mintlify api.playground runtime)"
+          "quote": "The Pipecat Cloud REST reference renders a live \"Try it\" API playground per endpoint"
         },
         {
           "evidenceId": "pipecat-api-tryit-20261106",
@@ -7604,7 +7610,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Pipecat's docs publish a machine-readable OpenAPI 3.0.0 document for the Pipecat Cloud REST API. The REST reference explicitly tells users to download the complete spec to generate clients, run mocks, or feed it to AI tools. The probe's 404s were at generic guessed paths, not the documented openapi.json location, so they do not contradict this. Missing for 10: independent or hands-on confirmation that the documented openapi.json path resolves and is downloadable.",
+    "rationale": "Pipecat's docs publish a downloadable OpenAPI 3.0.0 document for the Pipecat Cloud REST API and explicitly frame it as something to download and \"feed to AI tools\". The probe's 404s hit generic well-known paths, not the documented api-reference path, so they do not contradict this. Missing for 10: independent or hands-on confirmation that the documented openapi.json path resolves.",
     "evidenceIds": [
       "pipecat-cloud-openapi-20261106",
       "pipecat-spec-download-20261106",
@@ -7629,29 +7635,16 @@
   {
     "productId": "pipecat",
     "storyId": "api-sandbox",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Pipecat documents its own local development runner, explicitly not for production use, which gives a develop-and-test surface separate from production deployment. However, no hosted Pipecat Cloud sandbox or test mode is documented, and Evals run against the real agent with the same services, so isolation from production data is not shown. This is a separate local environment rather than a true sandbox; mock-generation from the OpenAPI spec is only a developer building block and earns no credit. missing for 10: a documented sandbox or test mode in Pipecat Cloud, a guarantee that test runs are isolated from production data or services, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "pipecat-dev-runner-20261106",
-      "pipecat-evals-20261106",
-      "pipecat-docs-24"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Pipecat documents a local development runner and Pipecat Evals, but neither is an isolated sandbox. The runner runs the agent on the developer's machine and is explicitly 'not a sandbox'. Evals run 'against your real agent (the same pipeline, the same services, the same code)', and no hosted Pipecat Cloud sandbox or test mode isolated from production data is documented. The OpenAPI spec's mention of running mocks is only a developer building block, not a product-provided sandbox.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": [
-        {
-          "evidenceId": "pipecat-dev-runner-20261106",
-          "quote": "The development runner is a local development tool — it isn't built or supported for production use"
-        },
-        {
-          "evidenceId": "pipecat-docs-24",
-          "quote": "Pipecat ships a built-in development runner (pipecat.runner.run) that handles the server-side glue most bots need during development"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -7660,7 +7653,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "The Pipecat framework follows Semantic Versioning, and its changelog has explicit Deprecated sections that name removal targets (e.g. 'will be removed in 2.0.0'). A dedicated 1.0 migration guide confirms that deprecations are staged before removal at the major version. However, the Cloud REST API is versioned only by its /v1 URL path, with no documented deprecation window, and there is no standalone formal deprecation policy stating timelines. Missing for 10: a documented deprecation window or policy for the Pipecat Cloud REST API, a formal standalone deprecation-policy document with guaranteed timelines, and independent corroboration.",
+    "rationale": "The open-source framework follows Semantic Versioning, marks deprecated APIs in explicit changelog sections with removal targets (e.g. \"will be removed in 2.0.0\"), and has a dedicated 1.0 migration guide, so its versioning and deprecation discipline is documented. The Pipecat Cloud REST API, however, is versioned only by its URL path (/v1) and has no documented deprecation window. missing for 10: a standalone formal deprecation policy with stated timelines, a deprecation/sunset policy for the Cloud REST API, independent corroboration of how reliably the policy is followed",
     "evidenceIds": [
       "pipecat-semver-changelog-20261106",
       "pipecat-migration-1-0-20261106",
@@ -7678,6 +7671,10 @@
         {
           "evidenceId": "pipecat-migration-1-0-20261106",
           "quote": "Pipecat 1.0 removes many deprecated APIs from the 0.0.x series. If you were already using the non-deprecated replacements, most of these changes won't affect you."
+        },
+        {
+          "evidenceId": "pipecat-migration-1-0-20261106",
+          "quote": "Deprecations are staged in the changelog before removal at the major version."
         }
       ]
     }
@@ -7688,7 +7685,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat Cloud exposes a REST API for managing agents, secrets and builds, so bulk operations are a fair question, but nothing in the evidence documents batch or bulk endpoints or multi-item actions. Multi-agent parallel fan-out and unlimited session concurrency are related runtime features, not bulk operations over many items, so they earn no credit.",
+    "rationale": "Bulk operations are a fair question for a framework with a Cloud management REST API, but the evidence documents no batch or bulk endpoint, command, or feature that acts on many items at once. Multi-agent parallel fan-out and unlimited session concurrency are adjacent capabilities, not bulk operations, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7700,17 +7697,17 @@
   {
     "productId": "pipecat",
     "storyId": "automation-rules-engine",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Pipecat is a code framework. It documents turn events that fire as user and assistant messages occur, and Pipecat Flows functions that move a conversation between nodes, so developers can attach actions to events in code. There is no evidence of a declarative rules or automation layer where users define trigger→action rules. Missing for 10: a documented rule-definition mechanism, a general event-to-action automation feature beyond turn and transcript events, and independent or hands-on corroboration.",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Pipecat is a code-first voice-agent framework. The evidence shows developer event hooks (turn events for collecting messages, client SDK events) and built-in behaviors like barge-in interruption, but no product feature for defining event-triggered automation rules. These are developer building blocks or fixed behaviors, not a user-definable rules capability, so they earn no credit. The axis is fair for a framework or cloud platform of this kind, so absence of evidence is none rather than na.",
     "evidenceIds": [
       "pipecat-docs-4",
-      "pipecat-docs-22"
+      "pipecat-docs-35"
     ],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
@@ -7718,8 +7715,8 @@
           "quote": "Pipecat's turn events make it easy to collect both user and assistant messages as they occur."
         },
         {
-          "evidenceId": "pipecat-docs-22",
-          "quote": "Progress the conversation by transitioning between nodes"
+          "evidenceId": "pipecat-docs-35",
+          "quote": "provide messaging and events for building responsive voice AI interfaces"
         }
       ]
     }
@@ -7730,7 +7727,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a voice-agent framework with a cloud deployment platform, so a scheduler for recurring jobs or sessions is a fair question to ask. The pack documents no cron, schedule, or recurring-trigger capability. The Cloud REST API starts agent sessions on demand and telephony sessions start from inbound carrier webhooks; both are one-off triggers, not recurring schedules.",
+    "rationale": "Pipecat is a voice-agent framework with a hosted cloud platform, so recurring scheduled jobs (such as scheduled outbound sessions) are a fair question for it. The evidence documents only on-demand session starts, inbound telephony webhooks, a local dev runner and evals. Nothing shows a cron, schedule or recurring-trigger capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7745,7 +7742,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no Pipecat capability for versioning, reviewing, or rolling back a user's own bots or flows. The semver changelog and 1.0 migration guide cover versioning of the framework itself, not of user automations. Pipecat Cloud's API manages agents and builds but documents no version history or rollback, and Evals is a behavior-testing harness rather than change review or rollback.",
+    "rationale": "Versioning, reviewing, and rolling back agent deployments is a fair question for Pipecat, especially since Pipecat Cloud deploys and manages agents, so the axis applies. The evidence documents no agent version history, no deployment review step, and no rollback. The framework's Semantic Versioning changelog and 1.0 migration guide cover Pipecat's own library releases, not the user's automations. The Cloud API's management of 'agents, secrets, builds' is adjacent and shows no version or rollback workflow.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7760,7 +7757,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Pipecat's first-party interruptions docs say that on barge-in the bot stops immediately, cancels in-flight work, and readies the pipeline for new user input. That covers stopping speech and recovering the turn, and Krisp noise filtering on Pipecat Cloud reduces false interruptions. Missing for 10: documented context updating on interruption (e.g. truncating the assistant message to what was actually spoken), and independent or hands-on corroboration of barge-in behavior.",
+    "rationale": "Pipecat's first-party interruptions docs describe native barge-in: when the user talks over the bot, it stops immediately, cancels in-flight work, and readies the pipeline for the new user input. That covers stopping speech and recovering the turn. Krisp noise suppression on Pipecat Cloud additionally reduces false interruptions. Missing for 10: documented evidence that conversation context is updated after an interruption (e.g., truncating the unspoken bot reply), and independent or hands-on corroboration of barge-in behavior.",
     "evidenceIds": [
       "pipecat-docs-19",
       "pipecat-docs-2",
@@ -7792,7 +7789,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat documents telephony transports and inbound carrier webhooks, and Pipecat Cloud advertises unlimited concurrency. None of the evidence describes batch outbound dialing, campaign scheduling, or per-campaign throughput or pacing controls. Concurrency capacity and inbound call handling are adjacent features, not the campaign capability this story asks about.",
+    "rationale": "Pipecat supports telephony transports and carrier webhooks for inbound calls, and Pipecat Cloud advertises unlimited concurrency. Nothing in the evidence documents batch outbound dialing, campaign management, call scheduling, or per-campaign throughput or pacing controls. Platform concurrency is an adjacent capacity feature, not a campaign throughput control, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7807,13 +7804,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat documents a fast quickstart (a browser bot in under 5 minutes), and its dev runner terminates telephony WebSockets. A documented command (`python bot.py -t twilio -x ...ngrok.io`) connects the same bot to carriers such as Twilio, Telnyx and Plivo. However, the phone number must come from an external carrier, local testing needs an ngrok tunnel, and the documented quickstart is browser-based rather than phone-based, so the one-hour phone path is unproven. Missing for 10: first-party phone number provisioning, a documented phone-call quickstart with time-to-first-call, and hands-on corroboration of a live call within an hour.",
+    "rationale": "Pipecat documents its own telephony path: the dev runner terminates telephony WebSockets, `python bot.py -t twilio -x ...` runs a bot against Twilio, and carriers like Twilio, Telnyx and Plivo call your webhook for inbound calls. However, the fast quickstart (under 5 minutes) targets a browser bot, not a phone line. The phone number must come from a separate carrier account, and nothing shows a first live phone call within an hour. missing for 10: built-in phone number provisioning, a documented phone-call quickstart with time-to-first-call evidence, hands-on corroboration of a live call within an hour.",
     "evidenceIds": [
       "pipecat-docs-17",
       "pipecat-docs-24",
       "pipecat-docs-40",
       "pipecat-docs-23",
-      "pipecat-docs-13",
       "pipecat-docs-28",
       "pipecat-docs-34"
     ],
@@ -7823,12 +7819,8 @@
       "subject": "As a developer, I can build a working phone voice agent — prompt, voice, and phone number — and take my first live call within an hour",
       "citations": [
         {
-          "evidenceId": "pipecat-docs-17",
-          "quote": "Build and run your first Pipecat voice AI bot in under 5 minutes: a simple conversational agent you can talk to in a browser."
-        },
-        {
           "evidenceId": "pipecat-docs-24",
-          "quote": "creating Daily rooms, accepting WebRTC offers, terminating telephony WebSockets, and serving a prebuilt UI"
+          "quote": "terminating telephony WebSockets, and serving a prebuilt UI"
         },
         {
           "evidenceId": "pipecat-docs-40",
@@ -7837,6 +7829,10 @@
         {
           "evidenceId": "pipecat-docs-23",
           "quote": "the carrier (Twilio, Telnyx, Plivo, Exotel, or your SIP provider) is calling your webhook to tell you there's an inbound call"
+        },
+        {
+          "evidenceId": "pipecat-docs-17",
+          "quote": "Build and run your first Pipecat voice AI bot in under 5 minutes: a simple conversational agent you can talk to in a browser."
         }
       ]
     }
@@ -7847,20 +7843,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Call-analytics dashboards are a fair question for a voice-agent framework with a hosted cloud, but the evidence shows no first-party dashboard for success rates, durations, outcomes, or sentiment. Pipecat's built-in pipeline metrics, audio recording, transcript events, and the Whisker debugger are only building blocks for a founder's own analytics. They earn no credit toward a ready-made dashboard.",
-    "evidenceIds": [
-      "pipecat-docs-5"
-    ],
+    "rationale": "The evidence shows only developer building blocks: built-in pipeline metrics, audio recording, transcript collection via turn events, and the Whisker frame debugger. None of these is a ready-made analytics dashboard for call success rates, durations, outcomes, or sentiment. No Pipecat Cloud analytics dashboard is documented, so a founder would have to build this themselves.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As a founder, I can see call analytics — success rates, durations, outcomes, sentiment — in dashboards without building my own",
-      "citations": [
-        {
-          "evidenceId": "pipecat-docs-5",
-          "quote": "Pipecat offers built-in metrics for both, which can be enabled with straightforward configuration options."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -7869,7 +7858,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat documents telephony support: carrier webhooks for Twilio, Telnyx, Plivo, Exotel and SIP, plus SIP/PSTN transports. However, no evidence shows a warm or blind transfer of a live call to a human, or passing context to that human. Multi-agent specialist handoff and Flows functions that call external APIs are agent-to-agent orchestration and developer building blocks, so they earn no credit toward human call transfer.",
+    "rationale": "Pipecat is a voice AI framework with documented telephony support (Twilio, Telnyx, Plivo, Exotel, SIP), so escalating a call to a human is a fair question for it. However, no evidence documents warm or blind transfer to a human agent, or passing context to that human. The multi-agent 'hand off' evidence covers AI subagents, and Flows functions calling external APIs are developer building blocks, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7882,9 +7871,9 @@
     "productId": "pipecat",
     "storyId": "concurrency-scaling-limits",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Pipecat Cloud's pricing page directly states unlimited concurrency, which speaks to scaling simultaneous calls without requesting capacity, and it mentions agent profiles for different compute needs. The evidence is a single marketing-level line with no detailed concurrency or limit documentation and no hands-on corroboration. Missing for 10: documented per-account concurrency/rate-limit specifics, autoscaling or warm-capacity mechanics, any quota-increase policy, independent evidence of scaling to many simultaneous calls.",
+    "rationale": "Pipecat Cloud's pricing page directly states unlimited concurrency and offers different agent profiles for compute needs. This first-party claim addresses scaling to many simultaneous calls without requesting capacity, but it is a single marketing-page line with no detailed scaling documentation. missing for 10: in-depth docs on concurrency or rate limits and autoscaling behavior, per-agent or per-region capacity details, documented burst/warm-instance handling, independent or hands-on corroboration of scaling to many simultaneous calls.",
     "evidenceIds": [
       "pipecat-docs-12",
       "pipecat-docs-26"
@@ -7911,7 +7900,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only related evidence is the AudioBufferProcessor, which captures user and bot audio. That is a recording building block a developer could use to construct compliant flows. It is not a documented consent, disclosure, per-call recording-control or data-retention capability. Nothing in the pack covers consent prompts, disclosure handling, toggling recording per call, or configuring how long recordings or transcripts are retained, so the evidence is only adjacent.",
+    "rationale": "The only related evidence is Pipecat's AudioBufferProcessor, which captures user and bot audio. That is a developer building block for recording, not a documented compliance capability: nothing in the pack shows consent or disclosure handling, per-call recording controls aimed at legal obligations, or configurable data retention. The axis applies to a voice-agent framework and its hosted cloud, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7926,7 +7915,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Voice cloning with a consent process is a fair question for a voice-agent framework and platform like Pipecat, so the axis applies. However, nothing in the evidence documents Pipecat's own voice-cloning feature or any consent workflow. The claim that you can swap among 200+ integrated speech providers is only an adjacent integration capability, not a documented cloning-plus-consent feature.",
+    "rationale": "Pipecat is a voice-agent framework, so cloning a custom brand voice with a consent process is a fair question for it. The evidence pack never mentions voice cloning, custom voice creation, or any consent workflow. Its claim that it can swap among 200+ integrated providers is a third-party integration point, not a documented cloning capability of Pipecat itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7941,7 +7930,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Pipecat backs its 'ultra-low latency' claim with a dedicated STT latency tuning page. That page ships measured P99 latency values per supported STT service and defines Time To Final Segment, and built-in metrics let teams measure latency themselves. The guidance covers the STT and turn-detection stage rather than full voice-to-voice latency. missing for 10: documented end-to-end voice-to-voice latency numbers, tuning guidance covering the LLM/TTS/transport stages, independent benchmark corroboration.",
+    "rationale": "Pipecat documents STT latency tuning guidance: it defines Time To Final Segment (TTFS) and ships measured P99 latency values per supported STT service so turn detection can compensate. Built-in metrics can be enabled, which partly backs the 'ultra-low latency' claim, but the guidance covers only the STT/turn-detection stage, not the full voice loop. Missing for 10: published end-to-end voice-to-voice latency numbers, tuning guidance across LLM/TTS/transport stages, independent benchmark corroboration.",
     "evidenceIds": [
       "pipecat-docs-15",
       "pipecat-docs-20",
@@ -7975,7 +7964,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a voice-agent framework with documented telephony support (Twilio, Telnyx, Plivo, Exotel, SIP), so this axis applies. However, nothing in the evidence pack mentions sending DTMF keypresses, navigating IVR menus, or detecting or leaving voicemail. Generic telephony transport and Flows node transitions are adjacent features, not this capability.",
+    "rationale": "Pipecat is a voice-agent framework with documented telephony support (Twilio, Telnyx, Plivo, Exotel, SIP, PSTN), so this axis applies. However, nothing in the evidence pack covers sending DTMF keypresses, navigating IVR menus, or detecting or leaving voicemail. The general carrier and webhook telephony evidence does not show these specific capabilities.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7990,7 +7979,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is a voice-agent framework, so per-call personalization is a fair axis. However, nothing in the evidence documents injecting dynamic variables or per-caller context at call or session start. The Cloud public API only \"starts agent sessions\" with no stated payload. The telephony docs describe inbound-call webhooks without per-caller data. Flows functions calling external APIs are an adjacent building block, not this capability.",
+    "rationale": "Injecting per-caller context is a fair axis for a voice-agent framework, but no evidence item documents passing dynamic variables or per-session data into a bot at call time. Starting Cloud sessions, receiving telephony webhooks, and Flows functions that call external APIs are adjacent features. None of them describes per-call personalization inputs.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8005,7 +7994,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of HIPAA/BAA support, SOC 2 attestation, or data-residency guarantees for Pipecat or Pipecat Cloud. The Cloud API's mention of managing 'regions' and the framework being self-hostable are adjacent deployment facts, not documented compliance or residency capabilities, so they earn no credit.",
+    "rationale": "The evidence pack contains no documentation of HIPAA compliance, a BAA, SOC 2 attestation, or explicit data-residency guarantees for Pipecat or Pipecat Cloud. The Cloud API's mention of managing \"regions\" and the self-hostable open-source framework are adjacent signals at most, not a documented compliance or residency capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8020,7 +8009,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Grounding answers in a user's documents is a fair capability to ask of a voice-agent framework, but the evidence pack shows no built-in knowledge base or RAG feature in Pipecat. The context-hub is a local index of Pipecat's own docs and examples for coding agents, not a store for the developer's content. Flows functions that call external systems are only a building block a developer could use to construct retrieval.",
+    "rationale": "Pipecat is an agent-building framework, so grounding agents on user documents is an applicable axis, but the evidence shows no built-in knowledge base or RAG feature. The context-hub indexes Pipecat's own docs for coding agents, not the developer's content for the bot. Flows functions that call external systems are only developer building blocks for constructing retrieval.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8035,7 +8024,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows built-in metrics that can be turned on through configuration, and Whisker, a community-described live debugger for viewing pipeline frames. These are telemetry primitives and debugging aids, not documented production call monitoring. Nothing in the pack shows alerting on agent misbehavior or error-rate spikes, so this is adjacent support only.",
+    "rationale": "The evidence shows no production call-monitoring dashboard and no alerting on agent misbehavior or error-rate spikes for Pipecat or Pipecat Cloud. The built-in metrics are emitted data a developer would have to route into their own monitoring and alerting stack, so they count only as building blocks. Whisker is described by the community as a pipeline debugger, not a production monitor with alerts, so neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -8048,9 +8037,9 @@
     "productId": "pipecat",
     "storyId": "mid-call-tool-calling",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat Flows documents functions that interface with external systems and APIs during a conversation, and it auto-derives function metadata from signatures and docstrings. Its site also mentions handing off long-running tools to subagents, which hints at keeping the conversation flowing. Nothing in the evidence explicitly shows filler speech, async tool-result speaking, or other dead-air mitigation during tool calls. Missing for 10: explicit documentation of how tool results are spoken without dead air (e.g., interim/filler responses or async function execution), core LLM function-calling docs outside Flows, independent or hands-on corroboration.",
+    "rationale": "Pipecat documents functions, via Pipecat Flows, that interface with external systems and APIs during a conversation, with metadata auto-derived from function signatures. It also suggests handing long-running tools off to subagents. Nothing in the evidence shows how results are spoken back or how dead air is avoided during tool calls. Missing for 10: documented handling of dead air during tool execution (filler speech, async or non-blocking calls), evidence of results being spoken back, core-pipeline function-calling docs beyond Flows, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pipecat-docs-22",
       "pipecat-docs-30",
@@ -8083,7 +8072,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Multilingual conversations, including language detection and mid-call switching, are a fair question for a voice AI framework like Pipecat, so the axis applies. However, nothing in the evidence pack covers multilingual support, language detection or switching languages mid-call. The 'swap speech, language, and vision services' claim refers to swapping AI service providers, not handling human languages, so it does not count toward this story.",
+    "rationale": "Multilingual conversation and mid-call language detection and switching are a fair question for a voice-agent framework like Pipecat, so the axis applies. However, nothing in the evidence pack documents multi-language support, automatic language detection, or switching language during a call. The one mention of \"language services\" refers to swapping service providers, not multilingual operation, so it is adjacent at best.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8098,7 +8087,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The Pipecat Cloud pricing page lists a first-party Krisp-powered noise-cancellation feature that removes background noise and voices that cause false interruptions, so the capability exists for this story. The only evidence is that one marketing-level mention, and it applies only to the Cloud offering. missing for 10: documentation on how a developer enables or configures noise suppression or audio filtering in a pipeline, evidence of a filter option in the open-source framework, any technical depth or settings, independent or hands-on corroboration that it keeps agents coherent on noisy calls.",
+    "rationale": "Pipecat Cloud's pricing page advertises Krisp-powered noise and background-voice elimination aimed at preventing false interruptions. That is a first-party audio-filtering capability tied to this story, but it is evidenced only by a single marketing line. missing for 10: documentation of how to enable or configure noise suppression in a pipeline, evidence of framework-level (self-hosted) audio filters, details on telephony/noisy-call behavior, independent or hands-on corroboration.",
     "evidenceIds": [
       "pipecat-docs-36"
     ],
@@ -8120,12 +8109,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Pipecat is a code-first open-source framework, and Pipecat Cloud publishes an OpenAPI 3.0 REST API. Its private API covers agents, secrets, builds, regions and organization settings, its public API starts sessions, and the official CLI covers cloud deploys. No evidence explicitly documents or verifies parity with a dashboard or UI. Missing for 10: an explicit API-to-UI parity statement or comparison, independent or hands-on verification that every dashboard action is exposed via the API, and coverage of areas such as billing and observability.",
+    "rationale": "Pipecat is a code-first Python framework, and Pipecat Cloud publishes a full OpenAPI 3.0 REST API. Its private API manages agents, secrets, builds, regions and organization settings, its public API starts sessions, and an official CLI covers deploys. That is a broad programmatic surface, but no evidence documents explicit parity with the Cloud dashboard UI. missing for 10: explicit documented API/UI parity statement, evidence that every dashboard action (e.g. logs, billing, session monitoring) is exposed via the API, independent hands-on corroboration.",
     "evidenceIds": [
       "pipecat-cloud-openapi-20261106",
       "pipecat-spec-download-20261106",
       "pipecat-api-tryit-20261106",
-      "pipecat-probe-rt-1"
+      "pipecat-probe-rt-1",
+      "pipecat-probe-rt-2"
     ],
     "support": {
       "relation": "direct",
@@ -8150,16 +8140,28 @@
   {
     "productId": "pipecat",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no data-export capability for Pipecat or Pipecat Cloud: no export of agents, sessions, logs, or account data in open formats. AudioBufferProcessor and turn-event transcript collection are developer building blocks for capturing data, not an export feature. Bot-file portability and the BSD-2 open-source license reduce code lock-in, but they are adjacent properties, not data export.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Pipecat is a BSD-2 open-source, pip-installable, self-hostable framework, and its docs say the same bot file is portable across the dev runner, Pipecat Cloud and most self-hosting setups, so users can take their agent code and leave. No documented export of Pipecat Cloud-held data (agents, secrets, builds, session or org data) in open formats exists; the audio-recording and transcript processors are developer building blocks and earn no credit. missing for 10: documented Cloud data export, open export formats for account and session data, an offboarding or account-deletion workflow, independent corroboration.",
+    "evidenceIds": [
+      "pipecat-docs-32",
+      "pipecat-probe-rt-2"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pipecat-docs-32",
+          "quote": "This is the property that makes the same bot file portable across the development runner, Pipecat Cloud, and most production self-hosting setups."
+        },
+        {
+          "evidenceId": "pipecat-probe-rt-2",
+          "quote": "the open-source voice-agent framework is real, pip-installable, and self-hostable"
+        }
+      ]
     }
   },
   {
@@ -8168,12 +8170,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Pipecat's docs call it an \"open source Python framework\". A runtime probe confirms the PyPI package pipecat-ai 1.8.1 is BSD-2 licensed OSS that installs and imports. The source is publicly hosted at github.com/pipecat-ai/pipecat, including a public changelog. Missing for 10: a first-party statement or LICENSE file in the repo naming the BSD-2 license (the license name comes only from the probe).",
+    "rationale": "Pipecat is documented as an open source Python framework. A runtime probe confirms the pip-installable pipecat-ai package is BSD-2 licensed OSS, and its source is hosted publicly on GitHub at pipecat-ai/pipecat, including the changelog. Missing for 10: a direct citation of the repository's LICENSE file confirming the license terms on the source itself.",
     "evidenceIds": [
       "pipecat-docs-42",
       "pipecat-probe-rt-2",
-      "pipecat-gh-1",
       "pipecat-probe-1",
+      "pipecat-gh-1",
       "pipecat-semver-changelog-20261106"
     ],
     "support": {
@@ -8202,14 +8204,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Pipecat's core is a BSD-2 open-source Python framework. A runtime probe confirmed it pip-installs and imports with no key, and the docs say the same bot file is portable to most production self-hosting setups. Community reports add that local inference via ollama and local whisper STT is supported, so the stack can run fully self-hosted. missing for 10: a detailed first-party production self-hosting deployment guide (the built-in dev runner is explicitly not supported for production use).",
+    "rationale": "Pipecat's core is an open-source (BSD-2) Python framework that a runtime probe confirmed is pip-installable and self-hostable, and its docs describe the same bot file as portable to \"most production self-hosting setups\". Community reports add that fully local inference via Ollama and Whisper works. missing for 10: an in-depth first-party production self-hosting guide in the evidence (the dev runner is explicitly not for production use).",
     "evidenceIds": [
       "pipecat-probe-rt-2",
       "pipecat-docs-42",
       "pipecat-docs-32",
-      "pipecat-dev-runner-20261106",
       "pipecat-comm-1",
-      "pipecat-gh-1"
+      "pipecat-dev-runner-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8218,7 +8219,7 @@
       "citations": [
         {
           "evidenceId": "pipecat-probe-rt-2",
-          "quote": "pypi pipecat-ai 1.8.1 (BSD-2 OSS) installs and `import pipecat` succeeds with no key, printing its startup banner — the open-source voice-agent framework is real, pip-installable, and self-hostable."
+          "quote": "the open-source voice-agent framework is real, pip-installable, and self-hostable"
         },
         {
           "evidenceId": "pipecat-docs-42",
@@ -8230,7 +8231,7 @@
         },
         {
           "evidenceId": "pipecat-comm-1",
-          "quote": "Local inference is already supported via Pipecat, you can use ollama or any custom OpenAI endpoint. Local STT is also supported via whisper, which pipecat will download and manage for you."
+          "quote": "Local inference is already supported via Pipecat, you can use ollama or any custom OpenAI endpoint."
         }
       ]
     }
@@ -8241,12 +8242,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Pipecat documents handling inbound telephony calls: carriers such as Twilio, Telnyx, Plivo, Exotel or a SIP provider call your webhook, and the runner terminates telephony WebSockets over SIP/PSTN transports. Phone numbers, however, come from the third-party carrier, and the Pipecat Cloud API manages agents, secrets and builds, not numbers. missing for 10: phone-number provisioning through Pipecat's own API, documented outbound call initiation, any independent or hands-on corroboration of telephony flows.",
+    "rationale": "Pipecat documents its own handling of inbound telephony calls. Carriers such as Twilio, Telnyx, Plivo, Exotel or SIP providers call your webhook, and the runner terminates their telephony WebSockets, with SIP/PSTN listed as transports. Phone numbers, however, come from the external carrier rather than a Pipecat API, and outbound calling is not evidenced. Missing for 10: phone-number provisioning via Pipecat's own API, documented outbound call initiation, a Cloud REST endpoint for telephony, and independent hands-on corroboration.",
     "evidenceIds": [
       "pipecat-docs-13",
       "pipecat-docs-23",
+      "pipecat-docs-24",
       "pipecat-docs-28",
-      "pipecat-docs-33",
       "pipecat-docs-40"
     ],
     "support": {
@@ -8259,12 +8260,12 @@
           "quote": "the carrier (Twilio, Telnyx, Plivo, Exotel, or your SIP provider) is calling your webhook to tell you there's an inbound call"
         },
         {
-          "evidenceId": "pipecat-docs-28",
-          "quote": "Any Transport: WebRTC, SIP, PSTN"
+          "evidenceId": "pipecat-docs-24",
+          "quote": "terminating telephony WebSockets"
         },
         {
-          "evidenceId": "pipecat-docs-33",
-          "quote": "terminating telephony WebSockets"
+          "evidenceId": "pipecat-docs-28",
+          "quote": "Any Transport: WebRTC, SIP, PSTN"
         }
       ]
     }
@@ -8273,9 +8274,9 @@
     "productId": "pipecat",
     "storyId": "privacy-data-residency",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "The Pipecat Cloud API is documented as managing \"regions\", which suggests a product-level region choice. The OSS framework is also verified as pip-installable and self-hostable, so users can control where pipeline data lives. Neither source explicitly documents data-residency guarantees or region selection for stored data such as recordings and transcripts. Missing for 10: explicit data-residency documentation, a list of available regions and how to select them per agent or session, guarantees on where stored artifacts reside, and independent corroboration.",
+    "rationale": "The Pipecat Cloud OpenAPI spec says its private API manages \"regions\", which suggests some first-party control over where agents run. The open-source framework is also documented as self-hostable, so data can stay on infrastructure the user chooses. Nothing explicitly describes data-residency guarantees or storage-region selection, so this is only a thin, glancing signal. Missing for 10: documented region selection for stored data such as recordings, transcripts and logs; a list of available regions; data-residency or compliance commitments; independent or hands-on corroboration.",
     "evidenceIds": [
       "pipecat-cloud-openapi-20261106",
       "pipecat-probe-rt-2"
@@ -8291,7 +8292,7 @@
         },
         {
           "evidenceId": "pipecat-probe-rt-2",
-          "quote": "the open-source voice-agent framework is real, pip-installable, and self-hostable."
+          "quote": "the open-source voice-agent framework is real, pip-installable, and self-hostable"
         }
       ]
     }
@@ -8302,7 +8303,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat is an open-source framework with a hosted Pipecat Cloud, so a no-training data policy or opt-out control is a fair question to ask of it. The evidence documents no such policy or opt-out from Pipecat or Pipecat Cloud. Community notes that Pipecat can run local models (ollama, whisper) and the evidence that it is self-hostable describe user-side ways to keep data local, not a product capability that prevents training on user data, so they earn no credit.",
+    "rationale": "The pack has no Pipecat or Pipecat Cloud documentation of a training opt-out, a no-training data policy, or any control over whether user data trains AI models. Community notes that Pipecat can run local inference through ollama or whisper describe a self-hosting workaround, not a documented training-exclusion capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8317,7 +8318,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair question for a voice-AI framework with a hosted cloud service, but the evidence documents no retention settings, deletion APIs, or retention policies. Audio recording and transcript capture are opt-in developer building blocks. Self-hosting and local inference are user-side arrangements, not documented controls for retaining or deleting data.",
+    "rationale": "Data retention and deletion is a fair question for a voice-AI framework with a hosted cloud, so the axis applies. The pack documents no retention policy, deletion API, or retention setting for Pipecat or Pipecat Cloud. Audio recording and transcript capture are developer building blocks, and self-hosting or local inference are user-side arrangements, so none of them count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8332,7 +8333,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for an open-source framework with a CLI and a cloud service, so the axis applies. Nothing in the evidence pack documents vendor telemetry, usage tracking, or any switch to disable them. The built-in pipeline metrics are an adjacent, opt-in performance feature, not a telemetry opt-out, so they earn no credit.",
+    "rationale": "Opting out of telemetry is a fair question for an open-source framework and CLI like Pipecat, so the axis applies. Nothing in the evidence pack documents any telemetry or usage tracking, or any opt-out switch for it. The built-in metrics doc covers developer-enabled pipeline performance metrics, which is an adjacent feature and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8344,20 +8345,20 @@
   {
     "productId": "pipecat",
     "storyId": "realtime-transcription-quality",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Pipecat documents swapping speech services across many integrated providers, usually in one line of code. It also documents STT final-transcript latency tuning with per-service P99 values, and community reports confirm local Whisper STT support, so control over the STT provider is directly evidenced. Transcription accuracy and finer-grained controls such as key-term boosting or STT model/language selection are not documented. Missing for 10: evidence of transcription accuracy, key-term/vocabulary boosting, explicit STT model or language configuration, and independent hands-on corroboration of real-time transcription quality.",
+    "rationale": "Pipecat lets developers swap among many integrated speech/STT providers, usually with one line of code, and community evidence confirms local Whisper STT works. Its docs cover real-time STT final-transcript latency (TTFS), per-service latency tuning, and transcript collection through turn events, so provider control over real-time transcription is clearly documented. Missing for 10: evidence of transcription accuracy, documented control over STT language/model selection or key-term/custom-vocabulary boosting, and independent hands-on corroboration of transcription quality.",
     "evidenceIds": [
       "pipecat-docs-14",
-      "pipecat-docs-20",
       "pipecat-docs-15",
-      "pipecat-comm-1",
-      "pipecat-docs-4"
+      "pipecat-docs-20",
+      "pipecat-docs-4",
+      "pipecat-comm-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can get accurate real-time transcription with control over the STT provider, language models, or key terms",
       "citations": [
         {
@@ -8375,6 +8376,10 @@
         {
           "evidenceId": "pipecat-comm-1",
           "quote": "Local STT is also supported via whisper, which pipecat will download and manage for you."
+        },
+        {
+          "evidenceId": "pipecat-docs-4",
+          "quote": "Pipecat's turn events make it easy to collect both user and assistant messages as they occur."
         }
       ]
     }
@@ -8385,11 +8390,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat documents first-party capture of both sides of the conversation: AudioBufferProcessor records user and bot audio, and turn events collect user and assistant messages for transcripts. However, these are in-pipeline capture features; there is no documented hosted store or API to retrieve recordings and transcripts after the fact, so the developer must persist them for every call. Missing for 10: documented programmatic retrieval API or storage for recordings and transcripts (e.g., via the Pipecat Cloud REST API), guaranteed per-call coverage, independent or hands-on corroboration.",
+    "rationale": "Pipecat documents its own capture capabilities: the AudioBufferProcessor records both user and bot audio, and turn events let you collect user and assistant messages for transcripts. The developer must wire these into each bot pipeline and store the output themselves; the Pipecat Cloud REST API is documented only for managing agents, secrets, builds and sessions, not for fetching recordings or transcripts. Missing for 10: a documented API or storage for retrieving recordings and transcripts after a call, automatic capture for every call without per-pipeline wiring, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pipecat-docs-3",
       "pipecat-docs-4",
-      "pipecat-docs-21"
+      "pipecat-cloud-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8413,7 +8418,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Pipecat is documented as an open-source (BSD-2) Python framework. A hands-on probe confirmed it pip-installs and runs keylessly, and the docs state the same bot file is portable to 'most production self-hosting setups', with distribution across processes and machines. The included development runner is explicitly not for production, so production self-hosting relies on the user's own server setup, and the pack has no detailed production self-hosting guide. Missing for 10: a dedicated production self-hosting guide (container/orchestration and scaling on own infrastructure), and independent reports of production self-hosted deployments.",
+    "rationale": "Pipecat is an open-source (BSD-2) Python framework. A hands-on probe confirmed it pip-installs and is self-hostable, and the docs say the same bot file is portable to 'most production self-hosting setups', including distribution across processes and machines. The built-in development runner is explicitly not for production use, and the pack has no detailed production self-hosting guide. Missing for 10: a documented production self-hosting deployment guide (e.g. containers/orchestration) and independent corroboration of production self-hosted runs.",
     "evidenceIds": [
       "pipecat-docs-42",
       "pipecat-probe-rt-2",
@@ -8451,7 +8456,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Pipecat documents Smart Turn Detection, which uses an ML model to decide when a user has finished speaking. It reads conversational cues such as intonation and linguistic signals, which goes beyond pure silence timeouts, and turn detection also accounts for STT latency automatically. missing for 10: explicit evidence of handling slow or pausing speakers without talk-over, configuration depth and whether it works outside Pipecat Cloud (the guide sits under the pipecat-cloud docs), and independent or hands-on corroboration.",
+    "rationale": "Pipecat documents Smart Turn Detection, which uses a machine learning model to decide when a user has finished speaking. It reads intonation patterns and linguistic signals, which goes beyond simple VAD silence detection. The framework also accounts for STT latency in turn detection, but the evidence is first-party only and thin on detail. Missing for 10: independent or hands-on corroboration, configuration and integration details for the turn model, and explicit evidence of handling slow or pausing speakers.",
     "evidenceIds": [
       "pipecat-docs-9",
       "pipecat-docs-31",
@@ -8483,13 +8488,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Pipecat ships Pipecat Evals, its own built-in system for testing agent behavior. You describe a conversation and the expected behavior, and it runs against the real agent's pipeline, services and code. The official CLI exposes an `eval` command (confirmed by runtime probe), and a local dev runner provides a separate develop-and-test surface ahead of production telephony. missing for 10: detailed docs on eval depth (simulated-caller personas, scoring/assertion types, telephony-specific simulation), independent hands-on corroboration of running evals.",
+    "rationale": "Pipecat ships a first-party evals system, Pipecat Evals. You describe a conversation and the expected behavior, and it runs that against your real agent pipeline to check whether the expectation still holds. A runtime probe confirmed the official CLI exposes an `eval` command for behavioral evals. Evals run against the real agent and services rather than an isolated sandbox, but the story asks for pre-deployment simulated conversations and evals, not sandbox isolation. Missing for 10: independent or hands-on corroboration of an eval run producing results, and detail on simulating telephony-specific audio/caller conditions or eval scoring depth.",
     "evidenceIds": [
       "pipecat-docs-8",
       "pipecat-docs-25",
-      "pipecat-evals-20261106",
       "pipecat-probe-rt-1",
-      "pipecat-dev-runner-20261106"
+      "pipecat-evals-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8514,20 +8518,19 @@
   {
     "productId": "pipecat",
     "storyId": "sip-trunk-byoc",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Pipecat's production telephony docs say inbound calls come from your own carrier (Twilio, Telnyx, Plivo, Exotel, or your SIP provider) hitting your webhook. The site advertises SIP and PSTN transports, and the runner supports a Twilio transport flag, so you bring your own carrier rather than using bundled telephony. missing for 10: explicit PBX/SIP-trunk configuration documentation, independent or hands-on corroboration of SIP connectivity.",
+    "rationale": "Pipecat's production telephony docs describe inbound calls arriving from the user's own carrier (Twilio, Telnyx, Plivo, Exotel, or a SIP provider) via the user's webhook, so the bot is not locked to bundled telephony; the homepage lists SIP and PSTN transports, and the dev runner documents a Twilio mode. However, the evidence never documents SIP trunk or PBX configuration in depth, so only part of the story is shown. missing for 10: documented SIP trunking / PBX connection setup (registration, trunk configuration), explicit number-import or BYO-number workflow for Pipecat Cloud, independent or hands-on corroboration of carrier/SIP interoperability.",
     "evidenceIds": [
       "pipecat-docs-23",
       "pipecat-docs-13",
       "pipecat-docs-28",
-      "pipecat-docs-40",
-      "pipecat-docs-33"
+      "pipecat-docs-40"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a platform-engineer, I can connect my own carrier or PBX via SIP trunking (or import Twilio/Telnyx numbers) instead of being locked to bundled telephony",
       "citations": [
         {
@@ -8541,10 +8544,6 @@
         {
           "evidenceId": "pipecat-docs-40",
           "quote": "python bot.py -t twilio -x your-name.ngrok.io"
-        },
-        {
-          "evidenceId": "pipecat-docs-33",
-          "quote": "terminating telephony WebSockets"
         }
       ]
     }
@@ -8555,10 +8554,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no built-in post-call structured-data extraction (outcomes, entities, dispositions) and no API or registrable outbound webhook that delivers such data after a call. The nearest items do not qualify. Turn-event transcript collection and Flows functions that 'process data by interfacing with external systems' are developer building blocks, not the capability itself. The telephony 'webhook' is the carrier's inbound-call webhook, not an outbound post-call callback.",
+    "rationale": "Pipecat documents transcript collection through turn events and Flows functions that can call external APIs. These are developer building blocks for building extraction yourself, not a built-in feature that extracts outcomes, entities or dispositions after each call. The only webhook in the evidence is the carrier's inbound-call webhook, and the Cloud REST API manages agents and sessions, not call data, so neither delivers extracted results.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can extract structured data from every call — outcomes, entities, dispositions — delivered via API or webhook after the call",
       "citations": []
@@ -8570,7 +8569,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pipecat Cloud has a dedicated pricing page on daily.co that lists agent profiles tied to compute needs, which points to published usage-based pricing. However, none of the quoted evidence shows actual per-minute rates or a way to estimate cost per call. missing for 10: actual per-minute/usage price figures, per-call cost estimation guidance or calculator, breakdown of third-party provider (STT/LLM/TTS/telephony) costs, independent corroboration.",
+    "rationale": "Pipecat Cloud has a dedicated pricing page on daily.co that describes compute-based agent profiles and unlimited concurrency, so published pricing exists. However, the evidence quotes no per-minute or usage rates, so a founder could not estimate cost per call from it. The open-source framework itself is free to self-host, but third-party service costs are not addressed. Missing for 10: actual per-minute or per-session rates, a per-call cost estimation method or calculator, and guidance on bundled versus pass-through provider costs (STT/LLM/TTS/telephony).",
     "evidenceIds": [
       "pipecat-docs-26",
       "pipecat-docs-12"
@@ -8597,10 +8596,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pipecat Flows provides multi-step conversation paths with node transitions and handoffs, but the evidence shows these are defined in Python code, with function metadata derived from signatures and docstrings. Nothing in the pack documents a visual or no-code builder. Whisker is a pipeline debugger and visualizer, not a flow-design tool, so it is an adjacent feature that earns no credit.",
+    "rationale": "Pipecat Flows models conversations as nodes with transitions, but the evidence describes it only as Python code, with functions and docstrings defining the flow. No visual or no-code builder is documented. Whisker's live pipeline graph is a debugger, not a flow designer, so neither counts as delivering a no-code visual builder.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a founder, I can design multi-step conversation flows in a visual builder with branching, states, and handoffs without writing code",
       "citations": []
@@ -8610,9 +8609,9 @@
     "productId": "pipecat",
     "storyId": "voice-library-choice",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pipecat's own docs say speech services can be swapped across 200+ integrated providers, usually with one line of code, and a community comment confirms supported providers are easy to onboard. However, TTS is never named explicitly, and nothing shows voice-library browsing or per-voice selection. Missing for 10: an explicit list of supported TTS providers, documentation of voice selection or a voice library, and hands-on corroboration of swapping TTS providers.",
+    "rationale": "Pipecat's own docs say developers can swap speech services from 200+ integrated providers, usually with one line of code, which supports plugging in multiple providers. However, no evidence names TTS providers specifically or describes a voice library or voice selection. Missing for 10: explicit list of supported TTS providers, documentation of voice selection or a voice library, independent hands-on corroboration of switching TTS voices.",
     "evidenceIds": [
       "pipecat-docs-14",
       "pipecat-docs-42",

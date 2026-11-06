@@ -1,22 +1,35 @@
 {
-  "hash": "dab8a697656f5c10b4df65cee7e3b4e4b79197a6284393c06f0036ddca55a67e",
+  "hash": "cf9d9c046a3d942a985911e2bb829334c97a285e414d2efc9ece1fcde5bc95b9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The only programmatic discovery evidence is CLI commands for searching the registry and finding tools. The vendor's own shutdown notice says the Smithery API, CLI and SDKs stopped working on October 31, 2026, and that no documented API surface remains. Smithery survives only as a public, non-proxied registry, and probes found no OpenAPI spec, llms.txt or docs.md, so there is no evidence of a working, documented registry or catalog API an agent can query.",
+    "rationale": "Smithery's maintained official CLI provides programmatic registry discovery (`smithery mcp search [term]`, `smithery tool find [query]`) against the public registry, which survives the shutdown. However, the shutdown notice says the Smithery API was discontinued and there is no longer a documented API surface, and probes found no OpenAPI spec or llms.txt. Discovery is therefore available only through the CLI, not a documented registry API. Missing for 10: a documented registry/catalog HTTP API, an API spec, independent hands-on corroboration of programmatic search, and clarity on whether tool-level discovery still works without the shut-down connection services.",
     "evidenceIds": [
-      "smithery-api-shutdown-20261106",
       "smithery-gh-1",
       "smithery-gh-2",
+      "smithery-api-shutdown-20261106",
       "smithery-probe-3"
     ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI agent, I can query the platform's registry or catalog through a documented API to discover servers and tools programmatically",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "smithery-gh-1",
+          "quote": "Registry commands: smithery mcp search [term], smithery mcp add <url>, smithery mcp list, smithery mcp remove."
+        },
+        {
+          "evidenceId": "smithery-gh-2",
+          "quote": "smithery tool find [query]"
+        },
+        {
+          "evidenceId": "smithery-api-shutdown-20261106",
+          "quote": "Smithery will remain as a public (non-proxied) MCP registry."
+        }
+      ]
     },
     "productId": "smithery",
     "storyId": "registry-programmatic-api"

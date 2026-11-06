@@ -1,20 +1,34 @@
 {
-  "hash": "3441f69f40c21ecd0dbd79eb5d6029ea7e13b0521ee8010ffed7dee006c8a8ab",
+  "hash": "73c0f5375401cbbffc93196710cd82f93e6acf7c82b9e11dabafdfc52caa1acd",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Smithery once offered headless-capable surfaces: a CLI (`smithery tool call`), a REST interface, and scoped service tokens. None of these were documented for CI use, and all were shut down on October 31, 2026. The vendor states that the Smithery API, accounts and API keys, CLI and SDKs stopped working, leaving only a non-proxied public registry. With no working programmatic or CLI surface, there is no current evidence the product can run headlessly or in CI.",
+    "rationale": "Smithery's own maintained CLI offers scriptable commands (mcp search/add/list/remove, tool list/find/get/call), so it can plausibly be driven from automation. However, nothing documents headless or CI use. The 2026-10-31 shutdown also ended API keys, the hosted Connect services and the service-tied CLI versions, which limits what unattended runs can do beyond querying the public registry. Missing for 10: explicit headless/CI documentation, non-interactive auth for CI after API keys were shut down, confirmation that tool-call commands work post-shutdown, and independent or hands-on corroboration of CI usage.",
     "evidenceIds": [
-      "smithery-api-shutdown-20261106",
-      "smithery-gh-2"
+      "smithery-gh-1",
+      "smithery-gh-2",
+      "smithery-api-shutdown-20261106"
     ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "smithery-gh-1",
+          "quote": "Smithery CLI connects your agents to thousands of skills and MCP servers directly from the command line."
+        },
+        {
+          "evidenceId": "smithery-gh-2",
+          "quote": "smithery tool call <connection> <tool> [args]"
+        },
+        {
+          "evidenceId": "smithery-api-shutdown-20261106",
+          "quote": "The CLI itself continues under the acquirer's org (github.com/arcadeai-labs/smithery-cli, npm smithery@latest) against the public registry"
+        }
+      ]
     },
     "productId": "smithery",
     "storyId": "agentic-headless"
