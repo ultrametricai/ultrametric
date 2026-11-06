@@ -226,6 +226,20 @@ ITEMS = {
          'Working Copy\'s automation surface is its x-callback-url scheme, documented as prose with inline example deep links (working-copy://x-callback-url/<command>/...). Write and read commands are gated by an app-generated secret: "Commands that change data or read content out of Working Copy are protected by a secret key". There is no machine-readable schema, no interactive reference (the examples are iOS deep links), no test mode, and no versioning or deprecation statement for the scheme.'),
     ],
     ('accounting', 'puzzle'): [
+        # PR #632 review (P1 agent-answers-affordability): the re-judged full cited
+        # conversational MCP access plus runway metrics while its rationale noted the
+        # missing tool coverage and affordability flow. Both are documented; appended so
+        # the cell rests on the vendor's own text.
+        ('puzzle-mcp-tools-20261106', 'claimed-docs',
+         'https://help.puzzle.io/en/articles/15331316-how-to-setup-your-puzzle-mcp.md',
+         ['With write access turned on (Beta), your assistant can also make changes',
+          'Try asking things like'],
+         'The Puzzle MCP setup guide documents the exposed ledger surface: tools covering trial balance, cash activity, transactions, journal entries, chart of accounts, invoices, bills, vendors, customers, payroll, revenue/expense/spending metrics and ledger accounts, connected at https://app.puzzle.io/mcp. "Once connected, open a new conversation and start exploring your financials. Try asking things like \'What does my income statement look like this quarter?\' or \'Show me my top vendors by spend.\'" "With write access turned on (Beta), your assistant can also make changes... It confirms each change with you before making it."'),
+        ('puzzle-runway-forecast-20261106', 'claimed-docs',
+         'https://help.puzzle.io/en/articles/17631956-cash-runway-and-cash-flow-forecasting-in-puzzle.md',
+         ['Puzzle projects your cash from your live books',
+          'ask Claude, ChatGPT or another AI assistant through the Puzzle MCP'],
+         '"Puzzle projects your cash from your live books: how long your cash lasts at your current burn, the month you\'d run out, when to start raising, and a week-by-week cash flow forecast built from your open invoices, bills and payroll. You can see runway on the Dashboard, run a forecast as an AI task, or ask Claude, ChatGPT or another AI assistant through the Puzzle MCP." Affordability-style questions (runway, burn, cash-out timing) are answerable through the agent against the live ledger.'),
         ('puzzle-openapi-spec-20261106', 'claimed-docs',
          'https://app.puzzle.io/rest/v0/openapi.yaml',
          ['openapi: 3.0.3', 'title: Puzzle Api'],
@@ -236,7 +250,8 @@ ITEMS = {
          'The ReadMe-hosted API reference ships the live "Try It!" console per endpoint ("Click Try It! to start a request and see the response here!") with generated language snippets. Executing requests needs the caller\'s own credentials; API access is request-gated (api@puzzle.io) per the getting-started page.'),
         ('puzzle-sandbox-server-20261106', 'claimed-docs',
          'https://puzzle-api.readme.io/docs/getting-started',
-         ['Sandbox Server', 'Request your sandbox credentials by emailing us at'],
+         ['Sandbox Server', 'https://staging.southparkdata.com', 'https://api.puzzle.io',
+          'Request your sandbox credentials by emailing us at'],
          'Puzzle documents a sandbox separate from production: "Sandbox Server: https://staging.southparkdata.com / Production Server: https://api.puzzle.io", with sandbox credentials (client id/secret, connection key; cid_test_/sk_test_ examples) issued on request: "Request your sandbox credentials by emailing us at" api@puzzle.io. The sandbox host is a non-puzzle.io staging domain and credentials are manually provisioned rather than self-serve.'),
         ('puzzle-api-stability-20261106', 'claimed-docs',
          'https://puzzle-api.readme.io/docs/getting-started',

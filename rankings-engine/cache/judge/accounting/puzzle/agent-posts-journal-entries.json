@@ -1,17 +1,30 @@
 {
-  "hash": "d17d92f7966770537e80a1850d02d4e48dce7b06478daca873a694b2d5d13bee",
+  "hash": "e0f5daab8c601b4017763a179a9c59f0cb4212923dc47ca3e3822e7f6f530d99",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Puzzle has a request-gated REST API (OpenAPI spec, sandbox) and an MCP integration for querying financial data. However, no evidence shows an API endpoint for creating or posting journal entries, or a draft/review queue where agent-posted entries wait for accountant approval. Manual journal entries are documented only through the UI and CSV import, and the 'reviewed by you' language refers to in-app automation rather than API-posted drafts.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Puzzle's MCP server lists journal entries among its tools, and a write-access mode (Beta) lets an agent make changes, confirming each change with the user before making it. That is only inline confirmation, not a draft-then-queue workflow for an accountant. The REST API's journal-entry write endpoints are not shown in the evidence. missing for 10: documented API/MCP endpoint for creating journal entries, a draft/unposted journal entry state, an accountant review/approval queue, non-beta write access, independent corroboration.",
+    "evidenceIds": [
+      "puzzle-mcp-tools-20261106",
+      "puzzle-docs-17",
+      "puzzle-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an ai-native user, I can have an agent draft and post journal entries via the API and leave them in a review queue for my accountant",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "puzzle-mcp-tools-20261106",
+          "quote": "With write access turned on (Beta), your assistant can also make changes... It confirms each change with you before making it."
+        },
+        {
+          "evidenceId": "puzzle-docs-17",
+          "quote": "described once, done automatically, reviewed by you before anything's final."
+        }
+      ]
     },
     "productId": "puzzle",
     "storyId": "agent-posts-journal-entries"
