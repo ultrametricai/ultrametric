@@ -1,24 +1,33 @@
 {
-  "hash": "bd74089fcd7a9d8166166f8f7675fe085ecb45de4155e9a5e82493b60cd491e3",
+  "hash": "c5612f70795073794f235d75804153ca2eb3901580e7deca296b8fc6bb11bd42",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "A live probe confirms Glama publishes an llms.txt (HTTP 200) that describes its MCP server directory, so an agent has a first-party entry point. Beyond that file, agent-oriented docs are thin: the markdown docs variant (mcp.md) returns 404 and no OpenAPI spec exists at any probed path. missing for 10: markdown/agent-readable versions of the docs pages, a machine-readable API spec, evidence of how deep or complete the llms.txt content is, and independent hands-on corroboration of agents using it successfully.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A live probe confirms Glama serves an llms.txt at glama.ai/llms.txt (HTTP 200) describing its directory. That llms.txt advertises an OpenAPI 3.0.3 spec \"for generating a client\", and an RFC 9727 /.well-known/api-catalog links the machine spec and hosted reference, so an agent has a machine-discoverable path from a well-known URL. missing for 10: markdown versions of doc pages (the /mcp.md probe returned 404), independent hands-on corroboration of agents successfully consuming the llms.txt.",
     "evidenceIds": [
       "glama-probe-1",
-      "glama-probe-2",
-      "glama-probe-3"
+      "glama-openapi-spec-20261106",
+      "glama-api-catalog-20261106",
+      "glama-probe-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
           "evidenceId": "glama-probe-1",
           "quote": "PROBE llms.txt: HTTP 200 at https://glama.ai/llms.txt # Glama"
+        },
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "advertised from its llms.txt \"for generating a client\" and discoverable through an RFC 9727 API catalog at /.well-known/api-catalog whose service-desc points at the spec"
+        },
+        {
+          "evidenceId": "glama-api-catalog-20261106",
+          "quote": "completing a fully machine-discoverable chain from the well-known path"
         }
       ]
     },

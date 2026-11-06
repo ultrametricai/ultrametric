@@ -1,28 +1,39 @@
 {
-  "hash": "64b0035635ad9ed34f1f50583ef167cc8f2832e137f612e15234c9dc52680524",
+  "hash": "3e217b6f704349850eabfdbb2e0e103be750cf4647489aadde9799ee80e2fdd7",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Entra ID is exposed through the documented Microsoft Graph API, which has a single public endpoint and documented operations such as listing user objects, so programmatic control is the product's own capability. The evidence shows only a narrow slice of that surface (user reads), not API control of conditional access, lifecycle workflows, or entitlement management, and no machine-readable OpenAPI spec was found. missing for 10: evidence of API coverage for core admin operations beyond user listing (conditional access, governance, app management), a discoverable OpenAPI/spec for the Entra surface, independent or hands-on corroboration of driving Entra via the API.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Microsoft Entra ID is driven through Microsoft Graph, a documented public API with a single endpoint and documented resource operations such as listing users. It also publishes machine-readable $metadata and OpenAPI descriptions, offers the interactive Graph Explorer console, and has an explicit versioning policy with a 24-month deprecation commitment. The probe 404s on learn.microsoft.com OpenAPI paths do not contradict this, because the metadata is served at graph.microsoft.com. Missing for 10: independent or hands-on corroboration of driving Entra end-to-end through the API.",
     "evidenceIds": [
       "microsoft-entra-docs-10",
-      "microsoft-entra-docs-24",
-      "microsoft-entra-docs-11"
+      "microsoft-entra-docs-11",
+      "microsoft-entra-graph-metadata-20261106",
+      "microsoft-entra-graph-explorer-20261106",
+      "microsoft-entra-graph-versioning-20261106",
+      "microsoft-entra-docs-4"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "microsoft-entra-docs-24",
-          "quote": "The Microsoft Graph API offers a single endpoint, https://graph.microsoft.com, to provide access to rich, people-centric data and insights in the Microsoft cloud, including Microsoft 365, Windows, and Enterprise Mobility + Security."
+          "evidenceId": "microsoft-entra-docs-10",
+          "quote": "The Microsoft Graph API offers a single endpoint, https://graph.microsoft.com, to provide access to rich, people-centric data and insights in the Microsoft cloud"
         },
         {
           "evidenceId": "microsoft-entra-docs-11",
           "quote": "Retrieve a list of user objects."
+        },
+        {
+          "evidenceId": "microsoft-entra-graph-metadata-20261106",
+          "quote": "Microsoft Entra's API surface is Microsoft Graph, whose machine-readable description is published live"
+        },
+        {
+          "evidenceId": "microsoft-entra-graph-versioning-20261106",
+          "quote": "Microsoft declares a version as deprecated at least 24 months in advance of retiring it"
         }
       ]
     },

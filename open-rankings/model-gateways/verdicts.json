@@ -6424,10 +6424,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Requesty documents service accounts as non-human identities whose key spend is not tied to a user, and each API key or service account can have its own monthly spend cap, so an agent can get its own budget-capped key. The pack has no evidence of per-key rate limits: the rate-limit mention is about provider failures triggering fallback, and the Guardrails feature is content scanning, not a rate control. missing for 10: per-key rate/request-throughput limits, details on cap enforcement behavior (hard stop vs alert), independent or hands-on corroboration.",
+    "rationale": "Requesty lets you give an agent its own key: service accounts create non-human entities with their own keys, and each API key or service account can carry its own monthly spend cap. The changelog confirms the budget field exists in the management API. Per-key rate limiting is not documented; the only rate-limit mention is upstream provider rate limits triggering fallbacks. Missing for 10: documented per-key request/token rate limits, finer-grained (non-monthly) budget windows, independent or hands-on corroboration that caps hard-stop an agent.",
     "evidenceIds": [
       "requesty-docs-18",
-      "requesty-docs-19"
+      "requesty-docs-19",
+      "requesty-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6441,6 +6442,10 @@
         {
           "evidenceId": "requesty-docs-19",
           "quote": "Service accounts allow you create non-human entities... spend from those keys will not be tied to any user."
+        },
+        {
+          "evidenceId": "requesty-changelog-20261106",
+          "quote": "`monthly_limit` is deprecated and will soon be migrated to `monthly_budget`"
         }
       ]
     }
@@ -6451,7 +6456,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Requesty documents gateway routing policies that switch models automatically. Fallback policies cover availability by retrying the next model in a chain on timeouts, rate limits, or errors. Weighted load balancing and latency-based routing add further policy options. No documented routing rule selects models by cost or by task capability, and spend caps limit spending rather than route requests. missing for 10: cost-based routing rules, capability-based routing rules, explicit mid-task agent model switching, independent or hands-on corroboration.",
+    "rationale": "Requesty documents gateway routing policies that switch models automatically. Fallback Policies retry the next model in a chain when one fails (availability), Load Balancing distributes requests across models by weight, and Latency-Based Routing picks the fastest model from real-time data. The evidence does not show routing rules keyed on cost or on task capability, so only the availability part of the story's policy triggers is clearly covered. missing for 10: documented cost-based routing rules, capability/task-based model selection rules, independent or hands-on corroboration of mid-task switching.",
     "evidenceIds": [
       "requesty-docs-3",
       "requesty-docs-4",
@@ -6488,10 +6493,11 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Hands-on probes confirm a live llms.txt at docs.requesty.ai that describes the product, and doc pages are served as markdown with an embedded pointer telling agents to fetch the full index from llms.txt. That is agent-oriented docs an agent can be pointed at directly. Missing for 10: first-party documentation that explicitly describes or promotes the llms.txt/markdown docs for agent use, and evidence of an llms-full.txt or similar complete-content bundle.",
+    "rationale": "A hands-on probe confirms Requesty serves an llms.txt at docs.requesty.ai/llms.txt (HTTP 200), and markdown mirrors of docs pages (e.g. quickstart.md) point agents back to that index. The llms.txt also advertises an OpenAPI spec and markdown mirrors of every docs page, so an agent can be pointed directly at agent-oriented docs. Missing for 10: no evidence of an expanded llms-full.txt or first-party guidance on using the docs with agents.",
     "evidenceIds": [
       "requesty-probe-1",
-      "requesty-probe-2"
+      "requesty-probe-2",
+      "requesty-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6505,6 +6511,10 @@
         {
           "evidenceId": "requesty-probe-2",
           "quote": "Fetch the complete documentation index at: https://docs.requesty.ai/llms.txt"
+        },
+        {
+          "evidenceId": "requesty-openapi-spec-20261106",
+          "quote": "advertised verbatim in the docs llms.txt (\"OpenAPI Spec: https://docs.requesty.ai/api-reference/openapi.json\") with markdown mirrors of every docs page"
         }
       ]
     }
@@ -6515,7 +6525,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesty documents a real-time analytics dashboard for costs, tokens, and latency, but nothing shows the product generating AI insights or suggestions from that data in its own interface. PDF and image analysis are pass-through API features that a developer could build on, so they earn no credit here.",
+    "rationale": "Requesty's analytics dashboard shows usage metrics such as costs, tokens and latency, but nothing indicates the product generates AI insights or suggestions from that data. Its PDF analysis, image understanding and prompt optimization features are model-routing building blocks or adjacent features, not in-product AI insights. Since an LLM gateway could plausibly offer AI-driven usage or cost recommendations, the axis applies and the lack of evidence makes this none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6530,7 +6540,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesty is an LLM gateway, and the evidence documents only request-time routing behaviors such as fallback retries, load balancing, auto caching and latency routing. Service accounts for non-human callers are a developer building block, not a feature for setting up background automations, scheduled jobs, triggers or autonomous runs. These are adjacent features and earn no credit, so the applicable axis has no supporting evidence.",
+    "rationale": "Requesty is an LLM gateway, and the evidence shows no product-level way for a user to define autonomous background automations, scheduled jobs, or recurring tasks. Automatic fallback retries and caching are internal routing behaviors rather than user-configured automations. Service accounts and the MCP gateway are building blocks an external agent could use, so they earn no credit toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6545,7 +6555,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesty is an LLM gateway and SaaS dashboard, so a built-in assistant that takes delegated tasks is a fair question for it. The evidence documents only routing, caching, analytics, prompt libraries and an MCP gateway for external coding assistants such as Claude Code and Cursor. Those external assistants are user-side integrations, not an assistant inside Requesty, so they earn no credit.",
+    "rationale": "Requesty is an LLM gateway with a dashboard, so a built-in assistant is a fair question for it, but the evidence documents no such assistant. The MCP Gateway and Claude Code integrations route external coding assistants through Requesty, and the API playground is an endpoint runner; neither is a built-in assistant users delegate tasks to, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6557,37 +6567,36 @@
   {
     "productId": "requesty",
     "storyId": "agentic-headless",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Requesty is a headless, OpenAI-compatible API gateway that any SDK can use by changing the base_url. It documents service accounts for non-human entities with their own keys and spend caps, and it configures agents such as Claude Code through environment variables, all of which suit unattended automation. Missing for 10: explicit CI/CD pipeline guides or examples, a published OpenAPI spec (probe returned 404), and independent or hands-on corroboration of CI usage.",
+    "rationale": "Requesty is an API-first gateway that can be driven without a UI. It is OpenAI-SDK compatible, offers service accounts for non-human entities with their own keys and spend caps, and publishes an OpenAPI spec covering the management API, so automated pipelines can use it programmatically. However, no CI-specific guidance or documented headless/CI workflow exists in the evidence. missing for 10: documented CI/CD integration guides or examples, a CLI or explicit headless-automation workflow docs, independent or hands-on corroboration of CI usage.",
     "evidenceIds": [
-      "requesty-docs-1",
-      "requesty-docs-2",
       "requesty-docs-19",
       "requesty-docs-18",
-      "requesty-docs-26"
+      "requesty-docs-2",
+      "requesty-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "requesty-docs-1",
-          "quote": "If you're already using the OpenAI SDK, point it at Requesty and you're done. No SDK changes, no new client to learn."
-        },
-        {
           "evidenceId": "requesty-docs-19",
-          "quote": "Service accounts allow you create non-human entities... spend from those keys will not be tied to any user."
+          "quote": "Service accounts allow you create non-human entities"
         },
         {
           "evidenceId": "requesty-docs-18",
           "quote": "Each API key or service account can have its own monthly spend cap."
         },
         {
-          "evidenceId": "requesty-docs-26",
-          "quote": "You connect it to Requesty with two environment variables, ANTHROPIC_BASE_URL and ANTHROPIC_AUTH_TOKEN"
+          "evidenceId": "requesty-docs-2",
+          "quote": "base_url=\"https://router.requesty.ai/v1\""
+        },
+        {
+          "evidenceId": "requesty-openapi-spec-20261106",
+          "quote": "covering both the OpenAI/Anthropic-compatible inference router and the management API"
         }
       ]
     }
@@ -6595,20 +6604,19 @@
   {
     "productId": "requesty",
     "storyId": "agentic-mcp-client",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Requesty's first-party MCP Gateway lets you register MCP servers, explore their tools, and configure authentication, including per-user keys. Connected assistants such as Claude Code, Cursor and Roo Code then reach those tools through Requesty, with usage analytics on top. Missing for 10: evidence that tools from registered MCP servers can be invoked directly within Requesty's own chat-completions requests (rather than only exposed to downstream assistants), detailed setup/transport documentation, and independent or hands-on corroboration.",
+    "rationale": "Requesty's own MCP Gateway lets users register MCP servers, explore their tools, and configure authentication, including per-user keys. The registered tools are consumed by downstream assistants (Claude Code, Cursor, Roo Code) connecting through the gateway. Nothing shows Requesty itself, or its router during chat completions, invoking those MCP tools. missing for 10: evidence that the router itself executes MCP tools in requests, detailed setup/transport documentation, independent hands-on corroboration.",
     "evidenceIds": [
       "requesty-docs-9",
       "requesty-docs-20",
-      "requesty-docs-23",
       "requesty-docs-21",
-      "requesty-docs-22"
+      "requesty-docs-23"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
       "citations": [
         {
@@ -6636,7 +6644,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Requesty ships a first-party MCP Gateway that Claude Code, Cursor, Roo Code and any MCP-compatible agent can connect to, with server registration, per-user keys and MCP analytics. However, it is documented as a proxy to external MCP servers, not as an official MCP server exposing Requesty's own capabilities. Missing for 10: evidence of an official MCP server exposing Requesty's own functions (routing, keys, analytics), concrete connection details such as an endpoint or config, and independent or hands-on corroboration.",
+    "rationale": "Requesty documents a first-party MCP Gateway that AI coding agents such as Claude Code, Cursor, Roo Code and any MCP-compatible tool can connect to. It is backed by server registration, per-user keys and analytics. However, the gateway mainly proxies registered third-party MCP servers rather than exposing Requesty's own capabilities as MCP tools, so story coverage is not complete. missing for 10: evidence of an official MCP server exposing Requesty's own functionality (e.g. routing or management tools), concrete connection or endpoint setup details, and independent or hands-on corroboration that agents connect successfully.",
     "evidenceIds": [
       "requesty-docs-9",
       "requesty-docs-23",
@@ -6670,7 +6678,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesty is an LLM gateway, and a natural-language way to operate it, such as an assistant or MCP server for configuring routing, keys, or policies, is a fair question for this kind of product. The evidence shows no such capability. Requesty forwards natural-language prompts to models and its MCP Gateway connects coding assistants to third-party MCP servers, but neither lets users operate Requesty itself with natural-language commands. Configuration is shown only through SDKs, the dashboard, and API parameters.",
+    "rationale": "Requesty is an LLM gateway, and operating such a product through natural-language commands is a reasonable thing for a buyer to ask about, so the axis applies. The evidence only shows it routing NL prompts to models and proxying third-party MCP servers for coding assistants. Nothing documents a natural-language interface, assistant or agent-facing tool for operating Requesty itself, such as configuring policies, keys or analytics.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6685,7 +6693,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair axis for an LLM gateway, but the evidence pack never documents a Requesty-owned CLI. The terminal-related evidence covers configuring Anthropic's Claude Code, a third-party tool, via environment variables. That is an integration with another vendor's CLI, not an official Requesty CLI.",
+    "rationale": "An LLM gateway could plausibly ship an official CLI, so the axis applies. The evidence pack documents no Requesty-owned CLI. Claude Code is Anthropic's terminal tool that users point at Requesty through environment variables, and the API reference offers generated cURL samples. Neither is Requesty's own CLI, so both are adjacent integrations that earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6697,40 +6705,38 @@
   {
     "productId": "requesty",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Requesty's core product is a documented, OpenAI-compatible public API. The docs cover the base URL, Chat Completions, Messages, Images endpoints, and prompt_id references, and llms.txt plus markdown docs make it agent-readable. The evidence does not show the product's configuration and management surface (keys, policies, guardrails, analytics) being drivable through a documented API, and no OpenAPI spec was found. missing for 10: documented management/admin API for configuring policies, keys, and analytics; a published OpenAPI/Swagger spec (probes 404); independent hands-on corroboration.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Requesty is itself an OpenAI-compatible API, with documented base URLs and SDK drop-in usage. It publishes an OpenAPI 3.0.3 spec covering both the inference router and a management API (api-v2), with an interactive per-endpoint playground, generated code samples, and a dated changelog with deprecation migration paths. The probe's 404s were at different candidate paths than the advertised api-reference/openapi.json, so they do not contradict the spec's existence. Missing for 10: independent hands-on corroboration of driving the management API end-to-end, and a stated versioning or back-compat policy.",
     "evidenceIds": [
+      "requesty-openapi-spec-20261106",
+      "requesty-api-playground-20261106",
+      "requesty-changelog-20261106",
       "requesty-docs-1",
       "requesty-docs-2",
-      "requesty-docs-29",
-      "requesty-docs-30",
-      "requesty-docs-34",
-      "requesty-probe-1",
-      "requesty-probe-2",
-      "requesty-probe-3"
+      "requesty-probe-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "requesty-openapi-spec-20261106",
+          "quote": "Requesty publishes an OpenAPI 3.0.3 document (info title \"Requesty API\") covering both the OpenAI/Anthropic-compatible inference router and the management API"
+        },
+        {
+          "evidenceId": "requesty-api-playground-20261106",
+          "quote": "The Mintlify API reference runs the default interactive playground with a \"Try it\" runner per endpoint"
+        },
         {
           "evidenceId": "requesty-docs-2",
           "quote": "base_url=\"https://router.requesty.ai/v1\""
         },
         {
-          "evidenceId": "requesty-docs-29",
-          "quote": "the dedicated Images API (/v1/images/generations and /v1/images/edits) for standard image workflows"
-        },
-        {
-          "evidenceId": "requesty-docs-34",
-          "quote": "reference prompts in any API request with a single prompt_id"
-        },
-        {
-          "evidenceId": "requesty-probe-1",
-          "quote": "Requesty is a unified LLM gateway and OpenAI-compatible API for 300+ AI models"
+          "evidenceId": "requesty-changelog-20261106",
+          "quote": "Requesty maintains a long dated changelog covering API-affecting changes"
         }
       ]
     }
@@ -6741,7 +6747,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Requesty lets you create service accounts, which are non-human entities with their own keys, and lets each API key or service account carry its own monthly spend cap. That gives an agent a separate, budget-limited credential. However, nothing in the evidence shows permission-level scoping, such as restricting a key to specific models, endpoints or MCP tools, so least-privilege is only partly evidenced. Missing for 10: per-key model/endpoint/tool permission scoping, key expiry/rotation controls, independent or hands-on corroboration.",
+    "rationale": "Requesty documents service accounts as non-human identities whose keys are not tied to a user, which suits agents, and lets each API key or service account carry its own monthly spend cap. That is a real but narrow budget-based limit, not documented least-privilege scoping. Missing for 10: permission or endpoint scopes on keys, per-key model or provider allowlists, documented least-privilege key configuration, independent or hands-on corroboration.",
     "evidenceIds": [
       "requesty-docs-18",
       "requesty-docs-19"
@@ -6757,7 +6763,7 @@
         },
         {
           "evidenceId": "requesty-docs-19",
-          "quote": "Service accounts allow you create non-human entities... spend from those keys will not be tied to any user."
+          "quote": "spend from those keys will not be tied to any user."
         }
       ]
     }
@@ -6768,13 +6774,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Requesty's own docs make official SDK use a supported path: you point the official OpenAI SDK at Requesty's base_url with 'no SDK changes, no new client to learn,' and Claude Code connects through Anthropic environment variables. There is no evidence of a Requesty-branded official SDK, and the OpenAPI spec probe returned 404 on every candidate path. Missing for 10: a first-party Requesty SDK (or SDKs across languages), SDK reference docs, a published OpenAPI spec for SDK generation, and independent hands-on corroboration.",
+    "rationale": "Requesty documents building with the official OpenAI SDK by changing its base_url to the Requesty router. Its API reference also provides generated Python and TypeScript samples. It explicitly offers no first-party client of its own (\"no new client to learn\"), so SDK support comes through compatibility rather than Requesty-maintained SDKs. Missing for 10: first-party Requesty SDKs (published packages, versioning, language coverage), SDK coverage of the management API, independent hands-on corroboration.",
     "evidenceIds": [
       "requesty-docs-1",
       "requesty-docs-2",
       "requesty-docs-26",
-      "requesty-probe-1",
-      "requesty-probe-3"
+      "requesty-api-playground-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6787,11 +6792,11 @@
         },
         {
           "evidenceId": "requesty-docs-2",
-          "quote": "base_url=\"https://router.requesty.ai/v1\""
+          "quote": "base_url=\"https://router.requesty.ai/v1\",         # was: https://api.openai.com/v1"
         },
         {
-          "evidenceId": "requesty-probe-1",
-          "quote": "Requesty is a unified LLM gateway and OpenAI-compatible API for 300+ AI models"
+          "evidenceId": "requesty-api-playground-20261106",
+          "quote": "plus generated cURL/Python/TypeScript samples"
         }
       ]
     }
@@ -6802,7 +6807,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesty is an LLM gateway platform, so webhook event subscriptions (for usage, spend-cap or request events) are a fair axis. The evidence pack documents no registrable outbound HTTP callbacks. Streaming responses, analytics dashboards and spend caps are adjacent features and do not count as webhooks.",
+    "rationale": "Requesty is an LLM gateway with a management API, so outbound event webhooks are a fair capability to ask about. However, the evidence pack documents no registrable outbound HTTP callbacks or event subscriptions. The analytics dashboards, streaming responses, and MCP gateway features are different capabilities and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6814,31 +6819,59 @@
   {
     "productId": "requesty",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "An interactive API reference with runnable examples is a fair question for an API gateway, so the axis applies. The pack shows static docs: a quickstart code snippet, markdown pages and an llms.txt index. Nothing shows an interactive \"try it\" reference or runnable examples, and every OpenAPI spec path the probe tried returned 404.",
-    "evidenceIds": [],
+    "rationale": "Requesty's Mintlify API reference has an interactive \"Try it\" runner on each endpoint, plus generated cURL, Python and TypeScript samples, all backed by a published OpenAPI 3.0.3 spec. The playground runs requests against the production router with a real key, so there is no sandbox or test-mode isolation. The probe's 404s were on other candidate paths, not the advertised spec URL, so they do not contradict the claim. Missing for 10: independent or hands-on confirmation that the runner works, and a sandbox or test-key mode separate from production.",
+    "evidenceIds": [
+      "requesty-api-playground-20261106",
+      "requesty-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "requesty-api-playground-20261106",
+          "quote": "The Mintlify API reference runs the default interactive playground with a \"Try it\" runner per endpoint"
+        },
+        {
+          "evidenceId": "requesty-api-playground-20261106",
+          "quote": "plus generated cURL/Python/TypeScript samples"
+        },
+        {
+          "evidenceId": "requesty-openapi-spec-20261106",
+          "quote": "Requesty publishes an OpenAPI 3.0.3 document (info title \"Requesty API\")"
+        }
+      ]
     }
   },
   {
     "productId": "requesty",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Probes at the common OpenAPI/Swagger paths on docs.requesty.ai all returned 404, and no evidence shows a downloadable machine-readable API spec. The llms.txt and markdown docs are machine-readable documentation, not an API spec. OpenAI SDK compatibility does not mean Requesty publishes its own spec.",
-    "evidenceIds": [],
+    "rationale": "Requesty publishes a downloadable OpenAPI 3.0.3 document at https://docs.requesty.ai/api-reference/openapi.json. It covers both the inference router and the management API, and the docs llms.txt advertises it. The probe's 404s were on different guessed paths, not the published one, so they do not contradict it. Missing for 10: independent or hands-on confirmation that the published openapi.json path actually resolves and validates.",
+    "evidenceIds": [
+      "requesty-openapi-spec-20261106",
+      "requesty-probe-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "requesty-openapi-spec-20261106",
+          "quote": "Requesty publishes an OpenAPI 3.0.3 document (info title \"Requesty API\") covering both the OpenAI/Anthropic-compatible inference router and the management API"
+        },
+        {
+          "evidenceId": "requesty-openapi-spec-20261106",
+          "quote": "advertised verbatim in the docs llms.txt (\"OpenAPI Spec: https://docs.requesty.ai/api-reference/openapi.json\")"
+        }
+      ]
     }
   },
   {
@@ -6847,7 +6880,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesty is an LLM gateway API, so a sandbox or test environment separate from production is a fair axis to ask about. The evidence pack documents no sandbox, test mode, or isolated non-production environment. Per-key spend caps, service accounts, and load-balancing A/B testing are adjacent controls, not sandbox isolation.",
+    "rationale": "Requesty is an LLM gateway, and a sandbox or test mode is a fair axis for this kind of product, but the evidence documents no sandbox, test-mode keys or isolated environment. The API playground explicitly 'executes against the production router with a real key'. Spend caps and service accounts are adjacent controls, not sandbox isolation, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6859,16 +6892,32 @@
   {
     "productId": "requesty",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented API versioning scheme and no deprecation policy. The only hint is the \"/v1\" segment in the base URL, which on its own does not show versioning commitments or deprecation timelines. Prompt-library version tracking concerns prompts, not the API contract, so it is a different capability and earns no credit here.",
-    "evidenceIds": [],
+    "rationale": "Requesty's API is /v1 path-versioned, and its dated changelog records API-affecting changes, including explicit field deprecations with migration paths. The evidence also states that no standalone versioning policy or back-compat window exists, so the deprecation practice is ad hoc rather than a documented policy. Missing for 10: a formal published deprecation/versioning policy, stated backward-compatibility or sunset windows, and independent corroboration.",
+    "evidenceIds": [
+      "requesty-changelog-20261106",
+      "requesty-docs-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "requesty-changelog-20261106",
+          "quote": "including explicit field deprecations with migration paths (\"`monthly_limit` is deprecated and will soon be migrated to `monthly_budget`\")"
+        },
+        {
+          "evidenceId": "requesty-changelog-20261106",
+          "quote": "The API is /v1 path-versioned"
+        },
+        {
+          "evidenceId": "requesty-docs-2",
+          "quote": "base_url=\"https://router.requesty.ai/v1\""
+        }
+      ]
     }
   },
   {
@@ -6877,7 +6926,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Requesty's documented Fallback Policies retry a failed request against a different model. If the primary model fails (timeout, rate limit, error), the router immediately tries the next model in a configured chain, so applications stay up when individual providers have issues. missing for 10: detailed documentation of how the fallback chain is configured (UI/API fields, cross-provider ordering options), independent or hands-on corroboration.",
+    "rationale": "Requesty's first-party docs describe Fallback Policies that automatically retry a request with the next model in a chain when the primary fails (timeout, rate limit, or error), covering failover across models and providers. Missing for 10: detailed documentation of how a policy is configured (UI or API fields, chain ordering, per-key scoping), and independent or hands-on corroboration that failover works in practice.",
     "evidenceIds": [
       "requesty-docs-3",
       "requesty-docs-4"
@@ -6904,7 +6953,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk or batch operations, such as a batch-request API, are a fair axis for an LLM gateway, but the evidence pack documents no batch endpoint or bulk-action capability. Load balancing and fallback policies only route individual requests and do not perform operations across many items at once.",
+    "rationale": "Bulk operations, such as a batch inference API or bulk management actions, are a fair axis for an LLM gateway, but the evidence pack never documents any batch or bulk capability. Load balancing and fallback route individual requests and are adjacent features, not bulk operations over many items.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6919,7 +6968,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesty is an LLM gateway, and a gateway could plausibly offer user-defined event-to-action automation, so this axis applies. The evidence shows no general rules engine where users define triggers and actions. Fallback policies (automatic retry on failure), spend caps and guardrails are fixed, routing- or governance-specific behaviors, so they are adjacent features and earn no credit for this story.",
+    "rationale": "Requesty is an LLM gateway, and a gateway could plausibly offer user-defined event-to-action automation, so the axis applies. The evidence shows only fixed built-in behaviors: fallback retries on model failure, load-balancing weights, auto caching and spend caps. These are adjacent routing and governance controls, not a general facility for defining rules that trigger actions on events.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -6934,7 +6983,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesty is an LLM gateway and router. An AI platform of this kind could plausibly offer scheduled or recurring workflows, so the axis applies. The evidence covers per-request features only (routing, fallbacks, load balancing, caching, the prompt library and the MCP gateway) and never mentions scheduling, cron, or recurring job execution.",
+    "rationale": "Requesty is an LLM gateway and router. A platform like this could plausibly offer scheduled or recurring jobs, so the axis applies. However, its documented features cover only per-request behaviour: routing, fallbacks, load balancing, caching, analytics, and the MCP gateway. Nothing in the pack shows any scheduler, cron, recurring job, or workflow automation capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6946,16 +6995,23 @@
   {
     "productId": "requesty",
     "storyId": "automation-versioned-workflows",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Requesty is an LLM gateway, and versioning its configurations is a fair question for this kind of product. However, the evidence shows no versioning, review, or rollback of automations, routing policies, or workflows. The only versioning shown is the Prompt Library tracking prompt versions with full diffs. That is an adjacent feature for prompt templates, not automations, and no rollback is documented.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Requesty's Prompt Library lets users store reusable configurations (messages, model, parameters, output formats) that API requests reference by prompt_id, and it documents version tracking with full diffs. That covers versioning and review for the closest thing this gateway has to an automation artifact. Missing for 10: documented rollback/restore to a prior version, versioning of routing configs (fallback/load-balancing policies), any review/approval workflow beyond diffs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "requesty-docs-34"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can version, review, and roll back my automations",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "requesty-docs-34",
+          "quote": "track versions with full diffs, organize with tags, and reference prompts in any API request with a single prompt_id"
+        }
+      ]
     }
   },
   {
@@ -6964,10 +7020,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Requesty's own docs say each API key or service account can have its own monthly spend cap, which delivers per-key budgets. Service accounts separate spend from users, but nothing shows team-level or per-user caps, or what happens when a cap is hit. missing for 10: documented per-team and per-user budget scopes, explicit hard-stop enforcement behavior when a cap is reached, non-monthly budget periods, independent/hands-on corroboration",
+    "rationale": "Requesty documents a monthly spend cap on each API key or service account. The changelog adds a `monthly_budget` management parameter that replaces `monthly_limit`, so per-key budgets are a first-party capability. Service accounts separate spend from users, but nothing shows limits set per team or per user, and the docs do not say whether a cap hard-blocks requests or only alerts. Missing for 10: per-team budgets, per-user budgets, documented hard-enforcement behavior when a cap is hit, independent corroboration.",
     "evidenceIds": [
       "requesty-docs-18",
-      "requesty-docs-19"
+      "requesty-docs-19",
+      "requesty-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6979,8 +7036,8 @@
           "quote": "Each API key or service account can have its own monthly spend cap."
         },
         {
-          "evidenceId": "requesty-docs-19",
-          "quote": "spend from those keys will not be tied to any user."
+          "evidenceId": "requesty-changelog-20261106",
+          "quote": "`monthly_limit` is deprecated and will soon be migrated to `monthly_budget`"
         }
       ]
     }
@@ -6991,7 +7048,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Requesty documents a dedicated Bring Your Own Keys (BYOK) feature that lets developers use their personal provider API keys through the gateway, which covers the core of the story. The MCP user-keys feature is a separate capability and is not credited here. The evidence is a single summary line from first-party docs, so the depth is thin. missing for 10: details on how keys are configured, which providers are supported, how BYOK traffic is routed and billed compared with Requesty-managed keys, and independent or hands-on corroboration.",
+    "rationale": "Requesty documents a dedicated Bring Your Own Keys (BYOK) feature that lets developers use their own provider API keys with the Requesty gateway, which is the core of this story. The evidence is a single sentence from the feature page, so the details are not shown. Missing for 10: which providers are supported, how keys are stored and secured, whether traffic falls back to Requesty-managed keys, how BYOK traffic is billed, and independent or hands-on corroboration.",
     "evidenceIds": [
       "requesty-docs-8"
     ],
@@ -7011,11 +7068,12 @@
     "productId": "requesty",
     "storyId": "cost-tracking",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Requesty documents a real-time analytics dashboard that tracks costs across all models and providers in one place. The service-accounts doc implies spend is normally attributed to users. However, the evidence never shows spend broken down by API key or by team: per-key spend caps (docs-18) are a limit control, not reporting. Missing for 10: documented per-key and per-team spend breakdowns, explicit per-user cost reporting, independent or hands-on corroboration.",
+    "rationale": "Requesty documents a real-time analytics dashboard that tracks costs across all models and providers in one place. Per-key spend caps and service accounts whose spend is 'not tied to any user' suggest spend is attributed to keys and users, but no doc explicitly shows per-dimension spend breakdowns. Missing for 10: explicit per-key/per-user spend breakdown views, any team-level spend attribution, independent or hands-on corroboration.",
     "evidenceIds": [
       "requesty-docs-11",
+      "requesty-docs-18",
       "requesty-docs-19",
       "requesty-docs-16"
     ],
@@ -7027,6 +7085,10 @@
         {
           "evidenceId": "requesty-docs-11",
           "quote": "Requesty's analytics dashboard gives you complete visibility into your AI usage across all models and providers. Track costs, requests, tokens, cache savings, and latency, all in real-time."
+        },
+        {
+          "evidenceId": "requesty-docs-18",
+          "quote": "Each API key or service account can have its own monthly spend cap."
         },
         {
           "evidenceId": "requesty-docs-19",
@@ -7041,7 +7103,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence never documents or measures how much latency Requesty's own gateway hop adds to provider calls. Latency-based routing picks the fastest downstream model, streaming improves perceived performance, and analytics reports latency, but these are adjacent features, not evidence of a low-overhead gateway.",
+    "rationale": "The evidence shows Requesty is a gateway that proxies provider calls, but nothing documents or measures the latency overhead the gateway itself adds. Latency-based routing, streaming and latency analytics are related features rather than evidence of minimal gateway overhead, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7056,7 +7118,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Requesty documents its own Load Balancing Policies, which distribute requests across multiple models by user-defined weights with sticky routing by trace_id or user_id. It also documents Latency-Based Routing that picks the fastest model from real-time performance data. However, balancing is described across models, not explicitly across providers, deployments or keys, and there is no cost-based routing. Missing for 10: cost-based load balancing, explicit balancing across provider deployments or API keys, independent or hands-on corroboration.",
+    "rationale": "Requesty documents Load Balancing Policies that split requests across multiple models by user-defined weights, with sticky routing by trace_id or user_id. It also documents latency-based routing that picks the fastest model from real-time performance data. So weight and latency strategies are first-party, but cost-based balancing is never documented, and balancing is described across models rather than explicitly across deployments or API keys. missing for 10: cost-based routing/load balancing, explicit balancing across deployments or multiple keys, independent or hands-on corroboration.",
     "evidenceIds": [
       "requesty-docs-5",
       "requesty-docs-6",
@@ -7072,12 +7134,12 @@
           "quote": "Load Balancing Policies distribute your requests across multiple models based on weights you define."
         },
         {
-          "evidenceId": "requesty-docs-6",
-          "quote": "Requests with the same trace_id or user_id always go to the same model."
-        },
-        {
           "evidenceId": "requesty-docs-17",
           "quote": "Latency-Based Routing automatically selects the fastest model for each request based on real-time performance data."
+        },
+        {
+          "evidenceId": "requesty-docs-6",
+          "quote": "Requests with the same trace_id or user_id always go to the same model."
         }
       ]
     }
@@ -7088,7 +7150,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence only gives headline model counts (300+/600+ models). It never documents a browsable catalog, a models-list endpoint, per-model pricing, or context-window metadata. Cost tracking in the analytics dashboard is about the user's own spend, not catalog pricing, so it earns no credit here.",
+    "rationale": "The evidence says Requesty gives access to 300+/600+ models through one OpenAI-compatible API. Nothing in the pack documents a browsable or queryable model catalog (such as a models endpoint or models page) that exposes per-model pricing or context-window metadata. The OpenAPI spec item describes inference and management APIs generally but never mentions a model listing, so this applicable axis lacks evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7101,9 +7163,9 @@
     "productId": "requesty",
     "storyId": "openai-compatible-endpoint",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Requesty's quickstart says existing OpenAI SDK code needs no SDK changes and only has to point at Requesty. It shows the base_url swap from api.openai.com/v1 to router.requesty.ai/v1, and the live llms.txt probe describes the product as an OpenAI-compatible API. missing for 10: an explicit quoted snippet showing the API key swap, independent or hands-on corroboration of drop-in compatibility.",
+    "rationale": "Requesty's quickstart says existing OpenAI SDK users only need to point the SDK at Requesty, with no SDK changes. It shows the base_url swap from api.openai.com/v1 to router.requesty.ai/v1, and llms.txt describes the product as an OpenAI-compatible API. Missing for 10: independent or hands-on corroboration that unmodified OpenAI code works end-to-end with only the base URL and key changed.",
     "evidenceIds": [
       "requesty-docs-1",
       "requesty-docs-2",
@@ -7132,16 +7194,29 @@
   {
     "productId": "requesty",
     "storyId": "openness-api-parity",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence documents a rich OpenAI-compatible inference API: chat, images, PDFs, web search, structured outputs, and referencing saved prompts by prompt_id. Nothing shows that the UI's management functions are available through an API. Fallback and load-balancing policies, API keys, spend caps, service accounts, MCP server registration, prompt library editing and the analytics dashboard all appear only as product features, with no documented management endpoints, and the OpenAPI probe returned 404 on every path tried.",
-    "evidenceIds": [],
+    "rationale": "Requesty publishes an OpenAPI spec that covers both its inference router and a separate management API, and its changelog tracks management-endpoint parameters, so programmatic control goes beyond inference. However, nothing documents that UI-configured features such as fallback and load-balancing policies, guardrails, MCP server registration, prompt library editing and the analytics dashboard are all reachable through the API, so UI parity is unproven. Missing for 10: an explicit API/UI parity statement, documented management endpoints for policies, guardrails, MCP servers and analytics, and independent or hands-on corroboration of parity.",
+    "evidenceIds": [
+      "requesty-openapi-spec-20261106",
+      "requesty-changelog-20261106",
+      "requesty-api-playground-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "requesty-openapi-spec-20261106",
+          "quote": "covering both the OpenAI/Anthropic-compatible inference router and the management API (servers router.requesty.ai and api-v2.requesty.ai)"
+        },
+        {
+          "evidenceId": "requesty-changelog-20261106",
+          "quote": "new management-endpoint parameters"
+        }
+      ]
     }
   },
   {
@@ -7150,7 +7225,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export is a fair question for an LLM gateway that stores usage logs, analytics and prompt-library content, so the axis applies. However, the evidence pack documents no export feature: no bulk download, no open-format export of logs, analytics or prompts, and no account data portability. OpenAI-SDK compatibility only makes switching code easier and is adjacent, not data export.",
+    "rationale": "Data export is a fair question for an LLM gateway that holds request logs, analytics and prompt-library content, but the evidence pack documents no export feature or open-format download of user data. The OpenAI-compatible drop-in API lowers switching cost, and the analytics dashboard and management API exist, but these are adjacent features, not a documented capability to export all data and leave.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7165,7 +7240,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesty is a hosted LLM gateway, and open-sourcing such a product is plausible, so the openness axis applies. The evidence pack contains no mention of a public source repository or an open license. Its docs cover only hosted features, pricing and documentation endpoints such as llms.txt, which concern docs access rather than source code.",
+    "rationale": "Requesty is a hosted LLM gateway, and an open-source license is a fair question for this kind of product. The evidence pack has nothing about a public source repository or an open-source license, only hosted service docs, a published OpenAPI spec and llms.txt. A public API spec is a different capability from readable source code, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7180,7 +7255,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an LLM gateway, so the axis applies. Every piece of evidence describes Requesty as a hosted service: clients point at router.requesty.ai, and even the EU routing option runs on Requesty's own AWS Frankfurt infrastructure. Nothing documents a self-hostable deployment, distribution, or source release.",
+    "rationale": "Self-hosting is a fair question for an LLM gateway, so the axis applies. The evidence only describes Requesty's managed infrastructure, such as the hosted router at router.requesty.ai and Requesty-operated EU infrastructure in Frankfurt. No self-hosted, on-prem, or open-source deployment option is documented.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7192,16 +7267,16 @@
   {
     "productId": "requesty",
     "storyId": "privacy-data-residency",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Requesty's own docs describe an EU routing option: traffic can go through its Frankfurt (AWS eu-central-1) infrastructure, and all Requesty processing and storage stays in the EU. That gives users a first-party choice of data residency. missing for 10: evidence of regions beyond the EU, documentation of how users select or enable the region, clarity on residency at downstream model providers, independent or hands-on corroboration.",
+    "rationale": "Requesty documents a first-party EU routing option that keeps all Requesty processing and storage in Frankfurt (AWS eu-central-1), so users can choose EU residency. The evidence covers only that one alternative region and does not explain how the region is selected or whether upstream model providers also keep data in-region. missing for 10: regions beyond the EU option, documentation of how region selection is configured, residency guarantees for downstream provider processing, independent or hands-on corroboration.",
     "evidenceIds": [
       "requesty-docs-12"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
       "citations": [
         {
@@ -7217,7 +7292,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Preventing training on user data is a fair question for an LLM gateway like Requesty, so the axis applies. The pack has no training opt-out, zero-data-retention routing, or no-training provider filter. Guardrails (scanning for sensitive content) and EU routing (data residency) are adjacent privacy controls, not a way to stop data being used for model training.",
+    "rationale": "An LLM gateway could plausibly offer a training opt-out, such as routing only to providers that do not train on customer data, so this axis applies. The evidence pack has nothing on training opt-outs, data-use policies or no-training provider filters. Guardrails (scanning for sensitive content), EU routing (data residency) and BYOK are adjacent controls and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7232,7 +7307,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for an LLM gateway that handles and stores request data, so the axis applies. The pack shows no retention settings, deletion controls, or zero-retention options. EU routing (data residency) and guardrails (sensitive-content scanning) are adjacent privacy features, not retention or deletion control, so they earn no credit.",
+    "rationale": "Data retention and deletion controls are a fair question for an LLM gateway that logs and stores traffic, but the evidence pack never documents retention periods, log-deletion options, or zero-retention settings. EU routing covers data residency and guardrails cover content scanning; both are adjacent features that earn no credit for retention or deletion control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7247,7 +7322,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Privacy controls such as opting out of usage tracking are a fair question for an LLM gateway, so the axis applies. However, the evidence pack documents no opt-out mechanism. The closest items are related but different features: EU data residency, guardrails that scan request content, and an analytics dashboard that actively tracks usage. None of these is an opt-out for telemetry or usage tracking.",
+    "rationale": "Nothing in the evidence pack documents a way to opt out of telemetry, usage tracking, or request logging. The material that is present points the other way: a real-time usage analytics dashboard and MCP user-activity analytics. EU data residency and guardrails are adjacent privacy features, not an opt-out control, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7259,16 +7334,34 @@
   {
     "productId": "requesty",
     "storyId": "provision-via-api",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows per-key monthly spend caps, service accounts, and MCP server registration. None of it says these can be provisioned programmatically through an admin or management API; they may only be dashboard features. The OpenAPI probe returned 404 on every candidate path, and no admin endpoints for creating keys, gateways, or budgets are documented.",
-    "evidenceIds": [],
+    "rationale": "Requesty publishes an OpenAPI spec that covers a management API on api-v2.requesty.ai, and its changelog cites management-endpoint parameters, including the move from `monthly_limit` to `monthly_budget`. Together with documented per-key and per-service-account spend caps, this points to programmatic budget management, but specific endpoints for creating keys or gateways are not shown. Missing for 10: explicit documented endpoints for creating and revoking API keys, programmatic gateway or service-account provisioning, endpoint-level budget docs, and hands-on corroboration.",
+    "evidenceIds": [
+      "requesty-openapi-spec-20261106",
+      "requesty-changelog-20261106",
+      "requesty-docs-18",
+      "requesty-docs-19"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can provision gateways, keys, and budgets programmatically through an admin API",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "requesty-openapi-spec-20261106",
+          "quote": "covering both the OpenAI/Anthropic-compatible inference router and the management API"
+        },
+        {
+          "evidenceId": "requesty-changelog-20261106",
+          "quote": "`monthly_limit` is deprecated and will soon be migrated to `monthly_budget`"
+        },
+        {
+          "evidenceId": "requesty-docs-18",
+          "quote": "Each API key or service account can have its own monthly spend cap."
+        }
+      ]
     }
   },
   {
@@ -7277,7 +7370,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents fallback to another model when a request is rate-limited, plus weighted load balancing across models. These are separate fallback and load-balancing features, not spreading traffic across multiple keys or queuing and throttling requests. Nothing describes key pooling or rotation, request queuing, or rate throttling. Monthly spend caps limit spend, not request rate.",
+    "rationale": "The evidence pack does not document spreading traffic across multiple keys, or queuing or throttling requests to stay under provider rate limits. What it does document is adjacent: fallback to a different model after a rate-limit failure, weighted load balancing across models (not keys), BYOK, and monthly spend caps per key. These are related features, not this capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7292,9 +7385,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Requesty documents its own analytics dashboard that tracks costs, requests, tokens, cache savings and latency in real time, which covers the metrics in this story. The evidence describes usage analytics, though, not a per-request log where a platform engineer can inspect individual request and response payloads with those metrics attached. Missing for 10: documented per-request log view, request/response body inspection, per-entry attachment of latency/tokens/cost, independent or hands-on corroboration.",
+    "rationale": "Requesty's own analytics dashboard tracks costs, requests, tokens, cache savings and latency in real time, so the metrics side of the story is documented. Nothing shows a per-request log where an engineer can open an individual request and response payload with those metrics attached; the evidence reads as aggregate usage analytics. Missing for 10: per-request log inspection, stored request/response bodies, per-request cost/token/latency attribution, independent or hands-on corroboration.",
     "evidenceIds": [
-      "requesty-docs-11"
+      "requesty-docs-11",
+      "requesty-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -7304,6 +7398,10 @@
         {
           "evidenceId": "requesty-docs-11",
           "quote": "Track costs, requests, tokens, cache savings, and latency, all in real-time."
+        },
+        {
+          "evidenceId": "requesty-docs-16",
+          "quote": "Access 600+ models through one API with intelligent routing, real-time analytics and centralized governance."
         }
       ]
     }
@@ -7311,34 +7409,16 @@
   {
     "productId": "requesty",
     "storyId": "response-caching",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesty documents its own 'auto caching' feature, which caches long system prompts and repeated content to cut cost by up to 90%, and cache savings appear in its analytics. However, this is provider-side prompt caching that only works on providers supporting it. It is not a gateway-level response cache that returns stored completions for repeated requests. missing for 10: true gateway-side response caching independent of provider, documented latency reduction on cache hits, cache controls (TTL/keys/invalidation), independent or hands-on corroboration.",
-    "evidenceIds": [
-      "requesty-docs-7",
-      "requesty-docs-25",
-      "requesty-docs-11",
-      "requesty-docs-35"
-    ],
+    "rationale": "The evidence documents only Requesty's 'auto caching', which caches long system prompts and repeated content on providers that support prompt caching. That is provider-side prompt-prefix caching, a related but different capability. Nothing shows Requesty storing and serving full responses at the gateway, so repeated requests still go to the provider and there is no documented gateway response cache.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a developer, I can cache responses at the gateway to cut cost and latency on repeated requests",
-      "citations": [
-        {
-          "evidenceId": "requesty-docs-7",
-          "quote": "Requesty's auto caching automatically caches long system prompts and repeated content to reduce costs on any provider that supports prompt caching."
-        },
-        {
-          "evidenceId": "requesty-docs-25",
-          "quote": "Reduce costs by up to 90% with automatic prompt caching. Works with any provider that supports prompt caching, on both Chat Completions and Responses APIs"
-        },
-        {
-          "evidenceId": "requesty-docs-11",
-          "quote": "Track costs, requests, tokens, cache savings, and latency, all in real-time."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -7347,7 +7427,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Requesty's Fallback Policies are a documented, first-party mechanism that automatically retries a failed request (timeout, rate limit, error) by moving to the next model in a configured chain. That covers automatic handling of transient provider errors. However, the evidence only describes failover to different models. Nothing shows configurable retries against the same provider. Missing for 10: same-model/same-provider retry configuration, retry count and backoff settings, per-error-class retry rules, and independent or hands-on corroboration.",
+    "rationale": "Requesty's own Fallback Policies automatically retry a failed request (timeout, rate limit, error) by moving to the next model in a configured chain. That covers automatic recovery from transient provider errors, but the evidence frames it as failover to different models, not a tunable retry policy. missing for 10: same-model/same-provider retry configuration, retry count and backoff settings, per-error-type retry rules, independent or hands-on corroboration.",
     "evidenceIds": [
       "requesty-docs-3",
       "requesty-docs-4"
@@ -7371,18 +7451,17 @@
   {
     "productId": "requesty",
     "storyId": "streaming-passthrough",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Requesty has a dedicated streaming feature page that documents token-by-token delivery of content as it is generated through its OpenAI-compatible router. Multi-provider breadth is implied by the unified 300+/600+ model API, but the docs do not explicitly confirm streaming works for every provider. missing for 10: explicit confirmation that streaming works across all providers, protocol details (SSE format, usage chunks), independent or hands-on corroboration.",
+    "rationale": "Requesty has a first-party streaming feature page that describes delivering content token-by-token through its OpenAI-compatible router, so the core capability is directly documented. The evidence does not show that streaming works uniformly across every provider and model, so coverage of the story is incomplete. Missing for 10: explicit documentation that streaming works for any or all providers, documented stream format and provider-normalization details, and independent or hands-on corroboration of streaming behavior.",
     "evidenceIds": [
       "requesty-docs-24",
-      "requesty-docs-2",
-      "requesty-docs-16"
+      "requesty-docs-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can stream token-by-token responses through the gateway from any provider",
       "citations": [
         {
@@ -7390,8 +7469,8 @@
           "quote": "Streaming responses provide immediate feedback to users by delivering content token-by-token as it's generated"
         },
         {
-          "evidenceId": "requesty-docs-16",
-          "quote": "Access 600+ models through one API"
+          "evidenceId": "requesty-docs-2",
+          "quote": "base_url=\"https://router.requesty.ai/v1\""
         }
       ]
     }
@@ -7400,12 +7479,12 @@
     "productId": "requesty",
     "storyId": "structured-outputs",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Requesty's own docs say it makes every supported model output structured JSON. This covers both json_object mode and strict, schema-enforced json_schema mode, with consistent behavior regardless of the underlying provider, which matches the cross-provider schema story directly. The prompt library can also store structured output formats. missing for 10: independent or hands-on corroboration that schema enforcement works across providers, and documented per-provider limitations.",
+    "rationale": "Requesty's first-party structured-outputs docs say every supported model can return JSON, from json_object mode up to strict, schema-enforced json_schema mode. They also promise consistent behavior regardless of the underlying provider, which directly covers the cross-provider story. The prompt library can additionally store structured output formats. Missing for 10: independent or hands-on corroboration of schema enforcement across providers, and documented per-provider limitations or edge cases (e.g., how it behaves with streaming or with providers lacking native schema support).",
     "evidenceIds": [
-      "requesty-docs-27",
       "requesty-docs-14",
+      "requesty-docs-27",
       "requesty-docs-34"
     ],
     "support": {
@@ -7430,11 +7509,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Requesty exposes an OpenAI-compatible API across 300+ models. Its docs show cross-provider translation of one tool definition: native web search, where it states it converts 'a single tool definition' to the right provider format. General user-defined function/tool calling with a consistent schema is not documented. missing for 10: explicit docs for user-defined function/tool calling across providers, normalized tool_call response format, streaming tool-call deltas, independent or hands-on corroboration.",
+    "rationale": "Requesty documents cross-provider tool translation only for its native web search tool: you pass a single tool definition and Requesty converts it to each provider's format. The pack never documents general user-defined function calling across providers. Its OpenAI-compatible API and its consistent structured-output behavior are adjacent features, not tool-calling evidence. missing for 10: documented general function/tool calling across providers, consistent tool-call response schema, streaming tool-call deltas, independent or hands-on corroboration",
     "evidenceIds": [
-      "requesty-docs-31",
-      "requesty-probe-1",
-      "requesty-docs-27"
+      "requesty-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -7444,10 +7521,6 @@
         {
           "evidenceId": "requesty-docs-31",
           "quote": "Pass a single tool definition and Requesty translates it to the right provider format automatically."
-        },
-        {
-          "evidenceId": "requesty-probe-1",
-          "quote": "Requesty is a unified LLM gateway and OpenAI-compatible API for 300+ AI models"
         }
       ]
     }
@@ -7458,7 +7531,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Requesty documents an in-product analytics dashboard for costs, requests, tokens and latency, plus MCP usage analytics. Nothing in the pack shows exporting gateway logs or traces to an external observability stack (no OpenTelemetry, log drains or export APIs). A built-in dashboard is an adjacent feature, not export, so it earns no credit.",
+    "rationale": "The evidence shows only Requesty's own hosted analytics dashboards for usage, cost, latency and MCP activity, plus a trace_id field used for load-balancing stickiness. Nothing documents exporting logs or traces to an external observability stack (no OpenTelemetry, log drains, or third-party integrations). Built-in dashboards are an adjacent feature, not export, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7473,14 +7546,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Requesty documents an OpenAI-compatible router: you change only the base_url to reach hundreds of models. Its docs also claim consistent cross-provider behavior, with structured outputs that behave the same regardless of provider and a single web-search tool definition translated to each provider's format. A probe of llms.txt confirms the product describes itself as a unified LLM gateway. Missing for 10: independent hands-on corroboration of cross-provider consistency, and a reconciled model count (docs cite both 300+ and 600+).",
+    "rationale": "Requesty is a unified LLM gateway with an OpenAI-compatible endpoint (router.requesty.ai/v1). It exposes 300+ models through one API. Its docs also describe provider-agnostic behavior for structured outputs and web search, where it translates requests to each provider's format. Missing for 10: independent or hands-on corroboration that cross-provider behavior is actually consistent (all evidence is first-party, and the model counts differ between pages: 300+ vs 600+).",
     "evidenceIds": [
       "requesty-docs-1",
       "requesty-docs-2",
       "requesty-docs-16",
+      "requesty-probe-1",
       "requesty-docs-27",
       "requesty-docs-31",
-      "requesty-probe-1"
+      "requesty-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -7516,7 +7590,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Requesty issues its own gateway API keys and service-account keys for non-human entities, each with its own monthly spend cap. Upstream provider keys can be held by Requesty via BYOK, so apps authenticate with a Requesty token rather than a raw provider key. Team-scoped key minting is not documented, and the claim that provider keys are never exposed is only implied by the gateway design. missing for 10: explicit team-level key issuance, documentation that provider keys are hidden from key holders, key lifecycle details (rotation/revocation), independent corroboration.",
+    "rationale": "Requesty issues its own gateway API keys and service-account keys for non-human entities such as apps, each with its own spend cap. Provider keys can be brought in via BYOK and held by the gateway, so clients call Requesty with a Requesty key rather than a provider key. missing for 10: explicit team-scoped key minting, explicit documentation that raw provider keys are never exposed to key holders, key-creation/rotation workflow docs, independent corroboration.",
     "evidenceIds": [
       "requesty-docs-18",
       "requesty-docs-19",
@@ -7529,12 +7603,12 @@
       "subject": "As a platform engineer, I can mint gateway-managed keys for teams and apps without exposing raw provider keys",
       "citations": [
         {
-          "evidenceId": "requesty-docs-18",
-          "quote": "Each API key or service account can have its own monthly spend cap."
-        },
-        {
           "evidenceId": "requesty-docs-19",
           "quote": "Service accounts allow you create non-human entities... spend from those keys will not be tied to any user."
+        },
+        {
+          "evidenceId": "requesty-docs-18",
+          "quote": "Each API key or service account can have its own monthly spend cap."
         },
         {
           "evidenceId": "requesty-docs-8",

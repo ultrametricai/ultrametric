@@ -2739,15 +2739,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Floot ships its own remote MCP server that lets AI clients build and ship full-stack apps and manage them through tools such as logs, SQL and database operations, and checkpoints, so programmatic app generation and management exists. It runs only through an MCP tool interface for AI clients, though. No general-purpose platform API is documented, and the OpenAPI probes all returned 404. Missing for 10: a documented REST/HTTP platform API or OpenAPI spec, an explicit app create/list/delete/publish API surface, and independent hands-on corroboration.",
+    "rationale": "Floot's only programmatic surface is its own remote MCP server (OAuth2, streamable-http, registered in the MCP registry). It exposes tools for building and shipping apps, reading logs, running SQL and creating checkpoints, so apps can be generated and managed programmatically through an AI client. There is no OpenAPI document, no documented REST API, no interactive reference, no sandbox and no versioning, which limits it as a general platform API. Missing for 10: documented REST/HTTP platform API with OpenAPI spec, explicit app create/list/delete/publish endpoints, versioning/changelog, sandbox, independent hands-on corroboration.",
     "evidenceIds": [
-      "floot-docs-2",
+      "floot-mcp-manifest-20261106",
       "floot-docs-15",
+      "floot-docs-2",
       "floot-docs-3",
       "floot-docs-4",
       "floot-docs-5",
-      "floot-probe-3",
-      "floot-probe-4"
+      "floot-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -2755,12 +2755,12 @@
       "subject": "As an AI-native user, I can generate and manage apps programmatically through a platform API",
       "citations": [
         {
-          "evidenceId": "floot-docs-15",
-          "quote": "It lets you build and ship full-stack apps without leaving your AI chat — works with Claude, ChatGPT, Cursor, and more"
+          "evidenceId": "floot-mcp-manifest-20261106",
+          "quote": "Floot's only programmatic surface is its remote MCP server"
         },
         {
-          "evidenceId": "floot-docs-2",
-          "quote": "Add Floot to Cursor, VS Code, Zed, or any client that supports remote MCP servers"
+          "evidenceId": "floot-docs-15",
+          "quote": "It lets you build and ship full-stack apps without leaving your AI chat — works with Claude, ChatGPT, Cursor, and more"
         },
         {
           "evidenceId": "floot-docs-4",
@@ -2769,6 +2769,10 @@
         {
           "evidenceId": "floot-docs-5",
           "quote": "create_checkpoint labels a point you can revert to from the Checkpoint panel in your project view."
+        },
+        {
+          "evidenceId": "floot-docs-2",
+          "quote": "Add Floot to Cursor, VS Code, Zed, or any client that supports remote MCP servers"
         }
       ]
     }
@@ -2779,11 +2783,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A probe confirms Floot serves an llms.txt at https://floot.com/llms.txt (HTTP 200) with a product summary, and the docs also include an llms-full.txt, so an agent can be pointed directly at agent-oriented docs. Agent-facing docs like \"What your AI can do\" add to this. missing for 10: markdown doc variants (docs.md returned 404), independent or hands-on corroboration of agents consuming these docs.",
+    "rationale": "A live probe confirms Floot serves an llms.txt at floot.com/llms.txt (HTTP 200) that describes the product. An llms-full.txt is also published, and the MCP discovery manifest is referenced from the vendor's llms.txt, so an agent can be pointed at agent-oriented docs directly. missing for 10: markdown doc variants (docs.md returned 404), evidence of the depth and coverage of the llms.txt content, independent user corroboration.",
     "evidenceIds": [
       "floot-probe-1",
       "floot-docs-6",
-      "floot-docs-3"
+      "floot-mcp-manifest-20261106",
+      "floot-probe-2"
     ],
     "support": {
       "relation": "direct",
@@ -2792,15 +2797,11 @@
       "citations": [
         {
           "evidenceId": "floot-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://floot.com/llms.txt # Floot"
+          "quote": "PROBE llms.txt: HTTP 200 at https://floot.com/llms.txt"
         },
         {
-          "evidenceId": "floot-docs-6",
-          "quote": "point at an element or annotate a screenshot for the assistant to pick up"
-        },
-        {
-          "evidenceId": "floot-docs-3",
-          "quote": "get_logs — the first step for any 500, blank page, or failed request."
+          "evidenceId": "floot-mcp-manifest-20261106",
+          "quote": "referenced from the vendor's own llms.txt"
         }
       ]
     }
@@ -2811,7 +2812,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents Floot generating AI insights or suggestions from a user's data inside the product. The closest items are adjacent: MCP tools such as query_database and get_logs let an external assistant (Claude, ChatGPT, Cursor) read data, and the built-in visitor tracking shows page views and trends without any AI analysis. Neither is an in-product AI insights capability.",
+    "rationale": "Floot is an AI app builder, so in-product AI insights on user data is a fair question to ask of it. The evidence does not show this capability. The docs cover built-in visitor tracking (page views, traffic sources, trends) without any AI-generated analysis. They also describe a query_database MCP tool, but that is a building block used by an external AI client such as Claude or ChatGPT, not an insights or suggestions feature inside Floot. Neither counts as the product delivering AI-generated insights from data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2824,9 +2825,9 @@
     "productId": "floot",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Floot's own platform documents scheduled jobs that run without a server to keep alive. That is a recurring-schedule capability that runs in the background of apps built on Floot, but the evidence is a single line with no detail on how users configure, trigger, or monitor these automations. missing for 10: documentation of setting up and configuring scheduled jobs, event-driven or trigger-based automations, monitoring and logs for background runs, agent-driven autonomous workflows, independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Floot's platform docs say apps built on it get scheduled jobs that run without a server to keep alive. That is a first-party recurring background-automation capability, not a one-off action, but it rests on a single thin line. Missing for 10: documentation of how to create and configure scheduled jobs or triggers, event-driven (non-schedule) automations, monitoring or run history for background jobs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "floot-docs-20"
     ],
@@ -2848,13 +2849,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Floot documents an assistant that takes delegated build tasks: you describe an integration and the endpoints, tables, and screens get built; you can point at elements or annotate screenshots for it to pick up; and you can ask it to restore checkpoints. However, much of the 'your AI' material describes external assistants (Claude, ChatGPT, Cursor) driving Floot over MCP rather than an assistant built into the product, so in-product coverage is only partly evidenced. missing for 10: clear first-party documentation that the assistant is native to the Floot editor rather than an external MCP client, detail on the range and autonomy of delegable tasks, independent or hands-on corroboration.",
+    "rationale": "Floot's docs describe an assistant that takes delegated work. Users can point at an element or annotate a screenshot for the assistant to pick up, describe an integration and have endpoints, tables and screens built, ask it to restore a checkpoint, or say \"make this a mobile app.\" Much of the documentation, however, frames the assistant as an external AI chat (Claude, ChatGPT, Cursor) connected over MCP, so the depth of a truly built-in, in-product assistant is only partly evidenced. Missing for 10: clear first-party documentation of the native in-editor assistant's scope and task-delegation flow, and independent or hands-on corroboration of in-product delegation.",
     "evidenceIds": [
       "floot-docs-6",
       "floot-docs-26",
       "floot-docs-25",
-      "floot-probe-1",
-      "floot-docs-16"
+      "floot-docs-14",
+      "floot-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -2874,8 +2875,8 @@
           "quote": "Ask it to restore a checkpoint from before the change went sideways."
         },
         {
-          "evidenceId": "floot-probe-1",
-          "quote": "Floot turns a plain-language description into a real, deployed full-stack app"
+          "evidenceId": "floot-docs-14",
+          "quote": "Take any website you've built on Floot and say \"make this a mobile app.\""
         }
       ]
     }
@@ -2886,7 +2887,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Floot exposes a remote MCP server that AI chat clients and editors (Claude, ChatGPT, Cursor) can drive interactively. Nothing documents a CLI, a headless mode, an API token flow for CI pipelines, or any CI integration, and the OpenAPI probes all returned 404. MCP use from an interactive AI client and scheduled jobs inside built apps are adjacent features, not headless or CI operation of the product itself.",
+    "rationale": "Floot's only programmatic surface is a remote MCP server with OAuth2 authentication. It is meant to be driven from interactive AI chat and IDE clients, and that belongs to the separate MCP-server story. The pack documents no CLI, no REST/OpenAPI API, no CI tokens and no headless or pipeline execution mode, and secrets must be entered through a browser dialog.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2901,7 +2902,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Floot acting only as an MCP server that external clients such as Claude, ChatGPT, Cursor and VS Code connect to. Nothing shows Floot letting users plug third-party MCP servers into it as a client. An AI app builder could plausibly offer MCP-client connectors, so the axis applies, but its server-side MCP support does not transfer to this story.",
+    "rationale": "Floot is an AI app builder, so plugging external MCP servers into its assistant is a fair question for this kind of product. The evidence only shows Floot acting as an MCP server that clients like Claude, Cursor and VS Code connect to. Nothing shows Floot itself connecting to or using tools from third-party MCP servers. Server-side MCP evidence belongs to a different story and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2916,16 +2917,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Floot documents an official remote MCP server that connects to Cursor, VS Code, Zed, Claude, ChatGPT and other MCP clients. It runs over MCP on the user's existing AI subscription and exposes a documented toolset (get_logs, query_database, execute_sql, create_checkpoint, generate_image), and a probe confirms the official MCP server docs page exists. Missing for 10: independent or hands-on corroboration that agents connect and operate reliably through the server.",
+    "rationale": "Floot ships an official remote MCP server. It is documented for Cursor, VS Code, Zed and any remote-MCP client, has a published tool set (get_logs, query_database, execute_sql, create_checkpoint, generate_image), and is described by a discovery manifest at /.well-known/mcp.json (streamable-http, OAuth2, registered in the MCP registry) whose endpoint answered a live probe. Missing for 10: independent community or hands-on reports of agents using the server end to end.",
     "evidenceIds": [
       "floot-docs-2",
-      "floot-docs-16",
       "floot-docs-3",
       "floot-docs-4",
       "floot-docs-5",
-      "floot-docs-7",
-      "floot-docs-15",
-      "floot-probe-4"
+      "floot-docs-16",
+      "floot-probe-4",
+      "floot-mcp-manifest-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -2945,8 +2945,8 @@
           "quote": "query_database for reads, execute_sql for writes and migrations, pull_database_schema to regenerate typed helpers."
         },
         {
-          "evidenceId": "floot-probe-4",
-          "quote": "official MCP server documented at https://floot.com/docs/integrations/other-mcp-clients"
+          "evidenceId": "floot-mcp-manifest-20261106",
+          "quote": "Floot's only programmatic surface is its remote MCP server, published as a machine-readable discovery manifest at /.well-known/mcp.json"
         }
       ]
     }
@@ -2956,14 +2956,15 @@
     "storyId": "agentic-nl-commands",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Floot's own docs show it is driven by plain-language commands. It builds apps from descriptions, converts a site when you say \"make this a mobile app,\" builds integrations you describe, restores checkpoints on request, and lets you build and ship entirely from an AI chat. missing for 10: independent or hands-on corroboration that natural-language operation works reliably across these tasks.",
+    "confidence": "medium",
+    "rationale": "Floot's core interaction model is natural language. Apps are built from a plain-language description, and users can say \"make this a mobile app\", ask the assistant to restore a checkpoint, or describe an integration and have endpoints, tables and screens built. It can also be driven from Claude, ChatGPT or Cursor chats via its MCP server. missing for 10: independent or hands-on corroboration of natural-language operation (all evidence is vendor-claimed docs).",
     "evidenceIds": [
       "floot-probe-1",
       "floot-docs-14",
-      "floot-docs-26",
       "floot-docs-25",
-      "floot-docs-15"
+      "floot-docs-26",
+      "floot-docs-15",
+      "floot-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -2979,16 +2980,16 @@
           "quote": "Take any website you've built on Floot and say \"make this a mobile app.\""
         },
         {
-          "evidenceId": "floot-docs-26",
-          "quote": "Describe the integration you want to your AI assistant, and the endpoints, database tables, and screens get built for you."
-        },
-        {
           "evidenceId": "floot-docs-25",
           "quote": "Ask it to restore a checkpoint from before the change went sideways."
         },
         {
+          "evidenceId": "floot-docs-26",
+          "quote": "Describe the integration you want to your AI assistant, and the endpoints, database tables, and screens get built for you."
+        },
+        {
           "evidenceId": "floot-docs-15",
-          "quote": "It lets you build and ship full-stack apps without leaving your AI chat"
+          "quote": "It lets you build and ship full-stack apps without leaving your AI chat — works with Claude, ChatGPT, Cursor, and more"
         }
       ]
     }
@@ -2998,8 +2999,8 @@
     "storyId": "agentic-official-cli",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Floot is a hosted AI app-building platform, so an official CLI is a fair question for it. The evidence documents only a remote MCP server for AI clients like Cursor, Claude and ChatGPT, plus code export. Neither is a first-party command-line tool, and no CLI is mentioned anywhere in the pack.",
+    "confidence": "high",
+    "rationale": "Floot is an app-building platform, so an official CLI is a fair question, but the evidence documents no CLI. Its programmatic access is a remote MCP server used from AI clients such as Cursor or Claude, which is a different surface from a CLI and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3014,13 +3015,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Floot documents a remote MCP server with a named tool surface (get_logs, query_database, execute_sql, create_checkpoint, generate_image), so an AI client can drive the product programmatically through a first-party interface. It does not appear to offer a conventional public API: probes of every OpenAPI/Swagger path returned 404, and no REST or HTTP API reference was found. Missing for 10: a documented REST/HTTP public API with an OpenAPI spec, auth and rate-limit documentation, and independent hands-on corroboration of programmatic use.",
+    "rationale": "Floot's own programmatic surface is a documented remote MCP server, backed by a discovery manifest, OAuth2 and published tools such as get_logs, query_database, execute_sql and create_checkpoint. An AI client can drive the product through it, but it is not a general documented public API. Probes found no OpenAPI spec, and the manifest confirms there is no REST API, interactive reference, sandbox or versioning surface. Missing for 10: documented REST/HTTP API, OpenAPI spec, API versioning/changelog, sandbox environment, independent hands-on corroboration.",
     "evidenceIds": [
+      "floot-mcp-manifest-20261106",
       "floot-docs-2",
-      "floot-docs-3",
       "floot-docs-4",
       "floot-docs-5",
-      "floot-docs-7",
+      "floot-docs-3",
       "floot-probe-3",
       "floot-probe-4"
     ],
@@ -3029,6 +3030,10 @@
       "coverage": "partial",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "floot-mcp-manifest-20261106",
+          "quote": "Floot's only programmatic surface is its remote MCP server"
+        },
         {
           "evidenceId": "floot-docs-2",
           "quote": "Add Floot to Cursor, VS Code, Zed, or any client that supports remote MCP servers"
@@ -3050,7 +3055,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Floot is a platform with an official remote MCP server, so scoped agent credentials are a fair question to ask of it. The evidence never shows Floot issuing scoped or least-privilege API tokens for an agent. The nearest items are adjacent and earn no credit: OAuth sign-in for end users of the apps Floot builds, and a secure browser dialog for entering third-party API keys.",
+    "rationale": "Floot's only programmatic surface is a remote MCP server authenticated via OAuth2. Nothing in the evidence shows a way to issue scoped, least-privilege, or permission-limited credentials for an agent. The secure dialog for entering third-party API keys is about the user's app integrations, not about minting restricted Floot credentials, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3064,8 +3069,8 @@
     "storyId": "agentic-sdks",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Floot is an AI app-building platform, so official SDKs are a fair question, but the evidence pack never mentions an official SDK or client library. The documented programmatic surface is a remote MCP server with tools like get_logs and query_database, which is a different capability from SDKs. The OpenAPI probes all returned 404.",
+    "confidence": "high",
+    "rationale": "Floot is an app-building platform, so official SDKs are a fair question, but the evidence shows no SDK of any kind. The manifest states the remote MCP server is Floot's only programmatic surface, and probes found no OpenAPI document or REST API. An MCP endpoint is a different integration surface, not an official SDK.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3080,7 +3085,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Floot is an app-building platform, so offering registrable outbound webhooks for platform events is a fair question, but the evidence pack never mentions webhooks or event subscriptions. Push notifications, email, scheduled jobs, and the ability to build backend endpoints are adjacent features or developer building blocks, not documented outbound HTTP callbacks a consumer can register for.",
+    "rationale": "Floot is an app-building platform, so outbound webhook subscriptions are a fair axis to ask about. The evidence documents no registrable outbound HTTP callbacks; the vendor manifest states its only programmatic surface is a remote MCP server. Push notifications, email, and scheduled jobs are adjacent features, not webhooks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3094,8 +3099,8 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Floot is an AI app-building platform, so a public interactive API reference is a fair question to ask of it. The evidence documents MCP tools such as get_logs and query_database, but never mentions an interactive API reference or runnable examples, and every OpenAPI/Swagger probe path returned 404. MCP tool descriptions are an adjacent feature and do not count as an explorable API reference.",
+    "confidence": "high",
+    "rationale": "An interactive API reference is a fair question for a platform like Floot, so the axis applies, but the evidence shows no such reference. The probes found no OpenAPI or Swagger document at any candidate path, and the vendor's MCP manifest states there is \"no OpenAPI document, no documented REST API, no interactive reference, no sandbox.\" The prose docs listing MCP tools such as get_logs and query_database describe a different surface and are not a runnable, explorable API reference.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3109,8 +3114,8 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Floot is a SaaS app-building platform, so offering a downloadable machine-readable API spec is a fair question. However, probes of every common OpenAPI/Swagger path returned 404, and no documentation mentions a published API spec. The official MCP server and llms.txt are separate capabilities and do not count as an OpenAPI-equivalent spec here.",
+    "confidence": "high",
+    "rationale": "Probes found no OpenAPI or Swagger document at any candidate path, and the vendor's own manifest note states there is no OpenAPI document or documented REST API. The /.well-known/mcp.json discovery manifest only describes how to connect to the MCP endpoint (URL, transport, OAuth) and is not a downloadable spec of API operations, so it is adjacent rather than equivalent.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3125,7 +3130,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a sandbox or staging environment whose data is isolated from production. Checkpoints are a rollback mechanism, not isolation, and the 'development preview' is a sharing option with no stated separation from the live database. Both are adjacent features, so they earn no credit, and the AI's execute_sql tool writes directly to the managed Postgres database.",
+    "rationale": "The evidence documents no isolated test or staging environment with data kept separate from production, and the MCP manifest summary explicitly lists 'no sandbox'. Checkpoints (revert points), development previews, and SQL dumps are adjacent features: they offer rollback or sharing, not sandbox isolation from production data, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3140,7 +3145,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Floot is an AI app-building platform with an MCP server, so asking whether its API is versioned and has a deprecation policy is a fair question. The evidence pack documents no API versioning scheme and no deprecation policy. The OpenAPI probes all returned 404, and the MCP tool docs say nothing about versions or deprecation timelines.",
+    "rationale": "Floot's programmatic surface is a remote MCP server, so API versioning and deprecation policy is a fair question to ask of it. The evidence shows no OpenAPI document, no documented REST API, and no versioning or changelog surface. No documented deprecation policy appears anywhere in the pack.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3155,7 +3160,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation that generated Floot apps can make built-in LLM calls or run agents at runtime without the user supplying provider keys. The closest items are generate_image, which writes images into the project at build time, and Floot-brokered OAuth, which is a different capability. The integrations docs say third-party keys are typed in by the user through a secure dialog, which suggests users do manage provider keys.",
+    "rationale": "The evidence pack does not document any built-in, Floot-managed LLM or agent capability that a generated app can call at runtime. generate_image only writes AI images into the project at build time. For third-party integrations, the docs say the user types their own key into Floot's secure dialog, which is the opposite of not managing provider keys. The built-in list covers database, OAuth, email, push, analytics and scheduled jobs, but not AI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3170,7 +3175,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Floot is an AI app builder, so a pre-launch security review is a fair question for this kind of product. The pack contains no evidence of one: the security-and-data page only mentions SQL dumps, and the secure key-entry dialog is an adjacent secrets-handling feature, not a security review of the generated app. One-click publish is documented with no review step.",
+    "rationale": "Floot is an AI app builder, so a pre-publish security review of generated apps is a fair question for it. The pack documents one-click publishing, checkpoints, logs and database tools, but nothing about scanning or reviewing an app for security issues before it goes live. The security-and-data page cited only covers downloading SQL dumps, which is a different feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3185,7 +3190,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Floot's own docs list built-in sign-in with Google or Microsoft through OAuth that Floot brokers, so no developer account is needed. That covers the social-provider part of the story. Its docs also say the assistant builds endpoints, tables, and screens for integrations you describe, which only implies that auth screens get scaffolded. Missing for 10: any evidence of email/password sign-up and login, explicit documentation that the builder scaffolds the sign-up and login flows and screens, and independent or hands-on corroboration.",
+    "rationale": "Floot's own docs say apps get built-in sign-in with Google or Microsoft through OAuth that Floot brokers, so no developer account is needed. That covers the social-provider half of the story as a first-party capability. Email/password sign-up and login are not evidenced, and neither is explicit scaffolding of sign-up and login screens; missing for 10: email-based sign-up/login, documentation of scaffolded auth flows and screens, additional social providers beyond Google/Microsoft, independent hands-on corroboration.",
     "evidenceIds": [
       "floot-docs-18",
       "floot-docs-26"
@@ -3212,10 +3217,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for an AI app-building platform, but the evidence documents no first-party bulk-operation capability, such as batch edits across projects, pages, or records. The closest item is the MCP execute_sql tool for database writes. That is a general developer primitive a user could use to build mass updates, not a documented bulk-operations feature, so it earns no credit.",
+    "rationale": "The evidence pack documents no bulk-operation capability, such as acting on many projects, records, or items in one operation. The MCP tool `execute_sql`, which handles writes and migrations, is only a raw developer primitive from which a user could build bulk changes, so it earns no credit. The axis is a fair question for an AI app-building platform, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": []
@@ -3227,7 +3232,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no feature for defining event-triggered rules or automations. The closest items are scheduled jobs, which are time-based schedules rather than event triggers, and inbound email and push notifications, which are app building blocks rather than a rules engine. Both are adjacent capabilities and earn no credit for this story.",
+    "rationale": "The evidence pack has no documented feature for defining event-based rules that automatically trigger actions. Scheduled jobs (floot-docs-20) are time-based recurring runs, not event triggers. Receiving email and sending push notifications are building blocks a developer could wire into such logic, not a rule-definition capability of the product itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3239,16 +3244,16 @@
   {
     "productId": "floot",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "full",
-    "quality": 6,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Floot's own platform docs list built-in jobs that run on a schedule without a server to keep alive. This is a recurring-schedule capability, not a one-off action, so the core of the story is directly delivered. The evidence is a single line with no further detail. Missing for 10: documentation of schedule configuration (cron/interval syntax), job monitoring or management, whether the AI assistant/MCP can create schedules, and independent or hands-on corroboration.",
+    "rationale": "Floot's own platform docs list scheduled jobs as a built-in capability: \"Jobs that run on a schedule, without a server to keep alive.\" That implies recurring execution rather than a one-off action. This is the only mention, and nothing describes how schedules are defined, managed or monitored, so depth is unproven. Missing for 10: documentation of schedule configuration (cron/interval syntax), creating or managing schedules via the AI/MCP tools, run history or failure handling for scheduled jobs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "floot-docs-20"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
       "citations": [
         {
@@ -3264,7 +3269,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Floot ships its own project-level checkpoints that can be created, labeled, and reverted. Since scheduled jobs live inside the project, this gives versioning and rollback, but nothing documents versioning specific to automations or any review step. Missing for 10: automation-specific version history, a review or diff workflow before changes go live, and independent or hands-on corroboration that rollback covers scheduled jobs.",
+    "rationale": "Floot's own checkpoint feature lets you label a point in the project (create_checkpoint) and revert to it, or ask the assistant to restore a checkpoint. That gives project-wide versioning and rollback, which would include scheduled jobs. It is not specific to automations, and nothing shows a review step such as diffs or change history. missing for 10: automation-specific version history, review/diff of changes before or after applying, documented rollback scope for scheduled jobs, independent or hands-on corroboration.",
     "evidenceIds": [
       "floot-docs-5",
       "floot-docs-25",
@@ -3296,7 +3301,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Floot has a dedicated custom-domains doc page that says you can point your own domain at your Floot app so it is served from your own address instead of the *.floot.app subdomain. Combined with one-click publishing, this delivers the core of the story. missing for 10: details on DNS setup steps, SSL/HTTPS provisioning, plan requirements or limits, and independent or hands-on corroboration.",
+    "rationale": "Floot has a dedicated custom-domains doc page stating you can point your own domain at your Floot app so it is served from your address instead of its *.floot.app subdomain. This builds on its one-click publish, so the core story is delivered first-party. missing for 10: DNS/verification steps, SSL/HTTPS provisioning details, plan requirements, independent or hands-on corroboration.",
     "evidenceIds": [
       "floot-docs-21",
       "floot-docs-22"
@@ -3320,18 +3325,19 @@
   {
     "productId": "floot",
     "storyId": "deploy-external-hosting",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Floot's own self-hosting doc says you can export the code and the database and deploy them anywhere, and other docs confirm the project is an exportable TypeScript/React app with a downloadable SQL dump. However, the evidence documents only the export step. It does not show how the exported app runs outside Floot, and the platform-brokered services (OAuth, email, scheduled jobs) are not shown to work off-platform. missing for 10: step-by-step deployment guidance for external hosts or own infrastructure, documentation of how Floot-managed services (brokered OAuth, email, push, scheduled jobs) behave when self-hosted, independent or hands-on corroboration of a successful self-hosted deployment.",
+    "rationale": "Floot has a dedicated self-hosting page stating that you can export the code and the database and deploy them wherever you like. Other docs confirm the project is a real TypeScript/React app that can be fully exported, and that a full SQL dump of the database can be downloaded on any plan. missing for 10: step-by-step self-hosting docs (supported hosts, runtime requirements, how Floot-brokered services like OAuth, email and scheduled jobs work off-platform), and independent or hands-on corroboration of a successful external deployment.",
     "evidenceIds": [
       "floot-docs-11",
       "floot-docs-33",
-      "floot-docs-24"
+      "floot-docs-24",
+      "floot-docs-17"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can deploy the generated app to an external host or my own infrastructure",
       "citations": [
         {
@@ -3352,23 +3358,16 @@
   {
     "productId": "floot",
     "storyId": "edit-code-directly",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Floot's docs say a project is a real TypeScript/React app that you 'can read or export', which partly covers opening the generated code. Nothing in the pack documents editing that code directly inside the builder; export implies editing happens elsewhere. missing for 10: documented in-builder code editor, evidence that edits made in the builder persist and apply to the app, confirmation that code viewing happens inside the builder rather than via export, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "floot-docs-33"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows a Floot project is real TypeScript/React code that can be read or exported, and that users can point at elements for the AI assistant. Nothing documents opening and directly editing that source code inside the builder. Read-only access and export are adjacent capabilities, not in-builder editing.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a developer, I can open and edit the generated source code directly inside the builder",
-      "citations": [
-        {
-          "evidenceId": "floot-docs-33",
-          "quote": "A Floot project is a real TypeScript and React app — pages, components, and backend endpoints — and you can read or export all of it."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -3377,12 +3376,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Floot's own self-hosting page says you can export both the code and the database and deploy them anywhere. Its docs also describe each project as a real TypeScript/React app whose code can be fully read or exported, and say a full SQL dump can be downloaded on any plan. The evidence is short first-party claims only, so missing for 10: step-by-step self-hosting instructions, documentation of how platform-brokered services (OAuth, email, push, scheduled jobs) behave outside Floot, and independent or hands-on confirmation that an exported app runs elsewhere.",
+    "rationale": "Floot's own docs say a project is a real TypeScript and React app that you can read or export in full, and its self-hosting page says you can export the code and the database and deploy them wherever you like. A full SQL dump is also available on any plan. missing for 10: detailed self-hosting/run instructions, clarity on whether platform-brokered services (OAuth, email, scheduled jobs) work outside Floot, independent or hands-on corroboration of a successful external deployment.",
     "evidenceIds": [
       "floot-docs-11",
       "floot-docs-33",
-      "floot-docs-24",
-      "floot-docs-17"
+      "floot-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -3407,23 +3405,24 @@
   {
     "productId": "floot",
     "storyId": "external-agent-drives-builder",
-    "verdict": "partial",
-    "quality": 7,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Floot documents an official remote MCP server that external agents (Cursor, VS Code, Zed, Claude, ChatGPT) can connect to. Through it they can build endpoints, tables and screens, read logs, run SQL and create checkpoints, using the user's own AI subscription rather than Floot credits, so an outside agent can drive the builder instead of the built-in one. The evidence does not show that the external agent can work alongside the built-in assistant on the same project, and nothing beyond vendor claims confirms it. missing for 10: documented co-existence/hand-off between an external agent and the built-in assistant, full enumeration of code/UI-editing tools available over MCP, independent or hands-on corroboration.",
+    "rationale": "Floot publishes an official remote MCP server (OAuth, streamable-http, listed in the MCP registry) that external agents such as Cursor, VS Code, Zed, Claude and ChatGPT can connect to. Through it they can build and ship full-stack apps, read logs, run SQL and migrations, and create checkpoints, so an outside agent can drive the builder instead of Floot's built-in one. Missing for 10: explicit evidence of an external agent working alongside the built-in assistant on the same project, and independent hands-on corroboration beyond vendor docs and a probe showing the endpoint is live.",
     "evidenceIds": [
       "floot-docs-2",
       "floot-docs-15",
       "floot-docs-16",
-      "floot-docs-26",
       "floot-docs-3",
       "floot-docs-4",
       "floot-docs-5",
+      "floot-docs-26",
+      "floot-mcp-manifest-20261106",
       "floot-probe-4"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can connect my own coding agent to the project so it drives the builder alongside or instead of the built-in one",
       "citations": [
         {
@@ -3431,12 +3430,12 @@
           "quote": "Add Floot to Cursor, VS Code, Zed, or any client that supports remote MCP servers"
         },
         {
-          "evidenceId": "floot-docs-16",
-          "quote": "It runs on your existing Claude or ChatGPT subscription over the Model Context Protocol (MCP), not Floot credits."
-        },
-        {
           "evidenceId": "floot-docs-15",
           "quote": "It lets you build and ship full-stack apps without leaving your AI chat — works with Claude, ChatGPT, Cursor, and more"
+        },
+        {
+          "evidenceId": "floot-docs-4",
+          "quote": "query_database for reads, execute_sql for writes and migrations, pull_database_schema to regenerate typed helpers."
         },
         {
           "evidenceId": "floot-docs-26",
@@ -3451,7 +3450,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Floot's first-party docs say a plain-language description becomes a deployed full-stack app. Describing a feature to the assistant builds the endpoints, database tables and screens together, and the result is a real React + TypeScript app with pages, components and backend endpoints backed by managed Postgres. missing for 10: independent or hands-on corroboration that one prompt yields working frontend and backend together, and deeper documentation of how backend logic is generated from the prompt.",
+    "rationale": "Floot's own docs say a plain-language description becomes a deployed full-stack app with a React + TypeScript frontend, and that describing a feature builds the endpoints, database tables and screens together. Projects are real TypeScript/React apps containing both pages/components and backend endpoints. Missing for 10: independent or hands-on corroboration that one prompt reliably produces working frontend and backend together, and in-depth docs on the generation process.",
     "evidenceIds": [
       "floot-probe-1",
       "floot-docs-26",
@@ -3484,10 +3483,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Floot lets you export a project's code and database for self-hosting, but nothing documents GitHub repository integration or bidirectional sync. A one-off export is an adjacent capability, not ongoing two-way sync with your own repo.",
+    "rationale": "Nothing in the evidence pack documents a GitHub integration, repository sync, or any two-way flow of changes between Floot and a user's own Git repository. The only related capability is a one-way code and database export for self-hosting. That is an adjacent feature, not the bidirectional GitHub sync this story asks for, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can sync my project to my own GitHub repository and keep changes flowing both ways",
       "citations": []
@@ -3499,7 +3498,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented Figma import or way to import an existing design for the builder to implement. The only related item is annotating a screenshot or pointing at an element for the assistant, which is an editing aid for the app being built, not design import, so it earns no credit.",
+    "rationale": "Importing a Figma file or existing design is a fair question for a prompt-to-app builder like Floot, but the evidence pack never mentions Figma import or implementing an imported design. The only nearby item describes pointing at elements or annotating screenshots to direct edits to an existing app. That is an adjacent editing feature, not design import, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3512,14 +3511,14 @@
     "productId": "floot",
     "storyId": "iterate-by-prompt",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Floot documents a chat-driven build loop with checkpoints you can create and restore when a change 'went sideways', plus element pointing and screenshot annotation for targeted follow-up edits. That is a real first-party safety net for iterating. However, the evidence only shows after-the-fact rollback, not that follow-up prompts preserve working features. missing for 10: documentation of scoped or incremental edits that avoid regressions, any diff or review of changes before they apply, and independent or hands-on corroboration of iteration stability.",
+    "rationale": "Floot's documentation supports refining an app through ongoing chat. Users can point at elements or annotate screenshots for the assistant to act on, and the assistant can create checkpoints and restore one \"from before the change went sideways.\" Keeping working parts intact therefore relies on rolling back after a break, not on preventing breaks in the first place. missing for 10: evidence of scoped or non-destructive edits that leave untouched features alone, regression testing or diff review before changes apply, and independent or hands-on corroboration of iterative edit reliability.",
     "evidenceIds": [
       "floot-docs-5",
       "floot-docs-25",
       "floot-docs-6",
-      "floot-docs-15"
+      "floot-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -3539,8 +3538,8 @@
           "quote": "point at an element or annotate a screenshot for the assistant to pick up"
         },
         {
-          "evidenceId": "floot-docs-15",
-          "quote": "It lets you build and ship full-stack apps without leaving your AI chat"
+          "evidenceId": "floot-docs-1",
+          "quote": "build and ship full-stack apps without leaving your AI chat"
         }
       ]
     }
@@ -3551,7 +3550,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Floot documents one-way code and database export (\"export the code and the database and deploy them wherever you like\") and an MCP server you can add to Cursor, VS Code, or Zed. Neither is documented as a round trip: there is no Git sync, repo pull/push, or way to bring locally edited code back into a Floot project. The MCP integration lets an AI assistant drive the hosted platform from your editor, which is an adjacent capability, not local development with your own tooling.",
+    "rationale": "Floot documents exporting code and the database to self-host elsewhere, which is a one-way export. It also documents connecting Cursor, VS Code or Zed as MCP clients, but that drives Floot's hosted project through AI tools rather than editing local files. Nothing in the evidence shows a way to push locally edited code back into the Floot platform, such as git sync, file upload or a CLI push, so the round-trip workflow is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3566,7 +3565,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Floot's homepage claims one-click publishing to a live shareable link. The custom-domain docs confirm apps are served from a *.floot.app subdomain by default, which supports a one-step publish to a live URL. Missing for 10: dedicated first-party docs on the publish/deploy flow beyond marketing copy, and independent or hands-on corroboration that the one-click publish works as claimed.",
+    "rationale": "Floot's own site claims one-click publishing to a live shareable link: \"Just one click 'publish' and you're live.\" The custom-domain docs confirm that apps are served from a *.floot.app subdomain by default. missing for 10: in-depth first-party documentation of the publish flow, independent or hands-on corroboration that one-click publish works as claimed.",
     "evidenceIds": [
       "floot-docs-22",
       "floot-docs-21",
@@ -3583,11 +3582,7 @@
         },
         {
           "evidenceId": "floot-docs-21",
-          "quote": "served from your own address instead of its *.floot.app subdomain"
-        },
-        {
-          "evidenceId": "floot-probe-1",
-          "quote": "Floot turns a plain-language description into a real, deployed full-stack app"
+          "quote": "Point your own domain at your Floot app so it is served from your own address instead of its *.floot.app subdomain."
         }
       ]
     }
@@ -3598,16 +3593,16 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Floot ships a first-party remote MCP server that exposes many platform operations programmatically: logs, database reads and writes, migrations, checkpoints and image generation. It also claims you can build and ship whole apps from an AI chat. Parity with the UI is not documented, though, and some flows still need the browser: API keys must be typed into Floot's secure web dialog, and checkpoints are reverted from the project's Checkpoint panel. No OpenAPI/REST spec was found. Missing for 10: documented full UI–API parity, a conventional REST API with an OpenAPI spec, a programmatic path for secret entry and other UI-only actions, independent hands-on corroboration.",
+    "rationale": "Floot's only programmatic surface is a first-party remote MCP server. Its tools cover substantial UI functionality: logs, database reads, writes and schema, checkpoints, image generation, and building and shipping apps \"without leaving your AI chat.\" Parity is not complete, though: API keys must be typed into a browser dialog on floot.com, and there is no REST API or OpenAPI document. Missing for 10: a documented general-purpose API (REST or OpenAPI), an explicit UI-to-API parity mapping, evidence that custom domains, sharing and collaborators, mobile app conversion, and secret entry work without the UI, and independent corroboration.",
     "evidenceIds": [
-      "floot-docs-2",
+      "floot-mcp-manifest-20261106",
+      "floot-docs-15",
       "floot-docs-3",
       "floot-docs-4",
       "floot-docs-5",
-      "floot-docs-15",
+      "floot-docs-25",
       "floot-docs-27",
-      "floot-probe-3",
-      "floot-probe-4"
+      "floot-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -3623,12 +3618,12 @@
           "quote": "query_database for reads, execute_sql for writes and migrations, pull_database_schema to regenerate typed helpers."
         },
         {
-          "evidenceId": "floot-docs-2",
-          "quote": "Add Floot to Cursor, VS Code, Zed, or any client that supports remote MCP servers"
+          "evidenceId": "floot-docs-5",
+          "quote": "create_checkpoint labels a point you can revert to from the Checkpoint panel in your project view."
         },
         {
-          "evidenceId": "floot-docs-27",
-          "quote": "your assistant creates a request and hands you a floot.com link — you type the key into Floot's secure dialog in your browser"
+          "evidenceId": "floot-mcp-manifest-20261106",
+          "quote": "Floot's only programmatic surface is its remote MCP server"
         }
       ]
     }
@@ -3636,19 +3631,19 @@
   {
     "productId": "floot",
     "storyId": "openness-full-export",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Floot's own docs say you can export a project's code (a real TypeScript/React app) and its database, download a full SQL dump at any time on any plan, and self-host elsewhere. That covers both exporting in open formats and leaving. Missing for 10: independent or hands-on corroboration of the export flow, and documentation that platform-held data beyond code and database (analytics, email logs, uploaded assets, auth users) is also exportable.",
+    "rationale": "Floot documents its own export path: users can export the full TypeScript/React codebase, download a full SQL dump of the Postgres database on any plan, and self-host elsewhere. That covers the core of leaving in open formats. However, the evidence does not show that ALL user data is exportable, so coverage is partial rather than complete. Missing for 10: documented export of non-code/non-database data (visitor analytics, email send logs, uploaded or generated image assets, auth/user records, checkpoints), and independent or hands-on corroboration that the export and self-hosting migration actually works.",
     "evidenceIds": [
       "floot-docs-11",
       "floot-docs-24",
-      "floot-docs-17",
-      "floot-docs-33"
+      "floot-docs-33",
+      "floot-docs-17"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": [
         {
@@ -3676,7 +3671,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-sourcing is a fair question for an AI app-building platform, so the axis applies. The evidence only shows that users can read and export their own generated project code. Nothing shows that Floot's own source is published or available under an open license.",
+    "rationale": "Floot's docs say users can read and export the code of their own generated apps, but that is the user's project code, not Floot's own source. Nothing in the pack shows Floot's platform source being published under any open license. Open-sourcing is a fair question for a SaaS app builder, so the axis applies and the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3691,9 +3686,11 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a hosted AI app builder, so the axis applies. The evidence only shows that users can export the apps they build (code and database) and deploy them elsewhere. That is portability of the generated output, not self-hosting of Floot's core platform, editor, or agent, so it is adjacent and earns no credit. Nothing in the pack shows the Floot product itself can be run on user infrastructure.",
+    "rationale": "The evidence shows only that users can export the code and database of apps they built and deploy those apps elsewhere. It does not show that the Floot builder platform itself (editor, AI assistant, MCP server) can be self-hosted. Exporting generated apps is an adjacent capability, not self-hosting the core product. The MCP manifest describes only a vendor-hosted remote endpoint.",
     "evidenceIds": [
-      "floot-docs-11"
+      "floot-docs-11",
+      "floot-docs-33",
+      "floot-mcp-manifest-20261106"
     ],
     "support": {
       "relation": "adjacent",
@@ -3703,6 +3700,10 @@
         {
           "evidenceId": "floot-docs-11",
           "quote": "you can export the code and the database and deploy them wherever you like."
+        },
+        {
+          "evidenceId": "floot-docs-33",
+          "quote": "A Floot project is a real TypeScript and React app — pages, components, and backend endpoints — and you can read or export all of it."
         }
       ]
     }
@@ -3711,14 +3712,14 @@
     "productId": "floot",
     "storyId": "preview-before-publish",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Floot's editor includes a preview with switchable device frames (Desktop, iPhone, Pixel, iPad, Responsive), and you can share a development preview separately from publishing, so a pre-publish preview clearly exists. The evidence does not explicitly say the preview is a live, clickable running app that updates as you build. It is also unclear whether the 'point at an element' feedback happens inside that preview. missing for 10: explicit documentation that the in-editor preview is fully interactive and updates live during building, and independent or hands-on corroboration of the preview experience.",
+    "rationale": "Floot's editor-and-preview docs describe a preview pane with Desktop, iPhone, Pixel, iPad and resizable Responsive frames. Users can point at elements in it for the assistant, and can send a development preview link that opens without login, so a pre-publish live preview exists. However, the evidence never explicitly says the preview is fully interactive (clicking through flows, live backend data) or that it updates live as the AI edits. missing for 10: explicit documentation that the in-editor preview is interactive and running against the live backend, confirmation that it hot-updates during builds, and independent or hands-on corroboration.",
     "evidenceIds": [
       "floot-docs-23",
+      "floot-docs-6",
       "floot-docs-32",
-      "floot-docs-28",
-      "floot-docs-6"
+      "floot-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -3728,6 +3729,10 @@
         {
           "evidenceId": "floot-docs-23",
           "quote": "switch between Desktop, iPhone (393 × 852), Pixel (412 × 915), iPad (820 × 1180), and a resizable Responsive frame"
+        },
+        {
+          "evidenceId": "floot-docs-6",
+          "quote": "point at an element or annotate a screenshot for the assistant to pick up"
         },
         {
           "evidenceId": "floot-docs-32",
@@ -3746,7 +3751,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Floot provides a managed Postgres database, but nothing in the evidence lets users pick a hosting region or data-residency location for it. The only related item is the option to export the code and database and self-host them elsewhere. That is a user-side workaround, not an in-product residency control, so it earns no credit.",
+    "rationale": "Floot hosts apps on a managed Postgres database, so choosing a data region is a fair question for it. However, no evidence shows a region or residency selector, or any documented data-location guarantee. Exporting the code and database to self-host elsewhere is a user-side workaround and an adjacent capability, so it earns no credit for in-product residency choice.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3761,7 +3766,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Floot is an AI app builder that handles user prompts and project data, so a training opt-out is a fair question for this kind of product. Nothing in the evidence pack documents a training opt-out, a no-training policy, or any data-usage controls. The security-and-data page cited only mentions downloading SQL dumps, which is data export, not training prevention.",
+    "rationale": "Floot is an AI app builder, so a training opt-out or no-training data policy is a fair question to ask of it. The evidence pack contains no documentation of such a policy or setting. The security-and-data page cited only covers SQL dump exports, which is a related but different data-portability feature and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3776,7 +3781,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents data export and backup: SQL dumps, database backups, and code export for self-hosting. It does not document any control over data retention periods or deleting user, project, or prompt data from Floot. Export and backup are adjacent portability features, and running SQL writes is a developer building block, not a retention or deletion control.",
+    "rationale": "The evidence covers data export and backup (SQL dumps, code and database export) and SQL write access, but none of it documents retention settings or a way to delete account or project data held by Floot. Export and portability are adjacent to retention and deletion control, not the capability itself. Running SQL writes on an app database is a developer building block, not a platform deletion control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3791,7 +3796,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a hosted AI app builder, but the evidence pack has no setting or documented option to disable Floot's own telemetry or usage tracking. The built-in visitor tracking feature collects analytics for apps users build, which is adjacent, and exporting code to self-host is a user-side workaround, not a documented opt-out.",
+    "rationale": "Opting out of telemetry is a fair question for a hosted AI app builder like Floot, but the evidence pack never documents a telemetry or usage-tracking opt-out for Floot users. The only tracking-related item is built-in visitor analytics that Floot provides for the apps users build. That is a different feature, not a privacy control over Floot's own data collection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3806,7 +3811,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Floot's own materials say it turns a plain-language description into a deployed full-stack app: a React + TypeScript frontend with backend endpoints and a managed Postgres database. Describing a feature generates endpoints, database tables and screens, and the app can be published in one click. Missing for 10: independent or hands-on corroboration that generated apps actually work end-to-end, since all evidence is vendor-claimed.",
+    "rationale": "Floot's own docs say it turns a plain-language description into a real, deployed full-stack app. That app is a React and TypeScript frontend with backend endpoints and a managed Postgres database, and it goes live with one-click publish. Describing a feature to the assistant builds the endpoints, tables and screens. Missing for 10: independent or hands-on corroboration that generated apps actually work end-to-end, since all evidence is vendor-claimed.",
     "evidenceIds": [
       "floot-probe-1",
       "floot-docs-33",
@@ -3849,12 +3854,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Floot documents a managed Postgres database that the app's endpoints query directly. The assistant builds the database tables for you, and you can browse the tables in-product. Through MCP the AI can run reads, writes and migrations and regenerate typed helpers, so you never leave the builder or AI chat. Missing for 10: explicit documentation of the automatic provisioning step and connection wiring, and independent or hands-on corroboration.",
+    "rationale": "Floot's docs describe a built-in managed Postgres database that the app's endpoints query directly, with tables browsable in the project. The assistant builds the database tables for you, and AI tools run SQL, migrations and typed-helper regeneration, all inside the builder. missing for 10: an explicit description of the provisioning step (when and how the database is created per project), and independent or hands-on corroboration beyond vendor docs.",
     "evidenceIds": [
       "floot-docs-17",
       "floot-docs-26",
       "floot-docs-4",
-      "floot-docs-1"
+      "floot-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -3872,10 +3877,6 @@
         {
           "evidenceId": "floot-docs-4",
           "quote": "query_database for reads, execute_sql for writes and migrations, pull_database_schema to regenerate typed helpers."
-        },
-        {
-          "evidenceId": "floot-docs-1",
-          "quote": "build and ship full-stack apps without leaving your AI chat"
         }
       ]
     }
@@ -3886,7 +3887,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Floot's own sharing docs say you can add collaborators to a project, so team members can work on the same project. This rests on a single brief mention, with no detail on a team-level shared workspace, roles or permissions, or simultaneous editing. Missing for 10: a documented team/shared workspace, collaborator roles and permissions, real-time or concurrent co-editing behavior, and independent or hands-on corroboration.",
+    "rationale": "Floot's sharing docs say you can add collaborators to a project, so team members can work on the same project. That is the core of the story. Nothing describes a team-level shared workspace, simultaneous editing, or permissions. Missing for 10: shared team/organization workspace, real-time or concurrent editing, collaborator roles and permissions, independent or hands-on corroboration.",
     "evidenceIds": [
       "floot-docs-32"
     ],
@@ -3906,9 +3907,9 @@
     "productId": "floot",
     "storyId": "server-functions-integrations",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Floot's docs say projects include backend endpoints and scheduled jobs. Integrations are built by describing them to the assistant, which generates the endpoints, tables and screens, with API keys entered through a secure dialog. Email send and receive is built in. However, nothing in the pack names payments as a supported integration, and all evidence is vendor-claimed. Missing for 10: explicit payments integration (e.g. Stripe) evidence, detail on authoring custom server-side functions in the builder, independent or hands-on corroboration.",
+    "rationale": "Floot's own docs show you can add backend endpoints and generic third-party integrations from the builder. The AI assistant builds the endpoints, database tables and screens, and API keys go in through a secure dialog. Transactional email (send and receive) and scheduled jobs are built in. Payments are never specifically documented, and all evidence is vendor-claimed. missing for 10: explicit payments integration (e.g., Stripe) documentation, independent or hands-on corroboration of integration building, detail on how custom server-side functions are authored or edited.",
     "evidenceIds": [
       "floot-docs-26",
       "floot-docs-27",
@@ -3951,7 +3952,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no template gallery, starter projects, or way to remix or fork community projects as a starting point. The only related item is the option to 'make the project public' when sharing. That is an adjacent sharing control, and it does not show that a founder can start a new build from someone else's project.",
+    "rationale": "Floot is an AI app builder, so starting from a template or community project is a fair question, but the evidence pack never documents a template gallery, starter projects, or a way to remix community projects. The only nearby item mentions making a project public or sending it to another account, which is a sharing feature and does not show founders starting from a template.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3966,20 +3967,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only related evidence is the ability to point at an element or annotate a screenshot so the AI assistant can pick it up. That still routes the change through a prompt round-trip rather than letting the designer edit text, style, or layout directly. No direct visual or inline editing capability is documented.",
-    "evidenceIds": [
-      "floot-docs-6"
-    ],
+    "rationale": "The only related evidence says you can point at an element or annotate a screenshot so the assistant can pick it up. That is still a prompt round-trip through the AI, not direct in-place editing of text, style, or layout. No visual or direct-manipulation editor is documented, so the axis applies but is unevidenced.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As a designer, I can select an element and edit its text, style, or layout directly without a prompt round-trip",
-      "citations": [
-        {
-          "evidenceId": "floot-docs-6",
-          "quote": "point at an element or annotate a screenshot for the assistant to pick up"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -3988,11 +3982,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Floot's own docs say a little about its credit model: credits can be topped up without changing plans, and MCP-driven builds run on the user's Claude/ChatGPT subscription rather than Floot credits. The pack has no per-action credit costs and no breakdown of plan inclusions. Missing for 10: a per-action credit or token consumption table, documentation of what each plan includes, a usage or credit-balance dashboard, and independent corroboration.",
+    "rationale": "Floot's own docs say a credit system exists, with credits added on demand rather than through plan changes. They also state that actions run over MCP use the user's Claude or ChatGPT subscription, not Floot credits, which partly explains what consumes credits. However, there is no per-action credit or token cost breakdown and no description of what each plan includes. Missing for 10: per-action credit/token consumption table, plan inclusions and limits, usage dashboard or metering docs, independent corroboration.",
     "evidenceIds": [
       "floot-docs-8",
-      "floot-docs-16",
-      "floot-docs-24"
+      "floot-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -4006,10 +3999,6 @@
         {
           "evidenceId": "floot-docs-16",
           "quote": "It runs on your existing Claude or ChatGPT subscription over the Model Context Protocol (MCP), not Floot credits."
-        },
-        {
-          "evidenceId": "floot-docs-24",
-          "quote": "You can download a full SQL dump of your database at any time, on any plan"
         }
       ]
     }

@@ -1,30 +1,34 @@
 {
-  "hash": "7b636312d97b089a3a474b2e01b5582ec9f5fa793d85589bf3eaa4b65aa0e692",
+  "hash": "d930c4ad66ecd58cade116e9c22ed3062ec3332bdfcabf255d6e5501fb98b334",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "high",
-    "rationale": "Unit publishes a live llms.txt (probe HTTP 200), so an agent can be pointed at it. Its content, however, is a high-level product and marketing overview (accounts, payments, cards, lending) rather than agent-usable API documentation, and the probes found no markdown docs or OpenAPI spec. missing for 10: llms.txt content covering API endpoints and integration guidance, markdown versions of the API docs (docs .md returned 404), a machine-readable OpenAPI spec (all candidate paths 404), and independent or hands-on corroboration of agents successfully using these docs.",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Unit serves an llms.txt at its root (the probe returned HTTP 200), so an agent can be pointed at it. It also links a machine-readable OpenAPI 3.0 spec from its docs. However, the llms.txt content in evidence is a product and capability overview rather than API-level guidance, and the markdown docs endpoint returned 404. Missing for 10: evidence that llms.txt links to or contains API reference content, markdown/agent-readable versions of the docs pages (the .md probe 404'd), an llms-full.txt or similar expanded file, and independent hands-on corroboration of agent use.",
     "evidenceIds": [
       "unit-probe-1",
       "unit-docs-11",
       "unit-docs-5",
-      "unit-probe-2",
-      "unit-probe-3"
+      "unit-openapi-link-20261106",
+      "unit-probe-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
           "evidenceId": "unit-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://www.unit.co/llms.txt"
+          "quote": "PROBE llms.txt: HTTP 200 at https://www.unit.co/llms.txt # Unit"
         },
         {
           "evidenceId": "unit-docs-11",
           "quote": "Companies can build directly on the Unit Platform using APIs and components, with control over their product experience and operating model."
+        },
+        {
+          "evidenceId": "unit-openapi-link-20261106",
+          "quote": "An OpenAPI 3.0 specification for the Unit API is available here"
         }
       ]
     },

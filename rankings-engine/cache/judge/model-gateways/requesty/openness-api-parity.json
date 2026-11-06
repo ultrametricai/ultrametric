@@ -1,17 +1,30 @@
 {
-  "hash": "74b616b2dcef6758f366f6d37d962e46af5d89e792ec864897724832059cd70d",
+  "hash": "d736cb0d8d2777fa94a7125d61e8face2972b3c10a4be569c5ab71392d488208",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence documents a rich OpenAI-compatible inference API: chat, images, PDFs, web search, structured outputs, and referencing saved prompts by prompt_id. Nothing shows that the UI's management functions are available through an API. Fallback and load-balancing policies, API keys, spend caps, service accounts, MCP server registration, prompt library editing and the analytics dashboard all appear only as product features, with no documented management endpoints, and the OpenAPI probe returned 404 on every path tried.",
-    "evidenceIds": [],
+    "rationale": "Requesty publishes an OpenAPI spec that covers both its inference router and a separate management API, and its changelog tracks management-endpoint parameters, so programmatic control goes beyond inference. However, nothing documents that UI-configured features such as fallback and load-balancing policies, guardrails, MCP server registration, prompt library editing and the analytics dashboard are all reachable through the API, so UI parity is unproven. Missing for 10: an explicit API/UI parity statement, documented management endpoints for policies, guardrails, MCP servers and analytics, and independent or hands-on corroboration of parity.",
+    "evidenceIds": [
+      "requesty-openapi-spec-20261106",
+      "requesty-changelog-20261106",
+      "requesty-api-playground-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "requesty-openapi-spec-20261106",
+          "quote": "covering both the OpenAI/Anthropic-compatible inference router and the management API (servers router.requesty.ai and api-v2.requesty.ai)"
+        },
+        {
+          "evidenceId": "requesty-changelog-20261106",
+          "quote": "new management-endpoint parameters"
+        }
+      ]
     },
     "productId": "requesty",
     "storyId": "openness-api-parity"

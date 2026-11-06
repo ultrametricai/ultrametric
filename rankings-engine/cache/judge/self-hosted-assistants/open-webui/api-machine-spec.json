@@ -1,17 +1,30 @@
 {
-  "hash": "66a4ad7c0a71088eea0bf01035ed230c0d80962b0372c9824703eb4638a5a809",
+  "hash": "faab9557c8f972d9795475d90d7be9809daca461491caf3b6b1e340a25937f8c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Open WebUI exposes an API that external code can call with API keys, so this axis applies. However, no evidence shows a downloadable OpenAPI or equivalent spec, and the probe found 404s on every candidate OpenAPI/Swagger path on the docs site. The llms.txt index is machine-readable documentation, not an API spec, and the OpenAI-compatible gateway is a related capability rather than a published spec, so neither earns credit.",
-    "evidenceIds": [],
+    "rationale": "Open WebUI documents a built-in FastAPI Swagger surface at /docs on a self-hosted instance. It is available only when ENV=dev and is labelled experimental. Probes of the vendor docs site found no downloadable openapi.json or swagger.json (all 404), so getting a spec means running your own instance in dev mode. missing for 10: a vendor-hosted downloadable OpenAPI file, explicit documentation of a raw spec download path (beyond the Swagger UI), availability without dev mode, a stable non-experimental spec, and independent corroboration.",
+    "evidenceIds": [
+      "open-webui-swagger-dev-20261106",
+      "open-webui-swagger-links-20261106",
+      "open-webui-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "open-webui-swagger-dev-20261106",
+          "quote": "Make sure to set the `ENV` environment variable to `dev` in order to access the Swagger documentation"
+        },
+        {
+          "evidenceId": "open-webui-swagger-links-20261106",
+          "quote": "Access detailed API documentation for different services provided by Open WebUI"
+        }
+      ]
     },
     "productId": "open-webui",
     "storyId": "api-machine-spec"

@@ -5506,7 +5506,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Open WebUI's Computer feature has a per-chat tool approval mode. In 'auto' mode, nothing changes on disk and no command runs until the user approves it, and pending actions appear as tool cards with Allow/Deny buttons. That covers the approval-prompt and opt-in mode parts of the story. missing for 10: documented command allowlists, elevated modes that are opt-in per action rather than per chat, and independent or hands-on corroboration.",
+    "rationale": "Open WebUI's Computer docs describe a per-chat tool approval mode. In the default \"auto\" mode, no command runs and nothing changes on disk until the user approves, and pending approvals appear as tool cards with Allow / Deny buttons. That covers the approval-prompt core of the story, but the evidence never shows command allowlists, and the approval mode is set per chat rather than per action. Missing for 10: command allowlists, per-action opt-in elevation, detail on what the other approval modes are, independent or hands-on corroboration.",
     "evidenceIds": [
       "open-webui-docs-37",
       "open-webui-docs-61",
@@ -5527,7 +5527,7 @@
         },
         {
           "evidenceId": "open-webui-docs-13",
-          "quote": "the pending approval that's blocking it, rendered as tool cards with Allow / Deny buttons."
+          "quote": "the pending approval that's blocking it, rendered as tool cards with Allow / Deny buttons"
         }
       ]
     }
@@ -5538,7 +5538,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Open WebUI's first-party docs describe a delegate_task tool that lets the AI hand work to parallel sub-agents, each a full chat with tool access. A separate use-case page shows running parallel agents on git worktrees, one agent per workspace, supervised from a single browser tab. Missing for 10: detail on how sub-agent results are aggregated and coordinated, any agent-to-agent protocol or swarm support, and independent or hands-on corroboration that delegation works on real tasks.",
+    "rationale": "Open WebUI's Computer docs say the AI can split work across parallel sub-agents with the delegate_task tool, and each sub-agent is a full chat with tool access. A separate use case runs parallel agents on git worktrees (one agent per workspace) supervised from one browser tab, so the core of splitting and parallelizing real work is documented first-party. missing for 10: an agent-to-agent protocol or swarm-style peer coordination, documentation of how sub-agent results are aggregated or coordinated, and independent or hands-on corroboration.",
     "evidenceIds": [
       "open-webui-docs-10",
       "open-webui-docs-58",
@@ -5566,9 +5566,10 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe confirms that docs.openwebui.com/llms.txt returns HTTP 200. The file describes itself as machine-readable entry points to the documentation, including a curated index of every docs page, so an agent can be pointed straight at it. missing for 10: first-party documentation describing the llms.txt or agent-oriented docs offering, evidence of a full-content variant (e.g. llms-full.txt or per-page markdown), independent hands-on corroboration of agents consuming it.",
+    "rationale": "A live probe confirms Open WebUI publishes an llms.txt at docs.openwebui.com that returns HTTP 200 and describes itself as a curated, machine-readable index of every docs page. Docs pages are also served as raw Markdown (e.g. reference/api-endpoints.md), so an agent can be pointed at them directly. Missing for 10: first-party documentation describing the llms.txt/agent-docs offering and how to use it, and evidence of a full-content variant (e.g. llms-full.txt) beyond the index.",
     "evidenceIds": [
-      "open-webui-probe-1"
+      "open-webui-probe-1",
+      "open-webui-swagger-dev-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5592,13 +5593,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Open WebUI's own RAG feature pulls relevant content from your documents into chat responses, @-mentioned files are fed to the AI as context, and scheduled automations can summarize new files, so users get AI output grounded in their data. The evidence frames this as question-answering over retrieved context rather than a dedicated insights or suggestions feature. Two community users report RAG failing in no-GPU, external-API-only setups, which limits confidence. Missing for 10: proactive or automatic insight and suggestion generation over user data, a dedicated data-analysis or insights feature (e.g., over CSVs or datasets), and independent corroboration that RAG works reliably across deployments.",
+    "rationale": "Open WebUI documents RAG over local and remote documents, @-mentioned files fed to the AI as context, and in-browser Python execution, so users can get AI-generated answers grounded in their own data inside the product. Community users report RAG failing in no-GPU, external-API-only setups, which caps quality but does not contradict the capability in general. Missing for 10: proactive or automatic insight and suggestion surfacing (everything evidenced is user-prompted), dedicated data-analysis or insight features, and independent corroboration that data-grounded answers work reliably across deployment configurations.",
     "evidenceIds": [
       "open-webui-docs-15",
       "open-webui-docs-68",
       "open-webui-docs-62",
-      "open-webui-docs-31",
       "open-webui-docs-22",
+      "open-webui-docs-12",
       "open-webui-comm-3",
       "open-webui-comm-4"
     ],
@@ -5620,8 +5621,8 @@
           "quote": "@ mentions a file; its content is fed to the AI as context."
         },
         {
-          "evidenceId": "open-webui-docs-31",
-          "quote": "\"summarize new files every Monday\""
+          "evidenceId": "open-webui-docs-22",
+          "quote": "Run Python directly in the browser or via Open Terminal"
         }
       ]
     }
@@ -5632,7 +5633,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Open WebUI documents a first-party Automations feature that schedules prompts to run automatically at recurring times. Each run creates a chat and goes through the normal completion pipeline. Open WebUI Computer adds scheduled tasks, such as running a test suite every weekday at 9 and reporting failures, so this is a recurring background schedule, not a one-off action. Missing for 10: independent or hands-on corroboration that scheduled runs work unattended, and documentation of how tool approvals, failures and run history behave during background runs.",
+    "rationale": "Open WebUI documents an Automations feature that schedules prompts to run automatically at recurring times. Each run creates a chat and executes through the normal pipeline without the user present. Its Computer ecosystem adds scheduled tasks such as running tests every weekday and reporting failures. Missing for 10: independent or hands-on corroboration that scheduled runs work reliably, and evidence of non-schedule (event-driven) triggers and of run monitoring or failure handling.",
     "evidenceIds": [
       "open-webui-docs-5",
       "open-webui-docs-53",
@@ -5665,10 +5666,10 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Open WebUI is itself an AI assistant platform. Its docs describe an agentic mode where models autonomously search and follow links, a delegate_task tool that hands work to parallel sub-agents with tool access, and per-chat tool approval modes for supervising delegated work. Missing for 10: independent or hands-on corroboration of delegation quality, and clarity on how much of the sub-agent and supervision capability lives in the separate 'Computer' ecosystem component versus core Open WebUI, which also depends on a user-supplied model.",
+    "rationale": "Open WebUI's built-in AI can take on delegated work. Agentic mode lets models independently explore and follow links, and the Computer agent can split work across parallel sub-agents with tool access, under per-chat approval modes. Users can also supervise a coding agent's edits and approve or deny each step. Missing for 10: independent or hands-on corroboration of task delegation; several of these capabilities are documented under the 'Computer' ecosystem component rather than the core chat app.",
     "evidenceIds": [
-      "open-webui-docs-58",
       "open-webui-docs-41",
+      "open-webui-docs-58",
       "open-webui-docs-37",
       "open-webui-docs-61",
       "open-webui-docs-13",
@@ -5680,16 +5681,16 @@
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
       "citations": [
         {
-          "evidenceId": "open-webui-docs-58",
-          "quote": "The AI can delegate work to parallel sub-agents with the delegate_task tool. Each sub-agent is a full chat with tool access"
-        },
-        {
           "evidenceId": "open-webui-docs-41",
           "quote": "By enabling Native Function Calling (Agentic Mode), you allow quality models to independently explore the web, verify facts, and follow links autonomously."
         },
         {
-          "evidenceId": "open-webui-docs-37",
-          "quote": "Every chat has a tool approval mode, set from the + menu in the chat input"
+          "evidenceId": "open-webui-docs-58",
+          "quote": "The AI can delegate work to parallel sub-agents with the delegate_task tool. Each sub-agent is a full chat with tool access"
+        },
+        {
+          "evidenceId": "open-webui-docs-61",
+          "quote": "auto is the everyday setting: the AI can explore freely, but nothing changes on disk and no command runs until you say so."
         },
         {
           "evidenceId": "open-webui-docs-13",
@@ -5704,12 +5705,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Open WebUI documents programmatic, non-UI access. API keys let external code call the same endpoints the web UI uses. The Computer gateway exposes workspaces as OpenAI-compatible models, so any OpenAI-style client can run agent tasks. There is also a single-command CLI (`cptr run`), and the product deploys via Docker or Kubernetes. However, nothing documents a headless or CI mode as such, and the CLI's purpose is undescribed; built-in scheduled Automations are an in-product recurring schedule, not CI integration. missing for 10: explicit headless/CI usage docs (e.g. CI pipeline examples, non-interactive exit codes), description of what the CLI run command does in automation, independent or hands-on corroboration of CI use.",
+    "rationale": "Open WebUI supports programmatic, non-UI use. API keys let external code call the same endpoints the web UI uses, and the Computer gateway exposes workspaces as OpenAI-compatible models that any OpenAI-style client can use to run agent tasks. It also ships a minimal CLI (`cptr run`) and deploys via Docker or Kubernetes. However, the REST API is declared experimental with no deprecation window, and nothing documents CI integration or a headless run mode beyond calling a running server. Scheduled Automations are recurring in-app runs, not CI invocation, so they are not credited. missing for 10: documented CI/pipeline usage or examples, a stable non-experimental API, clear docs on what the `cptr run` CLI does for automation, independent or hands-on corroboration.",
     "evidenceIds": [
       "open-webui-docs-2",
       "open-webui-docs-33",
       "open-webui-docs-38",
-      "open-webui-gh-1"
+      "open-webui-gh-1",
+      "open-webui-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5727,10 +5729,6 @@
         {
           "evidenceId": "open-webui-docs-38",
           "quote": "The CLI has exactly one command: cptr run"
-        },
-        {
-          "evidenceId": "open-webui-gh-1",
-          "quote": "Install seamlessly via pip, uv, Docker, or Kubernetes (kubectl, kustomize, or helm)"
         }
       ]
     }
@@ -5741,7 +5739,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "First-party docs say Open WebUI natively supports MCP from v0.6.31 and that users can call tools exposed by their MCP server. External tool servers can be connected in Admin settings, and a community commenter independently lists MCP integration as a feature they depend on. missing for 10: documented detail on supported MCP transports and auth/configuration depth, hands-on independent verification of MCP tool calling.",
+    "rationale": "Open WebUI's own docs state it natively supports MCP starting in v0.6.31 and that you can call tools exposed by your MCP server. A Tool Servers admin setting connects external tool servers, and a community user independently lists MCP integration as a feature they depend on. missing for 10: documented detail on supported MCP transports and setup/configuration steps, and hands-on corroboration of tool-calling reliability.",
     "evidenceIds": [
       "open-webui-docs-32",
       "open-webui-docs-27",
@@ -5774,7 +5772,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open WebUI is a self-hosted AI platform with its own API, so shipping an official MCP server for external agents is a fair question and the axis applies. The evidence only shows Open WebUI acting as an MCP client, calling tools from external MCP servers. That client-side support does not count toward this server-side story. The gateway exposes an OpenAI-compatible API, not an MCP server, and no first-party MCP server or 'mcp serve' mode is documented.",
+    "rationale": "Open WebUI is a self-hosted AI platform, not purely an agent, so publishing an official MCP server is a fair question and the axis applies. The evidence only shows MCP client support: Open WebUI can call tools from external MCP servers. Nothing shows Open WebUI exposing its own MCP server for outside agents to connect to. The gateway API is OpenAI-compatible, not MCP, so it is an adjacent feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5789,14 +5787,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Open WebUI's docs show natural-language prompts driving product actions. In the Computer ecosystem, a plain-language request can schedule a recurring task ('run the tests every weekday at 9') or save a procedure as a reusable skill. Agentic mode also lets models act autonomously with tools and sub-agents. However, the evidence centers on the Computer agent workspace, not on operating Open WebUI's own settings, admin, or configuration through natural language. Missing for 10: evidence that core product configuration and administration can be driven by NL commands, and independent or hands-on corroboration.",
+    "rationale": "Open WebUI's Computer agent accepts natural-language instructions that act on the product. Users can tell it to save a procedure as a reusable skill, delegate work to sub-agents, and act on workspace files under approval modes. Agentic mode lets models use tools autonomously. However, there is no evidence that core product configuration (admin settings, models, memory, automations) can be driven conversationally; memory, for example, is managed through the Settings UI. missing for 10: natural-language control of product settings and administration, evidence that schedules and automations can be created conversationally, independent hands-on corroboration.",
     "evidenceIds": [
-      "open-webui-docs-31",
-      "open-webui-docs-14",
       "open-webui-docs-42",
+      "open-webui-docs-10",
       "open-webui-docs-41",
-      "open-webui-docs-58",
-      "open-webui-docs-63"
+      "open-webui-docs-61",
+      "open-webui-docs-13",
+      "open-webui-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -5804,20 +5802,20 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
-          "evidenceId": "open-webui-docs-31",
-          "quote": "Run a prompt on a schedule: \"run the tests every weekday at 9\", \"summarize new files every Monday\", \"check the deploy hourly\"."
-        },
-        {
           "evidenceId": "open-webui-docs-42",
           "quote": "Save this whole procedure as a skill called release-checklist. Include the tag format and the announcement template."
+        },
+        {
+          "evidenceId": "open-webui-docs-10",
+          "quote": "The AI can delegate work to parallel sub-agents with the delegate_task tool."
         },
         {
           "evidenceId": "open-webui-docs-41",
           "quote": "By enabling Native Function Calling (Agentic Mode), you allow quality models to independently explore the web, verify facts, and follow links autonomously."
         },
         {
-          "evidenceId": "open-webui-docs-58",
-          "quote": "The AI can delegate work to parallel sub-agents with the delegate_task tool. Each sub-agent is a full chat with tool access"
+          "evidenceId": "open-webui-docs-61",
+          "quote": "auto is the everyday setting: the AI can explore freely, but nothing changes on disk and no command runs until you say so."
         }
       ]
     }
@@ -5828,10 +5826,9 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Open WebUI's ecosystem documents a first-party CLI reference for its Computer component, but that CLI has exactly one command, `cptr run`. It appears to launch the service rather than offer scriptable, agent-facing workflows from the terminal. missing for 10: CLI commands beyond launching (e.g. chatting, managing models/tools/automations from the terminal), documented AI-native or scripting use cases, independent or hands-on corroboration.",
+    "rationale": "Open WebUI's Computer ecosystem documents an official CLI, but the docs say it has exactly one command, `cptr run`. Nothing shows it driving AI or agent workflows from the terminal (chats, tasks, automation); it appears to just launch the product. missing for 10: CLI subcommands for agent/chat operations, documented scripting or AI-native workflow usage, independent or hands-on corroboration.",
     "evidenceIds": [
-      "open-webui-docs-38",
-      "open-webui-docs-56"
+      "open-webui-docs-38"
     ],
     "support": {
       "relation": "direct",
@@ -5841,10 +5838,6 @@
         {
           "evidenceId": "open-webui-docs-38",
           "quote": "The CLI has exactly one command: cptr run"
-        },
-        {
-          "evidenceId": "open-webui-docs-56",
-          "quote": "From zero to your real files in a browser, in about two minutes. You need Python 3.10+"
         }
       ]
     }
@@ -5855,11 +5848,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Open WebUI's own docs describe personal API keys that let external code call the same endpoints the web UI uses. The Computer gateway also exposes workspaces as an OpenAI-compatible model that any OpenAI-style client can drive, so programmatic control is a first-party capability. However, no published endpoint reference or OpenAPI spec is evidenced (all probed OpenAPI paths on the docs site returned 404), so how thoroughly the public API is documented is unproven. Missing for 10: a published API reference or OpenAPI/Swagger spec, documented coverage of endpoints beyond chat completions (e.g., managing chats, files, models, users), and independent or hands-on corroboration of driving the product via the API.",
+    "rationale": "Open WebUI documents a programmable API: personal API keys let external code call the same endpoints the web UI uses, an API-endpoints reference exists, and a gateway exposes workspaces as OpenAI-compatible models. However, the reference is declared experimental, the Swagger docs only appear on a self-hosted instance running with ENV=dev, no published OpenAPI spec was found (probes returned 404), and no REST deprecation window is promised. missing for 10: a stable, non-experimental public API reference; a published, downloadable OpenAPI spec or hosted playground; a REST-specific versioning or deprecation policy; independent hands-on corroboration of driving the product via the API.",
     "evidenceIds": [
       "open-webui-docs-2",
+      "open-webui-swagger-dev-20261106",
+      "open-webui-swagger-links-20261106",
       "open-webui-docs-33",
-      "open-webui-probe-2"
+      "open-webui-probe-2",
+      "open-webui-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5869,6 +5865,14 @@
         {
           "evidenceId": "open-webui-docs-2",
           "quote": "An API key is a personal access token that lets external code call the same endpoints the web UI uses."
+        },
+        {
+          "evidenceId": "open-webui-swagger-links-20261106",
+          "quote": "Access detailed API documentation for different services provided by Open WebUI"
+        },
+        {
+          "evidenceId": "open-webui-swagger-dev-20261106",
+          "quote": "Make sure to set the `ENV` environment variable to `dev` in order to access the Swagger documentation"
         },
         {
           "evidenceId": "open-webui-docs-33",
@@ -5883,10 +5887,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open WebUI documents API keys only as personal access tokens that call the same endpoints as the web UI. The evidence shows no per-key scopes, permission restrictions or agent-specific least-privilege credentials. User-level RBAC (roles, groups, permissions) is an adjacent control: a user could approximate scoping with a restricted account, but that is a workaround, not scoped credential issuance.",
+    "rationale": "Open WebUI documents API keys, but only as personal access tokens that call the same endpoints the web UI uses. Nothing in the evidence shows scopes, per-key permissions, or least-privilege credentials for an agent. RBAC governs user roles and permissions, which is an adjacent control rather than scoped credential issuance, so the story is not delivered.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": []
@@ -5898,7 +5902,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions an official Open WebUI SDK in any language. What it does show is adjacent: API keys that let external code call the same endpoints as the web UI, an OpenAI-compatible gateway that any OpenAI-style client can use, and a Python plugin system. None of these is a first-party SDK, and the probe found no published OpenAPI spec.",
+    "rationale": "The evidence documents a REST API reachable with personal API keys, an experimental Swagger UI available only in dev mode, and OpenAI-compatible endpoints that any OpenAI-style client can call. None of this is an official Open WebUI SDK or client library. Using third-party OpenAI clients against a compatible API is an adjacent building block, not a first-party SDK, so this applicable axis has no supporting evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5913,7 +5917,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Open WebUI documents its own webhooks feature, including a user-registrable personal webhook that fires an outbound notification when a chat response is ready. However, the evidence shows only narrow event coverage and names chat-app targets like Discord and Slack rather than a general event-subscription API for programmatic consumers. Missing for 10: a documented catalog of subscribable event types, a generic HTTP payload schema or delivery semantics (retries, signing), and independent or hands-on corroboration.",
+    "rationale": "Open WebUI documents a built-in webhooks feature, including a user-registrable personal webhook that sends an outbound notification when a chat response is ready. The evidence covers only that single event type, and the other cited use is posting to chat apps like Discord and Slack, which does not count toward a programmatic webhooks story. Missing for 10: a documented range of subscribable event types, payload schema and delivery semantics for programmatic consumers, and independent or hands-on corroboration.",
     "evidenceIds": [
       "open-webui-docs-48",
       "open-webui-docs-65"
@@ -5926,10 +5930,6 @@
         {
           "evidenceId": "open-webui-docs-48",
           "quote": "A personal webhook that notifies individual users when a response to their chat is ready, especially useful for long-running tasks."
-        },
-        {
-          "evidenceId": "open-webui-docs-65",
-          "quote": "receive automated notifications in external services like Discord, Slack ... as well as post messages from external services into Open WebUI channels."
         }
       ]
     }
@@ -5937,31 +5937,61 @@
   {
     "productId": "open-webui",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Open WebUI is a self-hosted platform that exposes APIs (API keys, a gateway API reference), so an interactive API reference is a fair question for it. However, nothing in the evidence shows an interactive, runnable API explorer. The OpenAPI/Swagger probe returned 404 on every candidate docs path, and the gateway reference page is only static documentation.",
-    "evidenceIds": [],
+    "rationale": "Open WebUI documents a built-in FastAPI Swagger UI at /docs on a self-hosted instance, which gives an interactive API reference. However, it only appears when ENV=dev is set, the API reference is labeled experimental, and there is no vendor-hosted playground or downloadable OpenAPI spec (the probe got 404s on every spec path). missing for 10: vendor-hosted interactive reference, documented runnable examples, availability without dev mode, a stable non-experimental API reference, and hands-on corroboration.",
+    "evidenceIds": [
+      "open-webui-swagger-dev-20261106",
+      "open-webui-swagger-links-20261106",
+      "open-webui-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "open-webui-swagger-dev-20261106",
+          "quote": "Make sure to set the `ENV` environment variable to `dev` in order to access the Swagger documentation"
+        },
+        {
+          "evidenceId": "open-webui-swagger-links-20261106",
+          "quote": "Access detailed API documentation for different services provided by Open WebUI"
+        },
+        {
+          "evidenceId": "open-webui-swagger-links-20261106",
+          "quote": "Without this configuration, the documentation will not be available"
+        }
+      ]
     }
   },
   {
     "productId": "open-webui",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Open WebUI exposes an API that external code can call with API keys, so this axis applies. However, no evidence shows a downloadable OpenAPI or equivalent spec, and the probe found 404s on every candidate OpenAPI/Swagger path on the docs site. The llms.txt index is machine-readable documentation, not an API spec, and the OpenAI-compatible gateway is a related capability rather than a published spec, so neither earns credit.",
-    "evidenceIds": [],
+    "rationale": "Open WebUI documents a built-in FastAPI Swagger surface at /docs on a self-hosted instance. It is available only when ENV=dev and is labelled experimental. Probes of the vendor docs site found no downloadable openapi.json or swagger.json (all 404), so getting a spec means running your own instance in dev mode. missing for 10: a vendor-hosted downloadable OpenAPI file, explicit documentation of a raw spec download path (beyond the Swagger UI), availability without dev mode, a stable non-experimental spec, and independent corroboration.",
+    "evidenceIds": [
+      "open-webui-swagger-dev-20261106",
+      "open-webui-swagger-links-20261106",
+      "open-webui-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "open-webui-swagger-dev-20261106",
+          "quote": "Make sure to set the `ENV` environment variable to `dev` in order to access the Swagger documentation"
+        },
+        {
+          "evidenceId": "open-webui-swagger-links-20261106",
+          "quote": "Access detailed API documentation for different services provided by Open WebUI"
+        }
+      ]
     }
   },
   {
@@ -5970,28 +6000,52 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no sandbox or test environment that isolates testing from production data. The approval mode where \"nothing changes on disk\" is a dry-run style gate, not sandbox isolation. Per-task git worktrees, in-browser Python execution and air-gapped deployment are adjacent features that do not provide a separate test environment.",
-    "evidenceIds": [],
+    "rationale": "Testing in a sandbox is a fair question for a self-hosted AI platform, but the evidence shows no product-provided sandbox or test environment isolated from production data. The 'auto' approval mode is a dry-run/approval gate, not sandbox isolation. Per-task worktrees isolate code changes, not production data. The dev-mode Swagger UI is an API docs surface, not a test environment. Running a separate self-hosted instance would be a user-side workaround. missing for 10: a documented sandbox/staging environment, isolation of test runs from production data, and evidence that agent or API testing can target that sandbox.",
+    "evidenceIds": [
+      "open-webui-docs-61",
+      "open-webui-docs-36"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "open-webui-docs-61",
+          "quote": "auto is the everyday setting: the AI can explore freely, but nothing changes on disk and no command runs until you say so."
+        },
+        {
+          "evidenceId": "open-webui-docs-36",
+          "quote": "one worktree per task, one workspace per worktree, one agent per workspace, all supervised from a single browser tab."
+        }
+      ]
     }
   },
   {
     "productId": "open-webui",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Open WebUI exposes an API: API keys let external code call the same endpoints the web UI uses, and there is an OpenAI-compatible gateway. That makes the axis applicable. However, nothing in the pack documents API versioning or a deprecation policy, and the OpenAPI probe returned 404 on every candidate path.",
-    "evidenceIds": [],
+    "rationale": "Open WebUI keeps a Keep-a-Changelog repository changelog with a Semantic Versioning commitment and publishes per-version plugin-API migration guides for breaking releases, which is some versioning discipline. However, the REST API reference is declared experimental, no REST-specific deprecation window is promised, and the :main tag can ship breaking changes without warning. missing for 10: versioned REST API endpoints, a documented deprecation policy or window, stable (non-experimental) API reference, independent corroboration.",
+    "evidenceIds": [
+      "open-webui-changelog-20261106",
+      "open-webui-swagger-dev-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "open-webui-changelog-20261106",
+          "quote": "this project adheres to Semantic Versioning"
+        },
+        {
+          "evidenceId": "open-webui-changelog-20261106",
+          "quote": "publishes per-version plugin-API migration guides for breaking releases"
+        }
+      ]
     }
   },
   {
@@ -6000,7 +6054,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a bulk-operation capability, such as multi-select actions across chats, files, memories, users or models. Nearby features do not qualify: parallel sub-agents and per-worktree agents are task delegation, Automations are recurring scheduled prompts rather than batch actions over many items, and API keys and Python Functions are only developer building blocks for scripting such operations.",
+    "rationale": "Bulk operations are a fair question for a chat and workspace platform like Open WebUI, but the evidence pack never documents a native way to select and act on many items at once, such as bulk delete, archive, move or edit of chats, files or memories. The nearby evidence covers different capabilities: parallel sub-agents and worktree agents (task delegation), scheduled automations (recurring runs) and API keys or plugins (developer building blocks a user could use to script bulk actions). None of these is the bulk-operations capability itself, so none earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6015,7 +6069,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no user-definable, event-triggered rules. Automations are time-based recurring schedules, which are not event triggers. Filter Functions that intercept messages are Python building blocks a developer would have to code a rule system from. The webhooks are notifications for completed responses or inbound channel posts, not configurable event-to-action rules.",
+    "rationale": "The evidence documents time-based Automations and scheduled tasks, which are recurring schedules rather than event-triggered rules. It also documents Python Filter functions that can intercept messages, but those are developer building blocks a user would code, not a rule-definition feature. The personal webhook is a fixed 'response ready' notification, not user-defined event-to-action rules, so nothing in the pack shows the product itself lets users define rules that fire actions on events.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -6030,7 +6084,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Open WebUI documents Automations that run prompts automatically at recurring times. Each run creates a chat and goes through the normal completion pipeline. The Computer ecosystem also documents scheduled tasks such as \"run the tests every weekday at 9\" or \"check the deploy hourly\", so this is a true recurring schedule, not a one-off action. Missing for 10: independent or hands-on corroboration, and detail on schedule syntax, job management (pause/edit/history) and multi-step workflow chaining beyond a single scheduled prompt.",
+    "rationale": "Open WebUI documents a first-party Automations feature that schedules prompts to run at recurring times, with each run creating a chat through the normal completion pipeline. Its Computer component separately documents scheduled tasks with recurring examples such as \"every weekday at 9\" and \"hourly\", which is a true recurring schedule rather than a one-off action. Missing for 10: independent or hands-on corroboration, and documented detail on schedule syntax, run history and failure handling.",
     "evidenceIds": [
       "open-webui-docs-5",
       "open-webui-docs-53",
@@ -6053,10 +6107,6 @@
         {
           "evidenceId": "open-webui-docs-31",
           "quote": "Run a prompt on a schedule: \"run the tests every weekday at 9\", \"summarize new files every Monday\", \"check the deploy hourly\"."
-        },
-        {
-          "evidenceId": "open-webui-docs-14",
-          "quote": "Schedule a task that runs the test suite every weekday at 9 and reports failures with the error output."
         }
       ]
     }
@@ -6067,7 +6117,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open WebUI documents automations (scheduled recurring prompts), and each run creates a chat, but nothing in the evidence shows versioning, change review, or rollback of automation definitions. Being able to view run output is not the same as versioning or rolling back the automation itself.",
+    "rationale": "Open WebUI documents Automations as scheduled prompts that run at recurring times. Nothing in the evidence shows that automations can be versioned, have their changes reviewed, or be rolled back to an earlier definition. The repository changelog covers the product's own releases, and the git worktrees page covers parallel agent tasks; neither is versioning of a user's automations, so neither is credited.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6082,10 +6132,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack shows web search and agentic search that can 'follow links autonomously'. That is web retrieval, not control of a real browser: nothing documents logging in, clicking or interacting with live pages. Tool servers and MCP integration are developer building blocks that could be used to construct such a capability, but they are not the capability itself, so they earn no credit.",
+    "rationale": "The evidence shows web search and agentic search that can 'follow links autonomously'. That is page retrieval, not driving a real browser to navigate, log in, click and extract from live pages. MCP and tool-server connectivity are developer building blocks that earn no credit here, and no first-party browser-automation capability is documented.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a power user, the assistant can drive a real browser — navigate, log in, click, and extract from live pages on my behalf",
       "citations": []
@@ -6097,12 +6147,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Open WebUI documents the bring-your-own-backend half of the story: any OpenAI-compatible provider can be added with a custom Base URL, and existing coding-agent subscriptions (Codex, Claude Code, etc.) can serve as chat backends. Nothing in the pack shows token usage or cost tracking per model or per conversation, which is the visibility half of the story. Missing for 10: token usage display, cost tracking per model, cost/usage per conversation, independent corroboration.",
+    "rationale": "Open WebUI documents bring-your-own backends: any OpenAI-compatible provider can be added with a custom Base URL, and existing coding-agent subscriptions (Codex, Claude Code, etc.) can serve as chat backends. The pack has no evidence of token-usage or cost visibility per model or per conversation, which is half the story. Missing for 10: token usage tracking, cost reporting per model, cost reporting per conversation, independent corroboration.",
     "evidenceIds": [
       "open-webui-docs-34",
       "open-webui-docs-35",
-      "open-webui-docs-60",
-      "open-webui-docs-19"
+      "open-webui-docs-19",
+      "open-webui-docs-60"
     ],
     "support": {
       "relation": "direct",
@@ -6130,10 +6180,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document inbound-message gating for messaging surfaces. There are no sender allowlists, DM policies, or mention gating for external chat channels. The RBAC 'Pending' role controls approval of web UI accounts, which is an adjacent access control rather than gating of inbound messages. Webhooks that post external messages into channels describe an integration path, not a sender-approval policy.",
+    "rationale": "Inbound gating is a fair question for a self-hosted assistant platform. However, the evidence documents no sender allowlists, DM policies or mention gating for inbound messages. RBAC roles (Admin/User/Pending) and webhooks that post into channels are adjacent account and access controls, not gating of who can drive the assistant through messaging surfaces.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a self-hoster, inbound messages are gated — sender allowlists, DM policies, mention gating — so only people I approve can drive my assistant",
       "citations": []
@@ -6142,22 +6192,23 @@
   {
     "productId": "open-webui",
     "storyId": "coding-agent-integration",
-    "verdict": "partial",
-    "quality": 7,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Open WebUI's Computer docs say the product embeds real coding agents (Codex, Claude Code, Cursor, OpenCode, Cline and others) as native chat backends. It supervises their file reads, edits and approvals as tool cards with Allow/Deny buttons, and runs parallel agents on git worktrees, so the editing and supervision parts of repo work are directly documented. Test runs appear only as a scheduled-task example, and repo cloning is never mentioned, so not every part of the story is covered. Missing for 10: explicit documentation of the agent cloning repositories, testing documented as part of an interactive agent workflow rather than only as a scheduled prompt, and independent or hands-on corroboration that the coding-agent supervision works in practice.",
+    "rationale": "First-party Open WebUI Computer docs show real coding agents (Codex, Claude Code, Cursor, OpenCode, Cline and others) running as native chat backends. A 'supervise a coding agent' flow shows every file read and edit, with Allow/Deny approvals, and parallel agents can each run on their own git worktree. Separate scheduled-task docs show prompts that run the test suite, which covers editing and testing in real repos. Missing for 10: explicit evidence of repo cloning, and independent or hands-on corroboration of the coding-agent integration.",
     "evidenceIds": [
       "open-webui-docs-35",
       "open-webui-docs-60",
       "open-webui-docs-13",
+      "open-webui-docs-59",
       "open-webui-docs-36",
-      "open-webui-docs-33",
+      "open-webui-docs-61",
       "open-webui-docs-14",
-      "open-webui-docs-61"
+      "open-webui-docs-33"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, the assistant can supervise or embed real coding agents so it does repo work — cloning, editing, testing — not just snippets in chat",
       "citations": [
         {
@@ -6173,10 +6224,6 @@
           "quote": "one worktree per task, one workspace per worktree, one agent per workspace, all supervised from a single browser tab."
         },
         {
-          "evidenceId": "open-webui-docs-33",
-          "quote": "any OpenAI-style client can run agent tasks in a real workspace."
-        },
-        {
           "evidenceId": "open-webui-docs-14",
           "quote": "Schedule a task that runs the test suite every weekday at 9 and reports failures with the error output."
         }
@@ -6189,11 +6236,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Open WebUI documents a plugin system (Functions as modular Python plugins, plus Tools, Pipes, Filters and Pipelines). Its site also invites users to \"Share what you build, run what others share,\" which points to a community-sharing ecosystem. Nothing in the pack shows the ecosystem's size, publishing volume or maintainer activity. Missing for 10: evidence of thousands of published plugins, skills or presets, evidence of active maintainers, and independent corroboration that the ecosystem is lively.",
+    "rationale": "Open WebUI documents its own plugin system: Functions are modular Python plugins, alongside Tools, Pipes, Filters and skills. Its site advertises a community sharing loop ('Share what you build, run what others share'), so a community ecosystem exists as a product capability. Nothing in the pack shows its scale or vitality. Missing for 10: evidence of thousands of published plugins, skills or presets, evidence of active maintainers or ongoing curation, and independent community corroboration of a thriving marketplace.",
     "evidenceIds": [
       "open-webui-docs-71",
       "open-webui-docs-3",
-      "open-webui-docs-25"
+      "open-webui-docs-25",
+      "open-webui-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -6202,7 +6250,7 @@
       "citations": [
         {
           "evidenceId": "open-webui-docs-71",
-          "quote": "Share what you build, run what others share."
+          "quote": "Extend with Python. Share what you build, run what others share."
         },
         {
           "evidenceId": "open-webui-docs-3",
@@ -6219,17 +6267,16 @@
     "productId": "open-webui",
     "storyId": "custom-skill-authoring",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Open WebUI documents its own extension formats. Functions are modular Python plugins, and Tools, Functions, Pipes, Filters and Pipelines execute arbitrary Python on your own server. Skills are folders containing a SKILL.md file, which Computer picks up automatically, so developers can write and load extensions into a self-hosted instance. Missing for 10: the evidence does not show the actual plugin code structure or skill schema, gives no step-by-step import/upload workflow, and has no independent hands-on corroboration of building and loading a custom plugin.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Open WebUI documents a first-party plugin system. Functions are 'modular Python plugins' that can add models or intercept messages, and Tools, Functions, Pipes, Filters and Pipelines all run Python on your own self-hosted server. Skills are also documented as a folder with a SKILL.md file, and the project publishes per-version plugin-API migration guides for breaking releases. Missing for 10: step-by-step evidence of how a custom plugin is uploaded or registered into an instance, detailed format/schema reference content in the pack, and independent hands-on corroboration of authoring and loading a custom plugin.",
     "evidenceIds": [
       "open-webui-docs-3",
       "open-webui-docs-25",
       "open-webui-docs-66",
-      "open-webui-docs-26",
       "open-webui-docs-11",
-      "open-webui-docs-57",
-      "open-webui-docs-71"
+      "open-webui-docs-71",
+      "open-webui-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6249,10 +6296,6 @@
           "quote": "A skill is a folder with a SKILL.md file: a reusable instruction set the AI can pull in on demand"
         },
         {
-          "evidenceId": "open-webui-docs-57",
-          "quote": "if you already keep skills or a CLAUDE.md/AGENTS.md for another tool, Computer picks them up automatically."
-        },
-        {
           "evidenceId": "open-webui-docs-71",
           "quote": "Extend with Python. Share what you build, run what others share."
         }
@@ -6265,7 +6308,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Open WebUI documents official install paths for Docker and Kubernetes (kubectl, kustomize, helm), plus pip and bare metal, and has a quick-start command that pulls and starts the image. That covers the container and Helm parts of the story, but the evidence does not show Docker Compose specifically, a small-VPS guide, Raspberry Pi support, or a separate maintained guide for each target. missing for 10: Docker Compose guide, small VPS guide, Raspberry Pi/ARM deployment guide, evidence of dedicated maintained per-target guides, independent hands-on corroboration.",
+    "rationale": "Open WebUI officially documents install paths via pip, uv, Docker, and Kubernetes (kubectl, kustomize, helm), plus bare metal, and its quick start pulls and runs the Docker image. That covers the Docker and Kubernetes/Helm targets, but the evidence does not show a separate maintained guide for each target. missing for 10: an explicit Docker Compose guide, dedicated small-VPS and Raspberry Pi deployment guides, evidence that each path has its own maintained guide, and independent hands-on corroboration.",
     "evidenceIds": [
       "open-webui-gh-1",
       "open-webui-docs-50",
@@ -6278,7 +6321,7 @@
       "citations": [
         {
           "evidenceId": "open-webui-gh-1",
-          "quote": "Install seamlessly via pip, uv, Docker, or Kubernetes (kubectl, kustomize, or helm)"
+          "quote": "Effortless Setup: Install seamlessly via pip, uv, Docker, or Kubernetes (kubectl, kustomize, or helm)"
         },
         {
           "evidenceId": "open-webui-docs-50",
@@ -6297,7 +6340,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never describes a first-run wizard that guides users through model credentials, channels, and defaults. The quick-start material covers only running a Docker command and claims a fast path to a first conversation. Provider connection is described as adding an OpenAI provider with a custom Base URL, with no guided onboarding flow shown, so none of the story's specific capability is evidenced.",
+    "rationale": "The evidence describes a quick-start Docker command, a 'first AI conversation in under five minutes' claim, and admin settings pages. None of it documents a first-run wizard that walks a user through model credentials, channels, and defaults. Easy install and settings screens are adjacent features, not a guided onboarding wizard, so this applicable axis gets no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6309,15 +6352,14 @@
   {
     "productId": "open-webui",
     "storyId": "knowledge-base-rag",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "disputed",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Open WebUI documents built-in RAG that retrieves relevant information from local and remote documents and incorporates it into chat responses. That covers the core of grounding answers in user-supplied documents. However, the evidence never describes a persistent, attachable knowledge-base collection, notes as a source, or source citations for document answers. Two community users also report RAG failing in no-GPU, external-API-only setups. missing for 10: documented persistent knowledge-base/collection management, explicit support for personal notes, citation/grounding guarantees for document answers, independent confirmation that RAG works reliably (community reports failures without a GPU).",
+    "rationale": "Open WebUI's docs describe built-in RAG that retrieves from 'local and remote documents' and incorporates the relevant information into chat responses, and one community user lists RAG integrations among its key features. However, two hands-on reports say RAG never worked for them on CPU-only or external-API setups, which concretely contradicts the claim for that configuration. Missing for 10: explicit documentation of a persistent, named knowledge-base collection (as opposed to per-chat document retrieval), evidence of citation or grounding quality, and reliable operation without a GPU.",
     "evidenceIds": [
       "open-webui-docs-15",
-      "open-webui-docs-40",
       "open-webui-docs-68",
-      "open-webui-docs-45",
+      "open-webui-docs-40",
       "open-webui-comm-1",
       "open-webui-comm-3",
       "open-webui-comm-4"
@@ -6336,8 +6378,8 @@
           "quote": "RAG can retrieve and incorporate the relevant information from that source into the chat response."
         },
         {
-          "evidenceId": "open-webui-docs-40",
-          "quote": "Retrieval Augmented Generation (RAG) is a technique that enhances the conversational capabilities of chatbots by incorporating context from diverse sources."
+          "evidenceId": "open-webui-comm-1",
+          "quote": "a rather unique combination of advanced features (RAG integrations, workspaces, pipelines, code execution, MCP integration, etc.)"
         }
       ]
     }
@@ -6345,21 +6387,20 @@
   {
     "productId": "open-webui",
     "storyId": "local-model-support",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Open WebUI's docs say it is a self-hosted platform \"built to run entirely offline\", with native Ollama support and OpenAI-compatible connections. They explicitly list Ollama, vLLM and LM Studio as backends that plug in via a custom Base URL, and an air-gapped deployment mode is documented. missing for 10: llama.cpp is never explicitly named (it is only implied by OpenAI-compatible support), and there is no independent or hands-on corroboration of fully local, cloud-free operation.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Open WebUI's docs say it is self-hosted and 'built to run entirely offline', with Ollama and OpenAI-compatible APIs for local models and an air-gapped deployment option. A connect-a-model page in the related Computer docs names Ollama, vLLM and LM Studio as OpenAI-compatible providers added via a custom Base URL. llama.cpp is never named, and no hands-on report confirms a fully local, cloud-free setup. missing for 10: explicit llama.cpp support documentation, core-product (not Computer-ecosystem) docs naming vLLM/LM Studio, independent or hands-on corroboration of fully offline local-model operation.",
     "evidenceIds": [
       "open-webui-docs-20",
-      "open-webui-docs-1",
       "open-webui-docs-19",
       "open-webui-docs-34",
-      "open-webui-docs-50",
-      "open-webui-docs-18"
+      "open-webui-docs-18",
+      "open-webui-docs-50"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a privacy-first user, I can run the assistant entirely on local models — Ollama, llama.cpp, LM Studio, or vLLM — with no cloud model dependency",
       "citations": [
         {
@@ -6367,12 +6408,12 @@
           "quote": "self-hosted AI platform that's extensible, feature-rich, user-friendly, and built to run entirely offline"
         },
         {
-          "evidenceId": "open-webui-docs-34",
-          "quote": "anything that speaks the OpenAI API (Ollama, OpenRouter, vLLM, LM Studio, Groq, ...) is added as provider OpenAI with a custom Base URL."
-        },
-        {
           "evidenceId": "open-webui-docs-19",
           "quote": "With support for Ollama and OpenAI-compatible APIs, it gives you a powerful, provider-agnostic interface for both local and cloud-based models."
+        },
+        {
+          "evidenceId": "open-webui-docs-34",
+          "quote": "anything that speaks the OpenAI API (Ollama, OpenRouter, vLLM, LM Studio, Groq, ...) is added as provider OpenAI with a custom Base URL."
         },
         {
           "evidenceId": "open-webui-docs-18",
@@ -6387,7 +6428,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no documented way to converse with the assistant from WhatsApp, Telegram, Discord, Slack, or iMessage. The webhooks page covers outbound notifications to Discord or Slack and inbound posting of messages into Open WebUI channels, which is adjacent plumbing, not a two-way messenger chat surface. The PWA and OpenAI-compatible API are host-surface or developer building blocks, not a messenger integration.",
+    "rationale": "Open WebUI's documented surfaces are its own web UI/PWA and an API. The evidence pack shows no first-party bridge that lets a user chat with the assistant from inside WhatsApp, Telegram, Discord, Slack, or iMessage. Webhook notifications to Discord/Slack, inbound webhook posts into Open WebUI channels, API keys, and Python Functions are adjacent notifications or developer building blocks, not a native messenger chat surface.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -6400,13 +6441,12 @@
     "productId": "open-webui",
     "storyId": "memory-inspection-ownership",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Open WebUI documents a cross-conversation memory system, and users can manually add, edit, or delete memories under Settings > Personalization > Memory. Because the platform is self-hosted and built to run entirely offline, the memory store plausibly lives on the user's own infrastructure. Missing for 10: evidence that memories are stored in an open, inspectable format on disk; explicit documentation of where the memory store lives; independent or hands-on corroboration of the edit/delete workflow.",
+    "rationale": "Open WebUI documents a cross-conversation memory system, and users can manually add, edit, or delete memories under Settings > Personalization > Memory. Because the platform is self-hosted and built to run entirely offline, the memory store plausibly stays on the user's own machine, but no evidence describes the storage format. Missing for 10: documentation that memories are stored in an open, user-readable format; explicit statement of where the memory store lives on disk; independent or hands-on corroboration of the inspect/edit/delete workflow.",
     "evidenceIds": [
       "open-webui-docs-30",
       "open-webui-docs-39",
-      "open-webui-docs-67",
       "open-webui-docs-20"
     ],
     "support": {
@@ -6435,7 +6475,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Open WebUI connects to many providers (Ollama and OpenAI-compatible APIs) and lets users switch models by hand mid-conversation. Nothing documents automatic fallback to another provider or model when one errors or rate-limits. Python Functions/Pipes are only developer building blocks someone could use to build such logic, so they earn no credit.",
+    "rationale": "Open WebUI connects to multiple providers and lets users switch models mid-conversation by hand. Nothing in the evidence documents automatic fallback to another provider or model when one errors or rate-limits. Python Functions/Pipes that can add custom models are only developer building blocks someone could use to build failover, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6447,43 +6487,44 @@
   {
     "productId": "open-webui",
     "storyId": "multi-provider-models",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Open WebUI documents a provider-agnostic design. It connects to Ollama, OpenAI-compatible and Open Responses providers, and any OpenAI-API endpoint (OpenRouter, vLLM, Groq, etc.) can be added via a custom Base URL. Users can talk to any model and switch mid-conversation, or run models side-by-side. Missing for 10: explicit native Anthropic and Google provider support (only implied via OpenAI-compatible endpoints or Claude Code CLI backends), documented per-agent model assignment, and independent hands-on corroboration.",
+    "rationale": "Open WebUI documents a provider-agnostic interface that connects to Ollama, OpenAI-compatible and Open Responses providers. OpenRouter and similar services are added as OpenAI providers with a custom base URL, and users can switch models mid-conversation or run two side by side. Native Anthropic and Google connections are not documented; Claude appears only as a Claude Code CLI backend in the Computer ecosystem. Per-agent model assignment is only implied through custom models added by Functions. missing for 10: explicit native Anthropic and Google provider support, documented per-agent model selection, independent or hands-on corroboration of multi-provider switching.",
     "evidenceIds": [
       "open-webui-docs-19",
-      "open-webui-docs-34",
       "open-webui-docs-50",
+      "open-webui-docs-34",
       "open-webui-docs-52",
       "open-webui-docs-8",
-      "open-webui-docs-60",
+      "open-webui-docs-26",
+      "open-webui-docs-35",
       "open-webui-docs-71"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a power user, I can plug in multiple model providers — Anthropic, OpenAI, Google, OpenRouter, and more — and switch models per agent or per conversation",
       "citations": [
         {
-          "evidenceId": "open-webui-docs-34",
-          "quote": "anything that speaks the OpenAI API (Ollama, OpenRouter, vLLM, LM Studio, Groq, ...) is added as provider OpenAI with a custom Base URL."
+          "evidenceId": "open-webui-docs-50",
+          "quote": "connects to Ollama, OpenAI-compatible, and Open Responses providers out of the box"
         },
         {
-          "evidenceId": "open-webui-docs-50",
-          "quote": "connects to Ollama, OpenAI-compatible, and Open Responses providers out of the box."
+          "evidenceId": "open-webui-docs-34",
+          "quote": "anything that speaks the OpenAI API (Ollama, OpenRouter, vLLM, LM Studio, Groq, ...) is added as provider OpenAI with a custom Base URL."
         },
         {
           "evidenceId": "open-webui-docs-52",
           "quote": "Talk to any model, switch mid-conversation, and keep your context intact."
         },
         {
-          "evidenceId": "open-webui-docs-19",
-          "quote": "it gives you a powerful, provider-agnostic interface for both local and cloud-based models."
+          "evidenceId": "open-webui-docs-8",
+          "quote": "Run two models side-by-side and compare responses"
         },
         {
-          "evidenceId": "open-webui-docs-60",
-          "quote": "Codex, Claude Code, Cursor, Grok, OpenCode, Cline, or Pi run as native chat backends using the CLI login already on your machine."
+          "evidenceId": "open-webui-docs-26",
+          "quote": "Adds a custom model or agent | Appears as a selectable model in the chat sidebar"
         }
       ]
     }
@@ -6494,7 +6535,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Open WebUI documents running one agent per workspace, supervised in parallel from one tab, and exposes each workspace as its own OpenAI-compatible model. Custom agents built as Functions appear as selectable models in the sidebar. Channels let multiple models take part in shared timelines, so distinct agents and some conversation-level assignment exist, but per-agent prompt configuration and explicit routing of channels to specific agents are not documented. missing for 10: documented per-agent system prompt configuration, explicit routing rules mapping conversations/channels to specific agents, independent hands-on corroboration",
+    "rationale": "Open WebUI documents distinct agents per workspace (one agent per workspace, each workspace exposed as its own OpenAI-compatible model) and custom agents that appear as selectable models. Channels let multiple models take part in shared timelines, which covers part of the routing requirement. However, per-agent system prompts and explicit rules for routing a conversation or channel to a specific agent are not documented. missing for 10: per-agent prompt configuration evidence, explicit channel/conversation-to-agent routing rules, independent hands-on corroboration.",
     "evidenceIds": [
       "open-webui-docs-36",
       "open-webui-docs-33",
@@ -6531,12 +6572,13 @@
     "productId": "open-webui",
     "storyId": "native-app-surfaces",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Open WebUI is itself a browser-based app, and its docs say it is a Progressive Web App you can install to a phone home screen, desktop taskbar or dock. That gives the same web interface across web, desktop and mobile, but there are no native desktop or mobile apps, and nothing documents feature parity or mobile usability beyond the shared web UI. Missing for 10: native desktop/mobile apps, documented feature parity across surfaces, independent or hands-on corroboration of the mobile/desktop experience.",
+    "rationale": "Open WebUI's own web interface is the full-featured surface, with voice and video calls and agent supervision beyond basic chat. The docs state it is a PWA that can be added to a phone home screen, desktop taskbar, or dock, so the same app reaches desktop and mobile. However, there are no dedicated native desktop or mobile apps, and parity on mobile is implied rather than documented. Missing for 10: native desktop/mobile apps, an explicit cross-surface feature-parity statement, hands-on evidence of the mobile PWA experience.",
     "evidenceIds": [
       "open-webui-docs-16",
-      "open-webui-docs-36"
+      "open-webui-docs-24",
+      "open-webui-docs-59"
     ],
     "support": {
       "relation": "direct",
@@ -6548,8 +6590,12 @@
           "quote": "Open WebUI is a Progressive Web App (PWA). Add it to your phone's home screen, your desktop taskbar, or your dock."
         },
         {
-          "evidenceId": "open-webui-docs-36",
-          "quote": "all supervised from a single browser tab."
+          "evidenceId": "open-webui-docs-24",
+          "quote": "Speech-to-text, text-to-speech, hands-free voice & video calls"
+        },
+        {
+          "evidenceId": "open-webui-docs-59",
+          "quote": "You want to see what it's proposing, answer its question, and let it continue, without being at the desk"
         }
       ]
     }
@@ -6560,11 +6606,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Open WebUI documents a quick-start that pulls and starts a Docker image with a single command. It also offers pip, uv, and Kubernetes installs, and claims \"zero to your first AI conversation in under five minutes.\" Community notes about very large Docker images are a caveat on install weight, not a contradiction. Missing for 10: the literal install command is not quoted in the evidence, and no independent hands-on report confirms the minutes-to-working-chat claim.",
+    "rationale": "Open WebUI documents several install paths (pip, uv, Docker, Kubernetes) and a quick-start whose single command pulls and starts the image. Its getting-started guide promises a first AI conversation in under five minutes. Community users note very large Docker images, which can slow setup but does not contradict the one-command install. Missing for 10: the exact install command text is not shown in the evidence, there is no independent hands-on confirmation of the minutes-to-chat claim, and image size is a friction point.",
     "evidenceIds": [
+      "open-webui-gh-1",
       "open-webui-docs-51",
       "open-webui-docs-46",
-      "open-webui-gh-1",
       "open-webui-docs-50",
       "open-webui-comm-2"
     ],
@@ -6574,16 +6620,16 @@
       "subject": "As a self-hoster, I can install the assistant on my own machine with one documented command — installer script, npm/pip package, or Docker image — and reach a working chat in minutes",
       "citations": [
         {
+          "evidenceId": "open-webui-gh-1",
+          "quote": "Effortless Setup: Install seamlessly via pip, uv, Docker, or Kubernetes (kubectl, kustomize, or helm)"
+        },
+        {
           "evidenceId": "open-webui-docs-51",
           "quote": "run the command below; it pulls the image and starts it"
         },
         {
           "evidenceId": "open-webui-docs-46",
           "quote": "From zero to your first AI conversation in under five minutes."
-        },
-        {
-          "evidenceId": "open-webui-gh-1",
-          "quote": "Effortless Setup: Install seamlessly via pip, uv, Docker, or Kubernetes (kubectl, kustomize, or helm)"
         },
         {
           "evidenceId": "open-webui-docs-50",
@@ -6598,10 +6644,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Open WebUI's docs state that API keys let external code call the same endpoints the web UI uses. That implies API-to-UI parity by design. The gateway also exposes workspaces as OpenAI-compatible models for programmatic agent tasks. Probes found no published OpenAPI spec on the docs site and there is no endpoint-by-endpoint reference, so parity rests on a single architectural claim. missing for 10: published API reference or OpenAPI spec enumerating UI-equivalent endpoints, independent/hands-on confirmation that all UI features (admin, channels, memory, automations) are reachable via API",
+    "rationale": "Open WebUI's own docs say API keys let external code call the same endpoints the web UI uses, which directly states UI/API parity. A built-in Swagger UI documents those endpoints on a self-hosted instance. However, the Swagger UI is available only in dev mode, the REST API reference is labelled experimental, and no REST deprecation window is promised. Missing for 10: a published, stable OpenAPI spec (all probed paths 404), independent or hands-on confirmation of feature-by-feature parity, and REST API stability guarantees.",
     "evidenceIds": [
       "open-webui-docs-2",
-      "open-webui-docs-33"
+      "open-webui-swagger-dev-20261106",
+      "open-webui-swagger-links-20261106",
+      "open-webui-changelog-20261106",
+      "open-webui-probe-2"
     ],
     "support": {
       "relation": "direct",
@@ -6613,8 +6662,8 @@
           "quote": "An API key is a personal access token that lets external code call the same endpoints the web UI uses."
         },
         {
-          "evidenceId": "open-webui-docs-33",
-          "quote": "The gateway exposes each of your workspaces as an OpenAI-compatible model, so any OpenAI-style client can run agent tasks in a real workspace."
+          "evidenceId": "open-webui-swagger-dev-20261106",
+          "quote": "Make sure to set the `ENV` environment variable to `dev` in order to access the Swagger documentation"
         }
       ]
     }
@@ -6625,7 +6674,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export is a fair question for a self-hosted chat platform, but the evidence pack never documents an export feature or any open export format for chats, memories or settings. Self-hosting, API keys and manual memory editing are adjacent at best and earn no credit. Community comments about migrating away concern licensing, not data export.",
+    "rationale": "The evidence pack does not document any export capability: no chat, memory, knowledge, or settings export, and no open-format data dump. Self-hosting, offline operation, and API keys that call the same endpoints as the UI are adjacent building blocks or host-side facts, not a documented export-and-leave feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6640,12 +6689,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Open WebUI's source is public on GitHub, and community reports describe the license as BSD-3 (previously MIT). However, the current license adds custom branding clauses that commenters say move it away from permissive open source and make forking problematic, so 'open license' holds only with significant caveats. missing for 10: first-party documentation of the license terms, evidence the license qualifies as OSI-approved open source without restrictive branding clauses.",
+    "rationale": "Open WebUI's source is published in a public GitHub repository. Community reports say it is licensed as BSD-3 with custom branding clauses added, after an earlier switch from MIT, so the source is readable but under a modified, less permissive license that commenters contest as truly open source. No vendor statement on the license appears in the pack, so this is not a vendor claim contradicted by evidence. missing for 10: first-party documentation of the license terms, a clean OSI-approved license without added branding restrictions, independent confirmation of the current license text.",
     "evidenceIds": [
       "open-webui-gh-1",
-      "open-webui-comm-5",
       "open-webui-comm-7",
       "open-webui-comm-8",
+      "open-webui-comm-5",
       "open-webui-comm-9"
     ],
     "support": {
@@ -6654,12 +6703,12 @@
       "subject": "As an AI-native user, I can read the product's source under an open license",
       "citations": [
         {
-          "evidenceId": "open-webui-comm-5",
-          "quote": "the most popular, most full-y featured OSS project"
-        },
-        {
           "evidenceId": "open-webui-comm-7",
           "quote": "custom clauses tacked onto BSD-3"
+        },
+        {
+          "evidenceId": "open-webui-comm-5",
+          "quote": "the most popular, most full-y featured OSS project"
         },
         {
           "evidenceId": "open-webui-comm-9",
@@ -6674,14 +6723,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Open WebUI documents itself as a self-hosted platform built to run entirely offline, with air-gapped support. Its docs and GitHub README list Docker, Kubernetes, pip/uv and bare-metal installs, and community users confirm they run it themselves via Docker. missing for 10: evidence pack does not state what the changed license permits for self-hosted deployments, and community reports very large Docker images even when only API gateway use is needed.",
+    "rationale": "Open WebUI documents itself as a self-hosted AI platform built to run entirely offline. It installs via pip, uv, Docker, or Kubernetes (or bare metal) with a quick-start Docker command, and enterprise docs cover air-gapped deployment. Community users confirm running it themselves; their complaints about large Docker images are about deployment weight, not the ability to self-host. Missing for 10: first-party documentation of the self-hosting license terms (community reports custom branding clauses added to BSD-3 that may constrain forks/redistribution).",
     "evidenceIds": [
       "open-webui-docs-20",
-      "open-webui-docs-50",
       "open-webui-gh-1",
-      "open-webui-docs-18",
+      "open-webui-docs-50",
       "open-webui-docs-51",
-      "open-webui-comm-6"
+      "open-webui-docs-18",
+      "open-webui-comm-6",
+      "open-webui-comm-2"
     ],
     "support": {
       "relation": "direct",
@@ -6693,12 +6743,12 @@
           "quote": "self-hosted AI platform that's extensible, feature-rich, user-friendly, and built to run entirely offline"
         },
         {
-          "evidenceId": "open-webui-docs-50",
-          "quote": "Open WebUI runs anywhere (Docker, Kubernetes, pip, bare metal)"
+          "evidenceId": "open-webui-gh-1",
+          "quote": "Effortless Setup: Install seamlessly via pip, uv, Docker, or Kubernetes (kubectl, kustomize, or helm)"
         },
         {
-          "evidenceId": "open-webui-gh-1",
-          "quote": "Install seamlessly via pip, uv, Docker, or Kubernetes (kubectl, kustomize, or helm)"
+          "evidenceId": "open-webui-docs-50",
+          "quote": "Open WebUI runs anywhere (Docker, Kubernetes, pip, bare metal)"
         },
         {
           "evidenceId": "open-webui-docs-18",
@@ -6713,7 +6763,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open WebUI is a self-hosted AI platform with agentic computer features, so device control is a fair question to ask of it. However, the evidence never documents pairing phones or other computers as nodes the assistant can use for screenshots, camera, notifications, or media playback. The PWA install, remote supervision of a coding agent, and response-ready webhooks are about access and notification, not cross-device control, so they earn no credit.",
+    "rationale": "Open WebUI is a self-hosted AI platform with computer-control features, so pairing other devices is a fair question for it. However, nothing in the evidence shows the assistant pairing with phones or computers to take screenshots, use a camera, push device notifications, or control media playback. What the evidence does show is adjacent and earns no credit: installing the web UI as a PWA on a phone, supervising an agent away from the desk, sending user webhooks when a response is ready, and running voice/video calls.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6726,9 +6776,9 @@
     "productId": "open-webui",
     "storyId": "persistent-memory",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Open WebUI documents a built-in memory system that lets models remember facts, preferences, and context across conversations. Users can manage these memories under Settings > Personalization > Memory, so durable cross-session memory exists. The evidence explicitly shows only manual creation of memories, so it is unclear whether the assistant writes memories on its own. Missing for 10: explicit evidence that the assistant automatically writes new memories, documentation of automatic recall behavior, independent or hands-on corroboration.",
+    "rationale": "Open WebUI documents a built-in memory system that lets models remember facts, preferences, and context across conversations, which supports durable cross-session recall. However, the only documented way to write memories is manual: users add, edit, or delete them under Settings > Personalization > Memory. Nothing in the pack shows the assistant writing memories on its own, so the story is only half delivered. missing for 10: documented automatic memory writing by the assistant, detail on how and when recall is injected into chats, independent or hands-on corroboration.",
     "evidenceIds": [
       "open-webui-docs-39",
       "open-webui-docs-67",
@@ -6761,7 +6811,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Open WebUI is documented as a self-hosted platform that runs anywhere (Docker, Kubernetes, pip, bare metal), fully offline, or air-gapped. The deployer therefore controls where data physically resides. That residency control comes only from choosing your own deployment location; the product documents no explicit data-residency or region-selection feature or storage-location configuration. Missing for 10: explicit data-residency/region controls, documentation of where chat/file data is stored and how to configure storage location, independent corroboration.",
+    "rationale": "Open WebUI is documented as a self-hosted platform that runs anywhere (Docker, Kubernetes, pip, bare metal), entirely offline, and even air-gapped. The operator therefore decides where the instance, and so the data, physically lives. However, the evidence never explicitly addresses data storage location, region selection, or residency controls; residency is only implied by the self-hosted deployment model. missing for 10: explicit data-storage/residency documentation (e.g. configurable database/file storage location), any region-selection guidance, independent corroboration.",
     "evidenceIds": [
       "open-webui-docs-50",
       "open-webui-docs-20",
@@ -6794,12 +6844,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Open WebUI is self-hosted and documented as built to run entirely offline, including an air-gapped mode with complete network isolation, so data used with local models never reaches a third party that could train on it. It has no explicit no-training policy or opt-out control, and when cloud providers are connected, whether data is used for training depends on those providers. Missing for 10: an explicit first-party statement that user data is never used for training, a per-provider training opt-out control, and independent corroboration.",
+    "rationale": "Open WebUI's own docs describe a self-hosted platform built to run entirely offline, including an air-gapped mode with complete network isolation. Running it that way with local models keeps user data from ever reaching a third-party model provider that could train on it. However, nothing explicitly addresses training use, and the docs also describe connecting to cloud providers, whose data handling the product does not govern. Missing for 10: an explicit no-training data policy or guarantee, controls over training use when cloud providers are connected, and independent or hands-on corroboration.",
     "evidenceIds": [
       "open-webui-docs-20",
       "open-webui-docs-18",
-      "open-webui-docs-56",
-      "open-webui-docs-19"
+      "open-webui-docs-19",
+      "open-webui-docs-56"
     ],
     "support": {
       "relation": "direct",
@@ -6827,9 +6877,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "The only documented deletion control is for memories: users can add, edit, or delete stored memories in Settings > Personalization > Memory. Self-hosted and offline operation affects where data lives, not retention controls, so it earns no credit here. missing for 10: chat/conversation deletion controls, configurable retention periods or auto-expiry policies, deletion of uploaded files/RAG data, admin-level retention settings, independent or hands-on corroboration.",
+    "rationale": "Open WebUI documents user-side deletion of one data type: memories can be manually added, edited or deleted under Settings > Personalization > Memory. Because it is self-hosted and built to run entirely offline, data stays on the operator's infrastructure. Nothing in the evidence covers retention policies or deletion of chats, files and other data. Missing for 10: configurable retention periods or auto-expiry, deletion of chat history, files and accounts, admin-level purge controls, independent corroboration.",
     "evidenceIds": [
-      "open-webui-docs-30"
+      "open-webui-docs-30",
+      "open-webui-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -6839,6 +6890,10 @@
         {
           "evidenceId": "open-webui-docs-30",
           "quote": "Users can manually add, edit, or delete memories by navigating to: Settings > Personalization > Memory"
+        },
+        {
+          "evidenceId": "open-webui-docs-20",
+          "quote": "self-hosted AI platform that's extensible, feature-rich, user-friendly, and built to run entirely offline"
         }
       ]
     }
@@ -6849,7 +6904,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions telemetry, analytics, or usage tracking, and documents no setting to opt out of them. Claims that Open WebUI is 'built to run entirely offline' and offers an enterprise 'Air-Gapped' deployment describe adjacent deployment posture, not a documented opt-out control, so they earn no credit.",
+    "rationale": "The evidence pack has no documented telemetry or usage-tracking opt-out control, such as a setting or environment variable to disable analytics. Claims that Open WebUI is 'built to run entirely offline' and offers an enterprise air-gapped deployment are adjacent network-isolation postures, not an opt-out of telemetry, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6864,7 +6919,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open WebUI has a plugin ecosystem with community sharing, so this axis applies. The pack shows only that plugins run arbitrary Python on the server and that users can run what others share. It contains no evidence of registry scanning or moderation, plugin provenance or signing, or a documented process for handling malicious submissions.",
+    "rationale": "Open WebUI has a plugin ecosystem with community sharing ('Share what you build, run what others share'), so a registry security story is a fair axis. The evidence pack, however, documents no scanning or moderation of submissions, no provenance or signing, and no documented response to malicious plugins. The only security-relevant item is a warning that Tools, Functions and Pipelines run arbitrary Python on your server, which is a caution rather than a registry safeguard.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6876,33 +6931,46 @@
   {
     "productId": "open-webui",
     "storyId": "safe-updates-recovery",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of an update process, changelogs, migration notes, or a repair or rollback path for Open WebUI. The only nearby hints are a version number cited in passing for MCP support and install-method mentions. Neither documents safe, versioned updating.",
-    "evidenceIds": [],
+    "rationale": "Open WebUI keeps a Keep-a-Changelog changelog, commits to Semantic Versioning, and publishes per-version plugin-API migration guides for breaking releases. That covers the versioned-releases, changelog, and part of the migration-notes elements of the story. The docs also warn that the :main tag can break without warning, and nothing in the pack documents a repair or rollback path after a failed update. Missing for 10: a documented rollback/downgrade or repair procedure, migration notes beyond the plugin API (e.g., database/config upgrades), and independent hands-on corroboration that updates are safe.",
+    "evidenceIds": [
+      "open-webui-changelog-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a self-hoster, updating is safe and documented — versioned releases with changelogs, migration notes, and a repair or rollback path when an update breaks",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "open-webui-changelog-20261106",
+          "quote": "Open WebUI keeps a Keep-a-Changelog repository changelog with a SemVer commitment (\"this project adheres to Semantic Versioning\")"
+        },
+        {
+          "evidenceId": "open-webui-changelog-20261106",
+          "quote": "publishes per-version plugin-API migration guides for breaking releases"
+        }
+      ]
     }
   },
   {
     "productId": "open-webui",
     "storyId": "sandboxed-tool-execution",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Open WebUI documents a per-chat tool approval mode. In the default 'auto' mode the AI can explore, but nothing changes on disk and no command runs until the user approves, with Allow/Deny tool cards for pending actions. That is a first-party permission mode limiting what the agent can touch, though the docs also note plugins execute arbitrary Python on the server. missing for 10: documented container/VM sandboxing of tool execution, finer-grained tool policies (per-tool allow/deny lists), independent or hands-on corroboration.",
+    "rationale": "Open WebUI's Computer agent gives every chat a tool approval mode. In 'auto', nothing changes on disk and no command runs until the user approves it, and Allow/Deny tool cards back this up. RBAC roles also set baseline trust levels. However, the docs state that Tools, Functions, Pipes, Filters and Pipelines run arbitrary Python on the server, and no container or VM isolation is documented. missing for 10: container/VM sandboxing of tool execution, per-tool allow/deny policies, isolation for server-side plugins, independent or hands-on corroboration.",
     "evidenceIds": [
       "open-webui-docs-37",
       "open-webui-docs-61",
-      "open-webui-docs-13"
+      "open-webui-docs-13",
+      "open-webui-docs-17",
+      "open-webui-docs-25"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a security engineer, risky tool runs are containable — container/VM sandboxing, tool policies, or permission modes that limit what the agent can touch",
       "citations": [
         {
@@ -6916,6 +6984,10 @@
         {
           "evidenceId": "open-webui-docs-13",
           "quote": "the pending approval that's blocking it, rendered as tool cards with Allow / Deny buttons."
+        },
+        {
+          "evidenceId": "open-webui-docs-17",
+          "quote": "Roles: The high-level user type (Admin, User, Pending). This defines the baseline trust level."
         }
       ]
     }
@@ -6926,7 +6998,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Credential handling is a fair axis for a self-hosted AI platform that connects to provider APIs, but the evidence pack never documents a secrets store, environment-variable separation of credentials, or redaction of keys from chat history. The API-key page (docs-2) describes personal access tokens for calling Open WebUI's own endpoints, and the 'no API key needed' CLI-login backends (docs-60) avoid keys rather than manage them. Both are adjacent features, not this capability.",
+    "rationale": "Credential handling is a fair question for a self-hosted AI platform that connects to provider APIs, so the axis applies. The pack never documents a secrets store, environment separation for provider keys, or redaction of credentials from chat history. The closest items are adjacent: personal API access tokens for calling Open WebUI's own endpoints, and coding-agent backends that reuse a CLI login so 'no API key is needed.'",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6941,14 +7013,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Open WebUI's first-party Computer ecosystem gives the AI a real exec surface on the user's machine. It connects to your real files, and the approval mode gates when \"something changes on disk\" or a \"command runs\". Supervision cards show every file read and edit, and scheduled tasks can run the test suite. Missing for 10: detailed docs on the shell/command tool's scope and sandboxing on the host, and independent hands-on corroboration of command execution and file editing.",
+    "rationale": "Open WebUI's Computer ecosystem documents a real exec surface on the user's own files: the agent edits files and runs commands behind per-chat approval modes, and its edits and pending approvals appear as tool cards. Open Terminal is listed for running code, and a community comment mentions code execution as a feature. Missing for 10: independent hands-on corroboration of command execution and file editing, and detailed docs on the shell/command tool's scope and isolation.",
     "evidenceIds": [
       "open-webui-docs-61",
       "open-webui-docs-13",
+      "open-webui-docs-12",
       "open-webui-docs-56",
       "open-webui-docs-22",
-      "open-webui-docs-14",
-      "open-webui-docs-37"
+      "open-webui-docs-37",
+      "open-webui-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -6972,8 +7045,8 @@
           "quote": "Run Python directly in the browser or via Open Terminal"
         },
         {
-          "evidenceId": "open-webui-docs-14",
-          "quote": "Schedule a task that runs the test suite every weekday at 9 and reports failures with the error output."
+          "evidenceId": "open-webui-docs-12",
+          "quote": "Files: browse, edit with syntax highlighting, preview Markdown, PDFs, CSVs, and Office files."
         }
       ]
     }
@@ -6984,10 +7057,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Open WebUI has its own plugin system (Functions are modular Python plugins), and its site says to \"share what you build, run what others share,\" which points to a first-party community sharing hub. Nothing in the evidence describes browsing that registry or installing from it with one click or one command. Missing for 10: documented browsable registry or marketplace, a one-click or one-command install flow, details on how skills or plugins are discovered and versioned, and independent or hands-on corroboration.",
+    "rationale": "Open WebUI documents a Python plugin system (Functions, Tools) and SKILL.md skills. Its homepage says users can \"Share what you build, run what others share,\" which points to a community sharing ecosystem. The pack does not describe a browsable registry or a one-command or one-click install flow, so support is only a glancing mention. Missing for 10: a documented browsable skills/plugins registry, a one-click or one-command install mechanism, and any hands-on or independent corroboration of installing from a registry.",
     "evidenceIds": [
       "open-webui-docs-71",
-      "open-webui-docs-3"
+      "open-webui-docs-3",
+      "open-webui-docs-25",
+      "open-webui-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -7001,6 +7076,10 @@
         {
           "evidenceId": "open-webui-docs-3",
           "quote": "Functions are modular Python plugins that extend the capabilities of Open WebUI itself."
+        },
+        {
+          "evidenceId": "open-webui-docs-11",
+          "quote": "A skill is a folder with a SKILL.md file: a reusable instruction set the AI can pull in on demand"
         }
       ]
     }
@@ -7011,7 +7090,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Open WebUI's features page lists speech-to-text, text-to-speech, and hands-free voice and video calls, which covers transcription, spoken replies, and live voice conversation. The voice-and-audio docs add sentence-by-sentence streaming read-aloud and a hands-free loop where you talk, the AI answers, and the reply is read back. Missing for 10: in-depth main-product docs on speech-to-text and voice-note transcription (the detailed pages sit under the Computer ecosystem section), and independent or hands-on corroboration.",
+    "rationale": "Open WebUI's feature docs list speech-to-text, text-to-speech, and hands-free voice and video calls. The voice-and-audio docs add that replies are read aloud sentence by sentence as they stream, and describe a hands-free talk/answer/read-back loop. That covers transcription, spoken replies, and live voice conversation. Missing for 10: explicit documentation of transcribing recorded or uploaded voice notes (as opposed to live speech input), in-depth docs for STT provider setup on the core platform, and independent or hands-on corroboration.",
     "evidenceIds": [
       "open-webui-docs-24",
       "open-webui-docs-44",

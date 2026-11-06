@@ -1,17 +1,29 @@
 {
-  "hash": "e3d72f56349f63892d3cea05afb13e33a9d2b35c359fc4f3d0e7c9ec4b3470e3",
+  "hash": "99d0a2fe62c50a7e2f77cd5e3aae22d6a6e4f56e5196b293195cc05e033a0ed2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence shows Google Workspace has REST API reference documentation for the Admin SDK Directory and Reports APIs, but nothing says a machine-readable spec (OpenAPI, Swagger or equivalent) can be downloaded. Probes of the standard OpenAPI paths on developers.google.com all returned 404. Human-readable REST reference pages are an adjacent artifact, not a downloadable machine-readable spec.",
-    "evidenceIds": [],
+    "rationale": "Google Workspace publishes a Discovery Document for the Admin SDK Directory API, which it describes as a machine-readable specification for REST APIs. The document is served as JSON without authentication at a per-API URL, so it is a fair equivalent of an OpenAPI spec. However, probes found no OpenAPI or Swagger file at any of the standard paths, and the evidence shows the Discovery format only for the Directory API, not across Workspace APIs generally. Missing for 10: a native OpenAPI-format spec, evidence that Discovery documents are published for the other Workspace APIs (Gmail, Drive, Sheets, Reports, etc.), and independent or hands-on confirmation of downloading and using the spec.",
+    "evidenceIds": [
+      "google-workspace-discovery-20261106",
+      "google-workspace-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "google-workspace-discovery-20261106",
+          "quote": "A Discovery Document is a machine-readable specification for describing and consuming REST APIs... used to build client libraries, IDE plugins, and other tools"
+        },
+        {
+          "evidenceId": "google-workspace-discovery-20261106",
+          "quote": "with the live per-API document at https://admin.googleapis.com/$discovery/rest?version=directory_v1 (serving JSON unauthenticated)"
+        }
+      ]
     },
     "productId": "google-workspace",
     "storyId": "api-machine-spec"
