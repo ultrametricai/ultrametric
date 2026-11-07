@@ -1,25 +1,30 @@
 {
-  "hash": "2f0ca017abd046351bb3ee235433283433511c69a92dcac596862276e215d7a4",
+  "hash": "864c8a4a13c591ef031a7ea0fa831b2f94ee53045663dda0195a67327de8c100",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Jitsu documents an HTTP API for sending data from your backend. It also documents delivery-durability mechanisms: Kafka buffering while the warehouse is offline, deduplication of resent data, and a dead-letter queue whose failed events can be replayed. The pack contains no evidence of how ingestion requests are authenticated, such as write keys or tokens; the API-token and OAuth items cover management and MCP access, not ingestion. Missing for 10: documented authentication for the HTTP ingestion API, endpoint/payload reference depth, independent hands-on corroboration of server-side ingestion and delivery guarantees.",
+    "rationale": "Jitsu documents an HTTP API for sending data from your backend, authenticated with an `X-Write-Key` header. For delivery guarantees, it documents Kafka buffering while the warehouse is offline, deduplication of resent data, and a dead-letter queue whose failed events can be replayed. Missing for 10: endpoint-level detail of the ingestion API (payload schema, response and acknowledgement semantics), an explicit delivery-semantics statement tied to the ingestion endpoint (e.g. at-least-once), and independent or hands-on corroboration of server-to-server ingestion reliability.",
     "evidenceIds": [
       "jitsu-docs-2",
+      "jitsu-docs-78",
       "jitsu-docs-8",
       "jitsu-docs-9",
       "jitsu-docs-16"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a data engineer, I can send events server-to-server through a documented HTTP ingestion API with authentication and delivery guarantees",
       "citations": [
         {
           "evidenceId": "jitsu-docs-2",
           "quote": "You can use HTTP API to send data to Jitsu. This is useful if you want to send data from your backend."
+        },
+        {
+          "evidenceId": "jitsu-docs-78",
+          "quote": "Use `X-Write-Key` header to authenticate requests."
         },
         {
           "evidenceId": "jitsu-docs-8",
