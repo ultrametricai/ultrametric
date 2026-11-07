@@ -1,16 +1,18 @@
 {
-  "hash": "55f30c2610232c8037cac890177b6d2c7f963b645b1936bf3882a0226866bddd",
+  "hash": "da10ffd7300305225577aad965ed8508e788e4bc06a5eb033771d4d467564f26",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Jitsu ships headless automation surfaces of its own: jitsu-cli, described as 'a real command-line interface that does everything the UI does', with init/deploy for Functions from your own repo. It also has a Management HTTP API and named API tokens with expiration, and the docs explicitly cover CI and headless environments authenticating with a personal API key instead of the browser flow. missing for 10: a documented CI pipeline recipe for jitsu-cli (e.g. GitHub Actions example or non-interactive flags), independent or hands-on corroboration of CI usage, and confirmation of the OpenAPI reference (the probe found no openapi.json at the candidate paths).",
+    "confidence": "high",
+    "rationale": "Jitsu documents headless operation directly. The docs say that in CI and other headless environments you authenticate with a personal API key instead of the browser flow. jitsu-cli \"does everything the UI does\" and accepts `-h`/`-k` credential flags, alongside a programmatic Management API and a repo-based `jitsu-cli deploy` workflow for Functions. Missing for 10: a documented end-to-end CI pipeline recipe (e.g., GitHub Actions example) for the CLI, and independent or hands-on corroboration of CI usage; the OpenAPI spec probe also returned 404 at standard paths.",
     "evidenceIds": [
-      "jitsu-docs-47",
       "jitsu-docs-20",
-      "jitsu-gh-6",
+      "jitsu-docs-47",
+      "jitsu-docs-84",
+      "jitsu-docs-86",
       "jitsu-docs-13",
+      "jitsu-gh-6",
       "jitsu-docs-61",
       "jitsu-docs-17"
     ],
@@ -20,12 +22,16 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "jitsu-docs-47",
-          "quote": "jitsu-cli — a real command-line interface that does everything the UI does."
-        },
-        {
           "evidenceId": "jitsu-docs-20",
           "quote": "In CI and other headless environments the browser flow can't run. There you authenticate with a personal API key instead"
+        },
+        {
+          "evidenceId": "jitsu-docs-84",
+          "quote": "**`jitsu-cli`** — a real command-line interface that does everything the UI does."
+        },
+        {
+          "evidenceId": "jitsu-docs-86",
+          "quote": "Saves credentials so subsequent commands don't need `-h` / `-k`."
         },
         {
           "evidenceId": "jitsu-gh-6",
@@ -34,10 +40,6 @@
         {
           "evidenceId": "jitsu-docs-61",
           "quote": "Jitsu exposes an HTTP API for managing workspaces, sites, destinations, connections, syncs and functions."
-        },
-        {
-          "evidenceId": "jitsu-docs-17",
-          "quote": "named user API tokens with expiration"
         }
       ]
     },
