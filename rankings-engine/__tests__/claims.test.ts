@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import authyClaims from '../../open-rankings/authenticator-apps/claims/authy.json'
+import enteClaims from '../../open-rankings/authenticator-apps/claims/ente-auth.json'
 import type { Evidence } from '@/lib/schemas'
 import { buildClaims, validateClaimRules } from '@/rankings-engine/stages/claims'
 
@@ -67,5 +69,16 @@ describe('buildClaims', () => {
     const raw = { claims: [{ text: 't', evidenceId: 'p-docs-1', storyIds: [] }] }
     const claims = buildClaims('p', raw, byIdLong, '2026-08-26T12:00:00.000Z')
     expect(claims[0].quote).toHaveLength(240)
+  })
+})
+
+describe('authenticator product boundaries', () => {
+  it('Authy claims exclude the separate Twilio Verify product', () => {
+    expect(authyClaims.filter(claim => new URL(claim.url).pathname.startsWith('/docs/verify'))).toEqual([])
+  })
+
+  it('Ente export claims do not use the Authy import extractor as export evidence', () => {
+    expect(enteClaims.filter(claim => new URL(claim.url).pathname.replace(/\/$/, '') === '/help/auth/migration/authy'
+      && claim.storyIds.some(id => id === 'open-format-export' || id === 'openness-full-export'))).toEqual([])
   })
 })
