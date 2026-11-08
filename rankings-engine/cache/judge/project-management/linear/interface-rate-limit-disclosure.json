@@ -1,17 +1,18 @@
 {
-  "hash": "f3dfb10ebdf925624551ce946f81a0e2b5e7fc2dfdc026271999d15da70a07bf",
+  "hash": "16136a16044630f478ea330b77b3e4ff534ce2dacd47914015fe2548c923b5b2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 7,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Linear publishes a dedicated rate-limiting doc. It gives exact per-auth request limits (API key 2,500/hr per user, OAuth app 5,000/hr, unauthenticated 600/IP), leaky-bucket refill, complexity limits, and rate-limit response headers. This is the core of the story, but the evidence never mentions any concurrency cap. Missing for 10: documented concurrency/parallel-request caps, independent or hands-on corroboration of the published limits.",
+    "rationale": "Linear's rate-limiting docs publish exact per-auth request limits (2,500/hr for API keys, 5,000 for OAuth apps, 600/IP unauthenticated). They also cover leaky-bucket refill, complexity limits, and X-RateLimit response headers, and say higher limits can be requested from support. That lets an automation builder know the documented ceilings before scaling. Missing for 10: an explicit concurrency cap (no simultaneous-request or connection limit is documented beyond the hourly and complexity limits), and independent or hands-on corroboration of the limits.",
     "evidenceIds": [
-      "linear-supp-rate-limits"
+      "linear-supp-rate-limits",
+      "linear-docs-115"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I know the documented API rate limits and concurrency caps before building automation at scale",
       "citations": [
         {
@@ -21,6 +22,10 @@
         {
           "evidenceId": "linear-supp-rate-limits",
           "quote": "X-RateLimit-Requests-Limit — The maximum number of API requests you're permitted to make per hour."
+        },
+        {
+          "evidenceId": "linear-docs-115",
+          "quote": "If you temporarily require higher limits, you can request them by contacting Linear support where we'll review them on a case by case basis."
         }
       ]
     },

@@ -1,33 +1,33 @@
 {
-  "hash": "6ad5b5b038e1b895428bdba913881ea294ac6baab5be3d62d9cb00beed39735b",
+  "hash": "ab76675f7cf6c066422eca655fee9531f39822eda873efa1438e8f1445c82601",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Trello's own REST API docs describe generating an API key and authorizing a User Token through a delegated flow where both the scope of permissions and the length of access are configurable. An agent can therefore be given limited, expiring credentials rather than full account access. missing for 10: an enumeration of the available scopes (e.g., read vs. write, per-board or per-workspace restriction), any agent-specific credential management, and independent or hands-on corroboration that least-privilege tokens work as described.",
+    "rationale": "Trello's authorization docs state that user tokens issued through the `1/authorize` route or OAuth1.0 have configurable permission scope and expiration via query params, so a narrower token can be issued for an agent. However, the evidence never shows how granular those scopes are, and the API introduction notes the standard token grants read and write over the entire account, so least privilege is possible but thinly documented. Missing for 10: documented scope granularity (e.g., read-only or per-board/workspace restriction), agent-specific credential management or revocation, and independent hands-on corroboration.",
     "evidenceIds": [
+      "trello-docs-43",
       "trello-docs-19",
       "trello-docs-20",
-      "trello-docs-17",
-      "trello-docs-18"
+      "trello-docs-42"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": [
         {
-          "evidenceId": "trello-docs-19",
-          "quote": "The length of access and scope of permissions are all configurable via query params"
+          "evidenceId": "trello-docs-43",
+          "quote": "The length of access and scope of permissions are all configurable via query params (documented below)."
         },
         {
           "evidenceId": "trello-docs-20",
           "quote": "There are two ways to authorize a client and receive a User Token. The first is via our `1/authorize` route, the second is via basic OAuth1.0."
         },
         {
-          "evidenceId": "trello-docs-17",
-          "quote": "navigate to the Trello Auth tab and select the option Generate a new API Key."
+          "evidenceId": "trello-docs-42",
+          "quote": "This token, along with your API key, can be used to read and write for your entire Trello account."
         }
       ]
     },
