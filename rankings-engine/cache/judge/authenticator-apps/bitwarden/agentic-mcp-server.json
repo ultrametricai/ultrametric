@@ -1,14 +1,15 @@
 {
-  "hash": "54ed039c55ec2f45e129175ae266530849cf7c2b37afb77d35f3001943cc0d76",
+  "hash": "a755e2d266eecfa3d908ad7dff495a45e93c193e656388f0769e3349a41c4e84",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Bitwarden has an official, first-party MCP server (bitwarden/mcp-server). A runtime probe confirmed `npx -y @bitwarden/mcp-server` completed a full stdio initialize handshake and identified itself as 'Bitwarden MCP Server' 2026.7.0, so an agent can connect to it. The evidence stops at the handshake and the repo pointer, with no documentation of the exposed tools or how authentication works. Missing for 10: documented tool surface and capabilities, auth/vault-unlock setup guidance for agents, independent or community hands-on corroboration of real agent workflows.",
+    "rationale": "Bitwarden publishes a first-party MCP server (bitwarden/mcp-server on GitHub, published to npm) that gives AI assistants access to password manager functionality. A runtime probe completed a full stdio initialize handshake with it via `npx -y @bitwarden/mcp-server`, so this is hands-on confirmation rather than only a vendor claim. missing for 10: detailed documentation in the pack of the specific tools and the 'two complementary interfaces' the server exposes.",
     "evidenceIds": [
-      "bitwarden-probe-3",
-      "bitwarden-probe-rt-2"
+      "bitwarden-docs-20261116",
+      "bitwarden-probe-rt-2",
+      "bitwarden-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -16,12 +17,16 @@
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
       "citations": [
         {
-          "evidenceId": "bitwarden-probe-3",
-          "quote": "official MCP server documented at https://github.com/bitwarden/mcp-server"
+          "evidenceId": "bitwarden-docs-20261116",
+          "quote": "A Model Context Protocol (MCP) server that provides AI assistants with secure access to Bitwarden password manager functionality through two complementary interfaces:"
         },
         {
           "evidenceId": "bitwarden-probe-rt-2",
-          "quote": "Bitwarden's OFFICIAL MCP server completed a FULL keyless stdio initialize handshake — `npx -y @bitwarden/mcp-server` answered with serverInfo {\"name\":\"Bitwarden MCP Server\",\"version\":\"2026.7.0\"}"
+          "quote": "Bitwarden's OFFICIAL MCP server completed a FULL keyless stdio initialize handshake — `npx -y @bitwarden/mcp-server` answered with serverInfo {\"name\":\"Bitwarden MCP Server\",\"version\":\"2026.7.0\"}."
+        },
+        {
+          "evidenceId": "bitwarden-probe-3",
+          "quote": "official MCP server documented at https://github.com/bitwarden/mcp-server"
         }
       ]
     },

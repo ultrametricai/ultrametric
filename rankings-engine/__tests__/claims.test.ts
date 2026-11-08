@@ -1,4 +1,9 @@
 import { describe, expect, it } from 'vitest'
+import authyClaims from '../../open-rankings/authenticator-apps/claims/authy.json'
+import enteClaims from '../../open-rankings/authenticator-apps/claims/ente-auth.json'
+import fastmailClaims from '../../open-rankings/email/claims/fastmail.json'
+import missiveClaims from '../../open-rankings/email/claims/missive.json'
+import missiveEvidence from '../../open-rankings/email/evidence/missive.json'
 import type { Evidence } from '@/lib/schemas'
 import { buildClaims, validateClaimRules } from '@/rankings-engine/stages/claims'
 
@@ -67,5 +72,32 @@ describe('buildClaims', () => {
     const raw = { claims: [{ text: 't', evidenceId: 'p-docs-1', storyIds: [] }] }
     const claims = buildClaims('p', raw, byIdLong, '2026-08-26T12:00:00.000Z')
     expect(claims[0].quote).toHaveLength(240)
+  })
+})
+
+describe('authenticator product boundaries', () => {
+  it('Authy claims exclude the separate Twilio Verify product', () => {
+    expect(authyClaims.filter(claim => new URL(claim.url).pathname.startsWith('/docs/verify'))).toEqual([])
+  })
+
+  it('Ente export claims do not use the Authy import extractor as export evidence', () => {
+    expect(enteClaims.filter(claim => new URL(claim.url).pathname.replace(/\/$/, '') === '/help/auth/migration/authy'
+      && claim.storyIds.some(id => id === 'open-format-export' || id === 'openness-full-export'))).toEqual([])
+  })
+})
+
+describe('email claim quotation support', () => {
+  it('Fastmail does not infer implementation licenses from a list of software types', () => {
+    const claim = fastmailClaims.find(row => row.id === 'fastmail-claim-13')!
+    expect(claim.quote).toBe('Webmail Rust library iOS app Server Typescript library Terminal client')
+    expect(claim.text).not.toMatch(/open.source/i)
+    expect(claim.text).toMatch(/^Lists JMAP implementations/)
+  })
+
+  it('Missive includes the preserved source sentence supporting Spanish regional coverage', () => {
+    const claim = missiveClaims.find(row => row.id === 'missive-claim-52')!
+    expect(claim.text).toContain('Spain and Latin America')
+    expect(claim.quote).toContain('One translation covers Spain and Latin America.')
+    expect(missiveEvidence.some(row => row.url === claim.url && row.excerpt === claim.quote)).toBe(true)
   })
 })
