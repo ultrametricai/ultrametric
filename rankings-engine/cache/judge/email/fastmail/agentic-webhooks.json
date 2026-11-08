@@ -1,15 +1,14 @@
 {
-  "hash": "c001feef9bdba477be736c4a40aa9ddbd4b263c4ec92cd831a0401d8c32455e0",
+  "hash": "31d8239cf05d041ee891e0985f38f88965ab2ab89fa904be3b258e14860c4cf1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fastmail's developer page says its API is JMAP per RFC 8620. JMAP's site advertises WebPush, which needs no permanent connection, so the server initiates delivery to a push endpoint. That is the closest the pack gets to an outbound callback a programmatic consumer could receive; the EventSource stream is client-held and does not count as a webhook. missing for 10: explicit Fastmail-side documentation of registering a callback URL (push subscription), event types and payload format, delivery, retry and verification semantics, and any independent or hands-on corroboration that Fastmail supports WebPush callbacks for non-mobile consumers.",
+    "rationale": "The JMAP documentation offers WebPush as an alternative to EventSource for 'mobile-compatible push, no permanent connection required.' That implies server-initiated HTTP pushes to a subscriber-registered endpoint, which approximates webhook-style event subscription. EventSource itself is a client-held stream, not a webhook, so it earns no credit here. The WebPush evidence is a single line on the protocol site (jmap.io), not Fastmail-specific documentation. Missing for 10: Fastmail-specific docs confirming WebPush/PushSubscription support, how to register a callback URL, which event types and payloads are delivered, verification/retry semantics, and any hands-on or independent corroboration.",
     "evidenceIds": [
-      "fastmail-docs-47",
       "fastmail-docs-3",
-      "fastmail-jmap-session-20261106"
+      "fastmail-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -21,8 +20,8 @@
           "quote": "Or use WebPush for mobile-compatible push, no permanent connection required."
         },
         {
-          "evidenceId": "fastmail-jmap-session-20261106",
-          "quote": "The JMAP session resource can be found at https://api.fastmail.com/jmap/session"
+          "evidenceId": "fastmail-docs-3",
+          "quote": "Get instant push via EventSource — one connection, all mailboxes. Or use WebPush for mobile-compatible push, no permanent connection required."
         }
       ]
     },
