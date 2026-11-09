@@ -1,5 +1,6 @@
 import type Anthropic from '@anthropic-ai/sdk'
 import crypto from 'node:crypto'
+import { isDeepStrictEqual } from 'node:util'
 import fs from 'node:fs'
 import path from 'node:path'
 import type { z } from 'zod'
@@ -10,6 +11,7 @@ import {
 import { sourceText, questionOnly } from '../evidence-source.mjs'
 import { clearBatchState, runMessageBatches } from '../batch-llm'
 import { DEFAULT_MAX_TOKENS, extractJson, JUDGE_MODEL, llmJson } from '../llm'
+import { correctionContext, rejectedAttempt, writeJudgeFailure, clearJudgeFailure, promptDigest, type RejectedAttempt } from '../judge-diagnostics'
 import { CACHE_DIR, categoryDir, readJson, resolveCategories, writeJson } from '../paths'
 
 // v6 requires explicit capability support and verbatim citations for new judgments.
@@ -49,44 +51,62 @@ export function cellHash(story: Story, evidence: Evidence[], promptVersion: stri
   return crypto.createHash('sha256').update(payload).digest('hex')
 }
 
-export function validateVerdictRules(verdict: Verdict, evidence: Evidence[], story?: Story): string | null {
+export type VerdictFailureCode = 'unknown-evidence-id' | 'support-subject' | 'direct-support'
+  | 'full-coverage' | 'unknown-support-id' | 'support-id-not-cited' | 'quote-mismatch'
+  | 'question-only' | 'missing-evidence' | 'disputed-tiers' | 'zero-quality' | 'quality-gap'
+export interface VerdictFailure {
+  code: VerdictFailureCode
+  message: string
+  citationIndex?: number
+  evidenceIdIndex?: number
+}
+
+// The first failing rule and its order remain identical to the string validator.
+export function verdictRuleFailure(verdict: Verdict, evidence: Evidence[], story?: Story): VerdictFailure | null {
   const known = new Map(evidence.map((e) => [e.id, e]))
-  for (const id of verdict.evidenceIds) {
-    if (!known.has(id)) return `cites unknown evidence id "${id}"`
+  for (const [evidenceIdIndex, id] of verdict.evidenceIds.entries()) {
+    if (!known.has(id)) return { code: 'unknown-evidence-id', evidenceIdIndex, message: `cites unknown evidence id "${id}"` }
   }
   if (verdict.support) {
     const support = verdict.support
-    if (story && support.subject !== story.title) return 'support subject must be the exact story being judged'
+    if (story && support.subject !== story.title) return { code: 'support-subject', message: 'support subject must be the exact story being judged' }
     const credited = ['full', 'partial', 'disputed'].includes(verdict.verdict)
     if (credited && (support.relation !== 'direct' || support.coverage === 'none' || !support.citations.length)) {
-      return 'credit requires direct support for the product capability; adjacent features earn none'
+      return { code: 'direct-support', message: 'credit requires direct support for the product capability; adjacent features earn none' }
     }
-    if (verdict.verdict === 'full' && support.coverage !== 'complete') return 'full credit requires complete story coverage'
-    for (const citation of support.citations) {
+    if (verdict.verdict === 'full' && support.coverage !== 'complete') return { code: 'full-coverage', message: 'full credit requires complete story coverage' }
+    for (const [citationIndex, citation] of support.citations.entries()) {
       const item = known.get(citation.evidenceId)
-      if (!item || !verdict.evidenceIds.includes(citation.evidenceId)
-          || !sourceText(item.excerpt).includes(sourceText(citation.quote))) return 'support must quote a cited evidence item verbatim'
-      if (credited && questionOnly(citation.quote)) return 'questions do not establish capability support'
+      const message = 'support must quote a cited evidence item verbatim'
+      if (!item) return { code: 'unknown-support-id', citationIndex, message }
+      if (!verdict.evidenceIds.includes(citation.evidenceId)) return { code: 'support-id-not-cited', citationIndex, message }
+      if (!sourceText(item.excerpt).includes(sourceText(citation.quote))) return { code: 'quote-mismatch', citationIndex, message }
+      if (credited && questionOnly(citation.quote)) return { code: 'question-only', citationIndex, message: 'questions do not establish capability support' }
     }
   }
   if (verdict.verdict !== 'none' && verdict.verdict !== 'na' && verdict.evidenceIds.length === 0) {
-    return 'non-none verdict must cite evidence'
+    return { code: 'missing-evidence', message: 'non-none verdict must cite evidence' }
   }
   if (verdict.verdict === 'disputed') {
     const tiers = new Set(verdict.evidenceIds.map((id) => known.get(id)!.tier))
-    if (tiers.size < 2) return 'disputed requires citations from at least two distinct tiers'
+    if (tiers.size < 2) return { code: 'disputed-tiers', message: 'disputed requires citations from at least two distinct tiers' }
   }
   if ((verdict.verdict === 'none' || verdict.verdict === 'na') && verdict.quality !== 0) {
-    return `${verdict.verdict} verdicts must have quality 0`
+    return { code: 'zero-quality', message: `${verdict.verdict} verdicts must have quality 0` }
   }
   if (
     (verdict.verdict === 'full' || verdict.verdict === 'partial')
     && verdict.quality < 10
     && !/missing for (a )?10/i.test(verdict.rationale)
   ) {
-    return 'quality below 10 must name the gap — the rationale must include "missing for 10: ..." listing the specific missing capabilities/evidence'
+    return { code: 'quality-gap', message: 'quality below 10 must name the gap — the rationale must include "missing for 10: ..." listing the specific missing capabilities/evidence' }
   }
   return null
+}
+
+// Preserve the existing callers' messages as well as acceptance/rejection behavior.
+export function validateVerdictRules(verdict: Verdict, evidence: Evidence[], story?: Story): string | null {
+  return verdictRuleFailure(verdict, evidence, story)?.message ?? null
 }
 
 // Exported so other consumers that need to re-run the EXACT judge prompt against current
@@ -165,20 +185,34 @@ export interface JudgeCell {
 // three, because one round proved brittle at fleet scale (a model that phrases the
 // rubric clause loosely once tends to comply on the next explicit ask).
 export async function resolveCellVerdict(cell: JudgeCell, initialRaw?: RawVerdict): Promise<Verdict> {
+  let prompt = judgePrompt(cell.productName, cell.story, cell.evidence)
+  const initialPromptHash = promptDigest(SYSTEM, prompt)
   let raw = initialRaw
-    ?? await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt: judgePrompt(cell.productName, cell.story, cell.evidence) })
+    ?? await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt })
   let verdict: Verdict = { ...raw, productId: cell.productId, storyId: cell.story.id }
-  let violation = validateVerdictRules(verdict, cell.evidence, cell.story)
-  for (let round = 0; violation && round < 3; round++) {
-    raw = await llmJson({
-      schema: RawVerdictSchema,
-      system: SYSTEM,
-      prompt: judgePrompt(cell.productName, cell.story, cell.evidence, `\nYour previous verdict violated a rule: ${violation}. Correct it. If quality is below 10, the rationale MUST contain the literal phrase "missing for 10:" followed by the specific gaps.`),
-    })
+  let violation = verdictRuleFailure(verdict, cell.evidence, cell.story)
+  const attempts: RejectedAttempt[] = []
+  for (let round = 0; violation; round++) {
+    const attempt = rejectedAttempt(cell, verdict, violation, round + 1,
+      round === 0 && initialRaw ? 'batch' : 'interactive', promptDigest(SYSTEM, prompt))
+    attempts.push(attempt)
+    if (round === 3) {
+      writeJudgeFailure(cell, { model: JUDGE_MODEL, promptVersion: PROMPT_VERSION,
+        keyVersion: CELL_HASH_VERSION, initialPromptHash }, attempts, 'semantic-exhaustion')
+      // Quote data stays in the bounded diagnostic file, not interpolated into logs.
+      throw new Error(`judge: ${JSON.stringify([cell.catId, cell.productId, cell.story.id])} still violates rules: ${violation.code}`)
+    }
+    prompt = judgePrompt(cell.productName, cell.story, cell.evidence, correctionContext(attempt))
+    try {
+      raw = await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt })
+    } catch (cause) {
+      writeJudgeFailure(cell, { model: JUDGE_MODEL, promptVersion: PROMPT_VERSION,
+        keyVersion: CELL_HASH_VERSION, initialPromptHash }, attempts, 'correction-request-failed')
+      throw cause
+    }
     verdict = { ...raw, productId: cell.productId, storyId: cell.story.id }
-    violation = validateVerdictRules(verdict, cell.evidence, cell.story)
+    violation = verdictRuleFailure(verdict, cell.evidence, cell.story)
   }
-  if (violation) throw new Error(`judge: ${cell.catId}/${cell.productId}:${cell.story.id} still violates rules: ${violation}`)
   return verdict
 }
 
@@ -317,6 +351,23 @@ export async function runJudge({ category, product, batch }: { category?: string
     matched += targets.length
     if (!targets.length) return []
     matchedCategories.add(cat.id)
+    clearJudgeFailure(cat.id)
+
+    // A retention sidecar is only a warning that raw caches may differ from the
+    // published matrix. It never authorizes trusting a canonical row or an override.
+    let published: Map<string, Verdict> | undefined
+    if (product && fs.existsSync(path.join(CACHE_DIR, 'refresh-retention', cat.id, 'decisions.json'))) {
+      try {
+        const rows = readJson(VerdictSchema.array(), path.join(dataDir, 'verdicts.json'))
+        published = new Map(rows.map(row => [`${row.productId}:${row.storyId}`, row]))
+        if (published.size !== rows.length || rows.length !== products.length * stories.length
+            || rows.some(row => !products.some(p => p.id === row.productId) || !stories.some(s => s.id === row.storyId))) {
+          throw new Error('missing, duplicate or out-of-catalog canonical cells')
+        }
+      } catch (cause) {
+        throw new Error(`judge: retained canonical matrix for ${cat.id} is missing or malformed; use judge-preview or a reviewed category run`, { cause })
+      }
+    }
 
     // A scoped publication still needs a complete current matrix. Check untouched
     // cells before paying for target judgments or changing any target cache files.
@@ -324,9 +375,13 @@ export async function runJudge({ category, product, batch }: { category?: string
       const evidence = readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${untouched.id}.json`))
       for (const story of stories) {
         try {
-          if (!currentCachedCell(cat.id, untouched.id, story, evidence)) throw new Error('missing or old-format cache')
+          const cached = currentCachedCell(cat.id, untouched.id, story, evidence)
+          if (!cached) throw new Error('missing or old-format cache')
+          if (published && !isDeepStrictEqual(published.get(`${untouched.id}:${story.id}`), cached)) {
+            throw new Error('retained untouched judgment differs from raw cache; a reviewed category run is required')
+          }
         } catch (cause) {
-          throw new Error(`judge: scoped publication blocked by untouched ${cat.id}/${untouched.id}:${story.id}; use judge-preview for a bounded pilot or review the category migration first`, { cause })
+          throw new Error(`judge: scoped publication blocked by untouched ${cat.id}/${untouched.id}:${story.id}; use judge-preview for a bounded pilot or ${published ? 'a reviewed category run (including retained untouched judgments)' : 'review the category migration first'}`, { cause })
         }
       }
     }

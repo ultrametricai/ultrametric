@@ -34,6 +34,9 @@ def allowed_path(kind, path):
             r'|rankings-engine/radar-discoveries/[A-Za-z0-9_./-]+\.json)', path))
     if kind not in ('story-runner', 'vendor-radar-bringup'):
         return False
+    if kind == 'story-runner' and re.fullmatch(
+            r'rankings-engine/cache/refresh-retention/[a-z0-9][a-z0-9-]*/decisions\.json', path):
+        return True
     if path == 'README.md' or re.fullmatch(r'rankings-engine/cache/judge/[A-Za-z0-9_./-]+\.json', path):
         return True
     if re.fullmatch(r'open-rankings/(graph|step-rankings|predictions)\.json', path):

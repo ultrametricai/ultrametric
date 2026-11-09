@@ -117,6 +117,69 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 ## Repair and recheck
 
+The scheduled story producer pins its starting main commit. After judging, before claims
+and derivation, `reconcile-refresh.ts` applies the existing stability policy to proposed
+grades. An unsupported flip retains the complete baseline row only when its citations
+still support it under the current rubric and its origin is proven by a matching model
+cache in Git history. Changed support, missing provenance, incompatible catalogs or stale
+rubrics stop the run for review. Legitimate new-source changes and verified downgrades
+still pass through. Deliberate scoring migrations remain separate from this producer path.
+
+Raw judge caches remain raw model output. Retained canonical decisions are recorded in
+`rankings-engine/cache/refresh-retention/<arena>/decisions.json`, bound to the complete
+current inputs and an ancestor model-backed decision. Repeat runs reverify that origin;
+each entry separately records the decision baseline used to reject the raw proposal.
+That proper-ancestor snapshot determines which sources were already known at the time,
+so a later run does not mistake a previously introduced source for new evidence. Both
+proofs are rechecked; the sidecar alone never authorizes retaining a grade. The final committed-diff stability
+guard still runs before any remote publication.
+
+Product-scoped manual judging stops before model calls if it would overwrite an untouched
+retained decision with raw cache output. Explicit whole-category rejudges and isolated
+previews keep their existing behavior. Automated PR repair also stops before writes or
+reviewer audits when the effective merged candidate contains retained decisions that differ
+from raw caches; those cases need human review until repair supports retention provenance.
+Deliberate migration and adjudication scripts are not retention-aware.
+
+Failed keyed runs save bounded, allowlisted baseline and candidate JSON, accepted judge
+caches, the reconciliation report and the terminal cell's rejected semantic attempts as
+`story-refresh-diagnostics-<run>-<attempt>`. The existing failure-only artifact has a
+64 MiB / 10,000-file input limit and 14-day retention. It has `publicationAuthority: false`
+and cannot act as an `internal-refresh-*` receipt accepted by the merge controller.
+
+On cache misses, judge corrections identify the first failing rule and its zero-based
+citation index: an unknown support ID, an ID missing from `evidenceIds`, or a verbatim
+quote mismatch. Each correction includes only the relevant rejected fields and named
+source excerpt, labeled as untrusted data. The initial prompt, schema, rubric, model,
+prompt version and cache keys are unchanged. This correction-only behavior improves
+cache-miss retries; it does not retroactively change valid cached judgments. The budget
+remains one initial semantic attempt plus three corrections, with the existing parsing,
+schema and transport retry limits. Exhaustion still fails before the cell cache and
+category matrix are written. Previously accepted cells retain their normal caches.
+
+The terminal record is `.pa-tmp/judge-failures/<arena>/terminal.json`, outside publishable
+caches. A new judge invocation clears the old record for each selected arena. A record
+contains cell identity, input/model/prompt metadata and up to four rejected-attempt
+summaries, including when a later correction request fails. It excludes full model
+responses, system prompts, environment dumps and unrelated inputs. Strings have explicit
+redaction/truncation flags; known credential forms are redacted, fields have fixed bounds
+and the entire record is capped at 256 KiB. Record creation failure is logged without
+untrusted text and cannot make an invalid verdict pass. The capture script checks the
+exact arena path, regular files, symlink ancestors, JSON fields and artifact limits.
+
+Inspect an extracted terminal record offline without credentials or model calls:
+
+```sh
+python3 scripts/capture_refresh_diagnostics.py --inspect-judge-failure /path/to/terminal.json
+```
+
+The inspector validates the record and prints JSON with terminal controls escaped.
+`exactReplay: false` is explicit: summaries and bounded/redacted excerpts cannot replay a
+complete model request. Original evidence remains in the separately allowlisted arena
+inputs. The Statsig `agentic-ai-insights` failure in [run 42217696564](https://github.com/ultrametricai/ultrametric/actions/runs/42217696564)
+preceded this capture path; its rejected output and refreshed evidence were not retained.
+Its exact defect is unknown, and passing committed baseline quotes do not reproduce it.
+
 The recovery controller dispatches `refresh-repair.yml` for failing generated story-runner
 PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
 wakes recovery. Drafts and PRs whose auto-merge opt-in was removed are skipped. Recovery
