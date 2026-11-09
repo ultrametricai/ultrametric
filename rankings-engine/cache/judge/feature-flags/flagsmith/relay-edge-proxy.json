@@ -1,14 +1,15 @@
 {
-  "hash": "eec33381dfa52cc79d2c0b75644d72f0a7200ebd2f2dadf9b7c3294d8ae98cf1",
+  "hash": "0ad5f94968db5903c1282435622ecdf02bfe51e8e506d95a377571f57700e5f1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Flagsmith documents a self-hosted Edge Proxy that runs the Flagsmith Engine inside your own infrastructure, and server-side SDKs connect to it, so SDK traffic stays on your network. The evidence does not say the proxy keeps serving flags when Flagsmith's hosted service is unreachable, which is half of the story. missing for 10: documented behaviour when the vendor is unreachable (caching, offline serving, failover), client-side SDK support via the proxy, independent or hands-on corroboration.",
+    "rationale": "Flagsmith documents a self-hosted Edge Proxy that runs the Flagsmith Engine inside your own infrastructure. Server-side SDKs connect to it, which keeps SDK traffic in-network, and it acts as a local cache that serves requests without hitting the Core API. However, no evidence explicitly says flags keep being served when the vendor is unreachable, and only server-side SDKs are named. Missing for 10: explicit documentation of serving flags during a vendor outage (failover and staleness behavior), client-side SDK support through the proxy, and independent or hands-on corroboration.",
     "evidenceIds": [
       "flagsmith-docs-14",
-      "flagsmith-docs-28"
+      "flagsmith-docs-28",
+      "flagsmith-docs-68"
     ],
     "support": {
       "relation": "direct",
@@ -22,6 +23,10 @@
         {
           "evidenceId": "flagsmith-docs-28",
           "quote": "Run the Edge Proxy within in your own infrastructure and connect to it from your server-side SDKs"
+        },
+        {
+          "evidenceId": "flagsmith-docs-68",
+          "quote": "The proxy also acts as a local cache, allowing you to make requests to the proxy without hitting the Core API."
         }
       ]
     },

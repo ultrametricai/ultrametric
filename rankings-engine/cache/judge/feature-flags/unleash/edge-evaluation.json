@@ -1,23 +1,31 @@
 {
-  "hash": "6102bc65f51e26500a0d16c8730dae0c9e8ded27778c453649f422ccfb6b1446",
+  "hash": "ac3ef83f0096c3baa102efd18ead28d9f3a125817d0999148835a577fe9cb0fb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Unleash ships Unleash Edge, a first-party caching and relay layer that SDKs connect to with backend tokens. The docs say targeting data such as user IDs, emails or IPs is processed inside the Edge node and never sent upstream, which means flag evaluation happens at the edge/relay layer. Missing for 10: evidence of deployment geographically close to users or multi-region placement, CDN-worker support, and independent or hands-on corroboration of Edge evaluation.",
+    "rationale": "Unleash ships its own relay layer, Unleash Edge. The docs say it evaluates flags for frontend SDKs directly on the Edge node, keeps PII local, acts as a read replica for thousands of SDKs, and survives upstream outages. That is first-party, direct support for an edge/relay evaluation layer. However, the evidence only documents evaluation for frontend SDKs, says nothing about running in CDN workers, and does not show placing nodes close to users. missing for 10: CDN-worker/edge-runtime evaluation, documented geo-distributed or near-user deployment guidance, on-node evaluation for backend SDKs, independent or hands-on corroboration.",
     "evidenceIds": [
+      "unleash-docs-59",
       "unleash-docs-5",
       "unleash-docs-28",
       "unleash-docs-35",
-      "unleash-docs-34",
-      "unleash-docs-23"
+      "unleash-docs-60"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a platform engineer, I can evaluate flags at the edge (CDN workers or an edge/relay layer) close to users",
       "citations": [
+        {
+          "evidenceId": "unleash-docs-59",
+          "quote": "It evaluates feature flags for [frontend SDKs](/sdks#frontend-sdks) directly on the Edge node, ensuring that sensitive user data required for evaluation is never sent upstream to Unleash."
+        },
+        {
+          "evidenceId": "unleash-docs-5",
+          "quote": "functioning as a read replica that can handle thousands of connected SDKs without increasing the read load on your primary Unleash instance"
+        },
         {
           "evidenceId": "unleash-docs-28",
           "quote": "Unleash Enterprise Edge is a lightweight caching layer designed to improve scalability, performance, and resilience."
@@ -27,12 +35,8 @@
           "quote": "user data (PII) used for targeting rules (like user IDs, emails, or IPs) is processed within the Edge node and never sent to the Unleash Cloud or your upstream instance"
         },
         {
-          "evidenceId": "unleash-docs-5",
-          "quote": "functioning as a read replica that can handle thousands of connected SDKs without increasing the read load on your primary Unleash instance"
-        },
-        {
-          "evidenceId": "unleash-docs-34",
-          "quote": "Backend tokens for connecting backend SDKs or Unleash Edge to Unleash."
+          "evidenceId": "unleash-docs-60",
+          "quote": "Edge is designed to survive restarts and maintain functionality even if you lose connection to your Unleash server."
         }
       ]
     },

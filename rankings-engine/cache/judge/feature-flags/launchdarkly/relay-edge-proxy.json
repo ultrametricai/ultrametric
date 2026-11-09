@@ -1,15 +1,14 @@
 {
-  "hash": "fdc6a7839efb195c3761518b0274b5a5277ad63da920aadc516cb8509f39ee8d",
+  "hash": "89a587f04feab4974a3e7db874e85728ca8e7ad8fc3914c37fff85b7996b27be",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LaunchDarkly documents its own Relay Proxy, a small Go application that runs on your own infrastructure. It connects to the LaunchDarkly streaming API and proxies that connection to clients, so SDK traffic can terminate inside your network. Community users confirm it is open source and run for extra resiliency and closer to services. The evidence does not explicitly show that flags keep being served while LaunchDarkly is unreachable, so coverage is partial. missing for 10: documented outage behavior (serving cached flags when the vendor is unreachable), explicit docs on keeping all SDK traffic in-network (proxy/offline modes), persistent-store and caching configuration details, independent hands-on corroboration of failover.",
+    "rationale": "LaunchDarkly documents its own Relay Proxy, a Go application that runs on your own infrastructure. It proxies the LaunchDarkly streaming connection to clients inside your organization's network, which covers keeping SDK traffic internal. The outage-resilience half (flags still served when LaunchDarkly is unreachable) is supported only by a community mention of \"extra resiliency\", not by first-party docs on caching or persistent-store behavior during vendor outages. missing for 10: documented offline/outage serving behavior (persistent store or cache when upstream is unreachable), hands-on corroboration of outage resilience, deployment/HA configuration details.",
     "evidenceIds": [
-      "launchdarkly-docs-13",
       "launchdarkly-docs-62",
-      "launchdarkly-docs-32",
+      "launchdarkly-docs-76",
       "launchdarkly-comm-2",
       "launchdarkly-comm-11"
     ],
@@ -23,12 +22,12 @@
           "quote": "a small Go application that runs on your own infrastructure. It connects to the LaunchDarkly streaming API and proxies that connection to clients"
         },
         {
-          "evidenceId": "launchdarkly-comm-2",
-          "quote": "LaunchDarkly has an open source 'Relay' you can run in your own environment for extra resiliency."
+          "evidenceId": "launchdarkly-docs-76",
+          "quote": "It connects to the LaunchDarkly streaming API and proxies that connection to clients within your organization’s network."
         },
         {
-          "evidenceId": "launchdarkly-comm-11",
-          "quote": "LD's open-source Relay lets you run proxies closer to your services."
+          "evidenceId": "launchdarkly-comm-2",
+          "quote": "LaunchDarkly has an open source 'Relay' you can run in your own environment for extra resiliency."
         }
       ]
     },

@@ -1,17 +1,24 @@
 {
-  "hash": "3d5e8a79dc02740b14b2340f52a421f04c90c6d3ba2d4c8fb7b5e013e541519c",
+  "hash": "8734f268ec56ede0bb2d678bc84deb3e335136189dd895a7de276eb28e3725ff",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack shows that Unleash ships backend SDKs, backend tokens, and an `isEnabled` call. It also documents Unleash Edge as a caching layer and read replica. None of this states that server SDKs evaluate flags in-process from a locally cached ruleset with no network call per check. Edge is a separate proxy service, not in-SDK local evaluation, so it is adjacent at best and earns no credit.",
-    "evidenceIds": [],
+    "rationale": "The evidence pack never documents that Unleash server/backend SDKs evaluate flags locally from a cached ruleset without a network call per check. The closest material describes Unleash Edge, a separate caching layer that evaluates flags for frontend SDKs on the Edge node. That is an adjacent component, not in-process server SDK evaluation, so it earns no credit.",
+    "evidenceIds": [
+      "unleash-docs-59"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a platform engineer, my server SDKs evaluate flags locally from a cached ruleset — microsecond decisions with no network call per flag check",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unleash-docs-59",
+          "quote": "It evaluates feature flags for [frontend SDKs](/sdks#frontend-sdks) directly on the Edge node"
+        }
+      ]
     },
     "productId": "unleash",
     "storyId": "local-evaluation-latency"

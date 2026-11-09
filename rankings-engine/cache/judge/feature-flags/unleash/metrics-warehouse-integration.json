@@ -1,17 +1,35 @@
 {
-  "hash": "f8e5b308abcecd0b84265b982a805138471b6a66fa79ce6dc1dc0349ad34fd9d",
+  "hash": "cc1a7666e33b04156144f9c58a2624641a4e0ab55387c928ed9bc1b7357f1911",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Unleash documents variants for A/B testing, but nothing shows defining experiment metrics from warehouse tables or ingested events. The closest feature, impact metrics, queries external Prometheus/VictoriaMetrics data. That data drives rollout safeguards and milestone progression, which is a related but different feature, not experiment metric definition.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Unleash's impact metrics can pull external metrics at read time from the team's own Prometheus or VictoriaMetrics instance, with the data staying in their system. These metrics drive rollout progression and safeguards, so they are defined from the user's own data rather than a black-box store. However, the evidence never shows them used as experiment metrics comparing variants, and it does not cover warehouse tables or ingested product events. missing for 10: warehouse-table metric definitions, ingested-event metric definitions, variant-level experiment analysis using those metrics, independent corroboration.",
+    "evidenceIds": [
+      "unleash-docs-44",
+      "unleash-docs-58",
+      "unleash-docs-22",
+      "unleash-docs-8"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a product manager, I can define experiment metrics from my own data — warehouse tables or ingested events — instead of a black-box metric store",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unleash-docs-44",
+          "quote": "External metrics are queried at read time from your existing Prometheus or VictoriaMetrics instance. The data stays in your system."
+        },
+        {
+          "evidenceId": "unleash-docs-22",
+          "quote": "Automate milestone progression or trigger safeguards that pause rollouts or disable environments when metrics cross a threshold."
+        },
+        {
+          "evidenceId": "unleash-docs-8",
+          "quote": "Variants let you expose different versions of a feature to users, for example, as part of A/B and multivariate testing."
+        }
+      ]
     },
     "productId": "unleash",
     "storyId": "metrics-warehouse-integration"

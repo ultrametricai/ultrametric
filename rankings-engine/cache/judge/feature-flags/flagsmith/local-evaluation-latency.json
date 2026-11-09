@@ -1,17 +1,29 @@
 {
-  "hash": "d1b7bc4b9fdca9aa7746c9d239348857c4996b6ca4629c81aa7ffb04d53d1c9a",
+  "hash": "cd0c75c7a6922d8aa7a41034efabb60f6abe8aade26bbe6d4a1d2dc658eb109b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents an in-process local-evaluation mode for the server SDKs, nor a cached ruleset that avoids a network call per flag check. The Edge Proxy is a separate self-hosted service that server SDKs still connect to over the network, and the CLI's SDK-style evaluation is not SDK behaviour, so both are adjacent features. Community comments describe Flagsmith as doing 'primarily server-side eval', which is consistent with the absence of this capability.",
-    "evidenceIds": [],
+    "rationale": "The evidence pack never documents an in-process local-evaluation mode in which server SDKs evaluate flags from a cached environment ruleset without a network call per check. The closest item is the self-hosted Edge Proxy, a separate service that acts as a local cache near your servers; SDKs still make requests to it, so it is an adjacent architecture rather than SDK local evaluation. Community discussion also describes Flagsmith as doing 'primarily server-side eval.'",
+    "evidenceIds": [
+      "flagsmith-docs-14",
+      "flagsmith-docs-68"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a platform engineer, my server SDKs evaluate flags locally from a cached ruleset — microsecond decisions with no network call per flag check",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "flagsmith-docs-14",
+          "quote": "The Flagsmith Edge Proxy is a service that you host yourself, that allows you to run an instance of the Flagsmith Engine close to your servers."
+        },
+        {
+          "evidenceId": "flagsmith-docs-68",
+          "quote": "The proxy also acts as a local cache, allowing you to make requests to the proxy without hitting the Core API."
+        }
+      ]
     },
     "productId": "flagsmith",
     "storyId": "local-evaluation-latency"

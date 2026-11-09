@@ -1,16 +1,15 @@
 {
-  "hash": "92602b3b73201afd025466e074544ff9f33a613a79b3d15502a9e44cfb06fd37",
+  "hash": "8481cd0188d760a485d29f699064842a2643f81182816e2f84ddf01a444a35a0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Statsig's docs say feature gates toggle behavior 'in real time without deploying new code' and describe an emergency disable switch that 'immediately' turns off a code branch in production, so the kill-switch capability is first-party. The pack never explains how changes reach connected SDKs (streaming vs. polling, update intervals, propagation latency), and SDKs evaluate locally from cached definitions after initialization, so the 'in seconds' guarantee is unproven. Missing for 10: documented streaming or polling propagation mechanism, stated propagation latency or polling interval, hands-on or independent corroboration that a kill switch reaches live SDKs within seconds.",
+    "rationale": "Statsig's docs say feature gates toggle behavior \"in real time\" and offer an emergency disable switch that can \"immediately turn off\" a code branch, so the kill-switch capability itself is claimed. The evidence never documents how changes reach connected SDKs (no streaming, polling interval, or propagation latency), and SDKs evaluate locally from cached state after initialization. Missing for 10: documented streaming or polling mechanism, stated propagation latency in seconds, independent or hands-on confirmation that a kill switch takes effect promptly in running SDKs.",
     "evidenceIds": [
       "statsig-docs-1",
       "statsig-docs-2",
-      "statsig-comm-4",
-      "statsig-docs-55"
+      "statsig-docs-39"
     ],
     "support": {
       "relation": "direct",
@@ -26,8 +25,8 @@
           "quote": "Have an emergency disable switch that lets you immediately turn off a particular code branch for users in production"
         },
         {
-          "evidenceId": "statsig-comm-4",
-          "quote": "realtime targeted config to reduce code churn"
+          "evidenceId": "statsig-docs-39",
+          "quote": "After initialization, both Client and Server SDKs evaluate experiments/gates _without a network request_, and typically in less than 1ms."
         }
       ]
     },

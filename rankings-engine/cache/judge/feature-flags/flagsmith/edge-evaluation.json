@@ -1,18 +1,19 @@
 {
-  "hash": "03e88244f3271f9fcafe4f439149b8e07695b20c605880a094da2e22d2993529",
+  "hash": "d179dc79fa9245388f505da6cb106df19ff7eafc42f4af479cb4dabbd5276e04",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Flagsmith documents a self-hosted Edge Proxy that runs an instance of the Flagsmith Engine in your own infrastructure, which is a first-party relay layer for flag evaluation. However, the docs describe it as running close to your servers and being reached from server-side SDKs, not close to end users, and nothing shows CDN-worker evaluation. The community remark about primarily server-side evaluation does not concretely contradict the Edge Proxy, so it creates no dispute. Missing for 10: CDN/edge-worker evaluation support (e.g., Cloudflare Workers or similar), evidence of deployment close to end users rather than servers, client-side SDK use of the relay, and independent or hands-on corroboration of Edge Proxy performance.",
+    "rationale": "Flagsmith documents a self-hosted Edge Proxy that runs the Flagsmith Engine inside your own infrastructure and acts as a local cache, so server-side SDKs evaluate flags against it rather than the Core API. That satisfies the edge/relay-layer form of the story. Missing for 10: any documented CDN-worker or edge-runtime evaluation, evidence of client-side or browser SDKs connecting to the proxy close to end users (the docs frame it as close to your servers), and independent or hands-on corroboration of Edge Proxy deployments.",
     "evidenceIds": [
       "flagsmith-docs-14",
-      "flagsmith-docs-28"
+      "flagsmith-docs-28",
+      "flagsmith-docs-68"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a platform engineer, I can evaluate flags at the edge (CDN workers or an edge/relay layer) close to users",
       "citations": [
         {
@@ -22,6 +23,10 @@
         {
           "evidenceId": "flagsmith-docs-28",
           "quote": "Run the Edge Proxy within in your own infrastructure and connect to it from your server-side SDKs"
+        },
+        {
+          "evidenceId": "flagsmith-docs-68",
+          "quote": "The proxy also acts as a local cache, allowing you to make requests to the proxy without hitting the Core API."
         }
       ]
     },
