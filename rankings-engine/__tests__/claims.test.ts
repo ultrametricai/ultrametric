@@ -3,6 +3,8 @@ import authyClaims from '../../open-rankings/authenticator-apps/claims/authy.jso
 import enteClaims from '../../open-rankings/authenticator-apps/claims/ente-auth.json'
 import type { Evidence } from '@/lib/schemas'
 import { buildClaims, validateClaimRules } from '@/rankings-engine/stages/claims'
+import { loadCategory } from '@/lib/data'
+import { claimStatus, unmappedClaims } from '@/lib/claims'
 
 const ev = (id: string, tier: Evidence['tier'], excerpt: string): Evidence => ({
   id, tier, url: `https://x.example/${id}`, excerpt, fetchedAt: '2026-08-26T00:00:00Z',
@@ -80,5 +82,26 @@ describe('authenticator product boundaries', () => {
   it('Ente export claims do not use the Authy import extractor as export evidence', () => {
     expect(enteClaims.filter(claim => new URL(claim.url).pathname.replace(/\/$/, '') === '/help/auth/migration/authy'
       && claim.storyIds.some(id => id === 'open-format-export' || id === 'openness-full-export'))).toEqual([])
+  })
+})
+
+describe('feature-flag export claims', () => {
+  const data = loadCategory('feature-flags')
+  const storyId = 'openness-full-export'
+  const quote = 'Export/import feature flags for easy migration'
+
+  it('keeps the Unleash export claim mapped to the story that cites its exact quote', () => {
+    const claim = data.claims.unleash!.find(item => item.quote === quote)!
+    const verdict = data.verdicts.find(item => item.productId === 'unleash' && item.storyId === storyId)!
+    const evidence = data.evidence.unleash!.find(item => item.excerpt === quote && item.url === claim.url)!
+    expect(claim).toMatchObject({ url: 'https://www.getunleash.io/pricing', sourceTier: 'claimed-docs' })
+    expect(verdict.evidenceIds).toContain(evidence.id)
+    expect(verdict.support?.citations).toContainEqual({ evidenceId: evidence.id, quote })
+    expect(claim.storyIds).toContain(storyId)
+  })
+
+  it('presents Unleash export as a vendor claim with vendor-only support', () => {
+    expect(claimStatus(data, 'unleash', storyId)).toBe('claimed-unverified')
+    expect(unmappedClaims(data, 'unleash').some(item => item.quote === quote)).toBe(false)
   })
 })
