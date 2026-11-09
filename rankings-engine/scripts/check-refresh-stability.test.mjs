@@ -24,6 +24,21 @@ test('a fabricated citation or uncited new evidence does not authorize a flip', 
 test('a flip citing a new, present evidence ID passes', () => {
   assert.equal(flips({ verdict: 'full', evidenceIds: ['new'] }, { vendor: [...pack.vendor, item('new')] }).length, 0)
 })
+test('structured support excludes incidental new evidence from authorizing a grade change', () => {
+  const support = { citations: [{ evidenceId: 'a', quote: item('a').excerpt }] }
+  assert.equal(flips({ quality: 6, evidenceIds: ['a', 'new'], support }, { vendor: [...pack.vendor, item('new')] }).length, 1)
+})
+test('structured support accepts a genuinely new supporting citation', () => {
+  const support = { citations: [{ evidenceId: 'new', quote: item('new').excerpt }] }
+  assert.equal(flips({ quality: 6, evidenceIds: ['a', 'new'], support }, { vendor: [...pack.vendor, item('new')] }).length, 0)
+})
+test('empty structured support does not fall back to incidental evidence IDs', () => {
+  assert.equal(flips({ quality: 6, evidenceIds: ['new'], support: { citations: [] } }, { vendor: [...pack.vendor, item('new')] }).length, 1)
+})
+test('support citations must also be included in the verdict evidence IDs', () => {
+  const support = { citations: [{ evidenceId: 'new', quote: item('new').excerpt }] }
+  assert.equal(flips({ quality: 6, evidenceIds: ['a'], support }, { vendor: [...pack.vendor, item('new')] }).length, 1)
+})
 test('new cells have no previous grade to preserve', () => {
   assert.equal(flips({ storyId: 'new-story', verdict: 'full' }).length, 0)
 })
