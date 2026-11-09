@@ -12,7 +12,7 @@ const evidence: Evidence = { id: 'old', tier: 'claimed-docs', url: 'https://exam
 const old: Verdict = { productId: 'vendor', storyId: 'story', verdict: 'partial', quality: 5, confidence: 'high', rationale: 'missing for 10: independent corroboration', evidenceIds: ['old'], support: { subject: story.title, relation: 'direct', coverage: 'partial', citations: [{ evidenceId: 'old', quote: evidence.excerpt }] } }
 const proposal: Verdict = { ...old, quality: 7, confidence: 'low', rationale: 'New wording; missing for 10: more documentation' }
 const roots: string[] = []
-afterEach(() => { for (const root of roots.splice(0)) fs.rmSync(root, { recursive: true, force: true }) })
+afterEach(() => { for (const root of roots.splice(0)) fs.rmSync(root, { recursive: true, force: true, maxRetries: 3 }) })
 function fixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'refresh-reconciliation-')); roots.push(root)
   const git = (...args: string[]) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: 'pipe' }).trim()
@@ -41,6 +41,15 @@ describe('scheduled refresh reconciliation', { timeout: 60000 }, () => {
     expect(f.read(`${f.dir}/verdicts.json`)).toEqual([old])
     expect(fs.readFileSync(path.join(f.root, f.cache), 'utf8')).toBe(raw)
     expect(f.read(f.ledger).retained).toEqual([{ cell: 'vendor:story', origin: f.baseline, decisionBaseline: f.baseline }])
+  })
+  it('retains a quality increase when the new evidence is absent from structured support', () => {
+    const f = fixture()
+    const unrelated = { ...evidence, id: 'unrelated', url: 'https://example.invalid/other', excerpt: 'Account recovery requires a phone number.' }
+    f.save({ ...proposal, evidenceIds: [...proposal.evidenceIds, unrelated.id] }, [evidence, unrelated])
+    const raw = fs.readFileSync(path.join(f.root, f.cache), 'utf8')
+    expect(f.run().retained).toEqual(['vendor:story'])
+    expect(f.read(`${f.dir}/verdicts.json`)).toEqual([old])
+    expect(fs.readFileSync(path.join(f.root, f.cache), 'utf8')).toBe(raw)
   })
   it('reassembles raw cache proposals on repeat runs and verifies retained baselines across commits', () => {
     const f = fixture(); const pack = [evidence, { ...evidence, id: 'other', url: 'https://example.invalid/other' }]

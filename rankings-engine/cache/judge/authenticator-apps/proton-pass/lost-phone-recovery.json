@@ -1,17 +1,40 @@
 {
-  "hash": "2a6cf206b44a72774abffa80637cbef979f980e9d76d1e3ffb2ee832d8026820",
+  "hash": "d688f9c9c23101a8c854f8ed04e3135741e59da9f83e0f62f4a02c3b70e18723",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The pack shows that Proton Pass generates TOTP codes (docs-5) and can export and import data (docs-3, docs-4, docs-11). None of it documents restoring tokens on a new device after losing a phone: there is no account-sync restore and no statement that exports include TOTP secrets or can be re-imported into Proton Pass. Export and import are adjacent backup and migration features, not a documented recovery path for this story.",
-    "evidenceIds": [],
+    "rationale": "Proton Pass stores TOTP secrets alongside saved logins and documents its own backup-and-restore path: export to a PGP-encrypted ZIP, then import that file directly into Proton Pass. That gives a manual route to rebuild items, including tokens, on another device. Nothing in the evidence documents the lost-phone scenario itself (signing in on a new device and having tokens reappear), and nothing confirms the export includes TOTP secrets. Missing for 10: explicit documentation of cross-device sync or restore of TOTP tokens on a new device, account-recovery steps after device loss, confirmation that exports include 2FA secrets, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "proton-pass-docs-26",
+      "proton-pass-docs-4",
+      "proton-pass-docs-11",
+      "proton-pass-docs-25",
+      "proton-pass-docs-23"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an everyday user, losing my phone doesn't lose my accounts — a documented recovery path restores my tokens on a new device",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "proton-pass-docs-26",
+          "quote": "Proton Pass can securely generate TOTP codes for websites that you have saved login details for."
+        },
+        {
+          "evidenceId": "proton-pass-docs-4",
+          "quote": "If you want to use your passwords elsewhere or create a separate hardcopy, you can easily export your data from Proton Pass."
+        },
+        {
+          "evidenceId": "proton-pass-docs-25",
+          "quote": "You can import a PGP-encrypted ZIP file directly into Proton Pass (see below)."
+        },
+        {
+          "evidenceId": "proton-pass-docs-11",
+          "quote": "A ZIP file containing a PGP-encrypted JSON file"
+        }
+      ]
     },
     "productId": "proton-pass",
     "storyId": "lost-phone-recovery"

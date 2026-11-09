@@ -21,7 +21,12 @@ export function unsupportedFlips(before, after, oldPacks, newPacks) {
     if (!old || (old.verdict === row.verdict && old.quality === row.quality)) return false
     const oldIds = new Set((oldPacks[row.productId] ?? []).map(item => item.id))
     const newItems = new Map((newPacks[row.productId] ?? []).map(item => [item.id, item]))
-    return !row.evidenceIds.some(id => !oldIds.has(id) && newItems.has(id)
+    // Structured support identifies what backs the capability. Other evidence IDs
+    // may describe limitations or unrelated context and cannot authorize an upgrade.
+    // Legacy judgments predate this contract and cite through evidenceIds alone.
+    const supportingIds = row.support === undefined ? row.evidenceIds
+      : row.support.citations.map(citation => citation.evidenceId).filter(id => row.evidenceIds.includes(id))
+    return !supportingIds.some(id => !oldIds.has(id) && newItems.has(id)
       && newSourceSupport(newItems.get(id), oldPacks[row.productId] ?? []))
       && !downgradeAfterSupportLoss(old, row, oldPacks[row.productId] ?? [], newPacks[row.productId] ?? [])
   })
