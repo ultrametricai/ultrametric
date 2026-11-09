@@ -1,6 +1,6 @@
 """Metadata-only refresh recovery, shared by planning and exact-head application."""
 import json, os, re, subprocess, time
-from refresh_policy import family, verify_provenance, MissingProvenance
+from refresh_policy import content_author, family, verify_provenance, MissingProvenance
 from refresh_update import check_commit, intent_name, verify_update_intent
 repo = os.environ['REPO']
 def api(path, method='GET', data=None, token=None):
@@ -22,10 +22,8 @@ content_bot = os.environ.get('CONTENT_BOT_LOGIN', '')
 if content_bot and not re.fullmatch(r'[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\[bot\]', content_bot):
     print('::warning::Invalid CONTENT_BOT_LOGIN; configured App recovery is disabled', flush=True)
     content_bot = ''
-def radar_app_author(pr):
-    return (bool(content_bot) and pr['user']['login'] == content_bot
-            and pr['user'].get('type') == 'Bot'
-            and re.fullmatch(r'vendor-radar(?:-bringup)?/[A-Za-z0-9_-]+', pr['head']['ref']))
+def content_app_author(pr):
+    return bool(family(pr)) and content_author(pr['user'])
 
 prs = json.loads(subprocess.check_output(
     ['gh', 'api', '--paginate', '--slurp', f'repos/{repo}/pulls?state=open&per_page=100'], text=True))
@@ -161,7 +159,7 @@ for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number'
     branch = pr['head']['ref']
     if (pr['draft'] or held(pr) or not pr['auto_merge'] or pr['base']['ref'] != 'main'
         or pr['head']['repo'] is None or pr['head']['repo']['full_name'] != repo
-        or not (actions_author(pr['user']) or radar_app_author(pr))
+        or not (actions_author(pr['user']) or content_app_author(pr))
         or not re.fullmatch(r'(story-runner|accuracy-engine|vendor-radar|vendor-radar-bringup|yc-coverage)/[A-Za-z0-9_-]+', branch)):
         continue
     number, sha = pr['number'], pr['head']['sha']
@@ -182,7 +180,7 @@ for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number'
                     and current['auto_merge'] and current['base']['ref'] == 'main'
                     and current['head']['sha'] == sha and current['head']['ref'] == branch
                     and (current['head'].get('repo') or {}).get('full_name') == repo
-                    and (actions_author(current['user']) or radar_app_author(current))):
+                    and (actions_author(current['user']) or content_app_author(current))):
                     updated.append({'family': family(current), 'head': sha, 'pr': number})
                 continue # wait for the restored ordinary receipt before dispatch
         # New CI runs may not have created check records yet. Preserve
@@ -217,10 +215,10 @@ for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number'
                 if len(expected_parents) != 2 or set(expected_parents) != {sha, main_sha}:
                     raise RuntimeError('Synthetic merge does not match the current internal head')
             update_token = None
-            if radar_app_author(current):
+            if kind:
                 update_token = os.environ.get('CONTENT_BOT_TOKEN', '')
                 if not update_token or os.environ.get('CONTENT_BOT_SLUG', '') + '[bot]' != content_bot:
-                    raise RuntimeError('Configured radar App token unavailable or identity mismatch; retain this head')
+                    raise RuntimeError('Configured Content App token unavailable or identity mismatch; retain this head')
             if kind:
                 if not apply_plan:
                     # Create an immutable object, without moving any branch. Its
@@ -231,14 +229,14 @@ for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number'
                     }, token=update_token)
                     plan = {'family': kind, 'pr': number, 'branch': branch,
                             'previous': sha, 'main': main_sha, 'tree': expected_merge['tree']['sha'],
-                            'head': candidate['sha'], 'app': bool(radar_app_author(current))}
+                            'head': candidate['sha'], 'app': True}
                     check_commit(plan, candidate)
                     planned.append(plan)
                     continue
                 if (apply_plan['pr'] != number or apply_plan['family'] != kind or
                     apply_plan['branch'] != branch or apply_plan['previous'] != sha or
                     apply_plan['main'] != main_sha or apply_plan['tree'] != expected_merge['tree']['sha'] or
-                    apply_plan['app'] != bool(radar_app_author(current))):
+                    apply_plan['app'] is not True):
                     raise RuntimeError('Update intent is stale; retain the current head')
                 check_commit(apply_plan, api(f"git/commits/{apply_plan['head']}"))
                 latest = api(f'pulls/{number}')
@@ -246,7 +244,7 @@ for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number'
                     or latest['head']['sha'] != sha or latest['head']['ref'] != branch
                     or latest['base']['ref'] != 'main'
                     or (latest['head'].get('repo') or {}).get('full_name') != repo
-                    or not (actions_author(latest['user']) or radar_app_author(latest))
+                    or not (actions_author(latest['user']) or content_app_author(latest))
                     or api('git/ref/heads/main')['object']['sha'] != main_sha):
                     raise RuntimeError('Update eligibility changed; retain the current head')
                 # This job is ordered after a successful immutable intent upload.
@@ -285,7 +283,7 @@ for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number'
         if (current['state'] != 'open' or current['draft'] or held(current) or not current['auto_merge']
             or current['head']['sha'] != sha or current['base']['ref'] != 'main'
             or current['head']['repo'] is None or current['head']['repo']['full_name'] != repo
-            or not (actions_author(current['user']) or radar_app_author(current))):
+            or not (actions_author(current['user']) or content_app_author(current))):
             continue
         runs = api(f'actions/workflows/ci.yml/runs?head_sha={sha}&per_page=100')
         ci_requested = needs_ci_dispatch(runs['workflow_runs'])

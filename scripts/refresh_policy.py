@@ -1,4 +1,5 @@
 """Pure policy for generated story/radar content; never executes candidate code."""
+import os
 import re
 
 ACTIONS_BOT = {'id': 41898282, 'login': 'github-actions[bot]', 'type': 'Bot'}
@@ -13,6 +14,12 @@ def family(pr):
 
 def actions_author(author):
     return all(author.get(key) == value for key, value in ACTIONS_BOT.items())
+
+
+def content_author(author):
+    login = os.environ.get('CONTENT_BOT_LOGIN', '')
+    return (bool(re.fullmatch(r'[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\[bot\]', login))
+            and author.get('login') == login and author.get('type') == 'Bot')
 
 
 def held(pr):

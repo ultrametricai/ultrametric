@@ -120,7 +120,7 @@ class ControllerTests(unittest.TestCase):
 
 
 class RepairReviewBoundaryTests(unittest.TestCase):
-    def repair(self, review_states):
+    def repair(self, review_states, token='app-fixture'):
         with tempfile.TemporaryDirectory() as directory:
             report_file=Path(directory)/'refresh-repair-report.json'
             calls=[]; review_reads=[]; states=iter(review_states)
@@ -144,26 +144,43 @@ class RepairReviewBoundaryTests(unittest.TestCase):
                 raise AssertionError(args)
             def command(args,**kwargs):
                 calls.append(args)
+                if args[0]=='git' and 'push' in args:
+                    self.assertEqual(kwargs['env']['GH_TOKEN'], 'app-fixture')
+                    self.assertIn('credential.helper=!gh auth git-credential', args)
                 if 'rankings-engine/scripts/repair-refresh.ts' in args:
                     report_file.write_text(json.dumps({'restored':[],'audits':[]}))
-            with patch.dict(GLOBALS,{'verify_provenance':lambda *_:None,'api':api,'current':lambda:({**PR,'head':{**PR['head'],'sha':'e'*40}} if any(c[:2]==['git','push'] for c in calls) else PR),'output':output,'command':command,
+            with patch.dict(GLOBALS,{'verify_provenance':lambda *_:None,'api':api,'current':lambda:({**PR,'head':{**PR['head'],'sha':'e'*40}} if any(c[0]=='git' and 'push' in c for c in calls) else PR),'output':output,'command':command,
                                     'threads':lambda:(SHA,[{'id':'finding'}]),'load_resume_report':lambda *_:None,
-                                    'recheck':lambda *_:'rechecked'}),patch.dict(os.environ,{'RUNNER_TEMP':directory}):
+                                    'recheck':lambda *_:'rechecked'}),patch.dict(os.environ,{'RUNNER_TEMP':directory,'CONTENT_TOKEN':token}):
                 MODULE['main']()
             return calls, json.loads(report_file.read_text()) if report_file.exists() else {}, review_reads
+
+    def test_missing_app_token_cannot_publish_a_repaired_head(self):
+        with self.assertRaisesRegex(RuntimeError,'Content App publication token is required'):
+            self.repair(['completed','completed'], token='')
+
+    def test_repair_accepts_only_configured_story_app_identity(self):
+        with patch.dict(os.environ, {'CONTENT_BOT_LOGIN':'fixture-content[bot]'}):
+            pr={**PR,'user':{'login':'fixture-content[bot]','type':'Bot'}}
+            self.assertTrue(MODULE['identity'](pr))
+            for changed in [{'user':{'login':'other[bot]','type':'Bot'}},
+                            {'user':{'login':'fixture-content[bot]','type':'User'}},
+                            {'head':{**PR['head'],'ref':'vendor-radar/fixture-123'}},
+                            {'labels':[{'name':'hold'}]}, {'auto_merge':None}]:
+                self.assertFalse(MODULE['identity']({**pr,**changed}))
 
     def test_worker_defers_before_model_or_data_writes_if_review_is_active(self):
         for status in ['queued','in_progress','waiting']:
             with self.subTest(status=status):
                 calls,report,reads=self.repair([status])
-                self.assertFalse(any(call[0]=='pnpm' or call[:2]==['git','push'] for call in calls))
+                self.assertFalse(any(call[0]=='pnpm' or (call[0]=='git' and 'push' in call) for call in calls))
                 self.assertEqual(report,{})
                 self.assertEqual(len(reads),1)
 
     def test_review_starting_during_repair_prevents_publication(self):
         calls,report,reads=self.repair(['completed','in_progress'])
         self.assertEqual(sum('rankings-engine/scripts/repair-refresh.ts' in call for call in calls),1)
-        self.assertFalse(any(call[:2]==['git','push'] for call in calls))
+        self.assertFalse(any((call[0]=='git' and 'push' in call) for call in calls))
         self.assertNotIn('publishedHead',report)
         self.assertEqual(report['phase'],'waiting-review')
         self.assertEqual(len(reads),2)
@@ -171,7 +188,7 @@ class RepairReviewBoundaryTests(unittest.TestCase):
 
     def test_completed_review_allows_validated_repair_to_publish(self):
         calls,report,reads=self.repair(['completed','completed'])
-        self.assertEqual(sum(call[:2]==['git','push'] for call in calls),1)
+        self.assertEqual(sum((call[0]=='git' and 'push' in call) for call in calls),1)
         self.assertEqual(report['publishedHead'],'e'*40)
         self.assertEqual(report['phase'],'rechecked')
         self.assertEqual(len(reads),2)
@@ -338,7 +355,7 @@ class RecoveryCITests(unittest.TestCase):
     def recover(self, runs, *, pr=None, updated_head=None, pending_review=False,
                 strict=True, behind=None, mergeable=True, current_override=None,
                 rules_error=False, unresolved=False, later_runs=None, finding_path='README.md',
-                review_history=None, content_bot='', content_token='', content_slug='',
+                review_history=None, content_bot='fixture-content[bot]', content_token='fixture-installation-token', content_slug='fixture-content',
                 update_tokens=None, provenance_error=False, bad_tree=False, phase='apply',
                 delayed=False, commit_read_error=False, update_response_error=False,
                 intent_error=False, stale_plan=False, graphql_error=False,
@@ -414,7 +431,7 @@ class RecoveryCITests(unittest.TestCase):
         error = None
         plan = {'family':pr['head']['ref'].split('/')[0], 'pr':536, 'branch':pr['head']['ref'],
                 'previous':initial_sha, 'main':('f' if stale_plan else 'c')*40, 'tree':'e'*40,
-                'head':updated_head, 'app':pr['user']['login'] != 'github-actions[bot]'}
+                'head':updated_head, 'app':True}
         plan.update(plan_override or {})
         from refresh_policy import MissingProvenance
         provenance_exception = MissingProvenance('No receipt') if provenance_error == 'missing' else RuntimeError('Untrusted head')
@@ -566,7 +583,7 @@ class RecoveryCITests(unittest.TestCase):
             self.assertNotIn('refresh-repair.yml',[c[3] for c in calls if c[:3]==['gh','workflow','run']])
 
     def test_app_radar_current_base_update_uses_only_matching_app_token(self):
-        for family in ['vendor-radar','vendor-radar-bringup']:
+        for family in ['story-runner','vendor-radar','vendor-radar-bringup']:
             tokens=[]
             _,_,error=self.recover([self.run_record('pull_request','success')],
                 pr=self.radar_pr(family,True),updated_head='b'*40,content_bot='fixture-content[bot]',
@@ -583,11 +600,18 @@ class RecoveryCITests(unittest.TestCase):
             self.assertIn('need attention',error)
             self.assertEqual(tokens,[])
 
+    def test_legacy_actions_head_update_requires_app_without_fallback(self):
+        tokens=[]
+        _,_,error=self.recover([self.run_record('pull_request','success')], updated_head='b'*40,
+                               content_token='', update_tokens=tokens)
+        self.assertIn('need attention',error)
+        self.assertEqual(tokens,[])
+
     def test_configured_app_does_not_adopt_other_authors_families_or_manual_stops(self):
         pr=self.radar_pr(app=True)
         cases=[(pr,''),({**pr,'user':{'login':'other[bot]','type':'Bot'}},'fixture-content[bot]'),
                ({**pr,'user':{'login':'fixture-content[bot]','type':'User'}},'fixture-content[bot]'),
-               (self.radar_pr('story-runner',True),'fixture-content[bot]'),
+               (self.radar_pr('accuracy-engine',True),'fixture-content[bot]'),
                ({**pr,'draft':True},'fixture-content[bot]'),({**pr,'auto_merge':None},'fixture-content[bot]'),
                ({**pr,'head':{**pr['head'],'repo':{'full_name':'fork/repo'}}},'fixture-content[bot]')]
         for candidate,login in cases:
@@ -872,7 +896,7 @@ if name=='gh' and args[:2]==['pr','merge'] and os.environ['FAIL_MERGE']=='true':
                 text=True,capture_output=True,env={'PATH':str(binaries)+os.pathsep+os.environ['PATH'],
                 'CALL_LOG':str(cwd/'calls.jsonl'),'RADAR_RUN_ID':'fixture-123','GITHUB_SHA':'baseline',
                 'GITHUB_REPOSITORY':'owner/repo','ANTHROPIC_API_KEY':'fixture',
-                'GH_TOKEN':'app-fixture' if app and not bringup else 'actions-fixture',
+                'GH_TOKEN':('app-fixture' if app else '') if not bringup else 'actions-fixture',
                 'CONTENT_TOKEN':'app-fixture' if app else '', 'GH_ACTIONS_TOKEN':'actions-fixture',
                 'HAS_CONTENT_BOT':'true' if app else 'false',
                 'FAIL_DISPATCH':str(fail_dispatch).lower(),'FAIL_CREATE':str(fail_create).lower(),
@@ -891,32 +915,23 @@ if name=='gh' and args[:2]==['pr','merge'] and os.environ['FAIL_MERGE']=='true':
             self.assertFalse(any(c[0]=='gh' and c[1][0]=='workflow' for c in calls))
             self.assertTrue(all(c[2]=='actions-fixture' for c in calls if c[0]=='pnpm'))
 
-    def test_radar_dispatch_failure_preserves_recovery_opt_in(self):
+    def test_radar_missing_app_token_fails_before_remote_publication(self):
         for bringup in [False,True]:
-            result,calls=self.publish_radar(bringup,False,fail_dispatch=True)
-            self.assertEqual(result.returncode,17,result.stderr)
-            merge=next(i for i,c in enumerate(calls) if c[0]=='gh' and c[1][:2]==['pr','merge'])
-            dispatch=next(i for i,c in enumerate(calls) if c[0]=='gh' and c[1][:3]==['workflow','run','ci.yml'])
-            self.assertLess(merge,dispatch)
-            self.assertEqual(calls[dispatch][2],'actions-fixture')
-            self.assertIn('--auto',calls[merge][1])
+            result,calls=self.publish_radar(bringup,False)
+            self.assertNotEqual(result.returncode,0)
+            self.assertFalse(any((c[0]=='git' and 'push' in c[1]) or
+                                 (c[0]=='gh' and c[1][0] in ['pr','workflow']) for c in calls))
 
-    def test_radar_opt_in_failure_still_starts_ci_and_remains_visible(self):
+    def test_radar_opt_in_failure_remains_visible_without_duplicate_ci(self):
         for bringup in [False,True]:
-            for app in [False,True]:
-                with self.subTest(bringup=bringup,app=app):
-                    result,calls=self.publish_radar(bringup,app,fail_merge=True)
-                    self.assertEqual(result.returncode,19,result.stderr)
-                    dispatches=[c for c in calls if c[0]=='gh' and c[1][:3]==['workflow','run','ci.yml']]
-                    self.assertEqual(len(dispatches),0 if app else 1)
-                    if dispatches:
-                        self.assertEqual(dispatches[0][2],'actions-fixture')
-                    self.assertFalse(any(c[0]=='gh' and c[1][:2]==['issue','create'] for c in calls))
+            result,calls=self.publish_radar(bringup,True,fail_merge=True)
+            self.assertEqual(result.returncode,19,result.stderr)
+            self.assertFalse(any(c[0]=='gh' and c[1][0] in ['workflow','issue'] for c in calls))
 
     def test_radar_issue_fallback_uses_actions_token_with_app_publication(self):
         for bringup in [False,True]:
             result,calls=self.publish_radar(bringup,True,fail_create=True)
-            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertEqual(result.returncode,18,result.stderr)
             issues=[c for c in calls if c[0]=='gh' and c[1][:2]==['issue','create']]
             self.assertEqual(len(issues),1)
             self.assertEqual(issues[0][2],'actions-fixture')
@@ -934,13 +949,13 @@ if name=='gh' and args[:2]==['pr','merge'] and os.environ['FAIL_MERGE']=='true':
     def test_publication_uses_the_bot_identity_accepted_by_recovery(self):
         root=Path(__file__).resolve().parents[2]
         source=(root/'.github/workflows/story-runner.yml').read_text().split('      - name: Open PR if anything changed\n',1)[1]
-        self.assertIn('GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}',source)
+        self.assertIn('GH_TOKEN: ${{ steps.content-app.outputs.token }}',source)
         self.assertNotIn('UM_BOT_PR_PAT',source)
 
     def test_unsupported_grade_change_stops_before_remote_push_pr_or_review(self):
         root=Path(__file__).resolve().parents[2]
         source=(root/'.github/workflows/story-runner.yml').read_text().split('      - name: Open PR if anything changed\n',1)[1]
-        script='\n'.join(line[10:] for line in source.split('        run: |\n',1)[1].split('\n      - name: Continue main CI',1)[0].splitlines())
+        script='\n'.join(line[10:] for line in source.split('        run: |\n',1)[1].split('\n      - name:',1)[0].splitlines())
         with tempfile.TemporaryDirectory() as directory:
             cwd=Path(directory)
             arena=cwd/'open-rankings/fixture'; (arena/'evidence').mkdir(parents=True)

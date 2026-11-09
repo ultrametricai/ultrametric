@@ -27,7 +27,7 @@ class ReviewGateTests(unittest.TestCase):
                  pages=None, changed=False, metadata_error=False, status_read_error=False,
                  author=None, pr_head=None, final_head=None, final_state='open',
                  status_runs=None, poll_run_ids=None, internal=None, files=None,
-                 file_mode="100644", reviews=None, final_override=None, proof_error=False):
+                 file_mode="100644", reviews=None, final_override=None, proof_error=False, content_bot='', bot_id=99):
         source = (Path(__file__).resolve().parents[2] / '.github/workflows/review-findings.yml').read_text()
         selection = source.split('        run: |\n', 1)[1].split('\n  findings:', 1)[0]
         selection = '\n'.join(line[10:] if line.startswith('          ') else line for line in selection.splitlines())
@@ -60,6 +60,8 @@ class ReviewGateTests(unittest.TestCase):
             endpoint = args[2]
             reads.append(endpoint)
             data = json.loads(input) if input else None
+            if endpoint.startswith('users/'):
+                return json.dumps({'id':bot_id,'type':'Bot'})
             if '/pulls/999' in endpoint:
                 raise RuntimeError('unrelated PR must not block this CI run')
             if '/pulls/513' in endpoint:
@@ -98,7 +100,7 @@ class ReviewGateTests(unittest.TestCase):
             raise AssertionError(endpoint)
 
         env = {'REPO': 'owner/repo', 'SERVER_URL': 'https://github.com', 'RUN_ID': '123',
-               'TARGET_PR': target, 'TARGET_HEAD': head}
+               'TARGET_PR': target, 'TARGET_HEAD': head, 'CONTENT_BOT_LOGIN':content_bot}
         namespace = {}
         with patch.dict(os.environ, env), patch('subprocess.check_output', side_effect=output), patch('refresh_policy.verify_provenance',side_effect=RuntimeError('No canonical receipt') if proof_error else None):
             try:
@@ -128,6 +130,14 @@ class ReviewGateTests(unittest.TestCase):
     def test_authenticated_scoped_internal_head_passes_all_existing_review_gates(self):
         posts,_=self.run_gate(internal=self.internal_pr())
         self.assertEqual(posts[0]['state'],'success')
+
+    def test_content_app_story_head_keeps_exact_receipt_scope_and_numeric_identity_gates(self):
+        pr={**self.internal_pr(),'user':{'id':99,'login':'fixture-content[bot]','type':'Bot'}}
+        for options,expected in [({},'success'), ({'proof_error':True},'pending'),
+                ({'bot_id':100},'pending'), ({'content_bot':'other[bot]'},'pending'),
+                ({'files':[{'filename':'rankings-engine/__tests__/claims.test.ts','status':'modified'}]},'pending')]:
+            posts,_=self.run_gate(**{'internal':pr,'content_bot':'fixture-content[bot]',**options})
+            self.assertEqual(posts[0]['state'],expected)
 
     def test_internal_hold_revokes_prior_green_even_if_it_arrives_on_final_read(self):
         for label in ['hold','manual-merge','automerge-hold','do-not-merge']:
