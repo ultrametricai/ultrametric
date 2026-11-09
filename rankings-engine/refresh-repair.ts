@@ -9,6 +9,7 @@ import { unsupportedFlips } from './scripts/check-refresh-stability.mjs'
 import { sameEvidence } from './evidence-source.mjs'
 import { CELL_HASH_VERSION, PROMPT_VERSION, RawVerdictSchema, SYSTEM, cellHash, judgePrompt, validateVerdictRules } from './stages/judge'
 import { llmJson } from './llm'
+import { prepareRetainedRepair } from './refresh-reconciliation'
 import { runDerive } from './stages/derive'
 import { combineSloHistory, isSloHistoryShard, readSloHistorySources } from '../lib/slo'
 
@@ -220,23 +221,10 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     const content = mergeData(show(base, file), show(main, file), proposed, file)
     plan.push([file, content])
   }
-  // The scheduled producer keeps raw model output separate from retained canonical
-  // decisions. This repair path cannot yet carry that provenance through a repair.
-  // Inspect the effective merge (including retention inherited from main) before
-  // applying files or paying for reviewer audits, rather than retagging raw caches.
+  // Authenticate retention against the effective merge before writes or paid work.
   const planned = new Map(plan)
   const candidate = (file: string): string | null => planned.has(file) ? planned.get(file)! : show(main, file)
-  if (candidate(`rankings-engine/cache/refresh-retention/${arena}/decisions.json`) !== null) {
-    const retainedRows = VerdictSchema.array().parse(JSON.parse(candidate(`open-rankings/${arena}/verdicts.json`) ?? 'null'))
-    for (const row of retainedRows) {
-      if (![row.productId, row.storyId].every(id => /^[a-z0-9][a-z0-9_-]*$/.test(id))) throw new Error('Unsafe retained cell identity')
-      const text = candidate(`rankings-engine/cache/judge/${arena}/${row.productId}/${row.storyId}.json`)
-      const raw = text === null ? null : z.object({ verdict: VerdictSchema }).safeParse(JSON.parse(text))
-      if (!raw || !raw.success || !isDeepStrictEqual(raw.data.verdict, row)) {
-        throw new Error(`${arena}/${key(row)}: retained producer decision needs human review; automated repair does not support retention provenance`)
-      }
-    }
-  }
+  const retention = prepareRetainedRepair({ arena, main, candidate, targets: [...targets.values()].map(key) })
   // Validate the combined candidate before writes or paid repair work. A new shard
   // can conflict with a different shard or the legacy log without a Git conflict.
   if (plan.some(([file]) => isSloHistoryShard(file) || file === 'open-rankings/slo-history.jsonl')) {
@@ -246,15 +234,11 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     }
     combineSloHistory([...sources].map(([source, text]) => ({ source, text })))
   }
-  for (const [file, content] of plan) {
-    if (content === null) { fs.rmSync(file, { force: true }); continue }
-    fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, content)
-  }
   const dir = `open-rankings/${arena}`
   const before = VerdictSchema.array().parse(JSON.parse(show(main, `${dir}/verdicts.json`)!))
-  const rawAfter = VerdictSchema.array().parse(JSON.parse(fs.readFileSync(`${dir}/verdicts.json`, 'utf8')))
-  const products = ProductSchema.array().parse(JSON.parse(fs.readFileSync(`${dir}/products.json`, 'utf8')))
-  const stories = StorySchema.array().parse(JSON.parse(fs.readFileSync(`${dir}/stories.json`, 'utf8')))
+  const rawAfter = VerdictSchema.array().parse(JSON.parse(candidate(`${dir}/verdicts.json`) ?? 'null'))
+  const products = ProductSchema.array().parse(JSON.parse(candidate(`${dir}/products.json`) ?? 'null'))
+  const stories = StorySchema.array().parse(JSON.parse(candidate(`${dir}/stories.json`) ?? 'null'))
   if (!isDeepStrictEqual(products, ProductSchema.array().parse(JSON.parse(show(main, `${dir}/products.json`)!)))) {
     throw new Error('Product roster edits require a dedicated reviewed change')
   }
@@ -268,21 +252,27 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
   const rawPacks: Record<string, Evidence[]> = Object.create(null), renames: Record<string, Record<string, string>> = Object.create(null)
   for (const product of products) {
     const file = `${dir}/evidence/${product.id}.json`
-    rawPacks[product.id] = EvidenceSchema.array().parse(JSON.parse(fs.readFileSync(file, 'utf8')))
+    rawPacks[product.id] = EvidenceSchema.array().parse(JSON.parse(candidate(file) ?? 'null'))
     const old = show(main, file)
     oldPacks[product.id] = old === null ? [] : EvidenceSchema.array().parse(JSON.parse(old))
     const normalized = rekeyEvidence(oldPacks[product.id], rawPacks[product.id])
     packs[product.id] = normalized.evidence; renames[product.id] = normalized.renamed
-    write(file, normalized.evidence)
   }
   const after = rawAfter.map(row => remapVerdictEvidence(row, renames[row.productId]))
   let result = restoreChurn(before, after, oldPacks, packs)
   let rows = result.rows
+  retention?.assertPreserved(rows, packs)
+  for (const [file, content] of plan) {
+    if (content === null) { fs.rmSync(file, { force: true }); continue }
+    fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, content)
+  }
+  for (const product of products) write(`${dir}/evidence/${product.id}.json`, packs[product.id])
   const audits: Array<{ thread: string; cell: string; addressed: boolean; reason: string }> = []
   const rejudged: string[] = []
   const modelJudgments = new Map<string, Verdict>()
   const scopedJudge = async (index: number, extra: string) => {
     const target = rows[index]
+    if (retention?.cells.has(key(target))) throw new Error('Retained review target needs human review')
     const product = products.find(product => product.id === target.productId)!
     const story = stories.find(story => story.id === target.storyId)!
     if (!keyed || product.affiliation) throw new Error(`Cell requires a keyed, non-affiliated scoped re-judge: ${key(target)}`)
@@ -329,6 +319,8 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
   result = restoreChurn(before, rows, oldPacks, packs)
   if (result.blocked.length) throw new Error(`Prior citations disappeared; refresh evidence before repairing: ${result.blocked.join(', ')}`)
   rows = result.rows
+  const caches: Record<string, unknown> = {}
+  const cacheWrites: Array<[string, unknown]> = []
   for (const row of rows) {
     const story = stories.find(story => story.id === row.storyId)
     if (!story || !packs[row.productId]) throw new Error('Cell is outside the current product/story catalog')
@@ -337,17 +329,28 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     const cacheFile = `rankings-engine/cache/judge/${arena}/${row.productId}/${row.storyId}.json`
     const expected = cellHash(story, packs[row.productId], PROMPT_VERSION)
     const cached = fs.existsSync(cacheFile) ? JSON.parse(fs.readFileSync(cacheFile, 'utf8')) : null
+    if (retention?.cells.has(key(row))) {
+      // Raw model proposals remain separate from retained canonical decisions.
+      caches[key(row)] = cached
+      continue
+    }
     const sourceRow = rawAfter.find(source => key(source) === key(row))
     // A cache can migrate across evidence-label changes only after proving its original
     // payload hash and original judgment match. The evidence text/order is unchanged.
     const sourceValid = sourceCacheMatches(cached, sourceRow, story, rawPacks[row.productId])
+      && sourceRow !== undefined && isDeepStrictEqual(remapVerdictEvidence(sourceRow, renames[row.productId]), row)
     const savedModelJudgment = modelJudgments.get(key(row))
     const freshModel = savedModelJudgment !== undefined && isDeepStrictEqual(savedModelJudgment, row)
     if (!freshModel && !sourceValid) {
       throw new Error(`Cell needs a scoped re-judge under the current rubric: ${key(row)}`)
     }
-    write(cacheFile, { ...cached, hash: expected, keyVersion: CELL_HASH_VERSION, verdict: row })
+    const next = { ...cached, hash: expected, keyVersion: CELL_HASH_VERSION, verdict: row }
+    caches[key(row)] = next; cacheWrites.push([cacheFile, next])
   }
+  const ledger = retention?.ledgerFor(rows, packs, caches)
+  // Validate the entire output before changing caches, canonical rows or the ledger.
+  for (const [file, value] of cacheWrites) write(file, value)
+  if (ledger) write(`rankings-engine/cache/refresh-retention/${arena}/decisions.json`, ledger)
   write(`${dir}/verdicts.json`, rows)
   // Derived timestamps and fingerprints cannot establish repair progress. Compare
   // canonical arena inputs with the actual PR head before regenerating projections.
