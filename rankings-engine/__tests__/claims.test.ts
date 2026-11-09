@@ -105,3 +105,22 @@ describe('feature-flag export claims', () => {
     expect(unmappedClaims(data, 'unleash').some(item => item.quote === quote)).toBe(false)
   })
 })
+
+describe('feature-flag background automation claims', () => {
+  const data = loadCategory('feature-flags')
+  const storyId = 'agentic-autonomous-automation'
+
+  it.each([
+    { product: 'flagsmith', quote: 'Define stages that your flags progress through automatically, with triggers and actions that control rollouts to selected environments and audiences.' },
+    { product: 'unleash', quote: 'you can define a reusable, structured rollout process that progresses automatically while monitoring application health' },
+  ])('keeps $product automatic rollout progression claimed on the cited background automation story', ({ product, quote }) => {
+    const claim = data.claims[product]!.find(item => item.quote === quote)!
+    const verdict = data.verdicts.find(item => item.productId === product && item.storyId === storyId)!
+    const evidence = data.evidence[product]!.find(item => item.excerpt === quote && item.url === claim.url)!
+    expect(claim.sourceTier).toBe('claimed-docs')
+    expect(verdict.evidenceIds).toContain(evidence.id)
+    expect(verdict.support?.citations).toContainEqual({ evidenceId: evidence.id, quote })
+    expect(claim.storyIds).toContain(storyId)
+    expect(claimStatus(data, product, storyId)).toBe('claimed-unverified')
+  })
+})
