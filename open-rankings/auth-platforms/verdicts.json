@@ -6368,6 +6368,1146 @@
     }
   },
   {
+    "productId": "supabase",
+    "storyId": "act-as-oauth-provider",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies, since an auth service could plausibly act as an OAuth/OIDC provider, but the evidence pack shows no such capability. The evidence covers Supabase consuming external OAuth providers (social login, custom OAuth/OIDC providers, third-party JWTs) and exposing a JWKS URL for its own tokens. These are adjacent features, not issuing tokens to third-party clients. One community user wants to use Supabase Auth as an IdP and is building that on top of it themselves, which is a user-side workaround and earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can turn my own application into an OAuth provider that issues tokens to third-party clients (\"Sign in with my app\")",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "active-session-visibility",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows only adjacent session controls: session lifetime, refresh tokens, multi-device sign-in behavior, and detection of reused revoked refresh tokens. Nothing documents letting users or admins list active sessions or devices, or revoke them individually or all at once.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a security-engineer, I can let users and admins see active sessions and devices and revoke them individually or all at once",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Live probes confirm Supabase serves an llms.txt (HTTP 200) that points to a single-file full-documentation version. The Auth guide is also served as raw markdown at /docs/guides/auth.md, so an agent can be pointed directly at machine-readable Auth docs. missing for 10: first-party documentation describing agent/LLM usage of these files, independent or community corroboration of agents using them, and an Auth-specific llms.txt section (the file shown is Supabase-wide).",
+    "evidenceIds": [
+      "supabase-probe-1",
+      "supabase-probe-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "supabase-probe-1",
+          "quote": "For the complete documentation in a single file, see [Full Documentation]"
+        },
+        {
+          "evidenceId": "supabase-probe-2",
+          "quote": "Supabase Auth makes it easy to implement authentication"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An auth service could plausibly offer in-product AI insights, such as anomaly or sign-in pattern suggestions, so this axis applies. The evidence pack documents only authentication features (OAuth, MFA, SSO, JWTs, hooks, sessions). The llms.txt and markdown docs probes make documentation readable by AI tools, which is not AI-generated insight from user data inside the product, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A background-automation story is a fair question for an auth SaaS, so the axis applies, but the evidence shows no scheduled jobs or autonomous background workflows. Auth hooks run Postgres functions at sign-in lifecycle points, and database triggers can link auth data to your tables. These are event-driven building blocks inside the auth flow, not automations that run on their own, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A built-in AI assistant is a fair question for a SaaS auth service with a dashboard, so the axis applies. However, nothing in the evidence describes an in-product assistant that users can delegate tasks to. The llms.txt, markdown docs and OpenAPI probes are machine-readable documentation, not a built-in assistant, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-headless",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Headless or CI automation is a fair question for an auth service, so the axis applies. The pack never documents a CLI, a CI workflow, or a headless or self-hosted run mode for automation. The OpenAPI spec probe and the self-hostable GitHub repo are at most developer building blocks, not a documented headless/CI capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "high",
+    "rationale": "Supabase Auth is an authentication and authorization service, not an agent or assistant that consumes tools. Plugging MCP servers into it so it can use their tools is a category error for this product type. Nothing in the evidence shows it acting as an MCP client.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Supabase Auth is a SaaS authentication service, not an agent, so shipping an official MCP server is a fair question for it. However, nothing in the evidence pack mentions an MCP server. The llms.txt, markdown docs and OpenAPI probes are adjacent AI-readability and API artifacts, not an MCP server an agent can connect to.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-nl-commands",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Natural-language operation is a fair question for an auth service, since it could ship an AI assistant or agent interface, so the axis applies. However, the evidence never shows Supabase Auth accepting natural-language commands. The probes show only an llms.txt file, Markdown docs and an OpenAPI spec, which are developer building blocks that make docs and APIs readable by LLMs, not a natural-language control capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can operate the product with natural-language commands",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-official-cli",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An official CLI is a fair question for an auth service and its ecosystem, so the axis applies. However, nothing in the evidence pack documents a Supabase CLI. The llms.txt, markdown docs and OpenAPI probes are adjacent agent-friendly artifacts, not a CLI, and earn no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can use an official CLI",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-public-api",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Supabase Auth has its own programmatic surface: an OpenAPI spec responds at supabase.com/openapi.json, each project exposes a JWKS URL, the client library takes tokens via an `accessToken` option, and there is a JavaScript auth-api reference page. However, the evidence does not show that the OpenAPI spec covers Auth endpoints, and no quoted docs enumerate Auth REST operations. Machine-readable docs (llms.txt, .md pages) support agent use. missing for 10: explicit documentation of the Auth REST endpoints (sign-up, sign-in, admin/user management), confirmation that the OpenAPI spec covers Auth, and independent or hands-on corroboration of driving Auth via the API.",
+    "evidenceIds": [
+      "supabase-probe-3",
+      "supabase-docs-17",
+      "supabase-docs-16",
+      "supabase-docs-18",
+      "supabase-probe-1",
+      "supabase-probe-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "supabase-probe-3",
+          "quote": "contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "supabase-docs-17",
+          "quote": "Supabase Auth exposes a [JSON Web Key](https://datatracker.ietf.org/doc/html/rfc7517) Set URL for each Supabase project:"
+        },
+        {
+          "evidenceId": "supabase-docs-16",
+          "quote": "you can pass it to the client library using the `accessToken` option."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents no first-party feature for issuing scoped, least-privilege API credentials to an agent. What it does show are developer building blocks: RLS-scoped user tokens, a Custom Access Token Hook for editing claims, a JWT expiry setting, and the option to sign your own JWTs with an imported key. A developer could construct agent credentials from these, but that does not count as the product shipping the capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-sdks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Supabase Auth documents an official client library. It covers creating Supabase clients for SSR frameworks like Next.js and SvelteKit, automatic JWT handling on every API call, and an `accessToken` option, all under a JavaScript auth-api reference. Community feedback points to coverage gaps: one user yearned for a first-party iOS SDK, and another said React Native OAuth guidance was thin. Missing for 10: evidence of SDK breadth across languages and platforms (e.g., first-party iOS/mobile SDKs), detailed SDK reference content, and independent hands-on corroboration of SDK quality.",
+    "evidenceIds": [
+      "supabase-docs-11",
+      "supabase-docs-15",
+      "supabase-docs-16",
+      "supabase-docs-18",
+      "supabase-comm-4",
+      "supabase-comm-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can build against official SDKs",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-11",
+          "quote": "Create a Supabase client for SSR frameworks like Next.js and SvelteKit."
+        },
+        {
+          "evidenceId": "supabase-docs-16",
+          "quote": "you can pass it to the client library using the `accessToken` option."
+        },
+        {
+          "evidenceId": "supabase-docs-15",
+          "quote": "their access token JWT is automatically managed and sent for you with every API call."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents no registrable outbound HTTP webhooks that a programmatic consumer can subscribe to. It mentions Auth hooks as Postgres functions at lifecycle points and database triggers. These are developer building blocks for customizing behavior, not an event-subscription webhook capability, so they earn no credit for this story.",
+    "evidenceIds": [
+      "supabase-docs-7"
+    ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-7",
+          "quote": "Customize Auth behavior with Postgres functions at key lifecycle points."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows a JavaScript Auth API reference page and a published OpenAPI spec (openapi.json). Neither is evidence of an interactive explorer or runnable examples: a machine-readable spec is a building block, and a static reference page is not interactive. No evidence shows a try-it console, playground, or executable snippets, so the applicable axis is unevidenced.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "api-machine-spec",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "A probe confirms a downloadable OpenAPI document at supabase.com/openapi.json (HTTP 200, contains an \"openapi\" key), so a machine-readable spec exists on the vendor's site. Nothing in the evidence shows that this spec covers the Supabase Auth endpoints rather than another Supabase API. The llms.txt and markdown docs are related machine-readable resources, not API specs. Missing for 10: confirmation that the spec documents the Auth API, first-party docs describing the spec and how to download it, and independent or hands-on corroboration of its use.",
+    "evidenceIds": [
+      "supabase-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
+      "citations": [
+        {
+          "evidenceId": "supabase-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://supabase.com/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A sandbox or test environment is a fair axis for an auth service, but the evidence pack never documents one for Supabase Auth: no test mode, local emulator, branching, or isolated non-production project. The pack covers only RLS scoping, auth hooks, MFA, SSO and anonymous sign-ins, which are adjacent features and not sandbox isolation from production data.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Versioned APIs with a documented deprecation policy is a fair axis for a hosted auth API, but nothing in the evidence pack mentions API versioning, version pinning, or deprecation timelines. The OpenAPI spec probe shows a machine-readable API description exists, but that is an adjacent feature and says nothing about versioning or deprecation guarantees.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "audit-logs-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Audit logging and SIEM export are a fair axis for an auth service, but the evidence pack never documents auth or admin audit logs, tamper evidence, log drains, or SIEM streaming or export. Postgres triggers and lifecycle hooks are developer building blocks a user could wire up themselves, not the capability itself, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a security-engineer, I can capture tamper-evident audit logs of authentication and admin activity and stream or export them to my SIEM",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "auth-event-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents no registrable auth webhooks or event streams for sign-ups, sign-ins, or user changes. It only mentions connecting auth data to your own tables via Postgres triggers and customizing Auth behavior with Postgres functions at lifecycle points. These are developer building blocks and adjacent customization hooks, not an outbound event subscription capability, so they earn no credit.",
+    "evidenceIds": [
+      "supabase-docs-2",
+      "supabase-docs-7"
+    ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a developer, I can subscribe to webhooks or event streams for auth events (sign-ups, sign-ins, user changes) to keep my systems in sync",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-2",
+          "quote": "You can connect this data to your own tables using triggers and foreign key references."
+        },
+        {
+          "evidenceId": "supabase-docs-7",
+          "quote": "Customize Auth behavior with Postgres functions at key lifecycle points."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk operations, such as bulk user import, deletion or updates, are a fair question for an auth service, so the axis applies. Nothing in the evidence documents a bulk-operation capability in Supabase Auth. Triggers, Postgres hooks and an OpenAPI spec are developer building blocks or adjacent features, not bulk operations themselves.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "automation-rules-engine",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Supabase Auth documents its own hook mechanism: Postgres functions run automatically at key auth lifecycle points, such as the Custom Access Token Hook that modifies token claims. That is event-triggered custom logic, but it is code-level hooks at fixed points rather than a rule-definition system. Database triggers on auth data come from the underlying Postgres platform and earn no credit. missing for 10: a declarative rule/condition builder, a documented list of supported auth events and actions, AI-native rule authoring, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "supabase-docs-7",
+      "supabase-docs-14"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-7",
+          "quote": "Customize Auth behavior with Postgres functions at key lifecycle points."
+        },
+        {
+          "evidenceId": "supabase-docs-14",
+          "quote": "You can use a [Custom Access Token Hook](/docs/guides/auth/auth-hooks/custom-access-token-hook) to add, remove or change claims present in the token."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Supabase Auth is an authentication and authorization service, so scheduling recurring jobs or workflows falls outside its product category. Nothing in the evidence shows Auth itself shipping a scheduler. Its lifecycle hooks and triggers (supabase-docs-7, supabase-docs-2) are event-driven responses, not recurring schedules, and do not make this axis applicable.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Supabase Auth has automation-like customization points: Postgres function hooks at lifecycle points and triggers. So asking whether those can be versioned, reviewed and rolled back is a fair question. Nothing in the evidence documents version history, review workflows or rollback for hooks, triggers or auth configuration.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "bot-attack-protection",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The pack documents adjacent controls: password character requirements, refresh-token reuse detection, and TOTP/phone MFA. None of these is built-in bot protection (e.g., CAPTCHA), credential-stuffing defense (e.g., leaked-password checks), or brute-force throttling or rate limiting on auth endpoints. Adjacent controls earn no credit, so the verdict is none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a security-engineer, I can rely on built-in protection against bots, credential stuffing, and brute-force attacks on the auth flows",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "bulk-user-import-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no documentation of bulk user import, password-hash import, or user export for Supabase Auth. The nearest items are linking auth data to your own tables with triggers and a community remark that copying user data to a public table is trivial. Both are adjacent workarounds, not a documented migration capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can bulk-import existing users — including password hashes — and export them again, so I am never locked in",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "deployment-data-control",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "None of the evidence documents self-managed deployment, a private or dedicated instance, or running Supabase Auth against your own database. The GitHub repo snippets describe configuration options (signup toggles, password rules, refresh-token rotation) but never state the server can be self-hosted. 'Standalone product' and 'connect this data to your own tables' describe how the product is used and how its data links to your tables, not where it runs.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a security-engineer, I can control where the auth system and its user data run — self-managed deployment, private instance, or my own database",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "device-flow-for-cli-agents",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Device authorization is a fair question for an authentication service, so the axis applies. The evidence covers social OAuth providers, magic links/OTP, MFA, SAML SSO, JWTs and refresh tokens, but nothing documents an OAuth device authorization grant for CLIs or headless agents. Without that, the verdict is none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can authenticate CLIs and headless agents via the OAuth device authorization flow instead of pasting long-lived secrets",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "edge-middleware-route-protection",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Supabase documents a first-party SSR client for Next.js and SvelteKit and ships a Next.js App Router template with cookie-based auth, so the framework-SDK part of the story is evidenced. Nothing in the pack documents route-protection middleware or session verification at the edge. The JWKS URL is only a building block for that and earns no credit. missing for 10: documented middleware for protecting routes, edge-runtime session verification, coverage of peer frameworks beyond a passing mention, independent hands-on corroboration",
+    "evidenceIds": [
+      "supabase-docs-11",
+      "supabase-docs-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can protect routes with first-party framework SDKs and middleware (Next.js and peers) that verify sessions at the edge",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-11",
+          "quote": "Create a Supabase client for SSR frameworks like Next.js and SvelteKit."
+        },
+        {
+          "evidenceId": "supabase-docs-19",
+          "quote": "A Next.js App Router template configured with cookie-based auth using Supabase, TypeScript and Tailwind CSS."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "enterprise-saml-oidc-sso",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Supabase Auth documents enterprise Single Sign-On over SAML 2.0. OIDC is only covered through a generic Custom OAuth/OIDC provider mechanism on the social-login page, not as enterprise workforce SSO, and a community user was unsure whether OIDC-based SSO is supported. missing for 10: documented OIDC enterprise SSO, named Okta/Entra/Google Workspace setup guides, workforce-specific configuration detail (domain mapping, attribute mapping), independent hands-on corroboration.",
+    "evidenceIds": [
+      "supabase-docs-8",
+      "supabase-docs-12",
+      "supabase-comm-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can connect enterprise identity providers over SAML and OIDC (Okta, Entra, Google Workspace) for workforce sign-in",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-8",
+          "quote": "Add Single Sign-On for enterprise applications with SAML 2.0."
+        },
+        {
+          "evidenceId": "supabase-docs-12",
+          "quote": "To add a provider that isn't listed, use [Custom OAuth/OIDC Providers](/docs/guides/auth/custom-oauth-providers)."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "fine-grained-authorization",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Supabase Auth documents row-level, policy-based authorization: its auth token scopes database access row by row when paired with Postgres RLS policies. Custom claims can be injected via the Custom Access Token Hook, and community users report building on RLS enforcement. However, the evidence is a thin documentation mention tied to RLS, with no dedicated policy engine or relationship-based (ReBAC) model, and one community member looked for an external AuthZ provider. missing for 10: in-depth documentation of policy authoring, relationship-based authorization model, authorization outside Postgres RLS, independent hands-on corroboration of fine-grained policy depth.",
+    "evidenceIds": [
+      "supabase-docs-3",
+      "supabase-docs-14",
+      "supabase-comm-6",
+      "supabase-comm-9"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can express fine-grained, resource-level authorization (relationship- or policy-based) beyond simple roles",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-3",
+          "quote": "The Auth Token scopes database access on a row-by-row level when used along with [RLS policies](/docs/guides/database/postgres/row-level-security)."
+        },
+        {
+          "evidenceId": "supabase-docs-14",
+          "quote": "You can use a [Custom Access Token Hook](/docs/guides/auth/auth-hooks/custom-access-token-hook) to add, remove or change claims present in the token."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "guided-competitor-migration",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack contains no vendor-maintained migration guide or tooling for moving users off a competing auth provider, and nothing about importing password hashes to avoid forced resets. The Third-Party Auth item (using Clerk/Auth0/Firebase/Cognito/WorkOS JWTs with Supabase APIs) lets you keep the other provider rather than migrate off it, so it is an adjacent feature and earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a founder, I can follow vendor-maintained migration guides or tooling for moving off a competing auth provider without forcing password resets",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "human-approval-for-agent-actions",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Asynchronous human approval of agent transactions is a fair question for an auth provider, but the evidence pack does not document CIBA or any out-of-band approval flow. The closest items are adjacent: MFA with TOTP or phone at sign-in, and Postgres auth hooks at lifecycle points. Neither provides per-transaction asynchronous human confirmation for an autonomous agent.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can require asynchronous human approval (e.g. CIBA-style confirmation) before an autonomous agent completes a sensitive transaction",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "m2m-client-credentials",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Machine-to-machine credentials are a fair question for an auth product, so the axis applies. However, the evidence pack never documents an OAuth client-credentials grant or any way to issue service or agent credentials. Self-signed JWTs via an imported signing key, third-party provider JWTs, and anonymous sign-ins are developer building blocks or adjacent features, not this capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can issue machine-to-machine credentials (client-credentials flow) so backend services and agents authenticate without a human in the loop",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "mfa-second-factors",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Supabase Auth's own docs say it can add a TOTP second factor (or phone) to user sign-in, which covers the core authenticator-app MFA part of the story. Nothing in the pack shows backup or recovery codes, a way to require MFA for all users, or step-up enforcement. Missing for 10: backup/recovery codes, documented MFA enforcement/requirement policy, step-up authentication enforcement, in-depth MFA docs and independent hands-on corroboration.",
+    "evidenceIds": [
+      "supabase-docs-6"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can require multi-factor authentication with TOTP authenticator apps and backup codes, with step-up enforcement where needed",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-6",
+          "quote": "Add a second factor to user sign-in with TOTP or phone."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "oauth-oidc-standard-flows",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Supabase Auth documents built-in sign-in with external OAuth providers, support for custom OAuth/OIDC providers, and managed sessions with refresh tokens and rotation, so developers don't hand-roll the token protocol. However, the evidence never mentions the authorization code flow with PKCE, and a community report says the OAuth flow on React Native/Expo needed Expo AuthSession and lacked a guide. Missing for 10: explicit documentation of authorization-code-with-PKCE support, OIDC flow details, and coverage beyond web platforms (e.g., mobile OAuth guides).",
+    "evidenceIds": [
+      "supabase-gh-1",
+      "supabase-docs-12",
+      "supabase-docs-13",
+      "supabase-docs-10",
+      "supabase-gh-5",
+      "supabase-docs-15",
+      "supabase-comm-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can implement standard OAuth 2.0 / OIDC flows (authorization code with PKCE, refresh tokens) without hand-rolling protocol details",
+      "citations": [
+        {
+          "evidenceId": "supabase-gh-1",
+          "quote": "Sign in with external providers (Google, Apple, Facebook, Discord, ...)"
+        },
+        {
+          "evidenceId": "supabase-docs-12",
+          "quote": "To add a provider that isn't listed, use [Custom OAuth/OIDC Providers](/docs/guides/auth/custom-oauth-providers)."
+        },
+        {
+          "evidenceId": "supabase-docs-10",
+          "quote": "Control session lifetime, refresh tokens, and multi-device sign-in behavior."
+        },
+        {
+          "evidenceId": "supabase-gh-5",
+          "quote": "If refresh token rotation is enabled, auth will automatically detect malicious attempts to reuse a revoked refresh token."
+        },
+        {
+          "evidenceId": "supabase-docs-15",
+          "quote": "their access token JWT is automatically managed and sent for you with every API call."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Supabase publishes a machine-readable OpenAPI spec (openapi.json returns HTTP 200) and documents a JavaScript auth-api reference, so programmatic access exists. Nothing in the evidence claims or shows that every dashboard action has an API equivalent. The docs point to the dashboard 'JWT expiry limit' field for one setting without naming an API path for it. missing for 10: an explicit API/UI parity statement, documented API coverage of admin and dashboard settings (e.g. JWT expiry, provider configuration), independent hands-on corroboration of parity.",
+    "evidenceIds": [
+      "supabase-probe-3",
+      "supabase-docs-15",
+      "supabase-docs-18"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "supabase-probe-3",
+          "quote": "contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "supabase-docs-15",
+          "quote": "their access token JWT is automatically managed and sent for you with every API call"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "openness-full-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no documented first-party feature for exporting all Auth data, such as users, identities or MFA factors, in open formats for migration away. The closest item is the ability to connect Auth data to your own tables via triggers and foreign keys, which is a developer building block rather than an export or exit capability. A community comment that copying user data is 'trivial' describes a user-side workaround and earns no credit.",
+    "evidenceIds": [
+      "supabase-docs-2"
+    ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can export all of my data in open formats and leave",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-2",
+          "quote": "You can connect this data to your own tables using triggers and foreign key references."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "openness-open-license",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Several evidence items come from the public GitHub repository github.com/supabase/auth, which suggests the Auth server's source is publicly readable. However, no item states the license or confirms the repo is the full product source. A community comment praising Supabase's 'openness' is vague and does not establish licensing. Missing for 10: explicit open-source license identification, confirmation that the repo is the complete product source, and independent corroboration of self-hostable open code.",
+    "evidenceIds": [
+      "supabase-gh-1",
+      "supabase-gh-5",
+      "supabase-comm-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can read the product's source under an open license",
+      "citations": [
+        {
+          "evidenceId": "supabase-gh-1",
+          "quote": "Sign in with external providers (Google, Apple, Facebook, Discord, ...)"
+        },
+        {
+          "evidenceId": "supabase-gh-5",
+          "quote": "If refresh token rotation is enabled, auth will automatically detect malicious attempts to reuse a revoked refresh token."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "openness-self-host",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The public supabase/auth GitHub repository documents server-side configuration behavior, such as disabling signups, password rules and refresh-token rotation. This suggests the Auth server is source-available and can be run and configured by the operator. No evidence item explicitly describes self-hosting, deployment instructions or licensing, so support is only implied. Missing for 10: explicit self-hosting documentation, deployment/setup guide, open-source license confirmation, parity notes between hosted and self-hosted, hands-on self-hosting reports.",
+    "evidenceIds": [
+      "supabase-gh-2",
+      "supabase-gh-3",
+      "supabase-gh-5"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can self-host the core product",
+      "citations": [
+        {
+          "evidenceId": "supabase-gh-2",
+          "quote": "When signup is disabled the only way to create new users is through invites."
+        },
+        {
+          "evidenceId": "supabase-gh-3",
+          "quote": "Use this to disable email signups (users can still use external OAuth providers to sign up / sign in)"
+        },
+        {
+          "evidenceId": "supabase-gh-5",
+          "quote": "If refresh token rotation is enabled, auth will automatically detect malicious attempts to reuse a revoked refresh token."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "org-level-sso-domains",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Supabase Auth documents SAML 2.0 Single Sign-On for enterprise applications, and a community user describes using it for multi-tenant SSO. That suggests each customer could get its own SSO connection. The pack never documents per-organization connection management, domain verification, or just-in-time provisioning. Missing for 10: per-organization SSO connection docs, verified-domain configuration, just-in-time user provisioning, OIDC-based enterprise SSO, hands-on corroboration.",
+    "evidenceIds": [
+      "supabase-docs-8",
+      "supabase-comm-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a security-engineer, I can give each customer organization its own SSO connection with verified domains and just-in-time provisioning",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-8",
+          "quote": "Add Single Sign-On for enterprise applications with SAML 2.0."
+        },
+        {
+          "evidenceId": "supabase-comm-3",
+          "quote": "A user new to implementing multi-tenant SSO was excited about Supabase's SAML SSO."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "organizations-multitenant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no first-party organizations, memberships, or org-scoped invitation feature in Supabase Auth. What it does show are developer building blocks: linking auth data to your own tables via triggers and foreign keys, RLS row-level scoping, and custom access token claims. The user-level invite path (\"only way to create new users is through invites\") is an adjacent account-creation control, not a B2B org invitation flow, so none of this earns credit for an out-of-the-box multi-tenant org model.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a developer, I can model multi-tenant B2B apps with organizations, memberships, and invitation flows out of the box",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "passkeys-passwordless-login",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Supabase Auth's own docs say users can sign up and sign in with a Magic Link or email OTP instead of a password, which covers the passwordless half of the story. Nothing in the pack mentions passkeys or WebAuthn, and the documented MFA factors are only TOTP or phone. missing for 10: passkeys/WebAuthn sign-in support, in-depth documentation of magic link/OTP flows, independent or hands-on corroboration of passwordless sign-in.",
+    "evidenceIds": [
+      "supabase-docs-9"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can offer passkeys/WebAuthn and passwordless options like magic links or email OTP as first-class sign-in methods",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-9",
+          "quote": "Sign up and sign in users with a Magic Link or email OTP instead of a password."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "prebuilt-auth-ui",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence covers Supabase Auth's backend capabilities: auth methods, MFA, SSO, sessions, JWTs, hooks and SSR clients. Nothing documents prebuilt, customizable UI components or hosted sign-in, sign-up or profile pages. The Next.js and create-t3-turbo starter templates are project scaffolds, which count as developer building blocks rather than the named UI component or hosted-page capability, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can ship production sign-in, sign-up, and profile management with prebuilt, customizable UI components or hosted pages",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Choosing a storage region or data residency is a fair question for a hosted auth service, so the axis applies. Nothing in the evidence pack mentions region selection, data residency, or where user data is stored. The docs and GitHub items cover auth methods, JWTs, sessions, and hooks only, so the verdict is none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Supabase Auth is a hosted SaaS service that processes user data, so an AI-training opt-out or no-training commitment is a fair privacy question to ask of it. Nothing in the evidence pack addresses AI model training, data-use policies or opt-out controls; the items cover authentication, JWTs, SSO, MFA and RLS only.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data retention and deletion is a fair question for an auth service that stores user identity data, so the axis applies. The pack only documents session lifetime and JWT expiry controls, which govern token validity, not how long user data is kept or how it is deleted. There is no evidence of user deletion, retention policies, or data purge controls.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry is a fair question for an auth service and its SDKs, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics collection, or any opt-out control for Supabase Auth.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "rbac-roles-in-tokens",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Supabase Auth documents its own Custom Access Token Hook for adding or changing claims in the JWT, and documents that the Auth token scopes database access row by row through RLS policies. Together these surface authorization data in tokens and enforce it. However, the evidence shows no first-party role or permission definition model: developers must build roles in their own tables. A community member also asked which external AuthZ provider (e.g., Cerbos or Casbin) to pair with it. Missing for 10: built-in role/permission definition and management, documented RBAC guide showing role claims enforced end-to-end, independent hands-on corroboration.",
+    "evidenceIds": [
+      "supabase-docs-14",
+      "supabase-docs-3",
+      "supabase-docs-2",
+      "supabase-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can define roles and permissions and have them enforced and surfaced in session tokens for authorization checks",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-14",
+          "quote": "You can use a [Custom Access Token Hook](/docs/guides/auth/auth-hooks/custom-access-token-hook) to add, remove or change claims present in the token."
+        },
+        {
+          "evidenceId": "supabase-docs-3",
+          "quote": "The Auth Token scopes database access on a row-by-row level when used along with [RLS policies](/docs/guides/database/postgres/row-level-security)."
+        },
+        {
+          "evidenceId": "supabase-docs-2",
+          "quote": "You can connect this data to your own tables using triggers and foreign key references."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "scim-directory-sync",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "SCIM directory sync is a fair axis for an auth product with enterprise SSO, but the evidence pack never mentions SCIM, directory sync of users or groups, or IdP-driven deprovisioning. The documented SAML 2.0 SSO is an adjacent sign-in capability and does not provide provisioning or deprovisioning.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a security-engineer, I can sync users and groups from customer directories via SCIM so deprovisioning in the IdP revokes app access",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "scoped-agent-identities",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents no first-party machine identity, service account, or per-agent credential feature in Supabase Auth. RLS-scoped tokens, custom access token hooks, self-signed JWTs, JWT expiry settings and refresh-token revocation are developer building blocks for constructing agent identities, not a shipped least-privilege agent-identity capability with instant revocation, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can give each agent its own least-privilege machine identity with narrowly scoped permissions and instant revocation, instead of sharing a human's credentials",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "secure-mcp-server-auth",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Supabase Auth is an auth product, so acting as a spec-compliant OAuth authorization server for an MCP server is a fair question. The evidence only shows Supabase consuming OAuth (social/custom providers), issuing its own JWTs with a JWKS URL, and customizing token claims. None of it documents Supabase acting as an OAuth authorization server that third-party agents can register with and get scoped tokens from, and no MCP auth flow is mentioned. JWKS, custom claims and RLS scoping are only building blocks, not the capability itself.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can put a spec-compliant OAuth authorization flow in front of my MCP server so remote agents connect with scoped, verifiable tokens",
+      "citations": []
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "session-lifecycle-revocation",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Supabase Auth documents its own controls for session lifetime and refresh tokens. Access-token expiry is configurable via the 'JWT expiry limit' setting, and refresh token rotation detects reuse of revoked refresh tokens. Nothing shows an explicit, immediate server-side way to kill a compromised session, and the access JWT is not shown to be invalidated before it expires. missing for 10: documented immediate server-side session/access-token revocation (e.g., admin sign-out or revoke-session API), detail on multi-device session termination, independent hands-on corroboration.",
+    "evidenceIds": [
+      "supabase-docs-10",
+      "supabase-docs-18",
+      "supabase-gh-5"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can manage session lifecycle — expiry, refresh, and immediate server-side revocation of a compromised session",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-10",
+          "quote": "Control session lifetime, refresh tokens, and multi-device sign-in behavior."
+        },
+        {
+          "evidenceId": "supabase-docs-18",
+          "quote": "The expiry of an access token can be set in the \"JWT expiry limit\" field in [your project's auth settings]"
+        },
+        {
+          "evidenceId": "supabase-gh-5",
+          "quote": "If refresh token rotation is enabled, auth will automatically detect malicious attempts to reuse a revoked refresh token."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "social-login-breadth",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Supabase Auth's own repo documents sign-in with external providers such as Google, Apple, Facebook, and Discord. Its docs point to Custom OAuth/OIDC Providers for any unlisted provider, and providers are managed from the project's auth providers dashboard and auth config settings, so the core of the story is delivered by the product itself. Community evidence corroborates Google sign-in working but notes the React Native OAuth flow took extra effort. Missing for 10: an explicit, enumerated provider list and step-by-step configuration-only setup documentation in the evidence, plus smoother independent hands-on corroboration across client platforms.",
+    "evidenceIds": [
+      "supabase-gh-1",
+      "supabase-docs-12",
+      "supabase-gh-3",
+      "supabase-docs-18",
+      "supabase-comm-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can offer sign-in with a broad set of social and OAuth identity providers through configuration, not custom code",
+      "citations": [
+        {
+          "evidenceId": "supabase-gh-1",
+          "quote": "Sign in with external providers (Google, Apple, Facebook, Discord, ...)"
+        },
+        {
+          "evidenceId": "supabase-docs-12",
+          "quote": "To add a provider that isn't listed, use [Custom OAuth/OIDC Providers](/docs/guides/auth/custom-oauth-providers)."
+        },
+        {
+          "evidenceId": "supabase-gh-3",
+          "quote": "Use this to disable email signups (users can still use external OAuth providers to sign up / sign in)"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "supabase",
+    "storyId": "token-vending-for-agent-tools",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Supabase Auth's own docs say social-login flows return the OAuth provider's access and refresh tokens, which can be used to call that provider's API under the user's consent. That is a thin, sign-in-bound version of delegated third-party access, not a token vault or exchange service. missing for 10: a managed token vault that stores and refreshes third-party tokens, RFC 8693-style token exchange, agent-specific delegated or scoped token issuance, consent flows for APIs beyond the sign-in provider, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "supabase-docs-13",
+      "supabase-docs-12"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent obtain short-lived, user-consented tokens for third-party APIs (token vault/exchange) so tool calls run under the user's delegated authority",
+      "citations": [
+        {
+          "evidenceId": "supabase-docs-13",
+          "quote": "You can use the provider token and provider refresh token returned to make API calls to the OAuth provider."
+        },
+        {
+          "evidenceId": "supabase-docs-12",
+          "quote": "To add a provider that isn't listed, use [Custom OAuth/OIDC Providers]"
+        }
+      ]
+    }
+  },
+  {
     "productId": "workos",
     "storyId": "act-as-oauth-provider",
     "verdict": "full",
