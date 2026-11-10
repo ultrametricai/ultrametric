@@ -1,17 +1,18 @@
 {
-  "hash": "f3a8909e234dd31b4728d5f6fd4ad3fd2ac12cfaab97de8ba97f5892c6bcd18a",
+  "hash": "a03345cbde2fd5bc478bae52f4c1079c624a4572da86ba78cd95731e669eab28",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lium lets users and agents control pod lifetime. A TTL, end time or spend cap triggers automatic pod deletion, and agents can remove pods programmatically. Pod local volumes are also backed up every 6 hours and kept for 2 days, a fixed retention window with no documented user control. Missing for 10: user-configurable backup retention or opt-out, documented deletion of persistent Volumes and backups, explicit data-deletion guarantees or policy, independent corroboration.",
+    "rationale": "Lium documents its own data-lifecycle controls. Pods can be set to auto-delete when a TTL, end time or spend cap is reached. Users choose whether data persists by mounting a Volume that outlives the pod. Local-volume backups are on by default with a fixed 2-day retention window. Retention durations are not user-configurable, and deletion of account-level or platform-held data is not documented. Missing for 10: configurable backup/retention periods, documented deletion of volumes, backups and account data, deletion guarantees or a privacy/retention policy, independent corroboration.",
     "evidenceIds": [
-      "lium-docs-1",
       "lium-docs-15",
+      "lium-docs-1",
+      "lium-docs-35",
+      "lium-docs-37",
       "lium-docs-16",
-      "lium-docs-18",
-      "lium-docs-22"
+      "lium-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -23,16 +24,16 @@
           "quote": "Pick one, and the pod is deleted when it is reached: Hours... End time... Spend cap: a budget in USD"
         },
         {
+          "evidenceId": "lium-docs-35",
+          "quote": "Mount a [Volume](./volumes) at `/mnt`. It keeps your data after the pod is deleted."
+        },
+        {
+          "evidenceId": "lium-docs-37",
+          "quote": "On by default: a new pod's local volume is backed up on a regular schedule and kept 2 days"
+        },
+        {
           "evidenceId": "lium-docs-1",
           "quote": "lium up --gpu H100 --ttl 1h# auto-removes after 1h"
-        },
-        {
-          "evidenceId": "lium-docs-16",
-          "quote": "the pod's local volume is backed up every 6 hours and kept 2 days, so you can restore it on another node"
-        },
-        {
-          "evidenceId": "lium-docs-22",
-          "quote": "An agent can do everything on Lium with no browser: sign up, fund, rent, connect and remove pods."
         }
       ]
     },

@@ -1,17 +1,17 @@
 {
-  "hash": "f79183bcc09469b17891d0d9f7030b34b08ee16f981341fd634fb94bb8cab427",
+  "hash": "961fe070fda7552065312b29664b00779722e24aba362e176a95721c50a826ac",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "CoreWeave documents its own AI Object Storage, an S3-compatible service for storing training data, checkpoints, and model weights with fast access from GPU compute. It is managed separately from clusters, through Terraform buckets and the Cloud Console, so data plausibly outlives node pools. However, the evidence shows only object storage accessed over S3, not network volumes attached or mounted to instances, and it never explicitly states that data persists after teardown. Missing for 10: attachable or mountable persistent network volumes (block or shared file system), explicit documentation that storage survives node or cluster teardown, and independent or hands-on corroboration.",
+    "rationale": "CoreWeave's AI Object Storage is a first-party, S3-compatible network store for training data, checkpoints, and model weights. Its buckets are managed independently of compute (via Console and Terraform), so data plausibly outlives any one GPU node pool. However, it is object storage reached over S3/LOTA, not an attachable volume or filesystem, and no evidence says explicitly that data persists after cluster or node teardown. missing for 10: an attachable persistent volume or shared filesystem (e.g., PVC/network file storage), explicit documentation of data persisting after instance/cluster teardown, independent hands-on corroboration.",
     "evidenceIds": [
       "coreweave-docs-10",
       "coreweave-docs-6",
+      "coreweave-docs-39",
       "coreweave-docs-43",
-      "coreweave-docs-56",
-      "coreweave-docs-39"
+      "coreweave-docs-41"
     ],
     "support": {
       "relation": "direct",
@@ -24,15 +24,11 @@
         },
         {
           "evidenceId": "coreweave-docs-6",
-          "quote": "including CKS clusters, VPC networking, AI Object Storage policies and buckets"
+          "quote": "including CKS clusters, VPC networking, AI Object Storage policies and buckets, and Managed Inference resources"
         },
         {
           "evidenceId": "coreweave-docs-43",
           "quote": "Training jobs that start with a warm cache can see a 30-50% faster first epoch compared to cold reads."
-        },
-        {
-          "evidenceId": "coreweave-docs-56",
-          "quote": "CPU-only clusters can now use the LOTA endpoint for accelerated object storage access."
         }
       ]
     },

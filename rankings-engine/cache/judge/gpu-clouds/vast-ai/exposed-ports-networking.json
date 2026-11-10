@@ -1,21 +1,21 @@
 {
-  "hash": "064d91b4544cfba234d07187bc8755292527f8cd00abae89c17ead9a7af36950",
+  "hash": "d1dd682a971b0a4e92e91f68dacf07d5bc31840feb6ca1f9132238d813254a2d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Vast.ai documents opening custom ports on an instance with docker -p arguments and creates a Cloudflare tunnel for each open port, so serving applications is covered. Private networking exists as overlay networks, but the docs limit it to instances on different machines within the same physical LAN, which is a significant caveat for connecting instances generally. missing for 10: private networking across arbitrary hosts and datacenters, deeper docs on overlay network setup and management, independent hands-on corroboration of port exposure and overlay networking.",
+    "rationale": "Vast.ai documents opening custom ports with docker -p arguments and creates a Cloudflare tunnel for each open port, so applications can be served from an instance. It also documents overlay networks that give instances a private virtual LAN with direct communication on all ports. missing for 10: private overlay networking is limited to instances on machines in the same physical LAN; no detailed docs on port mapping or how serving behaves through direct ports versus tunnels; no independent or hands-on corroboration.",
     "evidenceIds": [
       "vast-ai-docs-52",
       "vast-ai-docs-49",
       "vast-ai-docs-20",
       "vast-ai-docs-12",
-      "vast-ai-docs-18"
+      "vast-ai-docs-80"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can expose ports to serve applications from my instance and connect instances over private networking",
       "citations": [
         {
@@ -29,6 +29,10 @@
         {
           "evidenceId": "vast-ai-docs-12",
           "quote": "Vast now supports creating *overlay* networks for instances, allowing client instances on different machines on the same physical LAN to share a private, virtual LAN"
+        },
+        {
+          "evidenceId": "vast-ai-docs-80",
+          "quote": "This allows direct communication between the instances on all ports, which is expected by NCCL."
         }
       ]
     },

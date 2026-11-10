@@ -1,17 +1,24 @@
 {
-  "hash": "627b6ff0f80f31435e7b18a9bb1ec34021827d1584240832f6e961ad8a94224a",
+  "hash": "022825066a0095d94f6dbc296594d32e5e9cb37809bd25dc7ff430b9e2c7f1e4",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Moving data in and out is a fair question for a GPU rental platform, but the evidence shows no S3-compatible endpoint, no cloud-storage sync, and no documented upload/download or transfer tooling (e.g. a CLI copy command). Persistent Volumes mounted at /mnt and 6-hourly local-volume backups are storage features, not ways to transfer data in or out, so they are adjacent at best.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The official Lium CLI README includes a file-copy-to-pod command, which is the product's own transfer tooling. The evidence is a single comment line, though, with no detail on direction (out of the pod), throughput, or bulk transfer. Persistent Volumes mounted at /mnt and local-volume backups concern storage and restore rather than moving data in or out, so they are not credited. Missing for 10: S3-compatible endpoints, cloud-storage sync (S3/GCS/etc.), documented copy-out/download path, transfer-tooling depth (rsync, resumable or bulk transfer), independent corroboration.",
+    "evidenceIds": [
+      "lium-gh-5"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can move data in and out efficiently — S3-compatible endpoints, cloud-storage sync, or documented transfer tooling",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "lium-gh-5",
+          "quote": "# Copy files to pod"
+        }
+      ]
     },
     "productId": "lium",
     "storyId": "data-transfer-cloud-sync"

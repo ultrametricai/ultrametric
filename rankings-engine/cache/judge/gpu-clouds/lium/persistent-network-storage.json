@@ -1,18 +1,19 @@
 {
-  "hash": "bbca5667b45c0b7443db5d898259bcba06fa8c62af5277cda40fb0d1056397c2",
+  "hash": "82ce9c21b61aa24471ad4d1fcf2f3bdd2edb50edcf6b6576b2d8428e902133d7",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Lium documents Volumes as storage that outlives pods and can be attached to a pod, mounted at /mnt. That directly covers keeping datasets and checkpoints beyond a single GPU rental. Separately, local-volume backups every 6 hours with 2-day retention can be restored on another node. missing for 10: explicit confirmation that volumes are network-attached and reattachable across different nodes or regions, documented size and pricing limits, independent or hands-on corroboration.",
+    "rationale": "Lium documents Volumes as storage that outlives pods: a volume attaches to a pod at /mnt and keeps its data after the pod is deleted, which covers the core of the story. The evidence does not say volumes are network-attached, or that one volume can be reattached to a different node or later rental, so the 'outlives any single GPU rental' part is only implied. Missing for 10: explicit network-attached storage semantics, documented reattachment of a volume to new pods on other nodes, size and region limits, and independent or hands-on corroboration.",
     "evidenceIds": [
       "lium-docs-18",
-      "lium-docs-16"
+      "lium-docs-35",
+      "lium-docs-39"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can attach persistent network storage that survives instance teardown, so datasets and checkpoints outlive any single GPU rental",
       "citations": [
         {
@@ -20,8 +21,12 @@
           "quote": "A **Volume** is storage that outlives your pods. Attach one to a pod and it is mounted at **`/mnt`**."
         },
         {
-          "evidenceId": "lium-docs-16",
-          "quote": "the pod's local volume is backed up every 6 hours and kept 2 days, so you can restore it on another node"
+          "evidenceId": "lium-docs-35",
+          "quote": "It keeps your data after the pod is deleted."
+        },
+        {
+          "evidenceId": "lium-docs-39",
+          "quote": "Click **COST HISTORY** for the last 30 days, per volume per day."
         }
       ]
     },

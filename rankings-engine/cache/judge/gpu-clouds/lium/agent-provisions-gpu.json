@@ -1,26 +1,26 @@
 {
-  "hash": "4bfb5dc21f56919f09ad2b28e66128ed5bb7329dd0eb0d575c683bb97f9939e9",
+  "hash": "9c97ecb57c63420ffac6f0d8dd6f3847fefebb077d0b54be587bb5684c11ddd8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 7,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Lium's own docs and CLI cover most of the agent lifecycle without a console. An agent can provision a pod with `lium up --gpu H100 --ttl 1h` or rent-by-spec via the API, run workloads with `lium exec` (which returns the remote exit code) or the SDK, and tear down through explicit removal, TTL, or spend-cap auto-deletion; the agents doc states this all works with no browser. Monitoring a running pod's status and health is only thinly evidenced: `lium spend` reports cost per pod, and the WebSocket covers marketplace availability rather than pod health. The OpenAPI probe at docs.lium.io returned 404, though the docs point to a spec at lium.io/api/openapi.json. Missing for 10: documented pod status/health/utilization monitoring via API, CLI or MCP; an MCP server that manages pods (the documented one only covers docs and prices); independent hands-on corroboration of the end-to-end agent flow.",
+    "rationale": "Lium's first-party docs and CLI cover the whole agent loop without a browser: rent by spec through the API or `lium up`, run workloads with `lium exec` (which returns the remote exit code), and remove pods automatically via TTL or spend cap or by the SDK after the run. Monitoring is evidenced mainly as spend tracking (`lium spend`) plus running `nvidia-smi` through exec. The OpenAPI probe 404s only hit docs.lium.io paths, while the documented schema lives at lium.io/api/openapi.json, so they are not a contradiction. missing for 10: a documented pod status/health-monitoring endpoint or command beyond spend tracking, and independent hands-on corroboration of the end-to-end flow.",
     "evidenceIds": [
       "lium-docs-1",
       "lium-docs-2",
       "lium-docs-6",
-      "lium-docs-15",
-      "lium-docs-20",
       "lium-docs-22",
       "lium-docs-23",
       "lium-docs-24",
+      "lium-docs-26",
       "lium-gh-2",
-      "lium-docs-3"
+      "lium-docs-15",
+      "lium-docs-41"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI agent, I can provision a GPU, monitor it, run a workload, and tear it down end to end through documented APIs, CLI, or MCP without a human in the console",
       "citations": [
         {

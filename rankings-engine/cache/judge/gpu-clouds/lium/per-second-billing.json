@@ -1,20 +1,21 @@
 {
-  "hash": "e5e1245b41d336aa24c010d2af7e6306ea0292471898f414c61e1def0ae82a39",
+  "hash": "57de23f36376a98c3d2104d6157dfee7892e872b51c9883189c866a026bbd9b4",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Lium's billing docs state per-second billing with no minimum, and the llms.txt probe corroborates it, so the granularity half of the story is delivered. The 'only while my instance is actually running' half is only implied: pods are auto-deleted at a TTL, end time, or spend cap, but nothing explicitly says billing stops when a pod is removed or that no charges accrue in non-running states. missing for 10: an explicit statement that billing stops on pod removal and that non-running states are not charged, independent or hands-on corroboration of actual billing behavior.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Lium's billing docs state pods are billed per second (hourly price × seconds / 3600) with no minimum and no reservation. Pods can be auto-removed by TTL, end time or spend cap, which ties charges to the pod's lifetime. Missing for 10: explicit documentation that billing stops the moment a pod is removed (or of any stopped/paused state), and independent or hands-on corroboration of the per-second billing.",
     "evidenceIds": [
       "lium-docs-13",
+      "lium-docs-33",
       "lium-probe-1",
       "lium-docs-15",
       "lium-docs-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an ML engineer, I am billed at per-second or per-minute granularity and only while my instance is actually running",
       "citations": [
         {
@@ -22,16 +23,12 @@
           "quote": "You pay **per second**: `hourly price × seconds / 3600`, with no minimum."
         },
         {
-          "evidenceId": "lium-probe-1",
-          "quote": "rent NVIDIA GPUs by the hour, billed per second"
+          "evidenceId": "lium-docs-33",
+          "quote": "Lium bills every GPU per second with no minimum and no reservation."
         },
         {
           "evidenceId": "lium-docs-15",
           "quote": "Pick one, and the pod is deleted when it is reached"
-        },
-        {
-          "evidenceId": "lium-docs-1",
-          "quote": "auto-removes after 1h"
         }
       ]
     },

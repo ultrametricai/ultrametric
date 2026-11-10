@@ -1,20 +1,20 @@
 {
-  "hash": "4dfc15ae23a08413527703e4e227b3a2d8e667083bc7e55d332d6bc3fc791bac",
+  "hash": "8df6138315b7f39d3b24bd9598ac82ff29cb46bdd095af557bf17e4b5ff1e69c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Lambda documents filesystems as a high-capacity regional file store you attach to instances to store datasets and back up system state. An S3-compatible adapter allows moving data in and out with rclone or s5cmd, and Managed Kubernetes provides shared persistent storage across 1-Click Cluster nodes. That covers the core of persistent network storage for datasets and checkpoints, though survival after instance termination is implied by the backup purpose rather than stated outright. Missing for 10: explicit documentation that filesystem data persists after instance termination and can be reattached to new instances, regional or attachment constraints, and independent or hands-on corroboration.",
+    "rationale": "Lambda documents its own regional filesystems that attach to instances to store datasets and back up system state. Existing filesystems can be attached to new 1-Click Clusters, and an S3-compatible adapter allows file access, which implies the data persists independently of any single compute rental. However, no quoted evidence states that data survives instance termination. missing for 10: explicit documentation that filesystem data persists after instance teardown, independent or hands-on corroboration of reattaching data and checkpoints to a new instance.",
     "evidenceIds": [
       "lambda-labs-docs-9",
-      "lambda-labs-docs-17",
+      "lambda-labs-docs-70",
       "lambda-labs-docs-25",
-      "lambda-labs-docs-12"
+      "lambda-labs-docs-72"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can attach persistent network storage that survives instance teardown, so datasets and checkpoints outlive any single GPU rental",
       "citations": [
         {
@@ -22,12 +22,16 @@
           "quote": "A filesystem is a high-capacity regional file store you can attach to your instance to store datasets and back up system state."
         },
         {
+          "evidenceId": "lambda-labs-docs-70",
+          "quote": "Existing filesystems in the same region can additionally be attached."
+        },
+        {
           "evidenceId": "lambda-labs-docs-25",
           "quote": "This adapter allows you to use S3-compatible tools like rclone and s5cmd to copy files to and from your filesystems and perform common file operations."
         },
         {
-          "evidenceId": "lambda-labs-docs-12",
-          "quote": "shared persistent storage across all nodes in a 1CC"
+          "evidenceId": "lambda-labs-docs-72",
+          "quote": "There is no minimum storage period, and you are not charged for ingress or egress."
         }
       ]
     },

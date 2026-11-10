@@ -1,15 +1,16 @@
 {
-  "hash": "b4d6bcaa1a94203316ef0f0d1ccbc2eae381f05c1fe606310ac97d3b10959d60",
+  "hash": "790803da4a5cbbfe1f9884f013aef5e98a9a218e6c3dd513d72741296adee7f1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Lium's SDK can run a function on an ephemeral GPU node and remove the pod afterward, so you pay nothing once the job ends. That is a serverless-like, scale-to-zero pattern for one-off jobs, but it is not an autoscaling worker pool. The rest of the product is pod rental with TTL or spend-cap auto-deletion. Missing for 10: autoscaling worker pools that scale with request load, persistent serverless endpoints or queues, cold-start and scaling configuration, and independent corroboration.",
+    "confidence": "low",
+    "rationale": "Lium's first-party SDK runs a function on a freshly rented GPU node and then removes the pod, or keeps it warm. That is a first-party, ephemeral, serverless-like execution model that avoids always-on instances. TTL and spend-cap auto-deletion plus per-second billing support the no-idle-cost goal, but each call provisions one pod rather than a scaling worker pool. missing for 10: autoscaling worker pools that scale with load, a persistent serverless endpoint or queue that scales to zero and back up, any evidence of a deployable serverless endpoint product, and independent or hands-on corroboration.",
     "evidenceIds": [
       "lium-docs-24",
       "lium-docs-2",
       "lium-docs-1",
+      "lium-docs-15",
       "lium-docs-13"
     ],
     "support": {
@@ -24,6 +25,10 @@
         {
           "evidenceId": "lium-docs-2",
           "quote": "Your agent starts a pod, runs the job and removes it, within a budget you set."
+        },
+        {
+          "evidenceId": "lium-docs-13",
+          "quote": "You pay **per second**: `hourly price × seconds / 3600`, with no minimum."
         }
       ]
     },
