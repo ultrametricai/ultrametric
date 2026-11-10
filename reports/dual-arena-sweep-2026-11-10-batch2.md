@@ -31,10 +31,12 @@ branch reconciles onto post-#685 main.
 
 notion → notes-knowledge: approved on the verification in the JSON (notion is genuinely
 absent from the roster; REST API and MCP docs verified). The scoped judge run is stopped by
-the engine's stale-peer guard: the cached verdict for
-`notes-knowledge/obsidian:agentic-agent-docs` is stale ("inputs or judge version changed"),
-which marks a pending category migration owned elsewhere. The roster entry is withheld with
-the approval on record; the bring-up executes once that migration lands.
+the engine's stale-peer guard. Diagnosis (2026-11-10): all 55 obsidian judge-cache cells are
+stale against obsidian's current evidence pack after the wave-8 API-quality evidence append
+(commit aa3e266704), while every other peer is current. Reconciling obsidian is a
+product-wide re-judge owned by the API-quality lane, not a sibling-cell fix, so the roster
+entry is withheld with the approval on record; the bring-up executes once that lane's
+reconcile lands.
 
 ## Skipped
 
