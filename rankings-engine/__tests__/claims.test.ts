@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import authyClaims from '../../open-rankings/authenticator-apps/claims/authy.json'
 import enteClaims from '../../open-rankings/authenticator-apps/claims/ente-auth.json'
 import type { Evidence } from '@/lib/schemas'
+import { loadCategory } from '@/lib/data'
+import { claimStatus } from '@/lib/claims'
 import { buildClaims, validateClaimRules } from '@/rankings-engine/stages/claims'
 
 const ev = (id: string, tier: Evidence['tier'], excerpt: string): Evidence => ({
@@ -80,5 +82,24 @@ describe('authenticator product boundaries', () => {
   it('Ente export claims do not use the Authy import extractor as export evidence', () => {
     expect(enteClaims.filter(claim => new URL(claim.url).pathname.replace(/\/$/, '') === '/help/auth/migration/authy'
       && claim.storyIds.some(id => id === 'open-format-export' || id === 'openness-full-export'))).toEqual([])
+  })
+})
+
+describe('feature-flag background automation claims', () => {
+  const data = loadCategory('feature-flags')
+  const storyId = 'agentic-autonomous-automation'
+
+  it.each([
+    { product: 'flagsmith', quote: 'Define stages that your flags progress through automatically, with triggers and actions that control rollouts to selected environments and audiences.' },
+    { product: 'unleash', quote: 'you can define a reusable, structured rollout process that progresses automatically while monitoring application health' },
+  ])('keeps $product automatic rollout progression claimed on the cited background automation story', ({ product, quote }) => {
+    const claim = data.claims[product]!.find(item => item.quote === quote)!
+    const verdict = data.verdicts.find(item => item.productId === product && item.storyId === storyId)!
+    const evidence = data.evidence[product]!.find(item => item.excerpt === quote && item.url === claim.url)!
+    expect(claim.sourceTier).toBe('claimed-docs')
+    expect(verdict.evidenceIds).toContain(evidence.id)
+    expect(verdict.support?.citations).toContainEqual({ evidenceId: evidence.id, quote })
+    expect(claim.storyIds).toContain(storyId)
+    expect(claimStatus(data, product, storyId)).toBe('claimed-unverified')
   })
 })
