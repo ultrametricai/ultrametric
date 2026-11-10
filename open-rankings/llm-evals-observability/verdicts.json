@@ -7128,13 +7128,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datadog documents an official MCP server and a programmatic API for platform access, which gives an agent a direct path to query the platform. DDSQL or natural-language querying of telemetry is also documented. The pack never shows which tools the MCP server exposes, and the evaluations API is described only for submitting evaluations, not reading them back. Missing for 10: documented MCP/API tools for querying traces and LLM spans, documented metric query endpoints, documented retrieval of eval results, and hands-on corroboration of an agent debugging workflow.",
+    "rationale": "Datadog documents an official MCP server and a general-purpose API for programmatic platform access, and its docs describe querying telemetry data via natural language or DDSQL, so an agent has a first-party path to its observability data. However, the pack never shows which MCP tools or API endpoints expose traces, metrics, or LLM evaluation results for reading. The evaluations API shown is for submitting evaluations, not querying them. Missing for 10: documented MCP tools for trace, metric, and eval queries; an explicit read API for evaluation results; hands-on corroboration of agent-driven debugging.",
     "evidenceIds": [
       "datadog-probe-4",
       "datadog-docs-10",
       "datadog-docs-1",
-      "datadog-docs-30",
-      "datadog-docs-23"
+      "datadog-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -7160,15 +7159,15 @@
     "productId": "datadog",
     "storyId": "agent-session-traces",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Datadog's Agent Observability SDKs provide automatic and manual tracing of LLM and agent applications. Spans are categorized by span kind, and the evaluations API refers to spans, traces, and sessions, so session grouping is at least implied. However, the evidence never explicitly describes nesting child spans within a multi-step agent run, or how runs are grouped into sessions or threads. missing for 10: explicit documentation of nested span hierarchies for multi-step agent runs, documented session/thread grouping of traces, independent or hands-on corroboration.",
+    "rationale": "Datadog's Agent Observability SDKs (Python, Node.js, Java, and experimental Go) provide automatic and manual instrumentation that traces LLM and agent applications as spans categorized by span kind. Sessions exist as a concept, since evaluations can be associated with spans, traces, or sessions. However, the evidence does not explicitly document parent-child span nesting for multi-step agent runs or how runs are grouped into sessions or threads. Missing for 10: explicit documentation of nested span hierarchies for agent steps, documented session/thread grouping mechanics, and hands-on corroboration.",
     "evidenceIds": [
+      "datadog-docs-12",
       "datadog-docs-14",
       "datadog-docs-17",
       "datadog-docs-29",
-      "datadog-docs-23",
-      "datadog-docs-12"
+      "datadog-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -7199,14 +7198,14 @@
     "storyId": "agent-triggers-eval-run",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Datadog's Experiments feature documents creating and versioning datasets and comparing results. The SDK and an evaluations API exist for submitting evaluations, and there is a general programmatic API plus an official MCP server. However, the evidence does not show datasets being created or experiment runs being triggered via API or SDK, and it does not show results being read back programmatically. Missing for 10: explicit programmatic dataset-creation endpoint or SDK method, documented programmatic trigger for an experiment or eval run, API for retrieving eval results, agent-driven end-to-end example, independent hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Datadog's own Experiments feature documents creating and versioning datasets and comparing results. Its SDKs and evaluations API let code submit evaluations, so the core of the story exists in the product. However, the evidence never shows an agent programmatically creating a dataset, triggering an experiment/eval run, or reading results back through the API or SDK. Submitting external evaluations is not the same as triggering an eval run. Missing for 10: documented programmatic dataset-creation API/SDK calls, a documented way to trigger an experiment or eval run from code, a documented API to read back results, and independent hands-on corroboration.",
     "evidenceIds": [
+      "datadog-docs-24",
       "datadog-docs-25",
       "datadog-docs-26",
       "datadog-docs-23",
-      "datadog-docs-22",
-      "datadog-docs-1"
+      "datadog-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -7222,6 +7221,10 @@
           "quote": "Compare results to evaluate impact"
         },
         {
+          "evidenceId": "datadog-docs-24",
+          "quote": "It helps you understand how changes to prompts, models, providers, or system architecture affect performance."
+        },
+        {
           "evidenceId": "datadog-docs-23",
           "quote": "You can use the evaluations API provided by Agent Observability to send evaluations associated with spans, traces, or sessions to Datadog."
         }
@@ -7234,15 +7237,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Datadog documents an llms.txt index at docs.datadoghq.com/llms.txt, and a probe confirms it returns HTTP 200 as the 'canonical entry point to the documentation'. Docs pages also link markdown versions (e.g. llm_observability.md, api/latest.md, mcp_server.md), and the docs include a paste-in prompt for coding agents. The probe 404 hit a different URL pattern (/llm_observability/.md) from the documented one, so it does not contradict the claim. Missing for 10: no hands-on verification that the documented .md page URLs resolve, and no independent community corroboration of agents consuming these docs.",
+    "rationale": "Datadog publishes an llms.txt documentation index, confirmed live by an HTTP 200 probe that identifies it as the canonical entry point. Docs pages also link to markdown versions, and the quickstart includes a prompt to paste into a coding agent. The probe 404 hit a malformed `/.md` path, not the documented `llm_observability.md` form, so it does not contradict the claim. Missing for 10: independent or community corroboration of agents consuming these docs in practice, and no evidence of a full-content variant (e.g. llms-full.txt).",
     "evidenceIds": [
+      "datadog-probe-1",
       "datadog-docs-6",
       "datadog-docs-8",
-      "datadog-probe-1",
       "datadog-docs-7",
       "datadog-docs-11",
-      "datadog-docs-10",
-      "datadog-docs-13"
+      "datadog-docs-13",
+      "datadog-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -7250,16 +7253,16 @@
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
-          "evidenceId": "datadog-docs-6",
-          "quote": "A documentation index is available at [/llms.txt](https://docs.datadoghq.com/llms.txt)."
-        },
-        {
           "evidenceId": "datadog-probe-1",
           "quote": "This index is the canonical entry point to the documentation. Start here for reading the docs"
         },
         {
-          "evidenceId": "datadog-docs-7",
-          "quote": "A markdown version of this page is available at [https://docs.datadoghq.com/llm\\_observability.md](https://docs.datadoghq.com/llm_observability.md)."
+          "evidenceId": "datadog-docs-6",
+          "quote": "A documentation index is available at [/llms.txt](https://docs.datadoghq.com/llms.txt)."
+        },
+        {
+          "evidenceId": "datadog-docs-11",
+          "quote": "A markdown version of this page is available at [https://docs.datadoghq.com/api/latest.md](https://docs.datadoghq.com/api/latest.md)."
         },
         {
           "evidenceId": "datadog-docs-13",
@@ -7272,12 +7275,12 @@
     "productId": "datadog",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Datadog documents its own AI-adjacent in-product capabilities: natural-language querying of telemetry data, Bits AI agents, and managed evaluations that flag issues (such as sensitive information or language mismatch) on a user's LLM spans. None of this is explicitly described as AI-generated insights or recommendations surfaced from the user's data, so support is thin and largely inferred. Missing for 10: explicit documentation of AI-generated insights/suggestions (e.g., what Bits AI does with user data), coverage beyond LLM app evaluations and NL querying, independent or hands-on corroboration.",
+    "rationale": "Datadog documents in-product AI over user data in two narrow forms: natural-language querying of infrastructure and telemetry data, and LLM-as-a-judge evaluators that flag issues in a user's LLM application spans. Neither is shown to be a general AI assistant that proactively generates insights or recommendations across monitoring data; Bits AI appears only as an agent whose usage is tracked. Missing for 10: documented general AI-generated insights/suggestions across telemetry (e.g. root-cause or anomaly explanations), detail on the natural-language query feature, hands-on or independent corroboration.",
     "evidenceIds": [
       "datadog-docs-30",
-      "datadog-docs-32",
+      "datadog-docs-37",
       "datadog-docs-18",
       "datadog-docs-21"
     ],
@@ -7288,15 +7291,11 @@
       "citations": [
         {
           "evidenceId": "datadog-docs-30",
-          "quote": "Query infrastructure resources and telemetry data using natural language or DDSQL syntax"
+          "quote": "Query infrastructure resources and telemetry data using natural language or DDSQL syntax with support for tags as table columns."
         },
         {
-          "evidenceId": "datadog-docs-32",
-          "quote": "including coding agents, knowledge agents, and Bits AI agents"
-        },
-        {
-          "evidenceId": "datadog-docs-18",
-          "quote": "Agent Observability associates evaluations with individual spans so you can view the inputs and outputs that led to a specific evaluation."
+          "evidenceId": "datadog-docs-37",
+          "quote": "Custom LLM-as-a-judge evaluators use an LLM to judge the performance of another LLM."
         },
         {
           "evidenceId": "datadog-docs-21",
@@ -7311,10 +7310,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datadog is an observability platform that could plausibly ship background automations, so this axis applies. However, the evidence pack documents no user-configurable autonomous or background automation feature such as workflows or scheduled jobs. The material shown covers API access, LLM-observability SDKs, managed evaluations and coverage-based merge blocking, which are adjacent features rather than the automation capability itself.",
+    "rationale": "The evidence pack documents no user-configurable background automation or workflow capability for Datadog, such as scheduled or triggered workflows or autonomous agents acting on the user's behalf. The closest items are adjacent features: managed LLM evaluators that 'go live' after publishing, monitoring of Bits AI agents in Agent Console, and the API and client libraries as developer building blocks. None of these is a documented autonomous automation feature for this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": []
@@ -7326,7 +7325,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence only mentions in passing that Datadog has its own \"Bits AI agents\" (named in the Agent Console docs) and offers natural-language querying of infrastructure and telemetry. That suggests a built-in AI assistant exists, but nothing documents what tasks a user can delegate to it or how. Missing for 10: first-party docs describing the Bits AI assistant and its delegable tasks, examples of task delegation or autonomous actions in the product, and independent or hands-on corroboration.",
+    "rationale": "The evidence only glances at built-in AI. The docs index mentions Bits AI agents among the agents monitored in Datadog Agent Console, and describes querying infrastructure and telemetry in natural language, which implies some in-product AI assistance. Neither item documents what tasks a user can delegate to that assistant or how. Missing for 10: first-party docs describing the built-in assistant (Bits AI), its delegable tasks and workflows, any actions it can take, and independent or hands-on corroboration.",
     "evidenceIds": [
       "datadog-docs-32",
       "datadog-docs-30"
@@ -7342,7 +7341,7 @@
         },
         {
           "evidenceId": "datadog-docs-30",
-          "quote": "Query infrastructure resources and telemetry data using natural language or DDSQL syntax"
+          "quote": "Query infrastructure resources and telemetry data using natural language"
         }
       ]
     }
@@ -7351,16 +7350,15 @@
     "productId": "datadog",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Datadog documents its own programmatic access path: a platform API authenticated with an API key header, plus official client libraries. That supports non-interactive automation. Its docs also mention CI-adjacent flows, such as launching instrumented apps with `ddtrace-run` and environment variables, and uploading coverage reports to block merges. Missing for 10: a documented official CLI or CI runner integration (e.g. pipeline actions or headless setup guides), a machine-readable OpenAPI spec (the probe found none), and hands-on corroboration of CI usage.",
+    "rationale": "Datadog documents headless programmatic access. Its API authenticates with an API key header, official client libraries are available, and `ddtrace-run` enables instrumentation via environment variables. It also has one CI-specific capability: uploading coverage reports and blocking merges on thresholds. Evidence for running the product broadly inside CI pipelines is thin. Missing for 10: a documented CI CLI or pipeline integration for general automation, end-to-end CI workflow docs, and independent or hands-on corroboration of headless/CI use.",
     "evidenceIds": [
       "datadog-docs-1",
       "datadog-docs-2",
       "datadog-docs-3",
       "datadog-docs-16",
-      "datadog-docs-31",
-      "datadog-probe-3"
+      "datadog-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -7392,7 +7390,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datadog ships its own agents (Bits AI), so it is fair to ask whether it can consume external MCP servers. The evidence pack only documents an official Datadog MCP server, which exposes Datadog to other agents. That is the server role and does not transfer to this client-side story. No evidence shows Datadog connecting to or using tools from external MCP servers.",
+    "rationale": "Datadog is an observability platform with AI agents, so letting users plug external MCP servers into it is a fair question to ask. The evidence only documents Datadog's own official MCP server, which exposes Datadog's tools to other agents. That is the server role and does not transfer to this client-side story. No evidence shows Datadog or Bits AI connecting to external MCP servers and using their tools.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7405,9 +7403,9 @@
     "productId": "datadog",
     "storyId": "agentic-mcp-server",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Datadog is a SaaS observability platform, so an official MCP server is a fair axis. The evidence shows a dedicated first-party MCP server documentation page (probe confirms 'official MCP server documented' and a markdown version of /mcp_server/ exists). The pack contains nothing about how to connect an agent, which tools are exposed, authentication, or hands-on use, so only the server's existence is established. missing for 10: connection/setup instructions, exposed tools and scope, authentication details, independent or hands-on corroboration of agents connecting.",
+    "rationale": "Datadog is a SaaS observability platform, so an official MCP server is an applicable axis. The pack confirms a first-party MCP server documentation page exists at docs.datadoghq.com/mcp_server, but it shows nothing about how an agent connects, authenticates, or what tools are exposed. missing for 10: documented connection/setup steps for agents, authentication details, exposed tool/resource list, independent or hands-on corroboration.",
     "evidenceIds": [
       "datadog-probe-4",
       "datadog-docs-10"
@@ -7434,7 +7432,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Datadog documents its own natural-language interface for querying infrastructure resources and telemetry data, so part of the story is delivered by the product itself. That evidence is a single index line covering only querying, not operating the product more broadly (creating monitors, dashboards, or taking actions). The MCP server and the coding-agent prompt belong to other stories or are user-side workarounds, so they earn no credit here. Missing for 10: natural-language commands beyond querying (configuring or acting on resources), in-depth first-party docs for the NL interface, hands-on or independent corroboration.",
+    "rationale": "Datadog's own docs say users can query infrastructure resources and telemetry data in natural language, so the product itself accepts natural-language input. That evidence covers only querying, in a single index-level line, not broader operation of the product. The MCP server and the coding-agent setup prompt belong to other stories and are not credited here. Missing for 10: natural-language commands for operating the product (creating or changing monitors, dashboards, configuration), in-depth first-party docs on the natural-language interface, and independent or hands-on corroboration.",
     "evidenceIds": [
       "datadog-docs-30"
     ],
@@ -7456,7 +7454,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datadog is a SaaS observability platform, so an official CLI is a fair question to ask. The evidence documents only the HTTP API, client libraries, a Postman collection, llms.txt and an MCP server, none of which is a CLI. The `ddtrace-run` command is an instrumentation launcher for the tracing SDK, not a CLI for working with the platform, so it is an adjacent feature and earns no credit.",
+    "rationale": "The evidence pack documents an HTTP API, official client libraries, a Postman collection, an MCP server and llms.txt, but none of these is an official CLI. The only command-line item is `ddtrace-run`, a launcher that wraps an application to enable tracing. It is an adjacent instrumentation feature, not a CLI for working with the Datadog platform, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7471,15 +7469,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Datadog documents a public REST API for programmatic access to the platform. The docs cover API-key header authentication, official client libraries with per-endpoint code examples, a Postman collection, and an LLM-friendly markdown version of the API reference indexed in llms.txt. missing for 10: an OpenAPI spec at the probed paths (all returned 404), independent or hands-on corroboration of driving the product through the API.",
+    "rationale": "Datadog documents a public API for programmatic platform access. The docs cover API-key header authentication, official client libraries with per-endpoint code examples, a Postman collection, and a markdown version of the API reference that agents can read. Probes found no OpenAPI spec at the common candidate paths, which counts against machine-readability, not against the API existing. Missing for 10: a discoverable machine-readable OpenAPI spec, independent or hands-on corroboration of driving the product via the API.",
     "evidenceIds": [
       "datadog-docs-1",
       "datadog-docs-2",
       "datadog-docs-3",
       "datadog-docs-4",
       "datadog-docs-11",
-      "datadog-docs-8",
-      "datadog-probe-1",
       "datadog-probe-3"
     ],
     "support": {
@@ -7512,7 +7508,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence only shows that Datadog API access uses an API key and an Application key. Nothing in the pack documents scoping, role-restricted permissions, or least-privilege credentials issued for an agent. Plain key-based authentication is an adjacent feature and earns no credit, so the verdict is none.",
+    "rationale": "The evidence shows only that the Datadog API authenticates with an API key and an Application key. Nothing in the pack documents scoping, permission restriction or least-privilege credentials, so plain key-based authentication is an adjacent capability and earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7527,14 +7523,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Datadog documents official client libraries for its API, with per-endpoint code examples and Maven install instructions. It also ships first-party Agent Observability SDKs for Python, Node.js, Java, and Go (experimental), which include programmatic methods such as LLMObs.submit_evaluation(). Missing for 10: an enumerated list of supported languages for the API client libraries, independent or hands-on corroboration of SDK quality, and a stable (non-experimental) Go SDK.",
+    "rationale": "Datadog's API docs point to official client libraries, with code examples in each endpoint and Maven install instructions. It also ships official Agent Observability SDKs for Python, Node.js, Java and Go (experimental), offering automatic and manual instrumentation APIs. missing for 10: an explicit list of supported languages for the general API client libraries, independent or hands-on corroboration of SDK quality, and a non-experimental Go SDK.",
     "evidenceIds": [
       "datadog-docs-3",
       "datadog-docs-5",
       "datadog-docs-14",
       "datadog-docs-15",
-      "datadog-docs-22",
-      "datadog-docs-12"
+      "datadog-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -7554,10 +7549,6 @@
           "quote": "Agent Observability SDKs provide automatic instrumentation as well as manual instrumentation APIs to provide observability and insights into your LLM applications."
         },
         {
-          "evidenceId": "datadog-docs-22",
-          "quote": "The Agent Observability SDK provides the methods `LLMObs.submit_evaluation()` and `LLMObs.export_span()`"
-        },
-        {
           "evidenceId": "datadog-docs-5",
           "quote": "Maven - Add this dependency to your project's POM:"
         }
@@ -7570,7 +7561,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for an observability SaaS like Datadog, but nothing in the evidence pack documents registrable outbound HTTP callbacks. The pack covers the REST API, SDKs, llms.txt, Agent Observability and an MCP server, none of which is a webhook subscription capability.",
+    "rationale": "Webhooks are a fair question for an observability platform like Datadog, so the axis applies. However, nothing in the evidence pack documents registrable outbound HTTP callbacks for event subscription. The cited items cover the REST API, SDKs, LLM observability, and an MCP server, none of which are webhooks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7585,12 +7576,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datadog's API reference lets users pick an official client library on each endpoint to see code examples. It also provides an official Postman collection for executing authenticated requests, so examples can be run, but only through an external tool. There is no evidence of in-page \"try it\" execution, and the OpenAPI probes at common doc paths returned 404. missing for 10: in-browser runnable/try-it console in the reference itself, evidence that examples are copy-run ready, a discoverable OpenAPI spec, independent hands-on corroboration.",
+    "rationale": "Datadog's API reference lets you pick an official client library on each endpoint to see code examples. Datadog also provides its own Postman collection for running authenticated requests. So the reference is browsable and has executable examples, but there is no evidence of an in-browser 'try it' console. Missing for 10: in-browser runnable or try-it execution in the reference itself, a published OpenAPI spec (probe paths returned 404), and independent hands-on corroboration of the interactive experience.",
     "evidenceIds": [
       "datadog-docs-1",
       "datadog-docs-3",
       "datadog-docs-4",
-      "datadog-probe-3"
+      "datadog-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -7604,10 +7595,6 @@
         {
           "evidenceId": "datadog-docs-4",
           "quote": "To authenticate to the Datadog API through Postman, add your Datadog API and Application key values to the **Collection variables** of the Datadog API collection."
-        },
-        {
-          "evidenceId": "datadog-docs-1",
-          "quote": "Use the Datadog API to access the Datadog platform programmatically."
         }
       ]
     }
@@ -7618,7 +7605,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Datadog's API docs refer to an official \"Datadog API collection\" for Postman, which is a first-party, machine-readable API description close to an OpenAPI equivalent. However, the evidence never documents an OpenAPI/Swagger file or a download location, and probes of the common OpenAPI paths all returned 404. The markdown version of the API reference page is human-oriented, not a spec. missing for 10: a documented downloadable OpenAPI (or equivalent) spec file with a URL, confirmation of the spec's coverage and versioning, independent or hands-on corroboration of downloading it.",
+    "rationale": "Datadog's API docs refer to an official Datadog API collection for Postman, which is a machine-readable description of the API, though not OpenAPI. However, a probe found no OpenAPI/Swagger file at any common path (all returned 404), and the markdown version of the API page is not a structured spec. Missing for 10: a documented downloadable OpenAPI (or equivalent) spec file, an explicit download location for the Postman collection, and hands-on confirmation that a spec can be retrieved.",
     "evidenceIds": [
       "datadog-docs-4",
       "datadog-probe-3"
@@ -7630,7 +7617,7 @@
       "citations": [
         {
           "evidenceId": "datadog-docs-4",
-          "quote": "add your Datadog API and Application key values to the **Collection variables** of the Datadog API collection."
+          "quote": "add your Datadog API and Application key values to the **Collection variables** of the Datadog API collection"
         }
       ]
     }
@@ -7641,7 +7628,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment isolated from production data is a fair question for an observability SaaS platform, so the axis applies. The evidence pack documents no sandbox org, test environment, or production-data isolation. LLM Observability Experiments, which version datasets and compare prompt and model changes, is an adjacent evaluation feature, not sandbox isolation from production, so it earns no credit.",
+    "rationale": "A sandbox or test environment is a fair question for an observability SaaS platform like Datadog, so the axis applies. However, the evidence pack never documents a sandbox org, test environment, or any other isolation from production data. The LLM Experiments feature (versioned datasets, comparing results) is about evaluating prompt and model changes, not an isolated sandbox environment, so it is only adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7656,7 +7643,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a documented Datadog API with client libraries, but no item describes API versioning (such as v1/v2 endpoints) or any deprecation policy. The '/api/latest/' URL path alone does not document a versioning scheme or a deprecation timeline.",
+    "rationale": "The evidence documents a Datadog API at /api/latest/ with API-key authentication and client libraries. It never states how the API is versioned and never describes a deprecation policy, so the applicable axis is unevidenced. The 'latest' path segment alone does not establish documented versioning or deprecation guarantees.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7671,7 +7658,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a general programmatic API, client libraries, and an MCP server, but nothing describes bulk or batch operations that act on many items at once, such as bulk-muting monitors, batch-editing dashboards, or mass-updating tags. A general API is only a building block a developer could use to script bulk changes, so it earns no credit for this story.",
+    "rationale": "Bulk operations are a fair axis for an observability platform like Datadog, but the evidence pack never documents a bulk action across many items. The general REST API, client libraries and MCP server are developer building blocks someone could use to script bulk changes, not a bulk-operations capability. DDSQL querying is read-only querying, an adjacent feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7683,16 +7670,23 @@
   {
     "productId": "datadog",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack does not document a general rule engine for event-triggered automation in Datadog, such as monitors firing actions or workflow automation on events. The closest item is a code-coverage quality gate that blocks merges at configurable thresholds. That is a narrow, related feature rather than user-defined event-to-action rules, so it earns no credit.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only first-party evidence of a user-defined rule that automatically triggers an action is a one-line llms.txt index entry: coverage reports can block pull-request merges based on configurable thresholds. That is a narrow, event-driven gate, not a general rules-to-actions automation engine. missing for 10: a general event-triggered automation or rules engine (e.g., alert-driven actions or workflows), documentation of configurable triggers and action types, in-depth first-party docs beyond an index line, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "datadog-docs-31"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "datadog-docs-31",
+          "quote": "Upload coverage reports to Datadog, visualize coverage data for pull requests, and block merges based on configurable thresholds."
+        }
+      ]
     }
   },
   {
@@ -7701,7 +7695,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs or workflows is a fair question for an observability and automation platform like Datadog, so the axis applies. However, nothing in the evidence pack documents a recurring schedule, cron, or workflow trigger capability. The API, SDK, evaluations, experiments and MCP items are not about scheduling, so the verdict is none.",
+    "rationale": "Scheduling recurring jobs or workflows is a fair question for an observability platform like Datadog. However, nothing in the evidence pack documents any scheduling, cron, or recurring workflow capability. The API, the SDKs, evaluators going live on publish, and experiments are adjacent features at most, not scheduled recurring execution.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7716,7 +7710,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An observability platform could plausibly offer versioning, review, and rollback for its automations, so the axis applies. However, the evidence pack documents none of this. Dataset versioning, saving evaluations as drafts, and Change Tracking of service deployments are adjacent features, not versioning or rollback of the user's automations.",
+    "rationale": "The evidence pack does not document versioning, review, or rollback for automations. The closest items are adjacent: dataset versioning for experiments, saving evaluators as drafts, and Change Tracking for monitoring service changes. None of these is version history or rollback for the user's own automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7731,7 +7725,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk export of observability data to blob storage or a warehouse is a fair question for an observability platform like Datadog, so the axis applies. The pack shows only a general programmatic API, DDSQL querying and dataset creation. The `LLMObs.export_span()` method is documented for submitting evaluations, not for bulk export, so nothing shows traces or datasets being exported to blob storage or a data warehouse.",
+    "rationale": "The evidence shows a general programmatic API and the ability to create and version datasets. Nothing documents bulk export of traces or datasets to blob storage (e.g., S3) or a data warehouse. `LLMObs.export_span()` is for submitting external evaluations, not data export, and the community note about moving to BigQuery describes migrating away from Datadog, not a product export feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7746,10 +7740,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datadog documents offline Experiments (versioned datasets, comparing results) and an evaluations submission API. The pack does not show evals running in a CI pipeline or deployments being gated on eval results. The only merge-blocking evidence is for code coverage thresholds, which is a different feature and does not count toward this story.",
+    "rationale": "Datadog documents offline Experiments, where you create and version datasets and compare results, along with SDK and API evaluation submission. Nothing in the pack shows running these evals in a CI pipeline or blocking a deployment based on eval scores. The only documented CI gating blocks merges on code-coverage thresholds, which is a different feature and earns no credit here.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can run evals in CI and gate deployments on their results",
       "citations": []
@@ -7761,7 +7755,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents attaching custom metadata (user IDs, session IDs, feature tags) to LLM calls so that cost and usage can be broken down along those dimensions. The nearby items cover other capabilities: evaluations linked to sessions, org-level agent cost monitoring in Agent Console, and a generic custom search dimension. None of them is cost attribution via custom metadata, so they earn no credit.",
+    "rationale": "The evidence pack covers Datadog's Agent Observability SDK, span tracing, and evaluations, including evaluations tied to spans, traces, or sessions. None of it documents attaching custom metadata (user IDs, session IDs, feature tags) to attribute cost or usage. The Agent Console item covers org-wide AI agent usage and cost, and the community note describes custom search dimensions; both are adjacent features, not per-user/session/feature cost attribution via custom metadata.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7776,11 +7770,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datadog documents SDK methods (`LLMObs.submit_evaluation()`) and an evaluations API for sending externally computed evaluations tied to spans, traces, or sessions. This lets engineers compute custom metrics in their own code and record them in the product. However, the evidence never shows custom scorer functions being defined or run inside Datadog's experiments or evaluation framework; it only shows external submission. Missing for 10: documented custom code-based evaluator definitions within experiments, examples of scorer function signatures or metric types, and hands-on corroboration.",
+    "rationale": "Datadog's Agent Observability SDK provides `LLMObs.submit_evaluation()` and an evaluations API. Engineers can compute their own code-based evaluation results and attach them to spans, traces, or sessions as first-party custom evaluations. Its experiments feature supports datasets and comparisons, but no evidence shows code-based scorer functions plugged into experiments. The documented custom evaluators are LLM-as-a-judge, not code. Missing for 10: documented custom code scorer/evaluator functions within experiments, details on custom metric types and aggregation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "datadog-docs-22",
       "datadog-docs-23",
-      "datadog-docs-24"
+      "datadog-docs-18",
+      "datadog-docs-24",
+      "datadog-docs-25",
+      "datadog-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -7804,7 +7801,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents building custom dashboards. It covers adjacent pieces only: evaluations attached to spans and submitted via SDK/API, cost and usage analysis for AI agents in Agent Console, and a community mention of custom search dimensions. None of these shows a dashboard builder over latency, error, cost, and eval-score metrics, so the axis applies but is unevidenced.",
+    "rationale": "The evidence pack never mentions building custom dashboards. It documents LLM tracing, evaluation submission, managed and custom evaluators, and agent usage/cost analysis in Agent Console, but none of these is shown as user-configurable dashboards over latency, error, cost, and eval-score metrics. Adjacent features like evaluations attached to spans and APM correlation do not earn credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7819,7 +7816,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datadog's LLM Observability Experiments feature is documented as helping users understand how changes to prompts, models, providers, or system architecture affect performance. It supports versioned datasets and a 'Compare results to evaluate impact' step, which is the product's own capability for this story. The evidence is only brief feature-list bullets, though, with no detail on a side-by-side run view or regression flagging, and no independent corroboration. Missing for 10: documented side-by-side comparison UI for eval runs, explicit regression detection or highlighting between versions, depth of comparison metrics, and hands-on or community corroboration.",
+    "rationale": "Datadog's LLM Observability Experiments feature is documented as helping users understand how changes to prompts, models, or providers affect performance. It also lists \"Compare results to evaluate impact\" alongside versioned datasets, which is a direct first-party capability for comparing runs across versions. The evidence is only short bullet-level claims, though, with no detail on a side-by-side view or regression flagging. missing for 10: explicit side-by-side run comparison UI documentation, regression detection or diffing details, hands-on or independent corroboration",
     "evidenceIds": [
       "datadog-docs-24",
       "datadog-docs-25",
@@ -7851,10 +7848,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Datadog's own docs describe automatic tracing of supported LLM frameworks and libraries through integrations in its Agent Observability SDKs for Python, Node.js, Java and Go (experimental), enabled via `ddtrace-run`. However, the evidence never names which frameworks are covered, so support for LangChain, the OpenAI SDK or the Vercel AI SDK is unconfirmed. Missing for 10: an explicit list of supported integrations naming LangChain, the OpenAI SDK and the Vercel AI SDK; per-framework setup docs; independent or hands-on corroboration.",
+    "rationale": "Datadog's Agent Observability SDK documents automatic instrumentation through LLM framework and library integrations, all enabled via `ddtrace-run`, across Python, Node.js, Java and Go (experimental). The evidence never names which frameworks are supported, so coverage of LangChain, the OpenAI SDK or the Vercel AI SDK is unconfirmed. Missing for 10: an explicit list of supported integrations naming LangChain, the OpenAI SDK and the Vercel AI SDK, per-framework setup docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "datadog-docs-17",
       "datadog-docs-14",
+      "datadog-docs-35",
       "datadog-docs-15",
       "datadog-docs-16"
     ],
@@ -7868,12 +7866,12 @@
           "quote": "Agent Observability can automatically trace and annotate calls to supported LLM frameworks and libraries through various LLM integrations."
         },
         {
-          "evidenceId": "datadog-docs-14",
-          "quote": "Agent Observability SDKs provide automatic instrumentation as well as manual instrumentation APIs to provide observability and insights into your LLM applications."
+          "evidenceId": "datadog-docs-35",
+          "quote": "`ddtrace-run` automatically turns on all Agent Observability integrations."
         },
         {
-          "evidenceId": "datadog-docs-16",
-          "quote": "Enable Agent Observability by running your application using the `ddtrace-run` command and specifying the required environment variables."
+          "evidenceId": "datadog-docs-14",
+          "quote": "Agent Observability SDKs provide automatic instrumentation as well as manual instrumentation APIs to provide observability and insights into your LLM applications."
         }
       ]
     }
@@ -7884,7 +7882,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datadog's Agent Observability evidence covers managed evaluations, externally submitted evaluations via `LLMObs.submit_evaluation()`, and versioned datasets. Nothing in the pack documents human annotation queues or routing outputs to reviewers for labeling. The 'annotate' wording in the auto-instrumentation docs means trace metadata, and the external-evaluations API is only a building block a developer could use to record labels, not a review-queue capability.",
+    "rationale": "The evidence covers Agent Observability evaluations: managed evaluators, LLM-as-a-judge, external evaluation submission via `LLMObs.submit_evaluation()`, and dataset versioning. Nothing documents human annotation queues or routing outputs to human reviewers for labeling. The external-evaluation API is at most a building block a developer could use to construct a review workflow, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7896,32 +7894,38 @@
   {
     "productId": "datadog",
     "storyId": "llm-as-judge-scoring",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Datadog documents managed evaluations that attach scores to individual spans. These evaluators can be configured, saved as drafts, and enabled later, and examples include language-mismatch and sensitive-information flags. The pack never explicitly says these evaluators use an LLM as judge, and the submit_evaluation API only ingests externally computed scores, so it is a building block and earns no credit. Missing for 10: explicit evidence that the evaluators are LLM-as-a-judge, documentation of custom judge prompts/models/rubrics, independent or hands-on corroboration.",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Datadog documents custom LLM-as-a-judge evaluators that use an LLM to judge another LLM's outputs. Evaluators can be saved as drafts or published live, can send attached images and audio to the judge, and attach their results to individual spans. Managed evaluators add ready-made checks such as language mismatch and sensitive data. Missing for 10: detail on what can be configured (judge prompt, model/provider choice, scoring schema such as boolean, score or categorical) and any independent or hands-on corroboration.",
     "evidenceIds": [
+      "datadog-docs-37",
+      "datadog-docs-38",
+      "datadog-docs-36",
       "datadog-docs-18",
-      "datadog-docs-19",
-      "datadog-docs-20",
-      "datadog-docs-21"
+      "datadog-docs-39",
+      "datadog-docs-20"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an ML engineer, I can score outputs with configurable LLM-as-a-judge evaluators",
       "citations": [
         {
+          "evidenceId": "datadog-docs-37",
+          "quote": "Custom LLM-as-a-judge evaluators use an LLM to judge the performance of another LLM."
+        },
+        {
+          "evidenceId": "datadog-docs-38",
+          "quote": "Evaluators can also send the images and audio attached to your spans to the LLM judge."
+        },
+        {
+          "evidenceId": "datadog-docs-36",
+          "quote": "After you click Save and Publish, the evaluator goes live. Alternatively, you can Save as Draft and edit or enable it later."
+        },
+        {
           "evidenceId": "datadog-docs-18",
           "quote": "Agent Observability associates evaluations with individual spans so you can view the inputs and outputs that led to a specific evaluation."
-        },
-        {
-          "evidenceId": "datadog-docs-19",
-          "quote": "Alternatively, you can Save as Draft and edit or enable it later."
-        },
-        {
-          "evidenceId": "datadog-docs-20",
-          "quote": "Flags responses that are written in a different language than the user's input"
         }
       ]
     }
@@ -7929,16 +7933,23 @@
   {
     "productId": "datadog",
     "storyId": "multimodal-trace-payloads",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Capturing multimodal payloads in traces is a fair question for Datadog's LLM/Agent Observability tracing product, so the axis applies. The evidence only covers SDK instrumentation, auto-instrumentation and viewing span inputs and outputs. Nothing documents capturing images, audio or files inside spans.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is an evaluation doc saying evaluators can send \"the images and audio attached to your spans\" to an LLM judge. That implies spans can carry image and audio payloads, but it does not document how a developer captures them during instrumentation. Missing for 10: first-party docs on attaching images/audio to spans via the SDK, any evidence for file payloads, supported formats and size limits, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "datadog-docs-38"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can capture multimodal payloads (images, audio, files) inside my traces",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "datadog-docs-38",
+          "quote": "Evaluators can also send the images and audio attached to your spans to the LLM judge."
+        }
+      ]
     }
   },
   {
@@ -7947,10 +7958,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datadog's Agent Observability Experiments feature documents creating and versioning datasets and comparing experiment results to see how prompt, model, or provider changes affect performance. That covers offline evaluation against datasets. Its managed evaluations attach to production spans, but the evidence never shows datasets being curated from production traces. missing for 10: documented trace-to-dataset curation (adding production spans/traces to a dataset), detail on how offline experiment evaluators run, independent or hands-on corroboration.",
+    "rationale": "Datadog's Agent Observability Experiments feature documents creating and versioning datasets and comparing results to see how prompt, model, or provider changes affect performance, which covers offline evaluation against datasets. Evaluations can be tied to production spans, but nothing shows datasets being curated from production traces. missing for 10: documented workflow for curating datasets from production traces/spans, detail on how offline experiment runs execute evaluators, independent or hands-on corroboration.",
     "evidenceIds": [
-      "datadog-docs-24",
       "datadog-docs-25",
+      "datadog-docs-24",
       "datadog-docs-26",
       "datadog-docs-18"
     ],
@@ -7964,12 +7975,12 @@
           "quote": "Create and version datasets"
         },
         {
-          "evidenceId": "datadog-docs-26",
-          "quote": "Compare results to evaluate impact"
-        },
-        {
           "evidenceId": "datadog-docs-24",
           "quote": "It helps you understand how changes to prompts, models, providers, or system architecture affect performance."
+        },
+        {
+          "evidenceId": "datadog-docs-26",
+          "quote": "Compare results to evaluate impact"
         },
         {
           "evidenceId": "datadog-docs-18",
@@ -7984,13 +7995,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Datadog documents managed evaluations that can be enabled and are attached to individual traced spans from instrumented LLM applications, with checks such as language mismatch and sensitive-data detection. This is separate from its dataset-based Experiments feature, which strongly implies evaluation of live traffic. However, the docs shown never explicitly say evaluators run continuously on production traffic. missing for 10: explicit documentation that managed evaluators run continuously on live production spans, sampling/filtering controls for production traffic, independent or hands-on corroboration.",
+    "rationale": "Datadog documents managed and custom LLM-as-a-judge evaluators that 'go live' once published and attach results to individual spans from instrumented applications. This implies evaluation of live traced traffic, separate from the offline datasets and experiments feature. However, the evidence never states outright that evaluators run continuously on all production traffic. missing for 10: explicit documentation that published evaluators run continuously on incoming production traces, sampling and filtering controls for live traffic, independent or hands-on corroboration of online evaluation.",
     "evidenceIds": [
+      "datadog-docs-36",
       "datadog-docs-18",
-      "datadog-docs-19",
-      "datadog-docs-20",
-      "datadog-docs-21",
-      "datadog-docs-22",
+      "datadog-docs-37",
+      "datadog-docs-25",
       "datadog-docs-23"
     ],
     "support": {
@@ -7999,20 +8009,16 @@
       "subject": "As an ML engineer, I can run evaluators continuously on live production traffic, not just offline datasets",
       "citations": [
         {
+          "evidenceId": "datadog-docs-36",
+          "quote": "After you click Save and Publish, the evaluator goes live."
+        },
+        {
           "evidenceId": "datadog-docs-18",
           "quote": "Agent Observability associates evaluations with individual spans so you can view the inputs and outputs that led to a specific evaluation."
         },
         {
-          "evidenceId": "datadog-docs-19",
-          "quote": "Alternatively, you can Save as Draft and edit or enable it later."
-        },
-        {
-          "evidenceId": "datadog-docs-21",
-          "quote": "Flags the presence of sensitive or regulated information in model inputs or outputs"
-        },
-        {
-          "evidenceId": "datadog-docs-22",
-          "quote": "The Agent Observability SDK provides the methods `LLMObs.submit_evaluation()` and `LLMObs.export_span()` to help your traced LLM application submit external evaluations to Agent Observability."
+          "evidenceId": "datadog-docs-37",
+          "quote": "Custom LLM-as-a-judge evaluators use an LLM to judge the performance of another LLM."
         }
       ]
     }
@@ -8023,12 +8029,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Datadog documents a first-party API for programmatic access to the platform, with official client libraries, a Postman collection, and feature-specific APIs such as the evaluations API. Nothing in the evidence claims or shows full UI-to-API parity, and probes found no OpenAPI spec at the candidate paths. missing for 10: explicit statement or demonstration of UI/API feature parity, endpoint coverage across all UI features, a published machine-readable OpenAPI spec, independent corroboration of API completeness.",
+    "rationale": "Datadog documents a first-party API for programmatic access to the platform, with API-key authentication, official client libraries, and a Postman collection. Feature-specific APIs exist too, such as the evaluations API, but nothing documents parity with the UI, and some workflows (e.g. publishing evaluators) are described only as UI clicks. Missing for 10: an explicit API/UI parity claim or coverage matrix, a published OpenAPI spec (the probe found 404s), and independent confirmation that UI-only actions are scriptable.",
     "evidenceIds": [
       "datadog-docs-1",
+      "datadog-docs-2",
       "datadog-docs-3",
       "datadog-docs-4",
-      "datadog-docs-23"
+      "datadog-docs-23",
+      "datadog-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -8056,7 +8064,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no data-export or account-portability feature, and no open export formats. The general programmatic API is a developer building block, not an export capability. `LLMObs.export_span()` serves submitting evaluations into Datadog, not exporting data out, and the community reports of migrating away describe user-side moves rather than a product feature.",
+    "rationale": "Exporting data and leaving is a fair question for an observability SaaS, so the axis applies. However, the evidence pack documents no bulk export, no open export formats, and no offboarding path. The only related items are general programmatic API access, which is a developer building block rather than a documented export capability, and a community report of migrating to BigQuery, which is a user-side workaround.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8071,7 +8079,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is available under an open license is a fair question for an observability platform, so the axis applies. The evidence pack documents a proprietary API, official client libraries, and SDKs, but nothing says any Datadog source is published under an open license. Client libraries and SDKs existing does not show their source is readable under an open license, and nothing covers the core platform.",
+    "rationale": "Whether an observability platform's source is published under an open license is a fair question for this kind of product, so the axis applies. The evidence pack contains no statement that Datadog's source, or any component of it, is available under an open license. Mentions of client libraries, SDKs, llms.txt and markdown docs show programmatic access and readable documentation, not open-source code.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8086,7 +8094,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an observability platform like Datadog, so the axis applies. The evidence pack documents only the SaaS API, SDKs that send data to Datadog, and an MCP server; nothing shows a self-hostable version of the core platform. The community items are about pricing, UX and sales, which are off-topic and ignored.",
+    "rationale": "Self-hosting is a fair question for an observability platform, so the axis applies. The evidence pack only describes access to the hosted Datadog platform via API, SDKs and an MCP server. Nothing documents a self-hostable deployment of the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8101,7 +8109,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is a community report that a team switched from the Datadog agent to the OpenTelemetry agent and Datadog still displayed those traces, though poorly labeled (everything shown as io.opentelemetry.something). That implies Datadog ingests OpenTelemetry traces, but no first-party documentation in the pack covers OTLP endpoints, protocols or configuration. Missing for 10: first-party OTLP ingest docs, explicit OTLP protocol support, evidence of sending or exporting traces out over OTLP, and clean rendering of OTel span names.",
+    "rationale": "No first-party doc in the pack mentions OpenTelemetry or OTLP. The only relevant evidence is a community report: a team switched to the OpenTelemetry agent and Datadog did display those traces, but poorly, with everything labeled io.opentelemetry.something. That suggests Datadog accepts OTel-instrumented traces, with readability limitations. Missing for 10: first-party documentation of OTLP trace ingestion (endpoints or Collector/Agent configuration), explicit confirmation that the OTLP wire protocol is supported, evidence of sending or exporting traces out over OTLP, and well-mapped display of OTel span attributes.",
     "evidenceIds": [
       "datadog-comm-18"
     ],
@@ -8123,10 +8131,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any way to mask, scrub, or redact sensitive data in spans before they are stored. The closest item is a managed evaluation that only flags sensitive information in LLM inputs and outputs. That is detection after ingestion, an adjacent feature, not redaction before storage.",
+    "rationale": "The evidence pack has no documentation of masking, scrubbing, or redacting sensitive data before it is stored in traces. The only related item is a managed evaluation that flags sensitive information in model inputs or outputs, which is detection after capture, not redaction before storage, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can mask or redact sensitive data before it is stored in traces",
       "citations": []
@@ -8138,7 +8146,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency and region selection is a fair question for a SaaS observability platform, so the axis applies. However, nothing in the evidence pack mentions storage regions, sites, or residency controls. The items cover the API, LLM/Agent Observability SDKs, the MCP server, and pricing and UX sentiment, none of which bear on where data is stored.",
+    "rationale": "Data region and residency selection is a fair axis for a SaaS observability platform like Datadog, so the story applies. However, no evidence item mentions choosing a storage region, a site, or residency controls. The pack covers API authentication, Agent Observability SDKs, evaluations and community pricing complaints, none of which address where data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8153,7 +8161,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datadog is a SaaS platform that handles customer telemetry and ships AI features, so an AI-training opt-out is a fair question for it. However, nothing in the evidence pack documents a training opt-out, a data-usage policy for model training, or a related privacy control. The sensitive-data evaluation flag (datadog-docs-21) detects regulated information in LLM inputs and outputs, which is a different feature from preventing training use.",
+    "rationale": "Datadog is a SaaS platform with AI features, so a data-training opt-out is a fair question to ask. The evidence pack documents no setting, policy, or contractual commitment that keeps customer data out of AI model training. The sensitive-data evaluator (datadog-docs-21) is an adjacent feature that flags data in LLM inputs and outputs; it is not a training opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8168,7 +8176,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for an observability platform that stores logs, traces and LLM spans, so the axis applies. However, nothing in the evidence pack documents retention periods, retention filters, or data-deletion APIs or settings. The sensitive-data evaluation flag (datadog-docs-21) is an adjacent detection feature, not retention or deletion control.",
+    "rationale": "Data retention and deletion controls are a fair question for an observability SaaS like Datadog, so the axis applies. However, nothing in the evidence pack documents retention periods, retention configuration, or data deletion. The sensitive-information evaluator flags data but does not retain or delete it, so it is an adjacent feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8183,7 +8191,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of a vendor's own telemetry is a fair question for an observability SaaS with agents and SDKs, so the axis applies. Nothing in the evidence documents a way to disable Datadog's own telemetry or usage tracking. The telemetry mentions (e.g., querying telemetry data) describe customer observability data, not a vendor opt-out.",
+    "rationale": "Opting out of product telemetry is a fair question for an observability platform with agents and SDKs, so the axis applies. However, nothing in the evidence pack documents any setting, environment variable, or policy for disabling Datadog's own telemetry or usage tracking. The cited docs cover the API, Agent Observability instrumentation, evaluations and the MCP server; the community items concern pricing, UX and sales behavior.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8198,13 +8206,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Datadog's LLM/Agent Observability is an LLM tooling product, so a prompt playground is a fair axis. The evidence pack never documents an interactive playground for editing prompts against live models with variables. The closest evidence is Experiments with versioned datasets and result comparison, which is a related but different batch-evaluation feature and earns no credit here.",
-    "evidenceIds": [],
+    "rationale": "The evidence documents Datadog's Agent/LLM Observability Experiments feature, which uses versioned datasets and result comparison to show how prompt or model changes affect performance. That is an offline experimentation framework, not an interactive prompt playground. Nothing in the pack shows a playground for iterating on prompts against real models with templated variables, so this adjacent feature earns no credit.",
+    "evidenceIds": [
+      "datadog-docs-24"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can iterate on prompts in a playground against real models and variables",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "datadog-docs-24",
+          "quote": "It helps you understand how changes to prompts, models, providers, or system architecture affect performance."
+        }
+      ]
     }
   },
   {
@@ -8213,7 +8228,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents LLM observability, evaluations, and experiments that measure how prompt changes affect performance, and it mentions dataset versioning. It shows no prompt registry, prompt versioning, or way to deploy prompt changes to production without a code release. Experiments and dataset versioning are related features, and Change Tracking only monitors deployments; neither counts as prompt management.",
+    "rationale": "Prompt management is a fair axis for an LLM observability platform, but the evidence contains no prompt registry, prompt versioning, or way to deploy prompt changes without a code release. The closest items are adjacent: Experiments evaluate how prompt changes affect performance, and the versioning they offer applies to datasets, not prompts.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8225,19 +8240,19 @@
   {
     "productId": "datadog",
     "storyId": "python-js-sdk-parity",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Datadog documents official Agent Observability SDKs for Python and Node.js, with automatic and manual instrumentation APIs (e.g., ddtrace-run for Python). The evidence is scoped to LLM/agent observability rather than general application tracing, and TypeScript is not named explicitly. Missing for 10: documentation of general-purpose APM tracing SDKs for Python and JS/TS, explicit TypeScript support, independent or hands-on corroboration of SDK instrumentation.",
+    "rationale": "Datadog documents official Agent Observability SDKs for both Python and Node.js. They offer automatic and manual instrumentation APIs, and the Python side has a concrete `ddtrace-run` setup path. Missing for 10: explicit TypeScript support or typings, Node.js-specific setup detail comparable to Python's, documentation for general (non-LLM) app tracing SDKs, and independent hands-on corroboration of the SDKs.",
     "evidenceIds": [
+      "datadog-docs-15",
       "datadog-docs-12",
       "datadog-docs-14",
-      "datadog-docs-15",
       "datadog-docs-16"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can instrument apps in both Python and JS/TS with officially supported SDKs",
       "citations": [
         {
@@ -8254,7 +8269,7 @@
         },
         {
           "evidenceId": "datadog-docs-16",
-          "quote": "Enable Agent Observability by running your application using the `ddtrace-run` command"
+          "quote": "Enable Agent Observability by running your application using the `ddtrace-run` command and specifying the required environment variables."
         }
       ]
     }
@@ -8265,7 +8280,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Alerting with notifications is a fair question for an observability platform like Datadog, so the axis applies. However, the evidence pack contains no documentation of monitors or alert rules on error rates, cost spikes, or eval-score drops. It also never mentions Slack, PagerDuty, or email notification channels. The nearest items describe analyzing agent usage and cost and submitting evaluations, which are adjacent features, not alerting.",
+    "rationale": "The evidence pack documents LLM tracing, evaluations, and usage and cost analysis. No item describes configuring alerts or monitors on error rates, cost spikes, or eval-score drops, and none mentions routing notifications to Slack, PagerDuty, or email. Evaluations and cost analysis are adjacent features, not alerting, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8280,11 +8295,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Datadog's own docs say it can monitor and analyze AI agent usage and cost in its Agent Console. Its Agent Observability SDK traces LLM calls as spans, which gives per-request visibility. However, no evidence shows token counts or cost broken down per request, per model, or over time in dashboards. Missing for 10: documented token-usage metrics, per-request and per-model cost attribution, time-period dashboard views, and hands-on corroboration.",
+    "rationale": "Datadog documents an Agent Console to 'monitor and analyze AI agent usage, cost, and productivity across your organization.' That is first-party cost and usage monitoring, but the evidence never mentions token counts, per-request or per-model breakdowns, or time-period dashboards, and the Agent Observability docs shown cover tracing and evaluations, not cost. Missing for 10: token usage metrics, per-request cost attribution, per-model breakdown, time-period dashboard views, independent corroboration.",
     "evidenceIds": [
-      "datadog-docs-32",
-      "datadog-docs-17",
-      "datadog-docs-14"
+      "datadog-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -8294,10 +8307,6 @@
         {
           "evidenceId": "datadog-docs-32",
           "quote": "Monitor and analyze AI agent usage, cost, and productivity across your organization in Datadog Agent Console"
-        },
-        {
-          "evidenceId": "datadog-docs-17",
-          "quote": "Agent Observability can automatically trace and annotate calls to supported LLM frameworks and libraries through various LLM integrations."
         }
       ]
     }
@@ -8308,14 +8317,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Datadog's Agent Observability SDKs (Python, Node.js, Java, experimental Go) automatically and manually trace calls to supported LLM frameworks, and inputs and outputs are viewable on individual spans, so the core story is delivered first-party. However, the evidence never explicitly documents latency or token-usage capture on LLM spans. Missing for 10: explicit documentation of latency and token-usage metrics on LLM spans, independent or hands-on corroboration of LLM tracing.",
+    "rationale": "Datadog's Agent Observability (LLM Observability) SDKs for Python, Node.js, Java and Go provide automatic and manual instrumentation. They trace calls to supported LLM frameworks and record spans whose inputs and outputs can be viewed. However, the pack never explicitly documents capture of latency or token usage on those traces. Missing for 10: explicit documentation of per-call latency and token usage capture, independent or hands-on corroboration of LLM tracing.",
     "evidenceIds": [
-      "datadog-docs-12",
       "datadog-docs-14",
       "datadog-docs-15",
-      "datadog-docs-16",
       "datadog-docs-17",
       "datadog-docs-18",
+      "datadog-docs-16",
       "datadog-docs-29"
     ],
     "support": {
@@ -8334,10 +8342,6 @@
         {
           "evidenceId": "datadog-docs-18",
           "quote": "Agent Observability associates evaluations with individual spans so you can view the inputs and outputs that led to a specific evaluation."
-        },
-        {
-          "evidenceId": "datadog-docs-15",
-          "quote": "SDKs are available for Python, Node.js, Java, and Go (experimental)."
         }
       ]
     }
