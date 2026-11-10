@@ -6617,21 +6617,20 @@
   {
     "productId": "livekit",
     "storyId": "agent-joins-as-participant",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LiveKit's docs present server-side voice agents as a core product: Python/Node.js voice agents with automatic turn detection and interruption handling, deployed to LiveKit Cloud, with callers bridged into rooms. Together these show an agent that takes in live audio and speaks back in realtime within a session. missing for 10: an explicit statement that the agent joins the room as a participant and subscribes to and publishes audio tracks, and any independent or hands-on corroboration of realtime agent performance.",
+    "rationale": "LiveKit documents building server-side voice agents in Python or Node.js, with automatic turn detection and interruption handling. That implies realtime audio in and speech out. Participant tokens carry publish capabilities such as canPublish, but the pack never explicitly says the agent joins the room as a participant that subscribes to live audio and publishes synthesized speech tracks. Missing for 10: explicit docs of the agent joining as a room participant, documented audio-track subscription and speech publishing flow, independent hands-on corroboration of realtime latency.",
     "evidenceIds": [
       "livekit-docs-2",
       "livekit-docs-8",
-      "livekit-docs-9",
-      "livekit-docs-7",
-      "livekit-docs-12",
-      "livekit-docs-32"
+      "livekit-gh-7",
+      "livekit-docs-6",
+      "livekit-supp-token-expiry-grant-table"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, a server-side agent joins a session as a participant that receives live audio and publishes speech back in realtime",
       "citations": [
         {
@@ -6643,16 +6642,16 @@
           "quote": "Automatic turn detection and interruption handling"
         },
         {
-          "evidenceId": "livekit-docs-9",
-          "quote": "Deploy and run agents directly on LiveKit Cloud without managing servers or orchestration."
+          "evidenceId": "livekit-gh-7",
+          "quote": "It's available in both [Python](https://github.com/livekit/agents) and [Node.js](https://github.com/livekit/agents-js)."
         },
         {
-          "evidenceId": "livekit-docs-12",
-          "quote": "connect PSTN calls directly into LiveKit rooms without setting up trunks"
+          "evidenceId": "livekit-docs-6",
+          "quote": "Bring your agent to life through a web or mobile app."
         },
         {
-          "evidenceId": "livekit-docs-32",
-          "quote": "Execute custom methods on other participants and await a response."
+          "evidenceId": "livekit-supp-token-expiry-grant-table",
+          "quote": "canPublish — Allow participant to publish tracks"
         }
       ]
     }
@@ -6661,17 +6660,23 @@
     "productId": "livekit",
     "storyId": "agent-subscribes-one-track",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "LiveKit documents agents that process video input from rooms, so an agent can consume live media as a participant. The evidence does not explicitly show that an agent can subscribe to only one chosen track, or that the publisher's setup stays unchanged. The closest single-track evidence is Track Egress (PASSTHROUGH export of one video track), but that is a different feature: export to a file or stream, not agent subscription. Missing for 10: documented selective per-track subscription for agents, explicit statement that publishers need no changes, hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "LiveKit documents subscribe-only participant tokens, and agents that consume room media such as video input. Together these show an agent can join a live room as a pure subscriber while publishers keep publishing as usual. The evidence never shows choosing one specific track to subscribe to, and single-track egress export is a separate feature, not agent subscription. missing for 10: documented selective per-track subscription for agents, explicit statement that publishers need no changes, hands-on corroboration.",
     "evidenceIds": [
-      "livekit-docs-4"
+      "livekit-docs-42",
+      "livekit-docs-4",
+      "livekit-supp-token-expiry-grant-table"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As an AI-native user, an agent subscribes to a single track of a live broadcast without the publisher changing anything about how it publishes",
       "citations": [
+        {
+          "evidenceId": "livekit-docs-42",
+          "quote": "This example shows how to create a token where the participant can only subscribe (and not publish) into the room:"
+        },
         {
           "evidenceId": "livekit-docs-4",
           "quote": "Create AI assistants that process video input."
@@ -6685,7 +6690,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms an llms.txt file served at docs.livekit.io/llms.txt. LiveKit also documents agent-oriented docs: a Docs MCP server that installs into IDEs or coding agents, and a 'skills, docs, and tools' offering that makes coding agents LiveKit experts. Missing for 10: independent or community corroboration of how well agents use these docs, and evidence on the depth and completeness of the llms.txt content (the root /.md probe returned 404).",
+    "rationale": "A live probe confirms LiveKit serves an llms.txt at docs.livekit.io/llms.txt, and its first-party docs describe a Docs MCP server and agent-oriented skills and docs meant to make coding agents LiveKit experts. That directly delivers agent-pointable documentation. Missing for 10: independent or community hands-on corroboration of how well agents use these resources (the root /.md probe returned 404, though individual .md doc pages exist).",
     "evidenceIds": [
       "livekit-probe-1",
       "livekit-docs-37",
@@ -6717,7 +6722,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows LiveKit as a platform for building AI agents: Agent Builder, LiveKit Inference, and knowledge-base chatbots are developer building blocks, and the observability dashboard shows plain metrics. Nothing shows the product itself generating AI insights or suggestions from a user's own data. The docs MCP answers questions about LiveKit documentation, not user data, so it is adjacent at best.",
+    "rationale": "Asking a cloud platform for built-in AI insights on its own data (sessions, metrics, usage) is a fair question, so the axis applies. However, no evidence shows LiveKit generating AI insights or suggestions from a user's data inside the product. The evidence covers building blocks for developers to construct agents (knowledge-base chatbots, Agent Builder, Inference), non-AI metrics dashboards, and a docs MCP for coding agents. None of these is in-product AI analysis of user data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6731,13 +6736,13 @@
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "LiveKit's own docs show you can deploy agents to LiveKit Cloud that run without managing servers, keep them always-on, and have room recording start automatically when a room is created. These are autonomous, event-driven behaviors rather than a general automation system. There is no evidence of scheduled or recurring jobs, workflow triggers, or unattended background task orchestration beyond agents responding to sessions. Missing for 10: recurring schedule or cron-style automation, general trigger/workflow configuration for background tasks, independent or hands-on corroboration of autonomous background operation.",
+    "confidence": "low",
+    "rationale": "LiveKit lets you deploy agents that run on LiveKit Cloud without managing servers, keep them always-on, and route inbound calls to them through dispatch rules. Auto-egress also starts recording automatically when a room is created. These are event-triggered background behaviors, but they are real-time session agents rather than general user-defined automations, and nothing shows scheduled or recurring jobs. missing for 10: user-configurable background automation or workflow definitions, scheduled or recurring triggers, trigger types beyond rooms and calls, independent corroboration.",
     "evidenceIds": [
       "livekit-docs-9",
       "livekit-docs-16",
-      "livekit-docs-30",
-      "livekit-docs-22"
+      "livekit-docs-21",
+      "livekit-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -6757,8 +6762,8 @@
           "quote": "It starts recording automatically when a room is created."
         },
         {
-          "evidenceId": "livekit-docs-22",
-          "quote": "Outbound calls enable your applications to initiate phone calls programmatically."
+          "evidenceId": "livekit-docs-21",
+          "quote": "All callers can be placed in the same room or different rooms based on the dispatch rules."
         }
       ]
     }
@@ -6769,7 +6774,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows LiveKit as a platform for developers to build their own AI agents, through the Agent Builder, SDKs, and CLI scaffolding. It also offers a docs MCP and skills for users' external coding agents. None of this is a built-in AI assistant inside the product that a user can delegate tasks to; these are developer building blocks or external-agent integrations, which earn no credit here.",
+    "rationale": "The evidence shows LiveKit as a platform for building your own AI agents. Agent Builder, the browser-based agent creation and the Docs MCP for external coding agents are developer tools or adjacent features. None of them is a built-in assistant that users delegate tasks to inside the product, so this is adjacent support only.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6782,9 +6787,9 @@
     "productId": "livekit",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LiveKit ships as a headless server you can deploy as a single binary, in Docker or on Kubernetes, with a `--dev` mode that uses a placeholder key pair. Its own CLI can access server APIs, create tokens, generate test traffic, and scaffold and deploy agents, all of which are scriptable. Nothing in the evidence explicitly documents CI usage, though. Missing for 10: explicit CI/CD integration docs or examples (e.g. GitHub Actions), documented non-interactive or CI auth flows for the CLI, and independent hands-on corroboration of CI automation.",
+    "rationale": "LiveKit ships as a single binary, Docker image, or Kubernetes deployment, with a `livekit-server --dev` mode. Its CLI can access server APIs, create tokens, generate test traffic, and scaffold and deploy agents, all of which support headless, scriptable operation. However, nothing documents CI pipeline usage, non-interactive flags, or CI-based automation. missing for 10: documented CI integration or examples, non-interactive/headless CLI auth guidance, independent hands-on corroboration of CI automation.",
     "evidenceIds": [
       "livekit-gh-1",
       "livekit-gh-2",
@@ -6821,7 +6826,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LiveKit is an agent-building platform, so connecting to MCP servers as a client is a fair question for it. The pack contains no evidence that LiveKit agents can connect to external MCP servers. The only MCP evidence (livekit-docs-37) is LiveKit's own docs MCP server, which serves coding agents; that is server-side and does not count here. Agent Builder's generic \"tool configuration\" is an adjacent feature, not MCP client support.",
+    "rationale": "LiveKit is a platform for building AI agents, so letting its agents consume tools from MCP servers is a fair question to ask. The pack has no evidence that LiveKit agents can connect to external MCP servers. The Docs MCP item is LiveKit serving its own documentation to coding agents (server side), and Agent Builder's 'tool configuration' is a related feature that never mentions MCP; neither is credited here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6836,7 +6841,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiveKit documents a first-party Docs MCP server that coding agents and IDEs can install. Its stated scope is answering LiveKit documentation questions, not operating LiveKit resources such as rooms, agents or deployments. missing for 10: an MCP server exposing platform/API operations, documented setup and transport details, an explicit tool list, independent or hands-on corroboration.",
+    "rationale": "LiveKit documents an official Docs MCP server that users install in an IDE or coding agent to get up-to-date LiveKit answers, so an agent can connect through a first-party MCP server. The evidence only shows it serving documentation and knowledge, not operating LiveKit itself (rooms, tokens, deployments) through MCP tools. Missing for 10: evidence of MCP tools that act on LiveKit resources, setup and auth details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "livekit-docs-37",
       "livekit-docs-3"
@@ -6860,28 +6865,16 @@
   {
     "productId": "livekit",
     "storyId": "agentic-nl-commands",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "LiveKit documents first-party skills, docs and tools that turn a user's coding agent into a \"LiveKit expert\", which points to natural-language operation through an agent. The evidence does not say what those tools can actually do, and the Docs MCP is described only as answering questions in the editor, not as operating the platform. Agent Builder and the voice-agent features are for building NL agents, not for running LiveKit itself by NL. Missing for 10: a documented natural-language interface for running platform operations (rooms, deployments, telephony), details of what the coding-agent tools can execute, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "livekit-docs-3",
-      "livekit-docs-37"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence shows LiveKit itself accepting natural-language commands to operate the platform, such as managing rooms, deployments or tokens. The nearby items are adjacent at best: the docs MCP and coding-agent skills help an external coding agent answer LiveKit questions, Agent Builder is about designing agents' prompts, and the CLI is command-driven. None of these is a first-party natural-language control interface for the product.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
-      "citations": [
-        {
-          "evidenceId": "livekit-docs-3",
-          "quote": "Turn your favorite coding agent into a LiveKit expert with skills, docs, and tools."
-        },
-        {
-          "evidenceId": "livekit-docs-37",
-          "quote": "Install it in your IDE or coding agent to get accurate, up-to-date LiveKit answers without leaving your editor."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -6890,9 +6883,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LiveKit documents an official CLI on its own developer-tools reference page (livekit-cli). It scaffolds agents, runs them locally and deploys them to LiveKit Cloud. The GitHub README adds server API access, token creation and test-traffic generation. missing for 10: evidence of AI-native CLI features (e.g. machine-readable output or coding-agent integration through the CLI), installation/command reference detail, independent hands-on corroboration of CLI use.",
+    "rationale": "LiveKit has a first-party CLI reference page (developer-tools/livekit-cli) that documents scaffolding an agent, talking to it locally, and deploying it to LiveKit Cloud. The GitHub README adds that the tool gives access to server APIs, token creation, test-traffic generation and agent scaffolding and deployment. missing for 10: a detailed command reference or installation docs in the evidence, explicit evidence that the tool suits AI or coding-agent driven workflows (e.g. machine-readable output), and independent or hands-on corroboration of CLI use.",
     "evidenceIds": [
       "livekit-docs-38",
+      "livekit-docs-41",
       "livekit-gh-3"
     ],
     "support": {
@@ -6915,16 +6909,16 @@
     "productId": "livekit",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence shows LiveKit exposes server APIs, reachable through its CLI, which also creates tokens. Applications can initiate actions programmatically, such as outbound calls, and egress settings like the PASSTHROUGH preset can be configured. JWT authentication and a separate protobuf Protocol project back this API surface. However, no API reference page is in the pack, and the probe found no OpenAPI spec at any candidate path. missing for 10: a documented public API reference (REST/OpenAPI spec), endpoint-level documentation of server API coverage, independent hands-on corroboration of driving the product via API.",
+    "rationale": "LiveKit has programmatic server APIs: the CLI accesses server APIs, outbound calls can be started programmatically, and JWT tokens carry scoped grants such as roomCreate to create or delete rooms. However, the pack contains no dedicated server API reference, and the OpenAPI probes all returned 404, so the breadth and depth of the public API are unproven. Missing for 10: a first-party server API reference page covering room, participant and egress endpoints; a machine-readable API spec; independent hands-on corroboration of driving the product via the API.",
     "evidenceIds": [
       "livekit-gh-3",
       "livekit-docs-22",
-      "livekit-gh-6",
-      "livekit-comm-5",
-      "livekit-docs-31",
-      "livekit-probe-3"
+      "livekit-supp-token-expiry-grant-table",
+      "livekit-supp-token-grants",
+      "livekit-docs-39",
+      "livekit-comm-5"
     ],
     "support": {
       "relation": "direct",
@@ -6940,8 +6934,12 @@
           "quote": "Outbound calls enable your applications to initiate phone calls programmatically."
         },
         {
-          "evidenceId": "livekit-gh-6",
-          "quote": "Built for production, supports JWT authentication"
+          "evidenceId": "livekit-supp-token-expiry-grant-table",
+          "quote": "roomCreate — Permission to create or delete rooms"
+        },
+        {
+          "evidenceId": "livekit-supp-token-grants",
+          "quote": "Access tokens are JWT-based and signed with your API secret to prevent forgery."
         }
       ]
     }
@@ -6950,12 +6948,14 @@
     "productId": "livekit",
     "storyId": "agentic-scoped-keys",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "LiveKit's own CLI can create tokens and the server uses JWT authentication, so it does issue credentials itself. Nothing in the evidence shows those tokens can be scoped to limited permissions or tied to an agent's least-privilege needs. Missing for 10: documented permission scoping or grants on tokens or API keys, per-agent credential issuance, revocation or expiry controls, and independent corroboration.",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "LiveKit documents JWT access tokens whose grants scope each credential to one identity and room, with per-permission flags (roomCreate, roomAdmin, canPublish, canPublishData), subscribe-only tokens, and expiration. This is the product's own least-privilege credential mechanism. The evidence does not show these tokens issued specifically for agents, and it does not show scoping or restricting the server API key/secret pairs themselves, so coverage is partial. missing for 10: evidence of issuing scoped credentials specifically to agents, scoping or rotation of the API key/secret pairs themselves, independent or hands-on corroboration.",
     "evidenceIds": [
-      "livekit-gh-3",
-      "livekit-gh-6"
+      "livekit-supp-token-grants",
+      "livekit-supp-token-expiry-grant-table",
+      "livekit-docs-42",
+      "livekit-gh-3"
     ],
     "support": {
       "relation": "direct",
@@ -6963,12 +6963,20 @@
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": [
         {
-          "evidenceId": "livekit-gh-3",
-          "quote": "server APIs, create tokens, generate test traffic, and scaffold and deploy agents."
+          "evidenceId": "livekit-supp-token-grants",
+          "quote": "This token encodes the identity of a participant, name of the room, capabilities (for example, publishing audio, video, or data), and permissions (for example, permission to moderate a room)."
         },
         {
-          "evidenceId": "livekit-gh-6",
-          "quote": "Built for production, supports JWT authentication"
+          "evidenceId": "livekit-supp-token-expiry-grant-table",
+          "quote": "Access tokens also carry an expiration time, after which the server rejects connections with that token."
+        },
+        {
+          "evidenceId": "livekit-docs-42",
+          "quote": "This example shows how to create a token where the participant can only subscribe (and not publish) into the room:"
+        },
+        {
+          "evidenceId": "livekit-gh-3",
+          "quote": "server APIs, create tokens, generate test traffic, and scaffold and deploy agents."
         }
       ]
     }
@@ -6976,23 +6984,26 @@
   {
     "productId": "livekit",
     "storyId": "agentic-sdks",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LiveKit's docs say you can build voice agents in code with Python or Node.js and connect them to web or mobile apps, which implies official language SDKs, but the pack never names or lists the SDKs. A community member wished for a Rust desktop client SDK, which suggests SDK coverage has gaps; the CLI supports scaffolding agents alongside the code path. Missing for 10: an explicit list of official SDKs per language/platform, SDK reference documentation, independent hands-on corroboration of SDK quality, and evidence of Rust/desktop client SDK coverage.",
+    "rationale": "LiveKit ships official first-party Agents SDKs in Python and Node.js, with step-by-step guides for building agents in code. A CLI complements them for accessing server APIs, creating tokens, and scaffolding and deploying agents. Missing for 10: per-language SDK reference documentation and an enumerated list of client/mobile SDKs in the evidence, plus independent hands-on corroboration of SDK quality (one user wished for a Rust desktop SDK).",
     "evidenceIds": [
+      "livekit-gh-7",
       "livekit-docs-2",
       "livekit-docs-24",
-      "livekit-docs-6",
-      "livekit-docs-38",
-      "livekit-comm-1",
-      "livekit-comm-3"
+      "livekit-gh-3",
+      "livekit-docs-6"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": [
+        {
+          "evidenceId": "livekit-gh-7",
+          "quote": "It's available in both [Python](https://github.com/livekit/agents) and [Node.js](https://github.com/livekit/agents-js)."
+        },
         {
           "evidenceId": "livekit-docs-2",
           "quote": "Build a simple voice agent with Python or Node.js in less than 10 minutes."
@@ -7000,14 +7011,6 @@
         {
           "evidenceId": "livekit-docs-24",
           "quote": "Build a voice agent in code with this step-by-step guide."
-        },
-        {
-          "evidenceId": "livekit-docs-6",
-          "quote": "Bring your agent to life through a web or mobile app."
-        },
-        {
-          "evidenceId": "livekit-comm-1",
-          "quote": "It worked great with Svelte, and deploying a local dev server was easy."
         }
       ]
     }
@@ -7018,7 +7021,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a real-time infrastructure platform like LiveKit, but no item in the evidence pack documents registrable outbound HTTP callbacks for room, participant, or egress events. The in-room RPC, data streams and egress recording features are adjacent capabilities, not webhooks, so they earn no credit.",
+    "rationale": "Webhooks are a fair question for a real-time media and agent platform like LiveKit, so the axis applies. However, nothing in the evidence pack documents registrable outbound HTTP callbacks for events. The 'subscribe' token grant (participant media subscription) and RPC between participants are different features and cannot be credited here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7033,7 +7036,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows an interactive API reference with runnable examples. The in-browser agent builder, step-by-step guides, Docs MCP server and CLI are adjacent features, not a try-it-out API reference, and the probe found no OpenAPI spec at any of the candidate paths.",
+    "rationale": "LiveKit is an API-driven platform, so an interactive API reference is a fair question to ask. The evidence shows only static code examples, such as the token-grant example, and a browser-based Agent Builder. Neither is an interactive API reference with runnable examples, and the OpenAPI probe returned 404 on every candidate path.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7048,7 +7051,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "No OpenAPI spec was found: the probe returned 404 on every candidate openapi/swagger path. A community comment does note that LiveKit maintains a separate Protocol project of protobuf messages, a machine-readable definition that could serve as an equivalent spec, but this is a single thin mention. missing for 10: a published OpenAPI or equivalent downloadable spec, first-party docs confirming the protobuf definitions cover the server API, and documented download location and versioning.",
+    "rationale": "No OpenAPI document was found: every candidate OpenAPI/Swagger path returned 404. The only machine-readable spec-equivalent in the pack is a community mention that LiveKit maintains a separate Protocol project of protobuf message definitions, used as a reference for what is under the hood. missing for 10: a published, downloadable OpenAPI (or equivalent) spec for the server APIs, first-party docs pointing to the protobuf/Twirp definitions as the API contract, and confirmation that the protobuf definitions cover the full server API surface.",
     "evidenceIds": [
       "livekit-comm-5",
       "livekit-probe-3"
@@ -7060,7 +7063,7 @@
       "citations": [
         {
           "evidenceId": "livekit-comm-5",
-          "quote": "Appreciated that LiveKit keeps a separate Protocol project (protobuf messages)."
+          "quote": "Appreciated that LiveKit keeps a separate Protocol project (protobuf messages). It gives a quick sense of what's under the hood and serves as a helpful reference."
         }
       ]
     }
@@ -7071,11 +7074,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiveKit ships its own local development mode (`livekit-server --dev` with a placeholder API key/secret), and the CLI lets you talk to an agent locally and generate test traffic. That gives a non-production test environment, and a community user confirms the local dev server was easy to deploy. However, nothing documents a dedicated sandbox or test project that is explicitly isolated from production data, and the Cloud 'test and iterate' experience is not described as segregated. Missing for 10: a documented sandbox/test-project concept with explicit production-data isolation, guidance on testing against LiveKit Cloud without affecting production, independent hands-on corroboration of sandbox isolation.",
+    "rationale": "LiveKit ships its own isolated development mode: `livekit-server --dev` runs a local server with placeholder API credentials, and the CLI lets you talk to an agent locally before deploying to LiveKit Cloud. That gives a non-production test path, and a community user confirms the local dev server was easy to stand up. Nothing documents a dedicated sandbox environment or project, or any guarantee of separation from production data. missing for 10: an explicit sandbox/test environment or project in LiveKit Cloud, documented isolation of test data from production data, sandbox-specific credentials or limits, and independent corroboration beyond local dev mode.",
     "evidenceIds": [
       "livekit-gh-2",
-      "livekit-gh-3",
       "livekit-docs-38",
+      "livekit-gh-3",
       "livekit-docs-25",
       "livekit-comm-1"
     ],
@@ -7089,16 +7092,16 @@
           "quote": "Start LiveKit in development mode by running `livekit-server --dev`. It'll use a placeholder API key/secret pair."
         },
         {
-          "evidenceId": "livekit-gh-3",
-          "quote": "server APIs, create tokens, generate test traffic, and scaffold and deploy agents."
-        },
-        {
           "evidenceId": "livekit-docs-38",
           "quote": "Scaffold an agent, talk to it locally, and deploy it to LiveKit Cloud:"
         },
         {
+          "evidenceId": "livekit-gh-3",
+          "quote": "generate test traffic"
+        },
+        {
           "evidenceId": "livekit-comm-1",
-          "quote": "deploying a local dev server was easy."
+          "quote": "deploying a local dev server was easy"
         }
       ]
     }
@@ -7109,7 +7112,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LiveKit is an API-driven platform, so API versioning and a deprecation policy are fair questions to ask of it. However, the evidence pack contains no documentation of versioned APIs or of any deprecation policy. The deployment rollback items (livekit-docs-15, livekit-docs-27) cover agent deployment versions, and the separate Protocol project (livekit-comm-5) is a protobuf reference; both are adjacent features, not versioned APIs with a deprecation policy.",
+    "rationale": "The evidence pack contains nothing on API versioning schemes or a documented deprecation policy for LiveKit's server or SDK APIs. The closest items are agent deployment rollback and a separate protobuf Protocol project, which are adjacent features, not API versioning or deprecation guarantees.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7124,7 +7127,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a real-time infrastructure platform with server APIs and a CLI, so the axis applies. However, nothing in the evidence documents acting on many rooms, participants, agents, or deployments at once. The CLI's server API access, test traffic generation, telephony dispatch rules, and auto-recording on room creation are adjacent features, not bulk operations.",
+    "rationale": "Bulk operations across many items are a fair question for a real-time infrastructure platform with server APIs and a CLI, so the axis applies. The evidence pack does not document any batch or multi-item operation, such as bulk room deletion, bulk participant management, or batch egress. The nearby items cover different capabilities: dispatch rules route callers to rooms, the CLI generates test traffic, and recording starts automatically when a room is created.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7139,7 +7142,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "LiveKit documents two narrow, product-native event-triggered behaviors. Telephony dispatch rules route inbound callers to rooms, and auto-egress starts recording automatically when a room is created. Neither amounts to a general user-definable rules engine, so this counts as partial support. Missing for 10: a general-purpose rules or trigger system across arbitrary events, configurable action types beyond call routing and recording, documented webhook/event subscriptions, and independent or hands-on corroboration.",
+    "rationale": "LiveKit documents two narrow, built-in event-triggered behaviors. Telephony dispatch rules route inbound callers to rooms, and auto-egress starts recording automatically when a room is created. These are first-party rule-to-action mechanisms, but they are fixed to specific use cases rather than a general rules engine. Missing for 10: general-purpose user-defined event→action rules, a broad event catalog, conditional logic or chaining across arbitrary events, any detailed documentation of rule configuration, and independent or hands-on corroboration.",
     "evidenceIds": [
       "livekit-docs-21",
       "livekit-docs-30"
@@ -7166,7 +7169,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Recurring scheduling is a fair question for a cloud agent platform like LiveKit, but the evidence documents no cron-style or recurring job or workflow scheduler. Nearby items do not qualify: always-on agents are a deployment mode, auto-recording is triggered by room creation, and outbound calls are one-off programmatic actions rather than a recurring schedule.",
+    "rationale": "Scheduling recurring jobs is a fair question for a cloud agent platform like LiveKit, but the evidence shows no recurring scheduler. Always-on agents, programmatic outbound calls and auto-start recording on room creation are one-off or event-triggered behaviors, not recurring schedules, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7181,10 +7184,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiveKit Cloud documents reverting an agent deployment to a previous version and instant rollback, which implies versioned deployments and covers the roll-back part of the story. Reviewing changes before deploying is not evidenced, and the only sources are pricing-page claims. Missing for 10: a documented review or diff workflow for agent changes, explicit version history or management docs, and independent or hands-on corroboration of rollback.",
+    "rationale": "LiveKit Cloud documents reverting an agent deployment to a previous version and instant rollback, which implies versioned deployments for agents, the closest thing it has to automations. Nothing in the pack shows a review step such as diffs or approvals, and the rollback claims come only from pricing-page bullets. missing for 10: documented version history/listing of agent deployments, review or diff/approval workflow before deploy, in-depth docs on rollback mechanics, independent or hands-on corroboration.",
     "evidenceIds": [
       "livekit-docs-15",
-      "livekit-docs-27"
+      "livekit-docs-27",
+      "livekit-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -7208,7 +7212,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The egress docs cover recording to MP4 or HLS, RTMP streaming, auto-start when a room is created, and single-track passthrough. None of them states that multiple participants are composited into one output, and no layout options are documented. Room-level auto-recording only hints at composition, which is not enough to credit the story.",
+    "rationale": "The egress docs show recording to MP4 or HLS, RTMP streaming, auto-recording, and single-track passthrough export. Nothing in the pack shows composing multiple participants into one output or any documented layout options. That recording capability is adjacent and does not deliver this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7223,7 +7227,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack only uses generic 'low-latency' wording for data tracks and mentions a dashboard that shows latency metrics. Neither documents an end-to-end latency target, such as a millisecond budget, or a measured latency path for live conversation. Latency observability and 'instant responses' from always-on agents are adjacent features, not a documented latency target or path.",
+    "rationale": "The evidence pack has no documented end-to-end latency target or measured latency path for live conversation. The closest items are generic 'low-latency' wording for data tracks, an observability view that shows latency metrics, and an 'instant responses' claim for always-on agents. These are adjacent features, not a documented latency budget or a measured conversational pipeline.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7238,7 +7242,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Per-session participant or viewer capacity is a fair question for a real-time media platform like LiveKit, so the axis applies. However, nothing in the evidence pack documents a maximum participant or viewer count per room, or how behavior changes as a room grows. The telephony note that callers can share a room says nothing about capacity limits or scaling behavior.",
+    "rationale": "The evidence pack contains no documentation of how many participants or viewers a LiveKit room supports, and nothing on how behavior changes as a session grows. Subscribe-only tokens and dispatch rules that place callers in the same room are adjacent features, not documented capacity limits or scaling behavior.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7250,34 +7254,16 @@
   {
     "productId": "livekit",
     "storyId": "free-tier-development",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "No evidence shows a LiveKit Cloud free tier or free usage allowance; the pricing-page items cover per-minute cost previews and paid features only. LiveKit does document an open-source server with a `--dev` mode and a path to start on open source and move to Cloud later. That gives a no-cost route for development and early testing, though the evidence never states it in pricing terms. Missing for 10: an explicit free Cloud tier or free usage allowance, documented free-tier limits (minutes, participants, agent sessions), and independent confirmation that the free usage covers early testing.",
-    "evidenceIds": [
-      "livekit-probe-1",
-      "livekit-gh-2",
-      "livekit-docs-13",
-      "livekit-docs-26"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The pricing-page evidence covers paid Cloud features and per-minute cost previews, but nothing documents a free tier or free usage allowance on LiveKit Cloud. The open-source server and `livekit-server --dev` mode are adjacent: they let a team self-host for local development, but they are not a documented free allowance.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a founder, a free tier or free usage allowance covers development and early testing",
-      "citations": [
-        {
-          "evidenceId": "livekit-probe-1",
-          "quote": "LiveKit is an open-source platform for building voice, video, and physical AI agents."
-        },
-        {
-          "evidenceId": "livekit-gh-2",
-          "quote": "Start LiveKit in development mode by running `livekit-server --dev`. It'll use a placeholder API key/secret pair."
-        },
-        {
-          "evidenceId": "livekit-docs-13",
-          "quote": "You can start on open source and migrate to LiveKit Cloud without rewriting application code."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -7286,7 +7272,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents LiveKit Cloud's regions, points of presence, or an edge network that routes clients to a nearby media server. The only region mention is telephony trunk region restriction for regulatory compliance. That is an adjacent control, not documentation of a media edge network, so it earns no credit.",
+    "rationale": "LiveKit is a real-time media platform with a managed cloud, so a nearby point of presence and a documented media edge network are fair questions to ask. However, nothing in the evidence describes clients connecting to a nearby PoP or lists the regions or edge network that carry media. The only regional mention (docs-23) concerns telephony trunks being region-restricted for regulatory reasons, which is a different capability and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7300,13 +7286,17 @@
     "storyId": "in-session-data-channels",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "LiveKit documents a dedicated data transport section. It covers RPC between participants, byte streams for arbitrary binary data with progress tracking, and data tracks for continuous low-latency data, and the server repo lists data tracks among its room transport features. Missing for 10: independent or hands-on corroboration of the data API's latency, and explicit documentation that data is synchronized with or carried alongside audio/video tracks in the same session.",
+    "confidence": "high",
+    "rationale": "LiveKit documents a dedicated data transport API with RPC between participants, byte streams for arbitrary binary data, and data tracks for continuous low-latency telemetry. Access tokens include a canPublishData grant, so data travels in the same room as published audio and video tracks. Missing for 10: independent or hands-on corroboration of data-channel latency, and documented details on delivery guarantees and message-size limits.",
     "evidenceIds": [
       "livekit-docs-32",
       "livekit-docs-33",
       "livekit-docs-34",
-      "livekit-gh-4"
+      "livekit-docs-39",
+      "livekit-docs-40",
+      "livekit-gh-4",
+      "livekit-supp-token-expiry-grant-table",
+      "livekit-supp-token-grants"
     ],
     "support": {
       "relation": "direct",
@@ -7318,16 +7308,20 @@
           "quote": "Stream continuous, low-latency data for robotics, IoT, and telemetry use cases."
         },
         {
-          "evidenceId": "livekit-docs-33",
-          "quote": "Transfer files, images, or any binary data with progress tracking."
+          "evidenceId": "livekit-docs-40",
+          "quote": "Use byte streams to transfer files, images, or any other binary data."
         },
         {
-          "evidenceId": "livekit-docs-32",
-          "quote": "Execute custom methods on other participants and await a response."
+          "evidenceId": "livekit-docs-39",
+          "quote": "Use RPC to execute custom methods on other participants in the room and await a response."
+        },
+        {
+          "evidenceId": "livekit-supp-token-expiry-grant-table",
+          "quote": "canPublishData — Allow participant to publish data to the room"
         },
         {
           "evidenceId": "livekit-gh-4",
-          "quote": "[data tracks](https://docs.livekit.io/transport/data/data-tracks/) for low-latency telemetry and teleoperation"
+          "quote": "for low-latency telemetry and teleoperation"
         }
       ]
     }
@@ -7338,11 +7332,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiveKit documents building voice agents that handle live session audio, with turn detection and interruption handling, and LiveKit Inference runs supported AI models inside LiveKit Cloud. Together these imply that live audio reaches model endpoints during a session, but no item explicitly describes streaming session audio to a transcription (STT) or realtime model endpoint. Egress only covers recording and RTMP export, not model endpoints. Missing for 10: explicit documentation of piping live room audio to STT or realtime model endpoints, a named list of supported transcription or realtime providers, and hands-on or independent corroboration.",
+    "rationale": "LiveKit documents its own voice-agent framework, which joins live rooms and handles turn detection and interruptions, plus LiveKit Inference for running AI models inside LiveKit Cloud. Together these imply that live session audio is fed to AI models while the session runs. However, the pack never explicitly describes streaming room audio to a transcription (STT) or realtime model endpoint. Egress only covers files and RTMP, not model endpoints. missing for 10: explicit docs on routing live audio to STT or realtime model endpoints, a list of supported transcription or realtime providers, independent or hands-on corroboration.",
     "evidenceIds": [
       "livekit-docs-2",
       "livekit-docs-8",
-      "livekit-docs-10"
+      "livekit-docs-10",
+      "livekit-probe-1",
+      "livekit-gh-7"
     ],
     "support": {
       "relation": "direct",
@@ -7370,7 +7366,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents how LiveKit's media layer scales across nodes or regions, either through managed autoscaling or self-hosted clustering. The nearby items cover adjacent topics only: deployment packaging (single binary, Docker or Kubernetes), Cloud-hosted agents running without server management, region-restricted telephony trunks, and single-port UDP firewall configuration. None of these describes multi-node or multi-region media scaling.",
+    "rationale": "The pack never documents how LiveKit's media layer (SFU) scales across nodes or regions. It has no material on multi-node clustering, cross-region routing, or managed autoscaling of media servers. Kubernetes/Docker deployment, agent hosting on LiveKit Cloud, and region-restricted telephony trunks are adjacent features, not documentation of media-layer scaling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7385,7 +7381,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only first-party evidence is a single thin claim that agents can be brought to life 'through a web or mobile app'. That implies client support across web and mobile, and a community user confirms it worked with Svelte on the web. missing for 10: explicit official iOS and Android SDK documentation, evidence of a shared session/room and track model across platforms, confirmation that one backend serves all clients, independent corroboration on mobile.",
+    "rationale": "LiveKit's own docs say you can bring an agent to a web or mobile app, which implies first-party client support beyond the browser. The community report of using it with Svelte supports the web side only. Nothing in the pack names official iOS or Android SDKs or documents a shared session and track model across them, so this is a thin, glancing mention. Missing for 10: explicit official iOS and Android SDK documentation, evidence of the same room/session/track model across platforms, independent mobile hands-on corroboration.",
     "evidenceIds": [
       "livekit-docs-6",
       "livekit-comm-1"
@@ -7401,7 +7397,7 @@
         },
         {
           "evidenceId": "livekit-comm-1",
-          "quote": "It worked great with Svelte"
+          "quote": "It worked great with Svelte, and deploying a local dev server was easy."
         }
       ]
     }
@@ -7412,11 +7408,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "LiveKit documents its own programmatic surfaces. The CLI accesses server APIs, creates tokens, and scaffolds and deploys agents to LiveKit Cloud, and telephony supports programmatic outbound calls. Nothing documents that UI-only features such as browser Agent Builder, metrics dashboards, or deployment rollback can also be done via API, and no OpenAPI spec was found. Missing for 10: an explicit API/UI parity claim, API coverage for Agent Builder, dashboard metrics and rollback, a published OpenAPI/API reference, and independent corroboration.",
+    "rationale": "LiveKit documents its own programmatic surfaces: a CLI that accesses server APIs, creates tokens and scaffolds and deploys agents, programmatic outbound calls, and token grants that include room create and delete. Nothing documents full parity with the UI, though. The browser-based Agent Builder and Cloud dashboard features (metrics views, rollback, phone-number provisioning) are not shown to have API equivalents, and the OpenAPI probe returned 404 at every candidate path. Missing for 10: an explicit API/UI parity statement, API coverage for Agent Builder and dashboard features, a published API spec, and independent corroboration.",
     "evidenceIds": [
       "livekit-gh-3",
       "livekit-docs-38",
       "livekit-docs-22",
+      "livekit-supp-token-expiry-grant-table",
+      "livekit-docs-11",
       "livekit-probe-3"
     ],
     "support": {
@@ -7429,12 +7427,16 @@
           "quote": "server APIs, create tokens, generate test traffic, and scaffold and deploy agents."
         },
         {
+          "evidenceId": "livekit-docs-22",
+          "quote": "Outbound calls enable your applications to initiate phone calls programmatically."
+        },
+        {
           "evidenceId": "livekit-docs-38",
           "quote": "Scaffold an agent, talk to it locally, and deploy it to LiveKit Cloud:"
         },
         {
-          "evidenceId": "livekit-docs-22",
-          "quote": "Outbound calls enable your applications to initiate phone calls programmatically."
+          "evidenceId": "livekit-supp-token-expiry-grant-table",
+          "quote": "roomCreate — Permission to create or delete rooms"
         }
       ]
     }
@@ -7445,7 +7447,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "LiveKit documents that you can leave its Cloud service for self-hosting the open-source server without rewriting application code. Its Egress feature exports room media in open formats (MP4, HLS). However, nothing in the evidence describes exporting all account or project data (configurations, agent definitions, logs, metrics, phone numbers) from LiveKit Cloud in a bulk export. Missing for 10: a documented full account/project data export, open-format export of non-media data (agent configs, logs, metrics), and independent corroboration of a Cloud-to-self-hosted migration.",
+    "rationale": "LiveKit documents an exit path from LiveKit Cloud to self-hosting on its open-source server, and its own Egress feature can record media to open formats such as MP4 and HLS. There is no documented way to export all account or project data (agent configs, logs, metrics, transcripts) in open formats. Missing for 10: a documented bulk export of all user/account data, an explicit list of export formats for non-media data, and independent corroboration of a completed migration off Cloud.",
     "evidenceIds": [
       "livekit-docs-14",
       "livekit-docs-13",
@@ -7463,16 +7465,12 @@
           "quote": "You can move from LiveKit Cloud to self-hosted if your requirements change."
         },
         {
-          "evidenceId": "livekit-docs-13",
-          "quote": "You can start on open source and migrate to LiveKit Cloud without rewriting application code."
-        },
-        {
           "evidenceId": "livekit-docs-29",
           "quote": "It supports recording to an MP4 file or HLS segments"
         },
         {
           "evidenceId": "livekit-docs-31",
-          "quote": "To export a single video track without transcoding, set the `PASSTHROUGH` encoding preset, which writes the track in its native container."
+          "quote": "set the `PASSTHROUGH` encoding preset, which writes the track in its native container."
         }
       ]
     }
@@ -7483,15 +7481,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "LiveKit describes itself as an open-source platform, its docs refer to starting on open source and self-hosting, and the server is published as a public GitHub repository (livekit/livekit) whose source users can read. Community users confirm running it themselves and building on the open Pion ion-sfu. Missing for 10: the specific license is not named (e.g. Apache 2.0), and there is no evidence about which components (Cloud-only features, agents framework, SDKs) are open versus proprietary.",
+    "rationale": "LiveKit describes itself as an open-source platform. Its server source is published on GitHub (github.com/livekit/livekit), and the agents frameworks have their own public Python and Node.js repos. The docs also say you can start on open source and move between it and Cloud. Missing for 10: the specific license is never named (e.g. Apache-2.0), and there is no independent corroboration of the license terms or which components are open.",
     "evidenceIds": [
       "livekit-probe-1",
       "livekit-docs-13",
-      "livekit-docs-14",
+      "livekit-gh-7",
       "livekit-gh-1",
-      "livekit-gh-2",
-      "livekit-comm-4",
-      "livekit-comm-5"
+      "livekit-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -7507,12 +7503,8 @@
           "quote": "You can start on open source and migrate to LiveKit Cloud without rewriting application code."
         },
         {
-          "evidenceId": "livekit-gh-1",
-          "quote": "Easy to deploy: single binary, Docker or Kubernetes"
-        },
-        {
-          "evidenceId": "livekit-comm-5",
-          "quote": "Appreciated that LiveKit keeps a separate Protocol project (protobuf messages). It gives a quick sense of what's under the hood and serves as a helpful reference."
+          "evidenceId": "livekit-gh-7",
+          "quote": "It's available in both [Python](https://github.com/livekit/agents) and [Node.js](https://github.com/livekit/agents-js)."
         }
       ]
     }
@@ -7523,12 +7515,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "LiveKit's core server is open source and ships as a self-deployable single binary, Docker image, or Kubernetes deployment. First-party docs cover self-hosting topics such as ports and firewall setup, and say users can move between Cloud and self-hosted without rewriting code. A community user also describes it as the right choice for a modern SFU you run yourself. Missing for 10: in-depth self-hosting production guides in the evidence (scaling, TURN, and whether agents, egress, and telephony are all self-hostable), plus clarity on which Cloud-only features (Inference, Agent Builder, Phone Numbers) are unavailable when self-hosted.",
+    "rationale": "LiveKit's core media server is open source and documented as easy to self-deploy as a single binary, Docker image, or Kubernetes deployment, with a dev mode and self-hosting networking docs. The docs explicitly support moving between self-hosted and LiveKit Cloud, and a community team describes it as an SFU you run yourself. Missing for 10: in-depth self-hosting production deployment guidance in the pack beyond ports and firewall, and clarity on parity for Cloud-only features such as Inference, Agent Builder, and Phone Numbers.",
     "evidenceIds": [
       "livekit-gh-1",
       "livekit-gh-2",
-      "livekit-docs-14",
       "livekit-docs-13",
+      "livekit-docs-14",
       "livekit-docs-35",
       "livekit-comm-4",
       "livekit-probe-1"
@@ -7547,12 +7539,16 @@
           "quote": "You can move from LiveKit Cloud to self-hosted if your requirements change."
         },
         {
-          "evidenceId": "livekit-docs-35",
-          "quote": "It's possible to handle all UDP traffic on a single port."
+          "evidenceId": "livekit-docs-13",
+          "quote": "You can start on open source and migrate to LiveKit Cloud without rewriting application code."
         },
         {
-          "evidenceId": "livekit-probe-1",
-          "quote": "LiveKit is an open-source platform for building voice, video, and physical AI agents."
+          "evidenceId": "livekit-comm-4",
+          "quote": "They called it the right choice for a modern SFU you run yourself."
+        },
+        {
+          "evidenceId": "livekit-docs-35",
+          "quote": "It's possible to handle all UDP traffic on a single port."
         }
       ]
     }
@@ -7563,7 +7559,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented data-residency or storage-region selection for LiveKit Cloud. The closest items are adjacent: telephony trunks can be region-restricted for call regulations, and the open-source server can be self-hosted. Neither is a documented capability for choosing where data is stored.",
+    "rationale": "The evidence pack has no documented feature for choosing where LiveKit Cloud stores data (no region or residency selection). Nearby items do not count. Region-restricted SIP trunks are about telephony regulation, not data storage. PrivateLink connects agents to a VPC. Self-hosting is a deployment option rather than a residency control.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -7578,7 +7574,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LiveKit is a cloud platform that processes user voice, video and data and runs AI inference, so a training opt-out or no-training policy is a fair question to ask of it. The evidence pack contains no documentation of a training opt-out, a data-use policy, or a no-training commitment. The ability to self-host or move off LiveKit Cloud is an adjacent deployment option, not a control over AI training use, so it earns no credit.",
+    "rationale": "The axis applies: LiveKit runs a cloud platform with LiveKit Inference, so a data-training policy or opt-out is a fair question. The pack has no evidence of a no-training commitment, an opt-out control, or a data-usage policy. Self-hosting and PrivateLink are adjacent deployment options, not a documented guarantee against training use.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7593,7 +7589,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a cloud realtime/AI-agent platform like LiveKit, so the axis applies. The pack never documents retention periods, deletion APIs, or data-lifecycle settings. Related items (moving to self-hosted, egress recording to MP4/HLS, region-restricted telephony trunks) are adjacent features or user-side arrangements, not retention or deletion controls.",
+    "rationale": "Data retention and deletion is a fair privacy axis for a real-time media and agent cloud platform, but the pack documents no retention policies, deletion controls, or data-lifecycle settings. The nearby evidence is only adjacent: a token grant permitting room deletion, recording/egress features, and the option to self-host or move off LiveKit Cloud. None of these is a product-level control over how long data is kept or how it is deleted.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7608,7 +7604,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for an open-source realtime platform with a cloud offering, so the axis applies. The pack has no documented setting, flag, or policy for disabling LiveKit's own telemetry or usage tracking. The 'telemetry' mentions refer to data tracks for streaming application telemetry, a different feature, and the option to self-host is a deployment choice rather than an opt-out control.",
+    "rationale": "Telemetry opt-out is a fair question for a platform with SDKs, a CLI, and cloud services, so the axis applies. Nothing in the pack documents any setting to disable telemetry or usage tracking. The 'telemetry' mentions refer to data tracks that carry application data for robotics and IoT, which is unrelated, and the self-hosting option is only an adjacent workaround, not an opt-out control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7621,9 +7617,9 @@
     "productId": "livekit",
     "storyId": "published-usage-pricing",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "LiveKit's public pricing page offers a self-serve preview of the per-minute cost to run an agent on LiveKit Cloud, so some cost modeling is possible without sales. The evidence shows no actual published rates per participant-minute or per unit of bandwidth. missing for 10: explicit per-participant-minute rates, bandwidth/egress unit pricing, stated rate figures beyond agent per-minute cost, independent corroboration that pricing is fully self-serve.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "LiveKit's pricing page offers a preview of the per-minute cost to run an agent on LiveKit Cloud, which points to published usage-based pricing a founder could model without sales. However, the evidence shows no actual rates and nothing priced per participant-minute or per unit of bandwidth. Missing for 10: published per-participant-minute rates, per-GB bandwidth or egress rates, concrete price figures, and independent confirmation that costs can be modeled without contacting sales.",
     "evidenceIds": [
       "livekit-docs-26"
     ],
@@ -7643,9 +7639,9 @@
     "productId": "livekit",
     "storyId": "restream-rtmp-hls",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "LiveKit's first-party Egress docs state that a session can be recorded to HLS segments and exported to live streaming services such as YouTube Live, Twitch and Facebook via RTMP, so a large audience can watch without joining the room. The docs also mention automatic recording when a room is created. missing for 10: independent or hands-on corroboration of RTMP/HLS egress at audience scale, and deeper documentation of live HLS playback delivery.",
+    "rationale": "LiveKit's first-party Egress docs state it can record to HLS segments and export live to streaming services such as YouTube Live, Twitch, and Facebook via RTMP. This lets a large audience watch outside the session, and the docs also describe automatic room-start recording. Missing for 10: detailed docs on configuring an RTMP/HLS live-stream egress (API calls, latency, scaling to large audiences) and independent or hands-on corroboration of streaming egress.",
     "evidenceIds": [
       "livekit-docs-29",
       "livekit-docs-30"
@@ -7658,6 +7654,10 @@
         {
           "evidenceId": "livekit-docs-29",
           "quote": "It supports recording to an MP4 file or HLS segments, as well as exporting to live streaming services like YouTube Live, Twitch, and Facebook via RTMP."
+        },
+        {
+          "evidenceId": "livekit-docs-30",
+          "quote": "It starts recording automatically when a room is created."
         }
       ]
     }
@@ -7666,15 +7666,17 @@
     "productId": "livekit",
     "storyId": "room-join-token-flow",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "LiveKit's own tooling can create tokens and access server APIs, the server supports JWT authentication, and the docs point to connecting web or mobile apps. One community user calls it the best WebRTC getting-started experience. However, the pack never shows the end-to-end flow the story describes. missing for 10: documented server-side room/session creation API, permission-scoped join token minting via server SDK, official client SDK connect steps, a short end-to-end quickstart tying these together.",
+    "rationale": "LiveKit's docs show how to mint scoped, JWT-signed join tokens with per-permission grants (roomCreate, canPublish, subscribe-only) and expiry, and the CLI can access server APIs and create tokens. A community member also praised the 'get going' experience. The server-side room-creation step and the client SDK connect step are only implied, not shown as a documented end-to-end flow. missing for 10: an explicit server-side room/session creation API example, a documented client SDK connect call using the token, and evidence of a single short quickstart tying all three steps together.",
     "evidenceIds": [
+      "livekit-supp-token-grants",
+      "livekit-supp-token-expiry-grant-table",
+      "livekit-docs-42",
       "livekit-gh-3",
       "livekit-gh-6",
       "livekit-docs-6",
-      "livekit-comm-6",
-      "livekit-comm-1"
+      "livekit-comm-6"
     ],
     "support": {
       "relation": "direct",
@@ -7682,20 +7684,20 @@
       "subject": "As a developer, I can create a session from my server, mint a scoped join token, and connect a client with the official SDK in a short documented flow",
       "citations": [
         {
+          "evidenceId": "livekit-supp-token-grants",
+          "quote": "This token encodes the identity of a participant, name of the room, capabilities (for example, publishing audio, video, or data), and permissions (for example, permission to moderate a room). Access tokens are JWT-based and signed with your API secret to prevent forgery."
+        },
+        {
+          "evidenceId": "livekit-supp-token-expiry-grant-table",
+          "quote": "roomCreate — Permission to create or delete rooms"
+        },
+        {
+          "evidenceId": "livekit-docs-42",
+          "quote": "This example shows how to create a token where the participant can only subscribe (and not publish) into the room:"
+        },
+        {
           "evidenceId": "livekit-gh-3",
           "quote": "server APIs, create tokens, generate test traffic, and scaffold and deploy agents."
-        },
-        {
-          "evidenceId": "livekit-gh-6",
-          "quote": "Built for production, supports JWT authentication"
-        },
-        {
-          "evidenceId": "livekit-docs-6",
-          "quote": "Bring your agent to life through a web or mobile app."
-        },
-        {
-          "evidenceId": "livekit-comm-6",
-          "quote": "Looks like the best WebRTC get going experience I've seen."
         }
       ]
     }
@@ -7704,9 +7706,9 @@
     "productId": "livekit",
     "storyId": "selective-forwarding-tracks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Community reports describe LiveKit as a modern, self-run SFU built on Pion ion-sfu, so media routing through a selective forwarding unit is supported by independent evidence. No first-party documentation in the pack describes the SFU architecture, and nothing shows that each participant receives only the tracks it subscribes to. Missing for 10: first-party SFU/media-routing docs, evidence of per-participant selective track subscription and forwarding, relay/TURN routing details.",
+    "rationale": "Community reports describe LiveKit as a self-hostable SFU built on Pion ion-sfu, so media does route through a selective forwarding unit. However, no first-party doc in the pack describes SFU routing or confirms that only each participant's subscribed tracks are forwarded. The subscribe-only token example concerns permissions, not selective forwarding. Missing for 10: first-party documentation of the SFU architecture, documented per-participant selective track subscription/forwarding, hands-on corroboration of subscription-based delivery.",
     "evidenceIds": [
       "livekit-comm-4",
       "livekit-comm-5"
@@ -7733,7 +7735,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiveKit's first-party Egress docs show server-side recording of rooms to MP4 files or HLS segments, including automatic recording when a room is created and passthrough track export. Nothing in the pack shows those files being uploaded to a developer-owned storage bucket, so only half of the story is evidenced. Missing for 10: documented upload to the customer's own storage bucket (e.g. S3/GCS/Azure destinations), bucket credential configuration, and independent or hands-on corroboration.",
+    "rationale": "LiveKit's Egress docs show server-side recording of rooms to MP4 files or HLS segments, including automatic recording when a room is created and passthrough export of single tracks. Nothing in the pack shows those files being delivered to a developer-owned storage bucket, which is half of the story. Missing for 10: documented upload of recordings to customer-owned storage (e.g. S3/GCS/Azure bucket configuration), independent or hands-on corroboration of the recording workflow.",
     "evidenceIds": [
       "livekit-docs-29",
       "livekit-docs-30",
@@ -7751,10 +7753,6 @@
         {
           "evidenceId": "livekit-docs-30",
           "quote": "It starts recording automatically when a room is created."
-        },
-        {
-          "evidenceId": "livekit-docs-31",
-          "quote": "To export a single video track without transcoding, set the `PASSTHROUGH` encoding preset, which writes the track in its native container."
         }
       ]
     }
@@ -7763,11 +7761,13 @@
     "productId": "livekit",
     "storyId": "server-side-session-control",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "The only relevant evidence is a single GitHub mention that LiveKit's CLI lets you 'access server APIs', which confirms a server-side API exists. Nothing in the pack documents the specific operations this story asks for. missing for 10: documented list-rooms/sessions endpoint, mute participant API, remove participant API, end/delete room API, first-party server API reference docs, independent or hands-on corroboration.",
+    "rationale": "LiveKit documents that its CLI can \"access server APIs\", and its token grants define \"roomCreate — Permission to create or delete rooms\" and \"roomAdmin — Permission to moderate a room\". Together these imply server-side room deletion (ending a session) and moderation, but the pack never documents the actual API operations. missing for 10: documented endpoints for listing rooms/sessions, explicit mute-participant and remove-participant operations, explicit end-session/delete-room API docs, independent or hands-on corroboration.",
     "evidenceIds": [
-      "livekit-gh-3"
+      "livekit-gh-3",
+      "livekit-supp-token-expiry-grant-table",
+      "livekit-supp-token-grants"
     ],
     "support": {
       "relation": "direct",
@@ -7777,6 +7777,14 @@
         {
           "evidenceId": "livekit-gh-3",
           "quote": "server APIs, create tokens, generate test traffic, and scaffold and deploy agents."
+        },
+        {
+          "evidenceId": "livekit-supp-token-expiry-grant-table",
+          "quote": "roomCreate — Permission to create or delete rooms"
+        },
+        {
+          "evidenceId": "livekit-supp-token-expiry-grant-table",
+          "quote": "roomAdmin — Permission to moderate a room"
         }
       ]
     }
@@ -7787,7 +7795,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies to a WebRTC media platform, but nothing in the evidence documents per-session call-quality metrics such as packet loss, jitter, or bitrate through a dashboard or API. The closest item (livekit-docs-19) describes resource allocation, latency, errors, and process metrics for deployed agents. That is adjacent agent-observability, not per-session media quality telemetry, so it earns no credit.",
+    "rationale": "The evidence pack contains nothing about per-session call quality metrics such as packet loss, jitter, or bitrate, whether through a dashboard or an API. The only observability mention covers resource allocation, latency, errors, and process metrics for deployed agents. That is an adjacent agent-monitoring feature, not per-session media-quality telemetry for debugging calls.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7802,7 +7810,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Adapting simulcast or SVC layers to each subscriber's bandwidth is a fair question for LiveKit, which community posts describe as an SFU. However, nothing in the evidence pack mentions simulcast, layered encoding, or per-subscriber bandwidth adaptation. Being described as an SFU is related but does not show this capability, so the verdict is none.",
+    "rationale": "LiveKit is a WebRTC SFU, so simulcast/layered publishing with per-subscriber bandwidth adaptation is a fair axis. However, nothing in the evidence pack documents simulcast, SVC, or adaptive layer selection. Community items only call it an SFU built on Pion, which does not evidence this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7817,12 +7825,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "LiveKit's first-party telephony docs cover inbound and outbound calls. Phone Numbers bring PSTN calls directly into LiveKit rooms, outbound calls can be started programmatically, and dispatch rules place callers into rooms. The docs also mention trunks, so both dial-in and dial-out into sessions are documented. Missing for 10: explicit SIP protocol and trunk configuration detail in the evidence, independent or hands-on corroboration of telephony bridging.",
+    "rationale": "LiveKit's first-party telephony docs cover inbound PSTN calls connected directly into rooms, with dispatch rules placing callers in the same or different rooms. They also cover programmatic outbound calls and region-restrictable trunks, so both dial-in and dial-out are documented. Missing for 10: explicit SIP protocol and trunk-setup detail in the quoted evidence, and independent or hands-on corroboration of telephony bridging.",
     "evidenceIds": [
       "livekit-docs-12",
-      "livekit-docs-28",
-      "livekit-docs-22",
       "livekit-docs-21",
+      "livekit-docs-22",
+      "livekit-docs-28",
       "livekit-docs-23",
       "livekit-docs-7"
     ],
@@ -7836,16 +7844,16 @@
           "quote": "LiveKit Phone Numbers lets you provision phone numbers and connect PSTN calls directly into LiveKit rooms without setting up trunks."
         },
         {
-          "evidenceId": "livekit-docs-28",
-          "quote": "LiveKit telephony lets you build AI-powered voice apps that handle inbound and outbound calls."
+          "evidenceId": "livekit-docs-21",
+          "quote": "All callers can be placed in the same room or different rooms based on the dispatch rules."
         },
         {
           "evidenceId": "livekit-docs-22",
           "quote": "Outbound calls enable your applications to initiate phone calls programmatically."
         },
         {
-          "evidenceId": "livekit-docs-21",
-          "quote": "All callers can be placed in the same room or different rooms based on the dispatch rules."
+          "evidenceId": "livekit-docs-28",
+          "quote": "LiveKit telephony lets you build AI-powered voice apps that handle inbound and outbound calls."
         },
         {
           "evidenceId": "livekit-docs-23",
@@ -7860,14 +7868,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "LiveKit's telephony docs refer to configurable trunks, including region restriction, and dispatch rules, which implies you can bring your own trunk. Connectors bridge to external platforms such as Twilio and WhatsApp, and the Phone Numbers option is framed as an alternative to setting up trunks, so you are not tied to one carrier. However, the evidence never explicitly describes SIP protocol interoperability or lists compatible trunking providers. missing for 10: explicit SIP trunk interop documentation, named list of supported or compatible SIP providers, hands-on corroboration of connecting an existing carrier trunk.",
+    "rationale": "LiveKit's telephony docs show a trunk-based model: trunks can be region-restricted, and Phone Numbers is offered as an alternative to 'setting up trunks', implying you can bring your own. Connectors bridge to external platforms such as Twilio and WhatsApp, so you are not tied to LiveKit's own numbers. However, the pack never explicitly describes standards-based SIP trunk configuration or names compatible carriers. missing for 10: explicit SIP trunk setup documentation, a list of supported or tested carriers, and independent or hands-on corroboration of multi-carrier interoperability.",
     "evidenceIds": [
       "livekit-docs-23",
+      "livekit-docs-12",
       "livekit-docs-36",
       "livekit-docs-20",
-      "livekit-docs-12",
       "livekit-docs-28",
-      "livekit-docs-21"
+      "livekit-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -7879,12 +7887,16 @@
           "quote": "Trunks can be region restricted to meet local telephony regulations."
         },
         {
+          "evidenceId": "livekit-docs-12",
+          "quote": "connect PSTN calls directly into LiveKit rooms without setting up trunks"
+        },
+        {
           "evidenceId": "livekit-docs-36",
           "quote": "Connectors bridge LiveKit rooms with external voice platforms such as WhatsApp Business and Twilio."
         },
         {
-          "evidenceId": "livekit-docs-12",
-          "quote": "LiveKit Phone Numbers lets you provision phone numbers and connect PSTN calls directly into LiveKit rooms without setting up trunks."
+          "evidenceId": "livekit-docs-28",
+          "quote": "LiveKit telephony lets you build AI-powered voice apps that handle inbound and outbound calls."
         }
       ]
     }
@@ -7895,7 +7907,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies to a WebRTC media server, but nothing in the evidence documents TCP, TLS/TURN, or WebSocket media fallback when UDP is blocked, or when such a fallback engages. The ports/firewall item only says UDP can be handled on a single port. The Twilio-over-websockets item is a telephony connector, not a media transport fallback.",
+    "rationale": "Transport fallback is a fair question for a WebRTC media server, so the axis applies. The pack does not document TCP, TLS/TURN, or WebSocket fallback when UDP is blocked, or when such a fallback would engage. The ports/firewall excerpt only says UDP traffic can run on a single port, and the Twilio-over-websockets item is a telephony connector, not a media-transport fallback.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7910,7 +7922,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "LiveKit offers a hosted cloud service, so an uptime SLA and a public status page are fair things for a founder to ask about. Nothing in the evidence pack mentions either one. Metrics on resource allocation and errors (livekit-docs-19) are a related observability feature, not a published SLA or a public status page, so they earn no credit.",
+    "rationale": "LiveKit Cloud is a hosted service, so a published uptime SLA and a public status page are fair things to ask of it. The evidence pack never mentions either. The pricing items cover per-deployment metrics, rollback and always-on agents, which are adjacent features and do not count as an SLA or status page.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7925,15 +7937,15 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "LiveKit documents building voice agents that join live sessions, with a step-by-step guide, web/mobile and phone connections, turn detection, and hosted model inference. However, no evidence item names the speech-to-text, model, and text-to-speech pipeline stages, so the specific pipeline shape is implied rather than documented. Missing for 10: an explicit description of the STT→LLM→TTS pipeline and its configuration, named STT/TTS provider integrations, and independent or hands-on corroboration of the voice-agent path.",
+    "rationale": "LiveKit's own docs describe a step-by-step path to build voice agents in Python or Node.js, connect them to web, mobile, or phone sessions, and run AI models through LiveKit Inference, with turn detection and interruption handling. That makes it a first-party voice-agent integration path from live sessions. However, the evidence never explicitly describes the speech-to-text → model → text-to-speech pipeline stages. missing for 10: explicit documentation of the STT, LLM and TTS pipeline components and how they are wired, plus independent or hands-on corroboration of the voice-agent pipeline.",
     "evidenceIds": [
       "livekit-docs-2",
       "livekit-docs-24",
       "livekit-docs-6",
       "livekit-docs-8",
       "livekit-docs-10",
-      "livekit-docs-7",
-      "livekit-probe-1"
+      "livekit-gh-7",
+      "livekit-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -7953,12 +7965,12 @@
           "quote": "Bring your agent to life through a web or mobile app."
         },
         {
-          "evidenceId": "livekit-docs-8",
-          "quote": "Automatic turn detection and interruption handling"
-        },
-        {
           "evidenceId": "livekit-docs-10",
           "quote": "LiveKit Inference lets you run supported AI models directly within the LiveKit Cloud environment without requiring API keys."
+        },
+        {
+          "evidenceId": "livekit-docs-8",
+          "quote": "Automatic turn detection and interruption handling"
         }
       ]
     }
@@ -7969,12 +7981,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MoQ Relay's own pub/sub model connects arbitrary publishers to subscribers over native libraries (Rust, Python, Go and others). A production report shows server-side consumers (live transcription, voice ID) subscribing to live Opus audio through the relay with WebRTC-like latency. There is no evidence of a server-side agent publishing synthesized speech back into the same session, and no agent-participant integration. missing for 10: documented agent-as-participant flow, evidence of server-side speech publishing back to participants, bidirectional session semantics, independent hands-on corroboration of a realtime voice-agent loop.",
+    "rationale": "MoQ Relay connects arbitrary publishers to subscribers and ships native libraries (Rust, Python and others), so a server-side process can subscribe to live audio and publish its own track. SageOx shows server-side subscribers (live transcription, voice ID) consuming live Opus audio in production. However, no evidence shows an agent publishing synthesized speech back into the session, and there is no session or participant model or agent-specific tooling. Missing for 10: documented agent-participant pattern, evidence of server-side speech publishing back to participants, round-trip realtime latency evidence for conversational use.",
     "evidenceIds": [
       "moq-relay-comm-1",
       "moq-relay-docs-4",
       "moq-relay-docs-26",
-      "moq-relay-gh-1"
+      "moq-relay-gh-1",
+      "moq-relay-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -8006,14 +8019,16 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "MoQ Relay connects arbitrary publishers to subscribers. A production report shows independent programmatic subscribers (an archiver, live transcription, voice ID) attaching to one published broadcast, with new consumers requiring no publisher migration. Explicit per-track subscription is only implied by the track model, and late attach lost initial audio until the team changed the subscription and credential ordering. missing for 10: explicit documentation of subscribing to a single track within a broadcast, a first-party agent-oriented subscription example, and evidence that late-joining subscribers do not miss data without workarounds.",
+    "rationale": "The relay connects arbitrary publishers to subscribers and fans out at scale. A production report describes new independent consumers (archiver, live transcription, voice ID) subscribing to one published Opus broadcast without any change to the publisher, so adding a subscriber is well supported. Selecting a single track out of a multi-track broadcast is only implied by the custom-track and 'send only when someone is watching' claims, not explicitly documented. Missing for 10: explicit first-party docs on per-track subscription within a broadcast, a documented agent/headless subscriber example (e.g. via Python bindings), and caveats such as the relay not preserving packet timing and the race on late subscription.",
     "evidenceIds": [
       "moq-relay-comm-1",
       "moq-relay-docs-13",
       "moq-relay-docs-26",
       "moq-relay-docs-2",
-      "moq-relay-docs-15",
-      "moq-relay-comm-2"
+      "moq-relay-docs-22",
+      "moq-relay-docs-4",
+      "moq-relay-comm-2",
+      "moq-relay-comm-4"
     ],
     "support": {
       "relation": "direct",
@@ -8025,16 +8040,16 @@
           "quote": "publish Opus to one relay, which fans out to independent subscribers: an S3 archiver, Zoom Scribe Live transcription, and voice ID. They say adding a new consumer no longer requires another recorder or a migration."
         },
         {
+          "evidenceId": "moq-relay-docs-13",
+          "quote": "A server connecting publishers to subscribers"
+        },
+        {
           "evidenceId": "moq-relay-docs-26",
           "quote": "Dynamic announcements, connecting arbitrary publishers to subscribers."
         },
         {
           "evidenceId": "moq-relay-docs-2",
           "quote": "Extend the protocol with custom tracks for any live content."
-        },
-        {
-          "evidenceId": "moq-relay-docs-13",
-          "quote": "A server connecting publishers to subscribers"
         }
       ]
     }
@@ -8043,9 +8058,9 @@
     "productId": "moq-relay",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "high",
-    "rationale": "A live probe found an llms.txt served at doc.moq.dev (HTTP 200) with a structured Media over QUIC table of contents, so an agent can be pointed at it directly. Docs pages also appear to be reachable as .md URLs (e.g. concept/transport.md), although the root .md path returns 404. missing for 10: first-party documentation describing the llms.txt or agent-oriented docs offering, evidence of full content depth (e.g. an llms-full.txt), independent or hands-on corroboration of agents using it.",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "A probe confirms that https://doc.moq.dev/llms.txt returns HTTP 200 with a structured Media over QUIC table of contents linking to doc pages, so an agent can be pointed at it directly. Per-page markdown docs also appear to exist (e.g. concept/transport.md), though the root .md probe returned 404. Missing for 10: first-party docs describing or promoting agent-oriented usage, a working markdown variant for the docs root, and independent or hands-on reports of agents consuming these docs.",
     "evidenceIds": [
       "moq-relay-probe-1",
       "moq-relay-docs-20",
@@ -8059,6 +8074,10 @@
         {
           "evidenceId": "moq-relay-probe-1",
           "quote": "PROBE llms.txt: HTTP 200 at https://doc.moq.dev/llms.txt # Media over QUIC"
+        },
+        {
+          "evidenceId": "moq-relay-probe-1",
+          "quote": "## Table of Contents"
         }
       ]
     }
@@ -8068,9 +8087,15 @@
     "storyId": "agentic-ai-insights",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "The axis applies to this product kind (peer products hold positive or none verdicts on this story), so lack of evidence for an applicable capability is \"none\", never \"na\". (na/none harmonized at arena bring-up — see rankings-engine/scripts/na-harmonize.ts.)",
-    "evidenceIds": []
+    "confidence": "medium",
+    "rationale": "MoQ Relay is a media-over-QUIC relay and CDN server. A streaming infrastructure product could plausibly offer AI-driven analytics or insights, so the axis applies, but nothing in the evidence describes any built-in AI insight or suggestion feature. SageOx's transcription and voice-ID consumers are the user's own external subscribers, a user-side workaround that earns no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
+      "citations": []
+    }
   },
   {
     "productId": "moq-relay",
@@ -8087,7 +8112,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MoQ Relay is media-transport infrastructure: a relay server, protocol libraries, a CLI and an OBS plugin. A built-in AI assistant that takes delegated tasks is outside this product category, and nothing in the evidence shows it ships one. The SageOx transcription pipeline uses MoQ only as transport for an external consumer, so it is not a product-native assistant.",
+    "rationale": "MoQ Relay is a headless media-transport relay server with client libraries, so a built-in AI assistant for delegating tasks is outside this kind of product. Nothing in the evidence shows the product ships an assistant. The llms.txt probe is only an AI-readable docs index and does not make this axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8100,12 +8125,13 @@
     "productId": "moq-relay",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "MoQ ships non-GUI components of its own that suit unattended automation: the moq-cli tool imports and publishes broadcasts (including via ffmpeg), and moq-relay is a standalone server. A production report also describes programmatic headless subscribers (an S3 archiver and a transcription service) running against a relay. Nothing documents CI usage, a headless mode or non-interactive automation guidance, so only part of the story is evidenced. missing for 10: explicit CI/headless documentation, documented non-interactive flags or config for scripted runs, container or CI pipeline examples, independent corroboration of use in CI.",
+    "rationale": "MoQ ships headless components: `moq-relay` is a server you can deploy anywhere, and `moq-cli` imports and publishes broadcasts from the command line, including via ffmpeg. A community production deployment also runs automated headless subscribers such as an S3 archiver and transcription. However, nothing documents use in CI pipelines or automation-specific configuration. Missing for 10: documented CI usage or examples (e.g. a CI-runnable demo or test harness), automation-specific docs for non-interactive config and exit behavior, and independent hands-on corroboration of CI use.",
     "evidenceIds": [
       "moq-relay-docs-11",
       "moq-relay-docs-13",
+      "moq-relay-docs-30",
       "moq-relay-docs-14",
       "moq-relay-comm-1"
     ],
@@ -8119,8 +8145,8 @@
           "quote": "A CLI that can import and publish MoQ broadcasts from a variety of formats (fMP4, HLS, MPEG-TS, FLV, etc), including via ffmpeg."
         },
         {
-          "evidenceId": "moq-relay-docs-13",
-          "quote": "A server connecting publishers to subscribers, able to form a [self-hosted CDN cluster]"
+          "evidenceId": "moq-relay-docs-30",
+          "quote": "Deploy `moq-relay` anywhere."
         },
         {
           "evidenceId": "moq-relay-docs-14",
@@ -8139,7 +8165,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "MoQ Relay is a media-over-QUIC relay/CDN server that connects publishers to subscribers. It is not an agent or AI assistant that would consume tools, so acting as an MCP client is outside its product category. Nothing in the evidence shows it ships any MCP client capability that would make this axis apply.",
+    "rationale": "MoQ Relay is a media-over-QUIC relay/CDN server that connects publishers to subscribers. It has no agent or LLM component that could act as an MCP client and use tools, so plugging in MCP servers is a category error for this kind of product. Nothing in the evidence shows it ships any MCP-client capability that would make the axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8153,8 +8179,8 @@
     "storyId": "agentic-mcp-server",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "MoQ Relay is a media relay and protocol stack, not an agent, so publishing an official MCP server is a fair question and the axis applies. The evidence pack never mentions an MCP server. An llms.txt file and the libraries, CLI and OBS plugin are adjacent features, not an MCP server agents can connect to.",
+    "confidence": "medium",
+    "rationale": "MoQ Relay is a media relay/CDN server, not an agent, so an official MCP server is a plausible ecosystem offering and the axis applies. The evidence shows only an llms.txt file, a CLI and SDK libraries; none of these is an MCP server, and an llms.txt file is an adjacent AI-readability feature that earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8169,7 +8195,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MoQ Relay is a media relay server, and a natural-language operating interface is a plausible capability for this kind of product, so the axis applies. The evidence shows only a conventional CLI (moq-cli), SDK libraries, and an llms.txt docs index. None of these is a documented way to operate the relay through natural-language commands; llms.txt is documentation for LLMs and at most an adjacent building block.",
+    "rationale": "Operating a relay server through natural-language commands is a fair axis for infrastructure tooling, so the story applies. Nothing in the evidence pack shows MoQ Relay accepting natural-language commands: the CLI imports and publishes broadcasts using conventional formats, and an llms.txt docs file is a documentation aid, not a natural-language control interface.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8182,12 +8208,11 @@
     "productId": "moq-relay",
     "storyId": "agentic-official-cli",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "MoQ's official docs list a first-party moq-cli that imports and publishes MoQ broadcasts from several formats, so the product does ship an official CLI. Nothing in the evidence describes it as suited to AI-native or agentic use, and its command surface is not documented beyond publishing. missing for 10: evidence of agent-friendly CLI design (machine-readable output, scripting/automation guidance), documented CLI command reference beyond publishing, independent or hands-on corroboration of the CLI.",
+    "rationale": "The product's docs list an official first-party `moq-cli` that imports and publishes MoQ broadcasts from fMP4, HLS, MPEG-TS and FLV, including via ffmpeg, so an official CLI clearly exists. Its documented scope is narrow (ingest and publish) and it rests on a single short mention, with nothing showing it suits agent-driven or AI-native workflows. Missing for 10: documented command reference, machine-readable/scriptable output for agents, subscribe/admin/relay-management commands, independent or hands-on corroboration of CLI use.",
     "evidenceIds": [
-      "moq-relay-docs-11",
-      "moq-relay-docs-18"
+      "moq-relay-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -8196,11 +8221,7 @@
       "citations": [
         {
           "evidenceId": "moq-relay-docs-11",
-          "quote": "[moq-cli](/bin/cli.html) - A CLI that can import and publish MoQ broadcasts from a variety of formats (fMP4, HLS, MPEG-TS, FLV, etc), including via ffmpeg."
-        },
-        {
-          "evidenceId": "moq-relay-docs-18",
-          "quote": "The default demo starts a relay, publishes a test video, and opens the web player."
+          "quote": "A CLI that can import and publish MoQ broadcasts from a variety of formats (fMP4, HLS, MPEG-TS, FLV, etc), including via ffmpeg."
         }
       ]
     }
@@ -8211,13 +8232,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MoQ ships its own documented programmatic interfaces: Rust and TypeScript libraries with FFI bindings, plus moq-net/@moq/net for data channels. These let code publish and subscribe to broadcasts through the relay, and the docs are exposed via llms.txt. However, no OpenAPI or HTTP control-plane API for managing the relay was found (all OpenAPI probes returned 404). Programmatic use is therefore through protocol libraries rather than a documented service API. missing for 10: documented relay management/control API, OpenAPI/REST spec, evidence of AI agents driving it via the API, independent corroboration of API docs depth.",
+    "rationale": "MoQ Relay is driven programmatically through its own documented protocol libraries: Rust and TypeScript, plus FFI bindings for several other languages. Moq-net/@moq/net carry control channels, and a community production integration (SageOx) built programmatic publishers and subscribers against the relay. There is no evidence of a management or admin API for the relay itself, and probes for an OpenAPI spec all returned 404. missing for 10: documented relay management/control API, machine-readable API spec (OpenAPI), API reference depth beyond library index listings.",
     "evidenceIds": [
       "moq-relay-docs-4",
       "moq-relay-docs-17",
-      "moq-relay-docs-26",
-      "moq-relay-probe-1",
-      "moq-relay-probe-3"
+      "moq-relay-docs-15",
+      "moq-relay-comm-1",
+      "moq-relay-probe-3",
+      "moq-relay-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -8233,8 +8255,8 @@
           "quote": "Chat, game state, telemetry, and control channels over the same relays with [`moq-net`](/lib/rs/moq-net.html) or [`@moq/net`](/lib/js/net.html)."
         },
         {
-          "evidenceId": "moq-relay-docs-26",
-          "quote": "Dynamic announcements, connecting arbitrary publishers to subscribers."
+          "evidenceId": "moq-relay-comm-1",
+          "quote": "Browser, desktop, mobile and device clients publish Opus to one relay, which fans out to independent subscribers"
         }
       ]
     }
@@ -8245,7 +8267,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The relay documents JWT authentication, and a production write-up describes a client being issued a distinct 'publish credential' only after the archiver's subscription is held open. That implies role-limited credentials, but the evidence never documents how scopes, paths or permissions are encoded or restricted. missing for 10: documented scope/claim model (publish vs subscribe, per-broadcast or path restriction), credential issuance and revocation workflow, expiry controls, guidance for agent/programmatic credentials, independent corroboration of least-privilege enforcement.",
+    "rationale": "MoQ Relay documents JWT-based authentication. A production user describes handing clients a distinct \"publish credential\" only after a subscriber is attached, which implies credentials can be limited to the publish role. Scoping, path or broadcast restrictions, issuance tooling and least-privilege semantics are not documented first-party. missing for 10: first-party docs on token scopes/claims (publish vs subscribe, path/broadcast restrictions), credential issuance/revocation tooling, expiry controls, agent-oriented guidance, independent corroboration.",
     "evidenceIds": [
       "moq-relay-docs-6",
       "moq-relay-comm-2"
@@ -8271,16 +8293,15 @@
     "storyId": "agentic-sdks",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "MoQ's own docs list official libraries for Rust (native) and TypeScript (web), plus FFI bindings for C, Python, Kotlin, Swift, Go, and Dart. Named packages such as @moq/watch, @moq/net, moq-net and a Swift library are documented, and a community production team built on and contributed to the Rust implementation. Missing for 10: evidence of in-depth per-language docs for the FFI bindings, and independent hands-on corroboration of the non-Rust SDKs.",
+    "confidence": "medium",
+    "rationale": "The first-party docs list official libraries for Rust (native) and TypeScript (web), FFI bindings for C, Python, Kotlin, Swift, Go and Dart, plus named packages such as @moq/watch, @moq/net, moq-net and Swift async sequences. A community report of building on and contributing to the Rust implementation corroborates real use. Missing for 10: depth and maturity of the FFI bindings (C, Python, Kotlin, Go, Dart) beyond a one-line mention, and independent hands-on evidence for SDKs other than Rust.",
     "evidenceIds": [
       "moq-relay-docs-4",
       "moq-relay-docs-15",
       "moq-relay-docs-16",
       "moq-relay-docs-17",
-      "moq-relay-docs-14",
       "moq-relay-comm-6",
-      "moq-relay-comm-1"
+      "moq-relay-comm-7"
     ],
     "support": {
       "relation": "direct",
@@ -8316,7 +8337,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MoQ Relay is a publish/subscribe media relay, and a server product like this could plausibly offer webhooks, so the axis applies. However, the evidence shows only protocol-level subscriptions over QUIC/WebTransport and dynamic announcements. Nothing documents registrable outbound HTTP callbacks that a programmatic consumer can receive, and protocol-native subscriptions are an adjacent feature, not webhooks.",
+    "rationale": "A media relay server could reasonably offer outbound HTTP callbacks for events such as publish or announce, so this axis applies. The evidence pack documents no registrable webhooks. What it does show is MoQ-native subscription to broadcasts and dynamic announcements over the protocol itself, and that is a different mechanism from HTTP webhook callbacks, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8331,7 +8352,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An interactive API reference is a fair question for a relay server and library ecosystem, but the evidence shows none. OpenAPI and Swagger probes all return 404. The llms.txt index, the quick-start demo that launches a relay and web player, and the public test relay are adjacent onboarding aids, not an explorable API reference with runnable examples.",
+    "rationale": "MoQ Relay ships libraries and a relay server, so an interactive API reference is a fair question. The evidence shows only an llms.txt index, a default demo and a public test relay. The OpenAPI/Swagger probes all returned 404, and nothing shows an interactive reference with runnable examples, so the axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8346,7 +8367,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MoQ Relay is a server that connects publishers to subscribers, so a machine-readable API or protocol spec is a fair question for it. The probe found no OpenAPI or Swagger file at any candidate path, and nothing in the docs mentions a downloadable spec. The llms.txt file is a docs index for LLMs, an adjacent feature rather than an API spec, so it earns no credit.",
+    "rationale": "MoQ Relay is a server product, so a buyer can fairly ask whether it ships a machine-readable API spec, and the axis applies. Probes of all candidate OpenAPI/Swagger paths returned 404. The llms.txt file found is a docs index, not an API specification, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8361,7 +8382,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MoQ documents a public test relay and a default demo that starts a relay, publishes a test video and opens the web player. Together these give developers a non-production place to test publishing and subscribing. However, nothing describes a formal sandbox with isolation guarantees or a way to keep test traffic separate from production broadcasts. Missing for 10: a documented sandbox or staging mode with explicit isolation from production data, guidance on test credentials or namespaces, and independent or hands-on corroboration of using the test relay safely.",
+    "rationale": "The product documents a public test relay and a default local demo that starts its own relay and publishes a test video, so users can experiment away from a production deployment. Neither is documented as an isolated sandbox: the anon relay is public and shared, and nothing explains how test data stays separate from production. Missing for 10: documented sandbox isolation guarantees, separation of test from production credentials and data, agent-oriented sandbox workflow docs, independent corroboration.",
     "evidenceIds": [
       "moq-relay-docs-19",
       "moq-relay-docs-18"
@@ -8388,7 +8409,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Versioned APIs with a deprecation policy is a fair question for a relay server and its client libraries, so the axis applies. The pack contains no first-party documentation of API versioning or a deprecation policy. The only related evidence is a community report that ANNOUNCE was replaced by PUBLISH_NAMESPACE and that an integration fell behind on protocol drafts, which shows breaking churn rather than a documented policy.",
+    "rationale": "Versioning and deprecation policy is a fair question for a relay server with client libraries and FFI bindings, so the axis applies. The pack contains no documented API versioning scheme or deprecation policy. The only related material is a community report that protocol messages such as ANNOUNCE were replaced by PUBLISH_NAMESPACE and that the code tracks IETF drafts. That shows breaking churn, not a documented deprecation commitment.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8403,7 +8424,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations, such as acting on many broadcasts or streams at once through an API or CLI, are a fair question for a media relay or CDN product, so the axis applies. The evidence pack does not document any such capability: fan-out to many viewers, automatic broadcast discovery and clustering are different features, and the moq-cli only imports and publishes broadcasts. No OpenAPI or management API was found by the probes.",
+    "rationale": "A relay server could plausibly offer batch management of broadcasts, sessions or credentials, so the axis applies. The evidence pack documents no bulk or batch operation capability. Fan-out of one broadcast to many subscribers and automatic broadcast discovery are delivery behaviors, not user-initiated bulk operations across many items, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8418,7 +8439,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-driven automation such as hooks on publish or subscribe is a fair question for a media relay server. However, the evidence pack documents no user-definable rules or triggers. Built-in behaviors like automatic broadcast discovery and encoding only when someone is watching are fixed protocol features. SageOx's fan-out subscribers are custom consumers built on the relay, not a rules capability of the product.",
+    "rationale": "Event-triggered automation rules, such as on-publish hooks, are a fair question for a media relay or CDN server. However, the evidence documents no user-definable rules or event-to-action triggers. Built-in automatic behaviors (broadcast discovery and gossip, encoding only when watched) are fixed protocol features, not user-defined rules. SageOx's archiver and transcription consumers are a user-built workaround made of separate subscribers, which earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8433,7 +8454,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MoQ Relay is a live-media transport relay and CDN server that connects publishers to subscribers. Scheduling recurring jobs or workflows is outside this product type's axis, much like source control for a VPN. Nothing in the evidence shows a scheduling capability. The SageOx 'jobs' are always-on subscribers fanning out from a broadcast, not scheduled recurring tasks, so they do not make the axis apply.",
+    "rationale": "MoQ Relay is a media-over-QUIC relay/CDN server that connects live publishers to subscribers, so scheduling recurring jobs or workflows is outside its product category. No evidence shows it ships any scheduler or recurring-job capability that would make the axis apply. The SageOx 'several jobs' are always-on subscribers fanned out from one broadcast, not scheduled or recurring jobs.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8457,7 +8478,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MoQ Relay is live-media relay infrastructure, so composite recording or egress is a fair question for it. However, nothing in the evidence documents composing multiple participants into a single output or any layout options. The OBS plugin that uses MoQ broadcasts as sources relies on OBS, the host tool, to do any compositing. SageOx's S3 archiver is a user-built consumer that records audio, not a composite. Neither counts toward this story.",
+    "rationale": "Composite recording egress is a fair question for real-time media infrastructure like MoQ Relay. The evidence pack documents no capability to compose multiple participants into one output and no layout options. The community S3 archiver case only records independent audio streams fanned out from the relay, which is a user-built subscriber, not product-provided composition.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8472,7 +8493,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "The vendor makes qualitative latency claims: 'WebRTC-like latency', 'Real-time latency at massive scale', and a prioritization mechanism that favors new groups and audio. It does not document a numeric end-to-end latency target or a measured latency path for conversational use. missing for 10: a quantified end-to-end latency target (e.g. ms budget), a documented measured latency path or benchmarks, explicit suitability claims for two-way live conversation, independent latency measurements.",
+    "rationale": "The vendor states only a qualitative latency goal: 'WebRTC-like latency' and 'Real-time latency at massive scale'. The transport docs describe prioritization that favors audio and new groups over stale video, which is relevant to conversation. No numeric end-to-end target or measured latency path is documented. Missing for 10: a quantified end-to-end latency target (e.g. ms budget), a documented measured latency path from capture to playback, and independent latency measurements of MoQ for conversational use.",
     "evidenceIds": [
       "moq-relay-gh-1",
       "moq-relay-probe-1",
@@ -8502,14 +8523,13 @@
     "productId": "moq-relay",
     "storyId": "documented-session-capacity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The vendor makes a headline scale claim of serving millions of concurrent viewers. It also describes growth mechanics: fan-out design, a self-hosted CDN cluster, cross-region clustering with shortest-path routing and failover, and viewers landing on the nearest edge. However, there is no concrete documented per-session participant or viewer limit, and no description of how behavior or resources change as one session grows. Missing for 10: documented per-session viewer or publisher limits, sizing guidance or thresholds for when to cluster, documented behavior changes or tradeoffs at larger session sizes, independent load or scale corroboration.",
+    "rationale": "The vendor makes a headline scale claim of serving \"millions of concurrent viewers\" and describes fan-out and cross-region clustering as the scaling mechanism. However, there is no documented per-session participant or viewer limit, and no explanation of how behavior, cost or latency changes as a single session grows. missing for 10: a documented per-session viewer/publisher capacity figure, guidance on what changes (relay load, cluster topology, latency, quality) as one session scales, benchmarks or independent corroboration of the scale claim.",
     "evidenceIds": [
       "moq-relay-docs-1",
       "moq-relay-gh-4",
-      "moq-relay-docs-13",
-      "moq-relay-docs-24",
+      "moq-relay-docs-30",
       "moq-relay-docs-25"
     ],
     "support": {
@@ -8526,7 +8546,7 @@
           "quote": "**Massive scale** designed for fan-out and supports cross-region clustering."
         },
         {
-          "evidenceId": "moq-relay-docs-24",
+          "evidenceId": "moq-relay-docs-30",
           "quote": "Clusters discover each other, route by the shortest path, and fail over without a central controller."
         },
         {
@@ -8542,11 +8562,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs describe a public anonymous test relay and a default demo that starts a local relay, so a founder can develop and test without a paid account. That is direct but thin support: nothing states pricing, limits or terms for this free usage. Missing for 10: explicit free-tier or pricing documentation, stated usage limits or allowances for the public relay, and independent confirmation that the free usage covers early testing.",
+    "rationale": "The docs mention a public test relay at cdn.moq.dev/anon and a local demo that starts a relay. Docs also say moq-relay can be deployed anywhere, so a founder could develop and test without a paid service. The pack never calls this a free tier, never states that it is free, and gives no usage limits or pricing, so how far it covers development and early testing is unclear. Missing for 10: explicit free-tier or pricing documentation, stated usage limits or allowances for the public relay, and independent confirmation that development costs nothing.",
     "evidenceIds": [
       "moq-relay-docs-19",
       "moq-relay-docs-18",
-      "moq-relay-docs-13"
+      "moq-relay-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -8560,6 +8580,10 @@
         {
           "evidenceId": "moq-relay-docs-18",
           "quote": "The default demo starts a relay, publishes a test video, and opens the web player."
+        },
+        {
+          "evidenceId": "moq-relay-docs-30",
+          "quote": "Deploy `moq-relay` anywhere."
         }
       ]
     }
@@ -8570,10 +8594,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MoQ's own materials claim viewers land on the nearest edge automatically, and that relay clusters route by shortest path and support cross-region clustering. Global delivery is also claimed via Cloudflare and a public relay at cdn.moq.dev. However, the evidence never documents which regions or points of presence carry media, and the nearest-edge claim is marketing-level with no independent corroboration. Missing for 10: a documented list of regions/PoPs or an edge-network map, details of how nearest-edge routing works (anycast/geo-DNS), and independent or hands-on confirmation of edge proximity.",
+    "rationale": "The vendor states that every viewer lands on the nearest edge with no regions to pick, and that relay clusters route by the shortest path and support cross-region clustering. This covers nearest-PoP connection, though largely for self-hosted relay clusters or third-party CDNs like Cloudflare. The evidence does not document the actual regions, PoP locations or edge network that carries media; only a single public test relay endpoint is named. missing for 10: documented list of regions/PoPs or an edge-network map, details of how nearest-edge routing is performed, independent or hands-on corroboration of geographic routing.",
     "evidenceIds": [
       "moq-relay-docs-25",
-      "moq-relay-docs-24",
+      "moq-relay-docs-30",
       "moq-relay-gh-4",
       "moq-relay-docs-1",
       "moq-relay-docs-19"
@@ -8588,20 +8612,16 @@
           "quote": "Every viewer lands on the nearest edge, with no regions to pick."
         },
         {
-          "evidenceId": "moq-relay-docs-24",
+          "evidenceId": "moq-relay-docs-30",
           "quote": "Clusters discover each other, route by the shortest path, and fail over without a central controller."
         },
         {
           "evidenceId": "moq-relay-gh-4",
-          "quote": "**Massive scale** designed for fan-out and supports cross-region clustering."
+          "quote": "supports cross-region clustering"
         },
         {
           "evidenceId": "moq-relay-docs-1",
           "quote": "Serve millions of concurrent viewers across the globe, including via Cloudflare."
-        },
-        {
-          "evidenceId": "moq-relay-docs-19",
-          "quote": "A public test relay runs at `https://cdn.moq.dev/anon`."
         }
       ]
     }
@@ -8612,7 +8632,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "MoQ Relay's own docs say arbitrary non-media data (chat, game state, telemetry, control channels) travels over the same relays as audio/video via the moq-net / @moq/net libraries, and via custom tracks. GitHub also describes text chat as a core feature and the transport as delivering WebRTC-like latency. However, the data API reference itself is only linked, not shown, so its depth and any data-specific latency behaviour are unproven. Missing for 10: visible data-API reference content (message/track semantics, ordering and reliability options), measured latency for data tracks, and independent or hands-on corroboration of data exchange alongside media.",
+    "rationale": "MoQ documents its own way to send arbitrary low-latency data alongside media. Chat, game state, telemetry and control channels run over the same relays through the moq-net and @moq/net libraries, and custom tracks can carry any live content. The GitHub README treats text chat as a core feature and claims WebRTC-like latency. However, the pack only links to the data API pages without showing their content, and nothing shows data being synchronized with audio and video within a participant session. missing for 10: published data-API reference details (message semantics, ordering and reliability options), evidence of data tracks tied to a session alongside audio and video, independent or hands-on corroboration of data-channel use.",
     "evidenceIds": [
       "moq-relay-docs-17",
       "moq-relay-docs-2",
@@ -8649,15 +8669,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MoQ Relay's own documented role is connecting live publishers to subscribers. A production report (SageOx) shows browser and device clients publishing Opus audio to one relay that fans out live to a transcription subscriber while sessions run. However, the transcription consumer is custom subscriber code, and the report notes real caveats: the first audio group was lost to a subscribe race, the transport falsely reported 'connected', and the relay does not preserve packet timing. missing for 10: a first-party connector or documented integration that streams to transcription/realtime model endpoints, first-party docs for an audio-to-AI pipeline, and reliable timing/start-of-stream guarantees without workarounds.",
+    "rationale": "A production report shows MoQ Relay taking live Opus audio from browser, desktop, mobile and device clients and fanning it out, while the session runs, to independent subscribers, including Zoom Scribe Live transcription. However, the transcription subscriber is something the integrator built, and the relay ships no first-party transcription or realtime-model connector. The same report notes caveats: a late-attach race that dropped the first audio group, a transport that stayed 'connected' without delivering, and no preservation of packet timing. Missing for 10: a first-party connector or documented recipe for transcription/realtime-model endpoints, official docs covering this use case, and reliable early-audio delivery and timing without workarounds.",
     "evidenceIds": [
-      "moq-relay-docs-13",
-      "moq-relay-docs-26",
-      "moq-relay-docs-4",
       "moq-relay-comm-1",
       "moq-relay-comm-2",
       "moq-relay-comm-3",
-      "moq-relay-comm-4"
+      "moq-relay-comm-4",
+      "moq-relay-docs-13",
+      "moq-relay-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -8670,7 +8689,7 @@
         },
         {
           "evidenceId": "moq-relay-docs-13",
-          "quote": "A server connecting publishers to subscribers, able to form a [self-hosted CDN cluster](/bin/relay/cluster.html)."
+          "quote": "A server connecting publishers to subscribers"
         },
         {
           "evidenceId": "moq-relay-comm-4",
@@ -8685,12 +8704,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "MoQ's own docs say moq-relay can form a self-hosted CDN cluster. Clusters discover each other, gossip broadcasts, route by the shortest path, and fail over without a central controller, and the GitHub README claims cross-region clustering. These are only marketing-level statements, though: the pack never shows the cluster documentation's actual setup, topology, or operational steps, so the depth of the scaling documentation is unproven. missing for 10: actual cluster configuration and deployment documentation content, a managed autoscaling description, capacity/node-sizing guidance, independent or hands-on corroboration of multi-node or multi-region operation.",
+    "rationale": "The vendor documents self-hosted clustering for moq-relay. It describes a \"self-hosted CDN cluster,\" cross-region clustering, peer discovery, gossiped broadcast announcements, shortest-path routing and failover without a central controller. The pack contains only summary-level claims, though, not the cluster page's operational detail, so how the media layer scales is described rather than fully documented. missing for 10: cluster configuration and topology details from the linked cluster docs, capacity/node-sizing or scaling guidance, any managed autoscaling description, independent or hands-on corroboration of multi-node/multi-region operation.",
     "evidenceIds": [
       "moq-relay-docs-13",
-      "moq-relay-docs-24",
       "moq-relay-gh-4",
+      "moq-relay-docs-30",
       "moq-relay-docs-10",
+      "moq-relay-docs-25",
       "moq-relay-docs-9"
     ],
     "support": {
@@ -8703,20 +8723,20 @@
           "quote": "A server connecting publishers to subscribers, able to form a [self-hosted CDN cluster](/bin/relay/cluster.html)."
         },
         {
-          "evidenceId": "moq-relay-docs-24",
-          "quote": "Clusters discover each other, route by the shortest path, and fail over without a central controller."
-        },
-        {
           "evidenceId": "moq-relay-gh-4",
           "quote": "**Massive scale** designed for fan-out and supports cross-region clustering."
+        },
+        {
+          "evidenceId": "moq-relay-docs-30",
+          "quote": "Deploy `moq-relay` anywhere. Clusters discover each other, route by the shortest path, and fail over without a central controller."
         },
         {
           "evidenceId": "moq-relay-docs-10",
           "quote": "Broadcasts are automatically discovered and gossiped."
         },
         {
-          "evidenceId": "moq-relay-docs-9",
-          "quote": "Host your own CDN, use a 3rd party service, and/or connect P2P via Iroh (native only)."
+          "evidenceId": "moq-relay-docs-25",
+          "quote": "Every viewer lands on the nearest edge, with no regions to pick."
         }
       ]
     }
@@ -8727,13 +8747,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Official MoQ libraries cover web (TypeScript, e.g. @moq/watch and @moq/net) and iOS (Swift async sequences). FFI bindings include Kotlin, which implies Android support, and a production user reports browser, desktop and mobile clients all publishing to one relay. However, Android is never named, Kotlin support is an FFI binding rather than a dedicated SDK, and a shared session/track model across platforms is only implied by the common Rust core. Missing for 10: an explicitly documented Android SDK, documentation that the session/track model is identical across web, iOS and Android, and hands-on corroboration of Android clients.",
+    "rationale": "First-party docs list a TypeScript web library, Swift async sequences for iOS, and Kotlin FFI bindings, so a Kotlin route to Android exists. A community production report shows browser and mobile clients publishing to one relay, and the docs say the WebSocket fallback is automatic in every client. Android is never named explicitly, and Kotlin ships as FFI bindings rather than a native SDK. Missing for 10: an explicitly documented Android SDK, documentation that the session and track model is identical across web, iOS and Android, and hands-on corroboration of Android parity.",
     "evidenceIds": [
       "moq-relay-docs-4",
       "moq-relay-docs-16",
       "moq-relay-docs-15",
-      "moq-relay-docs-17",
-      "moq-relay-comm-1"
+      "moq-relay-comm-1",
+      "moq-relay-supp-fallback-automatic"
     ],
     "support": {
       "relation": "direct",
@@ -8749,12 +8769,12 @@
           "quote": "Async sequences for iOS, iPadOS, and macOS."
         },
         {
-          "evidenceId": "moq-relay-docs-17",
-          "quote": "Chat, game state, telemetry, and control channels over the same relays with [`moq-net`](/lib/rs/moq-net.html) or [`@moq/net`](/lib/js/net.html)."
+          "evidenceId": "moq-relay-comm-1",
+          "quote": "Browser, desktop, mobile and device clients publish Opus to one relay"
         },
         {
-          "evidenceId": "moq-relay-comm-1",
-          "quote": "Browser, desktop, mobile and device clients publish Opus to one relay, which fans out to independent subscribers"
+          "evidenceId": "moq-relay-supp-fallback-automatic",
+          "quote": "The fallback is automatic in every client"
         }
       ]
     }
@@ -8763,12 +8783,12 @@
     "productId": "moq-relay",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "low",
-    "rationale": "MoQ is library-first: its only documented UI, the `<moq-watch>` player element, is an optional layer over the @moq/watch library. Subscribing and publishing are also exposed through Rust and TypeScript libraries, FFI bindings and a CLI, so the UI's functions appear to be reachable programmatically. No source states API/UI parity, and there is no documented relay management or admin API; the OpenAPI probes all returned 404. missing for 10: an explicit statement that the API matches the UI, a documented relay administration/management API (OpenAPI or equivalent), independent confirmation that no UI-only functions exist.",
+    "rationale": "MoQ is library-first: functionality ships as Rust and TypeScript libraries with FFI bindings for many languages, plus a CLI, and the only UI noted is an optional `<moq-watch>` component layered on the `@moq/watch` subscribe/render library. This suggests the UI is a thin wrapper over programmatic capability, but no documentation explicitly states API/UI parity, and the probes found no OpenAPI spec. missing for 10: explicit documented API/UI parity statement, a documented relay management/admin API reference, independent corroboration.",
     "evidenceIds": [
-      "moq-relay-docs-15",
       "moq-relay-docs-4",
+      "moq-relay-docs-15",
       "moq-relay-docs-11",
       "moq-relay-probe-3"
     ],
@@ -8798,7 +8818,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability and exit are fair questions for a relay or CDN product, but the pack documents no export capability for user data. Self-hosting, open protocol support, and CMAF/HLS playback concern delivery, not exporting stored data. The S3 archiver is a user-built subscriber, which is a workaround and earns no credit.",
+    "rationale": "Lock-in and data portability are fair questions for a relay/CDN product, so the axis applies. However, the pack documents no feature for exporting a user's stored data in open formats. Self-hosting, an open protocol, and CMAF/HLS output reduce lock-in but are adjacent features, not a data-export capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8813,10 +8833,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The product's source is publicly hosted on GitHub (moq-dev/moq), and a community author read the Rust code and had a fix PR merged, so the source is readable and open to contribution. Nothing in the pack names the license, so the 'open license' half of the story is unproven. Missing for 10: explicit license identification (e.g. MIT/Apache), first-party docs stating the licensing terms.",
+    "rationale": "The evidence shows the source is publicly readable: the project lives in the public GitHub repo moq-dev/moq, and a community member read the Rust code, found a spec deviation, and had a fix PR merged. Nothing in the pack names the license, so the 'open license' half of the story is unverified. Missing for 10: an explicit open-source license statement (e.g. MIT/Apache) for the repo, and first-party docs pointing to the source and its licensing.",
     "evidenceIds": [
+      "moq-relay-comm-6",
       "moq-relay-gh-1",
-      "moq-relay-comm-6"
+      "moq-relay-comm-5"
     ],
     "support": {
       "relation": "direct",
@@ -8824,12 +8845,12 @@
       "subject": "As an AI-native user, I can read the product's source under an open license",
       "citations": [
         {
-          "evidenceId": "moq-relay-gh-1",
-          "quote": "MoQ delivers WebRTC-like latency without the constraints of WebRTC."
-        },
-        {
           "evidenceId": "moq-relay-comm-6",
           "quote": "Contributing to the moq-dev/moq repo: the author found the Rust code didn't close data streams before PUBLISH_DONE as draft-21 requires. His fix PR was merged by Luke Curley."
+        },
+        {
+          "evidenceId": "moq-relay-comm-5",
+          "quote": "The author describes it as catching up on 2700 PRs."
         }
       ]
     }
@@ -8840,13 +8861,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs say the moq-relay server can be self-hosted, including forming a self-hosted CDN cluster. The docs also say users can host their own CDN, and the setup demo starts a relay locally. A community production report (SageOx) shows clients publishing to a relay that fans out to their own subscribers, which corroborates real-world operation. missing for 10: detailed deployment and operations documentation in the pack, and explicit independent confirmation that the report's relay was self-operated rather than hosted.",
+    "rationale": "The first-party docs say moq-relay is a server you can deploy anywhere and use to build a self-hosted CDN cluster, with a private CDN as an option. The repo is open on GitHub, and a community production deployment (SageOx) shows a relay run outside the vendor's hosted service. Missing for 10: detailed self-hosting install/ops documentation in the pack (deployment steps, system requirements, licensing terms), and independent corroboration that explicitly describes self-hosting rather than implying it.",
     "evidenceIds": [
+      "moq-relay-docs-13",
+      "moq-relay-docs-30",
       "moq-relay-docs-7",
       "moq-relay-docs-9",
-      "moq-relay-docs-13",
       "moq-relay-docs-18",
-      "moq-relay-gh-4",
       "moq-relay-comm-1"
     ],
     "support": {
@@ -8856,15 +8877,19 @@
       "citations": [
         {
           "evidenceId": "moq-relay-docs-13",
-          "quote": "[moq-relay](/bin/relay/) - A server connecting publishers to subscribers, able to form a [self-hosted CDN cluster](/bin/relay/cluster.html)."
+          "quote": "A server connecting publishers to subscribers, able to form a [self-hosted CDN cluster](/bin/relay/cluster.html)."
         },
         {
-          "evidenceId": "moq-relay-docs-9",
-          "quote": "Host your own CDN, use a 3rd party service, and/or connect P2P via Iroh (native only)."
+          "evidenceId": "moq-relay-docs-30",
+          "quote": "Deploy `moq-relay` anywhere."
         },
         {
           "evidenceId": "moq-relay-docs-7",
           "quote": "You can optionally self-host a private CDN or end-to-end encrypt your content."
+        },
+        {
+          "evidenceId": "moq-relay-docs-9",
+          "quote": "Host your own CDN, use a 3rd party service, and/or connect P2P via Iroh (native only)."
         },
         {
           "evidenceId": "moq-relay-docs-18",
@@ -8878,14 +8903,14 @@
     "storyId": "privacy-data-residency",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "MoQ Relay has no region or residency selector, and its hosted network says 'no regions to pick.' Its own documented self-hosting does let operators run relays and a private CDN cluster on infrastructure they choose, which decides where data flows. Missing for 10: explicit data-residency or region controls, documentation of where data is stored or retained, any residency guarantees for the hosted or 3rd-party CDN, and independent corroboration.",
+    "confidence": "medium",
+    "rationale": "MoQ Relay's own docs say you can self-host a private CDN and deploy moq-relay anywhere, so you decide where relay infrastructure, and the data flowing through it, physically lives. There are no documented region or residency controls, the managed edge explicitly has \"no regions to pick,\" and the relay is a pass-through, so storage location is not addressed. Missing for 10: explicit region/residency selection settings, documentation of where data is stored or cached, residency guarantees for the hosted/public relay, independent corroboration.",
     "evidenceIds": [
       "moq-relay-docs-7",
-      "moq-relay-docs-9",
+      "moq-relay-docs-30",
       "moq-relay-docs-13",
-      "moq-relay-docs-25",
-      "moq-relay-gh-4"
+      "moq-relay-gh-4",
+      "moq-relay-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -8897,12 +8922,12 @@
           "quote": "You can optionally self-host a private CDN or end-to-end encrypt your content."
         },
         {
-          "evidenceId": "moq-relay-docs-9",
-          "quote": "Host your own CDN, use a 3rd party service, and/or connect P2P via Iroh (native only)."
+          "evidenceId": "moq-relay-docs-30",
+          "quote": "Deploy `moq-relay` anywhere."
         },
         {
-          "evidenceId": "moq-relay-docs-13",
-          "quote": "A server connecting publishers to subscribers, able to form a [self-hosted CDN cluster]"
+          "evidenceId": "moq-relay-gh-4",
+          "quote": "supports cross-region clustering"
         }
       ]
     }
@@ -8913,7 +8938,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack covers AI-training data use, such as a no-training policy, an opt-out setting, or data-use terms for the hosted or public relay. Self-hosting a private CDN and end-to-end encryption are related privacy controls, but they are not a documented guarantee or opt-out against model training, so they earn no credit.",
+    "rationale": "Privacy posture, including AI-training use of streamed content, is a fair question for a relay/CDN product that carries user media. However, the evidence contains no AI-training policy, opt-out, or data-use commitment. Self-hosting and end-to-end encryption are adjacent privacy controls, not a documented guarantee against training use, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8928,7 +8953,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Retention and deletion controls are a fair question for a self-hostable media relay, so the axis applies. However, the evidence never documents any retention window, cache-expiry setting, or deletion control. Self-hosting, end-to-end encryption, and a community-built S3 archiver are adjacent features or user-side arrangements, not documented retention or deletion controls.",
+    "rationale": "Data retention and deletion is a fair question for a relay or CDN product, but the evidence pack documents no retention windows, cache expiry, or deletion controls in moq-relay. Self-hosting and end-to-end encryption are adjacent privacy controls, not retention or deletion settings. SageOx's S3 archiver is a user-built consumer, not a capability of the product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8943,7 +8968,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for self-hostable relay software, but the evidence pack never documents whether MoQ Relay collects usage data or how to disable it. The 'telemetry' mention in docs-17 refers to user application data carried over relays, not product tracking. Self-hosting a private CDN is an adjacent deployment choice, not a documented opt-out control.",
+    "rationale": "Telemetry opt-out is a fair question for a self-hostable relay server, but the evidence pack never documents any product telemetry, usage tracking, or a way to disable it. The only mention of 'telemetry' (moq-relay-docs-17) describes carrying application telemetry channels over relays, a different feature. The option to self-host a private CDN is an adjacent deployment choice, not an opt-out control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8958,7 +8983,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no published usage pricing for MoQ Relay, neither per participant-minute nor per unit of bandwidth. It only describes open-source and self-hostable components, plus a free public test relay. Pricing is a fair axis for a media relay/CDN product that could offer a hosted tier, so the lack of evidence makes this 'none' rather than 'na'.",
+    "rationale": "Published usage pricing is a fair question for a media relay/CDN product, so the axis applies. The evidence pack has no pricing information at all: no per-participant-minute rate, no per-bandwidth rate, and no plan tiers. It covers only self-hosting, a public test relay, and third-party CDN options, none of which documents pricing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8973,12 +8998,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "MoQ's own docs say it can serve HLS players and supports CMAF/HLS for legacy devices, which is HLS egress of live broadcasts to a wide audience. The relay is also built for massive fan-out to subscribers. The HLS output is only stated in one-line marketing claims, with no detail on how it is configured, where it is produced, or how it behaves at scale. Missing for 10: documented HLS egress setup and configuration, any RTMP egress, and independent or hands-on corroboration of HLS output.",
+    "rationale": "MoQ's docs claim CMAF/HLS output for legacy devices and say it can 'serve HLS and WebRTC players', so a live broadcast can reach HLS viewers. The relay's fan-out design also targets very large audiences. The HLS claims are one-line marketing statements with no configuration details, and RTMP egress is not documented anywhere (OBS/FFmpeg/FLV appear only as ingest). missing for 10: documented RTMP egress, concrete HLS egress setup/configuration docs, independent or hands-on corroboration of HLS output.",
     "evidenceIds": [
-      "moq-relay-docs-23",
       "moq-relay-docs-8",
-      "moq-relay-docs-1",
-      "moq-relay-gh-4"
+      "moq-relay-docs-23",
+      "moq-relay-docs-28",
+      "moq-relay-gh-4",
+      "moq-relay-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -8986,16 +9012,16 @@
       "subject": "As a developer, a live session can be egressed to RTMP or HLS so a large audience watches without joining the session",
       "citations": [
         {
-          "evidenceId": "moq-relay-docs-23",
-          "quote": "Ingest with OBS or FFmpeg; serve HLS and WebRTC players."
-        },
-        {
           "evidenceId": "moq-relay-docs-8",
           "quote": "Supports CMAF and HLS for legacy device support."
         },
         {
-          "evidenceId": "moq-relay-docs-1",
-          "quote": "Serve millions of concurrent viewers across the globe, including via Cloudflare."
+          "evidenceId": "moq-relay-docs-23",
+          "quote": "Ingest with OBS or FFmpeg; serve HLS and WebRTC players."
+        },
+        {
+          "evidenceId": "moq-relay-gh-4",
+          "quote": "**Massive scale** designed for fan-out and supports cross-region clustering."
         }
       ]
     }
@@ -9006,7 +9032,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "MoQ documents JWT-based authentication and official client libraries for Rust, TypeScript and FFI targets, plus a quick-start demo that starts a relay and opens a player. That is a thin basis for authenticated client connection. There is no documented server-side session-creation API, no flow for minting scoped join tokens, and no short end-to-end walkthrough tying token issuance to SDK connection. missing for 10: server-side session creation, documented scoped token minting (claims/permissions), an end-to-end server-to-client auth flow guide, hands-on corroboration.",
+    "rationale": "MoQ Relay authenticates connections via JWT and ships official client libraries (TypeScript @moq/watch, Rust, and FFI bindings), with a quick-start demo that starts a relay and opens a player. This is the product's own token-auth and SDK-connect path. However, the evidence never documents a server-side session-creation step, how to mint scoped JWTs, or a short end-to-end token-to-client flow, and broadcasts are auto-discovered rather than created as sessions. Missing for 10: server-side session/room creation API, documented scoped-token minting (claims, permissions, expiry), a concise server-to-client connect walkthrough using the token, and hands-on corroboration.",
     "evidenceIds": [
       "moq-relay-docs-6",
       "moq-relay-docs-4",
@@ -9027,6 +9053,10 @@
           "quote": "Libraries for Rust (native) and TypeScript (web), plus FFI bindings for C, Python, Kotlin, Swift, Go, and Dart."
         },
         {
+          "evidenceId": "moq-relay-docs-15",
+          "quote": "Subscribe to and render MoQ broadcasts, with an optional `<moq-watch>` UI."
+        },
+        {
           "evidenceId": "moq-relay-docs-18",
           "quote": "The default demo starts a relay, publishes a test video, and opens the web player."
         }
@@ -9039,11 +9069,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "MoQ Relay is documented as a server connecting publishers to subscribers, with fan-out and send-only-when-watched behavior. A production report confirms one relay fanning out to independent subscribers. However, the evidence never explicitly documents per-participant, per-track selective forwarding, where each subscriber receives only the specific tracks it subscribed to. missing for 10: explicit documentation of track-level subscription filtering per participant, SFU-style conferencing evidence, and independent corroboration of selective per-track delivery.",
+    "rationale": "moq-relay is documented as a server that connects publishers to subscribers. Docs say content is sent only when someone is watching, and a production report describes one relay fanning out to independent subscribers. The evidence does not explicitly document per-participant, per-track selective forwarding, where each subscriber receives only the tracks it subscribed to; that behavior is implied by the subscribe model rather than stated. missing for 10: explicit documentation of per-track subscription filtering at the relay, hands-on corroboration that unsubscribed tracks are not forwarded to a participant.",
     "evidenceIds": [
       "moq-relay-docs-13",
-      "moq-relay-docs-22",
       "moq-relay-docs-26",
+      "moq-relay-docs-22",
       "moq-relay-comm-1",
       "moq-relay-docs-2"
     ],
@@ -9057,16 +9087,20 @@
           "quote": "A server connecting publishers to subscribers, able to form a"
         },
         {
-          "evidenceId": "moq-relay-docs-22",
-          "quote": "Encode and send only when someone is watching."
-        },
-        {
           "evidenceId": "moq-relay-docs-26",
           "quote": "Dynamic announcements, connecting arbitrary publishers to subscribers."
         },
         {
+          "evidenceId": "moq-relay-docs-22",
+          "quote": "Encode and send only when someone is watching."
+        },
+        {
           "evidenceId": "moq-relay-comm-1",
           "quote": "publish Opus to one relay, which fans out to independent subscribers"
+        },
+        {
+          "evidenceId": "moq-relay-docs-2",
+          "quote": "Extend the protocol with custom tracks for any live content."
         }
       ]
     }
@@ -9077,10 +9111,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no first-party server-side recording or egress-to-bucket feature for MoQ Relay. The only S3 archiving evidence is SageOx's own custom archiver, which subscribes to the relay. That is a user-built consumer on developer building blocks, not a product capability. Relay fan-out and CMAF/HLS support are adjacent features, not recording or storage delivery.",
+    "rationale": "The evidence pack has no first-party server-side recording or storage-bucket egress feature for MoQ Relay. The only related evidence is a community team (SageOx) that built its own S3 archiver as a subscriber to the relay. That is a user-side workaround on developer building blocks, not the product's own capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can record a session server-side and receive the files in my own storage bucket",
       "citations": []
@@ -9092,7 +9126,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A server-side moderation and session-management API is a fair question for a real-time media relay, so the axis applies. However, the evidence shows only JWT authentication, publish/subscribe relaying and automatic broadcast discovery. There is no documented admin API to list sessions, mute or remove participants, or end a session, and the OpenAPI probes all returned 404.",
+    "rationale": "The evidence describes moq-relay as a server that connects publishers to subscribers, with JWT authentication and automatic broadcast discovery. Nothing documents a server-side administrative API for listing sessions, muting or removing participants, or ending a session. The OpenAPI probe returned 404 on every candidate path, and broadcast gossip and JWT auth are adjacent features, not session-control endpoints.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9107,7 +9141,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Per-session quality metrics are a fair question for a media relay, so the axis applies. Nothing in the evidence documents a dashboard or API that exposes packet loss, jitter, or bitrate per session. The 'telemetry' mention refers to carrying application data channels over the relay, not to relay-provided quality metrics. A production user's report of a transport showing 'connected' for 42 seconds after it stopped delivering, which forced them to build their own durability receipts, suggests such observability is not provided.",
+    "rationale": "The evidence pack never mentions per-session quality metrics such as packet loss, jitter or bitrate, and shows no dashboard or metrics API for debugging sessions. Telemetry channels over the relays are a developer building block for carrying app data, not built-in session diagnostics. Observability is a fair axis for a media relay, so the absence of evidence makes this none, not na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9122,7 +9156,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows publishers sending simulcast or layered video, or the relay picking a layer for each subscriber based on their bandwidth. The closest items are adjacent rather than this capability: sender-side stream prioritization that lets new groups and audio starve old video, and custom tracks as a building block. A community question about client-side adaptive bitrate (ABR) in HLS/DASH also does not show MoQ doing it.",
+    "rationale": "The evidence pack never documents publishers sending simulcast or layered (SVC) video, or the relay choosing a layer per subscriber based on bandwidth. The closest item is stream prioritization, where new groups and audio starve old video under congestion. That is a related congestion behavior, not per-subscriber layer adaptation, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9137,7 +9171,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MoQ Relay is a real-time media relay, and SIP or PSTN bridging is a fair axis for real-time media infrastructure. The evidence pack documents ingest via OBS, ffmpeg, GStreamer, HLS and WebRTC players, but never mentions SIP, PSTN, or phone dial-in or dial-out. Absence of evidence for an applicable capability yields none.",
+    "rationale": "MoQ Relay is a real-time media relay and CDN, so telephony bridging is a fair question for this kind of product. The evidence documents only WebTransport/WebSocket, ffmpeg/OBS/GStreamer ingest, and HLS/CMAF/WebRTC playback. Nothing mentions SIP, PSTN, dial-in or dial-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9152,7 +9186,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MoQ Relay is a real-time media relay, and products of that kind can plausibly ship SIP or telephony bridging, so the axis applies. Nothing in the evidence mentions SIP, trunking, PSTN or telephony carriers. The documented ingest and egress options are ffmpeg, OBS, GStreamer, HLS, CMAF and WebRTC players, none of which is SIP interoperability.",
+    "rationale": "MoQ Relay is a real-time media transport and relay, so a buyer could fairly ask whether it bridges to SIP trunks or telephony carriers. The axis therefore applies. The evidence covers WebTransport, HLS/CMAF, ffmpeg/OBS/GStreamer ingest, WebRTC players and clustering, but never mentions SIP, PSTN or any telephony provider interoperability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9164,16 +9198,28 @@
   {
     "productId": "moq-relay",
     "storyId": "udp-blocked-fallback",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents what happens when UDP/QUIC is blocked: there is no TCP, TLS-over-TCP, or WebSocket fallback and no description of when a fallback would engage. The CMAF/HLS output is described as legacy device support, not as a transport fallback. The 'polyfills via Node/Bun/Deno' line is about running on native runtimes, not about falling back when UDP is blocked.",
-    "evidenceIds": [],
+    "rationale": "The first-party transport docs describe a WebSocket (wss://) fallback carried by the qmux multiplexer. They also say when it engages: when UDP is blocked or WebTransport is missing, clients race a WebSocket connection and keep whichever wins. The fallback is automatic in every client, the relay enables it with [web.https], and the docs note the TCP head-of-line blocking tradeoff. Missing for 10: independent or hands-on corroboration that the fallback actually keeps streams alive on UDP-blocked networks.",
+    "evidenceIds": [
+      "moq-relay-supp-websocket-fallback",
+      "moq-relay-supp-fallback-automatic"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As a platform engineer, a stream survives a network that blocks UDP: the service documents fallback over TCP, TLS, or WebSocket and when it engages",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "moq-relay-supp-websocket-fallback",
+          "quote": "Where UDP is blocked or WebTransport is missing, clients race a WebSocket connection (wss://) and keep whichever wins. A small multiplexer, qmux, carries MoQ streams over the socket."
+        },
+        {
+          "evidenceId": "moq-relay-supp-fallback-automatic",
+          "quote": "The fallback is automatic in every client; the relay enables it with [web.https]."
+        }
+      ]
     }
   },
   {
@@ -9182,7 +9228,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "MoQ Relay ships self-hostable relay software and runs a public test relay, so asking about a vendor uptime SLA and status page is fair. Nothing in the evidence pack mentions a published SLA, uptime commitment or public status page. Scale and failover claims describe architecture, not a vendor reliability commitment, so they do not count here.",
+    "rationale": "Nothing in the evidence pack mentions a published uptime SLA or a public status page for MoQ Relay or its public test relay at cdn.moq.dev. The clustering and failover claims describe architectural resilience, which is an adjacent feature. It is not a vendor reliability commitment or incident-visibility page, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9197,7 +9243,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The vendor docs cover relay fan-out, custom tracks, client libraries, and ffmpeg/OBS/GStreamer integrations, but nothing describes a path from a live session into a speech-to-text, model, and text-to-speech voice-agent pipeline. SageOx's community report shows a third party built its own transcription subscriber. That is a user-side build, not vendor documentation, and it covers only speech-to-text, not a model or text-to-speech.",
+    "rationale": "A live-media relay could plausibly document a path into a speech-to-text, model and text-to-speech voice-agent pipeline, so the axis applies. The vendor docs only offer general building blocks: custom tracks, multi-language libraries, and ffmpeg/OBS/GStreamer integrations. The one transcription example is a third-party community build (SageOx) covering transcription only, with no model or text-to-speech stage, so it is a user-side integration rather than a vendor-documented path.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

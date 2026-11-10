@@ -1,18 +1,18 @@
 {
-  "hash": "9a89a8899b4ef885d748fde2f2068e9d1bdce1a0a3ef45b405759c6a6c55ab86",
+  "hash": "dc34bfb79f7271892b3ea392501fa873e8cb5c74b6d74aeed9ffc92c9e0b591c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence shows LiveKit exposes server APIs, reachable through its CLI, which also creates tokens. Applications can initiate actions programmatically, such as outbound calls, and egress settings like the PASSTHROUGH preset can be configured. JWT authentication and a separate protobuf Protocol project back this API surface. However, no API reference page is in the pack, and the probe found no OpenAPI spec at any candidate path. missing for 10: a documented public API reference (REST/OpenAPI spec), endpoint-level documentation of server API coverage, independent hands-on corroboration of driving the product via API.",
+    "rationale": "LiveKit has programmatic server APIs: the CLI accesses server APIs, outbound calls can be started programmatically, and JWT tokens carry scoped grants such as roomCreate to create or delete rooms. However, the pack contains no dedicated server API reference, and the OpenAPI probes all returned 404, so the breadth and depth of the public API are unproven. Missing for 10: a first-party server API reference page covering room, participant and egress endpoints; a machine-readable API spec; independent hands-on corroboration of driving the product via the API.",
     "evidenceIds": [
       "livekit-gh-3",
       "livekit-docs-22",
-      "livekit-gh-6",
-      "livekit-comm-5",
-      "livekit-docs-31",
-      "livekit-probe-3"
+      "livekit-supp-token-expiry-grant-table",
+      "livekit-supp-token-grants",
+      "livekit-docs-39",
+      "livekit-comm-5"
     ],
     "support": {
       "relation": "direct",
@@ -28,8 +28,12 @@
           "quote": "Outbound calls enable your applications to initiate phone calls programmatically."
         },
         {
-          "evidenceId": "livekit-gh-6",
-          "quote": "Built for production, supports JWT authentication"
+          "evidenceId": "livekit-supp-token-expiry-grant-table",
+          "quote": "roomCreate — Permission to create or delete rooms"
+        },
+        {
+          "evidenceId": "livekit-supp-token-grants",
+          "quote": "Access tokens are JWT-based and signed with your API secret to prevent forgery."
         }
       ]
     },

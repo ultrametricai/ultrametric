@@ -1,18 +1,20 @@
 {
-  "hash": "30d1925176cb75f7c4b4e5b89e28216ef09960483abbf6902e1e9b4a66b56b71",
+  "hash": "f0ea9a33767314a2feb49cb8816be3b6518875e8d61eb9d8bcbd8f8a0a786a7e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "MoQ Relay connects arbitrary publishers to subscribers. A production report shows independent programmatic subscribers (an archiver, live transcription, voice ID) attaching to one published broadcast, with new consumers requiring no publisher migration. Explicit per-track subscription is only implied by the track model, and late attach lost initial audio until the team changed the subscription and credential ordering. missing for 10: explicit documentation of subscribing to a single track within a broadcast, a first-party agent-oriented subscription example, and evidence that late-joining subscribers do not miss data without workarounds.",
+    "rationale": "The relay connects arbitrary publishers to subscribers and fans out at scale. A production report describes new independent consumers (archiver, live transcription, voice ID) subscribing to one published Opus broadcast without any change to the publisher, so adding a subscriber is well supported. Selecting a single track out of a multi-track broadcast is only implied by the custom-track and 'send only when someone is watching' claims, not explicitly documented. Missing for 10: explicit first-party docs on per-track subscription within a broadcast, a documented agent/headless subscriber example (e.g. via Python bindings), and caveats such as the relay not preserving packet timing and the race on late subscription.",
     "evidenceIds": [
       "moq-relay-comm-1",
       "moq-relay-docs-13",
       "moq-relay-docs-26",
       "moq-relay-docs-2",
-      "moq-relay-docs-15",
-      "moq-relay-comm-2"
+      "moq-relay-docs-22",
+      "moq-relay-docs-4",
+      "moq-relay-comm-2",
+      "moq-relay-comm-4"
     ],
     "support": {
       "relation": "direct",
@@ -24,16 +26,16 @@
           "quote": "publish Opus to one relay, which fans out to independent subscribers: an S3 archiver, Zoom Scribe Live transcription, and voice ID. They say adding a new consumer no longer requires another recorder or a migration."
         },
         {
+          "evidenceId": "moq-relay-docs-13",
+          "quote": "A server connecting publishers to subscribers"
+        },
+        {
           "evidenceId": "moq-relay-docs-26",
           "quote": "Dynamic announcements, connecting arbitrary publishers to subscribers."
         },
         {
           "evidenceId": "moq-relay-docs-2",
           "quote": "Extend the protocol with custom tracks for any live content."
-        },
-        {
-          "evidenceId": "moq-relay-docs-13",
-          "quote": "A server connecting publishers to subscribers"
         }
       ]
     },
