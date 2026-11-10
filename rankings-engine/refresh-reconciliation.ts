@@ -51,14 +51,19 @@ function retentionContext(arena: string, root: string) {
   const git = (...args: string[]) => execFileSync('git', args, { cwd: root, encoding: 'utf8', maxBuffer: 128 * 1024 * 1024 }).trim()
   const dir = `open-rankings/${arena}`
   const ledgerPath = `rankings-engine/cache/refresh-retention/${arena}/decisions.json`
-  // Check every path component, including dangling links and temporary write targets.
-  // This is a local checkout guard, not a defense against concurrent filesystem mutation.
+  // Check every path component below the checkout root, including dangling links and
+  // temporary write targets. This is a local checkout guard, not a defense against
+  // concurrent filesystem mutation. The root itself is resolved first, so a checkout
+  // that merely lives under a symlinked prefix (macOS /tmp and /var, worktrees in
+  // symlinked locations) is accepted; only symlinks inside the repo-relative path are
+  // rejected.
+  const resolvedRoot = fs.realpathSync(path.resolve(root))
   const regularPath = (file: string) => {
-    const target = path.resolve(root, file)
-    const relative = path.relative(path.resolve(root), target)
+    const target = path.resolve(resolvedRoot, file)
+    const relative = path.relative(resolvedRoot, target)
     if (relative.startsWith('..') || path.isAbsolute(relative)) throw new Error(`Path escapes checkout: ${file}`)
-    const parts = target.split(path.sep).filter(Boolean)
-    let current = path.parse(target).root
+    const parts = relative.split(path.sep).filter(Boolean)
+    let current = resolvedRoot
     for (let i = 0; i < parts.length; i++) {
       current = path.join(current, parts[i])
       let stat: fs.Stats

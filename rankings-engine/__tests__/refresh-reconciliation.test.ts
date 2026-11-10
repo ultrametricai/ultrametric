@@ -216,4 +216,23 @@ describe('scheduled refresh reconciliation', { timeout: 60000 }, () => {
     expect(f.read(`${f.dir}/verdicts.json`)).toEqual([{ ...proposal, quality: 8 }])
   })
 
+  it('accepts a checkout root reached through a symlinked prefix', () => {
+    // macOS tmpdirs live under the /var -> /private/var symlink; a checkout's location
+    // must not trip the regular-path guard, only symlinks inside the repo may.
+    const f = fixture(); f.save(proposal)
+    const alias = fs.mkdtempSync(path.join(os.tmpdir(), 'refresh-reconciliation-alias-')); roots.push(alias)
+    const link = path.join(alias, 'repo')
+    fs.symlinkSync(f.root, link)
+    expect(reconcileRefresh({ arena: 'test', baseline: f.baseline, root: link }).retained).toEqual(['vendor:story'])
+  })
+
+  it('rejects a symlinked component inside the repo-relative path', () => {
+    const f = fixture(); f.save(proposal)
+    const real = path.join(f.root, 'open-rankings/test/verdicts.json')
+    const aside = path.join(f.root, 'open-rankings/test/verdicts.real.json')
+    fs.renameSync(real, aside); fs.symlinkSync(aside, real)
+    const blocked = f.blocked()
+    expect(String(blocked[0].reason)).toContain('Expected regular file and directory parents')
+  })
+
 })
