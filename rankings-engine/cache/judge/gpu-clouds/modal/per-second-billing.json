@@ -1,17 +1,34 @@
 {
-  "hash": "23f97b2029559853d9dd9a4cb3cb83c7602568171c64e3ed6320d5c6fc4a3c35",
+  "hash": "977e4c6a7152ec6950bc1741d9a713b8f94a5879a14c805c6463f84c02fab0a9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence pack never states Modal's billing granularity (per-second or per-minute) or that charges accrue only while containers run. The closest items, fast container spin-up/down (modal-docs-10) and endpoints that \"idle at zero\" (modal-docs-14), describe scaling behavior rather than a documented billing model, so they are adjacent features and earn no credit. Workspace budgets cover spend limits, not metering granularity.",
-    "evidenceIds": [],
+    "rationale": "Modal's pricing page says users never pay for idle resources and are billed only for actual compute time \"by the CPU cycle\", which implies granularity finer than per-second. Supporting claims say containers spin up and down in 1-2 seconds and endpoints idle at zero, which reinforces billing only while running. missing for 10: an explicit statement of the billing unit (per-second or per-minute) or a published rate table, details on how container idle timeouts are billed, and independent or hands-on corroboration of actual invoices.",
+    "evidenceIds": [
+      "modal-docs-25",
+      "modal-docs-14",
+      "modal-docs-10"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an ML engineer, I am billed at per-second or per-minute granularity and only while my instance is actually running",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "modal-docs-25",
+          "quote": "You never pay for idle resources — just actual compute time, by the CPU cycle."
+        },
+        {
+          "evidenceId": "modal-docs-14",
+          "quote": "Turn any function into an HTTPS endpoint that scales with traffic and idles at zero."
+        },
+        {
+          "evidenceId": "modal-docs-10",
+          "quote": "In contrast, _Modal spins containers_ up and down in 1-2 seconds."
+        }
+      ]
     },
     "productId": "modal",
     "storyId": "per-second-billing"

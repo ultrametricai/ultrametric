@@ -2739,7 +2739,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents no platform API for generating or managing Figma Make apps programmatically. All documented features are interactive: chats, attachments, code editing and version history. A community report says Figma's API returns 400 for .make files, forcing users to reverse-engineer the format. Probes found no OpenAPI spec. MCP connectivity is client-side context ingestion and does not count toward this story.",
+    "rationale": "Figma Make is a prompt-to-app builder, so a platform API for generating and managing apps is a fair axis, but the evidence documents only interactive chat, canvas and UI workflows. MCP support covers connecting external tools as context, which is client-side, not an API for driving Make itself. A community report says Figma's API returns 400 for .make files, and the OpenAPI and llms.txt probes returned 404, so no programmatic app generation or management is evidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2754,7 +2754,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The probe found no llms.txt at help.figma.com (HTTP 404), and no evidence shows agent-oriented documentation for Figma Make. The feature that lets Make's agent fetch content from a URL is a different capability and does not count as publishing agent-readable docs.",
+    "rationale": "A direct probe of help.figma.com/llms.txt returned HTTP 404, and no evidence shows Figma Make publishing agent-oriented docs that an external agent could be pointed at. Make's own ability to fetch URLs or connect via MCP is a different capability and does not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2769,7 +2769,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Figma Make using designs, web content and MCP-connected data only as context for generating apps and prototypes. It also creates an editable plan before generation. None of this is a documented feature that analyzes the user's own data and returns AI-generated insights or suggestions; these are adjacent generation features, so the applicable axis is unevidenced.",
+    "rationale": "The evidence shows Figma Make using data as context for building apps: backend creation, MCP-connected documents, tasks and data, and web search to ground the app. None of it documents the AI analyzing a user's data to surface insights or suggestions. Planning and grounding features are adjacent to this story, not the capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2784,7 +2784,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows chats can keep working while you start another (figma-make-docs-1), and that workflows can be packaged as reusable instructions (figma-make-docs-15). Both are user-initiated, one-off agent runs or prompt templates. Nothing documents recurring schedules, event triggers, or automations that run on their own in the background, so there is no credit for this story.",
+    "rationale": "The evidence shows parallel chats that keep working while you start another change, and reusable instruction packages for frequent workflows. Both are user-initiated agent sessions, not automations configured to run on their own via a schedule or trigger. No documented background automation, scheduling, or trigger capability appears in the pack.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2799,13 +2799,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Figma Make is built around an in-product AI agent. Users delegate work through chat prompts, can run several chats at once while one is still working, can annotate the preview to give the agent instructions for specific elements, and can have it draft an editable plan before generation. A community commenter confirms the AI generates the React app itself. Missing for 10: independent hands-on corroboration of how reliably the agent completes multi-step delegated tasks end to end.",
+    "rationale": "Figma Make is built around an in-product AI agent. Users describe what they want in chat and the agent generates apps, creates backends, and adds records. It supports parallel chats, an editable plan before generation, and annotations that give the agent element-level instructions. A community commenter independently confirms that Make's AI writes the React code. Missing for 10: independent hands-on evidence of how reliably the agent completes complex multi-step delegated tasks.",
     "evidenceIds": [
       "figma-make-docs-1",
       "figma-make-docs-10",
       "figma-make-docs-17",
+      "figma-make-docs-25",
+      "figma-make-docs-31",
       "figma-make-docs-15",
-      "figma-make-docs-12",
       "figma-make-comm-3"
     ],
     "support": {
@@ -2814,20 +2815,24 @@
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
       "citations": [
         {
+          "evidenceId": "figma-make-docs-25",
+          "quote": "Describe what you want to build in the chat, and Make can create a Payload-powered backend, including a database, file storage, authentication, and an admin panel."
+        },
+        {
           "evidenceId": "figma-make-docs-1",
           "quote": "You can run more than one chat at the same time in a single Make file, so you can start a new change while another chat is still working."
         },
         {
           "evidenceId": "figma-make-docs-10",
-          "quote": "to your Make preview to give the agent instructions for specific elements"
+          "quote": "Add [annotations](https://help.figma.com/hc/en-us/articles/42009840449175#h_01M30Q06FXE1CSX4XT91NBD0A4) to your Make preview to give the agent instructions for specific elements"
         },
         {
           "evidenceId": "figma-make-docs-17",
           "quote": "Clarify intent and create a structured, editable plan before generation starts."
         },
         {
-          "evidenceId": "figma-make-docs-15",
-          "quote": "Package your most frequent workflows into a reusable set of instructions for Make."
+          "evidenceId": "figma-make-docs-31",
+          "quote": "You can ask Make to add sample records so you have content to work with."
         }
       ]
     }
@@ -2838,7 +2843,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Headless or CI automation is a fair question for a SaaS AI app builder, so the axis applies. Every documented capability is interactive and in-editor: chats, annotations, the draw tool and collaboration. No CLI, headless mode or CI integration is documented. A community report says Figma's API returns 400 for .make files, forcing users to reverse-engineer the format, and probes found no OpenAPI spec.",
+    "rationale": "Headless or CI automation is a fair axis for an AI app builder, but every documented workflow in Figma Make runs through its interactive chat, preview and canvas UI. There is no CLI, API or CI integration in the pack. A community report even says Figma's API returns 400 for .make files, which forced users to reverse-engineer the format, and probes found no OpenAPI spec.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2853,7 +2858,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Figma Make's marketing page says it can 'Connect to external tools via the MCP' and use documents, tasks, and data from other apps as context. That is a first-party MCP-client capability, but it is a single marketing-level mention framed around pulling context, not invoking tools. Missing for 10: documentation on adding arbitrary or custom MCP servers, configuration details, evidence that the agent can call server tools beyond reading context, and independent or hands-on corroboration.",
+    "rationale": "Figma Make's own marketing page says it can connect to external tools via MCP and use documents, tasks, and data from other apps as context. That is a direct, product-native MCP-client capability. However, it rests on a single marketing line with no help-center detail on adding arbitrary or custom MCP servers, configuring them, or the agent invoking server tools rather than just pulling context. missing for 10: documentation of how to add or configure arbitrary MCP servers, evidence of tool invocation beyond context ingestion, independent or hands-on corroboration",
     "evidenceIds": [
       "figma-make-docs-16"
     ],
@@ -2875,7 +2880,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Figma Make is itself an AI agent: its docs describe giving 'the agent' instructions to generate apps, which makes it the MCP client in this relationship. Serving tools to other agents through an official MCP server is a different product role. The only MCP evidence (figma-make-docs-16) describes Make connecting out to external tools as context, which is client-side and does not show Make running as an MCP server.",
+    "rationale": "Figma Make is itself an AI agent that builds apps, so serving tools to other agents through an official MCP server is a different product role. The only MCP evidence (docs-16) describes Make connecting out to external tools as an MCP client, which belongs to the separate MCP-client story and cannot be credited here. Nothing in the pack shows Make running as an MCP server or exposing a first-party MCP endpoint.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2888,15 +2893,16 @@
     "productId": "figma-make",
     "storyId": "agentic-nl-commands",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Figma Make is operated through chat. First-party docs describe running chats that make changes, giving the agent instructions via annotations, adding marked-up areas to prompts, and having it build a plan before generation. A community commenter confirms its AI writes React code in response to use. missing for 10: an explicit first-party description of the core prompt-to-app flow, and hands-on independent reports on how reliably natural-language commands are executed.",
+    "rationale": "Figma Make is built around a chat interface. Users describe what they want, and the agent builds frontends and backends, plans before generating, adds records on request, and takes element-level instructions through annotations. A community commenter confirms the AI generates React code from these instructions. Missing for 10: hands-on independent verification of how reliably commands are followed, and evidence that non-build operations (publishing, settings) can be driven by natural language.",
     "evidenceIds": [
-      "figma-make-docs-1",
+      "figma-make-docs-25",
+      "figma-make-docs-31",
       "figma-make-docs-10",
-      "figma-make-docs-11",
       "figma-make-docs-17",
-      "figma-make-docs-15",
+      "figma-make-docs-1",
+      "figma-make-docs-30",
       "figma-make-comm-3"
     ],
     "support": {
@@ -2905,20 +2911,24 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
-          "evidenceId": "figma-make-docs-1",
-          "quote": "You can run more than one chat at the same time in a single Make file, so you can start a new change while another chat is still working."
+          "evidenceId": "figma-make-docs-25",
+          "quote": "Describe what you want to build in the chat, and Make can create a Payload-powered backend, including a database, file storage, authentication, and an admin panel."
+        },
+        {
+          "evidenceId": "figma-make-docs-31",
+          "quote": "You can ask Make to add sample records so you have content to work with."
         },
         {
           "evidenceId": "figma-make-docs-10",
-          "quote": "to your Make preview to give the agent instructions for specific elements"
-        },
-        {
-          "evidenceId": "figma-make-docs-11",
-          "quote": "mark up the preview and add those areas to your prompts"
+          "quote": "Add [annotations](https://help.figma.com/hc/en-us/articles/42009840449175#h_01M30Q06FXE1CSX4XT91NBD0A4) to your Make preview to give the agent instructions for specific elements"
         },
         {
           "evidenceId": "figma-make-docs-17",
           "quote": "Clarify intent and create a structured, editable plan before generation starts."
+        },
+        {
+          "evidenceId": "figma-make-docs-1",
+          "quote": "You can run more than one chat at the same time in a single Make file, so you can start a new change while another chat is still working."
         }
       ]
     }
@@ -2929,7 +2939,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for an AI app-building SaaS like Figma Make, so the axis applies. Nothing in the evidence documents any Figma Make CLI. Community reports describe users reverse-engineering .make files because the API rejects them, which suggests there is no official programmatic or command-line access.",
+    "rationale": "Figma Make is a hosted AI app-building product, so an official CLI is a fair axis to ask about, but nothing in the evidence pack documents a first-party CLI. The community extractor scripts (comm-1) are a user-side workaround built because Figma's API returns 400 for .make files, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2944,7 +2954,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no documented public API for driving Figma Make. A community report says Figma's API returns 400 for .make files, which forced a user to reverse-engineer the undocumented format, and probes found no OpenAPI spec or llms.txt. The MCP mention describes Make connecting out to external tools as a client, which is adjacent and does not count as a public API for driving the product.",
+    "rationale": "Nothing in the pack documents a public API for driving Figma Make programmatically. A community report says Figma's API returns 400 for .make files, forcing reverse-engineering, and the OpenAPI probes all returned 404. The MCP connection in docs-16 only lets Make pull in context from other tools, which is a client-side adjacent feature and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2959,7 +2969,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scoped, least-privilege API credentials are a fair question for a SaaS app-building platform like Figma Make, so the axis applies. Nothing in the evidence pack documents issuing API tokens, scopes or permission-limited credentials for agents. The docs cover chats, MCP connections to external tools, backends and sharing guidelines, none of which is credential scoping. The probes found no OpenAPI spec.",
+    "rationale": "Issuing scoped API credentials to an agent is a fair question for a hosted AI app-building platform, but the evidence documents no Figma Make API tokens, scopes, or least-privilege agent credentials. The only related item covers Figma securely storing a third-party key for a published app, which is a different feature. A community report also says Figma's API returns 400 for .make files, so there is no evidence of programmatic access to scope.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2974,7 +2984,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official SDK is a fair question for an AI app-building platform, but the evidence pack never documents one for Figma Make. Syncing npm packages and design systems into Make is an input feature, not an SDK to build against. A community report says Figma's API rejects .make files, and probes for OpenAPI specs returned 404s, so there is no evidence of an official SDK.",
+    "rationale": "Nothing in the pack documents an official Figma Make SDK for programmatic access. A community report says Figma's API returns 400 for .make files, so users had to reverse-engineer the format, and probes found no OpenAPI spec or llms.txt. Syncing npm packages and connecting MCP tools are inputs to generation, not SDKs for building against Make, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2989,7 +2999,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Figma Make is a SaaS AI app/prototype builder, so offering registrable outbound webhooks is a fair axis. The evidence pack documents no webhook subscription capability. MCP connections to external tools, adding a backend, and web fetching are adjacent features and do not count as outbound HTTP event callbacks. Community notes that Figma's API returns 400 for .make files, and probes found no OpenAPI spec, so there is no evidence of programmatic event delivery.",
+    "rationale": "Figma Make is a hosted AI app-building product that could plausibly offer event webhooks, so the axis applies. Nothing in the evidence documents registrable outbound HTTP callbacks for Make events. MCP connections to external tools and generated backends are adjacent features, not webhook subscriptions, and a community report says the API returns 400 for .make files.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3004,7 +3014,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Figma Make is a SaaS app-building platform, so an interactive API reference with runnable examples is a fair question to ask of it. The evidence shows no such reference: probes for OpenAPI and Swagger specs all returned 404, and a community report says Figma's API returns 400 for .make files, so users had to reverse-engineer the format. Code exploration and editing of generated apps is a different feature and earns no credit here.",
+    "rationale": "An API reference is a fair question for a SaaS app builder, so the axis applies. However, the evidence pack documents no interactive API reference or runnable examples for Figma Make. Probes for OpenAPI specs all returned 404, and a community report says Figma's API returns 400 for .make files, which suggests there is no documented API surface.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3019,7 +3029,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Figma Make publishing a downloadable OpenAPI or equivalent spec. Probes of common OpenAPI and Swagger paths all returned 404. A community report says Figma's API returns 400 for .make files, which suggests there is no documented programmatic surface for Make at all.",
+    "rationale": "Figma Make's evidence has no documented OpenAPI or equivalent machine-readable spec. Probes of the usual OpenAPI and Swagger paths all returned 404, and a community report says Figma's API returns 400 for .make files, forcing reverse-engineering. Publishing an API spec is a fair axis for a hosted app-building platform, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3034,7 +3044,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Figma Make is an AI app builder that can add a backend and publish apps, so a sandbox or staging environment isolated from production data is a fair question for it. The evidence documents a backend for storing data, a preview, code review and version history. None of it describes a separate sandbox or test environment, or any isolation of test runs from production data. Version history and code review are adjacent features, not sandbox isolation.",
+    "rationale": "Figma Make can generate a Payload backend with sample records, preview apps, and publish to hosted infrastructure. The evidence never documents a separate sandbox, staging, or test environment whose data is isolated from the production backend. Sample records and previews are adjacent features, not documented environment isolation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3049,7 +3059,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the pack shows a versioned public API or a documented deprecation policy for Figma Make. Community reports say Figma's API returns 400 for .make files and the format is undocumented, and the OpenAPI probes all returned 404. The app 'version history' feature is about project revisions, not API versioning, so it earns no credit.",
+    "rationale": "Figma Make is a hosted SaaS app builder, so versioned APIs with a deprecation policy are a fair question to ask of it. The pack documents no versioned API or deprecation policy. A community report says Figma's API returns 400 for .make files and the file format is undocumented, and probes for OpenAPI specs all returned 404.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3064,7 +3074,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Figma Make is an AI app builder, so built-in AI features for generated apps are a fair axis. The evidence never shows a way to add LLM calls or agents to the app with managed provider keys. The backend item covers data storage, while MCP and web search are context-gathering features for the building agent, not runtime AI features in the generated app.",
+    "rationale": "The evidence pack documents backend features (Payload database, auth, file storage, Supabase connection) and secure storage of a key the user supplies. Nothing shows built-in LLM calls or agents for the generated app, or managed provider access that removes the need for the user's own keys. Storing a user-provided secret is an adjacent control and does not deliver keyless AI features.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3079,7 +3089,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Figma Make is an AI app builder that publishes apps, so a pre-launch security review is a fair question for it. The evidence shows no security scanning or review feature. The 'Review' tab only shows code additions and deletions, which is an adjacent feature. The community post describes users extracting the code themselves to audit it before deployment, which is a user-side workaround, not platform capability.",
+    "rationale": "Figma Make is an AI app builder that publishes apps to hosted infrastructure, so pre-launch security review is a fair axis. The evidence shows no platform security scan or audit. The 'Review' tab only lets the user inspect code diffs manually, and secure secret storage is a different feature. Community posts describe extracting the code to audit it yourself, which is a user-side workaround.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3091,16 +3101,28 @@
   {
     "productId": "figma-make",
     "storyId": "auth-scaffolding",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Figma Make is an AI app builder, so auth scaffolding is a fair question for it. The evidence only says you can add a backend to store and manage data. Nothing in the pack mentions user sign-up, login, email auth or social providers. Backend data storage is an adjacent capability and earns no credit for this story.",
-    "evidenceIds": [],
+    "rationale": "Figma Make's own backend docs say it can create a Payload-powered backend that includes authentication from a chat prompt, so auth scaffolding is a first-party capability. The evidence never describes sign-up/login flows, email-based auth, or social providers specifically, and no hands-on report confirms it works. Missing for 10: documented email sign-up/login flows, social/OAuth provider support, independent or hands-on corroboration of the generated auth.",
+    "evidenceIds": [
+      "figma-make-docs-25",
+      "figma-make-docs-33"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can add user sign-up and login (email, social providers) scaffolded by the builder",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "figma-make-docs-25",
+          "quote": "Describe what you want to build in the chat, and Make can create a Payload-powered backend, including a database, file storage, authentication, and an admin panel."
+        },
+        {
+          "evidenceId": "figma-make-docs-33",
+          "quote": "The generated Payload and Next.js code is included in your Make project."
+        }
+      ]
     }
   },
   {
@@ -3109,7 +3131,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for an AI app builder, but the pack documents no capability to apply one operation across many items at once. Running parallel chats, attaching several designs as context, and packaging reusable instructions are adjacent features, not bulk operations, so they earn no credit.",
+    "rationale": "The evidence pack documents no bulk-operation capability, such as selecting many items, records, or elements and applying one action to all of them. Running several chats at once, attaching multiple designs as context, editing records one by one in the admin panel, and packaging workflows as reusable instructions are adjacent features, not bulk operations. Bulk actions are a fair axis for an AI app builder, so the absence of evidence is none, not na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3124,7 +3146,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation rules are a fair question for an AI app-building tool, but the evidence pack shows no rule engine or event-based triggers in Figma Make. Reusable instruction packages, guidelines, and MCP connections are manually invoked context or workflow aids, not rules that fire actions automatically on events, so they earn no credit.",
+    "rationale": "Event-triggered automation rules are a fair question for an AI app-building tool, but the evidence pack shows no documented way to define rules that fire actions automatically on events. The closest items are adjacent features: reusable instruction sets for frequent workflows, MCP connections for external context, and parallel chats. All of these are user-initiated, not event-driven.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3139,7 +3161,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for an AI app builder, but nothing in the evidence shows Figma Make running jobs on a timer or a recurring schedule. The closest items are reusable instruction sets for frequent workflows and parallel chats. Both are on-demand features, not scheduled recurring execution, so they earn no credit.",
+    "rationale": "Scheduling recurring jobs is a fair question for an AI app builder with hosted backends, but the evidence documents no scheduler, cron, or recurring trigger. The 'reusable set of instructions' for frequent workflows (docs-15) are on-demand instruction packages, not recurring schedules. The Payload backend and publishing docs do not mention scheduled jobs.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3154,7 +3176,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Figma Make documents version history and a Review tab for the generated app's code changes. That versions and reviews the app being built, not the user's automations, so it is an adjacent feature. The reusable workflow instructions it offers have no documented versioning, review or rollback.",
+    "rationale": "Figma Make documents version history and a code-diff Review panel for the generated app, but these cover the app's code, not automations. The closest automation-like feature, reusable packaged workflow instructions, has no documented versioning, review, or rollback. App-level versioning is an adjacent capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3167,11 +3189,12 @@
     "productId": "figma-make",
     "storyId": "custom-domain",
     "verdict": "full",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Figma Make's own help docs state that you can assign a custom domain you own to your app, which directly delivers the core of the story. The evidence is a single sentence, with no setup detail or hands-on confirmation. Missing for 10: documented DNS/SSL setup steps, plan or tier requirements, explicit tie-in to the publish flow, independent or hands-on corroboration.",
+    "rationale": "Figma Make's own docs say published apps deploy to Figma's hosted infrastructure, and that you can also assign a custom domain that you own. That directly covers connecting a custom domain to a published app, though it rests on a single brief mention. Missing for 10: setup details such as DNS records, verification steps and SSL handling, any plan or tier requirements, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "figma-make-docs-5"
+      "figma-make-docs-5",
+      "figma-make-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -3181,6 +3204,10 @@
         {
           "evidenceId": "figma-make-docs-5",
           "quote": "You can also assign a custom domain that you own."
+        },
+        {
+          "evidenceId": "figma-make-docs-32",
+          "quote": "Publishing deploys your app and its Payload backend to Figma’s hosted infrastructure."
         }
       ]
     }
@@ -3191,7 +3218,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only Figma-hosted publishing with a custom domain and in-app code viewing and editing. There is no documented code export, download, or deploy path to an external host or the user's own infrastructure. Community reports describe reverse-engineering the undocumented .make binary to extract the React apps, which is a user-side workaround and earns no credit.",
+    "rationale": "The documented publish path deploys only to Figma's own hosting, and a custom domain still sits on that hosting. Nothing in the evidence documents exporting the app or deploying it to an external host or your own infrastructure. A community user had to reverse-engineer the undocumented .make format to extract the code; that is a user-side workaround, not a product capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3204,9 +3231,9 @@
     "productId": "figma-make",
     "storyId": "edit-code-directly",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Figma Make's own docs describe a built-in Files panel where you can explore the app's files and edit its code. They also describe reviewing code diffs, collaboratively modifying the generated code, and switching between code and canvas. The community extractor thread concerns getting code out of .make files via the API, not in-builder editing, so it does not contradict this. missing for 10: in-depth documentation of the code editor's capabilities (e.g. which file types are editable, how editor features behave), and independent or hands-on corroboration of in-builder code editing.",
+    "rationale": "Figma Make's own docs say its Files view lets you explore the app's files and edit its code inside the builder. They also mention a Review view for code diffs, collaborators simultaneously modifying the generated code, and jumping between code and canvas. Missing for 10: detailed first-party documentation of the in-builder code editor's capabilities (the linked edit-code article isn't in the pack), and independent or hands-on corroboration of editing code inside Make.",
     "evidenceIds": [
       "figma-make-docs-7",
       "figma-make-docs-8",
@@ -3243,7 +3270,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no first-party documentation of exporting the full source code or running or hosting the app outside Figma Make. The docs show in-platform file browsing, code editing, and on-platform publishing with a custom domain, but none of these is code export or off-platform hosting. Community reports say the API returns 400 for .make files and users had to reverse-engineer the binary format with their own scripts to extract the React app; that is a user-side workaround and earns no credit.",
+    "rationale": "The evidence shows code that can be viewed and edited inside Make, plus generated Payload/Next.js code included in the Make project. That is in-platform code access, not a documented way to export the full source or run and host the app elsewhere. Publishing is documented only to Figma's hosted infrastructure, and community reports describe having to reverse-engineer the undocumented .make binary to extract the React code, which indicates there is no official export path.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3258,7 +3285,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Figma Make is an AI app builder, so letting an external coding agent drive it is a fair question. The evidence shows no way to connect your own agent. MCP support only pulls external tools in as context for the built-in agent (client-side), and manual code editing is a different feature. A community report says Figma's API returns 400 for .make files, so users had to reverse-engineer the format just to extract code.",
+    "rationale": "Nothing in the evidence shows a way to plug an external coding agent into a Make project to drive the builder, such as an MCP server, API, or agent bridge. Make's MCP support runs the other direction: Make connects out to external tools as context, which is client-side and adjacent. Manual code editing and multiple built-in chats are not external-agent control either. A community report that Figma's API returns 400 for .make files further suggests no programmatic access path.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3271,13 +3298,15 @@
     "productId": "figma-make",
     "storyId": "full-stack-generation",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Figma Make's docs show it generates frontend apps from prompts, and its own feature lets you add a backend to store and manage data. The documented flow is sequential, though: you generate the frontend, then create a backend. Nothing shows one prompt producing both UI and backend logic, and the backend is described only as data storage and management. Missing for 10: evidence of single-prompt full-stack generation, documentation of backend business logic beyond storing data, independent or hands-on corroboration of backend generation.",
+    "rationale": "Figma Make generates frontend apps from chat prompts. Its docs also say that describing what you want in chat creates a Payload-powered backend with database, file storage, authentication and an admin panel, and that it updates both the data model and the interface together. However, the marketing copy frames this as a sequence ('Generate... your frontend..., then create a backend'), so a single prompt producing both is not shown. missing for 10: evidence that one prompt generates both UI and backend at once, documentation of custom backend business logic beyond data/auth/storage scaffolding, independent hands-on corroboration.",
     "evidenceIds": [
+      "figma-make-docs-25",
       "figma-make-docs-18",
-      "figma-make-docs-6",
-      "figma-make-comm-3"
+      "figma-make-docs-30",
+      "figma-make-docs-33",
+      "figma-make-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -3285,16 +3314,20 @@
       "subject": "As a developer, I can generate both frontend UI and backend logic from a single prompt",
       "citations": [
         {
+          "evidenceId": "figma-make-docs-25",
+          "quote": "Describe what you want to build in the chat, and Make can create a Payload-powered backend, including a database, file storage, authentication, and an admin panel."
+        },
+        {
+          "evidenceId": "figma-make-docs-30",
+          "quote": "Make updates the data model and the interface to support the new fields."
+        },
+        {
           "evidenceId": "figma-make-docs-18",
           "quote": "Generate and design your frontend in Figma Make, then create a backend to manage your content."
         },
         {
-          "evidenceId": "figma-make-docs-6",
-          "quote": "You can also [add a backend](https://help.figma.com/hc/en-us/articles/32640822050199) to your app to securely store and manage data."
-        },
-        {
-          "evidenceId": "figma-make-comm-3",
-          "quote": "Figma Make's AI writes React code rather than creating a Figma drawing."
+          "evidenceId": "figma-make-docs-33",
+          "quote": "The generated Payload and Next.js code is included in your Make project."
         }
       ]
     }
@@ -3305,7 +3338,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Syncing a generated app to the user's own GitHub repository is a fair question for an AI app builder like Figma Make, so the axis applies. Nothing in the evidence documents a GitHub connection, push/pull, or two-way sync. The in-app code editing, change review and version history (docs-7, docs-8, docs-9) are adjacent features, not repository sync. Community posts describe users reverse-engineering the .make format just to extract code, which further suggests no first-party repo export exists.",
+    "rationale": "Nothing in the evidence documents a GitHub connection, repository sync, or two-way change flow for Figma Make. The pack shows only in-app code editing, change review, version history, and that generated code lives inside the Make project, none of which is repo sync. Community reports describe reverse-engineering the undocumented .make format to get code out, which further suggests no first-party GitHub export.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3317,21 +3350,26 @@
   {
     "productId": "figma-make",
     "storyId": "import-existing-design",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Figma Make's own docs say designers can paste frames and components from Figma designs into the chat, attach several designs as guidance, and attach Figma frames or PDFs, so importing an existing design is first-party and direct. The docs present attached designs only as 'guidance' for the model, though, and nothing shows the builder faithfully implementing an imported file end to end. Missing for 10: explicit documentation of whole-file import and of design-to-code implementation fidelity, and independent or hands-on corroboration that imported designs are implemented accurately.",
+    "rationale": "Figma Make's own docs say you can use existing designs to generate an app. You paste frames and components into the chat, attach several designs, or attach Figma frames via 'Add context'. Make then builds a code-backed app from them. missing for 10: independent or hands-on corroboration of how faithfully designs are implemented, documentation on importing whole Figma files versus individual frames.",
     "evidenceIds": [
+      "figma-make-docs-22",
       "figma-make-docs-2",
       "figma-make-docs-3",
       "figma-make-docs-21",
-      "figma-make-docs-19"
+      "figma-make-docs-35"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a designer, I can import a Figma file or existing design and have the builder implement it",
       "citations": [
+        {
+          "evidenceId": "figma-make-docs-22",
+          "quote": "To use your existing designs to generate an app, click **+**, then **Add context**."
+        },
         {
           "evidenceId": "figma-make-docs-2",
           "quote": "You can also paste frames and components from your designs directly into the chat."
@@ -3342,11 +3380,7 @@
         },
         {
           "evidenceId": "figma-make-docs-21",
-          "quote": "Bring in design systems using Make kits and npm packages, or attach Figma frames, PDFs, and more."
-        },
-        {
-          "evidenceId": "figma-make-docs-19",
-          "quote": "Everything you build is code-backed and visually editable, so you can easily jump between code and canvas."
+          "quote": "attach Figma frames, PDFs, and more"
         }
       ]
     }
@@ -3357,13 +3391,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Figma Make's own docs support iterative chat-driven changes, element-targeted instructions via annotations and the draw tool, diff review of code changes, and version history to go back to earlier versions. Together these give targeted follow-up refinement plus recovery when something breaks, but nothing documents that follow-up prompts preserve working functionality. missing for 10: documented guarantee or mechanism that follow-up prompts avoid regressions, hands-on or independent corroboration of stable iterative editing.",
+    "rationale": "Figma Make's own docs show iterative chat-driven changes: starting new changes in parallel chats, annotations and draw-tool markup to target specific elements, and Make updating the data model and interface when fields are added. Code-change review and version history act as safety nets against regressions. However, nothing shows that follow-up prompts preserve existing working behavior, and there is no hands-on corroboration. Missing for 10: evidence that follow-up edits are scoped and do not regress existing functionality, independent or hands-on reports of multi-turn refinement stability.",
     "evidenceIds": [
       "figma-make-docs-1",
       "figma-make-docs-8",
       "figma-make-docs-9",
       "figma-make-docs-10",
-      "figma-make-docs-11"
+      "figma-make-docs-11",
+      "figma-make-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -3372,7 +3407,7 @@
       "citations": [
         {
           "evidenceId": "figma-make-docs-1",
-          "quote": "you can start a new change while another chat is still working"
+          "quote": "so you can start a new change while another chat is still working"
         },
         {
           "evidenceId": "figma-make-docs-10",
@@ -3380,11 +3415,15 @@
         },
         {
           "evidenceId": "figma-make-docs-8",
-          "quote": "Inspect changes to your app’s code](https://help.figma.com/hc/en-us/articles/33649966245783) by viewing additions and deletions in the changed files."
+          "quote": "by viewing additions and deletions in the changed files"
         },
         {
           "evidenceId": "figma-make-docs-9",
-          "quote": "Use the [version history](https://help.figma.com/hc/en-us/articles/42009840449175#h_01KKD0YGT4J5V7TD9ETGKAK96F) to edit earlier versions of your app"
+          "quote": "to edit earlier versions of your app"
+        },
+        {
+          "evidenceId": "figma-make-docs-30",
+          "quote": "Make updates the data model and the interface to support the new fields."
         }
       ]
     }
@@ -3395,10 +3434,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows code editing only inside Figma Make's own Files panel. Nothing documents a local-development workflow with your own editor, nor a way to sync or push changes back to the platform. Community evidence points the other way: Figma's API returns 400 for .make files, and a user had to reverse-engineer the binary format just to extract the React code, with no path described for pushing edits back.",
+    "rationale": "The evidence pack documents no way to sync a Figma Make app to a local environment, edit it in your own editor, and push changes back. What it does document is adjacent: in-platform code editing (figma-make-docs-7) and the note that generated code is included in the Make project (figma-make-docs-33). Community evidence adds that Figma's API returns 400 for .make files, so users had to reverse-engineer the format just to extract code, with nothing pushed back (figma-make-comm-1).",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can work on the app locally with my own editor and tooling and push changes back to the platform",
       "citations": []
@@ -3408,11 +3447,13 @@
     "productId": "figma-make",
     "storyId": "one-click-publish",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Figma Make's own docs say you can assign a custom domain you own to your app. That implies the product hosts published apps at a live URL, but the pack never describes the publish action itself or shows it is a single step. missing for 10: explicit documentation of the publish-to-live-URL flow, evidence that publishing is one step, default hosted URL details, independent or hands-on corroboration.",
+    "rationale": "Figma Make's own docs state that publishing deploys the app and its Payload backend to Figma's hosted infrastructure, and that you can assign a custom domain, which implies a live URL. The docs never describe the flow as a single step, and no hands-on report confirms it. Missing for 10: explicit documentation of a one-click publish flow, explicit mention of the default live URL produced, independent or hands-on corroboration of the publish experience.",
     "evidenceIds": [
-      "figma-make-docs-5"
+      "figma-make-docs-32",
+      "figma-make-docs-5",
+      "figma-make-docs-29"
     ],
     "support": {
       "relation": "direct",
@@ -3420,8 +3461,16 @@
       "subject": "As a founder, I can publish my app to a live URL in one step",
       "citations": [
         {
+          "evidenceId": "figma-make-docs-32",
+          "quote": "Publishing deploys your app and its Payload backend to Figma’s hosted infrastructure."
+        },
+        {
           "evidenceId": "figma-make-docs-5",
           "quote": "You can also assign a custom domain that you own."
+        },
+        {
+          "evidenceId": "figma-make-docs-29",
+          "quote": "Figma stores it securely so your app can use it without exposing the key to visitors when you publish."
         }
       ]
     }
@@ -3431,8 +3480,8 @@
     "storyId": "openness-api-parity",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Every documented Figma Make capability (chats, attachments, code editing, version history, annotations, publishing) is a UI feature, and no public Make API is documented. A hands-on community report says Figma's API returns 400 for .make files, forcing the user to reverse-engineer the binary format. Probes found no OpenAPI spec or llms.txt. The MCP mention is client-side (pulling context from other apps), not API access to Make itself.",
+    "confidence": "high",
+    "rationale": "API parity is a fair question for a SaaS app builder like Figma Make, but the evidence documents no Make API at all. A community report says Figma's API returns 400 for .make files, forcing users to reverse-engineer the binary format, and probes found no OpenAPI spec or llms.txt. The MCP connection to external tools is client-side context ingestion, not an API that exposes Make's UI capabilities, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3447,7 +3496,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Figma Make's docs only show viewing and editing app files in-product (docs-7) and copying preview snapshots as layers into Figma Design (docs-4). Neither is a documented export of all data in open formats. Community reports say the API rejects .make files and that users had to reverse-engineer an undocumented binary format to get their code out, which is a user-side workaround and earns no credit.",
+    "rationale": "The evidence pack documents no first-party way to export a Make project's code, backend data, or files in open formats so a user can leave. The docs only say the code lives inside the Make project, where it can be viewed and edited, and that previews can be copied as layers into Figma Design, which keeps the work inside Figma. Community reports go further: Figma's API rejects .make files, and users had to reverse-engineer an undocumented binary format to extract their React apps and migrate away. That is a user-side workaround and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3461,8 +3510,8 @@
     "storyId": "openness-open-license",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Open-source availability is a fair question for an AI app-building product, so the axis applies. The evidence pack shows no open license or public repository for Figma Make's own source. The ability to view and edit generated app code (docs-7) concerns the user's app, not the product, and the community reverse-engineering of the .make format (comm-1) confirms that format is undocumented, not openly licensed.",
+    "confidence": "medium",
+    "rationale": "Whether the source is published under an open license is a fair question for any software product, so the axis applies. The evidence only shows that users can view and edit the code Make generates for their own apps. That is adjacent, not the product's own source, and nothing indicates Figma Make itself is released under an open license. Community reports of reverse-engineering an undocumented .make binary point to a closed product, not an open one.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3477,7 +3526,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an AI app-building SaaS, but nothing in the evidence shows Figma Make can be deployed or run on user-controlled infrastructure. The custom-domain feature applies to published apps on Figma's hosting, which is an adjacent capability and not self-hosting the product. Community reports that users had to reverse-engineer .make files to extract code point the other way, toward a closed, hosted-only product.",
+    "rationale": "Self-hosting is a fair question for an AI app-builder, so the axis applies. The evidence only says published apps deploy to Figma's hosted infrastructure, and that the generated app code sits in the Make project. Portability of the output app is a different capability and earns no credit. Nothing shows Figma Make itself can be run on user infrastructure.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3489,32 +3538,37 @@
   {
     "productId": "figma-make",
     "storyId": "preview-before-publish",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Figma Make's docs refer to a Make preview during the build loop: you can add annotations to it, mark it up with a draw tool, and copy snapshots of it as layers. Custom-domain support implies a separate publish step. The docs never explicitly say the preview is a live, clickable app you can interact with before publishing. Missing for 10: explicit documentation that the preview is interactive and running live, a description of what preview mode lets you do before publishing, and independent hands-on corroboration.",
+    "rationale": "Figma Make's docs describe an interactive app preview inside the Make file, plus a dedicated fullscreen preview. Users can annotate and draw on that preview to steer the agent while building, and publishing is a separate later step that deploys the app. missing for 10: explicit documentation that the preview updates live as changes are generated, independent or hands-on corroboration of the in-build preview experience.",
     "evidenceIds": [
+      "figma-make-docs-24",
       "figma-make-docs-10",
       "figma-make-docs-11",
       "figma-make-docs-4",
-      "figma-make-docs-5"
+      "figma-make-docs-32"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a founder, I can interact with a live preview of my app while building, before publishing",
       "citations": [
+        {
+          "evidenceId": "figma-make-docs-24",
+          "quote": "Once you have your interactive app, you can also view it in [a dedicated, fullscreen preview]"
+        },
         {
           "evidenceId": "figma-make-docs-10",
           "quote": "Add [annotations](https://help.figma.com/hc/en-us/articles/42009840449175#h_01M30Q06FXE1CSX4XT91NBD0A4) to your Make preview to give the agent instructions for specific elements"
         },
         {
           "evidenceId": "figma-make-docs-11",
-          "quote": "Use the [draw tool](https://help.figma.com/hc/en-us/articles/42009840449175#h_01KFKBNVY9E1696HN77SJA3936) to mark up the preview and add those areas to your prompts"
+          "quote": "mark up the preview and add those areas to your prompts"
         },
         {
-          "evidenceId": "figma-make-docs-4",
-          "quote": "copy a snapshot of a preview as layers and then paste those layers into Figma Design"
+          "evidenceId": "figma-make-docs-32",
+          "quote": "Publishing deploys your app and its Payload backend to Figma’s hosted infrastructure."
         }
       ]
     }
@@ -3525,7 +3579,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency and region selection is a fair axis for a cloud AI app builder like Figma Make, but nothing in the evidence pack documents choosing a storage region. The only storage-related item says users can add a backend to 'securely store and manage data', which is adjacent and says nothing about residency.",
+    "rationale": "Data residency is a fair question for a hosted AI app-building SaaS, so the axis applies. The evidence only says published apps and their Payload backend deploy to Figma's hosted infrastructure, with no documented way to choose a storage region. Manually connecting a Supabase project is a third-party arrangement, not Figma Make's own residency control, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3540,7 +3594,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of AI training is a fair question for an AI design and app-generation product, so the axis applies. However, nothing in the evidence pack covers AI training data use, opt-out controls, or data-privacy settings. Doc 6's mention of securely storing data in an app backend is a different feature and earns no credit.",
+    "rationale": "Controls over AI training on user data are a fair question for an AI app-building service, so the axis applies. The evidence pack has no documentation of a training opt-out, data-usage setting, or privacy guarantee for Figma Make. The one community mention of 'training' is about how the underlying model was trained on code, not about user data controls.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3555,7 +3609,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documentation of user controls for data retention or deletion, such as retention settings, chat or prompt deletion, or opt-outs from model training. The nearby items do not count: version history, an app backend for storing data, and code-diff 'deletions' are different features, not privacy retention or deletion controls.",
+    "rationale": "Data retention and deletion controls are a fair privacy axis for an AI app-building product. The evidence contains nothing about retention periods, deleting chats, prompts or files, or opting out of training data use. The backend admin panel (view/create/edit records) manages the user's own app content and is not a privacy retention control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3570,7 +3624,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for an AI app-building SaaS like Figma Make, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics opt-out, or any privacy controls. The available items cover chat, design attachment, backend, MCP and publishing features only.",
+    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a hosted AI app-builder like Figma Make, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics opt-outs, or data-use controls. The items on securely stored keys and backends cover a different capability and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3583,16 +3637,15 @@
     "productId": "figma-make",
     "storyId": "prompt-to-working-app",
     "verdict": "full",
-    "quality": 7,
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Figma Make's own docs describe prompting an agent in chat to generate a code-backed frontend, then adding a backend to store and manage data, and publishing the app to a custom domain. A community commenter confirms the AI writes React code, so the core prompt-to-app flow is delivered end to end. missing for 10: in-depth documentation of what the backend supports (auth, database, server logic) beyond storing and managing data/content, and independent hands-on corroboration that a working full-stack app results from a natural-language prompt.",
+    "rationale": "Figma Make's docs say you can describe what you want in chat and Make builds a Payload-powered backend with database, file storage, authentication and an admin panel. That backend pairs with a generated frontend in Next.js code, and publishing deploys both to Figma's hosted infrastructure, which together covers prompt-to-working-full-stack-app. Missing for 10: independent hands-on corroboration that the generated full-stack apps actually work end-to-end (community evidence only confirms React code generation).",
     "evidenceIds": [
+      "figma-make-docs-25",
       "figma-make-docs-18",
+      "figma-make-docs-32",
+      "figma-make-docs-33",
       "figma-make-docs-6",
-      "figma-make-docs-17",
-      "figma-make-docs-1",
-      "figma-make-docs-5",
-      "figma-make-docs-19",
       "figma-make-comm-3"
     ],
     "support": {
@@ -3601,24 +3654,20 @@
       "subject": "As a founder, I can describe an app in natural language and get a working full-stack application",
       "citations": [
         {
+          "evidenceId": "figma-make-docs-25",
+          "quote": "Describe what you want to build in the chat, and Make can create a Payload-powered backend, including a database, file storage, authentication, and an admin panel."
+        },
+        {
           "evidenceId": "figma-make-docs-18",
           "quote": "Generate and design your frontend in Figma Make, then create a backend to manage your content."
         },
         {
-          "evidenceId": "figma-make-docs-6",
-          "quote": "You can also [add a backend](https://help.figma.com/hc/en-us/articles/32640822050199) to your app to securely store and manage data."
+          "evidenceId": "figma-make-docs-32",
+          "quote": "Publishing deploys your app and its Payload backend to Figma’s hosted infrastructure."
         },
         {
-          "evidenceId": "figma-make-docs-17",
-          "quote": "Clarify intent and create a structured, editable plan before generation starts."
-        },
-        {
-          "evidenceId": "figma-make-docs-5",
-          "quote": "You can also assign a custom domain that you own."
-        },
-        {
-          "evidenceId": "figma-make-docs-19",
-          "quote": "Everything you build is code-backed and visually editable, so you can easily jump between code and canvas."
+          "evidenceId": "figma-make-docs-33",
+          "quote": "The generated Payload and Next.js code is included in your Make project."
         }
       ]
     }
@@ -3626,26 +3675,38 @@
   {
     "productId": "figma-make",
     "storyId": "provision-database",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Figma Make's own docs say you can add a backend to your app to securely store and manage data, and create a backend to manage your content, so a first-party data backend exists. The evidence gives no detail on how the database is provisioned, how it is wired into the generated app's code, or whether this all happens inside the builder. missing for 10: explicit database provisioning details, documented automatic wiring into app code, confirmation the flow stays inside the builder, independent or hands-on corroboration.",
+    "rationale": "Figma Make's own docs say you can describe a backend in chat and Make will create a Payload-powered backend that includes a database. Make then updates the data model and interface together, and publishing deploys the backend to Figma's hosted infrastructure, all inside the builder. A Supabase project can also be connected from Make settings. Missing for 10: independent or hands-on corroboration that provisioning works as claimed, and documentation of the database engine, migrations or limits.",
     "evidenceIds": [
-      "figma-make-docs-6",
-      "figma-make-docs-18"
+      "figma-make-docs-25",
+      "figma-make-docs-30",
+      "figma-make-docs-32",
+      "figma-make-docs-26",
+      "figma-make-docs-27",
+      "figma-make-docs-33"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can get a database provisioned and wired into my app without leaving the builder",
       "citations": [
         {
-          "evidenceId": "figma-make-docs-6",
-          "quote": "You can also [add a backend](https://help.figma.com/hc/en-us/articles/32640822050199) to your app to securely store and manage data."
+          "evidenceId": "figma-make-docs-25",
+          "quote": "Describe what you want to build in the chat, and Make can create a Payload-powered backend, including a database, file storage, authentication, and an admin panel."
         },
         {
-          "evidenceId": "figma-make-docs-18",
-          "quote": "Generate and design your frontend in Figma Make, then create a backend to manage your content."
+          "evidenceId": "figma-make-docs-30",
+          "quote": "Make updates the data model and the interface to support the new fields."
+        },
+        {
+          "evidenceId": "figma-make-docs-32",
+          "quote": "Publishing deploys your app and its Payload backend to Figma’s hosted infrastructure."
+        },
+        {
+          "evidenceId": "figma-make-docs-26",
+          "quote": "You can also manually connect a Supabase project from Make settings."
         }
       ]
     }
@@ -3656,11 +3717,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Figma Make's docs say teams can collaborate in the same conversations, leave comments, and modify the generated code at the same time within a shared Make file. Multiple chats can also run in a single file, which supports parallel teamwork. Missing for 10: detail on team-level shared workspace or permission management beyond file sharing, and independent or hands-on corroboration of real-time co-editing.",
+    "rationale": "First-party docs say teams can collaborate in the same Make conversations, leave comments, and edit the generated code at the same time. Files can be shared with others, and multiple chats can run in one Make file, which together cover working on the same project in a shared space. Missing for 10: details on team workspace structure, permissions and roles, and any independent or hands-on corroboration of real-time collaboration.",
     "evidenceIds": [
       "figma-make-docs-13",
       "figma-make-docs-14",
-      "figma-make-docs-1"
+      "figma-make-docs-1",
+      "figma-make-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -3677,7 +3739,11 @@
         },
         {
           "evidenceId": "figma-make-docs-1",
-          "quote": "You can run more than one chat at the same time in a single Make file, so you can start a new change while another chat is still working."
+          "quote": "You can run more than one chat at the same time in a single Make file"
+        },
+        {
+          "evidenceId": "figma-make-docs-28",
+          "quote": "Teammates can make routine content updates through the admin panel without prompting Make or editing the app’s code."
         }
       ]
     }
@@ -3686,12 +3752,15 @@
     "productId": "figma-make",
     "storyId": "server-functions-integrations",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Figma Make's own docs say you can add a backend to your app from the builder, but only to store and manage data and content. Server-side functions and third-party integrations such as payments or email are not documented. The MCP connector only brings external data in as context for building, not as app integrations. Missing for 10: documented server-side functions, payment integration, email integration, any hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Figma Make documents generating a server-side Payload/Next.js backend from chat, with a database, file storage, authentication and an admin panel. It can also connect a Supabase project and store keys securely so a published app can use them without exposing them to visitors. That covers the server-side and secret-handling core, but payments and email integrations are never shown. MCP connectivity only pulls in context for building, so it does not count as an app integration. Missing for 10: explicit server-side/custom function authoring, documented payments (e.g. Stripe) and email integrations, independent hands-on corroboration.",
     "evidenceIds": [
-      "figma-make-docs-6",
-      "figma-make-docs-18"
+      "figma-make-docs-25",
+      "figma-make-docs-26",
+      "figma-make-docs-29",
+      "figma-make-docs-32",
+      "figma-make-docs-33"
     ],
     "support": {
       "relation": "direct",
@@ -3699,12 +3768,20 @@
       "subject": "As a developer, I can add server-side functions and third-party integrations like payments and email from the builder",
       "citations": [
         {
-          "evidenceId": "figma-make-docs-6",
-          "quote": "You can also [add a backend](https://help.figma.com/hc/en-us/articles/32640822050199) to your app to securely store and manage data."
+          "evidenceId": "figma-make-docs-25",
+          "quote": "Describe what you want to build in the chat, and Make can create a Payload-powered backend, including a database, file storage, authentication, and an admin panel."
         },
         {
-          "evidenceId": "figma-make-docs-18",
-          "quote": "Generate and design your frontend in Figma Make, then create a backend to manage your content."
+          "evidenceId": "figma-make-docs-26",
+          "quote": "You can also manually connect a Supabase project from Make settings."
+        },
+        {
+          "evidenceId": "figma-make-docs-29",
+          "quote": "Figma stores it securely so your app can use it without exposing the key to visitors when you publish."
+        },
+        {
+          "evidenceId": "figma-make-docs-33",
+          "quote": "The generated Payload and Next.js code is included in your Make project."
         }
       ]
     }
@@ -3715,10 +3792,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a template gallery, community project remixing, or starting a Make file from an existing project instead of a blank prompt. Make kits, design-system imports, attached frames (docs-21) and reusable workflow instructions (docs-15) are adjacent context-supply features, not templates. Sharing a file with usage guidelines (docs-14) does not explicitly describe starting a new project from it.",
+    "rationale": "The evidence describes starting from your own codebase, design assets, Make kits, or from scratch. These are adjacent context inputs, not a documented template gallery or community-project remix flow. Sharing a Make file with guidelines (docs-14) hints at reuse but never presents it as a template or community starting point.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a founder, I can start from a template or community project instead of a blank prompt",
       "citations": []
@@ -3730,10 +3807,9 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Figma Make's marketing says builds are \"visually editable\" and that you can move between code and canvas, which suggests direct, prompt-free editing. Users can also edit the app's code directly. The docs do not describe selecting an element and changing its text, style, or layout. Annotations and the draw tool still route changes through the agent. Missing for 10: documented select-to-edit for text, style and layout properties, details of the visual editing controls, and independent or hands-on confirmation.",
+    "rationale": "Figma Make's own marketing says generated output is \"visually editable\" and lets you jump between code and canvas, which points to direct editing without prompting. No evidence describes selecting an element and changing its text, style, or layout in place. Copying to the Figma Design canvas and editing raw code are adjacent workarounds, not this capability. Missing for 10: documentation of element selection, direct text/style/layout property editing, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "figma-make-docs-19",
-      "figma-make-docs-7"
+      "figma-make-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -3743,10 +3819,6 @@
         {
           "evidenceId": "figma-make-docs-19",
           "quote": "Everything you build is code-backed and visually editable, so you can easily jump between code and canvas."
-        },
-        {
-          "evidenceId": "figma-make-docs-7",
-          "quote": "Explore your app’s files and [edit its code]"
         }
       ]
     }
@@ -3757,7 +3829,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Understanding credit or token consumption and plan inclusions is a fair question for an AI app builder like Figma Make, so the axis applies. However, nothing in the evidence pack covers credits, tokens, usage metering, or plan contents; the docs only describe features such as chats, backends, domains and MCP.",
+    "rationale": "Understanding credit or token consumption and plan inclusions is a fair question for an AI app builder like Figma Make, so the axis applies. However, nothing in the evidence pack mentions credits, tokens, usage limits, or plan contents. The cited items cover features such as chats, backends, MCP and publishing, not pricing or metering.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

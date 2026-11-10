@@ -4037,17 +4037,15 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Modal's Python SDK lets an agent request GPUs in code via the `gpu` argument and run workloads programmatically. An official CLI and an agent skill are documented, and containers spin down to zero automatically, which covers provisioning, execution and teardown without the console. Monitoring is only described as logs and metrics plus OpenTelemetry export, with no evidence that an agent can read them through the API or CLI. No MCP server or OpenAPI spec was found, and explicit teardown commands are not evidenced. missing for 10: documented programmatic or CLI access to GPU monitoring metrics, explicit teardown/stop commands, an MCP server or public OpenAPI spec, hands-on corroboration of an agent running the end-to-end flow.",
+    "rationale": "Modal's Python SDK lets code programmatically deploy and interact with the platform, including requesting specific GPU types via the `gpu` argument, and it ships an official CLI plus an agent skill, so an agent can provision GPUs and run workloads without the console. Monitoring and teardown are less clearly agent-addressable: logs and metrics are claimed, and containers spin down automatically, but the evidence shows no programmatic metrics or log API and no explicit stop or teardown command. Missing for 10: documented programmatic monitoring endpoints, an explicit teardown or stop API/CLI command, an official MCP server, and independent hands-on corroboration of an end-to-end agent run.",
     "evidenceIds": [
-      "modal-docs-1",
       "modal-gh-1",
+      "modal-docs-1",
       "modal-gh-3",
       "modal-probe-4",
-      "modal-docs-10",
-      "modal-docs-14",
       "modal-docs-21",
-      "modal-docs-22",
-      "modal-probe-3"
+      "modal-docs-10",
+      "modal-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -4055,28 +4053,24 @@
       "subject": "As an AI agent, I can provision a GPU, monitor it, run a workload, and tear it down end to end through documented APIs, CLI, or MCP without a human in the console",
       "citations": [
         {
-          "evidenceId": "modal-docs-1",
-          "quote": "You can pick a specific GPU type for your Function via the `gpu` argument."
-        },
-        {
           "evidenceId": "modal-gh-1",
           "quote": "The [Modal](https://modal.com/) Python SDK allows you to deploy high-performance serverless applications and programmatically interact with the Modal platform."
+        },
+        {
+          "evidenceId": "modal-docs-1",
+          "quote": "You can pick a specific GPU type for your Function via the `gpu` argument."
         },
         {
           "evidenceId": "modal-gh-3",
           "quote": "Modal distributes an [official skill](./py/modal/skills/modal/SKILL.md) to help coding agents use its latest features."
         },
         {
-          "evidenceId": "modal-probe-4",
-          "quote": "official CLI documented at https://modal.com/docs/reference/cli"
+          "evidenceId": "modal-docs-21",
+          "quote": "Comprehensive logs and metrics for every function and sandbox, down to the container."
         },
         {
           "evidenceId": "modal-docs-10",
           "quote": "In contrast, _Modal spins containers_ up and down in 1-2 seconds."
-        },
-        {
-          "evidenceId": "modal-docs-21",
-          "quote": "Comprehensive logs and metrics for every function and sandbox, down to the container."
         }
       ]
     }
@@ -4087,7 +4081,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Probes confirm Modal serves a live llms.txt (HTTP 200, a 'Modal Documentation' index) and markdown versions of its doc pages (e.g. /docs/guide/gpu.md). Modal also distributes an official SKILL.md to help coding agents use its latest features, so an agent can be pointed directly at agent-oriented docs. missing for 10: first-party documentation describing the llms.txt scope and coverage, independent hands-on corroboration of agents consuming it",
+    "rationale": "A live probe confirms Modal serves an llms.txt at modal.com/llms.txt and plain-markdown versions of its doc pages (e.g., /docs/guide/gpu.md). Modal also ships an official SKILL.md so coding agents can use its latest features. missing for 10: evidence of how complete the llms.txt index is (e.g., an llms-full.txt or full doc coverage), and independent reports of agents using these docs successfully.",
     "evidenceIds": [
       "modal-probe-1",
       "modal-probe-2",
@@ -4119,7 +4113,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A compute platform could plausibly offer built-in AI insights, for example over its logs, metrics or spend, so this story applies to Modal. The evidence shows only general-purpose infrastructure: GPUs, inference endpoints, logs and metrics, and an agent skill for coding agents. Those are developer building blocks or adjacent features, not product-generated AI insights or suggestions from the user's data, so they earn no credit.",
+    "rationale": "Modal is a serverless compute platform, so built-in AI insights on a user's data, such as their logs, metrics or usage, is a fair question. The evidence shows only plain logs and metrics, OpenTelemetry export, and inference and fine-tuning infrastructure. These are building blocks for developers, not an in-product feature that generates insights or suggestions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4132,9 +4126,9 @@
     "productId": "modal",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Modal's own homepage says it can spawn async batch and long-running work in the background, which covers the background-execution half of the story. Nothing in the evidence shows recurring schedules, cron, or event triggers, so a one-off background spawn is shown but not a self-running automation. missing for 10: documented scheduled/cron or trigger-based automations, configuration docs for autonomous recurring runs, independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Modal's own docs say it can \"spawn async batch processing and long-running work in the background,\" so it does run work in the background. That evidence covers one-off spawned jobs only; nothing documents a recurring schedule, cron, or event triggers that would make automations run on their own over time. missing for 10: documented scheduled/cron or trigger-based execution, an autonomous recurring automation setup flow, independent or hands-on corroboration.",
     "evidenceIds": [
       "modal-docs-15"
     ],
@@ -4156,7 +4150,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A cloud compute platform could plausibly ship an in-product AI assistant, so this axis applies. The evidence pack documents no built-in assistant that users can delegate tasks to. The official skill for external coding agents and the llms.txt file help outside agents use Modal; they are not an assistant inside the product, so they earn no credit.",
+    "rationale": "Modal is a cloud compute platform, and such a product could plausibly ship a built-in AI assistant, so the axis applies. The evidence shows no assistant inside Modal that users can delegate tasks to. The official skill for external coding agents and the llms.txt docs only help third-party agents use Modal, so they are adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4171,12 +4165,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Modal ships an official CLI that can be installed standalone, plus a Python SDK for programmatic interaction with the platform. Both are first-party, non-interactive surfaces suited to headless automation. However, no evidence explicitly documents CI usage, such as non-interactive token authentication, environment-variable credentials, or CI pipeline examples. missing for 10: explicit CI/CD documentation (e.g., GitHub Actions deploy guide), headless token/credential auth for CI, independent or hands-on corroboration of CI automation.",
+    "rationale": "Modal ships its own official CLI, which can be installed as a standalone tool and supports non-interactive flags like `--env`, plus a Python SDK for programmatically interacting with the platform. Both are first-party capabilities that enable headless automation. Nothing in the pack covers CI use specifically. Missing for 10: documented CI integration (e.g., GitHub Actions examples), non-interactive token/credential auth for CI runners, independent hands-on corroboration of headless/CI usage.",
     "evidenceIds": [
       "modal-probe-4",
       "modal-gh-4",
+      "modal-docs-27",
       "modal-gh-1",
-      "modal-gh-2"
+      "modal-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -4192,12 +4187,12 @@
           "quote": "The CLI can also be installed as a standalone tool via [uvx.sh](https://uvx.sh):"
         },
         {
-          "evidenceId": "modal-gh-1",
-          "quote": "The [Modal](https://modal.com/) Python SDK allows you to deploy high-performance serverless applications and programmatically interact with the Modal platform."
+          "evidenceId": "modal-docs-27",
+          "quote": "Most CLI commands also support an `--env` flag letting you specify which Environment you intend to interact with"
         },
         {
-          "evidenceId": "modal-gh-2",
-          "quote": "The JS and Go SDKs allow you to use Modal Sandboxes, invoke deployed Modal Functions, and interact with some Modal platform resources."
+          "evidenceId": "modal-gh-1",
+          "quote": "The [Modal](https://modal.com/) Python SDK allows you to deploy high-performance serverless applications and programmatically interact with the Modal platform."
         }
       ]
     }
@@ -4208,7 +4203,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal is a serverless compute and infrastructure platform, not an agent or assistant that consumes tools. Plugging in MCP servers so the product can call their tools is an MCP-client role outside its category. The only agent-related evidence is a skill that helps external coding agents use Modal, which points the other way and does not make the client axis applicable.",
+    "rationale": "Modal is a serverless compute and infrastructure platform, not an agent or AI app that calls tools, so acting as an MCP client is a category error for this kind of product. Nothing in the evidence shows Modal itself connecting to MCP servers. The official skill for coding agents and the SDKs serve the opposite role: they help agents use Modal, not Modal use MCP tools.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4223,7 +4218,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal is a cloud compute platform, not an agent, so publishing an official MCP server is a fair question and the axis applies. The evidence pack never mentions an MCP server or endpoint. The official coding-agent skill, the llms.txt file, the SDKs and the CLI are adjacent agent-enablement features, not an MCP server, so they earn no credit here.",
+    "rationale": "Modal is a cloud compute platform, not an agent, so publishing an official MCP server is a fair question and the axis applies. The pack never mentions an MCP server. The official coding-agent skill, llms.txt, CLI and SDKs are adjacent agent aids, not an MCP server, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4238,7 +4233,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal is a programmable compute platform, so a natural-language operating interface is a fair axis. The evidence shows only an official skill that helps third-party coding agents use Modal, plus an llms.txt file. These are enablers for external agents, not a natural-language command interface built into Modal itself. The product's documented interfaces are SDKs and a conventional CLI.",
+    "rationale": "The evidence shows no first-party natural-language command interface for operating Modal, such as a built-in assistant or a chat-driven console. Modal ships an official SKILL.md for coding agents (modal-gh-3) and an llms.txt (modal-probe-1), but these are aids for third-party agents. The natural-language layer itself comes from the external agent, so this is adjacent support only and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4251,12 +4246,14 @@
     "productId": "modal",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Modal ships an official CLI: it is documented at modal.com/docs/reference/cli, and the official GitHub repo notes it can be installed as a standalone tool via uvx.sh. An official agent skill for coding agents supports AI-native use. The evidence does not show what the CLI's commands actually cover. missing for 10: documented CLI command coverage, evidence of machine-readable/non-interactive output for agent use, independent or hands-on corroboration.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Modal ships an official CLI. It is documented in a CLI reference, can be installed as a standalone tool via uvx, and the environment docs show CLI commands with an `--env` flag. Its official coding-agent skill adds to the AI-native fit. Missing for 10: detail on the breadth of CLI commands, and evidence of agent-friendly features such as machine-readable output.",
     "evidenceIds": [
       "modal-probe-4",
       "modal-gh-4",
+      "modal-docs-26",
+      "modal-docs-27",
       "modal-gh-3"
     ],
     "support": {
@@ -4273,8 +4270,12 @@
           "quote": "The CLI can also be installed as a standalone tool via [uvx.sh](https://uvx.sh):"
         },
         {
-          "evidenceId": "modal-gh-3",
-          "quote": "Modal distributes an [official skill](./py/modal/skills/modal/SKILL.md) to help coding agents use its latest features."
+          "evidenceId": "modal-docs-27",
+          "quote": "Most CLI commands also support an `--env` flag letting you specify which Environment you intend to interact with"
+        },
+        {
+          "evidenceId": "modal-docs-26",
+          "quote": "New Environments can be created on the CLI:"
         }
       ]
     }
@@ -4282,18 +4283,19 @@
   {
     "productId": "modal",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Modal provides official Python, JS and Go SDKs that let users programmatically interact with the platform, which is its own documented programmatic interface. However, no public HTTP/OpenAPI spec was found (all OpenAPI probe paths returned 404), and the JS/Go SDKs cover only 'some' platform resources. missing for 10: documented public REST/HTTP API with an OpenAPI spec, full resource coverage across non-Python SDKs, independent hands-on corroboration of API-driven control.",
+    "rationale": "Modal's official Python SDK lets users programmatically interact with the Modal platform, and official JS and Go SDKs can invoke Functions, use Sandboxes and manage some platform resources. Together these form a first-party programmatic API, backed by a documented CLI and LLM-readable docs. However, probes found no public OpenAPI/REST spec, and the JS/Go SDKs cover only part of the platform. Missing for 10: a published OpenAPI/REST HTTP API spec, evidence of in-depth SDK API reference docs, full platform coverage in the non-Python SDKs, and independent hands-on corroboration.",
     "evidenceIds": [
       "modal-gh-1",
       "modal-gh-2",
-      "modal-probe-3"
+      "modal-probe-3",
+      "modal-probe-4"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
@@ -4313,7 +4315,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Issuing scoped API credentials is a fair question for a cloud compute platform like Modal, so the axis applies. However, the evidence pack contains nothing about API tokens, permission scopes, or least-privilege credentials for agents. Workspace budgets, the SDKs and the official agent skill are adjacent features and do not deliver credential scoping.",
+    "rationale": "Issuing scoped or least-privilege API credentials is a fair question for a cloud compute platform like Modal, so the axis applies. The evidence pack never documents token scoping, per-agent credentials, or permission-limited API keys. Environments (an `--env` flag) and Workspace budgets are adjacent controls, not scoped credentials, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4328,7 +4330,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Modal's official GitHub repo documents a first-party Python SDK for deploying serverless apps and interacting with the platform programmatically, plus official JS and Go SDKs. The JS and Go SDKs are scoped to Sandboxes, invoking deployed Functions, and only some platform resources. missing for 10: feature parity in the JS/Go SDKs, in-depth SDK reference documentation in the pack, independent or hands-on corroboration.",
+    "rationale": "Modal publishes an official Python SDK for deploying serverless applications and interacting with the platform programmatically. It also publishes official JS and Go SDKs for Sandboxes, invoking deployed Functions, and some platform resources, so the story of building against official SDKs is directly delivered. missing for 10: feature parity in the JS/Go SDKs (documented as covering only 'some' platform resources), independent or hands-on corroboration of SDK quality.",
     "evidenceIds": [
       "modal-gh-1",
       "modal-gh-2"
@@ -4355,7 +4357,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal is a serverless compute platform, so outbound event webhooks are a fair question to ask of it. However, no evidence shows that Modal offers registrable outbound HTTP callbacks for platform events. Its ability to turn functions into HTTPS endpoints (modal-docs-14) is an inbound developer building block and does not count as event subscription via webhooks.",
+    "rationale": "The evidence pack does not document any registrable outbound webhooks that Modal fires on platform events such as deployments, function completions or budget alerts. The closest item lets users turn a function into an inbound HTTPS endpoint, which is a building block for receiving webhooks from elsewhere, not Modal emitting event callbacks. Webhooks are a fair axis for a cloud compute platform, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4370,7 +4372,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal is a developer platform with SDKs and a CLI, so an interactive API reference with runnable examples is a fair question, but the pack shows no such reference. The OpenAPI/Swagger probe returned 404 on every candidate path, and the available evidence (llms.txt, markdown docs, a CLI reference page, an agent skill) covers adjacent documentation features, not an interactive, runnable API explorer.",
+    "rationale": "Nothing in the evidence shows an interactive API reference with runnable examples. The OpenAPI probe returned 404 on every candidate path. The llms.txt, Markdown docs and CLI reference pages are static documentation, not interactive or runnable, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4385,7 +4387,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal is a cloud platform with a programmatic surface, so a downloadable machine-readable API spec is a fair question to ask of it. The evidence shows no such spec: probes of the standard OpenAPI and Swagger paths all returned 404. The llms.txt file, the Markdown docs, the SDKs and the CLI are related features, not an OpenAPI-style API specification, so they earn no credit here.",
+    "rationale": "Modal is a cloud compute platform with a programmatic API surface, so a downloadable machine-readable API spec is a fair question to ask. The evidence shows no such spec: the probe found every candidate OpenAPI/Swagger path returning 404. llms.txt, Markdown docs, SDKs and the CLI are adjacent artifacts, not an OpenAPI-equivalent API specification, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4398,13 +4400,13 @@
     "productId": "modal",
     "storyId": "api-sandbox",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Modal ships a first-party Sandboxes feature: isolated containers usable from the Python, JS and Go SDKs at very large scale. That gives an isolated execution environment, not a dry-run. However, the evidence never describes Sandboxes as a test or staging environment kept separate from production data, so the story's core guarantee is only implied. Missing for 10: documented separation of test versus production environments or data, docs explaining that Sandboxes isolate from production resources, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Modal documents Environments, which can be created on the CLI and targeted with an `--env` flag, and objects are scoped per Environment. That gives a first-party way to stand up a separate test environment apart from production. However, the evidence never states that Environments isolate production data or describes a dev/staging versus prod workflow. Modal Sandboxes are isolated code-execution containers, not a test environment separated from production data, so they are not credited as a substitute. Missing for 10: explicit documentation that Environments isolate data and secrets from production, a documented staging/test workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "modal-docs-17",
-      "modal-gh-2",
-      "modal-docs-21"
+      "modal-docs-26",
+      "modal-docs-27",
+      "modal-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -4412,16 +4414,16 @@
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
       "citations": [
         {
-          "evidenceId": "modal-docs-17",
-          "quote": "Create over a million Sandboxes in under a minute, and run up to 1M concurrently."
+          "evidenceId": "modal-docs-26",
+          "quote": "New Environments can be created on the CLI:"
         },
         {
-          "evidenceId": "modal-gh-2",
-          "quote": "The JS and Go SDKs allow you to use Modal Sandboxes, invoke deployed Modal Functions, and interact with some Modal platform resources."
+          "evidenceId": "modal-docs-27",
+          "quote": "Most CLI commands also support an `--env` flag letting you specify which Environment you intend to interact with"
         },
         {
-          "evidenceId": "modal-docs-21",
-          "quote": "Comprehensive logs and metrics for every function and sandbox, down to the container."
+          "evidenceId": "modal-docs-28",
+          "quote": "It’s possible to explicitly look up objects in Environments other than the Environment your App runs within"
         }
       ]
     }
@@ -4432,7 +4434,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal is a cloud platform with Python, JS and Go SDKs and a CLI, so API versioning and a deprecation policy are fair questions to ask of it. The evidence pack contains nothing about API versioning, version pinning, changelogs or a deprecation policy. The OpenAPI probe returned 404 on every candidate path, and the SDK and CLI mentions say nothing about versioning guarantees.",
+    "rationale": "Modal is a cloud platform with Python, JS and Go SDKs and a CLI, so API versioning and a deprecation policy are fair questions to ask of it. However, nothing in the evidence pack covers API versioning, version pinning, changelogs or a deprecation policy. The OpenAPI probe also returned 404 on every candidate path, so the documented capability is absent.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4444,19 +4446,19 @@
   {
     "productId": "modal",
     "storyId": "auto-shutdown-spend-guards",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Modal's pricing page documents a Workspace budget for limiting monthly spend, which directly covers the spend-limit half of the story. It also says a timeout length is configurable, and the platform scales to zero, which supports automatic shutdown of idle capacity. missing for 10: detail on how budgets are enforced (hard stop vs. alert), explicit documentation of what the configurable timeout governs, independent or hands-on corroboration.",
+    "rationale": "Modal documents its own spend-limit control: a Workspace budget to cap monthly spend. It also states that a timeout length is configurable, and that resources scale to zero so idle time isn't billed. The evidence is single-line mentions, so whether the budget hard-stops running workloads and how the timeout bounds a runaway container are not shown. missing for 10: documented budget enforcement behavior (hard stop vs. alert), detail on the auto-shutdown/timeout mechanism and its limits, independent or hands-on corroboration.",
     "evidenceIds": [
       "modal-docs-7",
       "modal-docs-8",
-      "modal-docs-14",
-      "modal-docs-10"
+      "modal-docs-25",
+      "modal-docs-14"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ML engineer, I can set auto-shutdown timers or spend limits so a forgotten instance can't silently run up a huge bill",
       "citations": [
         {
@@ -4468,8 +4470,8 @@
           "quote": "However, this timeout length is configurable."
         },
         {
-          "evidenceId": "modal-docs-14",
-          "quote": "Turn any function into an HTTPS endpoint that scales with traffic and idles at zero."
+          "evidenceId": "modal-docs-25",
+          "quote": "You never pay for idle resources — just actual compute time, by the CPU cycle."
         }
       ]
     }
@@ -4480,7 +4482,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Modal's own marketing documents parallel fan-out and async batch processing over many workloads at once: thousands of GPUs, and creating or running up to 1M Sandboxes concurrently. That is the platform's analog of bulk operations across many items. The evidence is homepage-level claims only, with no API reference showing how a user submits or manages a bulk set of items. missing for 10: documented bulk/map API for applying an operation across many inputs, details on per-item results and error handling, independent or hands-on corroboration.",
+    "rationale": "Modal's own marketing documents bulk parallel work: fanning out across thousands of GPUs, async batch processing, and creating over a million Sandboxes in under a minute. These are first-party capabilities for operating on many items at once, but the evidence is homepage-level claims with no API reference describing how bulk operations are invoked. Missing for 10: documented bulk/map API semantics (e.g. per-item inputs, batching limits, error handling), CLI or agent-facing bulk operations, and independent or hands-on corroboration.",
     "evidenceIds": [
       "modal-docs-15",
       "modal-docs-16",
@@ -4492,12 +4494,12 @@
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": [
         {
-          "evidenceId": "modal-docs-15",
-          "quote": "Spawn async batch processing and long-running work in the background."
-        },
-        {
           "evidenceId": "modal-docs-16",
           "quote": "Fan out over thousands of GPUs, fully parallel, no job orchestration to manage."
+        },
+        {
+          "evidenceId": "modal-docs-15",
+          "quote": "Spawn async batch processing and long-running work in the background."
         },
         {
           "evidenceId": "modal-docs-17",
@@ -4512,7 +4514,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no rule- or event-trigger mechanism in Modal. HTTPS endpoints (modal-docs-14) and background spawning (modal-docs-15) are developer building blocks a user could wire to events. They are not product-level rules that fire actions automatically, and workspace budgets are an adjacent spend control, so none of these earns credit.",
+    "rationale": "Event-triggered automation is a fair question for a serverless compute platform, but the evidence pack does not document any rule or trigger system that runs actions automatically on events. The HTTPS endpoints and background spawning shown are developer building blocks that require explicit invocation. Workspace budgets are a spend control, an adjacent feature rather than an event rule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4527,7 +4529,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Recurring scheduling is a fair axis for a serverless compute platform like Modal, but the evidence pack never mentions cron, periodic schedules or recurring job triggers. The closest item (modal-docs-15) describes spawning one-off async background work, which is not a recurring schedule.",
+    "rationale": "Recurring scheduling is a fair question for a serverless compute platform like Modal, so the axis applies. However, the evidence pack contains no mention of cron, schedules, or periodic execution. The closest item (modal-docs-15) describes spawning one-off async background work, which is a one-off action, not a recurring schedule, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4542,7 +4544,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Versioning, reviewing, and rolling back deployed automations is a fair question for a serverless app platform like Modal, so the axis applies. However, the evidence pack covers only GPU selection, pricing, SDKs, the CLI, logs, and scaling. Nothing documents deployment versions, change review, or rollback.",
+    "rationale": "Versioning, reviewing, and rolling back deployed automations is a fair question for a serverless deployment platform like Modal, so the axis applies. However, the evidence pack documents no app versioning, deployment history, review step, or rollback capability. Environments and the `--env` CLI flag are an adjacent isolation feature, not version control or rollback, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4557,7 +4559,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a programmatic usage or billing API, or any per-team or per-workload cost breakdown. Workspace budgets are a spend-limit control, and per-function logs and metrics are observability, not billing attribution. The generic SDK statement does not mention billing data, and the OpenAPI probe returned 404 on every path.",
+    "rationale": "The evidence pack does not document any programmatic usage or billing API, cost export, or per-team or per-workload spend breakdown. Workspace budgets are a spend limit, not a breakdown. Per-function logs and metrics and the OpenTelemetry export cover observability, not billing. Environments are an organizational construct with no documented cost attribution, so all of these are adjacent features only.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4570,9 +4572,9 @@
     "productId": "modal",
     "storyId": "custom-docker-images",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Modal's own docs say any containerizable application can be deployed using Python, and they advertise bringing your entire inference stack. That implies custom container environments, but nothing in the pack explicitly documents supplying your own Docker image, registry image or Dockerfile. missing for 10: explicit documentation of bring-your-own Docker image/registry/Dockerfile support, details on custom image definition and environment pinning, independent or hands-on corroboration.",
+    "rationale": "Modal's own pricing page says any containerizable application can be deployed, and the homepage says you can bring your entire inference stack. That implies custom containerized environments, but no evidence explicitly documents running a user-supplied Docker image or a custom image/template definition. missing for 10: explicit docs on bringing your own Docker image or registry image, documentation of custom image building and pinning an exact environment, independent or hands-on corroboration.",
     "evidenceIds": [
       "modal-docs-9",
       "modal-docs-18"
@@ -4599,7 +4601,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Moving data in and out is a fair question for a serverless cloud compute platform like Modal. However, the evidence pack covers only GPUs, pricing, endpoints, SDKs and the CLI, and has nothing on S3-compatible endpoints, cloud-storage sync, volumes, or data transfer tooling. The CLI's existence alone does not show it handles data transfer.",
+    "rationale": "Data movement is a fair question for a serverless cloud compute platform like Modal, so the axis applies. However, the evidence pack contains nothing about S3-compatible endpoints, cloud-storage sync or mounts, volumes, or documented data-transfer tooling. The cited material covers only GPUs, pricing, environments, SDKs and the CLI, none of which address data transfer.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4614,7 +4616,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Modal documents turning any function into a scalable HTTPS endpoint, which partly covers serving applications from compute. The evidence never mentions arbitrary port exposure from a container or sandbox, and says nothing about private networking between instances. missing for 10: explicit port exposure/tunneling from instances, private networking between containers or sandboxes, in-depth docs and independent corroboration.",
+    "rationale": "Modal documents its own way to serve applications publicly: functions can become HTTPS endpoints that scale with traffic. That partly covers the 'serve applications' half of the story, but there is no evidence of exposing arbitrary ports from a container or sandbox, and nothing on private networking between instances. Missing for 10: arbitrary port exposure/tunneling from instances, private networking between instances, in-depth docs and hands-on corroboration.",
     "evidenceIds": [
       "modal-docs-14"
     ],
@@ -4636,7 +4638,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal's evidence documents choosing GPU types, fallback lists of acceptable GPUs, and claims of quota-free access. None of it shows a view or API that reports real-time GPU availability by type and region before provisioning. Fallback lists and automatic upgrades are adjacent features that reduce stockout impact; they do not provide the visibility the story asks for.",
+    "rationale": "Capacity visibility is a fair axis for a serverless GPU platform like Modal, but the evidence pack never documents a real-time view of GPU availability by type or region. The pack only covers choosing GPU types, fallback lists, and automatic upgrades (e.g. H100 to H200). Those are adjacent features that soften stockouts; they do not show availability before provisioning, and the 'without quota requests' marketing claim is not an availability view either.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4648,20 +4650,21 @@
   {
     "productId": "modal",
     "storyId": "gpu-breadth-latest-hardware",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Modal's GPU docs let you pick a specific GPU type with the `gpu` argument. They name current-generation H100, H200, B200 and B300 options, and they also list a previous-generation A100-40GB variant. Flags let you allow (`B200+`) or block (`H100!`) automatic upgrades. Missing for 10: pricing evidence showing the previous-generation options are actually cheaper, a full catalog of older GPU tiers beyond the A100, and independent or hands-on corroboration.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Modal's GPU docs show selectable current-generation GPUs: H100, H200 (via automatic upgrade or explicit pinning with `H100!`), and B200/B300 via `B200+`. They also show a previous-generation A100-40GB option, plus multi-GPU counts and fallback lists. The evidence does not show that the previous-generation options are cheaper, and the A100 is the only older GPU explicitly named, so coverage of the 'cheaper previous-generation' half is incomplete. Missing for 10: pricing evidence that older GPUs cost less, a fuller catalog of previous-generation GPUs (e.g., L4/T4/A10 class), and independent or hands-on corroboration of availability.",
     "evidenceIds": [
       "modal-docs-1",
       "modal-docs-4",
       "modal-docs-5",
+      "modal-docs-24",
       "modal-docs-6",
       "modal-docs-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ML engineer, I can choose from current-generation datacenter GPUs (H100/H200/B200 class) as well as cheaper previous-generation options",
       "citations": [
         {
@@ -4673,8 +4676,8 @@
           "quote": "Use `gpu=\"B200+\"` to allow Modal to run requests on either B200 or B300 GPUs."
         },
         {
-          "evidenceId": "modal-docs-5",
-          "quote": "In cases where an automatic upgrade to H200 would not be helpful (for instance, benchmarking) you can pass `gpu=H100!` to avoid it."
+          "evidenceId": "modal-docs-24",
+          "quote": "Modal may automatically upgrade a `gpu=\"H100\"` request to run on an H200."
         },
         {
           "evidenceId": "modal-docs-6",
@@ -4689,10 +4692,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Modal documents automatic container lifecycle: containers spin up and down in 1-2 seconds, and endpoints idle at zero, which supports paying only for what runs. Its Python SDK can programmatically interact with the platform, but no evidence documents explicit start, stop, restart, or terminate operations on instances. Missing for 10: documented programmatic stop/restart/terminate APIs for containers or sandboxes, explicit per-second or usage-based billing tied to running state, independent hands-on corroboration.",
+    "rationale": "Modal documents pay-only-for-what-runs billing: no charge for idle resources and endpoints that idle at zero. It also documents fast container spin-up/down and programmatic creation of Sandboxes and background work through its SDKs. Explicit programmatic stop, restart and terminate operations are not documented in the evidence, and scale-down appears platform-managed rather than user-invoked. Missing for 10: documented stop/restart/terminate APIs for containers or Sandboxes, explicit lifecycle-state control, independent or hands-on corroboration.",
     "evidenceIds": [
+      "modal-docs-25",
       "modal-docs-10",
       "modal-docs-14",
+      "modal-docs-17",
+      "modal-docs-15",
       "modal-gh-1",
       "modal-gh-2"
     ],
@@ -4702,6 +4708,10 @@
       "subject": "As a developer, I can start, stop, restart, and terminate instances programmatically and keep paying only for what is running",
       "citations": [
         {
+          "evidenceId": "modal-docs-25",
+          "quote": "You never pay for idle resources — just actual compute time, by the CPU cycle."
+        },
+        {
           "evidenceId": "modal-docs-10",
           "quote": "In contrast, _Modal spins containers_ up and down in 1-2 seconds."
         },
@@ -4710,8 +4720,12 @@
           "quote": "Turn any function into an HTTPS endpoint that scales with traffic and idles at zero."
         },
         {
+          "evidenceId": "modal-docs-17",
+          "quote": "Create over a million Sandboxes in under a minute, and run up to 1M concurrently."
+        },
+        {
           "evidenceId": "modal-gh-1",
-          "quote": "The [Modal](https://modal.com/) Python SDK allows you to deploy high-performance serverless applications and programmatically interact with the Modal platform."
+          "quote": "programmatically interact with the Modal platform"
         }
       ]
     }
@@ -4722,7 +4736,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal is a cloud compute platform, so one-step Jupyter or IDE (VS Code/Cursor) access is a fair question to ask of it. The evidence pack covers GPU selection, pricing, SDKs and a documented CLI. None of it mentions launching Jupyter or attaching an IDE to a running container, so the capability is unevidenced.",
+    "rationale": "Connecting Jupyter or an IDE to a compute instance is a fair question for a cloud GPU/compute platform like Modal, so the axis applies. However, nothing in the evidence pack mentions Jupyter, notebooks, VS Code/Cursor, remote IDE connections or shell access. The documented CLI and SDKs cover deployment and environments, not one-step IDE or notebook access.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4737,7 +4751,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows GPU types can be selected through the `gpu` argument, and the GPU guide is published as machine-readable markdown. Nothing shows a public or documented endpoint that returns the GPU catalog with live pricing or availability. The OpenAPI probe returned 404 on every candidate path, and the pricing-page excerpts cover budgets, credits and marketplace spend but no queryable price or capacity data.",
+    "rationale": "The evidence shows GPU types are selected via the `gpu` argument and that docs are machine-readable through llms.txt and .md pages. Nothing documents an endpoint, API, or CLI command that returns a GPU catalog with live pricing or availability, and the OpenAPI probes all returned 404. Static docs pages and the pricing page's budget and credit statements are adjacent material, not a queryable live catalog.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4752,10 +4766,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The story asks for managed Slurm or Kubernetes job scheduling, which is a fair axis for a cloud compute platform, but nothing in the evidence shows Modal offering either. Modal's own serverless fan-out ('no job orchestration to manage') and background batch spawning are a different, proprietary scheduling model. That is an adjacent feature, not managed Slurm or Kubernetes, so it earns no credit.",
+    "rationale": "Modal is a cloud compute platform, so offering managed Slurm or Kubernetes is a fair question to ask of it. The evidence never mentions Slurm or Kubernetes. Modal's own serverless fan-out and background job spawning ('no job orchestration to manage') is a different, adjacent scheduling approach, not managed Slurm or Kubernetes, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a platform engineer, I can schedule jobs on managed Slurm or Kubernetes instead of building my own scheduler on raw nodes",
       "citations": []
@@ -4767,10 +4781,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows several GPUs inside one container, parallel fan-out across many GPUs, and self-serve access without quota requests. None of it documents provisioning a multi-node GPU cluster with a fast interconnect for distributed training. Single-container multi-GPU and embarrassingly parallel fan-out are adjacent capabilities, not interconnected multi-node clusters, so they earn no credit for this story.",
+    "rationale": "The evidence shows Modal can attach several GPUs to one container (`:n`), lets you fan out embarrassingly parallel work over thousands of GPUs, and grants access without quota requests. None of this documents provisioning a multi-node cluster with fast interconnect (e.g., InfiniBand/RDMA) for distributed training. Single-container multi-GPU and parallel fan-out are adjacent capabilities, not interconnected multi-node clusters, so the axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an ML engineer, I can provision a multi-node GPU cluster with fast interconnect for distributed training without a sales cycle",
       "citations": []
@@ -4782,13 +4796,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Modal's own SDK lets a developer attach a specific GPU type to a Function through the `gpu` argument. Its docs claim containers spin up in 1–2 seconds and that resources are available in seconds without quota requests, so the core goal of running code on a GPU quickly is delivered programmatically. However, the model is serverless GPU containers rather than a provisioned 'instance', and there is no evidence of console-based provisioning, so coverage is partial. Missing for 10: console/UI GPU provisioning, a persistent on-demand instance lifecycle, and independent or hands-on corroboration of time-to-running-code.",
+    "rationale": "Modal documents requesting GPUs programmatically through the `gpu` argument on Functions, via its Python SDK and CLI. It claims containers start in 1-2 seconds and that resources are available in seconds without quota requests, which meets the 'running code within minutes' part of the story. However, it is a serverless function and container model rather than a provisioned GPU instance, and there is no evidence of provisioning from the console. The API is SDK-based, and no OpenAPI spec was found. missing for 10: console-based GPU provisioning, a persistent on-demand instance lifecycle, independent hands-on corroboration of startup time.",
     "evidenceIds": [
       "modal-docs-1",
       "modal-docs-10",
       "modal-docs-23",
       "modal-gh-1",
-      "modal-probe-2"
+      "modal-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -4820,10 +4834,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Modal's Python SDK lets you deploy apps and programmatically interact with the Modal platform, and an official CLI is documented, so much of the platform is code-first. However, no evidence states that the API matches the UI feature for feature: the JS and Go SDKs cover only some platform resources, and the OpenAPI probes all returned 404. Missing for 10: an explicit API/UI parity claim, a public REST/OpenAPI spec, evidence that UI-only settings such as workspace budgets are reachable via the API, and independent corroboration of parity.",
+    "rationale": "Modal's own Python SDK lets users deploy applications and programmatically interact with the platform, and the official CLI handles tasks such as creating Environments and targeting them with `--env`. However, nothing documents that every UI action has an API equivalent: the JS and Go SDKs cover only some platform resources, and no public OpenAPI spec was found. Missing for 10: an explicit statement of API/UI parity, evidence that dashboard-only settings (e.g., workspace budgets) are programmable, a public REST/OpenAPI spec, and independent corroboration of full parity.",
     "evidenceIds": [
       "modal-gh-1",
       "modal-gh-2",
+      "modal-docs-26",
+      "modal-docs-27",
       "modal-probe-4",
       "modal-probe-3"
     ],
@@ -4841,8 +4857,12 @@
           "quote": "The JS and Go SDKs allow you to use Modal Sandboxes, invoke deployed Modal Functions, and interact with some Modal platform resources."
         },
         {
-          "evidenceId": "modal-probe-4",
-          "quote": "official CLI documented at https://modal.com/docs/reference/cli"
+          "evidenceId": "modal-docs-26",
+          "quote": "New Environments can be created on the CLI:"
+        },
+        {
+          "evidenceId": "modal-docs-27",
+          "quote": "Most CLI commands also support an `--env` flag letting you specify which Environment you intend to interact with"
         }
       ]
     }
@@ -4853,7 +4873,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability is a fair question for a cloud compute platform, but the evidence pack documents no account-wide data export in open formats. OpenTelemetry export of traces and metrics is an adjacent observability feature, not an export of all user data. The Python, JS and Go SDKs are developer building blocks, not an export capability.",
+    "rationale": "Data export and portability is a fair question for a cloud compute platform like Modal, but the evidence pack does not document any feature for exporting all account or workspace data in open formats. The OpenTelemetry export of traces and metrics is an observability feature, not a full data export. Containerized deployment is not data export either, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4868,7 +4888,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Modal publishes its client SDK source (Python, JS and Go SDKs plus the CLI) in a public GitHub repo, modal-labs/modal-client, so part of the product's source is readable. The evidence does not state any license, and the core serverless platform/backend source is not shown to be available. missing for 10: evidence of an open-source license (e.g., Apache/MIT) on the repo, availability of the platform/server-side source beyond the client SDK, independent corroboration.",
+    "rationale": "Modal publishes its client SDK source (Python, plus JS and Go SDKs) in a public GitHub repository, modal-labs/modal-client, so part of the product's source can be read. Nothing in the pack names a license, and the core serverless platform is not shown to be open. missing for 10: evidence of an open license (e.g., Apache/MIT) on the repo, source availability for the platform/backend beyond the client SDKs, independent corroboration.",
     "evidenceIds": [
       "modal-gh-1",
       "modal-gh-2"
@@ -4895,7 +4915,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a cloud compute platform like Modal, so the axis applies. The evidence describes only a managed cloud service ('Modal handles the infrastructure', 'running AI workloads in the cloud'). The open-source GitHub repo is a client SDK and CLI for talking to the hosted platform, not a self-hostable core.",
+    "rationale": "Self-hosting is a fair question for a serverless compute platform, so the axis applies. The evidence only shows a hosted cloud service ('Modal handles the infrastructure') plus an open-source client SDK on GitHub. A client SDK is not the core platform, and nothing documents running Modal itself on your own infrastructure.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4907,16 +4927,33 @@
   {
     "productId": "modal",
     "storyId": "per-second-billing",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence pack never states Modal's billing granularity (per-second or per-minute) or that charges accrue only while containers run. The closest items, fast container spin-up/down (modal-docs-10) and endpoints that \"idle at zero\" (modal-docs-14), describe scaling behavior rather than a documented billing model, so they are adjacent features and earn no credit. Workspace budgets cover spend limits, not metering granularity.",
-    "evidenceIds": [],
+    "rationale": "Modal's pricing page says users never pay for idle resources and are billed only for actual compute time \"by the CPU cycle\", which implies granularity finer than per-second. Supporting claims say containers spin up and down in 1-2 seconds and endpoints idle at zero, which reinforces billing only while running. missing for 10: an explicit statement of the billing unit (per-second or per-minute) or a published rate table, details on how container idle timeouts are billed, and independent or hands-on corroboration of actual invoices.",
+    "evidenceIds": [
+      "modal-docs-25",
+      "modal-docs-14",
+      "modal-docs-10"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an ML engineer, I am billed at per-second or per-minute granularity and only while my instance is actually running",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "modal-docs-25",
+          "quote": "You never pay for idle resources — just actual compute time, by the CPU cycle."
+        },
+        {
+          "evidenceId": "modal-docs-14",
+          "quote": "Turn any function into an HTTPS endpoint that scales with traffic and idles at zero."
+        },
+        {
+          "evidenceId": "modal-docs-10",
+          "quote": "In contrast, _Modal spins containers_ up and down in 1-2 seconds."
+        }
+      ]
     }
   },
   {
@@ -4925,7 +4962,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Persistent network storage is a fair question for a serverless GPU cloud platform like Modal, so the axis applies. However, nothing in the evidence pack documents volumes, network filesystems or any storage that survives container teardown. The citations cover only GPU selection, pricing, endpoints, sandboxes, observability and SDKs, so the verdict must be none.",
+    "rationale": "Persistent network storage is a fair question for a serverless GPU platform, so the axis applies. However, nothing in the evidence pack documents volumes, network file systems, or any storage that persists across container teardown. The material covers GPU selection, pricing, environments, SDKs and sandboxes, none of which addresses persistent datasets or checkpoints.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4940,7 +4977,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pre-built ML templates are a fair question for a serverless GPU platform like Modal, so the axis applies. However, the evidence pack never mentions templates, pre-built images, or ready-made PyTorch, CUDA, vLLM or ComfyUI environments. The cited material covers GPU selection, containerized deployment in general, and inference endpoints, none of which shows a template catalog.",
+    "rationale": "Nothing in the evidence pack documents pre-built ML templates or images (PyTorch, CUDA, vLLM, ComfyUI) that a developer can launch from. The items cover GPU selection, containerized deployment in general and OpenAI-compatible endpoints, none of which is a template catalog. Templates are a fair axis for a GPU compute platform, so the lack of evidence makes this none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4955,7 +4992,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal is a cloud compute platform, so choosing a data storage region is a fair question to ask of it. Nothing in the evidence pack mentions region selection or data residency controls. GPU type selection and AWS/GCP marketplace billing are different features and earn no credit here.",
+    "rationale": "Choosing a data storage region is a fair question for a cloud compute platform like Modal, so the axis applies. However, the evidence pack contains no documentation of region selection or data residency controls. Environments (modal-docs-26/27/28) are logical workspace partitions, not geographic regions, and GPU type selection is unrelated, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4970,7 +5007,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal is a cloud compute platform that processes customer data and code, so a training-data opt-out or no-training policy is a fair question to ask of it. The pack has nothing on data-usage or training policies, though. It covers only GPUs, pricing, SDKs, endpoints and observability, none of which addresses whether customer data is used to train models.",
+    "rationale": "Modal is a cloud platform that processes customer code and data, so whether customer data is excluded from AI training is a fair privacy question for it. The evidence pack has no policy, setting, or opt-out about training on customer data. It covers only GPUs, pricing, SDKs, environments and observability, so the axis applies but nothing shows the capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4985,7 +5022,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a cloud compute platform like Modal, so the axis applies. However, the evidence pack contains nothing about retention policies, deletion of logs, data or volumes, or privacy controls. The only nearby item is a configurable timeout on the pricing page, which concerns compute rather than data retention, so it earns no credit.",
+    "rationale": "Data retention and deletion controls are a fair question for a cloud AI compute platform like Modal, but the evidence pack contains nothing about retention periods, deletion of data or logs, or privacy controls. The configurable timeout mentioned on the pricing page is about container scaling, not data retention, so it does not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5000,7 +5037,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a cloud platform that ships a Python SDK and CLI, so the axis applies. Nothing in the evidence pack documents any telemetry or usage-tracking opt-out. The logs, metrics and OpenTelemetry export items cover observability of the user's own workloads, not opting out of Modal's tracking, so they earn no credit.",
+    "rationale": "Modal is a cloud platform with an SDK and CLI, so opting out of telemetry and usage tracking is a fair question for it. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out. The OpenTelemetry export and logs/metrics features cover observability of the user's own workloads, which is a different capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5015,7 +5052,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no documented quota or instance-limit tables and no defined process for requesting increases. Modal's marketing instead claims access 'without quota requests,' and workspace budgets are a spend control, which is an adjacent feature rather than quota documentation or a limit-raise process.",
+    "rationale": "The pack contains no documented quota or instance-limit tables and no defined process for requesting increases. Modal's homepage instead advertises access to resources 'without quota requests', and workspace budgets are a spend control rather than a quota. The sandbox concurrency figure is a marketing capacity claim, not a documented per-account limit with a raise process.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5027,16 +5064,23 @@
   {
     "productId": "modal",
     "storyId": "reserved-committed-discounts",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The only commitment-related evidence is that customers can transact through the AWS and GCP marketplaces to apply existing cloud committed spend to Modal. That is a procurement path that draws down a cloud-provider commitment. It is not a Modal-offered reserved-capacity or committed-use discount on sustained GPU capacity, so it is adjacent and earns no credit. No evidence shows Modal itself offering reserved GPU pricing or commit-based discounts.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Modal's pricing page says customers can transact through the AWS and GCP marketplaces to use committed spend on Modal. That is a first-party committed-spend billing path, but nothing shows Modal's own reserved-capacity or committed-use discount programme for sustained GPU capacity. missing for 10: a documented Modal reserved or committed-use discount for sustained GPU capacity, a capacity reservation or guarantee mechanism, discount terms or rates, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "modal-docs-11"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a platform engineer, I can lock in reserved or committed-use discounts for sustained GPU capacity",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "modal-docs-11",
+          "quote": "Transact through the AWS and GCP marketplace to use committed spend on Modal."
+        }
+      ]
     }
   },
   {
@@ -5045,7 +5089,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Verifying security and compliance posture is a fair question for a cloud GPU/serverless provider like Modal, so the axis applies. However, nothing in the evidence pack covers SOC 2, data handling, security documentation, a trust center or datacenter tiers. The items cover only GPU selection, pricing, SDKs and observability, so the verdict is none.",
+    "rationale": "Security and compliance posture is a fair question for a cloud GPU compute provider like Modal, so the axis applies. The evidence pack covers only GPU selection, pricing, environments, SDKs and observability. Nothing in it addresses SOC 2, data-handling policies, datacenter tiers or a trust center.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5059,15 +5103,15 @@
     "storyId": "serverless-gpu-endpoints",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Modal's own docs show you attach GPUs to a Function with the `gpu` argument and deploy it as a serverless application. Its endpoints scale with traffic and idle at zero, and containers spin up and down in 1-2 seconds. That covers serverless GPU workers that autoscale and scale to zero, with no always-on instances to manage. missing for 10: in-depth autoscaler/scale-to-zero configuration docs (the claims come from the homepage and pricing pages), independent or hands-on corroboration of cold-start and scale-to-zero behavior.",
+    "confidence": "high",
+    "rationale": "Modal's own docs show GPU selection per Function via the `gpu` argument, deployment of serverless applications through the Python SDK, and endpoints that scale with traffic and idle at zero. Containers spin up and down in 1-2 seconds, and users never pay for idle resources, which directly replaces always-on instances. Missing for 10: independent or hands-on corroboration of scale-to-zero GPU behavior, and documentation of autoscaler configuration such as min/max containers and scaledown timing.",
     "evidenceIds": [
       "modal-docs-1",
-      "modal-gh-1",
       "modal-docs-14",
+      "modal-docs-25",
       "modal-docs-10",
       "modal-docs-16",
-      "modal-docs-23"
+      "modal-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -5079,20 +5123,20 @@
           "quote": "You can pick a specific GPU type for your Function via the `gpu` argument."
         },
         {
-          "evidenceId": "modal-gh-1",
-          "quote": "The [Modal](https://modal.com/) Python SDK allows you to deploy high-performance serverless applications and programmatically interact with the Modal platform."
-        },
-        {
           "evidenceId": "modal-docs-14",
           "quote": "Turn any function into an HTTPS endpoint that scales with traffic and idles at zero."
+        },
+        {
+          "evidenceId": "modal-docs-25",
+          "quote": "You never pay for idle resources — just actual compute time, by the CPU cycle."
         },
         {
           "evidenceId": "modal-docs-10",
           "quote": "In contrast, _Modal spins containers_ up and down in 1-2 seconds."
         },
         {
-          "evidenceId": "modal-docs-16",
-          "quote": "Fan out over thousands of GPUs, fully parallel, no job orchestration to manage."
+          "evidenceId": "modal-gh-1",
+          "quote": "The [Modal](https://modal.com/) Python SDK allows you to deploy high-performance serverless applications and programmatically interact with the Modal platform."
         }
       ]
     }
@@ -5103,7 +5147,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Modal is a serverless GPU compute platform, so spot or interruptible GPU pricing is a fair question to ask of it. The evidence pack never mentions spot, preemptible or interruptible capacity, discounted rates for it, or preemption semantics. The pricing items cover workspace budgets, marketplace committed spend and startup or research credits, which are different features and earn no credit here.",
+    "rationale": "Modal is a GPU compute platform, so a spot or interruptible pricing tier is a fair question to ask of it. The evidence pack does not document any discounted spot or preemptible GPU tier, or any preemption semantics. The pricing evidence covers only usage-based billing, workspace budgets, marketplace committed spend and credits, which are adjacent billing features rather than spot capacity.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5118,7 +5162,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "SSH access with your own keys and root control is a fair question for a GPU compute platform, so the axis applies. However, the evidence pack only covers GPU selection, containerized Functions, Sandboxes, SDKs and a CLI. Nothing documents SSH access, bringing your own keys, or root-level control of the environment.",
+    "rationale": "Modal is a serverless GPU compute platform, so SSH access and root control over a GPU environment is a fair axis for it. However, the evidence pack never mentions SSH access, bringing your own keys, or root-level control. The evidence covers only GPU selection, containers, Sandboxes, SDKs and the CLI, none of which documents this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5133,7 +5177,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains nothing on team member management, role-based access, or scoped API keys. The only related item is a Workspace budget for capping monthly spend. That is an adjacent spend control, not the role and scoped-credential governance this story asks for, so it earns no credit.",
+    "rationale": "The evidence pack never documents team member management, role-based access, or scoped API keys. The only related items are a Workspace budget for capping monthly spend and Environments for separating resources. These are adjacent controls, not the roles and scoped credentials the story requires, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5148,7 +5192,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A public pricing page exists at modal.com/pricing, but the excerpts from it only cover workspace budgets, configurable timeouts, marketplace committed spend and startup or academic credits. No excerpt shows per-GPU-hour prices for any GPU type. The GPU docs list GPU types (A100-40GB, H100, H200, B200, B300) but give no prices, so the core of the story is unevidenced.",
+    "rationale": "The evidence shows a public modal.com/pricing page that covers budgets, credits, marketplace spend and usage-based billing. None of the cited items quote a per-GPU-hour rate for any GPU type, so a published price for every GPU cannot be confirmed from the pack. The GPU docs list selectable GPU types but give no prices.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
