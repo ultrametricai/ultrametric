@@ -35,6 +35,18 @@ function claimsPrompt(productName: string, evidence: Evidence[], stories: Story[
   return `Product: ${productName}\n\nEvidence pack (claimed-docs + github only):\n${pack}\n\nStory taxonomy:\n${storyList}\n${extra}`
 }
 
+export function claimEvidenceForProduct(productId: string, evidence: Evidence[]): Evidence[] {
+  return evidence.filter(e => {
+    if (e.tier !== 'claimed-docs' && e.tier !== 'github') return false
+    if (productId !== 'paperspace') return true
+    // DigitalOcean hosts several distinct products. Keep sibling-product records
+    // available to the judge, but extract Paperspace promises only from its docs.
+    const url = new URL(e.url)
+    return url.hostname !== 'docs.digitalocean.com'
+      || /^\/(?:products|reference)\/paperspace(?:\/|$)/.test(url.pathname)
+  })
+}
+
 export function validateClaimRules(raw: RawClaims, byId: Map<string, Evidence>, storyIds: Set<string>): string | null {
   for (const c of raw.claims) {
     if (!byId.has(c.evidenceId)) return `claim cites unknown evidence id "${c.evidenceId}"`
@@ -84,9 +96,8 @@ export async function runClaims({ category, product }: { category?: string; prod
     matched += targets.length
 
     for (const p of targets) {
-      const evidence = readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${p.id}.json`)).filter(
-        (e) => e.tier === 'claimed-docs' || e.tier === 'github',
-      )
+      const evidence = claimEvidenceForProduct(p.id,
+        readJson(EvidenceSchema.array(), path.join(dataDir, 'evidence', `${p.id}.json`)))
       const byId = new Map(evidence.map((e) => [e.id, e]))
       const extractedAt = new Date().toISOString()
 
