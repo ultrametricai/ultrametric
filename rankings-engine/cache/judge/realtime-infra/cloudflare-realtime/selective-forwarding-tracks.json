@@ -1,0 +1,38 @@
+{
+  "hash": "608becd7e6d4b5553956618adda93299dccc4f22e6b930e1a69d7b0c645c23a5",
+  "keyVersion": "v2",
+  "verdict": {
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Cloudflare Realtime is an SFU whose API lets you control which endpoints publish or receive audio, video, and data. Its docs describe a publish/subscribe model: subscribers pull remote tracks, and publications can exist with no subscriber. Community comments confirm that participants route through Cloudflare rather than peer-to-peer. Missing for 10: explicit first-party documentation of per-track audio/video pull semantics (the pull example shown is for DataChannels), and hands-on corroboration that only subscribed tracks are forwarded to each participant.",
+    "evidenceIds": [
+      "cloudflare-realtime-docs-11",
+      "cloudflare-realtime-docs-28",
+      "cloudflare-realtime-docs-10",
+      "cloudflare-realtime-docs-12",
+      "cloudflare-realtime-comm-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, media routes through a selective forwarding unit or relay that delivers only the tracks each participant subscribes to",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-realtime-docs-11",
+          "quote": "Use the Realtime SFU API to control which endpoints publish or receive audio, video, and data."
+        },
+        {
+          "evidenceId": "cloudflare-realtime-docs-28",
+          "quote": "Traffic published into Cloudflare is free, including when no client subscribes to that publication."
+        },
+        {
+          "evidenceId": "cloudflare-realtime-docs-10",
+          "quote": "When a subscriber pulls a remote DataChannel with `waitForAck: true`, the SFU holds delivery to that subscriber until it sends its first message (the acknowledgment)."
+        }
+      ]
+    },
+    "productId": "cloudflare-realtime",
+    "storyId": "selective-forwarding-tracks"
+  }
+}
