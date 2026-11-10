@@ -1,16 +1,17 @@
 {
-  "hash": "a0fccbdbf8b90948a8c5816b79115a56e7165e84233676194aa2ebc96d87679d",
+  "hash": "4cd63c53d0422fb9cd5eda4d4cb75a04855cdc100741fd7a07b11f6008335585",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Gitea provides first-party automation surfaces: an official go-sdk, the tea CLI, an API, and an action runner for its GitHub Actions-compatible CI. These directly support scripted, non-UI use, but the evidence shows nothing about how tea or the API behave non-interactively inside a CI job. missing for 10: documented non-interactive/token authentication for headless use, CLI flags or machine-readable output for scripting, documented examples of driving Gitea from CI pipelines, independent hands-on corroboration of headless automation.",
+    "rationale": "Gitea documents its own automation surfaces: an official CLI (tea), a Go SDK, an action runner for Gitea Actions, GitHub Actions-compatible YAML workflows, and a versioned /api/v1 REST API with a built-in OpenAPI/Swagger document. Together these show the product can be driven programmatically and in CI pipelines. The evidence does not show tea or the API actually running non-interactively in CI (token-based auth for pipelines, scripted flags, machine-readable output), and there is no hands-on corroboration, so coverage is partial. Missing for 10: documented non-interactive/headless CLI usage in CI, a CI authentication pattern for tea, machine-readable CLI output, and independent hands-on corroboration of headless automation.",
     "evidenceIds": [
       "gitea-gh-6",
       "gitea-probe-4",
-      "gitea-docs-4",
-      "gitea-docs-2"
+      "gitea-docs-2",
+      "gitea-openapi-20261106",
+      "gitea-api-usage-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -22,16 +23,16 @@
           "quote": "We provide an official go-sdk, a CLI tool called tea and an action runner for Gitea Action."
         },
         {
+          "evidenceId": "gitea-docs-2",
+          "quote": "Gitea Actions supports CI/CD functionality, compatible with GitHub Actions. Users can write workflows in familiar YAML format and reuse a variety of existing Actions plugins."
+        },
+        {
+          "evidenceId": "gitea-openapi-20261106",
+          "quote": "The OpenAPI document is at: https://gitea.your.host/swagger.v1.json"
+        },
+        {
           "evidenceId": "gitea-probe-4",
           "quote": "official CLI documented at https://gitea.com/gitea/tea"
-        },
-        {
-          "evidenceId": "gitea-docs-4",
-          "quote": "Extend Gitea's functionality with our API and webhooks, creating custom workflows to match your unique needs."
-        },
-        {
-          "evidenceId": "gitea-docs-2",
-          "quote": "Gitea Actions supports CI/CD functionality, compatible with GitHub Actions."
         }
       ]
     },

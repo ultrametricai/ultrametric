@@ -1235,7 +1235,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agent-facing commerce catalog API, so cart or order-draft creation is a fair question for it. However, the evidence only documents product search, lookup, buy URLs, price-tracking webhooks, and MPP payment for API usage. Its UCP support is explicitly limited to \"product search and lookup across stores\", and no documented call for creating or updating a cart or order draft appears anywhere.",
+    "rationale": "Channel3's documented agent surfaces (API, MCP, CLI, UCP) cover product search, lookup, price tracking and sale attribution via buy URLs. Its UCP integration is scoped to \"product search and lookup across stores\". The pack contains no documented call for creating or updating a cart or order draft. A commerce API could plausibly offer this, so the axis applies, but it is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1250,18 +1250,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Channel3 documents a single API covering 100M+ products from 25,000+ brands. Agents can reach it via MCP without an API key, pay per call via MPP with no signup, or use free self-service API keys, so no partnership is needed. SDK and CLI access are also documented. Community hands-on reports confirm searches run but describe poor result relevance and ignored price filters, which lowers quality without contradicting the access capability. Missing for 10: independent evidence of reliable, relevant cross-merchant search results; a published OpenAPI spec (probe returned 404).",
+    "rationale": "Channel3 documents a single API for searching 100M+ products from 25,000+ brands. Agents can reach it with no key through the MCP server or via MPP payments with no signup, or with free self-service API keys and no OAuth or partnership. Community reports criticize result relevance but do not contradict the programmatic, self-service access. Missing for 10: independent hands-on corroboration of the keyless/MPP flow, and evidence that cross-merchant search relevance is reliable given community reports of poor results.",
     "evidenceIds": [
       "channel3-docs-5",
-      "channel3-docs-1",
       "channel3-docs-9",
       "channel3-docs-18",
       "channel3-docs-22",
       "channel3-docs-17",
-      "channel3-docs-11",
-      "channel3-docs-13",
-      "channel3-comm-2",
-      "channel3-comm-4"
+      "channel3-docs-1",
+      "channel3-probe-3",
+      "channel3-comm-2"
     ],
     "support": {
       "relation": "direct",
@@ -1293,7 +1291,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agent-facing product catalog API, so agent checkout is a fair question to ask of it. The evidence covers only product search, lookup, affiliate buy URLs and sale attribution; its UCP support is explicitly limited to search and lookup. MPP is documented only as a way for agents to pay for Channel3 API usage, not as a delegated payment credential for merchant checkout. There is no evidence of checkout sessions, delegated payment credentials or order confirmation.",
+    "rationale": "Channel3 is an agent-facing product catalog and search API, so agent checkout is a fair axis for it. The evidence shows only product search and lookup, buy URLs with affiliate attribution, and MPP payment for Channel3's own API usage. Nothing documents a checkout session, a delegated payment credential, or order confirmation for a merchant purchase, and the UCP integration is described as covering only search and lookup.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1308,7 +1306,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is agentic-commerce catalog infrastructure that routes purchases through buy URLs and records affiliate sales, so a merchant could fairly ask about risk allocation for agent-initiated transactions. The evidence pack contains no documentation of fraud, liability, or chargeback rules. The MPP payment option covers paying for API access, and affiliate payouts concern revenue share; neither addresses who bears transaction risk.",
+    "rationale": "Channel3 is an agentic-commerce product catalog and affiliate layer, so a merchant could fairly ask how risk is allocated for agent-initiated transactions. The evidence pack covers search, affiliate sale attribution, MPP payment for API access, and webhooks, but nothing documents fraud, liability, or chargeback rules for agent-initiated purchases.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1323,7 +1321,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agentic-commerce catalog and API layer, so verifiable agent identity is a fair question for it. The evidence pack documents nothing about registered agent profiles, signatures, or trust tiers that merchants could use to tell trusted agents from anonymous bots. API keys, keyless MPP payments, and a user identifier for click attribution are adjacent features, not merchant-facing agent identity verification.",
+    "rationale": "Channel3 is agent-commerce infrastructure sitting between shopping agents and merchants, so verifiable agent identity is a fair axis for it. The evidence shows no registered agent profiles, request signatures, or trust tiers exposed to merchants. API keys, keyless MCP access, MPP payments, and user identifiers for click attribution are adjacent access and attribution mechanisms, not verifiable agent identification.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1338,7 +1336,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is agentic-commerce catalog infrastructure, so merchant-side attribution of orders to agents is a fair question, but the evidence shows no merchant-facing capability to attribute orders to an originating agent or to report on or filter transactions by agent. The closest item is an optional user identifier that lets the developer (the affiliate) attribute clicks and sales to their own end users. That is an adjacent, developer-side feature and does not deliver merchant reporting by agent.",
+    "rationale": "Channel3's evidence covers developer-side attribution, not the merchant-side capability this story asks for. The search API accepts an optional user identifier so developers can attribute clicks and sales to their own end users, and Channel3 records sales to pay the developer a commission. Neither gives a merchant documented order attribution to the originating agent, or reporting and filtering of transactions by agent.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1353,7 +1351,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agentic-commerce product catalog API, so querying order status after purchase is a fair question for this kind of product. The evidence pack documents no order-status or shipment-tracking endpoint. The closest items are adjacent and earn no credit: price-tracking webhooks follow product price changes, not orders, and affiliate sale recording and attribution say nothing about an agent querying the status of an order it placed.",
+    "rationale": "Channel3 is an agent-facing product search and affiliate commerce API, so tracking orders after purchase is a fair question for it. The evidence documents product search, product lookup, affiliate sale recording and price-tracking webhooks, but no endpoint or tool for an agent to query an order's status or shipment tracking. Price-change webhooks and affiliate sale attribution are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1368,7 +1366,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agentic-commerce catalog layer between agents and merchants, so merchant-side controls over which agents can reach a catalog and checkout are a fair question for it. The evidence pack documents only developer- and agent-facing features: search, product lookup, MCP and UCP connectivity, pricing, and affiliate attribution. Nothing shows merchants can rate-limit, allow, or deny specific agents or agent platforms.",
+    "rationale": "Channel3 is an agentic-commerce product catalog API, so merchant-side controls over agent access are a fair question for it. The evidence pack documents only developer- and agent-facing search, lookup, MCP, CLI, pricing and affiliate features. Nothing shows merchants being able to rate-limit, allow or deny specific agents or agent platforms for catalog or checkout access.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1383,7 +1381,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agent-facing commerce and product-catalog API, so an agent wallet is a fair question to ask of it. The evidence shows no user-provisioned, user-funded wallet that an agent holds and spends from, and no balance visibility. The only payment evidence is that agents can pay Channel3 for its own API usage via MPP without an API key. That is an adjacent payment rail, not a wallet the user funds and controls.",
+    "rationale": "Channel3 is a product-catalog and search API for agent commerce, so asking about agent payment credentials is a fair question for this kind of product. The evidence pack documents no wallet that users can provision, fund, control, or check a balance on. The only payment-related item says agents can pay for Channel3's own API usage via MPP, the Machine Payments Protocol, which is an adjacent capability and not a user-funded agent wallet.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1398,12 +1396,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A hands-on probe returned HTTP 200 for https://docs.trychannel3.com/llms.txt, which serves a markdown index of the docs. Channel3 also publishes an agent-oriented page at /developers/agents.md, and its doc pages are available as .md files. missing for 10: independent community corroboration of agents actually consuming these docs, evidence of a full-content llms-full.txt variant.",
+    "rationale": "A live probe confirms an llms.txt at docs.trychannel3.com returns HTTP 200 and indexes agent-facing pages. The docs also provide llms-full.txt, .md mirrors of every page, and a dedicated agents.md developer page. missing for 10: independent hands-on corroboration of agents actually consuming these docs successfully.",
     "evidenceIds": [
       "channel3-probe-1",
+      "channel3-tryit-20261106",
       "channel3-docs-5",
-      "channel3-docs-6",
-      "channel3-docs-9"
+      "channel3-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1415,12 +1413,12 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://docs.trychannel3.com/llms.txt"
         },
         {
-          "evidenceId": "channel3-docs-5",
-          "quote": "Access 100 million+ products from 25,000+ brands through one API."
+          "evidenceId": "channel3-tryit-20261106",
+          "quote": "with llms.txt, llms-full.txt, and .md mirrors of every page"
         },
         {
-          "evidenceId": "channel3-docs-6",
-          "quote": "Pass any product URL and get structured metadata: pricing, variants, images, and merchant offers in a single response."
+          "evidenceId": "channel3-docs-5",
+          "quote": "Access 100 million+ products from 25,000+ brands through one API."
         }
       ]
     }
@@ -1431,7 +1429,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a product-catalog and search API with affiliate tracking, so AI insights over a user's own data (for example, sales or click analytics) is a fair question for it. However, the evidence documents no AI-generated insights or suggestions drawn from the user's data. Agentic search uses an LLM to plan product queries, but that is an adjacent search feature, not insights generated from the user's data.",
+    "rationale": "Channel3 is a product-catalog API platform, so AI insights from a user's data (for example, sales or attribution data) is a fair question for it. The evidence shows no feature that generates insights or suggestions from the user's own data inside the product. The agentic search mode uses an LLM to plan catalog queries, which is an adjacent search feature rather than insights from user data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1445,10 +1443,11 @@
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "Channel3's only documented background behavior is price-tracking subscriptions: once a user subscribes to a product, Channel3 monitors it on an ongoing basis and fires webhooks on price changes. This is a narrow, single-purpose monitor rather than general user-defined automations; the CLI and SDK are on-demand calls, not scheduled jobs. Missing for 10: general-purpose configurable automations or scheduled tasks, triggers or actions beyond price-change alerts, documentation of autonomous background agent runs, and independent hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Channel3 does not document a general automation builder. Its own price-tracking subscriptions do run in the background: a user subscribes to a product once, and Channel3 monitors it on an ongoing basis and fires webhook notifications when the price changes. Agentic search is a one-off, per-request LLM planning mode, and the CLI and SDK only make scripted calls, so neither counts as background automation. Missing for 10: user-defined or configurable automations beyond price tracking, documented scheduling or recurrence controls, management of running automations, and any independent or hands-on corroboration that price-tracking subscriptions work.",
     "evidenceIds": [
-      "channel3-docs-16"
+      "channel3-docs-16",
+      "channel3-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1458,6 +1457,10 @@
         {
           "evidenceId": "channel3-docs-16",
           "quote": "When you subscribe to price tracking for a product, you can receive webhook notifications whenever the price changes."
+        },
+        {
+          "evidenceId": "channel3-openapi-20261106",
+          "quote": "48 paths plus 5 webhooks"
         }
       ]
     }
@@ -1465,33 +1468,25 @@
   {
     "productId": "channel3",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Channel3's own docs describe an agentic search mode in which a built-in LLM plans the user's request: it extracts filters and splits the query into sub-searches. That is narrow, product-native delegation of search tasks rather than a general in-product assistant. The MCP server and CLI let external agents call the product, so they are not a built-in assistant and are not credited. Missing for 10: a general-purpose in-product assistant that accepts delegated tasks beyond search, multi-step task execution, documentation of the assistant UX, and independent or hands-on corroboration of agentic mode.",
-    "evidenceIds": [
-      "channel3-docs-20",
-      "channel3-docs-21"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Channel3 is a product-data API. The evidence shows no built-in AI assistant users can hand tasks to. Its 'agentic mode' is an LLM-planned search option within the search endpoint, an adjacent feature rather than an assistant that takes on delegated tasks. The MCP server and UCP integration serve external agents, not an in-product assistant.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
-      "citations": [
-        {
-          "evidenceId": "channel3-docs-20",
-          "quote": "Toggle to agentic mode, and an LLM plans the search: it extracts deterministic filters, may split the request into OR/AND sub-searches"
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "channel3",
     "storyId": "agentic-headless",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Channel3 ships an official CLI that calls its API \"from a terminal or script\", with machine-friendly output (format selection and JMESPath field extraction). It also has an SDK and simple API-key auth with no OAuth flow, so it can clearly run headlessly from scripts. However, no evidence documents CI usage specifically, so the story is only partially covered. Missing for 10: documented CI integration (e.g., CI pipeline examples or non-interactive/env-var credential setup for CI runners), and independent or hands-on corroboration of headless automation.",
+    "rationale": "Channel3 ships an official CLI that calls the API from a terminal or script, with JMESPath field extraction for machine-readable output. It also has an SDK and an API keyed without OAuth, so it can run non-interactively for automation. missing for 10: explicit CI/CD pipeline documentation (e.g., env-var auth, exit codes, CI examples), independent hands-on corroboration of headless/scripted use.",
     "evidenceIds": [
       "channel3-docs-13",
       "channel3-docs-15",
@@ -1501,7 +1496,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -1513,12 +1508,12 @@
           "quote": "Select formats or extract fields with JMESPath."
         },
         {
-          "evidenceId": "channel3-docs-12",
-          "quote": "Install the Channel3 SDK, authenticate, and make async calls."
-        },
-        {
           "evidenceId": "channel3-docs-22",
           "quote": "No OAuth flow is required for the public product data API. API keys are free to create."
+        },
+        {
+          "evidenceId": "channel3-docs-12",
+          "quote": "Install the Channel3 SDK, authenticate, and make async calls."
         }
       ]
     }
@@ -1529,7 +1524,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a product-search data API with an SDK, CLI and its own MCP server. Acting as an MCP client host that loads third-party MCP servers falls outside what this kind of product does. The evidence shows Channel3 only in the server role, with agents such as Cursor and Claude connecting to it, and its 'agentic mode' is internal LLM search planning, not pluggable tool use.",
+    "rationale": "Channel3 is a product-search data API. Its MCP evidence covers only the server role: agents such as Cursor, Claude and ChatGPT connect to Channel3. Plugging third-party MCP servers into a catalog API so it can call their tools is outside this product's category. Nothing in the pack shows Channel3 acting as an MCP client or tool host, so the axis does not apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1544,7 +1539,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Channel3 documents an official MCP server at its mcp-overview page, which agents in Cursor, VS Code, Claude, ChatGPT, Codex, or OpenCode can connect to. Its MCP agent use case says this works without writing code and without an API key. Missing for 10: detailed documentation of the MCP tool surface and auth/transport options in the evidence, and independent hands-on corroboration of the MCP connection.",
+    "rationale": "Channel3, a product-data API rather than an agent, documents an official MCP server with a dedicated overview page. It names supported agent clients (Cursor, VS Code, Claude, ChatGPT, Codex, OpenCode), and its 'Shopping Agent with MCP' guide says it works without code or an API key. Missing for 10: detail on the MCP tools exposed and on setup/transport, plus independent or hands-on corroboration of the MCP connection working.",
     "evidenceIds": [
       "channel3-probe-3",
       "channel3-docs-11",
@@ -1577,11 +1572,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Channel3 has its own agentic search mode, in which an LLM plans a natural-language request into deterministic filters and sub-searches. Its MCP server lets users drive it from Claude or ChatGPT without writing code. Natural-language control is documented only for search, and community hands-on queries such as \"red high top sneakers under $40\" ignored the price constraint and returned irrelevant results, so NL reliability is questionable. Missing for 10: natural-language operation beyond search (e.g., price tracking, lookups), independent confirmation that agentic mode parses constraints reliably, and in-depth docs on the NL command scope.",
+    "rationale": "Channel3 documents an agentic search mode in which an LLM turns a natural-language request into filters and sub-searches. It also ships an official MCP server, so users can drive search and lookup in plain language from Claude, ChatGPT, Cursor and similar clients, with no code or API key. Natural-language operation is evidenced mainly for search and lookup rather than the whole product, and hands-on reports show natural-language queries like \"red high top sneakers under $40\" returning irrelevant items and ignoring the price limit. missing for 10: evidence that natural-language commands cover operations beyond search (e.g., price-tracking subscriptions, account and billing actions), independent corroboration that agentic-mode interpretation is reliable, and documented examples of end-to-end natural-language workflows.",
     "evidenceIds": [
       "channel3-docs-20",
-      "channel3-docs-9",
       "channel3-docs-11",
+      "channel3-docs-9",
+      "channel3-probe-3",
       "channel3-comm-4"
     ],
     "support": {
@@ -1594,6 +1590,10 @@
           "quote": "Toggle to agentic mode, and an LLM plans the search: it extracts deterministic filters, may split the request into OR/AND sub-searches"
         },
         {
+          "evidenceId": "channel3-docs-11",
+          "quote": "Connect Cursor, VS Code, Claude, ChatGPT, Codex, or OpenCode."
+        },
+        {
           "evidenceId": "channel3-docs-9",
           "quote": "You can use it without writing any code, and without an API key."
         }
@@ -1604,9 +1604,9 @@
     "productId": "channel3",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Channel3 documents an official CLI that calls the Channel3 API from a terminal or script. It supports image search from URLs or local files and offers selectable output formats with JMESPath field extraction, which suits scripted and agent-driven workflows. The probe confirms official CLI docs exist. Missing for 10: independent or hands-on corroboration of CLI use, and documented install/auth details and command coverage beyond search.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Channel3 documents an official CLI that calls its API from a terminal or script. The docs show image search from URLs or local files, plus output-format selection and JMESPath field extraction, which suits scripted and agent workflows. Missing for 10: documented install and auth flow for the CLI, any agent-specific CLI features, and independent or hands-on corroboration.",
     "evidenceIds": [
       "channel3-docs-13",
       "channel3-docs-14",
@@ -1643,16 +1643,18 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Channel3 is an API-first product. Its documented public product data API has a versioned reference (/api-reference/v1/search), free API keys, and no OAuth requirement, and an official SDK and CLI are built on the same API. A developer reports building a product on top of it. Missing for 10: no machine-readable OpenAPI/Swagger spec was found at standard paths, and there is limited independent hands-on corroboration of the API's breadth.",
+    "rationale": "Channel3 is an API-first product. It documents a /v1 public API with per-endpoint reference pages and a live 'Try it' runner, and publishes a downloadable OpenAPI 3.1.0 spec (48 paths plus webhooks). It also offers free API keys with no OAuth flow, plus an SDK and a CLI that wrap the API, and a semver changelog with migration notes. The probe 404s were at different docs.trychannel3.com paths, so they do not contradict the published spec. missing for 10: independent hands-on corroboration of the API docs' completeness, and a formal versioning/deprecation-notice policy (the OpenAPI info block also still carries framework-default metadata).",
     "evidenceIds": [
       "channel3-docs-5",
+      "channel3-docs-6",
       "channel3-docs-19",
       "channel3-docs-22",
+      "channel3-openapi-20261106",
+      "channel3-tryit-20261106",
+      "channel3-changelog-20261106",
       "channel3-docs-12",
       "channel3-docs-13",
-      "channel3-docs-6",
-      "channel3-comm-8",
-      "channel3-probe-2"
+      "channel3-comm-8"
     ],
     "support": {
       "relation": "direct",
@@ -1664,20 +1666,20 @@
           "quote": "Access 100 million+ products from 25,000+ brands through one API."
         },
         {
+          "evidenceId": "channel3-openapi-20261106",
+          "quote": "Channel3 publishes a downloadable OpenAPI 3.1.0 document (48 paths plus 5 webhooks, production server https://api.trychannel3.com)"
+        },
+        {
+          "evidenceId": "channel3-tryit-20261106",
+          "quote": "The Mintlify-hosted API reference runs the \"Try it\" playground per endpoint"
+        },
+        {
           "evidenceId": "channel3-docs-22",
           "quote": "No OAuth flow is required for the public product data API. API keys are free to create."
         },
         {
-          "evidenceId": "channel3-docs-19",
-          "quote": "Optional user identifier to attribute clicks and sales to a user in your system. Channel3 appends it to buy URLs in the response."
-        },
-        {
           "evidenceId": "channel3-docs-13",
           "quote": "The Channel3 CLI calls the Channel3 API from a terminal or script."
-        },
-        {
-          "evidenceId": "channel3-docs-12",
-          "quote": "Install the Channel3 SDK, authenticate, and make async calls."
         }
       ]
     }
@@ -1688,7 +1690,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a developer API product, so least-privilege credentials are a fair question to ask of it. The evidence only shows that plain API keys are free to create, that no OAuth flow is needed, and that agents can pay via MPP without any key. Nothing documents scopes, permission restrictions, or per-agent limited keys.",
+    "rationale": "Channel3 is an API product, so scoped agent credentials are a fair question. The evidence only shows that plain API keys are free to create, that no OAuth is needed, and that agents can use the MCP server or MPP without a key. Nothing documents per-key scopes, permission limits or least-privilege credentials for agents.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1703,9 +1705,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Channel3 documents a first-party SDK page covering installation, authentication and async calls, so official SDK support exists. The evidence is a single summary line and doesn't show which languages or how many SDKs are offered. Missing for 10: supported languages and multiple SDKs, SDK reference detail (typed models, method coverage), independent or hands-on corroboration of SDK use.",
+    "rationale": "Channel3 documents a first-party SDK with installation, authentication, and async calls, and its changelog announces an SDK 3.0.0 release alongside the /v1 API. The evidence is thin, however: it does not say which languages are supported, show SDK reference depth, or show anyone building with the SDK. missing for 10: documented language coverage (plural SDKs), SDK reference/method documentation depth, independent or hands-on corroboration of SDK use.",
     "evidenceIds": [
-      "channel3-docs-12"
+      "channel3-docs-12",
+      "channel3-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1715,6 +1718,10 @@
         {
           "evidenceId": "channel3-docs-12",
           "quote": "Install the Channel3 SDK, authenticate, and make async calls."
+        },
+        {
+          "evidenceId": "channel3-changelog-20261106",
+          "quote": "Announcing the /v1 Search API & SDK 3.0.0"
         }
       ]
     }
@@ -1723,11 +1730,12 @@
     "productId": "channel3",
     "storyId": "agentic-webhooks",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Channel3 documents first-party webhooks: when you subscribe to price tracking for a product, it sends webhook notifications whenever the price changes. That is a real outbound HTTP callback, but the pack shows only this one event type and gives no details on how webhooks are registered or delivered. Missing for 10: webhook events beyond price changes, documented endpoint registration, payload schema, signing/verification and retry semantics, independent or hands-on corroboration.",
+    "rationale": "Channel3 documents its own outbound webhooks: subscribing to price tracking for a product delivers webhook notifications on price changes, and its OpenAPI spec declares 5 webhooks. However, the documented event scope is narrow (price changes only), and nothing in the evidence describes how a consumer registers endpoints or how delivery works. missing for 10: documented endpoint registration and subscription management, event catalog beyond price changes, delivery semantics (signing, retries), independent or hands-on corroboration.",
     "evidenceIds": [
-      "channel3-docs-16"
+      "channel3-docs-16",
+      "channel3-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1737,6 +1745,10 @@
         {
           "evidenceId": "channel3-docs-16",
           "quote": "When you subscribe to price tracking for a product, you can receive webhook notifications whenever the price changes."
+        },
+        {
+          "evidenceId": "channel3-openapi-20261106",
+          "quote": "48 paths plus 5 webhooks"
         }
       ]
     }
@@ -1744,31 +1756,57 @@
   {
     "productId": "channel3",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The evidence shows an API reference page exists (docs.trychannel3.com/api-reference/v1/search.md documents request parameters). Nothing shows that reference is interactive or offers runnable or try-it examples, and the OpenAPI spec probes all returned 404. A static reference alone is an adjacent feature, not the interactive, runnable experience the story asks for.",
-    "evidenceIds": [],
+    "rationale": "Channel3's Mintlify-hosted API reference provides a per-endpoint \"Try it\" playground that runs requests against the production API. It is backed by a downloadable OpenAPI 3.1.0 spec and .md/llms.txt mirrors of every page. Missing for 10: independent or hands-on corroboration of the playground, and a sandbox or test-mode option (examples run only against production with a real key).",
+    "evidenceIds": [
+      "channel3-tryit-20261106",
+      "channel3-openapi-20261106",
+      "channel3-probe-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "channel3-tryit-20261106",
+          "quote": "The Mintlify-hosted API reference runs the \"Try it\" playground per endpoint, with llms.txt, llms-full.txt, and .md mirrors of every page."
+        },
+        {
+          "evidenceId": "channel3-tryit-20261106",
+          "quote": "The runner mounts client-side and executes against the production API with a real key."
+        },
+        {
+          "evidenceId": "channel3-openapi-20261106",
+          "quote": "Channel3 publishes a downloadable OpenAPI 3.1.0 document"
+        }
+      ]
     }
   },
   {
     "productId": "channel3",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The axis applies because Channel3 is an API product, but no downloadable OpenAPI or equivalent spec appears in the evidence. The probe found all candidate OpenAPI/Swagger paths return 404. The human-readable API reference pages and the llms.txt index are adjacent features, not a machine-readable API spec, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Channel3 publishes a downloadable OpenAPI 3.1.0 document at channel3.ai/docs/openapi/openapi.json, with 48 paths and 5 webhooks, and the docs llms.txt advertises it under \"OpenAPI Specs\". The probe's 404s were on different docs.trychannel3.com paths, so they don't contradict the spec's existence; they only show it isn't at the conventional locations on that domain. Missing for 10: independent or hands-on confirmation of the download, and proper spec metadata (the info block still has the framework defaults \"FastAPI\" / \"0.1.0\").",
+    "evidenceIds": [
+      "channel3-openapi-20261106",
+      "channel3-probe-2",
+      "channel3-probe-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "channel3-openapi-20261106",
+          "quote": "Channel3 publishes a downloadable OpenAPI 3.1.0 document (48 paths plus 5 webhooks, production server https://api.trychannel3.com), advertised in the docs llms.txt under \"OpenAPI Specs\"."
+        }
+      ]
     }
   },
   {
@@ -1777,7 +1815,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a developer-facing product-data and commerce API, so a sandbox or test environment is a fair question to ask of it. The evidence pack never mentions a sandbox, test mode, or isolated environment. Free monthly credits and keyless MCP access are pricing and access conveniences, not isolation from production data.",
+    "rationale": "Channel3 is a developer API, so a sandbox or test environment is a fair question to ask of it. The evidence shows no sandbox: the OpenAPI document lists only a production server, and the docs' \"Try it\" playground runs against the production API with a real key. Free monthly credits and keyless MCP access are pricing and access conveniences, not isolation from production.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1789,16 +1827,32 @@
   {
     "productId": "channel3",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no documentation of an API versioning scheme or a deprecation policy. The only hint is the 'api-reference/v1/' path in one docs URL, but that item's content is about user attribution, not versioning, and nothing describes version lifecycles, deprecation notices, or sunset timelines.",
-    "evidenceIds": [],
+    "rationale": "Channel3 ships a /v1 path-versioned API with a dated semver changelog, explicit breaking-change migration instructions, per-release compatibility statements, and in-docs deprecation notices. However, there is no standalone deprecation policy defining notice windows or sunset timelines, so the 'documented deprecation policy' half rests on practice rather than a stated policy. missing for 10: a formal deprecation/versioning policy page with notice windows and sunset guarantees, independent or hands-on corroboration of deprecation handling.",
+    "evidenceIds": [
+      "channel3-changelog-20261106",
+      "channel3-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "channel3-changelog-20261106",
+          "quote": "The API is /v1 path-versioned"
+        },
+        {
+          "evidenceId": "channel3-changelog-20261106",
+          "quote": "`categories` on the Product response is now deprecated."
+        },
+        {
+          "evidenceId": "channel3-openapi-20261106",
+          "quote": "product versioning lives in the changelog"
+        }
+      ]
     }
   },
   {
@@ -1807,7 +1861,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a product-data API, but the evidence documents no batch endpoint or multi-item operation. Async SDK calls and a scriptable CLI are only building blocks a developer could loop over, and agentic search's sub-search splitting serves a single query rather than acting on many items at once.",
+    "rationale": "Bulk operations are a fair question for a product-data API, but the evidence documents no batch endpoint or multi-item operation. Each documented capability, such as single-URL lookup or per-query search, handles one request at a time. Scriptable CLI calls and async SDK calls are developer building blocks a user could loop over, not a product bulk-operation capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1819,23 +1873,16 @@
   {
     "productId": "channel3",
     "storyId": "automation-rules-engine",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Channel3's only documented event-driven automation is price-tracking subscriptions: you subscribe to a product and get a webhook notification whenever its price changes. That is a narrow, fixed trigger-action pair rather than user-defined rules. missing for 10: user-defined rule or condition logic (e.g. thresholds or filters), event types beyond price changes, action types beyond webhook notifications, in-depth docs on rule management, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "channel3-docs-16"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Channel3 is a product-data API, and a rules-based automation feature is a fair question for it, so the axis applies. The only event-driven capability in the evidence is price-tracking webhooks (channel3-docs-16), which send notifications when a price changes. That is a developer building block for the separate webhooks story, not a way for users to define rules that trigger actions, and no rules engine or condition-to-action configuration is documented.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
-      "citations": [
-        {
-          "evidenceId": "channel3-docs-16",
-          "quote": "When you subscribe to price tracking for a product, you can receive webhook notifications whenever the price changes."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -1844,7 +1891,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a product-data API with an SDK, CLI, and MCP server. Scheduling recurring jobs is a plausible feature for such a platform, so the axis applies, but the evidence documents no way to define or schedule recurring jobs or workflows. Price-tracking subscriptions with webhooks are a related event-driven monitor, not a user-defined schedule. CLI use from scripts would only be a user-side cron workaround, so neither earns credit.",
+    "rationale": "Channel3 is a product-data API, and a platform like this could plausibly offer scheduled or recurring jobs, so the axis applies. The evidence documents no way to schedule recurring jobs or workflows. Price-tracking subscriptions with webhook notifications are event-driven alerts on price changes, not a user-defined recurring schedule, so they are only an adjacent feature and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1859,7 +1906,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a product-catalog search and data API, offered with an SDK, CLI, and MCP server. It does not host user-defined automations or workflows, so versioning, reviewing, and rolling back automations is a category error for this product type. Its price-tracking webhook subscriptions are event notifications, not versioned automations.",
+    "rationale": "Channel3 is a product-catalog search and data API, reachable through an SDK, CLI and MCP server. It does not host user-defined automations, so versioning, reviewing and rolling back automations falls outside its product category. The changelog's /v1 path-versioning and semver releases describe the vendor's own API versions, not user automations, so they do not make this axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1874,7 +1921,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agent-facing product catalog, so a merchant feed or import path is a fair question for it. However, the evidence documents only the consumer side: developers and agents search, look up and track products across an aggregated catalog. Nothing documents a feed, upload or import API that lets a merchant publish its own catalog.",
+    "rationale": "Channel3 is an agent-facing product catalog, so a merchant feed or import path is a fair question for it. The evidence only documents developer- and agent-side capabilities: search, URL lookup, MCP, UCP connections, an SDK and a CLI over a catalog Channel3 aggregates and normalizes itself. Nothing shows a documented feed or import API that lets a merchant submit their own catalog.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1889,10 +1936,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 documents product search and lookup that agents can reach via MCP, including Claude and ChatGPT, plus buy URLs and affiliate sale attribution. Nothing in the pack shows buyers completing a checkout inside a chat or assistant surface, or any merchant-facing agent-checkout capability. Buy URLs and in-chat discovery are adjacent features, not in-chat purchase completion, so they earn no credit.",
+    "rationale": "Channel3 is a product-catalog API and MCP server that lets agents in ChatGPT and Claude search and look up products. The evidence shows only buy URLs and affiliate sale attribution, with no documented in-chat checkout for merchants' products. MCP and UCP support is described as search and lookup only, and MPP covers agents paying for API access rather than buyers purchasing merchandise, so neither counts as agent checkout.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a merchant, buyers can complete purchases of my products inside chat and assistant surfaces (ChatGPT, Claude, Gemini, Copilot and peers)",
       "citations": []
@@ -1902,14 +1949,14 @@
     "productId": "channel3",
     "storyId": "checkout-spec-versioned",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Channel3 documents that UCP-capable agents can connect to its catalog for product search and lookup. Its API is exposed under a v1 path with a consistent product schema, so developers can build against a commerce protocol to some degree. However, no published machine-readable schema is evidenced (all OpenAPI paths return 404), and no conformance or validation tooling is documented. Missing for 10: published versioned protocol schema/spec, conformance or validation tooling, protocol versioning policy, independent corroboration of UCP interoperability.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Channel3 ships a /v1 path-versioned API with a dated semver changelog and a downloadable OpenAPI 3.1.0 document, so developers do get a versioned, published schema. It also lets UCP-capable agents connect to its catalog. However, no conformance or validation tooling is evidenced; the Try-it playground only runs requests against the production API. The OpenAPI info block also carries framework defaults rather than a product version. missing for 10: conformance/validation tooling, a versioned protocol spec (versus a proprietary API schema), a versioning/notice-window policy page, independent corroboration.",
     "evidenceIds": [
+      "channel3-openapi-20261106",
+      "channel3-changelog-20261106",
       "channel3-docs-10",
-      "channel3-docs-3",
-      "channel3-docs-19",
-      "channel3-probe-2"
+      "channel3-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -1917,12 +1964,16 @@
       "subject": "As a developer, I can build against a versioned commerce protocol with a published schema and conformance or validation tooling",
       "citations": [
         {
-          "evidenceId": "channel3-docs-10",
-          "quote": "If your agent already supports UCP, connect it to Channel3's global catalog for product search and lookup across stores."
+          "evidenceId": "channel3-openapi-20261106",
+          "quote": "Channel3 publishes a downloadable OpenAPI 3.1.0 document (48 paths plus 5 webhooks, production server https://api.trychannel3.com)"
         },
         {
-          "evidenceId": "channel3-docs-3",
-          "quote": "Structured product data, with a consistent schema across retailers"
+          "evidenceId": "channel3-changelog-20261106",
+          "quote": "The API is /v1 path-versioned"
+        },
+        {
+          "evidenceId": "channel3-docs-10",
+          "quote": "If your agent already supports UCP, connect it to Channel3's global catalog for product search and lookup across stores."
         }
       ]
     }
@@ -1933,7 +1984,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agent-commerce product catalog and affiliate API. It records sales and accepts MPP payments for credits, so a dispute-handling API is a fair question for it. However, the evidence pack documents no API for disputes or chargebacks, including evidence submission, dispute status, or outcomes.",
+    "rationale": "Channel3 is an agentic-commerce product catalog and affiliate API. It records sales, pays commissions and accepts MPP payments for API usage, so a transaction-dispute axis is a fair question for it. However, nothing in the evidence documents dispute or chargeback endpoints, evidence submission, status tracking, or outcomes. The documented webhooks cover price tracking only, which does not transfer to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1948,10 +1999,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only published pricing covers API credits for developers: 1,000 free credits per month, then $0.007 per credit. Developers are also told they get 'a percentage of the sale price', but that percentage is not stated. Nothing in the evidence publishes the fees a merchant pays on agent-originated transactions, so a merchant cannot price agentic channels from these docs.",
+    "rationale": "Channel3 aggregates merchant catalogs and records sales, so a published merchant fee for agent-originated transactions is a fair question to ask of it. The evidence never states what merchants pay. The published pricing ($0.007 per credit, 1,000 free credits) covers API usage by developers and agents. The \"percentage of the sale price\" is a payout to developers, not a published merchant fee, so neither counts toward this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a merchant, the fees for agent-originated transactions are published — I can price agentic channels without asking sales",
       "citations": []
@@ -1963,7 +2014,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows agents can pay Channel3 itself via MPP to use Channel3's own API without an API key or signup. Nothing documents a way for a developer to put HTTP 402 per-call machine payments on their own API or service. Channel3's documented developer monetization is affiliate commission on product sales, which is a different capability, so the MPP item is adjacent and earns no credit here.",
+    "rationale": "Channel3 accepts MPP machine payments from agents for calls to its own product-data API. Nothing in the pack shows it lets a developer put HTTP 402 per-call payments on their own API or service. Its developer monetization is affiliate commission on product sales, which is a different capability, so the axis applies but is not delivered.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1978,7 +2029,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agentic-commerce product catalog API, and agents can pay for API usage via MPP, so a spending-approval step is a fair question for it. The evidence never documents a confirmation step, signed mandate, or per-purchase consent before money moves. Purchases happen through buy URLs that only record affiliate sales, and the MPP payment mention describes no user approval.",
+    "rationale": "Channel3 is a product-catalog and search API for agentic commerce, so approval-gated agent spending is a fair question to ask of it. The evidence shows only that agents can pay for API usage via MPP and that sales are attributed through affiliate buy URLs. Nothing documents a confirmation step, signed mandate, or per-purchase consent before money moves.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1993,7 +2044,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a product-catalog API that aggregates retailer data for agents and developers, so a merchant onboarding path is a fair question for this kind of product. However, every piece of evidence describes the developer or agent side: search, MCP, SDK, CLI, UCP connection for agents, and affiliate payouts to developers. Nothing documents a merchant enabling a setting, signing an agreement, or publishing an endpoint to accept agent traffic.",
+    "rationale": "Channel3 is a product-catalog API that aggregates retailers. A merchant self-serve enablement path is therefore a fair question for it, but the evidence documents only developer- and agent-side access: API keys, MCP, UCP, SDK, CLI and MPP payments. Nothing shows a merchant enabling a setting, signing an agreement, or publishing an endpoint to start receiving agent traffic, and the affiliate payouts are paid to developers, not merchants.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2008,7 +2059,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a proprietary product-data API. The evidence shows Channel3 adopting other parties' protocols (MCP clients like Cursor and Claude, UCP-capable agents, MPP payments) and developers consuming its API, but no independent party implementing Channel3's own protocol or platform. Supporting third-party standards and having API customers is adjacent to the story, not evidence of a multi-implementer ecosystem.",
+    "rationale": "The evidence shows Channel3 adopting other parties' protocols (MCP, UCP, MPP) and listing MCP clients that can connect to its server. It does not show any independent party implementing Channel3's own protocol or platform. A single community developer building on top of the API is a consumer, not an independent implementation. Interoperating with third-party protocols is adjacent to the story, not evidence that Channel3's platform is an ecosystem.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2020,16 +2071,33 @@
   {
     "productId": "channel3",
     "storyId": "open-spec-published",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows Channel3 can be reached by agents that support UCP, and that agents can pay via MPP. Nothing in the pack says either protocol, or Channel3's own API, is published as an open, versioned specification that can be read and implemented without signing anything. The OpenAPI probe returned 404 on every candidate path, so no machine-readable public spec was found either.",
-    "evidenceIds": [],
+    "rationale": "Channel3 publishes a downloadable OpenAPI 3.1.0 description of its API, and the API is /v1 path-versioned with a dated semver changelog. That gives developers a readable, versioned spec of the interface it speaks. However, the spec's info block carries framework defaults (\"FastAPI\", \"0.1.0\") rather than a real spec version, and it describes a proprietary API rather than an open commerce protocol. The UCP support mentioned in the docs is not shown to be backed by any spec Channel3 publishes. missing for 10: a versioned open protocol specification (e.g. a UCP spec published or linked by Channel3), meaningful version metadata in the spec itself, an explicit statement that it can be read and implemented without any agreement, and independent corroboration that the spec is accessible.",
+    "evidenceIds": [
+      "channel3-openapi-20261106",
+      "channel3-changelog-20261106",
+      "channel3-docs-10"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, the commerce protocol this product speaks is published as an open, versioned specification I can read and implement without signing anything",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "channel3-openapi-20261106",
+          "quote": "Channel3 publishes a downloadable OpenAPI 3.1.0 document (48 paths plus 5 webhooks, production server https://api.trychannel3.com)"
+        },
+        {
+          "evidenceId": "channel3-changelog-20261106",
+          "quote": "The API is /v1 path-versioned"
+        },
+        {
+          "evidenceId": "channel3-docs-10",
+          "quote": "If your agent already supports UCP, connect it to Channel3's global catalog for product search and lookup across stores."
+        }
+      ]
     }
   },
   {
@@ -2038,16 +2106,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Channel3 is API-first: its core capabilities (text, image and URL search, filters, structured product lookup, price-tracking webhooks, agentic search) are all documented as API features, and the SDK, CLI and MCP all call that API. However, no evidence states that the API matches the UI, and account-side actions such as creating API keys, billing and dashboard features are not shown to be available through it. No OpenAPI spec was found to confirm coverage. Missing for 10: an explicit API/UI parity statement, API coverage of account, key and billing management, a published OpenAPI spec, and independent hands-on corroboration of parity.",
+    "rationale": "Channel3 is API-first. Its core product functions (text, image and URL search, filters, product lookup, price-tracking webhooks) are documented as API capabilities. It also publishes an OpenAPI 3.1 spec with 48 paths and 5 webhooks, a CLI that calls the API, and a per-endpoint Try-it playground against the production API. However, the docs never state or demonstrate that everything in the UI is reachable through the API. missing for 10: an explicit UI-to-API parity statement or mapping, evidence that UI-only features (such as account or dashboard functions) are exposed via API, and independent hands-on confirmation of parity.",
     "evidenceIds": [
-      "channel3-docs-1",
-      "channel3-docs-2",
+      "channel3-openapi-20261106",
+      "channel3-docs-13",
       "channel3-docs-5",
       "channel3-docs-6",
-      "channel3-docs-13",
-      "channel3-docs-16",
-      "channel3-docs-20",
-      "channel3-probe-2"
+      "channel3-tryit-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -2055,20 +2120,24 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "channel3-docs-5",
-          "quote": "Access 100 million+ products from 25,000+ brands through one API."
-        },
-        {
-          "evidenceId": "channel3-docs-1",
-          "quote": "Search for products with text, image, or URL"
+          "evidenceId": "channel3-openapi-20261106",
+          "quote": "Channel3 publishes a downloadable OpenAPI 3.1.0 document (48 paths plus 5 webhooks, production server https://api.trychannel3.com)"
         },
         {
           "evidenceId": "channel3-docs-13",
           "quote": "The Channel3 CLI calls the Channel3 API from a terminal or script."
         },
         {
+          "evidenceId": "channel3-docs-5",
+          "quote": "Access 100 million+ products from 25,000+ brands through one API."
+        },
+        {
           "evidenceId": "channel3-docs-6",
           "quote": "Pass any product URL and get structured metadata: pricing, variants, images, and merchant offers in a single response."
+        },
+        {
+          "evidenceId": "channel3-tryit-20261106",
+          "quote": "The runner mounts client-side and executes against the production API with a real key."
         }
       ]
     }
@@ -2079,7 +2148,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an account-based API service that records sales, attributes users and manages price-tracking subscriptions, so exporting a user's own data is a fair question for it. However, no evidence documents any account data export or portability feature. The CLI's output-format selection applies to API query responses, not to exporting the user's data, so it earns no credit.",
+    "rationale": "Account data portability is a fair question for a SaaS API platform like Channel3, so the axis applies. The pack never documents a way to export a user's own account data, such as sales, attribution records, price-tracking subscriptions or usage, nor any off-boarding path. CLI output formatting and structured product-catalog responses are adjacent features, not a user-data export capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2094,7 +2163,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a commercial product-data API and SaaS. Open-sourcing its code is a fair question for this kind of product, so the axis applies. Nothing in the evidence shows the product's source is published under an open license: the SDK, CLI and MCP docs describe usage only, not source availability or licensing.",
+    "rationale": "Channel3 is a hosted product-data API with an SDK, CLI and MCP server, so whether its source is available under an open license is a fair question to ask. Nothing in the evidence mentions a public source repository or an open-source license for any part of the product. The published OpenAPI spec and llms.txt are API documentation, not source code under an open license.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2109,7 +2178,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a hosted product-data API with a CLI, SDK and MCP server. A self-hosted or on-prem deployment is a fair question for this kind of product, but nothing in the evidence shows one; every access path calls Channel3's hosted API and catalog.",
+    "rationale": "Channel3 is a hosted product-catalog API, and a buyer could fairly ask whether such a service offers a self-hostable deployment, so the axis applies. The evidence only shows the hosted production API (api.trychannel3.com), SDK, CLI, MCP and pay-per-credit access. Nothing documents a self-hosted, on-prem or open-source deployment of the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2124,7 +2193,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a commerce product-data and affiliate API, so order lifecycle events are a fair axis, but the evidence documents no subscribable order events (created, updated, fulfilled, canceled). The only documented webhooks are for price-tracking changes, which is a different capability. Sale recording for affiliate payouts is not a programmatic order-event push.",
+    "rationale": "Channel3 is a commerce product-data API that records sales, so order-lifecycle events are a fair question for it. However, the only documented webhooks are price-change notifications for price tracking. The OpenAPI document lists 5 webhooks without saying they cover order created, updated, fulfilled, or canceled events, and price-change webhooks are an adjacent feature that earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2139,7 +2208,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a paid API that accepts agent payments via MPP, so being discoverable through a directory of payable services is a fair question for it. The evidence never shows it publishing such a directory or appearing in one. Its llms.txt is a documentation index, and MPP payment is a payment capability, not discovery; both are adjacent at best. Its product catalog indexes retail products, not payable services or APIs.",
+    "rationale": "Channel3 is an agent-payable API: it accepts MPP payments without signup. A buyer could therefore fairly ask whether it is listed in, or publishes, a directory where agents discover payable services, so the axis applies. Nothing in the evidence shows such a listing or directory. The llms.txt file, MCP server and UCP catalog cover Channel3's own docs and its product search, not discovery of payable services or APIs, and the MPP payment ability is a separate story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2154,7 +2223,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a SaaS product-data API that handles user identifiers and API traffic, so asking where that data is stored is a fair question. Nothing in the evidence pack documents any region selection or data-residency control. Community remarks about the catalog being US-only concern product coverage, not where customer data is stored, so they do not count toward this story.",
+    "rationale": "Channel3 is a hosted product-data API, so letting customers choose a data storage region is a fair question to ask of it. The evidence pack documents no region or residency choice: it shows only a single production server (api.trychannel3.com) and no residency settings. Community remarks about the catalog being US-only concern product coverage, not where customer data is stored, so they do not apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2169,7 +2238,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a product-search API, MCP server and CLI that processes user queries and images, so a training opt-out or no-training policy is a fair privacy question. The evidence pack contains no data-usage policy, training opt-out, or retention controls, so the axis applies but has no support.",
+    "rationale": "Channel3 is a product-search API that handles user queries, images and user identifiers, so a training opt-out or data-use policy is a fair question for it. Nothing in the evidence pack mentions AI training on customer data, an opt-out, or any data-retention or usage policy. The docs cover search, catalog, MCP, CLI, pricing and webhooks only.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2184,7 +2253,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is a product-data and search API that handles user identifiers for click and sale attribution, so controlling data retention and deletion is a fair axis for it. The evidence pack documents no retention settings, deletion endpoints, or data-lifecycle controls. The user-identifier attribution parameter is an adjacent feature about tracking, not about retention or deletion.",
+    "rationale": "Channel3 is a product-data API and MCP service, so it could plausibly offer data retention or deletion controls, and the axis applies. Nothing in the evidence pack documents retention policies, deletion endpoints, or user-controlled data lifecycle. The optional user identifier for attributing sales is unrelated and does not count.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2199,7 +2268,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 ships a CLI, an SDK and an MCP server, so a telemetry opt-out is a fair question for this product. The evidence pack never documents any telemetry, analytics or usage-tracking opt-out. The optional user identifier for attributing clicks and sales is a different feature and does not count as an opt-out.",
+    "rationale": "Channel3 ships an SDK, CLI, and MCP server, so telemetry opt-out is a fair question for this product. However, the evidence pack contains no documentation of telemetry, usage tracking, or any opt-out control. The optional user identifier for click and sale attribution (docs-19) and keyless MCP access (docs-9) are adjacent features, not a telemetry opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2214,7 +2283,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agent-facing commerce API (catalog search, product lookup, buy URLs, and sale attribution), so asking about refund handling is a fair question for this kind of product. The evidence contains nothing on initiating or tracking refunds, disputes, or order status for agent-placed orders. Sale recording for affiliate payouts and price-tracking webhooks are adjacent features and do not deliver this capability.",
+    "rationale": "Channel3 is an agentic-commerce product catalog and search API, so a buyer could fairly ask about refund handling and the axis applies. The evidence only shows product search and lookup, affiliate sale attribution, and price-tracking webhooks. Nothing documents initiating or tracking refunds on agent-placed orders.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2229,7 +2298,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is agentic-commerce infrastructure (product catalog search, buy URLs, sale attribution), so issuing scoped agent payment credentials is a fair question for it. The evidence shows no way to give an agent a credential with amount limits, expiry, or merchant restrictions. The MPP mention only covers agents paying Channel3 for its own API usage, an adjacent feature, not a scoped purchasing credential.",
+    "rationale": "Channel3 is an agentic-commerce product catalog API, so issuing scoped payment credentials to agents is a fair question for it. The evidence shows no scoped or limited-use credential feature with amount limits, expiry, or merchant restrictions. The only payment-related item is that agents can pay for Channel3's own API usage via MPP, which is an adjacent capability and not a delegated user credential.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2244,7 +2313,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agent-facing product catalog and affiliate API, so merchant settlement for agent-driven sales is a fair question for this kind of agentic-commerce product. The evidence never documents merchant payout, settlement, or reconciliation flows for agent-originated payments. Its commission payouts to developers (docs-4) and click/sale attribution IDs (docs-19) serve developers, not merchants, and are adjacent features. MPP agent payments (docs-18) pay for Channel3's own API credits, not merchant sales.",
+    "rationale": "Channel3 is an agentic-commerce catalog and affiliate API, so merchant settlement of agent-originated payments is a fair question to ask of it. However, the evidence documents no merchant-facing settlement, payout, or reconciliation reporting flow for agent purchases. The documented money flows are adjacent and do not count: an affiliate commission paid to developers when their users buy, and MPP payment by agents for Channel3's own API credits.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2259,7 +2328,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Channel3 is an agent-facing commerce and product-data API that accepts agent payments via MPP, so per-agent spend controls are a fair question for it. The evidence never documents per-agent spend caps, usage limits, or instant revocation of an agent's payment authority. MPP payment support and per-credit billing are adjacent features, not the capability itself.",
+    "rationale": "Channel3 is an agentic-commerce product API that accepts agent payments via MPP, so per-agent spend controls are a fair question for it. However, the evidence documents no per-agent spend caps, no usage limits, and no way to revoke an agent's payment authority. The pay-per-credit billing and MPP payment option are related features, not controls over agent spending.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2274,7 +2343,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Channel3's pricing docs say agents can pay for API usage via MPP (Machine Payments Protocol) without an API key or signup. That is a first-party, agent-initiated payment rail. However, the evidence never states that MPP settlement happens in stablecoins, and it provides no rail documentation beyond a single line. Missing for 10: explicit stablecoin settlement evidence, documentation of the MPP payment flow and rails, any hands-on or independent corroboration.",
+    "rationale": "Channel3's pricing docs say agents can pay for API usage over a named protocol, MPP (Machine Payments Protocol), with no API key or signup. That makes agent-initiated payment over a documented rail the product's own capability. However, the evidence never says these payments settle in stablecoins, and nothing describes the rail's mechanics. Missing for 10: explicit stablecoin settlement, documentation of supported assets and networks, MPP integration and settlement details, independent or hands-on corroboration.",
     "evidenceIds": [
       "channel3-docs-18"
     ],
@@ -2294,17 +2363,16 @@
     "productId": "channel3",
     "storyId": "structured-offer-data",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Channel3's own API returns structured product metadata (pricing, variants, images and merchant offers) from any product URL under a consistent cross-retailer schema, and includes buy URLs in search responses. Availability is never documented, though. Hands-on reports of missing prices and a price shown as '0' point to uneven data quality rather than an absent capability. Missing for 10: documented availability/stock fields, a published OpenAPI schema (probe found none), and evidence of consistent price completeness.",
+    "rationale": "Channel3 documents a product-lookup API: pass a product URL and get structured pricing, variants, images and merchant offers in one response, under a consistent schema across retailers, with buy URLs included. Availability/stock status is never mentioned, and hands-on community reports show missing prices and a price of '0' for some items, so per-product price data is not reliably complete. missing for 10: documented availability/stock fields, evidence of consistently populated price data, independent corroboration of variant and offer completeness.",
     "evidenceIds": [
       "channel3-docs-6",
       "channel3-docs-3",
       "channel3-docs-19",
-      "channel3-docs-5",
+      "channel3-openapi-20261106",
       "channel3-comm-4",
-      "channel3-comm-7",
-      "channel3-probe-2"
+      "channel3-comm-7"
     ],
     "support": {
       "relation": "direct",

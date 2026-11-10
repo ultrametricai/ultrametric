@@ -5282,7 +5282,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Probes show no agent-oriented documentation: https://undermind.ai/llms.txt and the markdown docs variant https://undermind.ai/mcp.md both return HTTP 404, and no OpenAPI spec was found. The official MCP server and its setup docs are a separate capability (an MCP-server story) and do not count as agent-readable docs for this story.",
+    "rationale": "Probes show no llms.txt (HTTP 404 at /llms.txt) and no Markdown docs variant (HTTP 404 at /mcp.md), and the vendor reference lists no developer docs surface. Its MCP server is a separate integration capability, not agent-oriented documentation, so it earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5297,16 +5297,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Undermind generates AI insights inside the product. It writes syntheses of literature reviews, answers questions across full-text PDFs in the workspace (including uploaded paywalled papers), offers a brainstorming AI expert, builds custom tables, and sends tailored alerts on saved topics. Community users confirm it returns ranked, annotated results and gives a comprehensive understanding of a topic. Missing for 10: evidence of insights over non-literature user data, and independent hands-on corroboration of analysis of the user's own uploaded documents.",
+    "rationale": "Undermind produces AI-generated insights inside the product: written syntheses, a brainstorming AI expert that has read the literature, and custom tables. It also answers questions across the user's workspace papers and uploaded PDFs, and offers suggestions through follow-up questions and role-aware alerts. Community users corroborate useful ranked, annotated results. Missing for 10: insights over user data beyond literature and uploaded papers, and independent hands-on corroboration of workspace-based analysis and suggestions.",
     "evidenceIds": [
-      "undermind-docs-4",
-      "undermind-docs-5",
-      "undermind-docs-36",
-      "undermind-docs-38",
+      "undermind-docs-32",
       "undermind-docs-39",
+      "undermind-docs-5",
+      "undermind-docs-33",
+      "undermind-docs-36",
+      "undermind-docs-37",
       "undermind-docs-46",
-      "undermind-comm-8",
-      "undermind-comm-12"
+      "undermind-comm-8"
     ],
     "support": {
       "relation": "direct",
@@ -5314,28 +5314,28 @@
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": [
         {
-          "evidenceId": "undermind-docs-5",
-          "quote": "Reads full-text PDFs in parallel and answers specific questions across many papers at once, including from figures, tables, and equations."
-        },
-        {
-          "evidenceId": "undermind-docs-36",
-          "quote": "paywalled PDFs can be read after workspace upload."
+          "evidenceId": "undermind-docs-32",
+          "quote": "produces a ranked list of papers with a written synthesis"
         },
         {
           "evidenceId": "undermind-docs-39",
           "quote": "Brainstorm with an AI expert that has read the relevant literature. Generate custom tables to support your research."
         },
         {
-          "evidenceId": "undermind-docs-4",
-          "quote": "produces a ranked list of papers with a written synthesis"
+          "evidenceId": "undermind-docs-5",
+          "quote": "answers specific questions across many papers at once, including from figures, tables, and equations"
+        },
+        {
+          "evidenceId": "undermind-docs-33",
+          "quote": "Searches the global literature, papers already in the workspace"
+        },
+        {
+          "evidenceId": "undermind-docs-36",
+          "quote": "paywalled PDFs can be read after workspace upload"
         },
         {
           "evidenceId": "undermind-docs-46",
           "quote": "Monitors saved topics and sends concise updates tailored to each teammate’s role and active projects."
-        },
-        {
-          "evidenceId": "undermind-comm-8",
-          "quote": "returned 100 ranked, lightly annotated citations with topic-match scores"
         }
       ]
     }
@@ -5344,13 +5344,12 @@
     "productId": "undermind",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Undermind documents one kind of recurring background automation: it monitors saved topics and notifies users when relevant papers are published, with role-aware alerts on enterprise plans. The autonomous deep-review agent that plans its own searches is a one-off, user-triggered run, not a recurring scheduled automation, so it adds little to this story. Missing for 10: user-configurable automations beyond topic alerts (custom schedules, triggers, or chained actions), documentation of how alerts are set up and configured, and independent or hands-on corroboration that background monitoring works.",
+    "rationale": "Undermind's own docs describe background monitoring: it watches saved topics and notifies users when relevant papers are published, with role-aware alerts on enterprise plans. That is a recurring autonomous behavior, but it is limited to paper alerts rather than user-configurable automations. Its deep literature review runs autonomously but is a one-off, user-triggered action, not a recurring background job. Missing for 10: general user-defined automation or workflow setup, scheduling controls, any trigger or action configuration beyond topic alerts, and hands-on or independent corroboration of the alerting.",
     "evidenceIds": [
       "undermind-docs-9",
-      "undermind-docs-46",
-      "undermind-docs-4"
+      "undermind-docs-46"
     ],
     "support": {
       "relation": "direct",
@@ -5364,10 +5363,6 @@
         {
           "evidenceId": "undermind-docs-46",
           "quote": "Role-aware alerts: Monitors saved topics and sends concise updates tailored to each teammate’s role and active projects."
-        },
-        {
-          "evidenceId": "undermind-docs-4",
-          "quote": "Plans its own searches, follows citations and key authors, and stops only when new searches stop finding relevant papers."
         }
       ]
     }
@@ -5375,24 +5370,27 @@
   {
     "productId": "undermind",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Undermind is itself an AI research assistant. Inside the product, users can hand it an open-ended research goal; it asks clarifying follow-up questions, plans its own searches, and returns a ranked synthesis. Users can then brainstorm with an AI expert and generate custom tables. Community hands-on reports confirm delegated searches that return ranked, annotated results after follow-up questions. Missing for 10: in-depth first-party docs on the in-app assistant's scope and actions (current descriptions are short marketing lines), and evidence of delegation beyond literature search and synthesis tasks.",
+    "rationale": "Undermind's in-product AI takes delegated research work: it runs a deep literature review from an open-ended goal, plans its own searches, asks follow-up questions, and offers an AI expert to brainstorm with and generate custom tables. Community users confirm handing off searches and getting ranked results back. Delegation is documented only for literature search and analysis; the workspace actions (curating folders, starring papers, editing notes) are described as MCP tools for external agents, not as tasks the built-in assistant takes on. missing for 10: evidence the built-in assistant performs delegated tasks beyond search and synthesis (e.g., workspace organization or note editing inside the product), detailed first-party docs on the in-app assistant's scope.",
     "evidenceIds": [
+      "undermind-docs-4",
       "undermind-docs-37",
       "undermind-docs-38",
       "undermind-docs-39",
-      "undermind-docs-4",
       "undermind-comm-8",
-      "undermind-comm-5",
-      "undermind-comm-16"
+      "undermind-comm-17"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
       "citations": [
+        {
+          "evidenceId": "undermind-docs-4",
+          "quote": "Runs a deep literature review from an open-ended research goal and produces a ranked list of papers with a written synthesis. Plans its own searches, follows citations and key authors"
+        },
         {
           "evidenceId": "undermind-docs-37",
           "quote": "Undermind asks follow-up questions to understand exactly what you need."
@@ -5402,12 +5400,12 @@
           "quote": "Brainstorm with an AI expert that has read the relevant literature. Generate custom tables to support your research."
         },
         {
-          "evidenceId": "undermind-docs-4",
-          "quote": "Runs a deep literature review from an open-ended research goal and produces a ranked list of papers with a written synthesis. Plans its own searches, follows citations and key authors"
+          "evidenceId": "undermind-docs-38",
+          "quote": "Iterate on reports, dive into full texts, extract details, and refine your understanding."
         },
         {
-          "evidenceId": "undermind-comm-8",
-          "quote": "returned 100 ranked, lightly annotated citations with topic-match scores"
+          "evidenceId": "undermind-comm-17",
+          "quote": "The best results the user has gotten from an AI research assistant."
         }
       ]
     }
@@ -5416,14 +5414,14 @@
     "productId": "undermind",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Undermind's enterprise tier documents its own programmatic API and batch processing for high-volume work, and the GSK case study confirms a programmatic API integration. These are product-side ways to run research without the interactive UI. However, there is no documented headless or CI workflow, the API appears to be enterprise-only and custom, and probes found no public OpenAPI spec. MCP use through CLI agents depends on the host client, so it is not credited here. missing for 10: documented headless/CI usage, public self-serve API docs or spec, auth/token guidance for unattended runs, independent hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Undermind's enterprise page claims programmatic queries via API and batch processing for high-volume research, which is a first-party automation surface. However, the MCP reference says the only developer surface is a user-scoped MCP server using an interactive OAuth authorization-code flow, with no API-key or service-account access and no REST API, which undercuts unattended headless/CI use. missing for 10: non-interactive auth (API keys or service accounts) for CI, a documented public REST API or reference, a CLI or headless runner, CI usage docs, and independent hands-on corroboration.",
     "evidenceIds": [
-      "undermind-docs-17",
       "undermind-docs-44",
+      "undermind-docs-17",
       "undermind-docs-48",
-      "undermind-probe-3"
+      "undermind-mcp-reference-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5437,6 +5435,10 @@
         {
           "evidenceId": "undermind-docs-48",
           "quote": "GSK’s internal AI platform also connects programmatically to Undermind via a custom API"
+        },
+        {
+          "evidenceId": "undermind-mcp-reference-20261106",
+          "quote": "There is no separate API-key or service-account access model for MCP"
         }
       ]
     }
@@ -5447,7 +5449,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Undermind is an AI research assistant, so acting as an MCP client is a fair question for this kind of product. However, all MCP evidence describes Undermind as an MCP server that other clients connect to (Cursor, VS Code, Claude, ChatGPT). Nothing shows Undermind itself connecting to or using external MCP servers' tools, and server-role evidence does not transfer to this client story.",
+    "rationale": "Undermind is an AI research assistant, so letting users connect external MCP servers for it to use is a fair question for this kind of product. The evidence, however, documents only the opposite role: Undermind runs as an MCP server that other clients (Cursor, VS Code, Claude, Codex, Copilot) connect to. Nothing shows Undermind itself accepting or calling third-party MCP servers, and server-side evidence does not transfer to this client-side story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5462,7 +5464,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Undermind documents an official hosted MCP endpoint (https://mcp.undermind.ai/mcp) with setup instructions for Claude Code, Cursor, VS Code, Codex, Copilot and any MCP-compatible client. It exposes documented tools for deep literature review, full-text PDF reading, search, and workspace notes, and a probe confirms the official MCP page exists. Missing for 10: independent or hands-on community corroboration of the MCP server working in practice.",
+    "rationale": "Undermind documents an official hosted MCP server at https://mcp.undermind.ai/mcp using Streamable HTTP and OAuth with PKCE. It gives setup instructions for Claude, Cursor, VS Code, Codex, Copilot and ChatGPT, says it works with any MCP-compatible client, and lists the research tools the server exposes. Missing for 10: independent or hands-on corroboration of agent use over MCP, and non-user-scoped access (the vendor says there is no API-key or service-account model).",
     "evidenceIds": [
       "undermind-docs-14",
       "undermind-docs-15",
@@ -5470,10 +5472,10 @@
       "undermind-docs-13",
       "undermind-docs-24",
       "undermind-docs-26",
-      "undermind-docs-3",
-      "undermind-docs-4",
       "undermind-docs-45",
-      "undermind-probe-4"
+      "undermind-docs-4",
+      "undermind-probe-4",
+      "undermind-mcp-reference-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5507,17 +5509,21 @@
     "productId": "undermind",
     "storyId": "agentic-nl-commands",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Undermind is driven by natural-language research goals. It asks follow-up questions, lets users iterate on reports and brainstorm with an AI, and exposes workspace actions (notes, folders, stars) to chat agents via MCP, where users invoke it with `@Undermind`. Community users confirm that natural-language prompts work better than keyword fiddling. Missing for 10: documentation that every product operation (e.g., alert/settings configuration, workspace management in the native UI) can be done by natural-language command, and independent hands-on reports of operating it conversationally through MCP clients.",
+    "rationale": "Undermind's core interaction is natural language. Users give an open-ended research goal, it asks clarifying follow-up questions, and users can iterate and brainstorm conversationally. Through its MCP server, chat agents such as Claude, ChatGPT, and Copilot can also drive search, full-text Q&A, note editing, folder curation and starring. Community reports confirm that long natural-language prompts work better than keyword fiddling and that the follow-up questions are useful. Missing for 10: no evidence that account, workspace and alert settings can be managed through natural language, as opposed to research and library actions.",
     "evidenceIds": [
       "undermind-docs-4",
       "undermind-docs-37",
       "undermind-docs-38",
       "undermind-docs-39",
-      "undermind-docs-6",
       "undermind-docs-28",
+      "undermind-docs-6",
+      "undermind-docs-7",
+      "undermind-docs-8",
+      "undermind-docs-19",
       "undermind-comm-17",
+      "undermind-comm-5",
       "undermind-comm-8"
     ],
     "support": {
@@ -5534,8 +5540,8 @@
           "quote": "Undermind asks follow-up questions to understand exactly what you need."
         },
         {
-          "evidenceId": "undermind-docs-38",
-          "quote": "Iterate on reports, dive into full texts, extract details, and refine your understanding."
+          "evidenceId": "undermind-docs-39",
+          "quote": "Brainstorm with an AI expert that has read the relevant literature. Generate custom tables to support your research."
         },
         {
           "evidenceId": "undermind-docs-28",
@@ -5544,6 +5550,10 @@
         {
           "evidenceId": "undermind-docs-6",
           "quote": "Creates and edits Markdown notes, syntheses, and reports in the workspace."
+        },
+        {
+          "evidenceId": "undermind-comm-17",
+          "quote": "like that longer prompts beat keyword fiddling"
         }
       ]
     }
@@ -5553,8 +5563,8 @@
     "storyId": "agentic-official-cli",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Undermind is a SaaS research service, so an official CLI is a fair question to ask, but the evidence documents no Undermind-branded CLI. The docs only show its MCP server connecting to third-party CLIs (Claude Code, Codex CLI, Copilot CLI) and an API. Those CLIs are other products' clients, and the MCP server and API are adjacent capabilities, so neither earns credit for this story.",
+    "confidence": "high",
+    "rationale": "Undermind is a SaaS research service, so an official CLI is a fair question to ask. The evidence shows no Undermind CLI. The CLI mentions (Claude Code's `claude mcp add`, Codex CLI, Copilot CLI) are third-party MCP clients that connect to Undermind's MCP server, not an Undermind-shipped CLI. The vendor's reference also states the MCP server is its only developer surface.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5569,13 +5579,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Undermind's enterprise page claims \"Programmatic queries via API\" with batch processing, and GSK connects through a custom API. However, no public API reference or OpenAPI spec was found (all probed paths returned 404). The only publicly documented programmatic interface is the MCP endpoint at mcp.undermind.ai, with its tools described on the /mcp page. missing for 10: public API reference documentation, an OpenAPI spec or endpoint/auth docs, self-serve (non-enterprise) API access, independent hands-on corroboration of the API.",
+    "rationale": "Undermind's only documented public programmatic surface is its MCP server at https://mcp.undermind.ai/mcp (Streamable HTTP, OAuth with PKCE, user-scoped). Agents can drive its search, review, reading and workspace tools through it. The 'Programmatic queries via API' offering is enterprise-only and undocumented, and the vendor reference plus probes confirm there is no REST API, OpenAPI spec, or API reference. missing for 10: a documented general-purpose public API (REST/OpenAPI reference), API-key or service-account access, test environment, versioning/changelog, and public docs for the enterprise API.",
     "evidenceIds": [
+      "undermind-mcp-reference-20261106",
+      "undermind-docs-15",
       "undermind-docs-17",
       "undermind-docs-44",
       "undermind-docs-48",
-      "undermind-docs-15",
-      "undermind-docs-33",
       "undermind-probe-3"
     ],
     "support": {
@@ -5584,16 +5594,16 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "undermind-docs-44",
-          "quote": "Programmatic queries via API ... Batch processing for high-volume research work"
-        },
-        {
-          "evidenceId": "undermind-docs-48",
-          "quote": "GSK’s internal AI platform also connects programmatically to Undermind via a custom API"
-        },
-        {
           "evidenceId": "undermind-docs-15",
           "quote": "Point the client at `https://mcp.undermind.ai/mcp`"
+        },
+        {
+          "evidenceId": "undermind-docs-17",
+          "quote": "Programmatic queries via API"
+        },
+        {
+          "evidenceId": "undermind-mcp-reference-20261106",
+          "quote": "Every request runs as a specific Undermind user"
         }
       ]
     }
@@ -5604,7 +5614,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Undermind documents an enterprise API and a hosted MCP server. Its MCP clients identify themselves via a Client ID Metadata Document, but that is client identification, not issuing scoped or least-privilege credentials. Nothing in the evidence describes creating API keys or tokens with restricted scopes or permissions for an agent, so this applicable axis is unevidenced.",
+    "rationale": "Issuing credentials for an agent is a fair question for a SaaS research service that exposes an MCP server, so the axis applies. However, the vendor's MCP reference says access runs only through a user-scoped OAuth authorization-code flow and explicitly states there is no separate API-key or service-account model. Nothing in the pack shows scoped or least-privilege credentials an agent could be issued.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5619,7 +5629,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents an enterprise API ('Programmatic queries via API'), a custom API for GSK, and an official MCP server. None of it mentions an official SDK or client library in any language, and probes found no OpenAPI spec. A raw API and an MCP endpoint are adjacent building blocks, not the official SDKs this story asks for.",
+    "rationale": "Official SDKs are a fair question for a SaaS research service, so the axis applies. The evidence shows no official SDK: the vendor's own reference says the MCP server is the only developer surface, with no REST API, OpenAPI document or API reference. The enterprise page's vague \"Programmatic queries via API\" line and the MCP server are adjacent integration surfaces, not SDKs, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5634,7 +5644,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a SaaS research platform with an API, but the evidence never documents registrable outbound HTTP callbacks. The paper-publication notifications and role-aware alerts are user-facing alerts, not webhooks a program can receive, and the programmatic API covers queries rather than event subscriptions.",
+    "rationale": "Webhooks are a fair axis for a SaaS research platform, but the evidence shows no registrable outbound HTTP callbacks. Undermind's paper notifications and role-aware alerts are user-facing alerts, not programmatic webhooks. The vendor's MCP reference says the MCP server is the only developer surface.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5649,30 +5659,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Undermind documents a written synthesis, inline citations that trace statements back to source papers, and cross-paper question answering. None of the evidence describes showing where sources agree or disagree, or flagging conflicting findings. Synthesis, citation tracing and custom tables are adjacent capabilities, not the consensus-versus-disagreement view this story asks for, so they earn no credit.",
-    "evidenceIds": [
-      "undermind-docs-4",
-      "undermind-docs-12",
-      "undermind-docs-39"
-    ],
+    "rationale": "Undermind documents a written synthesis with in-line citations, cross-paper question answering, and custom tables. None of the evidence says it surfaces where sources agree or conflict, or that it qualifies answers by consensus versus disagreement. These are adjacent synthesis and traceability features, not the story's capability.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an analyst, I can see where sources agree and disagree instead of a single unqualified answer",
-      "citations": [
-        {
-          "evidenceId": "undermind-docs-4",
-          "quote": "produces a ranked list of papers with a written synthesis"
-        },
-        {
-          "evidenceId": "undermind-docs-12",
-          "quote": "Trace any statement by following in-line citations back to the source paper"
-        },
-        {
-          "evidenceId": "undermind-docs-39",
-          "quote": "Generate custom tables to support your research."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5680,8 +5673,8 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Undermind is a SaaS research service with an enterprise API, so an interactive API reference is a fair question for it. However, the evidence only mentions \"Programmatic queries via API\" and a \"custom API\" for GSK, plus MCP setup instructions. There is no documented interactive API explorer or runnable examples, and the OpenAPI/Swagger probes all returned 404.",
+    "confidence": "high",
+    "rationale": "Undermind is a SaaS research product, so an interactive API reference is a fair question to ask of it. The evidence explicitly states there is no REST API, no OpenAPI document, and no API reference or runner, and probes for openapi.json and related paths all returned 404. The enterprise page mentions 'Programmatic queries via API', but that is not an explorable reference with runnable examples, and the MCP setup docs are adjacent material that does not count here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5695,8 +5688,8 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Undermind advertises enterprise \"Programmatic queries via API\" and runs an MCP server, but nothing in the evidence shows a downloadable OpenAPI or equivalent spec, and probes of the standard OpenAPI/Swagger paths all returned 404. The MCP server is a separate integration story and does not count as a published API spec.",
+    "confidence": "high",
+    "rationale": "Undermind is a SaaS research service, so offering a downloadable API spec is a fair question, but there is no evidence it provides one. The OpenAPI probe returned 404 on every candidate path, and the vendor's MCP reference says there is no REST API and no OpenAPI document. The MCP server and the enterprise mention of 'Programmatic queries via API' are related features, not a downloadable machine-readable spec.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5710,8 +5703,8 @@
     "storyId": "api-sandbox",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Undermind is a SaaS research service with a documented API and MCP server, so a sandbox or test environment is a fair question for this kind of product. The evidence pack never mentions a sandbox, test mode, dry-run or isolated environment. MCP setup instructions and workspace features do not establish isolation from production data.",
+    "confidence": "high",
+    "rationale": "Undermind exposes developer surfaces (an MCP server and enterprise API access), so a sandbox or test environment is a fair question for it. The vendor's MCP reference states there is \"no test environment\". Access is user-scoped OAuth with no separate isolated mode, so nothing in the evidence shows a way to test without touching real workspace data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5725,8 +5718,8 @@
     "storyId": "api-versioning-policy",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Undermind mentions programmatic API access for enterprise and an MCP endpoint, but the evidence never documents API versioning or a deprecation policy. The \"v1 search engine\" mention is marketing about result quality, not API versioning, and OpenAPI probes all returned 404. Being an API-offering service, the axis applies, so absence of evidence is \"none\".",
+    "confidence": "high",
+    "rationale": "Undermind is a SaaS research service with an MCP server and an enterprise mention of programmatic API queries, so a versioning and deprecation axis applies. The evidence pack documents no API versions and no deprecation policy. The vendor's MCP reference explicitly states there is no versioning or changelog surface, and no REST API or OpenAPI document; probes for OpenAPI paths all return 404.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5739,13 +5732,14 @@
     "productId": "undermind",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Undermind documents several first-party bulk capabilities. It can resolve titles, DOIs, or an entire bibliography into matching papers in bulk. It can read full-text PDFs in parallel and answer questions across many papers at once. Enterprise offers batch processing for high-volume research work. However, bulk management actions are not documented: starring and foldering appear only as per-item operations. Batch processing is a thin, enterprise-only claim, and there is no hands-on or independent corroboration. missing for 10: documented bulk edit/organize operations (bulk star, bulk folder moves, bulk delete), detailed docs on the batch-processing API and its limits, independent corroboration of bulk workflows",
+    "rationale": "Undermind documents its own bulk capabilities. Its MCP tools resolve titles, DOIs or an entire bibliography into papers in bulk, and read full-text PDFs in parallel to answer questions across many papers at once. The enterprise page also claims batch processing for high-volume research. However, workspace actions such as starring and foldering are not documented as bulk operations, and batch processing is a one-line enterprise marketing claim with no documented interface. The MCP reference also says MCP is the only developer surface, with no REST API. Missing for 10: documented bulk mutation of workspace items (star/folder/delete many at once), a documented batch-processing interface with limits, and independent hands-on corroboration of bulk operations.",
     "evidenceIds": [
       "undermind-docs-34",
       "undermind-docs-5",
-      "undermind-docs-44"
+      "undermind-docs-44",
+      "undermind-mcp-reference-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5773,7 +5767,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Undermind documents a narrow form of event-triggered automation. Users can save topics that are monitored, and an alert is sent when relevant new papers are published, including role-aware updates for enterprise teams. This is a fixed alert behavior, not a general user-defined rule engine. Missing for 10: configurable rule/condition definitions, a choice of triggered actions beyond notifications, a broader set of event types, and hands-on or independent corroboration of the alerting feature.",
+    "rationale": "Undermind's own documentation describes topic monitoring that fires automatically when a matching event occurs: users save topics, and the product notifies them when relevant papers are published, with role-tailored updates on the enterprise plan. This is a narrow, fixed event-to-notification automation rather than general user-defined rules that trigger configurable actions. missing for 10: user-authored rule logic/conditions, a choice of triggered actions beyond notifications, other event types, webhooks or programmatic triggers, and any independent or hands-on corroboration of the alerting.",
     "evidenceIds": [
       "undermind-docs-9",
       "undermind-docs-46"
@@ -5800,7 +5794,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Undermind's only recurring automation in the evidence is topic monitoring: it watches saved topics and notifies users when relevant papers are published, with role-aware alerts on enterprise. That is a fixed, product-defined recurring job, not general user-defined scheduling of research runs or workflows. Batch processing and the API are one-off or programmatic actions, not schedules. Missing for 10: user-configurable schedules or cadences, scheduling of arbitrary jobs or workflows such as recurring deep reviews, schedule-management documentation, and hands-on corroboration that alerts recur reliably.",
+    "rationale": "The only recurring automation in the evidence is topic monitoring: Undermind watches saved topics and sends ongoing alerts when relevant papers are published, which is a recurring job the user sets up. There is no evidence of a general scheduler for arbitrary searches or workflows. Batch processing and API queries are one-off or programmatic, not scheduled. Missing for 10: user-defined schedules or cadence control, recurring execution of arbitrary research workflows, scheduling via MCP or API, and independent corroboration of the alerts feature.",
     "evidenceIds": [
       "undermind-docs-9",
       "undermind-docs-46"
@@ -5816,7 +5810,7 @@
         },
         {
           "evidenceId": "undermind-docs-46",
-          "quote": "Monitors saved topics and sends concise updates tailored to each teammate’s role and active projects."
+          "quote": "Role-aware alerts: Monitors saved topics and sends concise updates tailored to each teammate’s role and active projects."
         }
       ]
     }
@@ -5827,7 +5821,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Undermind has automation-adjacent features, such as saved-topic alerts, API batch processing and an MCP server, so asking whether those automations can be managed is a fair question. However, the evidence pack documents no way to version, review, or roll back automations. Notes and saved searches persisting across sessions is a different capability and does not count toward this story.",
+    "rationale": "Undermind offers automation-like features, such as saved-topic alerts and batch or programmatic queries, so asking whether those can be versioned, reviewed and rolled back is a fair question. The evidence pack documents no versioning, change review or rollback for any of them. The vendor reference also states there is no versioning or changelog surface.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5842,14 +5836,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Undermind's docs describe an autonomous deep literature review that starts from an open-ended goal. It plans its own searches, follows citations and key authors, and stops only when new searches stop finding relevant papers, then produces a ranked synthesis. Community reports of multi-minute searches, clarifying follow-up questions and an exhaustiveness progress metric corroborate the multi-step design. missing for 10: in-depth documentation of the investigation's intermediate steps or plan trace, and independent evidence that refined searches reliably explore new directions (one user saw near-identical results on a second search).",
+    "rationale": "First-party docs describe an autonomous deep review that starts from an open-ended research goal. It plans its own searches, follows citations and key authors, and keeps going until new searches stop finding relevant papers, then outputs a ranked list with a written synthesis. Community reports back this up indirectly: clarifying follow-up questions, multi-minute searches and an exhaustiveness metric, which points to more than a single-pass summary. Missing for 10: independent evidence showing the internal search-planning and citation-following steps directly, and consistent depth on niche queries (one user saw near-identical results after refining a search).",
     "evidenceIds": [
       "undermind-docs-4",
       "undermind-docs-16",
+      "undermind-docs-32",
       "undermind-docs-37",
+      "undermind-docs-41",
+      "undermind-comm-17",
       "undermind-comm-5",
       "undermind-comm-14",
-      "undermind-comm-17",
       "undermind-comm-2"
     ],
     "support": {
@@ -5859,15 +5855,15 @@
       "citations": [
         {
           "evidenceId": "undermind-docs-4",
-          "quote": "Runs a deep literature review from an open-ended research goal and produces a ranked list of papers with a written synthesis. Plans its own searches, follows citations and key authors, and stops only when new searches stop finding relevant papers."
+          "quote": "Runs a deep literature review from an open-ended research goal and produces a ranked list of papers with a written synthesis."
+        },
+        {
+          "evidenceId": "undermind-docs-16",
+          "quote": "Plans its own searches, follows citations and key authors, and stops only when new searches stop finding relevant papers."
         },
         {
           "evidenceId": "undermind-docs-37",
           "quote": "Undermind asks follow-up questions to understand exactly what you need."
-        },
-        {
-          "evidenceId": "undermind-comm-17",
-          "quote": "The 'Discovery Progress and Exhaustiveness' section (e.g., 23.6% of relevant papers found)"
         }
       ]
     }
@@ -5878,7 +5874,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents exporting results to document, spreadsheet, or reference-manager formats such as DOCX, CSV, BibTeX, or RIS. Undermind can create Markdown notes in its workspace and generate custom tables, but these are in-app features, not exports to common file formats. Export is a fair question for a literature-research tool, so the verdict is none rather than na.",
+    "rationale": "The evidence pack does not document any export of results to documents, spreadsheets, or reference-manager formats such as RIS, BibTeX, Zotero, or EndNote. Creating Markdown notes and custom tables inside the workspace are related in-app features, not export capabilities, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5891,16 +5887,16 @@
     "productId": "undermind",
     "storyId": "free-tier-trial",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Hands-on accounts show researchers could try Undermind via a 'Try it now' sign-up and run searches before paying. The paid-plan copy advertising '10x higher usage limits' implies a lower-limit tier exists, but no free tier or trial is explicitly documented. Sign-up requires an institutional or company email, which blocked an independent researcher. Missing for 10: explicit first-party documentation of a free tier or trial and its limits, access without an institutional email, and clarity on how many queries a trial allows.",
+    "rationale": "There are indirect signs of free access. The paid tier is described as offering '10x higher usage limits', which implies a lower-limit tier. Community users describe a 'Try it now' sign-up and running trial searches before deciding to subscribe at $20/month. However, the evidence never explicitly documents a free tier or trial or its limits, and sign-up reportedly requires an institutional or company email, which locked out an independent researcher. Missing for 10: explicit first-party documentation of a free tier or trial, its query or usage limits, open sign-up for researchers without institutional email, and evidence that the free allotment is enough for a meaningful evaluation.",
     "evidenceIds": [
+      "undermind-docs-18",
       "undermind-comm-15",
       "undermind-comm-1",
-      "undermind-docs-18",
+      "undermind-comm-11",
       "undermind-comm-4",
-      "undermind-comm-13",
-      "undermind-comm-11"
+      "undermind-comm-13"
     ],
     "support": {
       "relation": "direct",
@@ -5908,16 +5904,16 @@
       "subject": "As a researcher, I can try the product meaningfully on a free tier or trial",
       "citations": [
         {
+          "evidenceId": "undermind-docs-18",
+          "quote": "10x higher usage limits"
+        },
+        {
           "evidenceId": "undermind-comm-15",
           "quote": "'Try it now' leads to a sign-up with no social sign-in."
         },
         {
           "evidenceId": "undermind-comm-1",
           "quote": "Tried one search and found it impressive."
-        },
-        {
-          "evidenceId": "undermind-docs-18",
-          "quote": "10x higher usage limits"
         }
       ]
     }
@@ -5928,7 +5924,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Undermind's docs say users can trace any statement through in-line citations back to the source paper, and that citations in generated notes and reports link to the source papers. A community user adds light corroboration: Undermind reliably supplies references, unlike a general LLM. Missing for 10: independent or hands-on confirmation that every substantive claim carries an accurate in-line citation, and in-depth documentation of how citations are attached (e.g., passage-level anchoring).",
+    "rationale": "Undermind's own materials say users can 'trace any statement by following in-line citations back to the source paper', and that workspace notes, syntheses and reports carry citations linking back to source papers. A community user adds that it reliably returns references, unlike a general LLM. Missing for 10: in-depth documentation of citation granularity and coverage (whether every claim is cited), and independent hands-on confirmation of in-line, claim-level citations rather than ranked reference lists.",
     "evidenceIds": [
       "undermind-docs-12",
       "undermind-docs-6",
@@ -5945,7 +5941,7 @@
         },
         {
           "evidenceId": "undermind-docs-6",
-          "quote": "Citations link back to the source papers"
+          "quote": "Citations link back to the source papers, and files stay available to agents across sessions."
         },
         {
           "evidenceId": "undermind-comm-8",
@@ -5960,7 +5956,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Undermind documents an autonomous deep literature review that plans its own searches, follows citations, and stops only when new searches stop finding relevant papers. Community reports confirm these jobs run for minutes, so the long-running, unattended part of the story is supported. The documented notifications are recurring alerts about newly published papers on saved topics, which is a different feature from a one-off alert that a submitted job has finished, so the notify-when-ready part is unevidenced. Missing for 10: documented notification when a research job completes, evidence that jobs keep running if the user leaves the session, independent hands-on corroboration of unattended operation.",
+    "rationale": "Undermind documents an autonomous deep literature review that plans its own searches and runs until new searches stop finding relevant papers. Community reports confirm these are multi-minute jobs. Its documented notifications, however, are recurring alerts about newly published papers on saved topics, not a notice that a specific job has finished, so they do not cover the 'notify me when ready' half of the story. missing for 10: documented completion notification for a running job, evidence that jobs continue in the background after the user leaves (true unattended execution), any delivery channel for result-ready alerts.",
     "evidenceIds": [
       "undermind-docs-4",
       "undermind-docs-16",
@@ -5974,7 +5970,7 @@
       "citations": [
         {
           "evidenceId": "undermind-docs-4",
-          "quote": "Runs a deep literature review from an open-ended research goal and produces a ranked list of papers with a written synthesis. Plans its own searches, follows citations and key authors, and stops only when new searches stop finding relevant papers."
+          "quote": "Plans its own searches, follows citations and key authors, and stops only when new searches stop finding relevant papers."
         },
         {
           "evidenceId": "undermind-comm-14",
@@ -5989,7 +5985,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Undermind's own docs say users can 'Get notified whenever relevant papers are published,' and the enterprise tier describes alerts that monitor saved topics and send updates. That covers a recurring standing search that surfaces new sources, not just a one-off search. Both claims are brief marketing lines, though. Missing for 10: details on how alerts are set up and how often they run, the delivery channels, any limits per plan, and independent or hands-on confirmation that alerts work.",
+    "rationale": "Undermind's own marketing claims ongoing alerting: \"Get notified whenever relevant papers are published\" on the main site, and enterprise \"Role-aware alerts\" that monitor saved topics and send updates. That is a recurring standing search, not a one-off rerun. missing for 10: detailed docs on how alerts are set up (frequency, delivery channel, alert criteria), any hands-on or community confirmation that alerts work, and clarity on whether role-aware alerts are enterprise-only.",
     "evidenceIds": [
       "undermind-docs-9",
       "undermind-docs-46"
@@ -6016,10 +6012,8 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Undermind's own programmatic surface covers much of the UI. Its official MCP server exposes deep literature reviews, search with filters, bulk DOI/bibliography resolution, author lookup, full-text PDF Q&A, workspace notes, folders and starring, and the enterprise tier adds 'Programmatic queries via API' with batch processing. Parity with the UI is never claimed, and several UI features have no documented API or MCP equivalent: alerts and notifications, shared-workspace collaboration, team management, and custom tables. Probes found no OpenAPI spec, and the REST API appears to be enterprise-only. Missing for 10: an explicit UI/API parity claim, a public API reference or OpenAPI spec, programmatic access to alerts, team or collaboration management and custom tables, and independent hands-on confirmation of API coverage.",
+    "rationale": "Undermind's official MCP server exposes a large share of the core UI workflow programmatically: deep literature reviews, search with filters, bulk DOI/title resolution, author lookup, parallel full-text PDF Q&A, workspace notes, folders and starring. However, the vendor's own reference says MCP is the only developer surface, with no REST API, no API reference and user-scoped OAuth only, and UI features such as alerts, team management, shared workspaces and custom tables have no documented programmatic equivalent. missing for 10: documented UI-to-API parity, programmatic alerts/notifications, team/workspace management via API, a general REST/OpenAPI surface or service-account access, independent hands-on corroboration.",
     "evidenceIds": [
-      "undermind-docs-17",
-      "undermind-docs-44",
       "undermind-docs-4",
       "undermind-docs-5",
       "undermind-docs-6",
@@ -6028,19 +6022,15 @@
       "undermind-docs-33",
       "undermind-docs-34",
       "undermind-docs-35",
-      "undermind-docs-48",
-      "undermind-probe-3",
-      "undermind-probe-4"
+      "undermind-docs-44",
+      "undermind-mcp-reference-20261106",
+      "undermind-probe-3"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
-        {
-          "evidenceId": "undermind-docs-44",
-          "quote": "Programmatic queries via API ... Batch processing for high-volume research work"
-        },
         {
           "evidenceId": "undermind-docs-4",
           "quote": "Runs a deep literature review from an open-ended research goal and produces a ranked list of papers with a written synthesis."
@@ -6050,16 +6040,20 @@
           "quote": "Creates and edits Markdown notes, syntheses, and reports in the workspace."
         },
         {
-          "evidenceId": "undermind-docs-33",
-          "quote": "Searches the global literature, papers already in the workspace, or a paper’s references and citations in seconds."
-        },
-        {
           "evidenceId": "undermind-docs-7",
           "quote": "Curate papers into a folder for long-term use."
         },
         {
-          "evidenceId": "undermind-docs-8",
-          "quote": "Star important papers across the workspace."
+          "evidenceId": "undermind-docs-33",
+          "quote": "Searches the global literature, papers already in the workspace, or a paper’s references and citations in seconds. Filters by author, journal, year, and PDF availability."
+        },
+        {
+          "evidenceId": "undermind-docs-34",
+          "quote": "Resolve titles, DOIs, or an entire bibliography into matching papers in bulk."
+        },
+        {
+          "evidenceId": "undermind-docs-44",
+          "quote": "Programmatic queries via API ... Batch processing for high-volume research work"
         }
       ]
     }
@@ -6070,10 +6064,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Undermind is a SaaS research workspace, so data export and portability is a fair axis. The evidence documents no export capability. Markdown notes in the workspace, an organization data-removal request, and MCP/API query access are adjacent features or developer building blocks, not a documented way to export all of your data in open formats.",
+    "rationale": "Nothing in the evidence documents a data export capability, whether bulk download, open-format archive, or portability tooling, for workspaces, libraries, notes, or search results. The closest items are adjacent: notes are stored as Markdown inside the workspace, which is an open format but not an export path, and enterprise customers can request deletion of organization data, which covers deletion rather than data portability.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -6085,7 +6079,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-source availability is a fair question for a SaaS research tool like Undermind. The evidence pack covers only a hosted MCP endpoint, an enterprise API and product features, with no mention of a public source repository or open license, so the axis applies but is unevidenced.",
+    "rationale": "Reading a product's source under an open license is a fair question for a SaaS research tool, so the axis applies. Nothing in the evidence mentions an open-source license, a public repository, or published source code. The only developer surface documented is a hosted MCP server, which is adjacent and not open source.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6100,7 +6094,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a SaaS research product, so the axis applies. The evidence only shows a vendor-hosted service: a hosted MCP endpoint at mcp.undermind.ai, an enterprise API and data-removal requests. Nothing documents a self-hosted or on-prem deployment.",
+    "rationale": "Self-hosting is a fair question for a SaaS research product, so the axis applies. The evidence only shows a vendor-hosted service: the MCP endpoint is at mcp.undermind.ai and enterprise features are API, MCP and data removal. Nothing documents a self-hosted, on-prem or downloadable deployment of the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6115,7 +6109,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Undermind documents uploading PDFs to a workspace and searching and reading papers already there. However, upload is framed around reading paywalled versions of papers it has already found, not ingesting an arbitrary private corpus. Its full-text PDF Q&A then works across those workspace papers. Missing for 10: explicit support for uploading arbitrary or unpublished documents or a bulk corpus, documentation of the upload workflow and its limits, and independent or hands-on corroboration of research over user-uploaded files.",
+    "rationale": "Undermind documents uploading PDFs to a workspace: paywalled PDFs can be read after upload. It can also search papers already in the workspace and run parallel full-text Q&A across many papers, so researching over your own PDFs is supported. However, upload is framed only as a way to read paywalled papers, not as ingestion of an arbitrary personal corpus, and the deep-research agent is described as searching the global literature. Missing for 10: explicit support for uploading arbitrary documents or a whole corpus, documentation that the deep-research agent can be scoped to uploaded files only, and hands-on or community corroboration of upload-based research.",
     "evidenceIds": [
       "undermind-docs-36",
       "undermind-docs-33",
@@ -6152,7 +6146,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Undermind is a hosted SaaS research platform, so choosing a data-storage region is a fair question to ask of it. The evidence pack never mentions region selection or data residency. The only related item is the enterprise option to request complete removal of organization data, which is a different control and earns no credit.",
+    "rationale": "Choosing where data is stored is a fair question for a SaaS research platform, so the axis applies. The evidence pack never mentions region selection, data residency, or storage location. The only related item is the enterprise option to request complete removal of an organization's data, which is a deletion control, not a residency choice, and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6167,7 +6161,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Undermind is an AI research service that handles user queries and uploaded files, so a training opt-out is a fair question to ask of it. The pack contains no evidence of a training opt-out or a no-training commitment. The only related item is an enterprise data-removal request, which is deletion rather than training prevention and earns no credit.",
+    "rationale": "Undermind is an AI research service that handles user queries and uploaded papers, so a training opt-out is a fair question to ask of it. Nothing in the pack documents a training opt-out or a no-training commitment. The only related item is enterprise data removal on request, which is an adjacent deletion control, not a guarantee that data is excluded from model training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6182,7 +6176,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Undermind's enterprise page documents that an organization can request complete removal of its data at any time. That is a first-party deletion capability, but it is request-based and organization-level, with no documented self-serve retention controls. missing for 10: configurable retention periods, self-serve per-item or per-user deletion controls, documentation of the deletion process and timelines, availability outside the enterprise tier, independent corroboration.",
+    "rationale": "Undermind's enterprise page documents that an organization can request complete removal of its data at any time, which is a first-party deletion capability. It appears to be an on-request, org-level process rather than self-serve control, and nothing documents retention settings. missing for 10: configurable retention periods, self-serve per-item or per-user deletion controls, availability outside enterprise plans, detailed retention/deletion policy docs, independent corroboration.",
     "evidenceIds": [
       "undermind-docs-47"
     ],
@@ -6204,7 +6198,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a SaaS research assistant, but the evidence pack never documents a telemetry or usage-tracking opt-out. The only privacy-related item is an enterprise option to request removal of an organization's data, which is a different control from opting out of tracking and earns no credit.",
+    "rationale": "Opting out of telemetry is a fair question for a SaaS research tool, but the evidence pack never documents a telemetry or usage-tracking opt-out. The only privacy-related item is an enterprise option to request complete removal of an organization's data, which is a different capability and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6217,18 +6211,18 @@
     "productId": "undermind",
     "storyId": "scholarly-sources",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Undermind is built for scholarly literature search. Its docs describe searching the global literature and a paper's references and citations, with filters by author, journal and year, plus resolving DOIs and reading full-text PDFs. Several independent users report it surfaced relevant papers they had missed in Google Scholar, arXiv, ScienceDirect and PubMed. Missing for 10: documentation of which corpora and sources are indexed, and coverage of gray literature and dissertations, which hands-on users said was thin.",
+    "rationale": "Undermind is built for scholarly literature search. It searches the global literature, follows citations and key authors, filters by author, journal and year, resolves DOIs, and reads full-text PDFs. Hands-on users confirm it surfaced papers they had missed in Google Scholar, arXiv, ScienceDirect and PubMed. missing for 10: documentation of which corpora and databases are indexed, and coverage of gray literature and theses (users reported it missed much gray literature and few dissertations appeared).",
     "evidenceIds": [
       "undermind-docs-33",
       "undermind-docs-4",
+      "undermind-docs-5",
       "undermind-docs-34",
       "undermind-docs-36",
-      "undermind-docs-10",
-      "undermind-comm-3",
       "undermind-comm-7",
       "undermind-comm-16",
+      "undermind-comm-3",
       "undermind-comm-5",
       "undermind-comm-2"
     ],
@@ -6242,12 +6236,12 @@
           "quote": "Searches the global literature, papers already in the workspace, or a paper’s references and citations in seconds. Filters by author, journal, year, and PDF availability."
         },
         {
-          "evidenceId": "undermind-docs-34",
-          "quote": "Resolve titles, DOIs, or an entire bibliography into matching papers in bulk."
+          "evidenceId": "undermind-docs-4",
+          "quote": "Runs a deep literature review from an open-ended research goal and produces a ranked list of papers with a written synthesis."
         },
         {
-          "evidenceId": "undermind-docs-36",
-          "quote": "Fetches open-access PDFs automatically; paywalled PDFs can be read after workspace upload."
+          "evidenceId": "undermind-docs-5",
+          "quote": "Reads full-text PDFs in parallel and answers specific questions across many papers at once, including from figures, tables, and equations."
         },
         {
           "evidenceId": "undermind-comm-7",
@@ -6260,9 +6254,9 @@
     "productId": "undermind",
     "storyId": "share-collaborate",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Undermind's own docs say teams can \"Collaborate on shared workspaces\" and manage team members. Reports and notes live in the workspace, which implies collaborators could view and build on them. However, the sharing claim is a single marketing line with no detail on how sharing works. missing for 10: documented mechanics for sharing a specific session or report (links, invites), view vs. edit permission controls, collaborative editing details, independent or hands-on corroboration.",
+    "rationale": "Undermind's own docs say users can \"Collaborate on shared workspaces\" and manage team members, and reports and syntheses are stored in the workspace, so collaborators can plausibly view and build on shared research. However, the sharing feature appears only as a one-line marketing mention with no documented mechanics. Missing for 10: per-report or per-session share links, view vs. edit permission controls, documentation of how collaborators build on a shared report, and independent or hands-on corroboration of sharing.",
     "evidenceIds": [
       "undermind-docs-42",
       "undermind-docs-43",
@@ -6292,9 +6286,9 @@
     "productId": "undermind",
     "storyId": "steer-effort-scope",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Undermind lets researchers shape a run's scope before it starts: it asks clarifying follow-up questions, and users report this refined their questions. Resubmitting a similar search continues from existing results, which extends the run. However, depth and effort are set by the engine itself, which plans its own searches and stops only when new searches stop finding relevant papers, and there is no evidence of steering a run while it executes. Missing for 10: explicit user-set depth/effort controls, mid-run steering or interruption, documented scope parameters for deep research runs, and independent corroboration of steering controls.",
+    "rationale": "Undermind lets a researcher shape a run's scope before it starts by answering its follow-up questions. A similar resubmitted search continues from existing results, which effectively extends depth. However, the deep-research tool decides its own effort and stopping point ('stops only when new searches stop finding relevant papers'), and nothing documents a user-set depth or effort level or steering while a run executes. Missing for 10: explicit depth/effort controls, mid-run steering or interruption, scope filters documented for the deep-research run itself, independent hands-on confirmation of steering.",
     "evidenceIds": [
       "undermind-docs-37",
       "undermind-docs-41",
@@ -6328,15 +6322,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Undermind documents written syntheses with a ranked paper list, Markdown reports with linked citations, custom tables, iterating on reports, and shared workspaces for collaborating. A community user also describes a results page with a named section. Missing for 10: explicit documentation of sectioned report structure, export or sharing formats for stakeholders outside the workspace (PDF/doc/link), and independent corroboration of the table and summary output.",
+    "rationale": "Undermind documents reports with a written synthesis and a ranked paper list, Markdown reports with linked citations, custom table generation, and shared workspaces for collaboration. Together these cover the core of a summarized report with tables that others can see. However, structured sections and stakeholder-oriented sharing or export are not explicitly documented, and the community evidence describes ranked, annotated citation lists rather than formatted reports. Missing for 10: explicit documentation of sectioned report structure, export or share-link options for non-users, and independent hands-on corroboration of report formatting.",
     "evidenceIds": [
       "undermind-docs-32",
       "undermind-docs-6",
-      "undermind-docs-39",
       "undermind-docs-38",
+      "undermind-docs-39",
       "undermind-docs-42",
-      "undermind-docs-12",
-      "undermind-comm-17"
+      "undermind-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -6372,14 +6365,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Undermind documents its own cross-paper extraction: it reads full-text PDFs in parallel, answers specific questions across many papers at once, and generates custom tables. It also offers per-paper relevance judgment with sorting and filtering, which supports a screening-like pass. However, no structured systematic-review workflow with explicit, consistently applied inclusion/exclusion criteria is documented, and a meta-analysis author reported it missed a sample-size exclusion. Missing for 10: explicit user-defined screening criteria applied uniformly across papers, a documented systematic screening→extraction pipeline, independent evidence of consistent criteria application.",
+    "rationale": "Undermind documents parallel full-text extraction, answering specific questions across many papers at once, and custom tables. It also offers per-paper relevance judgment against a user's question, which approximates screening. However, it does not document a systematic screening workflow with explicit inclusion/exclusion criteria applied consistently, and a meta-analysis author reported it missed a sample-size exclusion. missing for 10: explicit user-defined inclusion/exclusion screening criteria, documented consistency/reproducibility of criteria across papers, screening audit trail (e.g., PRISMA-style), independent corroboration of extraction accuracy at scale.",
     "evidenceIds": [
       "undermind-docs-5",
       "undermind-docs-39",
       "undermind-docs-40",
       "undermind-docs-38",
-      "undermind-comm-5",
-      "undermind-comm-8"
+      "undermind-docs-44",
+      "undermind-comm-5"
     ],
     "support": {
       "relation": "direct",
@@ -6407,11 +6400,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Undermind's homepage describes a higher plan tier only in relative terms ('10x higher usage limits', unlimited workspaces/files/libraries) and mentions centralized team billing. A community user cites a $20/month subscription, but no first-party pricing figures or absolute limit numbers appear in the evidence. missing for 10: published plan prices, concrete per-plan usage limits (e.g. searches per month), a free-tier definition, enterprise pricing details, and independent corroboration of the limits.",
+    "rationale": "Undermind's homepage shows a plan-tier comparison mentioning \"10x higher usage limits\" and unlimited workspaces, so a prospective buyer gets a relative sense of tiers. The $20/month price appears only in a community comment, and no first-party document states prices or concrete usage caps. Missing for 10: a first-party pricing page with plan prices, explicit numeric usage limits (searches or queries per period), free-tier limits, and enterprise pricing details.",
     "evidenceIds": [
       "undermind-docs-18",
-      "undermind-docs-43",
-      "undermind-comm-11"
+      "undermind-comm-11",
+      "undermind-docs-43"
     ],
     "support": {
       "relation": "direct",
@@ -6420,11 +6413,7 @@
       "citations": [
         {
           "evidenceId": "undermind-docs-18",
-          "quote": "10x higher usage limits Unlimited workspaces, files, and paper libraries"
-        },
-        {
-          "evidenceId": "undermind-docs-43",
-          "quote": "Centralized billing"
+          "quote": "Deepest analysis of full texts 10x higher usage limits Unlimited workspaces, files, and paper libraries"
         },
         {
           "evidenceId": "undermind-comm-11",

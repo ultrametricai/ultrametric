@@ -69,3 +69,18 @@ Wave-10 specifics:
 Scoped re-judges run under the ratified v6 rubric (ai-video, business-phone, and
 compliance-screening judged category-wide), then `derive` per touched arena and the
 dependent generators. Engine output is accepted as-is; honest negatives ship.
+
+Four checked-absent cells publish as engine partials on adjacent evidence and carry both
+readings (aircall api-interactive-docs q3; pika, pomelo, and gitea api-versioning-policy
+on versioned paths without policy pages — the jira/dynadot classes).
+
+## Pre-audit (before the first push)
+
+54 verdict-level up-moves vs merge-base a35dff5507 (28 target cells, 26 side-effect
+flips), re-read against the v6 on-axis bar. Zero inputs corrections this wave; eleven
+thin or adjacent partials conceded and documented in the ledger JSON. The full-verdict
+ups ground in live spec downloads, vendor-hosted or instance-built-in runners, a
+dedicated Stage environment, and committed versioning policies, with gating, isolation,
+and aggregator-scope caveats carried in the cited excerpts (alloy's sandbox publishes as
+partial q4 with the vendor's own no-data-boundary caveat quoted in the verdict's
+support). Honest downs ship (21).

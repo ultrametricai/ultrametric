@@ -1,11 +1,11 @@
 {
-  "hash": "d7354ad9ad277abb5fd539abc97e6bd0a44171210a9a1a2308b902101a0d8574",
+  "hash": "69c484871179b5e8f028053fe085787670aa74569c2171ae95a755217b050605",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Alloy documents webhook signing: it signs the request body with a shared secret and sends the signature in the Authorization header, so developers can verify authenticity and integrity. It also documents retries with exponential backoff, but nothing in the evidence describes event IDs, idempotency keys or other guidance for deduplicating retried deliveries. That leaves only half the story supported. Missing for 10: documented unique event or delivery identifiers or idempotency guidance for deduplicating retries, signature verification details (algorithm, replay or timestamp protection), independent or hands-on corroboration.",
+    "rationale": "Alloy documents webhook authentication in which it signs the request body with a shared secret and sends the signature in the Authorization header, which lets a developer verify authenticity and payload integrity. It also documents that failed deliveries are retried on exponential backoff for 24 hours, but nothing in the evidence gives a developer a way to deduplicate those retries. missing for 10: a documented unique event/delivery ID or idempotency key for deduplicating retried notifications, details of the signature algorithm and verification steps, and independent or hands-on corroboration.",
     "evidenceIds": [
       "alloy-docs-6",
       "alloy-docs-7",
@@ -19,7 +19,7 @@
       "citations": [
         {
           "evidenceId": "alloy-docs-7",
-          "quote": "Alloy signs the request body with a shared secret and sends the signature in the Authorization header"
+          "quote": "Alloy signs the request body with a shared secret and sends the signature in the Authorization header... this also verifies that the payload was not altered in transit."
         },
         {
           "evidenceId": "alloy-docs-6",
@@ -27,7 +27,7 @@
         },
         {
           "evidenceId": "alloy-docs-8",
-          "quote": "retries continue on an exponential backoff for a duration of 24 hours from the time of the first failure."
+          "quote": "Subsequently, retries continue on an exponential backoff for a duration of 24 hours from the time of the first failure."
         }
       ]
     },
