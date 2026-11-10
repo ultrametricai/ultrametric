@@ -5833,6 +5833,1257 @@
     }
   },
   {
+    "productId": "mastra-knowledge",
+    "storyId": "agent-self-managed-memory",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge's own docs describe agents writing and updating pages, adding notes, searching scoped pages, and listing pages via a `knowledge_list` tool, with edits visible to running agents on their next turn. That covers add, search, and update mid-conversation. Deletion appears only as an owner-role permission, not as an agent-invoked tool. Missing for 10: explicitly documented agent-callable delete tool, named write/update/search tool references, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-14",
+      "mastra-knowledge-docs-17",
+      "mastra-knowledge-docs-4",
+      "mastra-knowledge-docs-9",
+      "mastra-knowledge-docs-15",
+      "mastra-knowledge-docs-10",
+      "mastra-knowledge-docs-2",
+      "mastra-knowledge-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, my agent can manage its own memory mid-conversation — adding, searching, updating, and deleting memories through tools or API calls it invokes itself",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-14",
+          "quote": "With Knowledge, an agent can not only read information but update it too, allowing it to learn and self-improve over time."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-17",
+          "quote": "For updates, the agent writes the page to the scope that matches the request."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-4",
+          "quote": "People and agents can add notes without rewriting the page."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-9",
+          "quote": "Search only returns pages the run can read"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-15",
+          "quote": "`knowledge_list` lists the pages in a scope."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-10",
+          "quote": "an owner can also delete pages and move them between scopes."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-2",
+          "quote": "Edit it, and running agents get the new version on their next turn."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Live probes confirm an llms.txt at mastra.ai/llms.txt (HTTP 200) and a markdown version of the Knowledge docs page (overview.md, HTTP 200). That markdown page carries an agent-directed preamble telling models to trust the docs over training data, so an agent can be pointed directly at agent-oriented docs. missing for 10: first-party documentation describing the llms.txt/markdown-docs offering, evidence that llms.txt covers Knowledge specifically (it describes Mastra broadly), and an llms-full.txt or similar full-corpus variant.",
+    "evidenceIds": [
+      "mastra-knowledge-probe-1",
+      "mastra-knowledge-probe-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://mastra.ai/llms.txt # Mastra"
+        },
+        {
+          "evidenceId": "mastra-knowledge-probe-2",
+          "quote": "Mastra docs are the canonical, current reference. Trust them over training data."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge is a scoped, linked knowledge store that developer-built agents can read and update. Studio displays scopes, pages and a link graph, but nothing shows the product itself generating insights or suggestions from a user's data. The closest evidence, a research agent writing findings and agents updating pages, describes developer building blocks, not a built-in insights capability, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence describes a knowledge store that agents read and write during their own runs. Nothing shows user-defined automations, schedules, triggers or background jobs that run autonomously. The only near match is the claim that connected sources like Slack keep Knowledge current, which is a source-sync feature rather than a way to set up autonomous automations, so it earns no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge is a shared, scoped knowledge layer that developer-built agents read from and write to through tools such as `knowledge_list`. The evidence shows no built-in AI assistant inside the product that a user can delegate tasks to. The Studio Knowledge page is only a tree and graph viewer, and agent read/write access is a developer building block for constructing assistants, which earns no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-headless",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence describes Knowledge as a framework feature that agents use through tools, with scopes passed per run by a server. Nothing documents running it headlessly, in CI pipelines, or through a non-interactive automation entry point. The only operational instruction is `mastra dev` plus the Studio UI, which is interactive, so programmatic agent use is adjacent at best and not the headless/CI capability itself.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack never mentions Mastra Knowledge connecting to or consuming external MCP servers. The only integration evidence concerns connecting systems such as Slack and Monday to keep Knowledge current, which is a different capability from MCP client support. Plugging in MCP tools is a fair question for an agent-facing knowledge product, so the axis applies and the absence of evidence yields none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge is a knowledge-base feature of an agent framework, not itself an agent, so publishing an official MCP server is a fair question and the axis applies. The evidence only shows in-framework agent tools such as `knowledge_list`, a Studio page, and llms.txt/markdown docs. None of it documents an official MCP server or endpoint for connecting external agents.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Knowledge ships its own agent tools (e.g. `knowledge_list`) and documents agents reading and updating pages in response to a request, so its content can be managed through natural-language instructions given to an agent. However, this depends on an agent the developer builds and wires up with those tools. There is no documented first-party natural-language command interface for operating the product, and Studio is a visual tree/graph UI. missing for 10: a built-in natural-language command surface for users, documented coverage of operations beyond reading and writing pages (scopes, permissions, moves), and hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-17",
+      "mastra-knowledge-docs-14",
+      "mastra-knowledge-docs-15",
+      "mastra-knowledge-docs-4",
+      "mastra-knowledge-docs-8"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can operate the product with natural-language commands",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-17",
+          "quote": "For updates, the agent writes the page to the scope that matches the request."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-14",
+          "quote": "With Knowledge, an agent can not only read information but update it too, allowing it to learn and self-improve over time."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-15",
+          "quote": "`knowledge_list` lists the pages in a scope."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-4",
+          "quote": "People and agents can add notes without rewriting the page."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-official-cli",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only evidence is a single docs mention of the first-party `mastra` CLI. Its `mastra dev` command launches Studio, where Knowledge is browsed, so an official CLI exists in the product's workflow. Nothing shows CLI commands for creating, editing, searching or scoping Knowledge pages. Missing for 10: Knowledge-specific CLI commands (list/read/write/search pages), CLI reference documentation, AI-agent-oriented CLI usage, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-12"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can use an official CLI",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-12",
+          "quote": "To see the page, run `mastra dev`, open Studio and select **Knowledge**."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-public-api",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mastra Knowledge has its own programmatic surfaces. Agents drive it through first-party tools such as `knowledge_list`, calls pass `scopes`, and `KNOWLEDGE_ROUTES` enables server routes for Studio. However, the evidence shows no documented public API reference, and the OpenAPI probe found nothing. missing for 10: a documented public HTTP/SDK API reference for Knowledge operations, an OpenAPI spec, a full listing of endpoints or tools beyond `knowledge_list`, and independent or hands-on corroboration of external programmatic control.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-15",
+      "mastra-knowledge-docs-13",
+      "mastra-knowledge-docs-11",
+      "mastra-knowledge-docs-17",
+      "mastra-knowledge-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-15",
+          "quote": "`knowledge_list` lists the pages in a scope."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-13",
+          "quote": "`KNOWLEDGE_ROUTES` turns on the Knowledge page in Studio"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-11",
+          "quote": "an agent without it works too, as long as each call passes `scopes`"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows scope-based access control inside Knowledge: the server passes scopes per run, there are viewer/contributor/editor/owner roles, and agents can be given read-only tools. None of it documents issuing API credentials, keys or tokens scoped to an agent. Permission scoping on knowledge pages is an adjacent control, not credential issuance.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-sdks",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Mastra Knowledge is part of Mastra, which describes itself as a TypeScript framework for building agents. The docs describe programmatic use: the server passes scopes per run, each agent call passes `scopes`, and the framework exposes tools like `knowledge_list` and a `KNOWLEDGE_ROUTES` setting. So developers build against first-party TypeScript code, but no named SDK, package or client-library reference is documented. missing for 10: explicit official SDK/package documentation, API reference for the Knowledge SDK surface, multi-language SDKs, published API spec (OpenAPI probes 404), independent corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-probe-1",
+      "mastra-knowledge-docs-11",
+      "mastra-knowledge-docs-3",
+      "mastra-knowledge-docs-15",
+      "mastra-knowledge-docs-13"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can build against official SDKs",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-probe-1",
+          "quote": "Mastra is a framework for building AI-powered applications and agents with a modern TypeScript stack."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-11",
+          "quote": "an agent without it works too, as long as each call passes `scopes`"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-15",
+          "quote": "`knowledge_list` lists the pages in a scope."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge is a shared knowledge store for agents, so emitting outbound webhook events on page changes is a fair question for this kind of product. The evidence pack documents no registrable outbound HTTP callbacks. The Slack/Monday item describes inbound source connectors, and agents picking up edits on their next turn is in-process propagation, not a webhook subscription.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack shows no interactive API reference or runnable-example playground for Mastra Knowledge, and the OpenAPI probe found nothing at any candidate path. The Studio Knowledge page is a browser for scopes and pages, and llms.txt and markdown docs are machine-readable documentation. Neither is an interactive API reference with runnable examples, so both are adjacent features that earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A machine-readable API spec is a fair ask for a framework and storage-backed knowledge product, so the axis applies. The probe found no OpenAPI or Swagger spec: every candidate path returned 404. The llms.txt file and markdown docs are LLM-readable documentation, not an API specification, so they earn no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence never documents a sandbox or test environment for Mastra Knowledge that is isolated from production data. Scopes are per-tenant read/write isolation, not a test sandbox. `mastra dev` opens a local Studio view of Knowledge but is not described as separating test data from production. Pointing Knowledge at a different storage provider would be a user-side workaround, not a product capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Versioning and deprecation policy is a fair axis for a framework feature like Mastra Knowledge, but the evidence shows no versioned API surface or documented deprecation policy. The only 'version' mention refers to agents seeing edited page content on their next turn, which is content updating, not API versioning, and the OpenAPI probes all returned 404.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "assistant-memory-plugins",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Knowledge being shared across agents built inside a Mastra server, for example a research, planning and coding agent reading from the same scope. Nothing shows off-the-shelf assistants such as Claude, ChatGPT or Cursor connecting to it, whether through an MCP server, a public API or a connector. The Slack and Monday connectors pull content in from those systems; they do not expose the memory to external assistants, so they are a different capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can connect off-the-shelf assistants (Claude, ChatGPT, Cursor) to the same memory so every tool I use shares what it knows about me",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "async-batch-processing",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ingesting at scale with async or batch processing and checking job status is a fair question for an agent knowledge and memory product, so the axis applies. The evidence only shows loading docs into a scope and connectors that keep Knowledge current. Nothing documents async or batch ingestion APIs, background job processing, or a way to check the status of background memory operations, so this is none rather than na.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform-engineer, I can ingest at scale with async or batch processing and check the status of background memory operations",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "automatic-memory-extraction",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Knowledge lets agents write and update pages so they can 'learn and self-improve over time.' It also claims to keep itself current from connected sources like Slack and Monday, which suggests some autonomous upkeep. There is no explicit documentation of extracting salient facts from raw conversation, or of a background consolidation or deduplication process run by the memory layer itself. Missing for 10: documented automatic fact extraction from conversation transcripts, background consolidation/merging of memories, details on how salience is decided, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-14",
+      "mastra-knowledge-docs-17",
+      "mastra-knowledge-docs-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, the memory layer decides for itself what is worth remembering — extracting salient facts from raw conversation and consolidating them in the background",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-14",
+          "quote": "With Knowledge, an agent can not only read information but update it too, allowing it to learn and self-improve over time."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-19",
+          "quote": "You connect the systems where your org already writes, like Slack and Monday, and Knowledge keeps itself current."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-17",
+          "quote": "For updates, the agent writes the page to the scope that matches the request."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk operations are a fair question for a knowledge-base product, so the axis applies. The evidence shows only per-page actions: listing pages in a scope, writing or editing a page, adding notes, and moving or deleting pages. None of it documents applying one operation to many items at once. Loading docs into a scope and syncing from Slack or Monday are ingestion and sync features, not a documented bulk-operation capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence describes Knowledge as a scoped, permissioned page graph that agents read and update. It also says edits reach agents on their next turn and that connected sources like Slack and Monday keep it current. That is content propagation and sync, not user-defined rules that fire actions on events, so these are adjacent features that earn no credit. A knowledge platform could plausibly offer event triggers, so the axis applies and absence of evidence yields none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scheduling recurring jobs is a fair question for a knowledge platform within an agent framework, but the evidence pack never documents cron, interval, or recurring workflow scheduling. The claim that Knowledge \"keeps itself current\" via connected systems describes automatic content syncing, not a user-configurable recurring schedule, so it earns no credit for this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge is an agent knowledge store, and versioning and rollback of its content is a fair question for it. The evidence only shows that edited pages reach running agents on their next turn, plus role permissions and notes. There is no documented version history, review or approval workflow, or rollback for automations or pages.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "business-data-ingestion",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge documents loading docs and policies into scoped pages that agents read and update, and it stores them in the configured storage provider. The announcement also claims connectors to Slack and Monday that keep Knowledge current, which loosely covers business data. JSON ingestion is never mentioned, and the ingestion mechanics (formats, APIs, bulk import) are thin. Missing for 10: JSON or structured-data ingestion, documented ingestion API and formats, detail on business-data connectors, hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-8",
+      "mastra-knowledge-docs-1",
+      "mastra-knowledge-docs-16",
+      "mastra-knowledge-docs-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can ingest documents, JSON, and business data into memory — not just chat transcripts",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-8",
+          "quote": "Load your docs or policies into a scope and give the agent read-only tools."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-19",
+          "quote": "You connect the systems where your org already writes, like Slack and Monday, and Knowledge keeps itself current."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-16",
+          "quote": "Knowledge is stored in your configured storage provider, which adds its own `mastra_knowledge_*` tables the first time Knowledge is used"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "custom-ontology-schema",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge documents pages that nest like folders and link to form a graph, plus scoped permissions. Nothing in the evidence shows user-definable entity types, edge or relation types, or an ontology or schema that can be tailored to a domain. Page nesting and linking are adjacent structural features, not memory-schema customization.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ml-engineer, I can customize the memory schema — entity types, edge types, or ontology — to match my domain",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "entity-graph-memory",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mastra Knowledge stores agent-writable pages whose links form a graph, and Studio visualizes that link graph. This is a page-link graph, though, not a documented entity-and-relationship memory store with multi-hop or entity-centric querying. missing for 10: entity extraction from memories, typed relationships between entities, graph traversal or multi-hop query support, entity-centric retrieval APIs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-6",
+      "mastra-knowledge-docs-13",
+      "mastra-knowledge-docs-14",
+      "mastra-knowledge-docs-17"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ml-engineer, I can store memories as a knowledge graph of entities and relationships so multi-hop and entity-centric questions are answerable",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-6",
+          "quote": "These links make Knowledge a graph rather than a list of documents."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-13",
+          "quote": "shows every scope and page as a tree beside a graph of how the pages link."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-14",
+          "quote": "With Knowledge, an agent can not only read information but update it too, allowing it to learn and self-improve over time."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "framework-integrations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence describes Knowledge only inside Mastra's own agents, Studio and storage, with no documented integration for LangChain, LangGraph, CrewAI or the Vercel AI SDK. The Slack and Monday connectors pull in data sources; they are not agent-framework integrations and earn no credit. The axis applies to a memory or knowledge layer, so this is \"none\" rather than \"na\".",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can drop the memory layer into agent frameworks like LangChain, LangGraph, CrewAI, or the Vercel AI SDK via documented first-party integrations",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "hybrid-filtered-recall",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows only that search results are limited to the scopes a run is allowed to read. That is an access-control boundary, not a developer-controlled metadata filter, keyword/hybrid search mode, or reranking option. Nothing documents any way to change retrieval beyond the default search, so the story is applicable but unevidenced.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can steer retrieval with metadata filters, keyword/hybrid search modes, or reranking instead of accepting a single fixed similarity search",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "local-embedded-mode",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mastra Knowledge stores its data in the developer's own configured storage provider, adding its own tables, and can be inspected locally via `mastra dev` and Studio. That points to self-hosted, in-app operation rather than a mandatory hosted service. However, the evidence never states that it runs fully offline, embedded in-process, or against local models. missing for 10: explicit embedded/in-process local storage option, local model/embedding support, statement of no cloud dependency, hands-on corroboration of offline operation.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-16",
+      "mastra-knowledge-docs-12"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can run the memory layer fully locally — embedded in-process or against local models — without any cloud dependency",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-16",
+          "quote": "Knowledge is stored in your configured storage provider, which adds its own `mastra_knowledge_*` tables the first time Knowledge is used"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-12",
+          "quote": "To see the page, run `mastra dev`, open Studio and select **Knowledge**."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "long-term-memory-add-search",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge lets agents write and update pages and notes that persist in the configured storage provider. A search capability is mentioned, so information can carry across runs. However, the evidence never says search is semantic, and it does not describe automatic capture of memories from conversations; it frames the feature as curated pages rather than conversational memory. Missing for 10: documented semantic/vector search, explicit conversation-to-memory extraction, cross-session recall examples, independent hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-14",
+      "mastra-knowledge-docs-17",
+      "mastra-knowledge-docs-4",
+      "mastra-knowledge-docs-9",
+      "mastra-knowledge-docs-16"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can add memories from conversations and retrieve them later with semantic search, so context persists across sessions",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-14",
+          "quote": "an agent can not only read information but update it too, allowing it to learn and self-improve over time"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-17",
+          "quote": "For updates, the agent writes the page to the scope that matches the request."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-4",
+          "quote": "People and agents can add notes without rewriting the page."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-9",
+          "quote": "Search only returns pages the run can read"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-16",
+          "quote": "Knowledge is stored in your configured storage provider"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "low-latency-retrieval-claims",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "high",
+    "rationale": "Retrieval-latency targets or measured numbers are a fair thing to ask of a knowledge/retrieval product, so the axis applies. Nothing in the evidence pack states latency targets, p50/p95 figures, or any benchmark. The docs cover scopes, permissions, page graphs and Studio, but not retrieval performance.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform-engineer, I can see documented retrieval-latency targets or measured numbers (e.g. p50/p95) backing the product's speed claims",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "memory-access-controls",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge documents role-based access: viewer, contributor, editor and owner roles control reading, adding, editing, deleting and moving pages. Server-passed scopes decide which pages a run can read, search is filtered to readable pages, and permissions can be set at individual, team and org level. Nothing in the pack shows any audit trail or access logging, which is half the story. Missing for 10: audit logging of read/write access, explicit policy/ACL configuration docs, independent corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-10",
+      "mastra-knowledge-docs-3",
+      "mastra-knowledge-docs-9",
+      "mastra-knowledge-docs-18"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can govern who and what can read or write memory with roles, policies, or access-control lists, and audit that access",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-10",
+          "quote": "a viewer reads, a contributor adds pages and notes, an editor changes pages, and an owner can also delete pages and move them between scopes."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-3",
+          "quote": "the scopes your server passes for a run decide which ones it can read."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-9",
+          "quote": "Search only returns pages the run can read"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-18",
+          "quote": "set permissions at the individual, team and org level."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "memory-deletion-erasure",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mastra Knowledge documents a role-based ability for an owner to delete individual pages, and pages are partitioned into per-customer or per-team scopes. That gives single-item deletion of stored agent knowledge. Nothing in the evidence shows bulk deletion by scope or entity, or a full-erasure operation for privacy requests. Missing for 10: per-entity/per-scope bulk deletion, full erasure of all of a user's data, an API or programmatic delete for privacy workflows, and any privacy/compliance-oriented documentation or independent corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-10",
+      "mastra-knowledge-docs-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can delete a user's memories on demand — single memory, per-entity, or full erasure — to satisfy privacy requirements",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-10",
+          "quote": "an owner can also delete pages and move them between scopes"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-3",
+          "quote": "Each customer's or team's pages live in their own scope"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "memory-expiration-ttl",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge is an agent knowledge and memory store, so expiring or decaying memories is a fair question for it. The evidence pack documents no TTL, expiration dates or recency weighting. Editing pages and syncing connected sources such as Slack keep content current, but those are adjacent features, not expiry or decay mechanisms.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can make memories expire or decay — via TTL, expiration dates, or recency weighting — so stale facts stop surfacing",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "memory-export-portability",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Knowledge data sits in the user's own configured storage provider (mastra_knowledge_* tables), and a knowledge_list tool lists pages. Neither is a documented export of memories in a machine-readable format: storing data in the user's own database and a list tool are adjacent building blocks, not an export capability. No export command, API, or file format is documented.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-16"
+    ],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As a platform-engineer, I can export memories in a machine-readable format so the memory store is portable and not a lock-in trap",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-16",
+          "quote": "Knowledge is stored in your configured storage provider, which adds its own `mastra_knowledge_*` tables the first time Knowledge is used"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "memory-update-reconcile",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge lets agents update stored pages and not only read them. Edits reach running agents on their next turn, and Knowledge is said to keep itself current from connected sources. The docs never describe detecting contradictions or automatically superseding or merging conflicting memories; updates appear to be explicit page writes or added notes. Missing for 10: documented contradiction detection, supersede/merge semantics for conflicting facts, version history or conflict-resolution behavior, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-14",
+      "mastra-knowledge-docs-17",
+      "mastra-knowledge-docs-2",
+      "mastra-knowledge-docs-4",
+      "mastra-knowledge-docs-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can rely on the memory layer to update, supersede, or merge memories when new information contradicts what was stored",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-14",
+          "quote": "With Knowledge, an agent can not only read information but update it too, allowing it to learn and self-improve over time."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-17",
+          "quote": "For updates, the agent writes the page to the scope that matches the request."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-2",
+          "quote": "Edit it, and running agents get the new version on their next turn."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-19",
+          "quote": "Knowledge keeps itself current."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "multi-language-sdks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence describes Mastra only as a TypeScript framework ('modern TypeScript stack'). Nothing in the pack shows an official Python SDK or equivalent memory APIs across languages, so the story's multi-language requirement is unevidenced.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can build against official SDKs in at least Python and TypeScript with equivalent memory APIs",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "multimodal-memory-ingestion",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge is a memory and knowledge system, so storing files as memory inputs is a fair axis for it. However, the evidence only describes text pages, notes, and scoped search. Nothing documents ingesting images, PDFs, or other binary files and recalling information from them; 'Load your docs or policies into a scope' refers to page content, not file uploads.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can store images, PDFs, or other files as memory inputs and recall information from them later",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Knowledge exposes its own programmatic operations: agent tools such as `knowledge_list`, agents writing pages to scopes, and people and agents adding notes. `KNOWLEDGE_ROUTES` powers the Studio Knowledge page, which implies server routes behind the UI. Nothing documents a public API that matches everything the Studio UI does, and no OpenAPI spec was found. missing for 10: a documented HTTP/SDK API reference for Knowledge, explicit UI–API parity (tree/graph browsing, delete/move between scopes, permission management), an OpenAPI spec, and independent corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-15",
+      "mastra-knowledge-docs-17",
+      "mastra-knowledge-docs-4",
+      "mastra-knowledge-docs-13",
+      "mastra-knowledge-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-15",
+          "quote": "`knowledge_list` lists the pages in a scope."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-17",
+          "quote": "For updates, the agent writes the page to the scope that matches the request."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-4",
+          "quote": "People and agents can add notes without rewriting the page."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-13",
+          "quote": "`KNOWLEDGE_ROUTES` turns on the Knowledge page in Studio, which shows every scope and page as a tree beside a graph of how the pages link."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "openness-full-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence documents no export feature, no open export format, and no offboarding path for Knowledge data. The only related evidence is that Knowledge data sits in the user's own storage provider in `mastra_knowledge_*` tables, and that a `knowledge_list` tool lists pages. Neither is a product-provided export capability: getting data out would mean querying those tables or building on the tools yourself, which earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can export all of my data in open formats and leave",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Whether a product's source is readable under an open license is a fair question for a developer framework feature like Mastra Knowledge, so the axis applies. Nothing in the pack mentions a license, a public repository, or source availability. The docs only cover Knowledge features (scopes, pinned pages, Studio, storage tables), and the probes cover llms.txt, markdown docs and missing OpenAPI files, none of which is evidence of open-source licensing.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can read the product's source under an open license",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "openness-self-host",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "low",
+    "rationale": "The docs imply Knowledge runs inside your own Mastra deployment. Data goes to your configured storage provider as `mastra_knowledge_*` tables, your server passes the scopes, and you view it locally via `mastra dev` and Studio. However, nothing explicitly documents self-hosting, a production deployment path or licensing. missing for 10: explicit self-hosting documentation, open-source license or source availability, production deployment guidance, independent hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-16",
+      "mastra-knowledge-docs-12",
+      "mastra-knowledge-docs-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can self-host the core product",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-16",
+          "quote": "Knowledge is stored in your configured storage provider, which adds its own `mastra_knowledge_*` tables the first time Knowledge is used"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-12",
+          "quote": "To see the page, run `mastra dev`, open Studio and select **Knowledge**."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-3",
+          "quote": "the scopes your server passes for a run decide which ones it can read"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "per-user-memory-isolation",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Knowledge provides its own scoped storage: each customer's or team's pages live in their own scope, and the scopes passed for a run decide what it can read. Search only returns pages the run can read, so a run holding a different org scope cannot find Acme's page. Permissions are also documented at individual, team and org level. Per-agent and per-application scoping are not explicitly documented, since the evidence shows multiple agents sharing one scope. Missing for 10: explicit per-agent and per-application scoping, independent or hands-on verification of tenant isolation in retrieval, and isolation guarantees beyond vendor claims.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-3",
+      "mastra-knowledge-docs-9",
+      "mastra-knowledge-docs-18",
+      "mastra-knowledge-docs-10"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can scope memories per user, agent, or application so one tenant's memories never leak into another's retrieval",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-3",
+          "quote": "Each customer's or team's pages live in their own scope, and the scopes your server passes for a run decide which ones it can read."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-9",
+          "quote": "Search only returns pages the run can read, so a run that holds a different `org:` scope doesn't find Acme's page."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-18",
+          "quote": "set permissions at the individual, team and org level."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "privacy-data-residency",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge documents that knowledge is stored in the user's own configured storage provider, so users choose the backing store and therefore where the data lives. Region or residency is never addressed directly, and the actual location depends on wherever that provider is deployed. Missing for 10: explicit region/residency selection documentation, data-residency guarantees or compliance statements, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-16"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-16",
+          "quote": "Knowledge is stored in your configured storage provider, which adds its own `mastra_knowledge_*` tables the first time Knowledge is used"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Training-data opt-out is a fair privacy question for a knowledge-management product, so the axis applies. The evidence pack has no documented training opt-out or no-training commitment. Storing Knowledge in the user's own configured storage provider is an adjacent data-residency fact, not a control that prevents model training, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "privacy-retention-controls",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge documents a deletion capability: owners can delete pages, gated by role. Knowledge data lives in the user's own configured storage provider, which gives some control over where it is held. Nothing documents retention controls such as TTLs, auto-expiry, retention policies, or purge and erasure workflows. Missing for 10: configurable retention periods or expiry, bulk or scope-level deletion, documented handling of notes and version history on delete, independent corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-10",
+      "mastra-knowledge-docs-16"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-10",
+          "quote": "an owner can also delete pages and move them between scopes"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-16",
+          "quote": "Knowledge is stored in your configured storage provider, which adds its own `mastra_knowledge_*` tables the first time Knowledge is used"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry is a fair question for a developer framework feature like Mastra Knowledge, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, or any way to disable them. Storing data in the user's own configured storage provider is an adjacent data-residency point, not a telemetry opt-out.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "prompt-ready-context-block",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows pinned pages being visible to agents each turn, scoped search, and list tools. Nothing documents a single call that returns a token-budgeted, prompt-ready context block assembled from relevant memories. Pinned-context injection and search are related features, not this capability, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can retrieve a token-budgeted, prompt-ready context block assembled from relevant memories in one call",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "published-memory-benchmarks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "high",
+    "rationale": "Mastra Knowledge is an agent knowledge and memory layer, so published recall benchmarks are a fair question for it. The evidence pack only describes scopes, pages, links, permissions and Studio views. It contains no LongMemEval, LoCoMo or other memory-quality benchmark results, and no recall-accuracy claims backed by measurements.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ml-engineer, I can see published memory-quality benchmark results (e.g. LongMemEval, LoCoMo) backing the product's recall-accuracy claims",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "self-host-oss-deployment",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge runs inside your own Mastra server: scopes are passed by \"your server\", it runs locally via `mastra dev`, and it stores its data in your configured storage provider by adding `mastra_knowledge_*` tables. That points to running on infrastructure you control. However, nothing in the evidence states the code is open source or describes a Docker or production self-hosting path. missing for 10: explicit open-source licensing/code availability, Docker or container deployment documentation, production self-host deployment guidance, independent hands-on corroboration.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-16",
+      "mastra-knowledge-docs-3",
+      "mastra-knowledge-docs-12"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can self-host the memory layer from open-source code (e.g. via Docker) on infrastructure I control",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-16",
+          "quote": "Knowledge is stored in your configured storage provider, which adds its own `mastra_knowledge_*` tables the first time Knowledge is used"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-3",
+          "quote": "the scopes your server passes for a run decide which ones it can read"
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-12",
+          "quote": "To see the page, run `mastra dev`, open Studio and select **Knowledge**."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "session-summarization",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence describes Mastra Knowledge as a scoped, editable page graph that agents can read and write. It mentions that pinned context depends on Memory, but nothing documents summaries of past sessions or threads for resuming a conversation. Agents writing findings to shared pages is a related but different feature, so it earns no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can get summaries of past sessions or threads so an agent can pick up where the last conversation left off",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "shared-team-memory",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge stores pages in per-customer or per-team scopes. The scopes the server passes for each run decide what that run can read, and search only returns readable pages. Multiple agents can share one scope, and permissions can be set at the individual, team and org level, which gives shared group memory while keeping other scopes private. Missing for 10: independent or hands-on corroboration of the isolation, detailed docs on individual-level private scopes beyond the announcement blog line, and clarity on how this interacts with per-agent conversational Memory privacy.",
+    "evidenceIds": [
+      "mastra-knowledge-docs-3",
+      "mastra-knowledge-docs-7",
+      "mastra-knowledge-docs-9",
+      "mastra-knowledge-docs-10",
+      "mastra-knowledge-docs-18",
+      "mastra-knowledge-docs-1"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can share selected memory across multiple agents or users (team or group memory) while keeping private memory private",
+      "citations": [
+        {
+          "evidenceId": "mastra-knowledge-docs-3",
+          "quote": "Each customer's or team's pages live in their own scope, and the scopes your server passes for a run decide which ones it can read."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-7",
+          "quote": "A research agent writes findings, a planning agent adds a plan under them, and a coding agent reads both from the same scope."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-9",
+          "quote": "Search only returns pages the run can read, so a run that holds a different `org:` scope doesn't find Acme's page."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-18",
+          "quote": "set permissions at the individual, team and org level."
+        },
+        {
+          "evidenceId": "mastra-knowledge-docs-10",
+          "quote": "a viewer reads, a contributor adds pages and notes, an editor changes pages, and an owner can also delete pages and move them between scopes."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "temporal-fact-memory",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge is a graph-structured knowledge and memory product, so temporal fact validity is a fair question to ask of it. The evidence only shows that editing a page gives agents the new version and that Knowledge 'keeps itself current.' That is overwrite-style updating, not tracking when facts became valid or invalid. Nothing documents validity timestamps, invalidation, or telling current facts apart from outdated ones.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ml-engineer, I can track when facts became valid or invalid (temporal reasoning) so the memory distinguishes current from outdated information",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "transparent-usage-pricing",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Published pricing is a fair question for a knowledge/memory product, so the axis applies. Nothing in the evidence pack mentions pricing, a free tier, or per-unit rates. The only cost-adjacent fact is that Knowledge is stored in the user's own configured storage provider, which is a host-side arrangement, not published pricing.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform-engineer, I can see published pricing with a free tier and per-unit rates so I can project memory costs before committing",
+      "citations": []
+    }
+  },
+  {
+    "productId": "mastra-knowledge",
+    "storyId": "voice-realtime-memory",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mastra Knowledge is an agent knowledge and memory layer, so integrating with real-time voice pipelines is a fair question for it. Nothing in the evidence pack mentions LiveKit, Pipecat, ElevenLabs, voice pipelines, or latency fit for live conversation. The only documented connectors are Slack and Monday, which are data sources rather than voice integrations.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can wire memory into real-time voice pipelines (e.g. LiveKit, Pipecat, ElevenLabs) with documented integrations fast enough for live conversation",
+      "citations": []
+    }
+  },
+  {
     "productId": "mem0",
     "storyId": "agent-self-managed-memory",
     "verdict": "full",
