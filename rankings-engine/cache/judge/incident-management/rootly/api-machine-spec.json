@@ -1,14 +1,16 @@
 {
-  "hash": "213c1a57aeec3a73419fab6ca8b868dae5734557f751a6d55a06f38c25fc080a",
+  "hash": "1224326d20d3842986d8b69ff60ee9800e03c3a56e9eb41033e00923b24d1c32",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Rootly's API overview page offers a \"Download OpenAPI Specification\" link to https://rootly.com/swagger/v1/swagger.json, which developers can use to explore endpoints or generate client libraries. An API changelog tracks changes to that surface. The probe's 404s were on unrelated guessed paths under docs.rootly.com, so they do not contradict the documented spec URL. The swagger.json URL does return 403 to non-browser clients, which limits automated retrieval by agents. Missing for 10: reliable programmatic (non-browser) fetching of the spec, independent hands-on confirmation of the spec's completeness.",
+    "rationale": "Rootly's API overview page offers a \"Download OpenAPI Specification\" link to a swagger.json file, explicitly meant for exploring endpoints or generating client libraries. Its MCP server builds its tools from that same OpenAPI spec, which corroborates that the spec exists and is maintained, and an API changelog tracks changes to it. Missing for 10: the swagger.json URL returns 403 to non-browser clients, so agents cannot fetch it directly; the spec is not served at any conventional well-known path; and there is no independent hands-on confirmation of the spec's contents.",
     "evidenceIds": [
       "rootly-supp-openapi-spec",
-      "rootly-supp-api-changelog"
+      "rootly-docs-105",
+      "rootly-supp-api-changelog",
+      "rootly-probe-2"
     ],
     "support": {
       "relation": "direct",
@@ -18,6 +20,10 @@
         {
           "evidenceId": "rootly-supp-openapi-spec",
           "quote": "Download the OpenAPI/Swagger specification to explore the Rootly API endpoints or generate client libraries."
+        },
+        {
+          "evidenceId": "rootly-docs-105",
+          "quote": "The server dynamically generates tools from Rootly's OpenAPI specification, so it always reflects the current API surface."
         }
       ]
     },
