@@ -15151,6 +15151,1150 @@
     }
   },
   {
+    "productId": "sentry",
+    "storyId": "agent-queries-own-traces",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence documents Sentry's trace, LLM-call, cost and dashboard views in the UI, but nothing shows an API or MCP server that lets a user's agent query traces, metrics, or eval results. The OpenAPI probe returned 404 on every path. llms.txt, Seer (Sentry's own debugging agent) and the official CLI do not establish programmatic query access for an external agent, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can have an agent query my traces, metrics, and eval results through an API or MCP server to debug my app",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agent-session-traces",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Sentry's first-party Agent Tracing docs say Traces show end-to-end agent runs across model calls, tools and services, with clickable AI Spans views. They also say `gen_ai.conversation.id` (set automatically or via `set_conversation_id()`) groups AI spans into chat sessions shown in a Conversations view. Missing for 10: explicit documentation of the parent/child nested span hierarchy for multi-step runs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "sentry-docs-3",
+      "sentry-docs-26",
+      "sentry-docs-9",
+      "sentry-docs-6",
+      "sentry-docs-13",
+      "sentry-docs-24",
+      "sentry-docs-10"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can trace multi-step agent runs as nested spans grouped into sessions or threads",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-3",
+          "quote": "**Traces** shows end-to-end agent runs and the application work around them."
+        },
+        {
+          "evidenceId": "sentry-docs-26",
+          "quote": "Use it to follow execution across model calls, tools, and services or to investigate latency and errors in context."
+        },
+        {
+          "evidenceId": "sentry-docs-6",
+          "quote": "Sentry uses the `gen_ai.conversation.id` attribute to group related AI spans, and some SDK integrations set it automatically."
+        },
+        {
+          "evidenceId": "sentry-docs-13",
+          "quote": "Use `set_conversation_id()` so every AI span in a chat session shares the same `gen_ai.conversation.id`."
+        },
+        {
+          "evidenceId": "sentry-docs-24",
+          "quote": "Use it to replay a user's multi-turn interaction, inspect its transcript and timeline, and find where a response or tool call went wrong."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agent-triggers-eval-run",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry ships AI agent tracing and LLM observability, so an evals-and-datasets capability is a fair question for it. However, the evidence covers only tracing, conversation replay, LLM-call comparison and dashboards. Nothing shows dataset creation, programmatic eval runs, or reading back eval results, and an official CLI's existence alone does not establish eval functionality.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can have an agent create a dataset, trigger an eval run programmatically, and read back the results",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "A probe confirms Sentry serves an llms.txt at docs.sentry.io/llms.txt (HTTP 200), framed for 'developers and their agents'. The docs also include agent-directed setup content that works with Cursor, Claude Code, and Codex, so an agent can be pointed at it. missing for 10: per-page markdown docs (the .md variant returned 404), evidence of llms.txt depth or completeness (such as llms-full.txt), and independent or hands-on corroboration of agents successfully consuming the docs.",
+    "evidenceIds": [
+      "sentry-probe-1",
+      "sentry-docs-12",
+      "sentry-probe-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "sentry-probe-1",
+          "quote": "Sentry is an application monitoring platform that helps developers and their agents have the context needed"
+        },
+        {
+          "evidenceId": "sentry-docs-12",
+          "quote": "Your agent will set up Sentry in your Python app automatically. Works with Cursor, Claude Code, Codex, and more."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-ai-insights",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Sentry's homepage claims Seer, a built-in debugging agent, finds root causes of production issues and generates merge-ready patches. That is AI-generated insight and suggestions drawn from the user's error data inside the product. However, it is backed only by two short marketing lines, with no in-depth docs or hands-on corroboration. The Agents Insights dashboards monitor the user's own AI apps and do not themselves produce AI-generated insights, so they earn no credit here. Missing for 10: first-party docs on how Seer analyzes data and surfaces insights, details on suggestion types beyond root cause and patches, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "sentry-docs-17",
+      "sentry-docs-22"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-17",
+          "quote": "Find root causes and fix production issues with [Seer, our debugging agent](https://sentry.io/product/seer/)."
+        },
+        {
+          "evidenceId": "sentry-docs-22",
+          "quote": "Fixes what’s broken while you ship what’s next – generating precise, merge-ready patches."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Sentry's own Seer debugging agent is marketed as fixing issues in the background ('while you ship what's next') by generating merge-ready patches, which hints at autonomous background work. The evidence is only a homepage line, though: nothing shows users configuring, triggering or scheduling their own automations. The agent-tracing and dashboard docs cover observability, not automation. Missing for 10: documentation of user-configurable automations, trigger and schedule setup, evidence that Seer runs autonomously without manual invocation, and hands-on corroboration.",
+    "evidenceIds": [
+      "sentry-docs-17",
+      "sentry-docs-22"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-22",
+          "quote": "Fixes what’s broken while you ship what’s next – generating precise, merge-ready patches."
+        },
+        {
+          "evidenceId": "sentry-docs-17",
+          "quote": "Find root causes and fix production issues with [Seer, our debugging agent]"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Sentry's homepage describes Seer as its own built-in debugging agent that finds root causes and generates merge-ready patches, so users can hand it debugging and fix tasks. The only support is two marketing lines, with no docs on how tasks are delegated or what Seer covers. The Agents Insights material is about monitoring a customer's own agents, not a built-in assistant, so it is not credited. Missing for 10: first-party Seer documentation (how to invoke it, what tasks it can take on, limits), any delegation scope beyond root-cause analysis and patch generation, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "sentry-docs-17",
+      "sentry-docs-22"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-17",
+          "quote": "Find root causes and fix production issues with [Seer, our debugging agent](https://sentry.io/product/seer/)."
+        },
+        {
+          "evidenceId": "sentry-docs-22",
+          "quote": "Fixes what’s broken while you ship what’s next – generating precise, merge-ready patches."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-headless",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only on-topic evidence is a probe confirming that Sentry has an official CLI documented at docs.sentry.io/cli/. That suggests headless, scriptable operation, but nothing in the pack describes CI use, authentication for automation, or what the CLI can do. missing for 10: documented CI/CD usage (e.g. release or sourcemap upload in pipelines), non-interactive token auth, CLI command coverage details, independent or hands-on corroboration of headless automation.",
+    "evidenceIds": [
+      "sentry-probe-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "sentry-probe-4",
+          "quote": "official CLI documented at https://docs.sentry.io/cli/"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry ships its own AI agent (Seer), so letting users plug in MCP servers is a fair question, but nothing in the evidence shows Seer or any Sentry feature acting as an MCP client. The agent-tracing docs only cover observing tool calls made by users' own agents, which is a different capability and earns no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry is a monitoring SaaS platform, so publishing an official MCP server is a fair question for it. However, nothing in the evidence pack documents a Sentry MCP server or endpoint. The agent-tracing docs, the agent-assisted SDK setup, llms.txt and the CLI are adjacent features and do not show an official MCP server that agents can connect to.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-nl-commands",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the pack shows Sentry accepting natural-language commands to operate the product. Seer is described as a debugging agent that finds root causes and generates patches, but there is no evidence of a conversational or command interface. The AI-agent setup flow relies on external coding agents (Cursor, Claude Code), and Agent Tracing monitors users' own AI apps; both are adjacent features or user-side tooling, not the product's own capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can operate the product with natural-language commands",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-official-cli",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "A probe confirms that Sentry documents an official CLI at docs.sentry.io/cli/, so the product ships one. Nothing in the pack describes what the CLI can do or how it fits AI-native or agentic workflows. missing for 10: documented CLI commands and capabilities, evidence of agent or AI-native usage (e.g. machine-readable output, non-interactive auth), independent or hands-on corroboration.",
+    "evidenceIds": [
+      "sentry-probe-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can use an official CLI",
+      "citations": [
+        {
+          "evidenceId": "sentry-probe-4",
+          "quote": "official CLI documented at https://docs.sentry.io/cli/"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-public-api",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence pack documents a public REST or management API for driving Sentry programmatically. The OpenAPI probe returned 404 on every candidate path. The documented CLI and the llms.txt file are adjacent capabilities, not a public API, and the SDK docs cover telemetry ingestion rather than controlling the product.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry is a SaaS platform with an API and CLI, so issuing scoped, least-privilege credentials for an agent is a fair question for this kind of product. However, nothing in the evidence pack covers API tokens, auth scopes, or agent-specific credentials. The dashboard 'Edit Access' control is a different feature (who can edit a dashboard), not credential scoping, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-sdks",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Sentry documents its own official SDKs for Python and JavaScript/Node, including a versioned SDK (11.0.0) that auto-instruments popular AI SDKs, and its site tells users to drop in the SDK. AI coding agents can set the SDK up automatically, and a community user reports native integration was very simple. Missing for 10: a documented catalog of the full SDK and platform set in the pack, and SDK API reference depth beyond the AI-agents module.",
+    "evidenceIds": [
+      "sentry-docs-16",
+      "sentry-docs-31",
+      "sentry-docs-11",
+      "sentry-docs-12",
+      "sentry-docs-14",
+      "sentry-docs-32",
+      "sentry-comm-9"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can build against official SDKs",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-16",
+          "quote": "Drop in the [SDK](https://sentry.io/platforms/). No agents to install."
+        },
+        {
+          "evidenceId": "sentry-docs-31",
+          "quote": "As of SDK version `11.0.0`, Sentry auto-instruments the most popular AI SDKs and frameworks out of the box"
+        },
+        {
+          "evidenceId": "sentry-docs-12",
+          "quote": "Your agent will set up Sentry in your Python app automatically. Works with Cursor, Claude Code, Codex, and more."
+        },
+        {
+          "evidenceId": "sentry-docs-11",
+          "quote": "Supported AI libraries are instrumented automatically when their packages are installed."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Webhooks are a fair axis for an application monitoring platform like Sentry, but nothing in the evidence pack documents registrable outbound HTTP callbacks for event subscription. The cited material covers agent tracing, dashboards, community self-hosting reports, and probes for llms.txt, the CLI and a missing OpenAPI spec, with no mention of webhooks.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An interactive API reference is a fair question for a SaaS monitoring platform like Sentry, so the axis applies. The evidence pack contains no documentation of an interactive API reference or runnable examples. Probes for an OpenAPI spec all returned 404. The llms.txt file and the official CLI are different capabilities and earn no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry is a SaaS platform with a public API, so a downloadable machine-readable spec is a fair question. The evidence pack contains no documented OpenAPI or equivalent spec: the probe got 404s on every candidate OpenAPI/Swagger path. The llms.txt file and the CLI are adjacent features, not API specs, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A sandbox or test environment is a fair question for an observability SaaS, so the axis applies. However, the evidence pack documents no sandbox, test organization, or production-isolated testing mode for Sentry. A community user running their own Sentry in Docker for local debugging is a user-side workaround, not a product capability, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry is a SaaS monitoring platform, so versioned APIs with a deprecation policy is a fair question to ask of it. The evidence pack does not document API versioning or a deprecation policy. The mentions of SDK version 11.0.0 and self-hosted date-based release versioning concern adjacent product versioning, not versioned APIs, and the OpenAPI probe returned 404s on every candidate path.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk operations, such as acting on many issues or items at once, are a fair question for a monitoring platform like Sentry, so the axis applies. Nothing in the evidence pack documents a bulk-action capability. The nearest items, dashboard filters and duplication and an official CLI being documented, are adjacent features and do not show bulk operations across many items.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Event-triggered automation rules are a fair axis for a monitoring platform, but the evidence pack never documents a feature for defining rules that fire actions on events. The pack covers agent tracing, dashboards, and Seer. The only nearby material is automatic incident-to-owner mapping, which is a fixed behaviour rather than a user-defined rule, and a passing community mention of exception alerts, which does not show rule configuration.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scheduling recurring jobs or automated workflows is a fair question for a monitoring and debugging platform, so the axis applies. However, nothing in the evidence pack documents Sentry scheduling recurring jobs, workflows or reports. The pack covers agent tracing, dashboards, a CLI and self-hosting; the one daily-digest mention describes a user-built replacement for Sentry, not a Sentry feature.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry is a monitoring platform that could plausibly offer automations such as alert rules or workflows, so the axis applies. However, the evidence pack contains nothing about versioning, reviewing, or rolling back automations. Dashboard edit-access controls and duplicating dashboards as templates are adjacent features, not version history or rollback, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "bulk-trace-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk export of traces or datasets is a fair question for an observability platform like Sentry, so the axis applies. However, the evidence pack documents no export capability to blob storage or a data warehouse. It covers only in-product trace views, dashboards and widgets, and the existence of a CLI, none of which is documented as a bulk-export path.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can bulk-export traces and datasets to blob storage or my data warehouse",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "ci-eval-gating",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry offers AI agent tracing, dashboards, conversation replay and an official CLI. Nothing in the evidence describes running evals or scoring datasets, in CI or anywhere else, or gating deployments on eval results. Comparing models and prompts in the LLM Calls view is production observability, not CI evaluation, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can run evals in CI and gate deployments on their results",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "cost-attribution-metadata",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Sentry records cost and token usage per LLM call and per trace. It groups AI spans into sessions with `set_conversation_id()` and shows user identity in the Conversations view, and span-based dashboard widgets can be built from Trace Explorer queries. The docs never show cost broken down by user, session, or feature, or tagging spans with arbitrary custom metadata for cost attribution. Missing for 10: documented custom metadata or attributes for feature-level attribution, explicit per-user and per-session cost aggregation views, and independent corroboration.",
+    "evidenceIds": [
+      "sentry-docs-2",
+      "sentry-docs-7",
+      "sentry-docs-27",
+      "sentry-docs-13",
+      "sentry-docs-6",
+      "sentry-docs-15",
+      "sentry-docs-30",
+      "sentry-docs-37"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can attribute cost and usage to users, sessions, and features via custom metadata",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-2",
+          "quote": "Use it to compare models, prompts, token usage, cost, and response performance without reviewing an entire conversation or trace."
+        },
+        {
+          "evidenceId": "sentry-docs-27",
+          "quote": "Below these widgets is a traces table showing trace ID, agents, root duration, errors, LLM calls, tool calls, total tokens, total cost, and timestamp."
+        },
+        {
+          "evidenceId": "sentry-docs-13",
+          "quote": "Use `set_conversation_id()` so every AI span in a chat session shares the same `gen_ai.conversation.id`."
+        },
+        {
+          "evidenceId": "sentry-docs-15",
+          "quote": "Any of `id`, `email`, or `username` is sufficient — the Conversations tab displays whichever fields are present."
+        },
+        {
+          "evidenceId": "sentry-docs-30",
+          "quote": "The [Conversations](/product/agents/conversations/) view includes a **User** column."
+        },
+        {
+          "evidenceId": "sentry-docs-37",
+          "quote": "You can create span-based widgets directly from [Trace Explorer](/product/trace-explorer/) queries using the \"Save As\" button."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "custom-code-scorers",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry ships AI agent tracing and LLM observability, so evaluation scorers are a fair axis for it. However, the evidence only documents tracing, conversation replay, cost and token dashboards, and custom dashboard widgets. Nothing shows evaluations, datasets, or user-defined code-based scorers or metrics. Custom span-based dashboard widgets are an adjacent feature and earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ML engineer, I can write custom code-based scorers and metrics for my evaluations",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "custom-dashboards",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Sentry documents custom dashboards, built by duplicating templates or saving span-based widgets from Trace Explorer queries. Its agent dashboards cover duration (average/P95), errors, token usage and model cost, so three of the four requested metric types are evidenced. Nothing in the evidence shows eval-score metrics, and no hands-on corroboration exists that these AI metrics can be charted in user-built widgets. Missing for 10: eval-score metric support in dashboards, explicit documentation of custom widgets over AI cost/latency fields, independent hands-on corroboration.",
+    "evidenceIds": [
+      "sentry-docs-36",
+      "sentry-docs-37",
+      "sentry-docs-34",
+      "sentry-docs-28",
+      "sentry-docs-7",
+      "sentry-docs-4",
+      "sentry-docs-27"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an ML engineer, I can build custom dashboards over latency, error, cost, and eval-score metrics",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-36",
+          "quote": "You can also use these dashboards as templates by duplicating them to create your own custom dashboards."
+        },
+        {
+          "evidenceId": "sentry-docs-37",
+          "quote": "You can create span-based widgets directly from [Trace Explorer](/product/trace-explorer/) queries using the \"Save As\" button."
+        },
+        {
+          "evidenceId": "sentry-docs-28",
+          "quote": "**Duration**: Displays average and P95 response times for your agent executions"
+        },
+        {
+          "evidenceId": "sentry-docs-7",
+          "quote": "The Model Cost widget shows estimated costs based on token usage and model pricing."
+        },
+        {
+          "evidenceId": "sentry-docs-4",
+          "quote": "View agent executions, model costs, token usage, tool calls, and recent errors in the Agents Dashboards."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "experiment-comparison",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack shows no eval runs, eval datasets, or scoring, and no side-by-side comparison of eval runs between prompt or model versions. The LLM Calls view lets users compare models, prompts, tokens, cost and response performance across production model requests. That is observability of live traffic, an adjacent feature rather than eval-run comparison for catching regressions.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an ML engineer, I can compare eval runs side by side to catch regressions between prompt or model versions",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "framework-auto-instrumentation",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Sentry documents first-party AI integrations in both its Python and JavaScript SDKs. Supported AI libraries are auto-instrumented when installed, and as of JS SDK 11.0.0 the most popular AI SDKs and frameworks are instrumented out of the box, with per-integration options such as include_prompts and recordInputs/recordOutputs. missing for 10: no explicit naming in the evidence of LangChain, the OpenAI SDK, or the Vercel AI SDK as supported integrations, no supported-library list, no independent or hands-on corroboration.",
+    "evidenceIds": [
+      "sentry-docs-11",
+      "sentry-docs-31",
+      "sentry-docs-32",
+      "sentry-docs-14",
+      "sentry-docs-6"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can instrument my app through existing integrations for frameworks like LangChain, the OpenAI SDK, or the Vercel AI SDK",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-11",
+          "quote": "Supported AI libraries are instrumented automatically when their packages are installed."
+        },
+        {
+          "evidenceId": "sentry-docs-31",
+          "quote": "As of SDK version `11.0.0`, Sentry auto-instruments the most popular AI SDKs and frameworks out of the box — you don't need to add their integrations yourself."
+        },
+        {
+          "evidenceId": "sentry-docs-32",
+          "quote": "You can also set `recordInputs` / `recordOutputs` on a specific AI integration."
+        },
+        {
+          "evidenceId": "sentry-docs-14",
+          "quote": "set `include_prompts=False` on the integration"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "human-annotation-queues",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry ships AI agent tracing, with conversation replay, LLM call views and dashboards, so routing outputs to human annotation queues is a fair question for this product. The evidence pack never documents annotation queues, human review workflows or labeling of outputs. The 'human handoffs' item refers to agent runtime transitions, not review queues, so it does not count.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ML engineer, I can route outputs to human annotation queues for review and labeling",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "llm-as-judge-scoring",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry's agent-tracing product records conversations, LLM calls, token cost, tool calls and errors, so output scoring is a fair question for it. The evidence pack never mentions evaluators, LLM-as-a-judge scoring or configurable eval criteria. Replay, monitoring and dashboards are adjacent features and do not deliver this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ML engineer, I can score outputs with configurable LLM-as-a-judge evaluators",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "multimodal-trace-payloads",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry's agent tracing documents capturing prompt and response content through the `data_collection` gen_ai option and `recordInputs`/`recordOutputs`. Nothing in the evidence says images, audio, or file payloads can be captured or rendered inside traces. Generic input/output recording is an adjacent feature, not documented multimodal payload capture, so the axis applies but is unevidenced.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can capture multimodal payloads (images, audio, files) inside my traces",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "offline-eval-datasets",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry's agent tracing captures production traces and lets users replay conversations and compare models, prompts, cost and performance across live LLM calls. The evidence shows no way to curate datasets from those traces or to run offline evaluations against them. Comparing production calls in a dashboard is an adjacent monitoring feature, not dataset curation or offline evals, so the axis applies but is unevidenced.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ML engineer, I can curate datasets from production traces and run offline evaluations against them",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "online-evals-guardrails",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry's agent tracing captures production LLM calls, traces, costs, and tool errors, and claims to help \"catch unexpected output issues.\" However, nothing in the evidence documents evaluators, such as scoring functions or LLM-as-judge, that run on live traffic or on offline datasets. Observability of production AI spans is an adjacent feature, not continuous online evaluation.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an ML engineer, I can run evaluators continuously on live production traffic, not just offline datasets",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "openness-api-parity",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "API-to-UI parity is a fair question for a SaaS monitoring platform like Sentry, so the axis applies. The pack has no documentation of a public API or its coverage relative to the UI, and the OpenAPI probe found no spec at any candidate path. The documented CLI and llms.txt are adjacent artifacts and do not show the API matches the UI.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "openness-full-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data portability is a fair question for a SaaS monitoring platform, but the evidence pack documents no bulk data export, open-format download, or account-exit feature. Community reports about self-hosting and source availability concern deployment options, not exporting your data, and the CLI probe says nothing about export, so none of it counts toward this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can export all of my data in open formats and leave",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "openness-open-license",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Sentry's source is publicly readable. It has a public GitHub repository, users describe reading the code directly, and long-time self-hosters install it via git clone. However, the community reports that Sentry was relicensed to the Business Source License, which at least one user treats as closed-source rather than an open license. Missing for 10: first-party documentation of the current license terms, and evidence that the license is a genuinely open (OSI-approved) license rather than BSL source-available.",
+    "evidenceIds": [
+      "sentry-gh-1",
+      "sentry-comm-1",
+      "sentry-comm-2",
+      "sentry-comm-14"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can read the product's source under an open license",
+      "citations": [
+        {
+          "evidenceId": "sentry-gh-1",
+          "quote": "Sentry is the debugging platform that helps every developer detect, trace, and fix issues."
+        },
+        {
+          "evidenceId": "sentry-comm-1",
+          "quote": "they could read exactly what the code does instead of relying on docs"
+        },
+        {
+          "evidenceId": "sentry-comm-14",
+          "quote": "installation is git clone, editing one or two config files, and running ./install.sh"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "openness-self-host",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Several independent hands-on reports show the core Sentry product can be self-hosted: long-running instances, an install via git clone and ./install.sh, and Helm-chart deployments that 'just work'. However, the pack has no first-party self-hosting documentation, and users report real limits: releases lag the SaaS version, it needs a 16GB+ machine, setup can be prohibitively complex, and some upgrades break. missing for 10: first-party self-hosting documentation, evidence of feature parity with SaaS, lighter-weight deployment for small teams, reliably smooth upgrades.",
+    "evidenceIds": [
+      "sentry-comm-3",
+      "sentry-comm-14",
+      "sentry-comm-11",
+      "sentry-comm-10",
+      "sentry-comm-12",
+      "sentry-comm-13",
+      "sentry-comm-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can self-host the core product",
+      "citations": [
+        {
+          "evidenceId": "sentry-comm-3",
+          "quote": "A user has run self-hosted Sentry at work for a couple of years and says it has worked fantastically and is rock-solid once running."
+        },
+        {
+          "evidenceId": "sentry-comm-14",
+          "quote": "installation is git clone, editing one or two config files, and running ./install.sh"
+        },
+        {
+          "evidenceId": "sentry-comm-11",
+          "quote": "A user deployed self-hosted Sentry with a Helm chart and says it 'just works'."
+        },
+        {
+          "evidenceId": "sentry-comm-13",
+          "quote": "'self host-able but increasingly prohibitively complex'"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "otel-native-tracing",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry is a tracing and monitoring platform, so OTLP ingest and export is a fair axis. However, nothing in the evidence pack mentions OpenTelemetry or OTLP. All tracing evidence describes Sentry's own SDKs and auto-instrumentation, and `gen_ai.*` attribute naming alone does not show OTLP send or receive support.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can send and receive traces over OpenTelemetry (OTLP) instead of a proprietary format",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "pii-masking-controls",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Sentry's own SDKs let developers keep sensitive AI prompt and response content out of traces before it is sent: content is off by default, and it can be disabled per integration via `include_prompts=False` or `recordInputs`/`recordOutputs`. These are coarse all-or-nothing toggles for AI content, not field-level masking or redaction. missing for 10: field-level masking/redaction of specific sensitive values in span data, documented scrubbing hooks or rules for traces generally, independent corroboration.",
+    "evidenceIds": [
+      "sentry-docs-14",
+      "sentry-docs-29",
+      "sentry-docs-32"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can mask or redact sensitive data before it is stored in traces",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-14",
+          "quote": "To keep other PII on but turn AI content off, set `include_prompts=False` on the integration."
+        },
+        {
+          "evidenceId": "sentry-docs-29",
+          "quote": "Prompt and response content is off by default"
+        },
+        {
+          "evidenceId": "sentry-docs-32",
+          "quote": "You can also set `recordInputs` / `recordOutputs` on a specific AI integration."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "privacy-data-residency",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The pack has no first-party documentation of choosing a cloud region or data-residency location. Community reports do show that Sentry ships a self-hosted deployment, which lets users decide where their data lives and is recommended for legal or compliance needs. Missing for 10: first-party docs on SaaS region selection (e.g. US/EU data residency), first-party self-hosting docs in the pack, and any documented residency guarantees.",
+    "evidenceIds": [
+      "sentry-comm-3",
+      "sentry-comm-14",
+      "sentry-comm-18",
+      "sentry-comm-10"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": [
+        {
+          "evidenceId": "sentry-comm-3",
+          "quote": "A user has run self-hosted Sentry at work for a couple of years and says it has worked fantastically and is rock-solid once running."
+        },
+        {
+          "evidenceId": "sentry-comm-18",
+          "quote": "They say self-hosting is fine if budgeted and recommend it only for legal or compliance needs."
+        },
+        {
+          "evidenceId": "sentry-comm-14",
+          "quote": "installation is git clone, editing one or two config files, and running ./install.sh"
+        },
+        {
+          "evidenceId": "sentry-comm-10",
+          "quote": "One team self-hosts Sentry on a high-end Hetzner server (96 cores, 512GB) for about $300/month."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry is a SaaS platform with AI features such as Seer, so whether customer data is used for AI training is a fair question to ask. The pack does not document a training opt-out or a no-training policy. The prompt-capture controls (prompt content off by default, `include_prompts=False`, `recordInputs`/`recordOutputs`) only govern what agent-tracing telemetry is collected, which is a related but different feature. Self-hosting is a user-side workaround, not a training control.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence documents data-collection controls, such as prompt and response capture being off by default and the `include_prompts` and `recordInputs`/`recordOutputs` toggles. These limit what gets collected, which is an adjacent control, not retention or deletion of data already stored. Nothing in the pack documents configurable retention periods or deletion of stored events or conversations; self-hosting is a user-side arrangement and earns no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no documented way to opt out of Sentry's own telemetry or usage tracking (for example of the SDK, CLI, or self-hosted instance). The only related evidence is data-collection controls for AI prompt and response content: `include_prompts=False`, `recordInputs`/`recordOutputs`, and prompt content being off by default. Those are an adjacent feature that limits what monitoring data gets captured, not a telemetry opt-out, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "prompt-playground",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry's AI agent tracing is observational. Its \"replay\" of past conversations shows transcripts and timelines, and the LLM Calls view compares recorded prompts and models. Nothing in the evidence shows a playground for editing prompts and re-running them against real models with variables. Since LLM observability products could plausibly ship a playground, the axis applies, and the lack of evidence makes this \"none\".",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can iterate on prompts in a playground against real models and variables",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "prompt-versioning-deploy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sentry's AI agent monitoring captures and compares prompts in LLM-call telemetry. Prompt management is a fair axis for an LLM observability product, but nothing in the evidence shows prompt versioning, a prompt registry, or deploying prompt changes to production without shipping code. Comparing captured prompts in traces is an adjacent observability feature, not prompt management.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can version prompts and deploy changes to production without shipping code",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "python-js-sdk-parity",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Sentry's own docs cover instrumentation in both a Python SDK (platforms/python tracing docs: auto-instrumented AI libraries, `set_conversation_id()`, integration options) and a JavaScript/Node SDK (platforms/javascript/guides/node: 'As of SDK version 11.0.0…' auto-instrumentation). The homepage also frames the SDK as the drop-in instrumentation path. missing for 10: explicit TypeScript mention, evidence of general (non-AI-agent) tracing instrumentation in both SDKs, independent or hands-on corroboration of the Python/JS SDKs.",
+    "evidenceIds": [
+      "sentry-docs-11",
+      "sentry-docs-13",
+      "sentry-docs-31",
+      "sentry-docs-32",
+      "sentry-docs-16",
+      "sentry-docs-5"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can instrument apps in both Python and JS/TS with officially supported SDKs",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-11",
+          "quote": "Supported AI libraries are instrumented automatically when their packages are installed."
+        },
+        {
+          "evidenceId": "sentry-docs-13",
+          "quote": "Use `set_conversation_id()` so every AI span in a chat session shares the same `gen_ai.conversation.id`."
+        },
+        {
+          "evidenceId": "sentry-docs-31",
+          "quote": "As of SDK version `11.0.0`, Sentry auto-instruments the most popular AI SDKs and frameworks out of the box"
+        },
+        {
+          "evidenceId": "sentry-docs-16",
+          "quote": "Drop in the [SDK](https://sentry.io/platforms/). No agents to install."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "threshold-alerting",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack shows Sentry dashboards with widgets for errors, model cost, and token usage. Nothing in it documents configurable alert rules on error rates, cost spikes, or eval-score drops, or notification delivery to Slack, PagerDuty, or email. Dashboards that only visualize these metrics are an adjacent feature, not alerting. The single community remark about 'unhandled-exception alerts' is indirect and names no thresholds or channels, so it does not establish the capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can set alerts on error rates, cost spikes, or eval-score drops and get notified in Slack, PagerDuty, or email",
+      "citations": []
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "token-cost-dashboards",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Sentry's own Agents Dashboards show model costs and token usage. The LLM Calls view surfaces token usage and cost for individual model requests so models can be compared, and the traces table lists total tokens, total cost and timestamp per trace. The time-period part of the story is only implied by per-trace timestamps, and per-model breakdown is mostly implied by the Model Cost widget, so the story is not completely documented. Missing for 10: explicit documentation of cost/token aggregation over selectable time periods, an explicit per-model cost/token breakdown in a dashboard widget, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "sentry-docs-2",
+      "sentry-docs-4",
+      "sentry-docs-7",
+      "sentry-docs-27"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can see cost and token usage per request, model, and time period in dashboards",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-2",
+          "quote": "**LLM Calls** shows individual model requests. Use it to compare models, prompts, token usage, cost, and response performance without reviewing an entire conversation or trace."
+        },
+        {
+          "evidenceId": "sentry-docs-4",
+          "quote": "View agent executions, model costs, token usage, tool calls, and recent errors in the Agents Dashboards."
+        },
+        {
+          "evidenceId": "sentry-docs-7",
+          "quote": "The Model Cost widget shows estimated costs based on token usage and model pricing."
+        },
+        {
+          "evidenceId": "sentry-docs-27",
+          "quote": "Below these widgets is a traces table showing trace ID, agents, root duration, errors, LLM calls, tool calls, total tokens, total cost, and timestamp."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "sentry",
+    "storyId": "trace-llm-calls",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Sentry's first-party Agent Tracing auto-instruments supported AI libraries and records individual LLM calls with token usage, cost, and response performance. Prompt and response content can be captured via `data_collection` (Python) or `recordInputs`/`recordOutputs` (Node), and traces show durations so latency can be investigated in context. Note that input/output capture is off by default and must be enabled. Missing for 10: independent or hands-on corroboration of LLM tracing.",
+    "evidenceIds": [
+      "sentry-docs-2",
+      "sentry-docs-11",
+      "sentry-docs-29",
+      "sentry-docs-32",
+      "sentry-docs-26",
+      "sentry-docs-27",
+      "sentry-docs-31"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can capture traces of my LLM calls with inputs, outputs, latency, and token usage",
+      "citations": [
+        {
+          "evidenceId": "sentry-docs-2",
+          "quote": "**LLM Calls** shows individual model requests. Use it to compare models, prompts, token usage, cost, and response performance without reviewing an entire conversation or trace."
+        },
+        {
+          "evidenceId": "sentry-docs-29",
+          "quote": "Prompt and response content is off by default — use the `gen_ai` key of the [`data_collection` option](/platforms/python/configuration/options/#data_collection) to capture it."
+        },
+        {
+          "evidenceId": "sentry-docs-32",
+          "quote": "You can also set `recordInputs` / `recordOutputs` on a specific AI integration."
+        },
+        {
+          "evidenceId": "sentry-docs-26",
+          "quote": "Use it to follow execution across model calls, tools, and services or to investigate latency and errors in context."
+        },
+        {
+          "evidenceId": "sentry-docs-27",
+          "quote": "Below these widgets is a traces table showing trace ID, agents, root duration, errors, LLM calls, tool calls, total tokens, total cost, and timestamp."
+        },
+        {
+          "evidenceId": "sentry-docs-11",
+          "quote": "Supported AI libraries are instrumented automatically when their packages are installed."
+        }
+      ]
+    }
+  },
+  {
     "productId": "wandb-weave",
     "storyId": "agent-queries-own-traces",
     "verdict": "full",
