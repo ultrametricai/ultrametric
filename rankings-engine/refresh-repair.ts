@@ -357,7 +357,14 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
   const headPacks = Object.fromEntries(products.map(product => [product.id,
     EvidenceSchema.array().parse(JSON.parse(show(head, `${dir}/evidence/${product.id}.json`)!))]))
   const headRows = VerdictSchema.array().parse(JSON.parse(show(head, `${dir}/verdicts.json`)!))
-  if (!repairProgress(headRows, rows, headPacks, packs)) {
+  const canonicalChanged = repairProgress(headRows, rows, headPacks, packs)
+  // An otherwise clean refresh can become unmergeable when trusted main advances
+  // shared projections. Rebuilding those projections is useful progress, but does
+  // not address a review finding. Keep the no-op guard for reviewed repairs and
+  // for heads that already contain main. The controller still verifies the input
+  // receipt, publishes from trusted main and records the new exact-head receipt.
+  const baseUpdate = !canonicalChanged && findings.length === 0 && base !== main
+  if (!canonicalChanged && !baseUpdate) {
     throw new Error('Repair made no canonical arena change; no projections, commit or review requested')
   }
   await runDerive({ category: arena })
@@ -365,6 +372,6 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     ['compute-confidence-intervals.ts', '--category', arena], ['generate-predictions.ts'], ['settle-predictions.ts'],
     ['generate-vendor-reviews.ts'], ['generate-story-graph.ts'], ['generate-step-rankings.ts'],
   ]) execFileSync('pnpm', ['exec', 'tsx', `rankings-engine/scripts/${args[0]}`, ...args.slice(1)], { stdio: 'inherit' })
-  return { arena, head, main, evidenceRenames: renames, restored: restoreChurn(before, after, oldPacks, packs).restored, rejudged, audits,
+  return { arena, head, main, mode: baseUpdate ? 'base-update' : 'canonical-repair', evidenceRenames: renames, restored: restoreChurn(before, after, oldPacks, packs).restored, rejudged, audits,
     unresolved: findings.filter(finding => !audits.some(audit => audit.thread === finding.id && audit.addressed)).map(finding => finding.id) }
 }
