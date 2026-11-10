@@ -1,0 +1,32 @@
+{
+  "hash": "9452cb59e721e4766f9bd7f6a05550717569e3418935b47ccb3b503781b6cb72",
+  "keyVersion": "v2",
+  "verdict": {
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cloudflare documents its own TURN relay that engages when a NAT or firewall prevents a direct connection, and the SFU bundles it at no charge. That is the product's own firewall-traversal fallback with a stated trigger. However, nothing in the pack says the relay runs over TCP, TLS (e.g. port 443) or WebSocket, or that it keeps working when UDP is blocked outright. The WebSocket media adapters are a server-side integration feature, not a client transport fallback, so they are not credited. Missing for 10: documented TURN-over-TCP/TLS transport options, explicit UDP-blocked fallback behavior and when it switches, any WebSocket client fallback, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "cloudflare-realtime-docs-22",
+      "cloudflare-realtime-docs-23",
+      "cloudflare-realtime-docs-26"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, a stream survives a network that blocks UDP: the service documents fallback over TCP, TLS, or WebSocket and when it engages",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-realtime-docs-22",
+          "quote": "Relay WebRTC traffic through Cloudflare when a NAT or firewall prevents a direct connection."
+        },
+        {
+          "evidenceId": "cloudflare-realtime-docs-26",
+          "quote": "Using Cloudflare Realtime TURN service is available free of charge when used together with the Realtime SFU."
+        }
+      ]
+    },
+    "productId": "cloudflare-realtime",
+    "storyId": "udp-blocked-fallback"
+  }
+}

@@ -218,6 +218,18 @@ class DispatcherTests(unittest.TestCase):
                                        {'id':2,'name':'ci','app':{'id':15368},'conclusion':'success'}])
         self.assertEqual(latest[0]['conclusion'],'success')
 
+    def test_approval_diagnostic_uses_latest_pr_run_and_never_dispatch_status(self):
+        fn=self.controller()['pr_ci_approval_required']
+        held={'id':1,'event':'pull_request','status':'completed','conclusion':'action_required'}
+        dispatch={**held,'id':3,'event':'workflow_dispatch','conclusion':'success'}
+        self.assertTrue(fn([held,dispatch]))
+        for conclusion in ['success','failure',None]:
+            newer={**held,'id':2,'conclusion':conclusion,
+                   'status':'in_progress' if conclusion is None else 'completed'}
+            self.assertFalse(fn([held,newer,dispatch]))
+        self.assertFalse(fn([]))
+        self.assertFalse(fn([dispatch]))
+
     def test_a_superseded_workflow_suite_cannot_satisfy_a_new_recheck(self):
         old={'id':1,'name':'validation','app':{'id':15368},'conclusion':'success','check_suite':{'id':10}}
         self.assertEqual(MODULE['latest_checks']([old],ci_suite=20),[])
@@ -425,11 +437,12 @@ class RecoveryCITests(unittest.TestCase):
                 patch('subprocess.run',side_effect=run), patch('time.sleep'), \
                 patch('refresh_policy.verify_provenance',side_effect=provenance_exception if provenance_error else None), \
                 patch('refresh_update.verify_update_intent',side_effect=RuntimeError('Invalid intent') if intent_error else None), \
-                redirect_stdout(io.StringIO()):
+                redirect_stdout(io.StringIO()) as captured:
             try:
                 exec(code,{})
             except SystemExit as exc:
                 error = str(exc)
+        self.recovery_output = captured.getvalue()
         ci = [call for call in calls if call[:4] == ['gh','workflow','run','ci.yml']]
         return ci, calls, error
 
@@ -553,7 +566,7 @@ class RecoveryCITests(unittest.TestCase):
                 with self.subTest(family=family,app=app):
                     pr=self.radar_pr(family,app)
                     ci,calls,error=self.recover([self.run_record()],pr=pr,content_bot='fixture-content[bot]')
-                    self.assertIsNone(error)
+                    self.assertIn('need attention',error)
                     self.assertEqual(ci,[['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',pr['head']['ref']]])
                     self.assertNotIn('refresh-repair.yml',[c[3] for c in calls if c[:3]==['gh','workflow','run']])
 
@@ -614,7 +627,7 @@ class RecoveryCITests(unittest.TestCase):
 
     def test_approval_event_winning_branch_update_race_still_dispatches_ci(self):
         ci, calls, error = self.recover([self.run_record()], updated_head='b'*40)
-        self.assertIsNone(error)
+        self.assertIn('need attention',error)
         self.assertEqual(ci, [['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',BRANCH]])
         self.assertTrue(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         self.assertFalse(any('approve' in call for call in calls))
@@ -720,7 +733,10 @@ class RecoveryCITests(unittest.TestCase):
         for runs in [[], [self.run_record()]]:
             with self.subTest(runs=runs):
                 ci, _, error = self.recover(runs)
-                self.assertIsNone(error)
+                if runs:
+                    self.assertIn('need attention',error)
+                else:
+                    self.assertIsNone(error)
                 self.assertEqual(len(ci), 1)
 
     def test_pending_ci_is_left_running(self):
@@ -760,8 +776,11 @@ class RecoveryCITests(unittest.TestCase):
             with self.subTest(conclusion=conclusion):
                 ci, calls, error = self.recover([
                     self.run_record('workflow_dispatch',conclusion), self.run_record(id=2)])
-                self.assertIsNone(error)
+                self.assertIn('need attention',error)
+                self.assertIn('PR CI awaits workflow approval',self.recovery_output)
+                self.assertIn('do not satisfy required PR checks',self.recovery_output)
                 self.assertEqual(ci, [])
+                self.assertFalse(any('approve' in call or 'rerun' in call for call in calls))
                 repairs = [call for call in calls if call[:4] == ['gh','workflow','run','refresh-repair.yml']]
                 self.assertEqual(len(repairs), 1 if conclusion == 'failure' else 0)
 
@@ -808,7 +827,7 @@ class RecoveryCITests(unittest.TestCase):
         ci, _, error = self.recover([
             self.run_record('workflow_dispatch','success',id=2),
             self.run_record('workflow_dispatch','cancelled'), self.run_record(id=3)])
-        self.assertIsNone(error)
+        self.assertIn('need attention',error)
         self.assertEqual(ci, [])
 
     def test_repeated_startup_failures_exhaust_budget_without_dispatching(self):
@@ -820,7 +839,7 @@ class RecoveryCITests(unittest.TestCase):
 
     def test_many_approval_records_do_not_exhaust_dispatch_budget(self):
         ci, _, error = self.recover([self.run_record(id=i) for i in range(4)])
-        self.assertIsNone(error)
+        self.assertIn('need attention',error)
         self.assertEqual(len(ci), 1)
 
     def test_drafts_forks_and_unrelated_authors_still_stay_outside_recovery(self):
