@@ -299,6 +299,38 @@ function retainedFixture(count = 2, sameProduct = false) {
 }
 
 describe('provenance-aware retained repair', { timeout: 60000 }, () => {
+  it('updates an unreviewed stale refresh onto trusted main without changing canonical evidence or verdicts', async () => {
+    const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+    try {
+      f.write('open-rankings/predictions.json', [{ id: 'fictional-pr-prediction' }])
+      const head = f.commit()
+      const rows = f.read(`${f.dir}/verdicts.json`)
+      const packs = f.products.map(product => [product.id, f.read(`${f.dir}/evidence/${product.id}.json`)])
+      f.git('checkout', '--detach', f.main)
+      f.write('open-rankings/predictions.json', [{ id: 'fictional-new-main-prediction' }])
+      const main = f.commit(); process.chdir(f.root)
+      const report = await repair({ head, main, arena: 'fixture', keyed: false, findings: [] })
+      expect(report.mode).toBe('base-update')
+      expect(report.rejudged).toEqual([]); expect(report.audits).toEqual([])
+      expect(fake).not.toHaveBeenCalled()
+      expect(f.read(`${f.dir}/verdicts.json`)).toEqual(rows)
+      for (const [id, pack] of packs) expect(f.read(`${f.dir}/evidence/${id}.json`)).toEqual(pack)
+    } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+  })
+
+  it('does not count a main update as addressing an unchanged review finding', async () => {
+    const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+    try {
+      const head = f.commit()
+      f.git('checkout', '--detach', f.main)
+      f.write('open-rankings/predictions.json', [{ id: 'fictional-new-main-prediction' }])
+      const main = f.commit(); process.chdir(f.root)
+      fake.mockResolvedValueOnce({ addressed: true, reason: 'No canonical correction', evidenceIds: ['new'] })
+      await expect(repair({ head, main, arena: 'fixture', keyed: true, findings: [f.finding(head)] }))
+        .rejects.toThrow('no canonical arena change')
+    } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+  })
+
   it('repairs two ordinary cells beside 49 retained cells, then supports a repeat repair and the next producer refresh', async () => {
     const f = retainedFixture(49), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
     try {
