@@ -1,14 +1,15 @@
 {
-  "hash": "2b24ad39eedbe5fa57adcbe529cc427ac705eedd455b3f17bbb011527a98f87e",
+  "hash": "beb4a04a8af54ff5896d73d28fdc04aae1b56c317d0298040e6f9e858ad1df91",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Live probes confirm Supabase serves an llms.txt (HTTP 200) that points to a single-file full-documentation version. The Auth guide is also served as raw markdown at /docs/guides/auth.md, so an agent can be pointed directly at machine-readable Auth docs. missing for 10: first-party documentation describing agent/LLM usage of these files, independent or community corroboration of agents using them, and an Auth-specific llms.txt section (the file shown is Supabase-wide).",
+    "rationale": "Live probes show Supabase serves an llms.txt at supabase.com/llms.txt that points to a single-file full documentation, and the Auth guide is available as agent-friendly markdown (auth.md). An OpenAPI spec is also served, so an agent can be pointed at machine-readable docs directly. missing for 10: first-party documentation describing or endorsing the llms.txt/markdown docs for agent use, and confirmation of the full content of llms-full (the probe output is truncated).",
     "evidenceIds": [
       "supabase-probe-1",
-      "supabase-probe-2"
+      "supabase-probe-2",
+      "supabase-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -17,11 +18,19 @@
       "citations": [
         {
           "evidenceId": "supabase-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://supabase.com/llms.txt # Supabase Docs"
+        },
+        {
+          "evidenceId": "supabase-probe-1",
           "quote": "For the complete documentation in a single file, see [Full Documentation]"
         },
         {
           "evidenceId": "supabase-probe-2",
-          "quote": "Supabase Auth makes it easy to implement authentication"
+          "quote": "PROBE docs-md: HTTP 200 at https://supabase.com/docs/guides/auth.md # Auth"
+        },
+        {
+          "evidenceId": "supabase-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://supabase.com/openapi.json — contains \"openapi\" key"
         }
       ]
     },

@@ -1,17 +1,19 @@
 {
-  "hash": "0456f000cf8d2b3b5d4b3651077582241c551ee352e1140852a795a173650dc3",
+  "hash": "f860bd2554971a8243c6533231555bbe64f8b8638296ce8044135afe41ea49ef",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sentry documents LLM cost and token tracking through the LLM Calls view and the Model Cost widget. It groups AI spans into sessions with `gen_ai.conversation.id` / `set_conversation_id()`, and it shows user `id`/`email`/`username` in the Conversations tab, so session and user context exist alongside cost data. missing for 10: explicit documentation that cost and usage can be broken down or aggregated per user or session, attribution to features via arbitrary custom metadata or tags, and independent or hands-on corroboration.",
+    "rationale": "Sentry groups AI spans into sessions via `gen_ai.conversation.id` / `set_conversation_id()` and shows a User column in the Conversations view. Cost and token usage appear per LLM call and per trace, so session- and user-level attribution is partly supported. Nothing shows arbitrary custom metadata tags for features, or cost rolled up by user, session or feature. Missing for 10: feature-level attribution via custom metadata, explicit cost aggregation by user or session, independent corroboration.",
     "evidenceIds": [
-      "sentry-docs-2",
-      "sentry-docs-7",
       "sentry-docs-6",
       "sentry-docs-13",
-      "sentry-docs-15"
+      "sentry-docs-15",
+      "sentry-docs-30",
+      "sentry-docs-27",
+      "sentry-docs-2",
+      "sentry-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -19,20 +21,28 @@
       "subject": "As a developer, I can attribute cost and usage to users, sessions, and features via custom metadata",
       "citations": [
         {
-          "evidenceId": "sentry-docs-2",
-          "quote": "Use it to compare models, prompts, token usage, cost, and response performance"
-        },
-        {
-          "evidenceId": "sentry-docs-7",
-          "quote": "The Model Cost widget shows estimated costs based on token usage and model pricing."
-        },
-        {
           "evidenceId": "sentry-docs-13",
           "quote": "Use `set_conversation_id()` so every AI span in a chat session shares the same `gen_ai.conversation.id`."
         },
         {
+          "evidenceId": "sentry-docs-6",
+          "quote": "Sentry uses the `gen_ai.conversation.id` attribute to group related AI spans"
+        },
+        {
+          "evidenceId": "sentry-docs-30",
+          "quote": "The [Conversations](/product/agents/conversations/) view includes a **User** column."
+        },
+        {
           "evidenceId": "sentry-docs-15",
           "quote": "Any of `id`, `email`, or `username` is sufficient — the Conversations tab displays whichever fields are present."
+        },
+        {
+          "evidenceId": "sentry-docs-27",
+          "quote": "a traces table showing trace ID, agents, root duration, errors, LLM calls, tool calls, total tokens, total cost, and timestamp"
+        },
+        {
+          "evidenceId": "sentry-docs-2",
+          "quote": "Use it to compare models, prompts, token usage, cost, and response performance"
         }
       ]
     },

@@ -1,13 +1,15 @@
 {
-  "hash": "076b9b6716d274dd15dfae1945b79bfdeb6b15db5a496382d140dd072faecacc",
+  "hash": "d0809c3a09f94a1830807570dc117711883ce86b7717fb55bf6497a6d97a1318",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Sentry's own AI integration has a documented switch that keeps AI prompt and response content out of captured spans while leaving other PII on. That is a real, if coarse, way to stop sensitive data reaching traces. It is all-or-nothing exclusion of AI content, not field-level masking or redaction. missing for 10: general-purpose trace/span scrubbing or masking (e.g., hooks to modify spans before sending), server-side data scrubbing rules, partial/pattern-based redaction of prompt content, independent corroboration.",
+    "rationale": "Sentry documents its own controls that keep sensitive AI content out of traces. Prompt and response content is off by default and is captured only through the `data_collection` option. Developers can also turn AI content off per integration with `include_prompts=False` or `recordInputs`/`recordOutputs` while leaving other PII on. These are coarse on/off collection toggles, not selective masking or redaction of specific sensitive values before storage. missing for 10: field-level masking or redaction rules (e.g., scrubbing hooks or pattern-based redaction) for trace data, coverage of non-AI span data, independent or hands-on corroboration.",
     "evidenceIds": [
-      "sentry-docs-14"
+      "sentry-docs-29",
+      "sentry-docs-14",
+      "sentry-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -15,8 +17,16 @@
       "subject": "As a developer, I can mask or redact sensitive data before it is stored in traces",
       "citations": [
         {
+          "evidenceId": "sentry-docs-29",
+          "quote": "Prompt and response content is off by default — use the `gen_ai` key of the [`data_collection` option](/platforms/python/configuration/options/#data_collection) to capture it."
+        },
+        {
           "evidenceId": "sentry-docs-14",
           "quote": "To keep other PII on but turn AI content off, set `include_prompts=False` on the integration."
+        },
+        {
+          "evidenceId": "sentry-docs-32",
+          "quote": "You can also set `recordInputs` / `recordOutputs` on a specific AI integration."
         }
       ]
     },

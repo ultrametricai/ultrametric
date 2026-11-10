@@ -1,18 +1,16 @@
 {
-  "hash": "d9df6a8822b8a353481bca19fe4be10ac4f92907794cd7f76d805e9c0c5cdab8",
+  "hash": "e41c0a277042aa6f50b9bc62f9e120f26c262548c7baaf04f51d2f26ea47cda9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Supabase Auth has its own programmatic surface: an OpenAPI spec responds at supabase.com/openapi.json, each project exposes a JWKS URL, the client library takes tokens via an `accessToken` option, and there is a JavaScript auth-api reference page. However, the evidence does not show that the OpenAPI spec covers Auth endpoints, and no quoted docs enumerate Auth REST operations. Machine-readable docs (llms.txt, .md pages) support agent use. missing for 10: explicit documentation of the Auth REST endpoints (sign-up, sign-in, admin/user management), confirmation that the OpenAPI spec covers Auth, and independent or hands-on corroboration of driving Auth via the API.",
+    "rationale": "Supabase Auth's docs state it provides API endpoints for creating and managing users. A probe found a reachable OpenAPI spec, and the docs describe JWT-authenticated API calls, so a documented public API exists. The pack does not show endpoint-level reference detail for Auth operations, and it does not confirm that the OpenAPI spec covers Auth rather than the wider platform. missing for 10: endpoint-level Auth API reference, confirmation the OpenAPI spec covers Auth endpoints, independent hands-on evidence of driving Auth programmatically via the API.",
     "evidenceIds": [
+      "supabase-docs-21",
       "supabase-probe-3",
-      "supabase-docs-17",
-      "supabase-docs-16",
-      "supabase-docs-18",
-      "supabase-probe-1",
-      "supabase-probe-2"
+      "supabase-docs-15",
+      "supabase-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -20,16 +18,16 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
+          "evidenceId": "supabase-docs-21",
+          "quote": "We provide client SDKs and API endpoints to help you create and manage users."
+        },
+        {
           "evidenceId": "supabase-probe-3",
-          "quote": "contains \"openapi\" key"
+          "quote": "PROBE openapi: HTTP 200 at https://supabase.com/openapi.json"
         },
         {
-          "evidenceId": "supabase-docs-17",
-          "quote": "Supabase Auth exposes a [JSON Web Key](https://datatracker.ietf.org/doc/html/rfc7517) Set URL for each Supabase project:"
-        },
-        {
-          "evidenceId": "supabase-docs-16",
-          "quote": "you can pass it to the client library using the `accessToken` option."
+          "evidenceId": "supabase-docs-15",
+          "quote": "their access token JWT is automatically managed and sent for you with every API call"
         }
       ]
     },

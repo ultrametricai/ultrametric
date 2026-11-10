@@ -1,16 +1,16 @@
 {
-  "hash": "25bac18a03d35ec607a6338b70f2e26662ff4240344536a40cde3d494e053fb8",
+  "hash": "f72f5862e6fd45be4899dfc2627379286d93f81de8807547793136635ee0a5df",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Supabase Auth documents its own Custom Access Token Hook for adding or changing claims in the JWT, and documents that the Auth token scopes database access row by row through RLS policies. Together these surface authorization data in tokens and enforce it. However, the evidence shows no first-party role or permission definition model: developers must build roles in their own tables. A community member also asked which external AuthZ provider (e.g., Cerbos or Casbin) to pair with it. Missing for 10: built-in role/permission definition and management, documented RBAC guide showing role claims enforced end-to-end, independent hands-on corroboration.",
+    "rationale": "Supabase Auth documents a Custom Access Token Hook that adds, removes or changes JWT claims, so developer-defined role data can appear in session tokens. It also documents the auth token scoping database access row-by-row when combined with RLS policies, which gives enforcement. However, there is no documented first-party model for defining roles and permissions; developers store them in their own tables and wire them in through hooks and Postgres policies, and one community member asked which external AuthZ provider to pair with it. Missing for 10: a built-in role/permission definition and management model, documented RBAC enforcement beyond RLS wiring, and independent or hands-on corroboration of an RBAC setup.",
     "evidenceIds": [
       "supabase-docs-14",
       "supabase-docs-3",
-      "supabase-docs-2",
-      "supabase-docs-7"
+      "supabase-docs-7",
+      "supabase-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -26,8 +26,8 @@
           "quote": "The Auth Token scopes database access on a row-by-row level when used along with [RLS policies](/docs/guides/database/postgres/row-level-security)."
         },
         {
-          "evidenceId": "supabase-docs-2",
-          "quote": "You can connect this data to your own tables using triggers and foreign key references."
+          "evidenceId": "supabase-docs-7",
+          "quote": "Customize Auth behavior with Postgres functions at key lifecycle points."
         }
       ]
     },
