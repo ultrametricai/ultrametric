@@ -59,8 +59,11 @@ jobs:
           python3 rankings-engine/__tests__/refresh_review_controller.py
           python3 rankings-engine/__tests__/refresh_policy_controller.py
 
+      # Generated-refresh branch families: story-runner's 6-hourly refreshes and the
+      # weekly api-gap-repair waves both re-roll judged cells, so both get the
+      # re-judge stability gate in CI (api-gap-repair also runs it pre-push).
       - name: Refresh verdict stability
-        if: startsWith(github.head_ref || github.ref_name, 'story-runner/')
+        if: startsWith(github.head_ref || github.ref_name, 'story-runner/') || startsWith(github.head_ref || github.ref_name, 'api-gap-repair/')
         run: node rankings-engine/scripts/check-refresh-stability.mjs origin/main
 
       - name: Install dependencies
