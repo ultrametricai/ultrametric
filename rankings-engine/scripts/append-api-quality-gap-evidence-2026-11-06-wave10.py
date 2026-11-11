@@ -143,11 +143,13 @@ ITEMS = {
          'https://docs.agents.lumalabs.ai/guides/faq/index.md',
          ['There is no staging or sandbox environment. Use a test key and small generations to experiment.'],
          'Counter-check: the current API FAQ answers the sandbox question directly: "There is no staging or sandbox environment. Use a test key and small generations to experiment." - where a "test key" is a named production key (keys can be named "e.g. `production`, `staging`" and "Multiple keys belonging to the same client share quota") and "Is there a free tier?" is answered "No. The API is Pay-as-you-go from the first image, with no minimum spend or contract."'),
+        # Re-derived 2026-11-10 after live drift (see UPDATES below): the FAQ dropped
+        # the committed-window sentence and a dated changelog page appeared.
         ('luma-versioning-20261106', 'claimed-docs',
-         'https://docs.agents.lumalabs.ai/guides/faq/index.md',
-         ['Every response includes `X-API-Version`',
-          'the previous version remains available during a deprecation window'],
-         'The Luma Agents API publishes a versioning policy: "Every response includes `X-API-Version`. The current value is `2026-04-01`. You do not need to send a version header - there is currently a single version." and "Breaking changes ship behind a new `X-API-Version` value; the previous version remains available during a deprecation window." The base is versioned (https://agents.lumalabs.ai/v1) and the legacy-model migration guide instructs: "If you received a deprecation notice, use the retirement date in that message as the cutoff for your account. Legacy requests will continue to work during the notice period." Caveat: the new docs carry no distinct changelog page.'),
+         'https://docs.agents.lumalabs.ai/guides/changelog/index.md',
+         ['Breaking changes are announced here before they ship.',
+          'It reports the version that answered; you cannot send it to choose a version'],
+         'The Luma Agents API publishes a dated API changelog ("Changes to the `/v1` API that you can see as a caller, newest first... Breaking changes are announced here before they ship.", entries through 2026-11-09) over the versioned /v1 base, with every response carrying an X-API-Version header (currently 2026-04-01; "It reports the version that answered; you cannot send it to choose a version"). The legacy-model migration guide keeps per-account notice periods ("If you received a deprecation notice, use the retirement date in that message as the cutoff for your account. Legacy requests will continue to work during the notice period."). Caveat: the FAQ\'s earlier committed-deprecation-window sentence ("the previous version remains available during a deprecation window") was removed between 2026-11-06 and 2026-11-10; the current commitment is pre-announcement in the changelog plus the migration-guide notice periods.'),
     ],
     ('ai-video', 'pika'): [
         ('pika-openapi-20261106', 'claimed-docs',
@@ -255,8 +257,19 @@ ITEMS = {
 # Rows removed after review, (arena, product) -> evidence ids (none at wave start).
 REMOVALS: dict = {}
 
-# Excerpt updates (verify-then-replace; none at wave start).
-UPDATES: dict = {}
+# Excerpt updates (verify-then-replace, ef4d42d8 precedent). The hardened rerun replay
+# (PR #691 P2 fix) caught live drift in luma's FAQ: between 2026-11-06 and 2026-11-10
+# the committed deprecation-window sentence was removed and a dated changelog page
+# appeared. The row is re-derived to the current wording.
+UPDATES = {
+    ('ai-video', 'luma'): [
+        ('luma-versioning-20261106',
+         'https://docs.agents.lumalabs.ai/guides/changelog/index.md',
+         ['Breaking changes are announced here before they ship.',
+          'It reports the version that answered; you cannot send it to choose a version'],
+         'The Luma Agents API publishes a dated API changelog ("Changes to the `/v1` API that you can see as a caller, newest first... Breaking changes are announced here before they ship.", entries through 2026-11-09) over the versioned /v1 base, with every response carrying an X-API-Version header (currently 2026-04-01; "It reports the version that answered; you cannot send it to choose a version"). The legacy-model migration guide keeps per-account notice periods ("If you received a deprecation notice, use the retirement date in that message as the cutoff for your account. Legacy requests will continue to work during the notice period."). Caveat: the FAQ\'s earlier committed-deprecation-window sentence ("the previous version remains available during a deprecation window") was removed between 2026-11-06 and 2026-11-10; the current commitment is pre-announcement in the changelog plus the migration-guide notice periods.'),
+    ],
+}
 
 # Hand-recorded counter-check/context rows a scheduled refresh must not clobber.
 PRESERVE_IDS: set = {
@@ -302,8 +315,10 @@ TLS_MISMATCH_CHECKS: dict = {}
 
 _fetch_cache: dict = {}
 
-# Courtesy pacing for hosts known to rate-limit bursts (the wave-8 fellow lesson).
-HOST_DELAYS: dict = {}
+# Courtesy pacing for hosts known to rate-limit bursts (the wave-8 fellow lesson;
+# developer.aircall.io, another ReadMe host, rate-limited repeated replay runs on
+# 2026-11-10).
+HOST_DELAYS = {'developer.aircall.io': 20}
 
 
 def fetch(url):
@@ -392,11 +407,14 @@ def main() -> None:
                 verify_post(*POST_CHECKS[iid])
             if iid in TLS_MISMATCH_CHECKS:
                 verify_tls_mismatch(*TLS_MISMATCH_CHECKS[iid])
-            if iid in have:
-                print(f'{iid}: already present, skipping')
-                continue
+            # Markers replay on every run, including for rows already appended, so a
+            # rerun re-verifies saved sources (rotated kling CDN chunks included) and
+            # fails closed on drift rather than skipping silently.
             if markers:
                 verify(url, markers)
+            if iid in have:
+                print(f'{iid}: already present, markers re-verified')
+                continue
             row = {'id': iid, 'tier': tier, 'url': url, 'excerpt': excerpt, 'fetchedAt': NOW}
             if iid in PRESERVE_IDS:
                 row['preserve'] = True

@@ -84,3 +84,17 @@ dedicated Stage environment, and committed versioning policies, with gating, iso
 and aggregator-scope caveats carried in the cited excerpts (alloy's sandbox publishes as
 partial q4 with the vendor's own no-data-boundary caveat quoted in the verdict's
 support). Honest downs ship (21).
+
+## Review round (PR #691)
+
+One P2, script-class: reruns skipped marker verification for already-saved rows, so the
+promised rotated-chunk replay never ran on reruns. The fix moves verification before the
+existing-ID skip, and the hardened replay immediately proved its worth by catching live
+drift: luma's FAQ dropped its committed deprecation-window sentence between 2026-11-06
+and 2026-11-10 while a dated changelog page appeared. The versioning row was re-derived
+to the current wording (changelog pre-announcement, X-API-Version reports-not-selects,
+migration-guide notice periods, with the removal carried as a caveat) and ai-video was
+re-judged: luma api-versioning-policy honestly downgrades to partial q6, and the one
+re-roll up (video-inpaint-restyle full q7) grounds in verbatim vendor quotes.
+developer.aircall.io rate-limited the repeated replays and now carries the same
+20-second courtesy pacing as developers.fellow.ai.
