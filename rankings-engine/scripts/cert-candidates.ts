@@ -52,7 +52,7 @@ export function compareCandidates(a: CertCandidate, b: CertCandidate): number {
 /**
  * The full candidate queue across every arena. A product id certified anywhere (and not
  * expired) is excluded everywhere; a product listed in several arenas is queued once, from the
- * first arena that carries it (same first-wins dedupe as scripts/generate-badges.mjs).
+ * first arena that carries it in categories.json order.
  */
 export function collectCertCandidates(now: Date = new Date()): CertCandidate[] {
   const activeCertified = new Set<string>()

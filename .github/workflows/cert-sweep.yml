@@ -52,11 +52,6 @@ jobs:
       - name: Certification sweep (re-verify + candidates)
         run: pnpm tsx rankings-engine/scripts/cert-sweep.ts
 
-      # Re-render the /badges SVGs from the updated registry — same "re-run after data changes,
-      # commit the diff" cadence the script documents.
-      - name: Regenerate badges
-        run: node scripts/generate-badges.mjs
-
       - name: Tests
         run: pnpm test
 
@@ -65,16 +60,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if git diff --quiet -- rankings public/badges; then
+          if git diff --quiet -- open-rankings; then
             echo "No certification changes — done."
             exit 0
           fi
-          pnpm stats   # keep the README's generated counts in sync with the refreshed data
+          pnpm stats   # check README prose after the refresh
           BRANCH="cert-sweep/$RUN_ID"
           git config user.name "ultrametric-cert-sweep"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add rankings public/badges README.md
+          git add open-rankings README.md
           git commit -m "chore(cert-sweep): weekly certification re-verify + new passers"
           git push -u origin "$BRANCH"
           # Org policy currently forbids Actions from creating PRs ("Write permissions for
@@ -84,10 +79,10 @@ jobs:
           # fails on a missing label).
           if ! gh pr create \
             --title "cert-sweep: weekly certification re-verify + new passers" \
-            --body "Automated weekly keyless certification sweep: re-ran the Agent-Ready conformance suite (\`rankings-engine/scripts/certify.ts\`) against every certified product and the top of the probe-evidence candidate queue (\`rankings-engine/scripts/cert-candidates.ts\`). Updates \`open-rankings/*/certifications.json\`, \`open-rankings/*/cert-reports/*.json\` and \`public/badges/*-certified.svg\` only — no verdicts or rankings touched. Removals mean a former passer failed the live suite today (failing report committed as evidence); see the run log for the per-product breakdown." \
+            --body "Automated weekly keyless certification sweep: re-ran the Agent-Ready conformance suite (\`rankings-engine/scripts/certify.ts\`) against every certified product and the top of the probe-evidence candidate queue (\`rankings-engine/scripts/cert-candidates.ts\`). Updates \`open-rankings/*/certifications.json\` and \`open-rankings/*/cert-reports/*.json\` only — no verdicts or rankings touched. Removals mean a former passer failed the live suite today (failing report committed as evidence); see the run log for the per-product breakdown." \
             --base main --head "$BRANCH"; then
             gh issue create \
               --title "cert-sweep: ready on $BRANCH" \
-              --body "The weekly certification sweep is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link — this workflow only updates the certification registry, cert reports and badges. Enable org Settings → Actions → General → 'Allow GitHub Actions to create and approve pull requests' to remove this manual step." \
+              --body "The weekly certification sweep is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link — this workflow only updates the certification registry and cert reports. Enable org Settings → Actions → General → 'Allow GitHub Actions to create and approve pull requests' to remove this manual step." \
               --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
           fi
