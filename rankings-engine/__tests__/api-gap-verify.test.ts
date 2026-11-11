@@ -219,6 +219,25 @@ describe('api-gap-verify.py', () => {
     expect(drifted.ledger.withheld[0].reason).toContain('expected a TLS verification failure')
   })
 
+  it('withholds a spec-document item whose URL rotated to an HTML page quoting the markers', () => {
+    const rotated = '<!doctype html><html><body><h1>Widget API docs</h1><pre>{"openapi": "3.1.0", "info": {"title": "Widget API"}, "paths": {}}</pre></body></html>'
+    const { ledger, pack } = run({
+      items: [{ ...baseItem, format: 'openapi-document' }],
+      fixture: { [baseItem.url]: { status: 200, body: rotated } },
+    })
+    expect(pack).toEqual([])
+    expect(ledger.cells).toEqual([])
+    expect(ledger.withheld[0].reason).toContain('no longer parses as a machine-readable API description')
+  })
+
+  it('appends a spec-document item when the body is still a real spec', () => {
+    const { pack } = run({
+      items: [{ ...baseItem, format: 'openapi-document' }],
+      fixture: { [baseItem.url]: { status: 200, body: '{"openapi": "3.1.0", "info": {"title": "Widget API"}, "paths": {}}' } },
+    })
+    expect(pack).toHaveLength(1)
+  })
+
   it('withholds an item that declares no verification at all (fail-closed by construction)', () => {
     const { ledger, pack } = run({
       items: [{ ...baseItem, markers: [] }],

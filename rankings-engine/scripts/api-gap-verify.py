@@ -68,11 +68,15 @@ class Verifier:
         self._cache[url] = (status, body)
         return self._cache[url]
 
-    def verify(self, url, markers):
-        """Fail-closed marker check: HTTP 200 and every marker present, or a reason string."""
+    def verify(self, url, markers, fmt=None):
+        """Fail-closed marker check: HTTP 200 and every marker present, or a reason string.
+        fmt='openapi-document' additionally re-validates the body as a spec DOCUMENT, so a
+        URL that rotates to an HTML page quoting the markers can never pass."""
         status, body = self.fetch(url)
         if status != 200:
             return f'{url} returned {status}; refusing to append unverified evidence'
+        if fmt == 'openapi-document' and not looks_like_spec_document(body):
+            return f'{url} no longer parses as a machine-readable API description document; re-derive the item'
         text = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', body))
         for marker in markers:
             if marker not in text and marker not in body:
@@ -133,6 +137,32 @@ class Verifier:
         return None
 
 
+def looks_like_spec_document(body):
+    """Structural spec-document check, mirroring api-gap-pick.ts specSignature: an HTML
+    shell, a JSON page merely mentioning the format, or a prose page quoting an example
+    is not a machine-readable API description."""
+    trimmed = body.lstrip()
+    if trimmed.startswith('<'):
+        return False
+    if re.search(r'"(openapi|swagger)"\s*:\s*"', body):
+        try:
+            parsed = json.loads(body)
+        except json.JSONDecodeError:
+            return False
+        if not isinstance(parsed, dict) or not ('openapi' in parsed or 'swagger' in parsed):
+            return False
+        if 'info' not in parsed:
+            return False
+        return any(k in parsed for k in ('paths', 'webhooks', 'components'))
+    if re.search(r'^```', body, re.MULTILINE):
+        return False
+    if not re.search(r'^(openapi|swagger):', body, re.MULTILINE):
+        return False
+    if not re.search(r'^info:', body, re.MULTILINE):
+        return False
+    return bool(re.search(r'^(paths|webhooks|components|servers):', body, re.MULTILINE))
+
+
 def verify_item(item, manifest, verifier):
     """Run every fail-closed check an item declares; None = verified, else the reason."""
     iid = item['id']
@@ -149,7 +179,7 @@ def verify_item(item, manifest, verifier):
             if reason:
                 return reason
     if item.get('markers'):
-        return verifier.verify(item['url'], item['markers'])
+        return verifier.verify(item['url'], item['markers'], fmt=item.get('format'))
     if not checked:
         return 'item declares no live verification (no markers, no checks); refusing to append'
     return None

@@ -228,6 +228,13 @@ export interface ManifestItem {
   markers: string[]
   excerpt: string
   source: 'llms-txt' | 'well-known'
+  /**
+   * Extra shape the verify harness enforces beyond markers: 'openapi-document' makes it
+   * re-validate the fetched body as a spec DOCUMENT (same structural rules as
+   * specSignature), so a URL that rotates to an HTML page quoting the markers can never
+   * append a machine-readable-description claim.
+   */
+  format?: 'openapi-document'
 }
 
 export function buildSpecItem(
@@ -248,6 +255,7 @@ export function buildSpecItem(
     markers: sig.markers,
     excerpt: `Published machine-readable API description at ${url}: ${sig.descriptor}. Discovered mechanically (${sourceLabel}) by the scheduled api-gap-repair workflow; markers re-verified live, fail-closed, at append time.`,
     source,
+    format: 'openapi-document',
   }
 }
 
