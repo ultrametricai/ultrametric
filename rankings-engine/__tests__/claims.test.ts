@@ -1,3 +1,9 @@
+import shortwaveClaims from '../../open-rankings/email/claims/shortwave.json'
+import shortwaveEvidence from '../../open-rankings/email/evidence/shortwave.json'
+import superhumanClaims from '../../open-rankings/email/claims/superhuman.json'
+import fastmailClaims from '../../open-rankings/email/claims/fastmail.json'
+import missiveClaims from '../../open-rankings/email/claims/missive.json'
+import missiveEvidence from '../../open-rankings/email/evidence/missive.json'
 import { ClaimsArraySchema } from '../../lib/schemas'
 import { describe, expect, it } from 'vitest'
 import authyClaims from '../../open-rankings/authenticator-apps/claims/authy.json'
@@ -145,5 +151,45 @@ describe('feature-flag retained documented claims', () => {
     expect(claimStatus(data, product, storyId)).not.toBe('delivered-unclaimed')
     const ids = data.claims[product]!.map(item => item.id)
     expect(new Set(ids).size).toBe(ids.length)
+  })
+})
+
+describe('email claim quotation support', () => {
+  it('Fastmail does not infer implementation licenses from a list of software types', () => {
+    const claim = fastmailClaims.find(row => row.id === 'fastmail-claim-13')!
+    expect(claim.quote).toBe('Webmail Rust library iOS app Server Typescript library Terminal client')
+    expect(claim.text).not.toMatch(/open.source/i)
+    expect(claim.text).toMatch(/^Lists JMAP implementations/)
+  })
+
+  it('Missive includes the preserved source sentence supporting Spanish regional coverage', () => {
+    const claim = missiveClaims.find(row => row.id === 'missive-claim-52')!
+    expect(claim.text).toContain('Spain and Latin America')
+    expect(claim.quote).toContain('One translation covers Spain and Latin America.')
+    expect(missiveEvidence.some(row => row.url === claim.url && row.excerpt === claim.quote)).toBe(true)
+  })
+})
+
+
+describe('email claim product and quote boundaries', () => {
+  it('Shortwave cites separate evidence for web browsing and the paid-plan default', () => {
+    const browsing = shortwaveClaims.find(claim => claim.id === 'shortwave-claim-3')!
+    expect(browsing.text).toBe('The AI can browse the web for current information related to your emails')
+    expect(browsing.url).toBe('https://www.shortwave.com/pricing/')
+    const paidDefault = shortwaveClaims.find(claim => claim.id === 'shortwave-claim-34')!
+    expect(paidDefault.text).toBe('AI web browsing is enabled by default for paid plans')
+    expect(paidDefault.quote).toBe('AI web browsing enabled by default: Now automatically on for paid plans')
+    expect(paidDefault.url).toBe('https://www.shortwave.com/changelog/')
+    for (const claim of [browsing, paidDefault]) {
+      expect(shortwaveEvidence.some(row => row.url === claim.url && row.excerpt === claim.quote)).toBe(true)
+    }
+  })
+
+  it('Superhuman Mail excludes the changelog entries labeled Docs or Go', () => {
+    // The shared changelog labels personalization/mobile as Mail, agent building/governance
+    // as Go, and spreadsheet import, AI columns, and cursor editing as Docs.
+    const changelogClaims = superhumanClaims.filter(claim => claim.url === 'https://superhuman.com/products/whats-new')
+    expect(changelogClaims.map(claim => claim.id)).toEqual(['superhuman-claim-11', 'superhuman-claim-39'])
+    expect(superhumanClaims.some(claim => /Superhuman Docs|AI Columns|highlighted text in a doc/i.test(claim.text))).toBe(false)
   })
 })
