@@ -139,6 +139,12 @@ ITEMS = {
          'https://docs.lumalabs.ai/reference/creategeneration',
          ['"tryIt":"Try It"', '"url":"https://api.lumalabs.ai/dream-machine/v1"'],
          'The legacy ReadMe-hosted reference runs the "Try It!" request panel against https://api.lumalabs.ai/dream-machine/v1. Caveat: the current Luma Agents API docs (docs.agents.lumalabs.ai) are a static Starlight reference with code samples, "Copy Markdown", and assistant-open links but no runner; the only runnable try-it is on the legacy-generation docs.'),
+        # Review scoping row (PR #691 second round): what Modify Video actually is.
+        ('luma-modify-video-20261106', 'claimed-docs',
+         'https://docs.lumalabs.ai/docs/modify-video.md',
+         ['The output adheres very closely to the source video. This is ideal for subtle enhancements, minor retexturing, or applying a light stylistic filter without drastically altering the original content.',
+          'Preserve full-body motion and facial performance, including choreography, lip sync, and nuanced expression'],
+         'Scope of Modify Video: edits are controlled by global adherence modes rather than region selection - "Adhere - The output adheres very closely to the source video. This is ideal for subtle enhancements, minor retexturing, or applying a light stylistic filter without drastically altering the original content.", "Flex - ... maintaining recognizable elements", "Reimagine - ... adheres much more loosely", and the feature can "Preserve full-body motion and facial performance, including choreography, lip sync, and nuanced expression". No masking, region selection, or guarantee that untouched areas stay intact is documented.'),
         ('luma-no-sandbox-20261106', 'claimed-docs',
          'https://docs.agents.lumalabs.ai/guides/faq/index.md',
          ['There is no staging or sandbox environment. Use a test key and small generations to experiment.'],
