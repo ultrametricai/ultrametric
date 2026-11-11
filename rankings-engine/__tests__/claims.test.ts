@@ -4,6 +4,7 @@ import enteClaims from '../../open-rankings/authenticator-apps/claims/ente-auth.
 import fastmailClaims from '../../open-rankings/email/claims/fastmail.json'
 import missiveClaims from '../../open-rankings/email/claims/missive.json'
 import missiveEvidence from '../../open-rankings/email/evidence/missive.json'
+import superhumanClaims from '../../open-rankings/email/claims/superhuman.json'
 import type { Evidence } from '@/lib/schemas'
 import { loadCategory } from '@/lib/data'
 import { claimsIntegrity } from '@/lib/claimsIntegrity'
@@ -89,6 +90,11 @@ describe('authenticator product boundaries', () => {
 })
 
 describe('email claim quotation support', () => {
+  it('Superhuman Mail excludes the Docs rewriting claim', () => {
+    expect(superhumanClaims.some(claim => claim.id === 'superhuman-claim-42')).toBe(false)
+    expect(superhumanClaims.some(claim => /highlight text in a doc/i.test(claim.quote))).toBe(false)
+  })
+
   it('Fastmail does not infer implementation licenses from a list of software types', () => {
     const claim = fastmailClaims.find(row => row.id === 'fastmail-claim-13')!
     expect(claim.quote).toBe('Webmail Rust library iOS app Server Typescript library Terminal client')
