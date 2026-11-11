@@ -16,6 +16,9 @@ import { PREDICTIONS_FILE, PredictionsArraySchema, settleQuestions } from '../..
 import { DATA_DIR, readJson, writeJson } from '../paths'
 
 function main(): void {
+  const args = process.argv.slice(2)
+  const at = args.length ? args[1] : undefined
+  if (args.length && (args.length !== 2 || args[0] !== '--at' || !at || new Date(at).toISOString() !== at)) throw new Error('Expected --at ISO timestamp')
   const file = path.join(DATA_DIR, PREDICTIONS_FILE)
   if (!fs.existsSync(file)) {
     console.log('settle-predictions: no predictions.json yet — nothing to settle')
@@ -24,7 +27,7 @@ function main(): void {
   const existing = readJson(PredictionsArraySchema, file)
 
   const { events } = buildChangelog(DATA_DIR)
-  const { questions, settled } = settleQuestions(existing, events, new Date())
+  const { questions, settled } = settleQuestions(existing, events, at ? new Date(at) : new Date())
 
   if (settled.length === 0) {
     console.log(`settle-predictions: nothing settled (${existing.filter((q) => q.status === 'open').length} open)`)

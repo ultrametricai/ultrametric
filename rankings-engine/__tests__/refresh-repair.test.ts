@@ -7,6 +7,7 @@ import { llmJson } from '../llm'
 import { createHash } from 'node:crypto'
 import { reconcileRefresh, prepareRetainedRepair } from '../refresh-reconciliation'
 import { cellHash, CELL_HASH_VERSION, PROMPT_VERSION, validateVerdictRules } from '../stages/judge'
+import { runDerive } from '../stages/derive'
 vi.mock('../stages/derive', () => ({ runDerive: vi.fn(async () => {}) }))
 vi.mock('node:child_process', async importOriginal => {
   const actual = await importOriginal<typeof import('node:child_process')>()
@@ -315,6 +316,49 @@ function retainedFixture(count = 2, sameProduct = false) {
 }
 
 describe('provenance-aware retained repair', { timeout: 60000 }, () => {
+  it('replays a no-model base update at an explicit time for derivation and settlement', async () => {
+    const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+    try {
+      const head = f.commit()
+      f.git('checkout', '--detach', f.main)
+      f.write('base-update-fixture.json', {}); const historicalBase = f.commit()
+      f.write('recovery-code-fixture.json', {}); const trusted = f.commit()
+      process.chdir(f.root)
+      const at = '2026-11-01T03:40:27.465Z'
+      const report = await repair({ head, main: historicalBase, arena: 'fixture', findings: [], keyed: false, replay: { trusted, at } })
+      expect(report.mode).toBe('base-update'); expect(report.rejudged).toEqual([])
+      expect(fake).not.toHaveBeenCalled()
+      expect(vi.mocked(runDerive)).toHaveBeenLastCalledWith({ category: 'fixture', generatedAt: at })
+      expect(vi.mocked(execFileSync)).toHaveBeenCalledWith('pnpm',
+        ['exec', 'tsx', 'rankings-engine/scripts/settle-predictions.ts', '--at', at], { stdio: 'inherit' })
+    } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+  })
+
+  it('rejects a replay base outside the current trusted source ancestry', async () => {
+    const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+    try {
+      const trusted = f.commit()
+      f.git('checkout', '--detach', f.main); f.write('foreign-code-fixture.json', {}); const foreign = f.commit()
+      f.git('checkout', '--detach', trusted); process.chdir(f.root)
+      await expect(repair({ head: f.main, main: foreign, arena: 'fixture', findings: [], keyed: false,
+        replay: { trusted, at: '2026-11-01T00:00:00.000Z' },
+      })).rejects.toThrow('Replay base must be an ancestor of the trusted source')
+      expect(fake).not.toHaveBeenCalled(); expect(f.git('status', '--porcelain')).toBe('')
+    } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+  })
+
+  it.each(['keyed', 'findings', 'time', 'source'])('rejects replay with %s before any model calls or data changes', async kind => {
+    const f = retainedFixture(), fake = vi.mocked(llmJson); fake.mockReset()
+    try {
+      const before = f.git('diff')
+      await expect(repair({ head: f.main, main: f.main, arena: 'fixture',
+        keyed: kind === 'keyed', findings: kind === 'findings' ? [f.finding(f.main)] : [],
+        replay: { trusted: kind === 'source' ? 'HEAD' : f.main, at: kind === 'time' ? 'tomorrow' : '2026-11-01T00:00:00.000Z' },
+      })).rejects.toThrow('Replay requires an explicit trusted source, fixed time and no model work')
+      expect(fake).not.toHaveBeenCalled(); expect(f.git('diff')).toBe(before)
+    } finally { fs.rmSync(f.root, { recursive: true, force: true }) }
+  })
+
   it('updates an unreviewed stale refresh onto trusted main without changing canonical evidence or verdicts', async () => {
     const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
     try {

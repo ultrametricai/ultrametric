@@ -6,7 +6,7 @@ import { appendScoreHistoryOnChange } from '../../lib/scoreHistory'
 import { buildRankings } from '../../lib/scoring'
 import { categoryDir, readJson, resolveCategories, writeJson } from '../paths'
 
-export async function runDerive({ category }: { category?: string; product?: string }): Promise<void> {
+export async function runDerive({ category, generatedAt }: { category?: string; product?: string; generatedAt?: string }): Promise<void> {
   for (const cat of resolveCategories(category)) {
     const dataDir = categoryDir(cat.id)
     const products = readJson(ProductSchema.array(), path.join(dataDir, 'products.json'))
@@ -15,7 +15,7 @@ export async function runDerive({ category }: { category?: string; product?: str
     // attachProvenance stamps the ownership watermark (lib/provenance.ts) — a pure function of
     // (arena id, rankings content), so recompute-check can reproduce it byte-for-byte.
     const rankings = RankingsSchema.parse(
-      attachProvenance(cat.id, buildRankings(products, stories, verdicts, new Date().toISOString())),
+      attachProvenance(cat.id, buildRankings(products, stories, verdicts, generatedAt ?? new Date().toISOString())),
     )
     writeJson(path.join(dataDir, 'rankings.json'), rankings)
     // Country/area rollups for arenas with jurisdiction-tagged products (government-services):

@@ -117,6 +117,25 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 ## Repair and recheck
 
+Receipt recovery is an explicit mode of the trusted-main repair workflow. Supply the
+orphan head and the failed run's `recover_run`, `recover_artifact` and `recover_digest`
+inputs together. Ordinary missing provenance does not enter recovery. The failed audit
+must describe a base update with no review findings, restored judgments, rejudging or
+audits, and its original head must retain a canonical receipt. The audit is downloaded
+by its immutable artifact ID, checked against its SHA-256 digest, and parsed within
+strict bounds. An audit's failure message is diagnostic context, not proof of a push.
+
+Recovery executes current trusted code with model credentials removed and a replay time
+bounded by the authenticated failed run. Unrelated changes to main's inputs, dependencies
+or validation code stop recovery. The replayed data reconstructs the complete original
+candidate tree in a separate Git index and must match its ordered parents and tree exactly.
+Fresh validation, stability and current PR, workflow and review eligibility checks precede
+any receipt output. Recovery writes a new run-bound attestation for the explicitly selected
+head, preserves the original audit, and does not push, dispatch reviews or resolve threads.
+Later repair runs authenticate that new attestation instead of treating the old incomplete
+audit as a completed publication.
+
+
 The scheduled story producer pins its starting main commit. After judging, before claims
 and derivation, `reconcile-refresh.ts` applies the existing stability policy to proposed
 grades. An unsupported flip retains the complete baseline row only when its citations

@@ -72,6 +72,7 @@ const denyCases = {
   'internal update intent change': (f) => { f.files = [{ filename: 'scripts/refresh_update.py' }] },
   'internal continuation change': (f) => { f.files = [{ filename: 'scripts/refresh_main_ci.py' }] },
   'internal repair change': (f) => { f.files = [{ filename: 'scripts/refresh-repair.py' }] },
+  'receipt recovery trust change': (f) => { f.files = [{ filename: 'scripts/refresh_recovery.py' }] },
   'internal review change': (f) => { f.files = [{ filename: 'scripts/refresh-review.py' }] },
   'gate config change': (f) => { f.files = [{ filename: 'scripts/config/vitest.config.ts' }] },
   'fast path change': (f) => { f.files = [{ filename: 'scripts/docs-fast-path.mjs' }] },

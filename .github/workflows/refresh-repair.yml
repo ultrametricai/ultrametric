@@ -11,6 +11,18 @@ on:
         description: Expected PR head SHA
         required: true
         type: string
+      recover_run:
+        description: Explicit failed no-model base-update run whose exact head receipt needs recovery
+        required: false
+        type: string
+      recover_artifact:
+        description: Exact failed-run audit artifact ID (required with recover_run)
+        required: false
+        type: string
+      recover_digest:
+        description: Audit artifact SHA-256 hex digest (required with recover_run)
+        required: false
+        type: string
 permissions:
   contents: write
   pull-requests: write
@@ -41,8 +53,11 @@ jobs:
           REPO: ${{ github.repository }}
           PR_NUMBER: ${{ inputs.pr }}
           PR_HEAD: ${{ inputs.head }}
+          RECOVER_RUN: ${{ inputs.recover_run }}
+          RECOVER_ARTIFACT: ${{ inputs.recover_artifact }}
+          RECOVER_DIGEST: ${{ inputs.recover_digest }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ inputs.recover_run == '' && secrets.ANTHROPIC_API_KEY || '' }}
           GIT_AUTHOR_NAME: ultrametric-story-runner
           GIT_AUTHOR_EMAIL: noreply@ultrametric.ai
           GIT_COMMITTER_NAME: ultrametric-story-runner

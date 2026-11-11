@@ -223,9 +223,16 @@ export function repairProgress(before: Verdict[], after: Verdict[], oldPacks: Re
     || !isDeepStrictEqual(payloads(oldPacks), payloads(packs))
 }
 
-export async function repair({ head, main, arena, findings, keyed }: { head: string; main: string; arena: string; findings: Finding[]; keyed: boolean }) {
+export async function repair({ head, main, arena, findings, keyed, replay }: {
+  head: string; main: string; arena: string; findings: Finding[]; keyed: boolean;
+  replay?: { trusted: string; at: string };
+}) {
   if (!/^[a-z0-9-]+$/.test(arena) || !/^[a-f0-9]{40}$/.test(head) || !/^[a-f0-9]{40}$/.test(main)) throw new Error('Invalid repair identity')
-  if (git('rev-parse', 'HEAD') !== main || git('status', '--porcelain')) throw new Error('Repair requires a clean checkout of trusted main')
+  if (replay && (keyed || findings.length || !/^[a-f0-9]{40}$/.test(replay.trusted)
+      || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/.test(replay.at)
+      || new Date(replay.at).toISOString() !== replay.at)) throw new Error('Replay requires an explicit trusted source, fixed time and no model work')
+  if (git('rev-parse', 'HEAD') !== (replay?.trusted ?? main) || git('status', '--porcelain')) throw new Error('Repair requires a clean checkout of trusted main')
+  if (replay && git('merge-base', main, replay.trusted) !== main) throw new Error('Replay base must be an ancestor of the trusted source')
   const base = git('merge-base', main, head)
   const files = git('diff', '--name-only', base, head).split('\n').filter(Boolean)
   for (const file of files) if (!allowed(file, arena)) throw new Error(`PR changes code or data outside its arena: ${file}`)
@@ -398,11 +405,13 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
   if (!canonicalChanged && !baseUpdate) {
     throw new Error('Repair made no canonical arena change; no projections, commit or review requested')
   }
-  await runDerive({ category: arena })
+  if (replay && (!baseUpdate || rejudged.length || audits.length || result.restored.length)) throw new Error('Replay requires an unchanged no-model base update')
+  await runDerive({ category: arena, ...(replay ? { generatedAt: replay.at } : {}) })
   for (const args of [
     ['compute-confidence-intervals.ts', '--category', arena], ['generate-predictions.ts'], ['settle-predictions.ts'],
     ['generate-vendor-reviews.ts'], ['generate-story-graph.ts'], ['generate-step-rankings.ts'],
-  ]) execFileSync('pnpm', ['exec', 'tsx', `rankings-engine/scripts/${args[0]}`, ...args.slice(1)], { stdio: 'inherit' })
+  ]) execFileSync('pnpm', ['exec', 'tsx', `rankings-engine/scripts/${args[0]}`, ...args.slice(1),
+    ...(replay && args[0] === 'settle-predictions.ts' ? ['--at', replay.at] : [])], { stdio: 'inherit' })
   return { arena, head, main, mode: baseUpdate ? 'base-update' : 'canonical-repair', evidenceRenames: renames, restored: restoreChurn(before, after, oldPacks, packs).restored, rejudged, audits,
     unresolved: findings.filter(finding => !audits.some(audit => audit.thread === finding.id && audit.addressed)).map(finding => finding.id) }
 }

@@ -1,6 +1,7 @@
 """Trusted-main repair controller. PR refs are read only as allowlisted JSON data."""
 import json
-from refresh_policy import actions_author, held, verify_provenance
+from refresh_policy import actions_author, held, verify_provenance, MissingProvenance
+from refresh_recovery import selected, trusted_run, recovery_evidence, recovery_resume, replay, GATES
 import hashlib
 import os
 import re
@@ -21,10 +22,10 @@ def command(args, **kwargs):
     STAGE = " ".join(args[:4])
     return subprocess.run(args, text=True, check=True, **kwargs)
 
-def output(args):
+def output(args, **kwargs):
     global STAGE
     STAGE = " ".join(args[:4])
-    return subprocess.check_output(args, text=True).strip()
+    return subprocess.check_output(args, text=True, **kwargs).strip()
 
 def api(endpoint, data=None):
     args = ['gh', 'api', endpoint]
@@ -100,6 +101,9 @@ def load_resume_report(head, trusted):
         return None
     if not base_match:
         raise RuntimeError('Repair commit lacks its trusted base binding')
+    recovered = recovery_resume(api, command, output, REPO, NUMBER, head, trusted)
+    if recovered is not None:
+        return recovered
     run_id = run_match.group(1)
     run = api(f'repos/{REPO}/actions/runs/{run_id}')
     if (run['path'] != '.github/workflows/refresh-repair.yml' or run['head_branch'] != 'main'
@@ -241,6 +245,61 @@ def recheck(report, branch, new_sha):
     return 'rechecked'
 
 
+def recover_receipt(pr, selection):
+    # Explicit workflow inputs select the orphan. Missing provenance alone never
+    # routes ordinary repair into this path, and API errors are not permission.
+    if not re.fullmatch(r'[1-9][0-9]*', RUN_ID) or RUN_ID == selection[0] or not os.environ.get('GITHUB_OUTPUT'):
+        raise RuntimeError('Recovery attestation requires a distinct new workflow run and output destination')
+    try:
+        verify_provenance(api, REPO, pr)
+    except MissingProvenance:
+        pass
+    else:
+        raise RuntimeError('This exact head already has provenance; use ordinary repair')
+    trusted = output(['git', 'rev-parse', 'HEAD'])
+    own_run = trusted_run(api, output, REPO, RUN_ID, trusted, active=True)
+    if own_run['head_sha'] != trusted:
+        raise RuntimeError('Recovery checkout differs from this run source')
+    branch = pr['head']['ref']
+    ref = f'refs/repair/recovery/{RUN_ID}'
+    command(['git', 'fetch', '--no-tags', 'origin', f'refs/heads/{branch}:{ref}'])
+    if output(['git', 'rev-parse', ref]) != EXPECTED:
+        raise RuntimeError('Recovery branch no longer matches the explicitly selected orphan')
+    original, proof = recovery_evidence(api, command, output, verify_provenance, REPO, pr, trusted, selection)
+
+    def eligible():
+        live = current()
+        if not identity(live) or live['head']['sha'] != EXPECTED or live['head']['ref'] != branch:
+            raise RuntimeError('Recovery PR identity, expected head or automation opt-in changed')
+        if api(f'repos/{REPO}/branches/main')['commit']['sha'] != trusted:
+            raise RuntimeError('Main changed during receipt recovery')
+        workflow = api(f'repos/{REPO}/actions/workflows/refresh-repair.yml')
+        if workflow.get('id') != own_run['workflow_id'] or workflow.get('path') != own_run['path'] or workflow.get('state') != 'active':
+            raise RuntimeError('Recovery workflow identity changed or was paused')
+        sha, findings = threads()
+        if sha != EXPECTED or findings or review_active(EXPECTED):
+            raise RuntimeError('Recovery head has changed or active/unresolved review; ordinary review required')
+        remote = output(['git', 'ls-remote', '--refs', 'origin', f'refs/heads/{branch}']).splitlines()
+        if remote != [f'{EXPECTED}\trefs/heads/{branch}']:
+            raise RuntimeError('Recovery branch readback differs from the explicitly selected orphan')
+
+    eligible()
+    replay(command, output, original, proof, trusted, os.environ['RUNNER_TEMP'])
+    eligible()
+    report = {key: original[key] for key in ('arena', 'head', 'evidenceRenames', 'restored', 'rejudged',
+                                            'audits', 'unresolved', 'originalThreads', 'findingSnapshots')}
+    report.update(pr=NUMBER, runId=RUN_ID, main=trusted, mode='receipt-recovery', attestationVersion=1,
+                  publishedHead=EXPECTED, phase='receipt-recovered', recovery=proof,
+                  validated=[gate[1] for gate in GATES] + ['refresh-stability'])
+    report_file = Path(os.environ['RUNNER_TEMP']) / 'refresh-repair-report.json'
+    report_file.write_text(json.dumps(report, indent=2) + '\n')
+    # Persist the new run's proof first. The workflow uploads it under this run;
+    # no old receipt is fabricated, no branch is pushed, and no threads are resolved.
+    with open(os.environ['GITHUB_OUTPUT'], 'a') as receipt:
+        receipt.write(f'published_head={EXPECTED}\n')
+    print('Exact orphan tree replayed and freshly validated; new run-bound receipt prepared')
+
+
 def main():
     pr = current()
     if pr['state'] != 'open':
@@ -249,6 +308,10 @@ def main():
     match = identity(pr)
     if not match or pr['head']['sha'] != EXPECTED or not re.fullmatch('[0-9a-f]{40}', EXPECTED):
         raise RuntimeError('PR identity or expected head changed; no repair performed')
+    recovery = selected(os.environ)
+    if recovery is not None:
+        recover_receipt(pr, recovery)
+        return
     verify_provenance(api, REPO, pr)
     branch, arena = pr['head']['ref'], match.group(1)
     trusted = output(['git', 'rev-parse', 'HEAD'])

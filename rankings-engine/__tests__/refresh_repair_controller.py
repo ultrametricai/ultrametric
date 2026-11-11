@@ -309,6 +309,8 @@ class ResumeArtifactTests(unittest.TestCase):
             if args[:2]==['git','merge-base']:return args[2]
             raise AssertionError(args)
         def api(endpoint):
+            if '/actions/artifacts?name=' in endpoint:
+                return {'total_count':0,'artifacts':[]}
             if endpoint.endswith('/artifacts?per_page=100'):
                 return {'artifacts':[{'name':'refresh-repair-536-123','expired':expired,'size_in_bytes':100}]}
             return {'path':'.github/workflows/refresh-repair.yml','head_branch':'feature' if bad_branch else 'main',
@@ -989,6 +991,12 @@ if name=='gh' and args[:2]==['pr','merge'] and os.environ['FAIL_MERGE']=='true':
             self.assertNotEqual(result.returncode,0)
             self.assertIn('unsupported refresh grade changes',result.stderr)
             self.assertFalse((cwd/'remote-attempt').exists())
+
+# Exercise explicit receipt recovery in the existing CI controller test command.
+from refresh_recovery_controller import (
+    RecoveryInputTests, RecoveryRunTests, RecoveryArtifactTests, RecoveryEvidenceTests,
+    RecoveryReplayTests, RecoveryGitFixtureTests, RecoveryResumeTests, RecoveryControllerTests,
+)
 
 if __name__=='__main__':
     unittest.main()
