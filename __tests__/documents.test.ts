@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   DOCUMENT_USE_CASES,
+  judgedProductRef,
   loadDocumentRegistry,
   validateDocumentReadme,
   validateDocumentRegistry,
@@ -188,5 +189,28 @@ describe('documents validators (failure modes)', () => {
     expect(validateDocumentReadme(wrongUrl, registry).join(';')).toContain('must link its canonical URL')
     // The committed-shape row passes clean.
     expect(validateDocumentReadme('| `present-doc` | [x](https://example.com/doc) |', registry)).toEqual([])
+  })
+})
+
+
+describe('document publisher product references', () => {
+  it('resolves every committed publisher mapping', () => {
+    for (const document of loadDocumentRegistry().documents) {
+      if (document.publisherProductId) expect(judgedProductRef(document.publisherProductId).productId).toBeTruthy()
+    }
+  })
+
+  it('rejects malformed qualified publisher references in the registry', () => {
+    const registry = structuredClone(loadDocumentRegistry())
+    registry.documents[0].publisherProductId = 'code-hosting/github/extra'
+    expect(validateDocumentRegistry(registry, AS_OF).some((error) => error.includes('product slug or arena/product'))).toBe(true)
+  })
+
+  it('resolves an explicit arena without guessing for duplicate product IDs', () => {
+    expect(judgedProductRef('code-hosting/github')).toMatchObject({ arenaId: 'code-hosting', productId: 'github' })
+    expect(() => judgedProductRef('github')).toThrow('Ambiguous')
+    expect(() => judgedProductRef('not-an-arena/github')).toThrow('Unknown')
+    expect(() => judgedProductRef('../github')).toThrow('Invalid')
+    expect(() => judgedProductRef('code-hosting/github/extra')).toThrow('Invalid')
   })
 })
