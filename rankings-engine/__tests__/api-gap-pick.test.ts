@@ -3,10 +3,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 import {
   buildMovesTable, buildNeedsHumanBody, buildSpecItem, discoverProduct, extractSpecUrls,
-  ExclusionsFileSchema, parseRoster, routeCandidates, snapshotProduct, specSignature,
+  ExclusionsFileSchema, parseRoster, positiveEvidenceUrls, routeCandidates, snapshotProduct, specSignature,
   type Candidate, type DiscoveryFetcher, type ExclusionEntry,
 } from '../scripts/api-gap-pick'
-import type { Product } from '../../lib/schemas'
+import type { Evidence, Product } from '../../lib/schemas'
 import { ROOT } from '../paths'
 
 // The scheduled gap-repair workflow picks only genuinely unrepaired gap rows, never
@@ -102,14 +102,14 @@ describe('extractSpecUrls', () => {
 
 describe('specSignature', () => {
   it('extracts literal body slices from a JSON OpenAPI document', () => {
-    const body = '{"openapi": "3.1.0", "info": {"title": "Widget API", "version": "2.0.0"}}'
+    const body = '{"openapi": "3.1.0", "info": {"title": "Widget API", "version": "2.0.0"}, "paths": {}}'
     const sig = specSignature(body)
     expect(sig?.markers).toEqual(['"openapi": "3.1.0"', '"title": "Widget API"'])
     for (const marker of sig?.markers ?? []) expect(body).toContain(marker)
   })
 
   it('extracts slices from a YAML document', () => {
-    const body = 'openapi: 3.0.0\ninfo:\n  title: sevdesk API\n  version: 1.0\n'
+    const body = 'openapi: 3.0.0\ninfo:\n  title: sevdesk API\n  version: 1.0\npaths:\n  /invoices: {}\n'
     const sig = specSignature(body)
     expect(sig?.markers).toEqual(['openapi: 3.0.0', 'title: sevdesk API'])
   })
@@ -118,6 +118,32 @@ describe('specSignature', () => {
     expect(specSignature('<!doctype html><html>"openapi": "3.1.0"</html>')).toBeNull()
     expect(specSignature('{"page": "\\"openapi\\" is a spec format"}')).toBeNull()
     expect(specSignature('not a spec at all')).toBeNull()
+  })
+
+  it('rejects JSON with the version key but no spec structure', () => {
+    expect(specSignature('{"openapi": "3.1.0"}')).toBeNull()
+    expect(specSignature('{"openapi": "3.1.0", "info": {"title": "X"}}')).toBeNull()
+  })
+
+  it('rejects prose and markdown pages carrying an openapi example', () => {
+    const fenced = '# Quickstart\n\n```yaml\nopenapi: 3.1.0\ninfo:\n  title: Example\npaths: {}\n```\n'
+    expect(specSignature(fenced)).toBeNull()
+    const prose = 'Our reference is generated from an OpenAPI document.\nopenapi: 3.1.0 is the version we target.\n'
+    expect(specSignature(prose)).toBeNull()
+  })
+})
+
+describe('positiveEvidenceUrls', () => {
+  it('keeps positive rows and drops recorded negatives so a later spec is re-detected', () => {
+    const rows = [
+      { id: 'a', tier: 'claimed-docs', url: 'https://x.example.com/docs', excerpt: 'Documented behavior', fetchedAt: '2026-11-01T00:00:00Z' },
+      { id: 'b', tier: 'probe', url: 'https://x.example.com/openapi.json', excerpt: 'PROBE openapi: all candidate paths 404 (https://x.example.com/openapi.json)', fetchedAt: '2026-11-01T00:00:00Z' },
+      { id: 'c', tier: 'probe', url: 'https://x.example.com/llms.txt', excerpt: 'PROBE llms.txt: HTTP 200 at https://x.example.com/llms.txt # Docs', fetchedAt: '2026-11-01T00:00:00Z' },
+    ] as Evidence[]
+    const urls = positiveEvidenceUrls(rows)
+    expect(urls.has('https://x.example.com/docs')).toBe(true)
+    expect(urls.has('https://x.example.com/llms.txt')).toBe(true)
+    expect(urls.has('https://x.example.com/openapi.json')).toBe(false)
   })
 })
 
@@ -140,7 +166,7 @@ describe('discoverProduct', () => {
   it('proposes a spec item from the llms.txt listing and withholds the other stories', async () => {
     const found = await discoverProduct('widgets', product, stories, new Set(), fetcher({
       'https://docs.widget.example.com/llms.txt': { status: 200, text: '## OpenAPI Specs\n- [Spec](/openapi.json)' },
-      'https://docs.widget.example.com/openapi.json': { status: 200, text: '{"openapi": "3.1.0", "info": {"title": "Widget API"}}', contentType: 'application/json' },
+      'https://docs.widget.example.com/openapi.json': { status: 200, text: '{"openapi": "3.1.0", "info": {"title": "Widget API"}, "paths": {}}', contentType: 'application/json' },
     }), '2026-11-12')
     expect(found.items).toHaveLength(1)
     expect(found.items[0]).toMatchObject({
@@ -160,7 +186,7 @@ describe('discoverProduct', () => {
   it('falls back to the well-known paths and never proposes a soft-200 HTML shell', async () => {
     const found = await discoverProduct('widgets', product, stories, new Set(), fetcher({
       'https://docs.widget.example.com/openapi.json': { status: 200, text: '<!doctype html><title>Widget</title>', contentType: 'text/html' },
-      'https://widget.example.com/swagger.json': { status: 200, text: '{"swagger": "2.0", "info": {"title": "Widget API"}}', contentType: 'application/json' },
+      'https://widget.example.com/swagger.json': { status: 200, text: '{"swagger": "2.0", "info": {"title": "Widget API"}, "paths": {}}', contentType: 'application/json' },
     }), '2026-11-12')
     expect(found.items.map((i) => i.url)).toEqual(['https://widget.example.com/swagger.json'])
     expect(found.items[0].source).toBe('well-known')
@@ -170,7 +196,7 @@ describe('discoverProduct', () => {
     const found = await discoverProduct('widgets', product, stories,
       new Set(['https://docs.widget.example.com/openapi.json']),
       fetcher({
-        'https://docs.widget.example.com/openapi.json': { status: 200, text: '{"openapi": "3.0.0"}', contentType: 'application/json' },
+        'https://docs.widget.example.com/openapi.json': { status: 200, text: '{"openapi": "3.0.0", "info": {"title": "Widget API"}, "paths": {}}', contentType: 'application/json' },
       }), '2026-11-12')
     expect(found.items).toEqual([])
     expect(found.withheld).toHaveLength(4)

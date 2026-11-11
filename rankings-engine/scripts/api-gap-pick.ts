@@ -40,7 +40,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
 import { isSharedCodeHostOrigin } from '../stages/probe'
-import { ProductSchema, StorySchema, VerdictSchema, EvidenceSchema, type Product } from '../../lib/schemas'
+import { ProductSchema, StorySchema, VerdictSchema, EvidenceSchema, type Evidence, type Product } from '../../lib/schemas'
+import { recordsAbsence } from './staleness-scan'
 import { DATA_DIR, readJson } from '../paths'
 
 const TIMEOUT_MS = 8_000
@@ -163,8 +164,9 @@ export interface SpecSignature {
 
 // Recognizes an OpenAPI/Swagger document and returns literal slices of ITS OWN body as the
 // verification markers, so the fail-closed re-check can never pass on a rotated or
-// soft-200 page. Returns null for anything that is not plainly a spec document (an HTML
-// shell served with HTTP 200 must not become evidence).
+// soft-200 page. Returns null for anything that is not plainly a spec DOCUMENT: an HTML
+// shell, a JSON page that merely mentions the format, or a markdown/prose page carrying an
+// `openapi:` example must not become machine-spec evidence.
 export function specSignature(body: string): SpecSignature | null {
   const trimmed = body.trimStart()
   if (trimmed.startsWith('<')) return null
@@ -173,6 +175,10 @@ export function specSignature(body: string): SpecSignature | null {
     try {
       const parsed = JSON.parse(body) as Record<string, unknown>
       if (typeof parsed !== 'object' || parsed === null || !('openapi' in parsed || 'swagger' in parsed)) return null
+      // Spec structure, not just the version key: OpenAPI/Swagger documents carry an
+      // info object and an operation surface.
+      if (!('info' in parsed)) return null
+      if (!('paths' in parsed || 'webhooks' in parsed || 'components' in parsed)) return null
     } catch {
       return null
     }
@@ -180,14 +186,18 @@ export function specSignature(body: string): SpecSignature | null {
     const markers = [jsonVersion[0], ...(title ? [title[0]] : [])]
     return { markers, descriptor: markers.join(', ') }
   }
-  const yamlVersion = trimmed.match(/^(openapi|swagger):[^\n]*/m)
-  if (yamlVersion) {
-    const marker = yamlVersion[0].trimEnd()
-    const title = body.match(/^\s*title:[^\n]*/m)
-    const markers = [marker, ...(title ? [title[0].trim()] : [])]
-    return { markers, descriptor: markers.join(', ') }
-  }
-  return null
+  // YAML branch: a fenced code block means a prose page QUOTING a spec, not a spec; a
+  // real YAML document carries the version key plus the info and operation sections at
+  // the top level (column 0), which prose and markdown pages do not.
+  if (/^\s*```/m.test(body)) return null
+  const yamlVersion = body.match(/^(openapi|swagger):[^\n]*/m)
+  if (!yamlVersion) return null
+  if (!/^info:/m.test(body)) return null
+  if (!/^(paths|webhooks|components|servers):/m.test(body)) return null
+  const marker = yamlVersion[0].trimEnd()
+  const title = body.match(/^\s*title:[^\n]*/m)
+  const markers = [marker, ...(title ? [title[0].trim()] : [])]
+  return { markers, descriptor: markers.join(', ') }
 }
 
 export interface ManifestItem {
@@ -242,6 +252,15 @@ export interface WithheldRow {
   storyId: string
   disposition: 'needs-research'
   reason: string
+}
+
+// URLs already carrying POSITIVE evidence in the pack: these are skipped during
+// discovery (nothing to add). Rows that RECORD absence (negative openapi probes, stale
+// curated links) are deliberately excluded from the set: a URL that 404ed when the probe
+// ran can start serving a real spec later, and the recorded negative must not block the
+// re-check that detects it.
+export function positiveEvidenceUrls(evidence: Evidence[]): Set<string> {
+  return new Set(evidence.filter((e) => !recordsAbsence(e)).map((e) => e.url))
 }
 
 export async function discoverProduct(
@@ -494,10 +513,8 @@ async function runPick(args: CliArgs): Promise<void> {
     if (!product) throw new Error(`picked product missing from ${c.arena}/products.json: ${c.product}`)
     const storyIds = apiStoryIdsFor(c.arena)
     const evidenceFile = path.join(DATA_DIR, c.arena, 'evidence', `${c.product}.json`)
-    const existingUrls = new Set<string>(
-      fs.existsSync(evidenceFile)
-        ? readJson(EvidenceSchema.array(), evidenceFile).map((e) => e.url)
-        : [],
+    const existingUrls = positiveEvidenceUrls(
+      fs.existsSync(evidenceFile) ? readJson(EvidenceSchema.array(), evidenceFile) : [],
     )
     if (args.offline) {
       withheld.push(...storyIds.map((storyId): WithheldRow => ({

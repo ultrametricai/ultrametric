@@ -126,16 +126,23 @@ jobs:
         if: steps.gate.outputs.enabled == 'true'
         run: |
           LEDGER="reports/evidence-parity/$(date -u +%F)-api-quality-ci.json"
+          # --issue-body REWRITES the pick step's routing-only body with the full human
+          # queue: affiliated/excluded rows plus every withheld cell (needs-research and
+          # verification failures), so unfinished research reaches the issue even on a
+          # zero-append run (where no ledger is committed).
           python3 rankings-engine/scripts/api-gap-verify.py \
             --manifest /tmp/api-gap-manifest.json \
             --ledger "$LEDGER" \
-            --ledger-md "${LEDGER%.json}.md"
+            --ledger-md "${LEDGER%.json}.md" \
+            --issue-body /tmp/api-gap-needs-human.md
           echo "ledger=$LEDGER" >> "$GITHUB_OUTPUT"
           echo "appended=$(jq '.cells | length' "$LEDGER")" >> "$GITHUB_OUTPUT"
 
-      # Scoped re-judges: judge --batch per touched (arena, product) — the judge's
-      # cellHash cache means untouched cells cost nothing — then derive + the analytic
-      # intervals once per touched arena.
+      # Scoped re-judges — the judge's cellHash cache means untouched cells cost nothing —
+      # then derive + the analytic intervals once per touched arena. An arena with MORE
+      # THAN ONE touched product is judged category-wide (the local waves' convention):
+      # judge.ts blocks a scoped --product publication whenever any OTHER product's pack
+      # changed under its cache, so per-product calls would fail mid-wave.
       - name: Judge and derive touched arenas
         if: steps.gate.outputs.enabled == 'true' && steps.verify.outputs.appended != '0'
         env:
@@ -143,13 +150,17 @@ jobs:
           LEDGER: ${{ steps.verify.outputs.ledger }}
         run: |
           jq -r '.cells[] | "\(.arena) \(.product)"' "$LEDGER" | sort -u > /tmp/api-gap-touched.txt
-          while read -r ARENA PRODUCT; do
-            echo "::group::judge $ARENA/$PRODUCT"
-            pnpm engine judge --batch --category "$ARENA" --product "$PRODUCT"
-            echo "::endgroup::"
-          done < /tmp/api-gap-touched.txt
-          jq -r '.cells[].arena' "$LEDGER" | sort -u > /tmp/api-gap-arenas.txt
+          cut -d' ' -f1 /tmp/api-gap-touched.txt | sort -u > /tmp/api-gap-arenas.txt
           while read -r ARENA; do
+            COUNT=$(grep -c "^$ARENA " /tmp/api-gap-touched.txt)
+            echo "::group::judge $ARENA ($COUNT touched)"
+            if [ "$COUNT" -gt 1 ]; then
+              pnpm engine judge --batch --category "$ARENA"
+            else
+              PRODUCT=$(grep "^$ARENA " /tmp/api-gap-touched.txt | cut -d' ' -f2)
+              pnpm engine judge --batch --category "$ARENA" --product "$PRODUCT"
+            fi
+            echo "::endgroup::"
             echo "::group::derive $ARENA"
             pnpm engine derive --category "$ARENA"
             pnpm exec tsx rankings-engine/scripts/compute-confidence-intervals.ts --category "$ARENA"
@@ -206,6 +217,11 @@ jobs:
           git checkout -b "$BRANCH"
           git add open-rankings rankings-engine/cache reports/evidence-parity README.md
           git commit -m "chore(api-gap-repair): scheduled api-quality gap repairs ($DATE)"
+          # Re-judge stability gate on the committed candidate BEFORE any remote branch,
+          # PR, or review exists (the story-runner contract): a changed cellHash re-rolls
+          # every cell of a touched product, and an upgrade without new cited evidence or
+          # an unverified downgrade must not publish. A failure stops the wave here.
+          node rankings-engine/scripts/check-refresh-stability.mjs HEAD^ HEAD
           git push -u origin "$BRANCH"
           {
             echo "Scheduled api-quality gap repairs (\`.github/workflows/api-gap-repair.yml\`): the CI counterpart of the dated local waves. Evidence rows were appended only after the committed fail-closed harness (\`rankings-engine/scripts/api-gap-verify.py\`) re-verified them live; everything unverifiable is withheld in the ledger and stays flagged for a research wave. Per-cell detail: \`$LEDGER\` and its markdown twin."
@@ -236,8 +252,10 @@ jobs:
               --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
           fi
 
-      # The needs-human issue: affiliated/disclosed products and exclusion-routed rows the
-      # pick found this run — the judgment-heavy work that never runs autonomously.
+      # The needs-human issue: affiliated/disclosed products, exclusion-routed rows, and
+      # every withheld cell (needs-research + verification failures) — the judgment-heavy
+      # work that never runs autonomously. The verify step rewrites the body with the full
+      # queue; on a keyless run the pick step's routing-only body stands.
       # Same-day re-runs UPDATE the open issue; filing closes this generator's previous
       # still-open issue naming the successor (the vendor-radar pattern).
       # if: always() — a failure upstream must not swallow the routing; the step exits 0

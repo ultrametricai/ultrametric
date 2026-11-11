@@ -19,6 +19,8 @@ interface Scenario {
   postChecks?: Record<string, Record<string, unknown>>
   tlsMismatchChecks?: Record<string, Record<string, unknown>>
   withheld?: Array<Record<string, unknown>>
+  needsHuman?: Array<Record<string, unknown>>
+  deferred?: Array<Record<string, unknown>>
   fixture: Record<string, Record<string, unknown>>
   pack?: Array<Record<string, unknown>>
 }
@@ -59,7 +61,7 @@ const baseItem = {
   excerpt: 'Published machine-readable API description with a verified title.',
 }
 
-function run(scenario: Scenario): { ledger: Ledger; pack: PackRow[]; md: string; stdout: string } {
+function run(scenario: Scenario): { ledger: Ledger; pack: PackRow[]; md: string; issue: string | null; stdout: string } {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'api-gap-verify-'))
   const evidenceDir = path.join(dir, 'open-rankings', 'widgets', 'evidence')
   fs.mkdirSync(evidenceDir, { recursive: true })
@@ -69,8 +71,8 @@ function run(scenario: Scenario): { ledger: Ledger; pack: PackRow[]; md: string;
     date: '2026-11-12',
     scan: 'offline staleness scan fixture: 1 gap row after ledger suppression',
     picked: [],
-    deferred: [{ arena: 'terminals', product: 'iterm2', staleness: 80, reason: 'settlement-aware pass pending' }],
-    needsHuman: [{ arena: 'product-feedback', product: 'foreloop', staleness: 70, reason: 'own product pending ruling' }],
+    deferred: scenario.deferred ?? [{ arena: 'terminals', product: 'iterm2', staleness: 80, reason: 'settlement-aware pass pending' }],
+    needsHuman: scenario.needsHuman ?? [{ arena: 'product-feedback', product: 'foreloop', staleness: 70, reason: 'own product pending ruling' }],
     items: scenario.items ?? [baseItem],
     withheld: scenario.withheld ?? [],
     negativeChecks: scenario.negativeChecks ?? {},
@@ -82,11 +84,13 @@ function run(scenario: Scenario): { ledger: Ledger; pack: PackRow[]; md: string;
   fs.writeFileSync(path.join(dir, 'fixture.json'), JSON.stringify(scenario.fixture))
   const ledgerFile = path.join(dir, 'ledger.json')
   const mdFile = path.join(dir, 'ledger.md')
+  const issueFile = path.join(dir, 'issue.md')
   const stdout = execFileSync('python3', [
     SCRIPT,
     '--manifest', path.join(dir, 'manifest.json'),
     '--ledger', ledgerFile,
     '--ledger-md', mdFile,
+    '--issue-body', issueFile,
     '--root', dir,
     '--fixture', path.join(dir, 'fixture.json'),
   ], { encoding: 'utf8' })
@@ -94,6 +98,7 @@ function run(scenario: Scenario): { ledger: Ledger; pack: PackRow[]; md: string;
     ledger: JSON.parse(fs.readFileSync(ledgerFile, 'utf8')),
     pack: JSON.parse(fs.readFileSync(path.join(evidenceDir, 'widget.json'), 'utf8')),
     md: fs.readFileSync(mdFile, 'utf8'),
+    issue: fs.existsSync(issueFile) ? fs.readFileSync(issueFile, 'utf8') : null,
     stdout,
   }
 }
@@ -114,13 +119,15 @@ describe('api-gap-verify.py', () => {
     expect(md).toContain('| widget | widgets | 1 | 0 |')
   })
 
-  it('withholds on a non-200 status and never writes the pack', () => {
-    const { ledger, pack } = run({ fixture: { [baseItem.url]: { status: 404, body: '' } } })
+  it('withholds on a non-200 status, never writes the pack, and queues the failure in the issue body', () => {
+    const { ledger, pack, issue } = run({ fixture: { [baseItem.url]: { status: 404, body: '' } } })
     expect(pack).toEqual([])
     expect(ledger.cells).toEqual([])
     expect(ledger.withheld).toHaveLength(1)
     expect(ledger.withheld[0].disposition).toBe('withheld-verification-failed')
     expect(ledger.withheld[0].reason).toContain('returned 404')
+    expect(issue).toContain('withheld-verification-failed')
+    expect(issue).toContain('api-machine-spec')
   })
 
   it('withholds when a marker rotated out of the page (fail-closed)', () => {
@@ -223,9 +230,9 @@ describe('api-gap-verify.py', () => {
     expect(ledger.cells[0].note).toBe('already present')
   })
 
-  it('carries manifest withheld rows (needs-research) and routing into the ledger, outside cells', () => {
+  it('carries manifest withheld rows (needs-research) and routing into the ledger and the issue body, outside cells', () => {
     const withheld = [{ arena: 'widgets', product: 'widget', storyId: 'api-sandbox', disposition: 'needs-research', reason: 'No mechanically verifiable surface for this story.' }]
-    const { ledger, md } = run({
+    const { ledger, md, issue } = run({
       fixture: { [baseItem.url]: { status: 200, body: specBody } },
       withheld,
     })
@@ -235,5 +242,20 @@ describe('api-gap-verify.py', () => {
     expect(ledger.deferred[0].product).toBe('iterm2')
     expect(md).toContain('foreloop')
     expect(md).toContain('iterm2')
+    expect(issue).toContain('| widget | widgets | api-sandbox | needs-research |')
+    expect(issue).toContain('foreloop')
+    expect(issue).toContain('iterm2')
+  })
+
+  it('writes no issue body when nothing needs a human', () => {
+    const { issue, ledger } = run({
+      items: [baseItem],
+      withheld: [],
+      needsHuman: [],
+      deferred: [],
+      fixture: { [baseItem.url]: { status: 200, body: specBody } },
+    })
+    expect(ledger.cells).toHaveLength(1)
+    expect(issue).toBeNull()
   })
 })
