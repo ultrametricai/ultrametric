@@ -87,6 +87,15 @@ class ProvenanceTests(unittest.TestCase):
                         path.replace('fixture/', 'fixture/nested/'), path + '.bak']:
             self.assertFalse(policy.allowed_path('story-runner', invalid))
 
+    def test_retired_embeds_cannot_be_reintroduced_by_refreshes(self):
+        for kind in ['story-runner', 'vendor-radar', 'vendor-radar-bringup']:
+            for path in ['public/badges/stripe-score.svg',
+                         'public/badges/stripe-agent-ready.svg',
+                         'public/badges/stripe-certified.svg']:
+                self.assertFalse(policy.allowed_path(kind, path))
+        self.assertTrue(policy.allowed_path('vendor-radar-bringup',
+                                            'open-rankings/payments/products.json'))
+
     def test_only_explicit_continuation_workflows_can_attest_new_heads(self):
         for path in ['refresh-repair.yml','refresh-automerge.yml']:
             def change(d):

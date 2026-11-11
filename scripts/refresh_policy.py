@@ -48,7 +48,7 @@ def allowed_path(kind, path):
                     r'(score-history|popularity-history)\.jsonl)', path):
         return True
     return kind == 'vendor-radar-bringup' and bool(re.fullmatch(
-        r'(open-rankings/[a-z0-9-]+/products\.json|public/badges/[A-Za-z0-9_./-]+\.svg)', path))
+        r'open-rankings/[a-z0-9-]+/products\.json', path))
 
 
 def check_scope(kind, files, expected_count, mode):
