@@ -126,3 +126,21 @@ describe('Drata service-status claim boundaries', () => {
     })
   })
 })
+
+describe('feature-flag retained documented claims', () => {
+  const data = loadCategory('feature-flags')
+
+  it.each([
+    { product: 'unleash', claimId: 'unleash-claim-41', storyId: 'agentic-headless' },
+    { product: 'launchdarkly', claimId: 'launchdarkly-claim-restored-headless-pipeline', storyId: 'agentic-headless' },
+    { product: 'growthbook', claimId: 'growthbook-claim-restored-experiment-results', storyId: 'agent-experiment-analysis' },
+  ])('preserves $product documented $storyId claim with its existing evidence', ({ product, claimId, storyId }) => {
+    const claim = data.claims[product]!.find(item => item.id === claimId)!
+    expect(claim).toBeDefined()
+    expect(claim.storyIds).toContain(storyId)
+    expect(data.evidence[product]!.some(item => item.url === claim.url && item.excerpt === claim.quote)).toBe(true)
+    expect(claimStatus(data, product, storyId)).not.toBe('delivered-unclaimed')
+    const ids = data.claims[product]!.map(item => item.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+})
