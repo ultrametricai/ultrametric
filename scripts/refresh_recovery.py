@@ -29,7 +29,7 @@ RECOVERY_CODE = {
     'rankings-engine/__tests__/refresh_producer_controller.py',
     'rankings-engine/__tests__/refresh-repair.test.ts', 'rankings-engine/__tests__/derive.test.ts',
     'scripts/author-automerge.mjs', 'scripts/author-automerge.test.mjs',
-    'docs/ACCURACY.md', 'open-manifest.json',
+    'docs/ACCURACY.md', 'docs/repo-split-census.json', 'open-manifest.json',
 }
 EMPTY_LISTS = ('originalThreads', 'restored', 'rejudged', 'audits', 'unresolved')
 

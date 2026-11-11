@@ -135,7 +135,6 @@ head, preserves the original audit, and does not push, dispatch reviews or resol
 Later repair runs authenticate that new attestation instead of treating the old incomplete
 audit as a completed publication.
 
-
 The scheduled story producer pins its starting main commit. After judging, before claims
 and derivation, `reconcile-refresh.ts` applies the existing stability policy to proposed
 grades. An unsupported flip retains the complete baseline row only when its citations
