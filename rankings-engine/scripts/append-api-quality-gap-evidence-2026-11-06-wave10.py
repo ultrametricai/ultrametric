@@ -197,6 +197,12 @@ ITEMS = {
          'https://www.quo.com/docs/2026-03-30/calls/list-calls',
          ['data-testid="try-it-button"', 'aria-label="Try it"'],
          'The Mintlify-hosted API reference runs the "Try it" playground per endpoint, with llms.txt and .md mirrors of every page; the runner executes against the production API with a real key.'),
+        # Review grounding row (PR #691 third round): summaries attach to the call
+        # record itself.
+        ('quo-call-summaries-20261106', 'claimed-docs',
+         'https://www.quo.com/docs/mdx/api-reference/calls/get-a-summary-for-a-call.md',
+         ['Retrieve a detailed summary of a specific call identified by its unique call ID'],
+         'Quo attaches AI summaries to the call record: "Retrieve a detailed summary of a specific call identified by its unique call ID. This endpoint supports summaries for both regular calls and calls handled by Sona." A dedicated webhook triggers on call-summary events. Gate caveat verbatim: "Call summaries are only available on business and scale plans."'),
         ('quo-versioning-20261106', 'claimed-docs',
          'https://www.quo.com/docs/2026-03-30/versioning.md',
          ['Every version is a date. Every request declares which date it was built for:',
@@ -223,6 +229,12 @@ ITEMS = {
          'https://gitea.com/swagger.v1.json',
          ['"swagger": "2.0"', '"title": "Gitea API"', '"basePath": "/api/v1"'],
          'Gitea publishes machine-readable API descriptions built into every instance and live-verified on the vendor-run gitea.com: the Swagger 2.0 document at /swagger.v1.json (342 paths, basePath /api/v1) and an OpenAPI 3.0.3 document at /openapi3.v1.json. The docs state: "The OpenAPI document is at: https://gitea.your.host/swagger.v1.json".'),
+        # Review grounding row (PR #691 third round): milestone due dates are a schema
+        # fact in the already-cited machine spec.
+        ('gitea-milestone-schema-20261106', 'claimed-docs',
+         'https://gitea.com/swagger.v1.json',
+         ['"Milestone": {', '"due_on"'],
+         'The Gitea API\'s Milestone model carries a due date directly on the milestone: the spec\'s Milestone definition includes a due_on date-time property alongside title, description, state, and open/closed issue counts (and the milestone endpoints accept it on create and edit).'),
         ('gitea-swagger-ui-20261106', 'claimed-docs',
          'https://gitea.com/api/swagger',
          ['<title>Gitea API</title>',

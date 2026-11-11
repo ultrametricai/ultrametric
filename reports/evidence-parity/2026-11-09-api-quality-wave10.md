@@ -104,3 +104,10 @@ listed untouched-area preservation as missing. The appended scoping row records 
 Video's actual semantics (global adherence modes with motion and performance
 preservation; no masking, region selection, or untouched-area guarantee documented), and
 the re-judged cell settles at partial q5 citing it.
+
+A third round flagged two side-effect fulls whose rationales named a missing
+requirement. Both had direct evidence available: the Gitea machine spec's Milestone
+model carries due_on (appended as its own row; the cell now publishes full q9 citing
+it), and Quo documents per-call summaries by call ID with a dedicated call-summary
+webhook and a business/scale plan gate (full q7 citing it). Re-rolls pre-audited; honest
+downs ship.
