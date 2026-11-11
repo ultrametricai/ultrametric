@@ -4,7 +4,15 @@ import os from 'node:os'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { llmJson } from '../llm'
+import { createHash } from 'node:crypto'
+import { reconcileRefresh, prepareRetainedRepair } from '../refresh-reconciliation'
 import { cellHash, CELL_HASH_VERSION, PROMPT_VERSION, validateVerdictRules } from '../stages/judge'
+vi.mock('../stages/derive', () => ({ runDerive: vi.fn(async () => {}) }))
+vi.mock('node:child_process', async importOriginal => {
+  const actual = await importOriginal<typeof import('node:child_process')>()
+  return { ...actual, execFileSync: vi.fn((command: string, args: string[], options: object) =>
+    command === 'pnpm' ? Buffer.alloc(0) : actual.execFileSync(command, args, options)) }
+})
 vi.mock('../llm', async importOriginal => ({ ...await importOriginal<typeof import('../llm')>(), llmJson: vi.fn() }))
 import { allowed, mergeData, projection, restoreChurn, rowAtLine, rekeyEvidence, remapVerdictEvidence, sourceCacheMatches, judgeRepairCell, repair, repairProgress } from '../refresh-repair'
 import type { Evidence, Verdict, Story } from '../../lib/schemas'
@@ -55,6 +63,22 @@ describe('refresh repair policy', () => {
     expect(mergeData('old', 'old', 'new PR', 'evidence.json')).toBe('new PR')
     expect(mergeData('old', 'new main', 'old', 'evidence.json')).toBe('new main')
     expect(mergeData('old', 'old', null, 'evidence.json')).toBeNull()
+  })
+  it('preserves append-only popularity observations from both branches', () => {
+    const file = 'open-rankings/email/popularity-history.jsonl'
+    const row = (day: string, stars = 10) => JSON.stringify({ productId: 'vendor', stars, fetchedAt: '2026-10-01T00:00:00Z', runAt: `2026-10-${day}T00:00:00Z` }) + '\n'
+    const a = row('01'), b = row('02'), c = row('03')
+    expect(mergeData(a, a + c, a + b, file)).toBe(a + c + b)
+    expect(mergeData(a, a + b, a + b, file)).toBe(a + b)
+    expect(mergeData(a + a, a + a + c, a + a + b + b, file)).toBe(a + a + c + b + b)
+    expect(mergeData(a, (a + c).trimEnd(), a + b, file)).toBe(a + c + b)
+    for (const [base, main, incoming] of [
+      [null, a, a], [a, null, a], [a, a, null],
+      [a, b, a + c], [a, a + c, b], [a + a, a, a + a + b],
+      [a, a + b, a + row('02', 11)], [a, a, a + '{bad}'],
+      [a, a, a + JSON.stringify({ productId: 'vendor', runAt: 'bad' })],
+    ]) expect(() => mergeData(base, main, incoming, file)).toThrow()
+    expect(() => mergeData(a, a + c, a + b, 'open-rankings/email/popularity.json')).toThrow('Concurrent')
   })
   it('unions original uptime batches regardless of chronology without rewriting main', () => {
     const line = (date: string, up = true) => JSON.stringify({ date, arena: 'email', productId: 'vendor', surface: 'mcp', url: 'https://example.invalid', up, status: up ? 200 : 503 } satisfies SloEntry) + '\n'
@@ -202,7 +226,7 @@ describe('trusted-main Git boundary', () => {
       await expect(repair({ head, main, arena: 'fixture', keyed: true, findings: [{
         id: 'other-finding', path: 'open-rankings/fixture/verdicts.json', commit: head, line,
         body: 'Check this other product capability',
-      }] })).rejects.toThrow('fixture/vendor:story: retained producer decision needs human review')
+      }] })).rejects.toThrow()
       expect(fake).not.toHaveBeenCalled()
       expect(git('status', '--porcelain')).toBe('')
     } finally { process.chdir(previous); fs.rmSync(dir, { recursive: true, force: true }) }
@@ -237,5 +261,216 @@ describe('trusted-main Git boundary', () => {
         kind === 'code' ? 'outside its arena' : kind === 'symlink' ? 'regular data file' : kind === 'slo-conflict' ? 'Conflicting SLO observation' : 'Unsupported repair finding')
       expect(git('status', '--porcelain')).toBe('')
     } finally { process.chdir(previous); fs.rmSync(dir, { recursive: true, force: true }) }
+  })
+})
+
+// Fictional Git fixtures exercise the full repair path. Model replies and derived
+// projections are mocked; provenance verification and reconciliation run normally.
+function retainedFixture(count = 2, sameProduct = false) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'um-retained-repair-'))
+  const git = (...args: string[]) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: 'pipe' }).trim()
+  const dir = 'open-rankings/fixture', ledgerPath = 'rankings-engine/cache/refresh-retention/fixture/decisions.json'
+  const cachePath = (productId: string, storyId = 'story') => `rankings-engine/cache/judge/fixture/${productId}/${storyId}.json`
+  const write = (file: string, value: unknown) => { const target = path.join(root, file); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, JSON.stringify(value, null, 2) + '\n') }
+  const read = (file: string) => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))
+  const commit = () => { git('add', '.'); git('commit', '-qm', 'fixture'); return git('rev-parse', 'HEAD') }
+  const ids = [...Array.from({ length: count }, (_, i) => `retained-${i}`), 'target-a', 'target-b']
+  const products = (sameProduct ? ['vendor'] : ids).map(id => ({
+    id, name: id, vendor: id, type: 'commercial', urls: { site: 'https://example.invalid' },
+  }))
+  const stories = sameProduct ? ids.map(id => ({ ...story, id })) : [story]
+  const cells = sameProduct ? ids.map(storyId => ({ productId: 'vendor', storyId })) : ids.map(productId => ({ productId, storyId: 'story' }))
+  const supported = (productId: string, id: string, quality: number, storyId = 'story'): Verdict => ({ ...old, productId, storyId, quality, evidenceIds: [id], support: {
+    subject: story.title, relation: 'direct', coverage: 'partial', citations: [{ evidenceId: id, quote: evidence(id).excerpt }],
+  } })
+  const cache = (row: Verdict) => write(cachePath(row.productId, row.storyId), {
+    hash: cellHash(stories.find(item => item.id === row.storyId)!, read(`${dir}/evidence/${row.productId}.json`), PROMPT_VERSION), keyVersion: CELL_HASH_VERSION,
+    verdict: row, transport: 'offline-fixture',
+  })
+  git('init', '-qb', 'main'); git('config', 'user.name', 'Fixture'); git('config', 'user.email', 'fixture@example.invalid')
+  write(`${dir}/products.json`, products); write(`${dir}/stories.json`, stories)
+  const baselineRows = cells.map(cell => supported(cell.productId, 'old', 5, cell.storyId))
+  for (const row of baselineRows) { write(`${dir}/evidence/${row.productId}.json`, [evidence('old')]); cache(row) }
+  write(`${dir}/verdicts.json`, baselineRows); const main = commit()
+  const isTarget = (cell: { productId: string; storyId: string }) => (sameProduct ? cell.storyId : cell.productId).startsWith('target-')
+  for (const cell of cells.filter(isTarget)) write(`${dir}/evidence/${cell.productId}.json`, [evidence('old'), evidence('new')])
+  const proposals = cells.map(cell => {
+    const row = supported(cell.productId, isTarget(cell) ? 'new' : 'old', 7, cell.storyId); cache(row); return row
+  })
+  write(`${dir}/verdicts.json`, proposals)
+  reconcileRefresh({ arena: 'fixture', baseline: main, root })
+  const refreshIdentity = () => {
+    const rows: Verdict[] = read(`${dir}/verdicts.json`)
+    const snapshot = { products: read(`${dir}/products.json`), stories: read(`${dir}/stories.json`), rows,
+      packs: Object.fromEntries(products.map(p => [p.id, read(`${dir}/evidence/${p.id}.json`)])),
+      caches: Object.fromEntries(rows.map(row => [`${row.productId}:${row.storyId}`, read(cachePath(row.productId, row.storyId))])),
+    }
+    write(ledgerPath, { ...read(ledgerPath), identity: createHash('sha256').update(JSON.stringify(snapshot)).digest('hex') })
+  }
+  const finding = (head: string, productId = 'target-a') => ({ id: productId, path: `${dir}/verdicts.json`, commit: head,
+    line: git('show', `${head}:${dir}/verdicts.json`).split('\n').findIndex(line => line.includes(`"${productId}"`)) + 1,
+    body: 'Check this fictional capability against its cited evidence.',
+  })
+  return { root, git, dir, ledgerPath, cachePath, write, read, commit, main, products, supported, cache, refreshIdentity, finding }
+}
+
+describe('provenance-aware retained repair', { timeout: 60000 }, () => {
+  it('updates an unreviewed stale refresh onto trusted main without changing canonical evidence or verdicts', async () => {
+    const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+    try {
+      f.write('open-rankings/predictions.json', [{ id: 'fictional-pr-prediction' }])
+      const head = f.commit()
+      const rows = f.read(`${f.dir}/verdicts.json`)
+      const packs = f.products.map(product => [product.id, f.read(`${f.dir}/evidence/${product.id}.json`)])
+      f.git('checkout', '--detach', f.main)
+      f.write('open-rankings/predictions.json', [{ id: 'fictional-new-main-prediction' }])
+      const main = f.commit(); process.chdir(f.root)
+      const report = await repair({ head, main, arena: 'fixture', keyed: false, findings: [] })
+      expect(report.mode).toBe('base-update')
+      expect(report.rejudged).toEqual([]); expect(report.audits).toEqual([])
+      expect(fake).not.toHaveBeenCalled()
+      expect(f.read(`${f.dir}/verdicts.json`)).toEqual(rows)
+      for (const [id, pack] of packs) expect(f.read(`${f.dir}/evidence/${id}.json`)).toEqual(pack)
+    } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+  })
+
+  it('does not count a main update as addressing an unchanged review finding', async () => {
+    const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+    try {
+      const head = f.commit()
+      f.git('checkout', '--detach', f.main)
+      f.write('open-rankings/predictions.json', [{ id: 'fictional-new-main-prediction' }])
+      const main = f.commit(); process.chdir(f.root)
+      fake.mockResolvedValueOnce({ addressed: true, reason: 'No canonical correction', evidenceIds: ['new'] })
+      await expect(repair({ head, main, arena: 'fixture', keyed: true, findings: [f.finding(head)] }))
+        .rejects.toThrow('no canonical arena change')
+    } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+  })
+
+  it('repairs two ordinary cells beside 49 retained cells, then supports a repeat repair and the next producer refresh', async () => {
+    const f = retainedFixture(49), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+    try {
+      const head = f.commit(), ledger = f.read(f.ledgerPath)
+      const rawBytes = f.products.filter(p => p.id.startsWith('retained-')).map(p => [p.id, fs.readFileSync(path.join(f.root, f.cachePath(p.id)), 'utf8')])
+      const retainedRows = f.read(`${f.dir}/verdicts.json`).filter((row: Verdict) => row.productId.startsWith('retained-'))
+      f.git('checkout', '--detach', f.main); process.chdir(f.root)
+      for (const product of ['target-a', 'target-b']) fake.mockResolvedValueOnce({ addressed: false, reason: 'Fixture concern', evidenceIds: ['new'] })
+        .mockResolvedValueOnce(f.supported(product, 'new', 6))
+        .mockResolvedValueOnce({ addressed: true, reason: 'Fixture correction checked', evidenceIds: ['new'] })
+      const report = await repair({ head, main: f.main, arena: 'fixture', keyed: true, findings: [f.finding(head), f.finding(head, 'target-b')] })
+      expect(report.rejudged).toEqual(['target-a:story', 'target-b:story']); expect(fake).toHaveBeenCalledTimes(6)
+      expect(f.read(`${f.dir}/verdicts.json`).filter((row: Verdict) => row.productId.startsWith('retained-'))).toEqual(retainedRows)
+      for (const [product, bytes] of rawBytes) expect(fs.readFileSync(path.join(f.root, f.cachePath(product)), 'utf8')).toBe(bytes)
+      expect(f.read(f.ledgerPath).retained).toEqual(ledger.retained)
+      expect(f.read(f.ledgerPath).identity).not.toBe(ledger.identity)
+      const repaired = f.commit(); fake.mockReset()
+      await expect(repair({ head: repaired, main: repaired, arena: 'fixture', keyed: false, findings: [] })).rejects.toThrow('no canonical arena change')
+      expect(fake).not.toHaveBeenCalled(); expect(f.git('status', '--porcelain')).toBe('')
+      const next = f.read(`${f.dir}/verdicts.json`).map((row: Verdict) => ({ ...row, quality: 8 }))
+      for (const row of next) f.cache(row)
+      f.write(`${f.dir}/verdicts.json`, next)
+      const reportNext = reconcileRefresh({ arena: 'fixture', baseline: repaired, root: f.root })
+      expect(reportNext.retained).toHaveLength(51)
+      expect(f.read(f.ledgerPath).retained[0]).toEqual({ cell: 'retained-0:story', origin: f.main, decisionBaseline: repaired })
+      expect(f.read(`${f.dir}/verdicts.json`).find((row: Verdict) => row.productId === 'target-a').quality).toBe(6)
+    } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+  })
+
+  it('repairs a different story in the same product without rewriting its retained raw cache', async () => {
+    const f = retainedFixture(1, true), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+    try {
+      const head = f.commit(), cacheFile = f.cachePath('vendor', 'retained-0')
+      const raw = fs.readFileSync(path.join(f.root, cacheFile), 'utf8')
+      f.git('checkout', '--detach', f.main); process.chdir(f.root)
+      fake.mockResolvedValueOnce({ addressed: false, reason: 'Fixture concern', evidenceIds: ['new'] })
+        .mockResolvedValueOnce(f.supported('vendor', 'new', 6, 'target-a'))
+        .mockResolvedValueOnce({ addressed: true, reason: 'Fixture correction checked', evidenceIds: ['new'] })
+      const report = await repair({ head, main: f.main, arena: 'fixture', keyed: true, findings: [f.finding(head)] })
+      expect(report.rejudged).toEqual(['vendor:target-a'])
+      expect(fs.readFileSync(path.join(f.root, cacheFile), 'utf8')).toBe(raw)
+      expect(f.read(f.ledgerPath).retained).toEqual([{ cell: 'vendor:retained-0', origin: f.main, decisionBaseline: f.main }])
+    } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+  })
+
+  for (const kind of ['target', 'identity', 'origin', 'nonancestor', 'missing-entry', 'duplicate-entry', 'orphan-entry', 'missing-ledger', 'cache', 'support', 'normalization', 'main-drift', 'inherited-drift']) {
+    it(`rejects ${kind} before writes or model calls`, async () => {
+      const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+      try {
+        let main = f.main
+        if (kind === 'identity') f.write(f.ledgerPath, { ...f.read(f.ledgerPath), identity: 'forged' })
+        if (kind === 'origin') {
+          const ledger = f.read(f.ledgerPath); ledger.retained[0].origin = '0'.repeat(40); f.write(f.ledgerPath, ledger)
+        }
+        if (kind === 'nonancestor') {
+          const foreign = f.commit(), ledger = f.read(f.ledgerPath)
+          ledger.retained[0].decisionBaseline = foreign; f.write(f.ledgerPath, ledger)
+        }
+        if (kind.endsWith('-entry')) {
+          const ledger = f.read(f.ledgerPath)
+          if (kind === 'missing-entry') ledger.retained.shift()
+          if (kind === 'duplicate-entry') ledger.retained.push(ledger.retained[0])
+          if (kind === 'orphan-entry') ledger.retained.push({ ...ledger.retained[0], cell: 'target-a:story' })
+          f.write(f.ledgerPath, ledger)
+        }
+        if (kind === 'missing-ledger') fs.rmSync(path.join(f.root, f.ledgerPath))
+        if (kind === 'cache') {
+          const file = f.cachePath('retained-0'); f.write(file, { ...f.read(file), hash: 'forged' }); f.refreshIdentity()
+        }
+        if (kind === 'support') {
+          f.write(`${f.dir}/evidence/retained-0.json`, [{ ...evidence('old'), excerpt: 'Changed source' }]); f.refreshIdentity()
+        }
+        if (kind === 'normalization') {
+          // An extra label for already-known content would be normalized away, changing
+          // the raw cache input even though the retained citation itself is unchanged.
+          const file = `${f.dir}/evidence/retained-0.json`
+          f.write(file, [evidence('old'), { ...evidence('old'), id: 'alias' }])
+          f.cache(f.read(f.cachePath('retained-0')).verdict); f.refreshIdentity()
+        }
+        if (kind === 'inherited-drift') main = f.commit()
+        if (kind === 'inherited-drift') f.write(`${f.dir}/evidence/target-a.json`, [evidence('old')])
+        const head = f.commit(); f.git('checkout', '--detach', main)
+        if (kind === 'main-drift') {
+          f.write(`${f.dir}/evidence/retained-0.json`, [evidence('old'), evidence('main-addition')]); main = f.commit()
+        }
+        process.chdir(f.root)
+        await expect(repair({ head, main, arena: 'fixture', keyed: true,
+          findings: [f.finding(head, kind === 'target' ? 'retained-0' : 'target-a')],
+        })).rejects.toThrow()
+        expect(fake).not.toHaveBeenCalled(); expect(f.git('status', '--porcelain')).toBe('')
+      } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+    })
+  }
+
+  it('does not retag a newly restored ordinary row as raw model output', async () => {
+    const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+    try {
+      const head = f.commit(), raw = f.read(f.cachePath('target-b'))
+      f.git('checkout', '--detach', f.main); process.chdir(f.root)
+      fake.mockResolvedValueOnce({ addressed: false, reason: 'Fixture concern', evidenceIds: ['new'] })
+        .mockResolvedValueOnce(f.supported('target-a', 'new', 6))
+        .mockResolvedValueOnce({ addressed: true, reason: 'Fixture correction checked', evidenceIds: ['new'] })
+        .mockResolvedValueOnce({ addressed: false, reason: 'Fixture concern', evidenceIds: ['old'] })
+        .mockResolvedValueOnce(f.supported('target-b', 'old', 8))
+        .mockResolvedValueOnce({ addressed: true, reason: 'Fixture restoration checked', evidenceIds: ['old'] })
+      await expect(repair({ head, main: f.main, arena: 'fixture', keyed: true,
+        findings: [f.finding(head), f.finding(head, 'target-b')],
+      })).rejects.toThrow('Cell needs a scoped re-judge under the current rubric: target-b:story')
+      expect(fake).toHaveBeenCalledTimes(6)
+      expect(f.read(f.cachePath('target-b'))).toEqual(raw)
+      expect(f.read(`${f.dir}/verdicts.json`).find((row: Verdict) => row.productId === 'target-b').quality).toBe(7)
+    } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+  })
+
+  it('rejects a post-plan retained cache rewrite before issuing a new ledger', () => {
+    const f = retainedFixture()
+    try {
+      const candidate = (file: string) => fs.existsSync(path.join(f.root, file)) ? fs.readFileSync(path.join(f.root, file), 'utf8') : null
+      const plan = prepareRetainedRepair({ arena: 'fixture', main: f.main, root: f.root, candidate, targets: ['target-a:story'] })!
+      const rows: Verdict[] = f.read(`${f.dir}/verdicts.json`)
+      const packs = Object.fromEntries(f.products.map(p => [p.id, f.read(`${f.dir}/evidence/${p.id}.json`)]))
+      const caches = Object.fromEntries(rows.map(row => [`${row.productId}:${row.storyId}`, f.read(f.cachePath(row.productId))]))
+      caches['retained-0:story'].verdict = rows[0]
+      expect(() => plan.ledgerFor(rows, packs, caches)).toThrow('changed retained provenance')
+    } finally { fs.rmSync(f.root, { recursive: true, force: true }) }
   })
 })
