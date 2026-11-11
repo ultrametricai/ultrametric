@@ -125,9 +125,53 @@ describe('extraction source correction', () => {
     })
   })
 
-  it('keeps the minimum story count inside the same five-attempt budget', async () => {
-    const invalid = extraction()
-    invalid.stories.pop()
+  it.each([0, 1, 2, 3, 4])('accepts %i supported stories without quota retries or invented additions', async (count) => {
+    const sparse = { stories: extraction().stories.slice(0, count) }
+    create.mockResolvedValue(response(sparse))
+
+    await run()
+
+    expect(create).toHaveBeenCalledTimes(1)
+    expect(sleep).not.toHaveBeenCalled()
+    expect(mocks.writeJson).toHaveBeenCalledTimes(2)
+    expect(mocks.writeJson.mock.calls[0][1].map((item: { excerpt: string }) => item.excerpt))
+      .toEqual(quotes.slice(0, count))
+    expect(mocks.writeJson.mock.calls[1][1]).toHaveLength(count)
+  })
+
+  it('preserves dated evidence when an empty extraction supplies no new support', async () => {
+    const existing = [
+      { id: 'vendor-docs-8', tier: 'claimed-docs', url: product.urls.docs,
+        excerpt: 'A previously observed capability.', fetchedAt: '2026-01-01T00:00:00Z', sourceHash: 'a'.repeat(64) },
+      { id: 'vendor-probe-1', tier: 'probe', url: product.urls.site,
+        excerpt: 'Recorded probe result.', fetchedAt: '2026-01-01T00:00:00Z' },
+      { id: 'vendor-comm-1', tier: 'community', url: 'https://community.invalid/thread',
+        excerpt: 'Recorded community observation.', fetchedAt: '2026-01-01T00:00:00Z' },
+    ]
+    mocks.readJson.mockImplementation((_schema, file: string) => file.endsWith('products.json') ? [product] : existing)
+    create.mockResolvedValue(response({ stories: [] }))
+
+    await run()
+
+    expect(create).toHaveBeenCalledTimes(1)
+    expect(sleep).not.toHaveBeenCalled()
+    expect(mocks.writeJson.mock.calls[0][1]).toEqual(existing)
+    expect(mocks.writeJson.mock.calls[1][1]).toEqual([])
+  })
+
+  it('still rejects an unsupported single story without writing evidence', async () => {
+    const invalid = { stories: [{ ...extraction().stories[0], quote: 'The API supports every protocol.' }] }
+    create.mockResolvedValue(response(invalid))
+
+    await expect(run()).rejects.toThrow('lacks an affirmative verbatim quotation')
+
+    expect(create).toHaveBeenCalledTimes(5)
+    expect(sleep).toHaveBeenCalledTimes(4)
+    expect(mocks.writeJson).not.toHaveBeenCalled()
+  })
+
+  it('keeps the maximum story count inside the same five-attempt budget', async () => {
+    const invalid = { stories: Array.from({ length: 41 }, () => extraction().stories[0]) }
     create.mockResolvedValue(response(invalid))
 
     await expect(run()).rejects.toThrow('LLM output failed validation after 5 attempts')
