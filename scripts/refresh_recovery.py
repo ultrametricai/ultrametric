@@ -25,6 +25,8 @@ RECOVERY_CODE = {
     'rankings-engine/__tests__/refresh_repair_controller.py',
     'rankings-engine/__tests__/refresh_recovery_controller.py',
     'rankings-engine/__tests__/refresh-recovery.test.ts',
+    'rankings-engine/__tests__/radar-state.test.ts',
+    'rankings-engine/__tests__/refresh_producer_controller.py',
     'rankings-engine/__tests__/refresh-repair.test.ts', 'rankings-engine/__tests__/derive.test.ts',
     'scripts/author-automerge.mjs', 'scripts/author-automerge.test.mjs',
     'docs/ACCURACY.md', 'open-manifest.json',

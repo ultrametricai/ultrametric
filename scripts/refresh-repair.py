@@ -310,13 +310,11 @@ def recover_receipt(pr, selection):
         sha, findings = threads()
         if sha != EXPECTED or findings or review_active(EXPECTED):
             raise RuntimeError('Recovery head has changed or active/unresolved review; ordinary review required')
-        remote = output(['git', 'ls-remote', '--refs', 'origin', f'refs/heads/{branch}']).splitlines()
-        if remote != [f'{EXPECTED}\trefs/heads/{branch}']:
-            raise RuntimeError('Recovery branch readback differs from the explicitly selected orphan')
 
     eligible()
     replay(command, output, original, proof, trusted, os.environ['RUNNER_TEMP'])
     eligible()
+    confirm_publication(branch, EXPECTED, EXPECTED)
     report = {key: original[key] for key in ('arena', 'head', 'evidenceRenames', 'restored', 'rejudged',
                                             'audits', 'unresolved', 'originalThreads', 'findingSnapshots')}
     report.update(pr=NUMBER, runId=RUN_ID, main=trusted, mode='receipt-recovery', attestationVersion=1,

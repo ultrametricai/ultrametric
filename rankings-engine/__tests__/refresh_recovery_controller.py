@@ -898,7 +898,7 @@ class RecoveryControllerTests(unittest.TestCase):
 
     def test_late_remote_ref_readback_prevents_attestation(self):
         self.output_override = lambda args, value: f'{ORIGINAL}\trefs/heads/{BRANCH}' if self.remote_reads == 2 and args[1] == 'ls-remote' else value
-        with self.assertRaisesRegex(RuntimeError, 'branch readback differs'):
+        with self.assertRaisesRegex(RuntimeError, 'Remote head changed after repair publication'):
             self.invoke()
         self.replay.assert_called_once()
         self.assert_no_receipt()
