@@ -141,6 +141,7 @@ class RepairReviewBoundaryTests(unittest.TestCase):
                 if args[:2]==['git','log']:return ''
                 if args[:2]==['git','write-tree']:return 'd'*40
                 if args[:2]==['git','commit-tree']:return 'e'*40
+                if args[:2]==['git','ls-remote']:return 'e'*40+'\trefs/heads/'+BRANCH
                 raise AssertionError(args)
             def command(args,**kwargs):
                 calls.append(args)
@@ -175,6 +176,50 @@ class RepairReviewBoundaryTests(unittest.TestCase):
         self.assertEqual(report['publishedHead'],'e'*40)
         self.assertEqual(report['phase'],'rechecked')
         self.assertEqual(len(reads),2)
+
+
+class PublicationReadbackTests(unittest.TestCase):
+    def confirm(self, refs, heads, changes=None):
+        refs = iter(refs); heads = iter(heads)
+        sleep = Mock()
+        def current():
+            return {**PR, **(changes or {}), 'head':{**PR['head'], 'sha':next(heads)}}
+        read = Mock(side_effect=lambda _:next(refs)+'\trefs/heads/'+BRANCH)
+        with patch.dict(GLOBALS, {'current':current, 'output':read}), patch.object(MODULE['time'],'sleep',sleep):
+            MODULE['confirm_publication'](BRANCH, SHA, 'b'*40)
+        return read, sleep
+
+    def test_immediate_consistent_readback(self):
+        read,sleep=self.confirm(['b'*40]*2, ['b'*40])
+        self.assertEqual(read.call_count,2); sleep.assert_not_called()
+
+    def test_stale_pr_metadata_converges(self):
+        read,sleep=self.confirm(['b'*40]*4, [SHA,'b'*40])
+        self.assertEqual(read.call_count,4); sleep.assert_called_once_with(2)
+
+    def test_stale_ref_also_requires_convergence(self):
+        _,sleep=self.confirm([SHA,SHA,'b'*40,'b'*40], ['b'*40]*2)
+        sleep.assert_called_once_with(2)
+
+    def test_other_writer_never_retried(self):
+        for refs,heads in [(['c'*40], []), (['b'*40],['c'*40]), (['b'*40,'c'*40],['b'*40])]:
+            with self.subTest(refs=refs,heads=heads),self.assertRaisesRegex(RuntimeError,'head changed'):
+                self.confirm(refs, heads)
+
+    def test_stale_forever_fails_closed(self):
+        with self.assertRaisesRegex(RuntimeError,'did not converge'):
+            self.confirm(['b'*40]*12,[SHA]*6)
+
+    def test_hold_draft_or_closed_fails_closed(self):
+        for change in [{'labels':[{'name':'manual-merge'}]}, {'draft':True}, {'state':'closed'}, {'auto_merge':None}]:
+            with self.subTest(change=change),self.assertRaisesRegex(RuntimeError,'identity or automation'):
+                self.confirm(['b'*40],['b'*40],change)
+
+    def test_missing_ambiguous_or_bad_remote_ref_fails_closed(self):
+        for value in ['', 'b'*40+'\trefs/heads/wrong', 'bad\trefs/heads/'+BRANCH,
+                      ('b'*40+'\trefs/heads/'+BRANCH+'\n')*2]:
+            with self.subTest(value=value),patch.dict(GLOBALS,{'output':lambda _:value}),self.assertRaises(RuntimeError):
+                MODULE['confirm_publication'](BRANCH,SHA,'b'*40)
 
 
 class DispatcherTests(unittest.TestCase):
