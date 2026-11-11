@@ -1,0 +1,31 @@
+{
+  "hash": "74aab4421d3036cd7edb294465a6547b43a8ffa915216fb4b4aed0124e9b6650",
+  "keyVersion": "v2",
+  "verdict": {
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "The first-party transport docs describe a WebSocket (wss://) fallback carried by the qmux multiplexer. They also say when it engages: when UDP is blocked or WebTransport is missing, clients race a WebSocket connection and keep whichever wins. The fallback is automatic in every client, the relay enables it with [web.https], and the docs note the TCP head-of-line blocking tradeoff. Missing for 10: independent or hands-on corroboration that the fallback actually keeps streams alive on UDP-blocked networks.",
+    "evidenceIds": [
+      "moq-relay-supp-websocket-fallback",
+      "moq-relay-supp-fallback-automatic"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform engineer, a stream survives a network that blocks UDP: the service documents fallback over TCP, TLS, or WebSocket and when it engages",
+      "citations": [
+        {
+          "evidenceId": "moq-relay-supp-websocket-fallback",
+          "quote": "Where UDP is blocked or WebTransport is missing, clients race a WebSocket connection (wss://) and keep whichever wins. A small multiplexer, qmux, carries MoQ streams over the socket."
+        },
+        {
+          "evidenceId": "moq-relay-supp-fallback-automatic",
+          "quote": "The fallback is automatic in every client; the relay enables it with [web.https]."
+        }
+      ]
+    },
+    "productId": "moq-relay",
+    "storyId": "udp-blocked-fallback"
+  }
+}
