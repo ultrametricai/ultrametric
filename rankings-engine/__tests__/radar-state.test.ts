@@ -13,7 +13,7 @@ function temporary(): string {
   dirs.push(dir)
   return dir
 }
-afterEach(() => dirs.splice(0).forEach((dir) => fs.rmSync(dir, { recursive: true, force: true })))
+afterEach(() => dirs.splice(0).forEach((dir) => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })))
 const entry = (key: string, firstSeen = '2026-11-03', sources = ['https://example.test/launch']): SeenEntry => ({ key, name: key, firstSeen, sources })
 function discovery(root: string, runId: string, seen: SeenEntry[]): DiscoveryRecord {
   const reportPath = `reports/vendor-radar/runs/${runId}.json`
