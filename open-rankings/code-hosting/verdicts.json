@@ -3458,11 +3458,12 @@
     "productId": "gitea",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitea's own repository states that it provides an official go-sdk, so the product ships at least one first-party SDK to build against. However, the evidence is a single mention covering only one language. The published OpenAPI/Swagger documents could be used to generate clients, but that is a developer building block, not an official SDK, so it earns no credit here. Missing for 10: official SDKs beyond Go, SDK documentation and usage guides, SDK versioning or support guarantees, independent or hands-on corroboration of SDK use.",
+    "rationale": "Gitea's own GitHub README says it ships an official Go SDK, and it exposes an API that SDK-based builds can target. The evidence is a single thin mention of one language, and the OpenAPI probes at the docs domain all returned 404. Missing for 10: official SDKs in languages beyond Go, SDK documentation or usage guides, a discoverable OpenAPI spec, and independent or hands-on corroboration of building against the SDK.",
     "evidenceIds": [
-      "gitea-gh-6"
+      "gitea-gh-6",
+      "gitea-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -3471,7 +3472,11 @@
       "citations": [
         {
           "evidenceId": "gitea-gh-6",
-          "quote": "We provide an official go-sdk, a CLI tool called tea and an action runner for Gitea Action."
+          "quote": "We provide an official go-sdk"
+        },
+        {
+          "evidenceId": "gitea-docs-4",
+          "quote": "Extend Gitea's functionality with our API and webhooks"
         }
       ]
     }
@@ -3654,10 +3659,10 @@
   {
     "productId": "gitea",
     "storyId": "automation-rules-engine",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Gitea Actions lets users write YAML workflows whose syntax is compatible with GitHub Actions, which strongly implies event-triggered automation rules. Webhooks extend this to custom workflows. However, the evidence never explicitly lists which events trigger workflows or describes rule configuration. Missing for 10: explicit documentation of supported trigger events and conditions, hands-on or independent corroboration of event-triggered automation, any automation rules beyond CI/CD workflows.",
+    "rationale": "Gitea Actions is a built-in automation engine: users write YAML workflow rules compatible with GitHub Actions and reuse existing actions. Webhooks add event-driven custom workflows. Together these cover the core of defining rules that run actions automatically. Missing for 10: explicit documentation of the event trigger types (push, PR, issue, schedule), no hands-on or independent corroboration of event-triggered automation, and no evidence of AI-specific rule definition.",
     "evidenceIds": [
       "gitea-docs-2",
       "gitea-docs-33",
@@ -3667,7 +3672,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
@@ -3688,16 +3693,33 @@
   {
     "productId": "gitea",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence documents Gitea Actions as a GitHub Actions-compatible CI/CD workflow engine, but no item mentions scheduled, cron, or recurring triggers. Generic workflow support and syntax compatibility only show that workflows can run, not that they can recur on a schedule, so they cannot be credited for this story.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Gitea ships its own workflow engine, Gitea Actions, whose YAML workflow syntax is documented as compatible with GitHub Actions. That implies, but does not explicitly document, support for recurring scheduled triggers, so recurring scheduling is inferred rather than evidenced. missing for 10: explicit documentation of schedule/cron triggers in Gitea Actions, evidence that recurring runs actually execute (hands-on or independent corroboration), details on schedule management or limits.",
+    "evidenceIds": [
+      "gitea-docs-2",
+      "gitea-docs-33",
+      "gitea-gh-6"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "gitea-docs-2",
+          "quote": "Gitea Actions supports CI/CD functionality, compatible with GitHub Actions. Users can write workflows in familiar YAML format and reuse a variety of existing Actions plugins."
+        },
+        {
+          "evidenceId": "gitea-docs-33",
+          "quote": "Workflow and action syntax is compatible with GitHub Actions."
+        },
+        {
+          "evidenceId": "gitea-gh-6",
+          "quote": "We provide an official go-sdk, a CLI tool called tea and an action runner for Gitea Action."
+        }
+      ]
     }
   },
   {
@@ -3752,13 +3774,14 @@
     "productId": "gitea",
     "storyId": "browse-files-history-blame",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Gitea's docs say it supports browsing commit history and code files, and a community user confirms non-contributors read source through the web UI instead of cloning. Nothing in the pack mentions line-by-line blame, so one of the story's three elements is unevidenced. Missing for 10: any evidence of line-by-line blame in the web interface, in-depth docs on file and history browsing, and hands-on corroboration of commit-history browsing.",
+    "rationale": "Gitea's docs explicitly claim web browsing of code files and commit history, and a community user confirms that non-contributors read source through the web UI instead of cloning. Line-by-line blame, one of the story's three elements, is not evidenced anywhere in the pack. Missing for 10: documented line-by-line blame view, in-depth first-party docs on the file/history browsing UI.",
     "evidenceIds": [
       "gitea-docs-1",
+      "gitea-docs-3",
       "gitea-comm-1",
-      "gitea-docs-3"
+      "gitea-gh-7"
     ],
     "support": {
       "relation": "direct",
@@ -3770,12 +3793,12 @@
           "quote": "browsing commit history and code files"
         },
         {
-          "evidenceId": "gitea-comm-1",
-          "quote": "non-contributors read source through the web UI instead of cloning"
-        },
-        {
           "evidenceId": "gitea-docs-3",
           "quote": "Reviewers can browse code online and provide review comments or feedback."
+        },
+        {
+          "evidenceId": "gitea-comm-1",
+          "quote": "non-contributors read source through the web UI instead of cloning"
         }
       ]
     }
@@ -3783,19 +3806,20 @@
   {
     "productId": "gitea",
     "storyId": "built-in-ci",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Gitea's own Gitea Actions feature lets developers write CI/CD workflows in YAML that are compatible with GitHub Actions, and Gitea ships an official action runner. That covers the pipelines-as-code core of the story. However, the evidence never explicitly documents workflows living in the repository or triggering automatically on pushes and pull requests; this is only implied by GitHub Actions syntax compatibility. Missing for 10: explicit documentation of in-repo workflow files and push/PR triggers, and independent hands-on corroboration of Gitea Actions running.",
+    "rationale": "Gitea Actions is a first-party CI/CD feature. Workflows are written in YAML with GitHub Actions-compatible syntax, existing Actions can be reused, and Gitea ships an official action runner. That covers pipelines-as-code; automatic runs on push and pull request events are implied by the GitHub Actions workflow compatibility rather than stated explicitly. Missing for 10: explicit documentation of push/pull-request triggers and of where workflow files live in the repo, and independent hands-on corroboration of Gitea Actions running pipelines.",
     "evidenceIds": [
       "gitea-docs-2",
       "gitea-docs-33",
+      "gitea-docs-15",
       "gitea-gh-6",
-      "gitea-docs-15"
+      "gitea-docs-25"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can define CI/CD pipelines as code in my repository and have them run automatically on pushes and pull requests",
       "citations": [
         {
@@ -3820,17 +3844,17 @@
   {
     "productId": "gitea",
     "storyId": "chat-notifications",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Gitea's own marketing says it syncs with Slack, Discord, MS Teams, Lark and more, and it documents webhooks as an extension mechanism. That points to first-party chat integration, but the evidence never says which events (repository pushes, pull request activity) are sent to these tools or how they are configured. missing for 10: documentation of repository and pull request event notifications to chat tools, configuration details for the Slack/Discord/Teams integrations, independent or hands-on corroboration.",
+    "rationale": "Gitea's own site says it can sync with Slack, Discord, MS Teams, Lark and more, and that it provides webhooks for custom workflows. Together these show first-party chat-tool integration covering all three named platforms. missing for 10: explicit documentation that repository and pull request events trigger these chat notifications, configuration details for event selection, independent or hands-on corroboration.",
     "evidenceIds": [
       "gitea-docs-8",
       "gitea-docs-4"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can send repository and pull request notifications to chat tools like Slack, Discord, or Microsoft Teams",
       "citations": [
         {
@@ -3959,29 +3983,16 @@
   {
     "productId": "gitea",
     "storyId": "external-ci-status-checks",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Gitea's own marketing claims integrations with external CI services such as Drone, Woodpecker, and Jenkins, and community users report running Gitea with Drone successfully for years. However, no evidence explicitly documents commit statuses or status checks appearing on commits and pull requests. Missing for 10: documentation of a commit status API or status-check display on commits and PRs, evidence of status checks gating or showing on pull requests, and hands-on corroboration that external CI results surface as checks.",
-    "evidenceIds": [
-      "gitea-docs-20",
-      "gitea-comm-8-refresh-c65b0170228c0230",
-      "gitea-comm-7"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack never documents a commit status API or external CI results shown as status checks on commits or pull requests. Gitea does list integrations with Drone, Woodpecker and Jenkins and offers a general API and webhooks, but these are adjacent integrations and building blocks, not a documented status-check display. Community reports of using Gitea with Drone likewise never mention status reporting.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a developer, I can see builds from external CI services reported as status checks on commits and pull requests",
-      "citations": [
-        {
-          "evidenceId": "gitea-docs-20",
-          "quote": "Improve workflows with integrations like GitHub Actions, Drone, Woodpecker, Argo CD, and Jenkins, among others."
-        },
-        {
-          "evidenceId": "gitea-comm-8-refresh-c65b0170228c0230",
-          "quote": "Has used Gitea + Drone for several years and 'couldn't be happier': stable, fast, and it just works without consuming lots of RAM."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -4003,9 +4014,9 @@
     "productId": "gitea",
     "storyId": "fork-repository",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitea's own docs say code review supports the Pull Request workflow (plus the AGit workflow). They also say maintainers can review and merge code submissions, and submitters can respond to review comments and modify code online. That covers proposing changes back for review and merge. However, no evidence explicitly documents forking a repository or cross-repository pull requests from outside contributors' forks. Missing for 10: explicit documentation of repository forking and fork-based cross-repo pull requests, and independent or hands-on corroboration of the outside-contributor PR flow.",
+    "rationale": "Gitea's docs say it supports the Pull Request workflow (plus AGit) for submitting, reviewing and merging code, and that submitters can respond to review comments. However, the evidence never explicitly mentions forking repositories or contributions from outside, non-collaborator users. Missing for 10: explicit documentation of repository forking, cross-repository (fork-to-upstream) pull requests for external contributors, and independent or hands-on corroboration of the fork-and-PR flow.",
     "evidenceIds": [
       "gitea-docs-3",
       "gitea-docs-12",
@@ -4035,16 +4046,16 @@
   {
     "productId": "gitea",
     "storyId": "git-lfs",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitea's own docs state that Git Large File Storage is available when enabled, with Git >= 2.1.2, so developers can store large binaries via LFS on their instance. The evidence is a single conditional mention with no further detail. Missing for 10: LFS configuration and storage-backend documentation, file locking or size/quota details, and independent or hands-on corroboration of LFS use.",
+    "rationale": "Gitea's own docs say Git Large File Storage is available, but only when an admin enables it and the server's Git version is at least 2.1.2. This is a single conditional mention with no detail on storage backends, limits, or hands-on use. Missing for 10: in-depth LFS documentation (configuration, storage backends, size limits, locking), confirmation that it is enabled by default, and independent or community corroboration of LFS working in practice.",
     "evidenceIds": [
       "gitea-docs-29"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can store large binary files with Git LFS",
       "citations": [
         {
@@ -4290,19 +4301,20 @@
     "productId": "gitea",
     "storyId": "low-resource-self-host",
     "verdict": "full",
-    "quality": 9,
+    "quality": 10,
     "confidence": "high",
-    "rationale": "First-party docs say Gitea runs on a Raspberry Pi 3, supports Linux, Windows, macOS, FreeBSD and Kubernetes on x86, amd64, ARM, RISC-V 64 and PowerPC, and integrates with SQLite, MySQL, PostgreSQL, TiDB and MS SQL. Several hands-on community reports confirm low-resource operation on a $5 VPS, an Atom-based fitlet2 and a 4GB RAM host. missing for 10: independent or hands-on corroboration of the multiple database backends, which are evidenced only by a marketing-page claim.",
+    "rationale": "First-party docs cover every element of the story. Raspberry Pi 3 suitability shows low-resource operation. Linux, Windows, macOS, FreeBSD and Kubernetes are listed for OS coverage. x86, amd64, ARM, RISC-V 64 and PowerPC are listed for CPU architectures. SQLite, MySQL, PostgreSQL, TiDB and MS SQL are listed for database backends. Independent hands-on reports corroborate light resource use: a $5 VPS, an Atom x7 fitlet2, a 4GB RAM host, a USB stick and a single-binary deployment.",
     "evidenceIds": [
       "gitea-docs-27",
       "gitea-docs-10",
       "gitea-gh-3",
       "gitea-docs-14",
+      "gitea-docs-9",
       "gitea-comm-3",
-      "gitea-comm-18",
-      "gitea-comm-17",
-      "gitea-comm-2",
-      "gitea-gh-4"
+      "gitea-comm-19-refresh-5c0c56bdce1ad4cb",
+      "gitea-comm-17-refresh-4cf9c852e3d3714b",
+      "gitea-comm-2-refresh-9f4f6155414db1ad",
+      "gitea-comm-13-refresh-7819798cea50e564"
     ],
     "support": {
       "relation": "direct",
@@ -4322,8 +4334,12 @@
           "quote": "Offers seamless integration with leading databases, including SQLite, MySQL, PostgreSQL, TiDB, and MS SQL."
         },
         {
-          "evidenceId": "gitea-comm-3",
-          "quote": "Runs Gitea on a $5 VPS for all personal projects and says it works great"
+          "evidenceId": "gitea-docs-10",
+          "quote": "Universally compatible with diverse operating systems and environments, including Linux, Windows, macOS, FreeBSD, and Kubernetes. Compatible with multiple architectures, such as x86 and arm64."
+        },
+        {
+          "evidenceId": "gitea-comm-19-refresh-5c0c56bdce1ad4cb",
+          "quote": "Gitea performs well even on slow hardware (a fitlet2 with an Atom x7-E3950 and 16GB RAM)"
         }
       ]
     }
@@ -4346,17 +4362,17 @@
   {
     "productId": "gitea",
     "storyId": "milestones-due-dates",
-    "verdict": "full",
-    "quality": 6,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitea's first-party docs list milestones and due dates among its built-in issue-tracking features, so a developer can group issues into milestones and set due dates. The evidence is only a one-line feature list, and it ties due dates to issues rather than explicitly to milestones. Missing for 10: explicit documentation of due dates on milestones themselves, in-depth docs on milestone creation and management (progress, closing), and any independent or hands-on corroboration.",
+    "rationale": "Gitea's docs list milestones and due dates among its issue features, so grouping issues into milestones is a documented first-party capability. The evidence is only a single feature-list mention, and it ties due dates to issues rather than explicitly to milestones. Missing for 10: explicit documentation that milestones themselves carry due dates, detail on milestone management (creating milestones, assigning issues, tracking progress), and independent or hands-on corroboration.",
     "evidenceIds": [
       "gitea-docs-6",
       "gitea-docs-17"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can group issues into milestones with due dates",
       "citations": [
         {
@@ -4592,9 +4608,9 @@
     "productId": "gitea",
     "storyId": "pr-inline-review",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Gitea's docs say code review supports a Pull Request workflow, and that reviewers can browse code online and leave review comments, which submitters can answer or act on by changing the code. The pack never mentions diff comparison or line-level inline comments next to code, and nothing hands-on corroborates them. missing for 10: explicit diff/compare view documentation, explicit inline line-level review comment documentation, independent hands-on corroboration of the PR review experience",
+    "rationale": "First-party docs confirm a Pull Request code-review workflow. Reviewers can browse code online and leave review comments, and submitters can respond or modify code online. The evidence does not explicitly cover diff comparison or comments anchored inline next to specific lines. Missing for 10: explicit documentation of diff/compare views, explicit inline line-level review comments, independent or hands-on corroboration of the PR review experience.",
     "evidenceIds": [
       "gitea-docs-3",
       "gitea-docs-24",
@@ -4624,17 +4640,17 @@
   {
     "productId": "gitea",
     "storyId": "pr-web-edits",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Gitea's docs say submitters can receive review comments and \"respond or modify code online,\" and reviewers can browse code and leave feedback in the browser. That directly addresses the core of the story, but it is a single brief vendor claim. Missing for 10: explicit documentation of a web editor that creates commits on the PR branch, details of the in-browser edit and commit flow, and independent or hands-on corroboration.",
+    "rationale": "Gitea's docs say that, in its code review workflow, submitters receiving review comments can 'respond or modify code online', which is the story's core: answering review feedback by editing code in the browser. Reviewers browsing code online supports the review side of the loop. Missing for 10: explicit documentation of the in-browser commit step (e.g., commit message or committing to the PR branch), in-depth editor docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "gitea-docs-24",
       "gitea-docs-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can respond to review feedback by editing and committing code directly in the browser",
       "citations": [
         {
@@ -4813,21 +4829,22 @@
     "productId": "gitea",
     "storyId": "self-host-install",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Gitea is a free, MIT-licensed self-hosted Git service. It deploys as a single binary or an official container image across many OSes and architectures, and supports several databases. Static settings live in app.ini and dynamic settings in the admin panel, and community users describe painless installs and simple binary-swap upgrades. Missing for 10: first-party upgrade and backup/restore documentation (backup is only raised as an open community question), and downgrade or rollback support (migrations reportedly go up but not down).",
+    "rationale": "Gitea is documented as a free, self-hosted Git service. It installs as a single binary or official container image across many operating systems, and is configured through the admin panel for dynamic options and app.ini plus a restart for static ones. Hands-on reports confirm painless installs, smooth Docker setups and simple binary-swap upgrades. Missing for 10: first-party upgrade documentation, documented backup/restore and maintenance tooling (a community member questioned whether backup/restore is adequate), and a smoother upgrade path given reported 1.17 breaking changes.",
     "evidenceIds": [
       "gitea-docs-30",
       "gitea-docs-23",
       "gitea-gh-4",
-      "gitea-gh-3",
       "gitea-gh-5",
-      "gitea-docs-14",
+      "gitea-gh-3",
       "gitea-docs-13",
+      "gitea-docs-14",
       "gitea-comm-11-refresh-02264e3e5d3f6eef",
-      "gitea-comm-7-refresh-48cd0182665527dc",
       "gitea-comm-6-refresh-3983143ddc71aa4d",
-      "gitea-comm-12-refresh-30c0d0ede706c990"
+      "gitea-comm-7-refresh-48cd0182665527dc",
+      "gitea-comm-1-refresh-10123c6cdea5b650",
+      "gitea-comm-18-refresh-cc804b9e2ad33958"
     ],
     "support": {
       "relation": "direct",
@@ -4844,7 +4861,11 @@
         },
         {
           "evidenceId": "gitea-gh-5",
-          "quote": "For static config options, you can edit your app.ini file and restart the instance."
+          "quote": "For dynamic config options, you can change it on your admin panel's configuration section. For static config options, you can edit your app.ini file and restart the instance."
+        },
+        {
+          "evidenceId": "gitea-docs-23",
+          "quote": "This makes it convenient for individual developers or small teams to set up and manage their own Git services."
         },
         {
           "evidenceId": "gitea-comm-11-refresh-02264e3e5d3f6eef",
