@@ -141,6 +141,7 @@ class RepairReviewBoundaryTests(unittest.TestCase):
                 if args[:2]==['git','log']:return ''
                 if args[:2]==['git','write-tree']:return 'd'*40
                 if args[:2]==['git','commit-tree']:return 'e'*40
+                if args[:2]==['git','ls-remote']:return 'e'*40+'\trefs/heads/'+BRANCH
                 raise AssertionError(args)
             def command(args,**kwargs):
                 calls.append(args)
@@ -194,6 +195,50 @@ class RepairReviewBoundaryTests(unittest.TestCase):
         self.assertEqual(len(reads),2)
 
 
+class PublicationReadbackTests(unittest.TestCase):
+    def confirm(self, refs, heads, changes=None):
+        refs = iter(refs); heads = iter(heads)
+        sleep = Mock()
+        def current():
+            return {**PR, **(changes or {}), 'head':{**PR['head'], 'sha':next(heads)}}
+        read = Mock(side_effect=lambda _:next(refs)+'\trefs/heads/'+BRANCH)
+        with patch.dict(GLOBALS, {'current':current, 'output':read}), patch.object(MODULE['time'],'sleep',sleep):
+            MODULE['confirm_publication'](BRANCH, SHA, 'b'*40)
+        return read, sleep
+
+    def test_immediate_consistent_readback(self):
+        read,sleep=self.confirm(['b'*40]*2, ['b'*40])
+        self.assertEqual(read.call_count,2); sleep.assert_not_called()
+
+    def test_stale_pr_metadata_converges(self):
+        read,sleep=self.confirm(['b'*40]*4, [SHA,'b'*40])
+        self.assertEqual(read.call_count,4); sleep.assert_called_once_with(2)
+
+    def test_stale_ref_also_requires_convergence(self):
+        _,sleep=self.confirm([SHA,SHA,'b'*40,'b'*40], ['b'*40]*2)
+        sleep.assert_called_once_with(2)
+
+    def test_other_writer_never_retried(self):
+        for refs,heads in [(['c'*40], []), (['b'*40],['c'*40]), (['b'*40,'c'*40],['b'*40])]:
+            with self.subTest(refs=refs,heads=heads),self.assertRaisesRegex(RuntimeError,'head changed'):
+                self.confirm(refs, heads)
+
+    def test_stale_forever_fails_closed(self):
+        with self.assertRaisesRegex(RuntimeError,'did not converge'):
+            self.confirm(['b'*40]*12,[SHA]*6)
+
+    def test_hold_draft_or_closed_fails_closed(self):
+        for change in [{'labels':[{'name':'manual-merge'}]}, {'draft':True}, {'state':'closed'}, {'auto_merge':None}]:
+            with self.subTest(change=change),self.assertRaisesRegex(RuntimeError,'identity or automation'):
+                self.confirm(['b'*40],['b'*40],change)
+
+    def test_missing_ambiguous_or_bad_remote_ref_fails_closed(self):
+        for value in ['', 'b'*40+'\trefs/heads/wrong', 'bad\trefs/heads/'+BRANCH,
+                      ('b'*40+'\trefs/heads/'+BRANCH+'\n')*2]:
+            with self.subTest(value=value),patch.dict(GLOBALS,{'output':lambda _:value}),self.assertRaises(RuntimeError):
+                MODULE['confirm_publication'](BRANCH,SHA,'b'*40)
+
+
 class DispatcherTests(unittest.TestCase):
     def controller(self):
         source=(Path(__file__).resolve().parents[2]/'scripts/refresh-automerge.py').read_text()
@@ -234,6 +279,18 @@ class DispatcherTests(unittest.TestCase):
         latest=MODULE['latest_checks']([{'id':1,'name':'ci','app':{'id':15368},'conclusion':'cancelled'},
                                        {'id':2,'name':'ci','app':{'id':15368},'conclusion':'success'}])
         self.assertEqual(latest[0]['conclusion'],'success')
+
+    def test_approval_diagnostic_uses_latest_pr_run_and_never_dispatch_status(self):
+        fn=self.controller()['pr_ci_approval_required']
+        held={'id':1,'event':'pull_request','status':'completed','conclusion':'action_required'}
+        dispatch={**held,'id':3,'event':'workflow_dispatch','conclusion':'success'}
+        self.assertTrue(fn([held,dispatch]))
+        for conclusion in ['success','failure',None]:
+            newer={**held,'id':2,'conclusion':conclusion,
+                   'status':'in_progress' if conclusion is None else 'completed'}
+            self.assertFalse(fn([held,newer,dispatch]))
+        self.assertFalse(fn([]))
+        self.assertFalse(fn([dispatch]))
 
     def test_a_superseded_workflow_suite_cannot_satisfy_a_new_recheck(self):
         old={'id':1,'name':'validation','app':{'id':15368},'conclusion':'success','check_suite':{'id':10}}
@@ -442,11 +499,12 @@ class RecoveryCITests(unittest.TestCase):
                 patch('subprocess.run',side_effect=run), patch('time.sleep'), \
                 patch('refresh_policy.verify_provenance',side_effect=provenance_exception if provenance_error else None), \
                 patch('refresh_update.verify_update_intent',side_effect=RuntimeError('Invalid intent') if intent_error else None), \
-                redirect_stdout(io.StringIO()):
+                redirect_stdout(io.StringIO()) as captured:
             try:
                 exec(code,{})
             except SystemExit as exc:
                 error = str(exc)
+        self.recovery_output = captured.getvalue()
         ci = [call for call in calls if call[:4] == ['gh','workflow','run','ci.yml']]
         return ci, calls, error
 
@@ -570,7 +628,7 @@ class RecoveryCITests(unittest.TestCase):
                 with self.subTest(family=family,app=app):
                     pr=self.radar_pr(family,app)
                     ci,calls,error=self.recover([self.run_record()],pr=pr,content_bot='fixture-content[bot]')
-                    self.assertIsNone(error)
+                    self.assertIn('need attention',error)
                     self.assertEqual(ci,[['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',pr['head']['ref']]])
                     self.assertNotIn('refresh-repair.yml',[c[3] for c in calls if c[:3]==['gh','workflow','run']])
 
@@ -638,7 +696,7 @@ class RecoveryCITests(unittest.TestCase):
 
     def test_approval_event_winning_branch_update_race_still_dispatches_ci(self):
         ci, calls, error = self.recover([self.run_record()], updated_head='b'*40)
-        self.assertIsNone(error)
+        self.assertIn('need attention',error)
         self.assertEqual(ci, [['gh','workflow','run','ci.yml','--repo','owner/repo','--ref',BRANCH]])
         self.assertTrue(any(('/update-branch' in ' '.join(call) or 'graphql' in call[4:5]) for call in calls))
         self.assertFalse(any('approve' in call for call in calls))
@@ -744,7 +802,10 @@ class RecoveryCITests(unittest.TestCase):
         for runs in [[], [self.run_record()]]:
             with self.subTest(runs=runs):
                 ci, _, error = self.recover(runs)
-                self.assertIsNone(error)
+                if runs:
+                    self.assertIn('need attention',error)
+                else:
+                    self.assertIsNone(error)
                 self.assertEqual(len(ci), 1)
 
     def test_pending_ci_is_left_running(self):
@@ -784,8 +845,11 @@ class RecoveryCITests(unittest.TestCase):
             with self.subTest(conclusion=conclusion):
                 ci, calls, error = self.recover([
                     self.run_record('workflow_dispatch',conclusion), self.run_record(id=2)])
-                self.assertIsNone(error)
+                self.assertIn('need attention',error)
+                self.assertIn('PR CI awaits workflow approval',self.recovery_output)
+                self.assertIn('do not satisfy required PR checks',self.recovery_output)
                 self.assertEqual(ci, [])
+                self.assertFalse(any('approve' in call or 'rerun' in call for call in calls))
                 repairs = [call for call in calls if call[:4] == ['gh','workflow','run','refresh-repair.yml']]
                 self.assertEqual(len(repairs), 1 if conclusion == 'failure' else 0)
 
@@ -832,7 +896,7 @@ class RecoveryCITests(unittest.TestCase):
         ci, _, error = self.recover([
             self.run_record('workflow_dispatch','success',id=2),
             self.run_record('workflow_dispatch','cancelled'), self.run_record(id=3)])
-        self.assertIsNone(error)
+        self.assertIn('need attention',error)
         self.assertEqual(ci, [])
 
     def test_repeated_startup_failures_exhaust_budget_without_dispatching(self):
@@ -844,7 +908,7 @@ class RecoveryCITests(unittest.TestCase):
 
     def test_many_approval_records_do_not_exhaust_dispatch_budget(self):
         ci, _, error = self.recover([self.run_record(id=i) for i in range(4)])
-        self.assertIsNone(error)
+        self.assertIn('need attention',error)
         self.assertEqual(len(ci), 1)
 
     def test_drafts_forks_and_unrelated_authors_still_stay_outside_recovery(self):

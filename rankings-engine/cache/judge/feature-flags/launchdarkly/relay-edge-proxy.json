@@ -1,26 +1,32 @@
 {
-  "hash": "fdc6a7839efb195c3761518b0274b5a5277ad63da920aadc516cb8509f39ee8d",
+  "hash": "efd951ad96a53fb85096fdd4e368af70b9e3b1bd1ea74711cd46c693f5ccae7e",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "LaunchDarkly documents its own Relay Proxy, a small Go application that runs on your own infrastructure. It connects to the LaunchDarkly streaming API and proxies that connection to clients, so SDK traffic can terminate inside your network. Community users confirm it is open source and run for extra resiliency and closer to services. The evidence does not explicitly show that flags keep being served while LaunchDarkly is unreachable, so coverage is partial. missing for 10: documented outage behavior (serving cached flags when the vendor is unreachable), explicit docs on keeping all SDK traffic in-network (proxy/offline modes), persistent-store and caching configuration details, independent hands-on corroboration of failover.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "LaunchDarkly documents the Relay Proxy, a Go application that runs on your own infrastructure and proxies the LaunchDarkly streaming connection to clients within your organization's network. Independent community engineers corroborate running the open-source Relay for extra resiliency and closer to services. Missing for 10: first-party documentation of continued flag serving during a vendor outage (e.g., persistent-store/offline mode details), and detail on configuring SDKs to route all traffic solely through the relay.",
     "evidenceIds": [
       "launchdarkly-docs-13",
       "launchdarkly-docs-62",
-      "launchdarkly-docs-32",
+      "launchdarkly-docs-75",
       "launchdarkly-comm-2",
-      "launchdarkly-comm-11"
+      "launchdarkly-comm-11",
+      "launchdarkly-comm-13",
+      "launchdarkly-docs-76"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a platform engineer, I can run a relay/edge proxy so flags stay served when the vendor is unreachable and SDK traffic stays inside my network",
       "citations": [
         {
-          "evidenceId": "launchdarkly-docs-62",
-          "quote": "a small Go application that runs on your own infrastructure. It connects to the LaunchDarkly streaming API and proxies that connection to clients"
+          "evidenceId": "launchdarkly-docs-13",
+          "quote": "The LaunchDarkly Relay Proxy is a small Go application that runs on your own infrastructure."
+        },
+        {
+          "evidenceId": "launchdarkly-docs-75",
+          "quote": "It connects to the LaunchDarkly streaming API and proxies that connection to clients within your organization’s network."
         },
         {
           "evidenceId": "launchdarkly-comm-2",

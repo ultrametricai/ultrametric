@@ -28,6 +28,8 @@ def content_app_author(pr):
 prs = json.loads(subprocess.check_output(
     ['gh', 'api', '--paginate', '--slurp', f'repos/{repo}/pulls?state=open&per_page=100'], text=True))
 def usable_ci_run(runs):
+    # Diagnostic evidence for repair/review routing. A workflow_dispatch result
+    # does not satisfy GitHub's required PR checks, even on the same head SHA.
     candidates = [run for run in runs if run['conclusion'] != 'action_required']
     if any(run['status'] != 'completed' for run in candidates):
         return None
@@ -37,6 +39,11 @@ def usable_ci_run(runs):
             latest[run['event']] = run
     usable = [run for run in latest.values() if run['conclusion'] in ['success', 'failure']]
     return max(usable, key=lambda run: run['id']) if usable else None
+
+def pr_ci_approval_required(runs):
+    latest = max((run for run in runs if run['event'] == 'pull_request'),
+                 key=lambda run: run['id'], default=None)
+    return latest is not None and latest['conclusion'] == 'action_required'
 
 def needs_ci_dispatch(runs):
     # Approval-required records have no jobs. Keep active runs and real
@@ -301,7 +308,15 @@ for pr in sorted([pr for page in prs for pr in page], key=lambda pr: pr['number'
         if conflict:
             print(f'::warning::#{number}: merge conflict remains; same-head CI/review recovery retained', flush=True)
             errors.append(number)
-        print(f'#{number}: CI dispatched or present; existing auto-merge opt-in retained', flush=True)
+        if pr_ci_approval_required(runs['workflow_runs']):
+            print(f'::warning::#{number}: PR CI awaits workflow approval. Diagnostic workflow_dispatch checks '
+                  'do not satisfy required PR checks. Approve the existing PR run, or configure the content '
+                  'App publication path for future automatic PR runs. Existing auto-merge opt-in retained.', flush=True)
+            if number not in errors:
+                errors.append(number)
+        else:
+            print(f'#{number}: diagnostic CI dispatched or present; native auto-merge still requires '
+                  'eligible PR checks and review gates', flush=True)
     except (subprocess.CalledProcessError, RuntimeError) as error:
         # Conflicts and setup failures stay visible; process independent PRs too.
         detail = getattr(error, 'stderr', None) or str(error)
