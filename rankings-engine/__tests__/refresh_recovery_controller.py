@@ -537,6 +537,12 @@ class RecoveryReplayTests(unittest.TestCase):
 
 class RecoveryGitFixtureTests(unittest.TestCase):
     def test_real_git_reconstructs_the_exact_old_tree_without_downgrading_trusted_code(self):
+        self.check_git_replay(False)
+
+    def test_historical_snapshot_excludes_newer_data_but_keeps_current_code(self):
+        self.check_git_replay(True)
+
+    def check_git_replay(self, historical):
         git_binary = shutil.which('git')
         if git_binary is None:
             self.skipTest('Git is required for the isolated whole-tree fixture')
@@ -575,22 +581,30 @@ class RecoveryGitFixtureTests(unittest.TestCase):
                          '-m', repair_message(base=base))
             git('reset', '--hard', base)
             (root / 'trusted-code.py').write_text('version = 2\n')
+            if historical:
+                rankings.write_text('{"fixture":"newer main"}\n')
+                (rankings.parent / 'newer.json').write_text('{}\n')
             git('add', '.')
             git('commit', '-m', 'fictional trusted recovery code')
             trusted = git('rev-parse', 'HEAD')
             report = {**failed_report(), 'head': original, 'main': base}
             proof = {**proof_record(), 'head': orphan, 'originalHead': original,
-                     'base': base, 'parents': [original, base], 'tree': tree}
+                     'base': base, 'parents': [original, base], 'tree': tree,
+                     **({'historicalData': True} if historical else {})}
             commands = []
             def command(args, **kwargs):
                 commands.append(args)
                 if args[:4] == ['pnpm', 'exec', 'tsx', 'rankings-engine/scripts/repair-refresh.ts']:
-                    self.assertEqual(args[9:], ['--replay', trusted, AT])
+                    self.assertEqual(args[9:12], ['--replay-historical' if historical else '--replay', trusted, AT])
+                    if historical:
+                        self.assertEqual(rankings.read_text(), '{"fixture":"initial"}\n')
+                        self.assertFalse((rankings.parent / 'newer.json').exists())
+                        self.assertEqual(args[12], git('write-tree'))
                     self.assertEqual((root / 'trusted-code.py').read_text(), 'version = 2\n')
                     rankings.write_text(generated_data)
                     Path(args[8]).write_text(json.dumps(report))
                 elif args[0] == 'git':
-                    self.assertIn(args[1], ('add', 'read-tree', 'update-index'))
+                    self.assertIn(args[1], ('add', 'read-tree', 'update-index', 'restore'))
                     git(*args[1:], **kwargs)
                 elif args not in recovery.GATES and args != [
                         'node', 'rankings-engine/scripts/check-refresh-stability.mjs', base, orphan]:
@@ -598,7 +612,8 @@ class RecoveryGitFixtureTests(unittest.TestCase):
             def output(args, **kwargs):
                 self.assertEqual(args[0], 'git')
                 return git(*args[1:], **kwargs)
-            recovery.replay(command, output, report, proof, trusted, directory)
+            with tempfile.TemporaryDirectory() as replay_dir:
+                recovery.replay(command, output, report, proof, trusted, replay_dir)
             fields, parents, actual_tree, _ = recovery.commit_binding(output, orphan)
             self.assertEqual(fields, {'Run': RUN, 'Base': base, 'Attempt': '1'})
             self.assertEqual(parents, [original, base])
@@ -608,6 +623,53 @@ class RecoveryGitFixtureTests(unittest.TestCase):
             self.assertEqual(git('show', f'{orphan}:trusted-code.py'), 'version = 1')
             self.assertEqual((root / 'base-only.txt').read_text(), 'Base content survives replay.\n')
             self.assertEqual([args for args in commands if args in recovery.GATES], recovery.GATES)
+
+
+class HistoricalPathTests(unittest.TestCase):
+    def test_paths_are_data_only_not_configuration_or_traversal(self):
+        for file in ('open-rankings/fixture/products.json', 'rankings-engine/cache/judge/fixture/item.json'):
+            self.assertTrue(recovery.historical_path(file))
+        for file in ('open-rankings/package.json', 'open-rankings/fixture/tsconfig.json',
+                     'open-rankings/a/../b.json', 'open-rankings/.hidden.json', 'open-rankings/a.js',
+                     'open-rankings/a/loader.config.json', 'scripts/input.json',
+                     'open-rankings/node_modules/input.json', 'open-rankings/a\\b.json'):
+            with self.subTest(file=file): self.assertFalse(recovery.historical_path(file))
+
+    def test_explicit_historical_selection_cannot_stand_alone(self):
+        for env in ({'RECOVER_HISTORICAL': 'true'}, {'RECOVER_HISTORICAL': 'yes'}):
+            with self.assertRaises(RuntimeError): recovery.selected(env)
+
+    def test_historical_snapshot_rejects_dirty_or_foreign_source_before_writes(self):
+        for actual, dirty in ((BASE, ''), (TRUSTED, ' M input')):
+            output = Mock(side_effect=[actual, dirty] if actual == TRUSTED else [actual])
+            command = Mock()
+            with self.assertRaisesRegex(RuntimeError, 'clean trusted checkout'):
+                recovery.historical_snapshot(command, output, BASE, TRUSTED, {})
+            command.assert_not_called()
+
+    def test_historical_snapshot_rejects_changed_other_corpus_or_unsafe_paths(self):
+        for file in ('open-processes/fixture.json', 'jurisdictions/fixture.json',
+                     'open-rankings/package.json', 'rankings-engine/cache/run.sh'):
+            output = Mock(side_effect=[TRUSTED, '', file]); command = Mock()
+            with self.assertRaises(RuntimeError):
+                recovery.historical_snapshot(command, output, BASE, TRUSTED, {})
+            command.assert_not_called()
+
+    def test_historical_snapshot_rejects_symlink_executable_gitlink(self):
+        file = 'open-rankings/fixture/products.json'
+        for mode, kind in (('120000', 'blob'), ('100755', 'blob'), ('160000', 'commit')):
+            output = Mock(side_effect=[TRUSTED, '', file, f'{mode} {kind} {BASE}\t{file}'])
+            command = Mock()
+            with self.assertRaisesRegex(RuntimeError, 'regular authenticated'):
+                recovery.historical_snapshot(command, output, BASE, TRUSTED, {})
+            command.assert_not_called()
+
+    def test_snapshot_detects_blob_change_during_materialization(self):
+        file = 'open-rankings/fixture/products.json'
+        output = Mock(side_effect=[TRUSTED, '', file, f'100644 blob {BASE}\t{file}',
+                                  f'100644 blob {TRUSTED}\t{file}', f'100644 {TRUSTED} 0\t{file}'])
+        with self.assertRaisesRegex(RuntimeError, 'blob identity changed'):
+            recovery.historical_snapshot(Mock(), output, BASE, TRUSTED, {})
 
 
 class ResumeFixture:

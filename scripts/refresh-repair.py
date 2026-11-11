@@ -296,7 +296,9 @@ def recover_receipt(pr, selection):
     command(['git', 'fetch', '--no-tags', 'origin', f'refs/heads/{branch}:{ref}'])
     if output(['git', 'rev-parse', ref]) != EXPECTED:
         raise RuntimeError('Recovery branch no longer matches the explicitly selected orphan')
-    original, proof = recovery_evidence(api, command, output, verify_provenance, REPO, pr, trusted, selection)
+    historical = os.environ.get('RECOVER_HISTORICAL') == 'true'
+    original, proof = recovery_evidence(api, command, output, verify_provenance, REPO, pr, trusted, selection,
+                                       **({'historical': True} if historical else {}))
 
     def eligible():
         live = current()

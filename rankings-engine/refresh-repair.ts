@@ -225,13 +225,37 @@ export function repairProgress(before: Verdict[], after: Verdict[], oldPacks: Re
 
 export async function repair({ head, main, arena, findings, keyed, replay }: {
   head: string; main: string; arena: string; findings: Finding[]; keyed: boolean;
-  replay?: { trusted: string; at: string };
+  replay?: { trusted: string; at: string; snapshot?: string };
 }) {
   if (!/^[a-z0-9-]+$/.test(arena) || !/^[a-f0-9]{40}$/.test(head) || !/^[a-f0-9]{40}$/.test(main)) throw new Error('Invalid repair identity')
   if (replay && (keyed || findings.length || !/^[a-f0-9]{40}$/.test(replay.trusted)
       || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/.test(replay.at)
       || new Date(replay.at).toISOString() !== replay.at)) throw new Error('Replay requires an explicit trusted source, fixed time and no model work')
-  if (git('rev-parse', 'HEAD') !== (replay?.trusted ?? main) || git('status', '--porcelain')) throw new Error('Repair requires a clean checkout of trusted main')
+  if (git('rev-parse', 'HEAD') !== (replay?.trusted ?? main)
+      || (!replay?.snapshot && git('status', '--porcelain'))) throw new Error('Repair requires a clean checkout of trusted main')
+  if (replay?.snapshot) {
+    if (!/^[a-f0-9]{40}$/.test(replay.snapshot) || git('write-tree') !== replay.snapshot
+        || git('diff', '--name-only') || git('ls-files', '--others', '--exclude-standard')) {
+      throw new Error('Historical snapshot identity or working tree changed')
+    }
+    const changed = git('diff', '--name-only', replay.trusted, replay.snapshot).split('\n').filter(Boolean)
+    const inputs = git('diff', '--name-only', main, replay.trusted).split('\n').filter(Boolean)
+    if (inputs.some(file => /^(open-processes|jurisdictions|open-modules|open-law)\//.test(file))) {
+      throw new Error('Historical snapshot has changed non-ranking inputs')
+    }
+    for (const file of new Set([...changed, ...inputs.filter(file =>
+      file.startsWith('open-rankings/') || file.startsWith('rankings-engine/cache/'))])) {
+      const parts = file.split('/')
+      if (!file.startsWith('open-rankings/') && !file.startsWith('rankings-engine/cache/')
+          || !/\.jsonl?$/.test(file) || parts.some(part => !/^[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(part)
+            || /config/i.test(part) || ['package.json', 'deno.json', 'node_modules'].includes(part.toLowerCase()))
+          || git('ls-tree', main, '--', file) !== git('ls-tree', replay.snapshot, '--', file)) {
+        throw new Error('Historical snapshot contains unauthenticated data or executable configuration')
+      }
+      show(main, file) // Enforce regular blob modes, including deleted newer inputs.
+      show(replay.trusted, file)
+    }
+  }
   if (replay && git('merge-base', main, replay.trusted) !== main) throw new Error('Replay base must be an ancestor of the trusted source')
   const base = git('merge-base', main, head)
   const files = git('diff', '--name-only', base, head).split('\n').filter(Boolean)

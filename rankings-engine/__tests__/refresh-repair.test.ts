@@ -334,6 +334,31 @@ describe('provenance-aware retained repair', { timeout: 60000 }, () => {
     } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
   })
 
+  it.each(['valid', 'wrong-tree', 'omitted', 'forged-data', 'code', 'configuration', 'untracked', 'unstaged'])(
+    'authenticates historical snapshot before replay: %s', async kind => {
+      const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+      try {
+        const head = f.commit()
+        f.git('checkout', '--detach', f.main)
+        f.write('base-update-fixture.json', {}); const historicalBase = f.commit()
+        f.write(`${f.dir}/newer.json`, {}); const trusted = f.commit()
+        if (kind !== 'omitted') f.git('restore', '--source', historicalBase, '--staged', '--worktree', '--', `${f.dir}/newer.json`)
+        if (kind === 'forged-data') { f.write(`${f.dir}/newer.json`, { forged: true }); f.git('add', '.') }
+        if (kind === 'code') { f.write('loader.ts', {}); f.git('add', '.') }
+        if (kind === 'configuration') { f.write(`${f.dir}/package.json`, {}); f.git('add', '.') }
+        const snapshot = kind === 'wrong-tree' ? trusted : f.git('write-tree')
+        if (kind === 'untracked') f.write('unexpected.json', {})
+        if (kind === 'unstaged') f.write(`${f.dir}/verdicts.json`, [])
+        process.chdir(f.root)
+        const result = repair({ head, main: historicalBase, arena: 'fixture', findings: [], keyed: false,
+          replay: { trusted, at: '2026-11-01T03:40:27.465Z', snapshot } })
+        if (kind === 'valid') expect((await result).mode).toBe('base-update')
+        else await expect(result).rejects.toThrow(/Historical snapshot/)
+        expect(fake).not.toHaveBeenCalled()
+      } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+    },
+  )
+
   it('rejects a replay base outside the current trusted source ancestry', async () => {
     const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
     try {

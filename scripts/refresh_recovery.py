@@ -35,8 +35,13 @@ EMPTY_LISTS = ('originalThreads', 'restored', 'rejudged', 'audits', 'unresolved'
 
 
 def selected(environ):
+    historical = environ.get('RECOVER_HISTORICAL', '')
+    if historical not in ('', 'false', 'true'):
+        raise RuntimeError('Historical recovery requires an explicit boolean selection')
     values = [environ.get(key, '') for key in ('RECOVER_RUN', 'RECOVER_ARTIFACT', 'RECOVER_DIGEST')]
     if not any(values):
+        if historical == 'true':
+            raise RuntimeError('Historical recovery requires explicit failed-run inputs')
         return None
     if (not all(values) or not all(re.fullmatch(r'[1-9][0-9]*', value) for value in values[:2])
             or not re.fullmatch(DIGEST, values[2])):
@@ -133,7 +138,7 @@ def empty_audit(report):
             and all(value == {} for value in report['evidenceRenames'].values()))
 
 
-def recovery_evidence(api, command, output, verify_provenance, repo, pr, trusted, selection):
+def recovery_evidence(api, command, output, verify_provenance, repo, pr, trusted, selection, *, historical=False):
     run_id, artifact_id, digest = selection
     head = pr['head']['sha']
     fields, parents, tree, message = commit_binding(output, head)
@@ -164,7 +169,7 @@ def recovery_evidence(api, command, output, verify_provenance, repo, pr, trusted
     original_pr['head']['sha'] = original
     verify_provenance(api, repo, original_pr)
     changed = output(['git', 'diff', '--name-only', base, trusted]).splitlines()
-    if any(file not in RECOVERY_CODE for file in changed):
+    if not historical and any(file not in RECOVERY_CODE for file in changed):
         raise RuntimeError('Main contains changes outside the bounded recovery code; dedicated repair required')
     ranking = strict_json(output(['git', 'show', f'{head}:open-rankings/{arena}/rankings.json']))
     at = ranking.get('generatedAt', '')
@@ -174,7 +179,73 @@ def recovery_evidence(api, command, output, verify_provenance, repo, pr, trusted
     if not parse(run['run_started_at']) <= parse(at) <= parse(run['updated_at']):
         raise RuntimeError('Replay timestamp is outside the authenticated failed run')
     return report, {'head': head, 'runId': run_id, 'artifactId': artifact_id, 'artifactDigest': digest,
-                    'originalHead': original, 'base': base, 'tree': tree, 'parents': parents, 'replayedAt': at}
+                    'originalHead': original, 'base': base, 'tree': tree, 'parents': parents, 'replayedAt': at,
+                    **({'historicalData': True} if historical else {})}
+
+
+# Historical data is interpreted only by current trusted code. Configuration files,
+# scripts, links and arbitrary additions are not historical replay inputs.
+def historical_path(file):
+    parts = file.split('/')
+    return (all(re.fullmatch(r'[a-zA-Z0-9_-][a-zA-Z0-9_.-]*', part) for part in parts)
+            and file.startswith(('open-rankings/', 'rankings-engine/cache/'))
+            and file.endswith(('.json', '.jsonl'))
+            and not any(part.lower() in ('package.json', 'tsconfig.json', 'jsconfig.json', 'deno.json',
+                                         'deno.jsonc', 'node_modules') or 'config' in part.lower()
+                        for part in parts))
+
+
+def verify_historical_snapshot(output, base, trusted, snapshot):
+    if not isinstance(snapshot, str) or not re.fullmatch(SHA, snapshot):
+        raise RuntimeError('Historical snapshot tree binding is invalid')
+    changed = output(['git', 'diff', '--name-only', trusted, snapshot]).splitlines()
+    inputs = output(['git', 'diff', '--name-only', base, trusted]).splitlines()
+    if any(file.startswith(('open-processes/', 'jurisdictions/', 'open-modules/', 'open-law/')) for file in inputs):
+        raise RuntimeError('Historical snapshot has changed non-ranking inputs')
+    files = set(changed) | {file for file in inputs if file.startswith(('open-rankings/', 'rankings-engine/cache/'))}
+    for file in files:
+        if not historical_path(file):
+            raise RuntimeError('Historical snapshot contains undeclared data or code')
+        expected = output(['git', 'ls-tree', base, '--', file])
+        actual = output(['git', 'ls-tree', snapshot, '--', file])
+        current = output(['git', 'ls-tree', trusted, '--', file])
+        if (actual != expected or any(entry and not re.fullmatch(
+                r'100644 blob [a-f0-9]{40}\t' + re.escape(file), entry) for entry in (expected, actual, current))):
+            raise RuntimeError('Historical snapshot does not match authenticated data blobs')
+
+
+def historical_snapshot(command, output, base, trusted, env):
+    if output(['git', 'rev-parse', 'HEAD']) != trusted or output(['git', 'status', '--porcelain']):
+        raise RuntimeError('Historical replay requires a clean trusted checkout')
+    files = output(['git', 'diff', '--name-only', base, trusted]).splitlines()
+    selected = []
+    for file in files:
+        # These other corpus inputs are not snapshotted. Changing them needs a
+        # separately reviewed replay design, not current-data fallback.
+        if file.startswith(('open-processes/', 'jurisdictions/', 'open-modules/', 'open-law/')):
+            raise RuntimeError('Historical replay has changed non-ranking inputs')
+        if not file.startswith(('open-rankings/', 'rankings-engine/cache/')):
+            continue
+        if not historical_path(file):
+            raise RuntimeError('Historical replay has an unsupported data path')
+        entries = []
+        for ref in (base, trusted):
+            entry = output(['git', 'ls-tree', ref, '--', file])
+            if entry and not re.fullmatch(r'100644 blob [a-f0-9]{40}\t' + re.escape(file), entry):
+                raise RuntimeError('Historical replay requires regular authenticated data blobs')
+            entries.append(entry)
+        selected.append((file, entries[0]))
+    # Build and materialize only the explicit, validated path list. Git verifies
+    # object identity; no historical executable or loader configuration is read.
+    for file, entry in selected:
+        command(['git', 'restore', '--source', base, '--staged', '--worktree', '--', file], env=env)
+        actual = output(['git', 'ls-files', '--stage', '--', file])
+        expected = entry.replace(' blob ', ' ').replace('\t', ' 0\t') if entry else ''
+        if actual != expected:
+            raise RuntimeError('Historical snapshot blob identity changed')
+    if output(['git', 'diff', '--name-only']) or output(['git', 'ls-files', '--others', '--exclude-standard']):
+        raise RuntimeError('Historical snapshot has unexpected working files')
+    return output(['git', 'write-tree'])
 
 
 def replay(command, output, report, proof, trusted, directory):
@@ -185,8 +256,15 @@ def replay(command, output, report, proof, trusted, directory):
     for key in ('ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN', 'ANTHROPIC_BASE_URL', 'GH_TOKEN', 'GITHUB_TOKEN',
                 'UM_JUDGE_MODEL', 'PA_MODEL', 'UM_DATA_DIR', 'PA_DATA_DIR', 'NODE_OPTIONS', 'GIT_INDEX_FILE'):
         env.pop(key, None)
+    historical = proof.get('historicalData') is True
+    snapshot = historical_snapshot(command, output, proof['base'], trusted, env) if historical else None
+    if historical:
+        verify_historical_snapshot(output, proof['base'], trusted, snapshot)
+        proof['historicalSnapshot'] = snapshot
     command(['pnpm', 'exec', 'tsx', 'rankings-engine/scripts/repair-refresh.ts', proof['originalHead'],
-             proof['base'], report['arena'], str(finding_file), str(replay_file), '--replay', trusted, proof['replayedAt']], env=env)
+             proof['base'], report['arena'], str(finding_file), str(replay_file),
+             '--replay-historical' if historical else '--replay', trusted, proof['replayedAt']]
+            + ([snapshot] if historical else []), env=env)
     result = strict_json(replay_file.read_text())
     if (result.get('mode') != 'base-update' or result.get('arena') != report['arena']
             or result.get('head') != proof['originalHead'] or result.get('main') != proof['base']
@@ -195,7 +273,15 @@ def replay(command, output, report, proof, trusted, directory):
         raise RuntimeError('Replay performed work outside the authenticated no-model base update')
     command(['git', 'add', 'open-rankings', 'rankings-engine/cache', 'README.md'])
     generated = output(['git', 'write-tree'])
-    files = output(['git', 'diff', '--name-only', trusted, generated]).splitlines()
+    files = output(['git', 'diff', '--name-only', proof['base'] if historical else trusted, generated]).splitlines()
+    if historical:
+        changed_code = [file for file in output(['git', 'diff', '--name-only', trusted, generated]).splitlines()
+                        if not historical_path(file)]
+        if changed_code or output(['git', 'ls-files', '--others', '--exclude-standard']):
+            raise RuntimeError('Historical replay changed trusted code or undeclared files')
+        # Reconstruct old data over the old whole-tree index, retaining its old
+        # code as inert Git objects. Current executable code is never overlaid.
+        files = [file for file in files if historical_path(file)]
     with tempfile.TemporaryDirectory(prefix='refresh-replay-index-') as index_dir:
         index_env = {**env, 'GIT_INDEX_FILE': str(Path(index_dir) / 'index')}
         command(['git', 'read-tree', proof['base']], env=index_env)
@@ -212,7 +298,8 @@ def replay(command, output, report, proof, trusted, directory):
         command(gate, env=env)
     command(['node', 'rankings-engine/scripts/check-refresh-stability.mjs', proof['base'], proof['head']], env=env)
     command(['git', 'add', 'open-rankings', 'rankings-engine/cache', 'README.md'])
-    if output(['git', 'write-tree']) != generated or output(['git', 'diff', '--name-only']):
+    if (output(['git', 'write-tree']) != generated or output(['git', 'diff', '--name-only'])
+            or (historical and output(['git', 'ls-files', '--others', '--exclude-standard']))):
         raise RuntimeError('Validation changed the replayed tree')
 
 
@@ -252,5 +339,9 @@ def recovery_resume(api, command, output, repo, number, head, trusted):
                 or not re.fullmatch(DIGEST, proof.get('artifactDigest', ''))
                 or not re.fullmatch(r'\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z', proof.get('replayedAt', ''))):
             raise RuntimeError('Recovery attestation does not match this exact head and new run')
+        if proof.get('historicalData') is True:
+            verify_historical_snapshot(output, proof['base'], run['head_sha'], proof.get('historicalSnapshot'))
+        elif 'historicalData' in proof or 'historicalSnapshot' in proof:
+            raise RuntimeError('Recovery attestation has ambiguous historical replay bindings')
         return report
     return None

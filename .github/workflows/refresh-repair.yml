@@ -11,6 +11,11 @@ on:
         description: Expected PR head SHA
         required: true
         type: string
+      recover_historical:
+        description: Explicit isolated historical-data replay using current trusted code
+        required: false
+        type: boolean
+        default: false
       recover_run:
         description: Explicit failed no-model base-update run whose exact head receipt needs recovery
         required: false
@@ -53,6 +58,7 @@ jobs:
           REPO: ${{ github.repository }}
           PR_NUMBER: ${{ inputs.pr }}
           PR_HEAD: ${{ inputs.head }}
+          RECOVER_HISTORICAL: ${{ inputs.recover_historical }}
           RECOVER_RUN: ${{ inputs.recover_run }}
           RECOVER_ARTIFACT: ${{ inputs.recover_artifact }}
           RECOVER_DIGEST: ${{ inputs.recover_digest }}
