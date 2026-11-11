@@ -1,17 +1,32 @@
 {
-  "hash": "62b37b8771b7e91f0a99f7b7697bd9fc2076a4c979a7b6dfc88cf6ec54936340",
+  "hash": "d7c3d35ee7ec41b7512ddbd2431e3a2eff5bd489add114b67db2ab2b4c446941",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Testing in a sandbox is a fair question for a fraud-prevention API like Signifyd, so the axis applies. However, nothing in the evidence pack mentions a sandbox, test environment, test API keys, or any way to separate test traffic from production. The cited docs cover only production API endpoints, webhooks, SDKs and sensitive-data rejection.",
-    "evidenceIds": [],
+    "rationale": "Signifyd documents test teams as its own isolation mechanism. A test team is a separate tenant with its own API key, and its orders are not used in model learning. Signifyd explicitly warns against sending test orders to production teams, so testing can happen without touching production data. However, there is no dedicated sandbox base URL or self-serve test mode, and converting a team requires contacting the Implementation Manager or support. missing for 10: self-serve sandbox provisioning, a dedicated sandbox endpoint or test mode, documented sandbox decision behavior or test fixtures, independent hands-on corroboration.",
+    "evidenceIds": [
+      "signifyd-test-teams-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "signifyd-test-teams-20261106",
+          "quote": "we can update your newly created Signifyd production team to a test team"
+        },
+        {
+          "evidenceId": "signifyd-test-teams-20261106",
+          "quote": "orders created are not used in model learning"
+        },
+        {
+          "evidenceId": "signifyd-test-teams-20261106",
+          "quote": "it is strongly recommended to never send test orders to your production teams. Any test data added to a production environment can pollute the model with false data."
+        }
+      ]
     },
     "productId": "signifyd",
     "storyId": "api-sandbox"

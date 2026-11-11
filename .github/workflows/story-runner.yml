@@ -1,7 +1,9 @@
 # Continuous story-analysis runner: every 6 hours, pick the next arena in rotation and re-run
 # its full evidence refresh (crawl → extract → collect-community → probe → judge → claims →
 # popularity → derive). The judge's cellHash cache means unchanged evidence costs no LLM calls —
-# only cells whose evidence actually moved get re-judged — so a run on a quiet arena is cheap.
+# an unchanged product evidence pack needs no new judgments. A changed pack can re-judge
+# every story for that product; reconciliation retains supported baseline grades when
+# those proposals do not meet the existing stability policy.
 # Results land as a PR (never a direct push) so every ranking change stays reviewable and the
 # re-judge stability policy (see README) can be applied before merge.
 #
@@ -41,6 +43,10 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      - name: Pin refresh baseline
+        id: baseline
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Check for API key
         id: gate
@@ -100,6 +106,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CATEGORY: ${{ steps.pick.outputs.category }}
+          BASELINE_SHA: ${{ steps.baseline.outputs.sha }}
         run: |
           # NOTE: no `normalize` here — that stage re-authors the story taxonomy and is guarded
           # against running on arenas with real verdicts (it would invalidate all of them). A
@@ -112,6 +119,13 @@ jobs:
               pnpm exec tsx rankings-engine/scripts/normalize-refresh-evidence.ts "$CATEGORY"
             fi
             pnpm tsx rankings-engine/cli.ts "$stage" --category "$CATEGORY"
+            if [ "$stage" = "judge" ]; then
+              # Reconcile before claims and score derivation. Keep model cache output raw;
+              # retained decisions carry separate, ancestor-verified provenance.
+              pnpm exec tsx rankings-engine/scripts/reconcile-refresh.ts \
+                --category "$CATEGORY" --baseline "$BASELINE_SHA" \
+                --report "$RUNNER_TEMP/story-refresh-reconciliation.json"
+            fi
             echo "::endgroup::"
           done
           # Post-derive: refresh the analytic 68% score intervals for this arena — LLM-free,
@@ -238,3 +252,24 @@ jobs:
           path: ${{ runner.temp }}/story-runner-head.json
           if-no-files-found: error
           retention-days: 90
+
+      - name: Capture failed refresh inputs
+        if: failure() && steps.gate.outputs.enabled == 'true' && steps.pick.outputs.category != ''
+        env:
+          CATEGORY: ${{ steps.pick.outputs.category }}
+          BASELINE_SHA: ${{ steps.baseline.outputs.sha }}
+        run: |
+          python3 scripts/capture_refresh_diagnostics.py \
+            --category "$CATEGORY" --baseline "$BASELINE_SHA" \
+            --report "$RUNNER_TEMP/story-refresh-reconciliation.json" \
+            --output "$RUNNER_TEMP/story-refresh-diagnostics.tar.gz"
+
+      # Diagnostics are not an internal-refresh receipt and cannot authorize publication.
+      - name: Upload failed refresh diagnostics
+        if: failure() && steps.gate.outputs.enabled == 'true' && steps.pick.outputs.category != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: story-refresh-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/story-refresh-diagnostics.tar.gz
+          if-no-files-found: warn
+          retention-days: 14

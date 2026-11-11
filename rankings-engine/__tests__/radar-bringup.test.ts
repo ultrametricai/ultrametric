@@ -1,6 +1,31 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { rosterDedupeKey, slugify, vendorOf } from '../scripts/radar-bringup'
 import type { Disposition } from '../scripts/radar-triage'
+
+describe('vendor-radar bring-up workflow', () => {
+  it('refreshes fleet score intervals once after all products are derived and before validation', () => {
+    const workflow = fs.readFileSync(
+      path.resolve(__dirname, '../../.github/workflows/vendor-radar.yml'), 'utf8',
+    )
+    const step = workflow.match(
+      /^      - name: Bring-up PR for auto-approved passers\n[\s\S]*?(?=^      - name: |$(?![\s\S]))/m,
+    )?.[0]
+    expect(step).toBeDefined()
+    const lines = step!.split('\n').map((line) => line.trim())
+    const generator = 'pnpm tsx rankings-engine/scripts/compute-confidence-intervals.ts'
+    expect(lines.filter((line) => line === generator)).toHaveLength(1)
+    const loopEnd = lines.indexOf('done < /tmp/bringups.txt')
+    const refresh = lines.indexOf(generator)
+    const validation = lines.indexOf('pnpm test')
+    const stage = lines.findIndex((line) => line.startsWith('git add '))
+    expect(loopEnd).toBeGreaterThan(-1)
+    expect(refresh).toBeGreaterThan(loopEnd)
+    expect(validation).toBeGreaterThan(refresh)
+    expect(stage).toBeGreaterThan(validation)
+  })
+})
 
 describe('rosterDedupeKey', () => {
   it('keys shared-code-host products by owner/repo, not the bare host', () => {

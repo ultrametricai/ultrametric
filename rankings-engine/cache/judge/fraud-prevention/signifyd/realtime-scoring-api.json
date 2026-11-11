@@ -1,16 +1,17 @@
 {
-  "hash": "b3b7de585cc661a91b716e6d86390a6c56beda7aa3eb04d62055bf9a5376d8af",
+  "hash": "59c5ac8f70e9ef8af5375f5eacdfdbbe8147843ba8f37181fd44da9caa71a389",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Signifyd documents a Pre-Auth Checkout API that is called before the payment gateway to submit order and payment details for fraud review, and a Get Decision API that retrieves the fraud decision, so the pre-authorization API flow is the product's own documented capability. The evidence never shows that the Checkout call returns a risk score synchronously in its response, and the webhook and polling docs suggest decisions may arrive asynchronously. Missing for 10: explicit synchronous in-response decision or score from the Checkout call, evidence that the output is a machine-learning risk score rather than a guarantee decision, latency or real-time SLA details, independent or hands-on corroboration.",
+    "rationale": "Signifyd documents a Pre-Auth Checkout API that is called before the payment gateway to submit orders for fraud review, a Get Decision API for retrieving fraud decisions, and test-team docs noting orders feed 'model learning'. However, the evidence never shows the Checkout response returning a decision or score synchronously, and decisions are described as delivered via webhook or polling. Missing for 10: explicit documentation that the pre-auth call returns a synchronous decision/score in its response, an exposed numeric ML risk score rather than a guarantee decision, latency figures, independent hands-on corroboration.",
     "evidenceIds": [
-      "signifyd-docs-3",
+      "signifyd-docs-18",
       "signifyd-docs-21",
       "signifyd-docs-4",
-      "signifyd-docs-26"
+      "signifyd-docs-26",
+      "signifyd-test-teams-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -18,8 +19,8 @@
       "subject": "As a developer, I can get a machine-learning risk score for a transaction in real time — synchronously, before authorization completes — through a documented API",
       "citations": [
         {
-          "evidenceId": "signifyd-docs-3",
-          "quote": "The Checkout endpoint in Signifyd's API is used to record a Checkout Event in a Pre-Auth flow. This call should be made _before_ calling your Payment Gateway."
+          "evidenceId": "signifyd-docs-18",
+          "quote": "The Checkout endpoint in Signifyd's API is used to record a Checkout Event in a Pre-Auth flow. This call should be made before calling your Payment Gateway."
         },
         {
           "evidenceId": "signifyd-docs-21",

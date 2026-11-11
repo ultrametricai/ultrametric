@@ -3,16 +3,16 @@
     "productId": "formant",
     "storyId": "agent-controls-robot",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Formant documents commands that make a robot run scripts or publish ROS topics, an Admin API for defining custom commands, and APIs plus a RealtimeSDK for building custom applications. This suggests programmatic robot control is possible, but the evidence only shows commands being sent by button click, teleop or events, not explicitly through the API. missing for 10: scoped credentials or service-account authentication for an AI agent, explicit API/SDK calls that dispatch commands to a real robot, a documented end-to-end agent workflow, a published OpenAPI spec (probe returned 404), independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Formant documents a bearer-JWT-secured Admin API and says custom commands can be created through it. Its Agent SDK lets the on-device side receive and respond to commands, and built-in commands such as run_script and publish_ros_topic act on the robot. The command loop is only implied, though: the docs show commands sent from the UI or by events, not issued by an external programmatic client. Nothing shows credentials scoped to a least-privilege role. missing for 10: scoped or least-privilege credential documentation, an explicit API/SDK call that dispatches a command to a robot, an end-to-end AI-agent control example, independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-4",
-      "formant-docs-65",
-      "formant-gh-1",
-      "formant-docs-53",
+      "formant-endpoint-openapi-20261106",
       "formant-docs-55",
-      "formant-docs-57"
+      "formant-docs-65",
+      "formant-docs-52",
+      "formant-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -24,16 +24,20 @@
           "quote": "you can create custom commands via the Formant Admin API"
         },
         {
+          "evidenceId": "formant-endpoint-openapi-20261106",
+          "quote": "info title \"Formant admin-api\", internal version 1.357.8, bearer-JWT security"
+        },
+        {
+          "evidenceId": "formant-docs-55",
+          "quote": "The Agent SDK client contains a suite of methods which allow you to ingest telemetry data, receive and respond to commands, teleoperate your device"
+        },
+        {
           "evidenceId": "formant-docs-65",
           "quote": "`formant.publish_ros_topic` Publish a message to a ROS topic. `formant.run_script` Run a script on the device."
         },
         {
-          "evidenceId": "formant-gh-1",
-          "quote": "Create your own application that uses Formant's APIs and RealtimeSDK for data"
-        },
-        {
-          "evidenceId": "formant-docs-57",
-          "quote": "Formant's APIs and SDKs which allow you to programmatically ingest data, configure devices, design custom views and modules"
+          "evidenceId": "formant-docs-52",
+          "quote": "A durable message queue is also maintained that can issue requests to your system either immediately or the next time it’s online"
         }
       ]
     }
@@ -43,12 +47,11 @@
     "storyId": "agentic-agent-docs",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "A live probe confirms Formant publishes an llms.txt at docs.formant.io/llms.txt, which returned HTTP 200 with real documentation content. Its docs pages are also served as raw .md URLs, so an AI agent can be pointed directly at machine-readable documentation. Missing for 10: evidence of an llms-full.txt or agent-specific usage guidance, and independent or hands-on corroboration that agents consume these docs well (no OpenAPI spec was found either).",
+    "confidence": "high",
+    "rationale": "A live probe shows Formant publishes an llms.txt at docs.formant.io/llms.txt (HTTP 200, with a documentation summary header). Its ReadMe-hosted docs also expose markdown mirrors of every page, and endpoint mirrors embed full OpenAPI JSON, so an agent can be pointed directly at machine-readable docs. missing for 10: independent or hands-on corroboration of agents using the docs, a complete downloadable spec or llms-full-style consolidated corpus, explicit agent-oriented usage guidance.",
     "evidenceIds": [
       "formant-probe-1",
-      "formant-docs-2",
-      "formant-docs-3"
+      "formant-endpoint-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -57,11 +60,11 @@
       "citations": [
         {
           "evidenceId": "formant-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.formant.io/llms.txt # Formant Documentation"
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.formant.io/llms.txt"
         },
         {
-          "evidenceId": "formant-probe-1",
-          "quote": "The Formant software platform allows companies to run fleets of robots or advanced connected"
+          "evidenceId": "formant-endpoint-openapi-20261106",
+          "quote": "every endpoint page's markdown mirror embeds that operation's full OpenAPI JSON"
         }
       ]
     }
@@ -70,11 +73,12 @@
     "productId": "formant",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Formant's own materials say users can ask their fleet questions in plain language and receive ML-driven task recommendations. The analytics docs also mention an AI assistant for building dashboards, which points to in-product AI insights and suggestions. The evidence is mostly a marketing tagline plus one brief docs mention, so depth and behavior are unproven. Missing for 10: detailed docs on what insights the AI assistant generates from data, how recommendations are produced and surfaced, and independent or hands-on corroboration.",
+    "rationale": "Formant's own materials say users can ask the fleet questions in plain language and receive ML-driven task recommendations, and that Analytics includes an AI assistant for building dashboards. The recommendation claim comes from a marketing page, though, and the AI assistant is documented only as a dashboard-building aid, not as a source of insights into the data, so complete coverage is not shown. Missing for 10: in-depth first-party documentation of how AI insights and suggestions are generated from fleet data, evidence that the analytics AI assistant surfaces insights rather than only building dashboards, and independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-12",
+      "formant-docs-23",
       "formant-docs-25",
       "formant-docs-7"
     ],
@@ -100,14 +104,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Formant documents event-driven automations that run without a human at the controls: events can trigger commands such as running a script on the device, events can trigger outbound webhooks, and the marketing pages claim automated incident response and incident detection. There is no evidence of recurring or scheduled automations, and no detail on how automation rules are built or managed. The AI-driven task recommendations require people to approve them, so they are not autonomous. Missing for 10: scheduled or recurring automation runs, documented automation-rule configuration depth, independent corroboration.",
+    "rationale": "Formant documents event-driven automations that run without a human in the loop: events can trigger commands such as running a script on the device, events can fire webhooks to any HTTP endpoint, and the operations product is pitched as automating incident response and monitoring workflows. The evidence is only a few brief mentions, and its AI-driven task recommendations explicitly require people to approve what happens next. Missing for 10: scheduled or recurring automations (only one-off event triggers are shown), in-depth docs on configuring and managing background workflows, autonomous AI-agent execution without human approval, and independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-53",
-      "formant-docs-54",
       "formant-docs-28",
       "formant-docs-18",
       "formant-docs-64",
-      "formant-docs-52"
+      "formant-docs-54",
+      "formant-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -129,10 +133,6 @@
         {
           "evidenceId": "formant-docs-64",
           "quote": "Configurable alerts and automated incident detection"
-        },
-        {
-          "evidenceId": "formant-docs-54",
-          "quote": "`formant.run_script` | Run a script on the device."
         }
       ]
     }
@@ -143,12 +143,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Formant documents a built-in AI assistant that helps users build analytics dashboards. Its product page says users can ask the fleet questions in plain language and receive ML-driven task recommendations that people approve. Delegation is therefore limited to dashboard building and human-approved recommendations. The 'Formant agent' items describe device software, not an AI assistant, so they are not credited. Missing for 10: in-depth docs on what tasks the assistant can actually perform, evidence of autonomous task execution beyond recommendations, and independent or hands-on corroboration.",
+    "rationale": "Formant documents a built-in AI assistant for building analytics dashboards, and a plain-language fleet query interface that returns ML-driven task recommendations for people to approve. That is real in-product AI help, but the documented scope is narrow (dashboard building, querying and recommendations) rather than broad task delegation, and it rests only on brief vendor claims. Missing for 10: documented range of tasks the assistant can carry out end-to-end, detailed docs on how the assistant works, independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-25",
-      "formant-docs-7",
       "formant-docs-12",
-      "formant-docs-23"
+      "formant-docs-23",
+      "formant-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -171,15 +171,16 @@
     "storyId": "agentic-headless",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Formant documents its own programmatic, non-UI interfaces. The Python Cloud SDK can query and ingest data directly without an agent, the Admin API can create custom commands, and the agent installs via Docker and is configured through environment variables, so the platform can be driven by scripts. However, nothing in the evidence explicitly covers headless operation or CI pipeline usage, and no CLI is documented. missing for 10: an official CLI or headless mode, CI integration docs or examples, a published OpenAPI spec (the probe returned 404), and independent hands-on corroboration of automated pipeline use.",
+    "confidence": "medium",
+    "rationale": "Formant ships its own non-GUI programmatic surfaces: a Python Cloud SDK for querying and ingesting data without the web app, an Admin API for custom commands, and a Docker-installable device agent configurable through environment variables. Together these allow scripted, headless automation, but nothing documents a CLI, a CI integration, or a non-production environment for automated runs. Missing for 10: dedicated CLI or headless mode, CI/pipeline integration docs or examples, a test/sandbox environment for automated runs (the API console targets production only), and independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-3",
-      "formant-docs-61",
+      "formant-docs-27",
+      "formant-docs-45",
       "formant-docs-4",
+      "formant-docs-1",
       "formant-docs-40",
-      "formant-docs-35",
-      "formant-probe-2"
+      "formant-api-try-it-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -191,8 +192,8 @@
           "quote": "The primary programmatic way data scientists query for telemetry data is via the Cloud SDK, a lightweight Python module which can interact with the query API."
         },
         {
-          "evidenceId": "formant-docs-61",
-          "quote": "sometimes you may want to ingest directly without requiring an agent. The `ingest` method of the Formant Cloud SDK is a good option in those situations."
+          "evidenceId": "formant-docs-45",
+          "quote": "sometimes you may want to ingest directly without requiring an agent. The `ingest` method of the Formant Cloud SDK is a good option"
         },
         {
           "evidenceId": "formant-docs-4",
@@ -203,8 +204,8 @@
           "quote": "You can use environment variables to control Formant agent behavior."
         },
         {
-          "evidenceId": "formant-docs-35",
-          "quote": "Install the Formant agent on a ROS1 device by running the Docker-based installer."
+          "evidenceId": "formant-docs-1",
+          "quote": "This guide will teach you how to install the Formant agent to your device via Docker."
         }
       ]
     }
@@ -215,7 +216,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant has an AI assistant and plain-language fleet queries, so letting users plug in MCP servers is a fair question for this product. The evidence pack never mentions MCP or any way to register external tool servers with that assistant. Its SDKs, APIs, webhooks and custom commands are developer building blocks or adjacent features, not MCP-client capability.",
+    "rationale": "Formant ships AI features: an analytics AI assistant and plain-language fleet queries. An MCP-client capability is therefore a fair question for this platform, but nothing in the evidence shows users can connect external MCP servers so the product can use their tools. The webhooks, SDKs and llms.txt are adjacent features, not MCP-client support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -230,7 +231,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is a robotics fleet-management SaaS platform, so shipping an official MCP server is a fair question for it. The evidence pack shows no MCP server. The 'Formant agent' is on-device robot software, and the Agent SDK, Cloud SDK, APIs, llms.txt and in-app AI assistant are developer building blocks or adjacent features, not an MCP endpoint.",
+    "rationale": "Formant is a robotics fleet SaaS platform, not an AI agent, so publishing an official MCP server is a fair question and the axis applies. The pack shows no MCP server: the 'Formant agent' is on-device robot software, and llms.txt, per-endpoint OpenAPI definitions and SDKs are only adjacent building blocks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -245,7 +246,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Formant's own marketing says users can \"ask your fleet what's happening in plain language\" and receive ML-driven task recommendations that people approve. Its analytics docs also mention an AI assistant for building dashboards. This is first-party natural-language querying and assistance, but there is no evidence that natural-language commands directly operate the product or robots; commands are documented as button clicks, events, or API calls. Missing for 10: documented natural-language command execution, depth on the AI assistant's scope, and independent or hands-on corroboration.",
+    "rationale": "Formant's own marketing says users can \"ask your fleet what's happening in plain language\" and get ML-driven task recommendations that people approve. The analytics docs also mention an AI assistant for building dashboards. The evidence covers natural-language querying and assisted dashboard creation, not operating the product broadly with natural-language commands, and it is thin, marketing-level material. Missing for 10: documented natural-language command execution for device or fleet actions, in-depth docs on the AI assistant's scope and workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-12",
       "formant-docs-23",
@@ -274,7 +275,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair axis for a robotics fleet platform, but the evidence pack never documents a Formant command-line tool. It shows only Python Cloud and Agent SDKs, APIs, a Docker installer and agent environment variables, which are building blocks or adjacent features rather than an official CLI. The port-forwarding FAQ describes forwarding a device page to localhost but does not name or document a CLI.",
+    "rationale": "An official CLI is a fair axis for a robotics fleet platform, but the evidence pack never documents one. It only shows a Docker-based agent installer, the Python Cloud SDK, the Agent SDK, the Admin API with a per-endpoint Try It console, and the JavaScript toolkit. These are developer building blocks and other features, not an official command-line tool, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -286,23 +287,32 @@
   {
     "productId": "formant",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "Formant documents its own public APIs. An Admin API can create custom commands, and a Python Cloud SDK wraps the query and ingestion APIs. Its docs say the APIs and SDKs let you programmatically ingest data and configure devices. However, the evidence covers only a few API areas, and the probe found no published OpenAPI/Swagger spec, so full end-to-end programmatic control is not shown. Missing for 10: a published machine-readable API spec (OpenAPI paths all 404), a documented endpoint reference covering the whole product (fleet orchestration, teleop, analytics), and independent or hands-on corroboration of driving the product via the API.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Formant documents a public Admin API (bearer-JWT, OpenAPI 3.0.0 definitions embedded per endpoint, live Try It console), plus query and ingestion APIs wrapped by a Python Cloud SDK. Together these let a user drive device configuration, commands, data ingestion and queries programmatically. Missing for 10: a downloadable complete OpenAPI spec (the probe of standard spec paths returned 404 and the full download is admin-gated), and independent or hands-on corroboration of API usage.",
     "evidenceIds": [
+      "formant-endpoint-openapi-20261106",
+      "formant-api-try-it-20261106",
       "formant-docs-57",
       "formant-docs-4",
       "formant-docs-3",
       "formant-docs-27",
-      "formant-gh-1",
       "formant-probe-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "formant-endpoint-openapi-20261106",
+          "quote": "Formant's ReadMe-hosted reference publishes machine-readable OpenAPI 3.0.0 definitions per endpoint"
+        },
+        {
+          "evidenceId": "formant-api-try-it-20261106",
+          "quote": "The ReadMe reference ships the live \"Try It!\" console per endpoint"
+        },
         {
           "evidenceId": "formant-docs-57",
           "quote": "Formant's APIs and SDKs which allow you to programmatically ingest data, configure devices, design custom views and modules"
@@ -312,16 +322,8 @@
           "quote": "you can create custom commands via the Formant Admin API"
         },
         {
-          "evidenceId": "formant-docs-3",
-          "quote": "The primary programmatic way data scientists query for telemetry data is via the Cloud SDK, a lightweight Python module which can interact with the query API."
-        },
-        {
           "evidenceId": "formant-docs-27",
           "quote": "a lightweight Python module which can interact with the Formant ingestion API directly"
-        },
-        {
-          "evidenceId": "formant-gh-1",
-          "quote": "Create your own application that uses Formant's APIs and RealtimeSDK for data"
         }
       ]
     }
@@ -332,7 +334,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is an API-driven fleet platform (Admin API, Cloud SDK), so scoped credentials are a fair question to ask of it. However, nothing in the evidence documents issuing API keys, service accounts, or permission-scoped tokens for an agent. The 'Formant agent' material covers device provisioning and data-stream configuration, not least-privilege API credentials.",
+    "rationale": "Formant is an API-driven fleet platform, so issuing scoped credentials is a fair question to ask of it. The evidence only shows a generic bearer-JWT security scheme on the admin API, with nothing about scoped tokens, service accounts, role-limited keys or least-privilege permission settings. Generic 'governed platform' marketing and the Formant 'agent' (on-device robot software) are not scoped API credentials for an AI agent.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -347,15 +349,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Formant documents several first-party SDKs: an Agent SDK for ingesting telemetry, handling commands and teleoperation, and a Python Cloud SDK for querying and ingesting data. Its official GitHub toolkit adds a RealtimeSDK for building custom applications. Missing for 10: independent or hands-on corroboration of SDK quality, a published OpenAPI spec (probes returned 404), and evidence of language coverage and versioning beyond the Python Cloud SDK.",
+    "rationale": "Formant documents several official SDKs: an Agent SDK for telemetry ingestion, command handling and teleoperation; a Python Cloud SDK for querying and ingesting data; and a RealtimeSDK in its official GitHub toolkit for building custom applications. Missing for 10: independent or hands-on corroboration of the SDKs in use, and documentation of language coverage beyond Python and of SDK versioning.",
     "evidenceIds": [
       "formant-docs-2",
       "formant-docs-3",
       "formant-docs-27",
       "formant-docs-45",
-      "formant-docs-57",
       "formant-gh-1",
-      "formant-gh-6"
+      "formant-docs-57"
     ],
     "support": {
       "relation": "direct",
@@ -369,6 +370,10 @@
         {
           "evidenceId": "formant-docs-3",
           "quote": "The primary programmatic way data scientists query for telemetry data is via the Cloud SDK, a lightweight Python module which can interact with the query API."
+        },
+        {
+          "evidenceId": "formant-docs-27",
+          "quote": "The primary way of ingesting arbitrary data that is not via the Formant agent is with the Cloud SDK, a lightweight Python module which can interact with the Formant ingestion API directly."
         },
         {
           "evidenceId": "formant-gh-1",
@@ -385,9 +390,9 @@
     "productId": "formant",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Formant has a dedicated docs page for triggering webhooks from events. It describes outbound HTTP calls to any endpoint, fired by a Formant event trigger, which matches subscribing to events via webhooks. That page is the only evidence, so the depth of the capability is unproven. Missing for 10: payload schema details, programmatic (API-based) webhook registration, delivery guarantees/retries and signing, and independent or hands-on corroboration.",
+    "rationale": "Formant's docs describe event-triggered webhooks that make HTTP calls to any endpoint when a Formant event fires, which is the outbound callback a programmatic consumer can receive. The evidence is a single first-party statement with little detail. Missing for 10: documentation of payload format, signing/authentication, retry behavior, API-based webhook registration, and independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-28"
     ],
@@ -406,31 +411,55 @@
   {
     "productId": "formant",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Formant is an API- and SDK-driven platform, so an interactive API reference is a fair question to ask of it. However, the evidence only shows that Agent SDK and Cloud SDK documentation and reference pages exist. Nothing shows an interactive explorer or runnable 'try it' examples, and the OpenAPI/Swagger probes all returned 404.",
-    "evidenceIds": [],
+    "rationale": "Formant's ReadMe-hosted API reference ships a live \"Try It!\" console on each endpoint page, with multi-language code snippets and a bearer-JWT credential field, so examples are interactive and runnable. Per-endpoint OpenAPI definitions back the reference. The runner only executes against production api.formant.io, which limits safe exploration. Missing for 10: a sandbox/test environment for the runner, independent or hands-on corroboration of the console.",
+    "evidenceIds": [
+      "formant-api-try-it-20261106",
+      "formant-endpoint-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "formant-api-try-it-20261106",
+          "quote": "The ReadMe reference ships the live \"Try It!\" console per endpoint (\"Click Try It! to start a request and see the response here!\") with multi-language snippets and a bearer-JWT credential field."
+        },
+        {
+          "evidenceId": "formant-endpoint-openapi-20261106",
+          "quote": "Formant's ReadMe-hosted reference publishes machine-readable OpenAPI 3.0.0 definitions per endpoint"
+        }
+      ]
     }
   },
   {
     "productId": "formant",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Formant documents an Admin API, a query/ingestion API and SDKs, but nothing in the evidence shows a downloadable OpenAPI or equivalent spec, and the probe found 404s at every candidate OpenAPI/Swagger path. The llms.txt file it does serve is a documentation index, not a machine-readable API specification.",
-    "evidenceIds": [],
+    "rationale": "Formant's ReadMe-hosted reference embeds full OpenAPI 3.0.0 JSON for each endpoint in its markdown mirror (\"Formant admin-api\"), so a machine-readable spec does exist. However, the complete spec is not downloadable: the ReadMe OAS download is admin-gated, api.formant.io serves no spec paths, and probes of standard openapi.json/swagger.json paths all return 404. Users can only assemble the spec endpoint by endpoint. Missing for 10: a single publicly downloadable full OpenAPI document, a standard discoverable spec URL, and independent hands-on corroboration of using the per-endpoint mirrors.",
+    "evidenceIds": [
+      "formant-endpoint-openapi-20261106",
+      "formant-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "formant-endpoint-openapi-20261106",
+          "quote": "Formant's ReadMe-hosted reference publishes machine-readable OpenAPI 3.0.0 definitions per endpoint: every endpoint page's markdown mirror embeds that operation's full OpenAPI JSON"
+        },
+        {
+          "evidenceId": "formant-endpoint-openapi-20261106",
+          "quote": "The complete spec is not downloadable: the ReadMe OAS download is admin-gated and api.formant.io serves no spec paths"
+        }
+      ]
     }
   },
   {
@@ -439,7 +468,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is a cloud fleet-operations platform, so a sandbox or test environment isolated from production data is a fair question. The evidence pack never mentions a sandbox, staging org, test tenant, simulated devices, or dry-run mode. Agent environment variables, re-provisioning and configuration templates are adjacent features and do not isolate test work from production data.",
+    "rationale": "Testing against a sandbox is a fair question for a cloud robotics fleet platform with admin APIs, so the axis applies. The evidence pack documents no sandbox, staging or test environment, nor any dry-run mode. The reference notes indicate the API 'Try It!' runner executes against the production api.formant.io host and that no test environment exists to point it at.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -454,7 +483,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant documents several APIs and SDKs (Admin API, query API, ingestion API, Agent and Cloud SDKs), so this axis applies to the product. Nothing in the evidence shows API versioning or a documented deprecation policy. A doc page labelled \"legacy\" (mouse click stream) is not a deprecation policy, and the OpenAPI spec probe returned 404 on all candidate paths.",
+    "rationale": "The evidence pack never documents a deprecation policy, sunset timelines, or a versioning scheme that integrators can pin to. The only version-related item is an internal OpenAPI info version (1.357.8) embedded in per-endpoint specs, which is a build number rather than an API versioning or deprecation commitment. A page labeled 'legacy' does not amount to a documented deprecation policy either.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -469,10 +498,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents applying one operation to many devices or items at once, such as bulk command dispatch, bulk configuration changes, or batch edits. What it does show is adjacent: fleet-wide viewing and analytics by device group or tag, configuration templates with no stated bulk-apply, and commands sent with a per-device button click. None of these is a documented bulk-operation capability.",
+    "rationale": "The evidence shows fleet-wide visibility, analytics by device group or tag, and configuration templates. None of this documents applying an action, such as a command, configuration change, or update, to many devices in one bulk operation. Commands are described per device, via a button in the Observe view or during teleoperation, and multi-device views and aggregated analytics are adjacent read and visualization features, not bulk operations.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": []
@@ -481,19 +510,20 @@
   {
     "productId": "formant",
     "storyId": "automation-rules-engine",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Formant's own docs say events can trigger actions: events can trigger commands on the device, and webhooks fire HTTP calls to any endpoint based on a Formant event. Its operations pages also claim configurable alerts and automated incident response. However, the evidence never documents how event rules are defined: no condition syntax, thresholds, filters or rule-builder depth, and no independent or hands-on corroboration. That leaves coverage partial. Missing for 10: documented rule/condition definition model (thresholds, filters, scoping), breadth of trigger types and chained actions, programmatic or AI-native rule authoring, independent corroboration.",
+    "rationale": "Formant documents event-driven automation: events can trigger commands on devices, such as running scripts or publishing ROS topics, and events can fire webhooks to any HTTP endpoint. Its operations pages also claim automated incident response and configurable alerts. missing for 10: detailed documentation of how rule conditions are defined (thresholds, filters, logic), any AI-native or natural-language rule authoring, and independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-53",
       "formant-docs-28",
-      "formant-docs-64",
-      "formant-docs-18"
+      "formant-docs-65",
+      "formant-docs-18",
+      "formant-docs-64"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
@@ -505,12 +535,12 @@
           "quote": "A webhook allows you to make an API call to any endpoint over HTTP based on a trigger from a Formant event."
         },
         {
-          "evidenceId": "formant-docs-64",
-          "quote": "Configurable alerts and automated incident detection"
-        },
-        {
           "evidenceId": "formant-docs-18",
           "quote": "automating incident response and creating workflows for monitoring devices at scale"
+        },
+        {
+          "evidenceId": "formant-docs-64",
+          "quote": "Configurable alerts and automated incident detection"
         }
       ]
     }
@@ -521,7 +551,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a robot fleet operations platform, so the axis applies. The evidence only shows commands sent by button click, commands or webhooks triggered by events, a durable queue that delivers requests immediately or when the device is next online, and marketing about 'creating workflows'. None of these is a documented recurring or cron-style schedule; event triggers and one-off deferred delivery are adjacent features, not scheduling.",
+    "rationale": "Formant documents event-triggered commands, event-based webhooks, and monitoring workflows. None of these is a recurring schedule, and nothing in the pack mentions cron-style or time-based recurring jobs. Event triggers and one-off or queued command dispatch are adjacent capabilities that do not deliver scheduled recurrence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -536,7 +566,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant documents automations such as event-triggered commands, webhooks and incident-response workflows, but nothing in the evidence shows versioning, review or rollback of those automations. Exporting device configuration to YAML or saving it as a template covers device config rather than automations, and human approval of ML task recommendations is a different feature, so neither counts here.",
+    "rationale": "Formant documents automations: events can trigger commands and webhooks, and it offers incident-response workflows. However, nothing in the pack shows versioning, change review, or rollback for those automations. The closest item, exporting device configuration to YAML or saving it as a template, covers device configuration rather than automations, so it is only adjacent.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -551,7 +581,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is a robot fleet operations platform, so CI-based testing and simulation regression testing are a fair axis for it. The evidence never mentions CI integration, test runners, or simulation environments. Docker agent installation, the run_script command, and webhooks are at most developer building blocks, not a documented testing capability.",
+    "rationale": "Automated CI testing and simulation-based regression testing are a fair question for a robot software and fleet platform, so the axis applies. Nothing in the pack shows Formant offering CI test runners, simulation environments, or regression testing. Docker agent install, run_script commands, and SDKs are adjacent building blocks for running scripts on devices, not a testing capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -566,7 +596,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Role-based access control is a fair question for a robot fleet operations platform, but nothing in the evidence pack documents roles, permissions, or per-robot access scoping for commanding, configuring, or viewing devices. Marketing references to a 'governed platform' and human approval of AI recommendations are adjacent and do not show RBAC.",
+    "rationale": "Role- and permission-based access control is a fair question for a robot fleet operations platform, so the axis applies. The pack never documents roles, permissions, or per-robot access scoping for commanding, configuring, or viewing devices. Mentions of a 'governed platform' and bearer-JWT API authentication are adjacent and do not show who may command, configure, or view each robot.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -581,7 +611,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no registry or ecosystem of reusable packages for common hardware drivers or robot behaviors. The FormantIO toolkit offers UI elements and custom view modules for building apps, which are developer building blocks for dashboards rather than hardware or behavior packages. Adapter auto-restart and device configuration templates are adjacent features, not a pullable package ecosystem.",
+    "rationale": "The evidence pack shows no registry or ecosystem of reusable packages for common hardware drivers or robot behaviors. The FormantIO toolkit offers UI and visualization building blocks for custom apps, and the config templates and adapters are adjacent features, not a shared package registry. These developer building blocks and adjacent controls earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -594,16 +624,16 @@
     "productId": "formant",
     "storyId": "data-capture-sync",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Formant's on-device agent and Agent SDK ingest telemetry and sensor data and sync it to the cloud. Bandwidth-aware controls are documented first-party: per-stream rate limiting, configurable selection of which streams upload, a hard KBPS ceiling on asset uploads via FORMANT_UPLOAD_RATE_LIMIT_KBPS, and a low bandwidth mode. Missing for 10: independent or hands-on corroboration of these bandwidth policies, and documentation of offline buffering or prioritization behavior.",
+    "rationale": "Formant's on-device agent and Agent SDK ingest telemetry on the robot and upload it to the cloud. First-party docs describe several bandwidth-aware controls: choosing which streams upload, per-stream rate limiting, a hard upload ceiling via `FORMANT_UPLOAD_RATE_LIMIT_KBPS`, and a low bandwidth mode. Missing for 10: independent or hands-on corroboration, and evidence of offline buffering or store-and-forward sync when connectivity drops.",
     "evidenceIds": [
       "formant-docs-2",
       "formant-docs-37",
       "formant-docs-31",
       "formant-docs-42",
-      "formant-docs-60",
-      "formant-docs-13"
+      "formant-docs-43",
+      "formant-docs-60"
     ],
     "support": {
       "relation": "direct",
@@ -637,14 +667,14 @@
     "productId": "formant",
     "storyId": "data-query-export",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Formant documents a query API, reached through the Python Cloud SDK, as the primary programmatic way to query telemetry data, on a page titled data export. It also supports custom SQL queries in Analytics. The SQL support is documented only for building dashboards, and the export workflow itself (formats, bulk extraction, offline handoff) is not detailed. missing for 10: documented export formats or a bulk-download mechanism, evidence that SQL can be used for raw data extraction beyond dashboards, a published API reference (OpenAPI probe returned 404), independent or hands-on corroboration.",
+    "rationale": "Formant documents a Cloud SDK, a Python module that calls the query API, as the main programmatic way to query telemetry data, on a page titled data export. It also offers custom SQL queries in Analytics. However, the SQL evidence covers dashboard building, not bulk export, and the docs give little detail on export formats, scope or volume for offline analysis. missing for 10: documented export formats and bulk or offline export workflow details, evidence that SQL queries can export raw data outside dashboards, a downloadable full query API spec, independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-3",
       "formant-docs-56",
-      "formant-docs-25",
       "formant-docs-7",
+      "formant-docs-25",
       "formant-docs-36"
     ],
     "support": {
@@ -657,7 +687,7 @@
           "quote": "The primary programmatic way data scientists query for telemetry data is via the Cloud SDK, a lightweight Python module which can interact with the query API."
         },
         {
-          "evidenceId": "formant-docs-25",
+          "evidenceId": "formant-docs-7",
           "quote": "Using built-in visualizations, custom SQL queries, or our AI assistant, you can build a rich dashboard for your devices."
         },
         {
@@ -673,7 +703,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions emergency-stop, safety-interlock, or any documented safety pattern. The closest material is generic building blocks: predefined and custom commands, teleop buttons, and events that trigger commands. Under the partial-credit rule these are developer primitives a user could build on, not a documented safety capability, so the axis applies but is unevidenced.",
+    "rationale": "The evidence pack never mentions emergency-stop, safety interlocks, or any documented safety pattern. It covers only general building blocks: predefined commands (e.g., return to home), event-triggered commands, teleoperation controls, and anomaly alerts. A developer could use these to construct safety behaviors, but they are not a documented e-stop or interlock capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -688,14 +718,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Formant's operations pages claim configurable alerts, automated incident detection, and alerts for anomalies across the fleet. The docs also describe webhooks and commands triggered by Formant events, so a native alerting and event mechanism exists. However, nothing in the evidence covers alert types for faults, battery levels, or connectivity loss, and most support is marketing copy rather than detailed docs. Missing for 10: documented alert conditions for robot faults, battery thresholds and connectivity/offline status; detailed alert configuration and notification-channel docs; independent or hands-on corroboration.",
+    "rationale": "Formant's own marketing documents configurable alerts and automated incident detection on real-time fleet telemetry, and its docs show Formant events can trigger outbound webhooks. Nothing specifically documents fault, battery, or connectivity alert types, and the alerting claims come only from marketing pages rather than detailed configuration docs. Missing for 10: documented alert rules for robot faults, battery thresholds and connectivity/offline status, in-depth alert configuration docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-64",
       "formant-docs-51",
       "formant-docs-5",
       "formant-docs-28",
-      "formant-docs-53",
-      "formant-docs-18"
+      "formant-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -723,7 +752,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant documents per-device configuration: export to YAML, save as a template, and APIs to configure devices. Nothing in the evidence shows pushing a configuration change to many robots at once or targeting by group. Device groups and tags appear only for analytics, which is a different feature, and API device configuration is a developer building block rather than bulk fleet config rollout.",
+    "rationale": "The evidence shows per-device configuration, including YAML export and saving a configuration as a template, and API-based device configuration. It never documents pushing a configuration change to many robots at once or targeting by group. The only device-group or tag targeting in the pack is for Analytics queries, which is a different capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -738,15 +767,15 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Formant's own materials describe a single operator view across entire fleets, with real-time telemetry, status updates, anomaly alerts, and per-robot current location and status. Fleet-level analytics dashboards can be filtered by device group or tag. The support rests mostly on marketing pages rather than detailed product docs. Missing for 10: in-depth first-party documentation of a fleet-wide health/location map dashboard, explicit health-metric detail, and independent or hands-on corroboration.",
+    "rationale": "Formant's own materials describe fleet-wide real-time telemetry and status in a single operator view: \"Real-time telemetry and status updates across your entire fleet\", \"Manage multiple fleets simultaneously from a single operator view\", and \"One view across every vendor's fleet\". Its orchestration page tracks \"current location and status\" per robot, and analytics dashboards can span a fleet by device group or tag. Missing for 10: explicit documentation of a fleet map or location view inside the monitoring dashboard (location is only mentioned on the orchestration page), explicit health indicators beyond telemetry and anomaly alerts, and independent or hands-on corroboration beyond vendor marketing.",
     "evidenceIds": [
-      "formant-docs-22",
       "formant-docs-64",
-      "formant-docs-5",
+      "formant-docs-22",
       "formant-docs-19",
+      "formant-docs-5",
       "formant-docs-24",
       "formant-docs-36",
-      "formant-docs-25"
+      "formant-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -754,24 +783,24 @@
       "subject": "As an ops lead, I can monitor the health, location, and status of a whole robot fleet from one dashboard",
       "citations": [
         {
-          "evidenceId": "formant-docs-22",
-          "quote": "Manage multiple fleets simultaneously from a single operator view"
-        },
-        {
           "evidenceId": "formant-docs-64",
           "quote": "Real-time telemetry and status updates across your entire fleet. Configurable alerts and automated incident detection"
         },
         {
-          "evidenceId": "formant-docs-5",
-          "quote": "Get instant visibility into every robot in your fleet."
+          "evidenceId": "formant-docs-22",
+          "quote": "Manage multiple fleets simultaneously from a single operator view"
         },
         {
           "evidenceId": "formant-docs-19",
-          "quote": "One view across every vendor's fleet — AMRs, quadrupeds, humanoids, arms — without a separate dashboard"
+          "quote": "One view across every vendor's fleet — AMRs, quadrupeds, humanoids, arms — without a separate dashboard, update cycle, or incident format per manufacturer."
         },
         {
           "evidenceId": "formant-docs-24",
           "quote": "alongside current location and status"
+        },
+        {
+          "evidenceId": "formant-docs-5",
+          "quote": "Get instant visibility into every robot in your fleet."
         },
         {
           "evidenceId": "formant-docs-36",
@@ -786,7 +815,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is a robotics platform, so a hardware-abstraction question is a fair one to ask of it, but the evidence never documents stable interfaces for swapping sensors or actuators without rewriting application code. Multi-vendor data normalization, agent adapters, and re-provisioning are adjacent features, not a hardware abstraction layer.",
+    "rationale": "Formant is a robotics fleet platform, so a hardware-abstraction story is a fair question for it. However, nothing in the evidence documents stable HAL interfaces that let sensors or actuators be swapped without rewriting application code. The closest items are claims about connecting multiple robot types and keeping ingested data uniform, agent adapters, and an Agent SDK for telemetry and commands. These are data-normalization, adapter-restart, and telemetry building blocks, not a hardware-abstraction capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -801,13 +830,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Formant's own marketing documents automated incident detection and dispatching help when something looks wrong, plus peer-to-peer teleoperation for operators and recorded interventions. Together these approximate routing failures to a human who takes control, but the docs never describe a dedicated intervention queue or a hand-back-to-autonomy step. Missing for 10: an explicit operator intervention queue, a documented resolve/hand-back-control workflow, first-party technical docs beyond marketing pages, independent or hands-on corroboration.",
+    "rationale": "Formant documents automated incident detection and alerts, says orchestration \"dispatches help the moment something looks wrong,\" keeps intervention records, and offers operator teleoperation, which together cover the core of an escalate-to-human loop. Nothing in the evidence describes a dedicated intervention queue, triaging autonomy failures into it, or a handback-of-control step. missing for 10: an explicit human intervention queue, routing of autonomy failures into that queue, a documented resolve-and-handback-to-autonomy flow, independent or hands-on corroboration.",
     "evidenceIds": [
-      "formant-docs-17",
+      "formant-docs-30",
       "formant-docs-64",
       "formant-docs-18",
-      "formant-docs-21",
-      "formant-docs-13"
+      "formant-docs-13",
+      "formant-docs-21"
     ],
     "support": {
       "relation": "direct",
@@ -815,7 +844,7 @@
       "subject": "As an ops lead, I can route autonomy failures to a human intervention queue where an operator resolves and hands back control",
       "citations": [
         {
-          "evidenceId": "formant-docs-17",
+          "evidenceId": "formant-docs-30",
           "quote": "dispatches help the moment something looks wrong"
         },
         {
@@ -827,12 +856,12 @@
           "quote": "automating incident response and creating workflows for monitoring devices at scale"
         },
         {
-          "evidenceId": "formant-docs-21",
-          "quote": "Formant's teleoperation provides a secure peer-to-peer connection that enables operators to control any aspect of a system."
-        },
-        {
           "evidenceId": "formant-docs-13",
           "quote": "Time-synced video, sensor, and intervention records for your team"
+        },
+        {
+          "evidenceId": "formant-docs-21",
+          "quote": "enables operators to control any aspect of a system"
         }
       ]
     }
@@ -843,7 +872,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant documents exporting telemetry through the Cloud SDK for data scientists, and remote commands such as running a script on a device. These are building blocks a developer could assemble into an ML loop. Nothing in the pack documents a model-training integration or a model deployment or rollout mechanism back to the fleet.",
+    "rationale": "Formant documents exporting telemetry through the Cloud SDK and running scripts on devices through commands. Neither is a model-training pipeline or a model-deployment capability; they are only building blocks a developer could combine into that loop. No evidence shows the product itself feeds collected data into training or ships improved models back to the fleet.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -858,14 +887,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Formant documents official SDKs: an Agent SDK for telemetry ingestion, commands and teleop, and a Python Cloud SDK for querying and ingestion. Its GitHub toolkit provides a RealtimeSDK and web/ThreeJS building blocks, which suggests JavaScript support, but no language is stated. Only Python is explicitly evidenced, and the OpenAPI probe returned 404 on every path, so there is no sign of a generated or typed surface. Missing for 10: explicit TypeScript, Go and C++ SDKs, evidence the SDKs are typed, evidence they cover the full platform surface, and independent corroboration.",
+    "rationale": "Formant documents its own SDKs: a Python Cloud SDK for querying and ingesting data, an Agent SDK for telemetry, commands and teleoperation, and a RealtimeSDK in its GitHub toolkit for building custom web apps. However, Python is the only language explicitly named, and nothing shows typed bindings, Go or C++ SDKs, or coverage of the full platform surface. Missing for 10: explicit TypeScript, Go and C++ SDKs; evidence the SDKs are typed; evidence they cover the full platform/admin API surface; independent corroboration.",
     "evidenceIds": [
       "formant-docs-2",
       "formant-docs-3",
       "formant-docs-27",
       "formant-gh-1",
-      "formant-docs-57",
-      "formant-gh-6"
+      "formant-docs-57"
     ],
     "support": {
       "relation": "direct",
@@ -897,11 +925,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Formant's own marketing says users can query the fleet in plain language and receive ML-driven task recommendations that people approve, and that orchestration assigns jobs to robots. That is the closest match to the story. However, the natural-language input is framed as asking 'what's happening', not as commanding a task, and nothing documents the platform planning and executing a task from a natural-language instruction. missing for 10: documented natural-language task specification, automatic plan generation from that instruction, documented end-to-end execution of an approved plan, technical docs beyond marketing pages, independent or hands-on corroboration.",
+    "rationale": "Formant's own marketing says users can query the fleet in plain language and receive ML-driven task recommendations that people approve. That is a first-party natural-language-to-task-planning loop, separate from the job-assignment orchestration. However, the natural language is framed as asking what is happening, not as stating a task, and automatic execution after approval is only implied. missing for 10: documented natural-language task input (not just status queries), evidence that approved plans are executed automatically, technical docs or how-to for the feature, independent or hands-on corroboration.",
     "evidenceIds": [
       "formant-docs-12",
-      "formant-docs-23",
-      "formant-docs-17"
+      "formant-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -911,10 +938,6 @@
         {
           "evidenceId": "formant-docs-12",
           "quote": "Ask your fleet what's happening in plain language and get governed, ML-driven task recommendations — with people approving what happens next."
-        },
-        {
-          "evidenceId": "formant-docs-17",
-          "quote": "Assigns the right job to the right robot — regardless of who built it — using operational history and live data"
         }
       ]
     }
@@ -922,16 +945,23 @@
   {
     "productId": "formant",
     "storyId": "offline-resilience",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack never documents the Formant agent buffering telemetry locally during a cloud outage or backfilling it on reconnect. The closest item is a durable cloud-side message queue that delivers requests to the device 'the next time it's online'. That is command delivery to an offline device, not on-device data buffering. Custom data directories, low-bandwidth mode, upload rate limits and adapter auto-restart are adjacent controls and earn no credit.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Formant documents a durable message queue that delivers requests to a device immediately or the next time it comes back online. This is a first-party offline-resilience mechanism that covers part of recovering after connectivity drops. However, it concerns cloud-to-device requests, and nothing in the evidence shows the agent buffering telemetry locally during an outage or backfilling it on reconnect. Missing for 10: explicit local telemetry buffering during cloud outages, documented backfill/upload-on-reconnect behavior, evidence that robots keep operating autonomously while disconnected, and independent or hands-on corroboration of clean recovery.",
+    "evidenceIds": [
+      "formant-docs-52"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an ops lead, my robots keep operating and buffer data locally when cloud connectivity drops, then recover cleanly",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "formant-docs-52",
+          "quote": "A durable message queue is also maintained that can issue requests to your system either immediately or the next time"
+        }
+      ]
     }
   },
   {
@@ -940,12 +970,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Formant documents its own APIs and SDKs that programmatically cover major UI functions: data ingestion and query, device configuration, custom views and modules, and creating custom commands via the Admin API. However, nothing states that the API matches the UI feature for feature, and the OpenAPI probe found no published spec. Missing for 10: an explicit API/UI parity claim, a published OpenAPI spec, documented API coverage of analytics dashboards, teleop configuration and fleet orchestration, and independent corroboration.",
+    "rationale": "Formant documents a broad programmatic surface: an Admin API with per-endpoint OpenAPI definitions and a live Try It console, a Cloud SDK for querying and ingesting data, and an Agent SDK for commands and teleop. Its docs say the APIs let you configure devices and design custom views, and custom commands are created through the Admin API. However, nothing states that every UI action is exposed via the API, and the full spec is admin-gated rather than downloadable. Missing for 10: an explicit API/UI parity commitment, evidence that UI-only features (dashboards/analytics building, teleop view configuration, alerts setup) have API equivalents, a publicly downloadable complete API spec, and independent corroboration.",
     "evidenceIds": [
       "formant-docs-57",
       "formant-docs-4",
+      "formant-endpoint-openapi-20261106",
+      "formant-api-try-it-20261106",
       "formant-docs-3",
-      "formant-docs-27",
       "formant-docs-2",
       "formant-probe-2"
     ],
@@ -963,6 +994,10 @@
           "quote": "you can create custom commands via the Formant Admin API"
         },
         {
+          "evidenceId": "formant-endpoint-openapi-20261106",
+          "quote": "Formant's ReadMe-hosted reference publishes machine-readable OpenAPI 3.0.0 definitions per endpoint"
+        },
+        {
           "evidenceId": "formant-docs-3",
           "quote": "The primary programmatic way data scientists query for telemetry data is via the Cloud SDK, a lightweight Python module which can interact with the query API."
         }
@@ -975,10 +1010,9 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Formant documents a first-party data export path: the Python Cloud SDK queries telemetry, on a page titled data export. Device configuration can also be exported to YAML, an open format. The evidence does not show a complete account-wide export, the output formats of telemetry exports, or any offboarding or exit workflow. Missing for 10: documented bulk export of all data (telemetry, video, assets, events), explicit open-format output for telemetry exports, an account exit/offboarding process, and independent corroboration.",
+    "rationale": "Formant documents its own data-export path: a Python Cloud SDK that queries telemetry through the query API, on a docs page titled data export. Device configuration can also be exported to YAML, an open format. Nothing shows a complete, account-wide export of all data in open formats or an offboarding path, so only part of the story is evidenced. Missing for 10: bulk/full-account export of all data types (video, assets, events, analytics), documented open export formats for telemetry, offboarding or account-exit guidance, independent corroboration.",
     "evidenceIds": [
       "formant-docs-3",
-      "formant-docs-56",
       "formant-docs-46"
     ],
     "support": {
@@ -992,7 +1026,7 @@
         },
         {
           "evidenceId": "formant-docs-46",
-          "quote": "export the configuration to a YAML (from the device configuration), or save the configuration as a template"
+          "quote": "export the configuration to a YAML (from the device configuration)"
         }
       ]
     }
@@ -1003,7 +1037,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a robotics fleet platform publishes its source under an open license is a fair question, so the axis applies. The only GitHub evidence is the FormantIO/toolkit repo, a developer toolkit for building apps on Formant's APIs, not the platform's or agent's source, and no item names any license. With no evidence that the product's own source is readable under an open license, the verdict is none.",
+    "rationale": "Source availability under an open license is a fair question for a robotics fleet platform, so the axis applies. The evidence only shows a public GitHub toolkit repo (FormantIO/toolkit) of developer building blocks for custom apps and UI elements. Nothing shows that the Formant platform or agent source is published, and no license is named.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1018,7 +1052,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a fleet-management SaaS platform, so the axis applies. The evidence only covers installing the on-device Formant agent (e.g. via Docker), which uploads data to Formant's cloud. Nothing shows the core platform (web app, APIs, analytics) can be self-hosted, and an edge agent is an adjacent component rather than the core product.",
+    "rationale": "Formant is a cloud fleet-management platform, so self-hosting is a fair question to ask of it. The evidence only shows installing the on-device Formant agent via Docker, which is a client component and not the core platform. The API console and data uploads point to Formant's production cloud (api.formant.io), and nothing documents a self-hosted or on-prem deployment of the platform.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1033,7 +1067,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no over-the-air software update deployment, staged or canary rollouts, or rollback for robots. The `formant.run_script` command and the configuration templates are generic building blocks that a user could script around, not a documented OTA capability, so they earn no credit. Fleet software deployment is a fair question for a robot fleet platform, so the axis applies and the verdict is none rather than na.",
+    "rationale": "The evidence pack has no documented OTA software deployment feature, staged or canary rollout, or rollback capability. The `formant.run_script` command and the durable command queue are generic building blocks a developer could use to construct update delivery, so they earn no credit. The endpoint named `devicecontrollergetupdatedagentversion` is cited only for its OpenAPI publication and does not describe a fleet software rollout capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1048,7 +1082,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is a robotics fleet-operations platform. Simulating robots before touching hardware is a fair question for this kind of product, but the evidence only covers agent install, telemetry, teleoperation, analytics and orchestration. The ThreeJS toolkit for custom 3D visualizations is a building block for visualization, not a physics or sensor simulator, so it earns no credit.",
+    "rationale": "Formant is a robotics fleet operations platform, so a robotics buyer can fairly ask about simulation. However, the evidence documents only telemetry ingestion, teleoperation, analytics, commands and orchestration for real devices, with nothing on physics or sensor-model simulation. The ThreeJS toolkit is for custom 3D visualization of robots, not simulation, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1063,7 +1097,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is a cloud robotics platform, so choosing a storage region is a fair question, but the evidence pack never documents region or residency selection. Choosing which data streams are uploaded to the cloud and setting custom local agent directories are adjacent controls, not a choice of where data is stored geographically.",
+    "rationale": "Formant is a cloud SaaS platform for robot fleets, so choosing a data-storage region is a fair question. Nothing in the evidence documents selecting a storage region or residency. The nearest items are adjacent controls: choosing which data streams upload to the cloud, and setting custom local agent directories. Neither lets a user choose where cloud data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1078,7 +1112,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is a SaaS robotics platform with AI features, so a training opt-out is a fair question to ask of it. The evidence pack has no documented control or policy that keeps customer data out of AI model training. Choosing which data streams upload to the cloud is an adjacent control. The opt-in 'scoped research partnerships' mention does not say anything about model training. Neither earns credit.",
+    "rationale": "Formant is a SaaS fleet platform with AI features, so a training-data opt-out is a fair question. Nothing in the evidence documents a control or policy that keeps customer data out of AI model training. The 'where you choose, scoped research partnerships' line is not an AI-training control, and the configurable cloud-upload setting is an adjacent data-flow control, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1093,7 +1127,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a cloud robotics data platform like Formant, so the axis applies. The pack only documents adjacent controls: choosing which data streams upload to the cloud, rate-limiting streams, and low-bandwidth mode. These govern collection, not retention periods or deletion of stored data, so they earn no credit.",
+    "rationale": "Formant stores fleet telemetry, so controlling retention and deletion is a fair question for this product. The evidence only shows ingestion-side controls: choosing which streams upload to the cloud, per-stream rate limits, and low-bandwidth mode. Those are adjacent features, not retention periods or data deletion, and nothing in the pack documents retention settings or a way to delete stored data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1108,7 +1142,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented way to opt out of vendor telemetry or usage tracking. The 'telemetry' mentioned throughout refers to robot and device data the customer deliberately sends to Formant. Controls for which data streams upload, rate limits and low-bandwidth mode are adjacent data-ingestion settings, not an opt-out from product usage tracking, so they earn no credit.",
+    "rationale": "The axis applies, since a SaaS robotics platform could let users opt out of vendor usage analytics, but the pack has no evidence of any such opt-out. The cited controls (choosing which data streams upload to the cloud, rate limits, low-bandwidth mode) govern the customer's own robot telemetry ingestion. That is an adjacent feature, not an opt-out from the vendor's telemetry or usage tracking.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1123,14 +1157,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Formant documents real-time telemetry and status updates across the fleet, selectable data streams uploaded by the agent, a ROS-integrated agent, and remote commands such as ingesting a file or running a script on the device, so remote live state inspection is supported. Live ROS topic inspection is only implied by the ROS agent install, and log viewing is not documented; get_file can only approximate it. missing for 10: explicit documentation of live ROS topic browsing/inspection, a dedicated remote log viewer, independent or hands-on corroboration of debugging workflows.",
+    "rationale": "Formant documents real-time telemetry and status updates across the fleet, an Observe view, and a peer-to-peer WebRTC connection to deployed devices. It also offers commands to pull a file from the device or run a script on it, which together support remote state inspection and some debugging. Live ROS topic inspection is only implied through configurable data-stream ingestion, and log viewing is never explicitly documented. missing for 10: explicit live ROS topic browsing/echo, a documented remote log viewing or streaming feature, hands-on or independent corroboration of remote debugging workflows.",
     "evidenceIds": [
       "formant-docs-64",
-      "formant-docs-37",
-      "formant-docs-2",
+      "formant-docs-29",
+      "formant-docs-38",
       "formant-docs-65",
-      "formant-docs-35",
-      "formant-docs-29"
+      "formant-docs-37",
+      "formant-docs-48"
     ],
     "support": {
       "relation": "direct",
@@ -1142,16 +1176,16 @@
           "quote": "Real-time telemetry and status updates across your entire fleet."
         },
         {
-          "evidenceId": "formant-docs-37",
-          "quote": "You can configure which data sources and data streams are uploaded to the cloud."
+          "evidenceId": "formant-docs-38",
+          "quote": "allows you to remotely control your device via a real-time, peer-to-peer connection between your device and the Formant web application over WebRTC."
         },
         {
           "evidenceId": "formant-docs-65",
           "quote": "`formant.get_file` Ingest a file from your device."
         },
         {
-          "evidenceId": "formant-docs-2",
-          "quote": "The Agent SDK client contains a suite of methods which allow you to ingest telemetry data, receive and respond to commands, teleoperate your device, and more."
+          "evidenceId": "formant-docs-37",
+          "quote": "You can configure which data sources and data streams are uploaded to the cloud."
         }
       ]
     }
@@ -1160,15 +1194,14 @@
     "productId": "formant",
     "storyId": "robot-bring-up",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Formant documents its own onboarding path for a robot. You install its agent via Docker on ROS1/ROS2 devices, configure data streams and export the device config as YAML or a template, and get first motion through peer-to-peer teleoperation or a ROS-topic publish command. It also claims to 'connect to multiple robot types with minimal lift.' However, it does not provide hardware drivers or low-level bring-up, and the 'hours rather than weeks' timeline is only a marketing implication. missing for 10: hardware driver bring-up support, evidence of time-to-first-motion, independent or hands-on corroboration of fast onboarding.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Formant documents a Docker-based agent installer for ROS1/ROS2 devices, reusable device configuration exported as YAML or saved as templates, and teleoperation that can publish to ROS topics. Together these speed up onboarding a robot onto the platform and getting first remote control. It does not provide hardware drivers or low-level bring-up, and nothing evidences the hours-versus-weeks speed claim beyond the marketing line 'minimal lift'. Missing for 10: driver/hardware bring-up tooling, evidence of time-to-first-motion, independent or hands-on corroboration of fast onboarding.",
     "evidenceIds": [
-      "formant-docs-1",
       "formant-docs-35",
-      "formant-docs-10",
+      "formant-docs-1",
       "formant-docs-46",
-      "formant-docs-37",
+      "formant-docs-10",
       "formant-docs-38",
       "formant-docs-65"
     ],
@@ -1178,24 +1211,20 @@
       "subject": "As a robotics engineer, I can bring up a new robot — drivers, configuration, first motion — in hours rather than weeks",
       "citations": [
         {
-          "evidenceId": "formant-docs-1",
-          "quote": "This guide will teach you how to install the Formant agent to your device via Docker."
-        },
-        {
-          "evidenceId": "formant-docs-10",
-          "quote": "Easily connect to multiple robot types with minimal lift."
+          "evidenceId": "formant-docs-35",
+          "quote": "Install the Formant agent on a ROS1 device by running the Docker-based installer."
         },
         {
           "evidenceId": "formant-docs-46",
           "quote": "export the configuration to a YAML (from the device configuration), or save the configuration as a template"
         },
         {
-          "evidenceId": "formant-docs-38",
-          "quote": "allows you to remotely control your device via a real-time, peer-to-peer connection between your device and the Formant web application over WebRTC."
+          "evidenceId": "formant-docs-10",
+          "quote": "Easily connect to multiple robot types with minimal lift."
         },
         {
-          "evidenceId": "formant-docs-65",
-          "quote": "`formant.publish_ros_topic` Publish a message to a ROS topic."
+          "evidenceId": "formant-docs-38",
+          "quote": "allows you to remotely control your device via a real-time, peer-to-peer connection between your device and the Formant web application over WebRTC."
         }
       ]
     }
@@ -1206,10 +1235,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant's evidence shows an agent that installs on ROS1/ROS2 devices, ingests configured data streams, and publishes to ROS topics. None of it documents ready-made drivers for cameras, lidars, IMUs, or GPS, or standard sensor message types. ROS integration and SDK-based telemetry ingestion are adjacent building blocks, not the requested hardware bring-up capability.",
+    "rationale": "Formant's evidence shows a ROS-aware agent that ingests telemetry, publishes to ROS topics, and runs adapters. None of it documents ready-made drivers for cameras, lidars, IMUs, or GPS, or Formant-defined standard sensor message types. ROS compatibility and generic telemetry ingestion are adjacent host-platform and building-block capabilities, not the sensor-driver integration this story asks for.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a robotics engineer, I can integrate cameras, lidars, IMUs, and GPS with ready-made drivers and standard message types",
       "citations": []
@@ -1221,7 +1250,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is a robotics fleet operations, teleoperation and observability platform, so simulation support is a fair question for this kind of product. Nothing in the evidence pack mentions simulation, a simulator integration, or running the same code against simulated and physical robots. Agent features such as Docker or ROS installs and a configurable ROS_MASTER_URI are adjacent agent setup, not a sim-to-real capability, so they earn no credit.",
+    "rationale": "Formant is a robot fleet operations platform, so asking whether the same code can target simulation and real hardware is a fair question for it. However, nothing in the evidence pack mentions simulation or sim-to-real code portability. Items such as Docker/ROS agent installation, editing ROS_MASTER_URI, and the Agent SDK are general connectivity building blocks, not a documented simulation capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1236,7 +1265,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is a robotics fleet operations platform, so simulation, synthetic data generation and RL training are a fair question for its category. The evidence pack covers only telemetry ingestion, teleoperation, analytics, commands and fleet orchestration. Nothing documents simulation environments, synthetic training data generation, or reinforcement learning at scale.",
+    "rationale": "Formant is a robotics fleet operations and data platform, so simulation-based synthetic data generation and reinforcement learning is a fair question for this kind of product. The evidence pack covers only telemetry ingestion, teleoperation, analytics, commands and fleet orchestration. Nothing documents a simulator, synthetic data generation, or RL training at scale.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1251,14 +1280,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Formant's own docs describe real-time, low-latency peer-to-peer teleoperation over WebRTC from anywhere, using joystick, buttons or custom controls, with configurable teleop interfaces. That covers responsive remote control. Live video during teleop is never explicitly documented, and network resilience is only implied by low-bandwidth mode and the durable message queue. missing for 10: explicit documentation of live video streaming in teleop, evidence of performance over degraded real-world networks, independent or hands-on corroboration of latency claims",
+    "rationale": "Formant's own docs describe real-time, low-latency peer-to-peer teleoperation over WebRTC with joystick, buttons, or custom controls, which covers the responsive-control core of the story. However, no cited item explicitly documents live video streaming within the teleop session, so coverage is partial. The low-bandwidth mode only addresses the agent's passive duties, so it does not show teleop resilience on constrained networks. Missing for 10: explicit documentation of live video feeds during teleoperation, evidence of performance or degradation handling over constrained real-world networks, and independent or hands-on corroboration of latency claims.",
     "evidenceIds": [
+      "formant-docs-38",
       "formant-docs-6",
       "formant-docs-15",
       "formant-docs-21",
-      "formant-docs-38",
-      "formant-docs-11",
-      "formant-docs-52"
+      "formant-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -1266,12 +1294,12 @@
       "subject": "As an ops lead, I can teleoperate a remote robot with live video and responsive control over real-world networks",
       "citations": [
         {
-          "evidenceId": "formant-docs-6",
-          "quote": "Reliable, low-latency teleoperation over a peer-to-peer connection keeps your operations moving — via joystick, buttons, or custom controls."
-        },
-        {
           "evidenceId": "formant-docs-38",
           "quote": "allows you to remotely control your device via a real-time, peer-to-peer connection between your device and the Formant web application over WebRTC."
+        },
+        {
+          "evidenceId": "formant-docs-6",
+          "quote": "Reliable, low-latency teleoperation over a peer-to-peer connection keeps your operations moving — via joystick, buttons, or custom controls."
         },
         {
           "evidenceId": "formant-docs-15",
@@ -1290,7 +1318,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Formant is a robot fleet operations platform, so tooling for integrating vision-language-action or robotics foundation models into an autonomy stack is a fair question for it. The evidence pack shows no such tooling. What it does show is adjacent: fleet-level ML task recommendations, an analytics AI assistant, generic Agent SDK telemetry and command methods, and a marketing line about connecting \"AI\" and robots. None of these is documented support for running or integrating VLA or foundation models in on-robot autonomy.",
+    "rationale": "Formant is a robot fleet operations platform, so integrating robotics foundation models is a fair question to ask of it. The pack documents no tooling for plugging vision-language-action or foundation models into a robot's autonomy stack. What it does show is adjacent and earns no credit: an AI assistant for dashboards, ML-driven task recommendations, a general claim of connecting AI and robots, and agent SDKs for telemetry and commands.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

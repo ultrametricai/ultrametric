@@ -1,17 +1,34 @@
 {
-  "hash": "9e4d682fd5a1c07588f2d3f252dc9bae41a8306d3dda7e2540dafbbb67e085ae",
+  "hash": "06c8f80fc1d393f2eb0bf3d209ddf984ca9a467a27f0e75d416b6c6b800dd445",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence documents an external access token only for the Deployments API, symbol and mapping uploads, and source map uploads. It also documents dashboard-based error status changes and CSV export. Nothing shows a documented REST API for listing, querying or updating error groups or fetching raw events, nor scoped tokens for such access. The OpenAPI probe paths all returned 404, and the MCP server belongs to a different story.",
-    "evidenceIds": [],
+    "rationale": "Raygun publishes a documented v3 REST API: an OpenAPI 3.0.3 spec with 46 paths, a hosted Swagger UI, and authentication by Personal Access Token. The API is described as letting you access and manipulate Raygun data. The evidence does not show which endpoints cover error groups or raw events. missing for 10: explicit endpoints for listing, querying, and updating error groups (e.g. status changes), raw event/occurrence retrieval endpoints, documented token scoping/permissions, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "raygun-openapi-spec-20261106",
+      "raygun-swagger-ui-20261106",
+      "raygun-api-guide-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can list, query, and update issues and fetch raw events through a documented REST API with scoped tokens",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "allows you to access your Raygun data so that you can display, manipulate and process it in other tools, scripts and applications."
+        },
+        {
+          "evidenceId": "raygun-swagger-ui-20261106",
+          "quote": "the runner is client-rendered and executes against the production API with a Personal Access Token"
+        },
+        {
+          "evidenceId": "raygun-api-guide-20261106",
+          "quote": "This is version 3 of Raygun's API."
+        }
+      ]
     },
     "productId": "raygun",
     "storyId": "issues-api-read"

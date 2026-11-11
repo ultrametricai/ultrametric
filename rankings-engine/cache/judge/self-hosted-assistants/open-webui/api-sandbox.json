@@ -1,17 +1,29 @@
 {
-  "hash": "3cb6bee5bd13354f83786c4e579a6d385cb6d27a0e837572d5b354deed15222b",
+  "hash": "542396764efa3a0165726b6c0ccc48cccceb9b0ddc9a1f73a2862607b672107e",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no sandbox or test environment that isolates testing from production data. The approval mode where \"nothing changes on disk\" is a dry-run style gate, not sandbox isolation. Per-task git worktrees, in-browser Python execution and air-gapped deployment are adjacent features that do not provide a separate test environment.",
-    "evidenceIds": [],
+    "rationale": "Testing in a sandbox is a fair question for a self-hosted AI platform, but the evidence shows no product-provided sandbox or test environment isolated from production data. The 'auto' approval mode is a dry-run/approval gate, not sandbox isolation. Per-task worktrees isolate code changes, not production data. The dev-mode Swagger UI is an API docs surface, not a test environment. Running a separate self-hosted instance would be a user-side workaround. missing for 10: a documented sandbox/staging environment, isolation of test runs from production data, and evidence that agent or API testing can target that sandbox.",
+    "evidenceIds": [
+      "open-webui-docs-61",
+      "open-webui-docs-36"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "open-webui-docs-61",
+          "quote": "auto is the everyday setting: the AI can explore freely, but nothing changes on disk and no command runs until you say so."
+        },
+        {
+          "evidenceId": "open-webui-docs-36",
+          "quote": "one worktree per task, one workspace per worktree, one agent per workspace, all supervised from a single browser tab."
+        }
+      ]
     },
     "productId": "open-webui",
     "storyId": "api-sandbox"

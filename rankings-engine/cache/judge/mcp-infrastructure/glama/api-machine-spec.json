@@ -1,17 +1,30 @@
 {
-  "hash": "42965324727eb51bb15e6ae45625921dfed3d178b028aea91795b1204b6366ae",
+  "hash": "2dbccb938ffb6ddc7bb07000d94bc18d80735c3952ef05c0dcb09394274892ef",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Glama is a platform with an API, so an OpenAPI or equivalent spec is a fair thing to ask for, but the evidence shows none: every probed OpenAPI/Swagger path returned 404. The connector.json schema describes a connector config file, not the API, and llms.txt is a directory summary rather than an API spec, so neither counts toward this story.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Glama publishes a downloadable OpenAPI 3.0.3 document for its MCP directory API at /api/mcp/openapi.json. It is advertised from llms.txt \"for generating a client\" and discoverable through an RFC 9727 API catalog whose service-desc links to the spec. The spec also carries machine-readable deprecation flags. The probe 404s were at different guessed paths, so they do not contradict the published spec location. Missing for 10: independent hands-on corroboration of downloading and using the spec, and spec coverage for the Gateway (an MCP proxy with no separate REST spec).",
+    "evidenceIds": [
+      "glama-openapi-spec-20261106",
+      "glama-api-catalog-20261106",
+      "glama-endpoint-deprecation-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "Glama publishes an OpenAPI 3.0.3 document for its MCP directory API (info title \"Glama MCP API\", /v1 paths for servers, connectors, instances, usage)"
+        },
+        {
+          "evidenceId": "glama-api-catalog-20261106",
+          "quote": "The RFC 9727 API catalog (application/linkset+json) links the machine spec (service-desc) and the hosted reference (service-doc)"
+        }
+      ]
     },
     "productId": "glama",
     "storyId": "api-machine-spec"

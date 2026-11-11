@@ -1,17 +1,30 @@
 {
-  "hash": "df76b0857d098fb703eac09922f2d5943b8b1f55f1567ee9c7f719a0e132132a",
+  "hash": "09442da8916e54ae3092206c20f7d0bfd8f15dd2404a8a1b0ca94fc346e8cdfc",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "OneDrive exposes a documented REST API through Microsoft Graph, so this axis applies. However, nothing in the evidence shows a downloadable OpenAPI or equivalent machine-readable spec, and the probe found every candidate OpenAPI/Swagger path returning 404. The human-readable endpoint reference pages do not count as a machine-readable spec.",
-    "evidenceIds": [],
+    "rationale": "OneDrive's API surface is Microsoft Graph. Graph publishes an unauthenticated OData CSDL/EDMX $metadata document at the service root that describes the drives and driveItems resources, which counts as an 'equivalent' machine-readable spec. The probe found no OpenAPI file at learn.microsoft.com docs paths, but that does not contradict the Graph metadata endpoint. Missing for 10: a native OpenAPI/Swagger document, a files-scoped spec rather than the whole Graph surface, and independent or hands-on corroboration of downloading and using the spec.",
+    "evidenceIds": [
+      "onedrive-graph-metadata-20261106",
+      "onedrive-graph-scope-20261106",
+      "onedrive-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "onedrive-graph-metadata-20261106",
+          "quote": "The metadata document ($metadata) is published at the service root"
+        },
+        {
+          "evidenceId": "onedrive-graph-scope-20261106",
+          "quote": "You can use Microsoft Graph to create an app that connects with files across OneDrive, OneDrive for Business, and SharePoint document libraries"
+        }
+      ]
     },
     "productId": "onedrive",
     "storyId": "api-machine-spec"

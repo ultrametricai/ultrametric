@@ -1,24 +1,33 @@
 {
-  "hash": "911230d45d6812266c1287978515a6b96d018b9f53643e50188b184048dfb74a",
+  "hash": "fb28a31d8d275ac901960474ca78ebefae9ff40b5853edd704f47d1c11bc678d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "Formant documents its own public APIs. An Admin API can create custom commands, and a Python Cloud SDK wraps the query and ingestion APIs. Its docs say the APIs and SDKs let you programmatically ingest data and configure devices. However, the evidence covers only a few API areas, and the probe found no published OpenAPI/Swagger spec, so full end-to-end programmatic control is not shown. Missing for 10: a published machine-readable API spec (OpenAPI paths all 404), a documented endpoint reference covering the whole product (fleet orchestration, teleop, analytics), and independent or hands-on corroboration of driving the product via the API.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Formant documents a public Admin API (bearer-JWT, OpenAPI 3.0.0 definitions embedded per endpoint, live Try It console), plus query and ingestion APIs wrapped by a Python Cloud SDK. Together these let a user drive device configuration, commands, data ingestion and queries programmatically. Missing for 10: a downloadable complete OpenAPI spec (the probe of standard spec paths returned 404 and the full download is admin-gated), and independent or hands-on corroboration of API usage.",
     "evidenceIds": [
+      "formant-endpoint-openapi-20261106",
+      "formant-api-try-it-20261106",
       "formant-docs-57",
       "formant-docs-4",
       "formant-docs-3",
       "formant-docs-27",
-      "formant-gh-1",
       "formant-probe-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "formant-endpoint-openapi-20261106",
+          "quote": "Formant's ReadMe-hosted reference publishes machine-readable OpenAPI 3.0.0 definitions per endpoint"
+        },
+        {
+          "evidenceId": "formant-api-try-it-20261106",
+          "quote": "The ReadMe reference ships the live \"Try It!\" console per endpoint"
+        },
         {
           "evidenceId": "formant-docs-57",
           "quote": "Formant's APIs and SDKs which allow you to programmatically ingest data, configure devices, design custom views and modules"
@@ -28,16 +37,8 @@
           "quote": "you can create custom commands via the Formant Admin API"
         },
         {
-          "evidenceId": "formant-docs-3",
-          "quote": "The primary programmatic way data scientists query for telemetry data is via the Cloud SDK, a lightweight Python module which can interact with the query API."
-        },
-        {
           "evidenceId": "formant-docs-27",
           "quote": "a lightweight Python module which can interact with the Formant ingestion API directly"
-        },
-        {
-          "evidenceId": "formant-gh-1",
-          "quote": "Create your own application that uses Formant's APIs and RealtimeSDK for data"
         }
       ]
     },

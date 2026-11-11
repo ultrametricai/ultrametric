@@ -1,17 +1,20 @@
 {
-  "hash": "4df143c1e73869f6337fb0bf8c7930c372f93911d7c41348b55691e43223a1f4",
+  "hash": "481962efed3a11deb62bbc3b31df9b438c3e766fd86381e7cb6026495fd86678",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Windmill documents several first-party programmatic surfaces: the `wmill` CLI for working with instances from the terminal, scoped user tokens, CLI/Git-based deployment and Git sync. Together these cover a meaningful slice of UI operations outside the UI, but no evidence states that the API matches the UI feature for feature, and the OpenAPI probe found nothing at the tried public paths. Missing for 10: explicit API–UI parity statement, a published REST/OpenAPI reference, evidence that admin/permissions/app-builder operations are API-accessible, independent hands-on corroboration.",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Windmill publishes a first-party OpenAPI 3.0.3 spec, served live and versioned in the repo, with a hosted Scalar reference. It also documents a CLI, Git sync, and code/YAML definitions for flows, so programmatic access is clearly extensive. No evidence states that the API covers everything the UI can do, and the probe-3 404s were on marketing-site paths, not the live app spec, so parity is unproven rather than contradicted. Missing for 10: an explicit statement or demonstration of full UI/API parity, coverage of UI-only areas such as the low-code app editor via the API, and independent hands-on corroboration.",
     "evidenceIds": [
+      "windmill-openapi-cloud-20261106",
+      "windmill-openapi-source-20261106",
+      "windmill-scalar-reference-20261106",
       "windmill-docs-9",
-      "windmill-docs-8",
       "windmill-docs-4",
+      "windmill-docs-2",
       "windmill-docs-11",
-      "windmill-probe-3"
+      "windmill-release-lifecycle-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -19,16 +22,20 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "windmill-docs-9",
-          "quote": "The Windmill CLI, `wmill` allows you to interact with Windmill instances right from your terminal."
+          "evidenceId": "windmill-openapi-cloud-20261106",
+          "quote": "Windmill's cloud instance serves its OpenAPI 3.0.3 document live at /api/openapi.json (info title \"Windmill API\")"
         },
         {
-          "evidenceId": "windmill-docs-8",
-          "quote": "Tokens can be scoped to restrict access to specific resources and actions, following the principle of least privilege."
+          "evidenceId": "windmill-openapi-source-20261106",
+          "quote": "The source-of-truth spec lives in the official windmill-labs/windmill repository (backend/windmill-api/openapi.yaml), versioned with each release."
         },
         {
           "evidenceId": "windmill-docs-4",
           "quote": "Windmill supports both UI-based operations via its webIDE and low-code builders, as well as CLI deployments from a Git repository"
+        },
+        {
+          "evidenceId": "windmill-docs-9",
+          "quote": "The Windmill CLI, `wmill` allows you to interact with Windmill instances right from your terminal."
         }
       ]
     },

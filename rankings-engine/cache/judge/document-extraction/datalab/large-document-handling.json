@@ -1,13 +1,14 @@
 {
-  "hash": "b27aa011d1059583b54638c048acd44a68d8e928a60648cd1695e9439e1edf85",
+  "hash": "7817d0205a1172bb2ad234d47058bc5a5b6f08cc2c65bb8800ba5f86781a1db7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Datalab documents that size limits exist and offers a page_range parameter so oversized documents can be processed in segments. That is a product-native path for large inputs, but it means the user must split and orchestrate thousand-page or multi-gigabyte jobs themselves rather than having them processed reliably end-to-end. missing for 10: the actual page/file-size limits, native handling of thousand-page or multi-GB files in a single job, documented timeout behavior or guarantees, explicit protection against silent truncation, and independent or hands-on corroboration at large scale.",
+    "rationale": "Datalab documents explicit processing limits and tells users to split larger documents with the page_range parameter, so the product's own answer to oversized files is manual chunking rather than native handling. Async completion webhooks reduce polling, but nothing shows thousand-page or multi-gigabyte files completing reliably. missing for 10: native handling of thousand-page and multi-gigabyte files without manual segmentation, the actual page and file-size limits, documented timeout behavior, guarantees against silent truncation, independent or hands-on corroboration on very large files.",
     "evidenceIds": [
-      "datalab-docs-30"
+      "datalab-docs-30",
+      "datalab-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -17,6 +18,10 @@
         {
           "evidenceId": "datalab-docs-30",
           "quote": "For documents exceeding these limits, use the page_range parameter to process in segments"
+        },
+        {
+          "evidenceId": "datalab-docs-8",
+          "quote": "Webhooks provide real-time notifications when your document processing jobs complete, eliminating the need for continuous polling."
         }
       ]
     },

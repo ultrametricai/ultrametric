@@ -1,18 +1,18 @@
 {
-  "hash": "79f207da6a636fd8ade77c8beb5249286c3aa4d87cb6a88f2052275797a76837",
+  "hash": "210ad1ae533a8f2aca95d9698269e3396a8f75ebca2de7b9cc1b81e517405eab",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Bitwarden offers a substantial programmatic surface. Its CLI is described as \"fully-featured\" for vault management, `bw serve` exposes the vault as a local REST API, the Public API covers organization admin (members, collections, groups, event logs, policies), and there is an official MCP server. None of the evidence states that the API matches everything the UI can do. The Public API is limited to org-management areas, and no OpenAPI spec was found at the probed paths. missing for 10: an explicit documented UI/API parity claim, API coverage of client-side features such as vault health reports, a published OpenAPI/machine-readable spec, and independent hands-on corroboration of full parity.",
+    "rationale": "Bitwarden has substantial programmatic surfaces. The CLI is billed as \"fully-featured\" for vault management, and its `bw serve` mode exposes the vault as a local RESTful Vault Management API with an OpenAPI document. A separate Public API covers organization admin (members, collections, groups, event logs, policies) via OAS3/Swagger. However, no evidence documents UI-to-API parity: the vault API needs a locally run CLI server rather than a hosted endpoint, and features such as vault health reports run locally in the client with no API counterpart shown. missing for 10: explicit documented UI/API parity, hosted vault-item REST API (not local-only bw serve), API coverage of reports/import/export and other UI features, independent hands-on corroboration of parity.",
     "evidenceIds": [
       "bitwarden-docs-7",
       "bitwarden-docs-8",
-      "bitwarden-docs-9",
+      "bitwarden-public-api-oas-20261106",
       "bitwarden-probe-rt-1",
-      "bitwarden-probe-rt-2",
-      "bitwarden-probe-2"
+      "bitwarden-docs-9",
+      "bitwarden-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -29,7 +29,11 @@
         },
         {
           "evidenceId": "bitwarden-probe-rt-1",
-          "quote": "documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API)"
+          "quote": "the CLI whose documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API)"
+        },
+        {
+          "evidenceId": "bitwarden-docs-9",
+          "quote": "Using the personal API key for CLI authentication is suitable for automated workflows"
         }
       ]
     },

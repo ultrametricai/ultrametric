@@ -8327,15 +8327,14 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Unity documents first-party scriptable interfaces through which agents can drive the Editor. An MCP server connects LLM agents such as Claude Code and Cursor to the Unity Editor to 'perform project actions'. The newer first-party Unity CLI's `unity <command>`/`unity eval` drive the Editor directly. Editor command-line arguments automate workflows and support headless CI builds. However, the CLI is experimental and the in-editor MCP server is deprecated, and no evidence documents scene/node creation or property editing as specific agent operations. missing for 10: explicit documentation of creating scenes/GameObjects and editing properties via the agent interface, a non-experimental stable CLI surface, independent hands-on corroboration of an agent triggering builds end-to-end.",
+    "rationale": "Unity documents first-party ways for agents to drive the Editor: an MCP server that connects agents like Claude Code and Cursor to the Editor, a newer standalone CLI whose `unity <command>`/`unity eval` drive the Editor directly, command-line and headless launch modes for automation, and public scripting APIs. The evidence is generic, though: it never explicitly documents creating scenes or GameObjects, editing properties, or triggering builds through these agent interfaces, and the CLI is experimental while the in-editor MCP is deprecated. missing for 10: explicit documentation of scene/object creation and property editing via the agent-facing interface, an explicitly documented agent-triggered build command, a stable (non-experimental, non-deprecated) interface, and independent hands-on corroboration.",
     "evidenceIds": [
       "unity-docs-23",
       "unity-docs-24",
       "unity-probe-rt-4",
       "unity-docs-7",
-      "unity-probe-rt-3",
       "unity-docs-11",
-      "unity-docs-9"
+      "unity-probe-4"
     ],
     "support": {
       "relation": "direct",
@@ -8348,7 +8347,7 @@
         },
         {
           "evidenceId": "unity-docs-24",
-          "quote": "Use it to create assets, automate workflows, analyze performance, and perform project actions using natural-language prompts."
+          "quote": "perform project actions using natural-language prompts"
         },
         {
           "evidenceId": "unity-probe-rt-4",
@@ -8359,8 +8358,8 @@
           "quote": "You can launch the Unity Editor and Player with additional command line arguments to control startup behavior, configure settings, or automate workflows."
         },
         {
-          "evidenceId": "unity-probe-rt-3",
-          "quote": "the editor whose -batchmode/-nographics CLI is documented for headless CI builds"
+          "evidenceId": "unity-docs-11",
+          "quote": "Interacting directly with the public Unity APIs allows for finer control and a greater degree of customization."
         }
       ]
     }
@@ -8371,11 +8370,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Unity serves llms.txt files in several places: a marketing-site llms.txt at unity.com, a site-wide '# Unity Documentation' llms.txt on docs.unity.com, and a dedicated llms.txt for the CLI docs, so an agent has machine-readable entry points. However, the core engine manual on docs.unity3d.com returns 404 for llms.txt and has no .md page mirrors, so the main documentation is not agent-oriented. Missing for 10: llms.txt on docs.unity3d.com, markdown mirrors of manual pages, independent or hands-on confirmation that the docs.unity.com index covers the engine manual.",
+    "rationale": "Unity serves llms.txt files on unity.com, on docs.unity.com (a site-wide '# Unity Documentation' index), and in its CLI docs section, and Services API spec pages have raw markdown mirrors. However, the core engine documentation at docs.unity3d.com has no llms.txt (HTTP 404) and no .md mirrors, so agents cannot easily consume the main Manual. Missing for 10: llms.txt for the docs.unity3d.com engine Manual and scripting docs, markdown mirrors of Manual pages, independent hands-on corroboration of agent use.",
     "evidenceIds": [
+      "unity-probe-rt-2",
       "unity-probe-rt-5",
       "unity-probe-rt-4",
-      "unity-probe-rt-2",
+      "unity-openapi-specs-20261106",
       "unity-probe-1",
       "unity-probe-2"
     ],
@@ -8386,15 +8386,19 @@
       "citations": [
         {
           "evidenceId": "unity-probe-rt-5",
-          "quote": "docs.unity.com also serves a site-wide llms.txt index ('# Unity Documentation')"
+          "quote": "docs.unity.com also serves a site-wide llms.txt index ('# Unity Documentation')."
         },
         {
           "evidenceId": "unity-probe-rt-4",
-          "quote": "Its docs section serves its own llms.txt ('# Unity command-line interface (CLI)')"
+          "quote": "Its docs section serves its own llms.txt ('# Unity command-line interface (CLI)')."
         },
         {
           "evidenceId": "unity-probe-rt-2",
           "quote": "unity.com serves a site-root llms.txt"
+        },
+        {
+          "evidenceId": "unity-openapi-specs-20261106",
+          "quote": "each spec page carrying a \"Download OpenAPI specification\" control and a raw markdown mirror embedding the full OpenAPI 3.0.0 JSON"
         }
       ]
     }
@@ -8405,7 +8409,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Unity's in-editor AI Assistant (com.unity.ai.assistant) is documented as able to \"analyze performance\" and act on project data through natural-language prompts. That is a direct, product-native route to AI insights from the user's own project inside the editor. However, the evidence is a single high-level line, the tooling is described as beta, and usage is metered via Unity Credits, so how deep and useful the insights are remains unproven. Missing for 10: detailed docs on what data the Assistant analyzes and what suggestions it produces, documented performance/analytics insight workflows, and independent hands-on corroboration.",
+    "rationale": "Unity's in-editor AI Assistant (com.unity.ai.assistant, beta) is documented as able to \"analyze performance\" and take project actions from natural-language prompts. That is a first-party, in-product way to get AI-driven analysis of the user's own project, but the evidence is a single thin line and the tools are beta and metered by Unity Credits. Missing for 10: detailed docs on what insights or suggestions the Assistant produces from project or analytics data, coverage of data beyond performance, and independent or hands-on corroboration.",
     "evidenceIds": [
       "unity-docs-24",
       "unity-docs-14",
@@ -8431,15 +8435,14 @@
     "productId": "unity",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Unity's own Build Automation service provides continuous-integration builds that run without a user present. Headless/batchmode modes and the Unity CLI support CI build agents. This is background automation limited to builds, and the AI Assistant's prompt-driven 'automate workflows' is interactive, not autonomous. missing for 10: documented triggers or recurring schedules for automations, general-purpose (non-build) background automation, autonomous agent-driven background tasks, independent hands-on corroboration.",
+    "rationale": "Unity's own Build Automation service provides first-party continuous-integration builds that run in the cloud, separate from the user's interactive session, and connect to version control. That makes it a documented background automation, though it is limited to builds. The headless mode, the CLI and the AI Assistant's prompt-driven \"automate workflows\" are one-off or building-block capabilities and do not by themselves create autonomous recurring automations. missing for 10: documented triggers or recurring schedules for automations, autonomous AI or agentic background tasks beyond CI builds, automations beyond builds, independent hands-on corroboration.",
     "evidenceIds": [
       "unity-docs-28",
       "unity-docs-36",
-      "unity-docs-8",
-      "unity-docs-26",
-      "unity-docs-7"
+      "unity-docs-24",
+      "unity-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -8453,14 +8456,6 @@
         {
           "evidenceId": "unity-docs-36",
           "quote": "Build Automation supports most popular version control systems and builds for multiple platforms simultaneously, including iOS."
-        },
-        {
-          "evidenceId": "unity-docs-8",
-          "quote": "Run the application in headless mode. In this mode, the application doesn’t display anything or accept user input."
-        },
-        {
-          "evidenceId": "unity-docs-26",
-          "quote": "The Unity CLI works well for: Continuous integration (CI) and build agents where installing the full Hub is undesirable."
         }
       ]
     }
@@ -8468,10 +8463,10 @@
   {
     "productId": "unity",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Unity documents a built-in, in-editor AI Assistant (com.unity.ai.assistant) that lets users create assets, automate workflows, analyze performance, and perform project actions through natural-language prompts, which is the core of delegating tasks. However, it ships as a pre-release/beta package metered by Unity Credits, and the depth of its task delegation is not shown. missing for 10: generally available (non-beta) status, detailed docs on multi-step autonomous task execution, independent or hands-on corroboration of delegation quality.",
+    "rationale": "Unity's first-party in-editor AI Assistant package (com.unity.ai.assistant) is documented for creating assets, automating workflows, analyzing performance, and performing project actions through natural-language prompts. Assistant messages are metered through Unity Credits, so this is a built-in capability users can delegate work to. missing for 10: in-depth documentation of what agentic actions the Assistant can execute autonomously, hands-on or independent corroboration, and a stable non-beta release (the package is 2.20.0-pre.1 and part of AI tools beta).",
     "evidenceIds": [
       "unity-docs-24",
       "unity-docs-14",
@@ -8480,7 +8475,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
       "citations": [
         {
@@ -8493,11 +8488,7 @@
         },
         {
           "evidenceId": "unity-probe-rt-5",
-          "quote": "packages.unity.com/com.unity.ai.assistant resolves the in-editor AI Assistant package (latest 2.20.0-pre.1"
-        },
-        {
-          "evidenceId": "unity-probe-rt-1",
-          "quote": "Unity's AI tools (beta) inside the com.unity.ai.assistant package"
+          "quote": "packages.unity.com/com.unity.ai.assistant resolves the in-editor AI Assistant package"
         }
       ]
     }
@@ -8508,7 +8499,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Unity documents running the Editor and Player from the command line to automate workflows, including a headless Player mode. A first-party Unity CLI is aimed at CI and build agents, with headless-worker distribution, JSON output and exit codes, and Unity Build Automation provides hosted CI for multiplatform builds. Missing for 10: no independent hands-on report of a headless CI run succeeding, and the Editor's -batchmode/-nographics flags are only referenced via a probe rather than quoted from the docs.",
+    "rationale": "Unity documents running the Editor and Player from the command line to automate workflows, a headless Player mode, and editor -batchmode/-nographics for headless CI builds. It also ships a first-party Unity CLI aimed at CI and build agents, plus the hosted Build Automation CI service. missing for 10: in-depth first-party docs on editor batchmode CI usage in the pack (it is referenced only via a probe), and the standalone CLI is still experimental.",
     "evidenceIds": [
       "unity-docs-6",
       "unity-docs-7",
@@ -8525,12 +8516,12 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "unity-docs-7",
-          "quote": "You can launch the Unity Editor and Player with additional command line arguments to control startup behavior, configure settings, or automate workflows."
-        },
-        {
           "evidenceId": "unity-docs-8",
           "quote": "Run the application in headless mode. In this mode, the application doesn’t display anything or accept user input."
+        },
+        {
+          "evidenceId": "unity-docs-7",
+          "quote": "You can launch the Unity Editor and Player with additional command line arguments to control startup behavior, configure settings, or automate workflows."
         },
         {
           "evidenceId": "unity-docs-26",
@@ -8553,7 +8544,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unity has an in-editor AI Assistant, so acting as an MCP client is a fair question for this product. The evidence only documents Unity acting as an MCP server: its server lets external agents such as Claude Code and Cursor drive the Editor, and `unity mcp` is a server mode. Nothing shows the Assistant or the Editor connecting to third-party MCP servers to use their tools, and server-role evidence does not transfer to this client story.",
+    "rationale": "The evidence documents Unity only as an MCP server: the in-editor com.unity.ai.assistant bridge and the CLI's `unity mcp` mode let external agents such as Claude Code and Cursor drive the Unity Editor. Nothing shows Unity or its AI Assistant connecting to external MCP servers as a client to use their tools. Server-side evidence belongs to a different story and earns no credit here, so this applicable axis is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8565,10 +8556,10 @@
   {
     "productId": "unity",
     "storyId": "agentic-mcp-server",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Unity documents an official MCP server that connects LLM agents such as Claude Code and Cursor to the Unity Editor. It first shipped in the com.unity.ai.assistant package, and a later probe reports it is now offered as the standalone CLI's fully supported `unity mcp` server mode, with the in-editor server deprecated. Missing for 10: no hands-on or independent handshake verification (closed distribution, no keyless handshake possible), and stability is unproven given the beta in-editor server, its deprecation churn and the experimental CLI.",
+    "rationale": "Unity documents an official MCP server that connects agents such as Claude Code and Cursor to the Unity Editor. However, the original in-editor server in com.unity.ai.assistant is beta and is now documented as deprecated. Its replacement, the `unity mcp` mode, ships inside a CLI that is itself experimental, and distribution is closed and credit-metered. missing for 10: a stable non-experimental, non-deprecated MCP server, a public repo or standalone package allowing a keyless handshake, and independent hands-on corroboration of an agent connecting successfully.",
     "evidenceIds": [
       "unity-docs-23",
       "unity-probe-4",
@@ -8578,7 +8569,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
       "citations": [
         {
@@ -8586,16 +8577,12 @@
           "quote": "MCP server connects large language model (LLM)-based agents, such as Claude Code and Cursor, to the Unity Editor through standardized MCP tools."
         },
         {
-          "evidenceId": "unity-probe-4",
-          "quote": "official MCP server documented at https://docs.unity3d.com/Packages/com.unity.ai.assistant@2.20/manual/integration/unity-mcp-get-started.html"
+          "evidenceId": "unity-probe-rt-1",
+          "quote": "Unity ships an OFFICIAL MCP server as part of Unity's AI tools (beta) inside the com.unity.ai.assistant package"
         },
         {
           "evidenceId": "unity-probe-rt-4",
           "quote": "`unity mcp` is the CLI's own fully-supported MCP server mode"
-        },
-        {
-          "evidenceId": "unity-probe-rt-1",
-          "quote": "Unity ships an OFFICIAL MCP server as part of Unity's AI tools (beta) inside the com.unity.ai.assistant package"
         }
       ]
     }
@@ -8606,7 +8593,7 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Unity's first-party AI Assistant (com.unity.ai.assistant) lets users create assets, automate workflows, analyze performance and perform project actions with natural-language prompts. External LLM agents can also drive the Editor through the official MCP server. It is not full credit because the AI tooling is beta and pre-release (2.20.0-pre.1), metered by Unity Credits, and the in-editor MCP bridge is reported deprecated in favor of an experimental CLI. Missing for 10: GA (non-beta) status, documentation of how much of the Editor natural-language commands can actually operate, and independent or hands-on corroboration of the Assistant's reliability.",
+    "rationale": "Unity's first-party AI Assistant lets users create assets, automate workflows, analyze performance and perform project actions through natural-language prompts. Its official MCP server also connects LLM agents such as Claude Code and Cursor to the Editor. However, the AI tools are documented as beta and ship in a pre-release package (2.20.0-pre.1), and every Assistant message is metered against Unity Credits, so coverage is limited rather than complete. Missing for 10: GA (non-beta) status, uncapped or unmetered natural-language operation, detailed docs on which editor operations prompts can drive, and independent hands-on corroboration.",
     "evidenceIds": [
       "unity-docs-24",
       "unity-docs-14",
@@ -8624,12 +8611,12 @@
           "quote": "Use it to create assets, automate workflows, analyze performance, and perform project actions using natural-language prompts."
         },
         {
-          "evidenceId": "unity-docs-23",
-          "quote": "MCP server connects large language model (LLM)-based agents, such as Claude Code and Cursor, to the Unity Editor through standardized MCP tools."
+          "evidenceId": "unity-docs-14",
+          "quote": "send a message to the Assistant, you spend Unity Credits from your organization's monthly allocation."
         },
         {
-          "evidenceId": "unity-docs-14",
-          "quote": "Whenever you generate an image, create a 3D model, produce a sound effect, or send a message to the Assistant, you spend Unity Credits from your organization's monthly allocation."
+          "evidenceId": "unity-docs-23",
+          "quote": "MCP server connects large language model (LLM)-based agents, such as Claude Code and Cursor, to the Unity Editor through standardized MCP tools."
         }
       ]
     }
@@ -8640,15 +8627,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Unity documents a first-party Unity CLI for installing and managing Editors and modules, aimed at scripts, automation and CI. A runtime probe verified a keyless install script, JSON/TSV output, documented exit codes, a CLI llms.txt, and `unity <command>`/`unity eval` commands that drive the Editor directly for agents that can run shell commands. Editor command-line arguments for headless automation add to this. Missing for 10: the CLI is still labelled experimental, and there is no independent or community hands-on corroboration of agent use.",
+    "rationale": "Unity documents an official, first-party Unity CLI for installing and managing Editors and modules, aimed at automation and CI. A live probe confirms a keyless install script, structured JSON/TSV output, documented exit codes, an `unity mcp` server mode, and `unity eval` commands built for agents that can run shell commands. Missing for 10: the CLI is still labeled experimental rather than stable, and there is no independent community corroboration of agent use in practice.",
     "evidenceIds": [
       "unity-docs-25",
       "unity-docs-26",
       "unity-docs-33",
       "unity-probe-5",
-      "unity-probe-rt-4",
-      "unity-docs-7",
-      "unity-docs-8"
+      "unity-probe-rt-4"
     ],
     "support": {
       "relation": "direct",
@@ -8657,11 +8642,7 @@
       "citations": [
         {
           "evidenceId": "unity-docs-25",
-          "quote": "Use the Unity CLI to install and manage Unity Editors and modules from the command-line"
-        },
-        {
-          "evidenceId": "unity-docs-26",
-          "quote": "The Unity CLI works well for: Continuous integration (CI) and build agents where installing the full Hub is undesirable."
+          "quote": "Use the Unity CLI to install and manage Unity Editors and modules from the command-line... Use it for new scripts, automation, and CI pipelines."
         },
         {
           "evidenceId": "unity-probe-rt-4",
@@ -8672,8 +8653,8 @@
           "quote": "structured JSON/TSV output and documented exit codes"
         },
         {
-          "evidenceId": "unity-docs-7",
-          "quote": "You can launch the Unity Editor and Player with additional command line arguments to control startup behavior, configure settings, or automate workflows."
+          "evidenceId": "unity-probe-5",
+          "quote": "official CLI documented at https://docs.unity.com/en-us/unity-cli"
         }
       ]
     }
@@ -8682,15 +8663,14 @@
     "productId": "unity",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Unity documents public scripting APIs for finer control of the product, and its documented first-party CLI drives the Editor directly via `unity <command>`/`unity eval`, with structured JSON/TSV output and documented exit codes. Together these give an agent a documented programmatic surface. Missing for 10: no HTTP/REST or OpenAPI spec (all OpenAPI probe paths returned 404), the standalone CLI is still experimental, the manual is not machine-readable (no llms.txt or .md mirrors on docs.unity3d.com), and there is no hands-on corroboration of agent-driven API use.",
+    "rationale": "Unity documents public APIs at several levels. Its Services Web APIs ship as about 50 downloadable OpenAPI 3.0 specs with a published versioning and deprecation policy. The manual points to the public Unity scripting APIs, and the first-party CLI's `unity <command>`/`unity eval` commands drive the Editor directly for agents. The docs.unity3d.com OpenAPI 404 probe does not contradict this, because the specs are hosted on docs.unity.com. Missing for 10: independent or hands-on corroboration of driving the product through these APIs, a stable (non-experimental) CLI for Editor control, and deeper evidence on scripting API coverage; the deprecation window is also comparatively short.",
     "evidenceIds": [
+      "unity-openapi-specs-20261106",
+      "unity-api-lifecycle-20261106",
       "unity-docs-11",
-      "unity-docs-7",
-      "unity-probe-rt-4",
-      "unity-docs-25",
-      "unity-probe-3"
+      "unity-probe-rt-4"
     ],
     "support": {
       "relation": "direct",
@@ -8698,16 +8678,20 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
+          "evidenceId": "unity-openapi-specs-20261106",
+          "quote": "Unity publishes downloadable OpenAPI documents for its Services Web APIs"
+        },
+        {
+          "evidenceId": "unity-api-lifecycle-20261106",
+          "quote": "Breaking changes are introduced only to new API versions."
+        },
+        {
           "evidenceId": "unity-docs-11",
           "quote": "Interacting directly with the public Unity APIs allows for finer control and a greater degree of customization."
         },
         {
           "evidenceId": "unity-probe-rt-4",
           "quote": "`unity <command>`/`unity eval` drive the Editor directly without MCP"
-        },
-        {
-          "evidenceId": "unity-docs-7",
-          "quote": "You can launch the Unity Editor and Player with additional command line arguments to control startup behavior, configure settings, or automate workflows."
         }
       ]
     }
@@ -8718,7 +8702,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unity is a development platform with cloud services, MCP and CLI tooling, so issuing scoped credentials for agents is a fair question for this kind of product. However, nothing in the evidence pack documents scoped, least-privilege API keys, service accounts or per-agent permission controls. The MCP server, CLI and Unity Credits evidence covers agent connectivity and metering, not credential scoping.",
+    "rationale": "Unity documents Services Web APIs with OpenAPI specs, isolated environments, and an MCP server and CLI for agents, so this axis applies. Nothing in the evidence describes issuing scoped or least-privilege API credentials, such as service accounts with roles, permission-limited keys or per-agent tokens. Environments are logical data partitions, not credential scoping, and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8731,17 +8715,16 @@
     "productId": "unity",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Unity documents first-party programmatic surfaces that work as official SDKs: public scripting APIs, editor-extension APIs, Package Manager packages such as the multiplayer packages, and the Sentis inference library, with a keyless UPM registry probe confirming the packages resolve. The evidence is only one-line snippets, with no explicit SDK catalogue or language or service client libraries. The core engine docs at docs.unity3d.com are not machine-readable (no llms.txt or .md mirrors), which limits AI-native consumption. Missing for 10: an explicit official SDK listing with language and service coverage, in-depth API reference evidence, machine-readable engine docs, and independent hands-on corroboration of building against the SDKs.",
+    "rationale": "Unity documents public scripting APIs, official packages delivered through the Package Manager (multiplayer packages, the Sentis inference library), and versioned Services Web APIs with downloadable OpenAPI specs, so developers can build against first-party libraries and APIs. The evidence never describes these as named, language-specific SDKs with install and usage depth. missing for 10: explicitly documented official SDKs (e.g. per-language service client SDKs), SDK versioning/install guidance, independent hands-on corroboration of building against them.",
     "evidenceIds": [
       "unity-docs-11",
-      "unity-docs-10",
       "unity-docs-13",
       "unity-docs-4",
       "unity-docs-27",
-      "unity-probe-rt-5",
-      "unity-probe-rt-2"
+      "unity-openapi-specs-20261106",
+      "unity-api-lifecycle-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -8757,12 +8740,20 @@
           "quote": "Packages deliver a wide range of enhancements to Unity through the Package Manager."
         },
         {
+          "evidenceId": "unity-docs-4",
+          "quote": "Simplify multiplayer game creation with Unity’s multiplayer packages and services."
+        },
+        {
           "evidenceId": "unity-docs-27",
           "quote": "Sentis is a neural network inference library for Unity."
         },
         {
-          "evidenceId": "unity-docs-4",
-          "quote": "Simplify multiplayer game creation with Unity’s multiplayer packages and services."
+          "evidenceId": "unity-openapi-specs-20261106",
+          "quote": "Unity publishes downloadable OpenAPI documents for its Services Web APIs"
+        },
+        {
+          "evidenceId": "unity-api-lifecycle-20261106",
+          "quote": "Breaking changes are introduced only to new API versions."
         }
       ]
     }
@@ -8773,7 +8764,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unity is a development platform with cloud services such as Build Automation, so registrable outbound webhooks are a fair question to ask of it. However, nothing in the evidence pack documents webhook subscriptions or outbound HTTP event callbacks. The CLI, MCP server and Build Automation CI items describe other capabilities and do not transfer to this story.",
+    "rationale": "Unity is a development platform with cloud services (Gaming Services, Build Automation, Web APIs), so registrable outbound webhooks are a fair question. The evidence pack documents no webhook subscription or outbound HTTP callback capability. The CLI, MCP server, OpenAPI specs and Build Automation CI do not amount to event subscriptions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8788,10 +8779,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An interactive API reference is a fair question for a game engine with a public scripting API, so the axis applies. Nothing in the evidence documents an interactive API reference or runnable examples: the scripting manual only mentions using public APIs, and the OpenAPI probe paths all return 404.",
+    "rationale": "Unity documents per-service OpenAPI spec pages with a download control and markdown mirrors. That is a static, machine-readable reference, not an interactive explorer with runnable or try-it examples. A downloadable spec is a building block a user could load into external tooling, so it earns no credit for this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": []
@@ -8800,46 +8791,84 @@
   {
     "productId": "unity",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Unity offers web services such as Build Automation, so a machine-readable API spec is a fair question here. The evidence shows no downloadable OpenAPI or equivalent spec: every candidate OpenAPI/Swagger path on docs.unity3d.com returned 404. The UPM registry's JSON responses, the CLI's structured output and the MCP server are different capabilities and earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Unity documents downloadable OpenAPI 3.0.0 specifications for about 50 Services Web APIs. Each spec page has a \"Download OpenAPI specification\" control and a raw markdown mirror that embeds the full JSON. The probe 404s were on docs.unity3d.com (engine docs), a different host from docs.unity.com, so they do not contradict this. Missing for 10: independent or hands-on verification that the downloaded specs are complete and valid; a clean raw-JSON download URL (the .md wraps the JSON in frontmatter and the one-click download is generated client-side).",
+    "evidenceIds": [
+      "unity-openapi-specs-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unity-openapi-specs-20261106",
+          "quote": "Unity publishes downloadable OpenAPI documents for its Services Web APIs"
+        },
+        {
+          "evidenceId": "unity-openapi-specs-20261106",
+          "quote": "each spec page carrying a \"Download OpenAPI specification\" control and a raw markdown mirror embedding the full OpenAPI 3.0.0 JSON"
+        }
+      ]
     }
   },
   {
     "productId": "unity",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Unity is a development platform with cloud services such as multiplayer and build automation, so a sandbox or test environment separate from production data is a fair question. The evidence pack does not document any sandbox, staging, or isolated environment feature. Headless mode, command-line arguments, build automation and the MCP/CLI tooling are adjacent capabilities and do not isolate testing from production data.",
-    "evidenceIds": [],
+    "rationale": "Unity Gaming Services documents its own isolated environments: projects start with a production environment and can add up to 25 more for testing and staging, and changing data in one environment does not affect the others. That directly delivers testing without touching production data. Missing for 10: independent or hands-on corroboration; evidence that agent tooling (CLI/MCP) can target a non-production environment; the isolation is a logical partition only, with no provisioned resources.",
+    "evidenceIds": [
+      "unity-environments-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unity-environments-20261106",
+          "quote": "Environments are isolated. This means that if you change data in one environment, data in other environments is not affected."
+        },
+        {
+          "evidenceId": "unity-environments-20261106",
+          "quote": "All projects start with a production environment. You can create up to 25 environments for a project."
+        }
+      ]
     }
   },
   {
     "productId": "unity",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows versioned package documentation (e.g. com.unity.ai.assistant@2.20, 2.20.0-pre.1) and one deprecation notice for the in-editor MCP server, but no documented API versioning scheme or deprecation policy (timelines, support windows, migration guarantees). An isolated deprecation notice and package version numbers are adjacent signals, not the policy this story asks for.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Unity publishes an explicit API lifecycle policy for its Services Web APIs. Endpoints are path-versioned, breaking changes go only into new versions, and deprecated versions get three months to a year of continued support plus at least two months' shutdown notice. The versioned OpenAPI spec catalog (e.g. Cloud Save 1.0.0) corroborates the versioning. Missing for 10: independent or hands-on corroboration that the policy is honored, a documented deprecation policy beyond the Services Web APIs (e.g. engine/editor scripting APIs), and a support window comparable to the 12-24 month commitments of other cloud vendors.",
+    "evidenceIds": [
+      "unity-api-lifecycle-20261106",
+      "unity-openapi-specs-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unity-api-lifecycle-20261106",
+          "quote": "The API may receive non-breaking changes without its version number being changed. Breaking changes are introduced only to new API versions."
+        },
+        {
+          "evidenceId": "unity-api-lifecycle-20261106",
+          "quote": "After three months to a year of continued support for a deprecated version, Unity may cease support or shutdown that version entirely. A version shutdown notice will be posted in this portal at least 2 months in advance."
+        },
+        {
+          "evidenceId": "unity-openapi-specs-20261106",
+          "quote": "Unity publishes downloadable OpenAPI documents for its Services Web APIs"
+        }
+      ]
     }
   },
   {
@@ -8848,7 +8877,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Unity documents a first-party Package Manager that delivers 'a wide range of enhancements', backed by a live UPM registry serving packages. Community evidence shows a Unity Store that distributed third-party plugins such as VLC-Unity, though the VideoLAN account also shows Unity removing a plugin publisher. missing for 10: first-party documentation of the Asset Store itself, evidence of its scale ('large'), evidence of ready-made models/art assets, and independent corroboration of ecosystem breadth.",
+    "rationale": "Unity documents a Package Manager that delivers enhancements as packages, and probes show a live UPM registry (packages.unity.com) serving packages. Community posts confirm a Unity store that distributes third-party plugins such as VLC-Unity. However, nothing documents the store's size, ready-made 3D models, or a catalog of tools and plugins. missing for 10: first-party Asset Store documentation, evidence of ecosystem scale, ready-made models/art assets, third-party tool/plugin catalog breadth, independent hands-on corroboration.",
     "evidenceIds": [
       "unity-docs-13",
       "unity-probe-rt-5",
@@ -8870,7 +8899,7 @@
         },
         {
           "evidenceId": "unity-comm-8",
-          "quote": "Unity basically told us we were not welcome back to their Store, ever. Even if we were to remove all LGPL code from the Unity package."
+          "quote": "Unity basically told us we were not welcome back to their Store, ever."
         }
       ]
     }
@@ -8881,10 +8910,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a built-in bulk-operation capability that applies one action across many items (assets, objects or scenes) at once. Scripting APIs, editor extensions, the Asset Database, `unity eval` and MCP prompts are developer building blocks or general automation, not a bulk-operations feature. Build Automation's simultaneous multi-platform builds are an adjacent build feature and earn no credit here.",
+    "rationale": "Nothing in the evidence documents a first-party bulk-operation capability, such as multi-select batch edits, batch asset processing or bulk actions exposed through the CLI or MCP. What the evidence does show is building blocks: command-line automation, scripting APIs, editor extensions and `unity eval`, which a developer could use to construct bulk operations. Build Automation's simultaneous multi-platform builds belong to the CI/build story, not bulk operations across items.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": []
@@ -8896,7 +8925,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no user-definable rules that fire actions automatically on events. Build Automation is described only as CI and multiplatform builds, with no documented event triggers or rule definitions. Editor scripting APIs, CLI arguments and prompt-driven AI Assistant workflows are developer building blocks or manual invocations, not event-triggered automation rules.",
+    "rationale": "Event-triggered automation is a fair axis for a platform like Unity, which has editor tooling and cloud services, so the story applies. However, the pack never documents user-defined rules that fire actions on events. Build Automation's CI features and command-line automation describe build pipelines and launch-time control, not rule-on-event triggers, so they are adjacent at most and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8911,7 +8940,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unity documents automation building blocks: command-line arguments to 'automate workflows', headless mode, a CLI for CI pipelines, and Build Automation with continuous integration features. None of the evidence documents a way to schedule recurring jobs, such as timed or cron-style builds. Running Unity from an external CI scheduler is a user-side workaround, and one-off automation is not a recurring schedule, so the applicable axis has no evidenced support.",
+    "rationale": "Scheduling recurring jobs is a fair question for Unity, since its Build Automation is a CI service that could offer scheduled builds, so the axis applies. However, the evidence only documents one-off automation primitives: command-line arguments, headless mode, the Unity CLI for CI pipelines, and Build Automation's continuous-integration and multiplatform builds. Nothing documents a recurring schedule, cron, or timed trigger, and running the CLI from an external CI scheduler is a user-side workaround that earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8926,7 +8955,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unity documents automation surfaces: Editor command-line arguments, Build Automation, the Unity CLI and AI Assistant workflows. None of the evidence shows a first-party way to version, review or roll back those automations. Build Automation's support for version control systems means it builds from the user's VCS, which is an adjacent integration rather than versioning of the automations themselves.",
+    "rationale": "The evidence covers automation entry points: the CLI, headless batch mode, Build Automation, and AI Assistant workflows. None of it documents a way to version, review, or roll back the user's own automations. Build Automation's support for version control systems describes building from source repos. The Services API lifecycle policy covers Unity's own API versions, and Environments are data partitions; all of these are adjacent features, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8939,9 +8968,9 @@
     "productId": "unity",
     "storyId": "browser-deployment",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Unity documents WebGL as a first-party build target for publishing real-time interactive 3D graphics into a browser, which covers the 'WebGL today' part of the story. Nothing in the evidence addresses payload size or a WebGPU backend. Missing for 10: evidence of reasonable/optimized web build payload size, any WebGPU support or roadmap, hands-on or independent corroboration of browser deployment quality.",
+    "rationale": "Unity documents a first-party WebGL build target for publishing real-time 3D games to the browser, which covers the 'WebGL today' part of the story. The pack has no evidence on payload or build size, compression, or any WebGPU support or roadmap. Missing for 10: evidence of reasonable or optimizable web payload size, a documented WebGPU backend or roadmap, depth beyond a single WebGL manual line, and independent or hands-on corroboration.",
     "evidenceIds": [
       "unity-docs-22"
     ],
@@ -8963,7 +8992,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Built-in physics (rigid bodies, collisions, raycasts) is a fair question for a game engine like Unity, so the axis applies. However, nothing in the evidence pack mentions physics, rigid bodies, colliders or raycasting. The pack covers only rendering, multiplayer, CLI, builds, MCP and pricing, so the verdict is none.",
+    "rationale": "Built-in physics is a fair axis for a game engine, but nothing in the evidence pack mentions rigid bodies, colliders, collision detection, raycasts, or any physics system. The only related material is generic marketing ('Build 2D and 3D games'), which does not document a physics capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -8976,13 +9005,12 @@
     "productId": "unity",
     "storyId": "codegen-friendly-apis",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Unity documents public scripting APIs and editor-extension APIs in its first-party manual, which is the base this story depends on. However, nothing in the pack speaks to API stability over time, the volume of public code examples, or how reliably LLM-generated Unity code works on the first try. Machine-readable docs are uneven: docs.unity.com serves an llms.txt, but docs.unity3d.com returns 404 for llms.txt and has no .md mirrors. Missing for 10: evidence of API stability/backward compatibility, evidence of abundant public examples, hands-on or independent reports of first-try LLM code success, machine-readable scripting API reference.",
+    "rationale": "Unity documents public scripting APIs and publishes a versioned API lifecycle policy for its Services Web APIs that keeps breaking changes out of existing versions, which partly supports the stable, well-documented side of the story. Nothing in the pack shows abundant public code examples or measured first-try success of LLM-generated Unity code, and the engine manual has no llms.txt or .md mirrors. missing for 10: evidence of abundant public code examples, any evidence of LLM first-try code success, stability guarantees for the engine scripting API (the lifecycle policy covers only the Services Web APIs, with short deprecation windows), machine-readable engine docs.",
     "evidenceIds": [
       "unity-docs-11",
-      "unity-docs-10",
-      "unity-probe-rt-5",
+      "unity-api-lifecycle-20261106",
       "unity-probe-rt-2"
     ],
     "support": {
@@ -8995,12 +9023,8 @@
           "quote": "Interacting directly with the public Unity APIs allows for finer control and a greater degree of customization."
         },
         {
-          "evidenceId": "unity-docs-10",
-          "quote": "Unity lets you extend the editor with your own custom inspectors and Editor Windows and you can define how properties are displayed in the inspector with custom Property Drawers"
-        },
-        {
-          "evidenceId": "unity-probe-rt-5",
-          "quote": "docs.unity.com also serves a site-wide llms.txt index ('# Unity Documentation')"
+          "evidenceId": "unity-api-lifecycle-20261106",
+          "quote": "Breaking changes are introduced only to new API versions."
         }
       ]
     }
@@ -9008,41 +9032,29 @@
   {
     "productId": "unity",
     "storyId": "collaboration-versioning",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only on-topic evidence is a marketing tagline about team collaboration and a note that Unity Build Automation works with popular version control systems. This suggests team and VCS-aware tooling, but nothing documents how the project format itself behaves under version control. Missing for 10: documentation of text-serialized or diffable scene/asset formats, scene merge tooling, a named built-in version control or collaboration product, and independent or hands-on corroboration of multi-person workflows.",
-    "evidenceIds": [
-      "unity-docs-2",
-      "unity-docs-36"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The pack does not document any of the story's capabilities: mergeable scenes, text or YAML serialization, merge tooling, or a built-in version-control or collaboration feature. 'Collaborate and iterate quickly with your team' is a marketing tagline that names no feature. Build Automation's support for version control systems concerns CI builds, not whether the project format works well under version control. Both are adjacent at best.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a studio lead, the project format and tooling play well with version control and multi-person teams — mergeable scenes, diffable text formats, or built-in collaboration",
-      "citations": [
-        {
-          "evidenceId": "unity-docs-2",
-          "quote": "Collaborate and iterate quickly with your team"
-        },
-        {
-          "evidenceId": "unity-docs-36",
-          "quote": "Build Automation supports most popular version control systems"
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "unity",
     "storyId": "dedicated-server-runtime",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Unity's Player command-line docs describe a headless mode in which the application 'doesn't display anything or accept user input'. That lets game logic run without a display. A probe also notes that -batchmode/-nographics are documented, though for headless CI builds rather than game servers. The evidence never shows a dedicated-server build target or a server-optimized runtime with rendering stripped, so only the headless-run part of the story is documented. Missing for 10: an explicit dedicated-server build target/profile, documented stripping of rendering from server builds, and independent or hands-on corroboration of running game servers headless.",
+    "rationale": "Unity's Player command-line docs describe a headless mode in which the built application displays nothing and accepts no user input, so game logic can run on a server without a display. The evidence does not show a dedicated-server build target or server-specific runtime documentation, and it never says rendering is stripped from the build. missing for 10: documented dedicated-server build target/profile, evidence that rendering is stripped from server builds, server deployment guidance, independent or hands-on corroboration.",
     "evidenceIds": [
       "unity-docs-8",
-      "unity-probe-rt-3",
-      "unity-docs-9"
+      "unity-docs-6",
+      "unity-probe-rt-3"
     ],
     "support": {
       "relation": "direct",
@@ -9054,8 +9066,8 @@
           "quote": "Run the application in headless mode. In this mode, the application doesn’t display anything or accept user input."
         },
         {
-          "evidenceId": "unity-probe-rt-3",
-          "quote": "the editor whose -batchmode/-nographics CLI is documented for headless CI builds"
+          "evidenceId": "unity-docs-6",
+          "quote": "You can run the Unity Editor and Players from command-line interfaces to change and customize how they run at launch time."
         }
       ]
     }
@@ -9066,12 +9078,13 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Unity's own docs say you can extend the editor with custom inspectors, Editor Windows and Property Drawers, and that its public scripting APIs allow fine-grained customization. A runtime probe adds that the first-party CLI's `unity <command>`/`unity eval` drive the Editor directly, and the Package Manager delivers plugin-style enhancements. Programmatic scene and asset manipulation is only implied: the Asset Database evidence describes syncing source and imported assets, not an editing API, and no evidence shows scene-editing scripts. missing for 10: explicit documentation of programmatic scene/asset manipulation APIs (e.g. editor-script asset creation and scene editing), independent or hands-on corroboration of editor extension workflows.",
+    "rationale": "First-party docs show Unity lets developers extend the editor with custom inspectors, Editor Windows and Property Drawers, script against public Unity APIs, and add packages through the Package Manager. Editor automation is also documented through command-line arguments and the new CLI's `unity eval`, which drives the Editor directly. However, the pack never explicitly documents scripting APIs that manipulate scenes or assets: the Asset Database snippet only describes keeping source and imported assets in sync, not an editor-script API. missing for 10: explicit documentation of programmatic scene manipulation, an editor-scripting API for asset creation/modification (e.g. AssetDatabase or editor-script reference), documented plugin authoring workflow, independent or hands-on corroboration.",
     "evidenceIds": [
       "unity-docs-10",
       "unity-docs-11",
       "unity-docs-12",
       "unity-docs-13",
+      "unity-docs-7",
       "unity-probe-rt-4"
     ],
     "support": {
@@ -9092,8 +9105,8 @@
           "quote": "Packages deliver a wide range of enhancements to Unity through the Package Manager."
         },
         {
-          "evidenceId": "unity-probe-rt-4",
-          "quote": "`unity <command>`/`unity eval` drive the Editor directly without MCP"
+          "evidenceId": "unity-docs-7",
+          "quote": "You can launch the Unity Editor and Player with additional command line arguments to control startup behavior, configure settings, or automate workflows."
         }
       ]
     }
@@ -9104,7 +9117,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Edit-run iteration speed is a fair question for a game engine, so the axis applies. Nothing in the evidence pack documents hot reload, script recompilation speed, or near-instant preview after a script change. Generic marketing lines such as \"iterate quickly with your team\" and \"build and review 3D projects in real time\" are not about the script edit-run loop and earn no credit.",
+    "rationale": "Edit-run loop speed is a fair question for a game engine, so the axis applies. However, the evidence pack contains nothing about script hot reload, domain or assembly reload behavior, or instant Play-mode preview after a code change. Marketing lines like \"iterate quickly with your team\" and \"real time\" are generic slogans, not documentation of this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9119,7 +9132,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Unity's own site claims it builds 2D games alongside 3D, which directly addresses the 2D axis. That claim is a single marketing tagline with no documentation of specific 2D tooling. Missing for 10: documented sprite workflow, tilemap tooling, 2D physics system, any evidence that 2D is first-class rather than secondary, and independent or hands-on corroboration.",
+    "rationale": "Unity's own marketing says it builds both 2D and 3D games, which places 2D development within the product's stated scope. That is a single headline claim; nothing in the pack documents sprite tooling, tilemaps or 2D physics, or shows 2D is first-class rather than secondary. Missing for 10: documentation of sprite workflows, tilemap tooling, 2D physics, evidence 2D is first-class rather than bolted onto 3D, independent or hands-on corroboration.",
     "evidenceIds": [
       "unity-docs-1"
     ],
@@ -9139,9 +9152,9 @@
     "productId": "unity",
     "storyId": "full-scene-editor",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Unity's docs confirm a Unity Editor with an inspector and Editor Windows that can be extended with custom inspectors and Property Drawers, and they refer to authoring scenes. That makes a visual editor a documented first-party capability. However, the pack never directly documents the scene viewport, prefabs, or scene composition as the primary level-building workflow. missing for 10: documentation of the scene view/viewport, prefab system, scene composition/level-building workflow, and independent hands-on corroboration.",
+    "rationale": "The evidence documents a first-party Unity Editor with an inspector that can be extended through custom inspectors, Editor Windows and Property Drawers, and it refers to working with scenes. It does not document a scene viewport, prefabs or scene composition as the primary level-building workflow. Missing for 10: documentation of the scene view/viewport, prefab and scene-composition workflow, evidence that the editor is the primary level-building tool, and independent hands-on corroboration.",
     "evidenceIds": [
       "unity-docs-10",
       "unity-docs-30",
@@ -9160,10 +9173,6 @@
         {
           "evidenceId": "unity-docs-5",
           "quote": "Elevate your scenes with scalable, captivating visuals using the latest advances in rendering, lighting, and visual effects."
-        },
-        {
-          "evidenceId": "unity-docs-9",
-          "quote": "Unity can build your application for different platforms with unique build configurations using build profiles in the Unity Editor."
         }
       ]
     }
@@ -9174,7 +9183,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Engine source access is a fair question for a game engine, but nothing in the evidence pack documents that Unity lets developers read or modify the full engine source. The cited material covers editor extension, public scripting APIs and packages. These are adjacent extensibility features, not engine source access, so they earn no credit here.",
+    "rationale": "Engine source access is a fair question for any game engine, but the evidence pack has nothing showing Unity offers developers access to read or modify the full engine source. The cited items cover only adjacent extensibility: editor extensions, public scripting APIs and the Package Manager. None of these amount to engine source access.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9189,14 +9198,13 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Unity documents launching the Editor from the command line to automate workflows. A probe notes the Editor's -batchmode/-nographics CLI is documented for headless CI builds. The Unity CLI and Build Automation are both positioned for CI and build agents. However, the evidence never shows the actual command-line build or export invocation, so the core build step is only implied. The community license-cost complaint is about price, not capability. missing for 10: first-party documentation of the command-line build/export invocation (e.g. a build method or target flags), explicit Editor batchmode/no-graphics doc quotes rather than a probe summary, independent hands-on corroboration of headless CI builds",
+    "rationale": "Unity's own docs say the Editor accepts command-line arguments to 'automate workflows', and its Build Automation service runs CI multiplatform builds. A runtime probe notes the editor's -batchmode/-nographics CLI is documented for headless CI builds, but the pack has no first-party doc excerpt showing a scripted build/export invocation, so coverage is only partial. The community complaint about CI build servers concerns seat cost, not capability, so it does not create a dispute. Missing for 10: first-party docs showing a headless editor build/export command (e.g. batchmode with a build target or build method), explicit evidence that self-hosted CI runners can produce exported player builds without the GUI, and independent hands-on corroboration of headless CI builds.",
     "evidenceIds": [
       "unity-docs-7",
-      "unity-docs-6",
       "unity-probe-rt-3",
-      "unity-docs-26",
       "unity-docs-28",
-      "unity-docs-36"
+      "unity-docs-36",
+      "unity-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -9212,12 +9220,12 @@
           "quote": "the entry point to the editor whose -batchmode/-nographics CLI is documented for headless CI builds"
         },
         {
-          "evidenceId": "unity-docs-26",
-          "quote": "The Unity CLI works well for: Continuous integration (CI) and build agents where installing the full Hub is undesirable."
-        },
-        {
           "evidenceId": "unity-docs-28",
           "quote": "Use Unity Build Automation and its continuous integration features for multiplatform builds."
+        },
+        {
+          "evidenceId": "unity-docs-36",
+          "quote": "Build Automation supports most popular version control systems and builds for multiple platforms simultaneously, including iOS."
         }
       ]
     }
@@ -9225,39 +9233,16 @@
   {
     "productId": "unity",
     "storyId": "headless-test-runs",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Unity's own docs cover running the Editor and Player headlessly from the command line. That includes a headless Player mode, command-line arguments to automate workflows, -batchmode/-nographics for headless CI builds, and a CLI aimed at CI agents. However, nothing in the pack shows unit or integration tests actually being run this way against the engine. missing for 10: documented test framework/test runner, command-line test execution in batchmode, CI test-result reporting, hands-on corroboration of headless test runs",
-    "evidenceIds": [
-      "unity-docs-8",
-      "unity-docs-7",
-      "unity-probe-rt-3",
-      "unity-docs-26",
-      "unity-docs-25"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Unity can run the Editor and Player from the command line and the Player in a headless mode, and that its CLI and Build Automation target CI builds. Nothing in the pack documents a test framework, a test runner, or running unit or integration tests in CI against the engine. Headless launch and CI builds are adjacent capabilities that do not by themselves deliver headless test execution.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a game developer, tests run headlessly — unit and integration tests of game code execute in CI against the real engine",
-      "citations": [
-        {
-          "evidenceId": "unity-docs-8",
-          "quote": "Run the application in headless mode. In this mode, the application doesn’t display anything or accept user input."
-        },
-        {
-          "evidenceId": "unity-docs-7",
-          "quote": "You can launch the Unity Editor and Player with additional command line arguments to control startup behavior, configure settings, or automate workflows."
-        },
-        {
-          "evidenceId": "unity-probe-rt-3",
-          "quote": "-batchmode/-nographics CLI is documented for headless CI builds"
-        },
-        {
-          "evidenceId": "unity-docs-26",
-          "quote": "The Unity CLI works well for: Continuous integration (CI) and build agents where installing the full Hub is undesirable."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -9266,11 +9251,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Unity's docs claim built-in rendering and lighting capabilities for 3D scenes, which points to a 3D renderer, but the evidence pack never names PBR materials, global illumination or baked lighting, shadows, or post-processing. Support is a single generic marketing line plus broad '3D games' claims. Missing for 10: documented PBR material system, GI/baked lighting (lightmapping) docs, shadow rendering docs, post-processing stack docs, and independent or hands-on corroboration of render quality.",
+    "rationale": "Unity's docs describe its own 3D rendering capability: they cite 'the latest advances in rendering, lighting, and visual effects' and position the engine for 3D and high-end games. However, no evidence names the specific elements of a modern production renderer. missing for 10: documented PBR materials, global illumination or baked lightmapping, shadow systems, post-processing stack, and independent or hands-on corroboration of render quality.",
     "evidenceIds": [
       "unity-docs-5",
       "unity-docs-1",
-      "unity-docs-19"
+      "unity-docs-16",
+      "unity-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -9286,8 +9272,12 @@
           "quote": "Build 2D and 3D games for any platform"
         },
         {
-          "evidenceId": "unity-docs-19",
-          "quote": "Create interactive 3D experiences"
+          "evidenceId": "unity-docs-16",
+          "quote": "Create and optimize high-end games and interactive experiences."
+        },
+        {
+          "evidenceId": "unity-docs-22",
+          "quote": "WebGL lets you publish real-time interactive 3D graphics into a browser."
         }
       ]
     }
@@ -9296,15 +9286,15 @@
     "productId": "unity",
     "storyId": "multi-platform-export",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Unity documents building one project for different platforms through build profiles, claims 25+ supported platforms, and its Build Automation builds for multiple platforms at once, including iOS. A community comment corroborates its cross-platform and iOS strength. Desktop and console targets are never named explicitly, and nothing describes console access directly or via partners. missing for 10: explicit desktop target documentation, explicit console export documentation (direct or via partner programs), independent hands-on corroboration of console builds",
+    "rationale": "Unity's docs say one project can be built for many platforms: 'any platform', '25+ platforms', and build profiles with per-platform configurations. Build Automation builds multiple platforms simultaneously, including iOS, and a community comment confirms Unity is a solid way to build cross-platform and target iOS. However, the evidence never names console targets or console partner programs, and desktop targets appear only implicitly. Missing for 10: explicit evidence of console export (direct or via partners), named desktop targets (Windows/macOS/Linux), Android, and hands-on corroboration of exporting one project to all three platform classes.",
     "evidenceIds": [
       "unity-docs-1",
       "unity-docs-3",
       "unity-docs-9",
-      "unity-docs-28",
       "unity-docs-36",
+      "unity-docs-28",
       "unity-comm-10"
     ],
     "support": {
@@ -9313,12 +9303,16 @@
       "subject": "As a studio lead, one project exports to desktop, mobile, and (directly or via partners) consoles",
       "citations": [
         {
-          "evidenceId": "unity-docs-9",
-          "quote": "Unity can build your application for different platforms with unique build configurations using build profiles in the Unity Editor."
+          "evidenceId": "unity-docs-1",
+          "quote": "Build 2D and 3D games for any platform"
         },
         {
           "evidenceId": "unity-docs-3",
           "quote": "Discover 25+ platforms Unity supports"
+        },
+        {
+          "evidenceId": "unity-docs-9",
+          "quote": "Unity can build your application for different platforms with unique build configurations using build profiles in the Unity Editor."
         },
         {
           "evidenceId": "unity-docs-36",
@@ -9337,10 +9331,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether an engine can be consumed as an importable, bundleable, tree-shakeable dependency is a fair question for game engines targeting the web, so the axis applies. Nothing in the evidence shows Unity doing this. Its Package Manager and UPM registry deliver packages into the Unity Editor itself, and WebGL is a build-and-export target, not a library a web developer imports and bundles. Both are adjacent features, not this capability.",
+    "rationale": "The evidence shows no first-party npm/JS package that a web developer can import, bundle, and tree-shake as a dependency. What it does show is adjacent: the UPM registry delivers packages into the Unity Editor, WebGL is a build-export target, and Homebrew/CLI installs only fetch the Hub, Editor, or tooling. None of these install the engine as a library in an existing web toolchain.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a web developer, the engine installs from a package registry into my existing toolchain — a library I import, bundle, and tree-shake like any dependency",
       "citations": []
@@ -9352,7 +9346,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Unity documents an official in-editor AI Assistant (com.unity.ai.assistant, a pre-release package) that creates assets, automates workflows and performs project actions from natural-language prompts. It also generates images, 3D models and sound effects, metered through Unity Credits. Script generation and answering API questions are not explicitly documented, and the package is beta/pre-release. Missing for 10: explicit documentation of script generation, API Q&A and scene scaffolding, a stable non-preview release, and independent hands-on corroboration.",
+    "rationale": "Unity documents an official in-editor AI Assistant (the com.unity.ai.assistant package) that takes natural-language prompts to create assets, automate workflows, analyze performance and perform project actions, and it can generate images, 3D models and sound effects. However, it is a beta/pre-release package metered by Unity Credits, and the evidence does not show script generation or API question answering. missing for 10: explicit evidence of script generation, API Q&A capability, scene scaffolding detail, GA (non-beta) status, independent hands-on corroboration",
     "evidenceIds": [
       "unity-docs-24",
       "unity-docs-14",
@@ -9385,7 +9379,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Governance and funding transparency is a fair question for any game engine, so the axis applies. The evidence pack has no mention of a foundation, published finances, or a public roadmap for Unity. The only nearby item is the Runtime Fee cancellation blog, which concerns a pricing change rather than transparent governance. Community reports describe licensing terms changing unilaterally, which points away from plannable governance.",
+    "rationale": "Governance and funding transparency is a fair question for a commercial game engine, so the axis applies. However, the evidence pack documents no foundation, no published finances, and no public product roadmap for Unity. The Runtime Fee cancellation post and the Services API lifecycle policy are pricing and API-versioning items, which are adjacent and do not satisfy this story. Community reports that terms changed unilaterally point away from plannable, transparent governance rather than toward it.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9400,14 +9394,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Unity documents public scripting APIs for finer control and editor extension, command-line and headless automation of the Editor, and a first-party CLI whose `unity <command>`/`unity eval` drive the Editor directly, with an MCP mode for agents. Together these give broad programmatic access to Editor functionality. No evidence states that everything in the UI is available through the API, and no OpenAPI spec exists. missing for 10: an explicit documented UI/API parity guarantee, a coverage map of which Editor actions are exposed programmatically, and independent hands-on corroboration of parity.",
+    "rationale": "Unity documents several programmatic surfaces: public scripting APIs that give finer control than the UI, editor command-line arguments for automating workflows, an experimental first-party CLI whose `unity <command>`/`unity eval` drive the Editor directly, and OpenAPI specs for its Services Web APIs. Together these point toward broad programmatic control, but nothing documents that every UI action is reachable via API. missing for 10: an explicit documented UI/API parity commitment, a non-experimental Editor-control API, independent or hands-on corroboration of parity coverage.",
     "evidenceIds": [
       "unity-docs-11",
       "unity-docs-7",
-      "unity-docs-10",
       "unity-probe-rt-4",
-      "unity-docs-24",
-      "unity-docs-23"
+      "unity-openapi-specs-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -9423,12 +9415,12 @@
           "quote": "`unity <command>`/`unity eval` drive the Editor directly without MCP"
         },
         {
-          "evidenceId": "unity-docs-24",
-          "quote": "Use it to create assets, automate workflows, analyze performance, and perform project actions using natural-language prompts."
-        },
-        {
           "evidenceId": "unity-docs-7",
           "quote": "You can launch the Unity Editor and Player with additional command line arguments to control startup behavior, configure settings, or automate workflows."
+        },
+        {
+          "evidenceId": "unity-openapi-specs-20261106",
+          "quote": "Unity publishes downloadable OpenAPI documents for its Services Web APIs"
         }
       ]
     }
@@ -9439,7 +9431,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability is a fair question for a game engine and its cloud services, so the axis applies. The evidence pack documents no export of projects, assets, or account data into open formats, and no exit or migration path. The Asset Database docs only describe keeping original source files in sync with imported counterparts, which is adjacent behavior, not a documented export capability.",
+    "rationale": "Data portability is a fair question for a game-engine and services platform, but the evidence pack documents no first-party capability to export all project or service data in open formats. The closest items are the Asset Database keeping original source files alongside imported versions and the per-service Web API OpenAPI specs. Those are adjacent developer building blocks, not a documented bulk-export or exit path, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9454,7 +9446,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Source availability under an open license is a fair question for a game engine, so the axis applies. Nothing in the evidence shows Unity's engine or editor source published under an open license. The only openness-related items are adjacent: a third-party plugin that is itself open source, the closed MCP distribution with no public repo, and community comparisons to open-source engines.",
+    "rationale": "Whether an engine's source is readable under an open license is a fair question for a game engine, so the axis applies. Nothing in the pack shows Unity publishing its engine or editor source under an open license. The only open-source mention is the third-party VLC-Unity plugin, and the runtime probe notes the official MCP component has no public repo and is a closed distribution.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9467,17 +9459,14 @@
     "productId": "unity",
     "storyId": "openness-self-host",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Unity's core product, the Editor and Player, is installed and run on the user's own machines. The docs cover installing Editors on your own CI/build agents with the Unity CLI and running headless via command-line arguments, so users can run the core on their own infrastructure. However, the evidence frames this as locally installed proprietary software, not a documented self-hosting deployment, and community reports describe the engine depending on phoning home to Unity. Missing for 10: explicit self-hosting/offline-operation documentation, self-hostable equivalents of Unity's hosted services (AI Assistant credits, Build Automation), open source or redistributable core, independent corroboration of fully self-contained operation.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Unity's core product, the Editor and Player, is software you install and run on your own machines. The docs show it running headless and on your own CI build agents through the Unity CLI, which is a form of running the core product on user-controlled infrastructure. However, nothing in the evidence documents a self-hosted deployment of the platform. Its services (Build Automation, Gaming Services, AI credits) are Unity-hosted, and a community report describes the editor needing to phone home. Missing for 10: documented self-hosting or offline deployment of the platform and services, independence from Unity licensing servers, open-source or redistributable core, independent hands-on corroboration.",
     "evidenceIds": [
-      "unity-docs-25",
-      "unity-docs-26",
+      "unity-docs-6",
       "unity-docs-8",
-      "unity-docs-7",
-      "unity-probe-rt-3",
-      "unity-probe-rt-4",
-      "unity-comm-3"
+      "unity-docs-26",
+      "unity-probe-rt-4"
     ],
     "support": {
       "relation": "direct",
@@ -9485,20 +9474,16 @@
       "subject": "As an AI-native user, I can self-host the core product",
       "citations": [
         {
-          "evidenceId": "unity-docs-25",
-          "quote": "Use the Unity CLI to install and manage Unity Editors and modules from the command-line... Use it for new scripts, automation, and CI pipelines."
+          "evidenceId": "unity-docs-8",
+          "quote": "Run the application in headless mode. In this mode, the application doesn’t display anything or accept user input."
         },
         {
           "evidenceId": "unity-docs-26",
           "quote": "The Unity CLI works well for: Continuous integration (CI) and build agents where installing the full Hub is undesirable."
         },
         {
-          "evidenceId": "unity-docs-8",
-          "quote": "Run the application in headless mode. In this mode, the application doesn’t display anything or accept user input."
-        },
-        {
-          "evidenceId": "unity-probe-rt-4",
-          "quote": "plus Homebrew/deb/rpm/MSIX distribution for headless CI workers"
+          "evidenceId": "unity-docs-6",
+          "quote": "You can run the Unity Editor and Players from command-line interfaces to change and customize how they run at launch time."
         }
       ]
     }
@@ -9509,7 +9494,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document a Unity Profiler, ECS/DOTS, the Job System, Burst, or GPU instancing. The closest items are adjacent rather than direct: marketing copy about optimizing high-end games, the AI Assistant's natural-language \"analyze performance\" feature, and a community comment that Godot lags on profiling. None of these establishes the product's own profiler or data-oriented scaling paths.",
+    "rationale": "The evidence pack does not document a Unity Profiler, ECS/DOTS, the Job System, Burst, or GPU instancing. The only nearby items are a generic marketing line about optimizing high-end games, an AI Assistant claim that it can 'analyze performance' (a different feature), and a community comment about Godot's profiling gaps. None of these is first-party evidence for the story's capabilities, so this applicable axis gets 'none'.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9522,13 +9507,14 @@
     "productId": "unity",
     "storyId": "permissive-license-no-royalties",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Unity's own announcement that it is canceling the Runtime Fee removes the per-install charge that community posts complained about. However, the license is proprietary rather than permissive: the free Personal plan applies only below $100K in revenue and funds raised, and community reports describe costly seats and unilateral license changes. Missing for 10: evidence of a permissive or open license, a documented explicit no-royalty term, terms that do not depend on revenue thresholds or paid seats, and assurance of license stability.",
+    "rationale": "Unity's own blog says the Runtime (per-install) Fee was canceled, which supports the 'no per-install fees' part of the story. The license is not permissive, though: the free Personal plan is limited to organizations under $100K in revenue and funds raised, and community reports describe costly per-seat licensing and Unity unilaterally moving studios to pricier tiers. Missing for 10: a permissive or open license, documented confirmation of no royalties at any revenue level, free use above the $100K threshold, and assurance that terms won't change unilaterally.",
     "evidenceIds": [
       "unity-docs-21",
       "unity-docs-15",
       "unity-comm-5",
+      "unity-comm-6",
       "unity-comm-15"
     ],
     "support": {
@@ -9552,8 +9538,8 @@
     "storyId": "pricing-terms-stability",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Pricing stability is a fair question for a commercial game engine, but the pack shows no stability track record: Unity's own blog post about canceling the Runtime Fee confirms that a fee was introduced and then reversed. Community reports describe a per-install fee on shipped games, unilateral forced license upgrades that doubled costs, and complaints that terms can change at any moment. There is no first-party commitment against retroactive repricing, so the story is not delivered.",
+    "confidence": "medium",
+    "rationale": "Pricing stability is a fair question for a commercial game engine, so the axis applies. The pack shows the opposite of a stable track record: community reports describe the per-install Runtime Fee announcement and a unilateral forced move to a more expensive license, and the only first-party item is a blog post titled 'Unity is Canceling the Runtime Fee', which shows a reversal rather than any documented commitment against retroactive repricing. No first-party policy guaranteeing license-term stability appears in the evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9568,7 +9554,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unity offers cloud services such as multiplayer, Build Automation and AI Assistant credits, so data region or residency is a fair question for this product. However, nothing in the evidence pack documents any way to choose where data is stored. Community comments about the editor 'phoning home' concern telemetry, not residency choice, so they do not count as support.",
+    "rationale": "Unity runs cloud services (Gaming Services such as Cloud Save, AI Assistant credits, Build Automation), so choosing a data region is a fair question for it. However, nothing in the evidence documents region or residency selection. UGS environments are logical partitions for testing, staging and production, not geographic storage choices, so they are an adjacent feature and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9583,7 +9569,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unity ships AI features (the AI Assistant, asset generators and an MCP server), so a training-data opt-out is a fair question for this product. However, nothing in the evidence documents an opt-out, data-usage policy or setting that keeps user data out of AI model training. Community comments about telemetry 'phoning home' are not about AI training, so they are not credited here.",
+    "rationale": "Unity ships AI features (the AI Assistant, generators metered by Unity Credits, and an MCP server), so a training-data opt-out is a fair question to ask. The evidence pack documents no setting, policy or contractual control that stops user data or prompts from being used to train AI models. Community complaints about telemetry 'phoning home' concern a different subject, so they do not count here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9598,7 +9584,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for Unity, which runs cloud and AI services such as Assistant, Credits and Build Automation. However, nothing in the evidence pack documents any setting, policy or API for controlling how long data is kept or for deleting it. Community remarks about the engine phoning home do not describe user-facing retention or deletion controls, so they earn no credit here.",
+    "rationale": "Data retention and deletion controls are a fair privacy question for Unity, which runs cloud services and AI tooling, so the axis applies. However, nothing in the pack documents retention settings, deletion workflows, or data-purge controls for user, project, or AI-assistant data. The Cloud Save spec only describes persisting state, and Services environments are logical test partitions; neither is a retention or deletion control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9613,7 +9599,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a game engine and editor, so the axis applies. However, no evidence item documents any Unity setting, flag or policy for disabling telemetry or usage tracking. Community comments only describe Unity 'phoning home', which shows tracking exists but says nothing about an opt-out.",
+    "rationale": "Opting out of telemetry is a fair question for a game engine and editor, but nothing in the evidence pack documents a telemetry or analytics opt-out for the Unity Editor, Hub, CLI or built players. Community comments say Unity 'phones home', but they describe no opt-out control, so they give no support and no documented claim to dispute.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9628,7 +9614,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Unity's scripting manual documents direct scripting against the public Unity APIs, and its editor docs show scripts can extend the Editor with custom inspectors and windows, so first-party scripting access to the engine API exists. The pack never names the primary language, never shows productivity or full API coverage, and never mentions a debugger. missing for 10: named primary scripting language and evidence of its productivity, evidence that the API is fully exposed, any documented script debugger, independent or hands-on corroboration.",
+    "rationale": "Unity's scripting manual says scripts interact directly with the public Unity APIs for finer control and customization, and the editor itself can be extended with custom inspectors and windows. That is direct but thin support for scripting access to the engine API. The evidence never names the scripting language, never shows the API is fully exposed or productive to use, and never mentions a debugger. Missing for 10: the scripting language named and its productivity evidenced, proof of full engine API exposure, any documented debugger integration, and independent or hands-on corroboration.",
     "evidenceIds": [
       "unity-docs-11",
       "unity-docs-10"
@@ -9655,7 +9641,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Unity documents Sentis (com.unity.ai.inference), an official neural network inference library that imports trained models and runs them in real time on the target device's compute resources. A registry probe confirms the package resolves as Unity's on-device inference library for games. Missing for 10: detail on supported model formats and per-platform or backend coverage, and independent hands-on corroboration of in-game inference performance.",
+    "rationale": "Unity ships Sentis, an official package (com.unity.ai.inference) that is a neural network inference library. It imports trained models and runs them in real time on the target device's compute resources, and the package is confirmed in Unity's UPM registry. That directly matches an official on-device inference runtime for games. missing for 10: details on supported model formats, backends and platform coverage, and independent hands-on corroboration of in-game inference performance.",
     "evidenceIds": [
       "unity-docs-27",
       "unity-docs-35",
@@ -9683,10 +9669,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Unity's own docs describe a built-in asset import process that converts source files and an Asset Database that keeps source and imported assets in sync, so incoming assets are processed without manual steps. The pack never mentions import hooks, import presets, or import-specific pipeline scripting. The command-line automation and public scripting APIs it does cite are generic building blocks and earn no credit. missing for 10: documented import hooks (post-processor callbacks), import presets, scripted batch reimport, independent or hands-on corroboration",
+    "rationale": "Unity's own docs say the Asset Database tracks source files and their imported counterparts to keep them in sync, and that the import process converts incoming assets automatically. The Editor can also be launched from the command line to automate workflows, and its public APIs allow deeper customization. However, nothing in the pack documents import hooks, import presets, or scripted per-asset processing, so only the baseline automatic import is evidenced. Missing for 10: documented import hooks (asset postprocessor callbacks), import presets, pipeline scripts that set import settings in bulk, and hands-on or independent corroboration.",
     "evidenceIds": [
+      "unity-docs-12",
       "unity-docs-29",
-      "unity-docs-12"
+      "unity-docs-7",
+      "unity-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -9700,6 +9688,10 @@
         {
           "evidenceId": "unity-docs-12",
           "quote": "The Asset Database stores information about the original source asset files and their imported counterparts to keep the two sets of data in sync."
+        },
+        {
+          "evidenceId": "unity-docs-7",
+          "quote": "You can launch the Unity Editor and Player with additional command line arguments to control startup behavior, configure settings, or automate workflows."
         }
       ]
     }
@@ -9710,7 +9702,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions an official language server, IDE integration, or typed API definitions for Unity's C# scripting that an editor could attach to for completions, diagnostics, or navigation. The MCP server, CLI, and the general 'public Unity APIs' mention are different capabilities and earn no credit for this story.",
+    "rationale": "The evidence pack never mentions an official language server, IDE integration, or typed API definitions for Unity's scripting language that a coding agent's editor could attach to. The only scripting reference is a generic note about using the public Unity APIs. The OpenAPI specs cover the Services Web APIs, not the scripting language, and the MCP server and CLI are separate agent-integration capabilities, so none of these count for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9725,7 +9717,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack only describes Unity's asset import pipeline in general terms ('converts most asset types'). It never names glTF, FBX, or USD, and nothing shows those formats importing cleanly. Generic import plumbing is adjacent to the story, not documented support for these specific interchange formats.",
+    "rationale": "Importing interchange formats is a fair question for a game engine, so the axis applies. However, the evidence pack never mentions glTF, FBX or USD import. The only related items are generic statements that the asset import process and Asset Database convert source files, which do not show that these specific formats import cleanly.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -9740,7 +9732,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Visual scripting is a fair axis for a game engine, but nothing in the evidence pack documents a visual scripting system in Unity. The scripting docs describe interacting with public APIs in code. The AI Assistant's natural-language prompts are a different capability and are not node-based gameplay logic authoring.",
+    "rationale": "Visual scripting is a fair axis for a game engine, so the story applies. However, the evidence pack never mentions a visual scripting or node-graph tool. The only scripting evidence describes working with the public Unity APIs in code, which is the opposite of building gameplay logic without code.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

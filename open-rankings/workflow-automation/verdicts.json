@@ -5,15 +5,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Activepieces documents an API-key-authenticated public API and a built-in MCP server that lets AI assistants \"build flows\" and \"drive the whole platform,\" so an agent can programmatically create flows. The evidence never shows specific API endpoints for creating, updating, or publishing flows, and the only documented activation path is the UI publish button. Missing for 10: documented flow create/update/publish endpoints in the public API, explicit evidence that agents can activate or publish flows programmatically, a published OpenAPI spec (probe returned 404), and hands-on corroboration.",
+    "rationale": "Activepieces documents a public, API-key-authenticated REST API with a published OpenAPI 3.1.0 spec (84 paths), which is Platform/Enterprise-only. It also documents a built-in MCP server that lets AI assistants build flows and 'drive the whole platform', so agent-driven flow creation is a first-party capability. However, no evidence shows specific REST endpoints for creating, updating, or publishing a flow; publishing is documented only as a UI button, with an approval gate in Sensitive projects. Missing for 10: documented flow create/update endpoints in the public API, a documented programmatic publish/activate operation, and hands-on corroboration of an agent completing the lifecycle via the API.",
     "evidenceIds": [
-      "activepieces-docs-2",
+      "activepieces-openapi-spec-20261106",
       "activepieces-docs-28",
-      "activepieces-docs-33",
       "activepieces-docs-4",
       "activepieces-docs-27",
-      "activepieces-docs-40",
-      "activepieces-probe-3"
+      "activepieces-docs-40"
     ],
     "support": {
       "relation": "direct",
@@ -21,20 +19,20 @@
       "subject": "As an AI-native user, I can have an agent create, update, and activate a workflow programmatically through the public API",
       "citations": [
         {
-          "evidenceId": "activepieces-docs-4",
-          "quote": "Activepieces includes a built-in MCP server that lets AI assistants build flows, manage tables, test automations, and more — all through natural language."
-        },
-        {
-          "evidenceId": "activepieces-docs-27",
-          "quote": "Connect Claude, Cursor, Codex or any MCP client and it drives the whole platform."
-        },
-        {
-          "evidenceId": "activepieces-docs-2",
-          "quote": "The API uses \"API keys\" to authenticate requests."
+          "evidenceId": "activepieces-openapi-spec-20261106",
+          "quote": "Activepieces publishes a downloadable OpenAPI 3.1.0 document (84 paths, server https://cloud.activepieces.com/api)"
         },
         {
           "evidenceId": "activepieces-docs-28",
           "quote": "you can pass the API key as a Bearer token in the header"
+        },
+        {
+          "evidenceId": "activepieces-docs-4",
+          "quote": "Activepieces includes a built-in MCP server that lets AI assistants build flows, manage tables, test automations, and more"
+        },
+        {
+          "evidenceId": "activepieces-docs-27",
+          "quote": "Connect Claude, Cursor, Codex or any MCP client and it drives the whole platform."
         }
       ]
     }
@@ -45,9 +43,10 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe confirms Activepieces serves an llms.txt at https://www.activepieces.com/llms.txt (HTTP 200) with a structured, LLM-oriented product summary, so an agent can be pointed at it directly. The docs are also published as per-page .md URLs, which suggests agent-readable markdown docs, although the root docs.md returned 404. Missing for 10: confirmation of llms.txt depth or coverage (e.g. a full llms-full.txt index), and independent or hands-on corroboration of agents consuming the docs.",
+    "rationale": "A probe confirms Activepieces serves a live llms.txt at its root (HTTP 200) with a product summary written for agents, and its docs publish markdown mirrors (.md pages that embed per-operation OpenAPI) that an agent can consume directly. The root /docs.md path returned 404, and nothing shows an agent actually being used against these docs. Missing for 10: evidence of an llms-full.txt or complete docs bundle, a working root docs.md, independent or hands-on corroboration of agent use.",
     "evidenceIds": [
       "activepieces-probe-1",
+      "activepieces-openapi-spec-20261106",
       "activepieces-probe-2"
     ],
     "support": {
@@ -60,8 +59,8 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://www.activepieces.com/llms.txt"
         },
         {
-          "evidenceId": "activepieces-probe-1",
-          "quote": "Open-source workflow automation and AI agents."
+          "evidenceId": "activepieces-openapi-spec-20261106",
+          "quote": "with per-operation OpenAPI embedded in every endpoint page's markdown mirror"
         }
       ]
     }
@@ -69,49 +68,33 @@
   {
     "productId": "activepieces",
     "storyId": "agentic-ai-insights",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Activepieces' own AI agents can pull live data from connected apps and act on it, for example summarising unread emails, so users can get AI-generated outputs from their data inside the product. Nothing documents built-in insight or suggestion features over the user's data; the user has to brief and configure an agent first. Missing for 10: a native data-insight or suggestion feature, documentation of insight generation over workspace or table data, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "activepieces-docs-38",
-      "activepieces-docs-8",
-      "activepieces-docs-37"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Activepieces documents AI agents that run tasks and an AI builder that writes agents and flows from plain-language descriptions. Neither is a feature that produces insights or suggestions from the user's data inside the product. The agent's ability to search connected apps for answers is task execution, and the email-summary example is a hypothetical agent prompt, not an insights capability. Both are adjacent features, so they earn no credit here.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
-      "citations": [
-        {
-          "evidenceId": "activepieces-docs-38",
-          "quote": "It searches Slack, Linear, Drive, or any of 760+ apps at the moment it needs the answer, rather than working from whatever you pasted into the instructions."
-        },
-        {
-          "evidenceId": "activepieces-docs-8",
-          "quote": "Write \"summarise my unread emails every morning\" and you get a drafted agent — a name, instructions, and the tools it needs"
-        },
-        {
-          "evidenceId": "activepieces-docs-37",
-          "quote": "You write down the job in plain language, give it access to the apps it needs, and it handles the work as it arrives."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "activepieces",
     "storyId": "agentic-autonomous-automation",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Activepieces documents trigger-driven flows that run on activation once published. Its agents are briefed in plain language and \"handle the work as it arrives,\" and durable execution lets interrupted runs resume from checkpoints, so the core of autonomous background automation is directly delivered. Missing for 10: explicit documentation of recurring schedule/cron triggers (the 'every morning' example is only a sample prompt for drafting an agent, not a documented schedule capability), and independent or hands-on corroboration of unattended background runs.",
+    "rationale": "Activepieces flows are built from a trigger plus actions and fire when activated once published. Its agents handle work as it arrives and carry out the steps themselves, and interrupted runs resume from checkpoints, so automations run autonomously in the background. missing for 10: explicit documentation of trigger types such as schedules or polling (recurring runs are only implied by the 'every morning' agent example), independent or hands-on corroboration of unattended background execution.",
     "evidenceIds": [
-      "activepieces-docs-37",
       "activepieces-docs-21",
       "activepieces-docs-39",
-      "activepieces-docs-40",
+      "activepieces-docs-37",
+      "activepieces-docs-42",
       "activepieces-docs-9",
-      "activepieces-docs-42"
+      "activepieces-docs-8",
+      "activepieces-docs-40"
     ],
     "support": {
       "relation": "direct",
@@ -119,20 +102,28 @@
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": [
         {
+          "evidenceId": "activepieces-docs-21",
+          "quote": "Flow consists of two parts, trigger and actions"
+        },
+        {
+          "evidenceId": "activepieces-docs-39",
+          "quote": "Actions come after the trigger and control what occurs when the flow is activated"
+        },
+        {
           "evidenceId": "activepieces-docs-37",
           "quote": "You write down the job in plain language, give it access to the apps it needs, and it handles the work as it arrives."
         },
         {
-          "evidenceId": "activepieces-docs-39",
-          "quote": "Actions come after the trigger and control what occurs when the flow is activated, like running code or communicating with other services."
+          "evidenceId": "activepieces-docs-42",
+          "quote": "It decides the steps and carries them out."
         },
         {
           "evidenceId": "activepieces-docs-9",
           "quote": "Interrupted runs resume from their last checkpoint instead of starting over"
         },
         {
-          "evidenceId": "activepieces-docs-42",
-          "quote": "It decides the steps and carries them out."
+          "evidenceId": "activepieces-docs-8",
+          "quote": "Write \"summarise my unread emails every morning\" and you get a drafted agent"
         }
       ]
     }
@@ -143,13 +134,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Activepieces documents a built-in chat assistant: you describe what you want and it builds the agent or automation, and plain-language edits in the editor rewrite the agent's instructions and tools. Its native AI agents also take a plain-language job, decide the steps and carry them out, with approval gates. Missing for 10: independent or hands-on corroboration of the in-product assistant, and deeper documentation of what the chat assistant can and cannot do beyond drafting and editing agents and flows.",
+    "rationale": "Activepieces documents built-in AI agents. You brief an agent in plain language, choose which apps, flows and files it can use, and it decides the steps and carries out the work as it arrives, with optional approval gates. You can also describe an agent in chat and have it drafted for you. Missing for 10: independent or hands-on corroboration that delegated tasks run reliably, and detail on whether the in-product chat assistant itself executes ad-hoc tasks rather than only drafting agents and automations.",
     "evidenceIds": [
+      "activepieces-docs-14",
+      "activepieces-docs-37",
+      "activepieces-docs-42",
       "activepieces-docs-18",
       "activepieces-docs-8",
-      "activepieces-docs-29",
-      "activepieces-docs-42",
-      "activepieces-docs-37"
+      "activepieces-docs-38"
     ],
     "support": {
       "relation": "direct",
@@ -157,24 +149,20 @@
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
       "citations": [
         {
-          "evidenceId": "activepieces-docs-18",
-          "quote": "Describe what you want in chat, and Activepieces builds the agent or automation for you."
-        },
-        {
-          "evidenceId": "activepieces-docs-8",
-          "quote": "Write \"summarise my unread emails every morning\" and you get a drafted agent — a name, instructions, and the tools it needs"
-        },
-        {
-          "evidenceId": "activepieces-docs-29",
-          "quote": "describe a change in the editor — \"only reply to paying customers\" — and the instructions and tools are rewritten for you"
+          "evidenceId": "activepieces-docs-37",
+          "quote": "You write down the job in plain language, give it access to the apps it needs, and it handles the work as it arrives."
         },
         {
           "evidenceId": "activepieces-docs-42",
           "quote": "You set the goal and choose which apps, flows and files the agent can use. It decides the steps and carries them out. Anything you want to check first waits for your approval."
         },
         {
-          "evidenceId": "activepieces-docs-37",
-          "quote": "You write down the job in plain language, give it access to the apps it needs, and it handles the work as it arrives."
+          "evidenceId": "activepieces-docs-18",
+          "quote": "Describe what you want in chat, and Activepieces builds the agent or automation for you."
+        },
+        {
+          "evidenceId": "activepieces-docs-8",
+          "quote": "Write \"summarise my unread emails every morning\" and you get a drafted agent — a name, instructions, and the tools it needs"
         }
       ]
     }
@@ -185,16 +173,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Activepieces documents an API-key-authenticated REST API (Bearer token) and an MCP server that 'drives the whole platform', so it can be controlled programmatically without the UI. A one-line scripted install and Docker options support unattended deployment. There is no documented CLI, no CI integration guidance, and no published OpenAPI spec (probe found none). Missing for 10: an official CLI for headless use, documented CI/CD pipeline usage (e.g. deploying or testing flows from CI), a published OpenAPI spec, and independent hands-on corroboration of headless/CI workflows.",
+    "rationale": "Activepieces documents an API-key-authenticated REST API with a downloadable OpenAPI 3.1.0 spec, plus scriptable one-line and Docker Compose installs, so it can be driven and deployed without the UI. Nothing documents a CLI or CI integration for running or testing flows, and API keys are limited to the Platform/Enterprise editions. missing for 10: documented CLI or CI integration (e.g. GitHub Action) for running or testing flows, headless flow-execution workflow guidance, API-key access outside Platform/Enterprise editions, independent hands-on corroboration of CI use.",
     "evidenceIds": [
       "activepieces-docs-2",
       "activepieces-docs-28",
       "activepieces-docs-33",
-      "activepieces-docs-27",
-      "activepieces-docs-4",
+      "activepieces-openapi-spec-20261106",
       "activepieces-docs-26",
-      "activepieces-docs-6",
-      "activepieces-probe-3"
+      "activepieces-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -210,8 +196,8 @@
           "quote": "you can pass the API key as a Bearer token in the header"
         },
         {
-          "evidenceId": "activepieces-docs-27",
-          "quote": "Connect Claude, Cursor, Codex or any MCP client and it drives the whole platform."
+          "evidenceId": "activepieces-openapi-spec-20261106",
+          "quote": "Activepieces publishes a downloadable OpenAPI 3.1.0 document (84 paths, server https://cloud.activepieces.com/api)"
         },
         {
           "evidenceId": "activepieces-docs-26",
@@ -230,7 +216,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The agents tools documentation lists \"MCP server\" as a tool type, described as an external server for systems that aren't pieces. That indicates Activepieces agents can attach external MCP servers and use their tools, but the evidence is a single brief line. The built-in MCP server and embeddable MCP evidence covers the server role and is not credited here. missing for 10: documented setup/configuration steps for adding an MCP server, supported transports and authentication, details on how MCP tools are discovered and exposed to agents, independent or hands-on corroboration.",
+    "rationale": "The agent tools documentation lists \"MCP server\" as a tool type an agent can use: an external server for systems that are not pieces. This means Activepieces agents can plug in external MCP servers, but it is only a single brief mention. The built-in MCP server and embeddable MCP evidence covers the opposite (server) role and is not credited here. Missing for 10: documentation of how to register or configure an external MCP server (transport, auth, URL), tool discovery and selection behavior, whether this works in flows as well as agents, and hands-on or independent corroboration.",
     "evidenceIds": [
       "activepieces-docs-5"
     ],
@@ -252,7 +238,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Activepieces is an automation platform, not an agent, so an official MCP server applies. Its docs describe a built-in MCP server that lets Claude, Cursor, Codex or any MCP client build flows, manage tables and test automations, and a probe confirms the MCP docs page exists; an embeddable MCP option for embedded users adds depth. The agent-tools page on connecting to external MCP servers is client-side and was not credited. Missing for 10: independent or hands-on corroboration of connecting an agent to the MCP server.",
+    "rationale": "Activepieces is an automation platform, not purely an agent, so an official MCP server story applies. Its docs describe a built-in MCP server that lets AI assistants build flows, manage tables and test automations, and its MCP page says Claude, Cursor, Codex or any MCP client can connect and drive the platform. An embeddable MCP option for end users is also documented. Missing for 10: independent or hands-on corroboration that connecting an agent works as documented.",
     "evidenceIds": [
       "activepieces-docs-4",
       "activepieces-docs-27",
@@ -274,10 +260,6 @@
           "quote": "Connect Claude, Cursor, Codex or any MCP client and it drives the whole platform."
         },
         {
-          "evidenceId": "activepieces-probe-4",
-          "quote": "official MCP server documented at https://www.activepieces.com/docs/mcp/overview"
-        },
-        {
           "evidenceId": "activepieces-docs-13",
           "quote": "Let your embedded users connect their automations to AI with one click"
         }
@@ -288,9 +270,9 @@
     "productId": "activepieces",
     "storyId": "agentic-nl-commands",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Activepieces documents operating the product through natural language in two ways. Its own chat lets users describe what they want and get an agent or automation built, and agents can be drafted and edited from plain-language prompts. Its built-in MCP server also lets AI assistants build flows, manage tables and test automations through natural language, and drive the whole platform. Missing for 10: independent or hands-on corroboration that natural-language operation works reliably across the platform.",
+    "rationale": "First-party docs say users can describe what they want in chat and Activepieces builds the agent or automation. They also show plain-language editing of agents, and a built-in MCP server lets AI assistants build flows, manage tables and test automations through natural language. Missing for 10: independent or hands-on corroboration that natural-language operation works as claimed, and documentation that the in-product chat (not just an external MCP client) covers operations beyond building and editing.",
     "evidenceIds": [
       "activepieces-docs-18",
       "activepieces-docs-4",
@@ -319,6 +301,10 @@
         {
           "evidenceId": "activepieces-docs-29",
           "quote": "describe a change in the editor — \"only reply to paying customers\" — and the instructions and tools are rewritten for you"
+        },
+        {
+          "evidenceId": "activepieces-docs-8",
+          "quote": "Write \"summarise my unread emails every morning\" and you get a drafted agent — a name, instructions, and the tools it needs"
         }
       ]
     }
@@ -329,7 +315,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a workflow-automation platform, so the axis applies. However, nothing in the evidence pack documents an Activepieces CLI. The one-line install script (curl | sh), the REST API with API keys, the embedding SDK and the MCP server are an installer, an API or adjacent features, not an official command-line tool.",
+    "rationale": "The evidence pack never documents an official Activepieces CLI. The curl install script, the TypeScript piece-building docs, the REST API, the SDK and the MCP server are all adjacent surfaces, not a CLI. An official CLI is a fair question for an automation platform, so the axis applies and the absence of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -342,13 +328,16 @@
     "productId": "activepieces",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Activepieces documents a public API in its endpoints section, with API-key authentication passed as a Bearer token and keys generated from the platform dashboard. That clearly supports programmatic control of the product. The probe found no OpenAPI spec at the usual paths, which leaves endpoint breadth unverified, but it does not contradict the documented API. Missing for 10: evidence of which resources and operations the API covers, a published machine-readable OpenAPI spec, and independent or hands-on confirmation of using the API.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Activepieces documents a public REST API. It authenticates with API keys passed as Bearer tokens and is backed by a downloadable OpenAPI 3.1.0 spec (84 paths) with a per-endpoint \"Try it\" playground. A per-release breaking-changes register tracks API surface changes on a path-versioned /v1 API. The probe 404s only hit root-level OpenAPI paths and do not contradict the spec published under /docs. Missing for 10: API keys are restricted to the Platform/Enterprise editions, no independent or hands-on corroboration of driving the product via the API, and no published deprecation-window or support-horizon commitment.",
     "evidenceIds": [
       "activepieces-docs-2",
       "activepieces-docs-28",
-      "activepieces-docs-33"
+      "activepieces-docs-33",
+      "activepieces-openapi-spec-20261106",
+      "activepieces-api-playground-20261106",
+      "activepieces-breaking-changes-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -364,6 +353,42 @@
           "quote": "you can pass the API key as a Bearer token in the header"
         },
         {
+          "evidenceId": "activepieces-openapi-spec-20261106",
+          "quote": "Activepieces publishes a downloadable OpenAPI 3.1.0 document (84 paths, server https://cloud.activepieces.com/api) backing its Mintlify API reference"
+        },
+        {
+          "evidenceId": "activepieces-api-playground-20261106",
+          "quote": "The API reference renders the Mintlify \"Try it\" playground per endpoint"
+        },
+        {
+          "evidenceId": "activepieces-breaking-changes-20261106",
+          "quote": "Activepieces maintains a per-release breaking-changes register covering API surface changes"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "activepieces",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only scoped credential documented is the embeddable MCP flow, where a user's Authorize click gives the backend a token limited to running that user's automations through AI. The general API keys are platform-level and span multiple projects, so they are not scoped. Action-level agent tool restrictions limit what an agent can do, not what a credential can reach, so they get no credit here. Missing for 10: per-key permission or scope configuration, least-privilege API keys for standalone (non-embedded) agents, documentation of token scope granularity, expiry or revocation, and independent corroboration.",
+    "evidenceIds": [
+      "activepieces-docs-35",
+      "activepieces-docs-13",
+      "activepieces-docs-33"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": [
+        {
+          "evidenceId": "activepieces-docs-35",
+          "quote": "your backend gets a token it can use to run that user's automations through AI"
+        },
+        {
           "evidenceId": "activepieces-docs-33",
           "quote": "API keys are generated under the platform dashboard at this moment to manage multiple projects"
         }
@@ -372,31 +397,16 @@
   },
   {
     "productId": "activepieces",
-    "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The only documented API credentials are API keys generated in the platform dashboard to manage multiple projects, with no evidence of permission scopes or least-privilege restrictions. Per-action tool selection for agents is an adjacent control over in-product agent behaviour, not scoped API credentials. The embeddable MCP token is a per-user authorization for embedded automations, not documented as a scoped or least-privilege credential an agent can be issued.",
-    "evidenceIds": [],
-    "support": {
-      "relation": "adjacent",
-      "coverage": "none",
-      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
-    }
-  },
-  {
-    "productId": "activepieces",
     "storyId": "agentic-sdks",
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Activepieces documents an official SDK for embedding and customizing the builder inside a SaaS app, and a TypeScript framework for building pieces, so a first-party SDK surface exists. However, the evidence never describes general-purpose API client SDKs, language coverage, or SDK reference depth, and the OpenAPI probe returned 404 on all paths. Missing for 10: documented official API client SDKs (multiple languages), SDK reference documentation depth, published OpenAPI spec, independent or hands-on corroboration of SDK use.",
+    "rationale": "Activepieces documents its own official SDK for embedding and customizing the builder in a SaaS app, plus a TypeScript framework for building pieces, and it keeps an SDK changelog. Evidence of SDK depth is thin, and nothing shows official client SDKs for the REST API. missing for 10: documented official API client SDKs across languages, detailed SDK reference docs, independent or hands-on corroboration of SDK use.",
     "evidenceIds": [
       "activepieces-docs-3",
-      "activepieces-docs-16",
       "activepieces-docs-34",
-      "activepieces-docs-1"
+      "activepieces-docs-1",
+      "activepieces-breaking-changes-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -408,12 +418,12 @@
           "quote": "You can use the SDK to embed and customize Activepieces in your SaaS"
         },
         {
-          "evidenceId": "activepieces-docs-34",
-          "quote": "This section provides an overview of how to embed the Activepieces builder in your application and automatically provision the user."
-        },
-        {
           "evidenceId": "activepieces-docs-1",
           "quote": "Build pieces using TypeScript for a more powerful and flexible development process."
+        },
+        {
+          "evidenceId": "activepieces-breaking-changes-20261106",
+          "quote": "alongside a dated product changelog and an SDK changelog"
         }
       ]
     }
@@ -424,7 +434,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhook event subscriptions are a fair question for a workflow-automation platform, but the evidence pack never documents registrable outbound HTTP callbacks that a programmatic consumer could subscribe to. The general description of flows having triggers and actions is an adjacent feature, not documented webhook event subscription, so it earns no credit.",
+    "rationale": "Nothing in the evidence pack documents registrable outbound HTTP webhook callbacks that a programmatic consumer could subscribe to for Activepieces events. The pack covers flow triggers and actions, a REST API, the MCP server and embedding, but none of these is an event-subscription webhook mechanism.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -437,17 +447,16 @@
     "productId": "activepieces",
     "storyId": "ai-agent-workflow-steps",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Activepieces documents its own AI agents with explicit tool use. You attach individual piece actions, flows, files and external MCP servers as tools, and the agent decides which steps to run, with approval gates. The evidence does not show an agent or LLM step placed inside a flow; it shows the reverse, flows handed to agents as tools. Model choice is only implied by 'Bring your own AI keys'. missing for 10: explicit agent/LLM step inside a workflow, documented per-step model selection, independent or hands-on corroboration.",
+    "rationale": "Activepieces documents its own AI agents with tool use. You attach specific app actions, the agent can search 760+ apps, and flows can be handed to an agent as tools. Bring-your-own AI keys suggests some provider choice. However, the evidence presents agents as standalone workers that call flows, not as steps placed inside a workflow. Missing for 10: explicit documentation of an AI agent or LLM step inside a flow, explicit per-step model selection, and independent or hands-on corroboration.",
     "evidenceIds": [
       "activepieces-docs-30",
-      "activepieces-docs-42",
-      "activepieces-docs-5",
-      "activepieces-docs-15",
       "activepieces-docs-38",
+      "activepieces-docs-15",
       "activepieces-docs-24",
-      "activepieces-docs-17"
+      "activepieces-docs-37",
+      "activepieces-docs-42"
     ],
     "support": {
       "relation": "direct",
@@ -459,12 +468,8 @@
           "quote": "You attach individual actions, not whole apps. An agent given Send message can post to Slack and nothing else."
         },
         {
-          "evidenceId": "activepieces-docs-42",
-          "quote": "You set the goal and choose which apps, flows and files the agent can use. It decides the steps and carries them out."
-        },
-        {
-          "evidenceId": "activepieces-docs-5",
-          "quote": "MCP server An external server, for systems that aren't pieces."
+          "evidenceId": "activepieces-docs-38",
+          "quote": "It searches Slack, Linear, Drive, or any of 760+ apps at the moment it needs the answer"
         },
         {
           "evidenceId": "activepieces-docs-15",
@@ -473,6 +478,10 @@
         {
           "evidenceId": "activepieces-docs-24",
           "quote": "Bring your own AI keys"
+        },
+        {
+          "evidenceId": "activepieces-docs-42",
+          "quote": "You set the goal and choose which apps, flows and files the agent can use. It decides the steps and carries them out."
         }
       ]
     }
@@ -480,31 +489,55 @@
   {
     "productId": "activepieces",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence shows only that an API endpoints overview exists, covering API-key and Bearer-token authentication. Nothing shows an interactive reference or runnable 'try it' examples, and the OpenAPI/Swagger probes at every candidate path returned 404. A plain API docs page is adjacent to this story, not the interactive, runnable reference it asks for.",
-    "evidenceIds": [],
+    "rationale": "Activepieces' Mintlify API reference renders a per-endpoint \"Try it\" playground, backed by a downloadable OpenAPI 3.1.0 document with per-operation specs, so its own reference is interactive and runnable. Running requests is limited: it targets the production cloud server and needs a Platform/Enterprise-only API key, with no documented sandbox. The playground's presence is also inferred from config (the disabled-playground setting is absent) rather than shown hands-on. Missing for 10: request execution without a paid-edition key, a sandbox or test environment for running examples, and hands-on or independent confirmation that the playground works.",
+    "evidenceIds": [
+      "activepieces-api-playground-20261106",
+      "activepieces-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "activepieces-api-playground-20261106",
+          "quote": "The API reference renders the Mintlify \"Try it\" playground per endpoint"
+        },
+        {
+          "evidenceId": "activepieces-api-playground-20261106",
+          "quote": "executing requests needs a Platform/Enterprise API key"
+        },
+        {
+          "evidenceId": "activepieces-openapi-spec-20261106",
+          "quote": "Activepieces publishes a downloadable OpenAPI 3.1.0 document (84 paths, server https://cloud.activepieces.com/api) backing its Mintlify API reference"
+        }
+      ]
     }
   },
   {
     "productId": "activepieces",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Activepieces documents a REST API authenticated with API keys, but nothing in the evidence shows a downloadable OpenAPI or equivalent machine-readable spec. The probe found every common OpenAPI/Swagger path returning 404. The llms.txt file and the MCP server are related features, not an API specification.",
-    "evidenceIds": [],
+    "rationale": "Activepieces publishes a downloadable OpenAPI 3.1.0 document at /docs/openapi.json, covering 84 paths, and embeds per-operation OpenAPI in every endpoint page's markdown mirror. The probe 404s were on different root-level paths (/openapi.json, /swagger.json, etc.), so they do not contradict the /docs/openapi.json location. Missing for 10: independent or hands-on confirmation that the /docs/openapi.json path resolves.",
+    "evidenceIds": [
+      "activepieces-openapi-spec-20261106",
+      "activepieces-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "activepieces-openapi-spec-20261106",
+          "quote": "Activepieces publishes a downloadable OpenAPI 3.1.0 document (84 paths, server https://cloud.activepieces.com/api) backing its Mintlify API reference, with per-operation OpenAPI embedded in every endpoint page's markdown mirror."
+        }
+      ]
     }
   },
   {
@@ -513,28 +546,48 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a draft/publish separation: edits do not affect the published flow until published, and sensitive projects require approval to publish. That protects the live flow, but it is not a sandbox environment that isolates test runs from production data. Nothing documents a separate test environment, mock data, or isolated test execution. Self-hosting a separate instance would be a user-side workaround, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "The evidence pack documents no sandbox or test environment that isolates testing from production data. The closest feature is draft-versus-published flow separation: unpublished edits don't disrupt the live flow, but this is adjacent, and there is no evidence that drafts run against isolated or mock data rather than real connections. The API 'Try it' playground runs against the production cloud server, and Sensitive-project publish approval is a governance gate, not data isolation.",
+    "evidenceIds": [
+      "activepieces-docs-40",
+      "activepieces-api-playground-20261106"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "activepieces-docs-40",
+          "quote": "The changes you make won't work right away to avoid disrupting the flow that's already published."
+        }
+      ]
     }
   },
   {
     "productId": "activepieces",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Activepieces exposes a public API authenticated with API keys, so the axis applies. Nothing in the evidence documents API versioning or a deprecation policy. Flow draft/publish behavior is a different feature, and the OpenAPI probe found no spec.",
-    "evidenceIds": [],
+    "rationale": "Activepieces documents a path-versioned API (/v1) and keeps a per-release breaking-changes register for API surface changes, with upgrade guidance, plus dated product and SDK changelogs. However, it publishes no deprecation window or support-horizon commitment, so the 'documented deprecation policy' half of the story is only approximated by after-the-fact change notes. missing for 10: a formal deprecation policy with notice periods, a support-horizon guarantee for API versions, independent corroboration.",
+    "evidenceIds": [
+      "activepieces-breaking-changes-20261106",
+      "activepieces-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "activepieces-breaking-changes-20261106",
+          "quote": "Activepieces maintains a per-release breaking-changes register covering API surface changes"
+        },
+        {
+          "evidenceId": "activepieces-breaking-changes-20261106",
+          "quote": "The API is path-versioned (/v1)"
+        }
+      ]
     }
   },
   {
@@ -543,7 +596,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs say every flow starts with a trigger that activates its actions, and Activepieces connects 760+ apps as an open-source Zapier replacement, so event-driven flows are its core model. However, nothing in the pack explicitly shows triggers firing on connected-app events such as new records, messages, emails or form submissions. missing for 10: explicit documentation of app-event triggers (new record, new message, new email, form submission), a list or examples of trigger types per app, independent or hands-on corroboration of event triggering.",
+    "rationale": "Activepieces documents that every flow starts with a trigger followed by actions, and it connects to 760+ apps, so app-event triggering is the core model. However, the evidence never explicitly shows triggers firing on app events such as new records, messages, emails or form submissions. missing for 10: explicit documentation of event-based app triggers (new record, message, email, form submission), a list of trigger types per piece, independent or hands-on corroboration of triggers firing.",
     "evidenceIds": [
       "activepieces-docs-21",
       "activepieces-docs-39",
@@ -561,15 +614,11 @@
         },
         {
           "evidenceId": "activepieces-docs-39",
-          "quote": "Actions come after the trigger and control what occurs when the flow is activated, like running code or communicating with other services."
+          "quote": "Actions come after the trigger and control what occurs when the flow is activated"
         },
         {
           "evidenceId": "activepieces-docs-7",
           "quote": "Move data, send messages and update records between 764 apps without writing glue code."
-        },
-        {
-          "evidenceId": "activepieces-gh-1",
-          "quote": "An open source replacement for Zapier"
         }
       ]
     }
@@ -580,7 +629,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any configurable automatic retry or backoff policy for failed steps. The only related item (docs-9) covers durable execution, where interrupted runs resume from a checkpoint. That is an adjacent infrastructure behavior, not developer-configured retries with backoff, so it earns no credit for this story.",
+    "rationale": "Nothing in the evidence pack documents configurable automatic retries or backoff for failed steps. The closest item is durable execution, where interrupted runs resume from a checkpoint. That is recovery from infrastructure interruption, not a developer-configured retry-with-backoff policy for failed steps, so it is adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -595,7 +644,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a workflow automation platform, but the evidence pack never documents batch or bulk actions, loops over item lists, or multi-item processing. The material on flows (trigger plus actions), agents and the MCP server's ability to 'manage tables' does not show acting on many items at once, so it earns no credit here.",
+    "rationale": "Bulk operations are a fair question for a workflow-automation platform, so the axis applies. However, nothing in the pack documents batch or bulk actions, loops over item lists, or acting on many records in a single operation. General statements about moving data between apps or managing tables via MCP do not establish a bulk-operation capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -607,19 +656,18 @@
   {
     "productId": "activepieces",
     "storyId": "automation-rules-engine",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Activepieces' core flow model is a trigger followed by actions. The docs say actions run when the flow is activated, which is event-triggered automation in the Zapier style the project explicitly replaces. Agents also handle incoming work as it arrives. Missing for 10: documentation of specific event trigger types (e.g. app events, webhooks, schedules), evidence of conditional/branching rule logic, and independent hands-on corroboration.",
+    "rationale": "Activepieces documents flows built from a trigger followed by actions that run when the flow is activated, and those flows become live once published. That covers the core 'event triggers action' mechanism, but the docs in the pack do not describe event-trigger types or conditional rule logic, and nothing independent confirms the behavior. Missing for 10: documented event-trigger types (app events or webhooks), conditional/branching rule definitions, hands-on or independent corroboration.",
     "evidenceIds": [
       "activepieces-docs-21",
       "activepieces-docs-39",
-      "activepieces-gh-1",
-      "activepieces-docs-14"
+      "activepieces-docs-40"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
@@ -631,12 +679,8 @@
           "quote": "Actions come after the trigger and control what occurs when the flow is activated, like running code or communicating with other services."
         },
         {
-          "evidenceId": "activepieces-gh-1",
-          "quote": "An open source replacement for Zapier"
-        },
-        {
-          "evidenceId": "activepieces-docs-14",
-          "quote": "it handles the work as it arrives"
+          "evidenceId": "activepieces-docs-40",
+          "quote": "To enable your changes, simply click on the publish button once you're done with your changes."
         }
       ]
     }
@@ -647,7 +691,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence says flows start from a trigger, but nothing documents a schedule, cron, or interval trigger that runs flows or agents on a recurring basis. The changelog example of typing \"summarise my unread emails every morning\" only says this produces a drafted agent (name, instructions, tools). It does not say a recurring schedule is configured, so it is a hypothetical prompt example, not affirmative support for scheduling.",
+    "rationale": "Scheduling recurring workflows is a fair question for a Zapier-style automation platform, but the evidence pack never documents a schedule, cron, or recurring trigger. Docs say flows start with a trigger (activepieces-docs-21) without naming a time-based one. The changelog line \"summarise my unread emails every morning\" (activepieces-docs-8) is an example prompt for drafting an agent, not documented recurring-schedule support. Since the axis applies but nothing in the pack shows the product delivers it, the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -660,9 +704,9 @@
     "productId": "activepieces",
     "storyId": "automation-versioned-workflows",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Activepieces keeps draft edits separate from the published flow and documents an approval-gated publish review for Sensitive projects. That covers the review part and a basic draft-versus-published form of versioning. Nothing in the evidence documents a version history or a way to roll back to a prior version. Missing for 10: documented flow version history, rollback/restore to previous versions, review outside Sensitive projects, independent or hands-on corroboration.",
+    "rationale": "Activepieces documents a draft/published split, so edits do not affect the live flow until you click Publish. Sensitive projects also require an approval review before publishing, which covers the review part. Nothing in the pack shows version history or rolling back to a prior version. Missing for 10: documented flow version history, rollback/restore to prior versions, review outside Sensitive projects, independent corroboration.",
     "evidenceIds": [
       "activepieces-docs-40",
       "activepieces-docs-43",
@@ -690,7 +734,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack never documents a central connection or credential store, sharing connections with a team, or per-credential access controls. The nearest items are adjacent and do not transfer: general governance claims (\"decide who can build, what they can reach\"), the sensitive-flow publishing permission, audit logs that record the account used, and vague community praise for connections.",
+    "rationale": "Central credential storage, sharing, and per-credential access control is a fair question for a workflow-automation platform, so the axis applies. The pack has no documentation of shared connections or credential-level permissions. The nearby evidence is off-target: API keys authenticate the platform's own API, the governance page describes build and reach controls in general, audit logs record which account an agent used, and one community comment vaguely praises connections, so none of it counts toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -705,7 +749,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The flow-building docs say actions can include \"running code,\" so the product itself offers a code step inside a workflow. That is a single passing mention. It does not say which languages are supported or how a code step works. The TypeScript piece-building docs cover authoring custom integrations, which is a different capability, so they earn no credit here. Missing for 10: documented JavaScript and/or Python code-step support, details of the code-step editor and runtime (packages, inputs/outputs, sandboxing), and independent or hands-on corroboration.",
+    "rationale": "Activepieces' flow docs say flow actions can include \"running code\", so a code step inside a workflow is a first-party capability. That is the only mention: the evidence doesn't say which languages are supported, how the step works, or what it can access. Building custom pieces in TypeScript is a separate piece-development capability and earns no credit here. Missing for 10: confirmation of JavaScript and/or Python support, dedicated code-step documentation (inputs/outputs, packages, runtime limits), and hands-on or independent corroboration.",
     "evidenceIds": [
       "activepieces-docs-39"
     ],
@@ -727,7 +771,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows that developers can author their own pieces in TypeScript and that a catalog of 760+ integrations exists. It never documents installing community-built pieces contributed from outside the vendor, nor any marketplace, registry or import mechanism for third-party pieces. Authoring your own piece is a developer building block, not the install capability the story asks for, so it earns no credit.",
+    "rationale": "The evidence shows developers can build their own pieces in TypeScript and that a catalog of 760+ apps exists. Nothing documents that pieces are contributed by the community outside the vendor, or that a developer can install such third-party pieces. Building your own piece is a developer building block, not the capability to install community-built integrations, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -742,7 +786,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Throttling or queuing executions is a fair question for a workflow automation platform, but the evidence pack never documents concurrency limits, rate limiting, or execution queue controls. The only reliability item, durable execution resuming from a checkpoint, is about recovering interrupted runs, not about respecting downstream rate limits, so it earns no credit.",
+    "rationale": "Throttling or queuing workflow executions is a fair question for a workflow automation platform, but the evidence pack never documents concurrency limits, rate limiting, or execution queues. The durable-execution checkpoint resume is a different reliability feature and does not throttle runs to respect downstream rate limits.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -757,7 +801,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Activepieces is a visual workflow-automation product, so branching is a fair axis to judge it on. The evidence only describes flows as a trigger plus actions and never mentions conditions, filters, branches, parallel paths or merging. Absent any documentation of these, the verdict is none.",
+    "rationale": "Branching is a fair axis for a workflow automation product, but the evidence pack never documents branches, conditions, filters, routers, or parallel paths that merge. It only says a flow consists of a trigger and actions, which does not show conditional or parallel control flow.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -772,7 +816,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling applies to a workflow automation tool like Activepieces, but the evidence pack never documents a schedule or cron trigger, or any timezone setting. It only notes that flows have triggers and gives an example agent prompt about running 'every morning', which is not a documented scheduling capability.",
+    "rationale": "Scheduling is a fair question for a workflow automation tool, but the evidence pack never documents a schedule or cron trigger, and never mentions timezone settings. It only says flows have a trigger and actions. The changelog prompt \"summarise my unread emails every morning\" shows agent drafting from plain language, not a documented recurring cron schedule with timezone control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -787,7 +831,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Activepieces documents its own developer path for building custom connectors (\"pieces\") in TypeScript, with a local dev loop that shows changes in the browser within seconds. The evidence does not show a piece SDK or CLI, how pieces are scaffolded, or how they are published or kept private, so coverage is only partial. Missing for 10: a documented pieces SDK/CLI or scaffolding, private piece publishing or distribution, and independent hands-on corroboration of building a custom piece.",
+    "rationale": "Activepieces documents its own TypeScript piece-building framework for custom connectors, including a fast local dev loop, so the core capability is first-party. However, the evidence is thin: two short doc snippets cover piece building, and nothing shows how a custom piece is privately published or distributed, nor any piece-scaffolding CLI or SDK reference for it. missing for 10: documented private/custom piece publishing to a self-hosted or cloud instance, an evidenced piece-scaffolding CLI or SDK reference, in-depth piece-framework docs (auth, triggers, actions), independent or hands-on corroboration of building a custom piece",
     "evidenceIds": [
       "activepieces-docs-1",
       "activepieces-docs-12"
@@ -814,7 +858,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Activepieces has a first-party durable-execution architecture page stating that interrupted runs resume from their last checkpoint rather than restarting, which covers the survive-restarts part of the story. Nothing in the pack shows workflows that pause and wait for days, such as delay or wait steps. The only durability evidence is a single short doc line. missing for 10: documented multi-day wait/delay steps, details of how state persists across worker vs. platform restarts, independent or hands-on corroboration of checkpoint resumption.",
+    "rationale": "Activepieces documents durable execution: interrupted runs resume from their last checkpoint rather than restarting, which covers surviving worker or platform restarts without losing state. Nothing in the evidence shows flows that pause or wait for days, such as a delay or wait step, and the agent approval wait is a different feature. Missing for 10: documented long-duration wait/delay steps lasting days, detail on how state is persisted across restarts, and independent or hands-on corroboration of restart recovery.",
     "evidenceIds": [
       "activepieces-docs-9"
     ],
@@ -836,12 +880,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Activepieces documents an embedding SDK for putting the builder inside a SaaS app, with customization and automatic user provisioning. Its pricing page explicitly promises the flow builder and integrations 'inside your own product, under your own brand', and an embeddable MCP flow extends this to embedded users. missing for 10: detailed documentation of white-label branding and theming controls, independent or hands-on corroboration of the embedding.",
+    "rationale": "Activepieces documents an embedding SDK that lets you embed and customize the builder in your SaaS and automatically provision users. Its pricing page explicitly offers the flow builder, agents and integrations 'inside your own product, under your own brand', and embeddable MCP extends this to embedded users. Missing for 10: detailed white-label branding docs (theming, custom domain, removing vendor branding), independent or hands-on corroboration of the embedding experience.",
     "evidenceIds": [
       "activepieces-docs-3",
       "activepieces-docs-16",
-      "activepieces-docs-17",
       "activepieces-docs-34",
+      "activepieces-docs-17",
+      "activepieces-docs-13",
       "activepieces-docs-35"
     ],
     "support": {
@@ -854,16 +899,16 @@
           "quote": "You can use the SDK to embed and customize Activepieces in your SaaS"
         },
         {
-          "evidenceId": "activepieces-docs-17",
-          "quote": "Put a flow builder, AI agents and 760+ integrations inside your own product, under your own brand."
-        },
-        {
           "evidenceId": "activepieces-docs-34",
           "quote": "This section provides an overview of how to embed the Activepieces builder in your application and automatically provision the user."
         },
         {
-          "evidenceId": "activepieces-docs-35",
-          "quote": "Your user clicks one **Authorize** button inside your app, and your backend gets a token it can use to run that user's automations through AI."
+          "evidenceId": "activepieces-docs-17",
+          "quote": "Put a flow builder, AI agents and 760+ integrations inside your own product, under your own brand."
+        },
+        {
+          "evidenceId": "activepieces-docs-13",
+          "quote": "Let your embedded users connect their automations to AI with one click"
         }
       ]
     }
@@ -874,13 +919,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only a draft-versus-published model inside a single flow, plus an approval gate for publishing in Sensitive projects. Neither is source-control (Git) versioning, nor separate dev/production environments with a promotion path. That makes them adjacent publishing controls, not the capability this story asks for. Nothing in the pack documents Git sync, flow export/import between environments, or environment promotion.",
-    "evidenceIds": [],
+    "rationale": "The evidence shows only a draft-vs-published model within a single flow, plus approval-gated publishing in Sensitive projects. That is an adjacent publishing control, not source-control integration or dev-to-production environment promotion. Nothing documents Git sync, flow export or import for versioning, or multi-environment promotion.",
+    "evidenceIds": [
+      "activepieces-docs-40",
+      "activepieces-docs-43"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can version workflows through source control or environments and promote changes from dev to production",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "activepieces-docs-40",
+          "quote": "The changes you make won't work right away to avoid disrupting the flow that's already published. To enable your changes, simply click on the publish button once you're done with your changes."
+        },
+        {
+          "evidenceId": "activepieces-docs-43",
+          "quote": "In projects marked as **Sensitive**, publishing requires review from a user with the `PUBLISH_SENSITIVE_FLOW_ACCESS` permission."
+        }
+      ]
     }
   },
   {
@@ -889,7 +946,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents dedicated error-handling branches, error workflows, or alerts when a run fails. The only reliability-related item (docs-9) covers interrupted runs resuming from a checkpoint, which is durable execution, not error routing or failure notification.",
+    "rationale": "The evidence pack does not document dedicated error-handling branches, error workflows, or failure notifications for flow runs. The only reliability-related item covers durable execution, where interrupted runs resume from a checkpoint. That is an adjacent recovery feature, not an error path or a failure alert, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -901,23 +958,16 @@
   {
     "productId": "activepieces",
     "storyId": "expressions-data-mapping",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only relevant evidence is a single mention that flow actions can include \"running code\". That is a first-party code step that could transform data, but nothing documents mapping outputs from one step into the inputs of the next. missing for 10: documented data mapping or referencing of previous step outputs, an expression or formula syntax for ops users, built-in transform functions, and any independent or hands-on corroboration.",
-    "evidenceIds": [
-      "activepieces-docs-39"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no documentation of mapping data between steps or transforming it with expressions, functions, or formulas. The only nearby mention is that flow actions can include \"running code\" (activepieces-docs-39). It does not say that code steps can reference earlier step outputs or transform data, so it is an adjacent feature and earns no credit here.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an ops user, I can map and transform data between steps with expressions, functions, or formulas",
-      "citations": [
-        {
-          "evidenceId": "activepieces-docs-39",
-          "quote": "Actions come after the trigger and control what occurs when the flow is activated, like running code or communicating with other services."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -926,7 +976,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Activepieces' own product page says its AI agents pause for human sign-off at runtime: \"Anything you want to check first waits for your approval.\" That is a real human-in-the-loop pause, but it is documented only for agents, in marketing-level copy. The publish-review gate for Sensitive projects and checkpoint resume are different features and earn no credit. Missing for 10: a documented approval or wait-for-input step inside regular flows, collecting human input (not just approval) mid-run, in-depth docs on how approvals are routed and resumed, and independent or hands-on corroboration.",
+    "rationale": "Activepieces' AI agent builder documents a human-in-the-loop gate where an agent's actions can wait for the user's approval before running, so the product does pause automated work for human sign-off. That evidence is only a marketing-level line scoped to agents, not flows. The Sensitive-project 'Request approval' feature governs publishing a flow, not pausing a running one, so it is adjacent and not credited. Missing for 10: a documented approval or wait step inside flows, collecting human input (forms or responses) mid-run, detail on how approvals are delivered and on timeouts, and independent or hands-on corroboration.",
     "evidenceIds": [
       "activepieces-docs-42",
       "activepieces-docs-31"
@@ -953,7 +1003,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Activepieces is a workflow-automation product, so an inbound webhook trigger is a fair axis to judge. However, the evidence pack only says generically that flows consist of a trigger and actions. Nothing documents a custom webhook URL that receives external HTTP requests and starts a run with the payload.",
+    "rationale": "The evidence pack says only that flows consist of a trigger and actions. Nothing documents a custom webhook URL that receives external HTTP requests and starts a run with the payload. A generic trigger concept is adjacent, not this capability, and the axis clearly applies to a workflow-automation product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -968,12 +1018,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Activepieces documents running its own instance locally: a single Docker container with an embedded database for one machine, a one-line install script, and Docker Compose. Developers can therefore stand up a local or dev instance to run workflows, and piece development offers fast browser reload. However, nothing documents CI testing of workflows, such as headless or CLI test runs or promoting flows between dev and prod instances, and a community user reported missing dev-setup instructions. missing for 10: CI/automated workflow testing tooling, CLI or headless flow execution, dev-to-prod flow promotion, independent hands-on confirmation of a smooth local dev workflow.",
+    "rationale": "Activepieces documents its own local and self-hosted installs: a one-line installer, Docker Compose, and a single container with an embedded database for one machine. A developer can therefore run workflows on a local or dev instance. Nothing in the pack covers CI testing, such as headless flow execution, a test runner or CLI, or promoting flows between environments. A community report also notes that dev-setup instructions were missing. missing for 10: CI test execution of flows, CLI or headless run tooling, dev-to-prod environment promotion docs, independent hands-on corroboration.",
     "evidenceIds": [
       "activepieces-docs-36",
       "activepieces-docs-26",
       "activepieces-docs-6",
-      "activepieces-docs-12",
       "activepieces-comm-2"
     ],
     "support": {
@@ -992,10 +1041,6 @@
         {
           "evidenceId": "activepieces-docs-26",
           "quote": "curl -fsSL https://get.activepieces.com | sh"
-        },
-        {
-          "evidenceId": "activepieces-docs-12",
-          "quote": "See your changes in the browser within 7 seconds."
         }
       ]
     }
@@ -1003,20 +1048,19 @@
   {
     "productId": "activepieces",
     "storyId": "nl-workflow-generation",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "First-party docs say users can describe what they want in chat and Activepieces builds the agent or automation, and that the built-in MCP server lets AI assistants build flows through natural language. Natural-language editing is documented explicitly for agents, where described changes rewrite the instructions and tools. missing for 10: explicit documentation of natural-language editing of existing flows (not just agents), in-depth docs on the in-product flow-generation experience, independent or hands-on corroboration.",
+    "rationale": "Activepieces documents generating automations from a chat description (\"Activepieces builds the agent or automation for you\"), and its built-in MCP server lets AI assistants build flows through natural language. The editing half of the story is only evidenced for agents, where a described change rewrites the instructions and tools, not for flows. All support is vendor-claimed. Missing for 10: documented natural-language editing of existing flows (not just agents), in-depth docs on the in-product prompt-to-flow builder, and independent or hands-on corroboration.",
     "evidenceIds": [
       "activepieces-docs-18",
       "activepieces-docs-4",
       "activepieces-docs-29",
-      "activepieces-docs-8",
-      "activepieces-docs-27"
+      "activepieces-docs-8"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can generate or edit a workflow from a natural-language prompt",
       "citations": [
         {
@@ -1040,14 +1084,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Activepieces documents an API-key-authenticated REST API, and its built-in MCP server is claimed to 'drive the whole platform' (building flows, managing tables, testing automations). No document claims or shows full API-to-UI parity, and the OpenAPI probe found no published spec. API keys are generated in the platform dashboard rather than through the API. missing for 10: documented API/UI parity statement or full endpoint coverage, published OpenAPI spec, programmatic API key management, independent hands-on confirmation of parity.",
+    "rationale": "Activepieces documents a public REST API with API-key auth and a downloadable OpenAPI 3.1.0 spec with 84 paths. It also ships a built-in MCP server that it claims 'drives the whole platform', including building flows, managing tables and testing automations. Nothing explicitly states or demonstrates full UI-to-API parity, and API keys are limited to the Platform and Enterprise editions. Missing for 10: an explicit or verified statement of UI/API parity, API access on all editions, independent hands-on corroboration of API coverage.",
     "evidenceIds": [
       "activepieces-docs-2",
-      "activepieces-docs-28",
-      "activepieces-docs-33",
-      "activepieces-docs-4",
+      "activepieces-openapi-spec-20261106",
       "activepieces-docs-27",
-      "activepieces-probe-3"
+      "activepieces-docs-4",
+      "activepieces-docs-33"
     ],
     "support": {
       "relation": "direct",
@@ -1059,16 +1102,16 @@
           "quote": "The API uses \"API keys\" to authenticate requests."
         },
         {
-          "evidenceId": "activepieces-docs-28",
-          "quote": "you can pass the API key as a Bearer token in the header"
-        },
-        {
-          "evidenceId": "activepieces-docs-4",
-          "quote": "Activepieces includes a built-in MCP server that lets AI assistants build flows, manage tables, test automations, and more"
+          "evidenceId": "activepieces-openapi-spec-20261106",
+          "quote": "Activepieces publishes a downloadable OpenAPI 3.1.0 document (84 paths, server https://cloud.activepieces.com/api)"
         },
         {
           "evidenceId": "activepieces-docs-27",
           "quote": "Connect Claude, Cursor, Codex or any MCP client and it drives the whole platform."
+        },
+        {
+          "evidenceId": "activepieces-docs-4",
+          "quote": "Activepieces includes a built-in MCP server that lets AI assistants build flows, manage tables, test automations, and more"
         },
         {
           "evidenceId": "activepieces-docs-33",
@@ -1083,7 +1126,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a data-export feature, such as exporting flows, tables, run history or connections in open formats, or any documented offboarding path. The MIT/open-source status, self-hosting and a general API are adjacent building blocks rather than an export capability, so they earn no credit for this story.",
+    "rationale": "The evidence pack documents no first-party data export feature, such as bulk export of flows, tables or run history in an open format. Open-source licensing, self-hosting and a REST API with an OpenAPI spec are adjacent openness traits or developer building blocks, not a documented export-and-leave capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1098,7 +1141,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Activepieces publishes its source in a public GitHub repository described as 'An open source replacement for Zapier'. Its own llms.txt calls it 'Open-source', and a community commenter independently notes the MIT license. Missing for 10: a first-party statement of the license terms in the evidence (e.g. the LICENSE file), and clarity on whether any parts of the codebase sit outside the open license.",
+    "rationale": "Activepieces publishes its source in a public GitHub repository that describes itself as \"An open source replacement for Zapier\", and its llms.txt calls it open-source. A community member independently notes the MIT license. Missing for 10: first-party documentation of the exact license terms (MIT is attested only by the community), and any detail on whether some editions or features sit outside the open license.",
     "evidenceIds": [
       "activepieces-gh-1",
       "activepieces-comm-4",
@@ -1130,16 +1173,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Activepieces is open source on GitHub (MIT-licensed per community) and documents several self-hosting paths: a one-line install script, Docker Compose that generates config and secrets, and a single-container Docker option. Its docs also say it can run on your own infrastructure or entirely inside your own network, and a community user ran it locally with the published images. missing for 10: evidence of production-scale deployment guidance (e.g. Kubernetes/HA), and complete dev-from-source setup docs, which a hands-on user reported were missing.",
+    "rationale": "Activepieces documents several first-party self-hosting paths: a one-line install script, Docker Compose that generates config and secrets and starts everything, and a single-container Docker option. It is presented as open source and runnable on your own infrastructure. A community user reports running it locally, though they hit a minor unrelated bug and noted missing dev-setup instructions. Missing for 10: independent corroboration of production-grade self-hosted operation, and docs for building or running the self-hosted stack from local source rather than published images.",
     "evidenceIds": [
       "activepieces-docs-6",
       "activepieces-docs-26",
       "activepieces-docs-36",
       "activepieces-docs-25",
       "activepieces-docs-41",
-      "activepieces-docs-44",
       "activepieces-gh-1",
-      "activepieces-comm-4",
       "activepieces-comm-2"
     ],
     "support": {
@@ -1161,7 +1202,7 @@
         },
         {
           "evidenceId": "activepieces-docs-25",
-          "quote": "Bring your own AI keys, run it on your own infrastructure, and keep the governance your company needs."
+          "quote": "run it on your own infrastructure"
         },
         {
           "evidenceId": "activepieces-docs-41",
@@ -1180,7 +1221,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Activepieces documents a first-party catalog of prebuilt integrations (\"pieces\") covering 760+ apps, free on every plan. That falls well short of the \"thousands\" in the story, and nothing in the evidence shows who builds or maintains the pieces. Missing for 10: catalog at the thousands scale (evidence shows ~763 apps), evidence that integrations are vendor-maintained, and independent or hands-on corroboration of connector quality.",
+    "rationale": "Activepieces documents a catalog of prebuilt integrations (\"pieces\") covering roughly 760+ apps, free on every plan, cloud or self-hosted. That is hundreds rather than the thousands the story asks for, and nothing in the evidence says who builds or maintains these pieces. Missing for 10: catalog breadth in the thousands, evidence that integrations are vendor-maintained, independent corroboration of connector quality and coverage.",
     "evidenceIds": [
       "activepieces-docs-7",
       "activepieces-docs-41",
@@ -1197,12 +1238,12 @@
           "quote": "Move data, send messages and update records between 763 apps without writing glue code. Free on every plan, cloud or self-hosted."
         },
         {
-          "evidenceId": "activepieces-docs-17",
-          "quote": "Put a flow builder, AI agents and 760+ integrations inside your own product, under your own brand."
+          "evidenceId": "activepieces-docs-7",
+          "quote": "Move data, send messages and update records between 764 apps without writing glue code."
         },
         {
-          "evidenceId": "activepieces-docs-38",
-          "quote": "It searches Slack, Linear, Drive, or any of 760+ apps at the moment it needs the answer"
+          "evidenceId": "activepieces-docs-17",
+          "quote": "Put a flow builder, AI agents and 760+ integrations inside your own product, under your own brand."
         }
       ]
     }
@@ -1213,7 +1254,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Activepieces documents two places your data can live: its own EU cloud, or self-hosted 'entirely inside your own network' on your own infrastructure. Self-hosting gives full control over location, but the evidence shows only one cloud region (EU) and no documented region picker or residency guarantees for the hosted service. Missing for 10: a documented choice among multiple cloud regions, explicit data-residency commitments or docs, and independent corroboration.",
+    "rationale": "Activepieces documents two places your data can live: its EU cloud, or your own infrastructure via self-hosting (Docker or Docker Compose). That gives a real choice of where data is stored. There is no documented region selector for the cloud, and no data-residency guarantees or detail on what data stays where. Missing for 10: a multi-region choice in the managed cloud, documented residency commitments, independent corroboration.",
     "evidenceIds": [
       "activepieces-docs-44",
       "activepieces-docs-25",
@@ -1246,10 +1287,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Activepieces is an AI-enabled automation platform, so a no-training privacy posture is a fair question to ask of it. However, the evidence pack contains no training opt-out, no data-use policy, and no statement that customer data is excluded from model training. Bring-your-own AI keys, self-hosting, and an EU cloud option are adjacent deployment and governance features, not a documented guarantee or control over model training.",
+    "rationale": "Nothing in the evidence documents a no-training policy, a training opt-out, or any commitment about how Activepieces or its AI providers use customer data for model training. The \"bring your own AI keys\" and self-hosting options are adjacent privacy and deployment controls, not a documented capability to prevent data from being used for training, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
       "citations": []
@@ -1261,7 +1302,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair question for a workflow automation platform, so the axis applies. The pack documents self-hosting, an EU cloud option, audit logs and sensitive-project publishing approval, but nothing about retention periods, run-data purging or deletion controls. Self-hosting and governance features are adjacent and earn no credit here.",
+    "rationale": "Data retention and deletion controls are a fair axis for a workflow automation platform that stores run data. No evidence item documents retention periods, run-history pruning, or deletion controls. Self-hosting, the EU cloud, and audit logs are adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1276,7 +1317,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a self-hostable automation platform, so the axis applies. The evidence pack never mentions telemetry, usage tracking, or any opt-out setting. Self-hosting and bring-your-own-keys claims are adjacent privacy features and are not a documented telemetry opt-out.",
+    "rationale": "Telemetry opt-out is a fair question for a self-hostable automation platform, so the axis applies. However, nothing in the evidence pack mentions telemetry, usage tracking, analytics collection, or a setting to disable them. Self-hosting and bring-your-own-keys statements are adjacent capabilities and do not show a documented opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1291,7 +1332,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack has no documentation of an execution or run-history log view, and no user-initiated retry of a failed run from its failing step. The only related item is the durable-execution note that interrupted runs resume from their last checkpoint. That is automatic infrastructure recovery from interruptions, an adjacent feature rather than an ops user inspecting logs and re-running a failed execution. The agent audit logs cover governance, not flow-run logs.",
+    "rationale": "The evidence pack documents no run-history view for inspecting past flow executions and no user-triggered retry of a failed run from its failing step. The only related item is durable execution, where infrastructure-interrupted runs resume automatically from a checkpoint. That is an adjacent reliability mechanism, not an ops user re-running a failed execution. Agent audit logs are also adjacent and are not flow execution logs.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -1306,10 +1347,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows flows can be handed to AI agents as tools, and developers can write custom TypeScript pieces. Neither documents a flow calling another flow as a reusable sub-workflow. Agent-callable flows and custom integration pieces are adjacent features, not composable sub-workflows invoked by other workflows.",
+    "rationale": "The evidence describes flows as a trigger plus actions, and says agents can be handed flows as tools. Nothing documents one workflow calling another as a reusable sub-workflow or module. Agent-invokes-flow and custom TypeScript pieces are adjacent features, not workflow-to-workflow composition, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can compose reusable sub-workflows or modules that other workflows call",
       "citations": []
@@ -1321,7 +1362,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document testing a flow with sample or pinned data, or inspecting each step's input and output. The draft-versus-published separation keeps edits from going live, but that is an adjacent control, not test-data or step-inspection tooling. The MCP server's mention of testing automations comes from a different story and says nothing about sample data or step I/O.",
+    "rationale": "Nothing in the evidence documents testing a flow with sample or pinned data, or inspecting each step's input and output in the builder. The draft-versus-published separation (docs-22, docs-40) is an adjacent control and does not evidence step-level test runs. The MCP server's mention of 'test automations' (docs-4) is too thin to show sample data or per-step I/O inspection.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1336,13 +1377,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Activepieces documents multi-step flows built from a trigger plus actions. It is positioned as a Zapier replacement with a 'flow builder' and an editor with a publish button, and it promises connecting 760+ apps 'without writing glue code'. The evidence never explicitly describes a visual or drag-and-drop canvas, and the no-code claim is limited to integration glue; actions can include 'running code'. missing for 10: explicit documentation of a visual or drag-and-drop editor, evidence that ops users can build complete multi-step flows with no code at all, and independent or hands-on corroboration of the builder experience.",
+    "rationale": "Activepieces documents a flow builder in which flows consist of a trigger followed by actions, so multi-step workflows are supported. It also claims users can connect 760+ apps \"without writing glue code\" and positions itself as an open-source Zapier replacement. The evidence never explicitly describes the builder as a visual or drag-and-drop canvas, and no hands-on account confirms that ops users can build flows without code, so coverage is not complete. missing for 10: explicit documentation of the visual editor and its interaction model (canvas, branching, step configuration UI), independent or hands-on confirmation of no-code multi-step building by non-developers.",
     "evidenceIds": [
       "activepieces-docs-21",
       "activepieces-docs-39",
-      "activepieces-docs-41",
       "activepieces-docs-17",
-      "activepieces-docs-40",
+      "activepieces-docs-7",
       "activepieces-gh-1"
     ],
     "support": {
@@ -1359,16 +1399,12 @@
           "quote": "Actions come after the trigger and control what occurs when the flow is activated"
         },
         {
-          "evidenceId": "activepieces-docs-41",
-          "quote": "Move data, send messages and update records between 763 apps without writing glue code."
-        },
-        {
           "evidenceId": "activepieces-docs-17",
           "quote": "Put a flow builder, AI agents and 760+ integrations inside your own product"
         },
         {
-          "evidenceId": "activepieces-docs-40",
-          "quote": "To enable your changes, simply click on the publish button once you're done with your changes."
+          "evidenceId": "activepieces-docs-7",
+          "quote": "Move data, send messages and update records between 764 apps without writing glue code."
         },
         {
           "evidenceId": "activepieces-gh-1",
@@ -1383,7 +1419,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents a library of 760+ integration pieces (connectors) and AI chat-driven flow generation. Neither is a public library of ready-made workflow templates to start from, and no evidence item mentions templates. A template gallery is a fair axis for a workflow automation product, so the verdict is none rather than na.",
+    "rationale": "Nothing in the evidence pack documents a public library of workflow templates to start from. The pack covers a library of 760+ app integrations ('pieces') and AI-assisted building of flows from chat descriptions. Both are adjacent features, not ready-made templates, so neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1398,12 +1434,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Activepieces ships its own MCP capabilities. A built-in MCP server lets external MCP clients such as Claude, Cursor and Codex drive the platform, including testing automations. An embeddable MCP gives a backend a token to run a user's automations through AI. However, the evidence never documents individual flows or piece actions being registered as distinct, callable MCP tools; it mostly describes platform management and flow building. Missing for 10: explicit docs on exposing specific flows or app actions as MCP tools, details on tool schemas and invocation, and independent or hands-on corroboration.",
+    "rationale": "Activepieces ships a built-in MCP server that external clients such as Claude, Cursor and Codex can connect to. It lets them build and test flows, and the embeddable MCP gives a backend a token to run a user's automations through AI. That covers calling workflows from an external agent. The evidence does not show individual connected-app actions, or specific chosen flows, being published as discrete callable MCP tools; the documented server is mainly platform-management oriented. missing for 10: documented per-flow or per-piece-action exposure as named MCP tools, tool schema/selection controls for what is exposed, independent or hands-on corroboration.",
     "evidenceIds": [
       "activepieces-docs-4",
       "activepieces-docs-27",
-      "activepieces-docs-13",
       "activepieces-docs-35",
+      "activepieces-docs-13",
       "activepieces-probe-4"
     ],
     "support": {
@@ -1413,7 +1449,7 @@
       "citations": [
         {
           "evidenceId": "activepieces-docs-4",
-          "quote": "Activepieces includes a built-in MCP server that lets AI assistants build flows, manage tables, test automations, and more — all through natural language."
+          "quote": "Activepieces includes a built-in MCP server that lets AI assistants build flows, manage tables, test automations, and more"
         },
         {
           "evidenceId": "activepieces-docs-27",
@@ -1422,10 +1458,6 @@
         {
           "evidenceId": "activepieces-docs-35",
           "quote": "your backend gets a token it can use to run that user's automations through AI."
-        },
-        {
-          "evidenceId": "activepieces-docs-13",
-          "quote": "Let your embedded users connect their automations to AI with one click"
         }
       ]
     }
@@ -12273,13 +12305,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Windmill documents its own programmatic path for creating and updating flows: flows can be defined in YAML or as code, deployed through the `wmill` CLI from a Git repository, and auto-deployed from new commits via Git sync. An agent could plausibly drive that path. However, nothing in the pack documents a public REST API endpoint for creating, updating, or activating flows, and the OpenAPI probe returned 404 on every candidate path. The MCP docs only cover triggering existing scripts and flows. Missing for 10: documented public API endpoints for flow create/update, an explicit activation/enable step, any agent-driven example, and independent corroboration.",
+    "rationale": "Windmill documents a public OpenAPI 3.0.3 \"Windmill API\" and its own programmatic deployment of flows via the wmill CLI and Git sync auto-deploy. However, the pack never shows specific API endpoints for creating, updating, or activating a flow, so the public-API part of the story is only implied. Missing for 10: explicit flow create/update endpoints in the API reference, documented activation/enable semantics, an agent-driven example, and independent hands-on corroboration.",
     "evidenceIds": [
-      "windmill-docs-2",
+      "windmill-openapi-cloud-20261106",
+      "windmill-openapi-source-20261106",
       "windmill-docs-4",
-      "windmill-docs-9",
       "windmill-docs-11",
-      "windmill-probe-3"
+      "windmill-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -12287,8 +12319,8 @@
       "subject": "As an AI-native user, I can have an agent create, update, and activate a workflow programmatically through the public API",
       "citations": [
         {
-          "evidenceId": "windmill-docs-2",
-          "quote": "An orchestrator for assembling these functions into efficient, low-latency flows, using either a low-code builder or YAML"
+          "evidenceId": "windmill-openapi-cloud-20261106",
+          "quote": "Windmill's cloud instance serves its OpenAPI 3.0.3 document live at /api/openapi.json (info title \"Windmill API\")"
         },
         {
           "evidenceId": "windmill-docs-4",
@@ -12307,10 +12339,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Hands-on probes show Windmill serves an llms.txt at its docs root (HTTP 200) and markdown versions of its docs pages (e.g. /docs/intro.md). An agent can therefore be pointed directly at agent-oriented documentation. missing for 10: first-party documentation describing the llms.txt/markdown-docs offering and its scope, independent or community corroboration of agents using it effectively",
+    "rationale": "Probes confirm a live llms.txt at windmill.dev/llms.txt and Markdown versions of the docs pages (e.g. /docs/intro.md), so an agent can be pointed at either. Separate evidence shows the llms.txt links further resources such as the hosted OpenAPI reference. missing for 10: no evidence of an expanded llms-full.txt or documented guidance on how agents should use these docs, and no independent or hands-on corroboration of agents consuming them.",
     "evidenceIds": [
       "windmill-probe-1",
-      "windmill-probe-2"
+      "windmill-probe-2",
+      "windmill-scalar-reference-20261106",
+      "windmill-openapi-cloud-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -12319,11 +12353,19 @@
       "citations": [
         {
           "evidenceId": "windmill-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://www.windmill.dev/llms.txt"
+          "quote": "HTTP 200 at https://www.windmill.dev/llms.txt"
         },
         {
           "evidenceId": "windmill-probe-2",
-          "quote": "PROBE docs-md: HTTP 200 at https://www.windmill.dev/docs/intro.md"
+          "quote": "HTTP 200 at https://www.windmill.dev/docs/intro.md"
+        },
+        {
+          "evidenceId": "windmill-scalar-reference-20261106",
+          "quote": "The vendor llms.txt points to it"
+        },
+        {
+          "evidenceId": "windmill-openapi-cloud-20261106",
+          "quote": "the vendor llms.txt names the hosted reference canonical"
         }
       ]
     }
@@ -12334,7 +12376,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents no built-in feature that analyzes a user's data and surfaces AI-generated insights or suggestions. AI Agent flow steps are developer building blocks for constructing such logic, AI generation edits scripts and flows rather than analyzing data, and MCP exposes scripts to external LLM clients. None of these is the capability itself, so they earn no credit.",
+    "rationale": "Nothing in the evidence shows Windmill offering built-in AI-generated insights or suggestions about a user's data. The AI features documented are AI Agent steps that developers wire into flows (a building block), AI code generation and editing of workspace items (a different capability), and an MCP server that lets external LLM clients trigger scripts (also a different capability). None of these is first-party data-insight functionality.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -12349,7 +12391,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Windmill documents CRON-based schedules that run scripts or flows on a recurring basis, with error and recovery handlers. It also documents event triggers (webhooks, Kafka, Postgres, email and others), step retries, and AI agent steps inside flows, so automations run unattended in the background. missing for 10: independent or hands-on corroboration of unattended scheduled or triggered runs in production.",
+    "rationale": "Windmill documents recurring CRON schedules for scripts and flows, with error and recovery handlers. It also documents event triggers (webhooks, Kafka, Postgres, SQS, MQTT and more), step retries, and AI agent steps inside flows, so automations can run unattended in the background on a recurring basis, not just as one-off runs. missing for 10: independent or hands-on corroboration of unattended scheduled or agentic runs in production.",
     "evidenceIds": [
       "windmill-docs-18",
       "windmill-docs-15",
@@ -12384,16 +12426,16 @@
   {
     "productId": "windmill",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill's AI generation docs describe a built-in AI that edits workspace items. The user can then ask it to review those changes, and it opens the Compare & Deploy page with the edited items preselected, which is in-product task delegation. AI Agent flow steps and the MCP server are separate capabilities (a flow building block and an external-client integration) and are not credited here. Missing for 10: detailed docs on the range of tasks the assistant can take on, and independent or hands-on corroboration.",
+    "rationale": "Windmill's AI generation docs describe a built-in AI that edits workspace items and, when asked, reviews those changes and opens the Compare & Deploy page with the edited items preselected. That is real in-product delegation, but the evidence is one thin snippet, so the range of tasks the assistant can take on is not shown. AI Agent flow steps are a building block for constructing flows, and MCP access is for external clients, so neither counts here. missing for 10: documentation of the assistant's interface and the range of tasks it handles, evidence of multi-step autonomous task execution beyond editing items, independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-21"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
       "citations": [
         {
@@ -12406,19 +12448,22 @@
   {
     "productId": "windmill",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 7,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Windmill documents an official CLI, `wmill`, for working with instances from the terminal. It also supports CLI deployments from a Git repository and Git sync that auto-deploys new commits, so it can clearly be driven headlessly. However, no evidence shows an explicit CI pipeline integration or a non-interactive CI runbook, so CI use is only implied. Missing for 10: explicit CI integration docs (e.g. pipeline examples or non-interactive auth in CI), independent hands-on corroboration of headless/CI use, and a published OpenAPI spec (probe found none).",
+    "rationale": "Windmill documents headless operation in several ways. The `wmill` CLI works with instances from the terminal, deployments can run via the CLI from a Git repository, and git sync auto-deploys new commits. A published OpenAPI spec, scoped API tokens and webhook/HTTP triggers also support programmatic, unattended automation. Missing for 10: explicit CI-pipeline documentation (e.g., GitHub Actions/GitLab CI examples, pre-merge validation runs), independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "windmill-docs-9",
       "windmill-docs-4",
       "windmill-docs-11",
+      "windmill-docs-8",
+      "windmill-docs-15",
+      "windmill-openapi-cloud-20261106",
       "windmill-probe-5"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -12432,6 +12477,14 @@
         {
           "evidenceId": "windmill-docs-11",
           "quote": "Windmill can automatically deploy new commits from the repository into the workspace"
+        },
+        {
+          "evidenceId": "windmill-docs-8",
+          "quote": "Tokens can be scoped to restrict access to specific resources and actions, following the principle of least privilege."
+        },
+        {
+          "evidenceId": "windmill-openapi-cloud-20261106",
+          "quote": "Windmill's cloud instance serves its OpenAPI 3.0.3 document live at /api/openapi.json"
         }
       ]
     }
@@ -12442,7 +12495,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies, because Windmill ships AI Agent flow steps that could plausibly consume external MCP tools. However, the pack only documents Windmill acting as an MCP server, letting clients like Claude or Cursor trigger its scripts and flows. That is the opposite role and does not count for this client-side story. The AI Agent docs mention connecting to AI providers and models, not plugging in external MCP servers.",
+    "rationale": "Windmill's AI Agent flow steps make consuming external MCP servers a fair question, but nothing in the evidence documents it. The MCP evidence [windmill-docs-17, windmill-probe-4] covers the opposite role: Windmill acting as an MCP server for clients like Claude or Cursor. The AI Agent steps [windmill-docs-20] mention only connecting to AI providers and models, not plugging in MCP servers as tool sources.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12455,9 +12508,9 @@
     "productId": "windmill",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Windmill's own docs describe an MCP integration that lets Claude, Cursor, or any MCP-compatible client connect to Windmill and trigger scripts and flows, and a probe confirms a dedicated official MCP docs page. missing for 10: details on setup/auth scoping and the exposed tool surface, independent or hands-on corroboration.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Windmill documents an official MCP integration that lets Claude, Cursor or any other MCP-compatible client connect to Windmill and trigger scripts and flows, and a probe confirms the official MCP server documentation page. The evidence is a single short docs excerpt, so depth is thin. Missing for 10: details on setup, auth and token scoping for the MCP endpoint, the exposed tool surface, and independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-17",
       "windmill-probe-4"
@@ -12481,10 +12534,10 @@
   {
     "productId": "windmill",
     "storyId": "agentic-nl-commands",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Windmill's own docs show users operating the product in natural language. Its AI generation feature edits workspace items on request and, when asked to review, opens the Compare & Deploy page with those items preselected. Its official MCP server also lets LLM clients trigger scripts and flows from chat. Missing for 10: detail on how broadly natural-language commands cover product operations (e.g., admin, scheduling, configuration), and independent or hands-on corroboration that the AI-driven operation works as described.",
+    "rationale": "Windmill's in-product AI lets users ask it, in natural language, to edit items and then review and deploy them (Compare & Deploy). Its official MCP integration also lets LLM chat clients trigger scripts and flows. The evidence covers authoring, deployment and execution only, not operating the product as a whole. Missing for 10: evidence of natural-language control of broader operations (schedules, triggers, permissions, workspace admin), detail on the in-app AI command scope, and independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-21",
       "windmill-docs-17",
@@ -12492,7 +12545,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
@@ -12501,7 +12554,7 @@
         },
         {
           "evidenceId": "windmill-docs-17",
-          "quote": "With MCP, you can connect your favorite LLMs (like Claude, Cursor, or any MCP compatible client) to Windmill, allowing you to trigger your scripts and flows from your client chat."
+          "quote": "allowing you to trigger your scripts and flows from your client chat"
         }
       ]
     }
@@ -12510,9 +12563,9 @@
     "productId": "windmill",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Windmill documents an official CLI, `wmill`, for working with Windmill instances from the terminal, and it supports CLI deployments from a Git repository. That clearly delivers the core of the story. Missing for 10: evidence of AI-native or agent-oriented CLI workflows, detailed command coverage, independent or hands-on corroboration of CLI use.",
+    "rationale": "Windmill documents an official CLI, `wmill`, for working with Windmill instances from the terminal. The docs also describe CLI deployments from a Git repository, and a probe confirmed the official CLI docs page. Missing for 10: detailed evidence of CLI command coverage or AI-native/agent-oriented CLI workflows (e.g., machine-readable output), and independent hands-on corroboration of CLI use.",
     "evidenceIds": [
       "windmill-docs-9",
       "windmill-docs-4",
@@ -12541,27 +12594,37 @@
   {
     "productId": "windmill",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Windmill documents HTTP webhook endpoints, including version-pinned flow endpoints, that trigger scripts and flows programmatically. It also documents scoped user tokens for restricting access to resources and actions, so part of the product can be driven over HTTP. The pack never explicitly describes a full general-purpose REST API for managing the platform, and the OpenAPI probe paths on the marketing domain returned 404. Missing for 10: explicit documentation of a comprehensive public management API, a discoverable OpenAPI/API reference, and hands-on corroboration of driving the product end-to-end via API.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Windmill serves a live OpenAPI 3.0.3 \"Windmill API\" document on its cloud instance. The source spec is versioned in the official repo, a hosted Scalar API reference is linked from llms.txt, and scoped tokens and a backward-compatibility release policy cover the API. The probe 404s were on the marketing domain, not the app host, so they do not contradict this. Missing for 10: independent or hands-on corroboration of driving the product through the API, and the noted lag of the deployed spec behind the source.",
     "evidenceIds": [
-      "windmill-docs-16",
-      "windmill-docs-15",
+      "windmill-openapi-cloud-20261106",
+      "windmill-openapi-source-20261106",
+      "windmill-scalar-reference-20261106",
+      "windmill-release-lifecycle-20261106",
       "windmill-docs-8"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "windmill-docs-16",
-          "quote": "Flows additionally expose version-pinned webhook endpoints that target a specific flow version by its numeric version ID instead of the latest deployment."
+          "evidenceId": "windmill-openapi-cloud-20261106",
+          "quote": "Windmill's cloud instance serves its OpenAPI 3.0.3 document live at /api/openapi.json (info title \"Windmill API\")"
         },
         {
-          "evidenceId": "windmill-docs-15",
-          "quote": "Use schedules, webhooks, emails, HTTP routes, websockets, Kafka, Postgres, NATS, SQS, MQTT, GCP, Azure Event Grid and more."
+          "evidenceId": "windmill-scalar-reference-20261106",
+          "quote": "Windmill vendor-hosts a Scalar API Reference at app.windmill.dev/openapi.html rendering the live spec"
+        },
+        {
+          "evidenceId": "windmill-openapi-source-20261106",
+          "quote": "The source-of-truth spec lives in the official windmill-labs/windmill repository (backend/windmill-api/openapi.yaml), versioned with each release."
+        },
+        {
+          "evidenceId": "windmill-release-lifecycle-20261106",
+          "quote": "The OpenAPI spec version tracks the release version, so the policy covers the API."
         },
         {
           "evidenceId": "windmill-docs-8",
@@ -12573,31 +12636,21 @@
   {
     "productId": "windmill",
     "storyId": "agentic-scoped-keys",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Windmill's user-token docs state that tokens can be scoped to specific resources and actions following least privilege, and a roles and permissions system is documented. Agents such as MCP clients can connect to Windmill, so scoped tokens are a direct way to grant an agent least-privilege access. missing for 10: detailed documentation of scope granularity and token issuance/expiry/revocation, explicit documentation tying scoped tokens to agent/MCP use, independent or hands-on corroboration.",
+    "rationale": "Windmill's own docs say user tokens can be scoped to specific resources and actions under the principle of least privilege, so the core capability is first-party. The evidence is a single summary line with no detail on scope granularity, agent-specific usage, or how tokens are issued and revoked, which limits coverage to partial. Missing for 10: documented scope granularity and the token issuance/expiry/revocation workflow, explicit guidance on agent or MCP credential use, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "windmill-docs-8",
-      "windmill-docs-7",
-      "windmill-docs-17"
+      "windmill-docs-8"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": [
         {
           "evidenceId": "windmill-docs-8",
           "quote": "Tokens can be scoped to restrict access to specific resources and actions, following the principle of least privilege."
-        },
-        {
-          "evidenceId": "windmill-docs-7",
-          "quote": "Windmill provides a roles and permissions system that allows you to control access and manage permissions within your instance and workspaces."
-        },
-        {
-          "evidenceId": "windmill-docs-17",
-          "quote": "With MCP, you can connect your favorite LLMs (like Claude, Cursor, or any MCP compatible client) to Windmill, allowing you to trigger your scripts and flows from your client chat."
         }
       ]
     }
@@ -12608,7 +12661,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions official client SDKs for building against Windmill. Multi-language script support, the wmill CLI and the MCP server are different capabilities and do not count as SDKs. The OpenAPI probe found no published spec.",
+    "rationale": "The evidence pack never mentions an official Windmill client SDK in any language. It documents a published OpenAPI spec, a Scalar API reference, the `wmill` CLI and an MCP server. These are adjacent building blocks or different features and earn no credit for an official-SDKs story. For a developer platform like Windmill the axis clearly applies, so absence of evidence is \"none\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12623,25 +12676,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Windmill's documented webhooks are inbound trigger endpoints that start scripts and flows. The pack contains no evidence of registrable outbound HTTP callbacks that notify an external consumer when events occur. Inbound triggering is the opposite direction, so it is an adjacent feature and earns no credit for subscribing to events.",
-    "evidenceIds": [
-      "windmill-docs-15",
-      "windmill-docs-16"
-    ],
+    "rationale": "Windmill's documented webhooks are inbound trigger endpoints that start scripts and flows. The pack has no evidence of registrable outbound HTTP callbacks that let a consumer subscribe to Windmill events such as job completion, so this is an adjacent feature, not the story's capability.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
-      "citations": [
-        {
-          "evidenceId": "windmill-docs-15",
-          "quote": "Use schedules, webhooks, emails, HTTP routes, websockets, Kafka, Postgres, NATS, SQS, MQTT, GCP, Azure Event Grid and more."
-        },
-        {
-          "evidenceId": "windmill-docs-16",
-          "quote": "Flows additionally expose version-pinned webhook endpoints that target a specific flow version by its numeric version ID instead of the latest deployment."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -12650,7 +12691,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Windmill documents AI Agent steps that run directly inside flows and connect to various AI providers and models, which covers the in-workflow LLM step and model choice. The evidence does not document tool use by those agent steps. The MCP docs describe external LLM clients triggering Windmill scripts, which is a different capability and is not credited here. Missing for 10: documented tool/function calling within AI agent steps, depth on model selection configuration, independent or hands-on corroboration.",
+    "rationale": "Windmill documents first-party AI Agent steps that run directly inside flows and connect to various AI providers and models, which covers adding LLM steps with model choice. The evidence never shows the agent step calling tools, and there is no independent or hands-on corroboration. Missing for 10: documented tool-use/function-calling within AI agent steps, detail on model selection configuration, independent corroboration.",
     "evidenceIds": [
       "windmill-docs-20"
     ],
@@ -12669,70 +12710,134 @@
   {
     "productId": "windmill",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Windmill is a developer platform with an API, so an interactive API reference is a fair question to ask of it. The evidence pack, however, never documents an interactive API reference or runnable examples, and every probed OpenAPI/Swagger path returned 404. Its llms.txt, markdown docs, CLI and MCP server are separate capabilities and do not count toward this story.",
-    "evidenceIds": [],
+    "rationale": "Windmill vendor-hosts a Scalar API Reference at app.windmill.dev/openapi.html. It renders the live OpenAPI 3.0.3 spec, and Scalar's built-in request client lets users run calls from the page. The probe 404s on www.windmill.dev paths don't contradict this, because the spec is served from the app.windmill.dev host. Missing for 10: hands-on or independent confirmation that the try-it client works against the API, documented curated runnable code examples beyond the generic request client, and a guarantee the deployed spec isn't trailing the source release.",
+    "evidenceIds": [
+      "windmill-scalar-reference-20261106",
+      "windmill-openapi-cloud-20261106",
+      "windmill-openapi-source-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "windmill-scalar-reference-20261106",
+          "quote": "Windmill vendor-hosts a Scalar API Reference at app.windmill.dev/openapi.html rendering the live spec (Scalar ships a built-in request client; the page mounts client-side)."
+        },
+        {
+          "evidenceId": "windmill-openapi-cloud-20261106",
+          "quote": "Windmill's cloud instance serves its OpenAPI 3.0.3 document live at /api/openapi.json (info title \"Windmill API\")"
+        }
+      ]
     }
   },
   {
     "productId": "windmill",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Windmill is a developer platform with an HTTP API, so a downloadable OpenAPI spec is a fair question. However, the evidence pack contains no documentation of a published API spec, and the probe found 404s at every candidate OpenAPI/Swagger path on windmill.dev. The llms.txt file, the markdown docs, the CLI and the MCP server are related agent-facing features but are not a machine-readable API specification, so they earn no credit here.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Windmill serves a live OpenAPI 3.0.3 document at app.windmill.dev/api/openapi.json and keeps a versioned source-of-truth openapi.yaml in its official GitHub repo, with a vendor-hosted Scalar reference that renders the spec. The probe's 404s were on www.windmill.dev marketing paths, a different host, so they do not contradict the app-domain spec. Missing for 10: independent hands-on confirmation of downloading the app-domain spec, and the deployed copy can lag the source spec by some releases.",
+    "evidenceIds": [
+      "windmill-openapi-cloud-20261106",
+      "windmill-openapi-source-20261106",
+      "windmill-scalar-reference-20261106",
+      "windmill-release-lifecycle-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "windmill-openapi-cloud-20261106",
+          "quote": "Windmill's cloud instance serves its OpenAPI 3.0.3 document live at /api/openapi.json (info title \"Windmill API\")"
+        },
+        {
+          "evidenceId": "windmill-openapi-source-20261106",
+          "quote": "The source-of-truth spec lives in the official windmill-labs/windmill repository (backend/windmill-api/openapi.yaml), versioned with each release."
+        },
+        {
+          "evidenceId": "windmill-scalar-reference-20261106",
+          "quote": "Windmill vendor-hosts a Scalar API Reference at app.windmill.dev/openapi.html rendering the live spec"
+        }
+      ]
     }
   },
   {
     "productId": "windmill",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a sandbox, staging, or dev workspace that is isolated from production data. Git sync (docs-11) and the AI 'Compare & Deploy' review page (docs-21) are deployment workflows, not test environments. The community 'sandbox runtime' remark is about execution runtime, and the pre-merge validation comment is only a question, so neither establishes isolated testing against non-production data.",
-    "evidenceIds": [],
+    "rationale": "Windmill documents local development and a single-instance Docker Compose self-host. The vendor says this local or self-hosted instance fills the sandbox role, which isolates testing from production data. However, it states outright that there is no separate hosted sandbox environment, so isolation depends on standing up and managing another instance. Missing for 10: a first-party sandbox or staging environment with documented data isolation from production, a documented workspace-promotion flow from test to production, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "windmill-selfhost-dev-20261106",
+      "windmill-docs-10"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "windmill-selfhost-dev-20261106",
+          "quote": "There is no separate hosted sandbox environment; the self-hosted/local instance fills that role."
+        },
+        {
+          "evidenceId": "windmill-selfhost-dev-20261106",
+          "quote": "local development against self-hosted or cloud workspaces is documented"
+        },
+        {
+          "evidenceId": "windmill-docs-10",
+          "quote": "For small setups, use Docker and Docker Compose on a single instance."
+        }
+      ]
     }
   },
   {
     "productId": "windmill",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Windmill is a developer platform with a programmatic API, so API versioning and a deprecation policy are fair questions to ask of it. The evidence shows no versioned API scheme and no documented deprecation policy. The version-pinned webhooks target a specific version of a user's own flow, not a versioned platform API, so they are only an adjacent feature, and the OpenAPI probes all returned 404.",
-    "evidenceIds": [],
+    "rationale": "Windmill documents an explicit release lifecycle: semantic versioning on a single v1.x line, backward-compatible releases with no breaking changes, 24-month major-version support, 12 months' notice before any end of life, and a dated changelog. The OpenAPI spec is versioned with each release in the official repo, so the policy covers the API. missing for 10: per-endpoint deprecation markers or notices in the API itself, independent or hands-on corroboration that the no-breaking-changes policy holds in practice, and a guarantee the hosted spec matches the release (the deployed copy can trail the source spec).",
+    "evidenceIds": [
+      "windmill-release-lifecycle-20261106",
+      "windmill-openapi-source-20261106",
+      "windmill-openapi-cloud-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "windmill-release-lifecycle-20261106",
+          "quote": "Windmill follows semantic versioning on one `v1.x` line. Every release is backward compatible and contains no breaking changes"
+        },
+        {
+          "evidenceId": "windmill-release-lifecycle-20261106",
+          "quote": "12 months of advance notice before any end of life"
+        },
+        {
+          "evidenceId": "windmill-openapi-source-20261106",
+          "quote": "The source-of-truth spec lives in the official windmill-labs/windmill repository (backend/windmill-api/openapi.yaml), versioned with each release."
+        }
+      ]
     }
   },
   {
     "productId": "windmill",
     "storyId": "app-event-triggers",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill's own docs list event triggers that cover several of the story's examples: email triggers, Postgres (new records), message brokers (Kafka, NATS, SQS, MQTT), and webhooks or HTTP routes that external apps or forms could call. The evidence is a single list-style mention, and it shows no prebuilt app-specific triggers (e.g., a new CRM record or a form-tool submission). Missing for 10: documented app-level event triggers for connected SaaS apps, explicit form-submission triggering, detailed trigger configuration docs, hands-on or independent corroboration.",
+    "rationale": "Windmill documents first-party triggers for scripts and flows, including emails, webhooks, HTTP routes, Postgres, and message brokers such as Kafka, NATS, SQS, MQTT, GCP and Azure Event Grid. That covers the email case directly and lets other apps push events through webhooks or infrastructure-level sources. However, the evidence never shows connected-app event triggers such as a new CRM record, a chat message, or a form submission; those would require each app to call a webhook. missing for 10: native connected-app event triggers (new record, chat message, form submission), documentation of per-app trigger setup for ops users, independent or hands-on corroboration of event triggering.",
     "evidenceIds": [
       "windmill-docs-15",
       "windmill-docs-16"
@@ -12748,7 +12853,7 @@
         },
         {
           "evidenceId": "windmill-docs-16",
-          "quote": "Flows additionally expose version-pinned webhook endpoints that target a specific flow version"
+          "quote": "Flows additionally expose version-pinned webhook endpoints"
         }
       ]
     }
@@ -12759,10 +12864,9 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Windmill's first-party flow docs describe per-step retries: on error, a step is retried with a delay up to a maximum number of attempts. The workflows-as-code docs also say Windmill handles fault tolerance. The evidence does not show a backoff strategy beyond a delay, such as exponential or increasing intervals. missing for 10: explicit backoff strategy (exponential/multiplier) documentation, retry configuration details for workflows-as-code activities, independent or hands-on corroboration.",
+    "rationale": "Windmill documents per-step retries in flows: on error, a step is retried with a delay up to a maximum number of attempts. This covers automatic retries for failed steps, but the evidence only mentions a delay, not an increasing or exponential backoff strategy. missing for 10: explicit documented exponential/backoff configuration, retry configuration for workflows-as-code activities, independent or hands-on corroboration.",
     "evidenceIds": [
-      "windmill-docs-13",
-      "windmill-docs-5"
+      "windmill-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -12772,10 +12876,6 @@
         {
           "evidenceId": "windmill-docs-13",
           "quote": "If defined, upon error this step will be retried with a delay and a maximum number of attempts as defined below."
-        },
-        {
-          "evidenceId": "windmill-docs-5",
-          "quote": "Windmill handles checkpointing, parallelism, and fault tolerance."
         }
       ]
     }
@@ -12784,9 +12884,9 @@
     "productId": "windmill",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Windmill's workflows-as-code engine supports loops with built-in parallelism and checkpointing, so many items can be processed in one run. Its Compare & Deploy page can also deploy multiple AI-edited items together. However, the evidence never describes a dedicated bulk-operation feature, such as a for-each loop over item lists or bulk-selecting items to act on. Missing for 10: explicit bulk/batch or for-each-over-items documentation, bulk actions on workspace items, and independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Windmill's workflows-as-code support loops, and the platform itself handles parallelism and checkpointing, so iterating an operation across many items is a native engine capability. Separately, the AI-assisted Compare & Deploy page opens with multiple edited items preselected for deployment together. Both are thin, indirect mentions, and no dedicated bulk-action feature is documented. Missing for 10: explicit documented bulk/for-each-over-items operations, bulk management actions on scripts/flows/jobs, limits/scale details, hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-5",
       "windmill-docs-21"
@@ -12812,12 +12912,13 @@
     "storyId": "automation-rules-engine",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Windmill lets users bind scripts and flows to many event sources, including webhooks, email, Kafka, Postgres, NATS, SQS, MQTT, GCP, Azure Event Grid and websockets, so actions run automatically when events arrive. Conditional rule logic is documented through flow branches that split execution based on a condition. Together these cover defining rules that fire actions on events. missing for 10: documented condition filtering configured on the trigger itself rather than inside the flow, and independent or hands-on corroboration that event-triggered rules work in practice.",
+    "confidence": "medium",
+    "rationale": "Windmill documents event triggers that run scripts and flows automatically, including webhooks, emails, HTTP routes, websockets, Kafka, Postgres, NATS, SQS, MQTT, GCP and Azure Event Grid. It also offers CRON schedules and conditional flow branches, so automatic event-driven rules are a direct, first-party capability. missing for 10: detailed docs on per-trigger rule or filter conditions (the trigger evidence is a one-line FAQ summary), independent or hands-on corroboration of event triggers.",
     "evidenceIds": [
       "windmill-docs-15",
       "windmill-docs-12",
-      "windmill-docs-2"
+      "windmill-docs-18",
+      "windmill-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -12833,8 +12934,8 @@
           "quote": "Branches allow to split the execution of the flow based on a condition."
         },
         {
-          "evidenceId": "windmill-docs-2",
-          "quote": "An orchestrator for assembling these functions into efficient, low-latency flows, using either a low-code builder or YAML"
+          "evidenceId": "windmill-docs-18",
+          "quote": "A Schedule consists of a Script or Flow, its arguments, a CRON expression that controls the execution frequency"
         }
       ]
     }
@@ -12845,7 +12946,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Windmill documents first-party Schedules that bind a Script or Flow and its arguments to a CRON expression. That is a true recurring schedule, not a one-off run, and it comes with optional error and recovery handlers for failed scheduled runs. Schedules are also listed as a core trigger type for scripts and flows. Missing for 10: independent or hands-on corroboration of scheduling in practice.",
+    "rationale": "Windmill's own docs describe Schedules: a Script or Flow is paired with its arguments and a CRON expression that sets how often it runs, with optional error and recovery handlers for failed runs. This is true recurring scheduling, not a one-off trigger. The triggers docs also list schedules as a first-class way to run scripts and flows. Missing for 10: independent or hands-on corroboration of scheduling, and depth on schedule management such as timezones or pausing.",
     "evidenceIds": [
       "windmill-docs-18",
       "windmill-docs-15"
@@ -12872,7 +12973,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Windmill documents versioning: Git Sync pushes a commit on each deploy, and flows have numeric version IDs. It also documents review through the Compare & Deploy page. Rollback is only implied, since Windmill can auto-deploy commits from the repository, but there is no documented one-click revert to a prior version. missing for 10: explicit documented rollback/revert workflow, version history UI details, independent or hands-on corroboration.",
+    "rationale": "Windmill documents versioning through Git sync, which commits every deploy and can auto-deploy commits from the repo. Flows carry numeric version IDs that webhooks can pin to, and a Compare & Deploy page lets you review AI-edited items before deploying. Rollback is never documented as a feature; it is only implied by git-driven deploys and pinnable versions. Missing for 10: an explicit documented rollback/revert-to-previous-version capability, review details beyond the AI-edit flow (diffs/approvals), and independent hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-11",
       "windmill-docs-16",
@@ -12895,10 +12996,6 @@
         {
           "evidenceId": "windmill-docs-21",
           "quote": "ask it to review the changes and it opens the Compare & Deploy page with exactly those items preselected, ready to deploy."
-        },
-        {
-          "evidenceId": "windmill-docs-4",
-          "quote": "CLI deployments from a Git repository"
         }
       ]
     }
@@ -12909,7 +13006,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill documents workspace-level Variables and Secrets, all encrypted with a workspace-specific key. That evidences central credential storage within a shared workspace. It also has a roles and permissions system for controlling access within workspaces, but the evidence never shows that permissions can be set on individual credentials. Missing for 10: explicit per-credential sharing and access-control documentation, a dedicated resource/connection credential model, and independent or hands-on corroboration.",
+    "rationale": "Windmill documents workspace-level Variables and secrets stored centrally and encrypted with a workspace-specific key. It also documents a general roles and permissions system for controlling access within workspaces. The evidence does not show per-credential sharing or ACLs controlling who can use which credential, and token scoping concerns API tokens, not stored credentials. missing for 10: explicit documentation of sharing individual credentials/resources with team members or groups, per-credential usage permissions, a dedicated connection-credential (resource) type, independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-6",
       "windmill-docs-7"
@@ -12936,7 +13033,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Windmill's own docs and repo describe flows assembled from code scripts, with TypeScript and Python among the supported languages, and workflows-as-code in TypeScript or Python. Writing real code as a flow step is the product's core model. Missing for 10: plain JavaScript (as opposed to TypeScript) step support is not stated explicitly, and there is no independent or hands-on corroboration of authoring code steps inside flows.",
+    "rationale": "Windmill is code-first. Scripts in TypeScript, Python and many other languages are the functions its orchestrator assembles into flows, and whole workflows can also be written as code in TypeScript or Python. That directly delivers real-code steps inside a workflow. Missing for 10: explicit documentation of inline code steps in the flow editor, explicit plain JavaScript (only TypeScript is named), independent hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-1",
       "windmill-docs-2",
@@ -12973,7 +13070,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Installing community-contributed integrations is a fair question for a workflow platform like Windmill, so the axis applies. However, nothing in the evidence pack documents a community hub, marketplace, or way to install third-party scripts, nodes, or integrations. Community comments calling it 'open and extensible' are sentiment, not a documented capability.",
+    "rationale": "The evidence pack never documents a community marketplace, hub, or any way to install integrations contributed by people outside the vendor. Running any language or Docker image, and syncing scripts from Git, are developer building blocks rather than a community-contribution install path. A community comment calling the model 'open and extensible' is sentiment, not a documented capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -12988,7 +13085,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no throttling, concurrency limits, or rate-limited execution queues for Windmill workflows. Step retries with a delay (windmill-docs-13) and cron-based schedules (windmill-docs-18) are adjacent features: one handles errors, the other is a recurring schedule. Neither caps execution rate to respect downstream limits, so neither earns credit.",
+    "rationale": "The evidence pack documents no concurrency limits, rate limiting, throttling, or execution queue controls for Windmill workflows. Step retries with delay and cron schedules are adjacent features: they handle failures and set recurring timing, but they do not throttle or queue executions to respect downstream rate limits.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13001,9 +13098,9 @@
     "productId": "windmill",
     "storyId": "conditional-branching-logic",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill's flow builder documents conditional branches ('Branch one') and a 'Branch all' mode that runs every branch, inside a low-code flow orchestrator. That covers conditional and multi-path branching. Filters, explicit parallel execution of those branches in the visual builder, and how branch results merge back into a single path are not evidenced. Missing for 10: documented filter steps, explicit parallel execution of branch-all paths, documented merge/join of branch outputs, independent or hands-on corroboration.",
+    "rationale": "Windmill's flow docs describe branches that split execution based on a condition, plus a 'Branch all' mode that runs every branch, and flows can be built in a low-code builder. That covers conditional and multi-path branching. Explicit filter steps, parallel execution of 'branch all' paths, and merging branches back together are not documented in the evidence. Missing for 10: documented filter steps, explicit confirmation that branch-all paths run in parallel, documented merge/rejoin of branch outputs, independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-12",
       "windmill-docs-2"
@@ -13015,11 +13112,7 @@
       "citations": [
         {
           "evidenceId": "windmill-docs-12",
-          "quote": "Branches allow to split the execution of the flow based on a condition."
-        },
-        {
-          "evidenceId": "windmill-docs-12",
-          "quote": "Branch all: all the branches will be executed."
+          "quote": "Branches allow to split the execution of the flow based on a condition. ... Branch all: all the branches will be executed."
         },
         {
           "evidenceId": "windmill-docs-2",
@@ -13032,9 +13125,9 @@
     "productId": "windmill",
     "storyId": "cron-schedules",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Windmill's first-party docs describe Schedules that attach a CRON expression to a Script or Flow, with optional error and recovery handlers, so cron-style scheduling of workflows is clearly delivered. Nothing in the pack documents timezone control, which is half of the story. Missing for 10: documented timezone selection for schedules, independent or hands-on corroboration of scheduled runs.",
+    "rationale": "Windmill's own scheduling docs confirm that Schedules run a Script or Flow on a CRON expression, with optional error and recovery handlers, which covers recurring cron-style execution of workflows. The evidence never mentions setting or controlling a schedule's timezone, so half of the story is unproven. Missing for 10: documented per-schedule timezone control, independent or hands-on corroboration of scheduling behavior.",
     "evidenceIds": [
       "windmill-docs-18",
       "windmill-docs-15"
@@ -13059,16 +13152,17 @@
     "productId": "windmill",
     "storyId": "custom-connector-sdk",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Windmill documents itself as a developer platform. It offers full-code scripting in many languages or any Docker image, workflows as code, and an official `wmill` CLI with Git-based deployment, so developers can write private integration code against external systems. However, the evidence never documents a dedicated connector or integration framework (for example, custom resource types) or a client SDK, so the connector-building part of the story is only implied. Missing for 10: explicit documentation of building reusable custom connectors or resource types, a documented SDK for integration authoring, and independent or hands-on corroboration of building a private integration.",
+    "rationale": "Windmill documents its own developer platform: scripts in many languages or any Docker image, workflows-as-code, the `wmill` CLI with Git-based deployment, and a published OpenAPI spec with a hosted reference. These let a developer build private integration logic in code. However, the evidence never describes a dedicated mechanism for packaging a reusable custom connector, such as defining custom resource or credential types, so connector-building is only implied. Missing for 10: documented custom connector or resource-type authoring, an official SDK for building integrations, and independent hands-on corroboration of building a private integration.",
     "evidenceIds": [
       "windmill-docs-1",
       "windmill-docs-4",
       "windmill-docs-5",
       "windmill-docs-9",
-      "windmill-probe-2",
-      "windmill-probe-5"
+      "windmill-probe-1",
+      "windmill-openapi-cloud-20261106",
+      "windmill-scalar-reference-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -13088,8 +13182,12 @@
           "quote": "as well as CLI deployments from a Git repository"
         },
         {
-          "evidenceId": "windmill-probe-2",
-          "quote": "An open-source workflow engine and developer platform to build endpoints, workf"
+          "evidenceId": "windmill-probe-1",
+          "quote": "Windmill is an open-source and self-hostable workflow engine and developer platform to build, orchestrate,"
+        },
+        {
+          "evidenceId": "windmill-openapi-cloud-20261106",
+          "quote": "Windmill's cloud instance serves its OpenAPI 3.0.3 document live at /api/openapi.json"
         }
       ]
     }
@@ -13100,7 +13198,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Windmill's own docs say its workflows-as-code engine handles checkpointing and fault tolerance, which is the core mechanism for durable state across failures. Nothing in the evidence shows workflows waiting or suspending for days, or explicitly surviving worker or platform restarts. Step retries (docs-13) are an adjacent error-handling feature and add no credit here. missing for 10: documented long waits/suspend (sleep for days, approvals), explicit state persistence across worker/platform restarts, independent or hands-on corroboration of durability.",
+    "rationale": "Windmill's workflows-as-code docs say the platform handles checkpointing and fault tolerance, which is direct first-party support for durable state across failures. Nothing in the pack documents multi-day waits or suspend/resume, nor explicitly shows recovery from a worker or platform restart. Step retries are a related error-handling feature and do not cover this story. missing for 10: documented long waits (sleep/suspend/approval for days), explicit restart-survival semantics, independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-5"
     ],
@@ -13122,7 +13220,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents white-labeling, rebranding, or embedding the Windmill builder or flow editor inside a third-party product for that product's customers. Self-hosting via Docker or Helm, the custom-frontend app builder, and app guests who sign in through your identity provider are adjacent deployment and access features, not white-label embedding.",
+    "rationale": "The evidence pack never documents white-labeling, rebranding, or embedding the Windmill platform inside another product for that product's customers. Self-hosting, the app builder, and free app guests who sign in through your identity provider are related but different capabilities, so they earn no credit. Embedding is a fair axis for an automation platform, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13137,12 +13235,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Windmill's own docs cover source-control versioning: Git sync commits each deployed item to a repository and can auto-deploy new commits back into a workspace. CLI deployments from Git and numeric flow version IDs also support versioning. Promotion from dev to production is only implied, through Git-based auto-deploy and a Compare & Deploy page; no evidence explicitly documents distinct dev/staging/prod workspaces or an environment promotion workflow. missing for 10: explicit documentation of dev-to-production environment promotion (e.g., separate workspaces/environments and a promotion flow), independent or hands-on corroboration of the Git sync and promotion workflow",
+    "rationale": "Windmill documents Git sync: each deployment creates and pushes a commit to a repository, and new commits can be auto-deployed back into a workspace. It also supports CLI deployments from Git and a Compare & Deploy page. Together these cover versioning through source control and imply a deploy path. Explicit multi-environment (dev/staging/prod workspace) promotion is not directly documented in the evidence. Missing for 10: explicit documentation of dev-to-prod workspace promotion, environment-specific configuration handling, and independent hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-11",
       "windmill-docs-4",
-      "windmill-docs-16",
-      "windmill-docs-21"
+      "windmill-docs-21",
+      "windmill-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -13158,12 +13256,12 @@
           "quote": "as well as CLI deployments from a Git repository"
         },
         {
-          "evidenceId": "windmill-docs-16",
-          "quote": "Flows additionally expose version-pinned webhook endpoints that target a specific flow version by its numeric version ID instead of the latest deployment."
-        },
-        {
           "evidenceId": "windmill-docs-21",
           "quote": "it opens the Compare & Deploy page with exactly those items preselected, ready to deploy"
+        },
+        {
+          "evidenceId": "windmill-docs-16",
+          "quote": "Flows additionally expose version-pinned webhook endpoints that target a specific flow version by its numeric version ID"
         }
       ]
     }
@@ -13174,11 +13272,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill documents optional Error and Recovery Handlers on schedules to deal with failed scheduled executions. Its error-handling docs also let a run be retagged as a failure via `wm_failure`, and steps can be retried on error. That is a real, product-native error-workflow capability, but the evidence only covers scheduled runs, and failure notification is not documented as such. Missing for 10: flow-level error-handler paths for non-scheduled runs, explicit failure notification channels, independent or hands-on corroboration.",
+    "rationale": "Windmill documents optional Error and Recovery Handlers for failed scheduled executions, which are dedicated error workflows. It also documents step-level retries on error and a `wm_failure` field that marks a run as failed. The evidence does not show flow-level error-handler steps for non-scheduled runs or any built-in failure notification. Missing for 10: documented flow-level error handler/error path for all runs, explicit failure notification channels (email/Slack/alerts), independent corroboration.",
     "evidenceIds": [
       "windmill-docs-18",
-      "windmill-docs-19",
-      "windmill-docs-13"
+      "windmill-docs-13",
+      "windmill-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -13190,12 +13288,12 @@
           "quote": "optional Error and Recovery Handlers to deal with failed scheduled executions"
         },
         {
-          "evidenceId": "windmill-docs-19",
-          "quote": "A script or flow can return a top-level `wm_failure` field (string) to retag the run as a failure even though the runtime did not raise an error."
+          "evidenceId": "windmill-docs-13",
+          "quote": "upon error this step will be retried with a delay and a maximum number of attempts"
         },
         {
-          "evidenceId": "windmill-docs-13",
-          "quote": "If defined, upon error this step will be retried with a delay and a maximum number of attempts as defined below."
+          "evidenceId": "windmill-docs-19",
+          "quote": "A script or flow can return a top-level `wm_failure` field (string) to retag the run as a failure even though the runtime did not raise an error."
         }
       ]
     }
@@ -13206,11 +13304,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill documents flows that assemble code functions. Workflows-as-code lets orchestration logic be written in TypeScript or Python with functions, conditionals and loops, and branches split on conditions. That implies data can be transformed between steps with code, but the evidence never explicitly describes step-to-step data mapping or expressions. Missing for 10: explicit documentation of mapping one step's output to the next step's input, a documented expression or formula syntax for transforms in the low-code builder, and hands-on corroboration.",
+    "rationale": "Windmill's own flows compose code functions (TypeScript, Python, etc.) into steps, and workflows-as-code let users write orchestration logic with ordinary functions. That implies data can be transformed between steps in code. However, the pack never explicitly documents mapping one step's output to the next step's input, or an expression/formula syntax for doing so. Missing for 10: explicit docs on step input/output mapping, an expression or formula syntax for transforms, an ops-friendly (non-code) mapping UI, and independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-2",
       "windmill-docs-5",
-      "windmill-docs-12"
+      "windmill-gh-1",
+      "windmill-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -13226,8 +13325,8 @@
           "quote": "An orchestrator for assembling these functions into efficient, low-latency flows, using either a low-code builder or YAML"
         },
         {
-          "evidenceId": "windmill-docs-12",
-          "quote": "Branches allow to split the execution of the flow based on a condition."
+          "evidenceId": "windmill-gh-1",
+          "quote": "can be composed together into flows or used into richer apps built with low-code"
         }
       ]
     }
@@ -13238,7 +13337,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Windmill is a workflow orchestrator, so pausing a flow for human approval or input is a fair question for this product. However, nothing in the evidence pack documents approval steps, suspend/resume, or waiting for human input. Branching, retries, checkpointing and the AI 'Review and deploy' page are adjacent features and earn no credit.",
+    "rationale": "Pausing a workflow for human approval is a fair question for a workflow engine like Windmill, so the axis applies. However, nothing in the evidence pack documents approval steps, suspend/resume, or waiting for human input inside a flow. The available evidence covers only branches, retries, triggers, schedules and error handling, which are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13250,17 +13349,17 @@
   {
     "productId": "windmill",
     "storyId": "inbound-webhook-triggers",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Windmill's docs list webhooks and HTTP routes as first-party triggers for scripts and flows, and say flows expose webhook endpoints, including version-pinned ones. That covers the core of an external HTTP request starting a workflow run. However, the evidence never shows how the request payload is passed into the run as inputs, or that the URL path can be custom-defined. missing for 10: documented mapping of the HTTP request payload into flow inputs, explicit evidence of custom/user-defined webhook URL paths, independent or hands-on corroboration.",
+    "rationale": "Windmill's own docs list webhooks and HTTP routes as first-party triggers for scripts and flows. They also say flows expose webhook endpoints, including version-pinned ones, so external HTTP requests can start workflow runs. Missing for 10: explicit documentation of how the request payload maps to flow inputs, detail on custom URL paths for HTTP routes, and independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-15",
       "windmill-docs-16"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can expose a custom webhook URL that receives external HTTP requests and starts a workflow run with the payload",
       "citations": [
         {
@@ -13278,10 +13377,11 @@
     "productId": "windmill",
     "storyId": "local-dev-instance",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Windmill documents its own `wmill` CLI for interacting with instances from the terminal, Docker Compose self-hosting for small setups (which allows a local or dev instance), and CLI deployments from Git. That supports working against a dev instance, but no evidence shows running workflows locally without an instance or a documented CI testing workflow. The community question about local and pre-merge runs is only a question, not support. missing for 10: explicit documentation of local workflow execution, a CI/pre-merge testing workflow (e.g. running branch versions non-destructively), and hands-on corroboration.",
+    "rationale": "Windmill documents local development against self-hosted or cloud workspaces, a single-instance Docker Compose self-host, and the `wmill` CLI for working with instances from the terminal, so running workflows locally or against a dev instance is supported. The CI-testing part is not documented anywhere in the evidence. Missing for 10: documented CI test-run workflow, local execution of flows without an instance, non-destructive branch or pre-merge validation, independent hands-on corroboration.",
     "evidenceIds": [
+      "windmill-selfhost-dev-20261106",
       "windmill-docs-9",
       "windmill-docs-10",
       "windmill-docs-4",
@@ -13293,6 +13393,10 @@
       "subject": "As a developer, I can run workflows locally or against a dev instance for development and CI testing",
       "citations": [
         {
+          "evidenceId": "windmill-selfhost-dev-20261106",
+          "quote": "local development against self-hosted or cloud workspaces is documented"
+        },
+        {
           "evidenceId": "windmill-docs-9",
           "quote": "The Windmill CLI, `wmill` allows you to interact with Windmill instances right from your terminal."
         },
@@ -13302,7 +13406,7 @@
         },
         {
           "evidenceId": "windmill-docs-4",
-          "quote": "as well as CLI deployments from a Git repository"
+          "quote": "CLI deployments from a Git repository"
         }
       ]
     }
@@ -13313,7 +13417,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill's own AI generation docs show an AI that edits workspace items on request and then opens the Compare & Deploy page with those changes preselected. That is a first-party, prompt-driven editing capability. However, the evidence never states that workflows (flows) specifically can be generated from scratch from a natural-language prompt; it refers only to generic 'items'. AI Agent steps inside flows are a separate feature and do not count here. Missing for 10: explicit documentation of generating flows from a prompt, explicit confirmation that flows are among the AI-editable items, and independent or hands-on corroboration.",
+    "rationale": "Windmill's AI generation docs say the AI edits workspace items and then hands them to the Compare & Deploy page for review. That is a first-party, prompt-driven editing capability. However, the evidence never explicitly says flows can be generated from scratch from a natural-language prompt, and 'items' is not specified as including flows. Missing for 10: explicit documentation of natural-language flow generation, confirmation that flows are among the editable items, and independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-21"
     ],
@@ -13333,15 +13437,18 @@
     "productId": "windmill",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Windmill documents several first-party programmatic surfaces: the `wmill` CLI for working with instances from the terminal, scoped user tokens, CLI/Git-based deployment and Git sync. Together these cover a meaningful slice of UI operations outside the UI, but no evidence states that the API matches the UI feature for feature, and the OpenAPI probe found nothing at the tried public paths. Missing for 10: explicit API–UI parity statement, a published REST/OpenAPI reference, evidence that admin/permissions/app-builder operations are API-accessible, independent hands-on corroboration.",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Windmill publishes a first-party OpenAPI 3.0.3 spec, served live and versioned in the repo, with a hosted Scalar reference. It also documents a CLI, Git sync, and code/YAML definitions for flows, so programmatic access is clearly extensive. No evidence states that the API covers everything the UI can do, and the probe-3 404s were on marketing-site paths, not the live app spec, so parity is unproven rather than contradicted. Missing for 10: an explicit statement or demonstration of full UI/API parity, coverage of UI-only areas such as the low-code app editor via the API, and independent hands-on corroboration.",
     "evidenceIds": [
+      "windmill-openapi-cloud-20261106",
+      "windmill-openapi-source-20261106",
+      "windmill-scalar-reference-20261106",
       "windmill-docs-9",
-      "windmill-docs-8",
       "windmill-docs-4",
+      "windmill-docs-2",
       "windmill-docs-11",
-      "windmill-probe-3"
+      "windmill-release-lifecycle-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -13349,16 +13456,20 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "windmill-docs-9",
-          "quote": "The Windmill CLI, `wmill` allows you to interact with Windmill instances right from your terminal."
+          "evidenceId": "windmill-openapi-cloud-20261106",
+          "quote": "Windmill's cloud instance serves its OpenAPI 3.0.3 document live at /api/openapi.json (info title \"Windmill API\")"
         },
         {
-          "evidenceId": "windmill-docs-8",
-          "quote": "Tokens can be scoped to restrict access to specific resources and actions, following the principle of least privilege."
+          "evidenceId": "windmill-openapi-source-20261106",
+          "quote": "The source-of-truth spec lives in the official windmill-labs/windmill repository (backend/windmill-api/openapi.yaml), versioned with each release."
         },
         {
           "evidenceId": "windmill-docs-4",
           "quote": "Windmill supports both UI-based operations via its webIDE and low-code builders, as well as CLI deployments from a Git repository"
+        },
+        {
+          "evidenceId": "windmill-docs-9",
+          "quote": "The Windmill CLI, `wmill` allows you to interact with Windmill instances right from your terminal."
         }
       ]
     }
@@ -13369,12 +13480,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill's own Git sync pushes a commit to an external repository each time an item is deployed, and flows can be defined in YAML. Combined with being open-source and self-hostable, this gives a documented path to take workspace code and definitions elsewhere. But there is no documented export of all data: run history, logs, encrypted variables/secrets and resources are not covered, and no exit or migration procedure is shown. Missing for 10: documented full-workspace export covering all data types (job history, variables, resources), an explicit open export format spec, and hands-on corroboration of leaving.",
+    "rationale": "Windmill's own Git sync pushes a commit to an external repository every time an item is deployed. Flows can be defined in YAML and scripts are plain code, so workspace items leave the product in open formats. The open-source, self-hostable deployment further reduces lock-in. However, nothing in the evidence documents a complete export of all data, such as run history, logs, resources or variables, and the CLI evidence never mentions export. missing for 10: documented full-workspace or all-data export (job history, logs, variables/secrets, resources), explicit export format documentation, independent or hands-on corroboration of a successful migration off Windmill.",
     "evidenceIds": [
       "windmill-docs-11",
       "windmill-docs-2",
-      "windmill-docs-10",
-      "windmill-probe-2"
+      "windmill-docs-4",
+      "windmill-selfhost-dev-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -13390,12 +13501,8 @@
           "quote": "using either a low-code builder or YAML"
         },
         {
-          "evidenceId": "windmill-docs-10",
-          "quote": "For small setups, use Docker and Docker Compose on a single instance."
-        },
-        {
-          "evidenceId": "windmill-probe-2",
-          "quote": "An open-source workflow engine and developer platform"
+          "evidenceId": "windmill-selfhost-dev-20261106",
+          "quote": "Windmill is open-source and self-hostable"
         }
       ]
     }
@@ -13403,19 +13510,20 @@
   {
     "productId": "windmill",
     "storyId": "openness-open-license",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Windmill's own docs and llms.txt describe it as an open-source, self-hostable workflow engine, and its source is published in a public GitHub repository (windmill-labs/windmill). That covers both reading the source and an open license at a general level. missing for 10: the specific license name and terms (e.g., any enterprise-feature carve-outs), independent confirmation of license details",
+    "rationale": "Windmill's own docs and llms.txt describe it as open-source and self-hostable, and its source is in a public official GitHub repository (windmill-labs/windmill), so users can read the code. However, no evidence names the license or states its terms, so the 'open license' half of the story is asserted rather than documented. missing for 10: the specific license name and terms (e.g., a LICENSE file citation), clarity on whether any components are under non-open or enterprise licenses, and independent corroboration of the license's openness.",
     "evidenceIds": [
       "windmill-probe-1",
       "windmill-probe-2",
-      "windmill-gh-1",
-      "windmill-comm-9"
+      "windmill-selfhost-dev-20261106",
+      "windmill-openapi-source-20261106",
+      "windmill-gh-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can read the product's source under an open license",
       "citations": [
         {
@@ -13427,8 +13535,12 @@
           "quote": "An open-source workflow engine and developer platform to build endpoints"
         },
         {
-          "evidenceId": "windmill-gh-1",
-          "quote": "Scripts are turned into sharable UIs automatically, and can be composed together into flows or used into richer apps built with low-code."
+          "evidenceId": "windmill-selfhost-dev-20261106",
+          "quote": "Windmill is open-source and self-hostable"
+        },
+        {
+          "evidenceId": "windmill-openapi-source-20261106",
+          "quote": "The source-of-truth spec lives in the official windmill-labs/windmill repository (backend/windmill-api/openapi.yaml), versioned with each release."
         }
       ]
     }
@@ -13437,12 +13549,14 @@
     "productId": "windmill",
     "storyId": "openness-self-host",
     "verdict": "full",
-    "quality": 9,
+    "quality": 10,
     "confidence": "high",
-    "rationale": "Windmill's own docs give self-hosting paths: Docker Compose for small setups and a Helm chart on Kubernetes for production. Its llms.txt describes it as open-source and self-hostable, and community users report deploying it themselves on Caprover and on Alpine with Podman plus Docker Compose. missing for 10: evidence on whether the self-hosted edition matches the cloud feature set, and detailed operational docs beyond the deployment-method summary.",
+    "rationale": "Windmill's first-party docs describe open-source self-hosting of the core product: Docker Compose for single-instance setups and a Helm chart for Kubernetes production deployments. Independent community reports confirm it in practice, with users self-hosting via Caprover one-click install and via Podman plus Docker Compose on Alpine. The product's own llms.txt and intro docs also describe it as open-source and self-hostable.",
     "evidenceIds": [
       "windmill-docs-10",
+      "windmill-selfhost-dev-20261106",
       "windmill-probe-1",
+      "windmill-probe-2",
       "windmill-comm-1",
       "windmill-comm-4"
     ],
@@ -13476,7 +13590,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Windmill is a workflow automation platform, so a prebuilt connector catalog is a fair question to ask of it. However, the evidence pack never documents a library of prebuilt, vendor-maintained integrations covering many apps. What it does show is adjacent: code in many languages, event triggers such as Kafka, Postgres and SQS, and AI-provider connections in agent steps. None of these is a maintained app-integration catalog.",
+    "rationale": "Prebuilt connectors are a fair question for a workflow automation platform like Windmill, so the axis applies. The pack, however, documents no catalog of prebuilt, vendor-maintained app integrations. It shows only multi-language scripting (developer building blocks) and event triggers such as Kafka, Postgres and SQS, which are a different capability from app connectors.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13491,12 +13605,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill documents self-hosting on your own infrastructure (Docker Compose or a Helm chart on Kubernetes), so you decide where the instance and its data live. Community reports confirm people self-host it on chosen servers such as Oracle and Alpine Linux. There is no documented region or data-residency selection for the hosted cloud offering, so residency control comes only from self-deployment. Missing for 10: documented region/residency choice for managed cloud, explicit data-residency documentation or guarantees.",
+    "rationale": "Windmill documents first-party self-hosting via Docker Compose or a Helm chart on Kubernetes, so users can keep their data on infrastructure in a location they choose. The evidence never addresses region selection or data-residency guarantees for the hosted cloud offering. Missing for 10: cloud region/residency selection, explicit data-residency documentation, independent corroboration.",
     "evidenceIds": [
       "windmill-docs-10",
-      "windmill-probe-1",
-      "windmill-comm-1",
-      "windmill-comm-4"
+      "windmill-selfhost-dev-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -13504,16 +13616,12 @@
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
       "citations": [
         {
+          "evidenceId": "windmill-selfhost-dev-20261106",
+          "quote": "Self-host Windmill on your own infrastructure"
+        },
+        {
           "evidenceId": "windmill-docs-10",
-          "quote": "For small setups, use Docker and Docker Compose on a single instance. For larger and production use-cases, use our Helm chart to deploy on Kubernetes."
-        },
-        {
-          "evidenceId": "windmill-probe-1",
-          "quote": "Windmill is an open-source and self-hostable workflow engine and developer platform"
-        },
-        {
-          "evidenceId": "windmill-comm-4",
-          "quote": "Pretty easy to selfhost as I deployed it on a Alpine Linux server using Podman + Docker Compose binary."
+          "quote": "For larger and production use-cases, use our Helm chart to deploy on Kubernetes."
         }
       ]
     }
@@ -13524,7 +13632,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Windmill is a developer platform with built-in AI features (AI agent steps, AI generation), so a data-training opt-out or no-training policy is a fair question to ask of it. The evidence pack contains no statement about AI training use of customer data or any opt-out control. Self-hosting and variable encryption are adjacent features, not a documented training opt-out, so they earn no credit.",
+    "rationale": "Windmill ships AI features (AI generation, AI agent steps, MCP), so a training-data opt-out is a fair question for this product. However, the evidence pack contains no policy, setting or contractual statement about whether customer data is used for AI model training. Self-hosting and encrypted variables are adjacent privacy controls, not a training opt-out, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13539,7 +13647,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a workflow platform like Windmill, which stores job logs and results, so the axis applies. The evidence pack documents no retention periods, log or job-result purging, or deletion controls. Variable encryption, roles and permissions, scoped tokens and self-hosting are adjacent features and do not count as retention or deletion control.",
+    "rationale": "Data retention and deletion controls are a fair question for a workflow platform that stores job runs, logs and variables, so the axis applies. The evidence pack documents no retention period, deletion, or purge capability. Self-hosting, variable encryption and role-based permissions are adjacent controls and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13554,7 +13662,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a self-hostable workflow platform, so the axis applies, but nothing in the evidence pack mentions telemetry, usage tracking, or a way to disable them. Self-hosting and encrypted variables are related privacy features, but they are not a documented telemetry opt-out and earn no credit here.",
+    "rationale": "Telemetry opt-out is a fair question for a self-hostable workflow platform, so the axis applies. However, nothing in the evidence pack documents telemetry, usage tracking, or any way to disable them. Self-hosting and encryption of variables are adjacent privacy features, not a telemetry opt-out, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13569,10 +13677,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document inspecting past execution logs or manually re-running a failed execution from its failing step. The closest material is adjacent: automatic per-step retries with a delay and attempt limit, generic checkpointing and fault tolerance in workflows-as-code, and error/recovery handlers on schedules. None of these is an ops-driven re-run of a past failed run that resumes at the failing step, so they earn no credit.",
+    "rationale": "The evidence pack never documents viewing past run logs or manually re-running a failed execution from its failing step. Only adjacent capabilities appear: automatic per-step retries with delay and max attempts, generic checkpointing and fault tolerance for workflows-as-code, and error and recovery handlers on schedules. None of these is the user-initiated inspect-and-resume capability the story asks for.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an ops user, I can inspect past execution logs and re-run a failed execution, resuming from the failing step",
       "citations": []
@@ -13584,7 +13692,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill documents reusable scripts and functions being composed into flows through its orchestrator, so the 'reusable modules' half of the story is directly supported. Nothing in the pack shows a flow calling another flow as a sub-workflow, or how shared modules are versioned or referenced across flows. missing for 10: explicit sub-flow (flow-calling-flow) documentation, details on referencing/versioning shared modules across workflows, independent or hands-on corroboration",
+    "rationale": "Windmill documents scripts as reusable units that are composed into flows, which covers reusable modules that workflows call. There is no evidence that a flow can call another flow as a sub-workflow, and no detail on how shared modules are reused or versioned. Missing for 10: explicit flow-as-subflow (nested workflow) support, documentation of reuse/versioning of shared modules across workflows, independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-gh-1",
       "windmill-docs-2"
@@ -13611,7 +13719,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Windmill documents a low-code flow builder and YAML orchestration, but nothing in the evidence pack describes test-running a flow with sample or pinned data, or inspecting each step's input and output before deploying. Branches, retries, and version-pinned webhooks are adjacent features and do not deliver this story. A community comment raises non-destructive validation only as a question, which is not evidence either way.",
+    "rationale": "Windmill is a workflow orchestrator with a low-code flow builder, so this story applies to it. However, the evidence pack never documents test runs with sample or pinned data, or per-step input/output inspection. The version-pinned webhooks (docs-16) pin a flow version, not test data. Self-hosted instances standing in for a sandbox is a host-level workaround, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13626,14 +13734,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Windmill documents a low-code flow builder for assembling steps into multi-step flows, with branches and per-step retries configurable in the flow. However, the flow steps are scripts written in code, so the 'without writing code' part is only partly met for an ops user. missing for 10: evidence that an ops user can build a complete workflow with no code (pre-built no-code step library or connectors), screenshots or docs of the visual flow editor in depth, independent hands-on corroboration of non-developer use.",
+    "rationale": "Windmill documents a low-code flow builder for assembling multi-step flows, with branching and per-step retries. However, the flow steps are functions written in code (TypeScript, Python, etc.), so the builder is low-code rather than no-code, and an ops user would likely still need to write or reuse scripts. Missing for 10: evidence of a fully no-code step library or pre-built integrations, a detailed description of the visual flow editor, and hands-on corroboration from non-developer users.",
     "evidenceIds": [
       "windmill-docs-2",
       "windmill-docs-4",
       "windmill-gh-1",
       "windmill-docs-12",
-      "windmill-docs-13",
-      "windmill-docs-1"
+      "windmill-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -13665,7 +13772,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A public template library is a fair question for a workflow engine like Windmill, so the axis applies. However, nothing in the evidence pack documents a public library of workflow or flow templates. The closest items cover the flow builder, workflows as code and auto-generated sharable UIs for scripts; none of these are a template catalog, and none can be credited here.",
+    "rationale": "A public template library is a fair question for a workflow engine, so the axis applies. Nothing in the evidence pack documents a public library of workflow templates. The pack covers flow building, scripting, triggers and sharable UIs, but none of these is a starter template catalog.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -13680,7 +13787,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Windmill documents an official MCP integration that lets Claude, Cursor or any MCP-compatible client connect to Windmill and trigger its scripts and flows as tools, and the probe confirms an official MCP server doc page. Evidence is limited to one summary sentence plus the probe. Missing for 10: details on selecting or scoping which workflows are exposed as tools, auth/token setup for the MCP endpoint, and independent or hands-on corroboration.",
+    "rationale": "Windmill documents an official MCP server that lets external MCP clients such as Claude or Cursor connect and trigger the user's scripts and flows, which is the core of the story. The evidence is a single doc sentence plus a probe confirming the MCP docs page exists. missing for 10: detail on how tools are selected, exposed and scoped (e.g., token or permission scoping per MCP client), explicit coverage of connected app or integration actions as tools, independent or hands-on corroboration.",
     "evidenceIds": [
       "windmill-docs-17",
       "windmill-probe-4"

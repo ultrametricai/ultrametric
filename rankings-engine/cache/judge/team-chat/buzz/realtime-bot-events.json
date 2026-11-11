@@ -1,22 +1,23 @@
 {
-  "hash": "3444d6b3cbad6a1fd72145c90ea7bb57b4cdef9a88a57a491f194c5451c27406",
+  "hash": "66bdc237e96bf9293aa99182f45e673cf8919851a8b1be157f114f7bfccd109a",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Buzz's relay is a WebSocket server that third-party Nostr clients connect to directly with NIP-29/NIP-42 authentication, which works as a gateway-style real-time connection. Bots get their own keypairs. The first-party buzz-acp harness shows a bot listening for @mentions on the relay in real time and replying. missing for 10: explicit documentation of event subscription and filtering semantics (which event kinds a bot can subscribe to and how), a dedicated bot developer guide, and independent hands-on corroboration of building a custom bot on the relay connection.",
+    "rationale": "Buzz's own relay is a WebSocket server that third-party Nostr clients and bot keypairs connect to directly with NIP-29/NIP-42 authentication, and its buzz-acp harness receives @mentions live from that relay, so a gateway-style real-time connection exists. The bot-facing event surface is only lightly documented: the protocol extensions are draft NIPs, there is no machine-readable spec, and the relay API has no deprecation policy. missing for 10: a documented bot-oriented event subscription reference (event kinds, filters, delivery semantics), a stable rather than draft protocol with a versioning/deprecation policy, and independent hands-on corroboration of building a real-time bot against the relay.",
     "evidenceIds": [
-      "buzz-supp-nostr-open-protocol",
       "buzz-docs-19",
-      "buzz-supp-acp-harness",
-      "buzz-docs-10",
+      "buzz-supp-nostr-open-protocol",
       "buzz-supp-agents-md",
-      "buzz-supp-helm-chart"
+      "buzz-docs-10",
+      "buzz-supp-acp-harness",
+      "buzz-nostr-protocol-20261106",
+      "buzz-release-lanes-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can build a bot that receives messages and events in real time through an events API or gateway connection",
       "citations": [
         {
@@ -24,16 +25,16 @@
           "quote": "Third-party Nostr clients connect directly to `buzz-relay` using NIP-29 and NIP-42 authentication."
         },
         {
-          "evidenceId": "buzz-docs-10",
-          "quote": "The harness listens for @mentions on the relay, prompts your agent, and the agent replies using the Buzz CLI."
-        },
-        {
           "evidenceId": "buzz-supp-agents-md",
           "quote": "buzz-relay # WebSocket relay server — main entry point; also hosts git + huddle audio"
         },
         {
-          "evidenceId": "buzz-supp-acp-harness",
-          "quote": "Each agent needs a Nostr keypair — this is the agent's identity in Buzz"
+          "evidenceId": "buzz-docs-10",
+          "quote": "The harness listens for @mentions on the relay, prompts your agent, and the agent replies using the Buzz CLI."
+        },
+        {
+          "evidenceId": "buzz-supp-nostr-open-protocol",
+          "quote": "Connect any NIP-29 client straight to the relay"
         }
       ]
     },

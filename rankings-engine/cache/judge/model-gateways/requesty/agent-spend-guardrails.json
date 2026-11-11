@@ -1,14 +1,15 @@
 {
-  "hash": "313cccd0dc934cb6359c08a521d44d93daa5b69c5f49ab6cb0fe3d4efc284346",
+  "hash": "c56568087a85dbb4756622dcb13ee2c28246466ff96f7a4e7cba0048fc485731",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Requesty documents service accounts as non-human identities whose key spend is not tied to a user, and each API key or service account can have its own monthly spend cap, so an agent can get its own budget-capped key. The pack has no evidence of per-key rate limits: the rate-limit mention is about provider failures triggering fallback, and the Guardrails feature is content scanning, not a rate control. missing for 10: per-key rate/request-throughput limits, details on cap enforcement behavior (hard stop vs alert), independent or hands-on corroboration.",
+    "rationale": "Requesty lets you give an agent its own key: service accounts create non-human entities with their own keys, and each API key or service account can carry its own monthly spend cap. The changelog confirms the budget field exists in the management API. Per-key rate limiting is not documented; the only rate-limit mention is upstream provider rate limits triggering fallbacks. Missing for 10: documented per-key request/token rate limits, finer-grained (non-monthly) budget windows, independent or hands-on corroboration that caps hard-stop an agent.",
     "evidenceIds": [
       "requesty-docs-18",
-      "requesty-docs-19"
+      "requesty-docs-19",
+      "requesty-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -22,6 +23,10 @@
         {
           "evidenceId": "requesty-docs-19",
           "quote": "Service accounts allow you create non-human entities... spend from those keys will not be tied to any user."
+        },
+        {
+          "evidenceId": "requesty-changelog-20261106",
+          "quote": "`monthly_limit` is deprecated and will soon be migrated to `monthly_budget`"
         }
       ]
     },

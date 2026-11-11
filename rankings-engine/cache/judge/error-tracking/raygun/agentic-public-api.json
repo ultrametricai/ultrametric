@@ -1,24 +1,31 @@
 {
-  "hash": "8661bba87a1ca9e414bcd97632217b99b94a630b92b25935785e338c405b052b",
+  "hash": "f487abef195e85fb401e9cf8a4c91a79be46c21aeccadad19be94bbe6bb0f88d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Raygun documents its own API surfaces: a Deployments API authenticated with an external access token, plus API upload of source maps, dSYMs and ProGuard files. That counts as direct but narrow programmatic control. The evidence shows no general API for querying errors, changing statuses or managing apps, and probes found no published OpenAPI spec. The MCP server belongs to a separate story and is not credited here. Missing for 10: documented general-purpose REST API covering core crash-reporting objects (error groups, statuses, apps), published API reference or OpenAPI spec, independent or hands-on corroboration of API use.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Raygun publishes a public v3 REST API with a downloadable OpenAPI 3.0.3 spec of 46 paths, a hosted Swagger UI with a working 'Try it out' runner, and an API guide; it is authenticated with Personal Access Tokens. This lets a user or agent programmatically access and manipulate Raygun data, and further API surfaces exist for deployments and source map uploads. The root-domain OpenAPI probe 404s only show the spec lives at the API origin, not that it is absent. Missing for 10: independent or hands-on corroboration of driving the product end-to-end via the API, and a formal versioning/deprecation policy.",
     "evidenceIds": [
+      "raygun-openapi-spec-20261106",
+      "raygun-swagger-ui-20261106",
+      "raygun-api-guide-20261106",
+      "raygun-migration-20261106",
       "raygun-docs-8",
-      "raygun-docs-15",
-      "raygun-probe-2"
+      "raygun-docs-15"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "raygun-docs-8",
-          "quote": "You'll need your external access token for the following services: Deployments API, Sending dSYMS to Raygun, Uploading ProGuard mapping files, Uploading JavaScript files directly to Raygun"
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "allows you to access your Raygun data so that you can display, manipulate and process it in other tools, scripts and applications."
+        },
+        {
+          "evidenceId": "raygun-api-guide-20261106",
+          "quote": "This is version 3 of Raygun's API. While we transition, the RUM API will remain available"
         },
         {
           "evidenceId": "raygun-docs-15",

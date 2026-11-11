@@ -1,15 +1,18 @@
 {
-  "hash": "3845e1c6eac75ea2c222198da72346443bfad93b88ea918cc01d134eeeab8591",
+  "hash": "830c1b85fab4f74db529928772ee82c8a74a1b911cc3b81ab665787e0525ce83",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Fivetran documents sync modes (Soft Delete, Live, History) and delete capture, which let users choose whether deleted source records are kept, soft-deleted, or kept as history in the destination. That is a product-native control over how synced data is retained or removed. However, the evidence is only mode names and a truncated feature line, with no detail on retention periods or on deleting data Fivetran itself holds. Missing for 10: configurable retention periods/TTL, documented purge or deletion of Fivetran-held data, detail on how each sync mode behaves, and any independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Fivetran's own sync modes (Soft Delete, Live, History) and its capture-deletes feature control how deleted source records are kept or removed in the destination. Data blocking and row filtering keep unwanted data from being synced at all. These are real product controls over deletion and history in the pipeline, but the evidence is mostly feature-name listings with no detail. Missing for 10: documentation of Fivetran-side data retention periods or retention policy settings, explicit user-initiated deletion or purge controls for synced or stored data, in-depth docs on how each sync mode handles retention, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fivetran-docs-35",
       "fivetran-docs-13",
-      "fivetran-docs-51"
+      "fivetran-docs-51",
+      "fivetran-docs-31",
+      "fivetran-docs-49",
+      "fivetran-docs-50"
     ],
     "support": {
       "relation": "direct",
@@ -21,12 +24,12 @@
           "quote": "Soft Delete Mode ... Live Mode ... History Mode"
         },
         {
-          "evidenceId": "fivetran-docs-13",
-          "quote": "Fivetran captures deletes"
-        },
-        {
           "evidenceId": "fivetran-docs-51",
           "quote": "Capture deletes | YES | `ENTITY` table and its child tables"
+        },
+        {
+          "evidenceId": "fivetran-docs-49",
+          "quote": "Data blocking | YES | Column level"
         }
       ]
     },

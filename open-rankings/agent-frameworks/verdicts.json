@@ -3976,9 +3976,9 @@
     "productId": "google-adk",
     "storyId": "agent-scaffolds-agent",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "ADK's docs say developers can scaffold, build, test, evaluate, and deploy agents with the official Agents CLI from an AI-enabled environment. They also say coding assistants can connect to ADK developer Skills, so official agent-driven scaffolding exists. However, the pack never shows the actual scaffold command, its template output, or proof that it is a single command. missing for 10: a documented one-command scaffold invocation (e.g. a create/init subcommand), a description of the generated project template, hands-on or independent corroboration of a coding agent running it.",
+    "rationale": "ADK's docs say an official Agents CLI can scaffold, build, test, evaluate and deploy agents from an AI-enabled developer environment. They also say coding assistants can connect to ADK developer Skills, which covers the core of the story. However, the evidence never shows the actual scaffold command or that it runs in one step. The shown `adk` commands (run, web, eval, deploy) operate on existing agent folders. Missing for 10: a documented one-command scaffold invocation, template details, and hands-on or independent corroboration of a coding agent driving the scaffold.",
     "evidenceIds": [
       "google-adk-docs-10",
       "google-adk-docs-9",
@@ -3995,7 +3995,11 @@
         },
         {
           "evidenceId": "google-adk-docs-9",
-          "quote": "ADK is designed to be written by both humans and AI. Connect your favorite coding assistant to our ADK developer Skills and AI-aware developer resources"
+          "quote": "Connect your favorite coding assistant to our ADK developer Skills and AI-aware developer resources"
+        },
+        {
+          "evidenceId": "google-adk-docs-1",
+          "quote": "Create your first Python ADK agent in minutes."
         }
       ]
     }
@@ -4006,10 +4010,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ADK's own docs say it is \"designed to be written by both humans and AI\" and point coding assistants to \"ADK developer Skills and AI-aware developer resources\", so first-party agent-oriented docs exist. However, nothing shows an llms.txt file or markdown doc endpoints. The probes returned 404 at the google.github.io root and at a malformed .md path, which does not concretely refute the adk-docs claim but leaves it unverified. Missing for 10: a documented llms.txt or llms-full.txt, a machine-readable markdown docs format, details on what the AI-aware resources contain and how to point an agent at them, and independent or hands-on corroboration.",
+    "rationale": "The ADK docs say the framework is \"designed to be written by both humans and AI\" and point coding assistants to \"ADK developer Skills and AI-aware developer resources\". Several evidence items are sourced from markdown versions of doc pages (adk.dev/.../index.md), which suggests agent-readable docs exist. However, no llms.txt is evidenced: the probes hit the google.github.io root and a malformed .md path rather than the adk.dev docs host, so they neither confirm nor contradict one. Missing for 10: a documented llms.txt or llms-full.txt, explicit documentation of the markdown or AI-resource endpoints, and independent or hands-on corroboration that agents can consume them.",
     "evidenceIds": [
       "google-adk-docs-9",
       "google-adk-docs-10",
+      "google-adk-swagger-docs-20261106",
+      "google-adk-v2-migration-20261106",
       "google-adk-probe-1",
       "google-adk-probe-2"
     ],
@@ -4021,6 +4027,10 @@
         {
           "evidenceId": "google-adk-docs-9",
           "quote": "ADK is designed to be written by both humans and AI. Connect your favorite coding assistant to our ADK developer Skills and AI-aware developer resources"
+        },
+        {
+          "evidenceId": "google-adk-docs-10",
+          "quote": "Use your favorite AI-enabled developer environment to scaffold, build, test, evaluate, and deploy with Agents CLI."
         }
       ]
     }
@@ -4031,7 +4041,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Google ADK is a framework for building agents. A framework could plausibly offer built-in AI insights (for example, on agent traces or evaluation results), so the axis applies. However, the evidence shows only developer building blocks: models, tools, workflows and a dev UI for testing and debugging. Nothing documents a built-in feature that generates insights or suggestions from the user's own data inside the product.",
+    "rationale": "Google ADK is a framework for building agents. Developers could use its model, tools and workflow primitives to construct an agent that analyzes data, but that is a developer building block, not a built-in feature. Nothing in the evidence shows the product itself, such as its dev UI, offering AI-generated insights or suggestions from a user's data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4046,10 +4056,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "ADK documents a graph-based workflow runtime (loops, retry, state management) and deployment to Cloud Run, Agent Runtime, GKE or Docker. Those are developer building blocks and hosting options for agents that are 'accessed, queried, and used', not a documented feature for setting up automations that run autonomously in the background. The pack has no evidence of scheduled, recurring or event-triggered background runs.",
+    "rationale": "The evidence shows ADK provides workflow orchestration and deployment to Cloud Run or Agent Runtime. These are developer building blocks and host-platform hosting for agents that are 'accessed, queried, and used'. Nothing documents a product-level way to set up automations that run autonomously in the background: no schedules, triggers, recurring or background runs.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": []
@@ -4061,7 +4071,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Google ADK is a framework for building agents, so a built-in assistant is a fair axis, but nothing in the evidence shows ADK shipping its own assistant that users can delegate tasks to. The dev UI is for testing the user's own agents. The Task API is agent-to-agent delegation inside apps a developer builds. Agents CLI and the developer Skills connect the user's own external coding assistant. These are developer building blocks or user-side tooling, not a built-in assistant.",
+    "rationale": "Google ADK is a framework for building agents, so a built-in assistant that takes delegated tasks inside it is a fair question. The evidence shows no such first-party assistant. The dev UI (gh-3) is for testing your own agents. The AI-assisted workflows (docs-9, docs-10) depend on connecting your own external coding assistant or AI-enabled environment. Both are adjacent or user-side, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4073,23 +4083,22 @@
   {
     "productId": "google-adk",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "ADK ships its own CLI with non-UI commands: `adk run` executes an agent from a path, `adk eval` runs evalsets from the command line, and `adk deploy docker`/`cloud_run` package agents as containers, which supports scripted, headless automation. However, no evidence explicitly documents CI pipeline usage or non-interactive/headless execution modes, so CI suitability is implied rather than shown. missing for 10: explicit CI/CD integration docs (e.g., GitHub Actions or pipeline examples), documented non-interactive flags or exit-code behavior for `adk run`/`adk eval`, independent hands-on corroboration of CI usage.",
+    "rationale": "ADK ships its own CLI for running agents outside any UI. `adk run` executes an agent from the terminal, `adk eval` runs evalsets against an agent, and `adk api_server` exposes agents over REST \"for programmatic testing\". Together these cover headless, scriptable automation. Missing for 10: explicit CI pipeline guidance (e.g. GitHub Actions examples, exit-code/non-interactive flags for `adk run`), and independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "google-adk-gh-5",
       "google-adk-gh-12",
       "google-adk-gh-13",
       "google-adk-gh-18",
+      "google-adk-local-testing-20261106",
       "google-adk-gh-19",
-      "google-adk-gh-20",
-      "google-adk-docs-24",
-      "google-adk-gh-17"
+      "google-adk-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -4101,12 +4110,12 @@
           "quote": "adk eval \\\n    samples_for_testing/hello_world \\\n    samples_for_testing/hello_world/hello_world_eval_set_001.evalset.json"
         },
         {
-          "evidenceId": "google-adk-gh-20",
-          "quote": "adk deploy cloud_run --with_ui <agent-folder>"
+          "evidenceId": "google-adk-local-testing-20261106",
+          "quote": "Use the API server in ADK to expose your agents through a REST API for programmatic testing"
         },
         {
-          "evidenceId": "google-adk-docs-24",
-          "quote": "You can manually package your Agent into a container image and then run it in any environment that supports container images."
+          "evidenceId": "google-adk-gh-19",
+          "quote": "adk deploy docker --with_ui <agent-folder>"
         }
       ]
     }
@@ -4115,9 +4124,9 @@
     "productId": "google-adk",
     "storyId": "agentic-mcp-client",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "ADK's own MCP documentation states that an ADK agent can act as an MCP client and use tools from external MCP servers. The GitHub README also lists MCP tools as part of its tool ecosystem, so the product itself delivers this capability. missing for 10: documented detail on connection setup (transports such as stdio/SSE, auth, tool filtering), independent or hands-on corroboration.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "ADK's first-party docs state that an ADK agent can act as an MCP client and use tools from external MCP servers, and the GitHub README lists MCP tools as part of its tool ecosystem, so the product itself delivers the core of this story. The evidence is limited to overview-level statements. missing for 10: documented connection details (transports such as stdio/SSE/HTTP, configuration or code examples for attaching an MCP server, tool filtering/auth), independent or hands-on corroboration.",
     "evidenceIds": [
       "google-adk-docs-4",
       "google-adk-gh-16"
@@ -4144,20 +4153,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "ADK is a framework, not an agent, so an official MCP server is a fair axis. The evidence does not show one. The docs describe ADK agents acting as MCP clients and give a how-to for developers to build their own MCP server wrapping ADK tools. That guide is a developer building block, not a first-party MCP server a user can connect to, so it earns no credit.",
-    "evidenceIds": [
-      "google-adk-docs-18"
-    ],
+    "rationale": "ADK is an agent framework rather than an agent, so an official MCP server is a fair axis to ask about. The pack shows no first-party hosted or shipped ADK MCP server. The MCP evidence covers ADK agents acting as MCP clients, plus a guide for developers to build their own MCP server wrapping ADK tools. That guide is a developer building block, not an official server, so it earns no credit.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
-      "citations": [
-        {
-          "evidenceId": "google-adk-docs-18",
-          "quote": "How to build an MCP server that wraps ADK tools, making them accessible to any MCP client."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -4165,8 +4167,8 @@
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "ADK documents first-party developer Skills and an Agents CLI built so a user's AI coding assistant can scaffold, build, test, evaluate, and deploy ADK agents. That gives natural-language operation, but only through an external assistant rather than a native natural-language command interface. Agent Config is no-code configuration, not natural-language operation, so it is not credited. Missing for 10: native natural-language command interface in ADK itself, detailed docs on what the Skills cover, hands-on or independent corroboration.",
+    "confidence": "low",
+    "rationale": "ADK does not ship its own natural-language command interface. It does publish first-party ADK developer Skills and an Agents CLI built so that a user's AI coding assistant can scaffold, build, test, evaluate, and deploy agents from natural-language requests. The NL interpreter itself is the user's external assistant, so ADK's role is first-party enablement for that assistant. missing for 10: a native natural-language command interface for operating ADK, documentation of which operations the Skills cover and how, hands-on or independent corroboration of NL-driven operation.",
     "evidenceIds": [
       "google-adk-docs-9",
       "google-adk-docs-10"
@@ -4193,14 +4195,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "ADK ships an official `adk` CLI with documented commands to run agents (`adk run`), launch the web UI (`adk web`), evaluate (`adk eval`), and deploy to Docker or Cloud Run (`adk deploy`). The docs also describe an Agents CLI for use from AI-enabled developer environments to scaffold, build, test, evaluate, and deploy. Missing for 10: a comprehensive first-party CLI reference covering all commands and flags, and independent or hands-on corroboration of the CLI working as described.",
+    "rationale": "ADK ships an official `adk` CLI. Its GitHub README documents `adk run`, `adk web`, `adk eval` and `adk deploy docker`/`cloud_run`, and the docs reference `adk api_server`. The docs also describe an Agents CLI that can be driven from AI-enabled developer environments to scaffold, build, test, evaluate and deploy agents. Missing for 10: independent or hands-on corroboration of CLI use, and evidence of agent-friendly CLI ergonomics such as machine-readable or JSON output.",
     "evidenceIds": [
       "google-adk-gh-12",
       "google-adk-gh-13",
       "google-adk-gh-14",
       "google-adk-gh-20",
       "google-adk-docs-10",
-      "google-adk-docs-17"
+      "google-adk-docs-17",
+      "google-adk-local-testing-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4210,10 +4213,6 @@
         {
           "evidenceId": "google-adk-gh-12",
           "quote": "adk run path/to/my_agent"
-        },
-        {
-          "evidenceId": "google-adk-gh-12",
-          "quote": "adk web path/to/agents_dir"
         },
         {
           "evidenceId": "google-adk-gh-20",
@@ -4234,17 +4233,15 @@
     "productId": "google-adk",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "ADK is a code-first framework whose product surface is a documented public programmatic API: agents are defined via the Agent class and orchestrated through a Workflow Runtime and Task API, in Python, TypeScript, Go, Java, and Kotlin. A documented CLI (adk run, eval, deploy) adds a second scriptable surface. The OpenAPI probes returned 404, but a REST spec is not required for a library's public API. Missing for 10: an evidenced formal API reference, a documented HTTP/OpenAPI interface for driving deployed agents, and independent hands-on corroboration.",
+    "rationale": "ADK publishes a downloadable OpenAPI 3.1 \"ADK REST API Reference\" for its API server, which exposes agents through a REST API for programmatic use. The Python and TypeScript servers also serve interactive Swagger UI documentation for live requests. Beyond REST, it is a code-first SDK available in Python, TypeScript, Go, Java and Kotlin. Missing for 10: the spec only describes the local dev server (`adk api_server`) rather than a hosted endpoint, the Go server has no /docs, there is no semver or deprecation-window commitment, and there is no independent hands-on corroboration.",
     "evidenceIds": [
-      "google-adk-docs-22",
-      "google-adk-gh-17",
+      "google-adk-openapi-spec-20261106",
+      "google-adk-swagger-docs-20261106",
+      "google-adk-local-testing-20261106",
       "google-adk-docs-29",
-      "google-adk-gh-7",
-      "google-adk-gh-6",
-      "google-adk-gh-12",
-      "google-adk-gh-13"
+      "google-adk-v2-migration-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4252,20 +4249,16 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "google-adk-gh-17",
-          "quote": "Code-First Development: Define agent logic, tools, and orchestration directly in Python for ultimate flexibility, testability, and versioning."
+          "evidenceId": "google-adk-openapi-spec-20261106",
+          "quote": "ADK publishes a downloadable OpenAPI 3.1 document (info title \"ADK REST API Reference\") for the ADK API server"
         },
         {
-          "evidenceId": "google-adk-docs-29",
-          "quote": "Available in Python, TypeScript, Go, Java, and Kotlin."
+          "evidenceId": "google-adk-swagger-docs-20261106",
+          "quote": "Swagger UI interactive documentation is served at `/docs` by the Python and TypeScript ADK API servers only"
         },
         {
-          "evidenceId": "google-adk-gh-7",
-          "quote": "Task API: Structured agent-to-agent delegation with multi-turn task mode, single-turn controlled output, mixed delegation patterns, human-in-the-loop, and task agents as workflow nodes."
-        },
-        {
-          "evidenceId": "google-adk-gh-12",
-          "quote": "adk run path/to/my_agent"
+          "evidenceId": "google-adk-local-testing-20261106",
+          "quote": "Use the API server in ADK to expose your agents through a REST API for programmatic testing"
         }
       ]
     }
@@ -4276,7 +4269,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scoped credentials are a fair question for an agent framework, but nothing in the evidence pack documents ADK issuing scoped or least-privilege API credentials for an agent. The tool-confirmation HITL flow guards tool execution, which is an adjacent control and not credential scoping, so it earns no credit.",
+    "rationale": "Scoped credentials are a fair question for an agent framework like ADK, since such frameworks can ship auth and credential-scoping features. However, the evidence pack never mentions issuing API keys, credential scoping, or least-privilege permissions for agents. The tool-confirmation (HITL) flow is a related control but does not issue scoped credentials, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4289,15 +4282,15 @@
     "productId": "google-adk",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Google ADK is itself an official, code-first agent development SDK. It ships in Python, TypeScript, Go, Java, and Kotlin, with an official google/adk-python repo, documented Agent APIs and code samples, and an `adk` CLI for running, evaluating, and deploying agents. missing for 10: independent or hands-on corroboration of SDK quality, and detailed evidence for the non-Python language SDKs.",
+    "rationale": "ADK is itself an official Google SDK/framework. First-party docs state it is available in Python, TypeScript, Go, Java, and Kotlin, and the official adk-python repo documents code-first development with code samples. Versioned releases come with per-language migration guidance. Missing for 10: independent or hands-on corroboration, and documentation depth for the non-Python SDKs (TypeScript/Go/Java/Kotlin), which is asserted but not detailed here.",
     "evidenceIds": [
       "google-adk-docs-29",
       "google-adk-gh-17",
       "google-adk-docs-22",
       "google-adk-docs-1",
-      "google-adk-gh-12"
+      "google-adk-v2-migration-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4315,6 +4308,10 @@
         {
           "evidenceId": "google-adk-docs-1",
           "quote": "Create your first Python ADK agent in minutes."
+        },
+        {
+          "evidenceId": "google-adk-v2-migration-20261106",
+          "quote": "the 2.0 page enumerates per-language breaking changes and deprecations"
         }
       ]
     }
@@ -4325,7 +4322,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhook event subscriptions are a fair question for an agent framework and its deployment runtime, so the axis applies. The evidence pack documents no registrable outbound HTTP callbacks. ADK 'Callbacks' are in-process lifecycle hooks inside agent code, which is an adjacent developer building block and not a webhook subscription.",
+    "rationale": "Webhooks are a fair axis for an agent framework, but the evidence pack never documents registrable outbound HTTP callbacks that a programmatic consumer could subscribe to. The documented 'Callbacks' are in-process lifecycle hooks inside agent code, an adjacent feature rather than webhook delivery. The REST API server is request/response only, with no event subscription mechanism.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4337,61 +4334,128 @@
   {
     "productId": "google-adk",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence shows a built-in dev web UI for testing your own agents and static code snippets in the docs. Neither is an interactive API reference with runnable examples. The OpenAPI probes all returned 404, and nothing documents a playground or try-it API explorer, so the dev UI is only an adjacent feature.",
-    "evidenceIds": [],
+    "rationale": "ADK documents a Swagger UI interactive reference at /docs on the Python and TypeScript API servers, where users can send live 'Try it out' requests, and it publishes an OpenAPI 3.1 'ADK REST API Reference' that the docs site also renders in Swagger UI. Runnable execution only targets the user's own locally run `adk api_server`, there is no hosted sandbox, and the Go server has no /docs endpoint. Missing for 10: hosted runnable examples without self-hosting a local server, /docs parity for the Go (and other) API servers, independent or hands-on corroboration of the interactive reference.",
+    "evidenceIds": [
+      "google-adk-swagger-docs-20261106",
+      "google-adk-openapi-spec-20261106",
+      "google-adk-local-testing-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "google-adk-swagger-docs-20261106",
+          "quote": "Swagger UI interactive documentation is served at `/docs` by the Python and TypeScript ADK API servers only"
+        },
+        {
+          "evidenceId": "google-adk-swagger-docs-20261106",
+          "quote": "to send live requests to your running agents."
+        },
+        {
+          "evidenceId": "google-adk-swagger-docs-20261106",
+          "quote": "The docs site additionally hosts a Swagger UI browsing the published spec."
+        },
+        {
+          "evidenceId": "google-adk-swagger-docs-20261106",
+          "quote": "The Go API server exposes no /docs endpoint, and live execution targets the user's own local server."
+        },
+        {
+          "evidenceId": "google-adk-openapi-spec-20261106",
+          "quote": "ADK publishes a downloadable OpenAPI 3.1 document"
+        }
+      ]
     }
   },
   {
     "productId": "google-adk",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies: an agent framework with a CLI, a web UI and deployable servers could reasonably publish a downloadable OpenAPI spec. The pack shows no such spec. The only OpenAPI mention (google-adk-gh-16) covers ADK consuming OpenAPI specs as agent tools, which is an adjacent feature, and the probe found every candidate OpenAPI path returning 404.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "ADK's docs publish a downloadable OpenAPI 3.1 document titled \"ADK REST API Reference\" for the ADK API server. It is generated at docs build time from the FastAPI app and linked from the API Reference index, and a Swagger UI is served at /docs by the Python and TypeScript API servers. The probe 404s were at the google.github.io root, not the adk.dev path where the spec is published, so they do not contradict it. Missing for 10: prose documentation of the running server's own /openapi.json endpoint, spec/Swagger parity for the Go API server, independent or hands-on corroboration of the downloaded spec.",
+    "evidenceIds": [
+      "google-adk-openapi-spec-20261106",
+      "google-adk-swagger-docs-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "google-adk-openapi-spec-20261106",
+          "quote": "ADK publishes a downloadable OpenAPI 3.1 document (info title \"ADK REST API Reference\") for the ADK API server, extracted at docs build time from the FastAPI app and linked from the docs' API Reference index."
+        },
+        {
+          "evidenceId": "google-adk-swagger-docs-20261106",
+          "quote": "The docs site additionally hosts a Swagger UI browsing the published spec."
+        }
+      ]
     }
   },
   {
     "productId": "google-adk",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "ADK documents local testing tools: a dev web UI, `adk run`, `adk eval` test files, and a local Docker deploy. None of the evidence describes a sandbox environment, mocked tools, or any isolation that keeps tests away from production data or systems. Local development and eval harnesses are adjacent testing features, not a documented sandbox, and tool confirmation (HITL) is a separate guard control, not isolation.",
-    "evidenceIds": [],
+    "rationale": "ADK documents its own pre-deployment test surface: the `adk api_server` and the ADK Web dev UI are explicitly not for production, and `adk eval` runs eval sets locally. This gives a separate local test environment from production deployments. The docs also state it is not a hosted sandbox and still calls real model APIs. Nothing shows data isolation, so tools can still reach real systems; the HITL tool-confirmation flow is an adjacent guard, not sandbox isolation. Missing for 10: a hosted or isolated sandbox environment, documented separation from production data or connected services, mock or stub tool backends, and independent corroboration.",
+    "evidenceIds": [
+      "google-adk-local-testing-20261106",
+      "google-adk-gh-3",
+      "google-adk-gh-13",
+      "google-adk-docs-21",
+      "google-adk-swagger-docs-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "google-adk-local-testing-20261106",
+          "quote": "Use the API server in ADK to expose your agents through a REST API for programmatic testing"
+        },
+        {
+          "evidenceId": "google-adk-local-testing-20261106",
+          "quote": "not meant for use in production deployments"
+        },
+        {
+          "evidenceId": "google-adk-gh-3",
+          "quote": "A built-in development UI to help you test, evaluate, debug, and showcase your agent(s)."
+        },
+        {
+          "evidenceId": "google-adk-docs-21",
+          "quote": "It's most effective during active agent development, serving as a form of unit testing."
+        }
+      ]
     }
   },
   {
     "productId": "google-adk",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Versioned APIs and a documented deprecation policy are a fair question for an agent development framework like ADK. However, nothing in the evidence pack documents API versioning, release or semver guarantees, or any deprecation policy. The 'versioning' mention in the GitHub README refers to users version-controlling their own code-defined agent logic, which is an adjacent workflow benefit and not a versioned-API or deprecation commitment.",
-    "evidenceIds": [],
+    "rationale": "ADK ships versioned releases with a 2.0 migration page that lists per-language breaking changes and deprecations, including runtime deprecation warnings, along with 1.x pinning guidance, Go major-version module paths and per-feature version badges. The vendor's own docs say this versioning practice is demonstrated rather than promised: there is no semver commitment and no deprecation-window policy page. Missing for 10: a formal documented deprecation policy with support windows, an explicit semver/API stability commitment, and independent corroboration.",
+    "evidenceIds": [
+      "google-adk-v2-migration-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "google-adk-v2-migration-20261106",
+          "quote": "the 2.0 page enumerates per-language breaking changes and deprecations (e.g. deprecated workflow agent classes that log \"a deprecation warning once per class, per process\"), pinning guidance for staying on 1.x, and Go's major-version module path"
+        }
+      ]
     }
   },
   {
@@ -4400,7 +4464,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no bulk-operation capability that acts across many items at once. The Workflow Runtime's fan-out/fan-in and loops are developer building blocks for constructing parallel processing, which is adjacent support and earns no credit here. Likewise, `adk eval` running an evalset is batch evaluation of test cases, not a general bulk-operations feature.",
+    "rationale": "ADK does not document a bulk-operations capability, meaning a feature that acts on many items at once. Its Workflow Runtime offers fan-out/fan-in, loops and dynamic nodes, but these are developer building blocks for constructing such processing, not the capability itself, so they earn no credit. Running eval sets via `adk eval` is a separate testing feature and does not carry over to this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4415,10 +4479,9 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "ADK's own Callbacks feature lets developers hook into specific agent-lifecycle events and run custom side-effects automatically. The Workflow Runtime adds deterministic routing that can act as conditional logic. This is code-level hooking into internal execution events, not a rule system triggered by external events. Missing for 10: declarative rule definitions, triggers on external or business events (e.g. incoming messages, schedules, data changes), and independent or hands-on corroboration.",
+    "rationale": "ADK documents Callbacks that hook into specific events during an agent's execution lifecycle to run custom side-effects, so code-defined, event-triggered actions are a first-party feature. This only covers internal agent-lifecycle events defined in code; there is no evidence of a rules engine or of triggers on external events. Missing for 10: declarative rule definition, triggers on external/business events (e.g., incoming data, schedules, system events), documented examples of rule-to-action automation, independent corroboration.",
     "evidenceIds": [
-      "google-adk-docs-28",
-      "google-adk-gh-6"
+      "google-adk-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -4428,10 +4491,6 @@
         {
           "evidenceId": "google-adk-docs-28",
           "quote": "Callbacks: Hook into specific events during an agent's execution lifecycle to add logging, monitoring, or custom side-effects without altering core agent logic."
-        },
-        {
-          "evidenceId": "google-adk-gh-6",
-          "quote": "Workflow Runtime: A graph-based execution engine for composing deterministic execution flows for agentic apps, with support for routing, fan-out/fan-in, loops, retry, state management"
         }
       ]
     }
@@ -4442,7 +4501,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring workflows is a fair question for an agent framework, but the evidence never shows a scheduler, cron trigger, or recurring-run capability in ADK. The graph-based Workflow Runtime supports loops, retry and orchestration within a single execution. That is a one-off run, not a recurring schedule. Deployment to Cloud Run, GKE or Agent Runtime is host-platform infrastructure and earns no credit.",
+    "rationale": "The evidence documents ADK's workflow orchestration (a graph-based runtime with loops, retry and fan-out) and deployment to Agent Runtime, Cloud Run, GKE or Docker. None of it shows a built-in way to schedule workflows on a recurring basis (cron-like triggers or time-based runs). In-workflow loops and host-platform deployment targets are adjacent features, not recurring scheduling, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4457,7 +4516,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "ADK's code-first design is described as enabling 'versioning', but that relies on the user's external source control (git). That is a user-side workaround, not a product capability. The evidence pack documents no first-party feature for versioning agent/workflow definitions, reviewing changes, or rolling back deployed automations.",
+    "rationale": "ADK is a code-first framework. Its only related claim is that defining agents in Python enables 'versioning', which relies on the user's own source control rather than any ADK feature for versioning, reviewing, or rolling back automations. The 2.0 migration evidence covers ADK's own release versioning, not user automations, so it does not transfer to this story.",
     "evidenceIds": [
       "google-adk-gh-17"
     ],
@@ -4468,7 +4527,7 @@
       "citations": [
         {
           "evidenceId": "google-adk-gh-17",
-          "quote": "Code-First Development: Define agent logic, tools, and orchestration directly in Python for ultimate flexibility, testability, and versioning."
+          "quote": "Define agent logic, tools, and orchestration directly in Python for ultimate flexibility, testability, and versioning."
         }
       ]
     }
@@ -4479,7 +4538,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence mentions 'state management' in the Workflow Runtime and persistent Artifacts. Neither documents checkpointing a run's execution state or resuming exactly where it left off after a crash or restart. These are adjacent features, not the durable-resume capability the story asks for.",
+    "rationale": "The evidence pack never documents checkpointing agent state or resuming a run after a crash or restart. The Workflow Runtime's general \"state management\" and \"retry\" support, and Artifacts that persist outputs beyond the conversation, are adjacent features. They are not durable checkpoint/resume of execution, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4494,7 +4553,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "ADK documents code-first agent definition in a few lines (an Agent with name, model, instruction and a tools list) and supports custom functions as tools defined directly in Python. However, the only snippet uses a prebuilt tool (google_search), and nothing shows how custom tool signatures are typed or turned into schemas. Missing for 10: evidence of typed tool definitions (type hints or schema generation from function signatures), a concrete custom-tool code example, and independent or hands-on corroboration.",
+    "rationale": "ADK's own docs show an agent defined in a few lines of Python (name, model, instruction, tools list), and the repo documents custom functions as tools defined directly in code. However, the few-lines example uses a prebuilt tool (google_search), and nothing shows custom tools being typed or schema-derived. missing for 10: evidence of typed tool signatures or schema generation from type hints, a concise custom-function tool code example, independent or hands-on corroboration.",
     "evidenceIds": [
       "google-adk-docs-22",
       "google-adk-gh-16",
@@ -4528,10 +4587,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a graph-based Workflow Runtime with \"state management\" and \"retry\", persistent Artifacts, and managed deployment targets (Agent Runtime, Cloud Run). None of it documents agents or workflows surviving process restarts or deploys, such as checkpointing, resume-from-failure, persistent session stores, or durable-execution integrations. These are adjacent features (in-run state, output persistence, hosting) rather than the durability capability itself, so the axis applies but is unevidenced.",
+    "rationale": "The evidence pack never documents durable execution for ADK. There is nothing on checkpointing or resuming agent runs after a process restart or redeploy, no persistent session or state backend, and no integration with durable-execution engines. The workflow runtime's 'state management' and 'retry', Artifacts that persist outputs, and managed hosting on Agent Runtime or Cloud Run are related features, but none of them is documented as making long-lived agents survive restarts or deploys.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an engineering-lead, I can run long-lived agents durably across process restarts and deploys, natively or via durable-execution integrations",
       "citations": []
@@ -4543,13 +4602,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "ADK ships built-in evaluation: test files per session used as unit tests, groundtruth- and rubric-based tool-use metrics, expected tool trajectories, and an `adk eval` CLI command that runs an evalset against an agent. A scriptable CLI makes CI use plausible, but no evidence documents a CI integration, pass/fail thresholds or exit codes. Missing for 10: documented CI pipeline integration, pass/fail gating and scoring-threshold details, independent or hands-on corroboration.",
+    "rationale": "ADK ships built-in evaluation: an `adk eval` CLI that runs agents against .evalset.json files, plus groundtruth- and rubric-based tool-use metrics and expected-trajectory checks. The docs frame these test files as a form of unit testing. However, nothing in the evidence documents running evals in CI, such as pass/fail thresholds, exit-code behavior, or a pytest or CI pipeline integration; that is only implied by the existence of a CLI. Missing for 10: documented CI integration (thresholds or exit codes, pipeline examples), detail on response-quality scoring beyond tool-use metrics, independent or hands-on corroboration.",
     "evidenceIds": [
+      "google-adk-gh-13",
+      "google-adk-gh-18",
       "google-adk-docs-20",
       "google-adk-docs-21",
       "google-adk-docs-25",
-      "google-adk-gh-13",
-      "google-adk-gh-18",
       "google-adk-gh-3"
     ],
     "support": {
@@ -4562,12 +4621,12 @@
           "quote": "ADK provides both groundtruth based and rubric based tool use evaluation metrics."
         },
         {
-          "evidenceId": "google-adk-docs-21",
-          "quote": "It's most effective during active agent development, serving as a form of unit testing."
-        },
-        {
           "evidenceId": "google-adk-gh-13",
           "quote": "adk eval \\\n    samples_for_testing/hello_world \\\n    samples_for_testing/hello_world/hello_world_eval_set_001.evalset.json"
+        },
+        {
+          "evidenceId": "google-adk-docs-21",
+          "quote": "It's most effective during active agent development, serving as a form of unit testing."
         },
         {
           "evidenceId": "google-adk-docs-25",
@@ -4579,20 +4638,20 @@
   {
     "productId": "google-adk",
     "storyId": "examples-runnable-headless",
-    "verdict": "partial",
-    "quality": 7,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "ADK ships its own CLI that runs agents from a terminal (`adk run path/to/my_agent`). Its `adk eval` command runs bundled sample agents (e.g. samples_for_testing/hello_world, contributing/samples/evaluation/home_automation_agent) against evalset files, which gives a terminal-driven way to check agent behavior. The evidence does not show that `adk run` works non-interactively (piped input, machine-readable output, exit codes), so whether an AI agent can fully script it headlessly is unproven. missing for 10: documented non-interactive/scriptable mode for `adk run` (stdin input, structured output, exit codes), explicit docs on running the shipped example agents headlessly for agent self-verification, independent hands-on corroboration.",
+    "rationale": "ADK's own CLI runs an agent folder from the terminal with `adk run path/to/my_agent`. It also runs bundled samples headlessly against evalsets via `adk eval samples_for_testing/hello_world ...`, and `adk api_server` exposes agents over REST 'for programmatic testing', so an agent can verify what it built without the web UI. missing for 10: prose documentation of `adk run`'s non-interactive/scripted input and output behavior, and independent or hands-on corroboration of agent-driven headless verification.",
     "evidenceIds": [
       "google-adk-gh-5",
       "google-adk-gh-12",
       "google-adk-gh-13",
       "google-adk-gh-18",
-      "google-adk-docs-21"
+      "google-adk-local-testing-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an ai-native user, I can run the framework's example agents headlessly from a terminal so an agent can verify what it just built",
       "citations": [
         {
@@ -4608,8 +4667,8 @@
           "quote": "adk eval \\\n    contributing/samples/evaluation/home_automation_agent \\\n    contributing/samples/evaluation/basic_criteria/home_automation.evalset.json"
         },
         {
-          "evidenceId": "google-adk-docs-21",
-          "quote": "It's most effective during active agent development, serving as a form of unit testing."
+          "evidenceId": "google-adk-local-testing-20261106",
+          "quote": "Use the API server in ADK to expose your agents through a REST API for programmatic testing"
         }
       ]
     }
@@ -4618,16 +4677,16 @@
     "productId": "google-adk",
     "storyId": "explicit-workflow-graphs",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "ADK's first-party Workflow Runtime is a graph-based execution engine for composing deterministic flows. It explicitly supports routing (branching), fan-out/fan-in (parallel steps), loops and nested workflows, and agents can serve as workflow nodes. The docs reinforce this with graph-based architectures that have explicit execution paths. Missing for 10: independent or hands-on corroboration, and concrete code examples of the graph or workflow API in the evidence.",
+    "rationale": "ADK's first-party Workflow Runtime is a graph-based execution engine for composing deterministic flows. It explicitly supports routing (branching), fan-out/fan-in (parallel steps), loops and nested workflows, and agents can serve as workflow nodes. The docs add that graph-based architectures offer explicit execution paths. Missing for 10: independent or hands-on corroboration, and in-depth docs or code examples of the graph-construction API (the older workflow agent classes are noted as deprecated in 2.0).",
     "evidenceIds": [
       "google-adk-gh-6",
       "google-adk-gh-8",
       "google-adk-docs-11",
       "google-adk-docs-16",
-      "google-adk-docs-3",
-      "google-adk-gh-7"
+      "google-adk-gh-7",
+      "google-adk-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -4659,7 +4718,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ADK's own docs say the framework automatically filters irrelevant events, summarizes older conversational turns, lazy-loads artifacts and tracks token usage, which directly addresses keeping an agent inside its context window. This rests on a single landing-page sentence, with no detail on how a developer configures or controls the behavior. Missing for 10: documented developer-facing configuration or API for trimming, summarization and filtering, explicit history truncation, in-depth reference docs, and independent or hands-on corroboration.",
+    "rationale": "ADK's own docs state that it automatically filters irrelevant events and summarizes older conversational turns while tracking token usage, so it directly addresses context-window management. This comes from a single landing-page sentence, with no detail on how developers configure or control it. Missing for 10: developer-facing configuration or API docs for trimming/summarization/filtering, explicit history truncation controls, and independent or hands-on corroboration.",
     "evidenceIds": [
       "google-adk-docs-12"
     ],
@@ -4678,10 +4737,10 @@
   {
     "productId": "google-adk",
     "storyId": "hitl-interrupt-resume",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "ADK's GitHub README documents a first-party tool confirmation flow (HITL) that guards tool execution with explicit confirmation and custom input. Its Workflow Runtime and Task API also list human-in-the-loop as a built-in capability. This covers pausing for human approval or input and acting on the human's decision. Missing for 10: explicit documentation of how a paused run is persisted and resumed with the human's decision, in-depth first-party docs beyond README feature bullets, and independent or hands-on corroboration.",
+    "rationale": "ADK ships its own HITL features. A Tool Confirmation flow guards tool execution with explicit confirmation and custom input, and the graph Workflow Runtime and Task API both list human-in-the-loop support. That covers pausing for approval or input, but the pack never documents how a run is suspended, how its state is persisted, or how it resumes with the human's decision. Missing for 10: explicit documentation of the pause/resume mechanics (suspension, state persistence, resuming with the decision), in-depth HITL docs beyond README feature bullets, and independent or hands-on corroboration.",
     "evidenceIds": [
       "google-adk-gh-2",
       "google-adk-gh-11",
@@ -4690,7 +4749,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can pause an agent mid-run for human input or approval and resume with the human's decision",
       "citations": [
         {
@@ -4699,11 +4758,11 @@
         },
         {
           "evidenceId": "google-adk-gh-6",
-          "quote": "Workflow Runtime: A graph-based execution engine for composing deterministic execution flows for agentic apps, with support for routing, fan-out/fan-in, loops, retry, state management, dynamic nodes, human-in-the-loop, and nested workflows."
+          "quote": "support for routing, fan-out/fan-in, loops, retry, state management, dynamic nodes, human-in-the-loop, and nested workflows"
         },
         {
           "evidenceId": "google-adk-gh-7",
-          "quote": "Task API: Structured agent-to-agent delegation with multi-turn task mode, single-turn controlled output, mixed delegation patterns, human-in-the-loop, and task agents as workflow nodes."
+          "quote": "mixed delegation patterns, human-in-the-loop, and task agents as workflow nodes"
         }
       ]
     }
@@ -4714,10 +4773,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented input/output guardrail feature that validates, transforms, or blocks unsafe content. Callbacks are described only as lifecycle hooks for logging, monitoring, or side-effects, and Tool Confirmation is a human-in-the-loop approval step for tool execution. Both are adjacent building blocks, not content guardrails, so they earn no credit here.",
+    "rationale": "The evidence pack never documents input/output guardrails that validate, transform, or block unsafe content. Callbacks are described only as hooks for \"logging, monitoring, or custom side-effects\". Tool Confirmation is a human-in-the-loop gate on tool execution, not content validation. Both are adjacent building blocks or controls, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, I can attach input/output guardrails that validate, transform, or block unsafe content",
       "citations": []
@@ -4729,7 +4788,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a long-term memory capability that persists knowledge across sessions or threads. Only adjacent features appear: Artifacts are persistent file or document outputs, context management summarizes older turns within a conversation, and workflow state management is not cross-session memory.",
+    "rationale": "Long-term memory is a fair axis for an agent framework, but the evidence pack never documents a memory service or any mechanism that persists agent memory across sessions and threads. The nearby items cover something else: context management that summarizes older turns in a conversation, workflow state management, and Artifacts as persistent file or document outputs. None of these is cross-session long-term memory, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4744,12 +4803,13 @@
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "ADK documents deployment to managed runtimes: Agent Runtime is a fully managed auto-scaling service for ADK agents, and Cloud Run is reachable via the `adk deploy cloud_run` command. The calling-as-an-API-endpoint half is only implied by docs saying the deployed agent \"can be accessed, queried, and used in production\"; no endpoint, request format or API reference is shown. missing for 10: explicit documentation of the HTTP/API endpoint exposed after deployment (routes, request/response schema, auth), independent or hands-on corroboration of calling a deployed agent.",
+    "rationale": "ADK documents deploying agents to managed runtimes: Agent Runtime, a fully managed auto-scaling service, and Cloud Run via `adk deploy cloud_run`. The deploy docs say deployed agents can be accessed and queried in production. However, the documented REST API and OpenAPI spec describe the local `adk api_server` dev server, so calling the deployed agent as an API endpoint is only implied, not documented. Missing for 10: documented request/auth flow for calling an agent hosted on Agent Runtime or Cloud Run as an API endpoint, a production endpoint API reference, and independent hands-on corroboration of deployment and invocation.",
     "evidenceIds": [
       "google-adk-docs-6",
       "google-adk-docs-14",
       "google-adk-gh-20",
-      "google-adk-docs-23"
+      "google-adk-docs-23",
+      "google-adk-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4761,16 +4821,16 @@
           "quote": "Agent Runtime is a fully managed auto-scaling service on Google Cloud specifically designed for deploying, managing, and scaling AI agents built with frameworks such as ADK."
         },
         {
-          "evidenceId": "google-adk-docs-14",
-          "quote": "Cloud Run is a managed auto-scaling compute platform on Google Cloud that enables you to run your agent as a container-based application."
-        },
-        {
           "evidenceId": "google-adk-gh-20",
           "quote": "adk deploy cloud_run --with_ui <agent-folder>"
         },
         {
           "evidenceId": "google-adk-docs-23",
           "quote": "the next step is to deploy it so it can be accessed, queried, and used in production"
+        },
+        {
+          "evidenceId": "google-adk-docs-14",
+          "quote": "Cloud Run is a managed auto-scaling compute platform on Google Cloud that enables you to run your agent as a container-based application."
         }
       ]
     }
@@ -4781,7 +4841,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "ADK's first-party docs say agents can 'swap the underlying intelligence' across Google and other providers through adapters, including locally running models. The agent definition takes the model as a single `model=` parameter, which supports swapping without rewriting agent logic. missing for 10: detailed docs naming specific provider adapters (e.g. which non-Google providers) and how to configure them, independent or hands-on corroboration that switching providers needs no other code changes.",
+    "rationale": "ADK's own docs say agents can swap their underlying model across Google and other providers through adapters, including locally running models. The agent definition exposes the model as a single parameter, which implies a swap does not require rewriting agent logic. missing for 10: documentation of specific adapters and provider configuration, an explicit example of changing providers without code changes, and independent or hands-on corroboration.",
     "evidenceIds": [
       "google-adk-docs-15",
       "google-adk-docs-33",
@@ -4794,12 +4854,12 @@
       "subject": "As a developer, I can swap the underlying LLM provider or model without rewriting my agent",
       "citations": [
         {
-          "evidenceId": "google-adk-docs-33",
-          "quote": "Swap the underlying intelligence of your agents by integrating with generative AI models from Google and other providers."
+          "evidenceId": "google-adk-docs-15",
+          "quote": "ADK can work with almost any generative AI model. The framework provides easy access to Gemini as well as other leading models, and we provide adapters that let you connect with many other models and model providers, including locally running models."
         },
         {
-          "evidenceId": "google-adk-docs-15",
-          "quote": "we provide adapters that let you connect with many other models and model providers, including locally running models."
+          "evidenceId": "google-adk-docs-33",
+          "quote": "Swap the underlying intelligence of your agents by integrating with generative AI models from Google and other providers."
         },
         {
           "evidenceId": "google-adk-docs-22",
@@ -4814,13 +4874,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "ADK's first-party docs and repo document multi-agent orchestration inside one workflow. A Workflow Runtime provides graph-based routing, fan-out/fan-in, loops and nested workflows. A Task API provides structured agent-to-agent delegation with task agents usable as workflow nodes. The docs state that any app with more than one agent is a workflow. missing for 10: independent or hands-on corroboration of multi-agent orchestration in practice.",
+    "rationale": "ADK's first-party docs and repo document multi-agent workflows. Any app with more than one agent counts as a workflow, and agents can be orchestrated together. A graph-based Workflow Runtime supports routing, fan-out/fan-in, loops and nested workflows, and a Task API provides structured agent-to-agent delegation with task agents as workflow nodes. This covers both handoffs and subagents. missing for 10: independent or hands-on corroboration of multi-agent orchestration in practice.",
     "evidenceIds": [
       "google-adk-docs-3",
       "google-adk-docs-16",
+      "google-adk-docs-11",
       "google-adk-gh-6",
       "google-adk-gh-7",
-      "google-adk-docs-11",
       "google-adk-docs-31"
     ],
     "support": {
@@ -4833,16 +4893,16 @@
           "quote": "workflows, which allow you to combine and orchestrate multiple agents and code execution tasks"
         },
         {
+          "evidenceId": "google-adk-docs-16",
+          "quote": "In ADK, any agent application that has more than one agent or executable Node is considered a workflow."
+        },
+        {
           "evidenceId": "google-adk-gh-7",
           "quote": "Task API: Structured agent-to-agent delegation with multi-turn task mode, single-turn controlled output, mixed delegation patterns, human-in-the-loop, and task agents as workflow nodes."
         },
         {
           "evidenceId": "google-adk-gh-6",
           "quote": "Workflow Runtime: A graph-based execution engine for composing deterministic execution flows for agentic apps, with support for routing, fan-out/fan-in, loops, retry, state management, dynamic nodes, human-in-the-loop, and nested workflows."
-        },
-        {
-          "evidenceId": "google-adk-docs-16",
-          "quote": "In ADK, any agent application that has more than one agent or executable Node is considered a workflow."
         }
       ]
     }
@@ -4853,8 +4913,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ADK is code-first: agent logic, tools and orchestration are defined in Python. Its CLI covers the main things the built-in dev UI is used for: running (`adk run`), evaluating (`adk eval`) and deploying (`adk deploy`) agents. However, nothing in the evidence states UI/API parity or documents an HTTP API that mirrors the dev UI's debugging features, so full parity is unproven. Missing for 10: an explicit API/UI parity statement, a documented programmatic equivalent for the dev UI's debug/inspection features, and independent corroboration.",
+    "rationale": "ADK is code-first, so agent logic, tools and orchestration are defined in code. It also ships its own REST API server (`adk api_server`) with a published OpenAPI 3.1 spec and Swagger UI, alongside CLI commands for run, eval and deploy that mirror the dev web UI's test, evaluate and debug roles. However, no evidence states that the REST API matches the web UI feature for feature, and the Go server lacks the /docs endpoint. Missing for 10: an explicit API-to-UI parity statement or mapping, documentation of the running server's own /openapi.json, and independent or hands-on confirmation that every web UI action is reachable programmatically.",
     "evidenceIds": [
+      "google-adk-openapi-spec-20261106",
+      "google-adk-swagger-docs-20261106",
+      "google-adk-local-testing-20261106",
       "google-adk-gh-17",
       "google-adk-gh-3",
       "google-adk-gh-12",
@@ -4867,20 +4930,20 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
+          "evidenceId": "google-adk-local-testing-20261106",
+          "quote": "Use the API server in ADK to expose your agents through a REST API for programmatic testing"
+        },
+        {
+          "evidenceId": "google-adk-openapi-spec-20261106",
+          "quote": "ADK publishes a downloadable OpenAPI 3.1 document (info title \"ADK REST API Reference\") for the ADK API server"
+        },
+        {
           "evidenceId": "google-adk-gh-17",
           "quote": "Code-First Development: Define agent logic, tools, and orchestration directly in Python for ultimate flexibility, testability, and versioning."
         },
         {
           "evidenceId": "google-adk-gh-3",
           "quote": "A built-in development UI to help you test, evaluate, debug, and showcase your agent(s)."
-        },
-        {
-          "evidenceId": "google-adk-gh-12",
-          "quote": "adk run path/to/my_agent"
-        },
-        {
-          "evidenceId": "google-adk-gh-20",
-          "quote": "adk deploy cloud_run --with_ui <agent-folder>"
         }
       ]
     }
@@ -4891,7 +4954,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability is a fair question for an agent framework, since it can persist sessions, artifacts and state. The evidence pack documents no data-export capability or open export format, though. Container packaging, offline deployment, code-first definitions and model swapping are adjacent portability features, not a way to export your data and leave.",
+    "rationale": "Data portability and exit is a fair question for an agent framework, because sessions, artifacts and state could be exported. However, the pack documents no data-export capability or open export formats. Related portability signals, such as code-first agents, model swapping and container packaging that runs anywhere, are adjacent features and do not count as exporting user data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4905,12 +4968,12 @@
     "storyId": "openness-open-license",
     "verdict": "partial",
     "quality": 5,
-    "confidence": "low",
-    "rationale": "Several evidence items come from the public GitHub repository github.com/google/adk-python, including a 'contributing/samples' directory, so the framework's source appears readable. Nothing in the pack names the license, so the 'open license' half of the story is unverified. Missing for 10: an explicit open-source license statement (e.g., Apache-2.0), a confirmed LICENSE file, and evidence that the source for the other language SDKs is public.",
+    "confidence": "medium",
+    "rationale": "The evidence includes Google ADK's own public GitHub repository (github.com/google/adk-python), and it references in-repo paths such as contributing/samples, so the source is publicly readable. However, no evidence item names the license, so the 'open license' half of the story is unconfirmed. missing for 10: explicit open-source license identification (e.g., a LICENSE file or license statement), independent corroboration of licensing terms.",
     "evidenceIds": [
       "google-adk-gh-18",
-      "google-adk-gh-17",
-      "google-adk-gh-12"
+      "google-adk-gh-13",
+      "google-adk-gh-17"
     ],
     "support": {
       "relation": "direct",
@@ -4922,8 +4985,8 @@
           "quote": "contributing/samples/evaluation/home_automation_agent"
         },
         {
-          "evidenceId": "google-adk-gh-17",
-          "quote": "Code-First Development: Define agent logic, tools, and orchestration directly in Python for ultimate flexibility, testability, and versioning."
+          "evidenceId": "google-adk-gh-13",
+          "quote": "samples_for_testing/hello_world/hello_world_eval_set_001.evalset.json"
         }
       ]
     }
@@ -4934,13 +4997,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "ADK documents running agents on your own infrastructure: `adk run` and `adk web` run locally, `adk deploy docker` packages an agent for a local Docker container, and the docs say containerized agents can run in any container environment, including offline with no Google Cloud connection. The docs also describe adapters for locally running models. Missing for 10: independent or hands-on corroboration of self-hosted deployments, and explicit evidence in the pack of the open-source license terms.",
+    "rationale": "ADK is a code-first framework from a public GitHub repo that runs on the user's own infrastructure. It runs locally with `adk run`, `adk web` and `adk api_server`, deploys to a local Docker container with `adk deploy docker`, and its docs describe container packaging for any environment and offline use with no Google Cloud connection, including locally running models. Missing for 10: independent or hands-on corroboration of a fully self-hosted production deployment, and the docs note the ADK Web dev UI is not meant for production.",
     "evidenceIds": [
       "google-adk-docs-7",
       "google-adk-docs-24",
       "google-adk-gh-19",
+      "google-adk-gh-14",
+      "google-adk-docs-15",
       "google-adk-gh-12",
-      "google-adk-docs-15"
+      "google-adk-local-testing-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4962,6 +5027,10 @@
         {
           "evidenceId": "google-adk-docs-15",
           "quote": "we provide adapters that let you connect with many other models and model providers, including locally running models."
+        },
+        {
+          "evidenceId": "google-adk-gh-12",
+          "quote": "adk run path/to/my_agent"
         }
       ]
     }
@@ -4969,33 +5038,16 @@
   {
     "productId": "google-adk",
     "storyId": "privacy-data-residency",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "ADK itself documents deploying agents offline, in local Docker containers, or in any container environment. That lets a user control where agent data physically lives by self-hosting. However, nothing documents explicit region selection or data-residency controls, and any regional choice on Google Cloud would come from the host platform rather than ADK. Missing for 10: explicit region/residency configuration for sessions, artifacts, or memory storage; documentation of where managed deployments store data; independent corroboration.",
-    "evidenceIds": [
-      "google-adk-docs-7",
-      "google-adk-docs-24",
-      "google-adk-gh-19"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency is a fair question for an agent framework with managed deployment options, so the axis applies. However, the evidence pack never documents an ADK capability for choosing a storage region or data residency. The ability to deploy containers anywhere or run offline is a self-hosting arrangement, and region selection on Cloud Run or Agent Runtime would be a host-platform feature, so neither counts as ADK's own residency control.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
-      "citations": [
-        {
-          "evidenceId": "google-adk-docs-7",
-          "quote": "This is a good option if you prefer to run offline or disconnected, or otherwise in a system that has no connection to Google Cloud."
-        },
-        {
-          "evidenceId": "google-adk-docs-24",
-          "quote": "You can manually package your Agent into a container image and then run it in any environment that supports container images."
-        },
-        {
-          "evidenceId": "google-adk-gh-19",
-          "quote": "Deploying the Agent Locally with Docker Container:"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5004,7 +5056,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A buyer could fairly ask whether an agent framework sends user data for model training or offers a training opt-out, so this axis applies. The pack contains no documented data-usage, training opt-out, or privacy-posture statement for ADK. Support for locally running models (google-adk-docs-15) and offline deployment (google-adk-docs-7) is an adjacent workaround, not a training-prevention control, so it earns no credit.",
+    "rationale": "Privacy posture around training-data use is a fair question for an agent framework, but the evidence pack never documents a training opt-out, a data-use policy, or any related ADK control. Support for locally running models and offline deployment are adjacent arrangements a user could make; they are not a documented ADK capability for preventing training on user data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5019,7 +5071,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair question for an agent framework that manages sessions, state and artifacts. However, the evidence never documents any retention policy, TTL, or delete control. The nearest items are adjacent and earn no credit: persistent artifacts that 'exist beyond the conversation lifecycle', context summarization of older turns, and offline or self-hosted deployment options.",
+    "rationale": "Data retention and deletion is a fair axis for an agent framework that manages sessions, state, and artifacts, so the axis applies. However, the evidence pack documents no retention policies, deletion APIs, or data-lifecycle controls. Mentions of persistent artifacts and context summarization are about adjacent features, not user-controlled retention or deletion.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5034,7 +5086,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for an agent framework and its CLI and dev UI, so the axis applies. However, nothing in the evidence documents ADK telemetry, usage tracking, or any opt-out setting. The offline deployment option and token-usage tracking are adjacent features, not a telemetry opt-out.",
+    "rationale": "Telemetry opt-out is a fair question for an agent framework with a CLI and dev UI, but the evidence pack never documents any telemetry, usage tracking, or a way to disable it. The offline-deployment option (docs-7) and token-usage tracking (docs-12) are adjacent features, not an opt-out control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5048,11 +5100,11 @@
     "storyId": "run-on-own-infra",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "ADK's own docs say agents can be packaged as containers and run in any container environment. They describe an option for running offline or in a system with no connection to Google Cloud, and the CLI ships `adk deploy docker` for local deployment. Model adapters cover locally running models, which removes dependence on Google's hosted models. Missing for 10: independent or hands-on corroboration of a fully self-hosted deployment, and detail on how local-model adapters and supporting services are configured without Google Cloud.",
+    "confidence": "medium",
+    "rationale": "ADK documents packaging agents into containers that run in any container environment, including a one-command local Docker deploy. It names an option for running offline or in systems with no connection to Google Cloud, and it supports locally running models, so agents need not depend on Google's platform or model APIs. missing for 10: independent or hands-on corroboration of fully disconnected operation, detailed docs on which option the offline guidance refers to and on self-hosted replacements for managed services (sessions, storage).",
     "evidenceIds": [
-      "google-adk-docs-7",
       "google-adk-docs-24",
+      "google-adk-docs-7",
       "google-adk-gh-19",
       "google-adk-gh-14",
       "google-adk-docs-15"
@@ -5063,16 +5115,16 @@
       "subject": "As an engineering-lead, I can run my agents entirely on my own infrastructure with no dependence on the vendor's platform",
       "citations": [
         {
-          "evidenceId": "google-adk-docs-7",
-          "quote": "This is a good option if you prefer to run offline or disconnected, or otherwise in a system that has no connection to Google Cloud."
-        },
-        {
           "evidenceId": "google-adk-docs-24",
           "quote": "You can manually package your Agent into a container image and then run it in any environment that supports container images."
         },
         {
+          "evidenceId": "google-adk-docs-7",
+          "quote": "This is a good option if you prefer to run offline or disconnected, or otherwise in a system that has no connection to Google Cloud."
+        },
+        {
           "evidenceId": "google-adk-gh-19",
-          "quote": "Deploying the Agent Locally with Docker Container:"
+          "quote": "Deploying the Agent Locally with Docker Container:\n\nadk deploy docker --with_ui <agent-folder>"
         },
         {
           "evidenceId": "google-adk-docs-15",
@@ -5087,7 +5139,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "ADK ships its own built-in development web UI (`adk web`) described as helping developers \"test, evaluate, debug\" agents, which is first-party UI support for inspecting agent runs. The evidence never says this UI shows per-LLM-call or per-tool-invocation traces. Callbacks for logging and monitoring are only a building block for constructing tracing, so they earn no credit here. Missing for 10: explicit documentation of a trace view covering every LLM call and tool invocation, span/trace export or observability-platform integration, and hands-on or independent corroboration.",
+    "rationale": "ADK ships its own built-in development UI (`adk web`) that is documented as helping developers debug agent runs, which is the closest first-party observability surface in the evidence. Nothing documents a trace view of each LLM call and tool invocation. Callbacks for logging and monitoring are only developer building blocks and earn no credit. Missing for 10: explicit per-run trace view of every LLM call, explicit tool-invocation tracing, OpenTelemetry or observability-platform export, independent or hands-on corroboration.",
     "evidenceIds": [
       "google-adk-gh-3",
       "google-adk-gh-12"
@@ -5114,7 +5166,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents token streaming or real-time delivery of tool-call and step events to a UI. Lifecycle callbacks (google-adk-docs-28) are a developer building block for logging and monitoring, not a documented streaming-output capability, and the built-in dev UI is a testing tool, not a streaming API for the developer's own UI. Streaming is a fair axis for an agent framework, so the verdict is none rather than na.",
+    "rationale": "Nothing in the evidence pack documents token streaming, SSE or WebSocket event streams, or real-time delivery of tool-call and step events to a UI. Lifecycle callbacks for logging and monitoring, the REST API server, and the dev Web UI are adjacent building blocks, not a documented streaming-output capability. The event-filtering mention concerns context management, not streaming.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5129,7 +5181,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents schema-validated structured output or retries triggered by failed validation. The Task API's \"single-turn controlled output\" is a vague delegation feature with no schema validation described. The Workflow Runtime's generic \"retry\" support is an adjacent orchestration control, not automatic retry on output-validation failure, so neither earns credit.",
+    "rationale": "The evidence pack has no documentation of schema-validated structured output, such as an output schema or validation of agent responses, and none of automatic retries triggered by validation failure. The Task API's \"single-turn controlled output\" and the Workflow Runtime's generic \"retry\" are adjacent features: neither is shown to validate output against a schema or to retry when validation fails.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5144,12 +5196,10 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "ADK's GitHub README documents a first-party Tool Confirmation (HITL) flow that guards tool execution with explicit confirmation and custom input, so the product itself directly supports approval before tool calls. Human-in-the-loop also appears in the Workflow Runtime and Task API. However, the evidence is only a README one-liner. It does not show how approval is scoped to specific sensitive tools, so coverage is partial. missing for 10: documentation that confirmation can be configured per specific sensitive tool, in-depth first-party docs on the approval flow (approver experience, deny/timeout handling), independent or hands-on corroboration.",
+    "rationale": "ADK's own README documents a Tool Confirmation (HITL) flow that guards tool execution with explicit confirmation and custom input, which is a first-party capability for human approval before tool calls run. Evidence is limited to brief README feature lines, so per-tool targeting of specific sensitive calls and the approval mechanics are not shown. Workflow and Task API human-in-the-loop mentions are adjacent context, not tool-call gating. Missing for 10: in-depth docs showing configuration of which specific tools require approval, details of the approval/resume flow, independent or hands-on corroboration.",
     "evidenceIds": [
       "google-adk-gh-2",
-      "google-adk-gh-11",
-      "google-adk-gh-6",
-      "google-adk-gh-7"
+      "google-adk-gh-11"
     ],
     "support": {
       "relation": "direct",
@@ -5161,8 +5211,8 @@
           "quote": "Tool Confirmation: A tool confirmation flow (HITL) that can guard tool execution with explicit confirmation and custom input."
         },
         {
-          "evidenceId": "google-adk-gh-6",
-          "quote": "dynamic nodes, human-in-the-loop, and nested workflows"
+          "evidenceId": "google-adk-gh-11",
+          "quote": "A tool confirmation flow (HITL) that can guard tool execution with explicit confirmation and custom input."
         }
       ]
     }
@@ -5171,9 +5221,9 @@
     "productId": "google-adk",
     "storyId": "tool-permission-limits",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "ADK ships its own tool confirmation (human-in-the-loop) flow that can gate tool execution behind explicit confirmation. That restricts what an agent may do, but only as approval gating, not a documented fine-grained permission model. There is no evidence of sandboxed execution: code execution is mentioned without any isolation, and container deployment is a host-platform feature, not a product sandbox. missing for 10: fine-grained per-tool permission/allowlist policies, sandboxed or isolated code/tool execution, independent corroboration.",
+    "rationale": "ADK's own Tool Confirmation flow is a human-in-the-loop guard: it can require explicit confirmation and custom input before a tool runs, which partly covers restricting what an agent may do. Nothing in the pack shows a declarative per-tool permission or policy model. Nothing shows sandboxed or isolated code execution either; the local `adk api_server` test harness is explicitly 'not a hosted sandbox' and is a dev surface, not execution isolation. missing for 10: fine-grained declarative tool permission policies, sandboxed or isolated execution environment for tools/code, independent corroboration.",
     "evidenceIds": [
       "google-adk-gh-2",
       "google-adk-gh-11"
@@ -5183,6 +5233,10 @@
       "coverage": "partial",
       "subject": "As an engineering-lead, I can restrict what an agent may do with fine-grained tool permissions and sandboxed execution",
       "citations": [
+        {
+          "evidenceId": "google-adk-gh-11",
+          "quote": "A tool confirmation flow (HITL) that can guard tool execution with explicit confirmation and custom input."
+        },
         {
           "evidenceId": "google-adk-gh-2",
           "quote": "Tool Confirmation: A tool confirmation flow (HITL) that can guard tool execution with explicit confirmation and custom input."
@@ -5196,7 +5250,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents strict typing, type-checked APIs, or schema validation that would let a coding agent catch its own mistakes at build time. Multi-language availability, code-first Python definitions, \"controlled output\" in the Task API, and runtime evaluation via adk eval are adjacent features, not build-time type or schema checking. This is an applicable axis for an agent framework, so absent evidence means none.",
+    "rationale": "The evidence pack never documents strict typing, typed tool or agent schemas, or build-time schema validation that would let a coding agent catch its own mistakes. Several items are related but do not deliver this story: support for typed languages (TypeScript, Go, Java, Kotlin), an OpenAPI spec for the dev server, \"single-turn controlled output\" in the Task API, and runtime evals. These are adjacent features or host-language properties, not an ADK-provided build-time validation capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5211,7 +5265,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "ADK documents eval test files that serve 'as a form of unit testing' and tool-trajectory metrics, but these evaluate real agent-model interactions. Nothing in the evidence shows a mock or fake model, stubbed tools, or a test harness for isolating agents from live LLM calls. Evaluation runs and a general claim of 'testability' are adjacent features, not the mocked-model and mocked-tool unit testing this story asks for.",
+    "rationale": "ADK documents evaluation test files that it describes as 'a form of unit testing', but these score agent sessions against expected trajectories and responses. They are not a mocking facility. Nothing in the evidence shows mock or fake models or stubbed tools, and the local test harness notes it 'still calls real model APIs unless configured otherwise'. The eval framework is an adjacent feature, not the mocked-model-and-tool unit testing the story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",

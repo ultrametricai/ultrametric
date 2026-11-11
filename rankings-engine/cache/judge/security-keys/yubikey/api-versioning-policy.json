@@ -1,17 +1,29 @@
 {
-  "hash": "5c7d50147bc53b2f45c6061ec5dced93597ecbd9d4d6cfde7259049c256e835b",
+  "hash": "8cd27d818cdf05384961eae524c0ba95b79957a0a7ca59d2fef6b42e11eb977d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Yubico ships programmatic surfaces, including SDKs, the ykman CLI and the YubiEnterprise REST API, so this axis applies. However, nothing in the evidence documents API versioning or a deprecation policy. Package release numbers (ykman 5.9.2, fido2 2.2.1) and firmware versions are not a versioned API with a published deprecation or sunset policy.",
-    "evidenceIds": [],
+    "rationale": "Yubico's YubiCloud OTP validation API is URL-versioned (/wsapi/2.0/verify). Its spec includes a version changelog stating that 2.0 is not backwards compatible with 1.x and that both versions can be served side by side, so the product's own documentation covers API versioning for that protocol. However, the evidence explicitly says no portal-wide versioning or deprecation policy exists, and the YubiEnterprise REST API and SDKs show no documented versioning or deprecation terms. Missing for 10: a documented deprecation policy (timelines, sunset notices), versioning across the other APIs (YubiEnterprise REST, SDKs), and independent corroboration.",
+    "evidenceIds": [
+      "yubikey-otp-version-history-20261106",
+      "yubikey-otp-protocol-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "yubikey-otp-version-history-20261106",
+          "quote": "version 2.0 is not backwards compatible with version 1.1 or version 1.0. However, because version 2.0 use a different URL than version 1.x, the server may support both version 1.x and version 2.0 clients at the same time."
+        },
+        {
+          "evidenceId": "yubikey-otp-protocol-20261106",
+          "quote": "Validation Protocol Version 2.0... All requests are HTTP GET requests"
+        }
+      ]
     },
     "productId": "yubikey",
     "storyId": "api-versioning-policy"

@@ -1,17 +1,34 @@
 {
-  "hash": "85d3b2f7b5795460c6ac42c7d56f37ee81f94ecfc201ad263565c3823aced124",
+  "hash": "f06593026a07dc5dbf33a0198c87c568dd11c5d915d04508214db5db1d6d5981",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Morph documents an OpenAI-compatible base URL (https://api.morphllm.com/v1) with chat completions and /v1/messages, but no evidence documents a GET /v1/models or equivalent endpoint for enumerating the live model catalog programmatically. OpenAI SDK compatibility alone does not establish that a models-listing endpoint exists, and the OpenAPI probes all returned 404.",
-    "evidenceIds": [],
+    "rationale": "Morph's published OpenAPI document includes a model-listing endpoint, and the API reference renders a live 'Try it' runner for it against production. A separate machine-readable model feed also lists per-model ids, limits and pricing. But no evidence confirms the exact GET /v1/models path, an OpenAI-compatible response shape, or that the listing reflects the live catalog, and the feed is a website JSON rather than an API endpoint. missing for 10: explicit documentation of a GET /v1/models path and its response schema, confirmation that the listing is live and complete (including Reflex/tool models), independent or hands-on corroboration of agent enumeration.",
+    "evidenceIds": [
+      "morph-openapi-spec-20261106",
+      "morph-api-playground-20261106",
+      "morph-models-feed-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can have an agent enumerate the live model catalog programmatically via a documented GET /v1/models-style endpoint",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "morph-openapi-spec-20261106",
+          "quote": "OpenAI- and Anthropic-compatible inference, Fast Apply, Compact, System One, model listing, dedicated endpoint management, credits and budgets (14 paths under /v1 and /api/v1)"
+        },
+        {
+          "evidenceId": "morph-api-playground-20261106",
+          "quote": "The Mintlify API reference renders a live \"Try it\" runner per endpoint (System One, Apply/chat completions, Compact, models, dedicated endpoints, credits), generated from the OpenAPI document"
+        },
+        {
+          "evidenceId": "morph-models-feed-20261106",
+          "quote": "For machine-readable models, limits and these list prices, fetch https://www.morphllm.com/api/models/json?prices=list"
+        }
+      ]
     },
     "productId": "morph",
     "storyId": "models-endpoint-discovery"

@@ -1,17 +1,29 @@
 {
-  "hash": "71b3c5dd4eb60cd1e698d63f77e0f835e5d8e265d50bfcae5fba40289366c761",
+  "hash": "34dc5efa35cc0128f0bdbe6ce7367179e29616626883ebc98d0b018ca03a2285",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no isolated sandbox or test environment that keeps an AI-native user away from production data. The closest items are adjacent: Infrastructure Manager preview deployments are a dry-run of infrastructure changes, not sandbox isolation. The free-tier credits are a trial offer, and IAM controls permissions; neither provides a separate test environment.",
-    "evidenceIds": [],
+    "rationale": "Google Cloud ships its own local, in-memory emulators through the gcloud CLI (Firestore is documented) for testing without touching production. They are per-service, do not persist data, and do not enforce all production limits, so they are not a hosted test tenant. Infrastructure Manager preview deployments are a dry-run, not sandbox isolation, and the vendor says the APIs Explorer acts on real data with no sandboxed mode. missing for 10: a hosted sandbox or test tenant spanning services, production-parity limits in the emulators, a sandbox mode for API exploration, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "google-cloud-firestore-emulator-20261106",
+      "google-cloud-api-explorer-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "google-cloud-firestore-emulator-20261106",
+          "quote": "The Google Cloud CLI provides a local, in-memory emulator for Firestore that you can use to test your application... You should use the emulator only for local testing."
+        },
+        {
+          "evidenceId": "google-cloud-firestore-emulator-20261106",
+          "quote": "The emulator does not enforce all limits enforced in production"
+        }
+      ]
     },
     "productId": "google-cloud",
     "storyId": "api-sandbox"

@@ -1,16 +1,16 @@
 {
-  "hash": "6794ae78cc969bcde16032df710fbe1607ee371cd8c0cc04d423a105e70e1c86",
+  "hash": "cbf7f6c66a7f9ec7b32c0a5abf138a4702ac315a8ad82fc42648352bc87ce957",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Airbyte documents incremental syncs that pull only data changed since the previous sync, and CDC replication that reads database change logs while tracking its current position, so new and changed records move without full reloads. A community user reports Airbyte continued syncing incrementally after the initial load. Missing for 10: explicit docs on how cursor fields and state are stored and managed automatically per connection, incremental mode docs beyond the Connector Builder context, and documented handling of hard deletes in cursor-based incremental mode.",
+    "rationale": "Airbyte's docs define incremental sync as pulling only data changed since the previous sync. Its CDC docs describe Airbyte tracking its current position in database logs to capture inserts, updates and deletes, and a hands-on user reports that after the initial sync Airbyte continued syncing incrementally from saved state. A community question about hard-delete handling is an open question, not a contradiction. Missing for 10: explicit first-party docs on cursor-field selection and how state is persisted for standard (non-CDC) incremental connections, and documented hard-delete handling in cursor-based incremental mode.",
     "evidenceIds": [
       "airbyte-docs-22",
       "airbyte-docs-15",
-      "airbyte-docs-25",
       "airbyte-docs-23",
+      "airbyte-docs-7",
       "airbyte-comm-3"
     ],
     "support": {
@@ -25,6 +25,10 @@
         {
           "evidenceId": "airbyte-docs-15",
           "quote": "A consumer of these log files (such as Airbyte) can read these logs while keeping track of the current position within the logs in order to read all record changes coming from DELETE/INSERT/UPDATE statements."
+        },
+        {
+          "evidenceId": "airbyte-docs-23",
+          "quote": "A sync mode governs how Airbyte reads from a source and writes to a destination."
         },
         {
           "evidenceId": "airbyte-comm-3",

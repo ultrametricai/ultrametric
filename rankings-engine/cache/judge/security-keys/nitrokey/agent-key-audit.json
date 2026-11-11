@@ -1,17 +1,26 @@
 {
-  "hash": "e43fcca2f1d6584b54cfadefe024a1e719bcfd36b5f45a6ffb557328f1498d70",
+  "hash": "8705e6f8649ba8d884b31aca40b2a631eaba3b074b048edf03a33b52be5e6c13",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows an official nitropy CLI, described as a 'Command line tool to interact with Nitrokey devices', and a Python SDK on PyPI. None of the evidence documents reading device state such as serial number, firmware version, enabled applications or stored credentials. A generic device-interaction CLI is an adjacent building block, not documented support for programmatic state readout or fleet auditing.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Nitrokey ships an official CLI, nitropy, and a Python SDK for programmatic interaction with its USB keys, so an agent has a first-party path to query devices. However, nothing in the evidence shows which state can actually be read: serial, firmware version, enabled applications or stored credentials are not documented. The NetHSM REST API covers a different product and is explicitly not available for the USB keys. Missing for 10: documented commands or SDK calls returning serial, firmware version, enabled applications and stored-credential inventory; structured or machine-readable output; fleet-scale or multi-device enumeration; hands-on corroboration.",
+    "evidenceIds": [
+      "nitrokey-probe-rt-1",
+      "nitrokey-docs-14",
+      "nitrokey-probe-4"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, an agent can read a key's state programmatically — serial, firmware version, enabled applications, stored credentials — to audit security posture across a fleet",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "nitrokey-probe-rt-1",
+          "quote": "'Command line tool to interact with Nitrokey devices' / 0.13.0. The official Python SDK also resolves on PyPI (nitrokey 0.4.2)."
+        }
+      ]
     },
     "productId": "nitrokey",
     "storyId": "agent-key-audit"

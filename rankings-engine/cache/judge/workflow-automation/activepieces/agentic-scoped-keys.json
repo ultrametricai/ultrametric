@@ -1,17 +1,30 @@
 {
-  "hash": "33dd634cde0e28f9a26611945857754146e8619f3dc5c77d394a357e80160cb6",
+  "hash": "0b3481b97360554e14c3af3eaf88e123b9f5166362cf91326376eb3f38fc6eb6",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The only documented API credentials are API keys generated in the platform dashboard to manage multiple projects, with no evidence of permission scopes or least-privilege restrictions. Per-action tool selection for agents is an adjacent control over in-product agent behaviour, not scoped API credentials. The embeddable MCP token is a per-user authorization for embedded automations, not documented as a scoped or least-privilege credential an agent can be issued.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only scoped credential documented is the embeddable MCP flow, where a user's Authorize click gives the backend a token limited to running that user's automations through AI. The general API keys are platform-level and span multiple projects, so they are not scoped. Action-level agent tool restrictions limit what an agent can do, not what a credential can reach, so they get no credit here. Missing for 10: per-key permission or scope configuration, least-privilege API keys for standalone (non-embedded) agents, documentation of token scope granularity, expiry or revocation, and independent corroboration.",
+    "evidenceIds": [
+      "activepieces-docs-35",
+      "activepieces-docs-13",
+      "activepieces-docs-33"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "activepieces-docs-35",
+          "quote": "your backend gets a token it can use to run that user's automations through AI"
+        },
+        {
+          "evidenceId": "activepieces-docs-33",
+          "quote": "API keys are generated under the platform dashboard at this moment to manage multiple projects"
+        }
+      ]
     },
     "productId": "activepieces",
     "storyId": "agentic-scoped-keys"

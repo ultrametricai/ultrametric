@@ -1,17 +1,34 @@
 {
-  "hash": "db5af33492fe40e9f6ecf4483b4b0d111ea746a4921506b1cb26e9b36e51f21f",
+  "hash": "2e90e8ed02a9749e9b0847201ebc5b237d2fd5ddc013900b1df41dd0082e3e2d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun exposes APIs, such as the Deployments API and source map upload API, so the axis applies. However, no evidence shows versioned API endpoints or a documented deprecation policy. The hasher version setting is an error-grouping feature, not API versioning, and the OpenAPI probes returned 404.",
-    "evidenceIds": [],
+    "rationale": "Raygun ships a path-versioned v3 API with a published OpenAPI spec, and it documents a version transition and a backward-compatible field deprecation in its deployment migration guide. However, the evidence explicitly says no standalone deprecation or versioning policy page exists, so the 'documented deprecation policy' half of the story rests only on ad-hoc notes. Missing for 10: a formal published deprecation/versioning policy (timelines, sunset guarantees), deprecation flags in the OpenAPI spec, API-level deprecations in the changelog, independent corroboration.",
+    "evidenceIds": [
+      "raygun-api-guide-20261106",
+      "raygun-migration-20261106",
+      "raygun-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "raygun-api-guide-20261106",
+          "quote": "This is version 3 of Raygun's API. While we transition, the RUM API will remain available"
+        },
+        {
+          "evidenceId": "raygun-migration-20261106",
+          "quote": "createdAt has been deprecated and deployedAt should be used instead. You may still use createdAt. If both properties are specified deployedAt will be preferred."
+        },
+        {
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "Raygun publishes a downloadable OpenAPI 3.0.3 document (\"Raygun API\", 46 paths, servers https://api.raygun.com/v3)"
+        }
+      ]
     },
     "productId": "raygun",
     "storyId": "api-versioning-policy"

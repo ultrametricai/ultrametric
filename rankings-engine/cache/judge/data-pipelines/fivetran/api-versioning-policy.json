@@ -1,17 +1,34 @@
 {
-  "hash": "89ff8bef1c81bfdc9d20004c9fb3fc6ae03fb6491b2bd1a07d8cfd6b6cdfe49b",
+  "hash": "ae4043ecc29b8f1f9fbab383617165b2fcb04f05cadb30f05b944cb6dd4259fb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Fivetran documents a REST API for managing accounts and pipelines programmatically, so this axis applies. Nothing in the evidence pack mentions API versioning, version headers or paths, or a deprecation and sunset policy. The fact that a REST API exists does not show that it is versioned or governed by a published deprecation policy.",
-    "evidenceIds": [],
+    "rationale": "Fivetran's REST API is URL-path versioned under /v1 with a published OpenAPI V1 spec. Its dated changelog records deprecations with sunset dates (e.g. May 1, 2025), so it delivers versioning and per-change deprecation notices. However, the evidence says there is no standalone versioning or breaking-change policy page, so the 'documented deprecation policy' half of the story is only met in practice, not as a formal policy. Missing for 10: a formal documented deprecation/breaking-change policy with guaranteed notice windows, any multi-version history beyond v1, and independent corroboration of how deprecations are handled.",
+    "evidenceIds": [
+      "fivetran-release-notes-20261106",
+      "fivetran-openapi-page-20261106",
+      "fivetran-openapi-file-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fivetran-release-notes-20261106",
+          "quote": "The REST API publishes dated release notes recording changes and deprecations with sunset dates"
+        },
+        {
+          "evidenceId": "fivetran-release-notes-20261106",
+          "quote": "The API is URL-path versioned under /v1"
+        },
+        {
+          "evidenceId": "fivetran-openapi-file-20261106",
+          "quote": "The spec file itself downloads as OpenAPI 3.0.1 (info version \"v1\"), covering the /v1 REST API."
+        }
+      ]
     },
     "productId": "fivetran",
     "storyId": "api-versioning-policy"

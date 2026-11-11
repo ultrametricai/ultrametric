@@ -1,15 +1,16 @@
 {
-  "hash": "20f94f98bada017e4fdb51096a1b4d5fefe1bdf569125ce5cff7e97abd9780aa",
+  "hash": "1a2b78511c367b48f5c5fff4f165e74ef9fd1d736ae47f69071534bde7cda288",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "YubiKey's own FIDO2 implementation requires user presence (a physical touch) for cryptographic operations, including FIDO2-backed SSH keys. Any automated action routed through those keys therefore cannot complete without a human touch, and a community comment confirms the touch-to-sign model resists remote abuse. Nothing documents framing or configuring this as an approval gate for agent-initiated or automated actions, so applying it to agent workflows depends on integrating through signing or SSH. missing for 10: documented agent or automation approval workflows, per-action policy for requiring touch on sensitive operations, independent hands-on corroboration of use as an agent approval step.",
+    "rationale": "YubiKey's own documentation says FIDO2 operations require a physical touch (user presence), with optional PIN verification. For example, the SSH keys it guards need a touch for each cryptographic operation, and community users confirm that touch-to-sign cannot be triggered remotely. Using this as an approval gate for agent-initiated actions, though, depends on routing those actions through touch-gated operations like SSH or signing, or on custom SDK integration. Missing for 10: documented agent or automation approval workflows, guidance for gating arbitrary sensitive actions (beyond SSH and signing) on a touch, and independent hands-on corroboration in AI-agent contexts.",
     "evidenceIds": [
       "yubikey-docs-6",
-      "yubikey-docs-24",
-      "yubikey-comm-10"
+      "yubikey-docs-5",
+      "yubikey-comm-10",
+      "yubikey-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -19,10 +20,6 @@
         {
           "evidenceId": "yubikey-docs-6",
           "quote": "FIDO2 also requires user presence (a touch on your YubiKey) for cryptographic operations, and can optionally enforce user verification (PIN entry)."
-        },
-        {
-          "evidenceId": "yubikey-docs-24",
-          "quote": "This guide shows how to generate and use SSH keys directly on your FIDO2 security key with OpenSSH."
         },
         {
           "evidenceId": "yubikey-comm-10",

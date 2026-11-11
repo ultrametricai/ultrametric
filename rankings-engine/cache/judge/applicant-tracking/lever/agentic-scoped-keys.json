@@ -1,17 +1,29 @@
 {
-  "hash": "16aafe3008ea8c37d9d9b4f9960e564d1c7771bcb3176caff6fe01f08a32bf27",
+  "hash": "f0a1a617172718abe8716aedc044c86955e8436baf708c8225874d61ff7e0d88",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Lever is a SaaS ATS with a developer API, so issuing scoped credentials is a fair question for it. However, the pack only shows a bare 'OAuth' documentation heading, with nothing on scopes, permission levels, or least-privilege API keys. An auth mechanism without documented scoping is adjacent, not the capability itself.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Lever's developer documentation includes an OAuth section, and its integrator sandbox uses its own auth server with separate apps per environment. This suggests app-specific delegated credentials rather than a single shared key, but the pack never shows scopes or permission limits on what an agent's credential can access. missing for 10: documented OAuth scopes or permission levels per credential, evidence of read-only or resource-limited tokens, credential revocation and rotation controls, self-serve credential issuance (access is partner-gated), independent or hands-on corroboration.",
+    "evidenceIds": [
+      "lever-docs-19",
+      "lever-sandbox-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "lever-docs-19",
+          "quote": "OAuth"
+        },
+        {
+          "evidenceId": "lever-sandbox-20261106",
+          "quote": "You will have two separate app's, one for each environment"
+        }
+      ]
     },
     "productId": "lever",
     "storyId": "agentic-scoped-keys"

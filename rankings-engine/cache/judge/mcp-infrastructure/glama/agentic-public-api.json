@@ -1,24 +1,38 @@
 {
-  "hash": "3391aa221a091682474561864c0a9c8e9828f7b57b34c8f3b554a19413063f1a",
+  "hash": "dba6fe8a6d8eb3466ba0951016bfe245988f21c2dbf37c9d36fade25f72303f1",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Glama's /mcp/reference page describes programmatic access: searching the curated server catalog, inspecting capabilities and keeping your own directory synchronized. A community user also mentions making \"API attempts\", which suggests some public API exists, but its scope and documentation depth are unclear and OpenAPI probes all returned 404. missing for 10: a machine-readable API spec (OpenAPI), documented endpoints and authentication, API coverage of hosting, gateway and chat actions, and hands-on corroboration of driving the product via the API.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Glama publishes an OpenAPI 3.0.3 'Glama MCP API' with /v1 paths for servers, connectors, instances and usage. It is discoverable via llms.txt and an RFC 9727 API catalog, and backed by a hosted reference with per-endpoint Try-it panels, multi-language samples and machine-readable deprecation flags. The probe 404s at generic paths do not contradict this, because the spec lives at /api/mcp/openapi.json. Missing for 10: the API covers the directory/hosting surface, while the Gateway (MCP-protocol only) and chat features have no REST API; there is no versioning or changelog policy page; and there is no independent hands-on corroboration of driving the product via the API.",
     "evidenceIds": [
-      "glama-docs-6",
-      "glama-comm-2",
-      "glama-probe-3"
+      "glama-openapi-spec-20261106",
+      "glama-api-catalog-20261106",
+      "glama-api-try-it-20261106",
+      "glama-endpoint-deprecation-20261106",
+      "glama-probe-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "glama-docs-6",
-          "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities, and keep your own directory synchronized."
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "Glama publishes an OpenAPI 3.0.3 document for its MCP directory API (info title \"Glama MCP API\", /v1 paths for servers, connectors, instances, usage)"
+        },
+        {
+          "evidenceId": "glama-api-try-it-20261106",
+          "quote": "The vendor-hosted API reference carries a per-endpoint \"Try it\" panel"
+        },
+        {
+          "evidenceId": "glama-api-catalog-20261106",
+          "quote": "The RFC 9727 API catalog (application/linkset+json) links the machine spec (service-desc) and the hosted reference (service-doc)"
+        },
+        {
+          "evidenceId": "glama-endpoint-deprecation-20261106",
+          "quote": "Versioning is practiced and machine-readable: /v1 path versioning"
         }
       ]
     },

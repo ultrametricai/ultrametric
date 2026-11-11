@@ -4232,7 +4232,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun's crash-reporting page says errors can be ordered and prioritized by users affected, not just by occurrence count. That covers the user side of blast-radius triage. Session-level impact is not documented, and the claim rests on a single marketing statement. Missing for 10: per-issue session-affected counts, in-depth docs on how user impact is calculated, independent or hands-on corroboration.",
+    "rationale": "Raygun's crash-reporting page says errors can be ordered and prioritized by users affected, not only by occurrence count. That covers the core of prioritizing by user blast radius. The evidence never mentions per-issue counts of affected sessions, and the claim rests on a single marketing statement. Missing for 10: affected-session counts per issue, in-depth docs on how users-affected is calculated and shown, independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-3"
     ],
@@ -4254,9 +4254,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "An official Raygun MCP server is documented, so an agent has a first-party path to error data. Raygun captures full stack traces, ranks errors by users affected and occurrences, and offers an error-status triage workflow. However, the evidence gives no detail on what the MCP server exposes, the probes found no public OpenAPI spec, and nothing shows filing bugs into an issue tracker (GitHub/Bitbucket/GitLab are cited only as repo/source-map integrations). Missing for 10: documented MCP/API tools for listing top issues with stack traces, documented API access to error groups, issue-tracker bug-filing integration, hands-on corroboration of the agent workflow.",
+    "rationale": "Raygun documents an official MCP server and a v3 OpenAPI-specified API for accessing Raygun data. It captures full stack traces, ranks errors by users affected and occurrence count, and offers an error-status workflow for triage, so an agent can plausibly pull and triage top issues. However, nothing shows which error or stack-trace data the API or MCP tools actually expose, and there is no documented issue-tracker integration for filing bugs. missing for 10: documentation that the MCP server/API returns top issues with stack traces, programmatic status/triage operations, native filing of bugs into a tracker (e.g. Jira/GitHub Issues), hands-on corroboration of an agent workflow.",
     "evidenceIds": [
       "raygun-probe-3",
+      "raygun-openapi-spec-20261106",
       "raygun-docs-38",
       "raygun-docs-3",
       "raygun-docs-25"
@@ -4269,6 +4270,10 @@
         {
           "evidenceId": "raygun-probe-3",
           "quote": "official MCP server documented at https://github.com/MindscapeHQ/mcp-server-raygun"
+        },
+        {
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "allows you to access your Raygun data so that you can display, manipulate and process it in other tools, scripts and applications."
         },
         {
           "evidenceId": "raygun-docs-38",
@@ -4291,7 +4296,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Agent-readable docs are a fair axis for a SaaS monitoring platform like Raygun, but the probe found no llms.txt (HTTP 404), and no evidence item describes agent-oriented documentation. The official MCP server belongs to a separate story and does not count as agent-oriented docs, and the AI error-resolution chat is an in-product feature, not documentation an agent can consume.",
+    "rationale": "The probe for llms.txt at raygun.com returned HTTP 404, and no agent-oriented documentation (llms.txt, llms-full.txt, or LLM-targeted docs) appears anywhere in the evidence. The published OpenAPI spec and the official MCP server belong to separate stories and do not count as agent-oriented docs here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4303,10 +4308,10 @@
   {
     "productId": "raygun",
     "storyId": "agentic-ai-insights",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Raygun's own AI Error Resolution feature generates in-product AI suggestions on the root cause of errors and how to fix them. It uses a collaborative chat that is auto-prompted with stack trace, environment and code context, powered by OpenAI or Azure OpenAI. Missing for 10: independent or hands-on corroboration of suggestion quality, AI insights beyond crash reporting (e.g. RUM/APM data), and a built-in model that needs no user-supplied OpenAI API key.",
+    "rationale": "Raygun's own AI Error Resolution feature delivers AI-generated suggestions inside the product: it offers root-cause and fix suggestions through a collaborative in-app chat, auto-prompted with stack trace, environment and code context. Its documented scope is limited to individual crash-reporting errors, and setup requires the user to supply their own OpenAI API key, so it does not evidence broader AI insights across the user's data. missing for 10: AI insights beyond per-error crash data (e.g. across APM/RUM trends or the whole error inbox), built-in AI that works without supplying your own LLM key, independent or hands-on corroboration of suggestion quality.",
     "evidenceIds": [
       "raygun-docs-4",
       "raygun-docs-27",
@@ -4316,7 +4321,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": [
         {
@@ -4324,16 +4329,16 @@
           "quote": "Resolve issues with unprecedented speed and accuracy using AI-powered suggestions on the root cause of errors and how to fix them."
         },
         {
-          "evidenceId": "raygun-docs-27",
-          "quote": "This feature allows you to identify and tackle errors swiftly with just a click, using advanced AI technology powered by OpenAI and Azure OpenAI."
-        },
-        {
           "evidenceId": "raygun-docs-30",
           "quote": "Auto-prompt your chosen LLM with crucial error context from your stack trace, environment, and affected code to get fast and accurate solutions."
         },
         {
-          "evidenceId": "raygun-docs-5",
-          "quote": "You can chat with this tool collaboratively."
+          "evidenceId": "raygun-docs-27",
+          "quote": "This feature allows you to identify and tackle errors swiftly with just a click, using advanced AI technology powered by OpenAI and Azure OpenAI."
+        },
+        {
+          "evidenceId": "raygun-docs-32",
+          "quote": "Enter your OpenAI API key and select your preferred GPT model (GPT-4 is default)."
         }
       ]
     }
@@ -4344,10 +4349,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents no user-configurable automations or autonomous background agents in Raygun. Its AI resolution is an on-demand chat triggered \"with just a click.\" Alert rules that open PagerDuty incidents, ignore-by-rule conditions, and automatic source-map fetching are adjacent notification, triage or built-in behaviors, not a general automation capability.",
+    "rationale": "The evidence pack documents no user-configurable automation or agent workflow that runs autonomously in Raygun's background. The closest items are adjacent: alert rules that open PagerDuty incidents, conditional ignore rules for error triage, automatic source-map fetching, and an on-demand AI chat for error resolution. These are monitoring, alerting and triage features, not user-defined background automations, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": []
@@ -4359,7 +4364,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun ships a built-in AI Error Resolution chat that auto-prompts an LLM (OpenAI/Azure OpenAI) with error context and suggests root causes and fixes. Teammates can use the chat collaboratively and post a link to the conversation as a comment. It is advisory and scoped to diagnosing errors, and it requires the user's own OpenAI API key. Missing for 10: evidence the assistant can actually carry out delegated tasks (e.g., change statuses, open fixes or PRs), scope beyond individual error diagnosis, independent or hands-on corroboration.",
+    "rationale": "Raygun ships a built-in AI Error Resolution chat, powered by OpenAI or Azure OpenAI, that auto-prompts an LLM with error context and suggests root causes and fixes. Teammates can chat with it together and link conversations into comments. However, the evidence shows only advice for error diagnosis, not an assistant that takes on and carries out tasks, and it needs the user's own OpenAI API key. Missing for 10: evidence the assistant can act on tasks (e.g., change statuses, create issues, run workflows), scope beyond error resolution, and independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-4",
       "raygun-docs-5",
@@ -4400,14 +4405,14 @@
     "productId": "raygun",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun documents token-authenticated, non-interactive APIs that fit CI pipelines: a Deployments API, uploading dSYMs and ProGuard mapping files, and uploading source maps via API. Together these support automated deployment tracking from build pipelines. However, the evidence never describes a CLI, a headless run mode, or any CI-specific integration or guide, and no OpenAPI spec was found. missing for 10: documented CLI or headless mode, CI/CD integration docs (e.g., GitHub Actions or other pipeline steps), a published API spec, and hands-on corroboration of CI usage.",
+    "rationale": "Raygun documents token-authenticated, non-UI automation paths that fit CI pipelines: a Deployments API, programmatic uploads of source maps, dSYMs and ProGuard files, and a public v3 REST API with an OpenAPI spec meant for use from scripts. However, there is no explicit CI or headless documentation, such as a CLI, pipeline plugins or CI recipes. missing for 10: official CLI or CI integrations (e.g. GitHub Actions or other pipeline steps), explicit headless/CI usage docs, independent or hands-on corroboration of CI usage.",
     "evidenceIds": [
       "raygun-docs-8",
       "raygun-docs-15",
       "raygun-docs-31",
-      "raygun-docs-45"
+      "raygun-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4416,11 +4421,15 @@
       "citations": [
         {
           "evidenceId": "raygun-docs-8",
-          "quote": "You'll need your external access token for the following services: Deployments API, Sending dSYMS to Raygun, Uploading ProGuard mapping files, Uploading JavaScript files directly to Raygun"
+          "quote": "Deployments API, Sending dSYMS to Raygun, Uploading ProGuard mapping files, Uploading JavaScript files directly to Raygun"
         },
         {
           "evidenceId": "raygun-docs-15",
           "quote": "manually upload source maps either through our website using the `JS source map center` or via our API"
+        },
+        {
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "allows you to access your Raygun data so that you can display, manipulate and process it in other tools, scripts and applications."
         },
         {
           "evidenceId": "raygun-docs-31",
@@ -4435,7 +4444,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Raygun ships an in-product AI chat (AI Resolution, OpenAI-powered), so it is fair to ask whether it can act as an MCP client. However, no evidence shows it can connect to external MCP servers or use their tools. The only MCP evidence is an official Raygun MCP server (mcp-server-raygun), which is the server role and cannot be credited to this client-side story.",
+    "rationale": "Raygun has an in-product AI chat for error resolution, so it is fair to ask whether that assistant can consume external MCP servers. The evidence pack never documents MCP-client support. The only MCP evidence is Raygun's own MCP server (raygun-probe-3), which is the server role and does not transfer to this client-side story; the OpenAI key configuration is an LLM setting, not MCP tool plug-in.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4450,9 +4459,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Raygun is a SaaS error-monitoring platform, so an official MCP server is an applicable axis. A probe confirms an official MCP server is documented in the vendor's own MindscapeHQ GitHub organization (mcp-server-raygun), which meets the story's core. missing for 10: details of the exposed tools and capabilities, setup and authentication documentation in the evidence, independent or hands-on corroboration.",
+    "rationale": "A probe confirms an official MCP server for Raygun, published under its parent organization's GitHub (MindscapeHQ/mcp-server-raygun), so an agent can connect to Raygun directly. The evidence is a single probe line, and the server is backed by Raygun's documented v3 API. Missing for 10: first-party docs describing the server's tools/capabilities and setup or auth flow, and independent or hands-on corroboration of agents connecting through it.",
     "evidenceIds": [
-      "raygun-probe-3"
+      "raygun-probe-3",
+      "raygun-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4470,14 +4480,13 @@
     "productId": "raygun",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Raygun ships an AI Resolution chat that users can talk to in natural language, but it is scoped to diagnosing and fixing individual errors rather than operating the product. An official MCP server also exists, which could let AI clients drive Raygun through natural language, but the evidence says nothing about which operations it exposes. Missing for 10: documented natural-language control of product actions (e.g., resolving or ignoring errors, filtering, configuring), details of the MCP server's capabilities, and independent or hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Raygun's own AI Error Resolution feature gives users an in-product natural-language chat, built on OpenAI/Azure OpenAI, for diagnosing and fixing individual errors. The evidence shows this as an error-diagnosis conversation, not as a way to issue commands that operate the product. The official MCP server belongs to a separate MCP story and is not credited here. Missing for 10: documented natural-language commands that perform product actions (resolving or ignoring errors, filtering, configuring alerts), coverage beyond error diagnosis, and independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-5",
       "raygun-docs-27",
-      "raygun-docs-4",
-      "raygun-probe-3"
+      "raygun-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -4493,8 +4502,8 @@
           "quote": "This feature allows you to identify and tackle errors swiftly with just a click, using advanced AI technology powered by OpenAI and Azure OpenAI."
         },
         {
-          "evidenceId": "raygun-probe-3",
-          "quote": "official MCP server documented at https://github.com/MindscapeHQ/mcp-server-raygun"
+          "evidenceId": "raygun-docs-6",
+          "quote": "Simply press the comment button in the AI chat, and it will create a link back to your conversation to be posted into the comments section."
         }
       ]
     }
@@ -4505,7 +4514,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for an error-monitoring SaaS like Raygun, so the axis applies. The evidence pack never mentions a Raygun CLI. It only references APIs (Deployments API, source map upload via API) and an MCP server, which are developer building blocks or a different story's capability and earn no credit here.",
+    "rationale": "An official CLI is a fair question for an error-monitoring SaaS like Raygun, but nothing in the evidence pack documents one. The REST API, OpenAPI spec, Swagger UI and MCP server are separate capabilities: developer building blocks or other stories, not an official CLI. They earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4517,23 +4526,30 @@
   {
     "productId": "raygun",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Raygun documents its own API surfaces: a Deployments API authenticated with an external access token, plus API upload of source maps, dSYMs and ProGuard files. That counts as direct but narrow programmatic control. The evidence shows no general API for querying errors, changing statuses or managing apps, and probes found no published OpenAPI spec. The MCP server belongs to a separate story and is not credited here. Missing for 10: documented general-purpose REST API covering core crash-reporting objects (error groups, statuses, apps), published API reference or OpenAPI spec, independent or hands-on corroboration of API use.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Raygun publishes a public v3 REST API with a downloadable OpenAPI 3.0.3 spec of 46 paths, a hosted Swagger UI with a working 'Try it out' runner, and an API guide; it is authenticated with Personal Access Tokens. This lets a user or agent programmatically access and manipulate Raygun data, and further API surfaces exist for deployments and source map uploads. The root-domain OpenAPI probe 404s only show the spec lives at the API origin, not that it is absent. Missing for 10: independent or hands-on corroboration of driving the product end-to-end via the API, and a formal versioning/deprecation policy.",
     "evidenceIds": [
+      "raygun-openapi-spec-20261106",
+      "raygun-swagger-ui-20261106",
+      "raygun-api-guide-20261106",
+      "raygun-migration-20261106",
       "raygun-docs-8",
-      "raygun-docs-15",
-      "raygun-probe-2"
+      "raygun-docs-15"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "raygun-docs-8",
-          "quote": "You'll need your external access token for the following services: Deployments API, Sending dSYMS to Raygun, Uploading ProGuard mapping files, Uploading JavaScript files directly to Raygun"
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "allows you to access your Raygun data so that you can display, manipulate and process it in other tools, scripts and applications."
+        },
+        {
+          "evidenceId": "raygun-api-guide-20261106",
+          "quote": "This is version 3 of Raygun's API. While we transition, the RUM API will remain available"
         },
         {
           "evidenceId": "raygun-docs-15",
@@ -4548,7 +4564,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents an 'external access token' used for the Deployments API and symbol/source-map uploads, plus a source-map auth key. Neither is shown to be issuable per agent or limited to particular permissions, so they are adjacent credentials rather than scoped, least-privilege API keys. The official MCP server is documented, but nothing describes how its credentials are scoped.",
+    "rationale": "The evidence shows Raygun has credentials: an external access token used for the Deployments API and symbol/source-map uploads, and a Personal Access Token for the v3 API. Nothing documents issuing tokens with restricted scopes, per-resource permissions, or least-privilege limits, so having a token alone does not deliver scoped agent credentials.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4563,12 +4579,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun's evidence points to its own client SDKs: open-source .NET providers praised by a long-time user, WinRT support, a changelog entry for an SDK-level SendInBackground queueing feature in .NET Core, and client-side filtering of sensitive data before errors are sent. Nothing in the pack documents an official SDK catalog, language coverage, or SDK reference docs, so the depth of this support is unproven. Missing for 10: first-party SDK documentation listing supported languages, SDK API reference, and independent hands-on corroboration of building against the SDKs.",
+    "rationale": "Raygun ships its own client providers/SDKs. Community users describe open-source .NET providers and WinRT support, and the changelog records SDK-level work such as the .NET SendInBackground queueing change and SDK deprecations. The pack has no first-party SDK catalog or reference docs, though. The OpenAPI spec is a REST API rather than an SDK, so it gets no credit here. Missing for 10: a documented list of official SDKs per language, SDK installation/reference documentation, and evidence of SDK suitability for AI-native/agent workflows.",
     "evidenceIds": [
       "raygun-comm-1",
       "raygun-comm-2",
       "raygun-docs-51",
-      "raygun-docs-12"
+      "raygun-migration-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -4584,8 +4600,8 @@
           "quote": "Enhanced SendInBackground to queue messages for sending: Prevents SNAT exhaustion in .NET Core Azure environments."
         },
         {
-          "evidenceId": "raygun-docs-12",
-          "quote": "You can filter out sensitive information from error data, meaning before errors are sent to Raygun."
+          "evidenceId": "raygun-migration-20261106",
+          "quote": "the public changelog carries SDK-level deprecations only"
         }
       ]
     }
@@ -4596,7 +4612,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for an error-monitoring SaaS like Raygun, but the evidence pack never documents registrable outbound HTTP callbacks. It shows only alerts via email, Slack and Teams, plus Slack and PagerDuty integrations, and chat-app or incident-tool integrations do not qualify as webhooks.",
+    "rationale": "Raygun is an error and performance monitoring SaaS, so outbound webhooks are a fair axis to judge. The evidence pack documents no registrable outbound HTTP callbacks. The only alerting evidence covers email, Slack, Teams and PagerDuty integrations, which are chat or incident-tool notifications and do not count as webhooks. The v3 REST API is pull-based and is not an event subscription.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4611,7 +4627,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Raygun's AI Error Resolution offers chat-based suggestions on root cause and how to fix errors, and Raygun separately integrates with GitHub, Bitbucket and GitLab for source context. Nothing in the evidence shows the AI drafting a code change or opening a pull request for human review. Chat suggestions are an adjacent feature, not the PR-based fix workflow this story asks for.",
+    "rationale": "Raygun's AI Error Resolution offers chat-based, LLM-generated suggestions on root cause and how to fix errors. Nothing in the pack shows the AI drafting a code change or opening a pull request against a connected repo for review. The GitHub, Bitbucket and GitLab integrations are documented only for repo connection and source map decoding, so the PR-opening core of the story is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4624,9 +4640,9 @@
     "productId": "raygun",
     "storyId": "ai-root-cause",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Raygun's AI Resolution feature, powered by OpenAI or Azure OpenAI, sends the stack trace, environment and affected code to an LLM and returns suggestions on the root cause and how to fix it. It also offers a collaborative chat. The documented AI context does not include breadcrumbs or related commits, and it requires the user's own OpenAI API key. There is no hands-on corroboration of the quality of its suggestions. Missing for 10: breadcrumbs as AI input, related commits as AI input, independent evidence of root-cause accuracy.",
+    "rationale": "Raygun documents an AI Resolution feature that gives AI-powered suggestions on the root cause of errors and how to fix them. It automatically prompts an LLM with the stack trace, environment and affected code, and the chat is collaborative. However, it requires you to supply your own OpenAI API key, and the evidence does not show breadcrumbs or related commits feeding the analysis. missing for 10: breadcrumbs as AI input, related commits/deployments in AI context, independent or hands-on corroboration of suggestion quality, a built-in model that doesn't need a user-supplied key",
     "evidenceIds": [
       "raygun-docs-4",
       "raygun-docs-30",
@@ -4664,11 +4680,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Raygun documents custom alerts to email, Slack or Teams, a Slack integration for APM trace messages, and PagerDuty incidents created when an APM rule triggers, so multi-channel alert delivery from rules exists. The evidence does not show routing by project, environment or severity, or per-rule thresholds for new issues, frequency spikes or affected-user counts. Spike protection concerns usage volume, not alert thresholds. Missing for 10: routing by project/environment/severity, per-rule thresholds for new-issue/frequency-spike/affected-user triggers, crash-reporting (not just APM) PagerDuty/Slack rule configuration, independent corroboration.",
+    "rationale": "Raygun documents its own alert delivery to email, Slack, and Teams, plus a rule-triggered PagerDuty integration and Slack messages for APM traces. That covers the destinations, but nothing shows routing by project, environment, or severity, or per-rule thresholds for new issues, frequency spikes, or affected-user counts. Spike protection concerns usage volume, not alert thresholds, so it earns no credit here. Missing for 10: routing by project/environment/severity, per-rule thresholds (new issue, frequency spike, affected-user count), crash-reporting (vs APM) PagerDuty rules, independent corroboration.",
     "evidenceIds": [
       "raygun-docs-48",
-      "raygun-docs-16",
-      "raygun-docs-17"
+      "raygun-docs-17",
+      "raygun-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -4693,31 +4709,61 @@
   {
     "productId": "raygun",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Raygun is a SaaS monitoring platform with public APIs (Deployments API, source map upload API), so an interactive API reference is a fair question. The evidence pack never mentions an interactive or runnable API reference, and probes for OpenAPI/Swagger specs all returned 404.",
-    "evidenceIds": [],
+    "rationale": "Raygun hosts Swagger UI over its published OpenAPI 3.0.3 v3 spec (46 paths). All submit methods are enabled, so each operation has a working \"Try it out\" runner, which makes it an interactive reference with runnable requests. The 404s on raygun.com/openapi.json do not contradict this, because the spec is served from the api.raygun.com origin. Missing for 10: a sandbox or mock environment (the runner executes against the production API with a Personal Access Token), documented multi-language code samples, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "raygun-swagger-ui-20261106",
+      "raygun-openapi-spec-20261106",
+      "raygun-api-guide-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "raygun-swagger-ui-20261106",
+          "quote": "Raygun hosts Swagger UI over its spec at https://api.raygun.com/v3/swagger/index.html; the served configuration loads the v3 spec and enables all submit methods, so the per-operation \"Try it out\" runner is available"
+        },
+        {
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "Raygun publishes a downloadable OpenAPI 3.0.3 document (\"Raygun API\", 46 paths, servers https://api.raygun.com/v3) at the API origin"
+        }
+      ]
     }
   },
   {
     "productId": "raygun",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Raygun is a SaaS platform with APIs (Deployments API, source map upload via API), so a downloadable API spec is a fair question. However, no evidence shows a published OpenAPI or equivalent machine-readable spec, and probes of common OpenAPI/Swagger paths all returned 404. The official MCP server is a separate capability and does not count toward this story.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Raygun publishes a downloadable OpenAPI 3.0.3 spec for its v3 API at api.raygun.com, linked from its docs, with a hosted Swagger UI loading the same spec. The probe 404s were on raygun.com candidate paths, not the API origin, so they do not contradict this. Missing for 10: independent or community corroboration of the spec's use, and discoverability at a conventional well-known path.",
+    "evidenceIds": [
+      "raygun-openapi-spec-20261106",
+      "raygun-swagger-ui-20261106",
+      "raygun-api-guide-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "Raygun publishes a downloadable OpenAPI 3.0.3 document"
+        },
+        {
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "Following the OpenAPI standard, you can see the full specification here"
+        },
+        {
+          "evidenceId": "raygun-swagger-ui-20261106",
+          "quote": "Raygun hosts Swagger UI over its spec at https://api.raygun.com/v3/swagger/index.html"
+        }
+      ]
     }
   },
   {
@@ -4726,7 +4772,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Asking whether an error-monitoring SaaS with APIs and an MCP server offers a sandbox or test environment separate from production is a fair question, so the axis applies. The evidence pack documents no sandbox, test mode, or isolated non-production environment for Raygun. Sensitive-data filtering and IP-storage controls are adjacent privacy features, not sandbox isolation, and the 'multi-environment clients' remark refers to Sentry, not Raygun.",
+    "rationale": "Raygun is an error-monitoring SaaS with a public API, so a sandbox or test environment is a fair question to ask of it. The evidence documents no sandbox or isolated test mode. The only testing surface, the Swagger UI \"Try it out\" runner, is explicitly noted to execute against the production API with a Personal Access Token, which is the opposite of the story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4738,16 +4784,33 @@
   {
     "productId": "raygun",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun exposes APIs, such as the Deployments API and source map upload API, so the axis applies. However, no evidence shows versioned API endpoints or a documented deprecation policy. The hasher version setting is an error-grouping feature, not API versioning, and the OpenAPI probes returned 404.",
-    "evidenceIds": [],
+    "rationale": "Raygun ships a path-versioned v3 API with a published OpenAPI spec, and it documents a version transition and a backward-compatible field deprecation in its deployment migration guide. However, the evidence explicitly says no standalone deprecation or versioning policy page exists, so the 'documented deprecation policy' half of the story rests only on ad-hoc notes. Missing for 10: a formal published deprecation/versioning policy (timelines, sunset guarantees), deprecation flags in the OpenAPI spec, API-level deprecations in the changelog, independent corroboration.",
+    "evidenceIds": [
+      "raygun-api-guide-20261106",
+      "raygun-migration-20261106",
+      "raygun-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "raygun-api-guide-20261106",
+          "quote": "This is version 3 of Raygun's API. While we transition, the RUM API will remain available"
+        },
+        {
+          "evidenceId": "raygun-migration-20261106",
+          "quote": "createdAt has been deprecated and deployedAt should be used instead. You may still use createdAt. If both properties are specified deployedAt will be preferred."
+        },
+        {
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "Raygun publishes a downloadable OpenAPI 3.0.3 document (\"Raygun API\", 46 paths, servers https://api.raygun.com/v3)"
+        }
+      ]
     }
   },
   {
@@ -4756,11 +4819,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun documents multi-select bulk actions in the Crash Reporting dashboard: you can tick several error groups and change their status together, and you can export all or selected error groups at once. This is UI-driven bulk handling for error triage only. There is no evidence of programmatic or AI-driven bulk operations; the MCP server is documented, but nothing shows it supports bulk actions. Missing for 10: bulk operations via API/MCP for AI-native workflows, bulk actions beyond status changes and export, documented limits or scale, and independent hands-on corroboration.",
+    "rationale": "Raygun documents multi-select bulk actions in the Crash Reporting dashboard: you can tick several error groups and change their status together, and export all or selected error groups. Evidence stops at these two UI operations, with nothing on bulk actions through the API or for AI-driven workflows. Missing for 10: programmatic or API bulk-operation endpoints, bulk actions beyond status change and export (e.g. assign, delete, tag), documented limits on batch size, independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-41",
       "raygun-docs-9",
-      "raygun-docs-46"
+      "raygun-docs-46",
+      "raygun-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -4774,6 +4838,10 @@
         {
           "evidenceId": "raygun-docs-9",
           "quote": "The Raygun Crash Reporting export feature allows customers to export all error groups or selected errors groups from within the Crash Reporting dashboard."
+        },
+        {
+          "evidenceId": "raygun-docs-46",
+          "quote": "You can also select to export all data within a specific time range."
         }
       ]
     }
@@ -4782,12 +4850,13 @@
     "productId": "raygun",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun's own docs show rules that fire actions on events: an APM rule can trigger an issue that automatically creates a PagerDuty incident, and custom alerts can go to email, Slack or Teams. That is real event-triggered automation, but the documented actions are limited to alerting and incident creation. The 'Ignore by rule' status condition is a triage filter, not an action trigger, so it earns no credit. Missing for 10: documentation of how rules are defined (conditions, event types), a general-purpose action set beyond notifications and PagerDuty incidents, and independent or hands-on corroboration.",
+    "rationale": "Raygun documents its own rule-based triggers. An APM issue rule can automatically create a PagerDuty incident, the pricing page lists custom alerts via email, Slack or Teams, and error statuses support 'Ignore by rule'. The documented actions are limited to alerting and incident creation, with no general-purpose rule engine or configurable action types shown. Missing for 10: documentation of how rule conditions and event types are defined, a broader range of automated actions beyond notifications and PagerDuty incidents, and independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-17",
-      "raygun-docs-48"
+      "raygun-docs-48",
+      "raygun-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -4800,7 +4869,11 @@
         },
         {
           "evidenceId": "raygun-docs-48",
-          "quote": "Alerts via email, Slack or Teams. Get custom alerts to where your team already works"
+          "quote": "Get custom alerts to where your team already works"
+        },
+        {
+          "evidenceId": "raygun-docs-11",
+          "quote": "Ignore by rule"
         }
       ]
     }
@@ -4811,7 +4884,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a monitoring SaaS, but the evidence shows no recurring schedules, cron-like jobs, or scheduled workflows. Time-period ignore conditions, one-off data exports for a time range, and rule-triggered alerts are adjacent features, not recurring scheduled jobs.",
+    "rationale": "Raygun is an error- and performance-monitoring SaaS, so scheduled recurring reports, checks or workflows are a fair question to ask of it. The evidence pack documents no capability for scheduling recurring jobs or workflows. The closest items are adjacent rather than relevant: 'ignore for a specific time period' is a status condition, and time-range export is a one-off manual action, not a recurring schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4826,7 +4899,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Raygun has automation-like features such as ignore-by-rule conditions and alert rules that trigger PagerDuty or Slack. However, the evidence never documents versioning, reviewing, or rolling back those rules or any other automation. Deployment tracking and the hasher version setting are about the user's own code and Raygun's grouping algorithm, so they do not count as versioning of automations.",
+    "rationale": "Raygun documents automation-like features such as ignore-by-rule conditions and alert rules that create PagerDuty incidents. Nothing in the evidence shows versioning, review, or rollback of those rules. Deployment tracking and API path versioning concern the user's app releases and Raygun's own API, not the user's automations, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4839,9 +4912,9 @@
     "productId": "raygun",
     "storyId": "breadcrumbs-custom-context",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Raygun's docs mention segmenting errors by 'custom tags' and prioritizing by 'users affected', which implies tags and user identity are carried on error events. Raygun also automatically captures environment diagnostics with the stack trace. However, nothing documents an SDK API for attaching tags or user context, and breadcrumbs are never mentioned. Missing for 10: breadcrumb capture, documented SDK API for setting custom tags per event, explicit user-context attachment docs, hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Raygun's docs show that errors can be segmented by custom tags and ranked by users affected, which implies tags and user identity travel with each event. The pack has no SDK-level documentation of how developers attach tags or user context, and never mentions breadcrumbs. Missing for 10: breadcrumb support, documented SDK APIs for setting custom tags and user context, arbitrary custom data per event, independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-3",
       "raygun-docs-38",
@@ -4854,11 +4927,7 @@
       "citations": [
         {
           "evidenceId": "raygun-docs-3",
-          "quote": "use smart filters to segment errors by date, location, version, host, OS, browser, and custom tags"
-        },
-        {
-          "evidenceId": "raygun-docs-3",
-          "quote": "Order and prioritize errors based on users affected and the number of occurrences"
+          "quote": "Order and prioritize errors based on users affected and the number of occurrences, and use smart filters to segment errors by date, location, version, host, OS, browser, and custom tags."
         },
         {
           "evidenceId": "raygun-docs-38",
@@ -4873,7 +4942,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun's docs say it automatically groups errors using exception type, class name, method name and stack-trace location, and that a selectable hasher version in application settings governs this grouping. Nothing in the pack shows a way to customize grouping when it is wrong, such as custom fingerprints, grouping keys or merging groups. Ignore rules are a status control, not a grouping override, so they earn no credit. Missing for 10: documented custom grouping/fingerprint overrides, a way to merge or split groups, independent corroboration of grouping quality at scale.",
+    "rationale": "Raygun's docs state that it automatically groups errors by exception type, class name, method name and stack-trace location, and that a versioned hasher is configurable in application settings. That covers the fingerprint-based deduplication half of the story. Nothing in the pack shows a way to customize grouping when it is wrong, such as custom grouping keys, fingerprint overrides or merging and splitting groups; checking the hasher version is only an adjacent control. Missing for 10: documented custom grouping or fingerprint override, merge/split of error groups, independent corroboration of grouping accuracy at scale.",
     "evidenceIds": [
       "raygun-docs-7",
       "raygun-docs-33",
@@ -4885,8 +4954,8 @@
       "subject": "As a developer, the platform groups thousands of duplicate events into one issue via stack-trace fingerprinting, and I can customize the grouping when it gets it wrong",
       "citations": [
         {
-          "evidenceId": "raygun-docs-7",
-          "quote": "Raygun groups errors based on the `exception type`, `class name`, `method name`, and the location within the `stack trace`."
+          "evidenceId": "raygun-docs-33",
+          "quote": "Raygun groups errors based on the exception type, class name, method name, and the location within the stack trace."
         },
         {
           "evidenceId": "raygun-docs-40",
@@ -4899,14 +4968,13 @@
     "productId": "raygun",
     "storyId": "error-trend-dashboards",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Raygun documents an error chart showing error frequency and trends, deployment tracking to spot new errors or regressions, and prioritizing and filtering errors by occurrences and version within the Crash Reporting dashboard. That covers volume over time and per-release regressions within an application. There is no evidence of leadership dashboards that aggregate trends across multiple projects or teams. Missing for 10: cross-project/team aggregated dashboards, an explicit 'new issues per release' dashboard view, a top-regressions ranking widget, independent or hands-on corroboration.",
+    "rationale": "Raygun documents an error chart that shows error frequency and trends, deployment tracking that surfaces new errors or regressions, and ordering of errors by occurrences with version filters. That covers volume over time and per-release regressions within an application. There is no evidence of cross-project or cross-team leadership dashboards, so this is partial. Missing for 10: cross-project/team aggregated dashboards, a dedicated top-regressions view, an explicit new-issues-per-release report, and independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-19",
       "raygun-docs-31",
-      "raygun-docs-3",
-      "raygun-docs-9"
+      "raygun-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -4934,7 +5002,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Raygun documents smart filters that segment errors by version (release) and custom tags, and it has a search results page. That covers part of the story but not a real query language or cross-project search. Missing for 10: a documented query syntax, cross-project search, explicit environment filtering, filtering by arbitrary custom properties, and independent or hands-on corroboration.",
+    "rationale": "Raygun documents smart filters that segment errors by version (release-like), host, OS, browser, location, date and custom tags, and the changelog mentions a search results page. Nothing in the evidence shows a real query syntax, cross-project search, or filtering by environment or arbitrary custom properties. Missing for 10: documented query language/syntax, cross-project search, environment filtering, custom-property filtering, independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-3",
       "raygun-docs-19"
@@ -4961,7 +5029,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions linking errors to Jira, GitHub Issues, or Linear, nor any two-way status sync. The GitHub integration shown is for repo connection and source maps, error resolution is a manual status change, and the Slack and PagerDuty integrations are alerting features, so none of these count toward this story.",
+    "rationale": "The evidence pack has no documented integration that links Raygun errors to Jira, GitHub Issues, or Linear, and no two-way status sync. The GitHub integration shown is a repository connection for source-code and source-map context, not issue tracking. Error statuses are changed manually in Raygun, and the Slack and PagerDuty items are notification or incident integrations, so they are adjacent features rather than ticket sync.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4976,7 +5044,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun documents an error-status triage workflow. Users can mark error groups Resolved and Ignore them with conditions, including for a specific time period (effectively a snooze), and can change status in bulk from the list. Nothing shows assigning an owner, and nothing shows a resolved issue reopening automatically on regression; deployment tracking to spot regressions is a related feature, not auto-reopen. Missing for 10: assign-owner capability, automatic reopen of resolved issues on regression, independent/hands-on corroboration.",
+    "rationale": "Raygun documents an error-status triage workflow. Users can mark error groups 'Resolved', and can ignore them by time period (effectively a snooze), by occurrence count, or by rule, with bulk status changes. The pack shows no owner assignment and no automatic reopening of a resolved issue on regression; deployment regression tracking is a different capability. missing for 10: assign-owner capability, documented auto-reopen of resolved issues on regression, independent corroboration.",
     "evidenceIds": [
       "raygun-docs-25",
       "raygun-docs-10",
@@ -5011,16 +5079,33 @@
   {
     "productId": "raygun",
     "storyId": "issues-api-read",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence documents an external access token only for the Deployments API, symbol and mapping uploads, and source map uploads. It also documents dashboard-based error status changes and CSV export. Nothing shows a documented REST API for listing, querying or updating error groups or fetching raw events, nor scoped tokens for such access. The OpenAPI probe paths all returned 404, and the MCP server belongs to a different story.",
-    "evidenceIds": [],
+    "rationale": "Raygun publishes a documented v3 REST API: an OpenAPI 3.0.3 spec with 46 paths, a hosted Swagger UI, and authentication by Personal Access Token. The API is described as letting you access and manipulate Raygun data. The evidence does not show which endpoints cover error groups or raw events. missing for 10: explicit endpoints for listing, querying, and updating error groups (e.g. status changes), raw event/occurrence retrieval endpoints, documented token scoping/permissions, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "raygun-openapi-spec-20261106",
+      "raygun-swagger-ui-20261106",
+      "raygun-api-guide-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can list, query, and update issues and fetch raw events through a documented REST API with scoped tokens",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "allows you to access your Raygun data so that you can display, manipulate and process it in other tools, scripts and applications."
+        },
+        {
+          "evidenceId": "raygun-swagger-ui-20261106",
+          "quote": "the runner is client-rendered and executes against the production API with a Personal Access Token"
+        },
+        {
+          "evidenceId": "raygun-api-guide-20261106",
+          "quote": "This is version 3 of Raygun's API."
+        }
+      ]
     }
   },
   {
@@ -5029,13 +5114,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun documents its own source map decoding, which turns minified JavaScript errors into readable traces with source snippets. Maps are fetched automatically when public, or can be uploaded manually through the JS source map center or an API that uses an external access token, so CI uploads are possible by scripting the API. The story specifically asks for a CLI or bundler plugin, and neither appears in the evidence. Missing for 10: an official upload CLI, bundler plugins (webpack/Vite/etc.), documented CI workflow examples, and independent hands-on corroboration.",
+    "rationale": "Raygun documents its own source-map support: it fetches public maps automatically, accepts manual uploads via the JS source map center or its API (authenticated with an external access token), and uses the maps to turn minified errors into readable traces with source snippets. The API route is scriptable from CI, but the evidence never mentions a dedicated CLI or bundler plugin, which is the delivery path the story names. Missing for 10: a documented upload CLI or bundler plugin (webpack/Vite etc.), CI-specific upload docs, and independent hands-on corroboration.",
     "evidenceIds": [
-      "raygun-docs-42",
-      "raygun-docs-15",
-      "raygun-docs-8",
       "raygun-docs-14",
-      "raygun-docs-2"
+      "raygun-docs-15",
+      "raygun-docs-42",
+      "raygun-docs-8",
+      "raygun-docs-43"
     ],
     "support": {
       "relation": "direct",
@@ -5043,16 +5128,20 @@
       "subject": "As a developer, I can upload JavaScript source maps from CI — via CLI or bundler plugin — so production stack traces show my original source, not minified frames",
       "citations": [
         {
-          "evidenceId": "raygun-docs-42",
-          "quote": "Raygun uses them to take un-readable errors generated from minified JavaScript and translate them to be readable and to include code snippets from your source."
-        },
-        {
           "evidenceId": "raygun-docs-15",
           "quote": "you can also manually upload source maps either through our website using the `JS source map center` or via our API"
         },
         {
+          "evidenceId": "raygun-docs-42",
+          "quote": "Raygun uses them to take un-readable errors generated from minified JavaScript and translate them to be readable and to include code snippets from your source."
+        },
+        {
           "evidenceId": "raygun-docs-8",
           "quote": "Uploading JavaScript files directly to Raygun"
+        },
+        {
+          "evidenceId": "raygun-docs-14",
+          "quote": "If your source maps are publicly available on your website Raygun will fetch them automatically without you having to do anything."
         }
       ]
     }
@@ -5063,7 +5152,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence explains how Raygun's fingerprinting groups errors (exception type, class name, method name, stack trace location) and mentions a selectable hasher version. Nothing documents manually merging duplicate error groups or splitting a wrongly collapsed group. Bulk status changes and ignore rules are adjacent triage controls, not merge or split.",
+    "rationale": "Raygun documents automatic grouping by exception type, class name, method name and stack-trace location, plus hasher versions and status changes. Nothing in the evidence shows a way to manually merge duplicate error groups or split ones the hasher wrongly collapsed. Status workflows and hasher settings are adjacent controls and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5078,8 +5167,9 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun's own docs show it handles native mobile crash artifacts: it accepts dSYMs, which implies iOS symbolication, and ProGuard mapping files, which implies Android deobfuscation. It also captures device, OS, and version context for each error. However, the pack contains no iOS or Android SDK crash-capture documentation and nothing on NDK, so mobile capture is inferred rather than documented. Missing for 10: explicit iOS and Android SDK crash-capture docs, any NDK/native C++ crash support, explicit app-version context for mobile crashes, and independent or hands-on corroboration.",
+    "rationale": "Raygun's docs mention sending dSYMs and uploading ProGuard mapping files, which implies iOS and Android crash symbolication. They also state Raygun captures full stack traces plus OS, device and version context for each error. However, the pack never explicitly documents native iOS or Android crash SDKs, and it says nothing about NDK/native C/C++ crashes. missing for 10: explicit iOS/Android crash-reporting SDK documentation, any NDK native-crash support, explicit app-version capture on mobile, independent or hands-on corroboration.",
     "evidenceIds": [
+      "raygun-docs-8",
       "raygun-docs-45",
       "raygun-docs-38",
       "raygun-docs-1",
@@ -5091,7 +5181,7 @@
       "subject": "As a developer, I can capture native mobile crashes — iOS, Android, NDK — with the device, OS, and app-version context needed to reproduce them",
       "citations": [
         {
-          "evidenceId": "raygun-docs-45",
+          "evidenceId": "raygun-docs-8",
           "quote": "Sending dSYMS to Raygun, Uploading ProGuard mapping files"
         },
         {
@@ -5111,7 +5201,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun's external-access-token docs list \"Sending dSYMS to Raygun\" and \"Uploading ProGuard mapping files\" as supported services, so dSYM and ProGuard upload are first-party capabilities. The evidence mentions them only as entries in a token-scope list, with no guide to the upload workflow and no description of the symbolicated output. Native (non-Apple) debug symbol upload is not evidenced at all. missing for 10: native debug symbol (e.g. NDK/Breakpad/PDB) upload, documented dSYM/ProGuard upload workflow, evidence that crashes resolve to function names and line numbers, independent or hands-on corroboration",
+    "rationale": "Raygun's access-token docs list \"Sending dSYMS to Raygun\" and \"Uploading ProGuard mapping files\" as supported services, so first-party dSYM and ProGuard upload is documented. That evidence is only a passing mention on a token page, though; there is no dedicated upload guide and no confirmation of how mobile crashes are symbolicated. Missing for 10: upload of native debug symbols (e.g. Breakpad/PDB/ELF), a documented upload workflow or CLI, evidence that iOS/Android crashes resolve to function names and line numbers, and independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-8",
       "raygun-docs-45"
@@ -5123,11 +5213,11 @@
       "citations": [
         {
           "evidenceId": "raygun-docs-8",
-          "quote": "Sending dSYMS to Raygun, Uploading ProGuard mapping files"
+          "quote": "You'll need your external access token for the following services: Deployments API, Sending dSYMS to Raygun, Uploading ProGuard mapping files"
         },
         {
           "evidenceId": "raygun-docs-45",
-          "quote": "You'll need your external access token for the following services: Deployments API, Sending dSYMS to Raygun, Uploading ProGuard mapping files"
+          "quote": "Sending dSYMS to Raygun, Uploading ProGuard mapping files"
         }
       ]
     }
@@ -5138,11 +5228,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun documents ignore conditions for error groups: ignore for a time period, for a number of occurrences, or by rule. These directly cover the mute/ignore part of the story. Its 'Spike protection' is described as flagging irregular data volumes to avoid surprise usage, which is about billing and usage rather than alert suppression, and per-key rate limits are not evidenced at all. missing for 10: per-key rate limiting, spike protection that suppresses alerts or pages, evidence that ignore rules stop notifications, independent corroboration.",
+    "rationale": "Raygun documents ignore conditions for error groups: ignore for a time period, for a number of occurrences, or by rule. These directly cover the mute/ignore part of the story. Its pricing page lists 'Spike protection', but it is framed around flagging irregular data volumes to avoid surprise usage rather than suppressing alert pages, and nothing documents per-key rate limits. Missing for 10: per-key/per-error rate limiting of alerts, evidence that spike protection throttles notifications rather than just usage, documentation of ignore-by-rule depth, independent corroboration.",
     "evidenceIds": [
       "raygun-docs-11",
       "raygun-docs-26",
-      "raygun-docs-34",
       "raygun-docs-25",
       "raygun-docs-49"
     ],
@@ -5172,10 +5261,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document Raygun's event-ingestion API or payload format, so it shows no way for custom clients to send events without an official SDK. The only related item is a 2013 community comment that the .NET providers are open source and could be extended with a NancyFX provider. That is an adjacent developer building block built on official SDK code, not a documented open protocol. The OpenAPI probes all returned 404.",
+    "rationale": "The pack contains no documentation of an event-ingestion endpoint, payload schema, or wire protocol that a custom client could use to send events without an official SDK. The documented OpenAPI v3 API is for reading and processing existing Raygun data, not ingesting events. A community note that the open-source providers let a user write a NancyFX provider shows extension of the official SDK code, which is a developer building block rather than a documented open ingestion protocol.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a developer, the event-ingestion protocol is documented and open enough that custom clients and compatible SDKs can send events without an official SDK",
       "citations": []
@@ -5185,16 +5274,15 @@
     "productId": "raygun",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun documents some programmatic surfaces: a Deployments API, source map, dSYM and ProGuard uploads via API with an external access token, and an official MCP server. However, the documented workflows for triage (status changes), export and settings are UI-driven, and no OpenAPI spec was found, so UI parity is not shown. Missing for 10: a documented general-purpose REST API covering error groups, statuses, export and settings, a published API reference/OpenAPI spec, and independent evidence that the API matches the UI.",
+    "rationale": "Raygun publishes a v3 OpenAPI 3.0.3 spec with 46 paths and hosted Swagger UI. The API is described as giving access to Raygun data for use in other tools, and some UI actions, such as source map upload, are explicitly available through the API too. Nothing documents that the API matches the UI feature-for-feature: UI workflows like bulk status changes, ignore rules, CSV export, AI chat and settings toggles are only shown as dashboard actions, and the API is mid-transition with the RUM API kept separately. Missing for 10: an explicit API/UI parity claim, API coverage of triage, export, settings and AI features, and independent hands-on confirmation of coverage.",
     "evidenceIds": [
-      "raygun-docs-8",
-      "raygun-docs-15",
-      "raygun-probe-3",
-      "raygun-docs-41",
-      "raygun-docs-9",
-      "raygun-probe-2"
+      "raygun-openapi-spec-20261106",
+      "raygun-swagger-ui-20261106",
+      "raygun-api-guide-20261106",
+      "raygun-docs-44",
+      "raygun-docs-8"
     ],
     "support": {
       "relation": "direct",
@@ -5202,16 +5290,16 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "raygun-docs-8",
-          "quote": "You'll need your external access token for the following services: Deployments API, Sending dSYMS to Raygun, Uploading ProGuard mapping files, Uploading JavaScript files directly to Raygun"
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "allows you to access your Raygun data so that you can display, manipulate and process it in other tools, scripts and applications."
         },
         {
-          "evidenceId": "raygun-docs-15",
+          "evidenceId": "raygun-docs-44",
           "quote": "you can also manually upload source maps either through our website using the `JS source map center` or via our API"
         },
         {
-          "evidenceId": "raygun-probe-3",
-          "quote": "official MCP server documented at https://github.com/MindscapeHQ/mcp-server-raygun"
+          "evidenceId": "raygun-api-guide-20261106",
+          "quote": "This is version 3 of Raygun's API. While we transition, the RUM API will remain available"
         }
       ]
     }
@@ -5222,11 +5310,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun documents its own Crash Reporting export, covering all or selected error groups or all data within a time range. The changelog separately mentions CSV exports that follow applied filters, which shows an open format for at least some views. The evidence does not show a full-account export across every product (crash, RUM, APM), and the format of the crash export itself is not stated. missing for 10: confirmation that every product's data (RUM, APM, deployments, settings) is exportable, explicit open formats (CSV/JSON) for the crash-reporting export, bulk or API-based full-account export for leaving the service, and independent corroboration.",
+    "rationale": "Raygun documents its own Crash Reporting export, covering all or selected error groups or all data within a time range. CSV exports exist for filtered views, and an OpenAPI-documented v3 API lets you pull your Raygun data into other tools. However, the evidence never states the crash-export file format or shows a whole-account export across all products, and leaving is not covered. Missing for 10: documented open format for the crash-reporting export, export coverage across all products (RUM, APM, deployments), account deletion/offboarding documentation, and independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-9",
       "raygun-docs-46",
-      "raygun-docs-18"
+      "raygun-docs-18",
+      "raygun-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5244,6 +5333,10 @@
         {
           "evidenceId": "raygun-docs-18",
           "quote": "Aligned **CSV exports** with applied top-level filters."
+        },
+        {
+          "evidenceId": "raygun-openapi-spec-20261106",
+          "quote": "allows you to access your Raygun data so that you can display, manipulate and process it in other tools, scripts and applications."
         }
       ]
     }
@@ -5251,24 +5344,16 @@
   {
     "productId": "raygun",
     "storyId": "openness-open-license",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "A long-time user reports that Raygun's client providers (SDKs) are open source and that they wrote their own NancyFX provider from them, so some product source is readable. A comparison with Sentry implies Raygun's core platform codebase is not open source. missing for 10: an open-source core platform, first-party documentation of source repositories, a named open license, current (non-2013) corroboration.",
-    "evidenceIds": [
-      "raygun-comm-1",
-      "raygun-comm-4"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Raygun is a hosted error-monitoring SaaS, and whether its source is openly licensed is a fair question for this kind of product, so the axis applies. The pack has no evidence that Raygun's own codebase is published under an open license. The only related item is a 2013 community remark that the client 'providers' (SDKs) are open source, which is adjacent rather than the product itself. A comparison comment also lists an open-source codebase as an advantage of Sentry over Raygun.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can read the product's source under an open license",
-      "citations": [
-        {
-          "evidenceId": "raygun-comm-1",
-          "quote": "because the providers are open source they were able to write a NancyFX-specific provider"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5277,7 +5362,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an error-monitoring platform, since competitors like Sentry publish their codebase. Raygun's evidence describes only a hosted SaaS service. The open-source client providers mentioned by a community user are SDKs, not the core product, so they earn no credit for this story.",
+    "rationale": "Self-hosting is a fair axis for an error and performance monitoring product, but the evidence pack never documents a self-hosted or on-premises deployment of Raygun. The evidence describes only a hosted service at raygun.com and api.raygun.com. Open-source client providers (SDKs) are not the core product and do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5292,7 +5377,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a storage region is a fair question for a SaaS monitoring product like Raygun, so the axis applies. The pack has no evidence of selectable data regions or residency. The only nearby features are client-side filtering of sensitive data and a flag to disable IP address storage, which are adjacent privacy controls and earn no credit here.",
+    "rationale": "Choosing a storage region is a fair question for a SaaS error-monitoring platform like Raygun, so the axis applies. Nothing in the evidence pack mentions data regions, residency options or region selection. The documented privacy controls (client-side filtering of sensitive data, disabling IP address storage) are adjacent features and do not let users choose where data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5307,7 +5392,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Raygun ships AI features (AI Error Resolution built on OpenAI and Azure OpenAI), so a training-data opt-out is a fair question for this product. The pack has no statement or setting about excluding customer data from AI model training. Filtering sensitive data before sending and disabling IP storage are adjacent privacy controls, not a training opt-out, so they earn no credit.",
+    "rationale": "Raygun is a SaaS monitoring platform with AI features (OpenAI/Azure OpenAI-powered AI resolution), so an AI-training opt-out is a fair question. The evidence contains no documented control or policy that keeps customer data out of AI model training. The available controls are adjacent: client-side scrubbing of sensitive data before sending and disabling IP address storage. Neither of these addresses AI training use.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5322,10 +5407,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no retention-period settings and no way to delete stored error data. The privacy controls shown are data-minimization features: client-side filtering of sensitive fields before sending, and a flag that disables IP address storage. These are related-but-different controls and earn no credit toward controlling retention or deletion.",
+    "rationale": "The evidence shows no Raygun capability for setting retention periods or deleting stored data. The documented privacy controls are adjacent: scrubbing sensitive fields client-side before sending and disabling IP address storage limit what gets collected, not how long data is kept or how it is removed. Export features are unrelated to deletion.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can control data retention and deletion",
       "citations": []
@@ -5337,10 +5422,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows privacy controls over the error data an application sends to Raygun: filtering sensitive fields before sending, and a 'Disable IP address storage' flag. These are adjacent data-handling controls, not a documented way for the user to opt out of Raygun's own telemetry or usage tracking. Nothing in the pack describes such an opt-out.",
+    "rationale": "Nothing in the evidence pack documents a way to opt out of Raygun's own telemetry or usage tracking, whether of its SDKs, dashboard, or AI features. The cited privacy controls are adjacent features: they cover the customer's captured error data, not opting out of tracking. These are filtering sensitive fields before sending and the 'Disable IP address storage' flag.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
       "citations": []
@@ -5352,13 +5437,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only cost-related evidence is the pricing page's 'Spike protection', which detects and flags irregular data volumes. Flagging is an adjacent control, not a per-project event quota cap or a spend limit that stops an error storm from producing a surprise bill. 'Ignore for a specific number of occurrences' is an inbox-triage status, not a quota, so no documented capping or spend-limit capability exists in the evidence.",
-    "evidenceIds": [],
+    "rationale": "The evidence pack does not document per-project event quotas, hard caps, or spend limits. The only related item is pricing-page 'Spike protection', which 'detects and flags' irregular volumes. That is a detection and flagging control, not a quota cap or a budget ceiling, so it earns no credit. The 'ignore for a number of occurrences' status rule (docs-11) is error-group triage, not a quota or billing cap.",
+    "evidenceIds": [
+      "raygun-docs-49"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an engineering leader, I can cap event quotas per project and set spend limits so an error storm burns a predictable budget, never a surprise invoice",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "raygun-docs-49",
+          "quote": "Spike protection. Detect and flag irregular data volumes to avoid any surprise usage"
+        }
+      ]
     }
   },
   {
@@ -5367,7 +5459,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Raygun documents marking fixed errors as 'Resolved' and claims deployment tracking that identifies 'new errors or regressions', and it offers custom alerts via email, Slack or Teams. Nothing shows a resolved error automatically reactivating in a newer release, or triggering an alert specific to regressions and separate from new-issue alerts. missing for 10: documented auto-reopen of resolved errors on recurrence in a later version, a regression-specific alert type distinct from new-error notifications, version-aware regression detection details, independent or hands-on corroboration.",
+    "rationale": "Raygun lets you mark a fixed error as 'Resolved' and claims deployment tracking can 'identify any new errors or regressions', and it offers alerts via email, Slack or Teams. Nothing shows that a resolved error which recurs in a newer release triggers its own alert, separate from new-issue alerts. missing for 10: documented reopen/regression behavior for resolved errors tied to a release version, a regression-specific alert type distinct from new-error alerts, hands-on or independent corroboration.",
     "evidenceIds": [
       "raygun-docs-31",
       "raygun-docs-10",
@@ -5388,7 +5480,7 @@
         },
         {
           "evidenceId": "raygun-docs-48",
-          "quote": "Alerts via email, Slack or Teams. Get custom alerts to where your team already works"
+          "quote": "Alerts via email, Slack or Teams."
         }
       ]
     }
@@ -5399,7 +5491,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Raygun documents its own per-deployment tracking to spot new errors or regressions, a Deployments API, and filtering errors by version. Together these cover only a thin slice of release health. Nothing in the evidence shows crash-free session or user rates, per-release adoption, or a side-by-side canary-versus-stable comparison. Missing for 10: crash-free sessions/users metrics, release adoption tracking, canary vs last-stable release comparison, independent or hands-on corroboration.",
+    "rationale": "Raygun documents its own deployment tracking for spotting new errors or regressions per deployment, and errors can be filtered by version. That touches release regression monitoring, but nothing documents crash-free session or user rates, adoption per release, or a canary-versus-stable comparison. Missing for 10: crash-free sessions/users metrics, per-release adoption tracking, side-by-side canary vs last-stable release comparison, independent corroboration.",
     "evidenceIds": [
       "raygun-docs-31",
       "raygun-docs-3",
@@ -5417,10 +5509,6 @@
         {
           "evidenceId": "raygun-docs-3",
           "quote": "use smart filters to segment errors by date, location, version, host, OS, browser, and custom tags."
-        },
-        {
-          "evidenceId": "raygun-docs-8",
-          "quote": "You'll need your external access token for the following services: Deployments API"
         }
       ]
     }
@@ -5431,13 +5519,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Raygun documents deployment tracking to surface new errors and regressions, a Deployments API, per-error version data with version filters, and native GitHub/Bitbucket/GitLab repo integrations. Nothing in the evidence shows an issue displaying the release it first appeared in, or Raygun identifying a suspect commit. missing for 10: documented first-seen-release attribution on issues, suspect-commit identification, commit-to-error association details, independent or hands-on corroboration.",
+    "rationale": "Raygun documents its own deployment tracking: a Deployments API, real-time deployment tracking to spot new errors or regressions, and version data captured and filterable on errors. Native GitHub, Bitbucket and GitLab repo integrations are also listed. However, nothing shows an issue displaying the release it first appeared in, or any suspect-commit attribution. Missing for 10: documented first-seen release per issue, suspect-commit identification linking errors to specific commits, detail on how deployments map to commits, and independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-31",
-      "raygun-docs-45",
-      "raygun-docs-1",
+      "raygun-docs-2",
       "raygun-docs-3",
-      "raygun-docs-2"
+      "raygun-docs-45",
+      "raygun-migration-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5449,16 +5537,16 @@
           "quote": "Track every deployment in real time to identify any new errors or regressions."
         },
         {
-          "evidenceId": "raygun-docs-45",
-          "quote": "You'll need your external access token for the following services: Deployments API"
+          "evidenceId": "raygun-docs-2",
+          "quote": "Connect to your repo through native integrations with GitHub, Bitbucket, and GitLab"
         },
         {
           "evidenceId": "raygun-docs-3",
           "quote": "use smart filters to segment errors by date, location, version, host, OS, browser, and custom tags"
         },
         {
-          "evidenceId": "raygun-docs-2",
-          "quote": "Connect to your repo through native integrations with GitHub, Bitbucket, and GitLab"
+          "evidenceId": "raygun-docs-45",
+          "quote": "You'll need your external access token for the following services: Deployments API"
         }
       ]
     }
@@ -5468,12 +5556,10 @@
     "storyId": "scm-blame-context",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Raygun documents native repo integrations with GitHub, Bitbucket and GitLab, and uses source maps to show readable code snippets from source. That covers the repo-connection part of the story. Nothing in the evidence shows suspect commits, code owners, or linking a stack frame to the exact line on the default branch. Missing for 10: suspect-commit attribution, code-owner display, stack-frame-to-source-line linking on the default branch, independent corroboration.",
+    "confidence": "low",
+    "rationale": "Raygun's own marketing says it connects to repositories through native GitHub, Bitbucket and GitLab integrations, which covers the repo-connection part of the story. Nothing in the evidence shows what that connection delivers on an issue: no suspect commits, no code owners, and no linking from a stack frame to a source line on the default branch. missing for 10: suspect-commit attribution, code-owner assignment, stack-frame-to-source-line linking on the default branch, in-depth first-party docs on the repo integration, independent or hands-on corroboration.",
     "evidenceIds": [
-      "raygun-docs-2",
-      "raygun-docs-42",
-      "raygun-docs-31"
+      "raygun-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -5482,11 +5568,7 @@
       "citations": [
         {
           "evidenceId": "raygun-docs-2",
-          "quote": "Connect to your repo through native integrations with GitHub, Bitbucket, and GitLab, with support for source map decoding."
-        },
-        {
-          "evidenceId": "raygun-docs-42",
-          "quote": "translate them to be readable and to include code snippets from your source"
+          "quote": "Connect to your repo through native integrations with GitHub, Bitbucket, and GitLab"
         }
       ]
     }
@@ -5495,14 +5577,13 @@
     "productId": "raygun",
     "storyId": "sdk-broad-coverage",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun states it automatically captures diagnostics for every error occurrence. The pack points to all three platform tiers: JavaScript/browser source-map decoding for frontend, .NET SendInBackground and open-source .NET providers for backend, and dSYM and ProGuard mapping uploads for iOS and Android. However, no evidence item explicitly documents a list of official SDKs or how each one hooks uncaught exceptions. Missing for 10: an explicit official SDK catalogue across web, backend and mobile; documentation of automatic uncaught-exception handlers per SDK; independent hands-on corroboration of mobile and frontend auto-capture.",
+    "rationale": "Raygun documents automatic capture of diagnostics for every error occurrence. It has a JavaScript crash-reporting language guide with source-map decoding and .NET SDK features such as SendInBackground. Community users confirm open-source .NET and WinRT providers, and dSYM/ProGuard uploads point to iOS/Android mobile crash reporting. However, the pack never names or documents the official web, backend and mobile SDKs together, nor confirms that uncaught exceptions are hooked automatically. Missing for 10: an explicit list of official SDKs across web/backend/mobile, docs for automatic uncaught-exception handlers per platform, named mobile SDK documentation, independent hands-on corroboration of current platform coverage.",
     "evidenceIds": [
       "raygun-docs-38",
       "raygun-docs-42",
-      "raygun-docs-14",
-      "raygun-docs-8",
+      "raygun-docs-45",
       "raygun-docs-51",
       "raygun-comm-1",
       "raygun-comm-2"
@@ -5521,8 +5602,8 @@
           "quote": "Raygun uses them to take un-readable errors generated from minified JavaScript and translate them to be readable and to include code snippets from your source."
         },
         {
-          "evidenceId": "raygun-docs-8",
-          "quote": "Sending dSYMS to Raygun, Uploading ProGuard mapping files"
+          "evidenceId": "raygun-docs-45",
+          "quote": "You'll need your external access token for the following services: Deployments API, Sending dSYMS to Raygun, Uploading ProGuard mapping files"
         },
         {
           "evidenceId": "raygun-docs-51",
@@ -5537,7 +5618,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Raygun documents client/SDK-side filtering of sensitive data before errors are sent, such as removing credit card details. The only server-side control evidenced is a single application-setting flag that disables IP address storage, not configurable scrubbing rules. missing for 10: configurable server-side scrubbing rules beyond IP storage, detail on SDK filter mechanisms (field/key lists, per-SDK coverage), independent or hands-on corroboration.",
+    "rationale": "Raygun documents filtering sensitive data such as credit card details out of error payloads before they are sent, which covers the SDK-level half of the story. On the server side, the only documented control is an application setting that disables IP address storage, not configurable scrubbing rules. missing for 10: configurable server-side scrubbing rules for arbitrary fields, documentation of SDK filter mechanics (field names, per-language support), independent or hands-on corroboration.",
     "evidenceIds": [
       "raygun-docs-12",
       "raygun-docs-24",
@@ -5566,7 +5647,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Collecting user feedback attached to an error event is a fair question for a crash-reporting product, so the axis applies. Nothing in the evidence pack documents a crash-report dialog, feedback widget, or any way to attach user comments to an error occurrence. The comment feature in raygun-docs-6 is for team members posting AI chat links, which is an adjacent feature and earns no credit, and RUM's 'see what your users see' is not user feedback collection.",
+    "rationale": "Crash-reporting tools can reasonably ship an end-user feedback widget, so this axis applies to Raygun. However, the evidence pack documents no crash-report dialog or user-feedback collection tied to error events. The only comment feature is a team-side link from the AI chat into an error group's comments, which is not end-user feedback.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

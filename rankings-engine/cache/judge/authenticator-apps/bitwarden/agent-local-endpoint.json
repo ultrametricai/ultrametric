@@ -1,17 +1,17 @@
 {
-  "hash": "8a624a5e8a32189b4780bedfeea0b6cf224cafdc06ffb139cd8b0a1419abad48",
+  "hash": "ee5fbd789657e87aee1500b0b30a1464e15e809d6c76986457c4e14cc80d57a1",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Bitwarden's official CLI has a documented `bw serve` mode that exposes the vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items, so no screen-scraping is needed. A community report confirms the CLI returns passwords and current TOTP codes programmatically, and a first-party MCP server also completed a local stdio handshake. missing for 10: a verbatim first-party doc excerpt describing the `bw serve` endpoints, and hands-on evidence of an agent querying the local endpoint (the runtime probe only confirmed install and version).",
+    "confidence": "high",
+    "rationale": "Bitwarden's official CLI has a documented `bw serve` mode that exposes the vault as a local RESTful Vault Management API, with its own OpenAPI document, which an agent can query for TOTP codes and items. A first-party MCP server, verified with a stdio handshake, also gives AI assistants direct vault access without screen-scraping. Missing for 10: a hands-on probe actually querying the `bw serve` endpoint for a TOTP code or secret, and in-depth first-party documentation in the pack detailing the endpoint's routes and authentication.",
     "evidenceIds": [
       "bitwarden-probe-rt-1",
+      "bitwarden-public-api-oas-20261106",
       "bitwarden-docs-7",
-      "bitwarden-comm-13",
-      "bitwarden-probe-rt-2",
-      "bitwarden-docs-9"
+      "bitwarden-docs-20261116",
+      "bitwarden-probe-rt-2"
     ],
     "support": {
       "relation": "direct",
@@ -23,16 +23,16 @@
           "quote": "the CLI whose documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items."
         },
         {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "The Vault Management API page embeds its own OpenAPI document for the CLI's `bw serve` local server."
+        },
+        {
           "evidenceId": "bitwarden-docs-7",
           "quote": "The Bitwarden command-line interface (CLI) is a powerful, fully-featured tool for accessing and managing your vault."
         },
         {
-          "evidenceId": "bitwarden-comm-13",
-          "quote": "it listed everything including passwords and current totp codes in plaintext"
-        },
-        {
-          "evidenceId": "bitwarden-probe-rt-2",
-          "quote": "Bitwarden's OFFICIAL MCP server completed a FULL keyless stdio initialize handshake"
+          "evidenceId": "bitwarden-docs-20261116",
+          "quote": "A Model Context Protocol (MCP) server that provides AI assistants with secure access to Bitwarden password manager functionality"
         }
       ]
     },

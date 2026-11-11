@@ -3,18 +3,18 @@
     "productId": "airbyte",
     "storyId": "agent-builds-pipeline",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Airbyte documents its own programmatic surfaces: an API to programmatically control Airbyte alongside orchestrators like Airflow, a Terraform provider for configuration as code, PyAirbyte for extracting data from Python, and the abctl CLI. These give an agent a headless route to configure and run syncs. However, abctl only creates and manages local Airbyte instances, not pipelines, and connector scaffolding (Connector Builder and its AI Assistant) lives in the UI. No end-to-end headless scaffold-configure-run workflow is shown, and the OpenAPI spec probes returned 404. missing for 10: a documented CLI for creating and running pipelines, headless connector scaffolding outside the UI, explicit API docs for creating sources, destinations and connections and triggering syncs, a machine-readable OpenAPI spec, hands-on corroboration of an agent driving a full pipeline.",
+    "rationale": "Airbyte documents a public API to programmatically control Cloud, OSS and Enterprise, with a published OpenAPI spec and a live Try It console. It also offers a Terraform provider for configuration as code, PyAirbyte for running extract-and-load in Python, and abctl as a CLI to create and manage instances, so headless configuration and operation through API, CLI or code is clearly supported. However, connector scaffolding is documented only through the UI-based Connector Builder and its AI Assistant, and the evidence does not show agent-driven end-to-end pipeline creation and sync triggering. Missing for 10: headless/CLI connector scaffolding, explicit evidence of creating connections and triggering syncs via API, and hands-on corroboration of a coding agent running a complete pipeline end to end.",
     "evidenceIds": [
+      "airbyte-openapi-spec-20261106",
       "airbyte-docs-3",
       "airbyte-docs-2",
       "airbyte-docs-1",
       "airbyte-docs-47",
       "airbyte-docs-52",
-      "airbyte-docs-17",
-      "airbyte-docs-20",
-      "airbyte-probe-2"
+      "airbyte-api-try-it-20261106",
+      "airbyte-docs-55"
     ],
     "support": {
       "relation": "direct",
@@ -36,6 +36,10 @@
         {
           "evidenceId": "airbyte-docs-52",
           "quote": "abctl is Airbyte's open source command line tool to create and manage local instances of Airbyte running in Docker."
+        },
+        {
+          "evidenceId": "airbyte-openapi-spec-20261106",
+          "quote": "Programmatically control Airbyte Cloud, OSS & Enterprise."
         }
       ]
     }
@@ -46,11 +50,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Airbyte documents its own API for programmatically controlling Airbyte, including from orchestrators like Airflow, which implies agents can drive syncs. However, nothing explicitly documents checking job status, retrieving failure logs or errors, or re-triggering a failed sync through the API. The MCP server evidence is about agents accessing data, not operating pipelines, and the Connection Timeline's logs and errors are shown as a UI feature. missing for 10: explicit API/MCP endpoints for sync status, programmatic retrieval of failure logs and errors for diagnosis, documented sync re-trigger call, an MCP server exposing pipeline-ops tools, hands-on corroboration.",
+    "rationale": "Airbyte documents a public API for programmatically controlling Airbyte, including orchestration from tools like Airflow, which implies triggering and monitoring syncs. However, the pack never shows specific job-status, failure-log, or re-trigger endpoints. Failure diagnosis (logs, errors) is documented only in the UI Connection Timeline, and the MCP server evidence covers agents accessing data rather than managing pipelines. Missing for 10: explicit API endpoints for job status and re-running syncs, API or MCP access to failure logs/diagnostics, an MCP server exposing pipeline operations, and hands-on corroboration of an agent doing this loop.",
     "evidenceIds": [
       "airbyte-docs-3",
-      "airbyte-docs-17",
-      "airbyte-docs-57"
+      "airbyte-openapi-spec-20261106",
+      "airbyte-docs-57",
+      "airbyte-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -62,8 +67,12 @@
           "quote": "Use the Airbyte API to programmatically interact with Airbyte. For example, you can control Airbyte in conjunction with orchestration tools like Airflow."
         },
         {
-          "evidenceId": "airbyte-docs-17",
-          "quote": "Most programmatic interactions with Airbyte require an access token."
+          "evidenceId": "airbyte-openapi-spec-20261106",
+          "quote": "Programmatically control Airbyte Cloud, OSS & Enterprise."
+        },
+        {
+          "evidenceId": "airbyte-docs-57",
+          "quote": "You can also view and download logs, find any relevant errors"
         }
       ]
     }
@@ -74,10 +83,10 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A hands-on probe found a live llms.txt at docs.airbyte.com (HTTP 200) with an Airbyte-specific summary, so an agent can be pointed straight at it. Airbyte also publishes agent-oriented docs for connecting MCP-capable agents such as Claude, Cursor and Codex. Missing for 10: first-party documentation describing the llms.txt or how agents should use it, evidence of the file's depth or completeness (e.g. a full-content llms-full.txt), and independent user corroboration.",
+    "rationale": "A live probe confirmed Airbyte publishes an llms.txt at docs.airbyte.com/llms.txt (HTTP 200) with an agent-oriented product summary, so a user can point an agent straight at it. The API reference also serves pages as .md files, which agents can read directly. Missing for 10: first-party documentation describing the llms.txt/agent-docs offering and its scope (e.g. a full-content llms-full.txt variant), independent community corroboration of agents using it.",
     "evidenceIds": [
       "airbyte-probe-1",
-      "airbyte-docs-6"
+      "airbyte-migration-guides-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -89,8 +98,8 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://docs.airbyte.com/llms.txt # docs.airbyte.com llms.txt"
         },
         {
-          "evidenceId": "airbyte-docs-6",
-          "quote": "Connect MCP-capable agents like Claude, Cursor, VS Code, ChatGPT, and Codex to your data through Airbyte Agents."
+          "evidenceId": "airbyte-probe-1",
+          "quote": "Airbyte is an open source platform designed for building and managing data pipelines"
         }
       ]
     }
@@ -101,10 +110,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Airbyte's documented AI features do not deliver this story. The Connector Builder AI Assistant prefills connector configuration fields, which is setup help rather than insights or suggestions drawn from the user's data. Airbyte Agents and MCP let external agents query data, which is a building block for agents outside the product, not in-product AI insights. No evidence shows Airbyte itself generating insights or suggestions from synced data inside the product.",
+    "rationale": "The evidence shows no in-product feature that produces AI-generated insights or suggestions from the user's data. The Connector Builder AI Assistant only prefills connector configuration fields, which is an adjacent feature. Airbyte Agents and the MCP servers feed data to external agents such as Claude or Cursor, a developer building block rather than insights delivered inside Airbyte.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": []
@@ -113,34 +122,38 @@
   {
     "productId": "airbyte",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Airbyte has its own background automation: each connection can be set to Scheduled, Cron or Manual, and cron syncs run unattended on a user-defined expression. Email or webhook notifications and dbt Cloud transformations that run right after syncs extend this into a chained, monitored pipeline. However, the automation is limited to data-sync jobs; nothing shows general-purpose or agent-driven autonomous automations, and the AI features are limited to connector setup and MCP data access. Missing for 10: autonomous automation beyond scheduled sync pipelines, agent-initiated or AI-driven background tasks, and independent or hands-on corroboration of unattended scheduled runs.",
+    "rationale": "Airbyte documents recurring, unattended sync automation: each connection can use a Scheduled or Cron schedule type, and Airbyte runs syncs on the user-defined cron expression. Cloud can also chain dbt transformations to run immediately after syncs and send webhook or email notifications, so pipelines run in the background without manual triggering. missing for 10: evidence of AI- or agent-driven setup of these background automations, and independent hands-on corroboration of scheduled-run reliability.",
     "evidenceIds": [
       "airbyte-docs-53",
-      "airbyte-docs-35",
       "airbyte-docs-30",
-      "airbyte-docs-9",
+      "airbyte-docs-35",
       "airbyte-docs-11",
-      "airbyte-docs-57"
+      "airbyte-docs-9",
+      "airbyte-docs-50"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": [
         {
           "evidenceId": "airbyte-docs-53",
-          "quote": "For each connection, you can select between three options that allow a sync to run. The three options for `Schedule Type` are: Scheduled, Cron, Manual"
+          "quote": "The three options for `Schedule Type` are: Scheduled, Cron, Manual"
         },
         {
           "evidenceId": "airbyte-docs-35",
           "quote": "Runs the syncs based on the user-defined cron expression"
         },
         {
+          "evidenceId": "airbyte-docs-30",
+          "quote": "you can also use CRON scheduling to set a specific time of day or month."
+        },
+        {
           "evidenceId": "airbyte-docs-11",
-          "quote": "By using the dbt Cloud integration, you can create and run dbt transformations immediately following syncs in Airbyte Cloud."
+          "quote": "you can create and run dbt transformations immediately following syncs in Airbyte Cloud."
         },
         {
           "evidenceId": "airbyte-docs-9",
@@ -155,7 +168,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte documents a built-in AI Assistant inside the Connector Builder UI that can automatically prefill and configure connector fields and sections, so users can delegate part of connector setup. Its documented scope is limited to that one workflow, and the MCP and Airbyte Agents material covers external agents connecting to Airbyte, not an in-product assistant. Missing for 10: a general-purpose in-product assistant for tasks beyond connector building (e.g. connections, syncs, troubleshooting), depth on what tasks it can complete end-to-end, and independent or hands-on corroboration.",
+    "rationale": "Airbyte documents a built-in AI Assistant in the Connector Builder UI that automatically prefills and configures connector fields and sections, so users can hand off part of connector setup. That assistant is scoped to connector development rather than general task delegation across the product. The Airbyte Agents/MCP material is about external agents connecting to Airbyte, not an in-product assistant, so it is not credited. Missing for 10: an assistant that takes delegated tasks beyond connector setup (e.g. managing connections, syncs or troubleshooting), depth on what the assistant can do end to end, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-5",
       "airbyte-docs-56",
@@ -184,21 +197,21 @@
   {
     "productId": "airbyte",
     "storyId": "agentic-headless",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Airbyte documents several headless automation paths of its own. Its API lets you control it programmatically alongside orchestrators like Airflow. Its Terraform provider automates and version-controls configuration as code. PyAirbyte runs connectors from Python without a server, and the abctl CLI creates and manages instances. Missing for 10: explicit CI-pipeline guidance (e.g., GitHub Actions examples), independent or hands-on corroboration of headless/CI use.",
+    "rationale": "Airbyte documents its own headless control surfaces: a public REST API for programmatic control alongside orchestrators like Airflow, a Terraform provider for configuration-as-code, the abctl CLI for managing instances, and PyAirbyte for running syncs from Python. These cover headless automation well, but nothing in the evidence documents running Airbyte inside a CI pipeline, so CI coverage is only implied. missing for 10: explicit CI pipeline documentation or examples (e.g., GitHub Actions/GitLab CI usage), non-interactive/headless mode guidance, independent or hands-on corroboration of headless/CI automation.",
     "evidenceIds": [
       "airbyte-docs-3",
       "airbyte-docs-2",
-      "airbyte-docs-1",
-      "airbyte-docs-40",
       "airbyte-docs-52",
+      "airbyte-docs-1",
+      "airbyte-openapi-spec-20261106",
       "airbyte-docs-17"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -210,12 +223,12 @@
           "quote": "you can use Airbyte's Terraform provider to automate and version control your Airbyte configuration as code"
         },
         {
-          "evidenceId": "airbyte-docs-40",
-          "quote": "It's a good choice if you're using Jupyter Notebook or iterating on an early prototype for a large data project and don't need to run your own server."
-        },
-        {
           "evidenceId": "airbyte-docs-52",
           "quote": "abctl is Airbyte's open source command line tool to create and manage local instances of Airbyte running in Docker."
+        },
+        {
+          "evidenceId": "airbyte-docs-1",
+          "quote": "PyAirbyte brings the power of Airbyte to every Python and AI developer."
         }
       ]
     }
@@ -226,7 +239,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only the opposite direction: external MCP-capable agents such as Claude and Cursor connect to Airbyte's data through Airbyte's own MCP servers. Nothing shows Airbyte acting as an MCP client that can register external MCP servers and use their tools. Server-side MCP evidence belongs to a different story and does not transfer, so this applicable axis is unevidenced.",
+    "rationale": "The evidence shows only the reverse direction: external MCP-capable agents like Claude and Cursor connect to Airbyte's own MCP servers. Nothing shows Airbyte acting as an MCP client that can plug in third-party MCP servers and use their tools. Server-side MCP evidence belongs to a different story and does not transfer here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -241,7 +254,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Airbyte's docs say MCP-capable agents (Claude, Cursor, VS Code, ChatGPT, Codex) can connect to user data through Airbyte Agents, and a probe confirms an official MCP server page. Related docs describe agents querying, searching, and acting on data in real time. Missing for 10: detailed documentation of the MCP server's tools, auth, and setup steps, and independent or hands-on corroboration that the server works as described.",
+    "rationale": "Airbyte's own docs page on MCP servers says MCP-capable agents such as Claude, Cursor, VS Code, ChatGPT and Codex can connect to user data through Airbyte Agents, and a probe confirms the MCP server is documented first-party. This is a direct, first-party capability, but the pack only shows the headline claim, and the page sits under a /community/ path, which leaves some doubt about its official status. Missing for 10: setup/auth and transport details, a list of exposed tools/actions, clarity on official vs community status, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-6",
       "airbyte-probe-3",
@@ -273,11 +286,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Airbyte's own docs show AI-driven interaction surfaces: an official MCP server through which agents like Claude, Cursor or ChatGPT reach data via Airbyte Agents to 'query, search, and act' on it, plus an AI Assistant that prefills Connector Builder fields. None of this is documented as natural-language commands that operate the platform itself (creating connections, running syncs, managing schedules). Natural-language use runs through external MCP agents and is scoped to data rather than pipeline management, and the AI Assistant is only shown prefilling configuration, not taking free-form instructions. missing for 10: documented natural-language control of core platform operations (connections, syncs, schedules), evidence that the AI Assistant accepts free-form commands, independent or hands-on corroboration.",
+    "rationale": "Airbyte ships its own AI features: an AI Assistant that prefills and configures Connector Builder fields, and Airbyte Agents/MCP that let assistants like Claude or Cursor reach data. The evidence frames these as AI-driven configuration of one sub-tool and data access, not as general natural-language control of the platform (connections, syncs, schedules). missing for 10: documented natural-language command interface for core platform operations, evidence the AI Assistant accepts free-form NL instructions, evidence the MCP server manages Airbyte resources rather than only querying data, hands-on corroboration",
     "evidenceIds": [
+      "airbyte-docs-56",
+      "airbyte-docs-5",
       "airbyte-docs-6",
       "airbyte-docs-39",
-      "airbyte-docs-5",
       "airbyte-probe-3"
     ],
     "support": {
@@ -286,16 +300,16 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
+          "evidenceId": "airbyte-docs-56",
+          "quote": "When starting a new connector, AI Assistant can automatically prefill and configure a number of fields and sections in the Airbyte Connector Builder"
+        },
+        {
           "evidenceId": "airbyte-docs-6",
           "quote": "Connect MCP-capable agents like Claude, Cursor, VS Code, ChatGPT, and Codex to your data through Airbyte Agents."
         },
         {
           "evidenceId": "airbyte-docs-39",
           "quote": "Equip your agents to query, search, and act on your data in real-time"
-        },
-        {
-          "evidenceId": "airbyte-docs-5",
-          "quote": "AI Assistant can automatically prefill and configure a number of fields and sections in the Airbyte Connector Builder, drastically reducing setup time."
         }
       ]
     }
@@ -306,7 +320,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte documents an official open-source CLI, abctl, but its scope is limited to creating and managing local Airbyte instances in Docker. There is no evidence it can manage connections or syncs, or that it is designed for AI-native or agent workflows. PyAirbyte, the API and Terraform are separate programmatic interfaces, not a CLI. Missing for 10: CLI coverage of pipeline and connection operations, AI-native/agent-oriented CLI features, and independent or hands-on corroboration of CLI use.",
+    "rationale": "Airbyte ships an official, open-source CLI, abctl, but its documented scope is creating and managing local Docker-based Airbyte instances. Nothing shows the CLI managing connections or syncs, or serving AI-native agent workflows. PyAirbyte, Terraform and the API are separate interfaces, not the CLI, so they earn no credit here. Missing for 10: CLI coverage of pipeline/connection/sync operations, AI-native or agent-oriented CLI features (e.g., machine-readable output, non-interactive scripting), and independent hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-52",
       "airbyte-docs-13"
@@ -331,15 +345,16 @@
     "productId": "airbyte",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Airbyte documents a public API for programmatic control, including orchestration with tools like Airflow, and documents access-token setup for API access. A probe found no OpenAPI spec at common paths, which limits machine discoverability but does not contradict that the documented API exists. Missing for 10: a discoverable machine-readable OpenAPI spec, evidence of endpoint-level reference depth, and independent or hands-on corroboration of API use.",
+    "rationale": "Airbyte documents a public, URL-versioned REST API (api.airbyte.com/v1) for programmatic control. It has token-based access, a published OpenAPI spec in the official airbytehq GitHub org, and a ReadMe reference with a live Try It console. Migration guides cover breaking changes. The 404s on docs-site OpenAPI paths only show the spec lives elsewhere (GitHub), not that the API is missing. missing for 10: independent or community hands-on corroboration of driving the API, a formal version-lifecycle/sunset policy",
     "evidenceIds": [
       "airbyte-docs-3",
-      "airbyte-docs-18",
-      "airbyte-docs-46",
       "airbyte-docs-17",
-      "airbyte-probe-2"
+      "airbyte-openapi-spec-20261106",
+      "airbyte-api-try-it-20261106",
+      "airbyte-migration-guides-20261106",
+      "airbyte-deprecation-notice-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -353,6 +368,14 @@
         {
           "evidenceId": "airbyte-docs-17",
           "quote": "Most programmatic interactions with Airbyte require an access token."
+        },
+        {
+          "evidenceId": "airbyte-openapi-spec-20261106",
+          "quote": "Programmatically control Airbyte Cloud, OSS & Enterprise."
+        },
+        {
+          "evidenceId": "airbyte-migration-guides-20261106",
+          "quote": "Airbyte publishes migration guides to assist with any breaking changes to our API users."
         }
       ]
     }
@@ -363,7 +386,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence only shows that programmatic access requires an access token (docs-17) and that RBAC appears as a pricing-tier feature (docs-29). Neither documents issuing API credentials limited by scope or least privilege, for agents or anyone else. RBAC for workspace users is a related control, not scoped API credentials, so it earns no credit.",
+    "rationale": "Airbyte documents that programmatic access requires an access token, and its pricing page lists RBAC. Neither shows that a user can issue credentials restricted to particular scopes, workspaces or permissions for an agent. Generic token issuance and user-level RBAC are adjacent controls, not scoped or least-privilege agent credentials.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -378,7 +401,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte documents PyAirbyte, an official Python library for developers, including AI developers, that extracts data from sources into caches. This is a first-party SDK, but the evidence shows only one language and gives little detail on its API surface. The REST API and Terraform provider are adjacent developer tooling, not SDKs. Missing for 10: official SDKs in other languages, documented SDK clients for the Airbyte management API, depth on PyAirbyte's API surface, independent hands-on corroboration.",
+    "rationale": "Airbyte documents PyAirbyte, an official Python library aimed at Python and AI developers, which extracts data from sources and loads it into caches. This is a first-party SDK, but only one language is evidenced and its scope is data extraction rather than full programmatic control of the platform. missing for 10: official SDKs in multiple languages wrapping the Airbyte API, documentation showing the SDK covers platform/connection management, independent or hands-on corroboration of SDK usage.",
     "evidenceIds": [
       "airbyte-docs-1",
       "airbyte-docs-47"
@@ -403,9 +426,9 @@
     "productId": "airbyte",
     "storyId": "agentic-webhooks",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte's own notification docs say it can send notifications about important events to a webhook as well as email, so outbound webhook callbacks are a first-party capability. The evidence frames this as a Cloud notification feature, and the excerpts give little detail on which events can be subscribed to or what the payload looks like. Missing for 10: a documented list of subscribable event types, a webhook payload schema, programmatic (API) webhook registration, confirmed support in self-hosted Airbyte, and independent or hands-on corroboration.",
+    "rationale": "Airbyte's built-in notification system can send notifications about important events to a webhook as well as email, which is a first-party outbound HTTP callback. The evidence does not show the event catalog, payload schema, or programmatic registration, so how far this supports event subscription is unproven. Missing for 10: documented event types and payload schema, API-based webhook registration/subscription management, signing/retry semantics, independent corroboration.",
     "evidenceIds": [
       "airbyte-docs-9",
       "airbyte-docs-26",
@@ -421,12 +444,12 @@
           "quote": "Airbyte can send notifications to an email address, webhook, or both."
         },
         {
-          "evidenceId": "airbyte-docs-26",
-          "quote": "Airbyte Cloud can send notifications to an email or webhook."
-        },
-        {
           "evidenceId": "airbyte-docs-34",
           "quote": "If you want Airbyte to notify you about important events, use its built-in notification system."
+        },
+        {
+          "evidenceId": "airbyte-docs-26",
+          "quote": "Airbyte Cloud can send notifications to an email or webhook."
         }
       ]
     }
@@ -437,7 +460,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte's own Connector Builder includes an AI Assistant that, when starting a new connector, automatically prefills and configures fields and sections. The resulting connector can be developed and used in syncs inside the Airbyte workspace, which supports a review-then-ship flow. However, the evidence never says the assistant works from API documentation, never says which sections it fills (auth, pagination, streams), and never shows the drafted connector actually working. Missing for 10: explicit evidence of drafting from API docs, documented coverage of auth, pagination and streams, a review and publish workflow, and independent or hands-on corroboration.",
+    "rationale": "Airbyte ships a first-party AI Assistant inside its no-code Connector Builder that prefills and configures fields and sections when you start a new connector, and the Builder lets you develop a connector for syncs inside the workspace, which covers review and ship. The evidence never says the AI works from API documentation, nor which parts (auth, pagination, streams) it drafts. missing for 10: evidence that AI drafts from API documentation input, explicit coverage of auth, pagination and stream generation, hands-on or independent corroboration that drafted connectors work.",
     "evidenceIds": [
       "airbyte-docs-56",
       "airbyte-docs-5",
@@ -459,7 +482,11 @@
         },
         {
           "evidenceId": "airbyte-docs-4",
-          "quote": "letting you develop a connector to use in data syncs without ever needing to leave your Airbyte workspace."
+          "quote": "letting you develop a connector to use in data syncs without ever needing to leave your Airbyte workspace"
+        },
+        {
+          "evidenceId": "airbyte-docs-55",
+          "quote": "It provides an intuitive user interface on top of the low-code YAML format"
         }
       ]
     }
@@ -467,31 +494,56 @@
   {
     "productId": "airbyte",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Airbyte documents a programmatic API, but nothing in the evidence describes an interactive API reference or runnable examples. The OpenAPI probe returned 404 on every candidate path, so no explorable spec was found either. API availability alone is adjacent to this story and does not count as delivering it.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Airbyte's ReadMe-hosted API reference has a live \"Try It!\" console on each endpoint, with multi-language code snippets and a bearer-token field. Requests run against the real api.airbyte.com, so the examples in the interactive reference are genuinely runnable. The 404s on docs-site OpenAPI paths do not contradict this, because the canonical spec is published on GitHub. Missing for 10: independent or hands-on corroboration of the Try It console, and a sandbox mode (calls hit the live API with a real token).",
+    "evidenceIds": [
+      "airbyte-api-try-it-20261106",
+      "airbyte-openapi-spec-20261106",
+      "airbyte-docs-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "airbyte-api-try-it-20261106",
+          "quote": "The ReadMe-hosted API reference ships the live \"Try It!\" console per endpoint (\"Click Try It! to start a request and see the response here!\") with multi-language snippets and a bearer credential field."
+        },
+        {
+          "evidenceId": "airbyte-api-try-it-20261106",
+          "quote": "The runner executes against the live api.airbyte.com with a real access token."
+        }
+      ]
     }
   },
   {
     "productId": "airbyte",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Airbyte documents a programmatic API (\"Use the Airbyte API to programmatically interact with Airbyte\"), but nothing in the evidence shows a downloadable OpenAPI or equivalent spec. The probe found every candidate OpenAPI/Swagger path returned 404. An llms.txt file exists, but that is a docs index, not a machine-readable API spec, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Airbyte's machine-readable OpenAPI spec for its public API is published in the official airbytehq GitHub repo as api.yaml, and the newer Agent API self-serves its own OpenAPI document. However, the ReadMe API reference's OAS download is admin-gated, and every standard docs path for the spec returned 404, so the spec is not downloadable from the documentation site itself. Missing for 10: a self-serve spec download from the official API reference or docs site, a discoverable well-known spec URL, and independent hands-on confirmation that the GitHub spec matches the live API.",
+    "evidenceIds": [
+      "airbyte-openapi-spec-20261106",
+      "airbyte-probe-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "airbyte-openapi-spec-20261106",
+          "quote": "The ReadMe reference's own OAS download is admin-gated, so the GitHub document is the published machine-readable spec; the newer Agent API separately self-serves its own OpenAPI document at its origin."
+        },
+        {
+          "evidenceId": "airbyte-probe-2",
+          "quote": "PROBE openapi: all candidate paths 404"
+        }
+      ]
     }
   },
   {
@@ -500,7 +552,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no documented Airbyte sandbox or test-environment feature that isolates testing from production data. Running a separate local instance via the OSS quickstart or abctl, or using Multiple Workspaces, is an adjacent arrangement made by the user rather than a sandbox capability. The Connector Builder evidence covers building connectors, not running tests against isolated non-production data.",
+    "rationale": "The evidence pack documents no Airbyte sandbox or test environment that isolates testing from production data. Running a local instance with abctl or the OSS quickstart, using multiple workspaces, or loading data into PyAirbyte caches are deployment options or user-side arrangements, not a sandbox capability. The API 'Try It!' console runs against the live api.airbyte.com with a real token, which is not isolated testing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -512,16 +564,33 @@
   {
     "productId": "airbyte",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence documents a programmatic Airbyte API, access tokens, and a Terraform provider. Nothing in the pack shows API versioning or a documented deprecation policy. A community remark about a white-label platform being deprecated is an anecdote, not a published policy, and the OpenAPI spec probe returned 404 on every path.",
-    "evidenceIds": [],
+    "rationale": "Airbyte's public API is URL-versioned at /v1, and Airbyte documents a commitment to publish migration guides for breaking API changes, with dated per-change deprecation notices such as the standalone API server deprecation. However, its own docs state there is no formal version-lifecycle or sunset-policy document, so the 'documented deprecation policy' half is only approximated by ad-hoc announcements. Missing for 10: a formal deprecation/sunset policy with defined timelines, a version-lifecycle document covering multiple API versions, independent corroboration of deprecation handling.",
+    "evidenceIds": [
+      "airbyte-migration-guides-20261106",
+      "airbyte-deprecation-notice-20261106",
+      "airbyte-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "airbyte-migration-guides-20261106",
+          "quote": "Airbyte publishes migration guides to assist with any breaking changes to our API users."
+        },
+        {
+          "evidenceId": "airbyte-migration-guides-20261106",
+          "quote": "The API is URL-versioned at /v1."
+        },
+        {
+          "evidenceId": "airbyte-deprecation-notice-20261106",
+          "quote": "We're deprecating the standalone Airbyte API server and moving the routes into the Airbyte server"
+        }
+      ]
     }
   },
   {
@@ -530,7 +599,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lineage is a fair question for a data-integration platform like Airbyte, but the evidence pack documents no lineage view or lineage metadata showing which sources, steps, and transformations produced each table. The Connection Timeline (historical connection events and logs) and the one-to-one stream-to-table mapping are related features, not end-to-end lineage, and earn no credit.",
+    "rationale": "Lineage is a fair question for an ELT/data-integration platform, so the axis applies. The evidence pack does not document any lineage view that traces which sources, steps, and transformations produced each table. Adjacent features do not count as lineage: the Connection Timeline (historical connection events and logs), the one-to-one stream-to-table mapping, and triggering dbt Cloud jobs after syncs.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -545,7 +614,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a data-integration platform, so the story applies, but no evidence shows a native bulk-action capability such as selecting many connections to sync, edit or delete at once. The Airbyte API, Terraform provider and PyAirbyte are developer building blocks that could be scripted to approximate bulk changes, so they earn no credit.",
+    "rationale": "Bulk operations are a fair question for a data-pipeline platform, so the axis applies. However, the evidence pack documents no first-party bulk or batch capability, such as multi-select editing, bulk sync triggers, or batch API endpoints. The Airbyte API, Terraform provider and PyAirbyte are developer building blocks for scripting many operations, not a documented bulk-operations feature, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -560,12 +629,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte has several built-in event-driven behaviors. It sends notifications to email or webhook on important events, lets you set per-connection rules for handling source schema changes, and can run dbt Cloud transformations immediately after syncs. These are fixed, predefined triggers rather than a general user-defined rules engine. Cron and interval scheduling are time-based, not event-based, so they do not count here. Missing for 10: a general-purpose event→action rules engine with configurable conditions, documentation of the available event types and actions in depth, and independent or hands-on corroboration.",
+    "rationale": "Airbyte ships its own fixed event-to-action behaviours: per-connection rules for handling source schema changes, dbt Cloud transformations that run immediately after syncs, and email or webhook notifications on important events. These are preset triggers, not a general user-defined rules engine, and cron schedules are recurring timers rather than event triggers, so they earn no credit here. Missing for 10: arbitrary user-defined event conditions and actions, a general rules/automation builder, and any independent or hands-on corroboration.",
     "evidenceIds": [
-      "airbyte-docs-9",
-      "airbyte-docs-34",
       "airbyte-docs-14",
-      "airbyte-docs-11"
+      "airbyte-docs-11",
+      "airbyte-docs-34",
+      "airbyte-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -573,20 +642,20 @@
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": [
         {
-          "evidenceId": "airbyte-docs-34",
-          "quote": "If you want Airbyte to notify you about important events, use its built-in notification system."
-        },
-        {
-          "evidenceId": "airbyte-docs-9",
-          "quote": "Airbyte can send notifications to an email address, webhook, or both."
-        },
-        {
           "evidenceId": "airbyte-docs-14",
           "quote": "You can specify for each connection how Airbyte should handle any change of schema in the source."
         },
         {
           "evidenceId": "airbyte-docs-11",
           "quote": "By using the dbt Cloud integration, you can create and run dbt transformations immediately following syncs in Airbyte Cloud."
+        },
+        {
+          "evidenceId": "airbyte-docs-34",
+          "quote": "If you want Airbyte to notify you about important events, use its built-in notification system."
+        },
+        {
+          "evidenceId": "airbyte-docs-9",
+          "quote": "Airbyte can send notifications to an email address, webhook, or both."
         }
       ]
     }
@@ -597,13 +666,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Airbyte's own docs show each connection can run on a recurring schedule. The Schedule Type can be Scheduled, Cron or Manual, and syncs run from a user-defined cron expression set to a specific time of day or month. dbt Cloud transformations can also run right after syncs, which gives a light workflow chain. Missing for 10: explicit evidence that schedules can be set programmatically (via the API, Terraform or agents) rather than only per connection, and independent or hands-on confirmation of scheduling.",
+    "rationale": "Airbyte's sync schedule docs let each connection run on a recurring basis via a 'Scheduled' interval or a user-defined cron expression, with Manual as the third option. That is a direct, recurring schedule, not a one-off trigger, and pricing references 15-minute syncs. Missing for 10: independent or hands-on corroboration of scheduling behavior, and explicit evidence that schedules can be set programmatically (API/Terraform/agent) for an AI-native workflow.",
     "evidenceIds": [
       "airbyte-docs-53",
       "airbyte-docs-30",
       "airbyte-docs-35",
-      "airbyte-docs-8",
-      "airbyte-docs-11",
       "airbyte-docs-50"
     ],
     "support": {
@@ -613,19 +680,19 @@
       "citations": [
         {
           "evidenceId": "airbyte-docs-53",
-          "quote": "For each connection, you can select between three options that allow a sync to run. The three options for `Schedule Type` are: Scheduled, Cron, Manual"
+          "quote": "The three options for `Schedule Type` are: Scheduled, Cron, Manual"
         },
         {
           "evidenceId": "airbyte-docs-30",
-          "quote": "If you prefer more precision in scheduling your sync, you can also use CRON scheduling to set a specific time of day or month."
+          "quote": "you can also use CRON scheduling to set a specific time of day or month"
         },
         {
           "evidenceId": "airbyte-docs-35",
           "quote": "Runs the syncs based on the user-defined cron expression"
         },
         {
-          "evidenceId": "airbyte-docs-11",
-          "quote": "By using the dbt Cloud integration, you can create and run dbt transformations immediately following syncs in Airbyte Cloud."
+          "evidenceId": "airbyte-docs-50",
+          "quote": "15-minute syncs"
         }
       ]
     }
@@ -634,12 +701,13 @@
     "productId": "airbyte",
     "storyId": "automation-versioned-workflows",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte's own Terraform provider is documented as a way to 'automate and version control your Airbyte configuration as code', which gives a config-as-code path to versioning pipeline definitions. Review and rollback would depend on the surrounding Terraform/git workflow rather than any native in-product version history. missing for 10: native version history of connections/automations, built-in review or diff workflow, documented one-click rollback, independent or hands-on corroboration.",
+    "rationale": "Airbyte's first-party Terraform provider lets users version-control their Airbyte configuration (connections and syncs) as code, and the Connection Timeline shows historical connection events. Review and rollback of configuration changes are only implied through the IaC workflow, not documented as native features. Missing for 10: native config version history, documented change review/diff for automations, a built-in rollback mechanism, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-2",
-      "airbyte-docs-19"
+      "airbyte-docs-19",
+      "airbyte-docs-57"
     ],
     "support": {
       "relation": "direct",
@@ -651,8 +719,8 @@
           "quote": "you can use Airbyte's Terraform provider to automate and version control your Airbyte configuration as code"
         },
         {
-          "evidenceId": "airbyte-docs-19",
-          "quote": "you can use Airbyte's Terraform provider to automate and version control your Airbyte configuration as code."
+          "evidenceId": "airbyte-docs-57",
+          "quote": "The Connection Timeline displays historical information about relevant connection events."
         }
       ]
     }
@@ -663,7 +731,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Backfill and per-table resync is a fair axis for a data-replication platform, but nothing in the evidence documents resyncing, refreshing, or clearing a single stream or table. The sync-mode, incremental-sync and CDC docs describe general replication behavior, not targeted backfills. The community report of 'tricking' Airbyte past a first sync is a user-side workaround and earns no credit.",
+    "rationale": "The evidence covers sync modes, incremental sync, CDC, schedules and schema-change handling, but nothing documents a per-stream or per-table resync, refresh, reset, or historical backfill that leaves the rest of the connection intact. The one community report on a large table describes a custom workaround that 'tricked' Airbyte, not a product capability. Adjacent sync features earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -678,7 +746,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Airbyte's own CDC documentation says it consumes database replication logs, tracks its position in them, and reads all record changes from INSERT, UPDATE and DELETE statements. That covers the core of capturing updates and deletes via log-based CDC. The community question about hard deletes is only a question, not contradicting evidence, so it does not create a dispute. Missing for 10: which databases are supported (MySQL binlog / Postgres WAL), explicit evidence of reduced load on the source, and independent hands-on corroboration.",
+    "rationale": "Airbyte's first-party CDC docs say it consumes database replication logs, tracks its position in those logs, and reads all record changes from DELETE/INSERT/UPDATE statements. That covers the core of log-based capture of updates and deletes. The community HN post about hard deletions is only a question, not a contradiction, so it does not create a dispute. Missing for 10: explicit per-database binlog/WAL connector details, documentation that log reading reduces load on the source, and independent hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-15",
       "airbyte-docs-25",
@@ -704,20 +772,19 @@
   {
     "productId": "airbyte",
     "storyId": "connector-catalog-breadth",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
-    "confidence": "high",
-    "rationale": "Airbyte's GitHub repo documents a catalog of 600+ connectors for APIs, databases, data warehouses and data lakes, and the marketing site claims 700+ systems, so the breadth of the catalog is clearly delivered. Community users report it handles data from many 'weird places' and works well for most use cases. Missing for 10: explicit evidence of file-based sources, documentation of connector maintenance or support tiers, and a browsable list confirming specific SaaS and database coverage.",
+    "confidence": "medium",
+    "rationale": "Airbyte documents a broad first-party connector catalog of 600+ connectors (700+ systems on the marketing site) covering APIs, databases, warehouses and lakes, and a community user describes it handling data from many unusual sources. The evidence does not show that connectors are maintained, and it does not mention file sources, so coverage is partial. Missing for 10: evidence of connector maintenance or quality tiers, explicit coverage of file-based sources, and independent hands-on confirmation of catalog breadth for specific SaaS and database systems.",
     "evidenceIds": [
       "airbyte-gh-1",
       "airbyte-docs-51",
       "airbyte-docs-32",
-      "airbyte-comm-4",
-      "airbyte-comm-3"
+      "airbyte-comm-4"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a data engineer, I pick from a broad catalog of maintained connectors for the SaaS APIs, databases, and files my company actually uses",
       "citations": [
         {
@@ -741,7 +808,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Airbyte has a large connector catalog (600+/700+ connectors). Nothing in the pack documents per-connector maturity, support level, or maintainer labels in that catalog. The axis clearly applies to a connector platform, so the lack of evidence yields none.",
+    "rationale": "The evidence only shows that Airbyte has a large connector catalog (600+ or 700+ connectors). Nothing in the pack documents per-connector maturity labels, support levels, or maintainer attribution in that catalog. The axis clearly applies to a connector-based ELT platform, so the lack of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -754,9 +821,9 @@
     "productId": "airbyte",
     "storyId": "custom-connector-builder",
     "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Airbyte documents a first-party Connector Builder, a no-code UI layered on its low-code YAML format. It lets you develop a custom connector and use it in syncs without leaving the workspace, with AI-assisted prefill and incremental sync support, so no fork is needed. missing for 10: independent or hands-on corroboration of building a long-tail API connector with the Builder.",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Airbyte's first-party docs describe the Connector Builder, a no-code UI layered on its low-code YAML format. It lets a data engineer build a custom connector and use it in syncs without leaving the workspace, so no fork is needed. The docs also cover an AI Assistant that prefills the builder and incremental-sync support within it. Missing for 10: independent or hands-on corroboration that custom long-tail connectors work well, documentation of a code-based connector framework (CDK), and detail on builder coverage of auth and pagination edge cases.",
     "evidenceIds": [
       "airbyte-docs-4",
       "airbyte-docs-55",
@@ -774,7 +841,7 @@
         },
         {
           "evidenceId": "airbyte-docs-55",
-          "quote": "Connector Builder is a no-code tool that’s part of the Airbyte UI. It provides an intuitive user interface on top of the low-code YAML format"
+          "quote": "It provides an intuitive user interface on top of the low-code YAML format"
         },
         {
           "evidenceId": "airbyte-docs-56",
@@ -793,10 +860,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Airbyte's own dbt Cloud integration chains one downstream step: dbt transformations run immediately after a sync. That is a narrow, fixed form of step ordering, not a general way to define dependencies between pipeline steps and datasets. Its schedules are time-based, and the docs send cross-pipeline ordering to external orchestrators like Airflow, which earns no credit here. Missing for 10: user-defined dependencies between connections or steps, dataset-aware dependency graphs (DAGs), multi-step ordered orchestration, and independent or hands-on corroboration.",
+    "rationale": "Airbyte's own dbt Cloud integration chains a dbt transformation to run immediately after a connection's sync, which is a narrow built-in form of step sequencing. Beyond that, schedules are per-connection only, and the docs point to external orchestrators like Airflow, which does not count as the product's own capability. Missing for 10: general dependency definitions between connections, steps or datasets; DAG-style orchestration across multiple pipelines; dataset-aware triggering; independent corroboration of the dbt chaining.",
     "evidenceIds": [
       "airbyte-docs-11",
-      "airbyte-docs-27"
+      "airbyte-docs-27",
+      "airbyte-docs-53"
     ],
     "support": {
       "relation": "direct",
@@ -806,6 +874,10 @@
         {
           "evidenceId": "airbyte-docs-11",
           "quote": "By using the dbt Cloud integration, you can create and run dbt transformations immediately following syncs in Airbyte Cloud."
+        },
+        {
+          "evidenceId": "airbyte-docs-53",
+          "quote": "For each connection, you can select between three options that allow a sync to run. The three options for `Schedule Type` are: Scheduled, Cron, Manual"
         }
       ]
     }
@@ -816,7 +888,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a Connection Timeline of historical connection events, email/webhook notifications for unspecified 'important events', and sync schedules (Scheduled, Cron, Manual). None of it shows per-destination-table freshness or an alert that fires when a pipeline misses its expected cadence. These are adjacent features, so they earn no credit toward this story.",
+    "rationale": "The evidence covers generic notifications 'about important events' via email or webhook, a Connection Timeline of historical connection events, and sync schedules. Nothing documents per-destination-table freshness or an alert that fires when a sync misses its expected cadence. These are adjacent features, not the capability the story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -828,10 +900,10 @@
   {
     "productId": "airbyte",
     "storyId": "dbt-integration",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Airbyte's own dbt Cloud integration lets users create and run dbt transformations immediately after syncs in Airbyte Cloud. That ties transformations to the completed load rather than to an independent timer. missing for 10: evidence for self-hosted/OSS or dbt Core support (documented only for Airbyte Cloud with dbt Cloud), detail on failure handling and job configuration, independent or hands-on corroboration.",
+    "rationale": "Airbyte's own dbt Cloud integration triggers dbt transformations immediately after syncs, so transforms follow freshly loaded data rather than a separate timer. The evidence scopes this to Airbyte Cloud plus a dbt Cloud account, and it does not show self-hosted/OSS or dbt Core support, failure gating, or freshness guarantees. missing for 10: evidence of support in self-hosted/OSS Airbyte or with dbt Core, documentation that transforms are skipped or gated when a sync fails, details of per-connection job chaining, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-11",
       "airbyte-docs-27",
@@ -839,7 +911,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an analytics engineer, dbt transformations run against freshly loaded data as part of the pipeline, not on a blind timer",
       "citations": [
         {
@@ -859,11 +931,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte's own docs and repo say it loads into data warehouses, data lakes and databases through a large connector catalog, and typing/deduping describes consistent one-to-one table mapping in the warehouse. However, none of the named destinations is explicitly evidenced, and nothing shows that switching destinations leaves the pipeline unchanged. missing for 10: explicit evidence of Snowflake, BigQuery, Databricks, Postgres and object-storage destination connectors, documentation that destinations can be swapped without changing pipelines, independent or hands-on corroboration of multi-destination loading.",
+    "rationale": "Airbyte's own docs and repo say it loads into data warehouses, data lakes and databases through a large connector catalog, so multi-destination loading is a first-party capability. However, the evidence never names the specific destinations in the story, and nothing shows a pipeline being retargeted without changes. Missing for 10: explicit evidence of Snowflake, BigQuery, Databricks, Postgres and object-storage destination connectors; documentation that a pipeline can switch destinations without modification; independent or hands-on corroboration of cross-destination loading.",
     "evidenceIds": [
       "airbyte-gh-1",
       "airbyte-docs-32",
-      "airbyte-docs-24"
+      "airbyte-docs-24",
+      "airbyte-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -880,7 +953,11 @@
         },
         {
           "evidenceId": "airbyte-docs-24",
-          "quote": "One-to-one table mapping: Data in one stream will always be mapped to one table in your data warehouse. No more sub-tables."
+          "quote": "One-to-one table mapping: Data in one stream will always be mapped to one table in your data warehouse."
+        },
+        {
+          "evidenceId": "airbyte-docs-23",
+          "quote": "A sync mode governs how Airbyte reads from a source and writes to a destination."
         }
       ]
     }
@@ -889,14 +966,14 @@
     "productId": "airbyte",
     "storyId": "incremental-sync",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Airbyte documents incremental syncs that pull only data changed since the previous sync, and CDC replication that reads database change logs while tracking its current position, so new and changed records move without full reloads. A community user reports Airbyte continued syncing incrementally after the initial load. Missing for 10: explicit docs on how cursor fields and state are stored and managed automatically per connection, incremental mode docs beyond the Connector Builder context, and documented handling of hard deletes in cursor-based incremental mode.",
+    "rationale": "Airbyte's docs define incremental sync as pulling only data changed since the previous sync. Its CDC docs describe Airbyte tracking its current position in database logs to capture inserts, updates and deletes, and a hands-on user reports that after the initial sync Airbyte continued syncing incrementally from saved state. A community question about hard-delete handling is an open question, not a contradiction. Missing for 10: explicit first-party docs on cursor-field selection and how state is persisted for standard (non-CDC) incremental connections, and documented hard-delete handling in cursor-based incremental mode.",
     "evidenceIds": [
       "airbyte-docs-22",
       "airbyte-docs-15",
-      "airbyte-docs-25",
       "airbyte-docs-23",
+      "airbyte-docs-7",
       "airbyte-comm-3"
     ],
     "support": {
@@ -913,6 +990,10 @@
           "quote": "A consumer of these log files (such as Airbyte) can read these logs while keeping track of the current position within the logs in order to read all record changes coming from DELETE/INSERT/UPDATE statements."
         },
         {
+          "evidenceId": "airbyte-docs-23",
+          "quote": "A sync mode governs how Airbyte reads from a source and writes to a destination."
+        },
+        {
           "evidenceId": "airbyte-comm-3",
           "quote": "'tricked' Airbyte into thinking it had done the first sync. After that, it continued to sync happily."
         }
@@ -925,7 +1006,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents Airbyte loading synced data into vector-store destinations or LLM-ready chunked or embedded formats. The nearest items are adjacent and earn no credit: PyAirbyte loads into caches, Airbyte Agents and MCP let agents query live data, and a generic 'inference layers' marketing line names no capability. The axis applies to a data-pipeline product, so the lack of evidence makes this 'none'.",
+    "rationale": "The evidence pack never documents vector-store destinations, embedding or chunking, or LLM-ready output formats for synced data. The nearby items cover other capabilities: Airbyte Agents and MCP give live data access, PyAirbyte loads into caches, and the destinations named are warehouses, lakes and databases. None of these show pipelines loading into vector stores, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -940,12 +1021,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte documents running pipelines locally in two ways: a local Airbyte Core instance deployed with abctl on Docker, and PyAirbyte, which extracts data into local caches and is positioned for Jupyter and early prototyping. The 'lightweight destination' is evidenced only by the bare mention of caches, and nothing documents promoting a locally tested pipeline to production. One old community report of a failed local docker-compose install lowers confidence but predates abctl, so it does not create a dispute. Missing for 10: explicit documentation of lightweight local destinations (e.g., which cache backends), a documented local-test-to-production promotion workflow, and independent hands-on corroboration of current local runs.",
+    "rationale": "Airbyte documents running pipelines locally. The OSS quickstart and abctl spin up a local Airbyte instance in Docker, and PyAirbyte extracts data into local caches, which suits notebook or prototype iteration without a server. However, no workflow is documented for testing a pipeline against a lightweight destination and then promoting it to production. A 2021 community report of a failed local docker-compose install predates abctl and lowers confidence rather than creating a dispute. Missing for 10: explicit documentation of a lightweight local destination (e.g., which cache backend), a documented local-to-production promotion or test workflow, independent hands-on corroboration of current local runs.",
     "evidenceIds": [
-      "airbyte-docs-47",
-      "airbyte-docs-40",
       "airbyte-docs-12",
       "airbyte-docs-52",
+      "airbyte-docs-47",
+      "airbyte-docs-40",
       "airbyte-docs-1"
     ],
     "support": {
@@ -954,20 +1035,20 @@
       "subject": "As a data engineer, I run and test a pipeline locally against a lightweight destination before it touches production",
       "citations": [
         {
-          "evidenceId": "airbyte-docs-47",
-          "quote": "Data can be extracted from sources and loaded into caches"
-        },
-        {
-          "evidenceId": "airbyte-docs-40",
-          "quote": "It's a good choice if you're using Jupyter Notebook or iterating on an early prototype for a large data project and don't need to run your own server."
+          "evidenceId": "airbyte-docs-12",
+          "quote": "This quickstart guides you through deploying a local instance of Airbyte Core, Airbyte's open source product."
         },
         {
           "evidenceId": "airbyte-docs-52",
           "quote": "abctl is Airbyte's open source command line tool to create and manage local instances of Airbyte running in Docker."
         },
         {
-          "evidenceId": "airbyte-docs-12",
-          "quote": "This quickstart guides you through deploying a local instance of Airbyte Core, Airbyte's open source product."
+          "evidenceId": "airbyte-docs-47",
+          "quote": "Data can be extracted from sources and loaded into caches"
+        },
+        {
+          "evidenceId": "airbyte-docs-40",
+          "quote": "It's a good choice if you're using Jupyter Notebook or iterating on an early prototype for a large data project and don't need to run your own server."
         }
       ]
     }
@@ -978,12 +1059,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte documents a first-party API for programmatic control, along with access tokens and a Terraform provider for configuration as code, so the core of API-driven operation exists. Nothing in the evidence shows that the API matches the UI feature for feature, and the Connector Builder is described as part of the UI. missing for 10: documented UI-to-API feature parity, evidence that Connector Builder and AI Assistant work through the API, a discoverable OpenAPI spec (probe paths returned 404), independent hands-on corroboration of API completeness.",
+    "rationale": "Airbyte documents a public REST API with a published OpenAPI spec titled \"Programmatically control Airbyte Cloud, OSS & Enterprise.\" It also ships a Terraform provider for configuration as code, and API breaking changes come with migration guides. Nothing in the evidence claims or shows that the API matches everything the UI can do. UI-centric features such as the no-code Connector Builder and its AI Assistant, notification setup, and the Connection Timeline have no documented API equivalent. Missing for 10: an explicit API/UI parity statement or endpoint coverage map, API access to Connector Builder, notifications and timeline/log features, and independent hands-on confirmation of parity.",
     "evidenceIds": [
       "airbyte-docs-3",
-      "airbyte-docs-17",
       "airbyte-docs-2",
+      "airbyte-openapi-spec-20261106",
       "airbyte-docs-46",
+      "airbyte-migration-guides-20261106",
       "airbyte-docs-55"
     ],
     "support": {
@@ -993,15 +1075,19 @@
       "citations": [
         {
           "evidenceId": "airbyte-docs-3",
-          "quote": "Use the Airbyte API to programmatically interact with Airbyte. For example, you can control Airbyte in conjunction with orchestration tools like Airflow."
+          "quote": "Use the Airbyte API to programmatically interact with Airbyte."
         },
         {
-          "evidenceId": "airbyte-docs-17",
-          "quote": "Most programmatic interactions with Airbyte require an access token."
+          "evidenceId": "airbyte-openapi-spec-20261106",
+          "quote": "Programmatically control Airbyte Cloud, OSS & Enterprise."
         },
         {
           "evidenceId": "airbyte-docs-2",
           "quote": "you can use Airbyte's Terraform provider to automate and version control your Airbyte configuration as code"
+        },
+        {
+          "evidenceId": "airbyte-docs-46",
+          "quote": "you can control Airbyte in conjunction with orchestration tools like Airflow"
         }
       ]
     }
@@ -1012,10 +1098,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented feature for exporting all of a user's Airbyte data (connections, configurations, sync history) in open formats so they can leave the product. The Terraform provider, the API and self-hostable open-source Airbyte Core are related building blocks for managing or running Airbyte, not a documented full-export path. They earn no credit here.",
+    "rationale": "The evidence pack has no documented feature for exporting all of a user's Airbyte data (connections, configurations, workspace state) in open formats to leave the platform. The Terraform provider (config-as-code), the public API, log downloads and the open-source self-hosted edition are related capabilities, but none is documented as a full data-export or exit path.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -1024,33 +1110,38 @@
   {
     "productId": "airbyte",
     "storyId": "openness-open-license",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Airbyte's docs call Airbyte Core \"Airbyte's open source product\" and abctl \"Airbyte's open source command line tool\", and a public GitHub repository (airbytehq/airbyte) exists, so the source is readable. However, the evidence never names the license. A community report also states the project is \"not a fully open source project\" with non-free parts, so coverage is partial rather than complete. missing for 10: the specific open license (e.g., an OSI-approved name or LICENSE file) is never identified, there is no evidence on which parts are under which license given the reported non-free components, and there is no independent confirmation that all product source is openly licensed.",
+    "rationale": "Airbyte's docs repeatedly describe Airbyte Core as \"Airbyte's open source product\", and its source is published on GitHub under the airbytehq org (the main repo and the platform repo hosting the API spec). abctl is also described as open source. A community comment says some parts are non-free, which limits the extent of openness but does not contradict that the core source is readable under an open license. Missing for 10: the specific license is never named in the evidence, the boundary between open and non-free (enterprise/security) components is undocumented, and there is no independent hands-on confirmation of license terms.",
     "evidenceIds": [
       "airbyte-docs-12",
-      "airbyte-docs-52",
       "airbyte-gh-1",
       "airbyte-probe-1",
+      "airbyte-docs-52",
+      "airbyte-openapi-spec-20261106",
       "airbyte-comm-6"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can read the product's source under an open license",
       "citations": [
         {
           "evidenceId": "airbyte-docs-12",
-          "quote": "This quickstart guides you through deploying a local instance of Airbyte Core, Airbyte's open source product."
+          "quote": "deploying a local instance of Airbyte Core, Airbyte's open source product"
         },
         {
-          "evidenceId": "airbyte-docs-52",
-          "quote": "abctl is Airbyte's open source command line tool to create and manage local instances of Airbyte running in Docker."
+          "evidenceId": "airbyte-gh-1",
+          "quote": "Airbyte provides a catalog of 600+ connectors for APIs, databases, data warehouses, data lakes"
         },
         {
           "evidenceId": "airbyte-probe-1",
           "quote": "Airbyte is an open source platform designed for building and managing data pipelines"
+        },
+        {
+          "evidenceId": "airbyte-docs-52",
+          "quote": "abctl is Airbyte's open source command line tool to create and manage local instances of Airbyte running in Docker."
         }
       ]
     }
@@ -1061,14 +1152,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Airbyte documents Airbyte Core as its open-source product. It can be self-hosted locally with abctl on any Docker host, or deployed into any Kubernetes cluster, and a community user confirms their company self-hosts it. An older install failure report (docker-compose era) and a freemium-licensing remark do not concretely contradict the currently documented self-hosting paths. Missing for 10: clear evidence of which paid features (e.g., SSO/RBAC) are available in self-hosted Core, and recent hands-on corroboration of the current abctl/Kubernetes install.",
+    "rationale": "Airbyte documents self-hosting its open-source core, Airbyte Core. Paths include a local quickstart, the open-source abctl CLI on any Docker host, and a guide for deploying to any Kubernetes cluster. A community user confirms they self-host it in production. An older report of a failed docker-compose install and a remark that some parts are non-free do not contradict that the core product can be self-hosted. Missing for 10: clarity on which security/enterprise features (SSO, RBAC) are excluded from the self-hosted open-source core, and more recent independent hands-on corroboration of installation reliability.",
     "evidenceIds": [
       "airbyte-docs-12",
       "airbyte-docs-13",
       "airbyte-docs-52",
       "airbyte-docs-28",
-      "airbyte-docs-45",
-      "airbyte-comm-7"
+      "airbyte-comm-7",
+      "airbyte-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -1080,8 +1171,8 @@
           "quote": "This quickstart guides you through deploying a local instance of Airbyte Core, Airbyte's open source product."
         },
         {
-          "evidenceId": "airbyte-docs-13",
-          "quote": "abctl makes it easy to run Airbyte anywhere Docker is running."
+          "evidenceId": "airbyte-docs-52",
+          "quote": "abctl is Airbyte's open source command line tool to create and manage local instances of Airbyte running in Docker."
         },
         {
           "evidenceId": "airbyte-docs-28",
@@ -1100,7 +1191,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Airbyte documents a Connection Timeline that shows historical connection events and lets users view and download logs and find errors. It also has a built-in notification system that sends to email, a webhook, or both, so the core monitoring and alerting loop is delivered. Missing for 10: documented per-sync row counts, explicit failure-triggered alert semantics, Slack delivery, and independent or hands-on corroboration.",
+    "rationale": "Airbyte documents a Connection Timeline of historical connection events where you can view and download logs and find errors. It also has a built-in notification system that sends to email, webhook, or both, so the core of per-sync visibility and alerting is first-party. missing for 10: per-sync row counts, explicit run-status detail, explicit failure-triggered alerts, Slack notification channel, independent or hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-57",
       "airbyte-docs-10",
@@ -1132,16 +1223,15 @@
     "productId": "airbyte",
     "storyId": "pipelines-as-code",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Airbyte's own Terraform provider lets you automate and version-control Airbyte configuration as code. PyAirbyte offers a Python, code-first way to extract and load data, and connectors have a low-code YAML format underneath the Builder. However, the core product is UI- and server-centric (the no-code Connector Builder lives in the Airbyte UI), and the evidence only shows code representations layered on top, not pipelines that live natively as plain code in a repo. Missing for 10: evidence that whole pipelines live natively in a user repository as plain code, documented review/CI workflows, documented portability of pipeline definitions across deployments, and independent hands-on corroboration.",
+    "rationale": "Airbyte's first-party Terraform provider lets you version-control connection configuration as code. PyAirbyte lets pipelines be written in Python, and the Connector Builder sits on a low-code YAML format. However, the core platform is a stateful, UI-driven server that Terraform configures, not plain code that is itself the pipeline, and review and portability workflows are only implied. Missing for 10: documented git/PR review workflow, evidence that config is portable across instances or environments, depth beyond one-line Terraform and PyAirbyte mentions, independent hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-2",
-      "airbyte-docs-19",
       "airbyte-docs-1",
       "airbyte-docs-47",
       "airbyte-docs-55",
-      "airbyte-docs-4"
+      "airbyte-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -1153,8 +1243,8 @@
           "quote": "you can use Airbyte's Terraform provider to automate and version control your Airbyte configuration as code"
         },
         {
-          "evidenceId": "airbyte-docs-47",
-          "quote": "Data can be extracted from sources and loaded into caches"
+          "evidenceId": "airbyte-docs-1",
+          "quote": "PyAirbyte brings the power of Airbyte to every Python and AI developer."
         },
         {
           "evidenceId": "airbyte-docs-55",
@@ -1168,12 +1258,12 @@
     "storyId": "pricing-model-clarity",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Airbyte publishes a pricing page with a credit-based model. A credit-to-dollar ratio is implied (400 credits = $2,000 of usage), and tier features such as SSO, RBAC and 15-minute syncs are listed. However, nothing in the evidence explains how credits are consumed per source (rows, GB or connector type), so a data platform lead cannot estimate a new source's cost before connecting it. Missing for 10: documented credit consumption rates per source or volume, a cost estimator or calculator, evidence of predictability from users.",
+    "confidence": "low",
+    "rationale": "Airbyte publishes a pricing page with a credit-based model: a 30-day trial with 400 credits worth $2,000 of usage, which implies $5 per credit, plus tier feature lists. The evidence does not show how credits are consumed per source, connection or volume, so a lead could not estimate a new source's cost before connecting it. Missing for 10: documented per-source or per-volume credit consumption rates, a cost calculator or estimator, evidence of predictability across tiers, independent corroboration.",
     "evidenceIds": [
       "airbyte-docs-49",
-      "airbyte-docs-29",
-      "airbyte-docs-50"
+      "airbyte-docs-50",
+      "airbyte-docs-29"
     ],
     "support": {
       "relation": "direct",
@@ -1183,10 +1273,6 @@
         {
           "evidenceId": "airbyte-docs-49",
           "quote": "Start with a 30-day free trial. 400 credits included ($2,000 of usage)."
-        },
-        {
-          "evidenceId": "airbyte-docs-29",
-          "quote": "Multiple Workspaces"
         }
       ]
     }
@@ -1196,13 +1282,13 @@
     "storyId": "privacy-data-residency",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Airbyte documents its own self-hosted deployment, into any Kubernetes cluster or anywhere Docker runs, and a community user confirms self-hosting. That lets a user decide where the pipeline and its data physically reside. However, no documentation explicitly addresses data residency or region selection, and nothing shows Airbyte Cloud offering region choice. missing for 10: explicit data-residency/region-selection docs, Cloud region choice, residency guarantees or compliance statements.",
+    "confidence": "medium",
+    "rationale": "Airbyte documents self-hosted deployment of its open-source Airbyte Core into any Kubernetes cluster, or anywhere Docker runs. That lets a user decide where the platform and its data live, but the evidence never describes region or residency selection as such. missing for 10: explicit region/data-residency selection for Airbyte Cloud, documented residency guarantees or compliance statements, independent corroboration.",
     "evidenceIds": [
       "airbyte-docs-28",
+      "airbyte-docs-45",
       "airbyte-docs-13",
-      "airbyte-docs-12",
-      "airbyte-comm-7"
+      "airbyte-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -1210,16 +1296,16 @@
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
       "citations": [
         {
-          "evidenceId": "airbyte-docs-28",
-          "quote": "This installation guide walks through how to deploy Airbyte into any kubernetes cluster."
+          "evidenceId": "airbyte-docs-45",
+          "quote": "This installation guide walks through how to deploy Airbyte into _any_ kubernetes cluster."
         },
         {
           "evidenceId": "airbyte-docs-13",
           "quote": "abctl makes it easy to run Airbyte anywhere Docker is running."
         },
         {
-          "evidenceId": "airbyte-comm-7",
-          "quote": "We use airbyte at my company, although we self-host it."
+          "evidenceId": "airbyte-docs-12",
+          "quote": "This quickstart guides you through deploying a local instance of Airbyte Core, Airbyte's open source product."
         }
       ]
     }
@@ -1230,7 +1316,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Airbyte handles customer data and ships AI features such as the Connector Builder AI Assistant and Airbyte Agents, so asking whether it offers an AI-training opt-out or no-training guarantee is a fair question. The evidence pack contains no policy, setting or contractual statement that customer data is excluded from model training. Self-hosting options (OSS quickstart, abctl, Kubernetes) are a deployment choice, not a documented training-prevention capability, so they earn no credit.",
+    "rationale": "Airbyte is a data-movement platform with AI features (Connector Builder AI Assistant, Airbyte Agents), so a training opt-out or no-training commitment is a fair question to ask of it. The evidence pack contains no policy, setting, or contractual statement about whether customer data is used to train AI models. Self-hosting options are only an adjacent workaround and do not count as an opt-out control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1245,7 +1331,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a data-pipeline platform, but nothing in the evidence documents retention settings, purge or deletion controls, or data-lifecycle policies. CDC docs only describe reading DELETE records from source logs for replication, which is an adjacent feature rather than user control over retention. The community item about hard deletions is an open question, not evidence of the capability.",
+    "rationale": "Data retention and deletion controls are a fair privacy axis for a data-pipeline platform like Airbyte, but the evidence pack documents no retention settings, deletion controls, or data-purge capability. CDC reading DELETE statements from source logs is about replicating source changes, not about the user controlling retention. Self-hosting the open-source edition is at most a user-side workaround and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1260,7 +1346,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a data-integration platform like Airbyte, which ships self-hosted, CLI, and Python SDK components, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, or any opt-out setting, so the verdict is none.",
+    "rationale": "Opting out of telemetry is a fair question for a self-hostable data-integration platform like Airbyte, so the axis applies. However, no evidence item mentions telemetry, usage tracking, analytics collection, or any opt-out setting or environment variable. The deployment docs (abctl, Kubernetes, OSS quickstart) cover installation only and say nothing about disabling tracking.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1275,7 +1361,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document automatic retry of transient sync failures or resuming interrupted syncs from checkpoints. Incremental sync (changes since the previous sync) and CDC log-position tracking are related cursor mechanisms, but they say nothing about retry policy or mid-sync checkpoint recovery. Neither is credited here.",
+    "rationale": "Nothing in the evidence pack documents automatic retries for transient sync failures, or checkpoint-based resumption of an interrupted sync. Incremental sync and CDC log-position tracking describe cursor state carried between successive syncs, which is an adjacent feature and not resume-from-checkpoint after an interruption.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1290,7 +1376,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reverse ETL is a fair axis for a data-integration platform like Airbyte, so it applies. However, the evidence describes data flowing into warehouses, lakes and databases ('Consolidate data from hundreds of sources into your data warehouses'). Nothing documents syncing modeled warehouse data out to CRM, ads or support tools as destinations. Agent 'act on your data' features are a different capability and earn no credit here.",
+    "rationale": "Reverse ETL is a fair question for a data-integration platform like Airbyte, so the axis applies. However, the evidence only describes moving data from sources into warehouses, lakes, and databases. Nothing documents syncing modeled warehouse data back into CRM, ads, or support tools as destinations. The agent 'act on your data' material covers a different capability and does not count here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1305,7 +1391,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Airbyte's schema change management docs state that you can set, per connection, how Airbyte handles any source schema change. That directly matches choosing a propagation policy instead of letting loads break silently. Missing for 10: the specific policy options (e.g. propagate, ignore, pause) are not enumerated, detection mechanics and alerting on schema changes are not documented, and there is no independent or hands-on corroboration.",
+    "rationale": "Airbyte's schema change management docs say each connection can be configured for how Airbyte handles source schema changes. That is a user-chosen, per-connection policy rather than silent breakage. The evidence is a single first-party statement, so the specific policy options and how detection works are not spelled out. Missing for 10: the enumerated policy options (e.g., propagate, ignore, pause), explicit description of the detection mechanism and schema-change alerting, independent or hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-14"
     ],
@@ -1327,12 +1413,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Airbyte's sync-schedule docs say each connection can be set to one of three Schedule Types: Scheduled, Cron, or Manual. Cron runs syncs on a user-defined cron expression, and the pricing page lists 15-minute syncs, which covers sub-hour frequency. Missing for 10: detailed first-party documentation of the available scheduled intervals (sub-hour support appears only as a pricing-page line and may be plan-dependent), and independent or hands-on corroboration of scheduling behavior.",
+    "rationale": "Airbyte's sync-schedule docs let you pick, per connection, one of three schedule types: Scheduled, Cron (runs on a user-defined cron expression) and Manual. The pricing page lists '15-minute syncs', which supports sub-hour frequency. missing for 10: detailed first-party documentation of sub-hour interval options and any plan restrictions on them (only a pricing-page bullet), independent or hands-on corroboration of scheduling behavior.",
     "evidenceIds": [
       "airbyte-docs-53",
-      "airbyte-docs-8",
-      "airbyte-docs-30",
       "airbyte-docs-35",
+      "airbyte-docs-30",
+      "airbyte-docs-8",
       "airbyte-docs-50"
     ],
     "support": {
@@ -1365,10 +1451,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Airbyte has a first-party Typing and Deduping doc page stating that each stream maps to exactly one warehouse table with no sub-tables, so this is a product capability aimed directly at query-ready destination tables. The quoted text, however, only covers the one-to-one table mapping. It does not show column typing, deduplication behavior or how raw JSON is avoided. Missing for 10: explicit evidence of typed columns, documented deduplication semantics (e.g., primary-key-based dedup), confirmation that tables are not raw JSON blobs, and independent or hands-on corroboration.",
+    "rationale": "Airbyte has a first-party Typing and Deduping docs page. Its quoted text confirms one-to-one table mapping into the warehouse (\"No more sub-tables\"), which points to structured destination tables rather than raw blobs. However, the quoted spans do not state that columns are typed or that records are deduplicated, and the sync-mode docs do not mention dedup behavior. missing for 10: explicit evidence of typed columns, explicit evidence of deduplication (e.g., a dedup sync mode or primary-key handling), handling of typing errors, and independent or hands-on corroboration.",
     "evidenceIds": [
       "airbyte-docs-24",
-      "airbyte-docs-41"
+      "airbyte-docs-41",
+      "airbyte-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -1378,6 +1465,10 @@
         {
           "evidenceId": "airbyte-docs-24",
           "quote": "One-to-one table mapping: Data in one stream will always be mapped to one table in your data warehouse. No more sub-tables."
+        },
+        {
+          "evidenceId": "airbyte-docs-23",
+          "quote": "A sync mode governs how Airbyte reads from a source and writes to a destination."
         }
       ]
     }
@@ -4349,16 +4440,16 @@
     "productId": "fivetran",
     "storyId": "agent-builds-pipeline",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Fivetran's own REST API is documented to set up and manage pipelines programmatically. Its Connector SDK ships AI coding-agent plugins (Claude Code, Codex CLI, Gemini CLI, Copilot CLI) to build, test, and deploy connectors from natural-language prompts. The official MCP server can unlock write operations and copy connections with their configs. However, the evidence never shows a coding agent creating a destination, connection, and transformations and then triggering a sync end to end, and no machine-readable OpenAPI spec was found. Missing for 10: documented end-to-end headless pipeline creation and run-triggering via API/CLI, a published OpenAPI spec, and independent hands-on corroboration of agent-driven pipeline setup.",
+    "rationale": "Fivetran's REST API lets you programmatically set up and manage pipelines, and it is backed by a published OpenAPI 3.0.1 spec. The official MCP server can unlock write operations, and Connector SDK plugins let Claude Code, Codex CLI and similar agents build, test and deploy custom connectors from natural-language prompts. However, the evidence never shows a single headless flow from scaffolding through destination, connector, transformation setup and triggering a run, and no first-party CLI for pipeline management is documented. Missing for 10: explicit API/CLI docs for triggering syncs and wiring destinations, connectors and transformations end to end; a first-party pipeline-management CLI beyond the Connector SDK; independent hands-on corroboration of a fully agent-driven pipeline build.",
     "evidenceIds": [
       "fivetran-docs-3",
-      "fivetran-intdir-6",
+      "fivetran-openapi-page-20261106",
+      "fivetran-openapi-file-20261106",
       "fivetran-docs-29",
-      "fivetran-docs-30",
-      "fivetran-docs-37",
-      "fivetran-probe-3"
+      "fivetran-intdir-6",
+      "fivetran-docs-37"
     ],
     "support": {
       "relation": "direct",
@@ -4371,7 +4462,7 @@
         },
         {
           "evidenceId": "fivetran-intdir-6",
-          "quote": "We provide AI coding agent plugins that add Connector SDK-specific skills to Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot CLI. These skills let you build, test, and deploy connectors using natural language prompts."
+          "quote": "These skills let you build, test, and deploy connectors using natural language prompts."
         },
         {
           "evidenceId": "fivetran-docs-29",
@@ -4390,7 +4481,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Fivetran ships an official MCP server that lets an agent ask about sync status (\"was my last postgres sync successful\", \"are any of my connections broken\"). A write scope can be enabled, and the REST API manages the account programmatically. However, no evidence explicitly shows re-triggering a sync or retrieving failure details to diagnose a run. Missing for 10: explicit documented sync-trigger/re-run endpoint or MCP tool, documented failure-diagnosis detail (error logs, root cause) via API/MCP, independent hands-on corroboration of the agent workflow.",
+    "rationale": "Fivetran ships an official MCP server that lets an agent check sync status and spot broken connections. Write operations can be unlocked via FIVETRAN_SCOPE, and the REST API supports programmatic management, but neither source explicitly documents triggering a sync or re-sync. Detecting broken connections is documented, but deeper diagnosis of why a run failed is not. Missing for 10: an explicitly documented API/MCP sync or re-sync trigger, documented failure-diagnosis detail such as error logs or causes, and independent hands-on corroboration.",
     "evidenceIds": [
       "fivetran-probe-4",
       "fivetran-docs-28",
@@ -4404,16 +4495,16 @@
       "subject": "As an AI-native user, an agent can check sync status, diagnose a failed run, and re-trigger it through an API or MCP server",
       "citations": [
         {
-          "evidenceId": "fivetran-probe-4",
-          "quote": "official MCP server documented at https://github.com/fivetran/fivetran-mcp"
-        },
-        {
           "evidenceId": "fivetran-docs-28",
           "quote": "It allows you to ask read-only questions like \"when was the last time my postgres connection completed a sync?\" and \"are any of my connections broken?\""
         },
         {
           "evidenceId": "fivetran-docs-29",
           "quote": "Set `FIVETRAN_SCOPE` to `read/write` or `read/write/delete` to unlock write and delete operations"
+        },
+        {
+          "evidenceId": "fivetran-probe-4",
+          "quote": "official MCP server documented at https://github.com/fivetran/fivetran-mcp"
         },
         {
           "evidenceId": "fivetran-docs-3",
@@ -4428,12 +4519,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe confirms Fivetran serves an llms.txt at fivetran.com/llms.txt (HTTP 200) with a structured documentation summary. Doc pages are also served as .md URLs, and Fivetran ships AI coding-agent plugins with Connector SDK skills for Claude Code, Codex CLI, Gemini CLI and Copilot CLI. Missing for 10: no first-party documentation describing or maintaining the llms.txt / markdown-docs offering, the root docs.md endpoint returns 404, and no independent hands-on corroboration of agents consuming these docs.",
+    "rationale": "A probe confirms Fivetran serves a live llms.txt at fivetran.com/llms.txt describing its documentation, and doc pages resolve at agent-friendly .md URLs. Fivetran also ships agent-oriented Connector SDK skills for Claude Code, Codex CLI, Gemini CLI and Copilot CLI. Missing for 10: the root docs.md index returns 404, there is no evidence of an llms-full.txt or detail on llms.txt coverage, and no independent or hands-on corroboration of agents consuming these docs.",
     "evidenceIds": [
       "fivetran-probe-1",
       "fivetran-probe-2",
-      "fivetran-intdir-6",
-      "fivetran-docs-41"
+      "fivetran-docs-41",
+      "fivetran-intdir-6"
     ],
     "support": {
       "relation": "direct",
@@ -4442,7 +4533,11 @@
       "citations": [
         {
           "evidenceId": "fivetran-probe-1",
-          "quote": "HTTP 200 at https://fivetran.com/llms.txt # Fivetran Documentation"
+          "quote": "PROBE llms.txt: HTTP 200 at https://fivetran.com/llms.txt # Fivetran Documentation"
+        },
+        {
+          "evidenceId": "fivetran-probe-1",
+          "quote": "Fivetran is a fully managed data movement platform that automates data pipelines"
         },
         {
           "evidenceId": "fivetran-intdir-6",
@@ -4457,7 +4552,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies, since a data platform could surface AI insights in-product, but the evidence shows no in-product AI that generates insights or suggestions from the user's data. The AI support assistant draws on Fivetran documentation and known solutions for troubleshooting, not on customer data. The MCP server and the 'context layer' serve external AI tools, which are adjacent building blocks rather than in-product insights.",
+    "rationale": "The pack shows no in-product feature that generates AI insights or suggestions from the user's synced data. The AI support assistant only answers troubleshooting questions from Fivetran documentation. The MCP server lets external agents query connection status, and the 'context layer' feeds the customer's own AI tools; none of these deliver in-product data insights.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4469,33 +4564,38 @@
   {
     "productId": "fivetran",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "partial",
-    "quality": 6,
-    "confidence": "medium",
-    "rationale": "Fivetran documents recurring, autonomous background work. Connectors sync data automatically, handling schema changes and incremental syncs, at frequencies down to 1-minute syncs, and transformations run automatically after syncs or on a set schedule. This is a recurring schedule, not a one-off action, but it is limited to data-pipeline syncs and transformations rather than general automations a user defines. missing for 10: general-purpose or agent-driven background automations beyond data syncs and transformations, documentation of scheduling configuration depth (custom triggers, conditional workflows), and independent hands-on corroboration of the autonomous scheduling.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Fivetran's core product is background automation. Connectors sync data automatically and handle schema changes and incremental syncs. Transformations run automatically after syncs or on a set schedule, which is a recurring schedule rather than a one-off action. A community report says syncing has been very reliable, though another user reports occasional out-of-sync issues that needed re-syncs. Missing for 10: general-purpose automations beyond data sync and transformations, and detailed documentation of sync-frequency and schedule configuration (only '1-minute syncs' on the pricing page).",
     "evidenceIds": [
       "fivetran-docs-1",
-      "fivetran-docs-11",
-      "fivetran-docs-37",
       "fivetran-docs-18",
-      "fivetran-comm-15"
+      "fivetran-docs-37",
+      "fivetran-docs-11",
+      "fivetran-comm-3",
+      "fivetran-comm-14"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": [
+        {
+          "evidenceId": "fivetran-docs-1",
+          "quote": "Fivetran provides pre-built data connectors that automatically sync data from your applications, databases, event streams, and files to your data warehouse or data lake."
+        },
         {
           "evidenceId": "fivetran-docs-37",
           "quote": "Transformations are automatically executed after connection syncs or on a set schedule."
         },
         {
-          "evidenceId": "fivetran-docs-1",
+          "evidenceId": "fivetran-docs-18",
           "quote": "Each connector handles schema changes, API updates, and incremental syncs automatically — no data pipelines to maintain."
         },
         {
-          "evidenceId": "fivetran-docs-11",
-          "quote": "1-minute syncs"
+          "evidenceId": "fivetran-comm-3",
+          "quote": "Fivetran's syncing has been very reliable (compared to others we tried)"
         }
       ]
     }
@@ -4505,8 +4605,8 @@
     "storyId": "agentic-builtin-assistant",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Fivetran documents a built-in AI Support Assistant in the dashboard's troubleshooting area. It uses Fivetran documentation and known solutions to help resolve common issues without a human support engineer, so it is an in-product assistant but only for support and troubleshooting help. The MCP server and the coding-agent plugins run in external agents and are not built-in, so they earn no credit here. Missing for 10: evidence the assistant can carry out delegated actions in the product (creating or modifying connections, running syncs or transformations), scope beyond support troubleshooting, availability details beyond Free/Standard plans, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Fivetran documents a built-in AI Support Assistant in the dashboard that uses Fivetran documentation and known solutions to help resolve common issues. The evidence shows only troubleshooting help, not a general in-product assistant that performs tasks. The MCP server and coding-agent plugins are external agent integrations and do not count as a built-in assistant. Missing for 10: evidence the assistant can execute actions (create or modify connections, trigger syncs, configure pipelines), scope beyond support troubleshooting, detailed docs on its capabilities, independent or hands-on corroboration.",
     "evidenceIds": [
       "fivetran-docs-44",
       "fivetran-docs-66"
@@ -4533,12 +4633,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fivetran documents its own REST API for setting up, scaling and managing the account programmatically, which is the product's own headless automation path. Its Connector SDK also has AI-agent CLI plugins to build, test and deploy connectors from natural-language prompts. However, nothing documents a CLI or a CI/CD integration pattern for running Fivetran operations in pipelines, and one community report calls the APIs unreliable, which lowers confidence but is too vague to dispute the capability. Missing for 10: a documented first-party CLI, CI/CD pipeline guides or examples, and independent hands-on corroboration of headless automation.",
+    "rationale": "Fivetran documents programmatic, UI-free account and pipeline management through its REST API, backed by a published OpenAPI spec. The Connector SDK adds coding-agent CLI plugins to build, test and deploy connectors, and the Hybrid Deployment Agent can run unattended under systemd. However, there is no documented CI integration or first-party CLI for running headlessly in a pipeline, and one community report calls the APIs unreliable, which lowers confidence. Missing for 10: documented CI/CD integration (e.g. GitHub Actions or pipeline guides), a first-party headless CLI for running syncs, independent hands-on corroboration of reliable automation.",
     "evidenceIds": [
       "fivetran-docs-3",
       "fivetran-docs-36",
+      "fivetran-openapi-page-20261106",
       "fivetran-intdir-6",
-      "fivetran-docs-2"
+      "fivetran-docs-65"
     ],
     "support": {
       "relation": "direct",
@@ -4554,8 +4655,8 @@
           "quote": "These skills let you build, test, and deploy connectors using natural language prompts."
         },
         {
-          "evidenceId": "fivetran-docs-36",
-          "quote": "Access to Fivetran REST API"
+          "evidenceId": "fivetran-docs-65",
+          "quote": "You can configure `systemd` to manage the Hybrid Deployment Agent and start it automatically when the host boots."
         }
       ]
     }
@@ -4563,10 +4664,10 @@
   {
     "productId": "fivetran",
     "storyId": "agentic-mcp-client",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only an official Fivetran MCP server (fivetran-mcp) that lets external AI models query and manage Fivetran. That is the server role, the opposite direction from this story. Nothing shows Fivetran itself acting as an MCP client that can connect to external MCP servers and use their tools. The AI coding-agent plugins and AI support assistant are adjacent features and do not count toward this story.",
+    "rationale": "Fivetran is a managed data-movement and ELT platform, not an agent or tool-consuming AI client, so plugging third-party MCP servers into it for tool use is outside its product role. The pack shows Fivetran publishing its own MCP server and offering Connector SDK plugins for external coding agents. Both are the opposite direction (Fivetran's capabilities exposed to agents) and get no credit for an MCP-client story. Nothing shows the product itself consuming MCP tools.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4581,7 +4682,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Fivetran publishes an official MCP server in its own GitHub org (fivetran/fivetran-mcp), confirmed by a probe. It lets an agent ask read-only questions about connection and sync status, and it can unlock write and delete operations through FIVETRAN_SCOPE, guarded by a credential-endpoint denylist (DISALLOWED_ACTIONS). Missing for 10: independent or hands-on corroboration of agent connections, and documented setup steps for specific MCP clients and hosting options.",
+    "rationale": "Fivetran publishes an official MCP server (github.com/fivetran/fivetran-mcp). Agents can query sync status read-only by default, and setting FIVETRAN_SCOPE unlocks write and delete operations such as copying connections, with a credential denylist available as a safeguard. missing for 10: independent or hands-on corroboration of the MCP server, coverage of it in the main docs site beyond the README (e.g., client setup guides).",
     "evidenceIds": [
       "fivetran-probe-4",
       "fivetran-docs-28",
@@ -4608,8 +4709,8 @@
           "quote": "Set `FIVETRAN_SCOPE` to `read/write` or `read/write/delete` to unlock write and delete operations"
         },
         {
-          "evidenceId": "fivetran-docs-60",
-          "quote": "Credential endpoints are governed by `DISALLOWED_ACTIONS`."
+          "evidenceId": "fivetran-docs-30",
+          "quote": "Copy existing Fivetran connections to a new destination. Keep their configs and schemas intact or modify them as you like."
         }
       ]
     }
@@ -4618,9 +4719,9 @@
     "productId": "fivetran",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Fivetran's official MCP server lets users ask natural-language questions about connection and sync status through an AI model, with optional read/write/delete scopes that unlock operations such as copying connections. Its Connector SDK plugins also let users build, test and deploy connectors with natural-language prompts. However, natural-language control runs through external AI clients, is read-only by default, and is not documented as covering the full product. missing for 10: native in-product natural-language command interface, documented coverage of write operations beyond copying connections, independent or hands-on corroboration of natural-language operation.",
+    "rationale": "Fivetran ships an official MCP server that lets users run natural-language queries against their account, such as whether a connection's last sync succeeded or whether any connections are broken, and write/delete operations can be enabled via scope. It also provides first-party coding-agent plugins for building, testing and deploying Connector SDK connectors with natural-language prompts. Natural-language operation depends on an external AI client, is read-only by default, and there is no evidence of a native natural-language command interface in the product itself. missing for 10: native in-product natural-language command console, documented natural-language coverage of full pipeline operations (create/configure/sync), independent hands-on corroboration",
     "evidenceIds": [
       "fivetran-docs-28",
       "fivetran-docs-59",
@@ -4645,10 +4746,6 @@
         {
           "evidenceId": "fivetran-intdir-6",
           "quote": "These skills let you build, test, and deploy connectors using natural language prompts."
-        },
-        {
-          "evidenceId": "fivetran-docs-59",
-          "quote": "It lets you ask questions like \"was my last postgres sync successful\" and \"are any of my connections broken\" and have the model answer the questions for you."
         }
       ]
     }
@@ -4659,7 +4756,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair axis for a SaaS data-movement platform, but the evidence never documents a Fivetran CLI. The REST API is a developer building block, and the MCP server belongs to a different story. The Connector SDK plugins are skills added to third-party agent CLIs (Claude Code, Codex CLI, etc.), not a first-party Fivetran CLI, so none of these earn credit.",
+    "rationale": "An official CLI is a fair question for a SaaS data-movement platform, so the axis applies. However, the evidence never documents a Fivetran-branded command-line tool. What it does show are adjacent items: the REST API, an MCP server, and Connector SDK plugins that add skills to third-party CLIs (Claude Code, Codex CLI, Gemini CLI, GitHub Copilot CLI). None of these is an official Fivetran CLI, so none earns credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4672,17 +4769,15 @@
     "productId": "fivetran",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Fivetran documents a public REST API for programmatically setting up and scaling pipelines and managing the account. It has a getting-started guide, lists API access on its pricing plans, and ships an official MCP server with read/write scopes for agent-driven operation. One community comment says the APIs are unreliable, but it does not contradict the documented capability, so it only lowers confidence. Missing for 10: a published OpenAPI spec (all probed paths returned 404), detailed endpoint coverage in the evidence, and independent hands-on corroboration of API reliability.",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Fivetran documents a public REST API for setting up pipelines and managing the account programmatically, publishes a downloadable OpenAPI 3.0.1 spec that generates its API reference, and keeps dated changelog entries with deprecation sunset dates. One older community comment calls the APIs unreliable, but that does not contradict that a documented public API exists. Missing for 10: a standalone versioning or breaking-change policy, and independent hands-on corroboration of API reliability.",
     "evidenceIds": [
       "fivetran-docs-3",
-      "fivetran-docs-22",
-      "fivetran-docs-23",
-      "fivetran-docs-36",
-      "fivetran-docs-29",
-      "fivetran-probe-3",
-      "fivetran-comm-7"
+      "fivetran-openapi-page-20261106",
+      "fivetran-openapi-file-20261106",
+      "fivetran-release-notes-20261106",
+      "fivetran-docs-36"
     ],
     "support": {
       "relation": "direct",
@@ -4694,12 +4789,16 @@
           "quote": "Set up and scale your data pipeline, and manage your Fivetran account programmatically using the Fivetran REST API."
         },
         {
-          "evidenceId": "fivetran-docs-36",
-          "quote": "Access to Fivetran REST API"
+          "evidenceId": "fivetran-openapi-page-20261106",
+          "quote": "Fivetran publishes a dedicated \"OpenAPI Definition (V1)\" page with direct JSON and YAML downloads of the full REST API specification, from which the API reference is auto-generated."
         },
         {
-          "evidenceId": "fivetran-docs-29",
-          "quote": "Set `FIVETRAN_SCOPE` to `read/write` or `read/write/delete` to unlock write and delete operations"
+          "evidenceId": "fivetran-openapi-file-20261106",
+          "quote": "The spec file itself downloads as OpenAPI 3.0.1 (info version \"v1\"), covering the /v1 REST API."
+        },
+        {
+          "evidenceId": "fivetran-docs-36",
+          "quote": "Access to Fivetran REST API"
         }
       ]
     }
@@ -4710,7 +4809,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence does not show Fivetran issuing API credentials that are themselves scoped or least-privilege. The official MCP server's `FIVETRAN_SCOPE` setting and `DISALLOWED_ACTIONS` denylist restrict which operations the MCP tool exposes, but they do not scope the underlying API key. Role-based access control appears only as a pricing-page line item, with no link to API credentials. These are adjacent controls, not scoped credential issuance.",
+    "rationale": "The evidence does not document issuing scoped or least-privilege API credentials, such as API keys limited to specific permissions or resources. The official MCP server's `FIVETRAN_SCOPE` setting and `DISALLOWED_ACTIONS` denylist are an adjacent control: they restrict which tools the MCP server exposes, but they do not scope the underlying API credential. The 'Role-based access control' pricing line item and Hybrid Deployment Agent token regeneration are not shown to produce scoped API credentials for an AI agent.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4722,21 +4821,20 @@
   {
     "productId": "fivetran",
     "storyId": "agentic-sdks",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Fivetran documents an official Python Connector SDK for building custom connectors and deploying them as Fivetran extensions, with a setup guide, a GitHub repo, and AI coding-agent plugins that add SDK-specific skills for building, testing and deploying connectors. The evidence covers only this one Python SDK; the REST API has no documented official client SDKs and no published OpenAPI spec. Missing for 10: official SDKs in more than one language, client SDKs for the management REST API, an OpenAPI spec, and independent or hands-on corroboration of the SDK developer experience.",
+    "rationale": "Fivetran ships an official Python Connector SDK for building and deploying custom connectors. It also offers AI coding-agent plugins for Claude Code, Codex CLI, Gemini CLI and Copilot CLI to build, test and deploy with that SDK. Account and pipeline management, however, is exposed only as a REST API with a downloadable OpenAPI spec, and no official client SDKs are evidenced. missing for 10: official client SDKs for the REST/management API, multi-language SDK coverage beyond Python connector development, independent or hands-on corroboration of the SDK developer experience.",
     "evidenceIds": [
       "fivetran-docs-2",
       "fivetran-intdir-5",
       "fivetran-intdir-6",
-      "fivetran-intdir-7",
-      "fivetran-docs-17",
-      "fivetran-probe-3"
+      "fivetran-docs-3",
+      "fivetran-openapi-page-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can build against official SDKs",
       "citations": [
         {
@@ -4744,12 +4842,12 @@
           "quote": "Fivetran’s Connector SDK allows you to develop a custom data connector using Python and deploy it as an extension of Fivetran."
         },
         {
-          "evidenceId": "fivetran-intdir-5",
-          "quote": "Follow our Connector SDK setup guide for custom connectors and visit our Connector SDK GitHub Repo to create a custom source connector and connect it with your destination using Fivetran."
-        },
-        {
           "evidenceId": "fivetran-intdir-6",
           "quote": "We provide AI coding agent plugins that add Connector SDK-specific skills to Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot CLI. These skills let you build, test, and deploy connectors using natural language prompts."
+        },
+        {
+          "evidenceId": "fivetran-intdir-5",
+          "quote": "visit our Connector SDK GitHub Repo to create a custom source connector and connect it with your destination using Fivetran."
         }
       ]
     }
@@ -4760,7 +4858,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event webhooks are a fair question for a managed data-pipeline SaaS, so the axis applies. However, no evidence documents registrable outbound HTTP callbacks for Fivetran events such as sync completion or failure. The only webhook mention (fivetran-docs-47) describes data sent *to* an endpoint as a source for usage tracking, not an event subscription, and 'Fivetran Alerts' is only a bare title with no callback mechanism described.",
+    "rationale": "Webhooks are a fair axis for a managed data-pipeline SaaS, but the evidence pack never documents registrable outbound HTTP callbacks for Fivetran events such as sync completion or failure. The only webhook-related item (fivetran-docs-47) describes sending data to an endpoint as a source for ingestion and its usage cost, which is inbound data collection, not event subscription. 'Fivetran Alerts' is a dashboard feature with no documented programmatic webhook delivery, so it is an adjacent control and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4775,12 +4873,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fivetran documents first-party AI coding agent plugins that add Connector SDK skills to Claude Code, Codex CLI, Gemini CLI, and GitHub Copilot CLI, letting users build, test, and deploy custom Python connectors from natural-language prompts. The evidence does not show the AI drafting from API documentation specifically, or handling auth, pagination, and streams. Missing for 10: evidence of drafting directly from API documentation, explicit auth/pagination/stream generation, a documented review-before-ship workflow, and independent or hands-on corroboration.",
+    "rationale": "Fivetran ships its own AI coding agent plugins that add Connector SDK skills to Claude Code, Codex CLI, Gemini CLI and GitHub Copilot CLI, so connectors can be built, tested and deployed from natural-language prompts, producing Python code the user can review before deploying. The evidence does not show the AI drafting from API documentation or handling auth, pagination and streams, and it depends on third-party agents. Missing for 10: documented generation from API docs, explicit auth, pagination and stream scaffolding, a review step in the workflow, and independent hands-on corroboration.",
     "evidenceIds": [
       "fivetran-intdir-6",
       "fivetran-intdir-7",
-      "fivetran-docs-2",
-      "fivetran-intdir-5"
+      "fivetran-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -4801,31 +4898,57 @@
   {
     "productId": "fivetran",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Fivetran documents a REST API for managing pipelines programmatically, but nothing in the evidence shows an interactive API reference or runnable, try-it examples. The OpenAPI probe found no spec at any candidate path. A plain REST API doc is an adjacent feature, not the interactive, runnable reference this story asks for.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Fivetran publishes its own REST API reference, auto-generated from a downloadable OpenAPI 3.0.1 V1 spec in JSON and YAML, so a first-party API reference clearly exists. Nothing in the evidence shows that the reference is interactive or offers runnable or try-it examples, and the probe found no OpenAPI spec at the standard well-known paths. missing for 10: evidence of an interactive in-browser explorer, runnable/try-it request examples, code samples, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "fivetran-openapi-page-20261106",
+      "fivetran-openapi-file-20261106",
+      "fivetran-docs-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fivetran-openapi-page-20261106",
+          "quote": "Fivetran publishes a dedicated \"OpenAPI Definition (V1)\" page with direct JSON and YAML downloads of the full REST API specification, from which the API reference is auto-generated."
+        },
+        {
+          "evidenceId": "fivetran-docs-3",
+          "quote": "manage your Fivetran account programmatically using the Fivetran REST API"
+        }
+      ]
     }
   },
   {
     "productId": "fivetran",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence documents a Fivetran REST API for managing accounts programmatically, but nothing shows a downloadable OpenAPI or equivalent machine-readable spec. The probe found every candidate OpenAPI/Swagger path returned 404. A REST API's existence alone is an adjacent capability, not a downloadable spec.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Fivetran publishes a dedicated 'OpenAPI Definition (V1)' page with direct JSON and YAML downloads of the full REST API spec, and the file itself is a valid OpenAPI 3.0.1 document covering /v1. The probe's 404s at conventional paths like /openapi.json do not contradict this, because the spec is hosted at a documented docs-assets URL. Missing for 10: independent or community corroboration of using the spec, and discoverability at standard well-known paths.",
+    "evidenceIds": [
+      "fivetran-openapi-page-20261106",
+      "fivetran-openapi-file-20261106",
+      "fivetran-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fivetran-openapi-page-20261106",
+          "quote": "Fivetran publishes a dedicated \"OpenAPI Definition (V1)\" page with direct JSON and YAML downloads of the full REST API specification"
+        },
+        {
+          "evidenceId": "fivetran-openapi-file-20261106",
+          "quote": "The spec file itself downloads as OpenAPI 3.0.1 (info version \"v1\"), covering the /v1 REST API."
+        }
+      ]
     }
   },
   {
@@ -4834,7 +4957,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no Fivetran sandbox or test environment that is isolated from production data. The closest items are adjacent, not the capability itself: the MCP server's read-only default scope is a permission control, not sandbox isolation. Copying connections to a new destination is a user-side workaround. The Connector SDK agent plugins mention building and testing connectors but do not describe an isolated sandbox.",
+    "rationale": "A sandbox or test environment is a fair axis for a managed data-pipeline platform, but the evidence pack documents no sandbox, staging, or test environment isolated from production data. The closest items are adjacent and earn no credit: the Connector SDK coding-agent skills mention \"test\" without any isolated environment, the MCP server can copy connections to a new destination (a user-side workaround), and the MCP read-only scope is an access control, not sandbox isolation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4846,16 +4969,33 @@
   {
     "productId": "fivetran",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Fivetran documents a REST API for managing accounts and pipelines programmatically, so this axis applies. Nothing in the evidence pack mentions API versioning, version headers or paths, or a deprecation and sunset policy. The fact that a REST API exists does not show that it is versioned or governed by a published deprecation policy.",
-    "evidenceIds": [],
+    "rationale": "Fivetran's REST API is URL-path versioned under /v1 with a published OpenAPI V1 spec. Its dated changelog records deprecations with sunset dates (e.g. May 1, 2025), so it delivers versioning and per-change deprecation notices. However, the evidence says there is no standalone versioning or breaking-change policy page, so the 'documented deprecation policy' half of the story is only met in practice, not as a formal policy. Missing for 10: a formal documented deprecation/breaking-change policy with guaranteed notice windows, any multi-version history beyond v1, and independent corroboration of how deprecations are handled.",
+    "evidenceIds": [
+      "fivetran-release-notes-20261106",
+      "fivetran-openapi-page-20261106",
+      "fivetran-openapi-file-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fivetran-release-notes-20261106",
+          "quote": "The REST API publishes dated release notes recording changes and deprecations with sunset dates"
+        },
+        {
+          "evidenceId": "fivetran-release-notes-20261106",
+          "quote": "The API is URL-path versioned under /v1"
+        },
+        {
+          "evidenceId": "fivetran-openapi-file-20261106",
+          "quote": "The spec file itself downloads as OpenAPI 3.0.1 (info version \"v1\"), covering the /v1 REST API."
+        }
+      ]
     }
   },
   {
@@ -4864,7 +5004,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lineage is a fair question for a managed data-pipeline platform like Fivetran, so the axis applies. However, nothing in the evidence pack documents a lineage view or graph tracing tables back through sources, syncs and transformations. The connector, transformation-orchestration and dbt-integration docs describe adjacent pipeline features, not lineage visibility.",
+    "rationale": "Lineage is a fair axis for a managed data-movement and transformation platform like Fivetran. However, the evidence pack never documents a lineage view or graph tracing sources, sync steps and transformations to the tables they produce. The transformation orchestration and dbt integration docs describe running models, not showing lineage, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4877,13 +5017,12 @@
     "productId": "fivetran",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Fivetran's official MCP server documents one multi-item operation: copying existing connections, with their configs and schemas, to a new destination. That is a first-party bulk action, but it is narrow, and the docs never describe bulk operations as a general capability. The REST API scaling claim and connection-level re-sync are building blocks or adjacent features, not bulk-operation features. Missing for 10: documented general bulk actions across many connections or items (e.g., bulk pause, re-sync, edit or delete), batch API endpoints, limits on bulk scope, and independent or hands-on confirmation that the copy operation works at scale.",
+    "rationale": "The official Fivetran MCP server documents one multi-item operation: copying existing connections, in the plural, to a new destination while keeping their configs and schemas. That is a narrow, bulk-style workflow an AI agent can run. The REST API is a programmatic building block rather than a bulk-operations feature, and table-level re-sync acts within a single connection, so neither earns credit here. Missing for 10: general bulk actions across many connections (pause, resync, delete, schema edits), batch API endpoints, documented limits or semantics for multi-item operations, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fivetran-docs-30",
-      "fivetran-docs-29",
-      "fivetran-probe-4"
+      "fivetran-docs-29"
     ],
     "support": {
       "relation": "direct",
@@ -4905,9 +5044,9 @@
     "productId": "fivetran",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Fivetran documents one built-in event-driven automation: transformations can run automatically when a connection sync completes, as an alternative to a fixed schedule. That is a single fixed trigger-action pairing, not a general rule engine for defining conditions and actions on arbitrary events. The 'Fivetran Alerts' item is only a bare title with no described behavior, so it earns no credit. missing for 10: user-definable rule/condition logic, a range of event types beyond sync completion, configurable action types (e.g., outbound webhooks or API calls), a detailed rules or automation documentation page, independent or hands-on corroboration.",
+    "rationale": "Fivetran documents one built-in event-to-action link: transformations run automatically after a connection sync completes, or on a schedule. Only the after-sync path counts as event-driven; the schedule option is a recurring timer, not an event rule. There is no evidence of a general rule engine where users define their own triggers, conditions and actions; 'Fivetran Alerts' appears only as a page title. Missing for 10: user-definable rule/condition logic, multiple event types beyond sync completion, configurable action types, independent or hands-on corroboration.",
     "evidenceIds": [
       "fivetran-docs-37"
     ],
@@ -4929,11 +5068,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Fivetran's own docs say transformations run automatically after connection syncs or on a set schedule. Connectors sync automatically, and the pricing page lists 1-minute syncs, which implies recurring sync cadences. The evidence does not document how users configure sync frequency or schedules, or how an AI-native user would schedule jobs programmatically via the REST API or MCP server, so coverage is partial. missing for 10: explicit documentation of configurable connector sync schedules/frequencies, documented API or MCP control of schedules, cron-style or workflow-level scheduling details, independent or hands-on corroboration of scheduling.",
+    "rationale": "Fivetran's own docs say transformations can run on a set schedule or automatically after connection syncs. Connectors sync data automatically, and the pricing page lists 1-minute syncs, which implies recurring sync jobs. However, there is no documentation of configuring sync frequency, schedule types, or managing schedules programmatically through the REST API or MCP server, which an AI-native user would need. Missing for 10: documented connector sync-frequency/schedule configuration, schedule management via API/MCP for agent-driven workflows, general workflow scheduling beyond transformations, independent or hands-on corroboration of scheduling behavior.",
     "evidenceIds": [
       "fivetran-docs-37",
       "fivetran-docs-11",
-      "fivetran-docs-1"
+      "fivetran-docs-24",
+      "fivetran-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -4949,7 +5089,7 @@
           "quote": "1-minute syncs"
         },
         {
-          "evidenceId": "fivetran-docs-1",
+          "evidenceId": "fivetran-docs-24",
           "quote": "Fivetran provides pre-built data connectors that automatically sync data from your applications, databases, event streams, and files to your data warehouse or data lake."
         }
       ]
@@ -4961,7 +5101,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Versioning, reviewing, and rolling back pipeline or connector configurations is a fair question for a data-movement platform, but the evidence pack never documents config versioning, change review, or rollback. The nearby items do not qualify. Connector SDK code and dbt projects could be kept in a user's own git, which is a user-side workaround. Copying connections, re-syncs, and History Mode are adjacent features about data, not automation versions.",
+    "rationale": "Versioning, reviewing, and rolling back pipelines and transformations is a fair question for a data-pipeline platform like Fivetran, but the evidence documents no config version history, change review, or rollback feature. Custom connectors are Python code and transformations can live in a dbt project, which a user could put under their own source control, but that is a user-side workaround and earns no credit. The REST API changelog covers Fivetran's own API versioning, not users' automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4976,7 +5116,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fivetran's own connector docs list re-sync at both connection level and table level, so a single table can be resynced without rebuilding the pipeline. A community report also confirms full re-syncs were performed. However, the table-level evidence comes from a single connector page (Akamai), and nothing documents backfilling history over a chosen range. missing for 10: evidence that table-level resync is available across connectors, a documented historical backfill capability, details on how to trigger a resync via the UI or API, and independent hands-on corroboration of a table-level resync.",
+    "rationale": "Fivetran's own connector docs list re-sync at both connection and table level ('A parent table re-sync includes all associated child tables'), so a single table can be resynced without rebuilding the pipeline. This is shown only on one connector's (Akamai) feature table, not as a platform-wide capability, and a community user confirms full re-syncs in practice. History Mode is change tracking, not a historical backfill, so it is not credited. missing for 10: platform-wide documentation of table-level re-sync across connectors, explicit historical backfill or date-range re-sync capability, independent hands-on corroboration of single-table resync",
     "evidenceIds": [
       "fivetran-docs-48",
       "fivetran-comm-14"
@@ -4992,7 +5132,7 @@
         },
         {
           "evidenceId": "fivetran-comm-14",
-          "quote": "We even had to do a full re-sync on a couple of occasions (which to their credit they did for no charge)."
+          "quote": "We even had to do a full re-sync on a couple of occasions"
         }
       ]
     }
@@ -5000,16 +5140,38 @@
   {
     "productId": "fivetran",
     "storyId": "cdc-log-replication",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack says Fivetran syncs databases with automatic incremental syncs, captures deletes, and offers a soft delete mode. None of it mentions log-based CDC, binlog or WAL reading, or lower load on the source, so the story's core mechanism is unevidenced. Generic incremental syncs and delete capture are adjacent features, not documented log-based replication.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Fivetran documents pre-built database connectors with automatic incremental syncs, delete capture, and soft-delete/live/history sync modes. That covers the outcome of replicating updates and deletes, but nothing in the pack says this is done by reading logs (binlog/WAL) rather than querying the source. Missing for 10: any documented log-based CDC via binlog/WAL, evidence of low source impact, database-specific delete-capture docs (the delete-capture line is truncated and the connector table is for an application), and hands-on corroboration.",
+    "evidenceIds": [
+      "fivetran-docs-24",
+      "fivetran-docs-18",
+      "fivetran-docs-13",
+      "fivetran-docs-35"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a data engineer, I replicate databases with log-based CDC (binlog/WAL) so I capture updates and deletes without hammering the source",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "fivetran-docs-24",
+          "quote": "Fivetran provides pre-built data connectors that automatically sync data from your applications, databases, event streams, and files to your data warehouse or data lake."
+        },
+        {
+          "evidenceId": "fivetran-docs-18",
+          "quote": "Each connector handles schema changes, API updates, and incremental syncs automatically"
+        },
+        {
+          "evidenceId": "fivetran-docs-13",
+          "quote": "Fivetran captures deletes whene"
+        },
+        {
+          "evidenceId": "fivetran-docs-35",
+          "quote": "Soft Delete Mode ... Live Mode ... History Mode"
+        }
+      ]
     }
   },
   {
@@ -5018,13 +5180,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Fivetran documents a catalog of 700+ pre-built connectors covering applications, databases, event streams and files. Each connector is maintained by Fivetran, handling schema changes and API updates automatically. The directory lists specific SaaS and database sources, and independent community comments corroborate the breadth of the catalog and the relief from API maintenance. Missing for 10: hands-on evidence of per-source depth and quality across the catalog (connector reliability varies, e.g. occasional out-of-sync reports).",
+    "rationale": "Fivetran documents a catalog of 700+ pre-built connectors spanning applications, databases, event streams and files, each of which handles schema changes and API updates automatically. Per-connector pages such as Akamai detail supported features, and community users independently praise the breadth of the catalog and the relief from maintaining connectors through third-party API changes. Missing for 10: an enumerated, category-level view of the catalog in the evidence showing database and file connector coverage in depth (only a few named SaaS examples appear).",
     "evidenceIds": [
-      "fivetran-docs-54",
-      "fivetran-docs-1",
+      "fivetran-docs-24",
       "fivetran-docs-18",
+      "fivetran-docs-54",
       "fivetran-intdir-3",
       "fivetran-intdir-4",
+      "fivetran-docs-48",
       "fivetran-comm-19",
       "fivetran-comm-15"
     ],
@@ -5034,16 +5197,16 @@
       "subject": "As a data engineer, I pick from a broad catalog of maintained connectors for the SaaS APIs, databases, and files my company actually uses",
       "citations": [
         {
-          "evidenceId": "fivetran-docs-54",
-          "quote": "Fivetran Connectors | 700+ Data Integration Connectors & Setup Guides"
-        },
-        {
-          "evidenceId": "fivetran-docs-1",
+          "evidenceId": "fivetran-docs-24",
           "quote": "Fivetran provides pre-built data connectors that automatically sync data from your applications, databases, event streams, and files to your data warehouse or data lake."
         },
         {
           "evidenceId": "fivetran-docs-18",
           "quote": "Each connector handles schema changes, API updates, and incremental syncs automatically — no data pipelines to maintain."
+        },
+        {
+          "evidenceId": "fivetran-docs-54",
+          "quote": "Fivetran Connectors | 700+ Data Integration Connectors & Setup Guides"
         },
         {
           "evidenceId": "fivetran-comm-19",
@@ -5062,7 +5225,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a catalog of 700+ connectors and per-connector feature tables (re-sync, data blocking, row filtering, capture deletes). None of it documents the connector's maturity (for example beta or GA), its support level, or who maintains it. Feature-support matrices are an adjacent capability and do not satisfy this story.",
+    "rationale": "Fivetran's connector catalog (700+ connectors) and per-connector pages are documented, but the feature tables shown list only capabilities such as re-sync, data blocking, row filtering and capture deletes. No evidence shows the catalog labeling each connector's maturity or release stage, its support level, or who maintains it. Feature-support tables are an adjacent feature and earn no credit toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5075,14 +5238,15 @@
     "productId": "fivetran",
     "storyId": "custom-connector-builder",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Fivetran's own Connector SDK is a supported Python framework for building custom connectors that deploy as an extension of Fivetran rather than as a fork. It comes with a setup guide, a GitHub repo, and AI coding-agent plugins to build, test, and deploy connectors. missing for 10: detailed documentation of SDK depth (auth, pagination, incremental state, schema handling), any low-code/no-code builder option, independent or hands-on corroboration of building a long-tail API connector.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Fivetran's first-party Connector SDK is a supported Python framework for building custom connectors that deploy as an extension of Fivetran, not a fork. It has a setup guide, a GitHub repo, AI coding-agent plugins to build, test and deploy connectors, and a video tutorial. This directly covers building a custom connector for a long-tail API. Missing for 10: independent or hands-on corroboration of the SDK in practice, and documented depth on SDK capabilities such as incremental state, schema handling and runtime limits.",
     "evidenceIds": [
       "fivetran-docs-2",
       "fivetran-docs-17",
       "fivetran-intdir-5",
       "fivetran-intdir-6",
+      "fivetran-intdir-7",
       "fivetran-docs-39"
     ],
     "support": {
@@ -5111,7 +5275,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Fivetran documents orchestrating transformations in the destination, run automatically after the connection syncs they depend on or on a schedule, so there is sequencing between ingestion and downstream transformations. The evidence does not show a general way to declare dependencies between arbitrary pipeline steps and datasets. missing for 10: user-defined cross-pipeline/dataset dependency graphs, ordering across multiple connectors and transformations, documentation of how dependencies are declared, independent or hands-on corroboration.",
+    "rationale": "Fivetran documents its own transformation orchestration: transformations can run automatically after connection syncs. That gives a built-in sync-then-transform ordering, and the hosted dbt Core integration centralizes transformation management. The evidence does not show user-defined dependency graphs across arbitrary pipeline steps and datasets, or Fivetran itself resolving multi-step run order. Missing for 10: explicit user-defined dependencies between pipeline steps and datasets, DAG-level ordering across syncs and transformations beyond the after-sync trigger, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fivetran-docs-37",
       "fivetran-docs-4",
@@ -5143,7 +5307,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fivetran documents an Alerts feature, but the pack gives only its title. Its official MCP server answers connection-level sync-status questions such as \"when was the last time my postgres connection completed a sync?\" and \"are any of my connections broken?\". Neither shows per-destination-table freshness or an alert tied to a missed expected cadence. Missing for 10: per-table freshness visibility, documented alerting on missed sync cadence or schedule, details of what Fivetran Alerts covers, and independent or hands-on corroboration.",
+    "rationale": "Fivetran documents its own alerting feature ('Fivetran Alerts'). Its official MCP server can report when a connection last completed a sync and whether connections are broken, which gives connection-level freshness. The evidence does not show per-table freshness in the destination or alerts that fire specifically when a sync misses its expected cadence. Missing for 10: per-destination-table freshness visibility, documented missed-cadence/delay alerting, alert content and configuration details, independent or hands-on corroboration.",
     "evidenceIds": [
       "fivetran-docs-15",
       "fivetran-docs-28",
@@ -5160,7 +5324,7 @@
         },
         {
           "evidenceId": "fivetran-docs-28",
-          "quote": "It allows you to ask read-only questions like \"when was the last time my postgres connection completed a sync?\" and \"are any of my connections broken?\""
+          "quote": "It allows you to ask read-only questions like \"when was the last time my postgres connection completed a sync?\""
         }
       ]
     }
@@ -5168,19 +5332,18 @@
   {
     "productId": "fivetran",
     "storyId": "dbt-integration",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fivetran's docs say transformations run automatically after connection syncs, so they are triggered by fresh loads rather than only a timer, and Fivetran offers a hosted dbt Core integration. Evidence is limited to brief first-party statements. Missing for 10: detail on how sync-to-transformation dependencies are configured (which connections trigger which models, partial or failed sync handling), and independent or hands-on corroboration of sync-triggered dbt runs.",
+    "rationale": "Fivetran's own docs say it runs dbt transformations through its hosted dbt Core integration, and that transformations can be triggered automatically after connection syncs rather than only on a set schedule. That covers sync-triggered runs on freshly loaded data. The evidence is a single line, though, and does not explain how the trigger works (for example, multi-connection dependencies or behavior on failed syncs). missing for 10: documented details of the sync-triggered execution (waiting on multiple upstream connections, handling of failed or partial syncs, dbt Cloud/Coalesce trigger parity), independent or hands-on confirmation that dbt runs fire after loads complete.",
     "evidenceIds": [
       "fivetran-docs-37",
       "fivetran-docs-5",
-      "fivetran-docs-4",
-      "fivetran-docs-58"
+      "fivetran-docs-4"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an analytics engineer, dbt transformations run against freshly loaded data as part of the pipeline, not on a blind timer",
       "citations": [
         {
@@ -5202,14 +5365,14 @@
     "productId": "fivetran",
     "storyId": "destination-breadth",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Fivetran's docs say its connectors sync to \"your data warehouse or data lake,\" including data lakes in open table formats, and its official MCP server can copy existing connections to a new destination with configs and schemas intact, which supports swapping destinations without rebuilding pipelines. Snowflake and BigQuery as destinations are corroborated only by community users. The other named targets are not evidenced. missing for 10: explicit documentation of Databricks, Postgres-as-destination and object-storage destinations, a destination list beyond a page title, and independent hands-on evidence that destination switching leaves pipelines unchanged.",
+    "rationale": "Fivetran's docs say its connectors sync to 'your data warehouse or data lake', including data lakes in open table formats, and it has a supported-destinations page. Its MCP tooling can copy existing connections to a new destination with configs and schemas intact, which supports portability without rebuilding pipelines. However, only Snowflake and BigQuery are confirmed as destinations, and only by community posts; the destinations page is just a title. Missing for 10: first-party documentation naming Snowflake, BigQuery, Databricks, Postgres and object storage as supported destinations; evidence that destination switching works without pipeline changes outside the MCP copy tool; independent corroboration for Databricks, Postgres and object-storage loading.",
     "evidenceIds": [
       "fivetran-docs-24",
       "fivetran-docs-6",
-      "fivetran-docs-30",
       "fivetran-docs-55",
+      "fivetran-docs-30",
       "fivetran-comm-2",
       "fivetran-comm-13"
     ],
@@ -5247,12 +5410,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fivetran's docs state that each pre-built connector handles incremental syncs automatically with no pipelines to maintain, and that deletes are captured. Community users describe syncing as very reliable, though one reports occasional out-of-sync states that required full re-syncs, which Fivetran did for free. Missing for 10: detailed first-party documentation of the cursor/state mechanism (e.g., how it works per connector type), and independent hands-on confirmation that only changed rows move.",
+    "rationale": "Fivetran's connector docs say each connector handles incremental syncs automatically with no pipelines to maintain, so state tracking is the product's job rather than the user's. Capture deletes and documented sync modes support moving changes rather than doing full reloads, and community reports describe syncing as reliable. One user reports occasional drift that required full re-syncs. Missing for 10: detailed documentation of cursor/state or change-capture mechanics (e.g., log-based CDC, cursor fields), and independent hands-on confirmation that full reloads are avoided in practice.",
     "evidenceIds": [
-      "fivetran-docs-18",
       "fivetran-docs-1",
+      "fivetran-docs-18",
       "fivetran-docs-13",
       "fivetran-docs-51",
+      "fivetran-docs-35",
       "fivetran-comm-3",
       "fivetran-comm-14"
     ],
@@ -5279,29 +5443,16 @@
   {
     "productId": "fivetran",
     "storyId": "llm-ready-destinations",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Fivetran's docs make one thin first-party claim that it can create a unified context layer for AI tools, and it lists Unstructured File Replication as a feature. Otherwise, its documented destinations are warehouses and data lakes in open table formats, with no named vector-store destination. Missing for 10: documented vector-store destinations, embedding/chunking into LLM-ready formats, details of how agents retrieve synced data, and hands-on corroboration.",
-    "evidenceIds": [
-      "fivetran-docs-7",
-      "fivetran-docs-32",
-      "fivetran-docs-6"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Fivetran syncing data to data warehouses and data lakes in open table formats. It never documents loading into vector stores or producing embeddings, chunks, or other LLM-ready formats. The 'unified context layer' line for AI tools is a vague tagline with no described vector or LLM-format destination, and unstructured file replication is an adjacent feature, so neither earns credit for this story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, pipelines load into vector stores and LLM-ready formats so my agents can retrieve what was synced",
-      "citations": [
-        {
-          "evidenceId": "fivetran-docs-7",
-          "quote": "Create a unified context layer that enables your AI tools to answer questions more accurately."
-        },
-        {
-          "evidenceId": "fivetran-docs-32",
-          "quote": "Unstructured File Replication"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5310,10 +5461,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fivetran's own Connector SDK lets you develop custom Python connectors and documents a workflow to \"build, test, and deploy connectors\", which implies testing before deployment. That is only a thin mention covering custom connectors, not pipelines in general. Nothing in the evidence shows local execution or a lightweight local destination. missing for 10: documented local run/debug mode for pipelines, a lightweight local test destination, coverage beyond custom SDK connectors, and independent or hands-on corroboration.",
+    "rationale": "Fivetran's own Connector SDK lets data engineers develop custom Python connectors. Its AI coding-agent plugins, which run in local CLIs such as Claude Code, Codex CLI and Gemini CLI, explicitly let users 'build, test, and deploy connectors', which implies a pre-deployment test loop. Nothing in the evidence documents running a pipeline locally or writing to a lightweight local destination, and the core managed connectors have no local mode at all. missing for 10: documented local run/debug command, a lightweight local destination (e.g., file or embedded DB) for testing, any isolation from production destinations, hands-on or independent corroboration.",
     "evidenceIds": [
+      "fivetran-docs-2",
       "fivetran-intdir-6",
-      "fivetran-docs-2"
+      "fivetran-intdir-5"
     ],
     "support": {
       "relation": "direct",
@@ -5335,17 +5487,17 @@
     "productId": "fivetran",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Fivetran documents a first-party REST API for setting up and scaling pipelines and managing the account programmatically. Its official MCP server exposes read, write and delete scopes over that API, so broad programmatic control is evidenced, but nothing documents full UI parity. One community report calls the APIs unreliable; that speaks to stability rather than coverage, so it is reflected in confidence, not the verdict. Missing for 10: an explicit statement or endpoint inventory showing UI-to-API parity, API coverage for dashboard-centric functions such as Hybrid Deployment Agent and Proxy Agent management, a discoverable OpenAPI spec (probes returned 404), and independent hands-on corroboration of complete coverage.",
+    "rationale": "Fivetran documents a REST API for setting up and scaling data pipelines and managing the account programmatically. It publishes a full OpenAPI 3.0.1 v1 spec from which the API reference is generated, and its official MCP server exposes read, write and delete scopes, so broad programmatic control exists. However, no evidence claims or demonstrates UI-to-API parity, and several capabilities are documented only through dashboard tabs (Proxy Agent, Hybrid Deployment Agents, Quickstart data models). Missing for 10: an explicit API/UI parity statement or coverage mapping, evidence that dashboard-only features such as agent management and Quickstart models are API-accessible, and independent hands-on corroboration of parity.",
     "evidenceIds": [
       "fivetran-docs-3",
-      "fivetran-docs-22",
-      "fivetran-docs-23",
-      "fivetran-docs-36",
+      "fivetran-openapi-page-20261106",
+      "fivetran-openapi-file-20261106",
       "fivetran-docs-29",
       "fivetran-docs-30",
-      "fivetran-probe-4"
+      "fivetran-docs-36",
+      "fivetran-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -5357,12 +5509,12 @@
           "quote": "Set up and scale your data pipeline, and manage your Fivetran account programmatically using the Fivetran REST API."
         },
         {
-          "evidenceId": "fivetran-docs-29",
-          "quote": "Set `FIVETRAN_SCOPE` to `read/write` or `read/write/delete` to unlock write and delete operations"
+          "evidenceId": "fivetran-openapi-page-20261106",
+          "quote": "Fivetran publishes a dedicated \"OpenAPI Definition (V1)\" page with direct JSON and YAML downloads of the full REST API specification, from which the API reference is auto-generated."
         },
         {
-          "evidenceId": "fivetran-docs-30",
-          "quote": "Copy existing Fivetran connections to a new destination. Keep their configs and schemas intact or modify them as you like."
+          "evidenceId": "fivetran-docs-29",
+          "quote": "Set `FIVETRAN_SCOPE` to `read/write` or `read/write/delete` to unlock write and delete operations"
         }
       ]
     }
@@ -5373,12 +5525,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fivetran's documented model writes synced data into the user's own warehouse or data lake, including in open table formats, so that data stays with the user if they leave. The evidence does not document an export or exit path for Fivetran-held assets such as connection configs, schemas and history, and it does not name which open formats are used. missing for 10: documented account/config export or offboarding path, specifics of which open table formats are supported, independent corroboration of migrating away.",
+    "rationale": "Fivetran's own documented capability lands synced data in open table formats in your own data lake or warehouse, so the data already sits in customer-controlled storage in open formats. The pack documents nothing about exiting the platform itself, such as exporting connector configurations or account metadata, or any off-boarding path. The REST API is only a developer building block and is not credited. Missing for 10: documented export of Fivetran-held configuration/metadata, explicit exit or portability guidance, naming of the specific open formats, independent corroboration of leaving cleanly.",
     "evidenceIds": [
       "fivetran-docs-6",
-      "fivetran-docs-24",
-      "fivetran-docs-25",
-      "fivetran-comm-19"
+      "fivetran-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -5392,14 +5542,6 @@
         {
           "evidenceId": "fivetran-docs-24",
           "quote": "Fivetran provides pre-built data connectors that automatically sync data from your applications, databases, event streams, and files to your data warehouse or data lake."
-        },
-        {
-          "evidenceId": "fivetran-docs-25",
-          "quote": "You can either add the models in the Fivetran dashboard (Quickstart data models) or import them into your dbt project (Fivetran data models)."
-        },
-        {
-          "evidenceId": "fivetran-comm-19",
-          "quote": "Fivetran has become the default in getting data out of tools you already pay for directly into a controlled space."
         }
       ]
     }
@@ -5410,7 +5552,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-source availability is a fair question for a data-integration platform, so the axis applies. However, the evidence describes Fivetran as a fully managed SaaS and never documents its core source being published under an open license. The Connector SDK repo and the fivetran-mcp GitHub repo are adjacent tooling with no license stated, so they earn no credit.",
+    "rationale": "Open-source availability is a fair question for a data-integration platform, so the axis applies. However, nothing in the evidence shows Fivetran's core platform source is published under an open license. The GitHub repos cited (the MCP server and the Connector SDK repo) are peripheral tooling with no license stated, so they do not count as the product's source. The community comment contrasting Airbyte as open source implies Fivetran is not, but it says nothing positive about Fivetran's openness.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5425,14 +5567,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Fivetran documents a Hybrid Deployment model in which customers run a Hybrid Deployment Agent on their own hosts. The docs cover environment-specific configuration parameters and systemd management, and one agent can handle multiple connections. However, agents are still created and managed from the Fivetran dashboard, and the product describes itself as a fully managed platform, so the core product is not fully self-hosted. Missing for 10: a fully self-hostable control plane and dashboard, documented self-hosted install and upgrade of the entire product, and independent or hands-on corroboration of self-hosted operation.",
+    "rationale": "Fivetran documents a Hybrid Deployment model in which a Fivetran-provided agent runs on the customer's own host. The agent can be configured for the local environment, managed by systemd, and can handle multiple connections. However, agents are still created and managed from the Fivetran-hosted dashboard, so only the data-plane component is self-hosted, not the core product. Missing for 10: a fully self-hosted or on-prem deployment of the whole platform including the control plane and dashboard, open-source or air-gapped install docs, and independent hands-on corroboration of hybrid self-hosting.",
     "evidenceIds": [
       "fivetran-docs-26",
       "fivetran-docs-42",
       "fivetran-docs-45",
       "fivetran-docs-46",
       "fivetran-docs-65",
-      "fivetran-probe-1"
+      "fivetran-docs-64"
     ],
     "support": {
       "relation": "direct",
@@ -5444,6 +5586,10 @@
           "quote": "These solutions include the following deployment models: SaaS Deployment... Hybrid Deployment"
         },
         {
+          "evidenceId": "fivetran-docs-42",
+          "quote": "In the **Hybrid Deployment Agents** tab of the Fivetran dashboard, you can create new agents and view or manage all existing Hybrid Deployment Agents associated with your account."
+        },
+        {
           "evidenceId": "fivetran-docs-45",
           "quote": "These parameters enable you to customize the Hybrid Deployment Agent specifically for your environment."
         },
@@ -5452,8 +5598,8 @@
           "quote": "You can configure `systemd` to manage the Hybrid Deployment Agent and start it automatically when the host boots."
         },
         {
-          "evidenceId": "fivetran-docs-42",
-          "quote": "In the **Hybrid Deployment Agents** tab of the Fivetran dashboard, you can create new agents and view or manage all existing Hybrid Deployment Agents associated with your account."
+          "evidenceId": "fivetran-docs-46",
+          "quote": "a single agent can manage multiple connections at the same time."
         }
       ]
     }
@@ -5464,7 +5610,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fivetran's own MCP server can report per-connection sync status, such as whether the last sync succeeded or a connection is broken, and the docs have a \"Fivetran Alerts\" page, but that page is only a title with no detail on how alerts are delivered. The webhooks evidence concerns usage tracking for a source endpoint, not outbound failure alerts, so it earns no credit. missing for 10: sync logs, per-sync row counts, documented failure alert delivery to Slack, email, or webhook, dashboard run-history documentation, independent or hands-on corroboration.",
+    "rationale": "Fivetran documents a 'Fivetran Alerts' dashboard page, though the evidence gives only its title. Its official MCP server can answer sync-status questions such as whether the last sync succeeded or whether any connections are broken, which shows per-connection run status is exposed. Missing for 10: documented sync logs, per-sync row counts, failure alert delivery to Slack, email, or registrable outbound webhooks, any detail on what Alerts covers, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fivetran-docs-15",
       "fivetran-docs-28",
@@ -5476,16 +5622,16 @@
       "subject": "As a data engineer, I see run status, logs, and row counts per sync, and failures alert me in Slack, email, or a webhook",
       "citations": [
         {
-          "evidenceId": "fivetran-docs-59",
-          "quote": "It lets you ask questions like \"was my last postgres sync successful\" and \"are any of my connections broken\" and have the model answer the questions for you."
+          "evidenceId": "fivetran-docs-15",
+          "quote": "Fivetran Alerts"
         },
         {
           "evidenceId": "fivetran-docs-28",
           "quote": "It allows you to ask read-only questions like \"when was the last time my postgres connection completed a sync?\" and \"are any of my connections broken?\""
         },
         {
-          "evidenceId": "fivetran-docs-15",
-          "quote": "Fivetran Alerts"
+          "evidenceId": "fivetran-docs-59",
+          "quote": "It lets you ask questions like \"was my last postgres sync successful\" and \"are any of my connections broken\" and have the model answer the questions for you."
         }
       ]
     }
@@ -5494,15 +5640,15 @@
     "productId": "fivetran",
     "storyId": "pipelines-as-code",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Fivetran does let some pipeline logic live as code: custom connectors are written in Python with the Connector SDK, and Fivetran data models can be imported into your own dbt project. Its core product, though, is fully managed pre-built connectors configured in the dashboard or via the REST API, not config files kept in a repo. The custom-connector code also deploys only as an extension of Fivetran, so it is not portable. Missing for 10: declarative config-as-code for standard connectors, documented git/repo versioning and review workflow, portability outside Fivetran's hosted runtime, independent corroboration.",
+    "rationale": "Fivetran does have code-first pieces of its own: the Connector SDK lets you write custom connectors in Python and deploy them, and transformations can run as dbt models imported into your own dbt project. But its core offering is managed, pre-built connectors set up in the dashboard ('no data pipelines to maintain'). The REST API is only a building block for managing that config programmatically. Nothing shows standard pipeline config living as declarative files in your repo, or that it can be moved off Fivetran. missing for 10: declarative pipeline/connection config-as-code (e.g. an official IaC/config-file workflow) for standard connectors, documented versioning and review workflow, portability of pipelines outside Fivetran, independent hands-on corroboration.",
     "evidenceIds": [
       "fivetran-docs-2",
+      "fivetran-intdir-5",
       "fivetran-docs-25",
       "fivetran-docs-5",
-      "fivetran-docs-1",
-      "fivetran-intdir-6"
+      "fivetran-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -5518,8 +5664,8 @@
           "quote": "You can either add the models in the Fivetran dashboard (Quickstart data models) or import them into your dbt project (Fivetran data models)."
         },
         {
-          "evidenceId": "fivetran-intdir-6",
-          "quote": "These skills let you build, test, and deploy connectors using natural language prompts."
+          "evidenceId": "fivetran-docs-5",
+          "quote": "Use the Fivetran-hosted dbt Core integration or our third-party dbt Cloud and Coalesce orchestration to centralize and manage all your transformations."
         }
       ]
     }
@@ -5530,13 +5676,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Fivetran publishes a usage-based pricing model based on monthly active rows (MAR), with a free tier of 500,000 MAR and annual-contract discounts, so the model itself is public. Nothing in the evidence shows a way to estimate a new source's cost before connecting it. Hands-on community reports describe MAR billing as unpredictable, with spikes and ~10x row inflation, and note users must trim data during a post-connection 2-week window. missing for 10: a documented pre-connection cost estimator or calculator, published per-MAR rates, and evidence that costs are predictable in practice.",
+    "rationale": "Fivetran publishes its pricing model. It is usage-based, billed monthly on monthly active rows, with a documented free-plan MAR allowance and annual-contract discounts. However, nothing in the evidence shows a way to estimate a new source's cost before connecting it. Community users concretely report MAR billing as unpredictable, with spikes and inflated record counts, and one user says costs are only discoverable during the post-setup period. Missing for 10: a documented pre-connection cost estimator or per-source cost guidance, published per-MAR rates, and independent confirmation that bills are predictable.",
     "evidenceIds": [
       "fivetran-docs-9",
       "fivetran-docs-21",
       "fivetran-docs-27",
-      "fivetran-docs-10",
       "fivetran-docs-38",
+      "fivetran-docs-10",
       "fivetran-comm-3",
       "fivetran-comm-9",
       "fivetran-comm-12",
@@ -5548,8 +5694,8 @@
       "subject": "As a data platform lead, the pricing model is published and predictable — I can estimate what a new source costs before connecting it",
       "citations": [
         {
-          "evidenceId": "fivetran-docs-9",
-          "quote": "Fivetran’s pricing model involves four basic principles: _Pricing is usage-based_. You are charged based on what you use each month."
+          "evidenceId": "fivetran-docs-21",
+          "quote": "Pricing is usage-based. You are charged based on what you use each month."
         },
         {
           "evidenceId": "fivetran-docs-27",
@@ -5557,7 +5703,7 @@
         },
         {
           "evidenceId": "fivetran-docs-10",
-          "quote": "Get started now on our Free Plan. Upgrade to unlock unlimited usage, access premium features, and save up to 22% with an annual contract."
+          "quote": "Upgrade to unlock unlimited usage, access premium features, and save up to 22% with an annual contract."
         }
       ]
     }
@@ -5566,14 +5712,13 @@
     "productId": "fivetran",
     "storyId": "privacy-data-residency",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Fivetran's own docs show some deployment-location choice: the pricing page offers 'Pick any cloud provider (GCP, AWS, Azure)', and the deployment-models docs list a Hybrid Deployment option with customer-managed agents. That suggests some control over where data is processed. No evidence explicitly documents choosing a geographic region or data-residency guarantees. missing for 10: explicit region selection for processing/storage, documented data-residency or sovereignty guarantees, detail on what Hybrid Deployment keeps in the customer's environment, independent corroboration.",
+    "rationale": "The pricing page says customers can 'Pick any cloud provider (GCP, AWS, Azure)', and the docs offer a Hybrid Deployment model with agents run in the customer's environment. Both give some control over where data is handled, but neither explicitly documents choosing a geographic region or data residency. Missing for 10: explicit region selection, documented data-residency guarantees, confirmation that Hybrid Deployment keeps data within the customer's environment, and independent corroboration.",
     "evidenceIds": [
       "fivetran-docs-19",
       "fivetran-docs-26",
-      "fivetran-docs-42",
-      "fivetran-docs-8"
+      "fivetran-docs-42"
     ],
     "support": {
       "relation": "direct",
@@ -5587,10 +5732,6 @@
         {
           "evidenceId": "fivetran-docs-26",
           "quote": "These solutions include the following deployment models: SaaS Deployment... Hybrid Deployment"
-        },
-        {
-          "evidenceId": "fivetran-docs-42",
-          "quote": "In the **Hybrid Deployment Agents** tab of the Fivetran dashboard, you can create new agents and view or manage all existing Hybrid Deployment Agents associated with your account."
         }
       ]
     }
@@ -5601,7 +5742,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fivetran is a managed SaaS that handles customer data and ships AI features, so a no-training or AI-training opt-out policy is a fair question to ask. The evidence pack contains no statement about whether customer data is used for model training, and no opt-out control. Data blocking, column hashing and row filtering are adjacent data-minimization controls for syncs, not a training-use guarantee, so they earn no credit.",
+    "rationale": "Fivetran is a SaaS data-movement platform that handles customer data and ships AI features such as an AI support assistant, so a buyer could fairly ask about its AI-training data policy; the axis applies. The evidence pack contains no documented policy, setting, or contractual commitment preventing customer data from being used to train AI models. Data blocking and column hashing only control what syncs to the customer's own destination, so they are adjacent controls and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5615,12 +5756,15 @@
     "storyId": "privacy-retention-controls",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Fivetran documents sync modes (Soft Delete, Live, History) and delete capture, which let users choose whether deleted source records are kept, soft-deleted, or kept as history in the destination. That is a product-native control over how synced data is retained or removed. However, the evidence is only mode names and a truncated feature line, with no detail on retention periods or on deleting data Fivetran itself holds. Missing for 10: configurable retention periods/TTL, documented purge or deletion of Fivetran-held data, detail on how each sync mode behaves, and any independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Fivetran's own sync modes (Soft Delete, Live, History) and its capture-deletes feature control how deleted source records are kept or removed in the destination. Data blocking and row filtering keep unwanted data from being synced at all. These are real product controls over deletion and history in the pipeline, but the evidence is mostly feature-name listings with no detail. Missing for 10: documentation of Fivetran-side data retention periods or retention policy settings, explicit user-initiated deletion or purge controls for synced or stored data, in-depth docs on how each sync mode handles retention, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fivetran-docs-35",
       "fivetran-docs-13",
-      "fivetran-docs-51"
+      "fivetran-docs-51",
+      "fivetran-docs-31",
+      "fivetran-docs-49",
+      "fivetran-docs-50"
     ],
     "support": {
       "relation": "direct",
@@ -5632,12 +5776,12 @@
           "quote": "Soft Delete Mode ... Live Mode ... History Mode"
         },
         {
-          "evidenceId": "fivetran-docs-13",
-          "quote": "Fivetran captures deletes"
-        },
-        {
           "evidenceId": "fivetran-docs-51",
           "quote": "Capture deletes | YES | `ENTITY` table and its child tables"
+        },
+        {
+          "evidenceId": "fivetran-docs-49",
+          "quote": "Data blocking | YES | Column level"
         }
       ]
     }
@@ -5648,7 +5792,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a SaaS data platform that ships an SDK, a hybrid agent and an MCP server, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, or any way to opt out. Data blocking and column hashing control which synced source data is moved, not product telemetry, so they are adjacent features and earn no credit.",
+    "rationale": "Telemetry opt-out is a fair question for a SaaS data platform with a Connector SDK, MCP server and hybrid agents, so the axis applies. The evidence pack has nothing on disabling telemetry or usage tracking. The 'usage-based pricing' items concern billing metering, not a privacy opt-out, and data-blocking and column-hashing features control customer data being synced, not the product's own telemetry.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5663,7 +5807,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents automatic retry of transient failures or resuming interrupted syncs from checkpoints. The closest items are adjacent: automatic incremental syncs, alerts, manual re-sync controls, and general community praise for reliability. None of these show retry or checkpoint-resume behavior, so they earn no credit.",
+    "rationale": "The evidence pack contains no documentation of automatic retries for transient failures or of checkpoint-based resumption of interrupted syncs. Automatic incremental syncs, manual re-sync controls, and systemd auto-start for the Hybrid Deployment Agent are adjacent features, not this capability. The community remark that syncing is 'reliable' does not show retry or checkpoint behavior.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5678,7 +5822,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence only shows Fivetran moving data from applications, databases, event streams and files into a warehouse or data lake, plus in-warehouse transformations. Nothing documents syncing modeled warehouse data back into CRM, ads or support tools. The community comment comparing Fivetran (API to database) with Census (database to API) frames reverse ETL as another product's role. Data movement is a fair question for this kind of platform, so the absence of evidence makes this none rather than na.",
+    "rationale": "Every Fivetran capability in the evidence moves data into a warehouse or data lake from applications, databases, and files. Nothing documents syncing modeled warehouse data back out to CRM, ads, or support tools. A community comment contrasts Fivetran (APIs into databases) with Census (databases out to APIs), which reinforces that reverse-ETL activation is not evidenced here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5692,11 +5836,11 @@
     "storyId": "schema-evolution-handling",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Fivetran's own docs say each connector handles schema changes automatically, which covers detecting and propagating upstream schema changes rather than letting loads break. Nothing in the evidence shows a user-selectable schema-change policy (e.g., allow all, block new columns, or require review), so the 'by a policy I choose' part is unevidenced. missing for 10: configurable schema-change policy options, documentation of how changes are detected and propagated, alerting on schema changes, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Fivetran's own docs say each connector handles upstream schema changes automatically, so the core detection-and-propagation behavior is claimed. Nothing in the pack shows a user-selectable policy (for example, allow all, allow columns only, or block) governing how those changes are applied. missing for 10: a documented user-chosen schema change policy, detail on how changes are detected and propagated to the destination, alerting on schema changes, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "fivetran-docs-1",
-      "fivetran-docs-18"
+      "fivetran-docs-18",
+      "fivetran-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -5705,10 +5849,6 @@
       "citations": [
         {
           "evidenceId": "fivetran-docs-18",
-          "quote": "Each connector handles schema changes, API updates, and incremental syncs automatically — no data pipelines to maintain."
-        },
-        {
-          "evidenceId": "fivetran-docs-1",
           "quote": "Each connector handles schema changes, API updates, and incremental syncs automatically"
         }
       ]
@@ -5720,7 +5860,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fivetran's pricing page lists \"1-minute syncs\", which shows the product supports sub-hour sync frequencies. Nothing documents how frequency is set per connection, cron expressions, or on-demand sync triggers. Connection-level re-sync is a historical re-sync rather than a scheduling control, and the scheduled transformations are not data syncs. missing for 10: documented per-connection sync-frequency configuration, cron-expression scheduling, manual/on-demand sync trigger (UI or API), independent corroboration.",
+    "rationale": "Fivetran's pricing page lists '1-minute syncs', its own feature showing sub-hour sync frequency. Nothing in the pack documents per-connection frequency settings, cron-expression scheduling, or a manual 'sync now' trigger. Connection-level re-sync is a different, adjacent capability, and the transformation scheduling belongs to another story. Missing for 10: documented per-pipeline frequency configuration, cron expression support, manual sync triggers via UI or API, and independent hands-on corroboration.",
     "evidenceIds": [
       "fivetran-docs-11"
     ],
@@ -5742,11 +5882,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fivetran's docs say it syncs \"query-ready, fully-managed data\" in open table formats. They also list Custom Data Type Mapping, which implies typed destination columns, and connectors handle schema changes automatically. However, the pack never explicitly documents deduplication or primary-key merge behavior, and never states that data lands as structured tables rather than raw JSON. Missing for 10: explicit documentation of deduplication/upsert semantics, confirmation that nested source data is normalized into typed columns rather than JSON blobs, and independent or hands-on corroboration.",
+    "rationale": "Fivetran's own docs say it syncs \"query-ready, fully-managed data\" in open table formats, and list Custom Data Type Mapping as a platform feature. That implies typed tables rather than raw blobs, but the type mapping appears only as a feature heading, and nothing describes deduplication or primary-key merge behavior. Its pre-built data models produce analytics-ready tables, but that is a post-load transformation layer, not how raw data lands. Missing for 10: explicit documentation of deduplication or upsert semantics, detail on how source types map to destination column types, and independent or hands-on confirmation that tables land typed and deduplicated.",
     "evidenceIds": [
       "fivetran-docs-6",
       "fivetran-docs-33",
-      "fivetran-docs-1",
+      "fivetran-docs-25",
       "fivetran-docs-35"
     ],
     "support": {
@@ -5763,8 +5903,8 @@
           "quote": "Custom Data Type Mapping"
         },
         {
-          "evidenceId": "fivetran-docs-1",
-          "quote": "Each connector handles schema changes, API updates, and incremental syncs automatically"
+          "evidenceId": "fivetran-docs-25",
+          "quote": "We created data models that transform your data into analytics-ready tables."
         }
       ]
     }

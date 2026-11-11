@@ -1,15 +1,16 @@
 {
-  "hash": "66befd4a4cbb2a1e40cbc885d1e1f512b95e4f2c622dbabfcfc09fd93c91f26a",
+  "hash": "acbd83330b6b9b0f2e594698b3275ab592e02001ff6e8de7375a4faf4a38b2ee",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Glama's pricing page documents its own automation feature (\"Automate workflows using schedules or webhooks\"), and the Gateway lets agents make MCP calls programmatically without a UI. Both are forms of non-interactive operation. However, the evidence never shows Glama being invoked from a CI pipeline or run headlessly via a CLI or documented API, and the OpenAPI probe returned 404 on every candidate path. Missing for 10: a documented CLI or headless mode, CI integration docs or examples, a published API spec for scripting, and independent hands-on corroboration of CI usage.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Glama publishes an OpenAPI 3.0.3 REST API for its directory, covering servers, connectors, instances and usage. Calls authenticate with a bearer key, and the pricing page claims workflows can be automated via schedules or webhooks, so some programmatic, non-UI operation is documented. There is no CLI, no CI integration guidance and no documented headless runner, so CI use is only implied by the API's existence. Missing for 10: an official CLI or CI integration (e.g. a GitHub Action or pipeline docs), documented API-key provisioning for CI, a REST surface for Gateway and hosting automation, and independent hands-on corroboration of headless use.",
     "evidenceIds": [
+      "glama-openapi-spec-20261106",
+      "glama-api-try-it-20261106",
       "glama-docs-10",
-      "glama-docs-4",
-      "glama-probe-3"
+      "glama-api-catalog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -17,12 +18,16 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "glama-docs-10",
-          "quote": "Automate workflows using schedules or webhooks."
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "Glama publishes an OpenAPI 3.0.3 document for its MCP directory API (info title \"Glama MCP API\", /v1 paths for servers, connectors, instances, usage)"
         },
         {
-          "evidenceId": "glama-docs-4",
-          "quote": "Every MCP call from your agents flows through Glama"
+          "evidenceId": "glama-api-try-it-20261106",
+          "quote": "exercises the production API with a real bearer key"
+        },
+        {
+          "evidenceId": "glama-docs-10",
+          "quote": "Automate workflows using schedules or webhooks."
         }
       ]
     },

@@ -1,17 +1,30 @@
 {
-  "hash": "0e631ddf7fa80e9d48d19ed97b3658eac6877e44b53ffac44b4a3a3d8b257aa3",
+  "hash": "783ea9c39c33d72ea6d8de2f0cb953984ba4ef8c1b384168ab98fa0e7389423c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Sentry documents a programmatic web API, but nothing in the evidence shows a downloadable OpenAPI or equivalent machine-readable spec. The probe found every candidate OpenAPI/Swagger path returning 404. The llms.txt file is documentation for LLMs, not an API spec, so it is an adjacent feature and earns no credit.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Sentry's official getsentry/sentry-api-schema GitHub repository publishes a downloadable, dereferenced OpenAPI 3.0.3 document for the Sentry Public API covering the full /api/0/ surface. The probe's 404s on docs.sentry.io candidate paths only show the spec isn't served from the docs domain; they don't contradict the GitHub-hosted spec. Missing for 10: discoverability from the docs site (standard openapi.json/.well-known paths return 404), independent or hands-on corroboration of the spec's completeness and accuracy.",
+    "evidenceIds": [
+      "sentry-openapi-schema-20261106",
+      "sentry-probe-2",
+      "sentry-docs-20"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sentry-openapi-schema-20261106",
+          "quote": "The official getsentry/sentry-api-schema repository publishes the dereferenced OpenAPI 3.0.3 document for the \"Sentry Public API\" (info title \"API Reference\", version v0), covering the full /api/0/ surface."
+        },
+        {
+          "evidenceId": "sentry-docs-20",
+          "quote": "The Sentry web API is used to access the Sentry platform programmatically."
+        }
+      ]
     },
     "productId": "sentry",
     "storyId": "api-machine-spec"

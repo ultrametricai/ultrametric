@@ -1,16 +1,18 @@
 {
-  "hash": "e676ca545ede8060de1eacc3227b63b9bb512982c64cabef95d1dfe49432d37a",
+  "hash": "0d78ae6780963c6a4fa97db391fca031255accfc66bf5b0195ace346a4043476",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Sprinto documents inbound webhooks: each one generates a unique endpoint URL that external systems can call to push data in and trigger ingestion workflows. Its API reference also has a 'custom-integration-push-apis' section with an Integration Monitoring page, so a developer-facing push path for uncovered systems exists. However, the pack shows only that page's title, says nothing about payload schemas for evidence or test results, and the OpenAPI probe returned 404 on every candidate path. Missing for 10: documented push-API endpoints and schemas for evidence and test results, auth details, a published OpenAPI spec, and independent or hands-on corroboration of building a custom integration.",
+    "rationale": "Sprinto documents a custom-integration push/sync API section, with Integration Monitoring and OpenAPI fragments for the sync API. It also offers a GraphQL Developer API with introspection and a playground, plus ingestion webhooks that let external systems send data directly into Sprinto. However, the evidence never explicitly shows pushing evidence artifacts or control test results from uncovered systems. Missing for 10: explicit documentation that pushed data maps to evidence or control test results, a downloadable API spec (OpenAPI paths 404), and independent or hands-on corroboration of building a custom integration.",
     "evidenceIds": [
       "sprinto-docs-16",
+      "sprinto-introspection-20261106",
+      "sprinto-playground-20261106",
       "sprinto-docs-48",
-      "sprinto-docs-49",
-      "sprinto-docs-27"
+      "sprinto-docs-59",
+      "sprinto-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -18,16 +20,20 @@
       "subject": "As a developer, I can build private/custom integrations against a documented API to push evidence and test results from systems the catalog doesn't cover",
       "citations": [
         {
+          "evidenceId": "sprinto-introspection-20261106",
+          "quote": "the models page embeds OpenAPI fragments inside the docs page for the custom-integration sync API only"
+        },
+        {
           "evidenceId": "sprinto-docs-48",
           "quote": "Webhooks allow external systems to send data directly into Sprinto. Each webhook generates a unique endpoint URL that receives incoming requests from external services."
         },
         {
-          "evidenceId": "sprinto-docs-49",
-          "quote": "Receive incoming payloads * Trigger ingestion workflows * Process external events"
+          "evidenceId": "sprinto-docs-59",
+          "quote": "You can use webhooks to: Receive incoming payloads, Trigger ingestion workflows, Process external events"
         },
         {
-          "evidenceId": "sprinto-docs-16",
-          "quote": "Integration Monitoring | Sprinto Docs"
+          "evidenceId": "sprinto-playground-20261106",
+          "quote": "You can use the playground to explore the API schema, test queries and mutations, and validate responses in real time."
         }
       ]
     },

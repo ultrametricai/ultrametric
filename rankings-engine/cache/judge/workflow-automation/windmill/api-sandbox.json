@@ -1,17 +1,33 @@
 {
-  "hash": "df3fc157d5721fff982ccc948d1c51a2811ca749aac824881c48c56157fdfaf8",
+  "hash": "c419f7e80ad674a22e702de35ea06f0aa7804824f3e73346fd3a284dc92da65d",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a sandbox, staging, or dev workspace that is isolated from production data. Git sync (docs-11) and the AI 'Compare & Deploy' review page (docs-21) are deployment workflows, not test environments. The community 'sandbox runtime' remark is about execution runtime, and the pre-merge validation comment is only a question, so neither establishes isolated testing against non-production data.",
-    "evidenceIds": [],
+    "rationale": "Windmill documents local development and a single-instance Docker Compose self-host. The vendor says this local or self-hosted instance fills the sandbox role, which isolates testing from production data. However, it states outright that there is no separate hosted sandbox environment, so isolation depends on standing up and managing another instance. Missing for 10: a first-party sandbox or staging environment with documented data isolation from production, a documented workspace-promotion flow from test to production, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "windmill-selfhost-dev-20261106",
+      "windmill-docs-10"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "windmill-selfhost-dev-20261106",
+          "quote": "There is no separate hosted sandbox environment; the self-hosted/local instance fills that role."
+        },
+        {
+          "evidenceId": "windmill-selfhost-dev-20261106",
+          "quote": "local development against self-hosted or cloud workspaces is documented"
+        },
+        {
+          "evidenceId": "windmill-docs-10",
+          "quote": "For small setups, use Docker and Docker Compose on a single instance."
+        }
+      ]
     },
     "productId": "windmill",
     "storyId": "api-sandbox"

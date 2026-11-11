@@ -5221,21 +5221,24 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Maritime documents a CLI designed for other AI agents to operate non-interactively (JSON output, env-var auth), idempotent SDK provisioning of VM-backed agents, and per-user Linux computers a model can drive. That covers provisioning and agent-driven operation of an isolated environment. The rest of the loop is weak or absent: there is no explicit code-execution endpoint, results can only be read indirectly through the Files API, and teardown is not documented. missing for 10: a documented exec/run-code call with returned output, a documented teardown/delete operation, an end-to-end agent-run lifecycle example, and independent or hands-on corroboration.",
+    "rationale": "Maritime documents agent-operable provisioning: an idempotent SDK `provision` call, a CLI built for AI agents with `--json` output, and non-interactive key auth. It also offers per-user Linux computers driven by a model and a Files API for reading an agent's disk. However, there is no documented execute-code-and-return-output primitive, and no teardown or delete step, so the full lifecycle is not shown without a human. Missing for 10: explicit code-execution API returning stdout or results, documented sandbox teardown/delete, an end-to-end autonomous lifecycle example, and independent hands-on corroboration.",
     "evidenceIds": [
+      "maritime-docs-45",
       "maritime-docs-22",
       "maritime-docs-23",
-      "maritime-docs-9",
-      "maritime-docs-2",
       "maritime-docs-5",
       "maritime-docs-40",
-      "maritime-docs-50"
+      "maritime-docs-28"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As an ai-native user, my agent can provision its own sandbox, execute code, read the results, and tear it down — end to end without a human",
       "citations": [
+        {
+          "evidenceId": "maritime-docs-45",
+          "quote": "provision is idempotent on it: it returns the existing agent if there is one, else creates a new one."
+        },
         {
           "evidenceId": "maritime-docs-22",
           "quote": "The Maritime CLI is built to be operated by other AI agents, not just humans: machine-readable output on every command, stable exit codes, and a live self-describing contract."
@@ -5245,16 +5248,12 @@
           "quote": "Authenticate with an env var, never interactively."
         },
         {
-          "evidenceId": "maritime-docs-2",
-          "quote": "`provision` is **idempotent** on it: it returns the existing agent if there is one, else creates a new one."
-        },
-        {
-          "evidenceId": "maritime-docs-50",
-          "quote": "Agents are getting a real Linux desktop they can drive: screenshot, mouse, keyboard, and a live view you can take over."
-        },
-        {
           "evidenceId": "maritime-docs-40",
-          "quote": "eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps."
+          "quote": "The Maritime Files API: eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps."
+        },
+        {
+          "evidenceId": "maritime-docs-5",
+          "quote": "A persistent Linux desktop (XFCE, Chromium, LibreOffice) for each of _your_ end users, driven by _your_ model."
         }
       ]
     }
@@ -5265,7 +5264,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms an llms.txt at maritime.sh/llms.txt (HTTP 200). Maritime also publishes a CLI-specific llms.txt with explicit agent instructions and a dedicated AI-agents docs page that says the CLI is built to be operated by other agents, so an agent can be pointed directly at agent-oriented docs. missing for 10: markdown renditions of the docs (docs.md returned 404), machine-readable OpenAPI spec (all candidate paths 404).",
+    "rationale": "A probe confirms a live llms.txt at maritime.sh, and there is a CLI-specific llms.txt with agent instructions. A dedicated AI-agents docs page explains how to hand an assistant one prompt so it can install the CLI, authenticate and deploy. missing for 10: markdown renditions of docs pages (docs.md returned 404) and independent corroboration of agents successfully consuming these docs.",
     "evidenceIds": [
       "maritime-probe-1",
       "maritime-docs-9",
@@ -5304,7 +5303,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime is a platform for hosting AI agents, so built-in AI insights about a user's data (for example agents, builds or usage) is a fair question to ask of it. However, no evidence shows the product itself surfacing AI-generated insights or suggestions. What the evidence does show is that users can deploy their own agents that produce digests, or point an agent at a migration runbook. Those are user-built agent behaviors, not a native insights feature.",
+    "rationale": "Maritime is a platform for hosting AI agents, so built-in AI insights over a user's data is a fair axis to ask about. The evidence pack documents no first-party feature that analyzes the user's data (agents, builds, logs, usage) and surfaces AI-generated insights or suggestions inside the product. Hosted template agents that can send scheduled digests are agent workloads the user deploys, not a product insights capability, so they are adjacent at best.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5317,15 +5316,15 @@
     "productId": "maritime",
     "storyId": "agentic-autonomous-automation",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Maritime documents recurring background automation: cron triggers wake an agent on a five-field schedule and deliver its prompt on every fire. Agents can also set their own schedules, which the platform syncs into real wake triggers, and the migration docs explicitly cover moving cron jobs and background workers onto agents. Missing for 10: independent or hands-on corroboration that scheduled runs execute reliably in practice.",
+    "rationale": "Maritime documents cron triggers that wake agents on a five-field schedule and deliver a prompt on every fire. Agents can also set their own recurring schedules, which the platform syncs into real wake triggers. The platform explicitly positions itself as a home for cron jobs, scheduled functions and background workers, so this is a recurring autonomous schedule, not a one-off action. Missing for 10: independent or hands-on corroboration that scheduled runs fire reliably, and documented failure/retry handling and monitoring for unattended runs.",
     "evidenceIds": [
       "maritime-docs-10",
       "maritime-docs-32",
       "maritime-docs-31",
-      "maritime-docs-12",
-      "maritime-docs-19"
+      "maritime-docs-19",
+      "maritime-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -5338,15 +5337,11 @@
         },
         {
           "evidenceId": "maritime-docs-32",
-          "quote": "the platform syncs the schedule it sets for itself into real wake triggers"
+          "quote": "tell it \"send me a digest every weekday at 9\" and the platform syncs the schedule it sets for itself into real wake triggers."
         },
         {
           "evidenceId": "maritime-docs-31",
           "quote": "Move the automation layer of your cloud onto Maritime agents: cron jobs, scheduled functions, background workers, and bots."
-        },
-        {
-          "evidenceId": "maritime-docs-12",
-          "quote": "Always-on is a flat add-on for the rare agent that must react in milliseconds around the clock."
         }
       ]
     }
@@ -5357,12 +5352,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Maritime's own ready-made templates deploy pre-configured agents with no code. They use Maritime's metered LLM access by default, so you can talk to them and hand off tasks such as scheduling a weekday digest or migrating workloads off another provider. These are agents the user deploys from templates rather than an assistant embedded in the product's own interface, and the evidence never describes one. Missing for 10: an in-product assistant built into the dashboard or UI, documentation of what tasks it can operate on within Maritime itself, and independent or hands-on corroboration.",
+    "rationale": "Maritime ships ready-made template agents that deploy in one click with no code and use Maritime's metered LLM access by default. You can talk to them and delegate work: scheduling digests that the platform turns into real wake triggers, acting on your behalf through Google, and even migrating workloads from an old provider into Maritime. However, these are agents you deploy and host, not a documented assistant embedded in the product's own dashboard or workbench. missing for 10: a documented in-product assistant or copilot inside the Maritime UI, and hands-on or independent corroboration of delegated task execution.",
     "evidenceIds": [
       "maritime-docs-17",
-      "maritime-docs-32",
-      "maritime-docs-16",
       "maritime-docs-38",
+      "maritime-docs-32",
+      "maritime-docs-30",
+      "maritime-docs-16",
       "maritime-docs-21"
     ],
     "support": {
@@ -5375,6 +5371,10 @@
           "quote": "Deploy a complete agent from a template and talk to it, in under 5 minutes. No code."
         },
         {
+          "evidenceId": "maritime-docs-38",
+          "quote": "No key is required: the agent uses Maritime's metered LLM access by default."
+        },
+        {
           "evidenceId": "maritime-docs-32",
           "quote": "tell it \"send me a digest every weekday at 9\" and the platform syncs the schedule it sets for itself into real wake triggers."
         },
@@ -5383,8 +5383,8 @@
           "quote": "point Claude Code or your Maritime agent at a provider's runbook page and it can inventory the old provider with read-only credentials, recreate each workload as a Maritime agent"
         },
         {
-          "evidenceId": "maritime-docs-38",
-          "quote": "No key is required: the agent uses Maritime's metered LLM access by default."
+          "evidenceId": "maritime-docs-30",
+          "quote": "connect your Google account so it can act on your behalf."
         }
       ]
     }
@@ -5395,15 +5395,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Maritime's CLI is documented as built to be run by other agents: it gives machine-readable --json output on every command, stable exit codes, and non-interactive auth through a long-lived MARITIME_TOKEN env var. A REST API and SDKs add further headless control, which together support unattended automation. Missing for 10: explicit CI-pipeline documentation (e.g. a GitHub Actions or CI recipe) and independent hands-on corroboration of headless runs.",
+    "rationale": "Maritime's CLI is documented as built for non-interactive, agent-driven operation. It offers machine-readable `--json` output on every command, stable exit codes, and env-var authentication via a long-lived `MARITIME_TOKEN` key that never prompts. A REST API with bearer keys also supports scripted automation. missing for 10: explicit CI-pipeline documentation (e.g. a GitHub Actions or other CI runner example), independent or hands-on corroboration of headless runs.",
     "evidenceIds": [
       "maritime-docs-22",
       "maritime-docs-9",
       "maritime-docs-23",
       "maritime-docs-43",
       "maritime-docs-8",
-      "maritime-docs-36",
-      "maritime-docs-41"
+      "maritime-docs-36"
     ],
     "support": {
       "relation": "direct",
@@ -5415,16 +5414,20 @@
           "quote": "The Maritime CLI is built to be operated by other AI agents, not just humans: machine-readable output on every command, stable exit codes, and a live self-describing contract."
         },
         {
-          "evidenceId": "maritime-docs-23",
-          "quote": "Authenticate with an env var, never interactively. Mint a long-lived key (`mk_…`) with `maritime keys create` and export it as `MARITIME_TOKEN`."
-        },
-        {
           "evidenceId": "maritime-docs-9",
           "quote": "Pass --json on EVERY command. Success: one JSON value on stdout, stderr empty."
         },
         {
-          "evidenceId": "maritime-docs-36",
-          "quote": "RESTful API for managing agents programmatically."
+          "evidenceId": "maritime-docs-23",
+          "quote": "Authenticate with an env var, never interactively. Mint a long-lived key (`mk_…`) with `maritime keys create` and export it as `MARITIME_TOKEN`."
+        },
+        {
+          "evidenceId": "maritime-docs-43",
+          "quote": "Keys never expire; browser-login tokens do."
+        },
+        {
+          "evidenceId": "maritime-docs-8",
+          "quote": "Mint a personal API key with `maritime keys create` and send it as a Bearer token, the same token the CLI itself uses."
         }
       ]
     }
@@ -5435,7 +5438,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime is a cloud platform for hosting AI agents, so letting those agents connect to MCP servers is a fair question and the axis applies. However, nothing in the evidence pack mentions MCP or registering external tool servers. Chat channels, Google account connection and custom Docker frameworks are adjacent features, not MCP-client support.",
+    "rationale": "Maritime hosts and runs AI agents, so letting those agents connect to MCP servers as clients is a fair axis for this kind of product. However, nothing in the evidence pack mentions MCP client support or configuring external MCP servers. The closest items are Docker framework images, Telegram/WhatsApp/Google channels, and a CLI that other agents can operate, which are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5450,7 +5453,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime is a cloud platform for hosting AI agents, not an agent itself, so publishing an official MCP server is a fair question and the axis applies. The evidence documents only adjacent agent-facing surfaces: an agent-operable CLI with --json output, a REST API, and a paste-in prompt for assistants. None of the evidence mentions an official MCP server or MCP endpoint, so the verdict is none.",
+    "rationale": "Maritime is a cloud platform for hosting agents, not an agent itself, so publishing an official MCP server is a fair question to ask of it. The evidence pack never mentions an MCP server or MCP endpoint. What it does document is an agent-operable CLI, a REST API with an OpenAPI spec, and a paste-in prompt for assistants; these are adjacent surfaces and do not count as an MCP server.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5465,10 +5468,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Maritime has one documented natural-language control path of its own: you tell an OpenClaw-family or Hermes agent something like \"send me a digest every weekday at 9\", and the platform syncs that into real wake triggers. Broader natural-language operation (install, authenticate, deploy) relies on an external assistant such as Claude or Cursor driving the agent-operable CLI from a pasted prompt, which is a building block rather than built-in natural-language control. missing for 10: a first-party natural-language interface covering general platform operations (deploy, configure, manage), natural-language trigger setting beyond specific templates, independent or hands-on corroboration.",
+    "rationale": "Maritime documents some natural-language operation of the platform itself. Telling an OpenClaw- or Hermes-template agent something like \"send me a digest every weekday at 9\" is synced into real wake triggers, and a Maritime agent can be pointed at a runbook to recreate workloads during migration. Broader operation relies on an external assistant (Claude, Cursor) driving the agent-friendly CLI from a pasted prompt, so it is not a native, product-wide natural-language interface. Missing for 10: a first-party natural-language console covering deploy and management generally, natural-language triggers beyond specific templates, and independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-32",
       "maritime-docs-48",
+      "maritime-docs-16",
       "maritime-docs-42",
       "maritime-docs-22"
     ],
@@ -5479,7 +5483,11 @@
       "citations": [
         {
           "evidenceId": "maritime-docs-32",
-          "quote": "Ask the agent (OpenClaw-family and Hermes templates): tell it \"send me a digest every weekday at 9\" and the platform syncs the schedule it sets for itself into real wake triggers."
+          "quote": "tell it \"send me a digest every weekday at 9\" and the platform syncs the schedule it sets for itself into real wake triggers."
+        },
+        {
+          "evidenceId": "maritime-docs-16",
+          "quote": "point Claude Code or your Maritime agent at a provider's runbook page and it can inventory the old provider with read-only credentials, recreate each workload as a Maritime agent"
         },
         {
           "evidenceId": "maritime-docs-42",
@@ -5493,8 +5501,8 @@
     "storyId": "agentic-official-cli",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Maritime documents an official CLI, installed with `npm install -g maritime-cli`, for deploying and managing agents from the terminal. It is explicitly built to be operated by AI agents: `--json` output on every command, stable exit codes, a self-describing contract, and non-interactive env-var authentication via `MARITIME_TOKEN`. A probe confirms the CLI docs page exists. missing for 10: independent hands-on corroboration of the CLI actually working as documented.",
+    "confidence": "medium",
+    "rationale": "Maritime documents an official CLI installable via npm that deploys and manages agents from the terminal. It is explicitly designed for AI-agent operation: --json output on every command, stable exit codes, a self-describing contract, and non-interactive env-var auth. Missing for 10: independent or hands-on corroboration beyond vendor docs and a probe confirming the docs page exists.",
     "evidenceIds": [
       "maritime-docs-35",
       "maritime-docs-41",
@@ -5528,10 +5536,6 @@
         {
           "evidenceId": "maritime-docs-23",
           "quote": "Authenticate with an env var, never interactively."
-        },
-        {
-          "evidenceId": "maritime-probe-4",
-          "quote": "official CLI documented at https://maritime.sh/docs/cli"
         }
       ]
     }
@@ -5541,15 +5545,16 @@
     "storyId": "agentic-public-api",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Maritime documents a RESTful API for managing agents programmatically, authenticated with Bearer API keys that carry scopes. It also documents an eight-endpoint Files API and TypeScript and Python SDKs over that API. The 404 OpenAPI probe means no machine-readable spec was found, which does not contradict the API's existence. Missing for 10: a published OpenAPI/Swagger spec (all probed paths returned 404), an endpoint-level reference in the evidence, and independent or hands-on corroboration.",
+    "confidence": "high",
+    "rationale": "Maritime documents a RESTful API for managing agents programmatically, authenticated with bearer `mk_` keys. It serves a live OpenAPI 3.1 spec and Swagger UI at api.maritime.sh, backed by TypeScript/Python SDKs and a documented Files API. The 404s on maritime.sh paths do not contradict this, because the spec lives at the API origin. missing for 10: an API versioning or deprecation policy (the spec is at 0.1.0 and mixes internal host-events paths into the public surface), and independent or hands-on corroboration of the API in use.",
     "evidenceIds": [
       "maritime-docs-36",
       "maritime-docs-8",
-      "maritime-docs-40",
+      "maritime-openapi-spec-20261106",
+      "maritime-swagger-ui-20261106",
       "maritime-docs-18",
-      "maritime-docs-26",
-      "maritime-probe-3"
+      "maritime-docs-40",
+      "maritime-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5565,12 +5570,12 @@
           "quote": "Mint a personal API key with `maritime keys create` and send it as a Bearer token, the same token the CLI itself uses."
         },
         {
-          "evidenceId": "maritime-docs-40",
-          "quote": "The Maritime Files API: eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps."
+          "evidenceId": "maritime-openapi-spec-20261106",
+          "quote": "Maritime serves a live OpenAPI 3.1 document at the API origin (info title \"Maritime API\")"
         },
         {
-          "evidenceId": "maritime-docs-18",
-          "quote": "Give every one of your users their own agent with the TypeScript or Python SDK."
+          "evidenceId": "maritime-swagger-ui-20261106",
+          "quote": "with in-page request execution against the real API using a bearer key"
         }
       ]
     }
@@ -5578,10 +5583,10 @@
   {
     "productId": "maritime",
     "storyId": "agentic-scoped-keys",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Maritime's docs say every API key carries scopes and recommend giving each subsystem the narrowest key it needs. A computers-only key is concretely documented and is refused on every other endpoint, so least-privilege credentials exist for one surface. Beyond that one scope, the depth of scoping is unproven: missing for 10: an enumerated scope catalog beyond `computers`, per-agent or per-resource key scoping, key expiry or rotation (docs say long-lived keys never expire), and independent hands-on corroboration.",
+    "rationale": "Maritime documents that every API key carries scopes and recommends handing each subsystem the narrowest key it needs. It gives a concrete least-privilege example: a Computers-only key is refused on every other endpoint. Missing for 10: a documented list of available scopes beyond `computers`, key expiry/rotation controls (keys are documented as never expiring), per-agent scoping detail, and independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-26",
       "maritime-docs-25",
@@ -5591,7 +5596,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": [
         {
@@ -5615,7 +5620,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Maritime's own docs describe official TypeScript and Python SDKs with a dedicated SDK section covering a quickstart with idempotent `provision`, authentication scopes, messaging agents and webhooks, and the Files API is exposed through 'both SDKs'. The evidence is first-party only. missing for 10: SDK package names and install instructions, SDK API reference depth, independent or hands-on corroboration of the SDKs.",
+    "rationale": "Maritime's own docs say it ships official TypeScript and Python SDKs. They are backed by dedicated SDK doc pages for quickstart (idempotent `provision`), authentication scopes, agent messaging and webhooks, and the Files API is said to be covered by both SDKs. missing for 10: SDK package names or install instructions, independent or hands-on corroboration of the SDKs, and an SDK versioning or deprecation policy.",
     "evidenceIds": [
       "maritime-docs-18",
       "maritime-docs-40",
@@ -5635,7 +5640,7 @@
         },
         {
           "evidenceId": "maritime-docs-40",
-          "quote": "The Maritime Files API: eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP"
+          "quote": "The Maritime Files API: eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps."
         },
         {
           "evidenceId": "maritime-docs-45",
@@ -5654,7 +5659,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Maritime documents first-party webhooks: you subscribe a URL and Maritime POSTs a signed JSON body on every agent lifecycle event, so programmatic consumers can receive events without polling. Support rests on a single docs snippet with no further detail. Missing for 10: a documented event-type catalog beyond lifecycle events, delivery/retry and signature-verification details, independent or hands-on corroboration.",
+    "rationale": "Maritime's SDK docs describe first-party webhooks: you subscribe a URL and Maritime POSTs a signed JSON body on every agent lifecycle event, which a programmatic consumer can receive instead of polling. The support comes from a single docs excerpt, so its depth is thin. Missing for 10: a documented event-type catalog beyond lifecycle events, retry and delivery semantics, signature-verification details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-3"
     ],
@@ -5673,31 +5678,62 @@
   {
     "productId": "maritime",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Maritime documents a REST API at /docs/api, but nothing in the evidence shows an interactive reference such as a try-it console, an API explorer or runnable examples. Probes for an OpenAPI or Swagger spec at all candidate paths returned 404. A static API docs page is adjacent to the story and does not deliver an interactive reference with runnable examples.",
-    "evidenceIds": [],
+    "rationale": "Maritime hosts Swagger UI over its live OpenAPI 3.1 spec at api.maritime.sh/docs, which supports in-page request execution against the real API with a bearer key, so an interactive, runnable reference exists. It is the raw FastAPI-generated spec, though, and the prose docs offer only copyable curl examples with no embedded runner. missing for 10: curated runnable examples in the main docs (an embedded runner rather than curl-only), a polished public-only reference without internal host-events paths, independent or hands-on corroboration that try-it-out works.",
+    "evidenceIds": [
+      "maritime-swagger-ui-20261106",
+      "maritime-openapi-spec-20261106",
+      "maritime-docs-36"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "maritime-swagger-ui-20261106",
+          "quote": "The API origin hosts Swagger UI over the live spec (\"Maritime API - Swagger UI\", loading /openapi.json), with in-page request execution against the real API using a bearer key"
+        },
+        {
+          "evidenceId": "maritime-swagger-ui-20261106",
+          "quote": "The prose docs carry copyable curl examples rather than an embedded runner."
+        },
+        {
+          "evidenceId": "maritime-openapi-spec-20261106",
+          "quote": "The document is the raw FastAPI-generated spec and includes internal host-events paths alongside the public surface."
+        }
+      ]
     }
   },
   {
     "productId": "maritime",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Maritime documents a RESTful API, but the evidence never mentions a downloadable OpenAPI or equivalent spec, and the probe found every candidate OpenAPI/Swagger path returning 404. The CLI's \"live self-describing contract\" and the llms.txt file are adjacent features, not a machine-readable API specification, so they earn no credit.",
-    "evidenceIds": [],
+    "rationale": "Maritime serves a live OpenAPI 3.1 document at https://api.maritime.sh/openapi.json. The vendor llms.txt advertises it as the full REST API, and Swagger UI loads it. The probe 404s were on the marketing origin (maritime.sh), not the API origin, so they do not contradict this. Missing for 10: the spec is the raw FastAPI output mixed with internal host-events paths, it is unversioned (0.1.0, no deprecation policy), and no independent hands-on download confirms it.",
+    "evidenceIds": [
+      "maritime-openapi-spec-20261106",
+      "maritime-swagger-ui-20261106",
+      "maritime-docs-36",
+      "maritime-changelog-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "maritime-openapi-spec-20261106",
+          "quote": "Maritime serves a live OpenAPI 3.1 document at the API origin (info title \"Maritime API\"), advertised in the vendor llms.txt as \"The full REST API, bearer mk_ key\"."
+        },
+        {
+          "evidenceId": "maritime-swagger-ui-20261106",
+          "quote": "The API origin hosts Swagger UI over the live spec (\"Maritime API - Swagger UI\", loading /openapi.json)"
+        }
+      ]
     }
   },
   {
@@ -5706,7 +5742,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Testing in a sandbox is a fair question for an agent-hosting platform, but the evidence documents no sandbox, test mode, or staging environment kept separate from production data. Scoped API keys, idempotent provisioning, per-agent VMs and read-only migration credentials are adjacent controls, not a sandbox capability.",
+    "rationale": "Sandbox or test environments are a fair question for an agent-hosting platform, but the evidence never documents a sandbox, test mode, or staging environment kept apart from production data. Scoped API keys, per-agent VMs and a free plan are adjacent controls, not a separate test environment. The Swagger UI explicitly runs requests against the real API.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5720,9 +5756,11 @@
     "storyId": "api-versioning-policy",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Maritime documents a RESTful API and a CLI with stable exit codes and a self-describing contract. Nothing in the evidence mentions API versioning or a deprecation policy, and the OpenAPI probe returned 404 on every path. The axis applies to a cloud platform with a public API, so the lack of evidence makes this \"none\".",
-    "evidenceIds": [],
+    "confidence": "high",
+    "rationale": "The evidence states that Maritime has no documented API versioning scheme, version header, or deprecation policy, and its OpenAPI spec reports version 0.1.0. The only compatibility measure found is a single deprecated CLI alias (`lifetimeMinutes` for `timeLimitMinutes`), which is an adjacent behavior, not a versioned API with a stated deprecation policy.",
+    "evidenceIds": [
+      "maritime-changelog-20261106"
+    ],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -5734,14 +5772,14 @@
     "productId": "maritime",
     "storyId": "auto-teardown-timeouts",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Maritime documents automatic idle shutdown: web apps and agents are put to sleep when idle and woken on demand. There is no evidence of a developer-configurable timeout, and billing is a flat subscription rather than usage-metered, so sleeping does not stop charges. missing for 10: developer-settable idle/max-lifetime timeout controls, explicit shutdown-on-completion behavior, billing that stops when idle (billing is flat), independent corroboration.",
+    "rationale": "Maritime documents automatic sleep when idle for served containers, and its CLI exposes a `timeLimitMinutes` setting (formerly `lifetimeMinutes`), which suggests a configurable time limit. Billing is flat per agent rather than metered, so stopping a sandbox does not reduce cost the way the story assumes. Missing for 10: documented semantics and configuration of idle-timeout values, clarity on what `timeLimitMinutes` applies to and what happens when it expires, any billing stop tied to shutdown, and hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-29",
-      "maritime-docs-19",
-      "maritime-docs-37",
-      "maritime-docs-27"
+      "maritime-changelog-20261106",
+      "maritime-docs-27",
+      "maritime-docs-37"
     ],
     "support": {
       "relation": "direct",
@@ -5750,11 +5788,11 @@
       "citations": [
         {
           "evidenceId": "maritime-docs-29",
-          "quote": "Maritime builds it, runs it serverlessly, puts it to sleep when idle, and wakes it on the next visit."
+          "quote": "puts it to sleep when idle, and wakes it on the next visit."
         },
         {
-          "evidenceId": "maritime-docs-19",
-          "quote": "three endpoints get you sleep/wake, channels, and triggers."
+          "evidenceId": "maritime-changelog-20261106",
+          "quote": "a documented deprecated alias kept for old clients (`lifetimeMinutes` for `timeLimitMinutes` in the CLI docs)"
         },
         {
           "evidenceId": "maritime-docs-27",
@@ -5769,7 +5807,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only first-party bulk capability in the evidence is importing many configuration variables at once from a .env file or stdin, followed by a hot-reload. Nothing shows bulk actions across agents or other resources. The migration flow that recreates each workload is carried out by an external AI agent following a runbook, so it is a workaround, not a product bulk operation. Missing for 10: bulk operations across agents and other resource types (bulk deploy, delete, update, restart), batch API/CLI endpoints, documentation of bulk-operation limits or behavior, independent corroboration.",
+    "rationale": "Maritime documents one bulk capability of its own: importing many configuration variables at once from a .env file or stdin, followed by a hot-reload. That covers only one narrow item type (env vars on an agent). Nothing shows bulk actions across many agents, computers or other resources. Migration via an external agent recreating each workload is a user-side workaround and earns no credit. Missing for 10: bulk operations across multiple agents/resources (e.g. batch deploy, delete, update or restart), bulk API/CLI endpoints, and independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-11"
     ],
@@ -5791,10 +5829,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Maritime has its own triggers feature that automatically wakes an agent and delivers a prompt, but the only documented trigger type is a cron schedule, which is time-based rather than event-based. Lifecycle webhooks only notify an external consumer and do not run rule-defined actions inside Maritime. Missing for 10: event-based trigger types (e.g. on incoming data or external events), user-defined condition/rule logic, documented trigger actions beyond delivering a chat prompt, and independent or hands-on corroboration.",
+    "rationale": "Maritime has its own trigger system, but the documented type is a cron schedule that wakes the agent and delivers a prompt. That is a time-based recurring schedule, not a general event-to-action rule. The only event-driven mechanism documented is outbound webhooks that POST on agent lifecycle events: a fixed notification action, not user-definable conditions and actions. missing for 10: documented event-based trigger types beyond cron, a user-defined rule/condition engine mapping arbitrary events to actions, examples of event-triggered actions, independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-10",
       "maritime-docs-19",
+      "maritime-docs-3",
       "maritime-docs-32"
     ],
     "support": {
@@ -5811,6 +5850,10 @@
           "quote": "Any Docker container becomes an agent: three endpoints get you sleep/wake, channels, and triggers."
         },
         {
+          "evidenceId": "maritime-docs-3",
+          "quote": "Subscribe a URL, and Maritime POSTs a signed JSON body on every lifecycle event."
+        },
+        {
           "evidenceId": "maritime-docs-32",
           "quote": "the platform syncs the schedule it sets for itself into real wake triggers"
         }
@@ -5823,12 +5866,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Maritime documents cron triggers that take a standard five-field expression, wake the agent on schedule, and deliver a prompt on every fire. Agents can also set their own recurring schedules in natural language, which the platform syncs into real wake triggers. This is a true recurring schedule, not a one-off action. Missing for 10: independent or hands-on corroboration, and documentation of managing triggers programmatically (CLI/API) and of run history or failure handling for scheduled fires.",
+    "rationale": "Maritime documents cron triggers that take standard five-field expressions, wake the agent on schedule, and deliver a prompt on every fire. Agents can also set recurring schedules in natural language, which the platform syncs into real wake triggers, and the docs position Maritime as a home for migrated cron jobs and scheduled functions. This is a true recurring schedule, not a one-off action. Missing for 10: independent or hands-on corroboration, and documentation of programmatic trigger management (CLI/API/SDK) and of run history or failure handling for scheduled fires.",
     "evidenceIds": [
       "maritime-docs-10",
       "maritime-docs-32",
       "maritime-docs-48",
-      "maritime-docs-31"
+      "maritime-docs-31",
+      "maritime-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -5841,7 +5885,7 @@
         },
         {
           "evidenceId": "maritime-docs-32",
-          "quote": "tell it \"send me a digest every weekday at 9\" and the platform syncs the schedule it sets for itself into real wake triggers."
+          "quote": "the platform syncs the schedule it sets for itself into real wake triggers"
         },
         {
           "evidenceId": "maritime-docs-31",
@@ -5856,7 +5900,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime is an agent-hosting and automation platform, so versioning, reviewing, and rolling back automations is a fair question to ask of it. The evidence never documents versions, diffs or review of agent and trigger definitions, or rollback to a prior deployment. Building from GitHub repos relies on git's own versioning, a host-platform capability. Append-only session logs record runs, not automation definitions, so both are adjacent and earn no credit.",
+    "rationale": "The evidence shows Maritime builds agents from GitHub repos and streams build logs. Nothing documents Maritime itself versioning automations (agents or triggers), offering a review step for changes, or rolling back to a prior deployment. Git history is a user-side workaround, and append-only session logs for one framework concern run replay, not automation versioning or rollback.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5871,12 +5915,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Maritime documents a first-party Computers feature: a persistent Linux desktop (XFCE, Chromium, LibreOffice) per end user. The changelog says agents can drive it via screenshot, mouse, keyboard and a takeover live view, and dedicated Computers-scoped API keys exist. This directly delivers the full-desktop half of the story. missing for 10: independent or hands-on corroboration, detailed docs on running a headless browser programmatically, and clarity on maturity (the changelog phrasing \"are getting\" suggests an early rollout).",
+    "rationale": "Maritime documents a first-party Computers product: a persistent Linux desktop (XFCE, Chromium, LibreOffice) per end user that a model can drive through screenshots, mouse and keyboard, with a live view you can take over. That delivers the full-desktop half of the story directly. missing for 10: explicit documentation of the desktop's sandbox isolation boundary, an explicit headless-browser mode inside agent containers, and independent or hands-on corroboration (the changelog's 'are getting' wording suggests a recent or rolling release).",
     "evidenceIds": [
       "maritime-docs-5",
       "maritime-docs-50",
-      "maritime-docs-25",
-      "maritime-docs-44"
+      "maritime-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -5904,7 +5947,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Maritime documents provisioning a dedicated agent micro-VM for each of your end users through its SDK, which is a fleet-style capability. The only limits stated are plan agent counts, such as 3 agents on the free plan and 'a set number of agents' per subscription. No concurrency limits, scale figures or throughput numbers are documented. Missing for 10: documented concurrent-execution limits, evidence of large-scale concurrent fleet operation, rate limits or quotas beyond plan agent counts, independent or hands-on corroboration.",
+    "rationale": "Maritime documents provisioning a separate agent micro-VM for every end user through its SDK, which amounts to a fleet. Its only documented limits are plan-based agent counts (free plan includes 3 agents; subscriptions carry \"a set number of agents\"), not concurrency limits or scale figures. missing for 10: documented concurrent-run limits or quotas, evidence of running large fleets at scale, rate limits for provisioning, independent or hands-on corroboration of fleet performance.",
     "evidenceIds": [
       "maritime-docs-18",
       "maritime-docs-45",
@@ -5942,14 +5985,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Maritime documents bringing your own container: any Docker image that implements its three-endpoint contract becomes an agent, and any repo with a Dockerfile can be built and run, including private repos. Templates are cloneable agent packages that publishers can share via link or the public library, which covers defining custom templates. Missing for 10: details of the template-authoring workflow and the three-endpoint contract spec, plus independent or hands-on corroboration.",
+    "rationale": "Maritime's docs say any Docker image that implements a three-endpoint contract can run as an agent on the platform, and that any repo with a Dockerfile can be built and served. Templates are cloneable agent packages that publishers can share, which covers custom templates. missing for 10: detailed documentation on authoring and publishing custom templates, specifics of the three-endpoint contract and image constraints, independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-1",
       "maritime-docs-19",
       "maritime-docs-29",
-      "maritime-docs-7",
-      "maritime-docs-34",
-      "maritime-docs-24"
+      "maritime-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -5971,10 +6012,6 @@
         {
           "evidenceId": "maritime-docs-7",
           "quote": "Templates are cloneable agent packages; publishers can share them via link or the public library."
-        },
-        {
-          "evidenceId": "maritime-docs-34",
-          "quote": "Private repos work."
         }
       ]
     }
@@ -5985,7 +6022,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Maritime documents that a Dockerfile-based container can be served on a public, no-login HTTPS URL. That gives a public endpoint for a service running inside a Maritime-managed container. However, it is a web-app deployment feature, not documented port exposure or preview URLs for an agent's sandbox or VM. missing for 10: exposing arbitrary ports from an agent sandbox, preview-URL semantics (per-port or ephemeral URLs), access controls on exposed URLs, independent or hands-on corroboration.",
+    "rationale": "Maritime's own web-apps feature serves any Dockerfile repo on a public, no-login HTTPS URL, so a service running inside a Maritime-run container is reachable publicly. However, nothing documents exposing an arbitrary port from an agent's sandbox or micro-VM as a preview URL. missing for 10: port selection or exposure from a running agent sandbox, preview-URL lifecycle and access controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-29",
       "maritime-docs-47"
@@ -5998,10 +6035,6 @@
         {
           "evidenceId": "maritime-docs-29",
           "quote": "Any repo with a Dockerfile can be served on a public, no-login HTTPS URL. Maritime builds it, runs it serverlessly, puts it to sleep when idle, and wakes it on the next visit."
-        },
-        {
-          "evidenceId": "maritime-docs-47",
-          "quote": "Any repo with a Dockerfile can be served on a public, no-login HTTPS URL."
         }
       ]
     }
@@ -6012,7 +6045,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime runs agents in micro-VMs that sleep when idle and wake automatically, so cold-start latency is a fair question for this product. However, no evidence documents any wake or cold-start time. The 'under 5 minutes' figure refers to deploying a first agent, and the 'react in milliseconds' line describes the paid Always-on add-on, which implies sleeping agents do not wake that fast.",
+    "rationale": "Maritime documents sleep/wake behavior and automatic waking of sleeping agents, but no evidence gives a cold-start or wake latency figure. The 'under 5 minutes' claim covers first deployment, not sandbox start time. The always-on add-on for agents that 'must react in milliseconds' suggests sleeping agents do not wake that fast, but no number is documented either way.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6027,9 +6060,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Maritime documents a first-party Files API with eight endpoints, exposed through both SDKs, to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps. That covers reading, writing, uploading, and downloading files on the agent's filesystem via the SDK. The evidence is a single blog-level summary, though. Missing for 10: detailed SDK method reference for file operations, any detail of the eight endpoints, and independent or hands-on corroboration.",
+    "rationale": "Maritime documents a Files API with eight endpoints and support in both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps. That covers reading, writing, uploading, and downloading files in the agent's micro-VM filesystem via the SDK. The evidence is a single blog-level summary, missing for 10: SDK method reference docs or examples for file operations, documented limits (file size, paths), independent or hands-on corroboration.",
     "evidenceIds": [
-      "maritime-docs-40"
+      "maritime-docs-40",
+      "maritime-docs-18",
+      "maritime-docs-37"
     ],
     "support": {
       "relation": "direct",
@@ -6039,6 +6074,10 @@
         {
           "evidenceId": "maritime-docs-40",
           "quote": "The Maritime Files API: eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps."
+        },
+        {
+          "evidenceId": "maritime-docs-37",
+          "quote": "its own always-on micro-VM in the cloud, persistent storage"
         }
       ]
     }
@@ -6049,7 +6088,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Maritime's quickstart documents a free plan that includes 3 agents with no card required. The onboarding is fully self-serve: npm install the CLI, mint your own API key, and deploy a first agent in under 5 minutes, with no sales contact involved. Missing for 10: independent or hands-on corroboration of the free tier, and detailed documentation of free-plan limits beyond the agent count.",
+    "rationale": "Maritime's quickstart documents a free plan that includes 3 agents with no card required. Its docs also describe self-serve onboarding: install the CLI via npm, mint keys yourself with `maritime keys create`, and deploy your first agent in under 5 minutes. Nothing in the evidence involves a sales conversation. Missing for 10: independent or hands-on corroboration of the free-tier signup flow, and documentation of the free plan's limits beyond the agent count (e.g., included LLM credits or usage caps).",
     "evidenceIds": [
       "maritime-docs-20",
       "maritime-docs-14",
@@ -6071,12 +6110,12 @@
           "quote": "Deploy your first agent and talk to it, in under 5 minutes."
         },
         {
-          "evidenceId": "maritime-docs-8",
-          "quote": "Mint a personal API key with `maritime keys create` and send it as a Bearer token"
-        },
-        {
           "evidenceId": "maritime-docs-41",
           "quote": "npm install -g maritime-cli"
+        },
+        {
+          "evidenceId": "maritime-docs-8",
+          "quote": "Mint a personal API key with `maritime keys create` and send it as a Bearer token"
         }
       ]
     }
@@ -6087,7 +6126,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime is a cloud platform that runs agents and Docker containers in micro-VMs, so attaching GPUs to those workloads is a fair question for this kind of product. Nothing in the evidence pack mentions GPUs, accelerators, or hardware selection for agents, VMs, or computers. Absence of evidence for an applicable capability yields none.",
+    "rationale": "Maritime is a cloud platform that runs agents in micro-VMs and containers, so attaching GPUs to those workloads is a fair question for this kind of product. Nothing in the evidence pack mentions GPUs or any hardware accelerator. The micro-VMs, Linux desktops and Docker containers it documents do not show GPU attachment.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6102,7 +6141,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Maritime's docs say each agent gets its own micro-VM and that secrets are injected only into that agent's VM. That implies per-agent VM separation. However, these are passing mentions on a framework page and the configuration page, not a documented isolation or security boundary model. Missing for 10: a dedicated security/isolation architecture doc describing the microVM technology and its guarantees, documentation of the boundary between tenant sandboxes and customer or host systems (network and egress isolation), and independent or hands-on corroboration.",
+    "rationale": "Maritime's docs say each agent runs in its own micro-VM: the Claude Code page cites 'its own always-on micro-VM', and the configuration docs say secrets are 'injected only into that agent's VM'. Per-agent VM isolation is therefore implied. However, these are passing mentions, not a documented security or isolation boundary. missing for 10: dedicated isolation/security architecture docs (hypervisor/microVM technology, tenant separation guarantees, network isolation from customer systems), confirmation that the microVM applies to all agent types beyond the Claude Code page, independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-37",
       "maritime-docs-33"
@@ -6127,14 +6166,14 @@
     "productId": "maritime",
     "storyId": "long-running-sessions",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Maritime documents long-lived execution environments: each agent can get its own always-on micro-VM with persistent storage, plus an always-on add-on that keeps an agent running around the clock. That supports long-running agent workloads. However, agents sleep when idle by default, and no documented session-duration limits or hours/days guarantees exist for a single running task. Missing for 10: explicit documentation of maximum continuous session/task runtime (hours or days), confirmation that a long agent task stays running without idle sleep interrupting it on the default plan, and independent or hands-on corroboration of multi-hour or multi-day runs.",
+    "rationale": "Maritime documents an always-on add-on and an 'always-on micro-VM' with persistent storage for agents like Claude Code, plus persistent Linux desktops, so long-lived agent environments are a product capability. However, nothing states actual session duration limits in hours or days. The `timeLimitMinutes` parameter suggests sessions are time-capped. Missing for 10: documented maximum session duration (hours/days), explicit guarantees for uninterrupted long-running tasks, independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-37",
       "maritime-docs-12",
       "maritime-docs-5",
-      "maritime-docs-29"
+      "maritime-changelog-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6162,7 +6201,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime is a cloud platform for hosting AI agents on micro-VMs, so a code-execution capability is a fair question for it. However, the evidence describes deploying Docker images as agents, Linux desktops and a Files API, not an API to run code snippets in Python, JavaScript or other runtimes and get rich results back. Running an arbitrary container as an agent is an adjacent hosting feature, not the story's capability.",
+    "rationale": "Maritime is an agent-hosting platform. The evidence shows it running Docker-based agents, persistent Linux desktops and a files API, but it never documents an API for executing code snippets in Python, JavaScript or other runtimes and returning rich results. Hosting arbitrary containers and desktop control are adjacent capabilities, not this one.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6177,7 +6216,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime runs agents in per-agent micro-VMs and Linux desktops, so network egress control is a fair question for this platform. However, no evidence documents any outbound network policy, allowlist or denylist. The closest items are API key scopes and secret injection into the VM, which are adjacent access controls, not egress restriction.",
+    "rationale": "Maritime runs agents in per-agent micro-VMs and Linux desktops, so network egress policy is a fair axis for it. Nothing in the evidence documents egress allow/deny rules, domain allowlists, or any network policy for the sandbox. Scoped API keys and secret injection are adjacent access controls that govern who can call Maritime, not what the VM can reach, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6190,20 +6229,18 @@
     "productId": "maritime",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Maritime documents its own RESTful API, SDKs, a Files API, webhooks, and an agent-operable CLI that uses the same Bearer token as the API, so broad programmatic control exists. Nothing in the evidence claims parity with the UI. Several workflows are described only in the UI (Computers keys created in Settings, live build logs on the agent page, customizing templates from the agent page), and no OpenAPI spec was found to confirm coverage. missing for 10: an explicit API/UI parity statement, a published OpenAPI or full endpoint reference, documented API equivalents for UI-only flows (scoped Computers keys, build-log streaming, template customization, GitHub App connection), and independent corroboration.",
+    "rationale": "Maritime documents a first-party REST API with a live OpenAPI 3.1 spec and Swagger UI, bearer keys shared with the CLI, SDKs, a Files API, and an agent-operable CLI. That covers a broad programmatic surface, but nothing states the API matches the UI feature for feature. Some flows are documented only through the UI: creating a Computers-scoped key in Settings, installing the GitHub App via Settings, and customizing templates from the agent page. Missing for 10: an explicit UI/API parity statement, evidence that UI-documented actions (scoped key creation, GitHub integration, template customization) are exposed via the API, and independent or hands-on corroboration of coverage.",
     "evidenceIds": [
       "maritime-docs-36",
       "maritime-docs-8",
+      "maritime-openapi-spec-20261106",
+      "maritime-swagger-ui-20261106",
       "maritime-docs-40",
       "maritime-docs-22",
-      "maritime-docs-3",
       "maritime-docs-18",
-      "maritime-docs-25",
-      "maritime-docs-6",
-      "maritime-docs-24",
-      "maritime-probe-3"
+      "maritime-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -6219,12 +6256,16 @@
           "quote": "send it as a Bearer token, the same token the CLI itself uses."
         },
         {
+          "evidenceId": "maritime-openapi-spec-20261106",
+          "quote": "Maritime serves a live OpenAPI 3.1 document at the API origin"
+        },
+        {
           "evidenceId": "maritime-docs-40",
-          "quote": "eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps."
+          "quote": "eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps"
         },
         {
           "evidenceId": "maritime-docs-22",
-          "quote": "The Maritime CLI is built to be operated by other AI agents, not just humans: machine-readable output on every command"
+          "quote": "The Maritime CLI is built to be operated by other AI agents, not just humans: machine-readable output on every command, stable exit codes, and a live self-describing contract."
         }
       ]
     }
@@ -6235,10 +6276,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only first-party evidence touching data portability is the Files API, which lets you download an agent's disk over HTTP even while the agent sleeps. Agents are also plain Docker images under a three-endpoint contract, so workloads aren't locked to proprietary formats. There is no documented account-wide export or exit path, and the migration docs cover moving onto Maritime, not off it. Missing for 10: a documented full-account export (agents, configuration/variables, session logs, triggers, channel data), stated open export formats, an off-boarding/leave workflow, and independent corroboration.",
+    "rationale": "Maritime's own Files API can download an agent's disk over HTTP, even while the agent sleeps. Agents are standard Docker images speaking a three-endpoint contract, so data and workloads can be pulled out and run elsewhere. There is no documented account-wide export or open-format export of all user data, and the migration docs only cover moving onto Maritime, not leaving it. Missing for 10: a documented full-account data export (agents, configs, logs, channels, triggers), stated open export formats, exit/offboarding documentation, and independent corroboration.",
     "evidenceIds": [
       "maritime-docs-40",
-      "maritime-docs-19"
+      "maritime-docs-19",
+      "maritime-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -6247,7 +6289,7 @@
       "citations": [
         {
           "evidenceId": "maritime-docs-40",
-          "quote": "The Maritime Files API: eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps."
+          "quote": "eight endpoints and both SDKs to browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps"
         },
         {
           "evidenceId": "maritime-docs-19",
@@ -6262,7 +6304,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a cloud agent-hosting platform publishes its source under an open license is a fair question, so the axis applies. Nothing in the evidence mentions an open-source license, a public source repository, or readable platform or CLI source. Shareable templates and an npm-installable CLI say nothing about licensing.",
+    "rationale": "Maritime is a hosted cloud platform for AI agents, and whether its source is available under an open license is a fair question for this kind of product, so the axis applies. Nothing in the pack shows the platform, CLI or SDK source published under an open license. The public OpenAPI spec, Swagger UI and shareable templates are API descriptions and user content, not the product's source code, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6277,7 +6319,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an agent-hosting platform, but the evidence describes Maritime only as a managed cloud service. Running your own Docker images on Maritime's infrastructure is not the same as self-hosting the Maritime platform itself. Nothing in the pack documents a self-hosted or on-prem edition.",
+    "rationale": "Maritime is described as a cloud platform for deploying and hosting agents. Self-hosting is a fair question for this kind of product, but nothing in the evidence documents a self-hosted or on-prem deployment of the platform itself. Bring-your-own Docker images and migrating workloads onto Maritime both run on Maritime's own cloud, so they are not self-hosting the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6290,15 +6332,15 @@
     "productId": "maritime",
     "storyId": "pause-resume-state",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Maritime has its own sleep/wake lifecycle: agents and web apps go to sleep when idle and wake on the next message or visit. The agent's disk persists while it sleeps and can be browsed through the Files API, so filesystem state survives a sleep. Nothing shows that memory or process state is preserved across sleep, and sleep is idle-triggered rather than a documented developer-initiated pause. Missing for 10: an explicit pause/resume API or command, preservation of memory/process state across sleep, and independent or hands-on corroboration.",
+    "rationale": "Maritime documents sleep/wake for agents running in micro-VMs with persistent storage. The agent's disk survives sleep and stays reachable through the Files API, so filesystem state persists across a sleep/wake cycle. But sleep appears to be idle-driven rather than a developer-invoked pause, and nothing says in-memory process state survives. missing for 10: explicit developer-triggered pause/resume API or CLI command, evidence that memory/process state is preserved across sleep, independent or hands-on corroboration.",
     "evidenceIds": [
-      "maritime-docs-19",
-      "maritime-docs-29",
       "maritime-docs-37",
       "maritime-docs-40",
-      "maritime-docs-28"
+      "maritime-docs-19",
+      "maritime-docs-28",
+      "maritime-docs-29"
     ],
     "support": {
       "relation": "direct",
@@ -6306,24 +6348,24 @@
       "subject": "As a developer, I can pause a running sandbox and resume it later with filesystem and memory state intact",
       "citations": [
         {
-          "evidenceId": "maritime-docs-19",
-          "quote": "three endpoints get you sleep/wake, channels, and triggers"
-        },
-        {
-          "evidenceId": "maritime-docs-29",
-          "quote": "puts it to sleep when idle, and wakes it on the next visit"
-        },
-        {
           "evidenceId": "maritime-docs-37",
-          "quote": "persistent storage, sleep/wake economics"
+          "quote": "its own always-on micro-VM in the cloud, persistent storage, sleep/wake economics"
         },
         {
           "evidenceId": "maritime-docs-40",
           "quote": "browse, upload, download, and edit an agent's disk over HTTP, even while the agent sleeps"
         },
         {
+          "evidenceId": "maritime-docs-19",
+          "quote": "three endpoints get you sleep/wake, channels, and triggers"
+        },
+        {
           "evidenceId": "maritime-docs-28",
           "quote": "Sleeping agents wake automatically."
+        },
+        {
+          "evidenceId": "maritime-docs-29",
+          "quote": "puts it to sleep when idle, and wakes it on the next visit"
         }
       ]
     }
@@ -6334,8 +6376,11 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Maritime's billing docs describe a flat subscription with a set number of agents and flat-priced extras, explicitly with \"No meters, no hourly rates.\" That is the opposite of per-second, usage-based compute billing. The only metering mentioned applies to LLM access, not sandbox compute, so it does not count toward this story.",
-    "evidenceIds": [],
+    "rationale": "Maritime's billing docs describe the opposite of per-second usage pricing: a subscription with a fixed number of agents and flat-priced extras, with \"No meters, no hourly rates: how much your agents run never changes the bill.\" Always-on is also sold as a flat add-on. The pricing axis applies to this hosting platform, but there is no per-second, usage-based compute billing.",
+    "evidenceIds": [
+      "maritime-docs-27",
+      "maritime-docs-12"
+    ],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -6349,7 +6394,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime is a cloud hosting platform for AI agents, so letting users choose a storage region or data residency is a fair question for it. Nothing in the evidence mentions regions, residency, or choosing where data is stored. Encryption at rest and persistent storage are related features but do not answer the location question.",
+    "rationale": "Choosing a storage region is a fair question for a cloud agent-hosting platform, so the axis applies. Nothing in the evidence pack mentions regions, data residency, or a location selector. Encryption at rest for variables is a related but different control and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6364,7 +6409,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime is a cloud platform for hosting AI agents and provides metered LLM access, so a training opt-out or no-training commitment is a fair question for it. The evidence pack has no policy, setting or guarantee about whether customer data is used for model training. Encrypted secret variables and scoped API keys are adjacent security controls and earn no credit for this story.",
+    "rationale": "Maritime is an AI agent hosting platform that offers metered LLM access, so a training-data opt-out is a fair question for it. The evidence pack contains no documented policy or setting that keeps user data out of model training. Encrypted secret variables and scoped API keys are adjacent security controls, not a training opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6379,7 +6424,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime is a cloud platform that hosts agents and their data, so data retention and deletion is a fair question to ask of it. The evidence pack documents no retention policies, retention windows, or data-deletion controls. The Files API covers browse, upload, download, and edit of an agent's disk but never mentions deletion or retention. Encrypted-at-rest secrets are an adjacent security control, not retention control, and session logs are described as append-only.",
+    "rationale": "Data retention and deletion is a fair question for an agent-hosting platform, but the evidence documents no retention periods, deletion controls, or data-purge capability. The Files API lists browsing, uploading, downloading and editing an agent's disk, not deletion or retention policy. Session logs are described as append-only, and encrypted secret storage is an adjacent security feature rather than retention control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6394,7 +6439,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry and usage-tracking opt-out is a fair question for a cloud agent platform with a CLI and SDKs, so the axis applies. Nothing in the evidence pack mentions telemetry, analytics collection, or any opt-out setting or flag. Scoped API keys and encrypted secrets are related security controls, not a telemetry opt-out, so they earn no credit.",
+    "rationale": "Maritime is a cloud agent-hosting platform with a CLI and SDKs, so offering a telemetry or usage-tracking opt-out is a fair question. The evidence pack never mentions telemetry, analytics, or any opt-out control. Scoped keys and encrypted secrets are related security features, not a telemetry opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6409,7 +6454,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Maritime publishes dedicated framework pages for Claude Code and Codex. They describe running Claude Code in its own always-on cloud micro-VM with persistent storage, and running Codex on Maritime's metered LLM access with no key required, which together form a first-party recipe for hosting these coding agents. Templates are pre-configured and deploy from a single image pull. Missing for 10: step-by-step recipe details (setup steps and isolation guarantees) quoted in the evidence, and independent or hands-on corroboration that Claude Code and Codex run as described.",
+    "rationale": "Maritime publishes dedicated first-party framework pages for both Claude Code and Codex. They describe running each in its own cloud micro-VM with persistent storage, and say Codex works with no key using Maritime's metered LLM access. Together with the ready-made framework templates, this is a vendor-supplied recipe for running these coding agents inside its sandbox. Missing for 10: detailed step-by-step recipe content in the evidence (setup commands, auth flow for Claude Code), and any independent or hands-on corroboration that the recipes work as described.",
     "evidenceIds": [
       "maritime-docs-37",
       "maritime-docs-38",
@@ -6430,7 +6475,7 @@
         },
         {
           "evidenceId": "maritime-docs-13",
-          "quote": "Every ready-made template is a real agent framework, pre-configured and one image pull from live."
+          "quote": "Every ready-made template is a real agent framework, pre-configured and one image pull from live. Pick one, name it, deploy."
         }
       ]
     }
@@ -6441,12 +6486,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Maritime runs each agent in its own cloud micro-VM, with secrets injected only into that agent's VM, and gives end users per-user Linux desktops. AI-driven code therefore executes on Maritime's infrastructure rather than the developer's. However, the docs never present this as a sandbox for untrusted code and make no isolation or security guarantees. missing for 10: an explicit sandboxed code-execution API for untrusted/AI-generated code, documented isolation guarantees (network and resource limits, escape protection), ephemeral run-and-discard execution, and independent or hands-on corroboration.",
+    "rationale": "Maritime runs each agent, including coding agents like Claude Code and Codex, in its own cloud micro-VM. Secrets are injected only into that agent's VM, and scoped keys limit blast radius. That keeps agent-run code off the developer's own infrastructure, but the evidence never presents this as a sandbox for untrusted code. missing for 10: an explicit untrusted-code sandbox or code-execution API, documented isolation guarantees (network egress limits, tenant isolation, resource caps), and independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-37",
       "maritime-docs-33",
       "maritime-docs-5",
-      "maritime-docs-50"
+      "maritime-docs-44"
     ],
     "support": {
       "relation": "direct",
@@ -6459,11 +6504,15 @@
         },
         {
           "evidenceId": "maritime-docs-33",
-          "quote": "injected only into that agent's VM"
+          "quote": "stored encrypted at rest, injected only into that agent's VM, and always masked in the UI"
         },
         {
           "evidenceId": "maritime-docs-5",
           "quote": "A persistent Linux desktop (XFCE, Chromium, LibreOffice) for each of _your_ end users, driven by _your_ model."
+        },
+        {
+          "evidenceId": "maritime-docs-44",
+          "quote": "a key whose only scope is `computers` is refused on every other Maritime endpoint"
         }
       ]
     }
@@ -6474,7 +6523,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Maritime documents that each agent runs in its own cloud micro-VM, away from the user's laptop, and that secrets are injected only into that agent's VM. This implies per-agent isolation of credentials, but the docs never explicitly state that host or platform secrets are unreachable from code the agent runs. Missing for 10: explicit guarantee that host/platform credentials are inaccessible from inside the VM, documentation of the isolation boundary (network/metadata access), independent or hands-on corroboration.",
+    "rationale": "Maritime runs each agent in its own cloud micro-VM, away from the user's machine. Secrets are injected only into that agent's VM, which implies per-agent isolation. Scoped API keys limit what a leaked key can do, but that is an adjacent control and earns no credit here. The docs never state that host or platform credentials are unreachable from code running in the VM, and there is no independent or hands-on verification. Missing for 10: explicit documentation of the isolation boundary between agent code and host or other-tenant secrets, isolation technology details, independent corroboration.",
     "evidenceIds": [
       "maritime-docs-37",
       "maritime-docs-33"
@@ -6498,39 +6547,16 @@
   {
     "productId": "maritime",
     "storyId": "shell-and-packages",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Maritime runs any Docker container you supply on its own micro-VM, so arbitrary code and packages can be baked in at build time. It also offers persistent Linux desktops that agents can drive. However, no documented exec or shell-command API, and no runtime package-install capability, appears in the evidence. missing for 10: a documented interface for running arbitrary shell commands inside a running sandbox, explicit runtime package installation, hands-on corroboration.",
-    "evidenceIds": [
-      "maritime-docs-19",
-      "maritime-docs-29",
-      "maritime-docs-37",
-      "maritime-docs-5",
-      "maritime-docs-50"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack never documents running arbitrary shell commands or installing packages inside a Maritime sandbox. There is no exec endpoint, terminal command, or package-install flow. Related capabilities exist: custom Docker images as agents, micro-VMs, a GUI Linux desktop driven by screenshot/mouse/keyboard, and a Files API for disk edits. These are adjacent hosting and desktop features, not the stated shell-execution capability, so they earn no credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As a developer, I can run arbitrary shell commands and install packages inside the sandbox",
-      "citations": [
-        {
-          "evidenceId": "maritime-docs-19",
-          "quote": "Any Docker container becomes an agent: three endpoints get you sleep/wake, channels, and triggers."
-        },
-        {
-          "evidenceId": "maritime-docs-29",
-          "quote": "Any repo with a Dockerfile can be served on a public, no-login HTTPS URL. Maritime builds it, runs it serverlessly"
-        },
-        {
-          "evidenceId": "maritime-docs-37",
-          "quote": "its own always-on micro-VM in the cloud, persistent storage"
-        },
-        {
-          "evidenceId": "maritime-docs-5",
-          "quote": "A persistent Linux desktop (XFCE, Chromium, LibreOffice) for each of _your_ end users, driven by _your_ model."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -6539,7 +6565,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Maritime runs agents in micro-VMs with persistent storage, so snapshot, restore and fork is a fair axis for it. The pack never documents snapshotting a VM or disk, or restoring or forking from a snapshot. Adjacent features do not count toward this story: cloneable templates are agent packages, the DeepSeek harness forks session logs rather than sandboxes, and the Files API and persistent storage are file access, not snapshots.",
+    "rationale": "Maritime runs agents in micro-VMs with persistent storage, so snapshotting and forking sandboxes is a fair question for this product. The evidence pack never documents creating a snapshot of an agent or computer VM, or restoring or forking new sandboxes from one. The closest items are adjacent features that do not qualify: cloneable templates, which are agent packages rather than state snapshots, and resumable or forkable session logs in one framework, which cover conversation history rather than sandbox state.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6554,14 +6580,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Maritime's SDK documents a single idempotent `provision` call that creates a per-user agent, and each agent runs in its own micro-VM with secrets injected only into that VM, so one-call isolated provisioning is the product's own capability. Nothing shows the environment is live in seconds: the only timing claim is a whole quickstart 'in under 5 minutes', and no provisioning latency is documented. missing for 10: documented seconds-level time-to-live for provisioned environments, an explicit isolation model for the sandbox, independent or hands-on corroboration of provisioning speed.",
+    "rationale": "Maritime's SDK documents a single `provision` call that creates or returns an agent per end user. Each agent runs in its own micro-VM, and secrets are injected only into that agent's VM, which implies per-agent isolation. However, nothing shows the environment is live within seconds: the only timing claims are \"under 5 minutes\" for a template deploy, and isolation guarantees are only implied. Missing for 10: evidence of seconds-scale provisioning latency, explicit sandbox isolation documentation, independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-2",
       "maritime-docs-45",
       "maritime-docs-18",
       "maritime-docs-37",
       "maritime-docs-33",
-      "maritime-docs-5",
       "maritime-docs-14"
     ],
     "support": {
@@ -6584,10 +6609,6 @@
         {
           "evidenceId": "maritime-docs-33",
           "quote": "injected only into that agent's VM"
-        },
-        {
-          "evidenceId": "maritime-docs-14",
-          "quote": "Deploy your first agent and talk to it, in under 5 minutes."
         }
       ]
     }

@@ -1,17 +1,30 @@
 {
-  "hash": "5e5501300cf77de037e15f120bc3ab7904c6297475587ea35029d5f568330e07",
+  "hash": "251baa058742c8f772c04a0549627befc3a5f5276898f0db99a72bb50e89a6ee",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Stripe Identity is an API product, so a machine-readable spec is a fair question, but the evidence pack contains none. The OpenAPI probe returned 404 on every candidate path. The llms.txt file, the markdown docs and the MCP server are related AI-facing features, not a downloadable OpenAPI or equivalent API spec, so they earn no credit here.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Stripe publishes an official machine-readable OpenAPI spec in JSON and YAML, with GA and preview variants, in the stripe/openapi GitHub repository. The published spec3.json includes the Identity resources such as identity.verification_session, so Identity's API can be downloaded as part of the platform spec. The probe's 404s on docs.stripe.com/openapi.json and similar paths only show the spec lives on GitHub rather than at those URLs; they do not contradict its existence. Missing for 10: no Identity-specific spec file, no discoverable spec at conventional docs-site paths, no independent hands-on corroboration of consuming the spec.",
+    "evidenceIds": [
+      "stripe-identity-openapi-repo-20261106",
+      "stripe-identity-spec-resources-20261106",
+      "stripe-identity-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "stripe-identity-openapi-repo-20261106",
+          "quote": "Stripe publishes its machine-readable API specification in the official stripe/openapi repository (latest GA plus preview variants, JSON and YAML)."
+        },
+        {
+          "evidenceId": "stripe-identity-spec-resources-20261106",
+          "quote": "The published spec3.json itself carries the Identity resources (identity.verification_session and related schemas), so the Identity API is machine-readable through the platform spec."
+        }
+      ]
     },
     "productId": "stripe-identity",
     "storyId": "api-machine-spec"

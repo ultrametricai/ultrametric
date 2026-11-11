@@ -1,20 +1,23 @@
 {
-  "hash": "eb563cdc1338669c204f19d07b503866ae74e061a6e24b3a4d6fc26e686f52a9",
+  "hash": "37351235489b454d7a1b4a916d316b0d5c791c778f5085a8d79e9877786e9a96",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Bitwarden documents a Public API, but it is scoped to organization administration (members, collections, groups, event logs, policies). Vault items are reachable programmatically only through the CLI's local `bw serve` RESTful Vault Management API, authenticated with a personal API key. Because the hosted public API covers only part of the product, this is direct support with partial coverage rather than full delivery. missing for 10: a hosted public API covering vault items for individual users (the Public API is organization-admin only and vault access requires running a local CLI server), a discoverable OpenAPI spec (all probed openapi/swagger paths returned 404), and independent hands-on corroboration of driving the API end-to-end.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Bitwarden documents a Public (Organization) API that publishes an OAS3-compliant swagger.json, with a vendor-hosted Swagger UI and an explicit backwards-compatibility policy. Separately, the CLI's `bw serve` mode exposes a documented Vault Management API, with its own OpenAPI document, for programmatic access to vault items. The root-path openapi probe 404s, but the spec is published at /help/api/, so the probe does not contradict the docs. missing for 10: the Public API is scoped to organization administration (members, collections, groups, events, policies) while vault-item access requires the local `bw serve` server; no per-request version pinning; no independent hands-on corroboration of actual API calls.",
     "evidenceIds": [
       "bitwarden-docs-8",
+      "bitwarden-docs-20261115",
+      "bitwarden-public-api-oas-20261106",
+      "bitwarden-swagger-ui-20261106",
+      "bitwarden-api-compat-policy-20261106",
       "bitwarden-probe-rt-1",
-      "bitwarden-docs-9",
-      "bitwarden-probe-2"
+      "bitwarden-docs-9"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
@@ -22,12 +25,16 @@
           "quote": "The Bitwarden Public API provides organizations a suite of tools for managing members, collections, groups, event logs, and policies."
         },
         {
-          "evidenceId": "bitwarden-probe-rt-1",
-          "quote": "the CLI whose documented `bw serve` mode exposes the whole vault as a local RESTful API (Vault Management API) an agent can query for TOTP codes and items."
+          "evidenceId": "bitwarden-docs-20261115",
+          "quote": "The Public API is compatible with the OpenAPI Specification (OAS3) and publishes a compliant [`swagger.json`](/help/api/) definition file."
         },
         {
-          "evidenceId": "bitwarden-docs-9",
-          "quote": "Using the personal API key for CLI authentication is suitable for automated workflows"
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "The Vault Management API page embeds its own OpenAPI document for the CLI's `bw serve` local server."
+        },
+        {
+          "evidenceId": "bitwarden-api-compat-policy-20261106",
+          "quote": "As a practice, we aim to provide backwards compatibility to the API indefinitely through semantic versioning."
         }
       ]
     },

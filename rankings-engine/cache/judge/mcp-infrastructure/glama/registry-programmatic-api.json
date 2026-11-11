@@ -1,28 +1,35 @@
 {
-  "hash": "5252bc01d76970931a4acaba78189a35ece6aa81854c6712684ead2686a545f3",
+  "hash": "fc901cec3e9bb59b5539be1741454252d3df767fc6bacc83d540164c347ed875",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Glama's reference page describes searching its curated catalog of servers and connectors, inspecting their capabilities, and keeping a directory synchronized, which suggests a documented programmatic registry API. An llms.txt index of the directory also exists. However, the evidence never shows endpoints, auth, or query parameters, and every probed OpenAPI/Swagger path returned 404. missing for 10: concrete endpoint/schema documentation, machine-readable OpenAPI spec, tool-level discovery detail, hands-on corroboration of agent queries.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Glama documents a directory API for its MCP registry. An OpenAPI 3.0.3 spec titled \"Glama MCP API\" covers /v1 paths for servers and connectors. It is machine-discoverable from llms.txt and from an RFC 9727 /.well-known/api-catalog, and a hosted reference (e.g. list-mcp-servers) provides code samples and a Try-it panel. The OpenAPI probe's 404s at common guessed paths do not contradict this, because the spec lives at /api/mcp/openapi.json. Missing for 10: independent or hands-on corroboration that agents successfully query the API, and explicit evidence that tool-level listings are exposed via the API beyond the reference page's claim of capability inspection.",
     "evidenceIds": [
+      "glama-openapi-spec-20261106",
+      "glama-api-catalog-20261106",
+      "glama-api-try-it-20261106",
       "glama-docs-6",
       "glama-probe-1",
-      "glama-probe-3"
+      "glama-endpoint-deprecation-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI agent, I can query the platform's registry or catalog through a documented API to discover servers and tools programmatically",
       "citations": [
         {
-          "evidenceId": "glama-docs-6",
-          "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities, and keep your own directory synchronized."
+          "evidenceId": "glama-openapi-spec-20261106",
+          "quote": "Glama publishes an OpenAPI 3.0.3 document for its MCP directory API (info title \"Glama MCP API\", /v1 paths for servers, connectors, instances, usage)"
         },
         {
-          "evidenceId": "glama-probe-1",
-          "quote": "A directory of 91,626 Model Context Protocol servers and 23,749 remote connectors"
+          "evidenceId": "glama-api-catalog-20261106",
+          "quote": "The RFC 9727 API catalog (application/linkset+json) links the machine spec (service-desc) and the hosted reference (service-doc), completing a fully machine-discoverable chain from the well-known path."
+        },
+        {
+          "evidenceId": "glama-docs-6",
+          "quote": "Search Glama's curated catalog of open-source servers and remote connectors, inspect their capabilities, and keep your own directory synchronized."
         }
       ]
     },

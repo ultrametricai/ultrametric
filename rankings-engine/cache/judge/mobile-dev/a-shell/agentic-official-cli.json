@@ -1,18 +1,17 @@
 {
-  "hash": "fed221fd89f0ec39c24def3ea8cc916e4d783959aa2a0dfdbadd68d8213f60cd",
+  "hash": "ea873cee7553cb64916a6f085bdf0eb0ba99bb785446d2ff4e76812aec4971a9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "a-Shell's primary interface is its own official command line, a Unix-like terminal on iOS with first-party commands such as `config`, `pickFolder`, `pkg` and `help -l`. It can also be driven non-interactively through the Apple Shortcuts `Execute Command` action. However, nothing in the evidence shows the CLI is designed for or documented around AI-native or agent workflows, and the llms.txt probe returned 404, so coverage is partial. Missing for 10: AI/agent-oriented CLI usage or documentation, machine-readable agent docs (llms.txt 404), a CLI callable from a desktop or remote environment, and independent hands-on corroboration.",
+    "rationale": "a-Shell is itself an official, first-party Unix-like command line on iOS. It ships its own commands (`config`, `pickFolder`, `pkg install`, `help -l`), and an off-by-default relay server can accept command lines over HTTPS, so the core of an official CLI is directly delivered. The AI-native part of the story is unevidenced: the CLI only runs inside the iOS app, the relay is meant for trusted networks, the llms.txt probe returned 404, and no agent-oriented or machine-readable output mode is documented. missing for 10: machine-readable/structured output for agents, AI- or agent-specific CLI workflows, a CLI usable outside the iOS app sandbox, versioned CLI reference/changelog, independent hands-on corroboration.",
     "evidenceIds": [
       "a-shell-gh-17",
-      "a-shell-gh-20",
       "a-shell-gh-6",
       "a-shell-gh-27",
-      "a-shell-gh-33",
-      "a-shell-gh-4",
+      "a-shell-gh-22",
+      "a-shell-relay-20261106",
       "a-shell-probe-1"
     ],
     "support": {
@@ -33,12 +32,8 @@
           "quote": "You install them on your iPad using the `pkg` command: `pkg install zip`."
         },
         {
-          "evidenceId": "a-shell-gh-33",
-          "quote": "`Execute Command`, which takes a list of commands and executes them in order."
-        },
-        {
-          "evidenceId": "a-shell-gh-4",
-          "quote": "a-Shell is compatible with Apple Shortcuts, giving users full control of the Shell."
+          "evidenceId": "a-shell-relay-20261106",
+          "quote": "POST /run takes a UTF-8 command line as its body and requires Content-Length and X-Token"
         }
       ]
     },

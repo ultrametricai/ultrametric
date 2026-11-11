@@ -5099,13 +5099,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe Identity documents a VerificationSession API that tracks each verification and shows results on completion. Results can be read programmatically with a secret key, and status-change webhooks let an automated flow react. Nothing in the pack shows structured failure-reason codes or exposed risk signals an agent could branch on. Missing for 10: documented machine-readable failure/error reason codes, exposed risk or fraud signal fields, per-check result schema detail, independent hands-on corroboration of agent-driven branching.",
+    "rationale": "Stripe Identity documents a programmatic Verification Sessions API that tracks each verification and returns results, plus webhook events on every status change. Its machine-readable OpenAPI spec includes the identity.verification_session schemas, so an agent can read outcomes and branch on status. However, the pack never shows granular per-check results, risk scores or signals, or structured failure-reason codes. Missing for 10: documented per-check result fields, risk signals/scores, structured failure-reason codes, independent or hands-on corroboration of agent branching on outcomes.",
     "evidenceIds": [
       "stripe-identity-docs-13",
       "stripe-identity-docs-7",
       "stripe-identity-docs-6",
       "stripe-identity-docs-15",
-      "stripe-identity-docs-4"
+      "stripe-identity-spec-resources-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5127,6 +5127,10 @@
         {
           "evidenceId": "stripe-identity-docs-15",
           "quote": "Stripe generates events every time a session changes status."
+        },
+        {
+          "evidenceId": "stripe-identity-spec-resources-20261106",
+          "quote": "The published spec3.json itself carries the Identity resources (identity.verification_session and related schemas), so the Identity API is machine-readable through the platform spec."
         }
       ]
     }
@@ -5137,14 +5141,16 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe Identity's own API documents creating verification sessions, tracking status through completion, webhook outcome events, and programmatic retrieval of extracted data with a secret key. Stripe also documents an official MCP server for the Stripe API, but no evidence shows it exposes Identity tools. Re-checks and scoped (restricted) credentials are also unevidenced; the docs mention only a full secret key. Missing for 10: documented API re-check/re-verify trigger, scoped/restricted-key credentials for Identity, evidence the MCP server covers Identity sessions, independent hands-on corroboration of agent use.",
+    "rationale": "Stripe Identity documents an API to create verification sessions, track their status with webhook events, and retrieve extracted data and images programmatically with a secret key, so an agent can drive the core pipeline over the API. A general Stripe MCP server exists, but nothing shows it exposes Identity tools, and the evidence never mentions scoped or restricted credentials or an API-triggered re-check (status override is described as a manual review tool). missing for 10: documented re-check or re-verify API action, scoped/restricted key support for Identity, evidence that the MCP server covers Identity sessions, independent hands-on agent corroboration.",
     "evidenceIds": [
       "stripe-identity-docs-5",
       "stripe-identity-docs-13",
       "stripe-identity-docs-15",
       "stripe-identity-docs-7",
+      "stripe-identity-docs-16",
       "stripe-identity-docs-4",
-      "stripe-identity-docs-12"
+      "stripe-identity-docs-12",
+      "stripe-identity-spec-resources-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5178,14 +5184,14 @@
     "productId": "stripe-identity",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Hands-on probes confirm that Stripe serves an llms.txt at docs.stripe.com/llms.txt (HTTP 200, 'Stripe Documentation' with agent-directed instructions). They also confirm agent-friendly markdown versions of the Identity docs at identity.md and related .md pages, so an agent can be pointed directly at them. Missing for 10: no evidence that llms.txt specifically indexes Identity content, and no first-party documentation describing the llms.txt and .md offering for agents.",
+    "rationale": "Probes confirm a live llms.txt at docs.stripe.com/llms.txt and agent-friendly markdown versions of the Identity docs (identity.md, verification-sessions.md and others), so an agent can be pointed directly at machine-readable Identity documentation. missing for 10: evidence that the platform-wide llms.txt specifically indexes the Identity pages, independent or hands-on corroboration of agents using these docs.",
     "evidenceIds": [
       "stripe-identity-probe-1",
       "stripe-identity-probe-2",
-      "stripe-identity-docs-2",
-      "stripe-identity-docs-5"
+      "stripe-identity-docs-5",
+      "stripe-identity-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -5209,7 +5215,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An identity-verification SaaS could plausibly offer AI-generated insights or suggestions, so the axis applies. The evidence shows no such in-product feature. Automated fraud detection, manual review tools, and the Stripe MCP server for external agents are adjacent capabilities, not AI-generated insights or suggestions delivered to the user inside the product.",
+    "rationale": "An identity-verification SaaS with a dashboard could plausibly offer in-product AI insights, so the axis applies. The evidence pack documents none: the MCP server is a tool for external agents to call the Stripe API, and the fraud detection and manual review tools are adjacent features, not AI-generated insights or suggestions shown to the user.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5224,7 +5230,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stripe Identity documents webhooks that let your own integration react to verification events, and a blocklist that automatically rejects future verifications using a blocked document. Neither is a product feature for setting up autonomous background automations: webhooks are developer building blocks the user must build on, and the blocklist is an adjacent fraud control. No first-party automation, scheduling, or rule-builder capability appears in the evidence.",
+    "rationale": "Background automations are a fair question for an identity-verification service, since such a service could ship rules or scheduled workflows, so the axis applies. The pack shows no product-native way for users to set up autonomous background automations. Webhook events that let 'your integration' trigger reactions, reusable flow configurations, and blocklisting are developer building blocks or adjacent controls, not a user-configurable automation capability.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5239,7 +5245,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair axis for a SaaS verification product with a dashboard, but the evidence shows no in-product assistant users can delegate tasks to. The MCP server, llms.txt and CLI let external agents and developers work with the Stripe API, which is a different capability, so they earn no credit here.",
+    "rationale": "A built-in AI assistant is a reasonable thing to ask of a SaaS identity-verification product, so the axis applies. However, nothing in the pack shows an assistant inside Stripe Identity or its dashboard to which tasks can be delegated. The Stripe MCP server only provides tools for external AI agents to call the API, which is a developer building block, not a built-in assistant, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5252,14 +5258,16 @@
     "productId": "stripe-identity",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe Identity can be driven headlessly through its own API. Sessions are created with a secret key via curl, results can be read programmatically, and webhooks let an integration react automatically; an official Stripe CLI is also documented. However, nothing in the evidence documents CI usage, test-mode automation for Identity, or completing a verification without an end user doing the capture flow. missing for 10: documented CI/test-mode workflows, Identity-specific CLI commands, a headless way to complete verifications, independent hands-on corroboration of automation use.",
+    "rationale": "Stripe Identity is API-driven. Verification sessions can be created by curl with a secret key, results can be read programmatically, and webhooks let an integration react to outcomes automatically. An isolated sandbox and an official Stripe CLI also exist. However, the documented test-mode flow has you submit sessions by selecting a predefined test case in the verification UI, so headless end-to-end runs in CI are not shown. Missing for 10: documented headless or CI completion of verification sessions without the UI, CI-specific guidance, and hands-on corroboration of automated pipelines.",
     "evidenceIds": [
       "stripe-identity-docs-5",
-      "stripe-identity-docs-7",
       "stripe-identity-docs-6",
-      "stripe-identity-docs-13",
+      "stripe-identity-docs-7",
+      "stripe-identity-docs-15",
+      "stripe-identity-sandboxes-20261106",
+      "stripe-identity-test-flow-20261106",
       "stripe-identity-probe-5"
     ],
     "support": {
@@ -5269,7 +5277,7 @@
       "citations": [
         {
           "evidenceId": "stripe-identity-docs-5",
-          "quote": "curl https://api.stripe.com/v1/identity/verification_sessions \\\n  -u \"<<YOUR_SECRET_KEY>>:\" \\\n  -d type=document"
+          "quote": "curl https://api.stripe.com/v1/identity/verification_sessions"
         },
         {
           "evidenceId": "stripe-identity-docs-7",
@@ -5278,6 +5286,10 @@
         {
           "evidenceId": "stripe-identity-docs-6",
           "quote": "Listen for verification results so your integration can automatically trigger reactions."
+        },
+        {
+          "evidenceId": "stripe-identity-sandboxes-20261106",
+          "quote": "A sandbox is an isolated test environment."
         },
         {
           "evidenceId": "stripe-identity-probe-5",
@@ -5292,7 +5304,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Stripe Identity is an identity-verification API service, not an AI agent or MCP host, so consuming tools from plugged-in MCP servers is a category error for this kind of product. The evidence of an official Stripe MCP server (stripe-identity-docs-12, stripe-identity-probe-4) is the server role, which lets agents call Stripe. It is not client-side capability and does not make this axis applicable.",
+    "rationale": "Stripe Identity is an identity-verification API service, not an agent or AI client, so plugging MCP servers into it so it can use their tools is a category error for this product type. The evidence only shows Stripe publishing its own MCP server for agents to call (server role), which is a different story and does not show Identity consuming MCP tools.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5307,7 +5319,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe documents an official first-party MCP server that gives AI agents tools to work with the Stripe API, and a probe confirms the MCP docs page exists. The pack never shows that this server exposes Stripe Identity resources such as verification sessions, so its coverage of this product is unproven. missing for 10: evidence that the MCP server exposes Identity-specific tools (e.g. creating or retrieving verification sessions), setup and auth documentation for connecting an agent, independent or hands-on corroboration.",
+    "rationale": "Stripe documents an official, first-party MCP server that gives AI agents tools to interact with the Stripe API, which is the API surface Stripe Identity is exposed through. Nothing in the evidence shows that the MCP server includes Identity-specific tools such as creating or retrieving verification sessions, so its coverage of this product is unproven. Missing for 10: documented Identity-specific MCP tools (e.g. verification_session create/retrieve), MCP connection/auth setup details for Identity use, and independent or hands-on corroboration of agents driving Identity via MCP.",
     "evidenceIds": [
       "stripe-identity-docs-12",
       "stripe-identity-probe-4"
@@ -5334,7 +5346,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no natural-language command interface for Stripe Identity, such as a built-in assistant or a prompt-driven console. The only related item is Stripe's general MCP server, which gives external AI agents API tools. That is a separate MCP-server capability, relies on a third-party agent to interpret language, and is not shown to cover Identity endpoints, so it earns no credit here.",
+    "rationale": "Operating an identity-verification SaaS through natural-language commands is a fair question for this kind of product, but the evidence shows no Identity feature that accepts natural-language commands. The only related item is Stripe's platform-wide MCP server, which gives AI agents tools for the Stripe API. That belongs to the separate MCP-server story, is not shown to cover Identity, and is a building block for an external agent rather than natural-language operation of the product itself, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5347,9 +5359,9 @@
     "productId": "stripe-identity",
     "storyId": "agentic-official-cli",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "A probe confirms Stripe documents an official CLI at docs.stripe.com/stripe-cli, which Identity users can use as part of the Stripe API surface. However, no evidence shows Identity-specific CLI commands, such as creating or inspecting verification sessions; the docs show curl against the API instead. Missing for 10: evidence that the CLI covers Identity resources, CLI command documentation for verification sessions, and hands-on or independent corroboration of AI-native CLI workflows.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "A probe confirms Stripe documents an official CLI at docs.stripe.com/stripe-cli, the same vendor toolchain that governs the Identity API. The pack shows no Identity-specific CLI commands, and the docs demonstrate Identity calls only via curl, so how well the CLI covers Identity is unproven. missing for 10: evidence that the CLI exposes Identity verification-session commands, CLI documentation depth or AI-oriented usage details, independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-identity-probe-5"
     ],
@@ -5369,15 +5381,17 @@
     "productId": "stripe-identity",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Stripe Identity documents a public REST API at api.stripe.com/v1/identity/verification_sessions, with a curl example, that tracks verifications from creation to results. Secret-key programmatic access to results and webhook events for status changes are also documented. missing for 10: a machine-readable OpenAPI spec (probed paths all returned 404), independent or hands-on corroboration of driving the API programmatically.",
+    "rationale": "Stripe Identity documents a public REST API for creating and tracking verification sessions (with a curl example) and for programmatically retrieving results with a secret key. A machine-readable OpenAPI spec covering the Identity resources is published, the API uses dated versioning, and webhook events report status changes. The probe found no OpenAPI file at the docs paths, but the official stripe/openapi repo carries the spec, so this is not a contradiction. missing for 10: independent or hands-on community corroboration of driving Identity through the API.",
     "evidenceIds": [
       "stripe-identity-docs-5",
-      "stripe-identity-docs-13",
       "stripe-identity-docs-7",
+      "stripe-identity-docs-13",
       "stripe-identity-docs-15",
-      "stripe-identity-probe-2"
+      "stripe-identity-spec-resources-20261106",
+      "stripe-identity-openapi-repo-20261106",
+      "stripe-identity-versioning-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5389,16 +5403,16 @@
           "quote": "curl https://api.stripe.com/v1/identity/verification_sessions"
         },
         {
-          "evidenceId": "stripe-identity-docs-13",
-          "quote": "This API tracks a verification, from initial creation through the entire verification process, and shows verification results upon completion."
-        },
-        {
           "evidenceId": "stripe-identity-docs-7",
           "quote": "You can access most verification details programmatically... using your secret key."
         },
         {
-          "evidenceId": "stripe-identity-docs-15",
-          "quote": "Stripe generates events every time a session changes status."
+          "evidenceId": "stripe-identity-docs-13",
+          "quote": "This API tracks a verification, from initial creation through the entire verification process, and shows verification results upon completion."
+        },
+        {
+          "evidenceId": "stripe-identity-spec-resources-20261106",
+          "quote": "the Identity API is machine-readable through the platform spec"
         }
       ]
     }
@@ -5409,7 +5423,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Issuing scoped API credentials is a fair question for an API-driven service like Stripe Identity, so the axis applies. The evidence only shows a single secret key used for API calls and access to results. It never documents restricted, scoped or least-privilege keys for agents. The MCP server mention is a separate capability and does not show credential scoping.",
+    "rationale": "Scoped API credentials are a fair question for an API-driven identity service, so the axis applies. The evidence shows only that calls are authenticated with the account's full secret key, plus a mention of a Stripe MCP server. Nothing documents restricted, scoped or least-privilege keys that could be issued to an agent.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5424,10 +5438,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only first-party hint of official SDKs is Stripe's llms.txt, which refers to installing Stripe packages from the npm registry. Identity's own docs show only raw curl calls against the REST API. The MCP server and CLI are separate capabilities and earn no credit toward an SDK story. missing for 10: explicit documentation of official SDK libraries and supported languages for Identity, SDK code samples for verification sessions, independent or hands-on corroboration of SDK use.",
+    "rationale": "The only evidence of official SDKs is a glancing line in Stripe's llms.txt about installing Stripe packages from npm. Identity docs show only curl calls to the REST API, and the published OpenAPI spec is a building block for generating clients, not an official SDK itself. missing for 10: explicit documentation of official Identity-capable SDKs and their supported languages, SDK code examples for verification sessions, independent or hands-on corroboration of SDK use with Identity.",
     "evidenceIds": [
-      "stripe-identity-probe-1",
-      "stripe-identity-docs-5"
+      "stripe-identity-probe-1"
     ],
     "support": {
       "relation": "direct",
@@ -5445,9 +5458,9 @@
     "productId": "stripe-identity",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Stripe Identity's own docs say Stripe generates events on every verification-session status change. They also give a guide for implementing webhooks that notify your app so the integration can react automatically, which directly delivers outbound event subscriptions. Missing for 10: an explicit catalog of subscribable Identity event types and endpoint-registration/signature details in the pack, and independent or hands-on corroboration of the webhook flow.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Stripe Identity's own docs include an Identity-specific guide stating that Stripe generates events each time a verification session changes status, and that walks through implementing webhooks so an app is notified when results are available. That is a documented outbound HTTP callback mechanism a programmatic consumer can receive. missing for 10: an enumerated list of Identity event types, documentation of endpoint registration, signature verification and retry behavior, and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-identity-docs-15",
       "stripe-identity-docs-6"
@@ -5474,7 +5487,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Watchlist screening is a fair axis for an identity-verification product, but nothing in the evidence pack mentions sanctions, PEP, or adverse-media screening. The documented checks cover ID documents, selfie matching, SSN and id_number validation, and a merchant-managed document blocklist. That blocklist only blocks reuse of documents the merchant has flagged, so it is an adjacent control, not watchlist screening.",
+    "rationale": "Watchlist screening is a fair question for an identity-verification product, so the axis applies. The evidence covers document authenticity checks, selfie matching, SSN and ID-number validation, and manual review tools, but nothing mentions screening against sanctions, PEP, or adverse-media lists. The review-tools blocklist only blocks reuse of the same document and is an adjacent control, not watchlist screening.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5486,61 +5499,106 @@
   {
     "productId": "stripe-identity",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows only static documentation with a copyable curl snippet for creating verification sessions. Nothing documents an interactive API reference (such as an in-browser explorer or a 'try it' console with runnable requests), and the OpenAPI probe returned 404 on every candidate path. A static code sample is related documentation, not the interactive reference the story asks for, so the axis applies but is unevidenced.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Stripe's Identity docs include copy-pasteable curl examples against the live verification_sessions endpoint. A published OpenAPI spec and a test-mode sandbox let those examples be run safely, but nothing shows an interactive reference where calls execute in the browser. missing for 10: evidence of an interactive API reference explorer, in-page runnable or try-it examples, auto-filled test keys, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "stripe-identity-docs-5",
+      "stripe-identity-docs-13",
+      "stripe-identity-sandboxes-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "stripe-identity-docs-5",
+          "quote": "curl https://api.stripe.com/v1/identity/verification_sessions \\\n  -u \"<<YOUR_SECRET_KEY>>:\" \\\n  -d type=document"
+        },
+        {
+          "evidenceId": "stripe-identity-docs-13",
+          "quote": "This API tracks a verification, from initial creation through the entire verification process, and shows verification results upon completion."
+        }
+      ]
     }
   },
   {
     "productId": "stripe-identity",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Stripe Identity is an API product, so a machine-readable spec is a fair question, but the evidence pack contains none. The OpenAPI probe returned 404 on every candidate path. The llms.txt file, the markdown docs and the MCP server are related AI-facing features, not a downloadable OpenAPI or equivalent API spec, so they earn no credit here.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Stripe publishes an official machine-readable OpenAPI spec in JSON and YAML, with GA and preview variants, in the stripe/openapi GitHub repository. The published spec3.json includes the Identity resources such as identity.verification_session, so Identity's API can be downloaded as part of the platform spec. The probe's 404s on docs.stripe.com/openapi.json and similar paths only show the spec lives on GitHub rather than at those URLs; they do not contradict its existence. Missing for 10: no Identity-specific spec file, no discoverable spec at conventional docs-site paths, no independent hands-on corroboration of consuming the spec.",
+    "evidenceIds": [
+      "stripe-identity-openapi-repo-20261106",
+      "stripe-identity-spec-resources-20261106",
+      "stripe-identity-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "stripe-identity-openapi-repo-20261106",
+          "quote": "Stripe publishes its machine-readable API specification in the official stripe/openapi repository (latest GA plus preview variants, JSON and YAML)."
+        },
+        {
+          "evidenceId": "stripe-identity-spec-resources-20261106",
+          "quote": "The published spec3.json itself carries the Identity resources (identity.verification_session and related schemas), so the Identity API is machine-readable through the platform spec."
+        }
+      ]
     }
   },
   {
     "productId": "stripe-identity",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The sandbox axis applies to a developer-facing verification API, but the evidence pack never documents a test mode, sandbox environment, or test keys for Stripe Identity. The 'before going live' guidance only implies a pre-production phase and does not establish an isolated sandbox that keeps production data untouched.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Stripe documents sandboxes as isolated test environments that don't affect the live integration. Identity also ships its own test-mode flow, with predefined test cases (including failure cases) and a separate test dashboard for verification sessions. This lets users test without touching production data. Missing for 10: independent or hands-on corroboration of Identity testing in sandboxes, and a dedicated Identity testing page (the test flows are only embedded in the integration guide).",
+    "evidenceIds": [
+      "stripe-identity-sandboxes-20261106",
+      "stripe-identity-test-flow-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "stripe-identity-sandboxes-20261106",
+          "quote": "A sandbox is an isolated test environment. You can use your sandbox to test Stripe functionality in your account, and experiment with new features without affecting your live integration"
+        },
+        {
+          "evidenceId": "stripe-identity-test-flow-20261106",
+          "quote": "Submit the session by selecting a predefined test case"
+        }
+      ]
     }
   },
   {
     "productId": "stripe-identity",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents an API versioning scheme or a deprecation policy for Stripe Identity. The only hint is the '/v1/' segment in a curl example URL, which is incidental and is not documentation of versioning or deprecation guarantees.",
-    "evidenceIds": [],
+    "rationale": "Identity endpoints sit under Stripe's dated API versioning. New versions ship monthly with no breaking changes, major releases come twice a year, and requests can be pinned with the Stripe-Version header, backed by an upgrade guide and dated changelog. That covers the versioning half of the story well, but the evidence never states a deprecation or sunset policy. missing for 10: an explicit documented deprecation/sunset policy with timelines for old versions, Identity-specific versioning notes, independent corroboration.",
+    "evidenceIds": [
+      "stripe-identity-versioning-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "stripe-identity-versioning-20261106",
+          "quote": "we release new API versions monthly with no breaking changes. Twice a year, we issue a new major release"
+        }
+      ]
     }
   },
   {
@@ -5549,7 +5607,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for an API-driven verification service, but the evidence shows no batch or bulk endpoint. The API creates and reads verification sessions one at a time, and the review tools (override status, blocklist) act on individual verifications. A flow's static link that can 'verify any number of your users' lets one configuration be reused; it is not a bulk operation across many items, so it earns no credit.",
+    "rationale": "Bulk operations are a fair question for an API-driven verification service, but the evidence documents only per-session API calls, per-session review actions (override status, blocklist), and reusable flows or static links. A static link that can verify 'any number of your users' is a reusable entry point, not a batch operation over many existing items, and no bulk or batch endpoint or bulk dashboard action is documented.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5564,30 +5622,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stripe Identity emits events and webhooks so a developer's own integration can react to verification outcomes. That is a developer building block, not a product-native rules engine where users define event-triggered automations. The document blocklist is a related but narrower control, a single fixed block action rather than user-defined rules, so it earns no credit.",
-    "evidenceIds": [
-      "stripe-identity-docs-6",
-      "stripe-identity-docs-15",
-      "stripe-identity-docs-11"
-    ],
+    "rationale": "The evidence shows Stripe Identity emitting status-change events via webhooks, but any rules or automated reactions must be written in the developer's own integration code. That makes webhooks a developer building block, not a product-native rule engine. The blocklist is a narrow adjacent control, not user-defined event→action rules, so the applicable axis is unsupported.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
-      "citations": [
-        {
-          "evidenceId": "stripe-identity-docs-6",
-          "quote": "Listen for verification results so your integration can automatically trigger reactions."
-        },
-        {
-          "evidenceId": "stripe-identity-docs-15",
-          "quote": "Stripe generates events every time a session changes status."
-        },
-        {
-          "evidenceId": "stripe-identity-docs-11",
-          "quote": "Add the document to a blocklist to programmatically block future verifications completed with the same document."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5596,7 +5637,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stripe Identity is an API-driven verification service, so recurring scheduled jobs (for example, periodic re-verification) are a fair question for this kind of product. The evidence shows no scheduling capability. Webhooks react to one-off session status changes, and reusable verification flows save configuration; neither is a recurring schedule.",
+    "rationale": "Recurring scheduling of jobs or workflows is a fair automation axis for an API-driven SaaS service like Stripe Identity, but nothing in the evidence documents a scheduler or recurring-job capability. Webhooks are event-driven one-off reactions, and verification 'flows' are saved reusable configurations, not scheduled workflows. Neither qualifies as a recurring schedule.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5611,7 +5652,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Versioning and rolling back verification workflows is a fair question for an identity-verification platform, so the axis applies. The pack shows no versioning, change review, or rollback for Stripe Identity configurations or automations. Verification Flows only save and reuse a configuration, and the review tools cover manual review of individual verifications, not automation changes. Both are adjacent features and earn no credit.",
+    "rationale": "Identity-verification products can plausibly offer configurable workflows with versioning, so this axis applies. The evidence shows reusable verification flows (saved configurations), manual review tools for individual verifications, and platform-level dated API versioning. None of these provide versioning, change review, or rollback of a user's own automations or flow configurations. API versioning governs Stripe's endpoints, not user automations, and the 'review tools' cover fraud review of sessions, so both are adjacent features that earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5626,7 +5667,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Documenting lawful handling of biometric data is a fair question for an ID-and-selfie verification product, so the axis applies. However, nothing in the evidence pack covers GDPR lawful bases, BIPA or other US biometric statutes, or required consent language. The docs cover selfie matching and access to sensitive results, but not the legal framework for biometric processing.",
+    "rationale": "The axis applies to an identity-verification product that collects selfies and ID images. However, the evidence pack contains no documentation of GDPR lawful bases, BIPA or other US biometric statutes, or the consent language a flow needs. The only consent mention is a test case for a user declining consent, which is an adjacent testing feature, not legal-handling documentation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5641,7 +5682,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented funnel analytics for Stripe Identity: no pass-rate, drop-off, or completion-time reporting broken down by country or document type. The verification-session API and status events are only developer building blocks a founder could use to build such analytics, not the capability itself. The 'conversion-optimized flow' claim describes UX, not reporting.",
+    "rationale": "Verification funnel analytics is a fair question for an identity-verification product, so the axis applies. The evidence pack documents no pass-rate, drop-off, or completion-time reporting broken down by country or document type. It shows only per-session tracking, webhooks and programmatic result access, which are building blocks a developer could use to construct such analytics, plus a list of test sessions in the dashboard.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5656,7 +5697,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack covers accessing sensitive verification results, webhooks, review tools and blocklists. It contains no documented data-retention windows and no redaction or deletion API for scrubbing collected PII. Data-lifecycle control is a fair question for an identity-verification product, so the axis applies and the absence of evidence yields none.",
+    "rationale": "The evidence pack documents programmatic access to sensitive verification results and manual review tools. It shows no documented retention windows and no redaction or deletion API that scrubs collected PII on demand. Being able to access data later is adjacent to controlling its lifecycle, not the capability itself, so the applicable axis is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5671,7 +5712,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Stripe Identity documents an `id_number` verification type that checks a user's name, date of birth and national ID number without a document scan, and states that it validates SSNs. That covers the core of a document-free, database-backed check. Missing for 10: which authoritative data sources are used, country coverage beyond the US SSN, any credit-header data source, and independent or hands-on corroboration of the id_number flow.",
+    "rationale": "Stripe Identity documents an id_number verification session type that checks a user's name, date of birth and national ID number without a document scan, and it explicitly validates SSNs. That is a first-party, document-free data check. missing for 10: details on which authoritative databases or registries are queried and in which countries, any credit-header data source, and independent or hands-on corroboration of the id_number flow.",
     "evidenceIds": [
       "stripe-identity-docs-14",
       "stripe-identity-docs-3",
@@ -5689,10 +5730,6 @@
         {
           "evidenceId": "stripe-identity-docs-3",
           "quote": "validate Social Security numbers (SSNs)"
-        },
-        {
-          "evidenceId": "stripe-identity-probe-2",
-          "quote": "Verify government-issued IDs, match documents to selfies, and validate SSNs to prevent fraud."
         }
       ]
     }
@@ -5703,7 +5740,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents ID-to-selfie matching and only a generic statement that Stripe's programmatic systems detect fraudulent verifications. Nothing names a defense against AI-generated faces, deepfakes or camera-injection attacks, and the story explicitly excludes generic fraud mentions. Biometric anti-spoofing is a fair question for an identity-verification product, so the absence of evidence makes this \"none\", not \"na\".",
+    "rationale": "The evidence pack shows document authentication, selfie-to-ID matching, and a generic statement that Stripe's programmatic systems detect fraudulent verifications. It never names any defense against AI-generated faces, deepfakes, or camera-injection attacks, such as liveness detection, injection detection, or synthetic-face detection. The axis applies to an identity-verification product, so the absence of named capabilities is 'none'.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5718,7 +5755,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe documents verifying government-issued ID documents from more than 120 countries, and a customer notes you can specify which document types are accepted. However, the pack never names the document types (passports, national IDs, driver licenses, residence permits) or points to a published supported list. Community reports of unsupported Polish IDs and rejected Chinese passports point to coverage gaps, though they do not contradict the 120+ country claim. Missing for 10: explicit documented document types (passports, national IDs, driver licenses, residence permits), a published per-country supported-document list, and independent corroboration of coverage breadth.",
+    "rationale": "Stripe's own docs claim verification of government-issued ID documents from more than 120 countries, which shows real documented breadth. A hands-on user also notes you can specify the accepted document types. However, the evidence never enumerates the document types (passports, national IDs, driver licenses, residence permits) or points to a published supported-country/document list, and community reports cite gaps such as unsupported Polish IDs and rejected Chinese passports. missing for 10: published per-country supported-document list, explicit enumeration of passports/national IDs/driver licenses/residence permits, independent corroboration of consistent coverage across listed countries.",
     "evidenceIds": [
       "stripe-identity-docs-1",
       "stripe-identity-docs-2",
@@ -5736,6 +5773,10 @@
           "quote": "Verify the authenticity of government-issued ID documents from more than 120 countries"
         },
         {
+          "evidenceId": "stripe-identity-docs-2",
+          "quote": "Capture government-issued photo IDs with a conversion-optimized verification flow"
+        },
+        {
           "evidenceId": "stripe-identity-comm-15",
           "quote": "I like that it lets you specify the types of accepted docs."
         }
@@ -5748,7 +5789,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Stripe Identity documents a server-side VerificationSession API (type=document), a Stripe-provided conversion-optimized capture flow with selfie matching, reusable flows with static hosted links, and result retrieval via the API and webhooks. Community users independently confirm the hosted UX, including desktop-to-phone handoff and in-browser image analysis, so developers do not build capture UI themselves. Missing for 10: explicit evidence in the pack of the redirect-URL versus embedded/modal integration mechanics.",
+    "rationale": "Stripe Identity documents server-side VerificationSession creation (type=document), a Stripe-provided conversion-optimized capture flow with selfie matching, hosted static links and a modal web integration, and result retrieval via API and webhooks. Community users corroborate the turnkey UX, including the desktop-to-phone handoff and in-browser analysis. Missing for 10: the redirect-versus-embed mechanics are only thinly evidenced, via a static-link mention and a modal integration guide URL, with no detailed quote on redirect URLs or embed SDK calls.",
     "evidenceIds": [
       "stripe-identity-docs-2",
       "stripe-identity-docs-3",
@@ -5757,6 +5798,7 @@
       "stripe-identity-docs-7",
       "stripe-identity-docs-15",
       "stripe-identity-docs-9",
+      "stripe-identity-test-flow-20261106",
       "stripe-identity-comm-2",
       "stripe-identity-comm-5"
     ],
@@ -5782,12 +5824,12 @@
           "quote": "This API tracks a verification, from initial creation through the entire verification process, and shows verification results upon completion."
         },
         {
-          "evidenceId": "stripe-identity-docs-15",
-          "quote": "we’ll implement webhooks to notify your app when verification results become available"
-        },
-        {
           "evidenceId": "stripe-identity-docs-9",
           "quote": "You can use a flow’s static link to verify any number of your users."
+        },
+        {
+          "evidenceId": "stripe-identity-docs-15",
+          "quote": "we’ll implement webhooks to notify your app when verification results become available."
         },
         {
           "evidenceId": "stripe-identity-comm-2",
@@ -5801,8 +5843,8 @@
     "storyId": "kyb-business-verification",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Stripe Identity is an identity-verification product, so business verification (KYB) is a fair axis to ask about. The evidence only documents verifying individuals: government ID checks, selfie matching, SSN and ID-number validation. Nothing in the pack shows business registry lookups, UBO identification, or KYB flows that chain into KYC on the owners.",
+    "confidence": "medium",
+    "rationale": "Business verification is a fair question for an identity-verification product, so the axis applies. However, the evidence pack documents only individual checks: government ID documents, selfie matching, SSN and national ID number validation. Nothing covers business registry lookups, UBO identification, or KYB flows that chain into KYC on owners.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5817,7 +5859,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe Identity documents first-party review tools for manual review. Reviewers can override a verification's status to record their decision and blocklist documents. Collected images and extracted data are accessible. Nothing shows borderline cases being routed automatically into a review queue, or the review surface presenting images, fields and check results together. Missing for 10: automatic routing of borderline verifications into a manual review queue, documentation of a consolidated reviewer view with images, extracted fields and check results, and independent or hands-on corroboration of the review workflow.",
+    "rationale": "Stripe Identity documents first-party review tools: manual reviews as an extra fraud layer, a status override that records the reviewer's decision on the verification, and blocklisting. It also documents access to collected images and extracted document data, but nothing shows borderline sessions being automatically routed into a dedicated review queue alongside the check results. Missing for 10: documented routing of borderline verifications into a manual review queue, evidence that reviewers see images, extracted fields and check results together in one review view, and independent or hands-on corroboration of the review workflow.",
     "evidenceIds": [
       "stripe-identity-docs-17",
       "stripe-identity-docs-10",
@@ -5832,7 +5874,7 @@
       "citations": [
         {
           "evidenceId": "stripe-identity-docs-17",
-          "quote": "you can perform manual reviews to provide an extra layer of fraud protection."
+          "quote": "you can perform manual reviews to provide an extra layer of fraud protection"
         },
         {
           "evidenceId": "stripe-identity-docs-10",
@@ -5841,6 +5883,10 @@
         {
           "evidenceId": "stripe-identity-docs-4",
           "quote": "Access collected images, and extracted data from government-issued ID documents"
+        },
+        {
+          "evidenceId": "stripe-identity-docs-11",
+          "quote": "Add the document to a blocklist to programmatically block future verifications completed with the same document."
         }
       ]
     }
@@ -5851,11 +5897,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Stripe's docs describe capturing government ID photos through a conversion-optimized verification flow. A community user reports the image analysis runs in the browser and the flow hands off smoothly from desktop to phone, which suggests some guided web capture. missing for 10: any evidence of native iOS or Android SDKs, documented glare/blur/edge-detection coaching, and first-try capture success metrics.",
+    "rationale": "Stripe Identity documents its own conversion-optimized ID capture flow. Its web integration includes camera use, and a community user reports that image analysis runs in the browser without a native app. This shows a web capture flow, but the evidence is thin on the specific story elements. Missing for 10: documented native iOS and Android SDKs, explicit glare/blur/edge-detection coaching during capture, and evidence of first-try usable photo rates.",
     "evidenceIds": [
       "stripe-identity-docs-2",
       "stripe-identity-comm-2",
-      "stripe-identity-comm-5"
+      "stripe-identity-test-flow-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5869,10 +5915,6 @@
         {
           "evidenceId": "stripe-identity-comm-2",
           "quote": "It does all the image analysis in browser without the need for a native app."
-        },
-        {
-          "evidenceId": "stripe-identity-comm-5",
-          "quote": "the identity product has some great UX, they rarely get stuck on it"
         }
       ]
     }
@@ -5880,18 +5922,17 @@
   {
     "productId": "stripe-identity",
     "storyId": "no-code-verification-links",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Stripe Identity documents Verification Flows, a saved configuration that can be reused across integration interfaces, and a flow's static link can verify any number of users. That is a shareable link an ops lead could send without new engineering work. Community users also report sending guests a link that they complete easily. The evidence never mentions a QR code option, never states that flows and links are created without code (for example, from the Dashboard), and does not address one-off, per-person sends versus a shared static link. missing for 10: QR code support, explicit no-code/Dashboard creation of flows and links, per-recipient one-off link sending, independent hands-on corroboration of ops-only setup.",
+    "rationale": "Stripe Identity verification flows offer a static link that can be reused to verify any number of users. That covers the core of sending a verification by link without building a per-session API integration. missing for 10: explicit documentation of no-code flow creation in the Dashboard, any QR-code delivery option, and independent hands-on corroboration of ops teams using static links for one-off verifications.",
     "evidenceIds": [
       "stripe-identity-docs-9",
-      "stripe-identity-docs-8",
-      "stripe-identity-comm-5"
+      "stripe-identity-docs-8"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an ops lead, I can send a verification to someone with a no-code link or QR code — no engineering ticket to verify a one-off customer, contractor, or seller",
       "citations": [
         {
@@ -5901,10 +5942,6 @@
         {
           "evidenceId": "stripe-identity-docs-8",
           "quote": "Flows provide a way to save and reuse the same configuration across all of your integration interfaces."
-        },
-        {
-          "evidenceId": "stripe-identity-comm-5",
-          "quote": "Given that our guests have trouble even following a link for check-in the identity product has some great UX, they rarely get stuck on it."
         }
       ]
     }
@@ -5915,7 +5952,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Continuous watchlist re-screening is a fair question for a KYC and identity-verification product, so the axis applies. The pack, however, documents only one-off verification sessions. Webhooks fire on session status changes, and the document blocklist blocks future verifications. Neither is ongoing re-screening of previously verified users against watchlist updates, so they earn no credit here.",
+    "rationale": "Continuous watchlist re-screening is a fair question for a KYC and identity-verification product, so the axis applies. The evidence pack shows no sanctions/PEP watchlist screening and no ongoing monitoring of previously verified users. The documented webhooks fire only on verification-session status changes, and the blocklist only blocks reuse of a known document; both are adjacent features, not watchlist re-screening.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5930,14 +5967,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe Identity has a documented API for creating and tracking verification sessions, retrieving results programmatically, and receiving webhook events. The docs themselves say only \"most\" verification details are accessible programmatically, and Dashboard-side features (reusable Flows, manual status overrides, blocklisting in review tools) are never shown to have API equivalents, so full parity is unproven. Missing for 10: documented API equivalents for review tools (status override, blocklist) and Flow configuration, an explicit statement of API/UI parity, a published OpenAPI spec (probe returned 404), and independent hands-on corroboration.",
+    "rationale": "Stripe Identity has a full API for creating and tracking verification sessions, retrieving results with a secret key, and receiving webhooks. Its surface is also machine-readable through the platform OpenAPI spec and an official MCP server. But the docs say only \"most\" verification details are programmatically accessible, and the review tools (status override, blocklist) appear as manual review features with no documented API equivalents, so full UI parity is not shown. Missing for 10: evidence that dashboard review actions (override status, add to blocklist) and flow configuration are available via API; explicit documentation of complete API/UI parity; independent hands-on corroboration.",
     "evidenceIds": [
       "stripe-identity-docs-5",
       "stripe-identity-docs-7",
       "stripe-identity-docs-13",
       "stripe-identity-docs-15",
       "stripe-identity-docs-10",
-      "stripe-identity-docs-8"
+      "stripe-identity-docs-12",
+      "stripe-identity-spec-resources-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5953,8 +5991,12 @@
           "quote": "This API tracks a verification, from initial creation through the entire verification process, and shows verification results upon completion."
         },
         {
-          "evidenceId": "stripe-identity-docs-15",
-          "quote": "Stripe generates events every time a session changes status."
+          "evidenceId": "stripe-identity-docs-5",
+          "quote": "curl https://api.stripe.com/v1/identity/verification_sessions"
+        },
+        {
+          "evidenceId": "stripe-identity-spec-resources-20261106",
+          "quote": "the Identity API is machine-readable through the platform spec"
         }
       ]
     }
@@ -5965,7 +6007,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows API access to individual verification results, including images and extracted data, using a secret key. There is no documented bulk or self-serve export of all account data, no statement about open export formats, and no offboarding path. Per-record API retrieval is a developer building block for building an export, not the export capability itself, and the docs say only 'most' details are accessible, so it earns no credit.",
+    "rationale": "The evidence shows only per-session programmatic retrieval of verification results, images, and extracted data through the API. That is a developer building block for constructing an export, not a documented bulk export of all data in open formats. Nothing in the pack describes a data-portability or account-exit export feature for Stripe Identity.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5980,7 +6022,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is published under an open license is a fair question for a SaaS identity-verification service, so the axis applies. Nothing in the evidence pack mentions a source repository, an open-source license, or source availability for Stripe Identity. The docs, MCP server, CLI and llms.txt cover API access and documentation, not the product's own source.",
+    "rationale": "Whether a product's source is published under an open license is a fair question for any software product, including a hosted ID-verification SaaS, so the axis applies. Nothing in the pack shows Stripe Identity's own source code being released under an open license. The public stripe/openapi repository is a machine-readable API specification, not the product's source, so it is adjacent at most and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5995,7 +6037,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an identity-verification product, since some KYC tools can be deployed on-premises, so the axis applies. However, the evidence only describes Stripe Identity as a hosted service reached through api.stripe.com, with nothing documenting a self-hosted or on-premises deployment.",
+    "rationale": "Identity-verification products can plausibly offer self-hosted or on-prem deployments, so this axis applies to Stripe Identity. The evidence pack documents only Stripe's hosted API, sandboxes and published OpenAPI spec, with nothing showing the core product can be self-hosted.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6010,7 +6052,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stripe Identity's documented check types are ID document verification, selfie matching, SSN validation and id_number (name, date of birth, national ID). Nothing in the evidence documents phone or carrier checks, email risk, address history, or device fingerprint signals as additional check types. Enriching identity verification with these signals is a fair axis for a KYC product, so the lack of evidence makes this none rather than na.",
+    "rationale": "The documented Identity check types are document verification, selfie matching, SSN validation and id_number (name, DOB, national ID). Nothing in the pack shows phone, email or device risk signals such as carrier checks, address history or device fingerprinting offered as Identity check types. The axis applies to an identity-verification product, so the absence of evidence makes this none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6025,7 +6067,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for an identity-verification SaaS that stores sensitive ID images and extracted data, so the axis applies. However, nothing in the evidence pack documents any way to choose a storage region or residency location. Docs about accessing stored verification results and community worries about Stripe holding identity documents do not address region selection.",
+    "rationale": "Choosing a data storage region or residency is a fair question for an identity-verification SaaS that holds sensitive ID documents, so the axis applies. Nothing in the evidence pack documents region selection or data-residency controls for Stripe Identity. The items cover verification flows, access to results, webhooks, sandboxes and versioning, none of which address where data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6040,7 +6082,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stripe Identity processes sensitive ID and biometric data, so whether that data can be excluded from AI or model training is a fair question for this product. The evidence pack never mentions training-data use, an opt-out, or data-retention controls tied to model training. Community worries about trusting Stripe with ID data do not address training use.",
+    "rationale": "Stripe Identity processes sensitive user data (ID images, selfies, extracted document data), so a training opt-out or data-use control is a fair question for this kind of product. However, nothing in the evidence pack covers whether that data is used to train AI models or whether users can opt out. The pack covers verification flows, result access, review tools, sandboxes and the MCP server, none of which address training data use, and a general community worry about data security is not evidence of a training control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6055,7 +6097,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair privacy axis for an identity-verification service, but the evidence pack contains no documented retention settings, redaction, or deletion capability. The cited docs only cover accessing collected images and extracted data later (docs-4, docs-7, docs-16), which is the opposite of deletion control, and the community worry about data security (comm-8) does not show any capability.",
+    "rationale": "Data retention and deletion is a fair privacy question for an identity-verification service that stores ID images and extracted personal data, so the axis applies. The evidence pack covers programmatic access to sensitive results at a later date, but documents no retention-period settings, redaction, or deletion controls. Community worry about Stripe holding an ID database is general skepticism and does not count as evidence either way.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6070,7 +6112,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry or usage tracking is a fair privacy question for a SaaS verification service and its SDKs and CLI, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out. The docs cover verification flows, results access, webhooks, review tools, MCP and CLI availability, and none of them mention telemetry controls.",
+    "rationale": "Opting out of telemetry or usage tracking is a fair question for a developer-facing API product with SDKs, a CLI and an embedded verification flow, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out for Stripe Identity or its tooling. The community concerns about data storage are about how ID documents are secured, not telemetry, so they do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6085,7 +6127,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Stripe Identity documents a review-tool blocklist. Once an analyst adds a document to it, future verifications using that same document are blocked programmatically, so a repeat document is caught, but only after manual blocklisting. The docs also make a generic claim that programmatic systems detect fraudulent verifications. missing for 10: automatic duplicate detection without prior manual blocklisting, face/biometric duplicate matching across verifications, flagging the same identity under different names, independent or hands-on corroboration.",
+    "rationale": "Stripe Identity's review tools include a document blocklist. Once a reviewer manually adds a document, future verifications using that same document are blocked automatically, so repeat-document detection exists in a limited, reviewer-initiated form. There is no evidence of automatic duplicate detection across verifications without manual blocklisting, and nothing on face or selfie deduplication. Missing for 10: automatic cross-verification duplicate flagging without manual blocklisting, face/biometric duplicate matching, detection of the same identity under different names, and independent corroboration.",
     "evidenceIds": [
       "stripe-identity-docs-11",
       "stripe-identity-docs-17"
@@ -6112,7 +6154,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no documented way to recognize a previously verified person or reuse a passed check across sessions or products in place of a full re-run. Flows reuse a session *configuration* (docs-8, docs-9), not a verification result. Accessing past results (docs-16) and limiting verification attempts (docs-19) are adjacent features, and the 'biometric re-log in' remark (comm-15) appears to describe a different product in that thread.",
+    "rationale": "The evidence pack does not document reusing a prior passed check to recognize a returning user. Flows reuse configuration, not results. Retrieving past results later is a building block a developer could use to construct reuse, not the capability itself. The 'biometric re-log in' comment appears to describe a different product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6124,16 +6166,28 @@
   {
     "productId": "stripe-identity",
     "storyId": "sandbox-test-verifications",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The evidence pack contains nothing about test mode, sandbox keys, test documents, personas, or magic values that deterministically produce verified, failed, or requires-review outcomes. The docs cover session creation, webhooks, result access, flows, review tools and going-live branding, but never a test harness for exercising outcomes. Sandbox testing is a fair question for an identity-verification API, so this is \"none\", not \"na\".",
-    "evidenceIds": [],
+    "rationale": "Stripe Identity documents its own test-mode flow in which you submit a session by picking a predefined test case, including failure cases such as declined consent or refused camera permissions. This runs inside Stripe's isolated sandbox, and results are reviewable in the test dashboard. However, the test cases live only inside the integration guide, and the evidence does not show that every outcome, notably a manual-review result, can be produced deterministically. missing for 10: documented test case or magic value producing a review/requires-input outcome, a standalone exhaustive catalog of test documents/personas covering every verification result, independent hands-on corroboration.",
+    "evidenceIds": [
+      "stripe-identity-test-flow-20261106",
+      "stripe-identity-sandboxes-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, a sandbox lets me exercise every outcome before going live — documented test documents, personas, or magic values that deterministically produce pass, fail, and review results",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "stripe-identity-test-flow-20261106",
+          "quote": "Submit the session by selecting a predefined test case"
+        },
+        {
+          "evidenceId": "stripe-identity-sandboxes-20261106",
+          "quote": "A sandbox is an isolated test environment."
+        }
+      ]
     }
   },
   {
@@ -6142,7 +6196,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Stripe Identity documents selfie-to-document matching, and a community user confirms the selfie capture flow with in-browser image analysis. Nothing in the pack covers liveness detection or defenses against presentation attacks. Missing for 10: documented liveness detection, documented defenses against printed photos, screen replays and replayed video, depth on match methodology or thresholds, independent corroboration of anti-spoofing.",
+    "rationale": "Stripe Identity's own docs say it matches government-issued photo IDs with selfies, and a community user describes taking a selfie with in-browser image analysis, so the core selfie-to-document match is a first-party capability. Nothing in the pack documents liveness detection or defenses against printed photos, screens or replayed video, so only the face-match part of the story is evidenced. Missing for 10: documented liveness detection, documented anti-spoofing defenses against printed photos, screen replays and replayed video, details on match methodology or accuracy, and independent hands-on corroboration of selfie-match effectiveness.",
     "evidenceIds": [
       "stripe-identity-docs-3",
       "stripe-identity-probe-2",
@@ -6163,7 +6217,7 @@
         },
         {
           "evidenceId": "stripe-identity-comm-2",
-          "quote": "Easy transition from desktop to phone to take a picture of your ID or a selfie"
+          "quote": "It does all the image analysis in browser without the need for a native app."
         }
       ]
     }
@@ -6174,14 +6228,15 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe's docs cover creating a VerificationSession through the API, tracking its status through the lifecycle with webhook events on each status change, and retrieving sensitive results such as document images programmatically with the secret key. Nothing in the pack documents cancelling or redacting a session through the API, and the review tools (override status, blocklist) are manual controls, not cancel or redact. missing for 10: documented API cancel endpoint, documented API redact endpoint, explicit retrieve/status endpoint reference for sessions, independent hands-on corroboration of the full lifecycle.",
+    "rationale": "Stripe Identity documents creating a VerificationSession via the API, tracking its status through the lifecycle with status-change events, and retrieving verification results and collected images programmatically with a secret key. Nothing in the evidence covers cancelling or redacting a session through the API, so the lifecycle as written is only partly documented. Missing for 10: documented cancel endpoint, documented redact endpoint, independent hands-on corroboration of end-to-end API lifecycle control.",
     "evidenceIds": [
       "stripe-identity-docs-5",
       "stripe-identity-docs-13",
       "stripe-identity-docs-15",
       "stripe-identity-docs-7",
       "stripe-identity-docs-16",
-      "stripe-identity-docs-4"
+      "stripe-identity-docs-4",
+      "stripe-identity-spec-resources-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6217,7 +6272,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe Identity documents programmatic access to extracted data from government-issued ID documents using the secret key, with date of birth explicitly named as a retrievable sensitive result, so this is more than a pass/fail flag. The specific field set the story asks for is not enumerated in the evidence. missing for 10: explicit documentation that name, document number, address and expiry date are returned as structured fields, a field-level schema of the verified outputs, and independent or hands-on corroboration of extracted-field retrieval.",
+    "rationale": "Stripe Identity documents access to extracted data from government-issued ID documents, beyond a pass/fail outcome. Verification details, including sensitive results such as date of birth, can be retrieved programmatically with the secret key, and the session API shows verification results upon completion. However, the evidence names only date of birth as a returned field, and says only 'most' details are programmatically accessible. Missing for 10: explicit documentation that name, document number, address and expiry are returned as structured API fields; a sample response schema; independent hands-on corroboration.",
     "evidenceIds": [
       "stripe-identity-docs-4",
       "stripe-identity-docs-7",
@@ -6252,9 +6307,9 @@
     "productId": "stripe-identity",
     "storyId": "verification-webhooks",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Stripe's own docs say it generates events every time a verification session changes status, and they include a guide to implementing webhooks so the app reacts to verification results without polling. That covers the core of the story, but the pack does not show the webhooks are signed or list the specific lifecycle events. Missing for 10: evidence of webhook signature verification, an enumerated list of event types (created, processing, verified, requires_input), and independent or hands-on corroboration.",
+    "rationale": "Stripe Identity's own docs say it generates events every time a verification session changes status, and the guide shows how to implement webhooks so the integration reacts to results automatically, without polling. That covers the core lifecycle-webhook capability. However, the pack never documents webhook signing or names the individual event types. missing for 10: evidence that webhooks are cryptographically signed with signature verification, explicit enumeration of the created/processing/verified/requires-input event types, independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-identity-docs-15",
       "stripe-identity-docs-6",
@@ -6286,7 +6341,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Stripe Identity's Verification Flows let teams save a verification configuration and reuse it, including via a static link that verifies users without per-session code. That is a thin but first-party form of codeless configuration. The evidence never shows conditional steps, risk-based routing, country-specific requirement rules, or that editing a flow takes effect without an engineering deploy. Missing for 10: conditional/branching steps, risk-based routing, country-specific requirement configuration, explicit no-deploy template editing, independent corroboration.",
+    "rationale": "Stripe Identity's Verification Flows let teams save a verification configuration, reuse it across integration interfaces, and send users a static link. That is a thin, first-party form of reusable template configuration. The evidence does not say flows are edited without code or that changes take effect without a deploy, and it shows no conditional logic, routing or per-country rules. Missing for 10: conditional/branching steps, risk-based routing, country-specific requirement rules, explicit no-code editing of flows with changes live without an engineering deploy, and independent corroboration.",
     "evidenceIds": [
       "stripe-identity-docs-8",
       "stripe-identity-docs-9"

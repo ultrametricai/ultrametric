@@ -1,19 +1,21 @@
 {
-  "hash": "7b8937ea462b967d5a9bf6bc4ea78bead169d3c05a030f917aa5355052cf5630",
+  "hash": "24a642f7f46c7f922e1ae62f0fa9126529838fedf041a19d9cef45517a2c188b",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Open WebUI documents a per-chat tool approval mode. In the default 'auto' mode the AI can explore, but nothing changes on disk and no command runs until the user approves, with Allow/Deny tool cards for pending actions. That is a first-party permission mode limiting what the agent can touch, though the docs also note plugins execute arbitrary Python on the server. missing for 10: documented container/VM sandboxing of tool execution, finer-grained tool policies (per-tool allow/deny lists), independent or hands-on corroboration.",
+    "rationale": "Open WebUI's Computer agent gives every chat a tool approval mode. In 'auto', nothing changes on disk and no command runs until the user approves it, and Allow/Deny tool cards back this up. RBAC roles also set baseline trust levels. However, the docs state that Tools, Functions, Pipes, Filters and Pipelines run arbitrary Python on the server, and no container or VM isolation is documented. missing for 10: container/VM sandboxing of tool execution, per-tool allow/deny policies, isolation for server-side plugins, independent or hands-on corroboration.",
     "evidenceIds": [
       "open-webui-docs-37",
       "open-webui-docs-61",
-      "open-webui-docs-13"
+      "open-webui-docs-13",
+      "open-webui-docs-17",
+      "open-webui-docs-25"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a security engineer, risky tool runs are containable — container/VM sandboxing, tool policies, or permission modes that limit what the agent can touch",
       "citations": [
         {
@@ -27,6 +29,10 @@
         {
           "evidenceId": "open-webui-docs-13",
           "quote": "the pending approval that's blocking it, rendered as tool cards with Allow / Deny buttons."
+        },
+        {
+          "evidenceId": "open-webui-docs-17",
+          "quote": "Roles: The high-level user type (Admin, User, Pending). This defines the baseline trust level."
         }
       ]
     },

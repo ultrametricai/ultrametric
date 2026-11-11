@@ -1,17 +1,31 @@
 {
-  "hash": "4cbbbf04b47e3d7289f3afa7c9567a81b1f9eb440f28dc1829cab1e33f336c11",
+  "hash": "225d918ca6e3ea20770f474d8fc3c7d00747723010f41e1c128eb3d4460a04f7",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "na",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Nitrokey is a hardware security key: its core product is a physical device that already runs locally, with no hosted service to self-host. Self-hosting is therefore a category error for this product type. The open-source Rust firmware and installable releases concern openness and updatability, not running a hosted service yourself, so they do not make the self-hosting axis applicable.",
-    "evidenceIds": [],
+    "rationale": "Nitrokey's NetHSM ships a container image (docker.io/nitrokey/nethsm:testing) that users can run on their own infrastructure, so a self-hostable server form of the product exists. The docs restrict that image to testing and development and forbid production use. The USB keys are local devices with fully open-source firmware and installable tagged releases, which is user-controlled rather than vendor-hosted. Missing for 10: a documented production-grade self-hosted deployment (container or on-prem install guide for production NetHSM), and hands-on or independent corroboration of self-hosting.",
+    "evidenceIds": [
+      "nitrokey-nethsm-test-image-20261106",
+      "nitrokey-nethsm-openapi-20261106",
+      "nitrokey-gh-1",
+      "nitrokey-probe-rt-2"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can self-host the core product",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "nitrokey-nethsm-test-image-20261106",
+          "quote": "The test image is designed for testing and development purposes"
+        },
+        {
+          "evidenceId": "nitrokey-gh-1",
+          "quote": "This software is fully open source."
+        }
+      ]
     },
     "productId": "nitrokey",
     "storyId": "openness-self-host"

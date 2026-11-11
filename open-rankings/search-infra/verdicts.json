@@ -2703,13 +2703,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Meilisearch documents a native MCP server that lets an AI client create indexes, add documents, configure settings and run searches, all without a dashboard. Its single API and typed SDKs give agents a programmatic path as well. Missing for 10: no documented CLI for these operations, no explicit REST endpoint documentation for index creation or document upload in the pack, no published OpenAPI spec found by the probe, and no hands-on corroboration of an agent running the full loop.",
+    "rationale": "Meilisearch documents a native MCP server at POST /mcp. Through it an agent can create indexes, add documents, configure settings and run searches from an MCP client. A single REST API with a published OpenAPI 3.1 spec and typed SDKs covers the same steps programmatically, so no dashboard is needed. Missing for 10: no independent or hands-on report of a coding agent doing this end to end, and no dedicated management CLI is evidenced.",
     "evidenceIds": [
       "meilisearch-docs-13",
-      "meilisearch-docs-17",
       "meilisearch-docs-78",
       "meilisearch-docs-57",
       "meilisearch-docs-1",
+      "meilisearch-openapi-spec-20261106",
       "meilisearch-docs-50",
       "meilisearch-probe-4"
     ],
@@ -2741,9 +2741,9 @@
     "productId": "meilisearch",
     "storyId": "agent-search-tool",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Meilisearch documents a native MCP server at POST /mcp. Through it, MCP clients can search indexes, create indexes, add documents, and configure settings such as ranking rules, searchable attributes, and faceting. Analytics exists as a separate feature, but nothing shows it is exposed through the MCP or tool-calling surface. missing for 10: analytics operations exposed via MCP/tools, independent hands-on corroboration of the MCP server.",
+    "rationale": "Meilisearch documents a native MCP server at the POST /mcp route. Through it, MCP clients can search indexes, create indexes, add documents, and configure settings such as ranking rules, searchable attributes, and faceting. The evidence never shows search analytics being exposed through the MCP or tool-calling surface; analytics is documented only as a separate engine feature. There is also no independent or hands-on corroboration. Missing for 10: analytics operations exposed via MCP/tool-calling, independent hands-on verification of the MCP server, detailed tool-level documentation.",
     "evidenceIds": [
       "meilisearch-docs-78",
       "meilisearch-docs-13",
@@ -2777,10 +2777,11 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Direct probes show Meilisearch serves a site-level llms.txt, which it says is maintained to help AI assistants. Its docs pages are also served as Markdown and point agents to a complete documentation index at /docs/llms.txt, so an agent can be aimed straight at agent-oriented docs. Missing for 10: independent or hands-on corroboration of agents using these files, and no evidence of a full-content variant such as llms-full.txt.",
+    "rationale": "Probes confirm Meilisearch serves a root llms.txt that it says is maintained to help AI assistants. Its docs pages also come as markdown (.md) files that point agents to a complete docs llms.txt index, which also lists the OpenAPI specs. Missing for 10: independent or hands-on corroboration of agents actually consuming these files, and no evidence of an llms-full.txt or full-content variant.",
     "evidenceIds": [
       "meilisearch-probe-1",
-      "meilisearch-probe-2"
+      "meilisearch-probe-2",
+      "meilisearch-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -2794,6 +2795,10 @@
         {
           "evidenceId": "meilisearch-probe-2",
           "quote": "Fetch the complete documentation index at: https://www.meilisearch.com/docs/llms.txt"
+        },
+        {
+          "evidenceId": "meilisearch-openapi-spec-20261106",
+          "quote": "listed under \"## OpenAPI Specs\" in the docs llms.txt"
         }
       ]
     }
@@ -2803,11 +2808,11 @@
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Meilisearch's own conversational search generates AI answers grounded in indexed content, so asking questions of your data is product-native. Nothing shows AI-generated insights or proactive suggestions about the data or search configuration: analytics only tracks queries, clicks and conversions, and the MCP natural-language workflow runs in an external AI client, not inside the product. missing for 10: AI-generated insights or analysis over the data, in-product AI suggestions (e.g. relevancy or configuration recommendations), detailed docs on the conversational feature, independent hands-on corroboration",
+    "confidence": "medium",
+    "rationale": "Meilisearch documents a built-in conversational search capability that returns AI-generated answers grounded in the user's own indexed content, which covers part of getting AI output from your data inside the product. It does not document AI-generated insights or proactive suggestions. Analytics only tracks queries, clicks, and conversions with no AI layer, and the MCP integration runs in an external AI client rather than inside the product. Missing for 10: AI-generated insights or suggestions about the data (e.g., analytics or relevance recommendations), in-product AI surfacing beyond Q&A, depth documentation of conversational search, independent hands-on corroboration.",
     "evidenceIds": [
-      "meilisearch-docs-1",
       "meilisearch-docs-45",
+      "meilisearch-docs-1",
       "meilisearch-docs-79"
     ],
     "support": {
@@ -2832,10 +2837,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Meilisearch is a search engine platform, so user-configurable background automations (scheduled jobs, triggers, autonomous workflows) are a fair axis, but the evidence documents none. The closest items are adjacent rather than this capability: automatic embedding generation and Meilisync's automatic database syncing are fixed background behaviors, and the MCP server is interactive natural-language control, not autonomous automation.",
+    "rationale": "As a search platform, Meilisearch could plausibly offer user-configurable background automations, so the axis applies. However, the evidence documents no feature that lets users define, schedule, or run autonomous recurring automations. The closest items are automatic embedding generation, a fixed indexing behavior, and database-sync integrations (Meilisync, Rails/Firebase sync). These are adjacent features, not a general background-automation capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": []
@@ -2847,10 +2852,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in assistant is a fair question for a search platform with a cloud dashboard, so the axis applies. However, the evidence shows no assistant inside Meilisearch to which users can delegate tasks. The MCP server lets an external AI client manage indexes (\"in the AI client you already use\"), which is a different product role. Conversational search is a feature developers expose to their own end users, not an in-product task assistant, so neither earns credit here.",
+    "rationale": "A built-in assistant is a fair question for a search platform with a cloud dashboard, so the axis applies. The evidence shows no assistant inside the product. The native MCP server lets external AI clients drive Meilisearch through natural-language prompts. Conversational search is an API capability developers build into their own apps. Neither is a built-in assistant the user can delegate tasks to, so both are adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
       "citations": []
@@ -2860,17 +2865,17 @@
     "productId": "meilisearch",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Meilisearch is documented as a dependency-free single binary that runs headlessly as an API server. It can be installed via a cURL one-liner or official Docker images and run on any OS, which supports scripted automation. Community reports confirm containerized and k8s deployments that 'just worked'. However, no evidence explicitly documents CI pipeline usage. Missing for 10: explicit CI/CD integration docs (e.g., service-container or GitHub Actions guidance), documented non-interactive configuration for ephemeral test runs.",
+    "rationale": "Meilisearch documents headless operation: a dependency-free single binary installable by a curl script, official Docker images and Helm charts, and a REST API with typed SDKs and an OpenAPI spec for scripted control. Community users report scripted Docker and k8s deployments that \"just worked.\" No evidence documents CI usage specifically, so the story's CI element is only implied by these building blocks. missing for 10: first-party CI/CD pipeline docs or recipes (e.g. running Meilisearch as a CI service container), hands-on reports of use inside CI pipelines.",
     "evidenceIds": [
       "meilisearch-docs-11",
-      "meilisearch-docs-12",
       "meilisearch-docs-18",
-      "meilisearch-docs-44",
       "meilisearch-docs-73",
       "meilisearch-docs-69",
-      "meilisearch-docs-1",
+      "meilisearch-docs-50",
+      "meilisearch-openapi-spec-20261106",
+      "meilisearch-experimental-pathway-20261106",
       "meilisearch-comm-18"
     ],
     "support": {
@@ -2891,8 +2896,12 @@
           "quote": "Official Meilisearch Docker images for easy deployment and development."
         },
         {
-          "evidenceId": "meilisearch-docs-1",
-          "quote": "exposes them through fast full-text search, semantic search, and conversational interfaces, all from a single API"
+          "evidenceId": "meilisearch-docs-69",
+          "quote": "Helm charts for deploying Meilisearch on Kubernetes."
+        },
+        {
+          "evidenceId": "meilisearch-docs-50",
+          "quote": "Typed SDKs for JavaScript, Python, Ruby, PHP, Go, Rust, Java, Swift, Dart, and .NET."
         }
       ]
     }
@@ -2900,10 +2909,10 @@
   {
     "productId": "meilisearch",
     "storyId": "agentic-mcp-client",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Meilisearch offers LLM-backed conversational search, so acting as an MCP client is a fair question for it, but the pack contains no evidence that it can connect to external MCP servers or use their tools. The MCP evidence (the native server at POST /mcp, and natural-language index management from AI clients) describes the opposite role: Meilisearch serving tools to other agents. That belongs to a different story and earns no credit here.",
+    "rationale": "Meilisearch is a search engine and retrieval backend that serves data to AI clients. Consuming tools from external MCP servers is an agent/client role outside its product category. The evidence documents only a native MCP server at POST /mcp, which is the server side and cannot be credited toward this MCP-client story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2918,7 +2927,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Meilisearch documents a native, first-party MCP server at the POST /mcp route that any MCP-compatible client can use. Through it, agents can create indexes, add documents, configure settings, tune ranking rules and run searches via natural-language prompts, and a probe confirms the official MCP documentation page exists. missing for 10: independent or hands-on corroboration of the MCP server working in practice.",
+    "rationale": "Meilisearch's own docs say it ships a native MCP server at the POST /mcp route that any MCP-compatible client can use. Through it, agents can create indexes, add documents, configure settings and search using natural-language prompts. A probe confirmed the official MCP docs page exists. Missing for 10: independent or hands-on corroboration that the MCP server works as described.",
     "evidenceIds": [
       "meilisearch-docs-78",
       "meilisearch-docs-13",
@@ -2940,10 +2949,6 @@
           "quote": "Once configured, you can create indexes, add documents, configure settings, and perform searches using natural language prompts."
         },
         {
-          "evidenceId": "meilisearch-docs-43",
-          "quote": "Update ranking rules, searchable attributes, and faceting through natural-language prompts."
-        },
-        {
           "evidenceId": "meilisearch-docs-57",
           "quote": "Index documents, tune ranking rules, and search Meilisearch through natural conversation in the AI client you already use."
         },
@@ -2958,9 +2963,9 @@
     "productId": "meilisearch",
     "storyId": "agentic-nl-commands",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Meilisearch's first-party docs describe a native MCP server at the POST /mcp route. Through it, users can create indexes, add documents, configure settings (ranking rules, searchable attributes, faceting) and run searches with natural-language prompts. That covers operating the product, not just querying it. Missing for 10: independent or hands-on corroboration that natural-language operation works in practice, and a built-in natural-language console (it relies on an external MCP-compatible AI client).",
+    "rationale": "Meilisearch documents a native, first-party MCP server at POST /mcp. Its docs say users can create indexes, add documents, configure settings, tune ranking rules and run searches \"using natural language prompts\" from an MCP-compatible AI client, so the product can be operated conversationally. Missing for 10: no hands-on or independent corroboration of the natural-language operation, no documented coverage limits for which admin operations work this way, and it depends on an external AI client rather than a built-in natural-language console.",
     "evidenceIds": [
       "meilisearch-docs-13",
       "meilisearch-docs-17",
@@ -2999,7 +3004,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair thing to expect from a search engine. However, the evidence only shows a server binary that is installed via cURL and launched, plus SDKs, an MCP server and a web interface. None of these is a documented official CLI for operating Meilisearch. The server launch binary, the SDKs and the MCP endpoint are adjacent features and earn no credit for this story.",
+    "rationale": "A search engine could plausibly ship an official CLI for agent or terminal workflows, so the axis applies. The evidence shows only a server binary launched from the command line with flags, typed SDKs, and an MCP server. None of these is a documented official CLI for managing indexes, documents or searches, so no credit is given.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3012,18 +3017,17 @@
     "productId": "meilisearch",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Meilisearch is an API-first engine. Its docs say all search modes are exposed 'from a single API', describe dedicated endpoints authenticated by API keys, and list typed SDKs for ten languages plus a native MCP route at POST /mcp. Community users report driving indexing and settings programmatically. missing for 10: a published machine-readable OpenAPI spec (the probe found none at common paths), and a detailed endpoint-by-endpoint API reference in the evidence.",
+    "rationale": "Meilisearch is an API-first engine: all search, indexing and settings capabilities are exposed 'from a single API'. A versioned OpenAPI 3.1.0 spec is published on the docs site, API reference pages carry multi-language code samples, there are official typed SDKs in ten languages, and SemVer and experimental-feature policies are documented. Community users report building against the API directly. Missing for 10: an interactive in-docs 'Try it' runner (the playground is disabled), and long-term-support or deprecation guarantees for API versions.",
     "evidenceIds": [
       "meilisearch-docs-1",
-      "meilisearch-docs-41",
-      "meilisearch-docs-55",
+      "meilisearch-openapi-spec-20261106",
       "meilisearch-docs-50",
-      "meilisearch-docs-65",
-      "meilisearch-docs-78",
-      "meilisearch-probe-3",
-      "meilisearch-comm-10"
+      "meilisearch-docs-41",
+      "meilisearch-versioning-policy-20261106",
+      "meilisearch-playground-disabled-20261106",
+      "meilisearch-comm-17"
     ],
     "support": {
       "relation": "direct",
@@ -3035,20 +3039,20 @@
           "quote": "exposes them through fast full-text search, semantic search, and conversational interfaces, all from a single API"
         },
         {
+          "evidenceId": "meilisearch-openapi-spec-20261106",
+          "quote": "Meilisearch publishes its engine's OpenAPI 3.1.0 document on the docs site"
+        },
+        {
+          "evidenceId": "meilisearch-docs-50",
+          "quote": "Typed SDKs for JavaScript, Python, Ruby, PHP, Go, Rust, Java, Swift, Dart, and .NET."
+        },
+        {
           "evidenceId": "meilisearch-docs-41",
           "quote": "Facet search is a dedicated endpoint for searching through the values of a single facet."
         },
         {
-          "evidenceId": "meilisearch-docs-55",
-          "quote": "API keys authenticate requests, while tenant tokens restrict what data each user can see within a shared index."
-        },
-        {
-          "evidenceId": "meilisearch-docs-65",
-          "quote": "Integrate powerful search into your mobile and web applications with our easy-to-use APIs and SDKs for every major language."
-        },
-        {
-          "evidenceId": "meilisearch-docs-78",
-          "quote": "Meilisearch ships a native MCP server at the POST /mcp route so any MCP-compatible client can search your indexes directly."
+          "evidenceId": "meilisearch-versioning-policy-20261106",
+          "quote": "SemVer 2.0.0 on the engine release line"
         }
       ]
     }
@@ -3059,7 +3063,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Meilisearch documents API keys plus tenant tokens, which are short-lived, scoped credentials generated from an API key. They embed filter rules so a holder sees only permitted data, which gives a least-privilege credential an agent could use for search. The pack does not show action-level or index-level permission scoping for API keys, and nothing ties scoped credentials to agent or MCP use, so it delivers only part of the story. Missing for 10: documented per-action/per-index API key permissions, credential scoping for write/management operations, guidance on scoping keys for agents or the MCP server, independent corroboration.",
+    "rationale": "Meilisearch documents its own scoped credentials. Tenant tokens are short-lived, scoped credentials derived from an API key, and they embed filters that restrict what data each request can see; API keys authenticate requests. The evidence only covers search-level data scoping, though. It does not document per-action or per-index permissions on API keys, or how scoped credentials apply to an agent using the MCP route. Missing for 10: documented action- and index-level API key permissions, agent- or MCP-specific credential scoping guidance, independent hands-on corroboration.",
     "evidenceIds": [
       "meilisearch-docs-10",
       "meilisearch-docs-42",
@@ -3092,7 +3096,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Meilisearch documents typed official SDKs across ten languages. It also has dedicated first-party pages for its JavaScript/TypeScript client (Node, browser, edge) and its Python client (async, type hints), plus a first-party Laravel Scout driver. Community reports add caveats on SDK maturity: a .NET client still alpha at 1.0, and a Rails gem that fell out of step with the server. Missing for 10: in-depth docs evidenced for SDKs beyond JS/Python, independent hands-on corroboration that SDKs stay current with server releases.",
+    "rationale": "Meilisearch documents official, typed SDKs across ten languages, including a first-party JavaScript/TypeScript client and a Python client with async support. Its versioning policy states that SDK versions are decoupled from engine releases. Community reports mention an alpha-stage .NET client at 1.0 and a Rails gem that drifted from the server, which signal uneven maturity across SDKs rather than a contradiction. Missing for 10: in-depth per-SDK reference documentation in the evidence, independent corroboration of SDK quality and parity across all languages.",
     "evidenceIds": [
       "meilisearch-docs-50",
       "meilisearch-docs-65",
@@ -3101,6 +3105,7 @@
       "meilisearch-docs-83",
       "meilisearch-docs-84",
       "meilisearch-docs-70",
+      "meilisearch-versioning-policy-20261106",
       "meilisearch-comm-4",
       "meilisearch-comm-9"
     ],
@@ -3134,7 +3139,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a search engine API, which could ship outbound HTTP callbacks for events such as task completion. The evidence pack never documents registrable webhooks. Meilisync and the other sync integrations pull data into Meilisearch, and analytics event tracking records user behavior; neither is an outbound callback a programmatic consumer can receive.",
+    "rationale": "Webhooks are a fair axis for a search engine/API service, but the evidence pack never documents registrable outbound HTTP callbacks or event subscriptions. The analytics, MCP server, and database-sync integrations (Meilisync) are adjacent features, not webhooks, and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3148,11 +3153,11 @@
     "storyId": "api-interactive-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the evidence pack describes an interactive API reference or runnable examples in the docs. The OpenAPI probe found no spec at any candidate path. The \"default web interface\" is a search preview UI, and the llms.txt, markdown docs and MCP server are adjacent agent-facing features, not an interactive API explorer.",
+    "confidence": "high",
+    "rationale": "Meilisearch's API reference pages show static multi-language code samples, but a probe found the Mintlify playground set to \"simple\" display with the in-page runner disabled and no \"Try it\" control. The interactive, runnable part of the story is absent. The published OpenAPI spec and the Postman-import guide are a developer building block and external tooling, so they earn no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": []
@@ -3161,16 +3166,23 @@
   {
     "productId": "meilisearch",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents a downloadable OpenAPI or equivalent machine-readable API spec for Meilisearch, and the probe found every common OpenAPI/Swagger path returning 404. The llms.txt file, markdown docs and MCP server are related AI-facing features, not an API specification, so they earn no credit here.",
-    "evidenceIds": [],
+    "rationale": "Meilisearch's docs state that it publishes the engine's OpenAPI 3.1.0 document on the docs site. The spec is versioned with each engine release, listed in the docs llms.txt, and has a Postman-import guide. The probe's 404s were only at guessed root paths (/openapi.json and similar), not the documented release-asset URL, so they do not contradict the claim. Missing for 10: independent or hands-on confirmation that the documented spec URL downloads successfully.",
+    "evidenceIds": [
+      "meilisearch-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "meilisearch-openapi-spec-20261106",
+          "quote": "Meilisearch publishes its engine's OpenAPI 3.1.0 document on the docs site"
+        }
+      ]
     }
   },
   {
@@ -3179,10 +3191,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no sandbox, test-mode, or staging environment that is isolated from production data. Official Docker images, local binary installs and a free trial let a user run a separate instance themselves, but that is a self-arranged workaround rather than a product sandbox feature, so it earns no credit.",
+    "rationale": "The evidence pack documents no sandbox, staging, or test-environment feature in Meilisearch or Meilisearch Cloud that keeps testing isolated from production data. Running a separate local instance or a Docker image for development is a user-side arrangement. It is not a product-provided sandbox, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
       "citations": []
@@ -3191,16 +3203,33 @@
   {
     "productId": "meilisearch",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Versioning and deprecation policy are a fair question for a search engine that exposes an HTTP API, so the axis applies. The evidence pack documents the API, SDKs, an MCP server and llms.txt, but nothing describes API versioning or a deprecation policy. A community mention of the engine's 1.0 release and a report of a Rails gem falling out of step with the server say nothing about a documented versioning or deprecation commitment.",
-    "evidenceIds": [],
+    "rationale": "Meilisearch documents a dedicated versioning policy (SemVer 2.0.0 on the engine release line), publishes an OpenAPI spec versioned with each engine release, and documents an experimental-to-stable pathway that warns experimental APIs may break between releases. However, it states it only maintains the latest release and has no EOL or LTS policy, and the evidence shows no explicit deprecation policy with notice windows or sunset timelines. Missing for 10: a documented deprecation policy with timelines or notice periods, EOL/LTS support for prior versions, and independent corroboration of API stability practice.",
+    "evidenceIds": [
+      "meilisearch-versioning-policy-20261106",
+      "meilisearch-openapi-spec-20261106",
+      "meilisearch-experimental-pathway-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "meilisearch-versioning-policy-20261106",
+          "quote": "Meilisearch publishes a dedicated versioning policy: SemVer 2.0.0 on the engine release line (4-6 minor releases a year)"
+        },
+        {
+          "evidenceId": "meilisearch-openapi-spec-20261106",
+          "quote": "versioned with the engine release"
+        },
+        {
+          "evidenceId": "meilisearch-experimental-pathway-20261106",
+          "quote": "An experimental feature's API can change significantly and become incompatible between releases"
+        }
+      ]
     }
   },
   {
@@ -3209,7 +3238,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no query-suggestions feature, either derived from real search traffic or served from a dedicated suggestions index. The facet search endpoint offers type-ahead only over facet values in filter menus, which is a related but different feature from query suggestions. Analytics tracks search queries but is never described as feeding suggestions, and one community user explicitly said they miss a typeahead feature.",
+    "rationale": "The evidence pack documents no query-suggestion feature built from real search traffic and no dedicated suggestions index. Facet search powers type-ahead only over the values of a single facet in filter menus, which is an adjacent feature rather than query suggestions. Analytics tracks queries but is not documented as feeding suggestions, and one community user explicitly says they miss a typeahead feature.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3224,7 +3253,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Community reports show Meilisearch has batch indexing that handles large imports: a 7M-article initial import, a 1,000,000-record send, and ~80M documents once batch indexing arrived. However, no first-party docs in the pack describe bulk add, update or delete endpoints, and one user reports indexing of 50k frequently changing records fell behind for hours. Missing for 10: first-party documentation of bulk/batch document operations (update, delete-by-filter, batch settings changes), and evidence of bulk operations through the AI-native/MCP interface.",
+    "rationale": "No first-party doc describes bulk operations. Community hands-on reports do confirm the engine has batch indexing: one user sent 1,000,000 records, a 7M-article import ran via memory-intensive batch indexing, and an 80M-document self-hoster says batch indexing fixed their throughput problems. One report notes indexing of 50k constantly changing records fell behind, which limits confidence in bulk updates. Missing for 10: first-party documentation of bulk add/update/delete endpoints, bulk delete-by-filter or bulk edit operations, and evidence of bulk operations through the MCP/AI interface.",
     "evidenceIds": [
       "meilisearch-comm-15",
       "meilisearch-comm-16",
@@ -3237,16 +3266,16 @@
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": [
         {
-          "evidenceId": "meilisearch-comm-15",
-          "quote": "They needed a 16GB machine for the initial import because batch indexing is memory-intensive."
-        },
-        {
           "evidenceId": "meilisearch-comm-16",
           "quote": "later releases plus batch indexing fixed it"
         },
         {
+          "evidenceId": "meilisearch-comm-15",
+          "quote": "batch indexing is memory-intensive"
+        },
+        {
           "evidenceId": "meilisearch-comm-18",
-          "quote": "sent 1,000,000 records; it \"just worked\" on an $8/mo Hetzner instance"
+          "quote": "sent 1,000,000 records"
         }
       ]
     }
@@ -3257,7 +3286,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation is a fair question for a search platform, but the evidence pack documents no way to define rules that fire actions on events, such as webhooks, triggers, or task-completion hooks. 'Dynamic Search Rules' and tenant-token 'search rules' only change ranking or filtering on each query, and Meilisync or Rails auto-sync are integrations that push data into Meilisearch. None of these are user-defined event→action rules, so they earn no credit.",
+    "rationale": "Event-triggered automation, such as rules or callbacks fired on indexing or task events, is a fair question for a search engine. However, the pack documents no rule engine that triggers actions on events. 'Dynamic Search Rules' (boost/pin/bury per request) and tenant-token filters are query-time relevance and access controls, not event-driven actions. Meilisync and the Rails/Firebase auto-sync are separate data-sync integrations, so they are adjacent and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3272,7 +3301,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs, such as periodic reindexing, snapshots or sync jobs, is a fair question for a search engine platform. However, the evidence pack documents no scheduler or recurring-job capability. Meilisync's automatic database sync is a separate integration for continuous data sync, not a user-defined recurring schedule, so it earns no credit.",
+    "rationale": "Scheduling recurring jobs, such as periodic reindexing, crawls or snapshots, is a fair question for a search platform, so the axis applies. However, the evidence pack documents no scheduler or recurring-job capability in Meilisearch. Meilisync's automatic database sync is a separate integration for continuous syncing, not user-defined recurring jobs, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3287,7 +3316,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Meilisearch is a search platform, so it could plausibly version and roll back configurations such as settings or dynamic search rules, and the axis applies. The evidence pack documents no versioning, review, change history, or rollback for automations or settings. MCP-driven settings changes and Dynamic Search Rules are adjacent features, not version control or rollback.",
+    "rationale": "Versioning or rollback of user-defined automations is a fair question for a search platform with configurable rules and integrations, so the axis applies. The pack has no evidence that Meilisearch lets users version, review, or roll back any automation or rule configuration. The versioning-policy item covers engine release SemVer, not user automations, and Dynamic Search Rules have no documented history or rollback.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3299,18 +3328,18 @@
   {
     "productId": "meilisearch",
     "storyId": "builtin-embeddings",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Meilisearch's hybrid search docs say that once an embedder is configured, the engine automatically generates vector embeddings for every document, so developers don't compute or manage embeddings themselves. Combined with documented semantic and hybrid search over stored embeddings, this delivers the core of the story. Missing for 10: explicit documentation that query text is auto-embedded at search time, detail on which built-in or managed embedder providers are supported, and independent or hands-on corroboration.",
+    "rationale": "Meilisearch's own docs say that once an embedder is configured, the engine automatically generates vector embeddings for every document, so the developer does not compute or manage them. Hybrid and semantic search use those embeddings at query time. However, the pack never explicitly documents query-side vectorization or names which built-in or managed embedder providers are available, so story coverage is incomplete. missing for 10: explicit documentation that queries are auto-embedded, details of which built-in/managed embedder sources are supported, independent or hands-on corroboration.",
     "evidenceIds": [
       "meilisearch-docs-8",
-      "meilisearch-docs-1",
-      "meilisearch-docs-28"
+      "meilisearch-docs-28",
+      "meilisearch-docs-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can use built-in or managed embedders so documents and queries are vectorized without running my own embedding pipeline",
       "citations": [
         {
@@ -3318,12 +3347,12 @@
           "quote": "When you configure an embedder, Meilisearch automatically generates vector embeddings for every document in your index. You don't need to compute or manage embeddings yourself."
         },
         {
-          "evidenceId": "meilisearch-docs-1",
-          "quote": "It stores your documents and embeddings, then exposes them through fast full-text search, semantic search, and conversational interfaces, all from a single API."
-        },
-        {
           "evidenceId": "meilisearch-docs-28",
           "quote": "Hybrid search combines two search strategies: full-text search (matching keywords) and semantic search (matching meaning)."
+        },
+        {
+          "evidenceId": "meilisearch-docs-1",
+          "quote": "It stores your documents and embeddings, then exposes them through fast full-text search, semantic search, and conversational interfaces, all from a single API."
         }
       ]
     }
@@ -3334,13 +3363,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Meilisearch's integrations pages list sync connectors: Meilisync for MySQL, PostgreSQL and MongoDB, Firebase collection sync, ActiveRecord auto-sync for Rails, and a first-party Laravel Scout driver. These let a founder ingest content without building a custom pipeline. Evidence is limited to one-line marketing descriptions, and one production user reported the Rails gem falling out of step with the server. Missing for 10: any official web crawler, in-depth connector docs (setup, change capture, sync guarantees), and independent corroboration of the connectors working in practice.",
+    "rationale": "Meilisearch's integrations pages list connectors that sync data in automatically: Meilisync for MySQL, PostgreSQL and MongoDB, a Firebase collection sync, Rails ActiveRecord auto-sync, and a first-party Laravel Scout driver. That covers database and ORM ingestion without a custom pipeline, but there is no evidence of an official web or content crawler, and it is unclear whether Meilisync and the Firebase sync are first-party. One hands-on report says the Rails gem fell out of step with the server, and another says index setup and document upload took almost a week of coding. Missing for 10: an official web/content crawler, explicit first-party status and depth docs for Meilisync and Firebase sync, independent hands-on corroboration that the connectors work reliably.",
     "evidenceIds": [
       "meilisearch-docs-71",
       "meilisearch-docs-87",
       "meilisearch-docs-86",
       "meilisearch-docs-85",
-      "meilisearch-docs-70"
+      "meilisearch-docs-70",
+      "meilisearch-comm-9",
+      "meilisearch-comm-10"
     ],
     "support": {
       "relation": "direct",
@@ -3376,7 +3407,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Meilisearch documents seven built-in ranking rules, including a 'sort' rule, which developers can reorder. Its pricing page also lists Dynamic Search Rules to boost, pin, or bury results per request. However, the evidence never shows custom ranking rules tied to document attributes such as popularity, recency, or margin, and a community user notes that decay functions for phasing out results by age are absent. missing for 10: documented custom attribute-based ranking rules for business signals (popularity, recency, margin), recency/decay functions, in-depth docs for Dynamic Search Rules, independent hands-on corroboration of business-signal tuning",
+    "rationale": "Meilisearch documents built-in ranking rules, including a \"sort\" rule, whose order developers can change. Its pricing page advertises Dynamic Search Rules to boost, pin, or bury results per request, so relevance shaping beyond text matching exists in part. The evidence never shows custom attribute-based ranking rules for popularity or margin signals, and a community user reports there are no decay functions for recency, which Elasticsearch supports. missing for 10: documented custom ranking rules on numeric business attributes (popularity, margin), recency/decay scoring, in-depth docs for Dynamic Search Rules beyond a pricing-page mention, hands-on corroboration",
     "evidenceIds": [
       "meilisearch-docs-4",
       "meilisearch-docs-23",
@@ -3391,7 +3422,7 @@
       "citations": [
         {
           "evidenceId": "meilisearch-docs-4",
-          "quote": "Meilisearch contains seven built-in ranking rules in the following order"
+          "quote": "Meilisearch contains seven built-in ranking rules in the following order: [\"words\", \"typo\", \"proximity\", \"attributeRank\", \"sort\", \"wordPosition\", \"exactness\"]"
         },
         {
           "evidenceId": "meilisearch-docs-23",
@@ -3399,7 +3430,7 @@
         },
         {
           "evidenceId": "meilisearch-docs-15",
-          "quote": "Boost, pin, or bury results based on the context of each request"
+          "quote": "Dynamic Search Rules ... Boost, pin, or bury results based on the context of each request"
         }
       ]
     }
@@ -3410,14 +3441,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Meilisearch's own docs describe faceting as filters that also return distribution data, with aggregated counts per field value. They present this as the basis for e-commerce-style navigation across brand, color, size and price range, with counts shown for each option. Missing for 10: explicit documentation that facet counts for multiple facets come back in the same search response as the results (only implied), detail on how range/numeric facet counts work, and independent hands-on corroboration of faceted navigation.",
+    "rationale": "Meilisearch's first-party docs describe faceting as filters that also return aggregated counts per field value. They explicitly cite e-commerce navigation by brand, color, size and price range with counts per option (e.g. \"Color: Red (12), Blue (8)\"), and a dedicated facet-search endpoint for large facet lists. Missing for 10: explicit documentation that facet distributions and results come back in one search request, detail on range-facet statistics (min/max) for numeric ranges, and independent hands-on corroboration of faceted navigation.",
     "evidenceIds": [
       "meilisearch-docs-6",
       "meilisearch-docs-26",
       "meilisearch-docs-34",
       "meilisearch-docs-24",
       "meilisearch-docs-58",
-      "meilisearch-docs-40"
+      "meilisearch-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -3426,7 +3457,7 @@
       "citations": [
         {
           "evidenceId": "meilisearch-docs-6",
-          "quote": "Let shoppers narrow products by brand, color, size, and price range while displaying counts for each option."
+          "quote": "E-commerce faceted navigation: Let shoppers narrow products by brand, color, size, and price range while displaying counts for each option."
         },
         {
           "evidenceId": "meilisearch-docs-26",
@@ -3447,9 +3478,9 @@
     "productId": "meilisearch",
     "storyId": "fast-bulk-indexing",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Hands-on community reports show the bulk-import half of the story works at scale: a 7M-article initial import, ~80M documents across 13 indexes once batch indexing arrived, and 1M records that 'just worked' on a small instance. One report says indexing of constantly changing records fell behind, but that concerns continuous updates rather than a one-off bulk load. The pack contains no evidence at all of async task tracking to know when indexing completes, and first-party docs only generically mention 'adding documents'. Missing for 10: any evidence of an async task API or status tracking for indexing completion, first-party docs on bulk/batch import throughput, guidance on the memory cost of large imports.",
+    "rationale": "Hands-on reports confirm Meilisearch's own batch indexing handles bulk imports at scale: a 7M-article initial import, a self-hosted ~80M-document deployment after batch indexing was added, and 1M records on a small instance. First-party docs only mention adding documents in general terms, and nothing in the pack documents async task tracking for knowing when indexing completes. missing for 10: documented async task/status API to track indexing completion, first-party docs on bulk/batch import throughput and limits.",
     "evidenceIds": [
       "meilisearch-comm-15",
       "meilisearch-comm-16",
@@ -3463,7 +3494,7 @@
       "citations": [
         {
           "evidenceId": "meilisearch-comm-15",
-          "quote": "They needed a 16GB machine for the initial import because batch indexing is memory-intensive."
+          "quote": "One team uses Meilisearch in production with a 7-million-article corpus and says it works really well."
         },
         {
           "evidenceId": "meilisearch-comm-16",
@@ -3472,6 +3503,10 @@
         {
           "evidenceId": "meilisearch-comm-18",
           "quote": "sent 1,000,000 records; it \"just worked\" on an $8/mo Hetzner instance"
+        },
+        {
+          "evidenceId": "meilisearch-docs-2",
+          "quote": "creating a project and an index, adding documents to it"
         }
       ]
     }
@@ -3482,7 +3517,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Meilisearch's first-project guide explicitly walks through creating a project and an index, adding documents, and running a first search in the web interface. Local install is a single cURL command for a dependency-free binary. Hands-on reports back up the fast start: one user had a working zero-config setup within 30 minutes, and another's Docker deployment 'just worked.' One hobbyist said integration coding plus settings changes took about a week, but that concerns custom integration rather than the quickstart. Missing for 10: no documented time-to-first-search benchmark for the quickstart itself, and that one dissenting hands-on report on setup effort.",
+    "rationale": "Meilisearch's first-project guide walks through creating a project and an index, adding documents, and running a first search in the web interface, and local install is a single cURL command for a dependency-free binary. Hands-on reports back the speed claim: one user had it indexing and searching within 30 minutes with zero config. One user said building a full index, upload and settings integration took about a week of coding, which concerns a production build rather than the quickstart. missing for 10: explicit documented timing for the quickstart flow itself, and corroboration that the API/SDK quickstart path (not just the cloud web UI) runs in minutes.",
     "evidenceIds": [
       "meilisearch-docs-2",
       "meilisearch-docs-74",
@@ -3491,8 +3526,7 @@
       "meilisearch-docs-11",
       "meilisearch-docs-52",
       "meilisearch-comm-11",
-      "meilisearch-comm-18",
-      "meilisearch-comm-10"
+      "meilisearch-comm-18"
     ],
     "support": {
       "relation": "direct",
@@ -3510,10 +3544,6 @@
         {
           "evidenceId": "meilisearch-docs-52",
           "quote": "Adding search to your website takes minutes, not months."
-        },
-        {
-          "evidenceId": "meilisearch-comm-11",
-          "quote": "Indexing was about 10x faster and search at least 3x faster, with literally zero config."
         }
       ]
     }
@@ -3524,7 +3554,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Meilisearch's own materials say it helps users find results \"instantly\" even from partial input, and it pairs with React InstantSearch for responsive interfaces. Hands-on reports call search fast (3x faster than Elasticsearch, \"Searches are fast\"). However, no evidence documents per-keystroke prefix matching or millisecond latency for text search, and one user measured about 360ms on a production deployment, which lowers confidence. Missing for 10: explicit docs on prefix/as-you-type search-on-every-keystroke behavior, documented millisecond latency figures for full-text queries, independent latency benchmarks confirming sub-100ms responses.",
+    "rationale": "Meilisearch's own docs say it helps users find results 'instantly' and pair it with React InstantSearch for responsive search interfaces. Community users report fast search, but one hands-on check measured ~360ms on a Meilisearch-powered site, which questions the millisecond-per-keystroke claim without concretely disproving it for the engine. missing for 10: first-party documentation of as-you-type/search-on-every-keystroke behavior, documented millisecond latency figures for full-text search, independent latency benchmarks confirming sub-100ms responses.",
     "evidenceIds": [
       "meilisearch-docs-60",
       "meilisearch-docs-72",
@@ -3546,8 +3576,8 @@
           "quote": "Build performant, responsive search interfaces by pairing Meilisearch with React InstantSearch."
         },
         {
-          "evidenceId": "meilisearch-comm-16",
-          "quote": "Searches are fast."
+          "evidenceId": "meilisearch-comm-11",
+          "quote": "Indexing was about 10x faster and search at least 3x faster, with literally zero config."
         }
       ]
     }
@@ -3558,7 +3588,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Meilisearch's first-party docs describe tenant tokens as short-lived, scoped credentials generated from an API key. The tokens embed filter rules that apply automatically to every search, so each user sees only their own data within a shared index. The SaaS solution page adds that no separate indexes per customer are needed. Missing for 10: independent or hands-on corroboration of tenant-token isolation in practice.",
+    "rationale": "Meilisearch's first-party docs describe tenant tokens as short-lived, scoped credentials generated from an API key. They embed filters that automatically apply to every search request, so each user sees only their own data within a shared index, and the SaaS solution page states there is no need for separate indexes per customer. missing for 10: independent or hands-on community corroboration of tenant-token isolation in practice.",
     "evidenceIds": [
       "meilisearch-docs-10",
       "meilisearch-docs-55",
@@ -3577,7 +3607,7 @@
         },
         {
           "evidenceId": "meilisearch-docs-55",
-          "quote": "API keys authenticate requests, while tenant tokens restrict what data each user can see within a shared index."
+          "quote": "tenant tokens restrict what data each user can see within a shared index."
         },
         {
           "evidenceId": "meilisearch-docs-66",
@@ -3594,16 +3624,15 @@
     "productId": "meilisearch",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Meilisearch documents itself as exposing its capabilities through a single API, and the MCP layer that wraps the API can create indexes, add documents, configure settings and search, which are the same core actions the docs show in the default web interface. Nothing in the evidence explicitly states UI/API parity, and Cloud-console actions such as setting up a project have no documented API equivalent; the OpenAPI probe also returned 404. missing for 10: explicit statement of UI-to-API parity, API coverage of Cloud project/account management, a published machine-readable API spec (OpenAPI), independent corroboration of parity.",
+    "rationale": "Meilisearch is API-first: the engine exposes search and conversational features through a single API, publishes an OpenAPI 3.1.0 spec for its REST API, and supports creating indexes, adding documents, configuring settings and searching programmatically. No document explicitly states parity with the UI, and the Cloud web-interface steps (setting up Cloud, creating a project) have no documented API equivalent. missing for 10: an explicit API/UI parity statement, documented API coverage of Cloud project and account management, independent hands-on corroboration of parity.",
     "evidenceIds": [
       "meilisearch-docs-1",
       "meilisearch-docs-13",
+      "meilisearch-openapi-spec-20261106",
       "meilisearch-docs-74",
-      "meilisearch-docs-31",
-      "meilisearch-docs-50",
-      "meilisearch-probe-3"
+      "meilisearch-docs-50"
     ],
     "support": {
       "relation": "direct",
@@ -3619,8 +3648,8 @@
           "quote": "you can create indexes, add documents, configure settings, and perform searches using natural language prompts"
         },
         {
-          "evidenceId": "meilisearch-docs-74",
-          "quote": "setting up Meilisearch Cloud, creating a project and an index, adding documents to it, and performing your first search with the default web interface"
+          "evidenceId": "meilisearch-openapi-spec-20261106",
+          "quote": "Meilisearch publishes its engine's OpenAPI 3.1.0 document on the docs site"
         },
         {
           "evidenceId": "meilisearch-docs-50",
@@ -3635,7 +3664,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export is a fair question for a search engine that stores documents and embeddings. However, the evidence pack documents no export, dump, snapshot, or document-retrieval-for-migration capability, and nothing about open export formats. Self-hosting as a single binary concerns deployment portability, not data export, so it earns no credit here.",
+    "rationale": "Data export applies to a search engine that stores user documents and embeddings. However, the evidence pack documents no export, dump, or bulk-download capability, and no open export format. Self-hosting as a single binary and the published OpenAPI spec relate to portability and API access, not to exporting all data and leaving, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3648,9 +3677,9 @@
     "productId": "meilisearch",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "First-party install docs say Meilisearch can be installed 'from source', so the source is available. Community reports of active GitHub contributors and of running the core engine (Milli) locally support that the codebase is publicly accessible. No evidence names the license or confirms it is an open-source license. Missing for 10: explicit license identification (e.g., MIT or another OSI license), a link to the public source repository, and first-party documentation of the open-source licensing terms.",
+    "rationale": "Meilisearch's own install docs offer building 'from source', and community reports mention active GitHub contributors and running the core engine (Milli) locally. Together these imply the source is publicly readable, but no evidence names or describes an open license. missing for 10: explicit license identification (e.g. MIT/OSI terms), first-party docs linking the source repository, clarity on which components (engine vs. cloud/enterprise features) are open.",
     "evidenceIds": [
       "meilisearch-docs-44",
       "meilisearch-comm-1",
@@ -3668,6 +3697,10 @@
         {
           "evidenceId": "meilisearch-comm-1",
           "quote": "They praised active contributors on GitHub and Discord."
+        },
+        {
+          "evidenceId": "meilisearch-comm-6",
+          "quote": "A user runs the core engine (Milli) as a local indexer over their repositories and Obsidian files"
         }
       ]
     }
@@ -3678,7 +3711,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Meilisearch documents self-hosting as a single binary with no external dependencies. It runs on Linux, macOS or Windows and installs via cURL, Docker, Homebrew, APT or from source, with official Docker images, Helm charts and production deployment guidance. Independent self-hosters confirm this, running 80M documents on a Hetzner box and doing one-click Docker and k8s deployments. Missing for 10: evidence that replicated/high-availability clustering is available in the self-hosted free edition, since community reports say it is not in the free tier.",
+    "rationale": "Meilisearch documents self-hosting as a single dependency-free binary for Linux, macOS and Windows. It installs via cURL, Docker, Homebrew, APT or source, with official Docker images, Helm charts and production guidance. Community reports independently confirm self-hosted runs on Hetzner boxes, k8s clusters and Coolify Docker installs. Missing for 10: evidence that the replicated/high-availability configuration is available to self-hosters (community notes it isn't in the free tier), and no explicit open-source licensing evidence in the pack.",
     "evidenceIds": [
       "meilisearch-docs-11",
       "meilisearch-docs-12",
@@ -3708,8 +3741,8 @@
           "quote": "Helm charts for deploying Meilisearch on Kubernetes."
         },
         {
-          "evidenceId": "meilisearch-docs-73",
-          "quote": "Official Meilisearch Docker images for easy deployment and development."
+          "evidenceId": "meilisearch-comm-16",
+          "quote": "A self-hoster runs ~80M documents (191GB, 13 indexes) on a 64GB Hetzner box"
         }
       ]
     }
@@ -3720,7 +3753,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pricing predictability is a fair question for a search service with a cloud offering, so the axis applies. However, the evidence pack has no first-party documentation of Meilisearch's pricing model: nothing shows whether billing is per-request or resource-based, and nothing states costs stay flat as records and queries grow. Community reports point the other way, citing a jump from the free tier to a $1200/month plan and RAM needs that were 'impossible to plan' under heavy search traffic. Self-hosting reports on cheap servers are a user-side arrangement, not a documented pricing guarantee, so they earn no credit.",
+    "rationale": "The evidence pack never documents Meilisearch's pricing model: no flat-rate, resource-based or usage-based terms and no statement about per-request charges. The pricing-page items cover only features and a 14-day trial. Community reports point the other way, describing a jump from the free tier to a $1200/month plan and RAM needs that became 'too unpredictable and expensive' under heavy search traffic. Cheap self-hosted deployments on fixed hardware are a user-side arrangement, not a documented pricing guarantee.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3735,13 +3768,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Meilisearch documents a self-hosted deployment mode: a single binary that runs on any machine, bare metal or containers. That lets users keep data wherever they run it. A community user also implies Meilisearch Cloud offers selectable regions such as Singapore, but no first-party docs describe cloud region choice or residency guarantees. Missing for 10: first-party docs on Cloud region selection and the list of available regions, data-residency or compliance commitments, and coverage of regions such as Australia.",
+    "rationale": "Meilisearch documents first-party self-hosting as a single dependency-free binary you can run on any machine, bare metal or in containers. That lets a user keep data wherever they deploy it. For the managed cloud, the only sign of region choice is a community remark that the closest region to Australia is Singapore. No first-party docs cover region selection or residency guarantees. Missing for 10: first-party documentation of cloud region selection, a list of available regions, explicit data-residency or compliance commitments, and independent corroboration of residency controls.",
     "evidenceIds": [
       "meilisearch-docs-11",
-      "meilisearch-docs-19",
       "meilisearch-docs-44",
-      "meilisearch-comm-17",
-      "meilisearch-comm-16"
+      "meilisearch-comm-17"
     ],
     "support": {
       "relation": "direct",
@@ -3755,10 +3786,6 @@
         {
           "evidenceId": "meilisearch-comm-17",
           "quote": "They wish the cloud had an Australian region, since the closest is Singapore."
-        },
-        {
-          "evidenceId": "meilisearch-comm-16",
-          "quote": "A self-hoster runs ~80M documents (191GB, 13 indexes) on a 64GB Hetzner box"
         }
       ]
     }
@@ -3769,7 +3796,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Meilisearch is a search service with a cloud offering, so a policy or control preventing customer data from being used for AI model training is a fair question to ask. The evidence pack contains no training opt-out, no no-training policy, and no data-use commitment. Self-hosting and tenant-token access controls are adjacent features, not a training-data control, so they earn no credit.",
+    "rationale": "Meilisearch stores customer documents and embeddings, so a no-training guarantee or opt-out is a fair question to ask of it. The evidence pack contains no data-use or AI-training policy and no opt-out control. Self-hosting is a deployment option, not a documented no-training capability, and the telemetry complaint concerns usage pings, not model training.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3784,7 +3811,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Meilisearch stores documents and embeddings, so data retention and deletion controls are a fair question for it. However, the evidence pack never documents deleting documents or indexes, retention policies, or purge controls. Self-hosting and tenant-token access filtering are adjacent features and do not show retention or deletion control.",
+    "rationale": "Meilisearch stores user documents and embeddings, so retention and deletion controls are a fair question for it. However, nothing in the pack documents deleting documents or indexes, retention periods, or purge controls. Self-hosting and tenant-token access scoping are adjacent features (deployment choice and read isolation), not retention or deletion controls, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3799,7 +3826,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a self-hostable search engine, so the axis applies, but the pack contains no documented opt-out mechanism. The only telemetry-related item is a community report that analytics is on by default (a daily ping with a unique identifier), which describes the tracking but not a way to disable it. The documented analytics feature (docs-9) is customer-facing search analytics, a different feature, so it earns no credit here.",
+    "rationale": "Telemetry opt-out is a fair question for a self-hostable search engine. No first-party evidence documents a flag, setting, or environment variable to disable telemetry or usage tracking. The only on-topic item (meilisearch-comm-13) says analytics with a unique identifier is on by default, but it does not describe any opt-out mechanism. The analytics docs describe a customer-facing search-analytics feature, which is adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3814,7 +3841,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Meilisearch's own docs say it exposes stored documents and embeddings through semantic search and \"conversational interfaces, all from a single API.\" Its product pages position it as a RAG retrieval layer and offer conversational answers grounded in your content, backed by documented hybrid/semantic search with automatic embeddings. However, the evidence shows no documented answer or chat endpoint, and no detail on request/response shape or grounding and citation behavior, so the conversational-answer half rests mainly on marketing pages. Missing for 10: documented conversational/answer API endpoint details, RAG integration docs (LLM configuration, prompts, source citations), independent hands-on corroboration of conversational answers.",
+    "rationale": "Meilisearch's own docs overview says it exposes stored documents and embeddings through conversational interfaces from a single API. Its product pages position it as a RAG retrieval layer and promise answers grounded in your content, backed by documented hybrid and semantic search with auto-generated embeddings. However, the evidence names no specific answer or chat endpoint and no reference documentation for it, and most of the conversational and RAG claims come from marketing pages. Missing for 10: documented conversational or answer API endpoint and its parameters, RAG retrieval workflow docs, and independent or hands-on corroboration of conversational answers.",
     "evidenceIds": [
       "meilisearch-docs-1",
       "meilisearch-docs-45",
@@ -3850,17 +3877,18 @@
     "productId": "meilisearch",
     "storyId": "realtime-index-updates",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Meilisearch documents adding documents to an existing index. Its first-party sync integrations (Meilisync, the Rails ActiveRecord auto-sync) imply incremental change propagation rather than full rebuilds. However, no evidence explicitly documents update or delete semantics or near-real-time visibility. One community production report says indexing of 50k constantly changing records fell behind for hours. Another says early indexing couldn't keep up until batch indexing fixed it. Missing for 10: explicit documentation of incremental update/delete operations, stated indexing latency or near-real-time guarantees, and independent corroboration under high-churn workloads.",
+    "rationale": "Meilisearch documents adding documents to an existing index, and its first-party sync integrations (Meilisync database sync, Rails ActiveRecord auto-sync) imply incremental propagation of changes rather than full rebuilds. Near-real-time visibility is never documented, and one production user reports indexing of constantly changing records falling hours behind, while others report much-improved indexing speed after batch indexing arrived. missing for 10: documented update and delete semantics, any documented indexing latency or near-real-time guarantee, independent confirmation that changes are searchable quickly under churn.",
     "evidenceIds": [
       "meilisearch-docs-2",
+      "meilisearch-docs-57",
       "meilisearch-docs-71",
       "meilisearch-docs-85",
       "meilisearch-docs-87",
       "meilisearch-comm-9",
-      "meilisearch-comm-16",
-      "meilisearch-comm-7"
+      "meilisearch-comm-7",
+      "meilisearch-comm-16"
     ],
     "support": {
       "relation": "direct",
@@ -3872,12 +3900,16 @@
           "quote": "creating a project and an index, adding documents to it, and performing your first search"
         },
         {
+          "evidenceId": "meilisearch-docs-85",
+          "quote": "ActiveRecord sync. Auto-sync models with Meilisearch."
+        },
+        {
           "evidenceId": "meilisearch-docs-71",
           "quote": "Sync databases with Meilisearch automatically."
         },
         {
-          "evidenceId": "meilisearch-docs-85",
-          "quote": "ActiveRecord sync. Auto-sync models with Meilisearch."
+          "evidenceId": "meilisearch-comm-7",
+          "quote": "search speed and especially indexing speed have increased a lot"
         }
       ]
     }
@@ -3888,7 +3920,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Inspecting why a result ranked where it did is a fair question for a search engine, so the axis applies. The evidence only documents the built-in ranking rules and how to reorder them. It shows no per-result ranking score, score breakdown, or explanation output a platform engineer could inspect. Documentation of ranking rules is an adjacent feature, not the capability itself.",
+    "rationale": "The evidence pack documents Meilisearch's seven built-in ranking rules and how to reorder them, along with typo tolerance, synonyms and analytics. None of it shows a way to return per-result ranking scores or score breakdowns explaining why a document ranked where it did. Configuring ranking rules is an adjacent feature, not inspection of ranking outcomes, so this applicable axis has no supporting evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3901,9 +3933,9 @@
     "productId": "meilisearch",
     "storyId": "scale-headroom",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Meilisearch Cloud claims read high availability with native clusterization, and a community report confirms a replicated/distributed version exists in paid tiers. Self-hosting docs describe only a single binary, and the largest hands-on report is ~80M documents on one box, so no documented scaling path to hundreds of millions is shown. Missing for 10: documented clustering/replication/sharding guides for self-hosting, write HA or failover details, evidence of scaling to hundreds of millions of documents, depth beyond a one-line Cloud marketing claim.",
+    "rationale": "Meilisearch Cloud advertises read high availability through native clusterization, and a community report confirms a replicated/distributed version exists outside the free tier. One self-hoster also reports running ~80M documents on a single 64GB box. However, the evidence holds no documented guide to clustering, replication setup, sharding or horizontal scaling, and self-hosting docs describe a single binary deployment. missing for 10: documented self-hosted clustering/replication procedures, write HA or sharding/horizontal-scale guidance, evidence of a documented path to hundreds of millions of documents, independent corroboration of the Cloud HA claim.",
     "evidenceIds": [
       "meilisearch-docs-14",
       "meilisearch-comm-3",
@@ -3930,20 +3962,19 @@
     "productId": "meilisearch",
     "storyId": "sdk-breadth",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Meilisearch documents typed official SDKs for JavaScript, Python, Ruby, PHP, Go, Rust, Java, Swift, Dart and .NET. It also has dedicated official JS and Python clients and a first-party Laravel Scout driver, so language breadth is well covered. The 'kept current' part is not documented anywhere, and community reports describe the .NET client as still alpha and the Rails gem falling out of step with the server. Missing for 10: documented SDK versioning/parity guarantees with the server, independent evidence that SDKs (especially .NET and Ruby/Rails) stay current, and detailed docs for SDKs beyond JS and Python.",
+    "rationale": "Meilisearch documents typed official SDKs for JavaScript, Python, Ruby, PHP, Go, Rust, Java, Swift, Dart and .NET. It also documents dedicated official JS and Python clients and framework integrations for Laravel Scout and Rails, and a community user calls language support 'extensive and active'. The 'kept current' part is not documented and is undercut by hands-on reports: the Rails gem fell out of step with the server, and the .NET client was still alpha at the time of 1.0. Missing for 10: documented SDK currency or compatibility guarantees, independent confirmation that SDKs track engine releases, and per-SDK depth for PHP, Go and Ruby beyond a list mention.",
     "evidenceIds": [
       "meilisearch-docs-50",
-      "meilisearch-docs-65",
       "meilisearch-docs-67",
       "meilisearch-docs-68",
       "meilisearch-docs-70",
-      "meilisearch-docs-83",
-      "meilisearch-docs-84",
+      "meilisearch-docs-85",
+      "meilisearch-comm-1",
       "meilisearch-comm-4",
       "meilisearch-comm-9",
-      "meilisearch-comm-1"
+      "meilisearch-versioning-policy-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -3975,7 +4006,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Meilisearch documents a built-in analytics capability that tracks search queries, click events, and conversions to measure search quality, which covers the click-through part of the story and raw query tracking. The evidence does not show the specific reports the founder wants, such as top-query rankings or a no-result query view. Missing for 10: explicit top-queries reporting, no-result/zero-hit query reporting, documented click-through-rate metrics or dashboard detail, independent or hands-on corroboration.",
+    "rationale": "Meilisearch documents a first-party analytics capability that tracks search queries, click events, and conversions to measure search quality. However, the evidence never explicitly mentions top-query rankings, no-result query reports, or a click-through-rate view. Only the underlying tracking of queries and clicks is shown. Missing for 10: explicit top-queries report, explicit no-result-queries report, documented click-through-rate metric or dashboard, independent or hands-on corroboration.",
     "evidenceIds": [
       "meilisearch-docs-9",
       "meilisearch-docs-29",
@@ -4007,7 +4038,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Meilisearch's official integrations page says to build search interfaces by pairing Meilisearch with React InstantSearch, so there is a vendor-documented UI component path. The evidence does not show which components are offered, and the library is paired with rather than shown as Meilisearch's own. Faceting docs describe API data that powers UI navigation, not UI components. Missing for 10: evidence of specific components (search box, results, facets, pagination), first-party ownership of the component library, framework coverage beyond React, and hands-on corroboration.",
+    "rationale": "Meilisearch's first-party React integration page documents building search interfaces by pairing Meilisearch with React InstantSearch. That is an official path to prebuilt UI components, but the component library itself is a paired third-party library rather than one Meilisearch ships, and the evidence does not name any specific widgets. The \"default web interface\" in the getting-started docs is a built-in search preview, not an embeddable UI library, so it is not credited. Missing for 10: a Meilisearch-owned UI component library, documentation of specific widgets (search box, hits, facets/refinement lists, pagination), framework coverage beyond React, and independent hands-on corroboration.",
     "evidenceIds": [
       "meilisearch-docs-72"
     ],
@@ -4029,17 +4060,17 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Meilisearch documents self-hosting the engine as a single dependency-free binary. It can be installed via cURL, Docker, Homebrew, APT or source, and official Docker images and Helm charts are provided; community users report easy self-hosted deployments, including k8s and an 80M-document box. The 'same features as hosted' part is not established: no documentation asserts feature parity, and a community report says replication/high availability is not in the free tier, while clusterization HA is advertised on the Cloud page. Missing for 10: documented feature parity with Meilisearch Cloud, self-hosted replication/HA clustering, and confirmation that Cloud-marketed features such as analytics, personalization and dynamic search rules are available self-hosted.",
+    "rationale": "Meilisearch documents self-hosting the engine as a dependency-free single binary on Linux, macOS, or Windows, with official Docker images and Helm charts. Community users confirm running it on Kubernetes, Docker, and Hetzner boxes at scale. Parity with the hosted product is not established: the evidence ties read high availability and clusterization to the Cloud offering, and community reports say the replicated/distributed version is not freely available. Missing for 10: documented feature parity between self-hosted and Cloud, a self-hosted HA/replication/clustering path, and confirmation that Cloud-marketed features (e.g. analytics, personalization, dynamic search rules) run self-hosted.",
     "evidenceIds": [
       "meilisearch-docs-11",
       "meilisearch-docs-44",
-      "meilisearch-docs-36",
-      "meilisearch-docs-69",
       "meilisearch-docs-73",
+      "meilisearch-docs-69",
+      "meilisearch-docs-36",
       "meilisearch-docs-14",
-      "meilisearch-comm-3",
+      "meilisearch-comm-18",
       "meilisearch-comm-16",
-      "meilisearch-comm-18"
+      "meilisearch-comm-3"
     ],
     "support": {
       "relation": "direct",
@@ -4061,6 +4092,10 @@
         {
           "evidenceId": "meilisearch-docs-73",
           "quote": "Official Meilisearch Docker images for easy deployment and development."
+        },
+        {
+          "evidenceId": "meilisearch-docs-36",
+          "quote": "For production deployments, you will also need: A reverse proxy (Nginx or Caddy) for HTTPS termination A process manager (systemd)... A master key for authentication"
         }
       ]
     }
@@ -4069,12 +4104,12 @@
     "productId": "meilisearch",
     "storyId": "synonyms-curation",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Synonyms are documented first-party: you can create a list of equivalent words to improve relevance. Result curation appears only as a 'Dynamic Search Rules' line on the pricing page ('Boost, pin, or bury results based on the context of each request'), with no docs on how rules are defined or tied to specific queries. 'Bury' means demoting, not hiding. missing for 10: dedicated documentation for pinning/boosting rules keyed to specific queries, an explicit hide/exclude-hit capability, clarity on plan availability, independent or hands-on corroboration of curation.",
+    "rationale": "Synonyms are a documented relevancy setting. Result curation appears only as a single pricing-page line for \"Dynamic Search Rules\" that can boost, pin, or bury results \"based on the context of each request\", with no docs showing how rules are scoped to specific queries or whether hits can be fully hidden. missing for 10: first-party docs for Dynamic Search Rules, evidence of per-query pin/boost/hide targeting, explicit hide (versus bury) support, independent or hands-on corroboration of curation.",
     "evidenceIds": [
       "meilisearch-docs-5",
-      "meilisearch-docs-38",
+      "meilisearch-docs-53",
       "meilisearch-docs-15",
       "meilisearch-docs-30"
     ],
@@ -4100,7 +4135,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pricing page evidence covers only feature listings and a 14-day free trial. The one community mention of price describes a flat $1200/month next tier, not per-search, per-record or per-node rates. Nothing in the pack shows published per-unit pricing that would let a founder predict search costs, so this applicable axis is unevidenced.",
+    "rationale": "Pricing models are a fair question for a hosted search service, so the axis applies. The evidence pack contains no published per-unit pricing by searches, records, or nodes. Pricing-page items list only plan features and a 14-day trial, and one community report mentions a flat $1200/month next tier. That is a plan price, not per-unit metering that would let a founder predict cost.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4115,14 +4150,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Meilisearch's own docs show typo tolerance is on by default (\"even when they misspell... No tuning required\"). They also document tuning: per-index typo-tolerance configuration, a minWordSizeForTypos override for when typos are allowed, and a built-in 'typo' ranking rule whose order can be changed. missing for 10: independent or hands-on corroboration of typo-tolerance behavior, and fuller documentation of the remaining tunable rules (e.g., disabling typos on specific words or attributes) beyond minWordSizeForTypos.",
+    "rationale": "Meilisearch's first-party docs describe built-in typo tolerance (e.g. 'phnoe' finding 'phone') that works with no tuning, and a dedicated 'typo' ranking rule. They also document per-index configuration and a minWordSizeForTypos object for overriding the default thresholds that control when fuzzy matching applies. Missing for 10: the evidence names only minWordSizeForTypos (other tunable options such as disabling typos on specific attributes or words are not shown), and no independent or hands-on corroboration of typo tolerance.",
     "evidenceIds": [
       "meilisearch-docs-3",
       "meilisearch-docs-60",
       "meilisearch-docs-22",
       "meilisearch-docs-31",
       "meilisearch-docs-4",
-      "meilisearch-docs-32",
       "meilisearch-docs-75"
     ],
     "support": {
@@ -4145,10 +4179,6 @@
         {
           "evidenceId": "meilisearch-docs-31",
           "quote": "You can configure the typo tolerance feature for each index"
-        },
-        {
-          "evidenceId": "meilisearch-docs-4",
-          "quote": "Meilisearch contains seven built-in ranking rules in the following order: [\"words\", \"typo\", \"proximity\", \"attributeRank\", \"sort\", \"wordPosition\", \"exactness\"]"
         }
       ]
     }
@@ -4157,9 +4187,9 @@
     "productId": "meilisearch",
     "storyId": "vector-hybrid-search",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Meilisearch's own docs describe a hybrid search capability that combines full-text keyword matching with semantic search, using embedders that automatically generate vectors for indexed documents. The evidence does not show that both strategies are fused within one search request, or how results are blended or weighted. missing for 10: explicit documentation that keyword and vector results are fused in a single query, details of the fusion or weighting mechanism (e.g., a ratio parameter), independent or hands-on corroboration of hybrid search quality.",
+    "rationale": "Meilisearch's own docs describe a hybrid search capability that combines full-text keyword matching with semantic matching, with embeddings generated automatically once an embedder is configured. The evidence does not show how the two result sets are fused or weighted, or that both run in one search request; it only says 'a single API'. There is no hands-on or independent confirmation, so the story's single-query fusion element is unproven. missing for 10: documented single-request hybrid query syntax, fusion/weighting mechanism (e.g. a semantic-vs-keyword ratio), independent or hands-on corroboration of hybrid queries.",
     "evidenceIds": [
       "meilisearch-docs-28",
       "meilisearch-docs-33",
@@ -4183,6 +4213,10 @@
         {
           "evidenceId": "meilisearch-docs-61",
           "quote": "Combine keyword precision with AI that understands meaning and intent."
+        },
+        {
+          "evidenceId": "meilisearch-docs-1",
+          "quote": "exposes them through fast full-text search, semantic search, and conversational interfaces, all from a single API"
         }
       ]
     }

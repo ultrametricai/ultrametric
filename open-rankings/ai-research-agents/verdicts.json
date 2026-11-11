@@ -2,21 +2,23 @@
   {
     "productId": "consensus",
     "storyId": "agentic-agent-docs",
-    "verdict": "full",
-    "quality": 9,
+    "verdict": "partial",
+    "quality": 7,
     "confidence": "high",
-    "rationale": "A live probe confirms Consensus serves an llms.txt at https://consensus.app/llms.txt (HTTP 200). It also publishes llms-full.txt and a machine-readable /.well-known/pricing.md. These files carry agent-oriented content, such as MCP versus REST parameter guidance, that an agent can be pointed at directly. Missing for 10: per-page markdown versions of the docs (the probe of a .md doc page returned 404), and no independent corroboration of agents actually consuming these files.",
+    "rationale": "Consensus serves a live llms.txt (HTTP 200) plus llms-full.txt and a .well-known/pricing.md, which give an agent a machine-readable entry point covering the product, its features, filters, and the REST/MCP surface. The agent-oriented doc set is incomplete, though: per-page markdown docs return 404, docs.consensus.app is Cloudflare-walled, and the OpenAPI spec linked from llms.txt points to a host failing TLS. missing for 10: reachable agent-readable developer docs, a working machine-readable OpenAPI contract linked from llms.txt, markdown versions of doc pages, independent hands-on corroboration of agents consuming these files.",
     "evidenceIds": [
       "consensus-probe-1",
+      "consensus-docs-29",
       "consensus-docs-35",
       "consensus-docs-36",
-      "consensus-docs-29",
       "consensus-docs-17",
-      "consensus-probe-2"
+      "consensus-probe-2",
+      "consensus-agent-surface-20261106",
+      "consensus-spec-link-dead-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
@@ -28,12 +30,12 @@
           "quote": "Power agent workflows that need citable scientific sources via the REST API or MCP server"
         },
         {
-          "evidenceId": "consensus-docs-36",
-          "quote": "pass `exclude_preprints=true` (MCP) or `excludePreprints=true` (REST API) to filter to peer-reviewed papers only."
-        },
-        {
           "evidenceId": "consensus-docs-29",
           "quote": "API and agent ready: a REST API and an MCP server expose the same retrieval and synthesis surface that powers the web app"
+        },
+        {
+          "evidenceId": "consensus-agent-surface-20261106",
+          "quote": "The developer docs site (docs.consensus.app) is Cloudflare-walled throughout."
         }
       ]
     }
@@ -44,12 +46,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Consensus documents an AI-powered Library where users import their own papers from Zotero, BibTeX, PDF or RIS, then search it, \"find gaps,\" and get cited AI responses. That is in-product AI insight over the user's own collection, but how deep the insights and suggestions go on personal data is only described in marketing terms. Most synthesis evidence concerns the public corpus rather than the user's data. Missing for 10: detailed docs on what insights and suggestions are generated from the user's own library, explicit proactive suggestion features, independent or hands-on corroboration.",
+    "rationale": "Consensus documents an AI-powered Library workspace. Users import their own papers from Zotero, BibTeX, PDF or RIS, then search the collection and \"find gaps\". The product also generally synthesizes literature with cited insights. However, the evidence for AI insights and suggestions drawn from the user's own data is marketing-level and thin. missing for 10: concrete documentation of what insights or suggestions are generated from a user's imported library, details of gap-finding output, independent or hands-on corroboration.",
     "evidenceIds": [
       "consensus-docs-13",
       "consensus-docs-20",
       "consensus-docs-14",
-      "consensus-docs-11"
+      "consensus-docs-11",
+      "consensus-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -58,15 +61,11 @@
       "citations": [
         {
           "evidenceId": "consensus-docs-13",
-          "quote": "Turn your library into a research engine. Import thousands of papers in one click - then search, find gaps, and put your collection to work."
+          "quote": "Import thousands of papers in one click - then search, find gaps, and put your collection to work."
         },
         {
           "evidenceId": "consensus-docs-20",
           "quote": "The Consensus Library brings your entire research library into one searchable, AI-powered workspace."
-        },
-        {
-          "evidenceId": "consensus-docs-14",
-          "quote": "Import from Zotero ... or import from BibTex, PDF, or RIS"
         },
         {
           "evidenceId": "consensus-docs-11",
@@ -81,30 +80,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a research agent that chains search tools within a session, plus a REST API and MCP server that developers can call to run automated searches. Those are interactive features and developer building blocks, not product-native automations that a user sets up to run on a schedule or autonomously in the background. Nothing in the pack documents recurring jobs, scheduled searches, alerts, or background execution.",
-    "evidenceIds": [
-      "consensus-docs-15",
-      "consensus-docs-7",
-      "consensus-docs-35"
-    ],
+    "rationale": "Consensus documents a REST API and MCP server for running automated searches, plus a research agent that chains tools within a single query. These are developer building blocks or one-off interactive actions. There is no evidence of a product feature for setting up recurring or background automations such as scheduled searches, alerts, or autonomous jobs.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
-      "citations": [
-        {
-          "evidenceId": "consensus-docs-15",
-          "quote": "run automated searches with our API to quickly and easily find the most relevant and reliable research"
-        },
-        {
-          "evidenceId": "consensus-docs-7",
-          "quote": "Citation crawling, DOI lookup, author search, similar papers, and more - chained together on top of the worlds best academic search engine."
-        },
-        {
-          "evidenceId": "consensus-docs-35",
-          "quote": "Power agent workflows that need citable scientific sources via the REST API or MCP server"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -113,13 +95,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Consensus documents a built-in research agent that chains citation crawling, DOI lookup, author search and similar-paper discovery. It also offers conversational Threads and Deep Search, which runs literature reviews in minutes, so users can hand off multi-step research tasks inside the product. All of this comes from short first-party marketing taglines, with little detail on what can be delegated or how the agent executes. missing for 10: detailed documentation of the agent's task scope, autonomy and controls, delegation beyond literature search and synthesis, and independent or hands-on corroboration that delegation works as claimed.",
+    "rationale": "Consensus documents a built-in research agent that chains citation crawling, DOI lookup, author search and similar-paper discovery. It also offers Deep Search for literature reviews and conversational Threads, so users can hand research tasks to an in-product AI. The evidence is short marketing copy limited to academic research tasks, so how far a user can delegate is unproven. Missing for 10: detailed docs on what tasks the agent can run autonomously and how multi-step delegation works, independent or hands-on corroboration of agent behavior.",
     "evidenceIds": [
       "consensus-docs-24",
       "consensus-docs-7",
       "consensus-docs-31",
-      "consensus-docs-33",
-      "consensus-docs-12"
+      "consensus-docs-17",
+      "consensus-docs-33"
     ],
     "support": {
       "relation": "direct",
@@ -137,10 +119,6 @@
         {
           "evidenceId": "consensus-docs-33",
           "quote": "Threads reimagines how you interact with peer-reviewed research by turning isolated searches into flowing conversations."
-        },
-        {
-          "evidenceId": "consensus-docs-12",
-          "quote": "Search, screen, extract, and synthesize evidence faster—while keeping full transparency and scholarly rigor."
         }
       ]
     }
@@ -151,13 +129,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Consensus documents its own REST API and MCP server, which expose the same retrieval and synthesis surface as the web app, and it markets the API for running automated searches, so headless programmatic use is supported. However, nothing shows CI-specific usage, a CLI, or how non-interactive auth works, and all evidence is vendor marketing. Missing for 10: CI pipeline documentation or examples, a headless CLI, API auth/rate-limit and endpoint reference docs, independent or hands-on corroboration.",
+    "rationale": "Consensus documents its own headless programmatic surface: a REST API with bearer-token auth and versioned JSON endpoints, plus an MCP server, explicitly for running automated searches outside the web app. However, there is no CI-specific guidance, the developer docs are walled, and the advertised OpenAPI spec link is broken, so automation depth is unproven. Missing for 10: documented CI/pipeline usage or examples, a reachable API reference or OpenAPI contract, and independent or hands-on corroboration of headless automation.",
     "evidenceIds": [
       "consensus-docs-15",
       "consensus-docs-16",
+      "consensus-agent-surface-20261106",
       "consensus-docs-35",
-      "consensus-docs-1",
-      "consensus-docs-36"
+      "consensus-spec-link-dead-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -173,8 +151,8 @@
           "quote": "a REST API and an MCP server expose the same retrieval and synthesis surface that powers the web app"
         },
         {
-          "evidenceId": "consensus-docs-35",
-          "quote": "Power agent workflows that need citable scientific sources via the REST API or MCP server"
+          "evidenceId": "consensus-agent-surface-20261106",
+          "quote": "search, paper detail, synthesis, and the Consensus Meter as stable, versioned JSON endpoints with bearer-token authentication"
         }
       ]
     }
@@ -185,7 +163,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus is an AI research agent, so being an MCP client is a fair question to ask. The evidence only shows Consensus publishing its own MCP server and REST API for other agents to consume. That is the server role and does not show that users can plug external MCP servers into Consensus to use their tools.",
+    "rationale": "Consensus is an AI research engine and agent, so letting users plug in external MCP servers is a fair question for this kind of product. The evidence only shows Consensus serving its own MCP server (mcp.consensus.app/mcp) for other agents to call. That is the server role, which does not transfer to this client-side story, and nothing documents connecting third-party MCP servers to Consensus.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -198,10 +176,11 @@
     "productId": "consensus",
     "storyId": "agentic-mcp-server",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Consensus's own llms.txt and llms-full.txt say it offers an MCP server alongside its REST API to power agent workflows. They also name one MCP-specific parameter (`exclude_preprints=true`), so the capability is first-party and direct. However, the evidence is limited to brief machine-readable summaries with no connection or setup documentation, so story coverage is not complete. Missing for 10: MCP endpoint/connection instructions, authentication details, a documented tool list or schema, supported client compatibility, and independent or hands-on corroboration that agents can connect successfully.",
+    "rationale": "Consensus's own machine-readable docs describe an official MCP server at mcp.consensus.app/mcp. It exposes search, paper detail, synthesis and the Consensus Meter, offers an anonymous trial tier, and documents an MCP parameter, `exclude_preprints=true`. The full developer docs at docs.consensus.app are walled, so connection setup, auth flow and the complete tool list are only summarized, and nothing hands-on shows an agent actually connecting. missing for 10: accessible in-depth MCP setup/connection docs, a complete documented tool list and auth flow for MCP clients, independent or hands-on corroboration of a working agent connection.",
     "evidenceIds": [
+      "consensus-agent-surface-20261106",
       "consensus-docs-29",
       "consensus-docs-35",
       "consensus-docs-36",
@@ -223,6 +202,10 @@
         {
           "evidenceId": "consensus-docs-36",
           "quote": "pass `exclude_preprints=true` (MCP) or `excludePreprints=true` (REST API) to filter to peer-reviewed papers only."
+        },
+        {
+          "evidenceId": "consensus-agent-surface-20261106",
+          "quote": "Intended for trying the MCP server before signing up, not for production traffic"
         }
       ]
     }
@@ -230,10 +213,10 @@
   {
     "productId": "consensus",
     "storyId": "agentic-nl-commands",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Consensus's core interaction is natural language: its semantic search is built to understand questions phrased in plain language, Threads turns searches into ongoing conversations, and the research agent chains actions such as citation crawling, DOI lookup and author search on top of those queries. Missing for 10: documentation that non-search operations (library import and management, filters, exports) can be driven by natural-language commands, and independent or hands-on corroboration.",
+    "rationale": "Consensus documents natural-language querying through AI-embedding semantic search that 'support[s] natural language queries'. Threads turn searches into conversations, and a research agent chains tools such as citation crawling, DOI lookup and author search. The evidence covers natural-language research questions, not operating the product as a whole (library, filters, imports, exports) through natural-language commands. missing for 10: documented natural-language control of non-search product functions (library management, filtering, import/export), independent or hands-on corroboration of conversational command handling.",
     "evidenceIds": [
       "consensus-docs-26",
       "consensus-docs-33",
@@ -242,7 +225,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
@@ -255,7 +238,7 @@
         },
         {
           "evidenceId": "consensus-docs-24",
-          "quote": "Consensus has evolved from a search tool into a research agent. Citation crawling, DOI lookup, author search, similar papers, and more - chained together on top of the worlds best academic search engine."
+          "quote": "Consensus has evolved from a search tool into a research agent. Citation crawling, DOI lookup, author search, similar papers, and more - chained together"
         }
       ]
     }
@@ -266,7 +249,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus is a SaaS research engine, so an official CLI is a fair question for this kind of product and the axis applies. The evidence documents only a REST API and an MCP server, which are adjacent programmatic surfaces rather than a command-line tool. No official CLI is mentioned anywhere in the pack.",
+    "rationale": "Consensus is a SaaS research engine, so an official CLI is a fair question to ask. The evidence documents only a REST API and an MCP server, and never mentions a command-line tool. Those are adjacent developer surfaces, not a CLI, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -278,21 +261,21 @@
   {
     "productId": "consensus",
     "storyId": "agentic-public-api",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Consensus documents a public REST API (plus an MCP server) that exposes the same retrieval and synthesis surface as the web app, supports automated searches, and has at least one documented request parameter (excludePreprints). The evidence covers the API's existence and scope but not its reference depth. Missing for 10: detailed endpoint reference, authentication and rate-limit documentation, and independent or hands-on corroboration of API usage.",
+    "rationale": "Consensus's own machine-readable docs describe a REST API that exposes search, paper detail, synthesis and the Consensus Meter as versioned JSON endpoints with bearer-token auth, plus documented parameters such as `excludePreprints=true`. But probes found the developer docs site Cloudflare-walled and the advertised OpenAPI spec link dead, so the full documentation could not be verified. missing for 10: a reachable public API reference or OpenAPI contract, independent or hands-on confirmation of API calls, and a clear public (not subscription-gated) access path.",
     "evidenceIds": [
+      "consensus-agent-surface-20261106",
       "consensus-docs-29",
-      "consensus-docs-16",
-      "consensus-docs-15",
-      "consensus-docs-1",
+      "consensus-docs-35",
       "consensus-docs-36",
-      "consensus-docs-35"
+      "consensus-docs-15",
+      "consensus-spec-link-dead-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
@@ -300,16 +283,16 @@
           "quote": "API and agent ready: a REST API and an MCP server expose the same retrieval and synthesis surface that powers the web app"
         },
         {
-          "evidenceId": "consensus-docs-15",
-          "quote": "run automated searches with our API to quickly and easily find the most relevant and reliable research"
+          "evidenceId": "consensus-agent-surface-20261106",
+          "quote": "search, paper detail, synthesis, and the Consensus Meter as stable, versioned JSON endpoints with bearer-token authentication"
         },
         {
           "evidenceId": "consensus-docs-36",
           "quote": "pass `exclude_preprints=true` (MCP) or `excludePreprints=true` (REST API) to filter to peer-reviewed papers only."
         },
         {
-          "evidenceId": "consensus-docs-1",
-          "quote": "Connect the Consensus API within your project to seamlessly integrate up-to-date peer-reviewed citations into your own custom workflow."
+          "evidenceId": "consensus-docs-15",
+          "quote": "run automated searches with our API to quickly and easily find the most relevant and reliable research."
         }
       ]
     }
@@ -320,7 +303,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus documents a REST API and an MCP server for agent workflows, so the axis applies. However, nothing in the evidence describes issuing API keys with scopes, permissions, or least-privilege restrictions. Centralized organization account management and billing is an adjacent feature, not scoped agent credentials.",
+    "rationale": "Consensus documents a REST API and MCP server that use bearer-token authentication, with API keys issued via subscription. Nothing in the evidence shows scoped, permission-limited, or least-privilege credentials that could be issued to an agent. Plain bearer-token API keys are an adjacent capability, not scoped credentials, and the developer docs were walled, so no scoping detail could be verified.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -335,7 +318,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a REST API and an MCP server for Consensus, but nothing mentions official client SDKs or libraries in any language. A raw REST API is an adjacent surface, not an SDK. SDKs are a fair question for a SaaS research engine, so this is 'none' rather than 'na'.",
+    "rationale": "The evidence documents a REST API and an MCP server, but nothing mentions an official SDK or client library in any language. A raw REST API and an MCP endpoint are different capabilities from an SDK. The advertised OpenAPI spec link is dead, so there is not even a contract from which a client could be generated. The axis applies to an API-bearing SaaS product, so the absence of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -350,7 +333,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus is a SaaS research platform with a REST API and an MCP server, so a webhooks axis is a fair question for it. However, no evidence shows registrable outbound HTTP callbacks or event subscriptions. The REST API and MCP server are request/response surfaces and do not count as webhooks.",
+    "rationale": "Consensus is a SaaS research engine with a documented REST API and MCP server, so an outbound webhook capability is a fair question. However, nothing in the evidence pack documents registrable outbound HTTP callbacks or event subscriptions. The API and MCP endpoints are request/response retrieval surfaces, which do not count as webhooks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -362,10 +345,10 @@
   {
     "productId": "consensus",
     "storyId": "agreement-disagreement",
-    "verdict": "partial",
-    "quality": 7,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Consensus's own Consensus Meter classifies each relevant paper as supporting, refuting, or mixed/inconclusive and displays the distribution, so analysts see agreement and disagreement rather than a single answer. The docs scope it to yes/no/possibly questions, which is a documented limitation, so coverage is partial. Per-response citations let users trace each claim to its source. Missing for 10: agreement/disagreement mapping for open-ended (non-yes/no) questions, explanation of why studies conflict, independent or hands-on corroboration of the meter's accuracy.",
+    "rationale": "Consensus ships the Consensus Meter. For a yes/no question it classifies each relevant paper as supporting, refuting, or mixed/inconclusive, then displays the distribution. This directly shows where sources agree and disagree rather than giving one unqualified answer, and every response carries citations back to the sources. Missing for 10: independent or hands-on corroboration of the Meter's accuracy, and evidence of agreement/disagreement views for non-yes/no questions.",
     "evidenceIds": [
       "consensus-docs-22",
       "consensus-docs-18",
@@ -374,16 +357,16 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an analyst, I can see where sources agree and disagree instead of a single unqualified answer",
       "citations": [
         {
           "evidenceId": "consensus-docs-22",
-          "quote": "The Consensus Meter is a visual aggregator that, for a yes/no/possibly question, classifies each relevant paper as supporting, refuting, or mixed/inconclusive, then displays the distribution."
+          "quote": "classifies each relevant paper as supporting, refuting, or mixed/inconclusive, then displays the distribution"
         },
         {
           "evidenceId": "consensus-docs-34",
-          "quote": "Consensus Meter: aggregates per-study verdicts (Yes / No / Possibly / Mixed / Unknown) into a single distribution for a yes/no research question"
+          "quote": "aggregates per-study verdicts (Yes / No / Possibly / Mixed / Unknown) into a single distribution for a yes/no research question"
         },
         {
           "evidenceId": "consensus-docs-11",
@@ -398,7 +381,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus documents a REST API and an MCP server, so this axis applies. However, nothing in the evidence shows an interactive API reference, an API explorer, or runnable code examples. Existing marketing pages and an llms.txt file are not an interactive reference.",
+    "rationale": "Consensus documents a REST API and an MCP server, so this axis applies. The pack contains no evidence of an interactive API reference with runnable examples: the docs site (docs.consensus.app) is Cloudflare-walled, and the OpenAPI spec linked from llms.txt points to a host that fails TLS. The anonymous MCP tier for trying the server before signing up is a different feature and is not an explorable API reference, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -410,16 +393,28 @@
   {
     "productId": "consensus",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "disputed",
+    "quality": 2,
     "confidence": "medium",
-    "rationale": "The evidence shows Consensus has a REST API, an MCP server, and an llms.txt file, but nothing documents a downloadable OpenAPI or equivalent machine-readable API specification. llms.txt is a site summary for LLMs, not an API spec, and the existence of an API is an adjacent capability rather than a published spec.",
-    "evidenceIds": [],
+    "rationale": "Consensus's own llms.txt advertises an OpenAPI spec as a machine-readable API contract, and it documents versioned JSON REST endpoints. A hands-on probe, however, found the linked spec host fails TLS with a certificate for an unrelated domain, consensus.app/openapi.json returns 403, and the developer docs site is Cloudflare-walled, so no downloadable spec was reachable. Missing for 10: a reachable, downloadable OpenAPI (or equivalent) file, accessible developer docs hosting the spec, independent confirmation that the spec matches the live API.",
+    "evidenceIds": [
+      "consensus-spec-link-dead-20261106",
+      "consensus-agent-surface-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "consensus-spec-link-dead-20261106",
+          "quote": "[OpenAPI spec](https://llmconsensus.io/openapi.json): machine-readable API contract"
+        },
+        {
+          "evidenceId": "consensus-agent-surface-20261106",
+          "quote": "search, paper detail, synthesis, and the Consensus Meter as stable, versioned JSON endpoints with bearer-token authentication"
+        }
+      ]
     }
   },
   {
@@ -428,7 +423,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus documents a REST API and an MCP server, so a sandbox or test environment is a fair question for this product. No evidence item mentions a sandbox, test mode, test keys, or any isolation from production data. The pack shows no dry-run or sandbox capability.",
+    "rationale": "Consensus offers a REST API and an MCP server, so a sandbox or test environment is a fair question for it. The evidence documents no such environment. The MCP 'Anonymous Tier' is described as a way to try the server before signing up, but it is rate-limited production access rather than an isolated test environment. That is an adjacent trial feature, not sandbox isolation, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -440,16 +435,24 @@
   {
     "productId": "consensus",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Consensus documents a REST API and an MCP server, so this axis applies. However, nothing in the evidence pack mentions API versioning, version identifiers, or a deprecation policy. Having an API is adjacent to the story but does not show the versioning and deprecation guarantees it asks for.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Consensus's machine-readable corpus describes its REST API and MCP surface as \"stable, versioned JSON endpoints\", so the versioning half of the story has a first-party claim. Nothing in the pack documents a deprecation policy, version lifecycle, or sunset timelines. The developer docs are walled, and the advertised OpenAPI spec link is dead, so the versioning claim cannot be verified. missing for 10: a documented deprecation policy, any visible version scheme or changelog, a reachable API contract or docs, and independent corroboration.",
+    "evidenceIds": [
+      "consensus-agent-surface-20261106",
+      "consensus-spec-link-dead-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "consensus-agent-surface-20261106",
+          "quote": "search, paper detail, synthesis, and the Consensus Meter as stable, versioned JSON endpoints with bearer-token authentication"
+        }
+      ]
     }
   },
   {
@@ -458,7 +461,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Consensus documents one bulk operation of its own: the Library can import thousands of papers in one click from Zotero, BibTeX, PDF, or RIS. There is no evidence of other bulk actions such as bulk tagging, editing, deleting, exporting, or batch API calls on many selected items, so only the import slice of the story is covered. Missing for 10: bulk edit/delete/tag/export operations, batch API/MCP operations over many items, and any hands-on or independent corroboration.",
+    "rationale": "Consensus documents one first-party bulk action: importing thousands of papers into its Library in one click, from Zotero, BibTeX, PDF or RIS. No other bulk operations across many items are evidenced. Search-side aggregation such as Deep Search and the Consensus Meter synthesizes results rather than acting on a user's items. Missing for 10: bulk edit/tag/organize/delete/export across library items, programmatic batch endpoints in the API/MCP, and independent or hands-on corroboration.",
     "evidenceIds": [
       "consensus-docs-3",
       "consensus-docs-13",
@@ -475,7 +478,7 @@
         },
         {
           "evidenceId": "consensus-docs-14",
-          "quote": "or import from BibTex, PDF, or RIS"
+          "quote": "Import from Zotero ... or import from BibTex, PDF, or RIS"
         }
       ]
     }
@@ -486,7 +489,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus is an AI research search engine, and such a product could plausibly offer event-triggered rules (for example, alerts that fire when new papers match a query), so the axis applies. The evidence shows only a REST API and MCP server for running searches on demand and a research agent that chains search tools. Neither is a user-defined rule that triggers actions automatically on events. API-driven automated searches are a developer building block, not the capability itself.",
+    "rationale": "Consensus is a SaaS research engine, so event-triggered rules or automations (for example, alerts on new papers) are a fair question for this kind of product. The evidence shows only a REST API and MCP server for running searches programmatically. Those are developer building blocks a user could wire into their own automation, not a documented rule or trigger system in the product itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -501,7 +504,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduled or recurring searches, such as saved-search alerts, are a plausible capability for an AI research engine, so the axis applies. The evidence only shows a REST API and MCP server that a developer could call from their own scheduler to run automated searches. That is a developer building block for one-off calls, not a first-party recurring schedule, and nothing documents scheduled jobs, alerts or recurring workflows.",
+    "rationale": "Scheduling recurring jobs, such as saved-search alerts or periodic literature updates, is a fair question for an AI research engine, so the axis applies. The pack documents only a REST API and MCP server for \"automated searches\". These are developer building blocks a user could drive from an external scheduler, and they are one-off calls rather than a recurring schedule the product itself provides. No evidence shows a first-party scheduling, recurring-job or alert capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -516,7 +519,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus documents a REST API and MCP server for running automated searches and agent workflows, so the automation axis applies to it. However, nothing in the evidence shows the product itself versioning, reviewing, or rolling back automations. The API and MCP surfaces are only developer building blocks for external workflows, which earn no credit here.",
+    "rationale": "Consensus documents automated searches through its API and an agentic research workflow, so the story's axis applies. The evidence shows no way for users to version, review, or roll back automations. The \"stable, versioned JSON endpoints\" refers to versioning of the vendor's API, not of user-defined automations, so it is an adjacent feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -531,7 +534,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Consensus documents a research agent that chains citation crawling, DOI lookup, author search and similar-paper tools on top of its search engine. It also offers Deep Search for more comprehensive literature reviews across many studies, both of which go beyond a single-pass summary. missing for 10: detailed documentation of how the agent plans and runs its investigation steps autonomously, independent or hands-on corroboration of multi-step behavior.",
+    "rationale": "Consensus's own docs say it has evolved into a research agent that chains citation crawling, DOI lookup, author search and similar-paper steps on top of its search engine. It also offers Deep Search for more comprehensive literature reviews across many studies, which goes beyond a single-pass summary. Missing for 10: detailed documentation of how the agent plans and iterates autonomously from a posed question, and independent or hands-on corroboration of multi-step investigation depth.",
     "evidenceIds": [
       "consensus-docs-24",
       "consensus-docs-7",
@@ -564,7 +567,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only importing into the Consensus Library (from Zotero, BibTeX, PDF, or RIS). That is the opposite direction from exporting results. The REST API and MCP server are developer building blocks, not an export feature, and nothing in the pack shows export to documents, spreadsheets, or reference-manager files.",
+    "rationale": "The evidence documents only importing into the Consensus Library from Zotero, BibTeX, PDF, or RIS, plus a JSON REST API/MCP surface. Import is the opposite direction from export, and the API is a developer building block, not an export feature. Nothing shows exporting results to documents, spreadsheets, or reference-manager files.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -576,16 +579,23 @@
   {
     "productId": "consensus",
     "storyId": "free-tier-trial",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Pricing is a fair axis for a research search engine, but the pack never mentions a free tier, trial, or free-usage limits. The pricing page excerpts only cite Deep Searches and centralized billing for organizations, which says nothing about free access.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only first-party evidence of free or trial access is an \"Anonymous Tier\" of the Consensus MCP server, documented as intended for trying the server before signing up. It is rate-limited and serves the agent/MCP surface rather than the researcher-facing web app. The pricing page excerpts mention Deep Searches and centralized billing but say nothing about a free plan or its limits. Missing for 10: documented free tier or trial for the web app, stated free-tier usage limits (searches, Deep Searches, Consensus Meter), and independent or hands-on confirmation that free use is meaningful for research.",
+    "evidenceIds": [
+      "consensus-agent-surface-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a researcher, I can try the product meaningfully on a free tier or trial",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "consensus-agent-surface-20261106",
+          "quote": "Intended for trying the MCP server before signing up, not for production traffic"
+        }
+      ]
     }
   },
   {
@@ -594,10 +604,9 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Consensus's first-party docs state that every response includes citations so users can trace each insight back to the original source, which directly matches the verification goal of this story. Supporting docs describe surfacing citable, peer-reviewed sources per paper. Missing for 10: detailed documentation of inline, per-claim citation mechanics (e.g., sentence-level attribution) and independent or hands-on corroboration that every substantive claim is actually cited.",
+    "rationale": "Consensus's own docs say every response includes citations so users can trace each insight back to the original source, which directly matches the story. The evidence is a single first-party statement plus a general transparency claim, with no hands-on verification. Missing for 10: detailed documentation of per-claim inline citation granularity (e.g., sentence-level linking to specific papers or passages), independent or hands-on corroboration that every substantive claim is actually cited.",
     "evidenceIds": [
       "consensus-docs-11",
-      "consensus-docs-35",
       "consensus-docs-8"
     ],
     "support": {
@@ -608,10 +617,6 @@
         {
           "evidenceId": "consensus-docs-11",
           "quote": "Every response includes citations, so you can trace each insight back to the original source."
-        },
-        {
-          "evidenceId": "consensus-docs-35",
-          "quote": "Power agent workflows that need citable scientific sources via the REST API or MCP server"
         },
         {
           "evidenceId": "consensus-docs-8",
@@ -626,7 +631,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Consensus offers Deep Search and a research agent that chains search tools, but nothing documents a job that keeps running unattended in the background or notifies the user when results are ready. Deep Search being more comprehensive is a related feature, not this capability, so the verdict stays at none.",
+    "rationale": "Consensus documents Deep Search (more comprehensive literature reviews across many studies, \"in minutes\") and a research agent that chains search tools. Nothing in the evidence shows a job that keeps running unattended in the background or notifies the user when results are ready. Deep Search is an adjacent long-running research feature, not the asked-for unattended-job-plus-notification capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -641,7 +646,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus is an academic search engine, so standing searches or alerts are a fair question for it, but the evidence pack never documents saved searches, alerts, or notifications about new papers. The API's 'automated searches' is a developer building block a user could build on, not a built-in standing-alert feature, so it earns no credit.",
+    "rationale": "Nothing in the evidence pack documents saved or standing searches, alerts, or notifications that surface new papers as they are published. The API's 'automated searches' and the MCP server are developer building blocks a user could use to build their own monitoring. They are not a first-party alert feature, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -656,13 +661,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Consensus's own docs say a REST API and MCP server expose the same retrieval and synthesis surface that powers the web app, and a filter such as excludePreprints is documented on both surfaces. That parity claim covers retrieval and synthesis only. Nothing shows UI features like the Library (Zotero/BibTeX import), Citation Graph, Threads, Deep Search or the Consensus Meter are reachable via the API. Missing for 10: API coverage of library management and import, Citation Graph, Threads and Deep Search; a full API reference showing endpoint parity; independent or hands-on corroboration.",
+    "rationale": "Consensus's own docs say its REST API and MCP server \"expose the same retrieval and synthesis surface that powers the web app\": search, paper detail, synthesis and the Consensus Meter, plus filter parameters such as excludePreprints. That parity claim is limited to retrieval and synthesis. UI features like Library import (Zotero/BibTeX/RIS), Citation Graph, Threads, Deep Search and account management have no documented API equivalent, and the advertised OpenAPI spec link is dead while docs.consensus.app is walled, so the full API surface cannot be verified. Missing for 10: documented API coverage of library/reference management, citation graph, threads and deep search, a reachable machine-readable API contract, and independent hands-on confirmation of parity.",
     "evidenceIds": [
-      "consensus-docs-16",
       "consensus-docs-29",
-      "consensus-docs-35",
+      "consensus-docs-16",
+      "consensus-agent-surface-20261106",
       "consensus-docs-36",
-      "consensus-docs-15"
+      "consensus-docs-35",
+      "consensus-spec-link-dead-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -674,12 +680,12 @@
           "quote": "API and agent ready: a REST API and an MCP server expose the same retrieval and synthesis surface that powers the web app"
         },
         {
-          "evidenceId": "consensus-docs-36",
-          "quote": "pass `exclude_preprints=true` (MCP) or `excludePreprints=true` (REST API) to filter to peer-reviewed papers only."
+          "evidenceId": "consensus-agent-surface-20261106",
+          "quote": "search, paper detail, synthesis, and the Consensus Meter as stable, versioned JSON endpoints with bearer-token authentication"
         },
         {
-          "evidenceId": "consensus-docs-15",
-          "quote": "run automated searches with our API to quickly and easily find the most relevant and reliable research."
+          "evidenceId": "consensus-docs-36",
+          "quote": "pass `exclude_preprints=true` (MCP) or `excludePreprints=true` (REST API) to filter to peer-reviewed papers only."
         }
       ]
     }
@@ -690,7 +696,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only importing into the Consensus Library (from Zotero, BibTeX, PDF, or RIS). The REST API and MCP server expose paper search and synthesis, not export of a user's own library, threads, or account data. Import formats and a search API are adjacent features and do not show that a user can export all their data in open formats and leave.",
+    "rationale": "The evidence documents only importing into the Consensus Library (Zotero, BibTeX, PDF, RIS) and a REST API and MCP server for searching the paper corpus. Neither is a way to export the user's own data, such as library, threads or searches, in open formats. Import formats and corpus-retrieval APIs are adjacent features and earn no credit for a data-export story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -705,7 +711,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-source availability is a fair question for a SaaS research engine like Consensus, so the axis applies. Nothing in the evidence pack mentions a public source repository or an open license; the REST API and MCP server are access surfaces, not source code, and earn no credit toward this story.",
+    "rationale": "Open-sourcing is a fair question for a SaaS research engine, so the axis applies. However, nothing in the evidence shows Consensus publishes its source code under an open license. The pack documents only a hosted web app, a REST API and an MCP server, which are proprietary access surfaces rather than readable source.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -720,7 +726,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus is a hosted AI research search engine, and self-hosting is a fair question for this kind of product. The evidence pack documents no self-hosted, on-prem, or open-source deployment. The REST API and MCP server are hosted access surfaces to the web app's backend, not ways to run the core product yourself.",
+    "rationale": "Consensus is a hosted AI research search engine. Self-hosting or on-prem deployment is a fair openness question for a SaaS product, but the evidence pack never mentions it. The REST API and MCP server it documents are vendor-hosted access surfaces (mcp.consensus.app, subscription API keys), not a way to run the core product yourself, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -735,12 +741,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Consensus documents a Library that imports thousands of papers, including PDFs and Zotero, BibTeX and RIS files, into a searchable, AI-powered workspace where users can search and find gaps in their collection. It does not explicitly say the research agent or Deep Search runs over the uploaded corpus. Missing for 10: explicit documentation that the agent/synthesis features operate over user-uploaded PDFs, details on full-text analysis of uploaded files, independent hands-on corroboration.",
+    "rationale": "Consensus documents a Library feature that imports from PDF, BibTeX, RIS and Zotero and makes the collection 'searchable' and 'AI-powered', with search and gap-finding over it. However, the evidence does not show the research agent or Deep Search running over the user's uploaded corpus, as opposed to Consensus's own 200M-paper index. Missing for 10: explicit documentation that the agent/synthesis runs over uploaded PDFs, details on full-text processing of uploads, independent or hands-on corroboration.",
     "evidenceIds": [
       "consensus-docs-13",
       "consensus-docs-14",
-      "consensus-docs-20",
-      "consensus-docs-9"
+      "consensus-docs-30",
+      "consensus-docs-9",
+      "consensus-docs-20"
     ],
     "support": {
       "relation": "direct",
@@ -756,7 +763,7 @@
           "quote": "Import from Zotero ... or import from BibTex, PDF, or RIS"
         },
         {
-          "evidenceId": "consensus-docs-20",
+          "evidenceId": "consensus-docs-9",
           "quote": "The Consensus Library brings your entire research library into one searchable, AI-powered workspace."
         }
       ]
@@ -768,7 +775,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a data storage region is a fair question for a SaaS research engine that stores user libraries and accounts, so the axis applies. No evidence in the pack mentions region selection, data residency, or storage location. Centralized account management and billing (docs-39) is an adjacent feature and earns no credit.",
+    "rationale": "Choosing a storage region is a fair question for a SaaS research platform that holds user libraries and imported papers. Nothing in the evidence pack mentions data residency, region selection, or where data is stored. The closest item is organization-level centralized account and billing management, which is an adjacent feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -783,7 +790,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus is an AI-powered research SaaS, so a training opt-out or no-training data policy is a fair question for it. None of the evidence items mention data-use policies, model-training opt-outs, or privacy controls. The pack covers search, the library, the API/MCP server and pricing, none of which concerns whether user data trains models.",
+    "rationale": "Preventing user data from being used for AI training is a fair privacy-posture question for an AI-powered research engine like Consensus. Nothing in the evidence pack mentions a training opt-out, a no-training policy, or any data-use control. The pack covers search, library, API/MCP and pricing features only, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -798,7 +805,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Consensus is an AI research SaaS that stores user libraries and threads, so user control over data retention and deletion is a fair question to ask of it. The evidence pack contains nothing about retention settings, deletion controls, or data-handling policies. The library import, API and org account-management items are adjacent features and do not show retention or deletion control.",
+    "rationale": "Consensus is a SaaS research engine that stores user data such as libraries, imported papers and Threads, so controlling retention and deletion is a fair question for it. However, nothing in the evidence pack documents retention settings, deletion controls, or data-retention policies. The only nearby item, centralized account management for organizations, is an adjacent control, not retention or deletion capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -813,7 +820,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS research search engine like Consensus. Nothing in the evidence pack mentions telemetry, analytics, usage tracking, or any opt-out control; the items cover only search, library, API/MCP, and pricing features.",
+    "rationale": "Opting out of telemetry is a fair privacy question to ask of an AI research SaaS, so the axis applies. However, nothing in the evidence pack mentions telemetry, usage tracking, analytics opt-out, or any privacy controls. The pack covers only search, library, API/MCP and pricing features. The Anonymous Tier of the MCP server is a trial-access tier, not a tracking opt-out, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -827,16 +834,16 @@
     "storyId": "scholarly-sources",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Consensus is built as a scholarly search engine over 200 million academic papers rather than the open web. It analyzes full text, including paywalled papers from major publishers, and offers filters by study type and journal, a peer-reviewed-only option, and a Medical Mode limited to top journals and clinical guidelines. Every answer cites the original source. missing for 10: independent or hands-on corroboration of corpus coverage and source quality (all evidence is vendor-claimed).",
+    "confidence": "medium",
+    "rationale": "Consensus is built as an academic search engine. It searches over 200 million academic papers, analyzes full text including paywalled publisher papers, and traces every insight back to the original source. It also offers filters by study type and journal, plus a peer-reviewed-only option. missing for 10: independent or hands-on corroboration of corpus coverage and search quality (all evidence is vendor-authored).",
     "evidenceIds": [
       "consensus-docs-10",
-      "consensus-docs-4",
       "consensus-docs-5",
+      "consensus-docs-4",
+      "consensus-docs-11",
       "consensus-docs-19",
       "consensus-docs-36",
-      "consensus-docs-37",
-      "consensus-docs-11",
+      "consensus-docs-7",
       "consensus-probe-1"
     ],
     "support": {
@@ -849,20 +856,24 @@
           "quote": "It searches over 200 million academic papers and uses language models to help you find, understand, and synthesize the literature faster."
         },
         {
+          "evidenceId": "consensus-docs-5",
+          "quote": "Think of Consensus as an AI-native alternative to Google Scholar with a more-refined corpus."
+        },
+        {
           "evidenceId": "consensus-docs-4",
           "quote": "Consensus analyzes the full text, including paywalled papers from major publishers, so you can find the most relevant papers."
+        },
+        {
+          "evidenceId": "consensus-docs-11",
+          "quote": "Every response includes citations, so you can trace each insight back to the original source."
         },
         {
           "evidenceId": "consensus-docs-19",
           "quote": "Filters allow narrowing by study type (RCT, meta-analysis, systematic review, observational), publication year, journal, open-access status, and discipline."
         },
         {
-          "evidenceId": "consensus-docs-37",
-          "quote": "Clinicians often need insights drawn only from top medical journals and clinical guidelines — the gold standard of evidence.That's why we're introducing Medical Mode in Consensus."
-        },
-        {
-          "evidenceId": "consensus-docs-11",
-          "quote": "Every response includes citations, so you can trace each insight back to the original source."
+          "evidenceId": "consensus-docs-36",
+          "quote": "pass `exclude_preprints=true` (MCP) or `excludePreprints=true` (REST API) to filter to peer-reviewed papers only."
         }
       ]
     }
@@ -873,7 +884,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sharing a research session or report with collaborators is a fair axis for an AI research engine, but nothing in the evidence pack documents it. Threads turn searches into conversations, and the organization plan offers centralized account management and billing, but neither shows sharing a session or report for others to view or build on. Those are adjacent features and earn no credit.",
+    "rationale": "Nothing in the evidence pack documents sharing a search, thread or report with collaborators who can view or build on it. Threads turns searches into conversations, and organization plans offer centralized billing and account management, but neither is a sharing or collaboration capability. Sharing is a fair axis for a research tool, so this is none, not na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -888,7 +899,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Before a run starts, Consensus lets researchers set depth by choosing Deep Search, a more comprehensive literature review. They can set scope with filters (study type, year, journal, open access, discipline), Medical Mode, and a preprint exclusion. Nothing shows explicit effort controls or steering a run while it executes. Missing for 10: mid-run steering or redirection, explicit effort or budget controls, detailed docs on configuring Deep Search depth, independent hands-on corroboration.",
+    "rationale": "Before a run, Consensus lets researchers pick depth by choosing Deep Search for more comprehensive literature reviews. They can narrow scope with filters (study type, year, journal, discipline), Medical Mode, and a preprint-exclusion flag. Nothing shows effort tuning beyond the mode choice, or any way to steer a run while it executes. Missing for 10: granular depth/effort parameters, mid-run steering or redirection, and independent hands-on corroboration.",
     "evidenceIds": [
       "consensus-docs-17",
       "consensus-docs-31",
@@ -926,7 +937,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Consensus documents Deep Search, which produces 'more comprehensive Lit Reviews across many studies' and 'Literature Reviews in Minutes', along with evidence synthesis. That is the product's own report-like output, but nothing in the evidence describes its structure, tables, or how it is shared. Missing for 10: documented report sections, tables in the output, an explicit summary component, share/export to stakeholders, and independent or hands-on corroboration.",
+    "rationale": "Consensus documents its own Deep Search feature, which produces 'more comprehensive Lit Reviews across many studies,' and it markets synthesis of evidence. That is a report-like output, but the evidence never describes its structure (sections, tables, a summary) or any way to share it with stakeholders. Missing for 10: documented report sections, tables in report output, an explicit summary section, sharing/export to stakeholders, and independent or hands-on corroboration.",
     "evidenceIds": [
       "consensus-docs-17",
       "consensus-docs-31",
@@ -947,7 +958,7 @@
         },
         {
           "evidenceId": "consensus-docs-12",
-          "quote": "Search, screen, extract, and synthesize evidence faster—while keeping full transparency and scholarly rigor."
+          "quote": "Search, screen, extract, and synthesize evidence faster"
         }
       ]
     }
@@ -958,13 +969,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Consensus's own docs claim a literature-review feature to \"search, screen, extract, and synthesize evidence.\" They also document per-paper PICO extraction, study-design classification, uniform filters (study type, year, journal) and Deep Search across many studies. However, nothing documents a systematic workflow with user-defined inclusion/exclusion criteria applied consistently across a paper set, or structured extraction tables. Missing for 10: user-defined screening criteria applied consistently across papers, custom extraction fields/tables at scale, independent or hands-on corroboration.",
+    "rationale": "Consensus markets its literature-review feature as able to 'search, screen, extract, and synthesize' evidence. It documents per-paper PICO extraction, study-design classification, study-type filters and Deep Search across many studies, which together form a uniform per-paper extraction layer. But there is no documented systematic-review workflow where a researcher defines inclusion/exclusion criteria and applies them consistently across a paper set. Missing for 10: user-defined screening criteria applied consistently across papers, configurable extraction fields or tables, screening audit trail or decision logging, independent or hands-on corroboration.",
     "evidenceIds": [
       "consensus-docs-12",
       "consensus-docs-23",
       "consensus-docs-25",
       "consensus-docs-19",
-      "consensus-docs-17"
+      "consensus-docs-17",
+      "consensus-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -986,6 +998,10 @@
         {
           "evidenceId": "consensus-docs-17",
           "quote": "Deep Searches (more comprehensive Lit Reviews across many studies)"
+        },
+        {
+          "evidenceId": "consensus-docs-18",
+          "quote": "classifies each relevant paper as supporting, refuting, or mixed/inconclusive"
         }
       ]
     }
@@ -996,10 +1012,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Consensus publishes a first-party pricing document (/.well-known/pricing.md) that lists plan features such as Deep Searches and centralized billing for organizations, so a pricing reference exists before committing. The excerpts show no actual prices, tier names, or usage caps. Missing for 10: concrete plan prices, documented per-plan usage limits (e.g., Deep Search quotas), free-vs-paid tier comparison, independent corroboration.",
+    "rationale": "Consensus publishes its own machine-readable pricing page (/.well-known/pricing.md), which lists plan features such as Deep Searches and organization-level centralized billing. The MCP anonymous tier is described as rate-limited, giving a glimpse of usage limits. None of the cited excerpts show actual prices, plan tiers, or numeric quotas. Missing for 10: concrete plan prices, named tier comparison, numeric usage limits (e.g., searches per month), API/MCP rate-limit figures, and independent corroboration.",
     "evidenceIds": [
       "consensus-docs-17",
-      "consensus-docs-39"
+      "consensus-docs-39",
+      "consensus-agent-surface-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1013,6 +1030,10 @@
         {
           "evidenceId": "consensus-docs-39",
           "quote": "Centralized account management for your organization - Centralized billing"
+        },
+        {
+          "evidenceId": "consensus-agent-surface-20261106",
+          "quote": "Intended for trying the MCP server before signing up, not for production traffic"
         }
       ]
     }
@@ -1020,27 +1041,26 @@
   {
     "productId": "elicit",
     "storyId": "agentic-agent-docs",
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "A live probe confirms Elicit publishes an llms.txt (HTTP 200 at support.elicit.com/llms.txt) that indexes its Help Center articles, so an agent can be pointed at it directly, and the help articles themselves are served as .md files. Missing for 10: llms.txt scope beyond the Help Center (no machine-readable API reference; OpenAPI paths 404 and the docs-root .md 404), no first-party documentation describing the llms.txt offering, no independent or hands-on corroboration of agent use.",
+    "rationale": "A probe found a live llms.txt at support.elicit.com that indexes the Elicit Help Center for agents, and Elicit also serves a machine-readable OpenAPI 3.1 spec at the docs root, so an agent can be pointed at agent-oriented docs. Coverage is limited because the llms.txt covers only help-center articles and is not advertised in first-party docs. The API docs have no llms.txt, and the docs-root markdown probe returned 404. missing for 10: llms.txt or llms-full.txt for the API reference (docs.elicit.com), first-party documentation advertising agent-oriented docs, a working docs-root markdown endpoint, independent or hands-on corroboration of agents consuming these docs.",
     "evidenceIds": [
       "elicit-probe-1",
-      "elicit-probe-2",
-      "elicit-probe-3"
+      "elicit-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
           "evidenceId": "elicit-probe-1",
-          "quote": "HTTP 200 at https://support.elicit.com/llms.txt # Elicit Help Center"
+          "quote": "PROBE llms.txt: HTTP 200 at https://support.elicit.com/llms.txt # Elicit Help Center"
         },
         {
-          "evidenceId": "elicit-probe-1",
-          "quote": "> Help center for Elicit"
+          "evidenceId": "elicit-openapi-spec-20261106",
+          "quote": "Elicit serves a full OpenAPI 3.1.0 document (info title \"Elicit API\", version 2.0.0; 46 paths across Search, Sessions, Reports, Systematic Reviews, Research Agent and more; server https://elicit.com/api/v2)"
         }
       ]
     }
@@ -1049,18 +1069,19 @@
     "productId": "elicit",
     "storyId": "agentic-ai-insights",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Elicit natively generates AI insights from the user's own papers. Chat can compare, summarize along dimensions and cluster papers. Zotero and Library imports feed AI extraction and analysis. Research reports, screening recommendations and Routines that write summaries are also documented, and a hands-on user reported getting cited concept lists in about a minute. Several hands-on reports of incorrect or hallucinated summaries are about accuracy rather than absence of the capability, so they lower quality and confidence but not the verdict. missing for 10: independent evidence that insights are reliably accurate, explicit documentation of proactive suggestions beyond screening recommendations.",
+    "rationale": "Elicit generates AI insights from the user's own papers inside the product. Chat compares, summarizes and clusters papers; columns extract data points; the Research Agent and Systematic Reviews produce reports and screening recommendations; Zotero and PDF imports bring the user's collections in for analysis. Hands-on reports confirm the core capability works (topic analysis returned cited concepts), though some users found inaccurate or invented summaries. missing for 10: independent corroboration of output accuracy (community reports hallucinated summaries), explicit documentation of proactive suggestions beyond screening recommendations",
     "evidenceIds": [
       "elicit-docs-40",
       "elicit-docs-37",
-      "elicit-docs-80",
-      "elicit-docs-69",
+      "elicit-docs-18",
       "elicit-docs-19",
+      "elicit-docs-69",
+      "elicit-docs-80",
       "elicit-comm-1",
       "elicit-comm-2",
-      "elicit-comm-3"
+      "elicit-comm-9"
     ],
     "support": {
       "relation": "direct",
@@ -1076,12 +1097,12 @@
           "quote": "Elicit's Zotero integration helps you bring your paper collections into Elicit, where you can extract data and analyze your papers!"
         },
         {
-          "evidenceId": "elicit-docs-80",
-          "quote": "A Routine can act on what it finds and hand you a finished analysis: it can filter on criteria an Alert couldn't, update an artifact, or write the summary"
+          "evidenceId": "elicit-docs-19",
+          "quote": "including the screening recommendation tables and the data extraction table"
         },
         {
-          "evidenceId": "elicit-docs-19",
-          "quote": "Pro, Scale, and Enterprise subscribers can export tables from Systematic Reviews, including the screening recommendation tables and the data extraction table."
+          "evidenceId": "elicit-docs-80",
+          "quote": "A Routine can act on what it finds and hand you a finished analysis"
         }
       ]
     }
@@ -1092,7 +1113,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Elicit documents first-party background features. Alerts monitor for new relevant papers and email you, and a newer Routine feature 'can act on what it finds and hand you a finished analysis', including filtering, updating an artifact or writing a summary. That is genuine autonomous automation, but it rests on a single thin mention on a legacy Alerts page. missing for 10: dedicated Routines documentation covering setup, scheduling cadence and triggers, limits on what Routines can do, and independent or hands-on corroboration that they run reliably in the background.",
+    "rationale": "Elicit documents its own background automations. Alerts monitor continuously and email you when new relevant papers appear. Routines, mentioned only on a legacy Alerts page, can act on what they find: filter on richer criteria, update an artifact, or write a summary. The API supports automated reports from your own scripts, but that is a developer building block and earns no credit here. Missing for 10: dedicated documentation on setting up Routines, how they are scheduled or triggered, the range of actions they can take, and hands-on corroboration that they run unattended.",
     "evidenceIds": [
       "elicit-docs-80",
       "elicit-docs-3",
@@ -1124,17 +1145,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Elicit ships a built-in Research Agent. Users hand it tasks in natural language, for example adding extraction columns, applying filters, exporting sources, generating figures and drafting slides, all inside the conversation. Effort levels and reusable skills let users shape how the agent works. Community reports criticize answer accuracy, but none show that delegation to the agent fails, so they lower confidence rather than create a dispute. Missing for 10: independent hands-on corroboration of the current Research Agent's task delegation, and evidence of how far it can carry multi-step tasks without supervision.",
+    "rationale": "Elicit ships a built-in Research Agent that users delegate tasks to in conversation. The docs show it filtering and exporting sources, saving papers, generating figures, drafting slides and adding extraction columns on request. Skills, effort levels and collaborative sessions add depth. Missing for 10: independent hands-on corroboration of the agent delegation workflow; community reports concern older summarization and search quality, not the agent.",
     "evidenceIds": [
       "elicit-docs-12",
       "elicit-docs-56",
       "elicit-docs-11",
-      "elicit-docs-64",
       "elicit-docs-8",
-      "elicit-docs-16",
       "elicit-docs-2",
-      "elicit-docs-13",
-      "elicit-docs-80"
+      "elicit-docs-64",
+      "elicit-docs-9"
     ],
     "support": {
       "relation": "direct",
@@ -1150,10 +1169,6 @@
           "quote": "To add a column, simply tell the research agent what column(s) you'd like to add."
         },
         {
-          "evidenceId": "elicit-docs-64",
-          "quote": "The simplest way to filter is to just say what you want in your Research Agent query. Elicit will automatically detect and apply the right filter."
-        },
-        {
           "evidenceId": "elicit-docs-8",
           "quote": "A skill is a set of instructions you can hand to Elicit's agent so it approaches a task a particular way."
         },
@@ -1167,20 +1182,21 @@
   {
     "productId": "elicit",
     "storyId": "agentic-headless",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Elicit documents an API with managed API keys for programmatic use \"from your own code, scripts, and workflows\". The API covers search, automated research reports and end-to-end systematic reviews, and is also exposed via an MCP server. That is genuine headless operation, but nothing in the evidence documents CI usage, and no OpenAPI spec was found. missing for 10: explicit CI/pipeline integration docs or examples, a CLI or SDK, a published API reference/OpenAPI spec, independent hands-on corroboration of headless automation.",
+    "rationale": "Elicit ships its own programmatic API, backed by an OpenAPI 3.1 spec with 46 paths covering Search, Reports, Systematic Reviews and Research Agent. It is explicitly meant for running research tasks 'from your own code, scripts, and workflows', which is headless automation by the product itself, and all API functions are also exposed via an MCP server. missing for 10: CI-specific guidance or examples (e.g. pipeline integration), an official CLI, and independent or hands-on corroboration of unattended automated runs.",
     "evidenceIds": [
       "elicit-docs-34",
       "elicit-docs-78",
       "elicit-docs-36",
-      "elicit-docs-6",
-      "elicit-docs-35"
+      "elicit-openapi-spec-20261106",
+      "elicit-docs-35",
+      "elicit-docs-6"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -1190,6 +1206,10 @@
         {
           "evidenceId": "elicit-docs-36",
           "quote": "Systematic Review: run a full review end to end, with control over search strategy, screening criteria, extraction parameters, and reporting."
+        },
+        {
+          "evidenceId": "elicit-openapi-spec-20261106",
+          "quote": "Elicit serves a full OpenAPI 3.1.0 document (info title \"Elicit API\", version 2.0.0; 46 paths across Search, Sessions, Reports, Systematic Reviews, Research Agent and more; server https://elicit.com/api/v2)"
         },
         {
           "evidenceId": "elicit-docs-35",
@@ -1204,7 +1224,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Elicit's Research Agent could plausibly act as an MCP client, so this axis applies. However, the evidence only documents Elicit running as an MCP server that external clients such as Claude Code connect to. That is the opposite role and earns no credit here. Nothing shows users can add third-party MCP servers to Elicit so its agent can call their tools.",
+    "rationale": "Elicit runs its own Research Agent, so being an MCP client is a fair question for this product. The evidence only shows Elicit exposed as an MCP server for external clients such as Claude Desktop and Claude Code, which is the opposite role. Nothing documents Elicit's agent connecting to third-party MCP servers or using their tools.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1217,9 +1237,9 @@
     "productId": "elicit",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Elicit documents an official, first-party MCP server at https://elicit.com/api/mcp. It gives a concrete setup command for Claude Code and states that all API functionality is exposed to MCP-compatible clients such as Claude Desktop and Claude Code. missing for 10: independent or hands-on corroboration that the MCP server works as documented.",
+    "rationale": "Elicit is a research SaaS platform, not purely a coding agent, so an MCP-server story applies. Its first-party help article documents an official hosted MCP endpoint (https://elicit.com/api/mcp) with a Claude Code setup command, and says all API functionality is available to Claude Desktop, Claude Code and other MCP-compatible clients. Missing for 10: independent or hands-on corroboration that the MCP server works, documented tool list and authentication details for the MCP endpoint.",
     "evidenceIds": [
       "elicit-docs-28",
       "elicit-docs-35",
@@ -1247,15 +1267,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Elicit's Research Agent is documented as a conversational interface that runs operations from plain-language requests. You add extraction columns by telling the agent what you want, filters are detected and applied from your query, and you can filter, export, save papers, generate figures and draft slides without leaving the conversation. Search also accepts natural-language questions. Missing for 10: independent hands-on corroboration of command-style operation (as opposed to Q&A); some controls, such as the effort slider and library editing, are documented only as UI interactions.",
+    "rationale": "Elicit's docs show the Research Agent running core product operations from plain-language instructions. You can add extraction columns by telling the agent, apply filters by stating them in a query, and search with natural-language questions. You can also filter and export sources, save papers to the Library, generate figures and draft slides without leaving the conversation, with reusable skills invoked via /. Missing for 10: independent hands-on corroboration that agent-driven operations (columns, filters, exports) work reliably via natural language, and documentation of which UI actions cannot be done through chat.",
     "evidenceIds": [
       "elicit-docs-11",
       "elicit-docs-82",
       "elicit-docs-64",
       "elicit-docs-56",
       "elicit-docs-20",
-      "elicit-docs-12",
-      "elicit-docs-29"
+      "elicit-docs-8",
+      "elicit-docs-29",
+      "elicit-docs-69"
     ],
     "support": {
       "relation": "direct",
@@ -1264,7 +1285,7 @@
       "citations": [
         {
           "evidenceId": "elicit-docs-11",
-          "quote": "To add a column, simply tell the research agent what column(s) you'd like to add."
+          "quote": "To add a column, simply tell the research agent what column(s) you'd like to add. For example, you can say: \"Add a column for study type.\""
         },
         {
           "evidenceId": "elicit-docs-64",
@@ -1276,11 +1297,11 @@
         },
         {
           "evidenceId": "elicit-docs-20",
-          "quote": "you can ask a question in natural language, and Elicit will find relevant papers"
+          "quote": "you can ask a question in natural language, and Elicit will find relevant papers, without you having to think of every possible keyword to search for."
         },
         {
-          "evidenceId": "elicit-docs-82",
-          "quote": "columns are added via the chat interface by simply telling the Research Agent what column(s) you'd like to add."
+          "evidenceId": "elicit-docs-8",
+          "quote": "A skill is a set of instructions you can hand to Elicit's agent so it approaches a task a particular way."
         }
       ]
     }
@@ -1291,7 +1312,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Elicit is a SaaS research platform, so an official CLI is a fair axis, but the evidence pack never documents an Elicit command-line tool. The evidence shows a programmatic API and an MCP server. The `claude mcp add` command belongs to Claude Code's own CLI, not to an Elicit CLI, so these are adjacent building blocks that earn no credit here.",
+    "rationale": "Elicit documents a REST API (OpenAPI v2) and a hosted MCP server, but nothing in the pack shows an official Elicit command-line tool. The 'claude mcp add' command belongs to Claude Code's CLI, not Elicit's, and API access alone is a developer building block rather than a CLI.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1305,14 +1326,16 @@
     "storyId": "agentic-public-api",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Elicit documents a public API with API-key management that lets users programmatically search 138M+ papers, generate research reports, and run full systematic reviews end to end. The pricing page lists API access, and all API functionality is also exposed via an MCP server. The OpenAPI probe found nothing on the support domain, but that is an absence of evidence, not a contradiction. missing for 10: a machine-readable API spec or endpoint-level reference in evidence, independent or hands-on corroboration of API usage",
+    "confidence": "high",
+    "rationale": "Elicit documents a public programmatic API (v2, base URL https://elicit.com/api/v2) with a full OpenAPI 3.1 spec of 46 paths covering Search, Reports, Systematic Reviews and Research Agent. It also has a vendor-hosted Scalar reference, API key management, and an MCP server that exposes all API functionality. The 404 probes on support.elicit.com do not contradict this, because the spec lives at docs.elicit.com. API access requires a Pro plan or above. missing for 10: independent or hands-on corroboration of driving the product via the API, a published API changelog and v1 deprecation policy",
     "evidenceIds": [
       "elicit-docs-34",
       "elicit-docs-36",
-      "elicit-docs-6",
       "elicit-docs-35",
-      "elicit-docs-78"
+      "elicit-docs-6",
+      "elicit-openapi-spec-20261106",
+      "elicit-scalar-reference-20261106",
+      "elicit-v2-versioning-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1328,12 +1351,12 @@
           "quote": "Systematic Review: run a full review end to end, with control over search strategy, screening criteria, extraction parameters, and reporting."
         },
         {
-          "evidenceId": "elicit-docs-6",
-          "quote": "API access"
+          "evidenceId": "elicit-openapi-spec-20261106",
+          "quote": "Elicit serves a full OpenAPI 3.1.0 document (info title \"Elicit API\", version 2.0.0; 46 paths across Search, Sessions, Reports, Systematic Reviews, Research Agent and more; server https://elicit.com/api/v2)"
         },
         {
-          "evidenceId": "elicit-docs-35",
-          "quote": "All API functionality is also available via MCP (Model Context Protocol) server"
+          "evidenceId": "elicit-scalar-reference-20261106",
+          "quote": "Elicit vendor-hosts a Scalar API reference (\"Elicit API Reference — Complete API reference for the Elicit research automation platform\") embedding the spec."
         }
       ]
     }
@@ -1344,20 +1367,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Elicit has a public API with documented key management (the 'Managing your Elicit API keys' page) and an MCP server. However, nothing in the evidence shows that keys can be scoped, permission-limited, or issued with least privilege for an agent. Having API keys is adjacent to this story and does not deliver scoped credentials, so the verdict is none.",
-    "evidenceIds": [
-      "elicit-docs-34"
-    ],
+    "rationale": "Elicit documents an API and an API-key management article, but nothing in the evidence shows that keys can be scoped, permission-limited, or restricted to least privilege for an agent. Plain API key issuance is an adjacent capability and earns no credit for this story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
-      "citations": [
-        {
-          "evidenceId": "elicit-docs-34",
-          "quote": "The Elicit API lets you access Elicit's research capabilities programmatically: search 138 million+ academic papers and generate automated research reports from your own code, scripts, and workflows."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -1366,13 +1382,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents an Elicit API that can be called from \"your own code, scripts, and workflows\", plus an MCP server. Neither is an official SDK or client library, and nothing in the pack names a language-specific package for building against Elicit. A raw API and an MCP endpoint are adjacent capabilities that do not transfer to an SDK story, so the axis applies but is unevidenced.",
-    "evidenceIds": [],
+    "rationale": "Elicit documents a programmatic REST API (v2), an OpenAPI 3.1 spec, a hosted Scalar reference, and an MCP server. However, no evidence shows official client SDKs, such as Python or JS libraries, that a developer could build against. A raw API and spec are building blocks, not the SDK capability itself, so this applicable axis gets no credit. missing for 10: any official first-party SDK/client library, SDK docs, install instructions, and independent corroboration of SDK use.",
+    "evidenceIds": [
+      "elicit-docs-34",
+      "elicit-openapi-spec-20261106"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can build against official SDKs",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "elicit-docs-34",
+          "quote": "The Elicit API lets you access Elicit's research capabilities programmatically"
+        }
+      ]
     }
   },
   {
@@ -1381,7 +1405,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Elicit is a SaaS research platform with an API, so outbound webhooks are a fair axis to judge. The evidence shows no registrable HTTP callbacks for programmatic consumers. The only event-style features are instant email alerts and Routines, which are adjacent notification features, not webhooks. The API and MCP server are request-driven access, not event subscriptions.",
+    "rationale": "Elicit is a SaaS research platform with a public API, so webhook subscriptions are a fair axis. The evidence pack never documents registrable outbound HTTP callbacks. The OpenAPI spec description lists Search, Sessions, Reports, Systematic Reviews and Research Agent paths but no webhooks, and Instant email alerts and Routines are adjacent notification and automation features, not webhooks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1396,7 +1420,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Elicit's chat documents comparing and contrasting papers and summarizing multiple papers along specific dimensions. Its column-based extraction tables put per-paper answers side by side with highlighted sources, which lets an analyst see how findings vary across sources. However, no documented feature explicitly surfaces agreement versus disagreement or qualifies a synthesized answer, and hands-on reports of overstated conclusions lower confidence. missing for 10: an explicit consensus/disagreement view or conflicting-evidence flagging in reports, independent corroboration that contrasts are surfaced accurately",
+    "rationale": "Elicit's own Chat feature lets users \"Compare and contrast papers\" and summarize multiple papers along specific dimensions. Its column-based extraction tables put per-paper findings side by side with highlighted source passages, which supports seeing where papers differ. However, no documentation describes explicitly surfacing agreement, disagreement or consensus among sources as opposed to a single synthesized answer. missing for 10: an explicit agreement/disagreement or consensus view, documentation of how conflicting findings are flagged in reports, and independent hands-on corroboration.",
     "evidenceIds": [
       "elicit-docs-40",
       "elicit-docs-54",
@@ -1426,31 +1450,60 @@
   {
     "productId": "elicit",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Elicit documents a programmatic API for paper search, research reports and systematic reviews, plus an MCP server. However, nothing in the evidence describes an interactive API reference or runnable examples, and the probe found no OpenAPI or Swagger spec at the candidate paths. Having an API is adjacent to this story, not the capability itself, so the axis applies but is unevidenced.",
-    "evidenceIds": [],
+    "rationale": "Elicit vendor-hosts an interactive Scalar API reference backed by a full OpenAPI 3.1.0 spec (46 paths). Scalar's in-page test console provides a way to run requests. However, the runnable console is only inferred from the client-side mount, not shown working hands-on. It targets the production server only, and API access requires a Pro plan or above. missing for 10: confirmed working in-browser runnable examples, a sandbox or test environment instead of production-only calls, curated example snippets beyond the raw spec, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "elicit-scalar-reference-20261106",
+      "elicit-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "elicit-scalar-reference-20261106",
+          "quote": "Elicit vendor-hosts a Scalar API reference (\"Elicit API Reference — Complete API reference for the Elicit research automation platform\") embedding the spec."
+        },
+        {
+          "evidenceId": "elicit-scalar-reference-20261106",
+          "quote": "Scalar's in-page test console renders in-browser rather than in the served HTML) and targets the production server only."
+        },
+        {
+          "evidenceId": "elicit-openapi-spec-20261106",
+          "quote": "Elicit serves a full OpenAPI 3.1.0 document (info title \"Elicit API\", version 2.0.0; 46 paths across Search, Sessions, Reports, Systematic Reviews, Research Agent and more; server https://elicit.com/api/v2) as the backing document of its hosted reference."
+        }
+      ]
     }
   },
   {
     "productId": "elicit",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Elicit documents a programmatic API and an MCP server, so this axis applies. However, nothing in the evidence shows a downloadable OpenAPI or equivalent machine-readable spec. The OpenAPI probe returned 404 on every candidate path, though it only checked the support.elicit.com domain, and the llms.txt it found is a help-center index rather than an API spec.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Elicit serves a complete machine-readable OpenAPI 3.1.0 document (\"Elicit API\" v2.0.0, 46 paths) at docs.elicit.com/openapi.json, and it backs a vendor-hosted Scalar reference. The probe 404s were on the support.elicit.com subdomain, a different host, so they do not contradict this. Missing for 10: the spec is not advertised as an explicit download link (it sits at the docs root), and there is no independent or hands-on corroboration of the download.",
+    "evidenceIds": [
+      "elicit-openapi-spec-20261106",
+      "elicit-scalar-reference-20261106",
+      "elicit-v2-versioning-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "elicit-openapi-spec-20261106",
+          "quote": "Elicit serves a full OpenAPI 3.1.0 document (info title \"Elicit API\", version 2.0.0; 46 paths across Search, Sessions, Reports, Systematic Reviews, Research Agent and more; server https://elicit.com/api/v2)"
+        },
+        {
+          "evidenceId": "elicit-scalar-reference-20261106",
+          "quote": "Elicit vendor-hosts a Scalar API reference (\"Elicit API Reference — Complete API reference for the Elicit research automation platform\") embedding the spec."
+        }
+      ]
     }
   },
   {
@@ -1458,8 +1511,8 @@
     "storyId": "api-sandbox",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Elicit is a SaaS research platform with a documented API and MCP server, so a sandbox or test environment is a fair question for this kind of product. The evidence pack never mentions a sandbox, test mode, staging environment, or any isolation from production data. The API, MCP access, and 30-day library trash recovery are adjacent features and do not count as sandbox isolation.",
+    "confidence": "high",
+    "rationale": "Elicit ships a public API with a hosted OpenAPI reference, so a sandbox or test environment is a fair question to ask. The evidence shows no such environment: the Scalar reference targets the production server only, and the spec documents only the production base URL. The in-browser test console is not an isolated sandbox, since it hits production.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1471,16 +1524,28 @@
   {
     "productId": "elicit",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Elicit documents a programmatic API and an MCP server, but nothing in the evidence pack covers API versioning or a deprecation policy. The OpenAPI probe found no spec, and the 'legacy tool' note on Alerts concerns a UI feature, not API deprecation. Having an API alone does not deliver this story.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "high",
+    "rationale": "Elicit's API is explicitly versioned by URL path: the OpenAPI 3.1.0 spec documents v2 at /api/v2 and notes a distinct older v1 API. The deprecation half of the story is absent, so only roughly half the story is delivered. Missing for 10: a documented deprecation or sunset policy and timeline for v1, deprecated flags in the spec, an API changelog, and independent corroboration.",
+    "evidenceIds": [
+      "elicit-v2-versioning-20261106",
+      "elicit-openapi-spec-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "elicit-v2-versioning-20261106",
+          "quote": "This reference documents **v2**, with production base URL https://elicit.com/api/v2"
+        },
+        {
+          "evidenceId": "elicit-openapi-spec-20261106",
+          "quote": "info title \"Elicit API\", version 2.0.0"
+        }
+      ]
     }
   },
   {
@@ -1489,15 +1554,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Elicit runs AI operations across whole sets of papers. Data-extraction columns apply to every paper in a table, automated screening and full-text screening cover the review corpus, chat can summarize multiple papers along set dimensions, and tags can be applied to a batch of newly uploaded papers. General selection-based bulk management is not evidenced, and editing paper metadata is documented per row. Missing for 10: bulk edit/delete/move of selected library items, bulk actions via API or MCP, documented scale limits, independent hands-on corroboration of batch operations.",
+    "rationale": "Elicit documents several of its own batch capabilities. Extraction columns pull data across all papers in a table, systematic reviews apply automated screening and extraction to imported paper sets, newly uploaded papers can be tagged as a group, and Collections can launch reviews or extractions on grouped papers. The docs do not show general multi-select bulk actions (bulk edit, bulk delete, bulk re-tag) across existing library items, and nothing independent confirms the batch behavior at scale. missing for 10: documented multi-select bulk edit/delete/tag of existing library items, explicit limits and scale for batch operations, independent or hands-on corroboration of bulk workflows",
     "evidenceIds": [
       "elicit-docs-18",
       "elicit-docs-51",
-      "elicit-docs-45",
-      "elicit-docs-40",
       "elicit-docs-74",
-      "elicit-docs-25",
-      "elicit-docs-72"
+      "elicit-docs-73",
+      "elicit-docs-45",
+      "elicit-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -1510,23 +1574,15 @@
         },
         {
           "evidenceId": "elicit-docs-51",
-          "quote": "to use with Elicit's automated screening and extraction"
-        },
-        {
-          "evidenceId": "elicit-docs-45",
-          "quote": "Full-Text Screening is a distinct, automated step in the Systematic Review workflow"
-        },
-        {
-          "evidenceId": "elicit-docs-40",
-          "quote": "Summarize multiple papers along specific dimensions (like their methodologies)"
+          "quote": "This makes it much easier to import titles/abstracts from other tools like EndNote, Mendeley, or Rayyan to use with Elicit's automated screening and extraction."
         },
         {
           "evidenceId": "elicit-docs-74",
-          "quote": "click the \"Add tags\" button to create a tag or add an existing one to your newly uploaded papers"
+          "quote": "When uploading PDFs, simply click the \"Add tags\" button to create a tag or add an existing one to your newly uploaded papers."
         },
         {
-          "evidenceId": "elicit-docs-25",
-          "quote": "Tables can be exported in CSV and Excel format."
+          "evidenceId": "elicit-docs-73",
+          "quote": "Collections help you group related research, arrange it the way you want, share it with colleagues, and quickly launch reviews or extractions."
         }
       ]
     }
@@ -1535,13 +1591,12 @@
     "productId": "elicit",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Elicit documents topic-based Alerts that fire an instant email whenever a new relevant paper is found, which is an event-triggered rule with a notification action. It also documents Routines that can act on what they find: filtering on criteria, updating an artifact, or writing a summary. The docs are thin and do not say whether Routines run on events or on a schedule, or how users define the rules. Missing for 10: explicit documentation that Routines are event-triggered rather than scheduled, detail on defining rule conditions and the available actions, and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Elicit documents its own automation on new-research events. Alerts send an instant email whenever a new relevant paper is found. A Routine can act on what it finds by filtering on criteria, updating an artifact, or writing a summary, which goes beyond notification. The Routine evidence is a single thin mention, and it is unclear whether Routines fire on events or on a recurring schedule. missing for 10: documented user-defined rule/trigger configuration, explicit event-trigger semantics for Routines (vs. schedule), range of supported events and actions, independent or hands-on corroboration",
     "evidenceIds": [
       "elicit-docs-80",
       "elicit-docs-3",
-      "elicit-docs-15",
       "elicit-docs-53"
     ],
     "support": {
@@ -1566,12 +1621,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Elicit's own Alerts feature continuously monitors topics for new papers and can email you instantly when one is found. A newer Routine feature, described on the Alerts legacy page, can act on what it finds by filtering, updating an artifact or writing a summary, which points to recurring agentic workflows rather than one-off runs. However, the evidence never documents user-defined schedules, cadence or a general job scheduler, so this is recurring monitoring rather than proven arbitrary scheduling. Missing for 10: explicit schedule/cadence configuration (e.g., daily/weekly), scheduling of arbitrary workflows such as Systematic Reviews or API jobs, detailed Routine documentation, independent or hands-on corroboration.",
+    "rationale": "Elicit has its own recurring automation: Alerts continuously monitor for new relevant papers and email the user. A newer 'Routine' feature, described on the legacy Alerts page, can act on what it finds by filtering, updating an artifact or writing a summary, which implies recurring agent workflows. However, no evidence shows how a user sets a schedule, cadence or trigger, or how Routines are configured, so only the core monitoring loop is documented. Missing for 10: explicit scheduling/cadence configuration for Routines, dedicated Routine documentation, scheduling of arbitrary workflows (e.g. via API), independent or hands-on corroboration.",
     "evidenceIds": [
       "elicit-docs-80",
-      "elicit-docs-3",
-      "elicit-docs-15",
-      "elicit-docs-53"
+      "elicit-docs-53",
+      "elicit-docs-26",
+      "elicit-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -1583,12 +1638,12 @@
           "quote": "A Routine can act on what it finds and hand you a finished analysis: it can filter on criteria an Alert couldn't, update an artifact, or write the summary"
         },
         {
-          "evidenceId": "elicit-docs-3",
-          "quote": "Turn on **Instant email alerts** to be immediately alerted whenever a new relevant research paper is found."
+          "evidenceId": "elicit-docs-53",
+          "quote": "Alerts keep you up to date on the latest research about topics that are relevant to you"
         },
         {
-          "evidenceId": "elicit-docs-53",
-          "quote": "Alerts keep you up to date on the latest research about topics that are relevant to you, ready to add to your Library for future use."
+          "evidenceId": "elicit-docs-26",
+          "quote": "Turn on Instant email alerts to be immediately alerted whenever a new relevant research paper is found."
         }
       ]
     }
@@ -1599,7 +1654,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Elicit documents automation-like features such as Routines, Alerts, and reusable Skills, so the axis applies. However, no evidence shows that these automations can be versioned, have their change history reviewed, or be rolled back to a prior version. The 30-day recovery window for deleted Library papers concerns papers, not automations, so it does not count toward this story.",
+    "rationale": "Elicit documents automation-like features such as Skills, Routines, and Alerts, so this axis applies. However, no evidence shows version history, change review, or rollback for these automations. API URL versioning (v1/v2) and 30-day recovery of deleted papers are different capabilities and do not count toward versioning or rolling back user automations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1611,22 +1666,22 @@
   {
     "productId": "elicit",
     "storyId": "autonomous-research-run",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Elicit documents a Research Agent that takes a research question, runs at a selectable effort level, pulls from many source types, and supports iteration. It also generates research reports automatically from any question, and its API can run a full systematic review end to end across search, screening, extraction and reporting. However, the evidence never explicitly describes the agent autonomously planning and running multiple investigation steps. The in-app Systematic Review is described as step-by-step guidance rather than autonomous execution, so coverage is partial. Missing for 10: explicit documentation of autonomous multi-step planning and execution by the Research Agent (e.g. iterative search, refine and synthesize loops), and independent or hands-on corroboration of multi-step depth as opposed to single-pass summaries.",
+    "rationale": "Elicit documents a Research Agent that takes a question at a chosen effort level and pulls from a wide range of sources. It also documents automatic research reports generated from any research question, and an API mode that runs a full systematic review end to end (search, screening, extraction, reporting), which is clearly more than a single-pass summary. Community reports criticize accuracy but do not show that the multi-step investigation fails to run. Missing for 10: explicit documentation of the agent's autonomous step planning and iteration, and independent hands-on corroboration of the multi-step investigation depth.",
     "evidenceIds": [
       "elicit-docs-2",
       "elicit-docs-12",
       "elicit-docs-13",
       "elicit-docs-69",
       "elicit-docs-36",
-      "elicit-docs-79",
-      "elicit-docs-67"
+      "elicit-docs-34",
+      "elicit-docs-79"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a researcher, I can pose a research question and get an autonomous multi-step investigation, not just a single-pass summary",
       "citations": [
         {
@@ -1644,10 +1699,6 @@
         {
           "evidenceId": "elicit-docs-36",
           "quote": "Systematic Review: run a full review end to end, with control over search strategy, screening criteria, extraction parameters, and reporting."
-        },
-        {
-          "evidenceId": "elicit-docs-79",
-          "quote": "step-by-step guidance through search, screening, and data extraction, culminating in a research report summarizing the relevant papers"
         }
       ]
     }
@@ -1658,13 +1709,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Elicit's first-party export docs cover all three parts of the story. Research Reports export as PDF or Word on every plan, tables export as CSV and Excel, and the Library and certain source tables export as RIS or BIB for Zotero, Mendeley and EndNote. The pricing page also lists export to RIS, CSV, BIB, PDF and DOCX. Systematic Review table export is limited to Pro, Scale and Enterprise plans. Missing for 10: independent or hands-on corroboration of the export features, and spreadsheet export for Systematic Review tables on free or lower plans.",
+    "rationale": "Elicit's first-party export docs cover all three formats in the story: Research Reports export to PDF or Word on any plan, tables export to CSV and Excel, and the Library and certain source tables export as RIS/BIB for Zotero, Mendeley or EndNote. The one caveat is that Systematic Review table export is limited to Pro, Scale and Enterprise plans. Missing for 10: independent or hands-on corroboration of export quality, and plan gating on Systematic Review table exports.",
     "evidenceIds": [
       "elicit-docs-81",
       "elicit-docs-25",
       "elicit-docs-5",
       "elicit-docs-31",
-      "elicit-docs-19"
+      "elicit-docs-19",
+      "elicit-docs-47"
     ],
     "support": {
       "relation": "direct",
@@ -1696,7 +1748,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents a free tier or free trial for Elicit. The pricing-page snippets ('Unlimited search', 'Unlimited chat with papers') are not tied to any free plan. The reference to features available 'regardless of which Elicit plan you subscribe to' only implies that tiers exist, not that any of them is free or that a trial is offered.",
+    "rationale": "The evidence pack never documents a free tier or trial. Pricing-page snippets such as \"Unlimited search\" are not tied to any free plan. Notes that Pro and above are needed for table export and API access, and that report export works \"regardless of which Elicit plan\", only imply that other plans exist; none says a free or trial plan exists or what it includes.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1711,7 +1763,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Elicit's docs say it highlights the source of content within the relevant papers and quotes tables when a column answer draws on them. Community users report getting citations with links to papers and direct source quotes. The hallucination report (elicit-comm-3) is about accuracy: the attached quote let the user see the claim was wrong, so the verification mechanism worked and the report does not contradict that citations exist. Missing for 10: explicit documentation that every substantive claim in reports and agent outputs carries a citation, detail on how citations link to specific passages, and independent corroboration of citation completeness.",
+    "rationale": "Elicit's own docs say it highlights the source of generated content within the relevant papers and quotes tables it draws from. A hands-on user reported getting concepts with citations and links to papers, and another noted that Elicit quotes sources directly. That quoting let them catch a claim contradicted by its own quote, which shows verification works rather than disputing that citations exist. Missing for 10: evidence that every substantive claim (not just column answers and summaries) carries a citation, in-depth documentation of the citation/highlighting UX across Research Agent and reports, and corroboration that cited sources consistently support the claims made.",
     "evidenceIds": [
       "elicit-docs-59",
       "elicit-docs-63",
@@ -1741,42 +1793,25 @@
   {
     "productId": "elicit",
     "storyId": "long-horizon-runs",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "Elicit documents agent-driven work that runs without the user present. Routines \"hand you a finished analysis\", and the API generates automated research reports from scripts. However, Routines are recurring monitors rather than a one-off long job. The only documented email notification is Alerts for newly found papers, not job completion. missing for 10: explicit background/unattended execution of a one-off long research job, a documented notification (email/in-app) when that job's result is ready, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "elicit-docs-80",
-      "elicit-docs-34",
-      "elicit-docs-69"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows automatic research-report generation, API-driven reports and systematic reviews, and email Alerts. None of it documents a long one-off job that keeps running unattended and then notifies the analyst when its result is ready. Instant email alerts cover newly found papers, and Routines are a recurring monitoring feature that hands over analyses, so neither is completion notification for a single job.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an analyst, I can start a long research job that keeps working unattended and notifies me when the result is ready",
-      "citations": [
-        {
-          "evidenceId": "elicit-docs-80",
-          "quote": "A Routine can act on what it finds and hand you a finished analysis: it can filter on criteria an Alert couldn't, update an artifact, or write the summary"
-        },
-        {
-          "evidenceId": "elicit-docs-34",
-          "quote": "generate automated research reports from your own code, scripts, and workflows"
-        },
-        {
-          "evidenceId": "elicit-docs-69",
-          "quote": "Enter any research question in Elicit to generate a research-backed report!"
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "elicit",
     "storyId": "monitoring-alerts",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Elicit documents Alerts that keep researchers up to date on new research about chosen topics, with instant email alerts whenever a new relevant paper is found. A later archived page labels Alerts a legacy tool and points to Routines, which can act on what they find, so the standing-search capability continues in a newer form. missing for 10: detailed setup and scheduling documentation for Routines, clarity on the legacy Alerts' ongoing availability, independent or hands-on corroboration.",
+    "rationale": "Elicit documents Alerts that keep researchers up to date on topics they choose, with instant email notification whenever a new relevant paper is found, which matches the core of standing alerts. However, a later archived version of the same page labels Alerts a 'legacy tool' superseded by Routines, and Routines are only thinly described, so the current delivery path is unclear. Missing for 10: confirmation that Alerts remain supported rather than legacy, documentation of how Routines are set up and scheduled to surface new sources, configuration details such as query definition and alert frequency, and independent or hands-on corroboration.",
     "evidenceIds": [
       "elicit-docs-3",
       "elicit-docs-15",
@@ -1785,7 +1820,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a researcher, I can set up standing searches or alerts that surface new relevant sources as they appear",
       "citations": [
         {
@@ -1807,15 +1842,15 @@
     "productId": "elicit",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Elicit documents a first-party API covering paper search, automated research reports, and end-to-end Systematic Reviews, and all API functionality is also exposed through its MCP server. However, nothing shows the API reaching UI parity: the Library, Collections, tags, alerts and Routines, the Research Agent, chat, skills, collaboration, and imports are documented only as UI features, and no OpenAPI spec was found. Missing for 10: evidence of API coverage for Library/Collections/tags management, Research Agent sessions and chat, alerts/Routines, skills, collaboration/sharing, Zotero/RIS imports, and column-level extraction control; a published API reference/OpenAPI spec; independent corroboration.",
+    "rationale": "Elicit ships a documented v2 REST API with a 46-path OpenAPI spec covering Search, Sessions, Reports, Systematic Reviews and Research Agent. It also documents end-to-end Systematic Review control via the API, and the MCP server exposes all API functionality. There is no documented parity claim, and many UI capabilities have no evidenced API coverage. Missing for 10: an explicit UI/API parity statement, and evidenced API coverage of Library/Collections/tags management, Alerts/Routines, Skills, Projects, collaboration/sharing, column creation and exports.",
     "evidenceIds": [
-      "elicit-docs-34",
+      "elicit-openapi-spec-20261106",
       "elicit-docs-36",
+      "elicit-docs-34",
       "elicit-docs-35",
-      "elicit-docs-6",
-      "elicit-probe-3"
+      "elicit-scalar-reference-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -1823,16 +1858,20 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "elicit-docs-34",
-          "quote": "The Elicit API lets you access Elicit's research capabilities programmatically: search 138 million+ academic papers and generate automated research reports from your own code, scripts, and workflows."
+          "evidenceId": "elicit-openapi-spec-20261106",
+          "quote": "46 paths across Search, Sessions, Reports, Systematic Reviews, Research Agent and more"
         },
         {
           "evidenceId": "elicit-docs-36",
           "quote": "Systematic Review: run a full review end to end, with control over search strategy, screening criteria, extraction parameters, and reporting."
         },
         {
+          "evidenceId": "elicit-docs-34",
+          "quote": "The Elicit API lets you access Elicit's research capabilities programmatically: search 138 million+ academic papers and generate automated research reports from your own code, scripts, and workflows."
+        },
+        {
           "evidenceId": "elicit-docs-35",
-          "quote": "All API functionality is also available via MCP (Model Context Protocol) server, enabling use from Claude Desktop, Claude Code, and other MCP-compatible clients."
+          "quote": "All API functionality is also available via MCP (Model Context Protocol) server"
         }
       ]
     }
@@ -1843,12 +1882,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Elicit documents its own exports in open formats. The Library exports as RIS, tables export as CSV/Excel, some source tables as RIS/BIB, and Research Reports as PDF/Word. However, there is no documented account-wide 'export everything' capability, and Systematic Review table export is limited to Pro, Scale and Enterprise subscribers. Missing for 10: a single full-account export, export of agent sessions/chats, projects, skills and uploaded PDFs, export available on all plans, and independent corroboration that exports are complete.",
+    "rationale": "Elicit documents its own export of the Library as RIS, tables as CSV/Excel or RIS/BIB, and Research Reports as PDF/Word, so key research data can leave in open formats. However, Systematic Review table export is limited to Pro, Scale and Enterprise plans, and nothing documents a complete account-wide export. Missing for 10: a single 'export everything' or account-level data export, export of agent sessions, chats, projects, skills, alerts and uploaded PDFs, export on all plans, and independent or hands-on corroboration of a full exit.",
     "evidenceIds": [
       "elicit-docs-5",
       "elicit-docs-25",
-      "elicit-docs-19",
       "elicit-docs-81",
+      "elicit-docs-19",
       "elicit-docs-31"
     ],
     "support": {
@@ -1865,12 +1904,16 @@
           "quote": "Tables can be exported in CSV and Excel format. Certain tables of sources can be exported as RIS or BIB files."
         },
         {
+          "evidenceId": "elicit-docs-81",
+          "quote": "Research Reports can be exported as a PDF or Word file, regardless of which Elicit plan you subscribe to."
+        },
+        {
           "evidenceId": "elicit-docs-19",
           "quote": "Pro, Scale, and Enterprise subscribers can export tables from Systematic Reviews, including the screening recommendation tables and the data extraction table."
         },
         {
-          "evidenceId": "elicit-docs-81",
-          "quote": "Research Reports can be exported as a PDF or Word file, regardless of which Elicit plan you subscribe to."
+          "evidenceId": "elicit-docs-31",
+          "quote": "Export to RIS, CSV, BIB, PDF and DOCX"
         }
       ]
     }
@@ -1881,7 +1924,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a software product's source is available under an open license is a fair question for any software product, including a SaaS research assistant like Elicit, so the axis applies. Nothing in the evidence pack mentions a public repository, source availability, or an open-source license. The docs cover a proprietary hosted service with an API and MCP endpoint, which does not amount to open source.",
+    "rationale": "Elicit is a SaaS research product, so open-sourcing its code is a fair axis to judge it on. However, no evidence item mentions a source repository, a public codebase or an open-source license. A published OpenAPI spec, an API and an MCP server are adjacent openness features and do not make the product's source readable under an open license.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1896,7 +1939,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a SaaS research tool, since vendors can ship on-prem or self-hosted deployments. The evidence pack shows no self-hosted, on-prem or open-source deployment option for Elicit. The API and MCP server it documents are hosted endpoints at elicit.com, not self-hosting, so they earn no credit here.",
+    "rationale": "Self-hosting is a fair question for a SaaS research platform, but the evidence pack never mentions on-premise deployment, downloadable builds, or any self-hosted option. Every cited capability, including the API at elicit.com/api/v2 and the MCP server at elicit.com/api/mcp, is vendor-hosted. API and MCP access are hosted integration points, not self-hosting of the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1909,18 +1952,16 @@
     "productId": "elicit",
     "storyId": "own-corpus-upload",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Elicit documents uploading PDFs to the Library in bulk with no stated limit, plus Zotero and RIS/BIB import. Collections built from those papers can launch reviews or extractions, and chat and extraction columns work over papers' full text. The docs never explicitly say the Research Agent session itself researches over a user-uploaded corpus, so the 'agent' part of the story is only implied. Missing for 10: explicit documentation that the Research Agent can be scoped to uploaded PDFs or a library, and independent or hands-on corroboration of research over uploaded corpora.",
+    "rationale": "Elicit documents its own bulk PDF upload into the Library with no stated limit, plus Zotero and RIS/BIB import. Collections can launch reviews or extractions over those papers, and Zotero imports support extracting data and analyzing your papers. The evidence never states that the Research Agent itself researches over a user-uploaded corpus, so the 'agent researches over them' part is only implied through extraction, review and chat workflows. Missing for 10: explicit documentation that the Research Agent can be scoped to uploaded PDFs or a user corpus, hands-on or independent corroboration of research over uploaded files, and documented limits or quality of agent reasoning over the user's own corpus.",
     "evidenceIds": [
       "elicit-docs-70",
       "elicit-docs-74",
       "elicit-docs-77",
       "elicit-docs-37",
       "elicit-docs-38",
-      "elicit-docs-73",
-      "elicit-docs-18",
-      "elicit-docs-40"
+      "elicit-docs-73"
     ],
     "support": {
       "relation": "direct",
@@ -1940,16 +1981,12 @@
           "quote": "Elicit's Zotero integration helps you bring your paper collections into Elicit, where you can extract data and analyze your papers!"
         },
         {
-          "evidenceId": "elicit-docs-38",
-          "quote": "You can import RIS and BIB files into Elicit."
-        },
-        {
           "evidenceId": "elicit-docs-73",
           "quote": "Collections help you group related research, arrange it the way you want, share it with colleagues, and quickly launch reviews or extractions."
         },
         {
-          "evidenceId": "elicit-docs-18",
-          "quote": "Columns can pull data from the papers' body text or from tables in the papers."
+          "evidenceId": "elicit-docs-38",
+          "quote": "You can import RIS and BIB files into Elicit."
         }
       ]
     }
@@ -1960,7 +1997,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a SaaS research tool like Elicit, so the axis applies. However, nothing in the evidence pack mentions storage regions, residency options, or any user choice of data location. Export and deletion docs are adjacent data-handling features and do not count toward residency.",
+    "rationale": "Elicit is a SaaS research platform, so data region and residency choice is a fair axis for it. Nothing in the evidence pack mentions choosing a storage region or residency; the material covers export, deletion retention, API and collaboration, none of which is about where data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1975,7 +2012,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Elicit is a SaaS AI research tool, so a training opt-out or no-training data policy is a fair question for this kind of product and the axis applies. Nothing in the evidence pack covers model-training data usage, training opt-outs, or a no-training commitment. The pack covers only workflow, export, API, and collaboration features.",
+    "rationale": "Elicit is an AI research tool, so a training opt-out is a fair privacy question to ask of it. The pack covers search, systematic reviews, exports, the API and MCP, but nothing on model-training data use, opt-out controls or data-retention policies. With no evidence of the capability, the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1990,7 +2027,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Elicit's own docs describe deleting papers from the Library with a defined 30-day recoverable window before permanent deletion. That is a real first-party deletion and retention behavior, but it only covers Library papers. Export features concern portability, not retention control, so they are not credited. Missing for 10: configurable retention periods, deletion of sessions/chats/account data, policy on retaining uploaded content or using it for model training, and independent corroboration.",
+    "rationale": "Elicit's own docs show users can delete papers from their Library. Deleted papers go to a 30-day recoverable window and are then permanently deleted, which is a real but narrow deletion and retention control. Nothing in the evidence covers configurable retention periods, deleting sessions, chats or uploaded data more broadly, account-level deletion, or a data-retention policy. Missing for 10: configurable retention settings, deletion controls beyond Library papers (sessions, reports, account), a documented retention/data-handling policy, independent corroboration.",
     "evidenceIds": [
       "elicit-docs-76"
     ],
@@ -2012,7 +2049,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry and usage-tracking controls are a fair privacy question for a SaaS research tool like Elicit, so the axis applies. The evidence pack contains no documented setting or policy for opting out of telemetry or usage tracking. A community complaint about unsolicited follow-up emails concerns marketing email, not telemetry, so it earns no credit here.",
+    "rationale": "Elicit is a SaaS research tool, so a telemetry and usage-tracking opt-out is a fair question to ask of it. The evidence pack contains no documentation of any such setting. The only related item is a community complaint about unsolicited follow-up emails, which concerns marketing email consent, not telemetry, and does not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2027,17 +2064,17 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Elicit is built around searching scholarly literature, not the open web. Its documented capabilities are semantic and keyword search across 138M+ academic papers, journal and citation filters, and clinical trial registry search. Its Research Agent also pulls from primary sources such as public filings and press releases, and a community user reports getting cited concepts linked to papers. Missing for 10: independent corroboration that coverage is complete, since one hands-on user reports it missed key papers and another says paywalled research is under-covered.",
+    "rationale": "Elicit's docs describe search over a corpus of 138M+ academic papers using both semantic and keyword search. It also searches clinical trial registries, offers advanced filters such as restricting to a journal or to highly-cited papers, and has a Research Agent that pulls primary sources such as public filings and press releases. One community user reports that coverage of paywalled papers is limited and another says it missed key papers, but neither concretely contradicts that the scholarly search exists. Missing for 10: independent corroboration of corpus breadth, including paywalled content and the completeness of results.",
     "evidenceIds": [
       "elicit-docs-57",
       "elicit-docs-34",
       "elicit-docs-20",
       "elicit-docs-43",
       "elicit-docs-44",
-      "elicit-docs-67",
       "elicit-docs-48",
       "elicit-docs-12",
-      "elicit-comm-1"
+      "elicit-docs-67",
+      "elicit-docs-10"
     ],
     "support": {
       "relation": "direct",
@@ -2061,8 +2098,8 @@
           "quote": "Elicit offers both semantic search and keyword search to find the most relevant papers for your systematic review."
         },
         {
-          "evidenceId": "elicit-docs-67",
-          "quote": "combining different data sources (like semantic questions, Boolean strings, and Clinical Trial registries) into a single, reproducible protocol"
+          "evidenceId": "elicit-docs-48",
+          "quote": "You can use them to search within a particular journal, restrict your search to highly-cited papers, and more!"
         }
       ]
     }
@@ -2072,12 +2109,11 @@
     "storyId": "share-collaborate",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Elicit's first-party docs describe several sharing paths. Analysts can invite team members into live Research Agent sessions, where collaborators with edit access can ask questions, create artifacts and edit artifacts. Workflows can be shared via a view-only link that works without an account, and collections can be shared with colleagues. Shared items arrive in the recipient's Recents. missing for 10: independent or hands-on corroboration of the sharing and collaboration features.",
+    "confidence": "medium",
+    "rationale": "Elicit's own docs cover live collaboration in shared Research Agent sessions, where edit-access collaborators can query the agent, create artifacts and edit existing ones. They also cover view-only links that work for people without an account, shared items arriving in Recents, and sharing Collections with colleagues. Missing for 10: independent or hands-on corroboration of the sharing features, and explicit documentation that standalone Research Reports can be link-shared rather than only exported as PDF/Word.",
     "evidenceIds": [
-      "elicit-docs-17",
       "elicit-docs-46",
-      "elicit-docs-9",
+      "elicit-docs-17",
       "elicit-docs-65",
       "elicit-docs-60",
       "elicit-docs-73"
@@ -2088,12 +2124,8 @@
       "subject": "As an analyst, I can share a research session or report with collaborators who can view or build on it",
       "citations": [
         {
-          "evidenceId": "elicit-docs-17",
-          "quote": "Invite your team members to collaborate live with you in Research Agent sessions."
-        },
-        {
-          "evidenceId": "elicit-docs-9",
-          "quote": "Collaborators with edit access can ask the agent questions in your session, produce new artifacts (documents, tables, etc.), and edit other artifacts"
+          "evidenceId": "elicit-docs-46",
+          "quote": "Invite your team members to collaborate live with you in Research Agent sessions. Collaborators with edit access can ask the agent questions in your session, produce new artifacts (documents, tables, etc.), and edit other artifacts"
         },
         {
           "evidenceId": "elicit-docs-65",
@@ -2113,19 +2145,19 @@
   {
     "productId": "elicit",
     "storyId": "steer-effort-scope",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Elicit documents a Research Agent effort slider (Fastest, Fast, Balanced, Smart, Smartest) that you set before sending a question. Scope can be steered by stating filters in the query, which Elicit applies automatically, and skills let you direct how the agent approaches a task. Since the story allows steering before execution, this covers its core. Missing for 10: any evidence of adjusting effort or scope while a run is executing, a depth control distinct from the effort tiers, and independent or hands-on corroboration that these controls work.",
+    "rationale": "Elicit documents a pre-run effort slider (Fastest through Smartest) for Research Agent sessions, which covers depth and effort. Scope can be steered through query filters, and the API's Systematic Review endpoint exposes control over search strategy and screening criteria. All of this control is set before the run; nothing shows the user adjusting depth, effort or scope while a run executes, and post-run iteration is not mid-run steering. missing for 10: steering while the run executes (mid-run adjustment of effort/depth/scope), explicit depth controls separate from the effort level, independent or hands-on corroboration.",
     "evidenceIds": [
       "elicit-docs-2",
       "elicit-docs-13",
       "elicit-docs-64",
-      "elicit-docs-8"
+      "elicit-docs-36"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a researcher, I can steer the depth, effort, and scope of a research run before or while it executes",
       "citations": [
         {
@@ -2141,8 +2173,8 @@
           "quote": "The simplest way to filter is to just say what you want in your Research Agent query. Elicit will automatically detect and apply the right filter."
         },
         {
-          "evidenceId": "elicit-docs-8",
-          "quote": "A skill is a set of instructions you can hand to Elicit's agent so it approaches a task a particular way."
+          "evidenceId": "elicit-docs-36",
+          "quote": "Systematic Review: run a full review end to end, with control over search strategy, screening criteria, extraction parameters, and reporting."
         }
       ]
     }
@@ -2151,16 +2183,16 @@
     "productId": "elicit",
     "storyId": "structured-reports",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Elicit documents generating research reports from a question, and the Systematic Review workflow produces a report that summarizes the relevant papers. Reports export to PDF or Word on any plan, sessions can be shared by link with people who have no account, and the agent produces document and table artifacts. However, the docs never describe the report's internal structure, such as named sections or tables embedded in the report itself. missing for 10: documentation of the report's sectioned structure and embedded tables, and independent or hands-on corroboration of the shareable report's format.",
+    "rationale": "Elicit documents that it generates research reports, including one that summarizes the relevant papers at the end of a Systematic Review. Reports export to PDF or Word on any plan, and sessions can be shared by link with people who have no account, so a shareable report with a summary is covered. However, no evidence describes the report's internal structure (named sections or embedded tables); tables are documented only as separate artifacts and CSV/Excel exports. missing for 10: documented sectioned report structure, tables embedded within the report itself, independent or hands-on corroboration of report quality and layout.",
     "evidenceIds": [
       "elicit-docs-69",
       "elicit-docs-79",
       "elicit-docs-81",
       "elicit-docs-65",
-      "elicit-docs-9",
-      "elicit-docs-25"
+      "elicit-docs-25",
+      "elicit-docs-46"
     ],
     "support": {
       "relation": "direct",
@@ -2184,10 +2216,6 @@
           "quote": "Toggle on \"Anyone with the link can view\", then click \"Copy link\". This works for people without an Elicit account"
         },
         {
-          "evidenceId": "elicit-docs-9",
-          "quote": "produce new artifacts (documents, tables, etc.), and edit other artifacts"
-        },
-        {
           "evidenceId": "elicit-docs-25",
           "quote": "Tables can be exported in CSV and Excel format."
         }
@@ -2200,15 +2228,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Elicit's own docs describe a dedicated Systematic Reviews workflow. It covers title/abstract screening, a separate automated full-text screening step and column-based data extraction across papers, and the API offers control over screening criteria and extraction parameters. Community accuracy complaints concern summaries and search, not the screening or extraction workflow, so they do not create a dispute. Missing for 10: independent hands-on corroboration of screening/extraction accuracy at scale, and explicit UI-level documentation of how screening criteria are defined and applied consistently across all papers.",
+    "rationale": "Elicit documents a dedicated Systematic Reviews workflow that runs from setup and gathering through title/abstract screening and a distinct automated full-text screening step to column-based data extraction across papers. The API exposes explicit control over screening criteria and extraction parameters, and results export as screening recommendation and extraction tables. Missing for 10: independent hands-on corroboration of screening/extraction accuracy at scale, and detailed UI documentation of how the same screening criteria are defined and applied to every paper.",
     "evidenceIds": [
       "elicit-docs-1",
       "elicit-docs-22",
       "elicit-docs-45",
-      "elicit-docs-18",
       "elicit-docs-36",
+      "elicit-docs-18",
       "elicit-docs-19",
-      "elicit-docs-51",
+      "elicit-docs-38",
       "elicit-docs-67"
     ],
     "support": {
@@ -2221,8 +2249,8 @@
           "quote": "The Systematic Reviews workflow provides step-by-step guidance through search, screening, and data extraction, culminating in a research report summarizing the relevant papers."
         },
         {
-          "evidenceId": "elicit-docs-22",
-          "quote": "Elicit supports the major steps of a systematic review: 1. Set up your review on the Setup page 2. Gather all papers for the systematic review 3. Screen papers by title and abstract"
+          "evidenceId": "elicit-docs-36",
+          "quote": "Systematic Review: run a full review end to end, with control over search strategy, screening criteria, extraction parameters, and reporting."
         },
         {
           "evidenceId": "elicit-docs-45",
@@ -2233,8 +2261,8 @@
           "quote": "Create a column for each data point you'd like to extract from your papers."
         },
         {
-          "evidenceId": "elicit-docs-36",
-          "quote": "Systematic Review: run a full review end to end, with control over search strategy, screening criteria, extraction parameters, and reporting."
+          "evidenceId": "elicit-docs-19",
+          "quote": "Pro, Scale, and Enterprise subscribers can export tables from Systematic Reviews, including the screening recommendation tables and the data extraction table."
         }
       ]
     }
@@ -2245,14 +2273,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Elicit has a public pricing page that lists plan features and some usage terms ('Unlimited search', 'Unlimited chat with papers'). The help docs add plan-gated details: table exports are for Pro, Scale and Enterprise, report exports are on every plan, and the library has no PDF limit. However, no actual prices or quantified per-plan quotas appear in the evidence. Missing for 10: explicit plan prices, a per-tier comparison of usage limits (e.g., report or extraction caps), and independent corroboration of pricing clarity.",
+    "rationale": "Elicit has a public pricing page that lists plan features and some usage limits, such as unlimited search and unlimited chat with papers. The docs also note which plan tiers (Pro, Scale, Enterprise) unlock table exports and API access, and that the library has no PDF limit. However, the evidence never shows actual plan prices or any per-plan quotas beyond those unlimited claims. Missing for 10: actual dollar prices per plan, a per-tier comparison of usage quotas/credits, independent corroboration of pricing clarity.",
     "evidenceIds": [
       "elicit-docs-57",
       "elicit-docs-58",
+      "elicit-docs-6",
       "elicit-docs-19",
       "elicit-docs-81",
       "elicit-docs-70",
-      "elicit-docs-6"
+      "elicit-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -2278,6 +2307,10 @@
         {
           "evidenceId": "elicit-docs-70",
           "quote": "There is no limit on the number of PDFs your library can hold at this time."
+        },
+        {
+          "evidenceId": "elicit-openapi-spec-20261106",
+          "quote": "API access requires a Pro plan or above."
         }
       ]
     }

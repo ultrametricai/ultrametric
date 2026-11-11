@@ -1,17 +1,34 @@
 {
-  "hash": "20957a7594354b19ded17fa253bda52dee63d4f4b561e84680de6c2ba94c5355",
+  "hash": "2dae1474b81a3c07901085b102c760d2964c16b9a02d44086ec0d35ed1902438",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Bitwarden documents a Public API for organization management and a local Vault Management API through `bw serve`. However, nothing in the evidence shows an interactive API reference with runnable, try-it examples. The OpenAPI/Swagger probe returned 404 on every candidate path, and the API docs, CLI and llms.txt mirrors are adjacent features rather than the capability itself.",
-    "evidenceIds": [],
+    "rationale": "Bitwarden's docs direct users to explore the Public API through a vendor-hosted Swagger UI at bitwarden.com/help/api/, built on an OAS3 swagger.json, plus a parallel Swagger UI for the `bw serve` Vault Management API. The evidence describes this as a runnable in-browser console, so an interactive reference exists for both APIs. The probe 404s on root openapi paths do not contradict this, since the definition is served under /help/api/. Missing for 10: hands-on or independent confirmation that try-it-out requests actually execute, and evidence of language-specific runnable code samples beyond the Swagger console.",
+    "evidenceIds": [
+      "bitwarden-public-api-oas-20261106",
+      "bitwarden-swagger-ui-20261106",
+      "bitwarden-docs-20261115"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "bitwarden-public-api-oas-20261106",
+          "quote": "Explore the OpenAPI Specification using the Swagger UI:"
+        },
+        {
+          "evidenceId": "bitwarden-swagger-ui-20261106",
+          "quote": "the runnable console renders in-browser rather than in the served HTML"
+        },
+        {
+          "evidenceId": "bitwarden-docs-20261115",
+          "quote": "The Public API is compatible with the OpenAPI Specification (OAS3) and publishes a compliant [`swagger.json`](/help/api/) definition file."
+        }
+      ]
     },
     "productId": "bitwarden",
     "storyId": "api-interactive-docs"

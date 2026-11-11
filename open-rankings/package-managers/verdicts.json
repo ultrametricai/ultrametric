@@ -1378,19 +1378,18 @@
     "productId": "homebrew",
     "storyId": "agent-headless-dependency-install",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Homebrew documents project dependencies in a Brewfile, installed with one command, usable in scripts and CI such as GitHub Actions. The `brew bundle check || brew bundle install` pattern shows exit status can drive scripted control flow, and NONINTERACTIVE=1 and `--yes` support unattended runs. Missing for 10: explicit documentation of exit-code semantics and failure/error output for install and upgrade, documented non-interactive updating of Brewfile dependencies, and independent hands-on corroboration of agent/CI reliability.",
+    "rationale": "Homebrew documents project dependency encoding via a Brewfile and `brew bundle install`, which installs to a declared state from one command and works in CI such as GitHub Actions. Exit-code-driven scripting is implied by `brew bundle check || brew bundle install`, and non-interactive use is shown by `NONINTERACTIVE=1` for the installer and `install --yes` in admin scripts. However, exit-code semantics and error reporting are not explicitly documented. Missing for 10: documented exit codes for install/upgrade failures, clear machine-readable error output, explicit non-interactive guarantees for `brew bundle`/`brew upgrade` dependency updates, and independent hands-on corroboration of agent/CI reliability.",
     "evidenceIds": [
       "homebrew-docs-1",
-      "homebrew-docs-30",
+      "homebrew-docs-64",
       "homebrew-docs-65",
       "homebrew-docs-14",
       "homebrew-docs-67",
       "homebrew-docs-68",
       "homebrew-docs-35",
       "homebrew-docs-51",
-      "homebrew-docs-50",
       "homebrew-docs-46"
     ],
     "support": {
@@ -1407,16 +1406,16 @@
           "quote": "one command can set up project dependencies across these environments and in continuous-integration services such as GitHub Actions."
         },
         {
+          "evidenceId": "homebrew-docs-64",
+          "quote": "Rather than specifying the `brew` commands you wish to run, you can specify the state you wish to reach."
+        },
+        {
           "evidenceId": "homebrew-docs-35",
           "quote": "prepend `NONINTERACTIVE=1` to the installation command"
         },
         {
           "evidenceId": "homebrew-docs-51",
           "quote": "Use this from administrative scripts when the desktop user manages Homebrew, for example `brew as-console-user install --yes` formula."
-        },
-        {
-          "evidenceId": "homebrew-docs-30",
-          "quote": "this will take instructions from the Brewfile to run brew install ruby and install Ruby if needed"
         }
       ]
     }
@@ -1427,7 +1426,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "This axis applies to Homebrew, since a documentation site could publish llms.txt or agent-oriented docs. The probe found docs.brew.sh/llms.txt returns HTTP 404, and nothing in the pack shows agent-oriented docs. The JSON formula API and the manpage are general-purpose resources, not agent-targeted documentation, so they earn no credit.",
+    "rationale": "A probe found no llms.txt (HTTP 404 at docs.brew.sh/llms.txt), and nothing in the pack shows agent-oriented documentation. The JSON package-metadata API and the manpage are machine-readable or human docs, not agent-oriented docs, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1439,10 +1438,10 @@
   {
     "productId": "homebrew",
     "storyId": "agentic-ai-insights",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A package manager could plausibly offer AI-generated suggestions, for example package recommendations or upgrade insights, so this axis applies. The evidence pack shows no AI-generated insights or suggestion feature. Homebrew's anonymous aggregate analytics and `brew info --json` output are data and telemetry features, not AI insights, so they earn no credit.",
+    "rationale": "Homebrew is a CLI package manager for installing and managing software. AI-generated insights and suggestions drawn from a user's own data is an analytics or SaaS axis, not a fair question for this kind of product. Nothing in the evidence shows Homebrew ships any AI insight feature that would make the axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1457,13 +1456,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A package manager could plausibly ship its own background automations, such as scheduled auto-updates, so the axis applies. The evidence only shows that brew can be called non-interactively from administrative scripts and scheduled jobs. The scheduling itself would come from the host platform (cron/launchd/MDM) or user-side scripts, which earn no credit. Homebrew's own formula-bumping automation is maintainer infrastructure, not something a user sets up.",
-    "evidenceIds": [],
+    "rationale": "Homebrew is a package manager, so a built-in background automation feature, such as scheduled auto-updates, is a fair thing to ask about. The evidence shows no first-party way to configure autonomous recurring automations. It only says brew can be called from admin scripts and scheduled jobs, which means the scheduling comes from the host platform or the user's own setup (adjacent support, not the capability itself).",
+    "evidenceIds": [
+      "homebrew-docs-50"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "homebrew-docs-50",
+          "quote": "Use this in administrative scripts and scheduled jobs to manage an existing installation, including when no user is logged in."
+        }
+      ]
     }
   },
   {
@@ -1471,8 +1477,8 @@
     "storyId": "agentic-builtin-assistant",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Homebrew is a CLI package manager, and a built-in AI assistant is a capability such a tool could plausibly ship, so the axis applies. Nothing in the evidence pack describes any built-in AI assistant or task delegation to an AI. The docs cover only package installation, taps, bottles, Brewfiles and analytics.",
+    "confidence": "medium",
+    "rationale": "A built-in AI assistant is a plausible feature for a developer CLI tool like a package manager, so this axis applies. Nothing in the evidence pack documents any built-in AI assistant or task-delegation feature in Homebrew. The pack covers only package installation, Brewfile/bundle, taps, bottles, analytics and admin scripting, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1486,15 +1492,16 @@
     "storyId": "agentic-headless",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Homebrew's own docs cover headless and automated use. They document `NONINTERACTIVE=1` installs, unattended `.pkg` MDM installs, scriptable `brew bundle check || brew bundle install`, use in CI services such as GitHub Actions, and `as-console-user install --yes` for scheduled jobs with no logged-in user. One community comment calls Homebrew brittle on CI, but it gives no concrete failure, so it lowers confidence rather than creating a dispute. Missing for 10: independent hands-on corroboration of reliable CI runs, and a dedicated CI or headless guide (e.g. caching or official CI actions).",
+    "confidence": "high",
+    "rationale": "Homebrew is a CLI with documented headless and CI use. Installation supports `NONINTERACTIVE=1`, and the `.pkg` installer handles unattended MDM installs. The manpage directs certain commands to administrative scripts and scheduled jobs, including when no user is logged in, and shows `--yes` usage. Brew Bundle docs say one command sets up dependencies in CI services such as GitHub Actions and give the scriptable `brew bundle check || brew bundle install` idiom. One community comment calls Homebrew brittle on CI, but it cites no specific failure, so it lowers confidence rather than creating a dispute. Missing for 10: a dedicated CI/automation guide or official CI action in evidence, and independent hands-on corroboration of reliable CI operation.",
     "evidenceIds": [
       "homebrew-docs-35",
       "homebrew-docs-68",
       "homebrew-docs-65",
       "homebrew-docs-50",
       "homebrew-docs-51",
-      "homebrew-docs-45"
+      "homebrew-docs-45",
+      "homebrew-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -1529,8 +1536,8 @@
     "storyId": "agentic-mcp-client",
     "verdict": "na",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Homebrew is a package manager, not an AI agent or assistant. Acting as an MCP client that plugs in servers and calls their tools is outside its product category. Nothing in the evidence shows Homebrew consuming MCP servers or using external tools through MCP, so the axis does not apply.",
+    "confidence": "high",
+    "rationale": "Homebrew is a package manager, not an AI agent or LLM host, so acting as an MCP client that uses other servers' tools is outside its product category. Nothing in the evidence shows Homebrew connecting to or consuming MCP servers; its taps, Brewfile and JSON API features are package-management capabilities, not MCP-client support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1545,7 +1552,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew is a CLI package manager, not an agent itself, so shipping an official MCP server is a plausible capability and the axis applies. Nothing in the evidence pack mentions an MCP server, and probes found no llms.txt or OpenAPI spec. The only documented interface is the CLI manpage, which is not an MCP server and earns no credit here.",
+    "rationale": "Homebrew is a package manager, not an agent, so publishing an official MCP server is a plausible capability and the axis applies. Nothing in the evidence pack mentions an MCP server, an MCP endpoint, or any agent-connection protocol. The closest items are the formulae JSON data API, a CLI, and a 404 llms.txt probe, and these are adjacent building blocks, not an MCP server.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1560,7 +1567,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew is a CLI package manager, so a natural-language interface is a fair question, but the evidence only documents structured `brew` subcommands, substring/regex search and declarative Brewfiles. Nothing shows Homebrew accepting or interpreting natural-language commands, and the llms.txt probe returned 404.",
+    "rationale": "Natural-language operation is a fair question for a CLI package manager, but the evidence only documents conventional `brew` subcommands, declarative Brewfiles, and a JSON data API. None of these is a natural-language command interface. Declarative Brewfile state and substring search are related features, not natural-language commands, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1573,18 +1580,17 @@
     "productId": "homebrew",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Homebrew is itself an official CLI (`brew`), documented in the Manpage. It has documented automation-friendly behavior: `NONINTERACTIVE=1` installs, `--yes` for scripted runs, `brew info --json` output, and a scriptable `brew bundle check || brew bundle install` pattern for CI and admin scripts. Community users corroborate everyday `brew upgrade` use. missing for 10: explicit agent- or AI-oriented CLI guidance, and machine-readable docs such as llms.txt (the probe returned 404).",
+    "rationale": "Homebrew is itself an official CLI (`brew`), fully documented in its manpage. It supports scripted, non-interactive use through `NONINTERACTIVE=1`, `--yes`, `brew bundle check || brew bundle install` and `brew info --json` output, all of which suit automated or agent-driven workflows. Missing for 10: any agent-specific guidance or machine-readable docs (llms.txt returns 404), and no independent hands-on evidence of AI agents using the CLI.",
     "evidenceIds": [
       "homebrew-probe-3",
+      "homebrew-docs-27",
       "homebrew-docs-35",
       "homebrew-docs-51",
-      "homebrew-docs-50",
-      "homebrew-docs-70",
       "homebrew-docs-65",
-      "homebrew-docs-68",
-      "homebrew-comm-8",
+      "homebrew-docs-70",
+      "homebrew-docs-50",
       "homebrew-probe-1"
     ],
     "support": {
@@ -1605,12 +1611,12 @@
           "quote": "Use this from administrative scripts when the desktop user manages Homebrew, for example `brew as-console-user install --yes` formula."
         },
         {
-          "evidenceId": "homebrew-docs-70",
-          "quote": "List the `brew info --json` output for all current Homebrew/homebrew-core formulae or Homebrew/homebrew-cask casks."
-        },
-        {
           "evidenceId": "homebrew-docs-65",
           "quote": "You can use this behaviour in scripts like so: brew bundle check || brew bundle install"
+        },
+        {
+          "evidenceId": "homebrew-docs-70",
+          "quote": "List the `brew info --json` output for all current Homebrew/homebrew-core formulae or Homebrew/homebrew-cask casks."
         }
       ]
     }
@@ -1619,10 +1625,11 @@
     "productId": "homebrew",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Homebrew documents its own public JSON API at formulae.brew.sh, which serves the `brew info --json` metadata for all homebrew-core formulae and casks. That API only queries package metadata; driving actual operations (install, upgrade, tap) is done through the CLI, and the probes found no OpenAPI spec. missing for 10: an API that drives product actions such as install, upgrade and uninstall, a machine-readable API spec (OpenAPI), API depth and auth documentation, independent or hands-on corroboration of API use.",
+    "rationale": "Homebrew documents a public, unauthenticated JSON data API at formulae.brew.sh with per-package and analytics endpoints, curl examples and an example response schema. That API only reads package metadata; it cannot drive installs or other operations, which are done through the documented CLI rather than an API. Probes also found no OpenAPI spec or llms.txt. Missing for 10: an API that can perform actions (install, upgrade, manage) rather than read-only metadata, a formal API description (OpenAPI), versioned endpoints, independent corroboration of agent use.",
     "evidenceIds": [
+      "homebrew-json-api-20261106",
       "homebrew-docs-70",
       "homebrew-probe-2"
     ],
@@ -1631,6 +1638,10 @@
       "coverage": "partial",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "homebrew-json-api-20261106",
+          "quote": "Homebrew documents an unauthenticated JSON data API over its package metadata"
+        },
         {
           "evidenceId": "homebrew-docs-70",
           "quote": "List the `brew info --json` output for all current Homebrew/homebrew-core formulae or Homebrew/homebrew-cask casks."
@@ -1644,7 +1655,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scoped API credentials are a fair question for a package manager, since registry-backed package managers can issue scoped tokens. However, nothing in the evidence shows Homebrew issuing any API credentials, scoped or otherwise. Least-privilege-adjacent items such as non-admin installs, HOMEBREW_NO_SUDO and per-item tap trust are different controls and earn no credit here.",
+    "rationale": "Scoped credentials are a fair question for a package manager, since registries can issue granular tokens, so the axis applies. The evidence shows no way to issue API credentials of any kind. Homebrew's JSON API is documented as unauthenticated, and controls like per-item tap trust, non-admin installs and HOMEBREW_NO_SUDO govern installation permissions, not agent credentials.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1659,7 +1670,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Official SDKs are a fair question for a package manager, since it could ship client libraries for programmatic integration. The evidence documents only the CLI and a JSON listing endpoint (formulae.brew.sh/docs/api), and the OpenAPI probes all returned 404. None of the evidence shows an official SDK in any language. A raw JSON API is a developer building block, not an SDK, so it earns no credit.",
+    "rationale": "Homebrew documents an unauthenticated JSON data API over its package metadata and an official CLI. However, nothing in the evidence describes an official SDK or client library for building against it. A raw JSON API is a developer building block, not an SDK, so it earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1674,7 +1685,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair question for a package manager with a hosted ecosystem. Homebrew runs a public JSON API at formulae.brew.sh, and a registry could publish events such as new formula versions. However, nothing in the evidence documents registrable outbound HTTP callbacks or any event-subscription mechanism. The JSON API listing and the CLI are pull-based and do not count as webhooks.",
+    "rationale": "Homebrew publishes package metadata through formulae.brew.sh, so event notifications such as new-version or formula-change webhooks are a fair question for it. The evidence documents only a static, unauthenticated JSON data API that must be polled. Nothing shows registrable outbound HTTP callbacks or an event-subscription mechanism, and a polling API is an adjacent feature, not webhooks.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1689,10 +1700,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew publishes a JSON API (formulae.brew.sh/docs/api), so an interactive API reference is a fair question for it, but nothing in the evidence shows an interactive explorer or runnable examples. The OpenAPI probe returned 404 on every candidate path, and the docs only describe static endpoint listings.",
+    "rationale": "Homebrew documents an unauthenticated JSON data API with curl examples and an example response schema. However, the evidence says outright that there is no runner and the examples are static. No OpenAPI or equivalent artifact exists either (probes returned 404), so there is no interactive reference with runnable examples, only a static, related-but-different reference.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": []
@@ -1703,11 +1714,11 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Homebrew documents a public JSON API on formulae.brew.sh that returns `brew info --json` data. That is a data endpoint, not a downloadable machine-readable description of the API, and probes of the usual OpenAPI/Swagger paths all returned 404. The JSON API is an adjacent feature and earns no credit for this story.",
+    "confidence": "high",
+    "rationale": "Homebrew documents an unauthenticated JSON data API with curl examples and an example response schema. The evidence states that no formal API-description artifact (OpenAPI or equivalent) exists, and probes of the standard OpenAPI/Swagger paths all returned 404. The JSON data API is adjacent to this story but is not a downloadable machine-readable spec.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
       "citations": []
@@ -1719,7 +1730,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Asking whether a package manager offers an isolated environment for test installs is a fair question, so the axis applies. However, the evidence pack documents no sandbox or isolated test environment separate from the user's real installation. `brew bundle check` only reports whether an install would do anything, which is a dry-run check rather than sandbox isolation. `brew bundle exec` runs a shell with the project's dependencies but is not described as isolated from the live system.",
+    "rationale": "An isolated sandbox for trying package changes is a fair question for a package manager, but the evidence documents no sandbox or isolated test environment that separates experiments from a real installation. `brew bundle check` is a dry-run-style check, not sandbox isolation. `brew bundle exec` runs a shell in a dependency environment, not an isolated sandbox, so neither counts.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1734,7 +1745,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew exposes a JSON API (homebrew-docs-70 references `brew info --json` listings on formulae.brew.sh), so this axis applies. However, nothing in the evidence shows API versioning or a documented deprecation policy for it, and the OpenAPI probe found no spec. Community comments about Intel support deprecation concern hardware support, not API deprecation, so they do not count here.",
+    "rationale": "Homebrew documents a JSON data API, but the evidence states its endpoints carry no version segment. The deprecation fields in its schema cover the lifecycle of formulae, not the API surface, so there is no documented API versioning or API deprecation policy. Community comments on Intel support deprecation concern hardware support tiers, not API versioning, so they do not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1749,7 +1760,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no documentation of Homebrew verifying downloaded bottles, casks or sources against checksums, signatures or attestations. Tap trust (installing a fully qualified item to trust only that item) controls which repositories are trusted, not artifact integrity, and `brew audit` checks formula definitions, so both are adjacent features rather than download verification. The Trail of Bits audit comment gives no detail on integrity checks.",
+    "rationale": "The evidence pack never documents checksum, signature, or attestation verification of fetched bottles, casks, or source archives before they run. What it does cover is adjacent: tap trust scoping, `brew audit --strict` formula linting, automatic bottle download, and a general reference to a Trail of Bits audit. None of these shows that fetched artifacts are integrity-verified, so the axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1761,22 +1772,24 @@
   {
     "productId": "homebrew",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Homebrew documents real bulk operations. `brew bundle` installs every dependency in a Brewfile with one command, `brew bundle dump` snapshots all installed packages, `brew untap` removes one or more taps, and autoremove clears unneeded dependencies. Community reports confirm that `brew upgrade` updates all casks at once. Bulk coverage is mainly documented for install and snapshot workflows, so the full set of item operations is not shown. Missing for 10: first-party documentation of bulk upgrade and uninstall across selected item sets, and filtering or selection controls for bulk actions.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Homebrew ships its own bulk operations. `brew bundle` installs every dependency declared in a Brewfile with a single command, and `brew bundle dump` snapshots all installed packages at once. `brew untap` removes one or more taps, `brew autoremove` cleans up unneeded dependencies, and `brew upgrade` (with `--greedy` for casks) updates everything; community reports confirm `brew upgrade` acts on all packages at once. Missing for 10: explicit docs for multi-argument install/uninstall of arbitrary named items, filter- or selection-based bulk targeting, and documented dry-run previews beyond `brew bundle check`.",
     "evidenceIds": [
       "homebrew-docs-67",
-      "homebrew-docs-69",
+      "homebrew-docs-68",
       "homebrew-docs-2",
+      "homebrew-docs-69",
       "homebrew-docs-34",
       "homebrew-docs-7",
-      "homebrew-docs-66",
+      "homebrew-docs-46",
+      "homebrew-docs-65",
       "homebrew-comm-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can perform bulk operations across many items at once",
       "citations": [
         {
@@ -1794,6 +1807,10 @@
         {
           "evidenceId": "homebrew-docs-7",
           "quote": "Uninstall formulae that were only installed as a dependency of another formula and are now no longer needed."
+        },
+        {
+          "evidenceId": "homebrew-docs-46",
+          "quote": "use `brew upgrade --greedy` if you want Homebrew to update them too."
         }
       ]
     }
@@ -1804,7 +1821,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered hooks or rules are a fair question for a package manager, but nothing in the evidence shows Homebrew letting users define such rules. Brewfile describes a desired state, `brew bundle check || brew bundle install` is a user-written script pattern, and the 'scheduled jobs' mention covers running brew from external admin scripts. None of these is a product-native mechanism for triggering actions on events.",
+    "rationale": "Event-triggered automation rules, such as install or upgrade hooks, are a fair question for a package manager, so the axis applies. However, the evidence documents no user-definable rules that fire actions on events. Brewfile declarative state, `brew bundle check || brew bundle install` scripting, and use 'in administrative scripts and scheduled jobs' are user-side or host-side arrangements. Homebrew's internal version autobump is maintainer automation, not a user rule engine.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1819,7 +1836,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew is a package manager, and scheduled maintenance such as recurring updates is a fair axis for that kind of product, so the axis applies. However, the evidence documents no built-in scheduler or recurring-job feature. The only related mention says brew can be invoked from external 'scheduled jobs' (homebrew-docs-50), which relies on a host-platform scheduler and is an adjacent workaround, not the product's own capability.",
+    "rationale": "Recurring scheduling is a fair question for a package manager, for example scheduled auto-updates or background jobs, but the evidence documents no Homebrew feature that schedules recurring jobs or workflows. The only related mention says Homebrew can be invoked from 'administrative scripts and scheduled jobs'. That scheduling belongs to an external or host-platform scheduler, which is adjacent support and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1834,10 +1851,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew has no documented concept of automations with built-in versioning, review, or rollback. The Brewfile is a declarative state file that can be committed to a project repository, but the versioning and review would come from the user's git workflow, not from Homebrew itself. No rollback mechanism is documented, and a community user reports that rolling back bad updates was a huge pain and that they had to disable cleanup to keep old versions as a workaround.",
+    "rationale": "Homebrew offers declarative Brewfiles, and the docs say they can be added to a project's repository. That versioning comes from the user's own git setup, not from a Homebrew feature for versioning, reviewing, or rolling back automations. There is no documented rollback mechanism, and community reports show users asking for one and keeping old versions by hand as a workaround.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can version, review, and roll back my automations",
       "citations": []
@@ -1847,14 +1864,15 @@
     "productId": "homebrew",
     "storyId": "cli-manifest-editing",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "medium",
-    "rationale": "Homebrew uses a project Brewfile as a dependency manifest, and `brew bundle dump` is a documented CLI command that writes the Brewfile from installed state. An agent can therefore install, uninstall or upgrade packages and regenerate the manifest without hand-editing it. However, the pack documents no per-dependency add/remove/upgrade commands that edit the Brewfile directly, and no lockfile at all. missing for 10: dedicated CLI add/remove/upgrade commands that rewrite the Brewfile, lockfile generation and updating, safety guarantees for the rewrite, independent corroboration",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Homebrew treats the Brewfile as a project dependency manifest. `brew bundle dump` is a first-party command that writes the Brewfile from installed state, so an agent could install, uninstall or upgrade with brew commands and then regenerate the manifest instead of hand-editing it. That is a two-step snapshot workflow, not per-dependency manifest-rewriting commands, and no lockfile handling is evidenced. Missing for 10: documented add/remove commands that edit the Brewfile directly, a lockfile written safely by the CLI, upgrade flows that update the manifest, and independent hands-on corroboration.",
     "evidenceIds": [
       "homebrew-docs-1",
       "homebrew-docs-2",
       "homebrew-docs-64",
-      "homebrew-docs-69"
+      "homebrew-docs-69",
+      "homebrew-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -1868,6 +1886,10 @@
         {
           "evidenceId": "homebrew-docs-1",
           "quote": "Adding a `Brewfile` to a project's repository (like you might a `package.json`, `Gemfile` or `requirements.txt`) is a nicer way of encoding project dependencies for developer environments."
+        },
+        {
+          "evidenceId": "homebrew-docs-64",
+          "quote": "Rather than specifying the `brew` commands you wish to run, you can specify the state you wish to reach."
         }
       ]
     }
@@ -1875,17 +1897,16 @@
   {
     "productId": "homebrew",
     "storyId": "content-addressed-store-disk-efficiency",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew installs each package version once into its own keg in a global Cellar and symlinks it into the prefix, so a shared single on-disk copy is used across projects (Brewfiles declare dependencies but draw from the same global install). Nothing shows the store is content-addressable (hash-keyed or deduplicated by content). missing for 10: evidence of content-addressable storage, documented cross-project deduplication semantics, independent or hands-on corroboration of disk savings.",
+    "rationale": "The evidence shows only that Homebrew installs each package into a per-package keg in a global Cellar and symlinks it into the prefix. That is a single global install location, not a documented content-addressable store that deduplicates identical dependency versions across projects, so it earns no credit as an adjacent feature. missing for 10: a documented content-addressable or hash-keyed store, cross-project deduplication of identical dependency versions, and any independent corroboration.",
     "evidenceIds": [
-      "homebrew-docs-28",
-      "homebrew-docs-1"
+      "homebrew-docs-28"
     ],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As a developer, I can rely on a shared content-addressable store so the same dependency version is stored once on disk across all projects",
       "citations": [
         {
@@ -1899,18 +1920,17 @@
     "productId": "homebrew",
     "storyId": "cross-platform-parity",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Homebrew documents one package manager and one Brewfile workflow across macOS, Linux and WSL, with one command to set up dependencies across these environments and CI, and Brewfiles can manage WinGet packages from WSL. Windows support is only through WSL, not native Windows. Community reports note Linux friction, such as the /home/linuxbrew requirement for bottles and brittleness on CI. Missing for 10: native Windows support outside WSL, evidence that Brewfile entries such as casks and Mac App Store apps behave consistently across OSes, and independent corroboration of seamless cross-OS parity.",
+    "rationale": "Homebrew documents one package manager across macOS, Linux and Windows. The shared config is a Brewfile that sets up project dependencies 'across these environments' with one command. Windows support is only through WSL, not native Windows, and some Brewfile entry types are platform-specific (Mac App Store, WinGet on WSL). Missing for 10: native (non-WSL) Windows support, documentation of how one Brewfile behaves portably across OSes, and independent hands-on corroboration of identical workflows across all three platforms.",
     "evidenceIds": [
       "homebrew-docs-12",
       "homebrew-docs-27",
       "homebrew-docs-44",
-      "homebrew-docs-66",
       "homebrew-docs-68",
-      "homebrew-comm-10-refresh-e2f21cfef00a17d3",
-      "homebrew-comm-18-refresh-8b928f45ce87770f",
-      "homebrew-comm-17-refresh-fb7683e8f0d8c5b3"
+      "homebrew-docs-66",
+      "homebrew-docs-1",
+      "homebrew-comm-10-refresh-e2f21cfef00a17d3"
     ],
     "support": {
       "relation": "direct",
@@ -1930,8 +1950,8 @@
           "quote": "one command can set up project dependencies across these environments and in continuous-integration services such as GitHub Actions."
         },
         {
-          "evidenceId": "homebrew-docs-66",
-          "quote": "you can also use `brew bundle` with casks, taps, Mac App Store apps, WinGet packages on WSL"
+          "evidenceId": "homebrew-docs-44",
+          "quote": "Paste that in the macOS Terminal, a Linux shell or WSL."
         }
       ]
     }
@@ -1942,10 +1962,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Homebrew can install a Brewfile in CI such as GitHub Actions, downloads prebuilt bottles automatically, and can skip installation via `brew bundle check || brew bundle install`. None of this is a documented cache-restore setup or an offline-capable install mode. Bottles and bundle check are adjacent speed features, not the capability the story asks for.",
+    "rationale": "The evidence shows Brewfiles can set up dependencies in CI services such as GitHub Actions, and `brew bundle check || brew bundle install` skips work when dependencies are already satisfied. These are adjacent setup and idempotency features. Nothing documents a CI cache-restore setup (for example, caching bottles or the download cache between runs) or offline-capable installs, so the axis applies but there is no evidence the product delivers it.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a platform-engineer, I can make CI installs fast with a documented cache-restore setup and offline-capable installs",
       "citations": []
@@ -1957,7 +1977,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lockfile enforcement is a fair question for a package manager, so the axis applies. The evidence documents Brewfiles and `brew bundle check`, which only reports whether the installed state already satisfies the Brewfile. Nothing shows a lockfile or a frozen/immutable mode that fails the install when the manifest and lockfile disagree, so this is an adjacent feature and earns no credit.",
+    "rationale": "Homebrew's documented project-dependency mechanism is the Brewfile manifest. `brew bundle check` only reports whether the installed system satisfies the Brewfile, which compares the manifest to installed state, not to a lockfile. The evidence shows no lockfile and no frozen or immutable mode that fails an install on a manifest/lockfile mismatch, so this is an adjacent feature and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1972,7 +1992,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack shows no compatibility layer, command aliases, or interface mode that mirrors an incumbent package manager such as MacPorts, apt or Nix. The Brewfile is only described by analogy to package.json/Gemfile, and user-editable aliases are a user-side workaround, not a migration feature. Community comments about MacPorts and Nix switchers praise Homebrew's simplicity rather than any familiar-command support.",
+    "rationale": "The evidence pack has no documented compatibility layer, command aliases, or interface conventions that mirror an incumbent package manager such as apt, MacPorts, or Nix. The Brewfile is only compared by analogy to package.json/Gemfile, which is not command compatibility. The user-editable aliases feature is an adjacent building block, not a migration capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -1987,22 +2007,30 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew documents the Brewfile and `brew bundle install`, which install a project's declared dependencies from a file. Nothing in the evidence shows a lockfile that records exact resolved versions, or any guarantee of identical versions across machines. `brew bundle dump` snapshots which packages are installed, not their pinned versions. Community reports of being unable to pin upgrades and of missing Nix's reproducibility fit this gap. The Brewfile is an adjacent manifest feature, not version-locked reproducible installs.",
-    "evidenceIds": [],
+    "rationale": "Homebrew documents the Brewfile as a project dependency manifest that `brew bundle` installs from. Nothing in the evidence shows a lockfile or recorded resolved versions that reproduce exact versions across machines. Community reports point the other way: one user says they miss Nix's reproducibility, and another cites upgrades they couldn't pin. The Brewfile is an adjacent manifest feature, not a version-locking capability.",
+    "evidenceIds": [
+      "homebrew-docs-1",
+      "homebrew-docs-2"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can install dependencies from a lockfile and get the exact same resolved versions on every machine",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "homebrew-docs-1",
+          "quote": "Adding a `Brewfile` to a project's repository (like you might a `package.json`, `Gemfile` or `requirements.txt`) is a nicer way of encoding project dependencies for developer environments."
+        }
+      ]
     }
   },
   {
     "productId": "homebrew",
     "storyId": "machine-readable-cli-output",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The formulae API docs reference `brew info --json` output, which shows Homebrew's own CLI can emit JSON for at least the core `info` command. The pack shows JSON for only that one command and does not document a JSON schema or broader coverage. missing for 10: evidence of JSON output across other core commands (list, outdated, search, install/upgrade results), first-party documentation of the --json flag and its schema, independent or hands-on corroboration of agent parsing.",
+    "rationale": "The evidence shows that `brew info` has a `--json` mode: the Formulae API docs describe their endpoints as listing the `brew info --json` output. That is a first-party, machine-readable output path from one core CLI command. Beyond that one command, nothing in the pack documents JSON output for other core commands. The hosted JSON data API is a web endpoint, not CLI output, so it does not count here. missing for 10: documented `--json` flags on other core commands (list, outdated, search, install/upgrade results), first-party manpage documentation of the JSON output format, independent or hands-on corroboration of agent parsing.",
     "evidenceIds": [
       "homebrew-docs-70"
     ],
@@ -2024,7 +2052,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack contains no published benchmarks or measured timings backing Homebrew's speed claims. It has only anecdotal community praise for performance improvements and a user saying they look forward to measuring Bootsnap, which is not a published number. Speed benchmarks are a fair axis for a package manager, so lack of evidence means none rather than na.",
+    "rationale": "The evidence pack has no published benchmarks or measured numbers backing Homebrew's speed claims. There are only anecdotal community remarks praising performance improvements, plus one user anticipating doing their own numbers on Bootsnap; neither is a published measurement from the product. A package manager could plausibly publish such benchmarks, so the axis applies and the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2039,7 +2067,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no documented tooling for importing or converting an existing setup from an incumbent package manager such as MacPorts or Nix into Homebrew. `brew bundle dump` only snapshots Homebrew's own installed state, and `brew create` scaffolds new formulae from URLs; neither is migration tooling for this story. Community reports of users switching describe manual moves, not product-provided import.",
+    "rationale": "Migration from an incumbent package manager such as MacPorts or Nix is a fair axis for a package manager, but the evidence shows no documented import or conversion tooling from another tool. `brew bundle dump` only snapshots Homebrew's own installed state into a Brewfile. `brew create` builds a new formula from a source URL rather than converting another tool's project or manifest. Community posts describe users switching manually, not through any migration tooling.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2051,10 +2079,10 @@
   {
     "productId": "homebrew",
     "storyId": "monorepo-workspace-support",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew is a system-level package manager for CLI tools and apps, not a language or project package manager. Monorepo workspaces with a shared lockfile and cross-linked local in-development packages fall outside its product category. Brewfiles only declare which environment tools a project needs; nothing in the evidence shows workspace, lockfile-sharing or local cross-linking capability that would make the axis apply.",
+    "rationale": "Homebrew is a package manager, and its Brewfile is documented as a per-project dependency manifest, so a monorepo-workspace question is a fair one to ask. However, the evidence shows only a single Brewfile per project repository. There is no documented support for workspaces across multiple packages, a shared lockfile, or cross-linked local dependencies, and Brewfile-in-repo alone does not deliver this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2067,18 +2095,14 @@
     "productId": "homebrew",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Homebrew has no separate GUI. Its official CLI is the primary interface, and it is documented as scriptable for automation: non-interactive installs, `--yes`, use in administrative scripts and scheduled jobs, and declarative `brew bundle` workflows for CI. The only HTTP API documented is a read-only JSON listing of formula and cask metadata, and probes found no OpenAPI spec. Missing for 10: a documented programmatic API with parity to every CLI operation (the JSON API covers metadata only), a machine-readable API spec, and independent corroboration of automation parity.",
+    "rationale": "Homebrew documents its own unauthenticated JSON API over package metadata (formula, cask, per-package and analytics endpoints) that mirrors `brew info --json` output. However, it is a read-only data API: install, upgrade, tap and bundle actions are only available through the CLI, so API parity with the main interface is not achieved. Probes also found no OpenAPI spec. Missing for 10: API coverage of mutating operations (install/upgrade/uninstall/tap), any documented parity guarantee, a formal API description (OpenAPI), versioned endpoints.",
     "evidenceIds": [
+      "homebrew-json-api-20261106",
       "homebrew-docs-70",
       "homebrew-probe-2",
-      "homebrew-probe-3",
-      "homebrew-docs-50",
-      "homebrew-docs-51",
-      "homebrew-docs-35",
-      "homebrew-docs-65",
-      "homebrew-docs-68"
+      "homebrew-probe-3"
     ],
     "support": {
       "relation": "direct",
@@ -2090,16 +2114,8 @@
           "quote": "List the `brew info --json` output for all current Homebrew/homebrew-core formulae or Homebrew/homebrew-cask casks."
         },
         {
-          "evidenceId": "homebrew-docs-50",
-          "quote": "Use this in administrative scripts and scheduled jobs to manage an existing installation, including when no user is logged in."
-        },
-        {
-          "evidenceId": "homebrew-docs-35",
-          "quote": "prepend `NONINTERACTIVE=1` to the installation command"
-        },
-        {
-          "evidenceId": "homebrew-docs-68",
-          "quote": "one command can set up project dependencies across these environments and in continuous-integration services such as GitHub Actions."
+          "evidenceId": "homebrew-json-api-20261106",
+          "quote": "It is a machine-readable data API; no formal API-description artifact (OpenAPI or equivalent) exists"
         }
       ]
     }
@@ -2108,13 +2124,15 @@
     "productId": "homebrew",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Homebrew's `brew bundle dump` exports a snapshot of the user's installed state (formulae, casks, taps and other supported package types) to a plain-text Brewfile. That gives a documented, portable record of what is installed. However, the Brewfile is a Homebrew-specific format rather than a neutral open standard, it covers only 'supported' package types, and the evidence says nothing about leaving cleanly. Missing for 10: export of all user data rather than only supported package types, export in a vendor-neutral open format (e.g. JSON of installed state), a documented full uninstall/offboarding path, independent corroboration.",
+    "rationale": "Homebrew ships its own export: `brew bundle dump` snapshots installed formulae, casks, taps and other supported package types into a plain-text Brewfile. That Brewfile can be committed and reused, and `brew info --json` output provides machine-readable package metadata. However, the export covers only 'supported' package types, and there is no documented end-to-end exit or uninstall path. missing for 10: evidence that the export covers all user state (e.g. config or pinned versions), a documented full-uninstall/leave procedure, independent hands-on corroboration of the export round-trip",
     "evidenceIds": [
       "homebrew-docs-2",
       "homebrew-docs-69",
-      "homebrew-docs-66"
+      "homebrew-docs-66",
+      "homebrew-docs-70",
+      "homebrew-docs-1"
     ],
     "support": {
       "relation": "direct",
@@ -2128,6 +2146,10 @@
         {
           "evidenceId": "homebrew-docs-69",
           "quote": "`Brewfile`s can also be used as a way of saving all supported packages into a single file."
+        },
+        {
+          "evidenceId": "homebrew-docs-70",
+          "quote": "List the `brew info --json` output for all current Homebrew/homebrew-core formulae or Homebrew/homebrew-cask casks."
         }
       ]
     }
@@ -2135,48 +2157,65 @@
   {
     "productId": "homebrew",
     "storyId": "openness-open-license",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies, since a package manager can publish its source under an open license. However, no evidence item states Homebrew's license or affirms that its source is openly readable. The one GitHub-sourced item quotes `brew audit` usage, not licensing or source access, and the probes and community items do not address licensing.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "The Homebrew/brew GitHub README states that the code is under the BSD 2-clause license, which is an OSI open-source license. The source repository is public on GitHub, and other evidence shows users running audits against it. Missing for 10: independent or hands-on corroboration of the license terms beyond the first-party README.",
+    "evidenceIds": [
+      "homebrew-license-20261106",
+      "homebrew-gh-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can read the product's source under an open license",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "homebrew-license-20261106",
+          "quote": "Code is under the BSD 2-clause 'Simplified' License. Documentation is under the Creative Commons Attribution license."
+        }
+      ]
     }
   },
   {
     "productId": "homebrew",
     "storyId": "openness-self-host",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Homebrew is a locally run CLI. Its documented tap mechanism accepts any Git URL, and taps can supply their own bottles, so users can host their own formula and binary repositories. A community report confirms this works but says it needs a full git server rather than a static CDN host. missing for 10: documented self-hosting or mirroring of the core homebrew-core/cask repositories and the JSON API, a static-host-friendly tap option, and an end-to-end self-hosting guide.",
+    "rationale": "Homebrew's core is a BSD-2-licensed CLI that installs and runs on the user's own macOS, Linux or WSL machines, even under a non-admin account. Its package sources can also be self-hosted: taps accept any Git URL, and taps can provide their own bottles. A community report says hosting a tap needs a full git server rather than a static CDN; this is a friction point, not a contradiction. Missing for 10: a documented guide to self-hosting the formulae JSON API or bottle infrastructure, simpler static-file tap hosting, and independent hands-on corroboration of a fully self-hosted setup.",
     "evidenceIds": [
+      "homebrew-license-20261106",
+      "homebrew-docs-27",
+      "homebrew-docs-53",
       "homebrew-docs-60",
-      "homebrew-docs-19",
       "homebrew-docs-58",
-      "homebrew-docs-57",
       "homebrew-comm-16-refresh-2590124da856ca33"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can self-host the core product",
       "citations": [
         {
+          "evidenceId": "homebrew-license-20261106",
+          "quote": "Code is under the BSD 2-clause 'Simplified' License."
+        },
+        {
+          "evidenceId": "homebrew-docs-27",
+          "quote": "Homebrew installs the command-line tools and applications you need across macOS, Linux and WSL."
+        },
+        {
+          "evidenceId": "homebrew-docs-53",
+          "quote": "Homebrew can be installed for a non-admin account."
+        },
+        {
           "evidenceId": "homebrew-docs-60",
-          "quote": "The one-argument form assumes a repository on GitHub, while the two-argument form accepts any URL supported by Git."
+          "quote": "the two-argument form accepts any URL supported by Git."
         },
         {
           "evidenceId": "homebrew-docs-58",
           "quote": "This may be useful for taps that wish to provide bottles for their formulae or cater to a non-default HOMEBREW_CELLAR."
-        },
-        {
-          "evidenceId": "homebrew-docs-57",
-          "quote": "This generates a bottle file in the current directory and outputs the bottle DSL for insertion into the formula file."
         }
       ]
     }
@@ -2187,7 +2226,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Homebrew documents the Brewfile, a plain-text dependency file committed to a repo like package.json or Gemfile, and `brew bundle dump` snapshots installed formulae, casks and taps into one. An agent can read and diff it. However, the evidence shows only a manifest or installed-state snapshot, not a lockfile that pins exact versions or hashes. missing for 10: documented version/checksum pinning (true lockfile semantics), a formal format specification, independent corroboration of agent read/diff workflows.",
+    "rationale": "Homebrew documents the `Brewfile`, a text file committed to a project repository like `package.json` or a `Gemfile`, and `brew bundle dump` writes an installed-state snapshot to it, so an agent can read and diff it. But the evidence presents it as a declarative dependency manifest, not a lockfile: nothing shows it pins exact versions or hashes, and no format specification is documented. Missing for 10: evidence of lockfile semantics (pinned versions/checksums), a documented format/grammar reference, independent or hands-on corroboration of agent read/diff workflows.",
     "evidenceIds": [
       "homebrew-docs-1",
       "homebrew-docs-2",
@@ -2211,10 +2250,6 @@
         {
           "evidenceId": "homebrew-docs-64",
           "quote": "Rather than specifying the `brew` commands you wish to run, you can specify the state you wish to reach."
-        },
-        {
-          "evidenceId": "homebrew-docs-69",
-          "quote": "`Brewfile`s can also be used as a way of saving all supported packages into a single file."
         }
       ]
     }
@@ -2225,15 +2260,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Homebrew's own docs say that when a formula defines a bottle (prebuilt binary) matching your system, `brew install` downloads and installs it automatically, and building from source happens only when the user asks with `--build-from-source`. Casks also install upstream prebuilt binaries, and a Trail of Bits auditor independently notes that Homebrew serves its own binary builds. A community report says Linux prebuilt executables require the /home/linuxbrew prefix, which is a limitation rather than a contradiction. Missing for 10: explicit documentation of local download-cache reuse, and prebuilt-binary coverage for non-default prefixes on Linux.",
+    "rationale": "Homebrew's Bottles docs state that when a formula defines a bottle matching your system, `brew install` downloads and installs it automatically. Compiling from source happens only when the user asks for it with `--build-from-source`, and casks likewise install upstream pre-built binaries. That covers installing prebuilt binaries in place of source builds. Missing for 10: independent hands-on corroboration of bottle download and install behaviour (the evidence is first-party docs only).",
     "evidenceIds": [
       "homebrew-docs-8",
       "homebrew-docs-40",
       "homebrew-docs-59",
       "homebrew-docs-23",
-      "homebrew-docs-58",
-      "homebrew-comm-16",
-      "homebrew-comm-18-refresh-8b928f45ce87770f"
+      "homebrew-docs-57"
     ],
     "support": {
       "relation": "direct",
@@ -2251,10 +2284,6 @@
         {
           "evidenceId": "homebrew-docs-23",
           "quote": "Casks are package definitions that install upstream pre-built binaries such as applications, fonts and plugins."
-        },
-        {
-          "evidenceId": "homebrew-comm-16",
-          "quote": "the findings on Homebrew were not inconsistent with what I'd expect to find on any similarly sized userspace package manager that serves its own binary builds"
         }
       ]
     }
@@ -2265,7 +2294,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew is a local package manager that installs software onto the user's own machine. It offers no hosted data-storage service where a storage region or residency could be chosen, so this privacy-posture axis is a category error for this kind of product. The analytics opt-out is a different control and is not region or residency selection.",
+    "rationale": "Homebrew is a local, open-source command-line package manager that installs software onto the user's own machine. It does not host user data, so choosing a storage region or residency is a category error for this kind of product. The only related evidence is the ability to turn off anonymous aggregate analytics, which is a different control and does not make the residency axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2280,13 +2309,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew is a package manager that collects user data through analytics, so an AI-training privacy question is a fair axis. However, the evidence contains no policy or control about AI model training. The documented `brew analytics off` switch only disables anonymous aggregate usage analytics. That is an adjacent control, not an AI-training opt-out, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Homebrew collects usage data, so a training-data privacy question is a fair one to ask of it. However, the evidence never mentions AI model training or any opt-out from it. The only related control is the option to turn off anonymous aggregate analytics, which is an adjacent feature and earns no credit for this story.",
+    "evidenceIds": [
+      "homebrew-docs-42"
+    ],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "homebrew-docs-42",
+          "quote": "Turn Homebrew’s analytics off."
+        }
+      ]
     }
   },
   {
@@ -2295,13 +2331,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew collects anonymous analytics, so data retention and deletion is a fair privacy question for it. The evidence only shows an analytics opt-out (`brew analytics off`), an adjacent collection control, with no documented control over how long collected data is retained or any way to delete it. Removing local taps and packages is local file management, not privacy data retention or deletion.",
-    "evidenceIds": [],
+    "rationale": "Homebrew documents an opt-out for its anonymous aggregate analytics (`brew analytics off`). That stops data collection, which is an adjacent control and not a user-facing way to set retention periods or delete data already collected, so it earns no credit for this story. No evidence shows retention settings, deletion requests, or purging of previously sent analytics. Missing for 10: documented data-retention controls, a user-initiated deletion mechanism for collected analytics data, and independent corroboration of either.",
+    "evidenceIds": [
+      "homebrew-docs-42"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can control data retention and deletion",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "homebrew-docs-42",
+          "quote": "Turn Homebrew’s analytics off."
+        }
+      ]
     }
   },
   {
@@ -2310,12 +2353,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Homebrew's own manpage documents a command for its anonymous aggregate user-behaviour analytics, and `brew analytics off` turns that telemetry off. This is a first-party opt-out of usage tracking. The GitHub README confirms anonymised install, build and OS usage data is collected and published. missing for 10: detail on exactly what data the opt-out stops (e.g. whether any requests still occur), a documented environment-variable opt-out for scripted or agent use, independent or hands-on corroboration that disabling works.",
+    "rationale": "Homebrew's official manpage documents a first-party command, `brew analytics off`, that turns off its anonymous aggregate user-behaviour analytics. Its README confirms the analytics are anonymised usage data, so this opt-out directly addresses the story. Missing for 10: no documented environment-variable opt-out for scripted or agent workflows in the evidence, and no independent or hands-on corroboration that disabling stops all data collection.",
     "evidenceIds": [
-      "homebrew-docs-15",
       "homebrew-docs-9",
+      "homebrew-docs-15",
       "homebrew-docs-49",
-      "homebrew-docs-42",
       "homebrew-gh-2"
     ],
     "support": {
@@ -2344,11 +2386,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Homebrew's own `brew tap` command can add third-party repositories from any Git URL, and a community report confirms people self-host taps on their own git servers. That covers the 'point at private registries' part of the story. Nothing in the evidence documents scoped credentials or authentication for those sources, and no bottle or registry mirror configuration is shown; tap trust scoping is about which items to trust, not about authentication. Missing for 10: documented scoped or per-source authentication, mirror or alternate bottle-domain configuration, and first-party guidance on private tap authentication.",
+    "rationale": "Homebrew's own `brew tap` command adds custom repositories, and its two-argument form accepts any Git URL, so a platform engineer can point it at a self-hosted or internal tap. Taps can also ship their own bottles. Nothing in the evidence documents configurable mirrors or any scoped authentication mechanism, and a community report notes taps must be served over the git protocol rather than a static CDN-backed host. missing for 10: documented authentication/credential scoping for private taps or bottle hosts, configurable mirror endpoints for core/bottles/API, independent hands-on corroboration of private-registry setups.",
     "evidenceIds": [
       "homebrew-docs-5",
       "homebrew-docs-60",
-      "homebrew-docs-19",
+      "homebrew-docs-58",
+      "homebrew-docs-61",
       "homebrew-comm-16-refresh-2590124da856ca33"
     ],
     "support": {
@@ -2365,8 +2408,8 @@
           "quote": "the two-argument form accepts any URL supported by Git."
         },
         {
-          "evidenceId": "homebrew-comm-16-refresh-2590124da856ca33",
-          "quote": "Your server must implement the git protocol, so you can't just put it behind a CDN; you need to run and fortify a git server."
+          "evidenceId": "homebrew-docs-58",
+          "quote": "This may be useful for taps that wish to provide bottles for their formulae"
         }
       ]
     }
@@ -2377,13 +2420,26 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew documents project-level Brewfiles and a manually invoked `brew bundle exec` shell environment. There is no evidence that it activates tool versions or environment variables automatically when you enter a project directory. Community reports say users rely on pyenv, nvm or mise for per-project versions, so the closest feature is an adjacent manual command rather than the capability itself.",
-    "evidenceIds": [],
+    "rationale": "Homebrew documents project-level Brewfiles and a `brew bundle exec` shell environment, but that environment must be invoked explicitly. Nothing in the evidence shows tool versions or environment variables activating automatically when you enter a project directory. Community reports that users rely on pyenv, nvm or mise for per-version management support the absence of this capability.",
+    "evidenceIds": [
+      "homebrew-docs-33",
+      "homebrew-docs-1",
+      "homebrew-comm-12-refresh-2c3711a4db4ddde7"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can have the right tool versions and environment variables activate automatically when I enter a project directory",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "homebrew-docs-33",
+          "quote": "Run your shell in a `brew bundle exec` environment."
+        },
+        {
+          "evidenceId": "homebrew-docs-1",
+          "quote": "Adding a `Brewfile` to a project's repository (like you might a `package.json`, `Gemfile` or `requirements.txt`) is a nicer way of encoding project dependencies for developer environments."
+        }
+      ]
     }
   },
   {
@@ -2392,7 +2448,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Homebrew ships its own registry: homebrew-core formulae with prebuilt bottles, casks for apps, fonts and plugins, and taps for extra repositories, with a JSON API listing all current formulae and casks. Community users say it has many more packages than MacPorts, updates versions quickly, and uses automation that bumps versions automatically. Missing for 10: no quantified registry size in first-party evidence, and isolated reports of version lag (e.g. Elixir 1.20, a llama.cpp tap) temper the 'actively maintained' claim.",
+    "rationale": "Homebrew ships its own package repositories (homebrew-core formulae and homebrew-cask casks), plus third-party taps and prebuilt bottles, covering CLI tools and apps across macOS, Linux and WSL. Community users say it has many more packages than MacPorts and that automated version bumps keep the newest releases installable, though some report lag on specific packages such as Elixir and llama.cpp. Missing for 10: no documented registry size or package count, and freshness is uneven on some packages per community reports.",
     "evidenceIds": [
       "homebrew-docs-27",
       "homebrew-docs-23",
@@ -2401,7 +2457,7 @@
       "homebrew-docs-70",
       "homebrew-comm-18",
       "homebrew-comm-5-refresh-2a42ee9aa21f5e4d",
-      "homebrew-comm-15-refresh-039305a926d4b7df",
+      "homebrew-comm-3-refresh-ebd435ad41ebe740",
       "homebrew-comm-4-refresh-595189d1f1af2ce0"
     ],
     "support": {
@@ -2427,7 +2483,11 @@
         },
         {
           "evidenceId": "homebrew-comm-18",
-          "quote": "brew had and has many more packages available, brew updates versions more quickly"
+          "quote": "brew had and has many more packages available"
+        },
+        {
+          "evidenceId": "homebrew-comm-5-refresh-2a42ee9aa21f5e4d",
+          "quote": "the newest version is always installable"
         }
       ]
     }
@@ -2436,16 +2496,15 @@
     "productId": "homebrew",
     "storyId": "runtime-version-management",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Homebrew's own Brewfile can be checked into a project repository, and `brew bundle install` installs the declared tools from it, for example running `brew install ruby`. `brew bundle exec` offers a project shell environment. However, nothing documents per-project version pinning or switching between runtime versions, and community users say they still rely on pyenv or nvm for multiple Node or Python versions. missing for 10: per-project version pinning in the Brewfile, switching between multiple installed runtime versions per project, independent hands-on corroboration of per-project runtime management.",
+    "rationale": "Homebrew documents checking a Brewfile into a project repo and running `brew bundle install` to install the project's dependencies, including runtimes such as Ruby. It also offers a `brew bundle exec` environment. Nothing in the evidence shows pinning or switching runtime versions per project, and community reports say users still rely on pyenv/nvm for multiple Node/Python versions. Missing for 10: per-project version pinning in the Brewfile, switching between installed runtime versions per project, multi-version runtime coexistence.",
     "evidenceIds": [
       "homebrew-docs-1",
       "homebrew-docs-30",
-      "homebrew-docs-33",
+      "homebrew-docs-39",
       "homebrew-docs-67",
-      "homebrew-comm-12-refresh-2c3711a4db4ddde7",
-      "homebrew-comm-9"
+      "homebrew-comm-12-refresh-2c3711a4db4ddde7"
     ],
     "support": {
       "relation": "direct",
@@ -2461,8 +2520,8 @@
           "quote": "this will take instructions from the Brewfile to run brew install ruby and install Ruby if needed"
         },
         {
-          "evidenceId": "homebrew-docs-33",
-          "quote": "Run your shell in a `brew bundle exec` environment."
+          "evidenceId": "homebrew-docs-39",
+          "quote": "Run your shell in a brew bundle exec environment."
         },
         {
           "evidenceId": "homebrew-docs-67",
@@ -2477,7 +2536,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Vulnerability auditing is a fair question for a package manager, so the axis applies. The evidence pack documents no command that checks installed packages against known-vulnerability data. `brew audit --strict` audits a package definition, which is a different capability, and tap trust and Brewfile snapshots are adjacent controls that do not report known vulnerabilities.",
+    "rationale": "Auditing installed packages for known vulnerabilities is a fair question for a package manager, but the evidence pack never documents CVE or vulnerability scanning of installed formulae or casks. The only related item, `brew audit --strict`, is a formula audit with no stated vulnerability-checking role, and tap trust is a related but different control, so neither counts.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2490,16 +2549,17 @@
     "productId": "homebrew",
     "storyId": "single-command-bootstrap",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Homebrew's first-party docs describe committing a Brewfile to a project repository and having users run a single `brew bundle` command to install all declared project dependencies and start services. This works across formulae, casks, taps and other package types, and in CI such as GitHub Actions. missing for 10: independent hands-on corroboration that `brew bundle install` reliably bootstraps a fresh clone, and evidence of version pinning or locking so installs are reproducible across machines.",
+    "rationale": "Homebrew's first-party docs describe committing a Brewfile to a project repository to declare its dependencies. Users then run a single command (`brew bundle` / `brew bundle install`) to install everything it lists: formulae, casks, taps and other package types. A documented `brew bundle check || brew bundle install` idiom supports scripted and CI bootstrapping. missing for 10: independent or hands-on corroboration that `brew bundle` reliably bootstraps a fresh clone.",
     "evidenceIds": [
       "homebrew-docs-1",
       "homebrew-docs-67",
       "homebrew-docs-68",
-      "homebrew-docs-66",
       "homebrew-docs-64",
-      "homebrew-docs-65"
+      "homebrew-docs-65",
+      "homebrew-docs-66",
+      "homebrew-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -2507,12 +2567,12 @@
       "subject": "As a developer, I can bootstrap a fresh clone with one command that installs everything the project declares",
       "citations": [
         {
-          "evidenceId": "homebrew-docs-67",
-          "quote": "It allows you to tell users to run a single command to install all dependencies for a project and start any services."
-        },
-        {
           "evidenceId": "homebrew-docs-1",
           "quote": "Adding a `Brewfile` to a project's repository (like you might a `package.json`, `Gemfile` or `requirements.txt`) is a nicer way of encoding project dependencies for developer environments."
+        },
+        {
+          "evidenceId": "homebrew-docs-67",
+          "quote": "It allows you to tell users to run a single command to install all dependencies for a project and start any services."
         },
         {
           "evidenceId": "homebrew-docs-68",
@@ -2529,13 +2589,14 @@
     "productId": "homebrew",
     "storyId": "supply-chain-protections",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Homebrew documents a tap-trust model in which tapping a third-party repository does not grant whole-tap trust and users install fully qualified items to trust only those items. That is a first-party supply-chain protection against untrusted packages, and a community comment welcomes the new tap trust feature. Nothing in the pack shows a minimum-release-age or cooldown control: one user explicitly asks for a cooldown after a new release reached Homebrew within about 85 minutes. There is also no evidence of blocking install or lifecycle scripts. Missing for 10: minimum release age/cooldown enforcement, blocking of install or lifecycle scripts, in-depth docs on how tap trust is enforced and configured, independent hands-on corroboration.",
+    "rationale": "Homebrew documents its own tap-trust control: tapping a third-party repository does not grant whole-tap trust, and users trust only the fully qualified items they install. That is a first-party supply-chain protection against untrusted package sources, and the community welcomed it. However, the evidence shows nothing like blocking install scripts or a minimum release age, and a user explicitly asks for a cooldown because new versions land within hours. Missing for 10: minimum release age or cooldown enforcement, blocking or sandboxing package build/install scripts, an admin-enforceable policy switch, and depth of documentation for tap trust.",
     "evidenceIds": [
       "homebrew-docs-61",
       "homebrew-docs-16",
-      "homebrew-comm-4"
+      "homebrew-comm-4",
+      "homebrew-comm-3-refresh-ebd435ad41ebe740"
     ],
     "support": {
       "relation": "direct",
@@ -2547,8 +2608,8 @@
           "quote": "Tapping a repository does not grant whole-tap trust. Install a fully qualified item to trust only that item"
         },
         {
-          "evidenceId": "homebrew-docs-16",
-          "quote": "Install a fully qualified item to trust only that item:"
+          "evidenceId": "homebrew-comm-4",
+          "quote": "\"Hell yeah, tap trust!!!\" — positive reaction to new brew tap trust feature described in docs.brew.sh/Tap-Trust."
         }
       ]
     }
@@ -2559,17 +2620,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Homebrew documents third-party taps as its extension mechanism. `brew tap` adds repositories that supply formulae, casks and external commands from GitHub or any Git URL, and the docs cover fully qualified tap selection, per-item trust, untapping, repair, and tap-provided bottles. Community users confirm hosting their own taps, though hosting one requires a git server rather than a static host. Missing for 10: in-depth evidence on authoring external commands (plugin-style subcommands); tap hosting is limited to git-protocol servers rather than simple static/CDN hosting.",
+    "rationale": "Homebrew's own docs cover third-party taps in detail. `brew tap` adds external repositories for formulae, casks and external commands, from GitHub or any Git URL. Users can pick items with fully qualified names and grant per-item tap trust, taps can ship their own bottles, and `brew untap` removes them. Community reports confirm people actually host taps, though doing so requires running a git server. Missing for 10: detailed documentation on authoring external commands, and simpler static or CDN tap hosting.",
     "evidenceIds": [
       "homebrew-docs-5",
       "homebrew-docs-19",
       "homebrew-docs-60",
       "homebrew-docs-61",
       "homebrew-docs-63",
-      "homebrew-docs-34",
       "homebrew-docs-58",
-      "homebrew-comm-16-refresh-2590124da856ca33",
-      "homebrew-comm-4"
+      "homebrew-docs-34",
+      "homebrew-comm-16-refresh-2590124da856ca33"
     ],
     "support": {
       "relation": "direct",
@@ -2585,16 +2645,12 @@
           "quote": "The one-argument form assumes a repository on GitHub, while the two-argument form accepts any URL supported by Git."
         },
         {
-          "evidenceId": "homebrew-docs-19",
-          "quote": "`brew tap <user>/<repository>` clones `https://github.com/<user>/homebrew-<repository>` into Homebrew’s tap directory."
+          "evidenceId": "homebrew-docs-58",
+          "quote": "This may be useful for taps that wish to provide bottles for their formulae or cater to a non-default HOMEBREW_CELLAR."
         },
         {
           "evidenceId": "homebrew-docs-63",
           "quote": "Use the fully qualified name to select the formula from a particular tap"
-        },
-        {
-          "evidenceId": "homebrew-docs-58",
-          "quote": "This may be useful for taps that wish to provide bottles for their formulae or cater to a non-default HOMEBREW_CELLAR."
         }
       ]
     }
@@ -2605,10 +2661,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew documents per-project Brewfiles for declaring dependencies. However, nothing in the evidence shows a Brewfile, `brew bundle dump`, or any other command recording or enforcing exact package versions. Listing which packages a project needs is an adjacent feature, not version pinning. Community reports of upgrades users 'couldn't pin' and of the lack of a standard multi-version install point the same way.",
+    "rationale": "Version pinning is a fair question for a package manager, so the axis applies. The evidence only shows Brewfiles as a per-project list of which packages to install, and `brew bundle dump` as a snapshot of installed packages. Nothing documents pinning exact versions in a Brewfile or having Homebrew enforce such pins. Community reports point the same way: one user cites 'mandatory upgrades that I couldn't pin', and another wishes for a standard way to install multiple versions of node, php and Python.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a developer, I can pin exact versions of packages and tools per project and have the manager respect those pins",
       "citations": []
@@ -2620,7 +2676,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Homebrew is a system-level package manager for CLI tools and apps. Monorepo workspace concepts, such as running installs or scripts filtered to the workspace packages a change affects, fall outside its product category. The evidence shows only per-project Brewfiles (brew bundle) and no workspace or package-graph notion, so this axis does not apply.",
+    "rationale": "Homebrew is a system-level package manager for installing tools and apps (formulae, casks, Brewfiles). It has no concept of monorepo workspace packages, so filtering installs and scripts to a subset of workspace packages, or to those affected by a change, is outside its product role. Nothing in the evidence shows Homebrew shipping workspace or affected-package filtering.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5402,6 +5458,1131 @@
     "quality": 0,
     "confidence": "medium",
     "rationale": "Nix is a package manager and build tool, so filtering installs and scripts to a subset of workspace packages, or only to those affected by a change, is a fair axis to ask about. The evidence pack never documents workspace filtering or change-affected selection. It covers only dev shells (nix-shell, nix develop), building and running flakes, and binary caching, none of which is per-package workspace filtering.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can run installs and scripts filtered to a subset of workspace packages (including only those affected by a change)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agent-headless-dependency-install",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "npm's own docs show `npm install` and `npm install <pkg>` as the core dependency-install commands, configurable through `NPM_CONFIG_` environment variables and `--key val` switches, which supports scripted, agent-driven use. Nothing in the pack documents exit codes, error formats, a non-interactive guarantee or an update command. One community comment says differing min-release-age units make LLM agents spin on install failures, which suggests failure signals are not always clear to agents. missing for 10: documented exit codes and error semantics, an explicit non-interactive/CI mode, documentation of the update command, independent hands-on corroboration of agent-driven installs.",
+    "evidenceIds": [
+      "npm-docs-3",
+      "npm-docs-4",
+      "npm-docs-11",
+      "npm-docs-12",
+      "npm-comm-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can have an agent install and update project dependencies non-interactively, with clear exit codes and errors when something fails",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-3",
+          "quote": "The very first thing you will most likely want to run in any node program is `npm install` to install its dependencies."
+        },
+        {
+          "evidenceId": "npm-docs-4",
+          "quote": "You can also run `npm install blerg` to install the latest version of \"blerg\"."
+        },
+        {
+          "evidenceId": "npm-docs-11",
+          "quote": "Set any config by prefixing the name in an environment variable with `NPM_CONFIG_`."
+        },
+        {
+          "evidenceId": "npm-docs-12",
+          "quote": "Command line switches: Set a config with `--key val`."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-agent-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Agent-readable documentation is a fair axis for a package manager with public docs, but the probes found no llms.txt (404), no markdown docs variant (404) and no OpenAPI spec (all candidate paths 404). The registry API docs do exist as raw markdown on GitHub, but they are ordinary human-oriented documentation, not an agent-oriented entry point, so they earn no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A package manager and registry could plausibly offer AI-generated insights about a user's dependencies or packages, so the axis applies. However, nothing in the evidence pack documents any AI-generated insights or suggestions inside npm. The only related items are rule-based search filters such as `not:insecure` and the `npm ls` listing command, which are not AI insight features.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Background automation is a fair question for a package manager and registry platform, so the axis applies. However, the evidence pack documents no npm feature for scheduled, recurring, or autonomously running background automations. Lifecycle scripts like postinstall run only as one-off steps during an install, which is adjacent behavior rather than autonomous background automation.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A built-in AI assistant is a plausible feature for a developer tool and registry service like npm, so this axis applies. However, nothing in the pack shows npm shipping an in-product assistant you can delegate tasks to. The only AI-related mention is a community remark about external LLM agents struggling with install settings, which is not a built-in capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-headless",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "npm is a command-line tool that can be configured without interaction through `NPM_CONFIG_` environment variables and `--key val` switches, which suits headless automation. Community evidence shows `npm ci` is used in practice and that npm publishing runs from GitHub Actions CI/CD. However, the first-party docs in the pack never describe a CI workflow, a non-interactive mode, or token-based auth for automation, and community notes that `npm ci` is slow. missing for 10: first-party documentation of `npm ci` / CI usage, documented non-interactive or automation-token authentication, CI-oriented machine-readable output, and independent hands-on corroboration of smooth CI runs.",
+    "evidenceIds": [
+      "npm-docs-11",
+      "npm-docs-12",
+      "npm-docs-3",
+      "npm-comm-19",
+      "npm-comm-6"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-11",
+          "quote": "Set any config by prefixing the name in an environment variable with `NPM_CONFIG_`."
+        },
+        {
+          "evidenceId": "npm-docs-12",
+          "quote": "Set a config with `--key val`."
+        },
+        {
+          "evidenceId": "npm-comm-19",
+          "quote": "I absolutely loathe npm ci when checking out another branch. It is slow."
+        },
+        {
+          "evidenceId": "npm-comm-6",
+          "quote": "The compromised axios versions were published with stolen npm credentials, bypassing the project's GitHub Actions CI/CD."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "npm is a package manager and registry, not an AI agent or assistant, so acting as an MCP client that plugs in servers to use their tools is outside its product category. Nothing in the evidence shows npm shipping any MCP-client capability that would make this axis apply; its documented features are installing, publishing, searching packages and configuring registries.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "npm is a package manager and registry service, not an agent, so an official MCP server is a fair question for it and the axis applies. Nothing in the evidence pack documents an official npm MCP server or hosted MCP endpoint. The docs cover only the CLI and registry API, and the probes show no llms.txt or OpenAPI either.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-nl-commands",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Natural-language operation is a fair question for a developer CLI like npm, but the evidence shows only structured commands and flags (`npm install`, `npm search`, `--key val`). `npm help-search <query>` is keyword search over the docs, not a way to operate npm with natural-language commands. The agent-readiness probes (llms.txt, OpenAPI) all returned 404.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can operate the product with natural-language commands",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "npm is itself the official CLI, maintained at github.com/npm/cli. Its first-party docs cover the core commands (install, search, ls, publish, link, adduser), global mode, and non-interactive configuration through NPM_CONFIG_ environment variables and --key val switches, so it can be scripted by agents. Missing for 10: evidence of agent-oriented features such as machine-readable/JSON output or non-interactive auth, and independent hands-on corroboration of use in AI-agent workflows.",
+    "evidenceIds": [
+      "npm-docs-3",
+      "npm-docs-5",
+      "npm-docs-6",
+      "npm-docs-7",
+      "npm-docs-9",
+      "npm-docs-11",
+      "npm-docs-12",
+      "npm-gh-1",
+      "npm-gh-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can use an official CLI",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-3",
+          "quote": "The very first thing you will most likely want to run in any node program is `npm install` to install its dependencies."
+        },
+        {
+          "evidenceId": "npm-docs-11",
+          "quote": "Set any config by prefixing the name in an environment variable with `NPM_CONFIG_`."
+        },
+        {
+          "evidenceId": "npm-docs-12",
+          "quote": "Set a config with `--key val`."
+        },
+        {
+          "evidenceId": "npm-gh-2",
+          "quote": "You can download & install **`npm`** directly from [**npmjs**.com](https://npmjs.com/) using our custom `install.sh` script:"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-public-api",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "npm publishes a first-party Registry API document. It covers a package metadata endpoint that returns the 'packument' and a search endpoint with qualifiers such as scope, author, not:insecure and not:unstable, so programmatic read access is documented. The evidence shows only read and search operations, and the probe found no machine-readable OpenAPI spec. Missing for 10: documented write/publish and account endpoints, authentication docs for the API, an OpenAPI/machine-readable spec (all candidate paths 404), and independent hands-on corroboration of driving npm via the API.",
+    "evidenceIds": [
+      "npm-docs-18",
+      "npm-docs-14",
+      "npm-docs-15",
+      "npm-docs-16",
+      "npm-docs-17",
+      "npm-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-18",
+          "quote": "This endpoint responds with the package metadata document, sometimes informally called a \"packument\" or \"doc.json\"."
+        },
+        {
+          "evidenceId": "npm-docs-15",
+          "quote": "`scope:foo`: Show/filter results published under the `@foo` scope"
+        },
+        {
+          "evidenceId": "npm-docs-14",
+          "quote": "`not:insecure`: Exclude packages that are insecure or have vulnerable dependencies"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Issuing scoped credentials is a fair question for a package registry and CLI, so the axis applies. The pack only shows that `npm adduser` stores login credentials in the user config. It has no evidence of creating scoped, read-only, or least-privilege tokens for an agent. The `scope:foo` item is a search filter for package namespaces, not a credential scope, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-sdks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence covers the npm CLI and the raw registry HTTP API (search qualifiers, packument endpoint), but nothing documents an official SDK or client library for building against npm programmatically. A documented HTTP API is a building block, not an official SDK, and the OpenAPI probes returned 404. An official SDK is a fair question for a registry service, so this axis applies and the verdict is none.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can build against official SDKs",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Webhooks are a fair axis for a package registry service like npm, since a registry could plausibly send event callbacks on publishes. However, nothing in the evidence pack documents registrable outbound HTTP callbacks; the docs cover install, publish, search, config and registry API reads only.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows only a static Markdown registry API document (REGISTRY-API.md) describing endpoints and search qualifiers. Nothing shows an interactive API explorer or runnable examples. Probes for OpenAPI/Swagger specs all returned 404, so no evidence supports an interactive reference.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "npm has a registry HTTP API, so a machine-readable spec is a fair thing to ask of it, and the axis applies. The only API documentation in the pack is a prose markdown file (REGISTRY-API.md) describing endpoints and search qualifiers, which is not an OpenAPI or equivalent machine-readable spec. Probes of every candidate OpenAPI/Swagger path on docs.npmjs.com returned 404.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A package registry could plausibly offer a sandbox or staging registry for testing publishes and installs, so this axis applies. The evidence shows only that npm can point at any compatible registry or one you run yourself (e.g. third-party Verdaccio). That is a developer building block or user-side arrangement, not a first-party sandbox environment. No dry-run or isolated test mode is evidenced either.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies because npm exposes a documented registry API and a versioned CLI. However, nothing in the pack describes API versioning guarantees or a documented deprecation policy. The 'cli/v11' docs path shows only that the docs are versioned, which is adjacent at best, and the OpenAPI probes returned 404.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "artifact-integrity-verification",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no documentation of npm verifying fetched packages against checksums, signatures, or attestations. The closest items are adjacent: a search filter that excludes insecure packages, plus community workarounds (`ignore-scripts`, `min-release-age`, bwrap sandboxing) that limit harm rather than verify integrity. None of these count as verification of packages before they run.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform-engineer, I can trust that fetched packages are verified against checksums, signatures, or attestations before they run",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only first-party evidence of a multi-item operation is that `npm install` installs a project's dependencies in one command, which is a bulk install across many packages. Nothing else in the pack shows general bulk operations across items. `npm ls` only lists installed packages and does not act on them. missing for 10: documented bulk update/uninstall/deprecate/publish across many packages, multi-package or workspace-wide command execution, batch registry API operations, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "npm-docs-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-3",
+          "quote": "The very first thing you will most likely want to run in any node program is `npm install` to install its dependencies."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "automation-rules-engine",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is indirect, community-sourced: npm automatically runs packages' postinstall scripts when the install event occurs, which is an npm-owned mechanism for running actions on an event. Nothing documents a general way for users to define rules that trigger actions on events. Missing for 10: first-party documentation of lifecycle scripts or hooks, user-defined event rules beyond install-time scripts, a range of supported trigger events, and hands-on corroboration framed as a feature rather than a security risk.",
+    "evidenceIds": [
+      "npm-comm-2",
+      "npm-comm-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": [
+        {
+          "evidenceId": "npm-comm-2",
+          "quote": "run a postinstall script that deployed a RAT"
+        },
+        {
+          "evidenceId": "npm-comm-4",
+          "quote": "npm still runs them 'for legacy reasons.'"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "npm is a package manager and registry. Scheduling recurring jobs or workflows belongs to CI, cron or automation platforms, so the story is a category error for this kind of product. Nothing in the evidence shows npm shipping any scheduling capability that would make the axis apply.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents npm as a package manager and registry: installing, publishing, searching, and configuring packages. It never mentions defining automations, nor versioning, reviewing, or rolling them back. Package versioning (e.g., installing the latest version of a package) and lock files cover a different capability and do not count toward versioning or rolling back user automations.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "cli-manifest-editing",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows only that npm's own CLI can add a package (`npm install blerg` installs the latest version). Nothing in the pack documents removing or upgrading dependencies, or confirms that these commands safely rewrite package.json and the lockfile. Missing for 10: documented remove (uninstall) command, documented upgrade (update) command, explicit manifest and lockfile rewrite behavior, any safety guarantees, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "npm-docs-4",
+      "npm-docs-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can add, remove, and upgrade dependencies through CLI commands that safely rewrite the manifest and lockfile, so an agent never hand-edits them",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-4",
+          "quote": "You can also run `npm install blerg` to install the latest version of \"blerg\"."
+        },
+        {
+          "evidenceId": "npm-docs-3",
+          "quote": "The very first thing you will most likely want to run in any node program is `npm install` to install its dependencies."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "content-addressed-store-disk-efficiency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Disk deduplication via a shared store is a fair question for a package manager, so the axis applies. However, nothing in the evidence pack documents npm storing each dependency version once in a content-addressable store across projects. The `npm link` feature and a passing community mention of 'package caches' are adjacent and do not show this capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can rely on a shared content-addressable store so the same dependency version is stored once on disk across all projects",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "cross-platform-parity",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cross-platform consistency is a fair question for a package-manager CLI, so the axis applies. However, nothing in the evidence documents npm running with the same workflow and config across macOS, Linux, and Windows. The config mechanisms shown (.npmrc, NPM_CONFIG_ environment variables, --key val switches) carry no OS-portability claim. The only platform-specific items are a Unix install.sh script and a Linux-only bwrap workaround, which is a user-side arrangement and earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can use the same workflow and config on macOS, Linux, and Windows",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "fast-ci-installs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no documentation of an npm cache-restore setup for CI or of offline-capable installs (no offline or prefer-offline modes, and no cache command). The only CI-related item is a community complaint that `npm ci` is slow, and a passing mention of 'package caches' in a sandboxing workaround, which is not about this capability. Registry switching and self-hosted registries are adjacent features and earn no credit, so the axis applies but is unevidenced.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform-engineer, I can make CI installs fast with a documented cache-restore setup and offline-capable installs",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "frozen-lockfile-enforcement",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies, since a package manager could ship a frozen-lockfile mode. However, nothing in the pack documents a mode that fails the install when package.json and the lockfile disagree. The only nearby items are a community complaint that `npm ci` is slow (which never describes its behavior) and a doc line about switching registries with an existing lock file. Neither shows the enforcement this story asks for.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform-engineer, I can enforce a frozen/immutable lockfile mode that fails the install when the manifest and lockfile disagree",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "incumbent-interface-compat",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Command compatibility with an incumbent tool is a fair question for any package manager, so the axis applies. The evidence only documents npm's own commands (install, ls, search, link, publish) and compatible-registry configuration. Nothing shows npm accepting another manager's commands, aliases or interface conventions to ease a switch.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a switcher, I can keep using familiar commands and interface conventions from the incumbent tool while adopting this manager",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "lockfile-reproducible-install",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "npm's own docs confirm it creates and installs from a lock file, including after switching registries, and a community comment confirms an `npm ci` install command exists. Nothing in the pack documents that a lockfile install guarantees identical resolved versions across machines. Missing for 10: explicit documentation that lockfile installs pin exact resolved versions, documentation of `npm ci`'s strict lockfile behavior, and independent or hands-on corroboration of cross-machine reproducibility.",
+    "evidenceIds": [
+      "npm-docs-2",
+      "npm-comm-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can install dependencies from a lockfile and get the exact same resolved versions on every machine",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-2",
+          "quote": "If you create a lock file while using the default registry you can switch to another registry and npm will install packages from the new registry"
+        },
+        {
+          "evidenceId": "npm-comm-19",
+          "quote": "I absolutely loathe npm ci when checking out another branch."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "machine-readable-cli-output",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence pack documents a JSON output mode for npm CLI commands such as install, ls, or search. The registry API's packument JSON (npm-docs-18) is a separate HTTP endpoint, not machine-readable output from core CLI commands, and generic `--key val` config switches do not show any JSON output option.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can get machine-readable (JSON) output from core commands so an agent can parse results instead of scraping text",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "measured-performance-claims",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Speed benchmarks are a fair question for a package manager, so the axis applies. However, the evidence pack contains no published benchmarks, measured install times, or documented speed claims from npm. The only performance-related item is an anecdotal community complaint that `npm ci` is slow, which is not a published measurement.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can see published benchmarks or measured numbers backing the manager's speed claims",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "migration-from-incumbent",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Migration tooling is a fair axis for a package manager, but the evidence pack documents no import or conversion command for moving a project from another tool, such as translating a competitor's lockfile. The only related item, npm-docs-2, covers switching registries while keeping an npm lockfile, which is an adjacent feature rather than migration from an incumbent tool.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a switcher, I can migrate an existing project from the incumbent tool with documented import or conversion tooling",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "monorepo-workspace-support",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack never mentions npm workspaces, a shared monorepo lockfile, or automatic cross-linking of local packages. `npm link` (npm-docs-8) is a related but different single-package linking feature. Keeping small modules inside a project (npm-comm-18) is a user-side workaround, so neither earns credit for this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can manage many packages in one monorepo with workspaces sharing a single lockfile and cross-linked local dependencies",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "npm documents a registry API, including a package-metadata ('packument') endpoint and search qualifiers. The CLI also covers core actions such as search, publish, and account creation/login, so much of the core workflow can be done without the web UI. Nothing shows that the API or CLI matches everything the npmjs.com UI can do, and the OpenAPI probes all returned 404. Missing for 10: documented UI/API parity (e.g., org/team management, account settings, tokens, 2FA via API), a published OpenAPI/machine-readable API spec, and independent corroboration of parity.",
+    "evidenceIds": [
+      "npm-docs-18",
+      "npm-docs-15",
+      "npm-docs-9",
+      "npm-docs-10",
+      "npm-docs-5",
+      "npm-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-18",
+          "quote": "This endpoint responds with the package metadata document, sometimes informally called a \"packument\" or \"doc.json\"."
+        },
+        {
+          "evidenceId": "npm-docs-15",
+          "quote": "`scope:foo`: Show/filter results published under the `@foo` scope"
+        },
+        {
+          "evidenceId": "npm-docs-9",
+          "quote": "Use the [`npm publish`](/cli/v11/commands/npm-publish) command to upload your code to the registry."
+        },
+        {
+          "evidenceId": "npm-docs-10",
+          "quote": "adduser: Create an account or log in."
+        },
+        {
+          "evidenceId": "npm-docs-5",
+          "quote": "Use the `npm search` command to show everything that's available in the public registry."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "npm documents some first-party portability: users can point npm at any compatible registry or run their own, and lockfiles keep working after switching registries. The registry API also returns package metadata as a JSON document. There is no documented capability to export all of a user's account data in open formats. missing for 10: documented bulk export of account/package data, coverage of private packages and account data, an explicit export or offboarding workflow, independent hands-on corroboration.",
+    "evidenceIds": [
+      "npm-docs-1",
+      "npm-docs-2",
+      "npm-docs-18"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can export all of my data in open formats and leave",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-1",
+          "quote": "You can configure npm to use any compatible registry you like, and even run your own registry."
+        },
+        {
+          "evidenceId": "npm-docs-2",
+          "quote": "If you create a lock file while using the default registry you can switch to another registry and npm will install packages from the new registry"
+        },
+        {
+          "evidenceId": "npm-docs-18",
+          "quote": "This endpoint responds with the package metadata document, sometimes informally called a \"packument\" or \"doc.json\"."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "openness-open-license",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence includes material taken from npm's public GitHub repository (github.com/npm/cli) and the npm/registry repo, which implies the CLI source is publicly readable. Nothing in the pack states what license it is under, so the 'open license' half of the story is unevidenced. missing for 10: explicit statement of an open-source license (e.g., LICENSE file or license name), first-party docs pointing to source availability, independent corroboration of openness.",
+    "evidenceIds": [
+      "npm-gh-1",
+      "npm-gh-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can read the product's source under an open license",
+      "citations": [
+        {
+          "evidenceId": "npm-gh-1",
+          "quote": "Note: you can also search docs locally with `npm help-search <query>`"
+        },
+        {
+          "evidenceId": "npm-gh-2",
+          "quote": "You can download & install **`npm`** directly from [**npmjs**.com](https://npmjs.com/) using our custom `install.sh` script:"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "openness-self-host",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "npm's own docs say the client can be pointed at any compatible registry, including one you run yourself, and can install from a new registry after switching. The evidence shows no first-party, self-hostable npm registry server, so the actual server would be a third-party tool like Verdaccio, which earns no credit. missing for 10: first-party self-hostable registry software, self-hosting deployment docs, independent hands-on corroboration of a self-hosted setup.",
+    "evidenceIds": [
+      "npm-docs-1",
+      "npm-docs-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can self-host the core product",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-1",
+          "quote": "You can configure npm to use any compatible registry you like, and even run your own registry."
+        },
+        {
+          "evidenceId": "npm-docs-2",
+          "quote": "you can switch to another registry and npm will install packages from the new registry"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "parseable-lockfile-format",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "npm's own docs confirm it creates a lock file and keeps it usable when you switch registries. Nothing in the pack shows the file's format is documented, text-based, or readable and diffable by an agent. missing for 10: documentation of the lockfile format/schema, evidence the lockfile is plain text (e.g. JSON) that can be read and diffed, independent or hands-on corroboration of agent use.",
+    "evidenceIds": [
+      "npm-docs-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can point an agent at a documented, text-based lockfile format it can read and diff",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-2",
+          "quote": "If you create a lock file while using the default registry you can switch to another registry and npm will install packages from the new registry"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "prebuilt-binary-cache",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Installing prebuilt binaries from a cache is a fair question for a package manager like npm, so the axis applies. However, the evidence pack documents only registry configuration and basic `npm install` usage. Nothing covers prebuilt binary distribution, a local install cache, or avoiding source compilation; the single mention of 'package caches' comes from a user's bwrap sandboxing workaround and is not about this capability.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can install prebuilt binary packages from a cache instead of compiling from source",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency is a fair question for npm's hosted registry and accounts, but no evidence shows npm offering region or residency selection for stored data. The documented ability to point the CLI at another registry, or run your own (e.g. third-party Verdaccio), is a self-hosting workaround, not a residency control of npm itself.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "npm is a hosted registry and account service, so an AI-training opt-out or data-use policy is a fair question to ask of it. The evidence pack contains no documented control or policy about AI training. Adjacent features such as `\"private\": true` (blocks publishing), paid private packages, and running a self-hosted registry are related privacy or workaround measures, not an AI-training opt-out, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack does not document any npm control over data retention or deletion, such as retention settings, account or data deletion, or privacy controls. A 2016 community remark that authors can delete published packages concerns registry mutability in the left-pad incident, not a documented privacy-retention capability. Running your own registry and setting `\"private\": true` are adjacent workarounds and earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry is a fair question for a package-manager CLI, but nothing in the evidence pack mentions telemetry, usage tracking, or an opt-out setting for npm. The generic config mechanisms (NPM_CONFIG_ environment variables, --key val switches) and the ability to switch or self-host registries are adjacent features, not a documented telemetry opt-out, so they earn no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "private-registry-support",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "npm's docs say it can be pointed at any compatible registry, including a self-run one, and can switch registries even with an existing lock file; a community comment confirms switching is just an `npm config set`. The scoped-authentication half is barely covered: there is only a generic note that `adduser` stores credentials in the user config file, with nothing on per-scope registry mapping or per-registry auth tokens. missing for 10: documented per-scope registry configuration (@scope:registry), per-registry/scoped auth token configuration, explicit mirror/proxy setup guidance, hands-on corroboration of private-registry auth.",
+    "evidenceIds": [
+      "npm-docs-1",
+      "npm-docs-2",
+      "npm-docs-10",
+      "npm-comm-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform-engineer, I can point the manager at private registries or mirrors with scoped authentication",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-1",
+          "quote": "You can configure npm to use any compatible registry you like, and even run your own registry."
+        },
+        {
+          "evidenceId": "npm-docs-2",
+          "quote": "If you create a lock file while using the default registry you can switch to another registry and npm will install packages from the new registry"
+        },
+        {
+          "evidenceId": "npm-docs-10",
+          "quote": "When you do this, npm will store credentials in the user config file."
+        },
+        {
+          "evidenceId": "npm-comm-7",
+          "quote": "Switching registries is just an `npm config set`"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "project-env-activation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Toolchain and environment management is a fair question for a JavaScript package manager, so the axis applies. However, nothing in the evidence shows npm switching tool versions or loading environment variables automatically when you enter a project directory. The NPM_CONFIG_ environment-variable mechanism only sets npm's own config and is an adjacent feature, not directory-triggered activation.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can have the right tool versions and environment variables activate automatically when I enter a project directory",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "registry-breadth",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "npm's docs show it installs packages from the public registry with `npm install <name>`, lets you browse everything there with `npm search`, and lets you point at any compatible registry or run your own. Community reports of a flood of published packages and multi-million monthly download counts support the 'large' part of the story. Supply-chain security complaints concern trust, not whether packages are available, so they do not contradict the capability. Missing for 10: first-party evidence of registry size or package count, explicit evidence of active maintenance across the registry.",
+    "evidenceIds": [
+      "npm-docs-4",
+      "npm-docs-5",
+      "npm-docs-1",
+      "npm-docs-3",
+      "npm-docs-9",
+      "npm-comm-14",
+      "npm-comm-17"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can install almost anything I need from a large, actively maintained package registry or repository",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-4",
+          "quote": "You can also run `npm install blerg` to install the latest version of \"blerg\"."
+        },
+        {
+          "evidenceId": "npm-docs-5",
+          "quote": "Use the `npm search` command to show everything that's available in the public registry."
+        },
+        {
+          "evidenceId": "npm-docs-1",
+          "quote": "You can configure npm to use any compatible registry you like, and even run your own registry."
+        },
+        {
+          "evidenceId": "npm-comm-17",
+          "quote": "Per npm download stats, 2,538,464 of left-pad's 2,550,569 monthly downloads came via the line-numbers package."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "runtime-version-management",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Per-project toolchain or runtime management is a fair question for a JavaScript package manager. However, the evidence only covers installing package dependencies and switching registries. Nothing shows npm installing or switching language runtimes or tool versions from a checked-in config file.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can install and switch language runtimes or tool versions per project from a checked-in config file",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "security-audit-command",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The pack never documents a CLI command that audits installed dependencies for known vulnerabilities. The closest item is a registry search qualifier (`not:insecure`) that filters search results, which is adjacent and not an audit of installed packages. `npm ls` only lists installed packages, without any vulnerability information.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform-engineer, I can audit installed dependencies for known vulnerabilities directly from the CLI",
+      "citations": []
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "single-command-bootstrap",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "npm's own docs say that running `npm install` in a node program installs its dependencies, which is the one-command bootstrap this story asks for. A community comment confirms developers use `npm ci` on branch checkouts, though they find it slow; that is a speed complaint, not a contradiction. missing for 10: in-depth first-party docs that `npm install`/`npm ci` install everything declared in package.json (including dev, optional and workspace dependencies), and documented lockfile-exact reproducibility for a fresh clone.",
+    "evidenceIds": [
+      "npm-docs-3",
+      "npm-docs-2",
+      "npm-comm-19"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can bootstrap a fresh clone with one command that installs everything the project declares",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-3",
+          "quote": "The very first thing you will most likely want to run in any node program is `npm install` to install its dependencies."
+        },
+        {
+          "evidenceId": "npm-docs-2",
+          "quote": "If you create a lock file while using the default registry you can switch to another registry and npm will install packages from the new registry"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "supply-chain-protections",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Community reports describe npm's own native config settings for both named protections: `ignore-scripts=true` blocks lifecycle scripts and `min-release-age=7` enforces a minimum release age. Both can be set in ~/.npmrc, and the first-party docs confirm config can be set by env var or CLI flag. Scripts still run by default, but the story only asks that the protections can be turned on. missing for 10: first-party documentation of ignore-scripts and min-release-age, organization-wide or centrally enforced policy controls, protections beyond these two settings.",
+    "evidenceIds": [
+      "npm-comm-3",
+      "npm-comm-4",
+      "npm-docs-11",
+      "npm-docs-12"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a platform-engineer, I can turn on protections against malicious packages, such as blocking lifecycle scripts or enforcing a minimum release age",
+      "citations": [
+        {
+          "evidenceId": "npm-comm-3",
+          "quote": "npm now supports a minimum release age. Put `min-release-age=7` (days) and `ignore-scripts=true` in ~/.npmrc."
+        },
+        {
+          "evidenceId": "npm-comm-4",
+          "quote": "The commenter recommends setting ignore-scripts=true in ~/.npmrc"
+        },
+        {
+          "evidenceId": "npm-docs-11",
+          "quote": "Set any config by prefixing the name in an environment variable with `NPM_CONFIG_`."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "third-party-extension-ecosystem",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "npm's own docs say it can be pointed at any compatible registry, including a self-hosted one, and can install from a different registry than the one the lock file was made with. That is a documented way to extend it with third-party backends, and the community corroborates it (Verdaccio as a self-hosted registry, switching registries via `npm config set`). There is no evidence of a plugin, tap, or overlay mechanism that extends the manager's own behavior. Missing for 10: a plugin or extension system for the CLI itself, tap or overlay-style package sources, and in-depth docs on the registry backend protocol.",
+    "evidenceIds": [
+      "npm-docs-1",
+      "npm-docs-2",
+      "npm-comm-11",
+      "npm-comm-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can extend the manager through third-party taps, overlays, plugins, or backends",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-1",
+          "quote": "You can configure npm to use any compatible registry you like, and even run your own registry."
+        },
+        {
+          "evidenceId": "npm-docs-2",
+          "quote": "If you create a lock file while using the default registry you can switch to another registry and npm will install packages from the new registry"
+        },
+        {
+          "evidenceId": "npm-comm-11",
+          "quote": "Verdaccio exists as a self-hosted npm registry alternative"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "version-pinning-per-project",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only on-topic evidence is a single docs mention that npm creates a lock file and installs from it even after switching registries. That implies per-project dependency pinning, but nothing documents exact-version specifiers or how strictly installs respect the pins. A community mention of `npm ci` gives no detail on lockfile enforcement. Missing for 10: documentation of exact-version pinning in package.json, documented lockfile-respecting install behavior (e.g. npm ci failing on mismatch), per-project pinning of tools or the Node/npm version, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "npm-docs-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can pin exact versions of packages and tools per project and have the manager respect those pins",
+      "citations": [
+        {
+          "evidenceId": "npm-docs-2",
+          "quote": "If you create a lock file while using the default registry you can switch to another registry and npm will install packages from the new registry"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "npm",
+    "storyId": "workspace-filtered-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Filtering installs and scripts to a subset of workspace packages is a fair question for a package manager like npm, so the axis applies. However, nothing in the evidence pack mentions workspaces, workspace-filtered installs or scripts, or selecting packages affected by a change. The registry search filters (scope:, author:) are a different feature and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

@@ -1,38 +1,32 @@
 {
-  "hash": "e0003235f6e2417e6557ed75035e5d4d2e8fac547414c2d518a83afb3aaf16be",
+  "hash": "708279c6b9d479e47b66722682bbf2e75c3385a2349c792a2e4ac6c9890aa9f7",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Galileo documents its own programmatic interfaces: a Python SDK with an `@log` decorator, an 'sdk-api' docs section covering OTel distributed tracing via GalileoSpanProcessor, and quickstarts in Python or TypeScript. However, the evidenced programmatic surface is mostly about logging and tracing, and the probe found no OpenAPI or Swagger spec at any candidate path. The MCP server belongs to a separate story and is not credited here. Missing for 10: a documented REST API reference or OpenAPI spec, evidence that core actions (experiments, datasets, metrics, alerts) can be driven through the API rather than the UI, and independent corroboration.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Galileo publishes a downloadable OpenAPI 3.1.0 spec with 202 /v2/ paths and a generated API reference with a per-endpoint \"Try it\" runner against the production API, plus path versioning and documented deprecations. The docs-origin OpenAPI probe 404s, but the spec is published at the API origin, so this is not a contradiction. Missing for 10: independent hands-on corroboration of driving the API end-to-end, and polish such as a standalone versioning/deprecation policy and proper spec metadata (it still carries the FastAPI default title and version).",
     "evidenceIds": [
-      "galileo-gh-1",
-      "galileo-docs-28",
-      "galileo-docs-17",
-      "galileo-docs-43",
-      "galileo-probe-3"
+      "galileo-openapi-spec-20261106",
+      "galileo-tryit-20261106",
+      "galileo-deprecations-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "galileo-gh-1",
-          "quote": "You can also use the `@log` decorator to log spans."
+          "evidenceId": "galileo-openapi-spec-20261106",
+          "quote": "Galileo publishes a downloadable OpenAPI 3.1.0 document at its API origin (202 paths, all under /v2/)"
         },
         {
-          "evidenceId": "galileo-docs-28",
-          "quote": "Thanks to Galileo's Python SDK we'll be able to check the application's performance and tool selection."
+          "evidenceId": "galileo-tryit-20261106",
+          "quote": "The runner mounts client-side and executes against the production API with a real token."
         },
         {
-          "evidenceId": "galileo-docs-17",
-          "quote": "Stitch traces across two agents in different processes using OTel and the GalileoSpanProcessor."
-        },
-        {
-          "evidenceId": "galileo-docs-43",
-          "quote": "This guide works with Python or TypeScript, using OpenAI, Azure OpenAI service, Anthropic, or Gemini LLMs."
+          "evidenceId": "galileo-deprecations-20261106",
+          "quote": "the API is /v2 path-versioned, release notes record removals and method deprecations with migration guidance"
         }
       ]
     },

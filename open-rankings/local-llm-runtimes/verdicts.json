@@ -16149,7 +16149,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents built-in on-device acceleration, such as the Hexagon NPU on Snapdragon and 'whatever silicon the device has.' That is an adjacent capability, not the story's ask. Nothing in the pack describes a plugin or backend-extension mechanism, and nothing mentions TPUs, Gaudi, or similar datacenter accelerators.",
+    "rationale": "RunAnywhere documents built-in on-device acceleration, such as running on the Snapdragon Hexagon NPU and using 'whatever silicon the device has'. Nothing in the evidence describes a plugin mechanism for adding accelerator backends, or support for TPUs, Gaudi or similar datacenter accelerators. Built-in mobile NPU support is an adjacent feature, not the plugin-based accelerator extensibility the story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -16164,11 +16164,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms a structured llms.txt at docs.runanywhere.ai/llms.txt (HTTP 200, markdown index of the docs). The docs are also served as .md pages and include a dedicated 'vibe-coding' integration guide written for agent-driven setup. missing for 10: independent or hands-on corroboration of an agent successfully consuming the llms.txt or vibe-coding docs.",
+    "rationale": "A probe confirmed a live llms.txt at docs.runanywhere.ai, and a second llms.txt exists on the main site. The docs are published as raw .md pages, including a dedicated \"vibe-coding\" integration guide written for agent-driven setup, and the llms.txt also points to the OpenAPI spec. missing for 10: independent or hands-on corroboration of an agent actually consuming these docs successfully.",
     "evidenceIds": [
       "runanywhere-probe-1",
+      "runanywhere-docs-10",
       "runanywhere-docs-32",
-      "runanywhere-docs-10"
+      "runanywhere-openapi-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -16177,11 +16178,15 @@
       "citations": [
         {
           "evidenceId": "runanywhere-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.runanywhere.ai/llms.txt"
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.runanywhere.ai/llms.txt # RunAnywhere Documentation"
         },
         {
           "evidenceId": "runanywhere-docs-32",
           "quote": "The complete integration path for adding on-device LLM, STT, and TTS to a React Native app with the RunAnywhere SDK"
+        },
+        {
+          "evidenceId": "runanywhere-openapi-20261106",
+          "quote": "advertised in the docs llms.txt under \"OpenAPI Specs\""
         }
       ]
     }
@@ -16192,7 +16197,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device and cloud inference SDK/CLI. Its documented LLM generation, structured output and tool calling are developer building blocks for building insight features, not a product feature that analyzes the user's own data and surfaces insights or suggestions. Nothing in the evidence shows built-in AI insights over user data, such as usage or account analytics with AI suggestions; `wally account usage` only reports spend.",
+    "rationale": "RunAnywhere is an on-device and hosted inference SDK/CLI. The evidence shows developer primitives (LLM generation, structured output, tool calling, VLM) that a developer could use to build an insights feature. Nothing shows the product itself analyzing a user's data and surfacing AI-generated insights or suggestions. Those primitives are building blocks only and earn no credit toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -16207,7 +16212,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device AI SDK and CLI, so autonomous background automations are a fair axis for it. However, the evidence shows nothing about scheduled, recurring or background-running automations. The SDK's tool-calling loop and voice-agent session are developer building blocks or interactive features, not a user-facing automation capability, so they earn no credit.",
+    "rationale": "RunAnywhere is an on-device and hosted AI inference SDK and CLI, so a buyer could fairly ask whether it supports background automations. The evidence never documents scheduled, recurring or autonomous background jobs. The SDK's tool-calling loop and the voice agent are developer building blocks or interactive sessions, not automations a user configures to run unattended.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16219,44 +16224,31 @@
   {
     "productId": "runanywhere",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Hands-on reports show RunAnywhere's rcli acting as a voice assistant that takes spoken commands and performs actions through small-model tool calling. However, the same report says the delegated action ('navigate to google.com in safari') did nothing while the assistant claimed success, and the vendor called this a known small-LLM limitation. The SDK's voice-agent and tool-calling APIs are developer building blocks, not a built-in assistant, so they earn no credit here. Missing for 10: first-party documentation of a built-in assistant, reliable task execution, and evidence of the range of tasks it can perform.",
-    "evidenceIds": [
-      "runanywhere-comm-4",
-      "runanywhere-comm-8",
-      "runanywhere-comm-7"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The first-party evidence shows only developer building blocks for an assistant: an SDK tool-calling loop and a `RunAnywhere.voice` session that developers wire into their own apps. Nothing documents a built-in assistant inside RunAnywhere that users can hand tasks to. The only sign of an assistant that takes actions is community hands-on reports about rcli, and those describe it claiming success on actions that never ran, so they cannot stand in for a documented capability.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
-      "citations": [
-        {
-          "evidenceId": "runanywhere-comm-4",
-          "quote": "Just tried it, really cool, fun tech demo with rcli."
-        },
-        {
-          "evidenceId": "runanywhere-comm-8",
-          "quote": "This is a known limitation with small LLMs (0.6B-1.2B) doing tool calling."
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "runanywhere",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "RunAnywhere ships an official CLI (Wally) that can run local models offline without an account, and it exposes an OpenAI-compatible endpoint, so scripted use is plausible. However, nothing documents a headless or CI mode. Cloud authentication is a browser approval flow, which works against unattended CI runs. missing for 10: documented non-interactive/headless CLI mode, CI usage guidance or examples, a non-browser auth path (API key/token) for automation, independent hands-on corroboration.",
+    "rationale": "RunAnywhere has programmatic surfaces that could plausibly run unattended. Its hosted Wally API is OpenAI-compatible and authenticated with the caller's own key, and the CLI can run small local models offline without an account. However, nothing in the evidence documents a headless or CI mode, and CLI authentication for cloud use is browser-based, which is a hurdle for non-interactive pipelines. Missing for 10: documented headless/CI usage guide, non-interactive CLI auth (e.g. env-var keys or service tokens), isolated test environment or mock mode, and hands-on corroboration of unattended runs.",
     "evidenceIds": [
-      "runanywhere-probe-3",
-      "runanywhere-docs-6",
       "runanywhere-docs-4",
+      "runanywhere-docs-6",
       "runanywhere-docs-5",
-      "runanywhere-docs-15"
+      "runanywhere-tryit-20261106",
+      "runanywhere-contract-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -16264,16 +16256,16 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "runanywhere-docs-6",
-          "quote": "When a small model on your own machine is enough, the same CLI runs it, offline and without an account."
-        },
-        {
           "evidenceId": "runanywhere-docs-4",
           "quote": "The endpoint is OpenAI-compatible, so the official OpenAI clients work by pointing `base_url` at it."
         },
         {
-          "evidenceId": "runanywhere-probe-3",
-          "quote": "official CLI documented at https://github.com/RunanywhereAI/wally/releases"
+          "evidenceId": "runanywhere-docs-6",
+          "quote": "the same CLI runs it, offline and without an account."
+        },
+        {
+          "evidenceId": "runanywhere-tryit-20261106",
+          "quote": "Executing requires the caller's own key and runs against the production gateway."
         }
       ]
     }
@@ -16284,7 +16276,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence mentions MCP or connecting external MCP servers. The SDK's tool-calling registration only lets a developer register local functions, which is a building block rather than MCP client support. An on-device AI SDK and CLI could plausibly ship MCP client support, so the axis applies and the absence of evidence makes this 'none'.",
+    "rationale": "RunAnywhere is an on-device AI SDK and inference platform with tool calling and agent-style CLI tooling, so consuming tools from MCP servers is a fair question for it. Nothing in the evidence mentions MCP or plugging in external tool servers. The SDK's tool calling, where a developer registers a function in code, is a developer building block rather than MCP-client support. The integrations page describes pointing third-party tools at RunAnywhere models, which is the reverse direction and an adjacent feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16299,7 +16291,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device AI SDK and model-hosting platform (Wally CLI and cloud), not itself an agent, so publishing an official MCP server is a fair axis. The evidence pack never mentions an MCP server. The SDK's tool calling, the OpenAI-compatible endpoint and the CLI integrations are adjacent features, not an MCP server agents can connect to.",
+    "rationale": "RunAnywhere is an SDK, CLI and hosted inference platform, not itself an agent, so publishing an official MCP server is a fair question for it. The pack documents in-SDK tool calling, an OpenAI-compatible endpoint, an OpenAPI spec and a CLI that points tools at models, but nothing shows an official MCP server or endpoint agents can connect to. Those items are adjacent building blocks and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16311,15 +16303,14 @@
   {
     "productId": "runanywhere",
     "storyId": "agentic-nl-commands",
-    "verdict": "disputed",
+    "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "RunAnywhere's rcli accepts spoken natural-language commands such as 'navigate to google.com in safari', and the docs describe a voice session that listens, thinks, and answers out loud. A hands-on report shows such a command did nothing while the voice claimed success, and the vendor called this a known limitation of small-model tool calling. missing for 10: reliable execution of natural-language commands, first-party docs of a natural-language command interface for operating the product itself, independent confirmation that commands work.",
+    "confidence": "low",
+    "rationale": "Hands-on community reports show the rcli tool takes natural-language voice commands such as 'navigate to google.com in safari'. The same tester found it reported success without doing the action, and the vendor's reply calls this a known limitation of small-model tool calling. The SDK's voice-agent and tool-calling features are building blocks for developers, not ways to operate the product itself, so they earn no credit. Missing for 10: first-party docs describing natural-language operation of the product, reliable execution of commands, and coverage of natural-language control beyond the rcli demo.",
     "evidenceIds": [
       "runanywhere-comm-4",
       "runanywhere-comm-7",
-      "runanywhere-comm-8",
-      "runanywhere-docs-26"
+      "runanywhere-comm-8"
     ],
     "support": {
       "relation": "direct",
@@ -16327,12 +16318,12 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
-          "evidenceId": "runanywhere-docs-26",
-          "quote": "`RunAnywhere.voice` assembles speech-to-text, a language model, and text-to-speech into one session that listens, thinks, and answers out loud."
-        },
-        {
           "evidenceId": "runanywhere-comm-4",
           "quote": "Just tried it, really cool, fun tech demo with rcli."
+        },
+        {
+          "evidenceId": "runanywhere-comm-8",
+          "quote": "This is a known limitation with small LLMs (0.6B-1.2B) doing tool calling."
         }
       ]
     }
@@ -16341,14 +16332,13 @@
     "productId": "runanywhere",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents an official CLI, Wally, with concrete commands (`wally account whoami`, `wally account usage`), browser-based sign-in that hands a credential to the terminal, one-command integration with tools, and offline local model runs; a probe confirms official CLI releases on GitHub. Community hands-on reports of a separate RunAnywhere CLI (rcli) crashing and failing to install point to reliability concerns, but they do not contradict that the Wally CLI exists. Missing for 10: a full command reference, independent hands-on corroboration of the Wally CLI specifically, and evidence of stable installation.",
+    "rationale": "RunAnywhere documents an official CLI, Wally. It has concrete subcommands (`wally account whoami`, `wally account usage`), browser-based sign-in that hands the credential to the terminal, and the same CLI runs local models offline or hosted models when asked. Releases are published on GitHub. Community crash and install reports concern the separate rcli voice demo, not Wally's documented capability, so they do not create a dispute. Missing for 10: independent hands-on corroboration of the Wally CLI, a complete documented command reference.",
     "evidenceIds": [
       "runanywhere-docs-11",
       "runanywhere-docs-6",
       "runanywhere-docs-15",
-      "runanywhere-docs-5",
       "runanywhere-docs-7",
       "runanywhere-docs-16",
       "runanywhere-probe-3"
@@ -16364,7 +16354,7 @@
         },
         {
           "evidenceId": "runanywhere-docs-6",
-          "quote": "When a small model on your own machine is enough, the same CLI runs it, offline and without an account."
+          "quote": "the same CLI runs it, offline and without an account."
         },
         {
           "evidenceId": "runanywhere-docs-15",
@@ -16380,33 +16370,33 @@
   {
     "productId": "runanywhere",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents a public, OpenAI-compatible hosted endpoint that official OpenAI clients can drive by setting `base_url`. It also documents programmatic SDK APIs for generation, streaming, tool calling and structured output. However, the probe found no machine-readable OpenAPI/Swagger spec, and the hosted API documentation shown is thin. Account functions such as identity and usage appear only through the `wally` CLI, not through a documented API. Missing for 10: published OpenAPI/reference spec for the hosted API, documented API coverage of account/usage operations, independent or hands-on corroboration of driving the product via the API.",
+    "rationale": "RunAnywhere documents a public, versioned hosted inference API (https://inference.runanywhere.ai/v1). It publishes a downloadable OpenAPI 3.1.0 spec, the endpoint is OpenAI-compatible so official OpenAI clients work, and the API reference includes a Try-it playground; the on-device SDKs also expose documented programmatic APIs. The probe's 404s were at different candidate paths, so they do not contradict the published spec at /api-reference/openapi.json. Missing for 10: an isolated test/sandbox environment or test keys, a deprecation policy or changelog, and independent hands-on corroboration of the API.",
     "evidenceIds": [
+      "runanywhere-openapi-20261106",
       "runanywhere-docs-4",
-      "runanywhere-docs-8",
-      "runanywhere-docs-1",
-      "runanywhere-docs-11",
-      "runanywhere-probe-2"
+      "runanywhere-tryit-20261106",
+      "runanywhere-contract-20261106",
+      "runanywhere-docs-8"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
+        {
+          "evidenceId": "runanywhere-openapi-20261106",
+          "quote": "RunAnywhere publishes a downloadable OpenAPI 3.1.0 document for its hosted inference API (\"RunAnywhere Wally Public Inference API\", server https://inference.runanywhere.ai/v1)"
+        },
         {
           "evidenceId": "runanywhere-docs-4",
           "quote": "The endpoint is OpenAI-compatible, so the official OpenAI clients work by pointing `base_url` at it."
         },
         {
-          "evidenceId": "runanywhere-docs-1",
-          "quote": "Register a tool and the function that runs it. The SDK owns the call-and-execute loop and detects the format the model expects."
-        },
-        {
-          "evidenceId": "runanywhere-docs-8",
-          "quote": "for try await event in try await RunAnywhere.llm.generateStream(prompt: \"Write a haiku\")"
+          "evidenceId": "runanywhere-tryit-20261106",
+          "quote": "The Mintlify API reference runs the \"Try it\" playground on the endpoint pages, generated from the OpenAPI document."
         }
       ]
     }
@@ -16417,7 +16407,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies because RunAnywhere offers a hosted Wally Cloud API. The evidence only shows browser sign-in that hands the terminal a credential, plus account whoami and usage commands. Nothing documents issuing scoped, restricted or least-privilege API keys for an agent, so the verdict is none.",
+    "rationale": "Scoped credentials are a fair axis for a product with a hosted, key-authenticated inference API, so this applies. The evidence only shows browser sign-in that hands the terminal a credential, and key entitlement that varies by environment. Nothing documents issuing a key with restricted permissions, scopes, or least-privilege limits for an agent. Per-environment entitlement is a related but different behavior, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16432,7 +16422,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "RunAnywhere ships official SDKs: one C++ core with six thin bindings. First-party docs cover the Swift SDK (streaming, chat, tool calling, structured output, STT/TTS, VLM, models), the Kotlin SDK and a React Native integration path, and the SDKs are published on GitHub. missing for 10: independent or hands-on corroboration of building with the SDKs, and documentation evidence for all six bindings (only Swift, Kotlin and React Native are shown).",
+    "rationale": "RunAnywhere documents official SDKs built as one C++ core with six thin bindings. The Swift, Kotlin and React Native SDKs have concrete API docs covering streaming generation, chat, tool calling, structured output, STT/TTS, VAD, voice agents, VLM, image generation and model downloads, backed by a public runanywhere-sdks GitHub repo. Missing for 10: independent or hands-on corroboration of building with the SDKs (the community reports concern the rcli tool, not the SDKs), and documentation evidence for the remaining bindings beyond Swift, Kotlin and React Native.",
     "evidenceIds": [
       "runanywhere-docs-12",
       "runanywhere-docs-3",
@@ -16440,8 +16430,8 @@
       "runanywhere-docs-2",
       "runanywhere-docs-8",
       "runanywhere-docs-32",
-      "runanywhere-gh-1",
-      "runanywhere-docs-26"
+      "runanywhere-docs-26",
+      "runanywhere-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -16473,7 +16463,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device SDK with a hosted, OpenAI-compatible cloud API, so webhook event subscriptions are a fair question for it. The evidence only shows in-process event streams (generateStream token events, DownloadEvent streams), not registrable outbound HTTP callbacks. In-process event streams are an adjacent feature and earn no credit.",
+    "rationale": "RunAnywhere has a hosted inference API (Wally Cloud), so a webhooks story is a fair question. The evidence never documents registrable outbound HTTP callbacks. The only 'events' are in-process SDK async streams (generateStream token events, download DownloadEvent streams), which are a different mechanism from webhook subscriptions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16488,7 +16478,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents a hosted Wally Cloud endpoint, so a serving-API story is a fair question for this product. The only documented compatibility is OpenAI's: the endpoint works with official OpenAI clients via base_url. That is an adjacent API format, and nothing in the evidence describes an Anthropic-compatible messages endpoint.",
+    "rationale": "RunAnywhere's hosted Wally inference API is documented only as OpenAI-compatible, with chat completions at https://inference.runanywhere.ai/v1. Nothing in the evidence shows an Anthropic-compatible messages endpoint. A serving API could plausibly offer one, so the axis applies and the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16500,31 +16490,60 @@
   {
     "productId": "runanywhere",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The docs contain static code snippets (e.g., a Swift streaming example) and an OpenAI-compatible endpoint page, but nothing shows an interactive API explorer or runnable-in-browser examples. The OpenAPI probe returned 404 on every candidate path, so no machine-readable spec backs an interactive reference. Static snippets are adjacent to this story, not the capability itself.",
-    "evidenceIds": [],
+    "rationale": "RunAnywhere's own Mintlify API reference has a \"Try it\" playground on its endpoint pages, generated from a published OpenAPI 3.1.0 document, so users can run requests interactively. Coverage is limited: the reference spans only the hosted Wally cloud API, not the on-device SDKs. Running examples needs the caller's own key against the production gateway, with no test keys, mock mode, or isolated sandbox documented. missing for 10: interactive reference coverage of the on-device SDK APIs, a sandbox or test-key mode for safely running examples, independent or hands-on corroboration of the playground.",
+    "evidenceIds": [
+      "runanywhere-tryit-20261106",
+      "runanywhere-openapi-20261106",
+      "runanywhere-contract-20261106"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "runanywhere-tryit-20261106",
+          "quote": "The Mintlify API reference runs the \"Try it\" playground on the endpoint pages, generated from the OpenAPI document."
+        },
+        {
+          "evidenceId": "runanywhere-openapi-20261106",
+          "quote": "RunAnywhere publishes a downloadable OpenAPI 3.1.0 document for its hosted inference API"
+        },
+        {
+          "evidenceId": "runanywhere-tryit-20261106",
+          "quote": "Executing requires the caller's own key and runs against the production gateway."
+        }
+      ]
     }
   },
   {
     "productId": "runanywhere",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "RunAnywhere exposes a hosted, OpenAI-compatible API endpoint, so a downloadable API spec is a fair ask, but the evidence shows no OpenAI-compatible spec of its own. Probes of all common OpenAPI and Swagger paths returned 404. OpenAI compatibility and the llms.txt documentation index are adjacent features, not a machine-readable API spec.",
-    "evidenceIds": [],
+    "rationale": "RunAnywhere documents a downloadable OpenAPI 3.1.0 document for its hosted Wally inference API at /api-reference/openapi.json. It is advertised in llms.txt, pins its source schemas by sha256, and drives the docs' Try-it playground. The probe 404s were on different candidate paths, so they do not contradict this location. Missing for 10: independent or probe confirmation that the /api-reference/openapi.json file is actually retrievable.",
+    "evidenceIds": [
+      "runanywhere-openapi-20261106",
+      "runanywhere-tryit-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "runanywhere-openapi-20261106",
+          "quote": "RunAnywhere publishes a downloadable OpenAPI 3.1.0 document for its hosted inference API"
+        },
+        {
+          "evidenceId": "runanywhere-tryit-20261106",
+          "quote": "The Mintlify API reference runs the \"Try it\" playground on the endpoint pages, generated from the OpenAPI document."
+        }
+      ]
     }
   },
   {
@@ -16533,7 +16552,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for an SDK with a hosted cloud API, so the axis applies. However, the evidence documents no sandbox, test mode, test keys, or isolated non-production environment. Offline local execution and keeping hosted versus local runs explicit are adjacent deployment choices, not a sandbox for testing apart from production data.",
+    "rationale": "The docs explicitly state that no isolated test environment, test keys, or mock mode is documented. Both the \"Try it\" playground and the console playground run against the production gateway. Per-environment key entitlement and offline local execution are adjacent features, not a sandbox that isolates testing from production data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16545,25 +16564,37 @@
   {
     "productId": "runanywhere",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "RunAnywhere ships SDKs and an OpenAI-compatible hosted API, so API versioning and deprecation policy is a fair question for it. The evidence pack contains no documented API versioning scheme or deprecation policy. The OpenAI-compatible endpoint and the CLI releases page do not show a versioning or deprecation commitment, and the OpenAPI spec probes all returned 404.",
-    "evidenceIds": [],
+    "rationale": "The hosted Wally inference API is versioned at /v1 and has a pinned contract: an OpenAPI 3.1.0 spec whose x-runanywhere-contract block pins the source schemas by sha256. That covers the versioning half of the story. The docs corpus explicitly contains no deprecation policy or changelog, and versioning covers only the cloud API, not the on-device SDKs. missing for 10: documented deprecation policy, changelog/version history, sunset timelines or migration guidance, versioning guarantees for the SDKs.",
+    "evidenceIds": [
+      "runanywhere-contract-20261106",
+      "runanywhere-openapi-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "runanywhere-contract-20261106",
+          "quote": "The API base is versioned (https://inference.runanywhere.ai/v1) with a pinned contract"
+        },
+        {
+          "evidenceId": "runanywhere-openapi-20261106",
+          "quote": "with an x-runanywhere-contract block pinning the source JSON Schemas by sha256"
+        }
+      ]
     }
   },
   {
     "productId": "runanywhere",
     "storyId": "apple-silicon-acceleration",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Community-thread evidence shows a Metal-based inference engine (MetalRT) for Apple Silicon. It uses Metal 3.1 GPU features and benchmarks competitively, winning 3 of 4 runs against uzu. However, it requires M3 or later, M1/M2 fall back to llama.cpp, and the GitHub README claims acceleration only in general terms. Missing for 10: first-party documentation of Metal/ARM optimizations, evidence of native ARM-specific optimization, M1/M2 MetalRT support, and independent benchmark corroboration.",
+    "rationale": "RunAnywhere's own MetalRT engine uses Metal 3.1 GPU features on Apple Silicon and reports throughput figures (for example 184 tok/s on Llama-3.2-3B, winning 3 of 4 benchmarks against uzu). However, it requires M3 or later, and M1/M2 fall back to llama.cpp. Most of this evidence comes from HN thread replies rather than first-party docs. Missing for 10: M1/M2 Metal support, first-party documentation of the Metal/ARM optimizations, explicit evidence of native ARM (CPU) optimizations, independent benchmark corroboration.",
     "evidenceIds": [
       "runanywhere-comm-13",
       "runanywhere-comm-6",
@@ -16581,11 +16612,15 @@
         },
         {
           "evidenceId": "runanywhere-comm-6",
-          "quote": "MetalRT wins 3 of 4 benchmarks."
+          "quote": "MetalRT wins 3 of 4 benchmarks. The bigger difference is MetalRT also handles STT and TTS natively"
         },
         {
           "evidenceId": "runanywhere-gh-1",
           "quote": "Accelerated by whatever silicon the device has."
+        },
+        {
+          "evidenceId": "runanywhere-docs-33",
+          "quote": "validates every kernel against the silicon it runs on"
         }
       ]
     }
@@ -16596,7 +16631,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk or batch operations, such as batch inference or transcription across many inputs, are a fair axis for an AI SDK and CLI. However, the evidence pack documents only single-item calls (generate, transcribe, synthesize, vlm, images). The multi-file fields in DownloadProgress (currentFileIndex, totalFiles) describe one model download made of several files, which is an adjacent behavior and not a user-facing bulk operation.",
+    "rationale": "Batch or bulk processing is a fair question for an AI inference SDK and hosted API, so the axis applies. The evidence documents only single-request generation, streaming, transcription and tool calling, with no batch or bulk endpoint. The multi-file download progress fields (currentFileIndex, totalFiles) cover fetching a model's files, an adjacent feature that does not let a user act on many items at once.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16611,7 +16646,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device AI SDK and CLI, and a buyer could reasonably ask whether such a platform offers event-triggered automation, so the axis applies. The evidence shows only developer building blocks: tool calling, streamed token events and download progress events. None of these is a documented way for a user to define rules that fire actions automatically on events. With no direct evidence of rule-based triggers, the verdict is none.",
+    "rationale": "The evidence pack documents no user-definable rules or event-triggered automation. Tool-calling registration and streaming event types (token events, DownloadEvent) are developer building blocks for constructing such behavior, not the capability itself, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16626,7 +16661,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device and cloud AI inference SDK and CLI, so a scheduling or automation feature is a fair question for it. The evidence pack documents tool calling, streaming, structured output and hosted execution, but nothing about scheduling recurring jobs, cron-like triggers or workflow orchestration. One-off generation calls are not a recurring schedule.",
+    "rationale": "Scheduling recurring jobs or workflows is a fair question for an AI SDK/CLI/cloud platform, so the axis applies. Nothing in the evidence documents scheduling, cron, recurring triggers or workflow automation. The pack covers inference, tool calling, streaming, and CLI or cloud sign-in only, so the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16641,7 +16676,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device inference SDK and CLI, and its voice and tool-calling features execute actions, so asking about automation management is fair. The evidence documents no saved automations and no versioning, review, or rollback of them. Tool calling and the voice agent are adjacent building blocks, not the requested capability.",
+    "rationale": "Nothing in the evidence shows RunAnywhere letting users version, review, or roll back automations. The SDK's tool-calling loop and the versioned hosted API base (/v1) are adjacent features, not version control or rollback for user automations. The docs also note there is no changelog or deprecation policy. Because a developer AI platform could plausibly offer this, the axis applies and the lack of evidence yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16654,14 +16689,14 @@
     "productId": "runanywhere",
     "storyId": "broad-model-architecture-support",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "RunAnywhere's own SDK docs show it running several model types on device: language models, speech-to-text, text-to-speech, vision-language models and image generation. That covers the LLM and multi-modal parts of the story. Nothing in the evidence supports the scale claim of hundreds of architectures, nor any mention of MoE or embedding models. Missing for 10: evidence of hundreds of supported architectures, MoE model support, embedding model support, a published model/architecture compatibility list, independent corroboration of breadth.",
+    "rationale": "RunAnywhere documents on-device language, speech and vision models: LLM generation, a VLM API that takes an image and a prompt, and image generation. That covers LLMs and some multi-modal use, but nothing shows breadth across hundreds of architectures. missing for 10: evidence of support for hundreds of model architectures, any MoE model support, embedding model support, a list of supported architectures, independent corroboration of model breadth.",
     "evidenceIds": [
       "runanywhere-docs-3",
       "runanywhere-docs-28",
-      "runanywhere-docs-29",
-      "runanywhere-docs-26"
+      "runanywhere-docs-8",
+      "runanywhere-docs-29"
     ],
     "support": {
       "relation": "direct",
@@ -16679,10 +16714,6 @@
         {
           "evidenceId": "runanywhere-docs-29",
           "quote": "`RunAnywhere.images` generates an image from a prompt."
-        },
-        {
-          "evidenceId": "runanywhere-docs-26",
-          "quote": "`RunAnywhere.voice` assembles speech-to-text, a language model, and text-to-speech into one session that listens, thinks, and answers out loud."
         }
       ]
     }
@@ -16693,7 +16724,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Building a runtime from source is a fair question for an on-device inference SDK, so the axis applies. Nothing in the pack documents a source build process, build steps, or a minimal-dependency footprint. The 'one C++ core' claim describes architecture, not buildability, and community reports say the MetalRT engine is proprietary and commercial, which cuts against a source build of the runtime.",
+    "rationale": "Building the runtime from source is a fair question for an on-device inference SDK. The evidence pack contains no build-from-source instructions or dependency documentation. The C++ core and the GitHub repo are mentioned only in marketing terms, and a community comment notes that the MetalRT engine is proprietary, which suggests the core runtime may not be buildable from source at all.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16708,7 +16739,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes an on-device inference SDK with a programmatic chat API (`[ChatMessage]`), a terminal CLI (Wally/rcli) that runs local models, and integrations that point third-party tools like opencode at a model. None of these is a built-in graphical chat interface. The SDK chat API is a developer building block and the CLI is terminal-based, so neither earns credit for a first-party GUI chat app.",
+    "rationale": "The evidence shows local models are reached through a CLI and through developer SDKs with chat APIs, not through a built-in graphical chat app. The only graphical chat surfaces mentioned are the console playground and the Mintlify 'Try it' page. Both run against the hosted production gateway, not local models, so they are adjacent at best and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16721,9 +16752,9 @@
     "productId": "runanywhere",
     "storyId": "cli-interactive-chat",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "RunAnywhere ships an official CLI (Wally) that documentation says runs models locally offline, and one command points a tool at a model and starts it. However, the evidence never explicitly describes an interactive chat session in the terminal; the terminal flow appears to work by launching a tool such as opencode against the model. Missing for 10: explicit documentation of an interactive terminal chat command (multi-turn REPL), detail on chat-session features, independent hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "RunAnywhere documents an official CLI (Wally) that runs models from the terminal, locally and offline without an account, and one command 'points a tool at a model and starts it'. However, the evidence never explicitly describes an interactive text chat REPL; the session appears to come from launching an integrated tool such as opencode. Community hands-on reports of crashes concern the separate rcli voice demo, so they are not treated as a concrete contradiction here. Missing for 10: explicit documentation of an interactive chat/REPL command, details of multi-turn session behavior in the terminal, independent hands-on corroboration of the Wally CLI chat flow.",
     "evidenceIds": [
       "runanywhere-docs-6",
       "runanywhere-docs-7",
@@ -16744,8 +16775,8 @@
           "quote": "One command points a tool at a model and starts it. There is nothing to configure by hand"
         },
         {
-          "evidenceId": "runanywhere-probe-3",
-          "quote": "official CLI documented at https://github.com/RunanywhereAI/wally/releases"
+          "evidenceId": "runanywhere-docs-16",
+          "quote": "`--cloud` is an `opencode` flag: it asks for the hosted model rather than one on this machine."
         }
       ]
     }
@@ -16756,7 +16787,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere ships an official CLI (Wally/rcli) that can run a local model offline and handle account commands such as `wally account whoami` and `wally account usage`. However, nothing in the evidence documents CLI commands to search, download, list or remove models. Model download with progress events is documented only as a Swift SDK API, which is a different surface from the command line, so it earns no credit here.",
+    "rationale": "RunAnywhere has an official CLI (Wally) that can run a small local model offline and start a tool against a model with one command, but no evidence shows CLI commands to search, download, list, or remove models. The download capability is documented only in the Swift SDK's `download`/`DownloadProgress` API, which is a programmatic building block rather than a CLI feature, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -16771,7 +16802,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere ships a CLI (Wally) that can run small local models offline, so this axis applies. However, no evidence documents command-line flags for GPU offload (layer count) or context length. The docs instead stress that there is \"nothing to configure by hand,\" and the only documented flag, `--cloud`, selects hosted versus local execution.",
+    "rationale": "RunAnywhere ships a CLI that can run small models locally. The evidence never mentions command-line flags for GPU layer offload or context length. The only documented flag is `--cloud`, and the integrations page says there is \"nothing to configure by hand\", so custom load settings from the CLI are unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -16784,9 +16815,9 @@
     "productId": "runanywhere",
     "storyId": "cli-server-control",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "The official Wally CLI runs a local model offline, and a single command points a tool at a model and starts it. That is first-party command-line launching of local models. Nothing documents a persistent local server process, a stop or shutdown command, or a local OpenAI-compatible endpoint; the only documented endpoint is Wally Cloud. Missing for 10: an explicit command to start a local model server, a documented stop/shutdown command, a documented local server endpoint, and independent hands-on corroboration.",
+    "rationale": "RunAnywhere's own CLI can run a local model offline and launch a tool against a model with one command. That implies it starts local model execution from the terminal, but the evidence never describes a local model server or a stop command, and one docs note says the on-device SDKs have no HTTP surface. missing for 10: an explicitly documented local server mode, a stop/shutdown command, server lifecycle and status management, and hands-on corroboration.",
     "evidenceIds": [
       "runanywhere-docs-6",
       "runanywhere-docs-7",
@@ -16818,10 +16849,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents its own SDKs: Swift and Kotlin, a React Native SDK that gives JavaScript developers an official library, and a C++ core with \"six thin bindings.\" No Python library is evidenced, and the OpenAI-compatible cloud endpoint relies on OpenAI's clients rather than RunAnywhere's, so it earns no credit here. Missing for 10: an evidenced official Python library, a plain JavaScript/Node (non-React-Native) client, a documented list of all six bindings, and independent hands-on corroboration of the SDKs.",
+    "rationale": "RunAnywhere documents its own SDKs: a Swift SDK, a Kotlin SDK, a React Native SDK (a JavaScript-ecosystem library), and 'six thin bindings' over one C++ core, so official client libraries do exist across languages. There is no evidence of an official Python library or a general JavaScript/Node library. The OpenAI-compatible endpoint relies on OpenAI's clients rather than RunAnywhere's own, so it earns no credit. Missing for 10: an official Python client library, a documented JavaScript/Node (non-React Native) library, a named list of the six bindings, and independent corroboration.",
     "evidenceIds": [
-      "runanywhere-docs-32",
       "runanywhere-docs-12",
+      "runanywhere-docs-32",
       "runanywhere-docs-3",
       "runanywhere-docs-8"
     ],
@@ -16831,12 +16862,12 @@
       "subject": "As a developer, I can call the runtime from official client libraries in languages like Python or JavaScript",
       "citations": [
         {
-          "evidenceId": "runanywhere-docs-32",
-          "quote": "The complete integration path for adding on-device LLM, STT, and TTS to a React Native app with the RunAnywhere SDK"
-        },
-        {
           "evidenceId": "runanywhere-docs-12",
           "quote": "One C++ core, six thin bindings."
+        },
+        {
+          "evidenceId": "runanywhere-docs-32",
+          "quote": "adding on-device LLM, STT, and TTS to a React Native app with the RunAnywhere SDK"
         },
         {
           "evidenceId": "runanywhere-docs-3",
@@ -16851,12 +16882,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Wally's CLI runs both local models (offline, no account) and RunAnywhere's own hosted Wally Cloud models through the same tools. An explicit `--cloud` flag switches between hosted and local execution. However, the only cloud backend evidenced is RunAnywhere's first-party hardware, not third-party cloud AI providers. Missing for 10: connecting third-party cloud providers (e.g., OpenAI or Anthropic keys) alongside local models, a single unified interface spanning multiple providers, and independent hands-on corroboration of the local/cloud switching.",
+    "rationale": "The Wally CLI runs local models offline and also lets users choose RunAnywhere's own hosted cloud models through the same tools, for example with the `--cloud` flag, so hosted and local execution share one interface. The only cloud backend evidenced is RunAnywhere's first-party hosted service, not third-party cloud AI providers. missing for 10: connecting third-party cloud providers (e.g., OpenAI or Anthropic keys) alongside local models, evidence of mixing providers within one session or UI, independent hands-on corroboration.",
     "evidenceIds": [
       "runanywhere-docs-13",
       "runanywhere-docs-6",
       "runanywhere-docs-16",
-      "runanywhere-docs-10"
+      "runanywhere-docs-10",
+      "runanywhere-docs-35"
     ],
     "support": {
       "relation": "direct",
@@ -16877,7 +16909,7 @@
         },
         {
           "evidenceId": "runanywhere-docs-10",
-          "quote": "Hosted and local execution are explicit choices."
+          "quote": "Hosted and local execution are explicit choices. Wally does not silently move a request between them."
         }
       ]
     }
@@ -16888,7 +16920,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Wally Cloud documents a hosted tier that runs models on RunAnywhere's hardware, so users can use models too large for a laptop with the same tools. Users select it explicitly with a `--cloud` flag or through an OpenAI-compatible endpoint, and Wally never silently routes requests between local and hosted. Missing for 10: an explicit statement that cloud use needs no local model download, a documented list of which large models are offered, and independent or hands-on corroboration of the cloud tier.",
+    "rationale": "Wally Cloud runs models on RunAnywhere's hardware rather than the user's, so users can run models too large for a laptop with the same tools. A `--cloud` flag explicitly selects the hosted model, and an OpenAI-compatible endpoint is available. Hosted execution is an explicit choice, never a silent fallback, which fits a user-initiated offload. missing for 10: an explicit statement that cloud use needs no local model download, a documented catalog or size range of the hosted large models, and independent hands-on corroboration of the cloud tier.",
     "evidenceIds": [
       "runanywhere-docs-13",
       "runanywhere-docs-16",
@@ -16912,10 +16944,6 @@
         {
           "evidenceId": "runanywhere-docs-10",
           "quote": "Hosted and local execution are explicit choices. Wally does not silently move a request between them."
-        },
-        {
-          "evidenceId": "runanywhere-docs-4",
-          "quote": "The endpoint is OpenAI-compatible, so the official OpenAI clients work by pointing `base_url` at it."
         }
       ]
     }
@@ -16926,45 +16954,34 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence confirms a hosted Wally Cloud tier and a `wally account usage` command that shows spend. Seeing spend is an adjacent feature, though: nothing documents pricing tiers, rate limits, or usage caps for hosted inference. With no direct evidence for the story, the verdict is none.",
-    "evidenceIds": [
-      "runanywhere-docs-11",
-      "runanywhere-docs-13"
-    ],
+    "rationale": "RunAnywhere does have a hosted cloud tier (Wally Cloud), so this question applies. The evidence pack never documents pricing tiers, rate limits or usage caps for it. The only related item is `wally account usage`, which shows what you have spent; that is an adjacent spend-reporting feature, not a statement of tiers, limits or caps.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a power-user, I know the pricing tiers, rate limits, and usage caps that apply when offloading inference to the vendor's hosted cloud tier",
-      "citations": [
-        {
-          "evidenceId": "runanywhere-docs-11",
-          "quote": "see what you have spent with `wally account usage`"
-        }
-      ]
+      "citations": []
     }
   },
   {
     "productId": "runanywhere",
     "storyId": "coding-agent-backend-integration",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "RunAnywhere's first-party docs show it can act as a coding-agent backend: an OpenAI-compatible endpoint accepts standard clients via `base_url`, a one-command integration points a tool at a model, and the docs reference opencode's `--cloud` flag for using the hosted model. The evidence is thin, however: it names only one agent and has no step-by-step coding-agent setup or hands-on confirmation, so coverage is partial rather than complete. Missing for 10: documented list or setup guides for supported coding agents beyond the single opencode flag reference, detail on agentic features (tool-calling/streaming) through the endpoint for coding workloads, and independent or hands-on corroboration of a coding agent running against it.",
+    "rationale": "RunAnywhere's Wally CLI documents a one-command integration that points a tool at a model and starts it. The opencode coding agent can use a `--cloud` flag to target RunAnywhere's hosted models instead of local ones, and the hosted endpoint is OpenAI-compatible, so agents built on OpenAI clients can use it as a backend. missing for 10: an enumerated list of supported coding agents beyond opencode, step-by-step per-agent setup docs, and independent hands-on corroboration of a coding agent running against it.",
     "evidenceIds": [
-      "runanywhere-docs-4",
       "runanywhere-docs-7",
       "runanywhere-docs-16",
-      "runanywhere-docs-13"
+      "runanywhere-docs-4",
+      "runanywhere-docs-13",
+      "runanywhere-docs-6"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can connect a coding agent to this product as a working backend",
       "citations": [
-        {
-          "evidenceId": "runanywhere-docs-4",
-          "quote": "The endpoint is OpenAI-compatible, so the official OpenAI clients work by pointing `base_url` at it."
-        },
         {
           "evidenceId": "runanywhere-docs-7",
           "quote": "One command points a tool at a model and starts it. There is nothing to configure by hand"
@@ -16972,6 +16989,10 @@
         {
           "evidenceId": "runanywhere-docs-16",
           "quote": "`--cloud` is an `opencode` flag: it asks for the hosted model rather than one on this machine."
+        },
+        {
+          "evidenceId": "runanywhere-docs-4",
+          "quote": "The endpoint is OpenAI-compatible, so the official OpenAI clients work by pointing `base_url` at it."
         },
         {
           "evidenceId": "runanywhere-docs-13",
@@ -16986,7 +17007,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes a C++ core with thin platform bindings, token streaming, and NPU/GPU acceleration. None of it documents cold-start latency, runtime binary size, or how quickly inference begins after launch, so the applicable axis is unevidenced. Streaming time-to-first-token and 'thin bindings' are adjacent claims, not cold-start evidence.",
+    "rationale": "Cold-start latency is a fair question for an on-device inference runtime, so the axis applies. The pack never documents startup time, model-load latency, or binary size. The \"one C++ core, six thin bindings\" claim describes cross-platform architecture, not cold-start speed, and streaming output addresses time-to-first-token after inference starts rather than startup.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17001,7 +17022,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Concurrency limits are a fair question for a local inference product: RunAnywhere runs models locally through its CLI and offers an OpenAI-compatible endpoint. However, no evidence documents a maximum number of concurrent requests or connections, or the point where throughput degrades. The community benchmarks only compare single-stream tokens per second and say nothing about concurrency.",
+    "rationale": "RunAnywhere runs models locally through its CLI and on-device SDKs, so a local-serving concurrency limit is a fair question to ask. However, nothing in the evidence documents a maximum number of concurrent requests or connections, or any point where throughput degrades. The only throughput figures are community tok/s benchmarks, and the OpenAI-compatible endpoint described is the hosted Wally cloud API, which says nothing about local concurrency.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17016,7 +17037,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere ships an inference runtime (a C++ core with SDK bindings and the Wally CLI), so asking whether it can run in a container is a fair question. However, nothing in the evidence mentions Docker, container images, or containerized deployment. The evidence covers on-device mobile SDKs, a local CLI and a hosted cloud endpoint, none of which show container support.",
+    "rationale": "Running an inference runtime inside a container is a fair question for an AI runtime/SDK, so the axis applies. The pack has no Docker image, container guide, or containerized deployment docs, only on-device SDKs, a local CLI, and a hosted cloud API, none of which is container support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17031,7 +17052,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere ships its own inference engine (MetalRT) and a hosted OpenAI-compatible endpoint, so serving throughput is a fair question for it. However, the evidence never mentions continuous batching, chunked prefill, or multi-request serving throughput. The tok/s benchmark comparison with uzu concerns single-model decode speed, not batched serving, and does not transfer to this story.",
+    "rationale": "RunAnywhere ships inference engines (on-device SDK, MetalRT) and a hosted OpenAI-compatible inference API, so serving throughput via continuous batching and chunked prefill is a fair question for it. The evidence pack never mentions continuous batching, chunked prefill, or multi-request serving throughput. The only performance evidence is single-stream tok/s benchmarks and NPU/kernel acceleration, which is a different capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17046,7 +17067,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device inference SDK, so CPU+GPU offload for oversized models is a fair question. The evidence does not document layer splitting or partial GPU offload. The only answer to 'models too large' is routing to hosted cloud hardware (docs-13), which is a different capability. Generic 'accelerated by whatever silicon' claims and NPU support do not describe offloading a model across CPU and GPU memory.",
+    "rationale": "RunAnywhere is an on-device inference SDK and CLI, so CPU+GPU layer offloading is a fair question to ask of it. Nothing in the evidence documents splitting a model between CPU and GPU memory to exceed VRAM. The only related item is hosted Wally Cloud execution for models too large for a laptop, which is a different capability (remote execution, not local offload) and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17061,7 +17082,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device inference SDK, so CPU-architecture coverage is a fair question for it. The evidence only names Apple Silicon (M3+), Snapdragon Hexagon NPUs and mobile platforms. Nothing documents support for PowerPC or any CPU architecture beyond x86 and ARM, and the generic \"whatever silicon the device has\" tagline does not establish it.",
+    "rationale": "RunAnywhere is an on-device inference SDK, so CPU-architecture coverage is a fair axis. The evidence only covers phones, Snapdragon Hexagon NPUs and Apple M3+ Metal GPUs, plus generic claims like \"whatever silicon the device has\". Nothing documents support for PowerPC or any CPU architecture beyond x86 and ARM.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17076,7 +17097,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only SDK primitives: a system prompt that 'sets the model's role and constraints,' tool registration, and a voice-session assembler. These are developer building blocks for constructing an assistant, not a documented feature for creating, saving and reusing task-specialized custom assistants. Nothing in the pack describes assistant profiles, presets or persistent configurations.",
+    "rationale": "RunAnywhere documents developer primitives that could be used to build a task-specific assistant: system prompts that set a model's role and constraints, tool registration, and a voice-agent session. However, nothing in the evidence shows a product feature for creating, saving or managing specialized custom assistants, and building blocks earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -17091,7 +17112,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Model aliasing is a fair axis here, since RunAnywhere has an OpenAI-compatible endpoint (docs-4) and a CLI that loads local models (docs-6, docs-7). However, no evidence shows a way to assign a custom identifier or alias to a loaded model for use in API calls. The pack covers model downloads, the endpoint and the CLI, but never model naming or aliasing.",
+    "rationale": "The evidence pack documents an OpenAI-compatible hosted endpoint and per-environment model ids, but nothing showing a developer can assign a custom identifier or alias to a loaded model and use it in API calls. Model ids appear to be fixed by RunAnywhere, and the SDK docs cover downloading and generating, not aliasing.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17106,7 +17127,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an inference engine with a hosted Wally Cloud serving option, so prefill/decode disaggregation for large-scale serving is a fair axis for it. Nothing in the evidence pack describes splitting prefill and decode phases or any related serving architecture. Cloud models running on RunAnywhere's hardware and the NPU and kernel optimizations are different capabilities and earn no credit here.",
+    "rationale": "RunAnywhere ships its own inference engines and a hosted cloud inference API, so serving-architecture optimizations are a fair question for it. However, nothing in the evidence mentions separating prefill and decode phases or any large-scale serving architecture. The hosted Wally docs cover only an OpenAI-compatible endpoint and running models on RunAnywhere's hardware.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17121,7 +17142,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an inference SDK and engine, so multi-GPU distribution is a fair question to ask of it. The evidence pack only documents on-device execution on whatever silicon the device has (e.g., the Hexagon NPU and Metal GPUs) and hosted cloud models. Nothing documents tensor, pipeline, or data parallelism across multiple GPUs.",
+    "rationale": "RunAnywhere is an inference runtime, with on-device SDKs and a hosted Wally cloud, so multi-GPU distribution is a fair question for it. The evidence pack never mentions tensor, pipeline, or data parallelism. The closest items are single-device acceleration (Hexagon NPU, Metal on M3) and hosted cloud models running on RunAnywhere's own hardware, neither of which is a developer-controlled multi-GPU capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17136,7 +17157,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents offline on-device LLM chat, streaming, tool calling and structured output. Nothing in the evidence covers document ingestion, embeddings, vector search, or automatic retrieval-augmented generation over a user's own files. Offline chat and tool calling are adjacent building blocks, not the RAG capability itself.",
+    "rationale": "RunAnywhere documents offline on-device LLM chat (ChatMessage conversations, no-network operation) and tool calling. Nothing in the pack mentions document ingestion, embeddings, vector search or automatic retrieval-augmented generation. Offline chat and tool calling are only building blocks a developer could use to build RAG, so they earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17151,7 +17172,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device and hosted model inference SDK, runtime and CLI. An integrated document-editing workspace with autosave falls outside that product category, and nothing in the evidence shows it ships any document workspace or editor.",
+    "rationale": "RunAnywhere is an on-device inference SDK and a hosted inference API/CLI (Wally), not a document-authoring product, so an agent-driven document workspace with autosave falls outside its category. The evidence shows no such workspace. The console playground only \"keeps your recent conversations,\" which is chat history, not document drafting with automatic saving.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17163,16 +17184,34 @@
   {
     "productId": "runanywhere",
     "storyId": "download-models-from-huggingface",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows RunAnywhere's SDK can download models with progress events and run them on-device. Nothing in the pack mentions Hugging Face or pulling arbitrary open models from it. A generic model-download feature is adjacent to the story, not the story itself, so it earns no credit.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "RunAnywhere's own SDK documents downloading models to the device, with detailed progress events, and running them on-device and offline. However, nothing in the evidence says those models come from Hugging Face or that users can pull arbitrary open models from there. missing for 10: any documented Hugging Face integration or repo/model-id download, support for arbitrary open-model choice and formats, independent hands-on corroboration.",
+    "evidenceIds": [
+      "runanywhere-docs-30",
+      "runanywhere-docs-9",
+      "runanywhere-docs-3",
+      "runanywhere-docs-6"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a power-user, I can download and run open models directly from Hugging Face",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "runanywhere-docs-30",
+          "quote": "`download` returns a stream of `DownloadEvent`. Models are hundreds of megabytes to several gigabytes, so show this rather than a spinner."
+        },
+        {
+          "evidenceId": "runanywhere-docs-3",
+          "quote": "The RunAnywhere Kotlin SDK runs language, speech, and vision models on the device."
+        },
+        {
+          "evidenceId": "runanywhere-docs-6",
+          "quote": "When a small model on your own machine is enough, the same CLI runs it, offline and without an account."
+        }
+      ]
     }
   },
   {
@@ -17181,7 +17220,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device and hosted model-serving SDK and platform, so serving embedding models is a fair axis for it. The evidence documents LLM, STT, TTS, VAD, diarization, VLM and image generation APIs, plus an OpenAI-compatible cloud endpoint. None of it mentions embedding models, an embeddings API, or retrieval/search use.",
+    "rationale": "Serving embedding models is a fair question for an on-device and hosted inference SDK, so the axis applies. However, the evidence covers only LLM generation, chat, structured output, tool calling, STT, TTS, VAD, diarization, VLM and image generation. Nothing mentions an embeddings API or embedding models for retrieval or search. The OpenAI-compatible hosted endpoint is documented only for chat completions and does not show embedding support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17196,7 +17235,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "No first-party evidence documents licensing terms, a free community edition, or whether commercial or enterprise use needs a paid license. The only signal is one community comment saying RCLI is MIT-licensed while the MetalRT engine is commercial, and that the repo is misleading about it. That is third-party, and it points to unclear licensing rather than a documented answer. Cloud usage billing is a different capability and does not transfer to this story.",
+    "rationale": "The evidence pack contains no first-party licensing, pricing, or edition documentation that says whether commercial or enterprise use needs a paid license. The only related item is a community comment that the CLI is MIT-licensed while the MetalRT engine is commercial. That is third-party commentary, not product documentation of license terms. Cloud usage tracking and account-free local use are adjacent features, not licensing clarity.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17211,7 +17250,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device inference SDK, so quantization formats are a fair question for it. However, no item in the evidence pack mentions integer quantization, bit-widths, or memory-footprint reduction. The docs cover model downloads, NPU acceleration, and kernel validation, but nothing about very-low-bit to 8-bit quantization options.",
+    "rationale": "Integer quantization is a fair axis for an on-device inference SDK like RunAnywhere. However, nothing in the evidence pack mentions quantization formats, bit-widths, or memory-footprint reduction. The only related material covers model download sizes, NPU and Metal acceleration, and kernel validation, none of which documents low-bit to 8-bit integer quantization.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17226,7 +17265,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device inference SDK that downloads model files, so runtime-to-model-file compatibility is a fair question for it. The evidence pack never addresses model-file format versioning, compatibility guarantees across runtime upgrades, or migration guidance. Download-progress and cross-platform-consistency docs are about different capabilities and earn no credit here.",
+    "rationale": "The evidence pack never documents compatibility between SDK or runtime versions and previously downloaded quantized model files. It has no format-versioning notes, migration guidance, or re-download requirements on upgrade. The only versioning evidence covers the hosted Wally API contract, and even there no changelog or deprecation policy exists, so it does not address on-device model file compatibility.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17241,7 +17280,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device model runtime SDK and CLI, so loading GGUF-packaged models is a fair question for it. However, nothing in the evidence pack mentions GGUF or any user-loadable model file format. The docs cover model downloads and generation APIs, and one community comment mentions a llama.cpp fallback, but neither says GGUF files can be loaded, so no credit can be given.",
+    "rationale": "RunAnywhere is an on-device inference SDK and CLI, so loading GGUF-packaged models is a fair question for it. However, no evidence item mentions the GGUF format or loading user-supplied quantized model files. The only nearby item is a community note about a planned llama.cpp fallback on M1/M2, which never names GGUF and does not show the product loading such files.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17256,7 +17295,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Hardware-fallback diagnostics are a fair question for an on-device inference SDK that claims to use \"whatever silicon the device has,\" so the axis applies. The evidence pack never documents logs, warnings or other output explaining why GPU or NPU acceleration failed or that a CPU fallback happened. The mention of M1/M2 falling back to llama.cpp describes an engine fallback, not diagnostics, and the \"no silent move\" claim concerns hosted versus local routing, a different axis.",
+    "rationale": "The evidence pack contains no documentation of diagnostic output, logs, or warnings explaining why GPU or NPU acceleration failed or that inference fell back to CPU. Hardware acceleration is mentioned (Hexagon NPU, \"whatever silicon the device has\"), and a community note says M1/M2 falls back to llama.cpp. Neither describes any reporting of the fallback or its cause. The \"no silent move\" claim covers hosted versus local routing, a different capability, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17271,11 +17310,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "RunAnywhere ships an official terminal CLI that can run local models offline and without an account, so it has a documented non-GUI execution path. Nothing in the evidence documents server or CI use, a headless daemon or serving mode, or non-interactive operation. The OpenAI-compatible endpoint is the hosted Wally Cloud service, and cloud auth depends on a browser sign-in. Missing for 10: explicit headless/server mode documentation, CI pipeline usage guidance, non-interactive (no-browser) auth for automated environments, supported server OS/hardware details, and independent hands-on corroboration.",
+    "rationale": "RunAnywhere documents its own CLI, which runs local models from the terminal offline and without an account, so a non-GUI runtime path exists. Nothing documents server or CI use, and the hosted path needs browser sign-in, which makes unattended pipelines harder. Missing for 10: explicit headless/server deployment docs, documented CI usage or non-interactive authentication, Linux/server platform support evidence, and hands-on corroboration of headless operation.",
     "evidenceIds": [
       "runanywhere-docs-6",
       "runanywhere-docs-14",
-      "runanywhere-probe-3"
+      "runanywhere-probe-3",
+      "runanywhere-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -17299,7 +17339,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere ships an on-device and hosted inference engine, so paged KV-cache memory management is a fair question to ask of it. Nothing in the evidence pack mentions paged attention, KV-cache paging, memory fragmentation handling, or concurrent request capacity. The only related items are NPU acceleration and kernel validation claims, which are adjacent features and earn no credit.",
+    "rationale": "RunAnywhere ships inference engines (MetalRT, a C++ core, and hosted Wally cloud inference), so KV-cache memory management is a fair question for this product. However, nothing in the evidence pack mentions paged attention, KV-cache paging, fragmentation handling, or concurrent-request capacity. The hardware-acceleration and benchmark claims are about a different capability and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17312,14 +17352,14 @@
     "productId": "runanywhere",
     "storyId": "local-voice-transcription",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The SDK documents a streaming speech-to-text handle that you feed frames to \"as the microphone produces them\", which is real-time transcription. The Kotlin docs state that speech models run on the device, with audio staying on the phone and working offline. A community comment notes the engine handles STT natively. Missing for 10: explicit documentation of incremental/partial transcript results and latency, an end-user dictation flow rather than an SDK primitive, and independent hands-on corroboration of on-device dictation quality.",
+    "rationale": "RunAnywhere documents a streaming STT API where you push microphone frames into a handle as audio is produced, and its SDK runs speech models on the device with audio kept local and working offline. That covers real-time dictation by an on-device model. Missing for 10: explicit documentation of interim/partial transcript results and latency, and independent hands-on corroboration of live on-device dictation quality.",
     "evidenceIds": [
       "runanywhere-docs-22",
-      "runanywhere-docs-21",
       "runanywhere-docs-3",
-      "runanywhere-gh-1",
+      "runanywhere-docs-21",
+      "runanywhere-docs-32",
       "runanywhere-comm-6"
     ],
     "support": {
@@ -17340,8 +17380,8 @@
           "quote": "`RunAnywhere.stt.transcribe` takes an `AudioInput` and returns a `Transcription`."
         },
         {
-          "evidenceId": "runanywhere-comm-6",
-          "quote": "MetalRT also handles STT and TTS natively"
+          "evidenceId": "runanywhere-docs-32",
+          "quote": "The complete integration path for adding on-device LLM, STT, and TTS to a React Native app with the RunAnywhere SDK"
         }
       ]
     }
@@ -17352,7 +17392,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Serving multiple LoRA adapters on a base model is a fair question for an on-device inference SDK and runtime like RunAnywhere, so the axis applies. However, nothing in the evidence pack mentions LoRA adapters, adapter loading or hot-swapping, or multi-adapter serving. The docs cover model downloads, streaming, tool calling, and NPU acceleration, none of which is this capability.",
+    "rationale": "RunAnywhere is an on-device and hosted inference SDK/runtime, so serving multiple LoRA adapters on a base model is a fair question for it. Nothing in the evidence pack mentions LoRA adapters, adapter loading or swapping, or multi-adapter serving. The pack covers tool calling, structured output, STT/TTS, NPU acceleration and an OpenAI-compatible cloud API, none of which addresses this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17367,7 +17407,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device inference SDK and CLI, so exposing low-level engine settings is a fair axis to judge. The evidence pack documents no way to override memory locking, mmap or similar engine parameters. The integrations docs instead stress that there is \"nothing to configure by hand,\" which points to opinionated defaults rather than power-user overrides.",
+    "rationale": "RunAnywhere is an on-device inference SDK and CLI, so exposing low-level engine knobs such as memory locking or mmap is a fair axis for it. The evidence pack documents no such overrides. The docs stress opinionated, zero-configuration setup instead (\"There is nothing to configure by hand\"), and the C++ core and MetalRT engine are described only at a high level, with no tunable parameters. Under the rules, absence of evidence for an applicable capability is \"none\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17382,7 +17422,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no information about patch cadence, security advisories, or how quickly critical bugs are fixed. A releases page URL exists for the Wally CLI, and community posts report bugs such as segfaults and a leaked API key, but nothing documents response or fix timing.",
+    "rationale": "Patch cadence is a fair question for an open-source SDK/CLI project, so the axis applies. The pack only shows that a GitHub releases page exists for the CLI and that no changelog or deprecation policy exists in the docs. Nothing describes how quickly critical bugs or security vulnerabilities are patched, and the community bug reports show no fix turnaround.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17397,7 +17437,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device inference SDK that downloads models, so whether those files and caches can be reused by other runtimes is a fair question. The evidence covers download events and progress reporting but never says where model files live, what format they use, or whether other runtimes can reuse them without re-downloading or re-converting. The mention of a llama.cpp fallback is about the engine, not file reuse, so it does not count.",
+    "rationale": "Cache and model-file reuse across runtimes is a fair question for an on-device inference SDK, so the axis applies. The evidence covers download progress and download events only, plus a fallback to llama.cpp on M1/M2. Nothing documents whether downloaded model files or caches can be shared with other runtimes without re-downloading or re-converting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17412,7 +17452,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows SDK download APIs with progress events and per-request system prompts. These are developer building blocks for fetching models and setting prompts. Nothing documents a single place where a user can manage downloaded models, saved prompts, and per-model configurations.",
+    "rationale": "The pack documents only SDK-level model download primitives (progress events and DownloadProgress fields). Those are developer building blocks, not a user-facing hub for managing downloaded models. Nothing in the evidence covers saved prompts or per-model configuration, and the console playground keeping recent conversations is an adjacent feature, not prompt management.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17427,7 +17467,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents an OpenAI-compatible endpoint, a CLI that runs a model, and a `--cloud` flag for choosing hosted execution. None of the evidence shows loading several models at once or hot-switching between them in a running server without a restart. The `--cloud` flag and one-command model start are adjacent features, not runtime multi-model switching.",
+    "rationale": "Model serving is a fair axis for RunAnywhere, which ships a local CLI and an OpenAI-compatible endpoint. However, nothing in the evidence documents loading several models at once or hot-swapping models in a running local server. The docs only say one command points a tool at a model and starts it, and the hosted API mentions per-request model ids, which is a managed cloud service rather than user-controlled model loading.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17442,7 +17482,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers model download progress, hardware-accelerated inference such as the Hexagon NPU and Metal, and explicit local-versus-cloud execution. None of it documents an AI assistant or tool that recommends a local model based on the user's hardware and task before download. Model selection guidance is a fair question for an on-device AI SDK/CLI, so the axis applies but is unevidenced.",
+    "rationale": "Nothing in the evidence shows RunAnywhere or its CLI recommending which local model fits a user's hardware and task before download. The docs cover download progress reporting, hardware acceleration (Hexagon NPU, M3 requirement) and a cloud option for models too large for a laptop. These are adjacent features, not a pre-download model recommendation assistant.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17457,7 +17497,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Quantization-format support is a fair question for an on-device inference SDK like RunAnywhere, so the axis applies. However, nothing in the evidence pack mentions FP8, INT4, GPTQ, AWQ, or any other quantized model format. The 'detects the format the model expects' line concerns tool-calling formats, not weight quantization, so it earns no credit.",
+    "rationale": "RunAnywhere is an on-device inference SDK and engine, so the ability to load quantized models is a fair question to ask of it. The evidence pack never mentions FP8, INT4, GPTQ, AWQ or any other quantization format. It covers model downloads, NPU acceleration, kernel validation and a llama.cpp fallback, but none of that documents which quantized weight formats the product can load.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17472,7 +17512,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents on-device inference, NPU acceleration, and hosted cloud models that run on RunAnywhere's hardware. Nothing describes reserved or dedicated capacity, concurrency handling, or steady throughput across multiple agents or sessions. Running cloud models on vendor hardware is not the same as reserving capacity, so the axis applies but is unevidenced.",
+    "rationale": "Concurrent-throughput guarantees are a fair question for an inference runtime, but nothing in the evidence describes reserved or dedicated capacity, concurrency handling, or steady throughput across multiple agents or sessions. The closest item says hosted models run on RunAnywhere's hardware, which is about where inference executes, not about capacity reservation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17487,7 +17527,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device inference SDK and runtime, so controlling context or KV memory allocation across concurrent model instances is a fair question for it. However, nothing in the evidence pack documents context-size settings, memory budgets, or running multiple model instances at once. Hardware-acceleration claims (NPU, Metal) and download-progress details are adjacent features, not memory-allocation controls.",
+    "rationale": "RunAnywhere is an on-device inference SDK/CLI. Controlling context memory allocation across concurrent model instances is a fair performance axis for this kind of product. However, nothing in the evidence pack documents context-size settings, KV-cache or memory budgets, or running multiple model instances concurrently. The hardware-acceleration and NPU items cover other features and say nothing about memory allocation.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17500,15 +17540,14 @@
     "productId": "runanywhere",
     "storyId": "multi-vendor-gpu-support",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents vendor-specific acceleration on Apple and Qualcomm silicon: the MetalRT engine uses Metal 3.1 GPU features on M3 and later, inference runs on the Hexagon NPU on Snapdragon, and the NeuRT pipeline validates kernels against the silicon they run on. Nothing in the evidence shows NVIDIA or AMD GPU support, and MetalRT is limited to M3 or later, with M1/M2 falling back to llama.cpp. Missing for 10: NVIDIA (CUDA) kernel support, AMD (ROCm) kernel support, broader GPU-vendor coverage beyond Apple Metal and Qualcomm Hexagon, independent benchmarks across vendors.",
+    "rationale": "The evidence shows vendor-specific acceleration only for Apple silicon (MetalRT, which uses Metal 3.1 GPU features and requires M3 or later) and Qualcomm Hexagon NPUs. There is also a general claim of a kernel pipeline that validates kernels against the target silicon. Nothing documents NVIDIA or AMD GPU support, so the multi-vendor GPU core of the story is mostly unevidenced. Missing for 10: NVIDIA (CUDA) GPU kernels, AMD (ROCm) GPU kernels, documented GPU vendor coverage matrix, and Apple M1/M2 GPU acceleration (currently falls back to llama.cpp).",
     "evidenceIds": [
-      "runanywhere-docs-17",
-      "runanywhere-docs-33",
       "runanywhere-comm-13",
+      "runanywhere-docs-33",
       "runanywhere-gh-1",
-      "runanywhere-docs-34"
+      "runanywhere-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -17516,16 +17555,16 @@
       "subject": "As a power-user, I can run models on NVIDIA, AMD, or other GPU vendors using vendor-specific acceleration kernels",
       "citations": [
         {
-          "evidenceId": "runanywhere-docs-17",
-          "quote": "On Snapdragon hardware it runs on the Hexagon NPU."
+          "evidenceId": "runanywhere-comm-13",
+          "quote": "MetalRT uses Metal 3.1 GPU features available on M3, M3 Pro, M3 Max, M4, and later chips."
         },
         {
           "evidenceId": "runanywhere-docs-33",
           "quote": "An agentic kernel pipeline generates, compiles, and **validates every kernel against the silicon it runs on**."
         },
         {
-          "evidenceId": "runanywhere-comm-13",
-          "quote": "MetalRT uses Metal 3.1 GPU features available on M3, M3 Pro, M3 Max, M4, and later chips."
+          "evidenceId": "runanywhere-gh-1",
+          "quote": "Accelerated by whatever silicon the device has."
         }
       ]
     }
@@ -17536,7 +17575,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Serving models to other devices is a fair question for a local-inference SDK and CLI, so the axis applies. However, nothing in the evidence shows RunAnywhere exposing a local model as a server reachable over the LAN. The only OpenAI-compatible endpoint documented is the hosted Wally Cloud API, and the local CLI docs describe running a model on the same machine, not serving it to other devices.",
+    "rationale": "Serving models over the local network is a fair question for a local-inference CLI and SDK, so the axis applies. The only documented OpenAI-compatible HTTP endpoint is the hosted Wally cloud API, and the docs state the on-device SDKs have no HTTP surface. Nothing shows a local server that other devices on the network can reach.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17548,18 +17587,19 @@
   {
     "productId": "runanywhere",
     "storyId": "one-command-agent-launch",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Wally's integrations docs say a single command points a tool at a model and starts it with no manual configuration. The `opencode` flag documentation shows that a third-party coding agent defaults to a model on this machine unless `--cloud` is passed, and the same CLI runs local models offline. However, only one agent (opencode) is evidenced, there is no list of supported popular agent CLIs, and nothing independent confirms the launch flow works. missing for 10: documentation of multiple popular third-party coding agent CLIs beyond opencode, an explicit list of supported integrations with their exact launch commands, independent or hands-on corroboration of the one-command local-model launch.",
+    "rationale": "RunAnywhere's Wally CLI documents an integrations feature where one command points a tool at a model and starts it with nothing to configure by hand. opencode is named as a launched tool that defaults to an on-machine model unless `--cloud` is passed, and the same CLI runs local models offline without an account. missing for 10: an enumerated list of supported third-party coding agents beyond opencode, detailed per-agent setup docs, independent hands-on corroboration of the launch flow.",
     "evidenceIds": [
       "runanywhere-docs-7",
       "runanywhere-docs-16",
-      "runanywhere-docs-6"
+      "runanywhere-docs-6",
+      "runanywhere-probe-3"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can launch popular third-party coding agent CLIs pre-configured to use my local models with a single command",
       "citations": [
         {
@@ -17583,7 +17623,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a public GitHub repository (runanywhere-gh-1), and a community comment says the RCLI repo is MIT-licensed (runanywhere-comm-10). Nothing documents a contribution process: no contributing guide, pull-request or review workflow, or path to collaborator recognition. A public repo and an open-source license are adjacent signals, not the capability the story asks for, so the verdict is none.",
+    "rationale": "The evidence shows a public GitHub repository and a community note that the RCLI is MIT-licensed. Nothing documents a contribution process: no contributing guide, PR review workflow, or contributor recognition. An open license and a public repo alone don't show that developers can contribute code and become recognized collaborators.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17598,7 +17638,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only OpenAI-compatible endpoint in the evidence is the hosted Wally Cloud API (docs-4, under wally-cloud), which runs on RunAnywhere's hardware rather than locally. The local CLI evidence (docs-6, docs-7) shows running a model offline and pointing tools at it, but never documents a local OpenAI-compatible server for loaded models. The serving axis applies to this kind of product, so the lack of evidence makes this none.",
+    "rationale": "The only documented OpenAI-compatible endpoint is the hosted Wally cloud API at inference.runanywhere.ai; the docs state the on-device SDKs have no HTTP surface. Local CLI execution and one-command tool integrations are documented, but no local API server is, so a hosted endpoint is an adjacent capability and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17612,22 +17652,26 @@
     "storyId": "openness-api-parity",
     "verdict": "partial",
     "quality": 5,
-    "confidence": "low",
-    "rationale": "RunAnywhere is SDK- and CLI-first. It documents programmatic APIs for LLM generation and streaming, chat, tool calling, structured output, STT, TTS, VAD, voice agents, VLM, image generation and model downloads, plus an OpenAI-compatible cloud endpoint and CLI account and usage commands. It never documents explicit API/UI parity, cloud authentication relies on an interactive browser approval step, and probes found no OpenAPI spec. missing for 10: an explicit parity claim or comparison of UI vs API, a non-browser programmatic auth/account-management path, a published OpenAPI spec, independent corroboration.",
+    "confidence": "medium",
+    "rationale": "RunAnywhere is largely programmatic. Its on-device SDKs expose LLM, STT, TTS, VLM, image and model-download functions, and the hosted Wally inference API is OpenAI-compatible with a published OpenAPI 3.1.0 spec. However, nothing documents parity with the console UI: the playground keeps recent conversations with no documented API equivalent, sign-in requires browser approval, and account and usage checks are shown only via CLI. missing for 10: documented API parity with console features (conversation history, key/entitlement management), a non-browser programmatic auth path, an account/usage API beyond the CLI, independent corroboration.",
     "evidenceIds": [
+      "runanywhere-openapi-20261106",
       "runanywhere-docs-4",
       "runanywhere-docs-11",
-      "runanywhere-docs-26",
+      "runanywhere-docs-5",
+      "runanywhere-contract-20261106",
       "runanywhere-docs-29",
-      "runanywhere-docs-30",
-      "runanywhere-docs-15",
-      "runanywhere-probe-2"
+      "runanywhere-docs-30"
     ],
     "support": {
       "relation": "direct",
       "coverage": "partial",
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
+        {
+          "evidenceId": "runanywhere-openapi-20261106",
+          "quote": "RunAnywhere publishes a downloadable OpenAPI 3.1.0 document for its hosted inference API"
+        },
         {
           "evidenceId": "runanywhere-docs-4",
           "quote": "The endpoint is OpenAI-compatible, so the official OpenAI clients work by pointing `base_url` at it."
@@ -17637,16 +17681,8 @@
           "quote": "Check it with `wally account whoami`, and see what you have spent with `wally account usage`."
         },
         {
-          "evidenceId": "runanywhere-docs-26",
-          "quote": "`RunAnywhere.voice` assembles speech-to-text, a language model, and text-to-speech into one session that listens, thinks, and answers out loud."
-        },
-        {
           "evidenceId": "runanywhere-docs-29",
           "quote": "`RunAnywhere.images` generates an image from a prompt."
-        },
-        {
-          "evidenceId": "runanywhere-docs-30",
-          "quote": "`download` returns a stream of `DownloadEvent`."
         }
       ]
     }
@@ -17657,7 +17693,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere has user accounts and a hosted cloud (Wally Cloud), so a data-export-and-leave story is a fair question for it. The evidence documents on-device processing (data stays on the phone) and an OpenAI-compatible endpoint. Neither is an export capability; both are adjacent features. Nothing in the pack describes exporting account data or history in open formats.",
+    "rationale": "RunAnywhere has user accounts and a hosted console playground that \"keeps your recent conversations,\" so data export and leaving is a fair question for this product. The pack documents no data-export feature, open export format, or account-deletion path. On-device execution and the OpenAI-compatible endpoint concern where inference runs and API portability, not exporting a user's stored data, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17672,10 +17708,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "A community report says the RCLI component is MIT-licensed, so some source is readable under an open license. The same report and another commenter say the core inference engine, MetalRT, is proprietary or commercial, so the product is only partly open. Missing for 10: first-party documentation of license terms, confirmation of which repositories (such as the runanywhere-sdks C++ core and bindings) are open-licensed, and open source for the MetalRT engine.",
+    "rationale": "A community report confirms the RCLI repo is MIT-licensed, and a public GitHub SDK repo exists, so some source is readable under an open license. The same report and another comment say the MetalRT inference engine is commercial and proprietary, so the openness is incomplete. Missing for 10: first-party license documentation for the SDK repo, open source for the core inference engine (MetalRT), and a clear statement of which components are open.",
     "evidenceIds": [
       "runanywhere-comm-10",
-      "runanywhere-comm-5"
+      "runanywhere-comm-5",
+      "runanywhere-gh-1"
     ],
     "support": {
       "relation": "direct",
@@ -17684,11 +17721,11 @@
       "citations": [
         {
           "evidenceId": "runanywhere-comm-10",
-          "quote": "FWIW this RCLI is only MIT license but their engine MetalRT is commercial."
+          "quote": "this RCLI is only MIT license but their engine MetalRT is commercial"
         },
         {
           "evidenceId": "runanywhere-comm-5",
-          "quote": "it's better to use open source uzu than RunAnywhere's proprietary inference engine."
+          "quote": "RunAnywhere's proprietary inference engine"
         }
       ]
     }
@@ -17699,13 +17736,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "RunAnywhere's own SDK and CLI run models entirely on the user's hardware, offline and without an account, so the on-device core needs no vendor infrastructure. The evidence does not show a way to self-host the hosted Wally Cloud / OpenAI-compatible endpoint, and community notes that the MetalRT engine is commercial limit how open the self-hosted stack is. Missing for 10: documented self-hosted server deployment of the hosted/Cloud endpoint, self-hosting install and ops docs, independent corroboration of a fully self-run deployment.",
+    "rationale": "RunAnywhere's own SDK and Wally CLI run models entirely on the user's hardware, offline and without an account, so the local runtime is effectively self-hostable. Nothing documents self-hosting the hosted Wally cloud inference service or gateway, which runs on RunAnywhere's hardware, and community reports note the MetalRT engine is commercial rather than open. Missing for 10: a documented self-hosted deployment of the hosted inference/API service, self-hosting docs or a deployment guide, and an openly available core engine.",
     "evidenceIds": [
-      "runanywhere-docs-3",
       "runanywhere-docs-6",
-      "runanywhere-docs-14",
+      "runanywhere-docs-3",
       "runanywhere-gh-1",
-      "runanywhere-docs-10",
       "runanywhere-docs-13",
       "runanywhere-comm-10"
     ],
@@ -17715,12 +17750,12 @@
       "subject": "As an AI-native user, I can self-host the core product",
       "citations": [
         {
-          "evidenceId": "runanywhere-docs-3",
-          "quote": "Prompts, audio, and images stay on the phone, and everything keeps working with no network."
-        },
-        {
           "evidenceId": "runanywhere-docs-6",
           "quote": "When a small model on your own machine is enough, the same CLI runs it, offline and without an account."
+        },
+        {
+          "evidenceId": "runanywhere-docs-3",
+          "quote": "The RunAnywhere Kotlin SDK runs language, speech, and vision models on the device. Prompts, audio, and images stay on the phone, and everything keeps working with no network."
         },
         {
           "evidenceId": "runanywhere-gh-1",
@@ -17735,11 +17770,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Hands-on community reports show a Homebrew install path exists for the rcli tool. One user says 'not everything loads properly when installed via homebrew', another notes the install script itself installs Brew, and others report the install failed outright, so a quick, clean package-manager install is not demonstrated. missing for 10: first-party install documentation naming a standard package manager (brew/npm/pip/SPM/Gradle), evidence the install completes quickly and reliably, package-manager coverage for the SDK bindings.",
+    "rationale": "The only evidence that RunAnywhere installs through a standard package manager comes from community reports, which mention a Homebrew install path for rcli. Those same reports say the install is unreliable: not everything loads properly via Homebrew, and the install script itself installs Brew. Missing for 10: first-party install docs for any package manager (Homebrew, SPM, Gradle/Maven, npm), SDK package coordinates, evidence that installation is quick and reliable, and independent confirmation of a working install.",
     "evidenceIds": [
       "runanywhere-comm-4",
-      "runanywhere-comm-9",
-      "runanywhere-comm-14"
+      "runanywhere-comm-9"
     ],
     "support": {
       "relation": "direct",
@@ -17763,11 +17797,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Hands-on community reports show the rcli tool can be installed through Homebrew and via an install script. A probe points to an official CLI on a GitHub releases page, which suggests prebuilt distribution. However, the first-party docs never describe package-based installs, and users report Homebrew installs not loading everything and segfaulting. Missing for 10: first-party install documentation for packages or binaries (Homebrew, releases, SDK package managers), confirmation that the release assets are prebuilt binaries, and reliable install outcomes across methods.",
+    "rationale": "The evidence points to prebuilt distribution: the official CLI is published via GitHub releases, and hands-on users installed rcli through Homebrew and an install script, so compiling from source is not required. However, no first-party docs in the pack describe the install channels or SDK package-manager artifacts. Hands-on reports also say not everything loads properly when installed via Homebrew and that the install methods tried did not work. Missing for 10: first-party install docs for prebuilt binaries/packages, documented SDK package-manager distribution, platform coverage of binaries, reliable working Homebrew/script installs.",
     "evidenceIds": [
+      "runanywhere-probe-3",
       "runanywhere-comm-4",
       "runanywhere-comm-9",
-      "runanywhere-probe-3",
       "runanywhere-comm-14"
     ],
     "support": {
@@ -17776,12 +17810,12 @@
       "subject": "As a developer, I can install using prebuilt binaries or packages instead of compiling from source",
       "citations": [
         {
-          "evidenceId": "runanywhere-comm-4",
-          "quote": "installed via homebrew"
-        },
-        {
           "evidenceId": "runanywhere-probe-3",
           "quote": "official CLI documented at https://github.com/RunanywhereAI/wally/releases"
+        },
+        {
+          "evidenceId": "runanywhere-comm-4",
+          "quote": "not everything loads properly when installed via homebrew"
         }
       ]
     }
@@ -17792,7 +17826,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Prefix caching is a fair performance question for an on-device inference SDK and engine, so the axis applies. Nothing in the evidence pack mentions prefix, prompt, or KV caching for repeated prompts. System prompts, chat history, NPU acceleration and throughput benchmarks are adjacent features and earn no credit for this story.",
+    "rationale": "Prefix caching is a fair performance axis for an inference SDK and hosted API, but nothing in the evidence pack mentions prefix caching, KV-cache reuse, or prompt caching. System prompts and chat history are documented, but they do not show cached prefix reuse or any speedup for repeated prompts.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17804,38 +17838,16 @@
   {
     "productId": "runanywhere",
     "storyId": "privacy-data-residency",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere lets the user decide where data lives by choosing explicitly between on-device execution, where prompts, audio and images stay on the device, and hosted Wally Cloud. It does not silently move requests between them, which is a real, product-owned residency choice at the device-versus-cloud level. Missing for 10: selecting a geographic region or data-residency location for hosted/cloud data, documented storage and retention locations for cloud requests, and independent corroboration of the residency controls.",
-    "evidenceIds": [
-      "runanywhere-docs-3",
-      "runanywhere-docs-10",
-      "runanywhere-docs-35",
-      "runanywhere-docs-16"
-    ],
+    "rationale": "The evidence shows RunAnywhere processes data on-device and treats local versus hosted execution as an explicit choice. That is a related privacy control, not a documented way to pick a storage region or data-residency location. Nothing in the pack describes region selection or residency guarantees for the hosted Wally cloud, so the region/residency capability itself is unevidenced.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "adjacent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
-      "citations": [
-        {
-          "evidenceId": "runanywhere-docs-3",
-          "quote": "Prompts, audio, and images stay on the phone, and everything keeps working with no network."
-        },
-        {
-          "evidenceId": "runanywhere-docs-10",
-          "quote": "Hosted and local execution are explicit choices. Wally does not silently move a request between them."
-        },
-        {
-          "evidenceId": "runanywhere-docs-35",
-          "quote": "A request only leaves your machine _when you say so_."
-        },
-        {
-          "evidenceId": "runanywhere-docs-16",
-          "quote": "`--cloud` is an `opencode` flag: it asks for the hosted model rather than one on this machine."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -17844,7 +17856,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "RunAnywhere's own on-device architecture keeps prompts, audio and images on the device. Hosted execution happens only when the user explicitly chooses it, so local-mode data never reaches the vendor and cannot be trained on. This is inferred from data locality, not stated as a training policy: the docs never address training use, and nothing covers what happens to data sent to Wally Cloud. Missing for 10: explicit no-training policy or opt-out control, training-use terms for Wally Cloud hosted requests, independent verification beyond a single community 'no data is collected' reply.",
+    "rationale": "RunAnywhere's own documented on-device execution keeps prompts, audio and images on the phone and works offline without an account. Hosted execution happens only when the user explicitly asks for it, so local use keeps data out of any training pipeline. However, no statement anywhere addresses model training on user data, and the hosted Wally cloud path has no documented training opt-out or data-use policy. Missing for 10: an explicit no-training or data-use policy, a training opt-out control for hosted/cloud requests, and independent verification of the data-handling claims.",
     "evidenceIds": [
       "runanywhere-docs-3",
       "runanywhere-docs-35",
@@ -17866,10 +17878,6 @@
           "quote": "A request only leaves your machine _when you say so_."
         },
         {
-          "evidenceId": "runanywhere-docs-10",
-          "quote": "Hosted and local execution are explicit choices. Wally does not silently move a request between them."
-        },
-        {
           "evidenceId": "runanywhere-gh-1",
           "quote": "Private by default. Offline by design."
         },
@@ -17886,10 +17894,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows on-device processing where prompts, audio and images stay on the phone, and hosted execution is opt-in. Those are privacy postures, not user controls over data retention or deletion. No documented retention settings, retention policy for Wally Cloud requests, or deletion mechanism appears in the pack, so this applicable axis is unevidenced.",
+    "rationale": "The evidence shows on-device execution where prompts, audio and images stay on the phone, and it shows hosted execution is an explicit choice. These are privacy-by-locality properties, not user controls over retention or deletion. The only retention-related detail is that the Wally console playground \"keeps your recent conversations,\" and no setting to limit, export or delete that data is documented.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can control data retention and deletion",
       "citations": []
@@ -17901,7 +17909,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no telemetry or usage-tracking opt-out control, such as a setting, environment variable or flag, for the SDK or the Wally CLI. The docs cover on-device inference keeping prompts local and offline use without an account, but these concern where inference runs, not disabling telemetry. A single community reply says \"no data is collected\", but it is unverified and is not documented product capability, so it earns no credit.",
+    "rationale": "The evidence pack documents no telemetry or usage-tracking opt-out control: no flag, setting, or environment variable to disable data collection. The 'private by default / offline' positioning and an unverified HN reply saying 'no data is collected' describe a privacy posture, not a documented opt-out mechanism. The hosted Wally cloud explicitly tracks usage (`wally account usage`), and nothing shows that tracking can be disabled.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17914,14 +17922,14 @@
     "productId": "runanywhere",
     "storyId": "private-local-inference-guarantee",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "medium",
-    "rationale": "First-party docs state that the SDK runs language, speech and vision models on the device, that prompts, audio and images stay local and work with no network, and that the CLI runs local models offline and without an account. Hosted execution is an explicit opt-in that never happens silently. Missing for 10: independent verification of no network egress or telemetry (the 'no data collected' claim appears to come from the project itself), and clear documentation of hardware limits for local inference (e.g. the M3+ requirement for MetalRT).",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "RunAnywhere's own docs say its SDK runs language, speech, and vision models on the device, with prompts, audio, and images staying on the phone and no network needed. They also say the CLI runs local models offline without an account, and that hosted execution happens only when explicitly chosen. A community reply in the Hacker News thread corroborates that it is fully local with no data collected; install and segfault bug reports concern reliability, not where data goes. missing for 10: independent hands-on verification of no network egress or telemetry.",
     "evidenceIds": [
       "runanywhere-docs-3",
       "runanywhere-docs-6",
-      "runanywhere-docs-35",
       "runanywhere-docs-10",
+      "runanywhere-docs-35",
       "runanywhere-gh-1",
       "runanywhere-comm-2"
     ],
@@ -17947,8 +17955,8 @@
           "quote": "Hosted and local execution are explicit choices. Wally does not silently move a request between them."
         },
         {
-          "evidenceId": "runanywhere-gh-1",
-          "quote": "Private by default. Offline by design."
+          "evidenceId": "runanywhere-comm-2",
+          "quote": "Fully local - no data is collected!!"
         }
       ]
     }
@@ -17959,7 +17967,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Speculative decoding is a fair performance axis for an on-device inference SDK and engine, but nothing in the evidence mentions speculative decoding, draft models or similar techniques. The hardware acceleration claims (Hexagon NPU, silicon-validated kernels, MetalRT throughput benchmarks) are adjacent performance features, not speculative decoding, so they earn no credit.",
+    "rationale": "Speculative decoding is a fair performance axis for an on-device LLM inference SDK, but nothing in the evidence mentions it (no draft models, no lookahead or assisted decoding). The pack only covers adjacent acceleration: Hexagon NPU execution, silicon-validated kernels and MetalRT benchmarks. Those are different techniques and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -17974,7 +17982,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "RunAnywhere's own SDK documents `RunAnywhere.llm.generateStream`, with a quickstart example that iterates `.token` events and prints each token as it arrives. A dedicated streaming page recommends it 'for anything a person is waiting on', so the product directly delivers token streaming to the app. Missing for 10: independent or hands-on corroboration of token streaming, explicit documentation of streaming on the OpenAI-compatible cloud endpoint and on non-Swift bindings, and detail on stream lifecycle such as cancellation and completion events.",
+    "rationale": "The SDK documents a dedicated streaming API. The quickstart shows `RunAnywhere.llm.generateStream` yielding `.token` events that the app consumes as they arrive, and a stream page recommends it for latency-sensitive use. Evidence is first-party only and centred on the Swift SDK. missing for 10: explicit documentation of token streaming (e.g. SSE/`stream: true`) on the hosted OpenAI-compatible API, independent or hands-on corroboration of streaming behaviour.",
     "evidenceIds": [
       "runanywhere-docs-8",
       "runanywhere-docs-18"
@@ -18001,7 +18009,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "RunAnywhere's Swift SDK documents `generateStructured`, which validates model output against a schema and can repair it. That is a first-party structured-output capability, but the evidence describes checking and repairing output after generation, not grammar-constrained decoding as the story asks. missing for 10: grammar-based constrained decoding (e.g. GBNF or JSON-schema-guided sampling), explicit JSON format guarantees, coverage beyond the Swift SDK or via the OpenAI-compatible endpoint, independent or hands-on corroboration.",
+    "rationale": "The Swift SDK documents `generateStructured`, which validates model output against a schema and can repair it, so the product does have its own structured-output feature. However, the evidence describes checking and fixing output after generation, not constraining decoding with grammars. Missing for 10: evidence of grammar-based (e.g., GBNF/JSON-schema-constrained) decoding, coverage beyond the Swift SDK and for the hosted API, detailed docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "runanywhere-docs-2"
     ],
@@ -18021,13 +18029,12 @@
     "productId": "runanywhere",
     "storyId": "tool-calling-support",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents native tool-calling in its SDK: you register tools, and the SDK runs the call-and-execute loop and detects the tool format the model expects. A community reply also confirms the product does tool calling with small models. Nothing in the pack covers reasoning-parser support, and the OpenAI-compatible endpoint is not documented as accepting tool or reasoning parameters. missing for 10: reasoning-parser support, tool-calling documented on the serving API/OpenAI-compatible endpoint, independent hands-on corroboration of tool-call reliability.",
+    "rationale": "The Swift SDK documents native tool calling: you register tools, and the SDK runs the call-and-execute loop and detects the model's expected tool format. Nothing in the pack covers reasoning-parser support, or tools and reasoning fields on the OpenAI-compatible hosted request API. missing for 10: reasoning-parser support, tool-calling parameters documented on the hosted /v1 chat completion requests, independent hands-on corroboration of tool-call reliability.",
     "evidenceIds": [
       "runanywhere-docs-1",
-      "runanywhere-docs-4",
-      "runanywhere-comm-8"
+      "runanywhere-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -18037,10 +18044,6 @@
         {
           "evidenceId": "runanywhere-docs-1",
           "quote": "Register a tool and the function that runs it. The SDK owns the call-and-execute loop and detects the format the model expects."
-        },
-        {
-          "evidenceId": "runanywhere-comm-8",
-          "quote": "This is a known limitation with small LLMs (0.6B-1.2B) doing tool calling."
         }
       ]
     }
@@ -18051,7 +18054,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "RunAnywhere documents a dedicated VLM API (`RunAnywhere.vlm`) that takes an image together with a text prompt. The Kotlin SDK docs also state that vision models run on-device with images kept on the phone. missing for 10: documentation of which VLMs are supported and of output or streaming behaviour, cross-platform VLM detail beyond Swift and Kotlin, and independent or hands-on corroboration.",
+    "rationale": "RunAnywhere documents a dedicated VLM API, `RunAnywhere.vlm`, that takes an image together with a text prompt. The Kotlin SDK also states that vision models run on-device, with images staying on the phone, so this is a first-party capability that delivers the core of the story. Missing for 10: a list of supported vision-language models, in-depth VLM docs beyond a one-line description, and independent or hands-on corroboration that image understanding works in practice.",
     "evidenceIds": [
       "runanywhere-docs-28",
       "runanywhere-docs-3"
@@ -18078,7 +18081,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device inference SDK and CLI, so AMD GPU acceleration through Vulkan is a fair axis for it. The evidence only documents Qualcomm Hexagon NPU and Apple Metal (MetalRT) acceleration, plus a generic 'whatever silicon the device has' slogan. Nothing mentions a Vulkan backend, AMD GPUs, or running without ROCm.",
+    "rationale": "RunAnywhere is an on-device inference SDK and CLI, so hardware acceleration backends are a fair axis. However, the evidence only documents Snapdragon Hexagon NPU support and Apple Metal (MetalRT, with a llama.cpp fallback). Nothing mentions AMD GPUs, a Vulkan backend, or running without ROCm, and the generic \"accelerated by whatever silicon\" tagline does not establish this specific capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -18093,7 +18096,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RunAnywhere is an on-device inference SDK, so CPU instruction-set acceleration is a fair axis to judge. The evidence only names Qualcomm Hexagon NPU and Apple Metal acceleration, plus generic claims about using 'whatever silicon the device has' and validating kernels against the silicon. Nothing documents AVX, AVX2, AVX512, AMX or any x86 CPU optimization.",
+    "rationale": "RunAnywhere is an on-device inference SDK and CLI, so x86 CPU instruction-set acceleration is a fair question for it. However, the evidence only documents acceleration on Qualcomm Hexagon NPUs and Apple Metal GPUs, plus a generic claim of being 'accelerated by whatever silicon the device has'. Nothing mentions AVX, AVX2, AVX512, AMX, or x86 CPU kernels, so this is absence of evidence for an applicable axis.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

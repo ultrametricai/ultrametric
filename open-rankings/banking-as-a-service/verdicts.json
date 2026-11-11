@@ -7076,14 +7076,14 @@
     "productId": "unit",
     "storyId": "account-opening-api",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Unit's own docs say developers can create deposit accounts on its platform and build directly on it using APIs, so the core capability is first-party. Beyond that, the evidence is thin marketing copy. missing for 10: evidence that the accounts are FDIC-insured, a documented application-to-active-account API flow (customer application, KYC, approval), a sandbox environment with parity to production, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Unit documents creating deposit accounts through its APIs, and it has a strong sandbox that it describes as a full replica of production with identical endpoints, so the flow can be tested end-to-end before launch. The evidence does not show the application/KYC-to-active-account flow being fully programmatic, and it never mentions deposit insurance (the accounts are described only as held in FBO structures). Missing for 10: documented customer application/onboarding-to-active-account API flow, evidence of FDIC/deposit insurance, independent or hands-on corroboration.",
     "evidenceIds": [
       "unit-docs-1",
       "unit-docs-11",
       "unit-docs-26",
-      "unit-docs-5"
+      "unit-sandbox-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7096,11 +7096,15 @@
         },
         {
           "evidenceId": "unit-docs-11",
-          "quote": "Companies can build directly on the Unit Platform using APIs and components, with control over their product experience and operating model."
+          "quote": "Companies can build directly on the Unit Platform using APIs and components"
         },
         {
           "evidenceId": "unit-docs-26",
           "quote": "Issue cards, open accounts, move money, extend credit."
+        },
+        {
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Unit's Sandbox environment is a full replica of the production environment — all standard API endpoints work exactly the same way."
         }
       ]
     }
@@ -7111,12 +7115,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Unit documents sending and receiving money via ACH, building directly on its APIs, and a Webhook Events docs page, so basic API-driven ACH is claimed. Nothing in the evidence shows how ACH works in detail. missing for 10: explicit ACH credit vs debit origination, same-day ACH windows, returns/NOCs/reversals modeled as first-class API objects, ACH-specific webhook events, independent or hands-on corroboration.",
+    "rationale": "Unit's own docs say it sends and receives money over ACH through its APIs. It also has a webhook events page and sandbox simulation endpoints for payment clearing. Everything beyond basic ACH capability is unevidenced. Missing for 10: documented ACH credit vs debit origination, same-day ACH windows, returns/NOCs/reversals modeled as first-class API objects, ACH-specific webhook events, and independent or hands-on corroboration.",
     "evidenceIds": [
       "unit-docs-2",
       "unit-docs-11",
       "unit-docs-25",
-      "unit-docs-5"
+      "unit-sandbox-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7125,7 +7129,7 @@
       "citations": [
         {
           "evidenceId": "unit-docs-2",
-          "quote": "Send and receive money using payment capabilities including ACH, wires, real-time payments, checks, and international payments"
+          "quote": "Send and receive money using payment capabilities including ACH, wires, real-time payments, checks, and international payments, with settlement-level transaction visibility."
         },
         {
           "evidenceId": "unit-docs-11",
@@ -7134,6 +7138,10 @@
         {
           "evidenceId": "unit-docs-25",
           "quote": "Webhook Events | Unit"
+        },
+        {
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Sandbox exposes a set of simulation-specific endpoints"
         }
       ]
     }
@@ -7144,7 +7152,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit documents APIs for accounts with real-time balances and for payments, but these are general developer building blocks. The evidence never mentions scoped credentials for agents, transfer amount caps, counterparty allowlists, or any vendor-named agent use case. The card 'configurable controls' feature covers cards, not account transfers, so it does not transfer to this story.",
+    "rationale": "Unit documents APIs for accounts, real-time balances and payments, and configurable card controls. Nothing in the pack shows scoped credentials for an agent, transfer amount caps, counterparty allowlists, or any vendor-named agent account-operation use case. Card controls are an adjacent feature and general API access is a developer building block, so neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7157,14 +7165,15 @@
     "productId": "unit",
     "storyId": "agent-reads-banking-state",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Unit's own docs say its APIs expose account, payment, card and transaction data, with real-time balances, so an agent can read the core banking picture programmatically rather than scraping the dashboard. Pending activity and documents/statements are not evidenced, there is no MCP surface, and probes found no public OpenAPI spec or markdown docs. Missing for 10: documented pending/authorization activity access, documents/statements API, an MCP server, a machine-readable OpenAPI spec, and independent hands-on corroboration.",
+    "rationale": "Unit's own API exposes account, transaction, payment, card and customer data, with real-time balances. A machine-readable OpenAPI 3.0 spec and a full-replica sandbox make it a clean programmatic surface for an agent, with no dashboard scraping needed. Pending activity is not evidenced, documents are only implied by a sandbox statement-generation simulation, and there is no MCP server. missing for 10: explicit pending/authorization activity reads, a documented statements/documents retrieval API, an MCP server, independent hands-on corroboration of agent access.",
     "evidenceIds": [
       "unit-docs-5",
       "unit-docs-1",
-      "unit-docs-11",
-      "unit-probe-3"
+      "unit-docs-3",
+      "unit-openapi-link-20261106",
+      "unit-sandbox-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7180,8 +7189,12 @@
           "quote": "with real-time balances and transaction data"
         },
         {
-          "evidenceId": "unit-docs-11",
-          "quote": "Companies can build directly on the Unit Platform using APIs and components"
+          "evidenceId": "unit-openapi-link-20261106",
+          "quote": "An OpenAPI 3.0 specification for the Unit API is available here"
+        },
+        {
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Unit's Sandbox environment is a full replica of the production environment — all standard API endpoints work exactly the same way."
         }
       ]
     }
@@ -7189,29 +7202,33 @@
   {
     "productId": "unit",
     "storyId": "agentic-agent-docs",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "high",
-    "rationale": "Unit publishes a live llms.txt (probe HTTP 200), so an agent can be pointed at it. Its content, however, is a high-level product and marketing overview (accounts, payments, cards, lending) rather than agent-usable API documentation, and the probes found no markdown docs or OpenAPI spec. missing for 10: llms.txt content covering API endpoints and integration guidance, markdown versions of the API docs (docs .md returned 404), a machine-readable OpenAPI spec (all candidate paths 404), and independent or hands-on corroboration of agents successfully using these docs.",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Unit serves an llms.txt at its root (the probe returned HTTP 200), so an agent can be pointed at it. It also links a machine-readable OpenAPI 3.0 spec from its docs. However, the llms.txt content in evidence is a product and capability overview rather than API-level guidance, and the markdown docs endpoint returned 404. Missing for 10: evidence that llms.txt links to or contains API reference content, markdown/agent-readable versions of the docs pages (the .md probe 404'd), an llms-full.txt or similar expanded file, and independent hands-on corroboration of agent use.",
     "evidenceIds": [
       "unit-probe-1",
       "unit-docs-11",
       "unit-docs-5",
-      "unit-probe-2",
-      "unit-probe-3"
+      "unit-openapi-link-20261106",
+      "unit-probe-2"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
           "evidenceId": "unit-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://www.unit.co/llms.txt"
+          "quote": "PROBE llms.txt: HTTP 200 at https://www.unit.co/llms.txt # Unit"
         },
         {
           "evidenceId": "unit-docs-11",
           "quote": "Companies can build directly on the Unit Platform using APIs and components, with control over their product experience and operating model."
+        },
+        {
+          "evidenceId": "unit-openapi-link-20261106",
+          "quote": "An OpenAPI 3.0 specification for the Unit API is available here"
         }
       ]
     }
@@ -7222,7 +7239,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a financial infrastructure platform with a Dashboard and APIs that expose customer, account, and transaction data, so in-product AI-generated insights are a fair question to ask. Nothing in the evidence pack mentions AI-generated insights, suggestions, or analysis of that data. Data access alone is an adjacent building block, not the capability itself.",
+    "rationale": "Unit is a banking-infrastructure platform with a Dashboard and APIs that expose customer, account, and transaction data. Surfacing AI-generated insights from that data is a fair axis for this kind of product, but nothing in the evidence pack describes AI-generated insights, suggestions, or any AI analysis feature in the product. Access to raw data through the Dashboard or APIs is not the same as AI-generated insight.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7234,23 +7251,16 @@
   {
     "productId": "unit",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Unit's lending product page says it provides 'flows to automate lending and repayments.' That is a first-party automation capability, but it is scoped narrowly to lending and stated only in one thin marketing line. Nothing describes general user-configurable background automations or schedules. Missing for 10: general-purpose automation or rule builder, recurring/scheduled background execution documentation, evidence that a user (or AI agent) can configure these automations, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "unit-docs-15"
-    ],
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A financial infrastructure platform could plausibly offer user-configurable background automations, such as scheduled or recurring money movement, so the axis applies. The evidence pack documents no such feature. The only nearby items are a marketing line about \"flows to automate lending and repayments\" and a bare webhooks page title; both are adjacent features, not user-defined autonomous automations, so they earn no credit.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
-      "citations": [
-        {
-          "evidenceId": "unit-docs-15",
-          "quote": "with flows to automate lending and repayments"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -7259,7 +7269,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a banking-as-a-service platform with a Dashboard and APIs, so a built-in AI assistant for delegating tasks is a plausible capability and the axis applies. Nothing in the evidence pack mentions an AI assistant, copilot, or agent inside the Dashboard or product; the evidence covers only accounts, payments, cards, lending, managed solutions, and webhooks.",
+    "rationale": "Unit is a banking-as-a-service platform with a Dashboard, so a built-in AI assistant is a plausible capability and the axis applies. Nothing in the evidence pack describes an in-product AI assistant or agent that users can delegate tasks to. The docs cover accounts, payments, cards, lending, a sandbox, an OpenAPI spec and webhooks, none of which is an AI assistant.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7272,13 +7282,14 @@
     "productId": "unit",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Unit is an API-first platform, and its docs say the APIs give programmatic access to customer, account, payment, card and transaction data, so it can be operated without the UI. Beyond that, the evidence never addresses CI or automation pipelines, and the OpenAPI probes all returned 404. missing for 10: documented CI/automation guidance, sandbox/test environment for pipelines, CLI or SDK tooling, machine-readable API spec, independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Unit is an API-first platform: teams build on it through APIs, and it offers an OpenAPI spec, Postman collections, and a sandbox that fully replicates production, with simulation endpoints for testing integrations end-to-end. That supports programmatic, headless automation and automated testing, but nothing explicitly documents CI usage. missing for 10: explicit CI/CD integration guidance, documented machine credentials or service tokens for unattended runs, a CLI or headless tooling beyond raw API and Postman, independent hands-on corroboration.",
     "evidenceIds": [
-      "unit-docs-5",
       "unit-docs-11",
-      "unit-docs-25"
+      "unit-docs-5",
+      "unit-sandbox-20261106",
+      "unit-openapi-link-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7286,12 +7297,16 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "unit-docs-5",
-          "quote": "The Unit Dashboard and APIs provide teams with access to customer, account, payment, card, transaction, compliance, and operational data."
-        },
-        {
           "evidenceId": "unit-docs-11",
           "quote": "Companies can build directly on the Unit Platform using APIs and components"
+        },
+        {
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Unit's Sandbox environment is a full replica of the production environment — all standard API endpoints work exactly the same way. Use it to build and test your integration end-to-end before going live."
+        },
+        {
+          "evidenceId": "unit-openapi-link-20261106",
+          "quote": "An OpenAPI 3.0 specification for the Unit API is available here"
         }
       ]
     }
@@ -7302,7 +7317,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a banking-as-a-service and financial infrastructure platform, offering accounts, payments, cards and lending via APIs. It is not an AI agent or assistant that consumes tools, so acting as an MCP client is a category error for this kind of product. Nothing in the evidence shows Unit embedding any agent that could connect to MCP servers.",
+    "rationale": "Unit is banking-as-a-service infrastructure: accounts, payments, cards and lending exposed through APIs and a dashboard. It is not an AI agent or host that consumes external tools, so plugging MCP servers in as a client is a category error for this product type. Nothing in the evidence shows Unit has an agent or assistant that could act as an MCP client.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7317,7 +7332,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a banking-as-a-service API platform, so shipping an official MCP server is a fair question and the axis applies. However, nothing in the evidence pack mentions an MCP server or MCP endpoint. The only agent-adjacent signals are an llms.txt file, REST APIs and webhooks, which are building blocks rather than the requested capability.",
+    "rationale": "Unit is a financial infrastructure API platform, not an agent, so publishing an official MCP server is a fair question for it. Nothing in the evidence pack mentions an MCP server or MCP endpoint. The llms.txt file, OpenAPI spec, Postman collection, sandbox and webhooks are adjacent developer building blocks, not an MCP server, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7332,7 +7347,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a banking-infrastructure platform, and such a platform could plausibly ship natural-language operation, so this axis applies. The evidence only documents the Dashboard, APIs, components, and an llms.txt file. There is no assistant, chat interface, or natural-language command capability, and an llms.txt file for AI consumption does not count as natural-language operation.",
+    "rationale": "Unit is a banking-infrastructure platform operated through its Dashboard and REST APIs. A natural-language command interface, such as an AI assistant or agent surface, is a plausible capability for this kind of product, so the axis applies. However, nothing in the evidence shows Unit offers one. Its llms.txt file, OpenAPI spec and Postman collection are documentation and developer building blocks, not natural-language operation of the product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7347,7 +7362,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is an API-first financial infrastructure platform, so an official CLI is a fair question for this kind of product and the axis applies. The evidence pack documents only APIs, a Dashboard, components and webhooks. None of it mentions an official command-line tool, so the verdict is none.",
+    "rationale": "Unit is an API-first financial infrastructure platform, so an official CLI is a fair question, but the evidence never mentions one. The pack documents only a REST API, an OpenAPI spec and SDK repo, a Postman collection, and a sandbox. These are adjacent developer surfaces, not a CLI, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7359,21 +7374,21 @@
   {
     "productId": "unit",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Unit's own docs say companies build directly on the Unit Platform using APIs. Those APIs expose customer, account, payment, card and transaction data, and there is an 'Explore the API' entry point and an API docs path for webhook events. However, the pack contains no endpoint reference, authentication details or machine-readable spec, and probes found no OpenAPI/Swagger file and a 404 on the markdown API docs. Missing for 10: a published OpenAPI spec or machine-readable API reference, documented endpoints and authentication, and independent or hands-on corroboration of driving the product via the API.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Unit is built for programmatic use. Its docs describe building on the platform via APIs, a documented JSON:API REST API with an official OpenAPI 3.0 spec and Postman collection, a full-replica sandbox with simulation endpoints, and a published six-month deprecation notice policy. The probe 404s on well-known OpenAPI paths do not contradict this, because the spec is documented as hosted in the official SDK repository. missing for 10: independent or hands-on corroboration of API use, explicit API versioning scheme (paths are unversioned).",
     "evidenceIds": [
       "unit-docs-11",
       "unit-docs-5",
-      "unit-docs-19",
-      "unit-docs-25",
-      "unit-probe-3",
-      "unit-probe-2"
+      "unit-openapi-link-20261106",
+      "unit-postman-collection-20261106",
+      "unit-sandbox-20261106",
+      "unit-deprecation-policy-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
@@ -7381,12 +7396,16 @@
           "quote": "Companies can build directly on the Unit Platform using APIs and components, with control over their product experience and operating model."
         },
         {
-          "evidenceId": "unit-docs-5",
-          "quote": "The Unit Dashboard and APIs provide teams with access to customer, account, payment, card, transaction, compliance, and operational data."
+          "evidenceId": "unit-openapi-link-20261106",
+          "quote": "An OpenAPI 3.0 specification for the Unit API is available here"
         },
         {
-          "evidenceId": "unit-docs-19",
-          "quote": "Explore the API"
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Unit's Sandbox environment is a full replica of the production environment — all standard API endpoints work exactly the same way."
+        },
+        {
+          "evidenceId": "unit-docs-5",
+          "quote": "The Unit Dashboard and APIs provide teams with access to customer, account, payment, card, transaction, compliance, and operational data."
         }
       ]
     }
@@ -7397,7 +7416,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is an API-first financial infrastructure platform, so issuing scoped or least-privilege API credentials for an agent is a fair question to ask of it. The evidence pack only shows that APIs and a Dashboard exist and give access to data. Nothing documents API tokens, permission scopes, or least-privilege credential issuance.",
+    "rationale": "Unit is an API-first financial infrastructure platform, so scoped or least-privilege API credentials are a fair question for it. However, nothing in the evidence pack documents token scopes, per-credential permissions, or agent-specific credentials. The sandbox evidence mentions only that the 'same auth scheme' applies, without describing any scoping.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7409,16 +7428,23 @@
   {
     "productId": "unit",
     "storyId": "agentic-sdks",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Unit is an API-first financial infrastructure platform, so official SDKs are a fair question to ask of it. The evidence only mentions APIs, components, webhooks and an 'Explore the API' link. It never names any official SDK or client library, and the OpenAPI probes all returned 404, so there is no evidence of official SDKs.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only SDK-related evidence is Unit's API docs linking an official repository named unit-finance/openapi-unit-sdk. The docs present it as the home of the OpenAPI 3.0 spec rather than describing installable language SDKs. The Postman collection and sandbox help developers build integrations, but they are not SDKs. Missing for 10: documented official SDK packages per language, install and usage docs, SDK reference or versioning, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "unit-openapi-link-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can build against official SDKs",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unit-openapi-link-20261106",
+          "quote": "linking the official unit-finance/openapi-unit-sdk repository"
+        }
+      ]
     }
   },
   {
@@ -7427,7 +7453,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Unit has a first-party API docs page titled \"Webhook Events\" under /docs/api/webhooks/, which points to an outbound webhook event capability in its API. The evidence is only that page title, so the registration and delivery details are not shown. Missing for 10: documented webhook subscription/registration flow, event type catalog, payload and signature/verification details, retry/delivery semantics, independent or hands-on corroboration.",
+    "rationale": "Unit has a first-party API documentation page titled \"Webhook Events\" under its API docs, which indicates the product offers webhook event delivery. The pack contains only that page title, with no details on subscribing or receiving callbacks. Missing for 10: documented registration/subscription of webhook endpoints, the list of event types, payload format, delivery/retry and signature verification details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "unit-docs-25"
     ],
@@ -7446,61 +7472,115 @@
   {
     "productId": "unit",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Unit is an API-first financial platform, so an interactive API reference is a fair question. The pack only shows an \"Explore the API\" link and an API docs page for webhooks, with no evidence of an interactive console or runnable examples. Probes for an OpenAPI spec and markdown docs returned 404.",
-    "evidenceIds": [],
+    "rationale": "Unit's API reference is explicitly a static Docusaurus render with example requests and no in-page runner, so the reference itself is not interactive. Unit does publish its own Postman collection, preset to the Sandbox, which lets users run requests immediately, and an OpenAPI 3.0 spec backs it. Runnable examples therefore exist, but only through an external tool. Missing for 10: an interactive in-page API explorer/try-it console, runnable examples embedded in the reference, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "unit-postman-collection-20261106",
+      "unit-openapi-link-20261106",
+      "unit-sandbox-20261106",
+      "unit-docs-19"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unit-postman-collection-20261106",
+          "quote": "The hosted Postman v2.1 collection (\"Unit API\") is the vendor's documented request-trying surface; the API reference itself is a static Docusaurus render with example requests and no in-page runner."
+        },
+        {
+          "evidenceId": "unit-openapi-link-20261106",
+          "quote": "You can interact immediately with the Unit API via Postman"
+        },
+        {
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Unit's Sandbox environment is a full replica of the production environment — all standard API endpoints work exactly the same way."
+        }
+      ]
     }
   },
   {
     "productId": "unit",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Unit is an API-first financial platform, so a downloadable OpenAPI spec is a fair question. The evidence never mentions one. Probes of the common OpenAPI and Swagger paths all returned 404, and the 'Explore the API' and webhooks doc links do not show a machine-readable spec.",
-    "evidenceIds": [],
+    "rationale": "Unit's own API docs state that an OpenAPI 3.0 specification for the Unit API is available, linked to the official unit-finance/openapi-unit-sdk repository. A downloadable Postman v2.1 collection is also hosted on unit.co. The probe 404s on conventional unit.co spec paths do not contradict this, because the spec is distributed through the official repo rather than at a well-known URL. Missing for 10: hands-on confirmation that the linked spec downloads and is complete/current, and a spec hosted at a stable, discoverable URL on the vendor's own domain.",
+    "evidenceIds": [
+      "unit-openapi-link-20261106",
+      "unit-postman-collection-20261106",
+      "unit-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unit-openapi-link-20261106",
+          "quote": "An OpenAPI 3.0 specification for the Unit API is available here"
+        },
+        {
+          "evidenceId": "unit-postman-collection-20261106",
+          "quote": "The hosted Postman v2.1 collection (\"Unit API\") is the vendor's documented request-trying surface"
+        }
+      ]
     }
   },
   {
     "productId": "unit",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Unit is a banking API platform, so a sandbox or test environment is a fair question to ask of it. However, no item in the evidence pack mentions a sandbox, test mode, or non-production environment. The API, dashboard and webhook references describe production capabilities only, and none of them shows isolation from production data.",
-    "evidenceIds": [],
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Unit documents a dedicated Sandbox environment on its own base URL (api.s.unit.sh). It is described as a full replica of production in which all standard endpoints behave the same, plus simulation endpoints for payment clearing, wire receipt, card settlement and statements, so integrations can be tested end-to-end before going live. The vendor's Postman collection also defaults to the Sandbox, giving a ready-made way to try requests without touching production. Missing for 10: independent or hands-on corroboration of sandbox behavior, and an explicit statement that sandbox data is isolated from production.",
+    "evidenceIds": [
+      "unit-sandbox-20261106",
+      "unit-openapi-link-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Unit's Sandbox environment is a full replica of the production environment — all standard API endpoints work exactly the same way. Use it to build and test your integration end-to-end before going live."
+        },
+        {
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Sandbox exposes a set of simulation-specific endpoints"
+        },
+        {
+          "evidenceId": "unit-openapi-link-20261106",
+          "quote": "Initially set to the Unit Sandbox environment"
+        }
+      ]
     }
   },
   {
     "productId": "unit",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Unit is an API-based financial infrastructure platform, so API versioning and a deprecation policy are a fair question to ask of it. The evidence confirms Unit offers APIs and webhooks, but nothing in the pack mentions API versions, version pinning, changelogs or a deprecation policy. The OpenAPI probes also returned 404.",
-    "evidenceIds": [],
+    "rationale": "Unit documents a deprecation commitment: deprecated endpoints get a minimum six-month notice before retirement, as do all breaking changes, except for urgent security or compliance changes. The same source says the API uses unversioned paths with no URL- or header-based version scheme, so the 'versioned APIs' half of the story is not delivered. Missing for 10: an explicit API versioning scheme, version pinning or migration guidance, a changelog of deprecations, and independent corroboration that the notice period is honored.",
+    "evidenceIds": [
+      "unit-deprecation-policy-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unit-deprecation-policy-20261106",
+          "quote": "may be retired at a later point in time - subject to a minimum of a six month notice period, like all breaking changes on Unit, unless they follow an urgent security or compliance change."
+        }
+      ]
     }
   },
   {
@@ -7509,7 +7589,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for an API-first financial infrastructure platform such as Unit, for example batch payments or bulk account or card actions. However, nothing in the evidence pack documents batch or bulk endpoints or bulk actions in the Dashboard. The API, Dashboard and multi-party fund flow mentions describe general capabilities, not operating on many items at once.",
+    "rationale": "Bulk operations are a fair question for a banking-infrastructure API, so the axis applies. Nothing in the evidence pack documents batch or bulk endpoints, such as bulk payments, bulk card issuance, or batch account creation. Mentions of multi-party fund flows, the API, Postman collections and the sandbox describe single-resource capabilities or developer tooling, not bulk operations across many items.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7524,10 +7604,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a financial infrastructure platform, so a rules or automation engine is a fair axis to judge, but the pack documents no user-definable rules that trigger actions on events. The Webhook Events page (title only) is a developer building block for constructing automations externally, not a rules capability. Configurable card controls and automated lending/repayment flows are adjacent features, not event-triggered rules a user can define.",
+    "rationale": "The pack has no evidence that Unit lets users define event-triggered rules that run actions automatically. A 'Webhook Events' page title points to outbound event notifications, which are a developer building block for building such automation, not a rules engine. 'Configurable controls' on cards and 'flows to automate lending and repayments' are adjacent features that do not describe user-defined event-to-action rules.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
       "citations": []
@@ -7539,7 +7619,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs, such as recurring payments, is a fair question for a financial-infrastructure API platform like Unit, so the axis applies. However, the evidence pack never documents recurring schedules or scheduled workflows. The mention of 'flows to automate lending and repayments' is a vague marketing claim and does not establish a recurring scheduling capability.",
+    "rationale": "Scheduling recurring jobs, such as recurring payments or scheduled workflows, is a fair question for a financial-infrastructure API platform like Unit, so the axis applies. The evidence pack never documents a recurring schedule or scheduler. The closest item, \"flows to automate lending and repayments,\" describes automation in general, not a documented recurring schedule. Webhooks and sandbox simulation endpoints are adjacent features and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7554,7 +7634,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a financial infrastructure platform, and a platform like this could plausibly offer configurable automations, so the axis applies. Nothing in the evidence shows versioning, review, or rollback of automations. The mention of 'flows to automate lending and repayments' describes the product's own lending flows, not user-managed automation lifecycle controls.",
+    "rationale": "Unit is a banking and financial-infrastructure API platform, and it mentions 'flows to automate lending and repayments', so asking about automation management is a fair axis. However, the evidence never documents versioning, review, or rollback of user-defined automations. The API deprecation policy covers vendor endpoint lifecycle, not customer automations, so it earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7569,7 +7649,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Built-in operational AI is a fair question for a banking-infrastructure platform, so the axis applies. The evidence pack shows no AI capability: no natural-language transaction search, no drafted dispute or alert responses, and no anomaly summaries. The Unit Dashboard and APIs only provide access to operational data, which is an adjacent feature and earns no credit.",
+    "rationale": "Unit is a banking-infrastructure platform with a Dashboard and APIs exposing transaction, compliance, and operational data, so built-in AI for ops is a fair question. However, the evidence pack contains nothing about native AI features such as natural-language transaction search, drafted dispute or alert responses, or anomaly summaries. Data access through the Dashboard and APIs is a developer building block, not the AI capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7584,7 +7664,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Disputes are a fair question for a card-issuing and ACH banking-as-a-service platform, so the axis applies. Nothing in the evidence pack covers dispute handling, Reg E investigation timelines, provisional credit mechanics, or documented ops responsibilities. The only related items are general card issuing, ACH payments, and dashboard data access, which are adjacent features and earn no credit.",
+    "rationale": "Disputes handling is a fair question for a card-issuing and ACH banking platform like Unit, so the axis applies. However, the evidence pack never mentions disputes, Reg E investigation timelines, provisional credit, or the operator's dispute responsibilities. The card and ACH documentation covers only issuing, controls and money movement, which is adjacent material and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7599,7 +7679,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Unit's own docs say its payment capabilities let customers send and receive money by check, which touches both check issuance and check receipt. That is a single thin marketing mention. Nothing describes a check-issuance API, a check-deposit flow, or image capture. missing for 10: documented programmatic check issuance API, check deposit endpoint, front/back image capture for remote deposit, check status and lifecycle handling, independent or hands-on corroboration.",
+    "rationale": "Unit's own docs list checks among its payment capabilities for sending and receiving money, which loosely covers check issuance and check receipt. No evidence describes how either works, so the depth of the capability is unproven. missing for 10: documented check-issuance API endpoints, check deposit flow with front/back image capture, check-deposit status or clearing details, sandbox simulation for checks, independent or hands-on corroboration.",
     "evidenceIds": [
       "unit-docs-2"
     ],
@@ -7621,7 +7701,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document transaction monitoring, sanctions screening, alert case management, SAR-filing support, or any split of compliance duties between the customer, Unit, and the partner bank. The only related item says the Dashboard and APIs expose 'compliance' data, which is adjacent data access, not tooling for the compliance workload. Managed Solutions being 'fully managed by Unit' is a general product claim and says nothing about compliance responsibilities.",
+    "rationale": "The evidence pack does not document transaction monitoring, sanctions screening, alert case management, SAR-filing support, or a defined split of compliance duties between the user, Unit and the partner bank. The only related item says the Dashboard and APIs expose 'compliance data'. That is data access, not compliance tooling, so it earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7636,13 +7716,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Unit's docs say it issues physical and virtual cards with configurable controls and lifecycle management, tied to account customers, on the same unified API and ledger that opens accounts. That covers the core of the story. Digital wallet support (Apple Pay or Google Pay provisioning) is not evidenced: the \"wallet accounts\" mentioned are FBO stored-value accounts, which is a different feature. Missing for 10: digital wallet or tokenization support, explicit confirmation the cards are debit cards, detailed API reference for card issuance and spend-control parameters, independent or hands-on corroboration.",
+    "rationale": "Unit's docs say it can issue physical and virtual cards with configurable controls and real-time authorization. These cards are offered to business, individual, and joint account customers on the same unified infrastructure that opens accounts, and the sandbox can simulate card settlement. Digital wallet support is not evidenced; the 'wallet accounts' in the docs are FBO stored-value accounts, not Apple Pay or Google Pay provisioning. Missing for 10: digital wallet (Apple Pay/Google Pay) provisioning, explicit 'debit card tied to deposit account' API documentation, detailed spend-control docs (limits, MCC blocks), independent or hands-on corroboration.",
     "evidenceIds": [
       "unit-docs-3",
       "unit-docs-13",
       "unit-docs-24",
       "unit-docs-26",
-      "unit-docs-5"
+      "unit-sandbox-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7658,12 +7738,12 @@
           "quote": "Customized cards for your business, individual, or joint account customers."
         },
         {
-          "evidenceId": "unit-docs-24",
-          "quote": "They run on a unified infrastructure and native ledger, so companies can combine capabilities without stitching together"
-        },
-        {
           "evidenceId": "unit-docs-26",
           "quote": "Issue cards, open accounts, move money, extend credit."
+        },
+        {
+          "evidenceId": "unit-docs-24",
+          "quote": "They run on a unified infrastructure and native ledger, so companies can combine capabilities without stitching together"
         }
       ]
     }
@@ -7672,9 +7752,9 @@
     "productId": "unit",
     "storyId": "direct-bank-relationship",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Unit's docs show it is not itself a chartered bank. It operates through one or more 'Unit bank partners' and holds deposit and wallet accounts in FBO structures, which makes it a middleware or platform layer over sponsor banks. The evidence never names the partner banks or explains what happens to customer funds if Unit fails. Missing for 10: named partner bank(s) holding the charter, documented platform-failure and customer-fund protection scenario (e.g. FBO reconciliation and pass-through insurance), independent corroboration.",
+    "rationale": "Unit's own materials show it is not itself a bank. It works through 'bank partners', holds deposit and wallet accounts in FBO structures, and connects to the Federal Reserve on behalf of partner banks, which places it as a direct platform layer over sponsor banks. The evidence never names a partner bank and says nothing about what happens to customer funds if Unit fails. Missing for 10: named charter-holding partner bank(s), explicit disclosure of the charter and sponsor relationship, platform-failure and customer-fund protection details (e.g. FBO ledger reconciliation, pass-through insurance), and independent corroboration.",
     "evidenceIds": [
       "unit-docs-6",
       "unit-docs-7",
@@ -7704,13 +7784,13 @@
     "productId": "unit",
     "storyId": "fbo-structure-transparency",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Unit's own docs state that deposit and wallet accounts are held in FBO structures. They also say teams get Dashboard and API access to account and transaction data on a native ledger, which partly answers the structure and ledger-visibility parts of the story. Nothing in the evidence says where FDIC insurance attaches, whether pass-through coverage reaches end users, or how FBO pooling compares with individually titled accounts. missing for 10: FDIC insurance attachment/pass-through documentation, explicit FBO-pool vs individual-account explanation, clear rules on who can view the ledger (end users vs platform vs bank), independent corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Unit's own docs say deposit and wallet accounts are held in FBO structures and run on a native ledger. They also say the Dashboard and APIs give teams access to account and transaction data. That partly explains the account structure and who sees the data, but only as thin marketing-level statements. missing for 10: any documentation of where FDIC insurance attaches (pass-through coverage per end customer), a plain comparison of FBO pools versus individually titled accounts, explicit ledger visibility and permission rules (partner bank versus platform versus end customer), and independent corroboration.",
     "evidenceIds": [
       "unit-docs-1",
-      "unit-docs-5",
       "unit-docs-24",
+      "unit-docs-5",
       "unit-docs-6"
     ],
     "support": {
@@ -7723,12 +7803,12 @@
           "quote": "Create deposit accounts and wallet accounts held in FBO structures."
         },
         {
-          "evidenceId": "unit-docs-5",
-          "quote": "The Unit Dashboard and APIs provide teams with access to customer, account, payment, card, transaction, compliance, and operational data."
-        },
-        {
           "evidenceId": "unit-docs-24",
           "quote": "They run on a unified infrastructure and native ledger"
+        },
+        {
+          "evidenceId": "unit-docs-5",
+          "quote": "The Unit Dashboard and APIs provide teams with access to customer, account, payment, card, transaction, compliance, and operational data."
         }
       ]
     }
@@ -7739,7 +7819,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a banking-infrastructure platform offering ACH, cards and accounts, so the fraud-economics axis applies. The evidence pack never documents who bears losses from ACH return fraud, card disputes or account takeover, and it never describes fraud-prevention tooling. Mentions of card controls, real-time authorization and SOC 2/PCI compliance are adjacent features, not a documented liability split.",
+    "rationale": "Fraud liability allocation is a fair question for a banking-infrastructure platform, but the evidence pack never says who absorbs ACH return fraud, card dispute, or account takeover losses. It also documents no fraud-prevention tooling tied to such a split. Generic card controls and real-time authorization are adjacent card features, not documented fraud economics.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7754,7 +7834,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Unit's own docs list 'international payments' and 'wires' among its payment capabilities, so cross-border money movement is claimed. That claim is a single thin line with no detail. missing for 10: explicit SWIFT/international wire documentation, FX support with transparent rates, a documented coverage map of currencies and corridors, independent or hands-on corroboration.",
+    "rationale": "Unit's own docs say its payment capabilities include \"wires\" and \"international payments,\" so cross-border money movement is a documented first-party capability, but only as a single thin marketing line. Missing for 10: SWIFT or international wire specifics, FX conversion with transparent rates, a documented currency/corridor coverage map, and independent or hands-on corroboration.",
     "evidenceIds": [
       "unit-docs-2"
     ],
@@ -7776,7 +7856,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a banking-infrastructure platform, so programmatic KYC/KYB onboarding is a fair question to ask of it. However, the evidence pack never documents KYC or KYB applications, document collection, watchlist screening, or application states. The only related item is a generic statement that the APIs expose 'customer... compliance' data, which is adjacent and does not describe a verification capability.",
+    "rationale": "Customer verification is a core axis for a banking-infrastructure platform like Unit, so the story applies, but no evidence item documents KYC or KYB applications, document collection, watchlist screening, or application states. The only nearby item is a generic mention that the APIs expose 'compliance' data, which is adjacent and does not show the verification capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7791,7 +7871,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit's docs describe a 'native ledger', FBO-held accounts, real-time balances and settlement-level transaction visibility. None of the evidence documents a daily reconciliation between Unit's platform ledger and the partner bank's core records. Ledger and visibility claims are adjacent features, not the reconciliation capability the story asks for, so the verdict is none.",
+    "rationale": "Unit documents a native ledger, FBO-held accounts with real-time balances, and settlement-level transaction visibility, but nothing in the pack describes reconciling that ledger against the partner bank's core. There is no daily reconciliation process, no reconciliation reports, and no break handling. The axis applies to a BaaS platform, and these adjacent ledger and visibility features do not amount to the documented reconciliation the story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7806,7 +7886,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is banking infrastructure, so per-account and per-program risk controls are a fair question to ask of it. The evidence pack documents none of the specific controls: no transaction or velocity limits, no holds on suspicious activity, and no account freezes with reinstatement paths. The only nearby item is a vague mention of 'configurable controls' on cards, which is a related card feature and not account- or program-level risk controls, so it earns no credit.",
+    "rationale": "The evidence never documents per-account or per-program transaction or velocity limits, holds on suspicious activity, or account freezes with reinstatement paths. The only nearby item is generic 'configurable controls' on cards, which is an adjacent card feature rather than the account and program risk controls this story asks for. Dashboard access to compliance data does not establish these controls either.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7821,7 +7901,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Onboarding-queue operations are a fair question for a banking-infrastructure platform like Unit. However, the pack only says generically that the Dashboard and APIs give access to customer, compliance, and operational data. Nothing documents pending-application reasons, submitting additional documents, or a split between the platform's decisions and the partner bank's.",
+    "rationale": "The evidence pack never describes an onboarding or application queue. Nothing shows ops users seeing why an application is pending, uploading or supplying additional documents, or a split between company-owned and bank-owned decisions. The only related item is a generic statement that the Dashboard and APIs give access to customer, compliance, and operational data. That is an adjacent capability, not the story itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7836,11 +7916,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Unit documents that both its Dashboard and its APIs give teams access to customer, account, payment, card, transaction, compliance, and operational data, and that companies can build directly on the platform via APIs. That points to substantial API coverage of what the UI offers, but nothing in the evidence explicitly claims full UI/API parity, and probes found no public OpenAPI spec to verify coverage. missing for 10: explicit statement of complete Dashboard-to-API parity, a published API reference or OpenAPI spec showing endpoint coverage of dashboard operations, independent or hands-on corroboration.",
+    "rationale": "Unit is API-first. Its docs say the Dashboard and the APIs both give access to customer, account, payment, card, transaction, compliance and operational data, and that companies can build directly on the platform via APIs, backed by an OpenAPI 3.0 spec and a sandbox that fully replicates production. However, no evidence states that every Dashboard action has an API equivalent, so parity is implied rather than documented. Missing for 10: an explicit UI-to-API parity statement, evidence that Dashboard-only operational/admin functions (e.g. compliance review, user/team management) are exposed via API, and independent hands-on corroboration of parity.",
     "evidenceIds": [
       "unit-docs-5",
       "unit-docs-11",
-      "unit-docs-22"
+      "unit-openapi-link-20261106",
+      "unit-sandbox-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -7856,8 +7937,12 @@
           "quote": "Companies can build directly on the Unit Platform using APIs and components, with control over their product experience and operating model."
         },
         {
-          "evidenceId": "unit-docs-22",
-          "quote": "Both approaches run on the same core infrastructure, allowing companies to deepen their integration over time without moving to a different platform."
+          "evidenceId": "unit-openapi-link-20261106",
+          "quote": "An OpenAPI 3.0 specification for the Unit API is available here"
+        },
+        {
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Unit's Sandbox environment is a full replica of the production environment — all standard API endpoints work exactly the same way."
         }
       ]
     }
@@ -7868,10 +7953,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a financial infrastructure platform, so data portability is a fair question to ask of it. However, the evidence pack contains no documented bulk export, open-format export, or offboarding capability. The general statement that the Dashboard and APIs give teams access to their data is adjacent at most and is not an export-and-leave feature.",
+    "rationale": "The evidence shows only that the Dashboard and JSON:API REST APIs give access to customer, account, transaction and other data. That is a developer building block for pulling data, not a documented bulk-export or data-portability feature. Nothing in the pack describes exporting all data in open formats or a migration or offboarding path.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -7883,7 +7968,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a proprietary banking-infrastructure platform, and an open-source license is still a fair question for any software product. The evidence pack describes APIs, a dashboard, managed solutions and compliance certifications, but nothing about publicly readable source code or an open license.",
+    "rationale": "Whether a SaaS financial-infrastructure platform publishes its source under an open license is a fair question, so the axis applies. Nothing in the evidence shows Unit's platform source is public or openly licensed. The linked unit-finance/openapi-unit-sdk repository is an API spec and SDK, not the product's source, and no license is stated for it, so it is at most adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7898,7 +7983,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a hosted financial-infrastructure platform. Its evidence describes APIs, a dashboard, bank partners, and fully managed solutions, but nothing about a self-hostable or on-premises deployment of the core product. Self-hosting is a fair question for an infrastructure platform, so the lack of evidence makes this none rather than na.",
+    "rationale": "Self-hosting is a fair question for a software platform, so the axis applies. The evidence only describes Unit as a vendor-run platform reached through APIs, a dashboard, and a vendor-hosted sandbox (api.s.unit.sh), plus fully managed solutions. Nothing in the pack documents a deployable or self-hostable version of the core product.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7913,7 +7998,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a banking-infrastructure SaaS platform, so choosing a data storage region or residency is a fair question for it. The evidence pack never mentions regions, residency, or data location controls. Choosing among multiple bank partners and holding SOC 2 / PCI DSS certifications are adjacent features, not residency selection.",
+    "rationale": "Choosing a data storage region is a fair question for a SaaS financial infrastructure platform like Unit, so the axis applies. Nothing in the evidence pack documents region selection or data residency controls. Bank-partner choice, Federal Reserve connectivity and the SOC 2/PCI certifications are adjacent topics and do not show that users can pick where their data is stored.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7928,7 +8013,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a financial infrastructure platform that handles sensitive customer and transaction data, so a policy or control on AI-training use of that data is a fair privacy question. The evidence pack has no AI-training opt-out, data-use policy or related control. SOC 2 Type II and PCI DSS compliance are adjacent security certifications and do not address AI model training.",
+    "rationale": "Unit is a financial infrastructure SaaS that handles customer and transaction data, so a policy or control against using that data for AI model training is a fair privacy question to ask. The evidence pack contains no AI-training opt-out, data-use restriction or related policy. SOC 2 Type II and PCI DSS compliance are adjacent security attestations and do not address AI-training use of data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7943,7 +8028,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a financial-infrastructure platform that holds customer and transaction data, so the axis applies. However, nothing in the evidence pack documents retention policies, deletion APIs, or user-controlled data lifecycle settings. The SOC 2 and PCI DSS certifications are adjacent compliance posture, not a retention or deletion control.",
+    "rationale": "Unit is a financial infrastructure platform that holds customer, account and transaction data, so controlling data retention and deletion is a fair question for it. The evidence pack documents no retention settings, deletion APIs or data-purge controls. SOC 2 Type II and PCI DSS compliance and API access to customer data are adjacent features and earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7958,7 +8043,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit is a financial-infrastructure platform with a Dashboard, APIs and components, so a telemetry or usage-tracking opt-out is a fair question for it. However, nothing in the evidence pack mentions telemetry, analytics collection or any opt-out control. Its SOC 2 and PCI DSS compliance claims are an adjacent security posture, not a user-facing telemetry opt-out, so they earn no credit.",
+    "rationale": "Telemetry and usage-tracking opt-out is a fair privacy question for an API platform with a dashboard and SDKs, so the axis applies. The evidence pack never documents any telemetry or usage-tracking controls, let alone an opt-out. SOC 2 / PCI compliance is a security certification, not a user-facing opt-out, and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7973,7 +8058,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Documented program limits, approval stages, and a path to raising them are a fair question for a banking-as-a-service platform, so this axis applies. The evidence pack covers accounts, payments, cards, lending, dashboards, and multi-bank support. Nothing in it documents limits, approval tiers, or how limit increases work.",
+    "rationale": "Documented program-level limits are a fair question for a banking-as-a-service platform like Unit, so the axis applies. The evidence pack does not document program-level limits, approval stages, or any process for raising limits. Configurable card controls and the general compliance data in the dashboard are adjacent features, not documentation of program limits or how to raise them.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -7987,8 +8072,8 @@
     "storyId": "realtime-balances-events",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Unit's own docs claim real-time balances and transaction data on a native ledger, and a dedicated 'Webhook Events' API docs page exists, so the core real-time, event-driven elements are present. The pack only shows that page's title, so there is no detail on which events fire. missing for 10: evidence that balance reads reflect holds and pending activity, documentation that webhooks cover every transaction state change, details of the webhook registration and payload contract, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Unit documents a native ledger with real-time balances and transaction data, and has a Webhook Events docs page. The evidence does not show balance reads that reflect holds or pending activity, and it does not detail which transaction state changes fire webhooks. Missing for 10: documented available-vs-current balances including holds and pending, webhook event catalog covering every transaction state change, details on registering webhooks and delivery, independent or hands-on corroboration.",
     "evidenceIds": [
       "unit-docs-1",
       "unit-docs-24",
@@ -8017,16 +8102,23 @@
   {
     "productId": "unit",
     "storyId": "statements-tax-documents",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Unit is a banking-infrastructure platform with deposit accounts, so automated statements and 1099-INT tax documents are a fair axis to ask about. Nothing in the evidence pack mentions monthly statements, tax forms, or document retrieval endpoints. The general claim of API access to account and transaction data is adjacent, not the documented capability itself.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only evidence on this story is the sandbox docs, which list a 'statement generation' simulation endpoint. That implies Unit's own platform generates account statements, but per-account monthly cadence and API retrieval are not documented, and tax documents (1099-INT) are never mentioned. missing for 10: documented monthly per-account statement generation and retrieval API, 1099-INT tax document production and API retrieval, independent corroboration.",
+    "evidenceIds": [
+      "unit-sandbox-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an ops user, the paper obligations are automated — monthly statements generated per account, and tax documents (1099-INT) produced and retrievable through the API",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "(payment clearing, wire receipt, card settlement, statement generation)"
+        }
+      ]
     }
   },
   {
@@ -8035,7 +8127,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Unit documents transaction data exposed through its APIs across accounts, cards and payment rails, including \"settlement-level transaction visibility\" for ACH, wires, RTP, checks and international payments. That touches the rail-metadata part of the story, but the evidence gives no detail on transaction fields, so how rich the data is remains unproven. Missing for 10: documented counterparty details on transactions, specific rail-level metadata fields, stable transaction identifiers, merchant/category enrichment, API schema documentation, independent or hands-on corroboration.",
+    "rationale": "Unit's own docs say its accounts, payments and cards come with transaction data, including \"settlement-level transaction visibility\" across ACH, wires, RTP and checks, so transaction data is a first-party capability. Nothing in the evidence describes what that data contains or how rich it is. missing for 10: documented counterparty fields, rail-specific metadata (e.g. ACH/wire/RTP details), stable transaction identifiers, merchant/category enrichment, and any independent or hands-on corroboration of data richness.",
     "evidenceIds": [
       "unit-docs-2",
       "unit-docs-1",
@@ -8052,16 +8144,16 @@
           "quote": "Send and receive money using payment capabilities including ACH, wires, real-time payments, checks, and international payments, with settlement-level transaction visibility."
         },
         {
-          "evidenceId": "unit-docs-5",
-          "quote": "The Unit Dashboard and APIs provide teams with access to customer, account, payment, card, transaction, compliance, and operational data."
-        },
-        {
           "evidenceId": "unit-docs-1",
           "quote": "with real-time balances and transaction data"
         },
         {
           "evidenceId": "unit-docs-3",
           "quote": "real-time authorization capabilities, transaction data, and card lifecycle management"
+        },
+        {
+          "evidenceId": "unit-docs-5",
+          "quote": "The Unit Dashboard and APIs provide teams with access to customer, account, payment, card, transaction, compliance, and operational data."
         }
       ]
     }
@@ -8072,11 +8164,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Unit's own docs say it lets developers create deposit and wallet accounts held in FBO structures, covering customer wallets and sub-accounts. That maps to per-customer accounts and sub-accounts under a master (FBO) structure. However, nothing in the evidence explicitly says unique account and routing numbers are issued per account, describes virtual accounts for reconciliation, or shows provisioning at scale via API. missing for 10: explicit issuance of unique account/routing numbers, virtual accounts for reconciliation, documented at-scale API provisioning, independent or hands-on corroboration.",
+    "rationale": "Unit's own docs say developers can create deposit and wallet accounts held in FBO structures, with sub-accounts and customer wallets as listed use cases, all reachable via API. That maps to per-customer accounts and sub-accounts under a master (FBO) structure. The evidence never says these accounts get unique account and routing numbers, and it does not describe reconciliation-oriented virtual accounts or issuance at scale. Missing for 10: explicit issuance of unique account/routing numbers, virtual accounts for reconciliation, per-customer collection account docs, evidence of scale, independent or hands-on corroboration.",
     "evidenceIds": [
       "unit-docs-1",
-      "unit-docs-11",
-      "unit-docs-23"
+      "unit-docs-5",
+      "unit-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -8090,10 +8182,6 @@
         {
           "evidenceId": "unit-docs-11",
           "quote": "Companies can build directly on the Unit Platform using APIs and components"
-        },
-        {
-          "evidenceId": "unit-docs-23",
-          "quote": "Help your customers store and move money on your platform"
         }
       ]
     }
@@ -8102,14 +8190,14 @@
     "productId": "unit",
     "storyId": "wires-instant-rails",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Unit's own docs say it can send and receive money over wires and real-time payments, on a unified infrastructure reachable through its APIs, and claim direct Federal Reserve connectivity. FedNow is never named explicitly, and there is no per-rail capability documentation, only marketing-level summaries with no API reference reachable in the pack. Missing for 10: explicit FedNow and RTP naming with origination/receipt detail, per-rail capability documentation (limits, cutoffs, settlement times), API reference evidence for wire/instant-payment endpoints, independent or hands-on corroboration.",
+    "rationale": "Unit's own docs say the API can send and receive money over wires and real-time payments. Its sandbox simulates wire receipt, and Unit states it has direct Federal Reserve connectivity, which supports wires and faster rails through one platform API. However, the evidence never names RTP or FedNow specifically and shows no per-rail capability documentation, so only part of the story is evidenced. Missing for 10: explicit RTP and FedNow origination and receipt, per-rail capability and limit documentation, independent or hands-on corroboration.",
     "evidenceIds": [
       "unit-docs-2",
       "unit-docs-7",
-      "unit-docs-24",
-      "unit-docs-5"
+      "unit-sandbox-20261106",
+      "unit-docs-24"
     ],
     "support": {
       "relation": "direct",
@@ -8125,8 +8213,8 @@
           "quote": "Unit is a registered Federal Reserve service provider with direct connectivity to Federal Reserve systems on behalf of partner banks."
         },
         {
-          "evidenceId": "unit-docs-24",
-          "quote": "They run on a unified infrastructure and native ledger, so companies can combine capabilities without stitching together"
+          "evidenceId": "unit-sandbox-20261106",
+          "quote": "Sandbox exposes a set of simulation-specific endpoints"
         }
       ]
     }
@@ -8137,7 +8225,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Unit documents deposit and wallet accounts held in FBO structures, but nothing in the evidence mentions interest-bearing accounts, sweep options, rate mechanics, or who keeps the spread. Generic account provisioning does not transfer to this story, so the applicable axis has no supporting evidence.",
+    "rationale": "Unit documents deposit and wallet accounts held in FBO structures, but nothing in the evidence mentions interest-bearing accounts, yield, sweep programs, rate mechanics, or who keeps the spread. For a banking-infrastructure platform this axis applies, so the lack of evidence makes the verdict none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

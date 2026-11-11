@@ -1,28 +1,27 @@
 {
-  "hash": "e92100714db5719560f992f3be5ae8b502844834cd22bba2de019dd929ee9af8",
+  "hash": "2ced288a88c982f0184af62efbb896abf2ddbf4be93bd39e0087cc7a79402178",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "A live probe confirms Elicit publishes an llms.txt (HTTP 200 at support.elicit.com/llms.txt) that indexes its Help Center articles, so an agent can be pointed at it directly, and the help articles themselves are served as .md files. Missing for 10: llms.txt scope beyond the Help Center (no machine-readable API reference; OpenAPI paths 404 and the docs-root .md 404), no first-party documentation describing the llms.txt offering, no independent or hands-on corroboration of agent use.",
+    "rationale": "A probe found a live llms.txt at support.elicit.com that indexes the Elicit Help Center for agents, and Elicit also serves a machine-readable OpenAPI 3.1 spec at the docs root, so an agent can be pointed at agent-oriented docs. Coverage is limited because the llms.txt covers only help-center articles and is not advertised in first-party docs. The API docs have no llms.txt, and the docs-root markdown probe returned 404. missing for 10: llms.txt or llms-full.txt for the API reference (docs.elicit.com), first-party documentation advertising agent-oriented docs, a working docs-root markdown endpoint, independent or hands-on corroboration of agents consuming these docs.",
     "evidenceIds": [
       "elicit-probe-1",
-      "elicit-probe-2",
-      "elicit-probe-3"
+      "elicit-openapi-spec-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
           "evidenceId": "elicit-probe-1",
-          "quote": "HTTP 200 at https://support.elicit.com/llms.txt # Elicit Help Center"
+          "quote": "PROBE llms.txt: HTTP 200 at https://support.elicit.com/llms.txt # Elicit Help Center"
         },
         {
-          "evidenceId": "elicit-probe-1",
-          "quote": "> Help center for Elicit"
+          "evidenceId": "elicit-openapi-spec-20261106",
+          "quote": "Elicit serves a full OpenAPI 3.1.0 document (info title \"Elicit API\", version 2.0.0; 46 paths across Search, Sessions, Reports, Systematic Reviews, Research Agent and more; server https://elicit.com/api/v2)"
         }
       ]
     },

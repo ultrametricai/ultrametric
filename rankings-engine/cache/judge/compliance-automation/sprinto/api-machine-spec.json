@@ -1,17 +1,30 @@
 {
-  "hash": "26c7a5b3d35f5c7e88b6164ec49efe1b7b8852e14f885dd99c0680a5c36ae082",
+  "hash": "103fb713f5918c58b10ee624729ba42f22f2bbaff3364f5584ad2f8661758dd8",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Sprinto is a SaaS compliance platform with API reference pages (Integration Monitoring, Framework Health & Vendor Data APIs), so a downloadable OpenAPI-style spec is a fair question to ask. The evidence shows no such spec: probes of the common OpenAPI and Swagger paths all returned 404. The llms.txt and markdown docs exist but are documentation indexes, not machine-readable API specs.",
-    "evidenceIds": [],
+    "rationale": "Sprinto's GraphQL Developer API supports introspection, so a client can retrieve a machine-readable schema of its queries, mutations and response types. That is an equivalent of an OpenAPI spec, but only behind an admin-level API key against a live tenant. No static downloadable spec exists: the docs corpus has no OpenAPI or Postman download, OpenAPI fragments appear only inline for the custom-integration sync API, and probes of standard openapi.json/swagger.json paths all return 404. missing for 10: a publicly downloadable spec file (OpenAPI, Postman, or a published GraphQL SDL), access to the schema without credentials, and independent or hands-on confirmation that introspection works.",
+    "evidenceIds": [
+      "sprinto-introspection-20261106",
+      "sprinto-playground-20261106",
+      "sprinto-probe-3"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "sprinto-introspection-20261106",
+          "quote": "Introspection allows the API to describe its schema, including available queries, mutations, and response types."
+        },
+        {
+          "evidenceId": "sprinto-playground-20261106",
+          "quote": "You can use the playground to explore the API schema, test queries and mutations, and validate responses in real time."
+        }
+      ]
     },
     "productId": "sprinto",
     "storyId": "api-machine-spec"

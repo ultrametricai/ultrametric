@@ -117,6 +117,69 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 ## Repair and recheck
 
+The scheduled story producer pins its starting main commit. After judging, before claims
+and derivation, `reconcile-refresh.ts` applies the existing stability policy to proposed
+grades. An unsupported flip retains the complete baseline row only when its citations
+still support it under the current rubric and its origin is proven by a matching model
+cache in Git history. Changed support, missing provenance, incompatible catalogs or stale
+rubrics stop the run for review. Legitimate new-source changes and verified downgrades
+still pass through. Deliberate scoring migrations remain separate from this producer path.
+
+Raw judge caches remain raw model output. Retained canonical decisions are recorded in
+`rankings-engine/cache/refresh-retention/<arena>/decisions.json`, bound to the complete
+current inputs and an ancestor model-backed decision. Repeat runs reverify that origin;
+each entry separately records the decision baseline used to reject the raw proposal.
+That proper-ancestor snapshot determines which sources were already known at the time,
+so a later run does not mistake a previously introduced source for new evidence. Both
+proofs are rechecked; the sidecar alone never authorizes retaining a grade. The final committed-diff stability
+guard still runs before any remote publication.
+
+Product-scoped manual judging stops before model calls if it would overwrite an untouched
+retained decision with raw cache output. Explicit whole-category rejudges and isolated
+previews keep their existing behavior. Automated PR repair also stops before writes or
+reviewer audits when the effective merged candidate contains retained decisions that differ
+from raw caches; those cases need human review until repair supports retention provenance.
+Deliberate migration and adjudication scripts are not retention-aware.
+
+Failed keyed runs save bounded, allowlisted baseline and candidate JSON, accepted judge
+caches, the reconciliation report and the terminal cell's rejected semantic attempts as
+`story-refresh-diagnostics-<run>-<attempt>`. The existing failure-only artifact has a
+64 MiB / 10,000-file input limit and 14-day retention. It has `publicationAuthority: false`
+and cannot act as an `internal-refresh-*` receipt accepted by the merge controller.
+
+On cache misses, judge corrections identify the first failing rule and its zero-based
+citation index: an unknown support ID, an ID missing from `evidenceIds`, or a verbatim
+quote mismatch. Each correction includes only the relevant rejected fields and named
+source excerpt, labeled as untrusted data. The initial prompt, schema, rubric, model,
+prompt version and cache keys are unchanged. This correction-only behavior improves
+cache-miss retries; it does not retroactively change valid cached judgments. The budget
+remains one initial semantic attempt plus three corrections, with the existing parsing,
+schema and transport retry limits. Exhaustion still fails before the cell cache and
+category matrix are written. Previously accepted cells retain their normal caches.
+
+The terminal record is `.pa-tmp/judge-failures/<arena>/terminal.json`, outside publishable
+caches. A new judge invocation clears the old record for each selected arena. A record
+contains cell identity, input/model/prompt metadata and up to four rejected-attempt
+summaries, including when a later correction request fails. It excludes full model
+responses, system prompts, environment dumps and unrelated inputs. Strings have explicit
+redaction/truncation flags; known credential forms are redacted, fields have fixed bounds
+and the entire record is capped at 256 KiB. Record creation failure is logged without
+untrusted text and cannot make an invalid verdict pass. The capture script checks the
+exact arena path, regular files, symlink ancestors, JSON fields and artifact limits.
+
+Inspect an extracted terminal record offline without credentials or model calls:
+
+```sh
+python3 scripts/capture_refresh_diagnostics.py --inspect-judge-failure /path/to/terminal.json
+```
+
+The inspector validates the record and prints JSON with terminal controls escaped.
+`exactReplay: false` is explicit: summaries and bounded/redacted excerpts cannot replay a
+complete model request. Original evidence remains in the separately allowlisted arena
+inputs. The Statsig `agentic-ai-insights` failure in [run 42217696564](https://github.com/ultrametricai/ultrametric/actions/runs/42217696564)
+preceded this capture path; its rejected output and refreshed evidence were not retained.
+Its exact defect is unknown, and passing committed baseline quotes do not reproduce it.
+
 The recovery controller dispatches `refresh-repair.yml` for failing generated story-runner
 PRs, unresolved Greptile findings on verdict cells, and merge conflicts. CI completion also
 wakes recovery. Drafts and PRs whose auto-merge opt-in was removed are skipped. Recovery
@@ -200,7 +263,11 @@ change or bypass is needed for native merging or this continuation.
 
 GitHub marks `pull_request` runs created by `GITHUB_TOKEN` as `action_required` until a
 maintainer approves them. Generated PRs explicitly dispatch the same CI workflow on their
-head branch. Recovery treats an approval-required run with no dispatched result as missing
+head branch for diagnostics. GitHub excludes `workflow_dispatch` job checks from required
+PR checks, even when they pass on the exact head. The eligible PR run still needs approval.
+Recovery reports that hold as needing attention and does not approve or rerun it.
+See [GitHub's required-check event rules](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks#checks-from-some-workflow-jobs-are-not-evaluated).
+Recovery treats an approval-required run with no dispatched result as missing diagnostic
 CI. It preserves active runs from either event and the latest success/failure result within
 each event. Older completed runs cannot mask a newer cancelled run of the same event. It retries runs that
 ended without a result up to three dispatches per head. Exhausting that budget reports an
@@ -210,6 +277,24 @@ does not trigger another dispatch. See [GitHub's workflow-trigger rules](https:/
 Recovery, repair routing, and review requests select the same usable result: the newest
 success or failure among the latest runs per event. A newer cancelled dispatch cannot
 hide an approved PR result. Validation and review still bind checks to that exact suite.
+
+For approval-free PR CI, reuse the existing `ultrametric-content-bot` App installation and
+select only `ultrametricai/ultrametric` as the additional repository. This installation
+change and credential configuration require maintainer authorization. The publication
+token needs repository Contents and Pull requests read/write, with implicit Metadata read;
+it needs no Actions, Workflows, administration or ruleset-bypass permission. Configure the
+repository secrets `CONTENT_BOT_APP_ID` and `CONTENT_BOT_PRIVATE_KEY`, and repository variable
+`CONTENT_BOT_LOGIN` matching the verified App slug plus `[bot]`. Each minted token is
+restricted to this repository and the two write permissions. Provision secrets through
+GitHub's secret settings; keep their values out of logs, reports and source control.
+
+Vendor-radar scan and bring-up publication, review recovery and base updates already support
+this optional App identity. Story-runner still publishes with `GITHUB_TOKEN`; its publisher,
+review/recovery author checks and repair publisher need coordinated App support before the
+same setup can make story refreshes approval-free. That change must preserve canonical-run
+receipts, exact-head checks, file scope, holds, bounded repairs and every required check.
+App setup does not retroactively approve an existing held run. Verify a subsequent scheduled
+producer's exact-head `pull_request` CI and native merge before claiming automatic completion.
 
 The worker executes the current main branch only. It fetches the proposed branch as data,
 accepts changes only in its arena and declared generated projections, and rejects code,

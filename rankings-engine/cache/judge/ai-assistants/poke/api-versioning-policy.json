@@ -1,17 +1,30 @@
 {
-  "hash": "77d1ac13748b30e92749242a4eedcbf6d195849a4c33f6af2bb2c11f5d02f440",
+  "hash": "b14a2e5f4c27987cf17ed90f05ac4874bd884305e8c5c303a058628af1532562",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Poke documents a programmatic API for sending messages and a CLI, so a versioned-API axis applies. Nothing in the evidence shows API versioning or a deprecation policy. The CLI's use of 'poke@latest' is a package tag, not API versioning, and no OpenAPI spec was found.",
-    "evidenceIds": [],
+    "rationale": "Poke's API sits on a versioned path (/api/v1/...), and its docs record one concrete deprecation, the legacy inbound-sms webhook endpoint, with a migration path to V2 API keys. That is a single dated deprecation notice, not a published deprecation policy. The API is also a single endpoint. Missing for 10: a published deprecation/sunset policy with timelines, a stability or versioning commitment, a machine-readable spec (openapi.json returns 404), and independent corroboration.",
+    "evidenceIds": [
+      "poke-api-deprecation-20261106",
+      "poke-probe-3",
+      "poke-docs-1"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "poke-api-deprecation-20261106",
+          "quote": "Poke's API is a single documented endpoint on a versioned path (POST https://poke.com/api/v1/inbound/api-message, bearer auth)"
+        },
+        {
+          "evidenceId": "poke-api-deprecation-20261106",
+          "quote": "the legacy inbound-sms webhook endpoint \"is deprecated\""
+        }
+      ]
     },
     "productId": "poke",
     "storyId": "api-versioning-policy"
