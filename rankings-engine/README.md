@@ -142,6 +142,32 @@ evidence loop. The program design is in
   again, and `firstSeen` records the run that first surfaced it.
 - `popularity-packages.json` — curated map from product id to its npm or PyPI package
   names, read by the `popularity` stage and verified against the public registries.
+- `api-gap-exclusions.json` — standing exclusions for the scheduled api-quality gap
+  repair below: `skip` defers a product, `needs-human` routes it to the run's issue.
+
+## Scheduled api-quality gap repair
+
+`.github/workflows/api-gap-repair.yml` (weekly, Thursdays) is the CI counterpart of the
+dated local repair waves recorded in `reports/evidence-parity/`. It runs the offline
+staleness scan (whose gap signature already suppresses wave-ledger-covered products),
+picks the top genuinely unrepaired gap rows via `scripts/api-gap-pick.ts` (skipping
+`api-gap-exclusions.json` entries and routing affiliated/disclosed products to a
+needs-human issue), and discovers mechanical evidence candidates only (OpenAPI/Swagger
+documents from llms.txt listings and well-known paths) into a wave manifest.
+`scripts/api-gap-verify.py`, the generic fail-closed harness extracted from the wave
+scripts (marker verify, exact-status negative checks, recorded POST and TLS-mismatch
+checks, per-host pacing), re-verifies every candidate live before appending; anything
+unverifiable is withheld with a disposition in the dated committed ledger and stays
+flagged by the scan. Verified appends get a scoped `judge --batch` + `derive`, the
+dependent generators, and a PR with the ledger, moves table, and dispositions.
+
+Research-grade repairs stay local: interactive-docs, sandbox, and versioning-policy
+cells usually need a human-driven research pass, and review-finding fix rounds and
+pre-audit disputes are out of the workflow's scope. For those, a coordinator agent runs
+the dated wave template (an `append-api-quality-gap-evidence-*.py` script whose checks
+the same harness families verify, a `reports/evidence-parity/` ledger, scoped re-judges,
+and the pre-audit) and lands its own PR. The workflow's needs-human issue is the queue
+for that work.
 
 ## API key
 

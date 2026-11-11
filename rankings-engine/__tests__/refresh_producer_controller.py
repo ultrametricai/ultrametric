@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
@@ -17,11 +18,26 @@ import capture_refresh_diagnostics as diagnostics
 
 
 class DiagnosticTests(unittest.TestCase):
+    def _cleanup_temp(self):
+        for attempt in range(5):
+            try:
+                self.temp.cleanup()
+                return
+            except OSError:
+                if attempt == 4:
+                    raise
+                time.sleep(0.2)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
-        self.addCleanup(self.temp.cleanup)
+        self.addCleanup(self._cleanup_temp)
         self.root = Path(self.temp.name).resolve()
         self.git('init', '-q', '--initial-branch=main')
+        # Background git maintenance can repopulate .git while the tempdir is being
+        # removed, which fails rmtree with ENOTEMPTY on macOS; turn it off in the
+        # fixture and retry the cleanup for anything that still races (Spotlight).
+        self.git('config', 'gc.auto', '0')
+        self.git('config', 'maintenance.auto', 'false')
         self.write('open-rankings/fixture/verdicts.json', '["before"]')
         self.write('open-rankings/fixture/evidence/product.json', '[]')
         self.write('rankings-engine/cache/judge/fixture/product/story.json', '{}')

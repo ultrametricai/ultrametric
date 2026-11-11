@@ -1,5 +1,1127 @@
 [
   {
+    "productId": "amplitude",
+    "storyId": "ab-experiments",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Amplitude Experiment's own docs say it runs A/B, multivariate, and bandit tests on flags. Flags support any number of variants, can be converted into experiments, and the docs reference shipping 'the winning variant'. However, the pack has no detail on choosing metrics, viewing results, or how a winner is determined statistically. Missing for 10: documented metric selection and results/analysis views showing which variant wins, statistical significance details, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "amplitude-docs-2",
+      "amplitude-docs-12",
+      "amplitude-docs-13",
+      "amplitude-docs-3",
+      "amplitude-docs-8"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a product manager, I can run A/B and multivariate experiments on flags and see which variation wins on my metrics",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-2",
+          "quote": "Run A/B, multivariate, and bandit tests so the data, not the loudest opinion, makes the call."
+        },
+        {
+          "evidenceId": "amplitude-docs-12",
+          "quote": "You can add as many variants as you want to a flag."
+        },
+        {
+          "evidenceId": "amplitude-docs-13",
+          "quote": "You can create an experiment directly or convert an existing flag to an experiment."
+        },
+        {
+          "evidenceId": "amplitude-docs-3",
+          "quote": "ship the winning variant without a code deploy"
+        },
+        {
+          "evidenceId": "amplitude-docs-8",
+          "quote": "Estimate experiment duration"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agent-experiment-analysis",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Amplitude documents Experiment management APIs that programmatically control flags and experiments, and display holdout and mutex groups, so an agent can read experiment configuration. An official MCP server and an OpenAPI spec also exist. Nothing in the evidence shows programmatic access to experiment results, metrics or statistical significance, which an agent needs to summarize outcomes and recommend ship or rollback. missing for 10: documented results/analysis API (metrics, significance, variant performance), evidence that the MCP server exposes experiment data, independent or hands-on corroboration of agent use.",
+    "evidenceIds": [
+      "amplitude-docs-15",
+      "amplitude-docs-5",
+      "amplitude-docs-16",
+      "amplitude-probe-4",
+      "amplitude-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI agent, I can read experiment configurations and results programmatically to summarize outcomes and recommend ship/rollback decisions",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-15",
+          "quote": "Use the Experiment management API to programmatically create and control flags and experiments."
+        },
+        {
+          "evidenceId": "amplitude-docs-5",
+          "quote": "Manage flags, experiments, and deployments from CI, scripts, or your own tools with the Experiment APIs."
+        },
+        {
+          "evidenceId": "amplitude-docs-16",
+          "quote": "Holdout APIs to create, edit, and display holdout groups and their properties."
+        },
+        {
+          "evidenceId": "amplitude-probe-4",
+          "quote": "official MCP server documented at https://amplitude.com/mcp-server"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agent-toggles-flag-safely",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Amplitude documents an Experiment management API for programmatically creating and controlling flags and experiments, and an official MCP server, so the agent-access half of the story is covered. Nothing in the evidence shows approval workflows or review gates that force programmatic changes through sign-off before they reach production. Copying experiments between projects is not an approval control. Missing for 10: documented approval/review workflows for API/MCP-originated flag changes, any CLI, details of the MCP server's flag tools, independent corroboration.",
+    "evidenceIds": [
+      "amplitude-docs-15",
+      "amplitude-docs-5",
+      "amplitude-probe-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI agent, I can create and toggle flags through documented APIs, CLIs, or MCP — and the platform can force my changes through approval workflows instead of letting me write to production unreviewed",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-15",
+          "quote": "Use the Experiment management API to programmatically create and control flags and experiments."
+        },
+        {
+          "evidenceId": "amplitude-docs-5",
+          "quote": "Manage flags, experiments, and deployments from CI, scripts, or your own tools with the Experiment APIs."
+        },
+        {
+          "evidenceId": "amplitude-probe-4",
+          "quote": "official MCP server documented at https://amplitude.com/mcp-server"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Live probes confirm an llms.txt at amplitude.com/llms.txt that routes agents to an executable install.md entry point. They also confirm a markdown rendering of the Feature Experiment docs page (feature-experiment.md), so an agent can be pointed directly at agent-oriented docs for this product. missing for 10: first-party documentation describing the llms.txt/markdown-docs offering, confirmation that llms.txt specifically indexes Experiment content (it is site-wide Amplitude), and independent or hands-on corroboration of agents using it.",
+    "evidenceIds": [
+      "amplitude-probe-1",
+      "amplitude-probe-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
+      "citations": [
+        {
+          "evidenceId": "amplitude-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://amplitude.com/llms.txt # Amplitude"
+        },
+        {
+          "evidenceId": "amplitude-probe-1",
+          "quote": "For an executable setup entry point, fetch [install.md](https://amplitude.com/install.md)."
+        },
+        {
+          "evidenceId": "amplitude-probe-2",
+          "quote": "PROBE docs-md: HTTP 200 at https://amplitude.com/docs/en/feature-experiment.md"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence covers flags, A/B, multivariate and bandit tests, a visual editor, SDKs and management APIs, but nothing shows AI-generated insights or suggestions surfaced inside the product. The MCP server and llms.txt probes concern external agent and documentation access, which is a different capability and is not credited here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows no first-party automation feature, such as scheduled rollouts, automatic rollbacks, or background agent tasks, that users can set up to run on their own. The Experiment APIs for CI and scripts are developer building blocks for building automation externally, and the flag kill-switch is a manual control. Bandit tests and flag prerequisites are adjacent experiment features, not user-configured autonomous automations.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack never mentions a built-in AI assistant inside Amplitude Experiment that users can delegate tasks to. The official MCP server, llms.txt and OpenAPI probes are agent-facing integration surfaces, which is a different capability, and the Experiment APIs are developer building blocks rather than an in-product assistant.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Amplitude's docs say flags, experiments, and deployments can be managed \"from CI, scripts, or your own tools\" through the Experiment APIs. The Management API also lets you create and control flags, experiments, holdouts, and mutex groups programmatically, and an OpenAPI spec is published. That covers headless, CI-driven automation. missing for 10: a dedicated CLI or CI integration (e.g. a pipeline action or example workflow), documented auth/token setup for CI, and independent or hands-on corroboration of headless use.",
+    "evidenceIds": [
+      "amplitude-docs-5",
+      "amplitude-docs-15",
+      "amplitude-docs-16",
+      "amplitude-docs-17",
+      "amplitude-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-5",
+          "quote": "Manage flags, experiments, and deployments from CI, scripts, or your own tools with the Experiment APIs."
+        },
+        {
+          "evidenceId": "amplitude-docs-15",
+          "quote": "Use the Experiment management API to programmatically create and control flags and experiments."
+        },
+        {
+          "evidenceId": "amplitude-docs-16",
+          "quote": "Holdout APIs to create, edit, and display holdout groups and their properties."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents Amplitude's own official MCP server, which is the server role. Nothing shows Amplitude Experiment acting as an MCP client that can connect to external MCP servers and use their tools. The server-side evidence belongs to a different story and earns no credit here. An experimentation SaaS with AI features could plausibly consume MCP servers, so the axis applies, but there is no evidence that it does.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can plug MCP servers into this product so it can use their tools",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-mcp-server",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "A probe confirms that Amplitude documents an official MCP server at amplitude.com/mcp-server, so the product itself offers an official MCP endpoint that agents can connect to. The evidence is only a single probe line, though, with no detail on setup, authentication, or which Experiment operations (flags, experiments, deployments) the server exposes. Missing for 10: documentation of the MCP server's Experiment-specific tools, connection/auth setup details, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "amplitude-probe-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can connect an agent via an official MCP server",
+      "citations": [
+        {
+          "evidenceId": "amplitude-probe-4",
+          "quote": "official MCP server documented at https://amplitude.com/mcp-server"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-nl-commands",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack does not document any natural-language command interface in Amplitude Experiment. The only agent-related items are an official MCP server, llms.txt, markdown docs and an OpenAPI spec. These are machine-readable or agent-integration building blocks that belong to separate stories, and none shows users operating Experiment through natural-language commands, so they earn no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can operate the product with natural-language commands",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-official-cli",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence documents Experiment management APIs usable from CI and scripts, SDKs, an OpenAPI spec, llms.txt and an official MCP server, but nothing shows an official command-line tool. APIs and MCP are adjacent building blocks, not a CLI, so they earn no credit. An official CLI is a fair axis for an experimentation platform, so the verdict is none rather than na.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can use an official CLI",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Amplitude documents an Experiment Management API for creating and controlling flags and experiments, with dedicated Holdout and Mutex APIs, and explicitly supports managing flags and deployments from CI, scripts, or your own tools. A probe also found a published OpenAPI spec at amplitude.com/openapi.json. Missing for 10: independent or hands-on corroboration of driving Experiment through the API, and confirmation that the OpenAPI spec covers the Experiment endpoints.",
+    "evidenceIds": [
+      "amplitude-docs-5",
+      "amplitude-docs-15",
+      "amplitude-docs-16",
+      "amplitude-docs-17",
+      "amplitude-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can drive the product through a documented public API",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-5",
+          "quote": "Manage flags, experiments, and deployments from CI, scripts, or your own tools with the Experiment APIs."
+        },
+        {
+          "evidenceId": "amplitude-docs-15",
+          "quote": "Use the Experiment management API to programmatically create and control flags and experiments."
+        },
+        {
+          "evidenceId": "amplitude-docs-16",
+          "quote": "Holdout APIs to create, edit, and display holdout groups and their properties."
+        },
+        {
+          "evidenceId": "amplitude-docs-17",
+          "quote": "Mutex APIs to create, edit, and display mutex groups and their properties."
+        },
+        {
+          "evidenceId": "amplitude-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://amplitude.com/openapi.json — contains \"openapi\" key"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scoped API credentials are a fair question for a SaaS experimentation platform with management APIs, so the axis applies. The evidence documents an Experiment management API, an OpenAPI spec and an MCP server. None of it mentions issuing scoped, read-only, project-limited or otherwise least-privilege keys or tokens for an agent.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-sdks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Amplitude's first-party docs state that Experiment SDKs exist for flagging and testing features across web, mobile, and backend, so developers can build against official SDKs. The Experiment management API and a published OpenAPI spec back this up. The SDK evidence is a single overview line, with no language list, SDK reference depth, or hands-on corroboration. Missing for 10: per-language SDK listing and reference docs, independent or hands-on confirmation of SDK usage.",
+    "evidenceIds": [
+      "amplitude-docs-4",
+      "amplitude-docs-5",
+      "amplitude-docs-15",
+      "amplitude-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As an AI-native user, I can build against official SDKs",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-4",
+          "quote": "Use Experiment SDKs to flag and test features across web, mobile, and backend."
+        },
+        {
+          "evidenceId": "amplitude-docs-15",
+          "quote": "Use the Experiment management API to programmatically create and control flags and experiments."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Webhooks are a fair axis for a feature-flag and experimentation SaaS, but the evidence pack never documents registrable outbound HTTP callbacks for flag or experiment events. The Management API, OpenAPI spec and MCP server are inbound or programmatic-control surfaces, not event subscriptions, so they earn no credit here.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can subscribe to events via webhooks",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Amplitude Experiment has a management API with reference docs and a published OpenAPI spec. Nothing shows an interactive API explorer or runnable 'try it' examples. A static API reference and a machine-readable spec are adjacent building blocks, not the interactive, runnable reference the story asks for. The 'hands-on demo' item is a product demo, not an API reference.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "api-machine-spec",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "A probe confirms a downloadable machine-readable OpenAPI document at amplitude.com/openapi.json, and the docs describe an Experiment management API for creating and controlling flags and experiments. However, nothing shows that this spec covers the Experiment APIs, and no first-party docs point users to it. Missing for 10: evidence that the OpenAPI spec covers the Experiment management, Holdout and Mutex APIs, first-party documentation of the spec download, and independent or hands-on corroboration of its completeness.",
+    "evidenceIds": [
+      "amplitude-probe-3",
+      "amplitude-docs-15"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can download a machine-readable API spec (OpenAPI or equivalent)",
+      "citations": [
+        {
+          "evidenceId": "amplitude-probe-3",
+          "quote": "PROBE openapi: HTTP 200 at https://amplitude.com/openapi.json — contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "amplitude-docs-15",
+          "quote": "Use the Experiment management API to programmatically create and control flags and experiments."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "api-sandbox",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Amplitude's data-model docs describe a workflow where an experiment is built in a separate non-production project and then copied into the prod project. That implies a first-party way to test in isolation from production data, but the evidence is a single thin mention. Missing for 10: explicit documentation of dev/staging/sandbox projects or environments, how data isolation from production is guaranteed, programmatic (API/agent) access to sandbox environments, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "amplitude-docs-23"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-23",
+          "quote": "Then, copy the experiment into the prod project to run the experiment in prod."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence documents an Experiment management API and a published OpenAPI spec. Nothing in the pack mentions API versioning, version identifiers, or a deprecation or sunset policy, so the story's core capability is unevidenced.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "approvals-change-requests",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence pack documents approval workflows, change requests, or review gates before production flag changes go live. Flag prerequisites, safeguards against archiving dependent flags, and copying experiments into a prod project are different features and earn no credit for this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can require approvals or change requests before production flag changes go live",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "audit-trail",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Audit logging of flag changes is a fair governance question for a feature-flag product, so the axis applies. The evidence pack covers flag creation, targeting, prerequisites, and the management API, but nothing documents an audit log or change history recording who changed which flag, when, and to what value.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, every flag change is recorded in an audit log — who changed what, when, and to which value",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows a management API for programmatically creating and controlling flags and experiments one at a time, usable from scripts or CI. Nothing documents a native bulk operation, such as a batch endpoint or multi-select bulk edit, archive or rollout across many items at once. Scripting a loop over the API is a developer building block, not the capability itself, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "adjacent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can perform bulk operations across many items at once",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence covers feature flags, audience targeting rules, flag prerequisites, and a management API for programmatic control. None of it documents user-defined rules that automatically trigger actions when events occur, such as auto-rollback or event-driven workflows. Targeting rules and prerequisites decide who gets which variant, and the API is a building block that would need external orchestration, so both are adjacent rather than direct support.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scheduling recurring jobs or workflows is a fair axis for an experimentation platform, but no evidence shows a native scheduler. The Experiment APIs can be driven 'from CI, scripts, or your own tools', which is a user-side workaround and a developer building block, not a product capability. Prerequisite hierarchies for experiments that 'start at different times' describe dependency ordering, not a recurring schedule.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Amplitude Experiment can turn a flag off when something goes wrong and can manage flags through APIs from CI or scripts. Neither is documented versioning, change review, or rollback to a prior version of a configuration. A kill switch is an adjacent control, and API access is a developer building block, so neither earns credit for this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can version, review, and roll back my automations",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "create-toggle-flag-fast",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Amplitude's docs describe releasing features behind a flag, ramping to an audience, and turning it off immediately. A quick-start guide, SDKs, and a management API support creating and controlling flags. Nothing evidences the speed-from-signup part of the story, and the data-model docs describe copying from a separate prod project, which suggests some setup friction. missing for 10: evidence of minutes-from-signup time-to-first-live-toggle, a documented free/self-serve signup path, independent hands-on corroboration of the setup speed",
+    "evidenceIds": [
+      "amplitude-docs-1",
+      "amplitude-docs-9",
+      "amplitude-docs-4",
+      "amplitude-docs-15",
+      "amplitude-docs-23"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can create a feature flag and toggle it live in production within minutes of signing up",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-1",
+          "quote": "Release behind a flag, ramp to the audience you choose, and turn it off the moment something looks wrong."
+        },
+        {
+          "evidenceId": "amplitude-docs-15",
+          "quote": "Use the Experiment management API to programmatically create and control flags and experiments."
+        },
+        {
+          "evidenceId": "amplitude-docs-4",
+          "quote": "Use Experiment SDKs to flag and test features across web, mobile, and backend."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "edge-evaluation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge flag evaluation is a fair question for a feature-flag and experimentation product, so the axis applies. The evidence only covers SDKs for web, mobile and backend, plus management APIs. Nothing mentions CDN workers, edge runtimes, or a relay/proxy layer for evaluating flags close to users.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can evaluate flags at the edge (CDN workers or an edge/relay layer) close to users",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "experiment-stats-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents A/B, multivariate, and bandit test types and experiment duration estimation. It never describes the underlying statistics engine: no Bayesian or frequentist methodology, no variance-reduction options such as CUPED, and no documented significance approach. Test types and duration estimates are adjacent features, not a documented stats engine, so this applicable axis has no evidence.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a product manager, I can trust a documented statistics engine (Bayesian or frequentist, with variance-reduction options) behind experiment results",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "flag-environments",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The data-model docs describe running an experiment in one project and then copying it into a separate prod project. That implies environment separation with independent flag configurations per project, but only through a single thin mention. missing for 10: explicit documentation of dev/staging/prod environments, confirmation that flag states are independent per environment, scoped or per-environment SDK/deployment keys, and any independent or hands-on corroboration.",
+    "evidenceIds": [
+      "amplitude-docs-23"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can manage separate environments (dev/staging/prod) with independent flag states and scoped SDK keys",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-23",
+          "quote": "Then, copy the experiment into the prod project to run the experiment in prod."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "guarded-rollouts-auto-rollback",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows flag-based staged rollouts and a manual ability to turn a flag off when something looks wrong, but nothing documents metric guardrails that detect a regression or trigger an automatic rollback. The management APIs usable from CI are developer building blocks a user could script around, not the capability itself.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can guard a rollout with metrics so a regression is detected and the release is rolled back automatically",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "individual-user-targeting",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Amplitude Experiment documents staging features for beta testers and targeting audiences by properties, cohorts, or segments. That suggests a group of specific users can be targeted. Nothing in the evidence explicitly shows adding individual user IDs to a flag or excluding specific users. missing for 10: explicit individual user/device ID targeting (allowlist), explicit exclusion/blocklist of specific users, internal-account targeting docs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "amplitude-docs-9",
+      "amplitude-docs-7"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can target or exclude specific individual users for a flag (allowlists, beta testers, internal accounts)",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-9",
+          "quote": "Pre-plan and stage new features for beta testers, a percentage of your users, or specific target audiences."
+        },
+        {
+          "evidenceId": "amplitude-docs-7",
+          "quote": "to target users by properties, cohorts, or segments."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "local-evaluation-latency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence says Experiment SDKs cover backend use, but nothing in the pack mentions local evaluation, cached rulesets, or avoiding a network call per flag check. Backend SDK availability alone does not establish local evaluation, so the axis applies but is unevidenced.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, my server SDKs evaluate flags locally from a cached ruleset — microsecond decisions with no network call per flag check",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "metrics-warehouse-integration",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack covers flags, A/B and multivariate testing, targeting, bucketing, prerequisites and management APIs. Nothing documents defining experiment metrics from warehouse tables or ingested events. Mentions of data-driven decisions and group-level analysis do not describe user-defined metric sources, so this applicable axis is unevidenced.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a product manager, I can define experiment metrics from my own data — warehouse tables or ingested events — instead of a black-box metric store",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "multivariate-dynamic-config",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Amplitude's docs say a flag can carry as many variants as you want, which makes flags multivariate rather than boolean. Each flag can also attach a JSON-coded payload of variables that remotely changes behavior without a code change, which covers dynamic configuration. missing for 10: explicit documentation of typed string/number config values and how SDKs read payloads, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "amplitude-docs-12",
+      "amplitude-docs-11",
+      "amplitude-docs-2",
+      "amplitude-docs-24"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can serve multivariate flags and dynamic configuration values (strings, numbers, JSON), not just booleans",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-12",
+          "quote": "You can add as many variants as you want to a flag."
+        },
+        {
+          "evidenceId": "amplitude-docs-11",
+          "quote": "A payload is a JSON-coded set of variables that can remotely change flags and experiments without a manual code change."
+        },
+        {
+          "evidenceId": "amplitude-docs-2",
+          "quote": "Run A/B, multivariate, and bandit tests"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "openfeature-compatibility",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Using a flag vendor through OpenFeature providers is a fair question for a feature-flagging product, so the axis applies. The evidence pack never mentions OpenFeature or a vendor-neutral provider. It documents only Amplitude's own Experiment SDKs and management APIs, which do not meet the story's goal of avoiding lock-in to one vendor's SDK API.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can use the vendor through OpenFeature providers so my flag code isn't locked to one vendor's SDK API",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Amplitude documents its own Experiment management API for creating and controlling flags and experiments from CI, scripts, or your own tools, including holdout and mutex group APIs, and a probe found a published OpenAPI spec. Nothing in the evidence claims or shows that the API matches everything the UI can do, and several UI workflows have no documented API equivalent. Missing for 10: an explicit UI/API parity claim, API coverage for visual editor edits, audience definition, duration estimation, cross-project copy and prerequisites, and independent corroboration of parity.",
+    "evidenceIds": [
+      "amplitude-docs-5",
+      "amplitude-docs-15",
+      "amplitude-docs-16",
+      "amplitude-docs-17",
+      "amplitude-probe-3"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-5",
+          "quote": "Manage flags, experiments, and deployments from CI, scripts, or your own tools with the Experiment APIs."
+        },
+        {
+          "evidenceId": "amplitude-docs-15",
+          "quote": "Use the Experiment management API to programmatically create and control flags and experiments."
+        },
+        {
+          "evidenceId": "amplitude-docs-16",
+          "quote": "Holdout APIs to create, edit, and display holdout groups and their properties."
+        },
+        {
+          "evidenceId": "amplitude-docs-17",
+          "quote": "Mutex APIs to create, edit, and display mutex groups and their properties."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "openness-full-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data portability is a fair question for a SaaS experimentation platform, but the evidence pack never documents a bulk export of experiment or flag data in open formats. The management APIs for creating and controlling flags, holdouts and mutex groups are programmatic management controls, not a documented data-export capability. JSON payloads are flag configuration variables, not an export path.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can export all of my data in open formats and leave",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Open-source availability is a fair question for a SaaS experimentation platform, so the axis applies. The evidence pack documents SDKs, APIs, an OpenAPI spec, llms.txt and an MCP server, but nothing about the product's source being published under an open license. Mentions of SDKs or APIs are adjacent features, not evidence of readable source under an open license.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can read the product's source under an open license",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a feature-flag and experimentation product, but the evidence pack has nothing showing Amplitude Experiment can be self-hosted or deployed on-premises. The cited material covers only SaaS features (flags, experiments, the visual editor, SDKs and management APIs) plus agent-readable docs and an MCP server, none of which concern self-hosting.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can self-host the core product",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency and region selection is a fair question for a SaaS experimentation platform like Amplitude Experiment, so the axis applies. However, the evidence pack covers only flags, experiments, APIs, SDKs, and agent-readiness probes, and says nothing about choosing a storage region or data residency.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can choose where my data is stored (region/residency)",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Amplitude Experiment is a SaaS product that holds customer data, so an AI-training opt-out is a fair question to ask of it. The evidence pack covers flags, experiments, APIs, MCP and llms.txt, but nothing about AI training data use, opt-outs or data-usage controls.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data retention and deletion controls are a fair question for a SaaS experimentation platform, so the axis applies. Nothing in the evidence pack documents retention periods, data deletion, or user-data removal. The only nearby item is a restriction on archiving prerequisite flags, which concerns flag configuration rather than data retention, so it earns no credit.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can control data retention and deletion",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry or usage tracking is a fair question for an experimentation SaaS that ships SDKs, so the axis applies. Nothing in the evidence pack documents a telemetry or tracking opt-out for users or for the SDKs. The pack covers only flags, experiments, APIs and targeting.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As an AI-native user, I can opt out of telemetry and usage tracking",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "progressive-percentage-rollouts",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Amplitude Experiment's docs say you can ramp a flag-gated release, stage features for a percentage of users, and change flags remotely without a code change. They also mention a configurable bucketing unit (user, company ID, groups). However, nothing explicitly confirms deterministic or sticky bucketing across a ramp, or fine-grained 1%-to-100% percentage control. Missing for 10: explicit documentation of consistent/sticky bucketing as rollout percentage increases, documented percentage granularity and ramp mechanics, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "amplitude-docs-1",
+      "amplitude-docs-9",
+      "amplitude-docs-11",
+      "amplitude-docs-14",
+      "amplitude-docs-25"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can roll a flag out progressively by percentage with consistent bucketing, ramping from 1% to 100% without redeploying",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-1",
+          "quote": "Release behind a flag, ramp to the audience you choose, and turn it off the moment something looks wrong."
+        },
+        {
+          "evidenceId": "amplitude-docs-9",
+          "quote": "Pre-plan and stage new features for beta testers, a percentage of your users, or specific target audiences."
+        },
+        {
+          "evidenceId": "amplitude-docs-11",
+          "quote": "A payload is a JSON-coded set of variables that can remotely change flags and experiments without a manual code change."
+        },
+        {
+          "evidenceId": "amplitude-docs-14",
+          "quote": "In some B2B use cases, you might want to use company ID or city as the bucketing unit."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "rbac-scoped-access",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Amplitude Experiment offers a management API to create and control flags programmatically. Nothing in the pack covers roles, per-flag permissions, or scoped API tokens that restrict who can change which flags. A programmatic API is a related feature, not access control, so the story is unevidenced.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can restrict who can change which flags with roles, permissions, and scoped API tokens",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "realtime-flag-updates",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Amplitude's docs say you can release behind a flag and \"turn it off the moment something looks wrong,\" and Experiment SDKs exist across web, mobile, and backend. However, nothing documents how flag changes reach connected SDKs or how fast. Missing for 10: documented streaming or polling delivery to SDKs, stated propagation latency (seconds), and hands-on or independent evidence that a kill switch takes effect promptly in running SDKs.",
+    "evidenceIds": [
+      "amplitude-docs-1",
+      "amplitude-docs-4"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, flag changes propagate to connected SDKs in seconds via streaming or fast polling — a kill switch actually kills",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-1",
+          "quote": "Release behind a flag, ramp to the audience you choose, and turn it off the moment something looks wrong."
+        },
+        {
+          "evidenceId": "amplitude-docs-4",
+          "quote": "Use Experiment SDKs to flag and test features across web, mobile, and backend."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "relay-edge-proxy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A relay or edge proxy is a fair question for a feature-flag and experimentation product, so the axis applies. The evidence pack does not mention a relay proxy, self-hosted evaluation service, local flag caching for vendor outages, or keeping SDK traffic inside a private network. The SDK, management API, and MCP server items are about other capabilities and do not count toward this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can run a relay/edge proxy so flags stay served when the vendor is unreachable and SDK traffic stays inside my network",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "scheduled-releases",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no documented capability to schedule a flag change or release for a specific future time. Several items are related but do not qualify. Driving flags from CI or scripts via the management API (amplitude-docs-5, amplitude-docs-15) is a user-side workaround or developer building block. Prerequisite hierarchies for experiments that 'start at different times' (amplitude-docs-20) are dependency logic, not a time-based scheduler. 'Pre-plan and stage' (amplitude-docs-9) refers to audience staging, not timed activation.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a developer, I can schedule flag changes and releases to happen at a specific future time",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "sdk-language-breadth",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Amplitude's own docs say Experiment SDKs let you flag and test features across web, mobile, and backend, which covers the multi-stack SDK part of the story. The pack does not name specific SDKs or languages, and nothing addresses consistent flag evaluation across those SDKs. missing for 10: list of specific official SDKs/languages, evidence of consistent flag evaluation behavior across SDKs (e.g., shared evaluation engine or local/remote parity), independent or hands-on corroboration.",
+    "evidenceIds": [
+      "amplitude-docs-4",
+      "amplitude-probe-2"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a developer, I can use official SDKs across my whole stack — backend, web, and mobile — with consistent flag behavior",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-4",
+          "quote": "Use Experiment SDKs to flag and test features across web, mobile, and backend."
+        },
+        {
+          "evidenceId": "amplitude-probe-2",
+          "quote": "Test, analyze, and ship feature flags and experiments at scale across web, m"
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "self-host-open-source",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting from an open-source distribution is a fair axis for a feature-flag platform. The evidence pack never mentions an open-source distribution, a self-hosted deployment, or keeping evaluation data on customer infrastructure. It covers only hosted flags, experiments, SDKs and management APIs.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can self-host the full flag platform from an open-source distribution, keeping evaluation data on my infrastructure",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "stale-flag-cleanup",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Stale-flag detection and code-reference scanning are a fair axis for a feature-flag platform, but the evidence pack never documents either. The only nearby items are a guard against archiving prerequisite flags and a general management API. The first is an adjacent control and the second is a developer building block, so neither earns credit for this story.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a platform engineer, I can find stale flags and code references so temporary flags actually get removed from the codebase",
+      "citations": []
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "targeting-rules-segments",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Amplitude Experiment's docs say you can define an experiment or flag audience by user properties (attribute-based rules) and by cohorts or segments (reusable audiences). Flag targeting rules can also reference user properties, including prior assignments, and features can be staged to specific target audiences. Every element of the story is named, but the evidence is brief summary lines rather than detailed rule documentation. Missing for 10: detail on rule operators and the targeting-rule builder, explicit documentation that segments are saved and reused across flags, and independent or hands-on confirmation of targeting behavior.",
+    "evidenceIds": [
+      "amplitude-docs-7",
+      "amplitude-docs-21",
+      "amplitude-docs-9"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "complete",
+      "subject": "As a developer, I can target flags with attribute-based rules and reusable segments so the right users see the right variation",
+      "citations": [
+        {
+          "evidenceId": "amplitude-docs-7",
+          "quote": "to target users by properties, cohorts, or segments"
+        },
+        {
+          "evidenceId": "amplitude-docs-21",
+          "quote": "You can reference this user property in another flag's targeting rules to target users based on their previous assignments."
+        },
+        {
+          "evidenceId": "amplitude-docs-9",
+          "quote": "Pre-plan and stage new features for beta testers, a percentage of your users, or specific target audiences."
+        }
+      ]
+    }
+  },
+  {
+    "productId": "amplitude",
+    "storyId": "transparent-pricing-limits",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Pricing transparency is a fair question for a SaaS experimentation product, but the evidence pack contains no published pricing, plan tiers, or cost drivers such as seats, MAUs, events, or requests. The only commercial reference is that an 'Accounts add-on' can be purchased, which says nothing about price or what drives cost.",
+    "evidenceIds": [],
+    "support": {
+      "relation": "absent",
+      "coverage": "none",
+      "subject": "As a product manager, I can see published pricing and understand what drives cost (seats, MAUs, events, requests) before committing",
+      "citations": []
+    }
+  },
+  {
     "productId": "flagsmith",
     "storyId": "ab-experiments",
     "verdict": "full",
