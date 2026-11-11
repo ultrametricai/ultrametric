@@ -198,20 +198,31 @@ def historical_path(file):
 def verify_historical_snapshot(output, base, trusted, snapshot):
     if not isinstance(snapshot, str) or not re.fullmatch(SHA, snapshot):
         raise RuntimeError('Historical snapshot tree binding is invalid')
-    changed = output(['git', 'diff', '--name-only', trusted, snapshot]).splitlines()
     inputs = output(['git', 'diff', '--name-only', base, trusted]).splitlines()
     if any(file.startswith(('open-processes/', 'jurisdictions/', 'open-modules/', 'open-law/')) for file in inputs):
         raise RuntimeError('Historical snapshot has changed non-ranking inputs')
-    files = set(changed) | {file for file in inputs if file.startswith(('open-rankings/', 'rankings-engine/cache/'))}
-    for file in files:
-        if not historical_path(file):
-            raise RuntimeError('Historical snapshot contains undeclared data or code')
-        expected = output(['git', 'ls-tree', base, '--', file])
-        actual = output(['git', 'ls-tree', snapshot, '--', file])
-        current = output(['git', 'ls-tree', trusted, '--', file])
-        if (actual != expected or any(entry and not re.fullmatch(
-                r'100644 blob [a-f0-9]{40}\t' + re.escape(file), entry) for entry in (expected, actual, current))):
-            raise RuntimeError('Historical snapshot does not match authenticated data blobs')
+    # Receipt consumers have only pushed commits. Rebuild the synthetic snapshot
+    # from those authenticated sources instead of fetching an unreferenced tree.
+    with tempfile.TemporaryDirectory(prefix='historical-snapshot-index-') as directory:
+        env = {**os.environ, 'GIT_INDEX_FILE': str(Path(directory) / 'index')}
+        output(['git', 'read-tree', trusted], env=env)
+        for file in inputs:
+            if not file.startswith(('open-rankings/', 'rankings-engine/cache/')):
+                continue
+            if not historical_path(file):
+                raise RuntimeError('Historical snapshot contains undeclared data or code')
+            expected = output(['git', 'ls-tree', base, '--', file])
+            current = output(['git', 'ls-tree', trusted, '--', file])
+            if any(entry and not re.fullmatch(r'100644 blob [a-f0-9]{40}\t' + re.escape(file), entry)
+                   for entry in (expected, current)):
+                raise RuntimeError('Historical snapshot does not match authenticated data blobs')
+            if expected:
+                blob = expected.split()[2]
+                output(['git', 'update-index', '--add', '--cacheinfo', f'100644,{blob},{file}'], env=env)
+            else:
+                output(['git', 'update-index', '--force-remove', '--', file], env=env)
+        if output(['git', 'write-tree'], env=env) != snapshot:
+            raise RuntimeError('Historical snapshot tree differs from authenticated input reconstruction')
 
 
 def historical_snapshot(command, output, base, trusted, env):

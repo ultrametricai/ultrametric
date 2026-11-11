@@ -623,6 +623,20 @@ class RecoveryGitFixtureTests(unittest.TestCase):
             self.assertEqual(git('show', f'{orphan}:trusted-code.py'), 'version = 1')
             self.assertEqual((root / 'base-only.txt').read_text(), 'Base content survives replay.\n')
             self.assertEqual([args for args in commands if args in recovery.GATES], recovery.GATES)
+            if historical:
+                with tempfile.TemporaryDirectory(prefix='receipt-fresh-consumer-') as consumer_dir:
+                    subprocess.run([git_binary, 'clone', '--no-local', str(root), consumer_dir],
+                                   check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    snapshot = proof['historicalSnapshot']
+                    absent = subprocess.run([git_binary, 'cat-file', '-e', snapshot], cwd=consumer_dir,
+                                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    self.assertNotEqual(absent.returncode, 0)
+                    def consumer_output(args, **kwargs):
+                        return subprocess.check_output(args, cwd=consumer_dir, text=True, **kwargs).strip()
+                    recovery.verify_historical_snapshot(consumer_output, base, trusted, snapshot)
+                    with self.assertRaisesRegex(RuntimeError, 'differs from authenticated input'):
+                        recovery.verify_historical_snapshot(consumer_output, base, trusted, '0' * 40)
+
 
 
 class HistoricalPathTests(unittest.TestCase):
