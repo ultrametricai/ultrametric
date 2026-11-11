@@ -1,11 +1,11 @@
 {
-  "hash": "63ccc21d0e848ef90d0af9e9b85ff6470524aa8373a5a33cf99ef15321d77aed",
+  "hash": "4a91fca327bad4eb7f788651e8fefe8fbe4b06a6dce80a6508e112fb853d6b9a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "mParticle's own Events API tags every batch with an environment field set to \"production\" or \"development\". The client SDKs set it through isDevelopmentMode, and the docs say this segregates development data from production data, so test traffic is kept apart from production data. However, this is a per-event flag inside the same account, not an isolated sandbox instance or test tenant, and the docs never use the word sandbox. Missing for 10: a dedicated isolated sandbox environment or test tenant, documentation of how far the dev/prod segregation extends (audiences, integrations, forwarding), and independent or hands-on corroboration.",
+    "rationale": "mParticle documents its own environment flag: every Events API batch can be marked \"development\" instead of \"production\" (SDKs set it via isDevelopmentMode), which keeps test data apart from production data. That is data segregation within the same account, not an isolated sandbox. The evidence says there is no separate sandbox instance or test tenant and that the word sandbox never appears in the API docs, so isolation is only logical. missing for 10: a dedicated sandbox or test workspace isolated from the production account, documentation of how dev-mode data is kept from production audiences and outputs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "mparticle-environment-flag-20261106"
     ],
@@ -16,7 +16,11 @@
       "citations": [
         {
           "evidenceId": "mparticle-environment-flag-20261106",
-          "quote": "Every Events API batch carries an environment field, \"production\" or \"development\" (default production; the client SDKs set it via isDevelopmentMode), which segregates development data from production data within the same account."
+          "quote": "which segregates development data from production data within the same account"
+        },
+        {
+          "evidenceId": "mparticle-environment-flag-20261106",
+          "quote": "This is a per-event environment flag, not a separate sandbox instance or test tenant"
         }
       ]
     },

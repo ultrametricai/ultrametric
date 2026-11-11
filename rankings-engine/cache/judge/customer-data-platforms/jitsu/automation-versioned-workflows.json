@@ -1,17 +1,31 @@
 {
-  "hash": "f908cfa9d61f80cf4d7a5f82c1ad0dbdee15a6fdc5f1be542bf242d8f09df10f",
+  "hash": "e463a11dabb166f987509742faf4f3f5ac7382558641840e734cf1eb84f2a846",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Jitsu Functions can be built and deployed from a user's own repo with jitsu-cli, and that an audit log exists. Neither is a documented Jitsu capability for versioning, reviewing, or rolling back automations: versioning and review would come from the user's own git setup, and an audit log is an adjacent control, not version history or rollback. No first-party version history, diff/review, or rollback feature for functions or pipeline configuration is evidenced.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Jitsu documents a code-first workflow for its Functions: `jitsu-cli init` scaffolds a TypeScript project with tests, and `jitsu-cli deploy` ships it from your own repo. That puts automation logic in source control, where it can be versioned and reviewed, and a SOC2-oriented audit log records account activity. However, the evidence shows no native version history, diff/review UI, or rollback mechanism. Versioning and rollback would rely on the user's own git practice plus redeploying, and the repo workflow is documented only for Functions, not destinations, streams or connections. Missing for 10: built-in version history for functions and pipeline config, in-product change review/diff, documented one-step rollback, versioning of non-function config objects, and independent corroboration.",
+    "evidenceIds": [
+      "jitsu-gh-6",
+      "jitsu-gh-1",
+      "jitsu-docs-49",
+      "jitsu-docs-17"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can version, review, and roll back my automations",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "jitsu-gh-6",
+          "quote": "build and deploy them from your own repo with the Jitsu CLI — `jitsu-cli init` scaffolds a TypeScript project with tests, and `jitsu-cli deploy` ships it to your workspace."
+        },
+        {
+          "evidenceId": "jitsu-docs-17",
+          "quote": "Audit log (SOC2-oriented) with account-activity alerts"
+        }
+      ]
     },
     "productId": "jitsu",
     "storyId": "automation-versioned-workflows"

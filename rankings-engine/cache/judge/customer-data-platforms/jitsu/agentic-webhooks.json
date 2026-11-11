@@ -1,23 +1,28 @@
 {
-  "hash": "6476add6d4327086fe56ea19ce4c1871b596d633c0f2db2ce1018620bab10284",
+  "hash": "c174acf0d8ac229d3f6fcf330893f9b6968c375f2a77c8fdaa81e6d9cfc9317c",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Jitsu ships a first-party webhook destination that sends event data to any HTTP endpoint. A programmatic consumer can register its own URL and receive events, which goes beyond the Slack and Discord chat targets. Separately, Email/Slack failure alerts do not count, and the OTLP log export is adjacent rather than webhook support. Missing for 10: documented payload format, retry/delivery guarantees and request signing for the webhook destination, webhook subscriptions to platform/pipeline events (e.g., sync failures), and independent or hands-on corroboration.",
+    "rationale": "Jitsu documents a first-party webhook destination that sends event data to any HTTP endpoint. Connecting a source to a destination, plus Functions, lets users choose which events are delivered, so a programmatic consumer can subscribe to the event stream. The evidence is a single short doc line with no detail on delivery semantics, and there is no hands-on corroboration. Missing for 10: documented payload format, signing/authentication of callbacks, retry/delivery guarantees for the webhook destination, event-type subscription granularity beyond filtering, independent corroboration.",
     "evidenceIds": [
       "jitsu-docs-70",
-      "jitsu-docs-50"
+      "jitsu-docs-50",
+      "jitsu-docs-45"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
       "citations": [
         {
           "evidenceId": "jitsu-docs-70",
           "quote": "Send data to any HTTP endpoint. You can use this destination to send data to Slack, Discord, or any other service that accepts HTTP requests."
+        },
+        {
+          "evidenceId": "jitsu-docs-45",
+          "quote": "You can control which events become active by choosing not to connect a source to a destination or by using a Jitsu Function to filter out unwanted events before they are sent."
         }
       ]
     },
