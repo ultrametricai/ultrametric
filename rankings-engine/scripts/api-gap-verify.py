@@ -278,26 +278,31 @@ def load_prior_outstanding(root, exclude_file=None):
             if key not in covered and not _verdict_cites_evidence(root, *key)]
 
 
-def build_issue_md(ledger, carried=None, assume_published=True):
+def build_issue_md(ledger, carried=None):
     """The needs-human issue body: routed rows PLUS every withheld cell — this run's and
     the still-outstanding rows carried from earlier committed ledgers — so unfinished
     research stays in the human queue even on a zero-append run (where no ledger is
     committed) and after the gap signature clears. Returns None when there is nothing
     for a human to act on."""
-    # A carried row is superseded by anything THIS run recorded for the same cell: a
-    # fresh withheld row (newer reason wins) or a verified append (the research is done;
-    # load_prior_outstanding read the verdicts before this run judged, so it cannot see
-    # the repair itself). Appends supersede ONLY under assume_published: when judging or
-    # a later gate fails, the appended evidence never reaches main, so the workflow files
-    # the assume_published=False body instead and the carried row stays in the queue.
-    superseding = ledger['withheld'] + (ledger['cells'] if assume_published else [])
-    current_keys = {(r['arena'], r['product'], r['storyId']) for r in superseding}
-    carried = [row for row in (carried or [])
-               if (row['arena'], row['product'], row['storyId']) not in current_keys]
-    ledger = {**ledger, 'withheld': ledger['withheld'] + [
-        {**row, 'reason': f"{row.get('reason', '')} (carried forward from {row['carriedFrom']})".strip()}
-        for row in carried
-    ]}
+    # A carried row is dropped only when COMMITTED state proves completion — a ledger cell
+    # on main or a verdict citing evidence (both checked by load_prior_outstanding) — or
+    # when this run re-recorded the same cell as withheld (newer reason wins). A local
+    # append never drops the row: judging or a later gate can still fail, and the task
+    # must not vanish from the queue when supersession closes the previous issue. A row
+    # this run appended evidence for is kept with a pending note; it clears on the first
+    # run after the wave PR merges.
+    withheld_keys = {(r['arena'], r['product'], r['storyId']) for r in ledger['withheld']}
+    appended_keys = {(r['arena'], r['product'], r['storyId']) for r in ledger['cells']}
+    carried_rows = []
+    for row in (carried or []):
+        key = (row['arena'], row['product'], row['storyId'])
+        if key in withheld_keys:
+            continue
+        reason = f"{row.get('reason', '')} (carried forward from {row['carriedFrom']})".strip()
+        if key in appended_keys:
+            reason += ' — this wave appended verified evidence; the row clears once the wave PR merges'
+        carried_rows.append({**row, 'reason': reason})
+    ledger = {**ledger, 'withheld': ledger['withheld'] + carried_rows}
     if not ledger['needsHuman'] and not ledger['withheld']:
         return None
     lines = [f"## api-gap-repair: rows needing a human — {ledger['date']}", '']
@@ -340,7 +345,6 @@ def main(argv=None):
     parser.add_argument('--ledger', required=True)
     parser.add_argument('--ledger-md', required=True)
     parser.add_argument('--issue-body')
-    parser.add_argument('--issue-body-unpublished')
     parser.add_argument('--root', default=os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
     parser.add_argument('--fixture')
     args = parser.parse_args(argv)
@@ -374,19 +378,15 @@ def main(argv=None):
     ledger = build_ledger(manifest, results, now)
     outputs = [(args.ledger, json.dumps(ledger, indent=2, ensure_ascii=False) + '\n'),
                (args.ledger_md, build_ledger_md(ledger))]
-    if args.issue_body or args.issue_body_unpublished:
+    if args.issue_body:
         carried = load_prior_outstanding(args.root, exclude_file=args.ledger)
-        bodies = [(args.issue_body, True), (args.issue_body_unpublished, False)]
-        for path_, assume_published in bodies:
-            if not path_:
-                continue
-            issue_md = build_issue_md(ledger, carried, assume_published=assume_published)
-            if issue_md is not None:
-                outputs.append((path_, issue_md))
-            elif os.path.exists(path_):
-                # Nothing for a human in this variant: drop a stale body so the workflow
-                # files no issue from it.
-                os.remove(path_)
+        issue_md = build_issue_md(ledger, carried)
+        if issue_md is not None:
+            outputs.append((args.issue_body, issue_md))
+        elif os.path.exists(args.issue_body):
+            # Nothing for a human this run: drop a stale routing-only body so the
+            # workflow files no issue.
+            os.remove(args.issue_body)
     for out, content in outputs:
         os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
         with open(out, 'w') as f:

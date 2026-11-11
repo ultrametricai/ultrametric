@@ -130,15 +130,15 @@ jobs:
           # queue: affiliated/excluded rows plus every withheld cell (needs-research and
           # verification failures), so unfinished research reaches the issue even on a
           # zero-append run (where no ledger is committed).
-          # The second body variant keeps carried rows that this run's appends would
-          # supersede; the issue step below posts it when the wave did not publish, so a
-          # judge/gate failure cannot drop a research task from the queue.
+          # The issue body keeps carried research rows until COMMITTED state proves
+          # completion (a merged ledger cell or a verdict citing evidence) — a local
+          # append never drops a row, so a judge/gate failure after a successful append
+          # cannot make a task vanish from the queue.
           python3 rankings-engine/scripts/api-gap-verify.py \
             --manifest /tmp/api-gap-manifest.json \
             --ledger "$LEDGER" \
             --ledger-md "${LEDGER%.json}.md" \
-            --issue-body /tmp/api-gap-needs-human.md \
-            --issue-body-unpublished /tmp/api-gap-needs-human-unpublished.md
+            --issue-body /tmp/api-gap-needs-human.md
           echo "ledger=$LEDGER" >> "$GITHUB_OUTPUT"
           echo "appended=$(jq '.cells | length' "$LEDGER")" >> "$GITHUB_OUTPUT"
 
@@ -269,15 +269,8 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_OUTCOME: ${{ steps.pr.outcome }}
         run: |
-          # When this run appended evidence but the PR step did not succeed (judge, gates,
-          # stability, or push failed), the appends never reached a publishable branch —
-          # file the conservative body that keeps the carried research rows.
           BODY=/tmp/api-gap-needs-human.md
-          if [ "$PR_OUTCOME" != "success" ] && [ -f /tmp/api-gap-needs-human-unpublished.md ]; then
-            BODY=/tmp/api-gap-needs-human-unpublished.md
-          fi
           if [ ! -f "$BODY" ]; then
             echo "No needs-human rows — no issue to file."
             exit 0

@@ -64,7 +64,7 @@ const baseItem = {
   excerpt: 'Published machine-readable API description with a verified title.',
 }
 
-function run(scenario: Scenario): { ledger: Ledger; pack: PackRow[]; md: string; issue: string | null; issueUnpublished: string | null; stdout: string } {
+function run(scenario: Scenario): { ledger: Ledger; pack: PackRow[]; md: string; issue: string | null; stdout: string } {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'api-gap-verify-'))
   const evidenceDir = path.join(dir, 'open-rankings', 'widgets', 'evidence')
   fs.mkdirSync(evidenceDir, { recursive: true })
@@ -94,14 +94,12 @@ function run(scenario: Scenario): { ledger: Ledger; pack: PackRow[]; md: string;
   const ledgerFile = path.join(dir, 'ledger.json')
   const mdFile = path.join(dir, 'ledger.md')
   const issueFile = path.join(dir, 'issue.md')
-  const issueUnpublishedFile = path.join(dir, 'issue-unpublished.md')
   const stdout = execFileSync('python3', [
     SCRIPT,
     '--manifest', path.join(dir, 'manifest.json'),
     '--ledger', ledgerFile,
     '--ledger-md', mdFile,
     '--issue-body', issueFile,
-    '--issue-body-unpublished', issueUnpublishedFile,
     '--root', dir,
     '--fixture', path.join(dir, 'fixture.json'),
   ], { encoding: 'utf8' })
@@ -110,7 +108,6 @@ function run(scenario: Scenario): { ledger: Ledger; pack: PackRow[]; md: string;
     pack: JSON.parse(fs.readFileSync(path.join(evidenceDir, 'widget.json'), 'utf8')),
     md: fs.readFileSync(mdFile, 'utf8'),
     issue: fs.existsSync(issueFile) ? fs.readFileSync(issueFile, 'utf8') : null,
-    issueUnpublished: fs.existsSync(issueUnpublishedFile) ? fs.readFileSync(issueUnpublishedFile, 'utf8') : null,
     stdout,
   }
 }
@@ -319,30 +316,12 @@ describe('api-gap-verify.py', () => {
     expect(issue).not.toContain('api-versioning-policy')
   })
 
-  it('drops a carried row once this run appends evidence for the same cell', () => {
+  it('keeps a carried row through a local append: only committed state drops it (judge or a gate may still fail)', () => {
+    // Verify succeeds and appends locally this run, but nothing is committed yet — the
+    // carried row must stay in the queue (with a pending note), because the wave can
+    // still fail to publish after this point.
     const { ledger, issue } = run({
       items: [baseItem], // appends api-machine-spec this run
-      withheld: [],
-      needsHuman: [{ arena: 'product-feedback', product: 'foreloop', reason: 'own product pending ruling' }],
-      deferred: [],
-      fixture: { [baseItem.url]: { status: 200, body: specBody } },
-      priorLedgers: {
-        '2026-11-05-api-quality-ci.json': {
-          cells: [],
-          withheld: [
-            { arena: 'widgets', product: 'widget', storyId: 'api-machine-spec', disposition: 'withheld-verification-failed', reason: 'returned 404 last week' },
-          ],
-        },
-      },
-    })
-    expect(ledger.cells.map((c) => c.storyId)).toEqual(['api-machine-spec'])
-    expect(issue).not.toContain('returned 404 last week')
-    expect(issue).not.toContain('api-machine-spec')
-  })
-
-  it('keeps the carried row in the unpublished body variant: a failed publication must not drop a research task', () => {
-    const { issue, issueUnpublished } = run({
-      items: [baseItem],
       withheld: [],
       needsHuman: [],
       deferred: [],
@@ -356,8 +335,34 @@ describe('api-gap-verify.py', () => {
         },
       },
     })
-    expect(issue).toBeNull() // published: the append resolves the row, nothing left for a human
-    expect(issueUnpublished).toContain('returned 404 last week')
-    expect(issueUnpublished).toContain('carried forward from 2026-11-05-api-quality-ci.json')
+    expect(ledger.cells.map((c) => c.storyId)).toEqual(['api-machine-spec'])
+    expect(issue).toContain('returned 404 last week')
+    expect(issue).toContain('carried forward from 2026-11-05-api-quality-ci.json')
+    expect(issue).toContain('the row clears once the wave PR merges')
+  })
+
+  it('drops a carried row once committed state proves completion (merged ledger cell or citing verdict)', () => {
+    const { issue } = run({
+      items: [],
+      withheld: [],
+      needsHuman: [{ arena: 'product-feedback', product: 'foreloop', reason: 'own product pending ruling' }],
+      deferred: [],
+      fixture: {},
+      priorLedgers: {
+        '2026-11-05-api-quality-ci.json': {
+          cells: [],
+          withheld: [
+            { arena: 'widgets', product: 'widget', storyId: 'api-machine-spec', disposition: 'withheld-verification-failed', reason: 'returned 404 last week' },
+          ],
+        },
+        // The merged wave ledger records the repair: the committed cell resolves the row.
+        '2026-11-06-api-quality-ci.json': {
+          cells: [{ arena: 'widgets', product: 'widget', storyId: 'api-machine-spec', disposition: 'evidence-appended' }],
+          withheld: [],
+        },
+      },
+    })
+    expect(issue).not.toContain('returned 404 last week')
+    expect(issue).not.toContain('api-machine-spec')
   })
 })
