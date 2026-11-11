@@ -315,4 +315,25 @@ describe('api-gap-verify.py', () => {
     expect(issue).not.toContain('api-interactive-docs')
     expect(issue).not.toContain('api-versioning-policy')
   })
+
+  it('drops a carried row once this run appends evidence for the same cell', () => {
+    const { ledger, issue } = run({
+      items: [baseItem], // appends api-machine-spec this run
+      withheld: [],
+      needsHuman: [{ arena: 'product-feedback', product: 'foreloop', reason: 'own product pending ruling' }],
+      deferred: [],
+      fixture: { [baseItem.url]: { status: 200, body: specBody } },
+      priorLedgers: {
+        '2026-11-05-api-quality-ci.json': {
+          cells: [],
+          withheld: [
+            { arena: 'widgets', product: 'widget', storyId: 'api-machine-spec', disposition: 'withheld-verification-failed', reason: 'returned 404 last week' },
+          ],
+        },
+      },
+    })
+    expect(ledger.cells.map((c) => c.storyId)).toEqual(['api-machine-spec'])
+    expect(issue).not.toContain('returned 404 last week')
+    expect(issue).not.toContain('api-machine-spec')
+  })
 })

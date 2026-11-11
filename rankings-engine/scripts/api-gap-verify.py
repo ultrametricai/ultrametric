@@ -284,7 +284,12 @@ def build_issue_md(ledger, carried=None):
     research stays in the human queue even on a zero-append run (where no ledger is
     committed) and after the gap signature clears. Returns None when there is nothing
     for a human to act on."""
-    current_keys = {(w['arena'], w['product'], w['storyId']) for w in ledger['withheld']}
+    # A carried row is superseded by anything THIS run recorded for the same cell: a
+    # fresh withheld row (newer reason wins) or a verified append (the research is done;
+    # load_prior_outstanding read the verdicts before this run judged, so it cannot see
+    # the repair itself).
+    current_keys = {(r['arena'], r['product'], r['storyId'])
+                    for r in ledger['withheld'] + ledger['cells']}
     carried = [row for row in (carried or [])
                if (row['arena'], row['product'], row['storyId']) not in current_keys]
     ledger = {**ledger, 'withheld': ledger['withheld'] + [
