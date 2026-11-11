@@ -50,7 +50,7 @@ export interface OpenDocument {
    * judged product in open-rankings/ carry it (Cooley GO → cooley, Orrick → orrick, GitHub → github —
    * all in their arenas). Rendering resolves it via judgedProductRef (throws on an unknown or
    * ambiguous id, so a typo fails the build) and checks lib/logos hasLogo; unmapped publishers
-   * render as plain names — no logo invented. */
+   * render as plain names — no logo invented. Use arena/product for a product in multiple arenas. */
   publisherProductId?: string
   url: string
   /** The committed license class — the License column's short label key (DOCUMENT_LICENSES). */
@@ -122,8 +122,8 @@ export function validateDocumentRegistry(doc: DocumentRegistry, asOf: Date): str
       if (typeof d.family !== 'string' || !ID_RE.test(d.family)) errors.push(`${where}: family must be a registry-style slug`)
       if (typeof d.variant !== 'string' || d.variant.trim().length === 0) errors.push(`${where}: family member needs a committed variant label`)
     }
-    if (d.publisherProductId !== undefined && (typeof d.publisherProductId !== 'string' || !ID_RE.test(d.publisherProductId))) {
-      errors.push(`${where}: publisherProductId must be a registry-style slug`)
+    if (d.publisherProductId !== undefined && (typeof d.publisherProductId !== 'string' || !isPublisherProductId(d.publisherProductId))) {
+      errors.push(`${where}: publisherProductId must be a product slug or arena/product pair`)
     }
     if (typeof d.checked_on !== 'string' || !isIsoDate(d.checked_on)) errors.push(`${where}: invalid checked_on`)
     else {
@@ -256,6 +256,11 @@ export function documentJurisdictionFlag(jurisdiction: string): JurisdictionFlag
   return { flag: GEO_PREF_META[country].flag, countryLabel: GEO_PREF_META[country].label, text: jurisdiction }
 }
 
+function isPublisherProductId(value: string): boolean {
+  const parts = value.split('/')
+  return parts.length <= 2 && parts.every((part) => ID_RE.test(part))
+}
+
 /** A registry publisherProductId resolved against the judged data layer. */
 export interface JudgedProductRef {
   arenaId: string
@@ -263,7 +268,7 @@ export interface JudgedProductRef {
   name: string
 }
 
-// productId → (arena, name) over every open-rankings/<arena>/products.json, built once per process (the
+// Product slug or arena/product → (arena, name) over every open-rankings/<arena>/products.json, built once per process (the
 // page resolves at most a handful of vendors per build). Ambiguity throws rather than picking
 // an arena: 14 product ids live in two arenas (brex, ramp, square, …) — a publisher mapping to
 // one of those needs a deliberate disambiguation, not a readdir-order coin flip.
@@ -272,6 +277,7 @@ let judgedProductsCache: Map<string, JudgedProductRef | 'ambiguous'> | null = nu
 /** Resolve a committed publisherProductId to its judged product — throws on unknown or
  * ambiguous ids so a typo'd registry mapping fails the build loudly (the openDocumentById bar). */
 export function judgedProductRef(productId: string): JudgedProductRef {
+  if (!isPublisherProductId(productId)) throw new Error(`Invalid publisherProductId ${productId}`)
   if (judgedProductsCache === null) {
     judgedProductsCache = new Map()
     const categories = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-rankings/categories.json'), 'utf8')) as Array<{ id: string }>
@@ -280,6 +286,7 @@ export function judgedProductRef(productId: string): JudgedProductRef {
       if (!fs.existsSync(productsPath)) continue
       const products = JSON.parse(fs.readFileSync(productsPath, 'utf8')) as Array<{ id: string; name: string }>
       for (const p of products) {
+        judgedProductsCache.set(`${c.id}/${p.id}`, { arenaId: c.id, productId: p.id, name: p.name })
         judgedProductsCache.set(p.id, judgedProductsCache.has(p.id) ? 'ambiguous' : { arenaId: c.id, productId: p.id, name: p.name })
       }
     }
