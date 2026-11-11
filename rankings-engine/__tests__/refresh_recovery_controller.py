@@ -294,7 +294,7 @@ class EvidenceFixture:
             return BASE
         if args == ['git', 'merge-base', ORIGINAL, BASE]:
             return self.common
-        if args == ['git', 'diff', '--name-only', BASE, TRUSTED]:
+        if args == ['git', 'diff', '--name-only', '--no-renames', BASE, TRUSTED]:
             return '\n'.join(self.changed)
         if args == ['git', 'show', f'{HEAD}:open-rankings/fixture/rankings.json']:
             return json.dumps({'generatedAt': self.timestamp})
@@ -337,7 +337,7 @@ class RecoveryEvidenceTests(unittest.TestCase):
         fixture.verify.side_effect = MissingProvenance('original fixture receipt missing')
         with self.assertRaisesRegex(MissingProvenance, 'original fixture receipt missing'):
             fixture.collect()
-        self.assertFalse(any(args[:3] == ['git', 'diff', '--name-only'] for args in fixture.calls))
+        self.assertFalse(any(args[:4] == ['git', 'diff', '--name-only', '--no-renames'] for args in fixture.calls))
 
     def test_only_the_exact_interrupted_no_model_failure_is_eligible(self):
         changes = [('mode', 'repair'), ('phase', 'validated'), ('pr', NUMBER + 1), ('runId', NEW_RUN),
@@ -449,11 +449,11 @@ class ReplayFixture:
                 return self.reconstructed
             self.ordinary_tree_reads += 1
             return GENERATED if self.ordinary_tree_reads == 1 else self.final_tree
-        if args == ['git', 'diff', '--name-only', TRUSTED, GENERATED]:
+        if args == ['git', 'diff', '--name-only', '--no-renames', TRUSTED, GENERATED]:
             return '\n'.join(self.files)
         if args[:3] == ['git', 'ls-tree', GENERATED]:
             return self.entry
-        if args == ['git', 'diff', '--name-only']:
+        if args == ['git', 'diff', '--name-only', '--no-renames']:
             return self.dirty
         raise AssertionError(args)
 
@@ -542,6 +542,9 @@ class RecoveryGitFixtureTests(unittest.TestCase):
     def test_historical_snapshot_excludes_newer_data_but_keeps_current_code(self):
         self.check_git_replay(True)
 
+    def test_historical_rename_restores_both_paths_and_verifies_in_fresh_clone(self):
+        self.check_git_replay('rename')
+
     def check_git_replay(self, historical):
         git_binary = shutil.which('git')
         if git_binary is None:
@@ -557,6 +560,8 @@ class RecoveryGitFixtureTests(unittest.TestCase):
             rankings = root / 'open-rankings/fixture/rankings.json'
             rankings.parent.mkdir(parents=True)
             rankings.write_text('{"fixture":"initial"}\n')
+            if historical == 'rename':
+                (rankings.parent / 'old-input.json').write_text('{"historical":true}\n')
             (root / 'rankings-engine/cache').mkdir(parents=True)
             (root / 'rankings-engine/cache/.keep').write_text('')
             (root / 'README.md').write_text('Fixture\n')
@@ -583,10 +588,15 @@ class RecoveryGitFixtureTests(unittest.TestCase):
             (root / 'trusted-code.py').write_text('version = 2\n')
             if historical:
                 rankings.write_text('{"fixture":"newer main"}\n')
-                (rankings.parent / 'newer.json').write_text('{}\n')
+                if historical == 'rename':
+                    git('mv', 'open-rankings/fixture/old-input.json', 'open-rankings/fixture/newer.json')
+                else:
+                    (rankings.parent / 'newer.json').write_text('{}\n')
             git('add', '.')
             git('commit', '-m', 'fictional trusted recovery code')
             trusted = git('rev-parse', 'HEAD')
+            if historical == 'rename':
+                self.assertIn('R100', git('diff', '--name-status', '--find-renames', base, trusted))
             report = {**failed_report(), 'head': original, 'main': base}
             proof = {**proof_record(), 'head': orphan, 'originalHead': original,
                      'base': base, 'parents': [original, base], 'tree': tree,
@@ -599,6 +609,8 @@ class RecoveryGitFixtureTests(unittest.TestCase):
                     if historical:
                         self.assertEqual(rankings.read_text(), '{"fixture":"initial"}\n')
                         self.assertFalse((rankings.parent / 'newer.json').exists())
+                        if historical == 'rename':
+                            self.assertEqual((rankings.parent / 'old-input.json').read_text(), '{"historical":true}\n')
                         self.assertEqual(args[12], git('write-tree'))
                     self.assertEqual((root / 'trusted-code.py').read_text(), 'version = 2\n')
                     rankings.write_text(generated_data)
@@ -648,6 +660,33 @@ class HistoricalPathTests(unittest.TestCase):
                      'open-rankings/a/loader.config.json', 'scripts/input.json',
                      'open-rankings/node_modules/input.json', 'open-rankings/a\\b.json'):
             with self.subTest(file=file): self.assertFalse(recovery.historical_path(file))
+
+    def test_real_git_unsafe_renames_fail_before_snapshot_writes(self):
+        for source, target in (
+                ('open-rankings/fixture/old.json', 'open-processes/new.json'),
+                ('open-processes/old.json', 'open-rankings/fixture/new.json'),
+                ('open-rankings/fixture/package.json', 'open-rankings/fixture/new.json'),
+                ('open-rankings/fixture/old.json', 'open-rankings/fixture/tsconfig.json')):
+            with self.subTest(source=source, target=target), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                def output(args, **kwargs):
+                    return subprocess.check_output(args, cwd=root, text=True, stderr=subprocess.PIPE, **kwargs).strip()
+                def git(*args): return output(['git', *args])
+                git('init', '-b', 'main'); git('config', 'user.name', 'Fictional Fixture')
+                git('config', 'user.email', 'fixture@example.invalid')
+                (root / source).parent.mkdir(parents=True, exist_ok=True)
+                (root / source).write_text('{"fixture":true}\n')
+                git('add', '.'); git('commit', '-m', 'historical fixture'); base = git('rev-parse', 'HEAD')
+                (root / target).parent.mkdir(parents=True, exist_ok=True)
+                git('mv', source, target); git('commit', '-m', 'renamed fixture'); trusted = git('rev-parse', 'HEAD')
+                self.assertIn('R100', git('diff', '--name-status', '--find-renames', base, trusted))
+                command = Mock()
+                with self.assertRaises(RuntimeError):
+                    recovery.historical_snapshot(command, output, base, trusted, {})
+                command.assert_not_called()
+                with self.assertRaises(RuntimeError):
+                    recovery.verify_historical_snapshot(output, base, trusted, git('rev-parse', 'HEAD^{tree}'))
+                self.assertEqual(git('status', '--porcelain'), '')
 
     def test_explicit_historical_selection_cannot_stand_alone(self):
         for env in ({'RECOVER_HISTORICAL': 'true'}, {'RECOVER_HISTORICAL': 'yes'}):

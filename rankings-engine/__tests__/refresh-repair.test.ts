@@ -359,6 +359,31 @@ describe('provenance-aware retained repair', { timeout: 60000 }, () => {
     },
   )
 
+  it.each(['valid', 'missing-old-path', 'configuration', 'other-corpus'])(
+    'enumerates both sides of historical renames: %s', async kind => {
+      const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
+      try {
+        const head = f.commit()
+        f.git('checkout', '--detach', f.main)
+        const oldPath = kind === 'configuration' ? `${f.dir}/package.json`
+          : kind === 'other-corpus' ? 'open-processes/old-input.json' : `${f.dir}/old-input.json`
+        const newPath = `${f.dir}/newer.json`
+        f.write(oldPath, { historical: true }); const historicalBase = f.commit()
+        f.git('mv', oldPath, newPath); const trusted = f.commit()
+        expect(f.git('diff', '--name-status', '--find-renames', historicalBase, trusted)).toContain('R100')
+        f.git('restore', '--source', historicalBase, '--staged', '--worktree', '--',
+          ...(kind === 'missing-old-path' ? [newPath] : [oldPath, newPath]))
+        const snapshot = f.git('write-tree')
+        process.chdir(f.root)
+        const result = repair({ head, main: historicalBase, arena: 'fixture', findings: [], keyed: false,
+          replay: { trusted, at: '2026-11-01T03:40:27.465Z', snapshot } })
+        if (kind === 'valid') expect((await result).mode).toBe('base-update')
+        else await expect(result).rejects.toThrow(/Historical snapshot/)
+        expect(fake).not.toHaveBeenCalled()
+      } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
+    },
+  )
+
   it('rejects a replay base outside the current trusted source ancestry', async () => {
     const f = retainedFixture(), previous = process.cwd(), fake = vi.mocked(llmJson); fake.mockReset()
     try {

@@ -235,11 +235,11 @@ export async function repair({ head, main, arena, findings, keyed, replay }: {
       || (!replay?.snapshot && git('status', '--porcelain'))) throw new Error('Repair requires a clean checkout of trusted main')
   if (replay?.snapshot) {
     if (!/^[a-f0-9]{40}$/.test(replay.snapshot) || git('write-tree') !== replay.snapshot
-        || git('diff', '--name-only') || git('ls-files', '--others', '--exclude-standard')) {
+        || git('diff', '--name-only', '--no-renames') || git('ls-files', '--others', '--exclude-standard')) {
       throw new Error('Historical snapshot identity or working tree changed')
     }
-    const changed = git('diff', '--name-only', replay.trusted, replay.snapshot).split('\n').filter(Boolean)
-    const inputs = git('diff', '--name-only', main, replay.trusted).split('\n').filter(Boolean)
+    const changed = git('diff', '--name-only', '--no-renames', replay.trusted, replay.snapshot).split('\n').filter(Boolean)
+    const inputs = git('diff', '--name-only', '--no-renames', main, replay.trusted).split('\n').filter(Boolean)
     if (inputs.some(file => /^(open-processes|jurisdictions|open-modules|open-law)\//.test(file))) {
       throw new Error('Historical snapshot has changed non-ranking inputs')
     }
@@ -258,7 +258,7 @@ export async function repair({ head, main, arena, findings, keyed, replay }: {
   }
   if (replay && git('merge-base', main, replay.trusted) !== main) throw new Error('Replay base must be an ancestor of the trusted source')
   const base = git('merge-base', main, head)
-  const files = git('diff', '--name-only', base, head).split('\n').filter(Boolean)
+  const files = git('diff', '--name-only', '--no-renames', base, head).split('\n').filter(Boolean)
   for (const file of files) if (!allowed(file, arena)) throw new Error(`PR changes code or data outside its arena: ${file}`)
   // Reject every unsupported finding before any model calls, writes or projection work.
   // Silently skipping a claims finding caused #567 to publish timestamp-only repairs.

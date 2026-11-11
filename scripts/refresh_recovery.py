@@ -168,7 +168,7 @@ def recovery_evidence(api, command, output, verify_provenance, repo, pr, trusted
     original_pr = copy.deepcopy(pr)
     original_pr['head']['sha'] = original
     verify_provenance(api, repo, original_pr)
-    changed = output(['git', 'diff', '--name-only', base, trusted]).splitlines()
+    changed = output(['git', 'diff', '--name-only', '--no-renames', base, trusted]).splitlines()
     if not historical and any(file not in RECOVERY_CODE for file in changed):
         raise RuntimeError('Main contains changes outside the bounded recovery code; dedicated repair required')
     ranking = strict_json(output(['git', 'show', f'{head}:open-rankings/{arena}/rankings.json']))
@@ -198,7 +198,7 @@ def historical_path(file):
 def verify_historical_snapshot(output, base, trusted, snapshot):
     if not isinstance(snapshot, str) or not re.fullmatch(SHA, snapshot):
         raise RuntimeError('Historical snapshot tree binding is invalid')
-    inputs = output(['git', 'diff', '--name-only', base, trusted]).splitlines()
+    inputs = output(['git', 'diff', '--name-only', '--no-renames', base, trusted]).splitlines()
     if any(file.startswith(('open-processes/', 'jurisdictions/', 'open-modules/', 'open-law/')) for file in inputs):
         raise RuntimeError('Historical snapshot has changed non-ranking inputs')
     # Receipt consumers have only pushed commits. Rebuild the synthetic snapshot
@@ -228,7 +228,7 @@ def verify_historical_snapshot(output, base, trusted, snapshot):
 def historical_snapshot(command, output, base, trusted, env):
     if output(['git', 'rev-parse', 'HEAD']) != trusted or output(['git', 'status', '--porcelain']):
         raise RuntimeError('Historical replay requires a clean trusted checkout')
-    files = output(['git', 'diff', '--name-only', base, trusted]).splitlines()
+    files = output(['git', 'diff', '--name-only', '--no-renames', base, trusted]).splitlines()
     selected = []
     for file in files:
         # These other corpus inputs are not snapshotted. Changing them needs a
@@ -254,7 +254,7 @@ def historical_snapshot(command, output, base, trusted, env):
         expected = entry.replace(' blob ', ' ').replace('\t', ' 0\t') if entry else ''
         if actual != expected:
             raise RuntimeError('Historical snapshot blob identity changed')
-    if output(['git', 'diff', '--name-only']) or output(['git', 'ls-files', '--others', '--exclude-standard']):
+    if output(['git', 'diff', '--name-only', '--no-renames']) or output(['git', 'ls-files', '--others', '--exclude-standard']):
         raise RuntimeError('Historical snapshot has unexpected working files')
     return output(['git', 'write-tree'])
 
@@ -284,9 +284,9 @@ def replay(command, output, report, proof, trusted, directory):
         raise RuntimeError('Replay performed work outside the authenticated no-model base update')
     command(['git', 'add', 'open-rankings', 'rankings-engine/cache', 'README.md'])
     generated = output(['git', 'write-tree'])
-    files = output(['git', 'diff', '--name-only', proof['base'] if historical else trusted, generated]).splitlines()
+    files = output(['git', 'diff', '--name-only', '--no-renames', proof['base'] if historical else trusted, generated]).splitlines()
     if historical:
-        changed_code = [file for file in output(['git', 'diff', '--name-only', trusted, generated]).splitlines()
+        changed_code = [file for file in output(['git', 'diff', '--name-only', '--no-renames', trusted, generated]).splitlines()
                         if not historical_path(file)]
         if changed_code or output(['git', 'ls-files', '--others', '--exclude-standard']):
             raise RuntimeError('Historical replay changed trusted code or undeclared files')
@@ -309,7 +309,7 @@ def replay(command, output, report, proof, trusted, directory):
         command(gate, env=env)
     command(['node', 'rankings-engine/scripts/check-refresh-stability.mjs', proof['base'], proof['head']], env=env)
     command(['git', 'add', 'open-rankings', 'rankings-engine/cache', 'README.md'])
-    if (output(['git', 'write-tree']) != generated or output(['git', 'diff', '--name-only'])
+    if (output(['git', 'write-tree']) != generated or output(['git', 'diff', '--name-only', '--no-renames'])
             or (historical and output(['git', 'ls-files', '--others', '--exclude-standard']))):
         raise RuntimeError('Validation changed the replayed tree')
 
