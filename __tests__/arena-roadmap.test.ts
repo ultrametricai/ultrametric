@@ -61,3 +61,17 @@ describe('open-rankings/arena-roadmap.json', () => {
     }
   })
 })
+
+// Keep the website consumer's alias budget at the source boundary, before a content pin
+// reaches the private renderer. Aliases are authored here and cannot be trimmed by consumers.
+describe('arena search aliases', () => {
+  it('covers each live arena with three to eight distinct search phrases', () => {
+    const { arenas } = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-rankings/search-aliases.json'), 'utf8')) as { arenas: Record<string, string[]> }
+    for (const { id } of categories) {
+      expect(arenas[id], id).toBeDefined()
+      expect(arenas[id].length, id).toBeGreaterThanOrEqual(3)
+      expect(arenas[id].length, id).toBeLessThanOrEqual(8)
+      expect(new Set(arenas[id]).size, id).toBe(arenas[id].length)
+    }
+  })
+})
