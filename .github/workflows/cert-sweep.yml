@@ -60,7 +60,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if git diff --quiet -- open-rankings; then
+          git add open-rankings
+          if git diff --cached --quiet -- open-rankings; then
             echo "No certification changes — done."
             exit 0
           fi
