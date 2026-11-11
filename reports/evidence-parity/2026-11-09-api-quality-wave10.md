@@ -98,3 +98,9 @@ re-judged: luma api-versioning-policy honestly downgrades to partial q6, and the
 re-roll up (video-inpaint-restyle full q7) grounds in verbatim vendor quotes.
 developer.aircall.io rate-limited the repeated replays and now carries the same
 20-second courtesy pacing as developers.fellow.ai.
+
+A second-round P1 flagged luma video-inpaint-restyle at full q7 while its own rationale
+listed untouched-area preservation as missing. The appended scoping row records Modify
+Video's actual semantics (global adherence modes with motion and performance
+preservation; no masking, region selection, or untouched-area guarantee documented), and
+the re-judged cell settles at partial q5 citing it.

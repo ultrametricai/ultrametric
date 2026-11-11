@@ -2496,15 +2496,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Luma documents an agent-readable API for submitting generations: llms.txt, a markdown mirror of every docs page, per-endpoint OpenAPI 3.1.0 definitions (including createGeneration), SDKs, and a per-model credit price table an agent could use to estimate cost. The evidence does not show a documented job-status or polling mechanism, a way to download the finished asset, or per-job cost reporting in API responses. The OpenAPI reference is also on the legacy docs generation, and no standalone spec file exists. missing for 10: documented job-status/polling (watch the job), documented asset retrieval, per-job cost returned by the API, current-generation machine-readable spec, hands-on corroboration of the end-to-end loop",
+    "rationale": "Luma documents an agent-readable generation API: two endpoints, SDKs, llms.txt, markdown mirrors of every docs page, and per-endpoint OpenAPI definitions for the legacy create-generation call, plus a per-model credit price table. That covers submitting a prompt from docs and estimating cost, but the pack never documents polling job status, retrieving the finished asset, or the API reporting the actual cost of a job. The OpenAPI material also belongs to a generation the vendor labels legacy. Missing for 10: documented job-status polling or callbacks, asset download/URL retrieval, per-job cost reporting in API responses, OpenAPI coverage of the current Agents API, and hands-on corroboration of the end-to-end loop.",
     "evidenceIds": [
       "luma-docs-3",
       "luma-docs-4",
       "luma-openapi-md-20261106",
-      "luma-probe-1",
       "luma-docs-15",
-      "luma-docs-24",
-      "luma-docs-27"
+      "luma-docs-27",
+      "luma-docs-17"
     ],
     "support": {
       "relation": "direct",
@@ -2516,12 +2515,12 @@
           "quote": "Two endpoints, Python/JS/TS SDKs, credit-based pricing, production-grade from day one"
         },
         {
-          "evidenceId": "luma-openapi-md-20261106",
-          "quote": "publishes per-endpoint OpenAPI 3.1.0 definitions in the markdown mirror of every reference page"
-        },
-        {
           "evidenceId": "luma-docs-4",
           "quote": "Append .md to any documentation page URL to get its markdown version."
+        },
+        {
+          "evidenceId": "luma-openapi-md-20261106",
+          "quote": "publishes per-endpoint OpenAPI 3.1.0 definitions in the markdown mirror of every reference page"
         },
         {
           "evidenceId": "luma-docs-15",
@@ -2536,11 +2535,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "A live probe confirms an llms.txt at docs.lumalabs.ai/llms.txt (HTTP 200, titled \"Luma APIs Documentation\"), and lumalabs.ai/llms.txt summarizes the API, models and pricing. Any docs page can be fetched as markdown by appending .md, and the current Agents API docs offer \"Copy Markdown\" and assistant-open links. Missing for 10: the probed docs llms.txt indexes the legacy-generation docs rather than the current Agents API docs, and there is no independent or community corroboration of agents actually using these files.",
+    "rationale": "Luma publishes llms.txt files at both lumalabs.ai/llms.txt and docs.lumalabs.ai/llms.txt, the latter confirmed by a probe returning HTTP 200. Any docs page can be fetched as markdown by appending .md, and the markdown mirror carries per-endpoint OpenAPI definitions indexed by llms.txt. The current Agents API docs add \"Copy Markdown\" and assistant-open links. Missing for 10: an llms.txt confirmed for the current Agents API docs generation (the indexed docs.lumalabs.ai set is labeled legacy), and independent or hands-on corroboration of agents consuming these docs.",
     "evidenceIds": [
       "luma-probe-1",
-      "luma-docs-3",
       "luma-docs-4",
+      "luma-docs-3",
       "luma-openapi-md-20261106",
       "luma-tryit-20261106"
     ],
@@ -2551,23 +2550,19 @@
       "citations": [
         {
           "evidenceId": "luma-probe-1",
-          "quote": "HTTP 200 at https://docs.lumalabs.ai/llms.txt"
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.lumalabs.ai/llms.txt # Luma APIs Documentation"
         },
         {
           "evidenceId": "luma-docs-4",
           "quote": "Append .md to any documentation page URL to get its markdown version."
         },
         {
-          "evidenceId": "luma-docs-3",
-          "quote": "Luma API: Two endpoints, Python/JS/TS SDKs, credit-based pricing, production-grade from day one"
-        },
-        {
           "evidenceId": "luma-openapi-md-20261106",
-          "quote": "indexed by the docs llms.txt (\"# Luma APIs Documentation\")"
+          "quote": "publishes per-endpoint OpenAPI 3.1.0 definitions in the markdown mirror of every reference page"
         },
         {
           "evidenceId": "luma-tryit-20261106",
-          "quote": "\"Copy Markdown\", and assistant-open links"
+          "quote": "a static Starlight reference with code samples, \"Copy Markdown\", and assistant-open links"
         }
       ]
     }
@@ -2578,7 +2573,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Luma's evidence documents generative video and image capabilities and Agents that 'research, generate, and refine' creative assets. Nothing shows the product analyzing a user's own data to surface AI-generated insights or suggestions inside the product. Generating content is a different capability from deriving insights from user data, so it earns no credit here.",
+    "rationale": "Luma is an AI creative workspace with agents, so in-product AI suggestions are a plausible axis. However, the evidence only documents generation and editing of video, images, audio and text, such as agents that 'research, generate, and refine' and a reasoning endpoint that 'thinks before it ships.' Nothing shows AI-generated insights or suggestions drawn from the user's own data, so the generation features are adjacent rather than this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2593,7 +2588,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Luma documents its own agentic features. Luma Agents run multi-step video and image workflows, agents \"research, generate, and refine\" across media, and Luma Skills promise to \"Build a Creative Workflow Once, Run It Forever.\" This is only a headline claim of reusable, agent-run workflows, with no detail on how they execute. Nothing shows background execution, triggers, or a recurring schedule, so a reusable workflow cannot stand in for a scheduled automation. Missing for 10: documented background or unattended execution, scheduling or event triggers, details on how Skills run, and independent or hands-on corroboration.",
+    "rationale": "Luma's own docs describe Luma Agents that run multi-step workflows across video, image, audio and text, and Luma Skills that let you \"Build a Creative Workflow Once, Run It Forever.\" That points to reusable, agent-driven automation, but the only evidence is headline marketing lines with no detail on how it works. Missing for 10: documented background or unattended execution, recurring schedules or event triggers, completion notifications, setup and management docs for Skills, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "luma-docs-23",
       "luma-docs-29",
@@ -2623,9 +2618,9 @@
     "productId": "luma",
     "storyId": "agentic-builtin-assistant",
     "verdict": "full",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Luma's own docs describe a browser-based creative workspace with built-in Luma Agents that handle multi-step video and image workflows, researching, generating, and refining across video, image, audio, and text. This directly matches delegating tasks to an in-product AI assistant, though the evidence is marketing-level. Missing for 10: detailed documentation of how users delegate and steer agent tasks, and independent or hands-on corroboration of the agents in use.",
+    "rationale": "Luma's own docs describe Luma Agents built into its browser-based creative workspace. The agents research, generate, and refine multi-step video, image, audio, and text work, which is a built-in assistant users can delegate tasks to. Luma Skills adds reusable workflows, but the evidence is marketing-level taglines rather than detailed docs. Missing for 10: in-depth documentation of how tasks are handed off and supervised inside the app, which task types the agent handles on its own, and independent or hands-on confirmation of the agent workflow.",
     "evidenceIds": [
       "luma-docs-29",
       "luma-docs-21",
@@ -2657,13 +2652,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Luma offers a first-party REST API with Python/JS/TS SDKs and API keys, so generation can be driven programmatically without the browser UI. Nothing documents a CLI, CI integration guidance or a non-billing test path, and the FAQ says there is no sandbox or staging environment, so CI runs consume paid production quota. missing for 10: official CLI or headless runner, CI/pipeline integration docs, sandbox or test environment, independent hands-on corroboration of automated use.",
+    "rationale": "Luma ships a first-party API with Python/JS/TS SDKs and API keys, so generation can be driven programmatically without the browser UI, which is the core of headless automation. Nothing in the evidence covers CI use specifically, there is no CLI, and the FAQ says there is no staging or sandbox environment, so CI runs consume billed production credits. missing for 10: CI/headless-specific documentation or examples, an official CLI, a sandbox/test environment for automated runs, independent hands-on corroboration of automated pipelines.",
     "evidenceIds": [
-      "luma-docs-1",
       "luma-docs-3",
+      "luma-docs-1",
       "luma-docs-26",
-      "luma-no-sandbox-20261106",
-      "luma-versioning-20261106"
+      "luma-docs-20",
+      "luma-no-sandbox-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -2683,6 +2678,10 @@
           "quote": "Get API key - https://platform.lumalabs.ai/"
         },
         {
+          "evidenceId": "luma-docs-20",
+          "quote": "Dedicated capacity with guaranteed throughput and latency. Built for production workloads at scale."
+        },
+        {
           "evidenceId": "luma-no-sandbox-20261106",
           "quote": "There is no staging or sandbox environment. Use a test key and small generations to experiment."
         }
@@ -2695,7 +2694,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Luma ships agentic workflows (Luma Agents, Skills), so letting users plug in MCP servers is a fair question for this product. However, nothing in the evidence pack documents any MCP client support or a way to connect external MCP servers. The API, SDK, llms.txt and agent-workflow evidence is adjacent and does not show the product consuming MCP tools.",
+    "rationale": "Luma is an AI video and image generation platform that ships Luma Agents for multi-step workflows, so acting as an MCP client is a fair question for it. The evidence pack never mentions MCP or any way to connect external tool servers to Luma or its agents. The axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2710,7 +2709,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Luma is a generative video and image API platform, so shipping an official MCP server is a fair question for it. Nothing in the evidence pack documents one. llms.txt, markdown doc mirrors, SDKs and REST endpoints are only adjacent building blocks, not an MCP server an agent can connect to.",
+    "rationale": "Luma is a generative video/image SaaS and API platform, so an official MCP server is a fair question to ask of it. Nothing in the evidence pack documents one: the docs cover REST endpoints, SDKs, llms.txt, markdown mirrors and assistant-open links, none of which is an MCP server. Its 'Luma Agents' are its own agent product, not an MCP endpoint that external agents can connect to.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2723,15 +2722,15 @@
     "productId": "luma",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Luma's core interaction is natural-language prompting: text-to-video, plus a reasoning endpoint that accepts messy or chained prompts natively. Luma Agents are described as running multi-step video and image workflows and as researching, generating and refining across media, which points toward operating the product in plain language. However, the evidence never documents that these agents take natural-language commands to drive product operations beyond generation, and there is no hands-on corroboration of agent control. missing for 10: explicit documentation of natural-language command control over product operations (editing, managing, workflow steps) via Luma Agents, independent or hands-on corroboration of agentic NL operation.",
+    "rationale": "Luma's own docs show natural-language prompts driving generation and Luma Agents running multi-step research, generation and refinement workflows, so the product can be steered conversationally. The evidence covers generation tasks only, not operating the product as a whole, and nothing shows how far agent commands reach. missing for 10: documented natural-language control of product operations beyond generation (e.g., managing projects, settings, or edits via commands), detailed docs on the Luma Agents command interface, and independent hands-on corroboration of agent-driven operation.",
     "evidenceIds": [
-      "luma-docs-18",
       "luma-docs-21",
       "luma-docs-29",
-      "luma-docs-5",
-      "luma-docs-17"
+      "luma-docs-18",
+      "luma-docs-17",
+      "luma-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -2739,20 +2738,20 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
-          "evidenceId": "luma-docs-18",
-          "quote": "Messy or chained prompts work natively. No middleware or prompt engineering required."
-        },
-        {
           "evidenceId": "luma-docs-21",
-          "quote": "Agents research, generate, and refine across video, image, audio, and text"
+          "quote": "Agents research, generate, and refine across video, image, audio, and text, and your brand holds steady through all of it."
         },
         {
           "evidenceId": "luma-docs-29",
           "quote": "Luma Agents for multi-step video and image workflows"
         },
         {
-          "evidenceId": "luma-docs-5",
-          "quote": "text-to-video, image-to-video, video-to-video with character reference and keyframes"
+          "evidenceId": "luma-docs-18",
+          "quote": "Messy or chained prompts work natively. No middleware or prompt engineering required."
+        },
+        {
+          "evidenceId": "luma-docs-17",
+          "quote": "One reasoning endpoint. One generation endpoint. The model thinks before it ships, so the first pass is usually the right one."
         }
       ]
     }
@@ -2763,7 +2762,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Luma is a video-generation platform with a public API, so an official CLI is a fair question to ask. The evidence documents only REST endpoints, Python/JS/TS SDKs, a web workspace and Luma Agents, with no mention of an official command-line tool. SDKs are developer building blocks, not a CLI, so they earn no credit here.",
+    "rationale": "Luma is an API-backed generation platform, so an official CLI is a fair axis. The evidence documents REST endpoints and Python/JS/TS SDKs but never mentions a first-party command-line tool. SDKs are developer building blocks, not a CLI, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2778,18 +2777,17 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Luma documents a public API. The current Luma Agents API runs on a versioned /v1 base with a dated changelog and an X-API-Version header. It has Python/JS/TS SDKs, API keys issued from the platform, and per-endpoint OpenAPI 3.1.0 definitions in the markdown mirrors of the reference pages. Missing for 10: a standalone downloadable OpenAPI spec (openapi.json and swagger paths return 404), a runnable try-it on the current-generation docs (only the legacy docs have one), and independent hands-on corroboration of the official API.",
+    "rationale": "Luma documents a public API with API-key management, a versioned /v1 base with a dated changelog, Python/JS/TS SDKs, per-endpoint OpenAPI 3.1.0 definitions in the legacy reference, and a live Try-It panel against api.lumalabs.ai, so the product can clearly be driven programmatically. Missing for 10: a standalone downloadable OpenAPI spec (openapi.json/yaml return 404) with machine-readable definitions on the current Agents API docs rather than only the legacy generation, and independent hands-on corroboration of the first-party API.",
     "evidenceIds": [
       "luma-docs-1",
       "luma-docs-2",
       "luma-docs-3",
-      "luma-docs-17",
       "luma-docs-26",
-      "luma-docs-35",
+      "luma-versioning-20261106",
       "luma-openapi-md-20261106",
       "luma-tryit-20261106",
-      "luma-versioning-20261106",
-      "luma-probe-2"
+      "luma-probe-2",
+      "luma-docs-35"
     ],
     "support": {
       "relation": "direct",
@@ -2797,24 +2795,28 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
-          "evidenceId": "luma-docs-3",
-          "quote": "Luma API: Two endpoints, Python/JS/TS SDKs, credit-based pricing, production-grade from day one"
-        },
-        {
           "evidenceId": "luma-docs-1",
           "quote": "Dream Machine API let's developers use image and video generation capabilities."
         },
         {
-          "evidenceId": "luma-docs-17",
-          "quote": "One reasoning endpoint. One generation endpoint."
+          "evidenceId": "luma-docs-3",
+          "quote": "Luma API: Two endpoints, Python/JS/TS SDKs, credit-based pricing, production-grade from day one"
         },
         {
-          "evidenceId": "luma-docs-35",
-          "quote": "Sequence-level control, exposed at the API."
+          "evidenceId": "luma-docs-2",
+          "quote": "Create and manage API access in the Luma API Platform."
         },
         {
           "evidenceId": "luma-versioning-20261106",
-          "quote": "Breaking changes are announced here before they ship."
+          "quote": "Changes to the `/v1` API that you can see as a caller, newest first... Breaking changes are announced here before they ship."
+        },
+        {
+          "evidenceId": "luma-openapi-md-20261106",
+          "quote": "Luma's legacy Dream Machine API reference publishes per-endpoint OpenAPI 3.1.0 definitions in the markdown mirror of every reference page"
+        },
+        {
+          "evidenceId": "luma-tryit-20261106",
+          "quote": "The legacy ReadMe-hosted reference runs the \"Try It!\" request panel against https://api.lumalabs.ai/dream-machine/v1."
         }
       ]
     }
@@ -2825,10 +2827,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Luma's API platform lets users create and manage multiple named API keys, but those keys share quota. Nothing in the evidence shows per-key scopes, permission restrictions or least-privilege limits. Named keys are an adjacent capability, not scoped credentials, so this applicable axis has no support.",
+    "rationale": "Luma's API platform lets users create and manage API keys, and keys can be named (e.g. production, staging). However, multiple keys share quota, and nothing documents per-key permission scopes, endpoint restrictions or least-privilege limits. Named keys without scoping are an adjacent feature, not scoped credentials, so the verdict is none.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": []
@@ -2838,9 +2840,9 @@
     "productId": "luma",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Luma's own llms.txt states that the Luma API ships Python/JS/TS SDKs, so official SDKs are a first-party claim. However, it is a single summary line, with no SDK reference, package names, install steps or usage examples in the pack. The piapi.ai API mentioned by a community member is third-party and earns no credit. Missing for 10: SDK documentation (package names, install and usage guides, method reference), SDK coverage of the current Agents API versus the legacy Dream Machine API, and independent or hands-on corroboration of the SDKs.",
+    "rationale": "Luma's own llms.txt states that the Luma API ships Python/JS/TS SDKs, so official SDKs are a documented first-party capability. That is the only mention: no SDK reference, install or package details, or usage examples appear in the pack, and the piapi.ai API a commenter mentions is third-party and earns no credit. missing for 10: SDK reference documentation, package/install details and code samples, coverage of the current Agents API surface, independent or hands-on corroboration of SDK use.",
     "evidenceIds": [
       "luma-docs-3"
     ],
@@ -2862,7 +2864,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Luma offers a video and image generation API, and asynchronous generation APIs commonly offer outbound HTTP callbacks, so the webhooks axis applies. Nothing in the evidence pack documents registrable webhooks, a callback URL parameter, or event subscriptions. The API docs cover endpoints, SDKs, credits, versioning and the absence of a sandbox, but never outbound event delivery.",
+    "rationale": "Luma offers a developer API for video and image generation, so webhook event subscriptions are a fair question for this product. However, nothing in the evidence pack documents registrable outbound HTTP callbacks or webhook subscriptions. The materials cover endpoints, SDKs, a changelog and versioning, but say nothing about event delivery.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2877,11 +2879,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Luma's legacy ReadMe-hosted Dream Machine reference has a runnable \"Try It!\" request panel and per-endpoint OpenAPI 3.1.0 definitions. The current Luma Agents API docs, however, are a static reference with code samples and no runner, and there is no sandbox, so runnable calls hit production on paid credits. Missing for 10: a runnable try-it in the current Agents API reference, a sandbox or free test environment for running examples, and independent hands-on corroboration of the interactive experience.",
+    "rationale": "Luma's legacy ReadMe-hosted Dream Machine reference has a runnable \"Try It!\" request panel against the live API, and each endpoint page carries an OpenAPI 3.1.0 definition. The current Luma Agents API docs, however, are a static reference with code samples and no runner, so the interactive experience exists only on the deprecated generation. Missing for 10: a runnable try-it on the current Agents API reference, a sandbox or free environment for test calls (the FAQ says there is none and the API is pay-as-you-go), a standalone downloadable spec, and independent hands-on corroboration.",
     "evidenceIds": [
       "luma-tryit-20261106",
       "luma-openapi-md-20261106",
-      "luma-no-sandbox-20261106"
+      "luma-no-sandbox-20261106",
+      "luma-probe-2"
     ],
     "support": {
       "relation": "direct",
@@ -2893,12 +2896,12 @@
           "quote": "The legacy ReadMe-hosted reference runs the \"Try It!\" request panel against https://api.lumalabs.ai/dream-machine/v1."
         },
         {
-          "evidenceId": "luma-openapi-md-20261106",
-          "quote": "Luma's legacy Dream Machine API reference publishes per-endpoint OpenAPI 3.1.0 definitions in the markdown mirror of every reference page"
+          "evidenceId": "luma-tryit-20261106",
+          "quote": "the only runnable try-it is on the legacy-generation docs."
         },
         {
-          "evidenceId": "luma-no-sandbox-20261106",
-          "quote": "There is no staging or sandbox environment. Use a test key and small generations to experiment."
+          "evidenceId": "luma-openapi-md-20261106",
+          "quote": "Luma's legacy Dream Machine API reference publishes per-endpoint OpenAPI 3.1.0 definitions in the markdown mirror of every reference page"
         }
       ]
     }
@@ -2909,11 +2912,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Luma's legacy Dream Machine API reference embeds per-endpoint OpenAPI 3.1.0 JSON definitions in the .md mirror of each reference page, so machine-readable spec content exists in first-party docs. There is no standalone downloadable spec file: probes of openapi.json, openapi.yaml and swagger.json all return 404, and that docs generation is bannered as legacy. Missing for 10: a single downloadable OpenAPI file, a spec for the current Luma Agents API, and independent corroboration of spec usability.",
+    "rationale": "Luma's legacy Dream Machine API reference embeds per-endpoint OpenAPI 3.1.0 JSON definitions in the .md mirror of each reference page, so a machine-readable spec exists in fragments. However, no standalone downloadable spec file exists: probes of openapi.json, swagger.json and well-known paths all return 404. The OpenAPI blocks also cover only the generation the vendor labels legacy, and nothing shows a spec for the current Luma Agents API. Missing for 10: a single downloadable OpenAPI/equivalent file, spec coverage of the current Agents API, and independent corroboration.",
     "evidenceIds": [
       "luma-openapi-md-20261106",
-      "luma-probe-2",
       "luma-docs-4",
+      "luma-probe-2",
       "luma-probe-1"
     ],
     "support": {
@@ -2923,11 +2926,7 @@
       "citations": [
         {
           "evidenceId": "luma-openapi-md-20261106",
-          "quote": "Luma's legacy Dream Machine API reference publishes per-endpoint OpenAPI 3.1.0 definitions in the markdown mirror of every reference page"
-        },
-        {
-          "evidenceId": "luma-openapi-md-20261106",
-          "quote": "no standalone downloadable spec file exists on either docs generation"
+          "quote": "Luma's legacy Dream Machine API reference publishes per-endpoint OpenAPI 3.1.0 definitions in the markdown mirror of every reference page (each .md carries an \"# OpenAPI definition\" block with the operation's full JSON)"
         },
         {
           "evidenceId": "luma-docs-4",
@@ -2942,7 +2941,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Luma's own current API FAQ states plainly that there is no staging or sandbox environment. It recommends a test key and small generations instead, but that is a user-side workaround: test keys are production keys that share quota and are billed pay-as-you-go. The legacy 'Try It!' panel also sends requests to the production API endpoint, so it offers no isolation either.",
+    "rationale": "Luma's own current API FAQ states plainly that there is no staging or sandbox environment. It tells users to experiment with a test key and small generations, but that key is just a named production key sharing the same quota, with no free tier. Draft Mode and the legacy \"Try It!\" panel, which hits the live api.lumalabs.ai endpoint, are adjacent cost-reduction or request tools, not isolation from production.",
     "evidenceIds": [
       "luma-no-sandbox-20261106"
     ],
@@ -2959,11 +2958,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Luma's Agents API is versioned: it has a /v1 base, returns an X-API-Version header on every response, and keeps a dated changelog that promises to announce breaking changes before they ship. The legacy-model migration guide also honors per-account deprecation notice periods. However, the FAQ sentence committing to a deprecation window was removed, callers cannot pin a version through the header, and the legacy Dream Machine generation is now bannered as legacy. missing for 10: a committed, fixed-length deprecation window or formal policy page, client-selectable version pinning, independent corroboration of deprecation handling.",
+    "rationale": "Luma's own docs describe a versioned /v1 API with an X-API-Version header and a dated changelog that announces breaking changes before they ship. The legacy migration guide also promises per-account notice periods, during which legacy requests keep working. The deprecation commitment has weakened: the FAQ's guaranteed deprecation-window sentence was removed, and callers cannot pin a version. missing for 10: a fixed, guaranteed minimum deprecation window; caller-selectable version pinning; independent or hands-on corroboration of how deprecations are actually handled.",
     "evidenceIds": [
       "luma-versioning-20261106",
-      "luma-openapi-md-20261106",
-      "luma-docs-25"
+      "luma-docs-25",
+      "luma-openapi-md-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -2991,7 +2990,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk or batch operations are a fair axis for a generation API, but the evidence documents no batch endpoint and no multi-item operation. The closest items are reusable Skills workflows, multi-step Agents and dedicated throughput capacity. These are adjacent features, not documented bulk actions across many items at once.",
+    "rationale": "Bulk operations are a fair question for a generative video platform and API, so the axis applies. However, the evidence documents no batch endpoint, multi-item selection, or bulk-apply feature. Luma Skills (a workflow run repeatedly), Agents for multi-step workflows, and dedicated-throughput capacity are adjacent features, not documented operations across many items at once.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3006,7 +3005,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation rules are a fair question for an AI creative platform with agents and an API. However, the evidence shows only reusable workflows ('Luma Skills… Run It Forever') and multi-step agent workflows. Nothing documents event triggers, rule definitions, or callbacks that fire actions automatically.",
+    "rationale": "Event-triggered automation rules are a fair question for a creative-generation platform with an API and agents, so the axis applies. The pack shows no documented rule engine, event triggers, or callbacks. Luma Skills ('Build a Creative Workflow Once, Run It Forever') and Luma Agents multi-step workflows describe reusable or multi-step workflows, not rules that fire automatically on events, so they earn no credit as an adjacent feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3021,20 +3020,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only related evidence is Luma Skills, which lets a user build a reusable creative workflow they can run again. Nothing documents scheduling that workflow on a recurring cadence (cron, timers, triggers), so a reusable one-off run is not a recurring schedule. Scheduling is a fair axis for an agent-driven creative platform, so the verdict is none, not na.",
-    "evidenceIds": [
-      "luma-docs-23"
-    ],
+    "rationale": "The evidence shows reusable creative workflows (\"Luma Skills: Build a Creative Workflow Once, Run It Forever\") and multi-step Luma Agents. Neither documents cron-style or recurring scheduling: running a saved workflow on demand is not the same as running it on a recurring schedule. Scheduling is a fair axis for an agent and workflow platform, so the lack of evidence makes this \"none\" rather than \"na\".",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can schedule recurring jobs or workflows",
-      "citations": [
-        {
-          "evidenceId": "luma-docs-23",
-          "quote": "Introducing Luma Skills: Build a Creative Workflow Once, Run It Forever"
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -3043,7 +3035,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Luma documents reusable automations (Luma Skills, \"Build a Creative Workflow Once, Run It Forever\", and Luma Agents for multi-step workflows), so this axis applies. Nothing in the evidence shows users can version, review, or roll back those workflows. The only versioning evidence covers the vendor's own /v1 API changelog and X-API-Version header, which is a different capability and earns no credit here.",
+    "rationale": "Luma documents reusable automations through Luma Skills (\"Build a Creative Workflow Once, Run It Forever\") and multi-step Luma Agents workflows, so the axis applies. However, no evidence shows that users can version, review, or roll back those workflows. The only versioning evidence covers Luma's own /v1 API changelog and X-API-Version header, which is platform API versioning rather than user automation history, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3058,7 +3050,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Luma documents general text-to-video, character references, and facial-expression or performance transfer onto new characters. None of this evidence shows a script-to-presenter workflow with stock or custom talking avatars that speak a pasted script, and character reference or expression transfer is only an adjacent capability. Avatar presenters are a fair question for an AI video product, so the axis applies, but there is no evidence Luma delivers it.",
+    "rationale": "Luma documents general text-to-video, image-to-video and video-to-video generation with character references. It also documents expression transfer and lip-sync preservation, but only for existing source footage, which still requires a camera. Nothing in the evidence shows pasting a script and getting a narrated, presenter-led video from a stock or custom avatar. These are adjacent generation features, not the avatar-presenter capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3073,7 +3065,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document concurrency limits, rate limits, or queue behavior for batch rendering. The only related items are a marketing line about 'dedicated capacity with guaranteed throughput' for an enterprise tier and an FAQ note that multiple keys share quota. Neither specifies concurrency caps or how queued jobs behave, so they are adjacent at best.",
+    "rationale": "Nothing in the evidence pack documents concurrency limits, rate limits, or how queued and batch jobs behave. The closest items are a marketing line about \"dedicated capacity with guaranteed throughput\" and an FAQ note that keys share quota; neither describes concurrency caps or queue semantics. These are adjacent statements, not the documented capability the story asks for.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3086,14 +3078,13 @@
     "productId": "luma",
     "storyId": "camera-motion-control",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Luma documents its own camera-direction capability: Ray can transfer cinematic camera moves from a source video to new scenes. Multi-Keyframe adds beat-by-beat control over what changes and what holds. This gives creators a documented way to direct motion, but by reference footage and keyframes rather than explicit pan/zoom/orbit/static controls. Missing for 10: documented named camera-move controls (pan, zoom, orbit, static lock), prompt- or API-level camera parameters, and hands-on corroboration that directed camera moves are reliably followed.",
+    "rationale": "Luma's Ray page documents transferring cinematic camera moves from a source video to new scenes, so a creator can dictate camera motion rather than accept the model's choice. Multi-Keyframe adds beat-by-beat control over what changes and what holds. However, no named camera-move controls (pan, zoom, orbit, static lock) or prompt-level camera directives are documented. missing for 10: explicit pan/zoom/orbit/static camera controls, documentation of how camera direction works without a reference video, hands-on corroboration that camera direction is followed.",
     "evidenceIds": [
       "luma-docs-32",
-      "luma-docs-9",
-      "luma-docs-6",
-      "luma-docs-35"
+      "luma-docs-35",
+      "luma-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -3105,12 +3096,8 @@
           "quote": "Transfer cinematic camera moves across scenes, worlds, and styles."
         },
         {
-          "evidenceId": "luma-docs-9",
-          "quote": "Apply motion from a source video to new subjects, scenes, or styles."
-        },
-        {
           "evidenceId": "luma-docs-35",
-          "quote": "Multi-Keyframe lets you set up to 16 keyframes inside a single clip. Direct what changes and what holds, beat by beat."
+          "quote": "Direct what changes and what holds, beat by beat. Sequence-level control, exposed at the API."
         }
       ]
     }
@@ -3121,7 +3108,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Commercial-use and ownership terms are a fair question for a generative video and image service, so the axis applies. However, no evidence item quotes Luma's terms of service, licensing language, commercial-use rights, or output ownership. Marketing copy about adapting products across campaigns and the tier listings (Plus/Pro/Ultra/Enterprise) say nothing about who owns outputs or whether commercial use is permitted.",
+    "rationale": "Commercial-use rights and output ownership are a fair question for a generative video product, so the axis applies. However, the evidence pack contains no terms-of-service, licensing or ownership language. Plan tiers and campaign-oriented marketing copy do not state rights or ownership.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3136,7 +3123,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies because Luma offers an asynchronous video generation API. However, the evidence pack never documents a registrable webhook or callback URL, and never documents a pollable job or generation status endpoint for learning whether a render finished or failed. The API reference items cover generation creation, OpenAPI definitions, the try-it panel, versioning and the lack of a sandbox, but none describes completion or failure notification.",
+    "rationale": "The pack documents generation endpoints, SDKs, per-endpoint OpenAPI definitions on the legacy reference, and a versioned /v1 API. None of it mentions webhook or callback registration, a get-generation status endpoint, or job states such as completed or failed. Without evidence of either a completion webhook or a documented pollable job status, this applicable capability is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3151,7 +3138,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Luma documents character references, facial-expression transfer and transforming people into new characters. None of this is a custom avatar of a real person built through a documented consent and verification flow. The evidence pack never mentions consent capture, identity verification or avatar creation, so these features are only adjacent to the story.",
+    "rationale": "Luma is an AI video generation product, so building a custom avatar of a real person is a fair question to ask of it. The evidence shows only adjacent features: character references, facial-expression transfer, and transforming people into new characters. Nothing documents a custom real-person avatar or any consent and verification flow.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3166,7 +3153,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only mention of extension is an FAQ heading phrased as a question (\"Can I extend a prior video?\"), which is not an affirmative claim that the capability exists. Modify Video V2 restyles existing footage as a whole and Multi-Keyframe directs a single generation; neither is documented as extending a clip or regenerating one segment while leaving the rest of the video untouched. These are adjacent features and earn no credit.",
+    "rationale": "The evidence pack never affirmatively documents extending a clip or regenerating a single segment. The only related item (luma-docs-37) is a list of FAQ questions with no answers, so it is not affirmative support. Multi-Keyframe directs a single generation, and Modify Video is documented as applying global adherence modes with no masking, region, or segment selection, so both are adjacent features rather than the named capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3181,15 +3168,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Luma documents a developer API for video generation. It offers text-to-video, image-to-video and video-to-video, a generation endpoint, and Python/JS/TS SDKs. The legacy Dream Machine reference includes a createGeneration operation with OpenAPI definitions and a Try It runner against api.lumalabs.ai/dream-machine/v1. However, the evidence never shows how to poll for or download the finished asset, and the documented create-generation reference is marked legacy. missing for 10: documented status-polling or asset-retrieval endpoint, a current (non-legacy) generation reference with a full example of creating and retrieving a video, independent hands-on corroboration of the API workflow.",
+    "rationale": "Luma documents a video-generation API: the Dream Machine API, a generation endpoint with Python/JS/TS SDKs, a createGeneration reference page with per-endpoint OpenAPI 3.1.0 definitions, and a runnable Try It panel against api.lumalabs.ai, so submitting a job is clearly supported. Retrieving the finished asset (status polling, a get-generation endpoint, or a download URL) is never documented in the pack, and the most detailed reference is bannered as legacy. Missing for 10: documented retrieval/polling of completed generations and asset download URLs, detailed reference for the current Agents API generation endpoint, and independent hands-on corroboration of an end-to-end API job.",
     "evidenceIds": [
       "luma-docs-1",
       "luma-docs-3",
-      "luma-docs-5",
       "luma-docs-17",
       "luma-openapi-md-20261106",
-      "luma-tryit-20261106",
-      "luma-docs-26"
+      "luma-tryit-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -3202,11 +3187,15 @@
         },
         {
           "evidenceId": "luma-docs-3",
-          "quote": "Luma API: Two endpoints, Python/JS/TS SDKs, credit-based pricing, production-grade from day one"
+          "quote": "Two endpoints, Python/JS/TS SDKs"
         },
         {
           "evidenceId": "luma-docs-17",
           "quote": "One reasoning endpoint. One generation endpoint."
+        },
+        {
+          "evidenceId": "luma-openapi-md-20261106",
+          "quote": "Luma's legacy Dream Machine API reference publishes per-endpoint OpenAPI 3.1.0 definitions in the markdown mirror of every reference page"
         },
         {
           "evidenceId": "luma-tryit-20261106",
@@ -3219,14 +3208,15 @@
     "productId": "luma",
     "storyId": "generation-cost-visibility",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Luma publishes a per-model credit price table (e.g., 20 credits for a 5s draft text-to-video or image-to-video clip), so a marketer can work out what a generation will cost before running it. Its platform also links a Billing Dashboard for spend afterwards, but the evidence never shows an in-product cost estimate at generation time or what the dashboard actually tracks. Missing for 10: per-generation cost preview shown before running, documented spend-tracking or usage-history detail, credit-to-dollar conversion, independent or hands-on corroboration.",
+    "rationale": "Luma publishes per-model credit costs (e.g., 20 credits for a 5s 360p Draft T2V/I2V), so a marketer can work out a generation's cost in advance, and the docs link to a Billing Dashboard for tracking spend afterwards. There is no documented in-product cost preview before submitting a generation, and the Billing Dashboard is only named, not described. Missing for 10: a documented pre-run cost estimate shown in the UI or API, documented spend-tracking or usage-history features in the billing dashboard, and independent or hands-on corroboration.",
     "evidenceIds": [
       "luma-docs-15",
       "luma-docs-24",
       "luma-docs-26",
-      "luma-docs-27"
+      "luma-docs-27",
+      "luma-docs-3"
     ],
     "support": {
       "relation": "direct",
@@ -3235,7 +3225,7 @@
       "citations": [
         {
           "evidenceId": "luma-docs-15",
-          "quote": "T2V/I2V (5s) 20 credits"
+          "quote": "360p (Draft) ... T2V/I2V (5s) 20 credits"
         },
         {
           "evidenceId": "luma-docs-24",
@@ -3258,14 +3248,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Luma's own docs list image-to-video in its current video model, with I2V priced as its own tier and keyframe and character-reference controls. However, no documentation explicitly claims that the subject and composition of the source still are preserved during animation. A hands-on community report of morphing and weak temporal coherence lowers confidence, but it is general rather than a specific image-to-video counter-example, so it does not make the claim disputed. Missing for 10: documented guarantees of subject/composition fidelity from the source image, image-to-video specific docs or examples, independent hands-on corroboration of preservation.",
+    "rationale": "Luma's own docs list image-to-video in its current video model, and I2V generation is priced per clip, so animating a still image is a first-party capability. The evidence never documents that the source image's subject and composition carry through into the motion; character reference and keyframes are listed alongside but are not tied to fidelity to the source still. Missing for 10: documented preservation of subject and composition from the source image, I2V-specific guides or parameters, and independent hands-on corroboration of image-to-video fidelity.",
     "evidenceIds": [
       "luma-docs-5",
       "luma-docs-28",
-      "luma-docs-15",
-      "luma-docs-22",
-      "luma-docs-35",
-      "luma-comm-9"
+      "luma-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -3281,8 +3268,8 @@
           "quote": "T2V/I2V (5s) 20 credits"
         },
         {
-          "evidenceId": "luma-docs-35",
-          "quote": "Direct what changes and what holds, beat by beat."
+          "evidenceId": "luma-docs-5",
+          "quote": "image-to-video, video-to-video with character reference and keyframes"
         }
       ]
     }
@@ -3293,7 +3280,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Content-policy rules and moderation behavior are a fair axis for an AI video and image generator, but nothing in the pack documents Luma's content rules or shows a blocked generation returning a stated reason. The community praise for listing 'limitations' concerns model quality limits, not content rules, so it does not count toward this story.",
+    "rationale": "Content moderation rules and clear failure reasons are a fair question for an AI video generator, so the axis applies. However, the evidence pack documents no content policy, moderation behavior, or error reasons for blocked generations. Community praise for listing model limitations concerns output-quality caveats, not content rules, so it does not count toward this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3308,12 +3295,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Luma's own API exposes much of its generation feature set: text-to-video, image-to-video and video-to-video with character reference and keyframes, Draft Mode, HDR/EXR, and multi-keyframe control explicitly 'exposed at the API'. Nothing in the evidence claims or shows full parity with the browser workspace, so this is partial. Missing for 10: an explicit UI–API parity statement, API evidence for UI features such as Modify Video V2, Reframe, motion/camera transfer and Luma Skills, and independent hands-on corroboration of API coverage.",
+    "rationale": "Luma's API exposes a wide range of generation features that also appear in the creative product: image and video generation, Multi-Keyframe sequence control, and native HDR/EXR export. It also ships two endpoints with Python/JS/TS SDKs. However, no documentation claims or demonstrates that everything in the UI is available through the API. The browser workspace, Luma Agents workflows, Skills, Modify Video V2, Reframe, motion and lighting transfer are described for the product but not shown to be API-reachable. missing for 10: explicit UI/API parity statement or feature matrix, API coverage of Skills/Agents workspace workflows and Ray editing features (Modify, Reframe, motion/lighting transfer), independent hands-on confirmation of parity.",
     "evidenceIds": [
+      "luma-docs-1",
       "luma-docs-3",
-      "luma-docs-28",
       "luma-docs-35",
       "luma-docs-16",
+      "luma-docs-28",
       "luma-docs-29"
     ],
     "support": {
@@ -3322,8 +3310,12 @@
       "subject": "As an AI-native user, I can do everything through the API that I can do in the UI",
       "citations": [
         {
-          "evidenceId": "luma-docs-28",
-          "quote": "Current video model — text-to-video, image-to-video, video-to-video with character reference and keyframes, Draft Mode, HDR pipeline"
+          "evidenceId": "luma-docs-1",
+          "quote": "Dream Machine API let's developers use image and video generation capabilities."
+        },
+        {
+          "evidenceId": "luma-docs-3",
+          "quote": "Two endpoints, Python/JS/TS SDKs, credit-based pricing, production-grade from day one"
         },
         {
           "evidenceId": "luma-docs-35",
@@ -3331,11 +3323,7 @@
         },
         {
           "evidenceId": "luma-docs-16",
-          "quote": "Native HDR Generation and 16-bit EXR Export"
-        },
-        {
-          "evidenceId": "luma-docs-3",
-          "quote": "Two endpoints, Python/JS/TS SDKs"
+          "quote": "Native HDR Generation and 16-bit EXR Export so AI work composites alongside live-action plates in your users' Resolve or Nuke."
         }
       ]
     }
@@ -3346,10 +3334,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no account-level data export, bulk download of generation history, prompt or project export, or account-deletion and portability path. The 16-bit EXR export ([luma-docs-13], [luma-docs-16]) is a render output format for compositing individual generations. That is an adjacent feature, not a capability for exporting all of a user's data and leaving.",
+    "rationale": "The evidence pack has no documented bulk or account-level data export, no takeout or archive of generations, prompts and assets, and nothing on account deletion or offboarding. The 16-bit EXR/ACES export is a per-render output format for compositing workflows. It is related but different, so it earns no credit toward exporting all of a user's data and leaving.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -3361,7 +3349,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Publishing source code or models under an open license is a fair question for an AI video generation product, so the axis applies. The evidence covers only a proprietary, credit-billed API, SDKs and docs (including per-endpoint OpenAPI definitions). None of it mentions open-source code, a public repository or an open license.",
+    "rationale": "Open-sourcing code or model weights is a fair question for an AI video generation service, so the axis applies. The evidence pack documents only a hosted, credit-based API and SDKs. Nothing shows the product's source is published or available under an open license.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3376,7 +3364,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an AI video-generation product, since vendors in this category can ship downloadable weights or on-prem deployments. Every item in the pack describes a vendor-hosted service: a hosted API at api.lumalabs.ai, keys from platform.lumalabs.ai, credit-based pay-as-you-go billing, and dedicated capacity tiers. Nothing documents self-hostable software, model weights, or on-prem deployment.",
+    "rationale": "Self-hosting is a fair question for an AI video-generation product, so the axis applies. The evidence only describes a hosted API at api.lumalabs.ai, a browser-based workspace, and vendor-run dedicated capacity. Nothing shows downloadable models, on-prem deployment, or any self-hostable distribution.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3391,7 +3379,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency and region selection is a fair question for a cloud AI generation API and workspace like Luma, so the axis applies. Nothing in the evidence pack mentions storage regions, residency choices, or region-specific endpoints. The only base URL documented is https://api.lumalabs.ai/dream-machine/v1, with no regional variants, and dedicated capacity is described only in terms of throughput and latency.",
+    "rationale": "Data residency and region selection is a fair question for a cloud AI generation service and API like Luma, but nothing in the evidence pack documents choosing a storage region or residency. The only mention of \"region selection\" refers to video-editing masking in Modify Video, which is unrelated to data storage.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3406,7 +3394,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Luma is an AI generation service that ingests user prompts and footage. Whether user data can be excluded from model training is therefore a fair privacy question for this kind of product. Nothing in the evidence pack mentions training-data use, an opt-out, a data retention policy, or an enterprise no-training guarantee, so the verdict is none.",
+    "rationale": "Luma is an AI video and image generation service, so a training opt-out is a fair question for it. Nothing in the evidence pack mentions data-use policy, a training opt-out, zero-retention terms, or enterprise data controls. The docs cover generation features, pricing, API keys and versioning only, so the capability is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3421,7 +3409,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a cloud generative-media service with an API, so the axis applies. Nothing in the evidence pack documents retention settings, deletion of generations or uploads, or privacy controls. The material covers generation features, pricing, API keys, versioning and sandbox availability, none of which addresses this story.",
+    "rationale": "Data retention and deletion controls are a fair question for an AI generation SaaS and API like Luma. However, the evidence pack documents only generation features, pricing, API keys, versioning, and the lack of a sandbox. Nothing covers retention settings, deleting generations or assets, or data-deletion requests.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3436,7 +3424,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry and usage-tracking opt-out is a fair privacy question for a SaaS AI video platform with an API and browser workspace, so the axis applies. Nothing in the evidence pack mentions telemetry, analytics, or a usage-tracking opt-out. The sign-in complaint is about authentication options, not tracking, so it is not relevant.",
+    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS and API video-generation product like Luma. However, nothing in the evidence pack mentions telemetry, analytics opt-out, usage-tracking controls, or data-collection settings. Absence of evidence for an applicable capability yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3451,7 +3439,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Provenance signaling is a fair question for an AI video and image generator, so the axis applies. However, nothing in the evidence pack mentions C2PA metadata, content credentials, or any disclosed watermark on Luma output. Absence of evidence for an applicable capability yields none.",
+    "rationale": "Provenance signals are a fair question for an AI video and image generator, so the axis applies. Nothing in the evidence pack mentions C2PA metadata, content credentials, or a disclosed watermark on Luma output. The docs cover generation features, HDR/EXR export, pricing and API versioning, none of which concern provenance.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3466,7 +3454,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Luma's own docs say its Reframe feature \"handles every aspect ratio\" and that Modify Video V2 outputs \"all at 1080p\", so the core capability exists first-party. However, the evidence never names 16:9, 9:16 or 1:1 as native generation options, and only one feature is documented at 1080p. The FAQ line about outpainting to a different aspect ratio is phrased as a question, so it is not affirmative support. missing for 10: explicit documentation of native 16:9/9:16/1:1 output in text- and image-to-video generation, confirmation that 1080p or higher applies to standard generation (only Draft 360p is priced), documented delivery formats showing no external re-encoding is needed, independent or hands-on corroboration.",
+    "rationale": "Luma's own docs claim that \"Reframe handles every aspect ratio,\" and that Modify Video V2 outputs \"all at 1080p.\" However, no evidence explicitly lists 16:9, 9:16 or 1:1 as native generation options, and 1080p is documented only for Modify Video, not general text- or image-to-video. Missing for 10: an explicit list of supported aspect ratios (16:9/9:16/1:1) for native generation, documented 1080p-or-above output for standard generation, confirmation that delivery formats need no re-encoding, and independent hands-on corroboration.",
     "evidenceIds": [
       "luma-docs-8",
       "luma-docs-31",
@@ -3495,13 +3483,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Luma's own docs say its video model supports a character reference input, and that Luma Agents carry \"style references, character references, and visual grounding into every asset\" so the brand \"holds steady.\" That is a first-party claim of consistency across multiple outputs, not just a reference input for one clip. The claim is marketing-level, though, and nothing hands-on shows the same character or scene holding across separately generated shots. Multi-Keyframe works only inside a single clip, and the community complaint about poor temporal coherence concerns within-clip quality rather than cross-shot consistency, so it does not create a dispute. Missing for 10: detailed docs on how character/scene references persist across separate generations, documented limits, and independent or hands-on corroboration of cross-shot consistency.",
+    "rationale": "Luma documents a character-reference input for its video model and says Luma Agents carry style references, character references, and visual grounding into every asset, which addresses consistency across multiple generations. However, the cross-shot claim is brief marketing copy, and Multi-Keyframe and Modify Video only control what holds within a single clip, so cross-shot consistency itself is unproven. missing for 10: documentation of how character references persist across separate shots, any stated limits or fidelity guarantees for multi-shot consistency, and hands-on or independent evidence of characters staying consistent across clips.",
     "evidenceIds": [
+      "luma-docs-28",
       "luma-docs-22",
       "luma-docs-21",
-      "luma-docs-28",
-      "luma-docs-5",
-      "luma-docs-12"
+      "luma-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -3509,20 +3496,16 @@
       "subject": "As a creator, a character or scene stays consistent across multiple generated shots, not just within one clip",
       "citations": [
         {
+          "evidenceId": "luma-docs-28",
+          "quote": "text-to-video, image-to-video, video-to-video with character reference and keyframes"
+        },
+        {
           "evidenceId": "luma-docs-22",
           "quote": "carrying style references, character references, and visual grounding into every asset."
         },
         {
           "evidenceId": "luma-docs-21",
           "quote": "Agents research, generate, and refine across video, image, audio, and text, and your brand holds steady through all of it."
-        },
-        {
-          "evidenceId": "luma-docs-28",
-          "quote": "video-to-video with character reference and keyframes"
-        },
-        {
-          "evidenceId": "luma-docs-12",
-          "quote": "Transfer full facial expressions while maintaining character consistency."
         }
       ]
     }
@@ -3533,10 +3516,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Luma's own marketing says its Agents \"generate, and refine across video, image, audio, and text\" in the same workspace, so the product claims audio generation in the same tool. Nothing shows what kind of audio (sound effects, ambience or music) or that it is matched to the generated scene. missing for 10: documented sound-effect/ambient/music generation, scene-matched or video-synced audio, audio controls or API parameters, hands-on or independent corroboration.",
+    "rationale": "Luma's homepage says its Agents 'generate, and refine across video, image, audio, and text,' so the same workspace claims some audio generation. Nothing documents sound effects, ambient audio, music, or audio matched to a generated scene. Lip-sync preservation in Modify Video concerns the source footage and is not audio generation, so it earns no credit. Missing for 10: documented sound-effect, ambient, or music generation; scene-matched audio sync; audio controls or API endpoints; hands-on corroboration.",
     "evidenceIds": [
-      "luma-docs-21",
-      "luma-docs-29"
+      "luma-docs-21"
     ],
     "support": {
       "relation": "direct",
@@ -3546,10 +3528,6 @@
         {
           "evidenceId": "luma-docs-21",
           "quote": "Agents research, generate, and refine across video, image, audio, and text"
-        },
-        {
-          "evidenceId": "luma-docs-29",
-          "quote": "Browser-based creative workspace; Luma Agents for multi-step video and image workflows"
         }
       ]
     }
@@ -3560,7 +3538,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Luma is an AI video generator, so audio-driven lip-sync is a fair question to ask of it. The evidence pack documents no feature that takes user dialogue audio and syncs character lip movement to it. Facial-expression transfer from source video and agents that work across 'audio' are adjacent capabilities, not audio-matched lip-sync.",
+    "rationale": "The evidence pack documents no way to supply dialogue audio, generate speech, or drive a character's lip movement from an audio track. Modify Video can preserve the lip sync already present in source footage, and Ray can transfer facial expressions from a source performance. Both are adjacent video-to-video features, and using them this way would be a user workaround of filming the dialogue yourself, not audio-matched lipsync.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3575,12 +3553,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Luma's own docs describe reference-driven generation. They cite video-to-video with character reference, motion and camera-move transfer from a source video into new styles, and Luma Agents carrying style references into every asset. However, no evidence explicitly shows extracting the visual style of a reference video or image and generating new footage in that style; the documented video references transfer motion or camera, not look. Missing for 10: explicit documentation of style transfer from a reference image or video to new video footage, details on how style references work for video generation, and hands-on or independent corroboration of style fidelity.",
+    "rationale": "Luma's own docs claim style references carried into generated assets, video-to-video and image-to-video generation, and Modify Video adherence modes that can apply a stylistic look to source footage. However, the style-reference workflow for creating new footage from a reference clip or image is only a one-line marketing mention, and Modify Video restyles the source clip itself rather than producing new footage in a borrowed style. missing for 10: documented how-to or API parameters for style-reference-driven generation of new footage, explicit support for a video (not just image) as a pure style reference, hands-on or independent corroboration of style fidelity.",
     "evidenceIds": [
       "luma-docs-22",
+      "luma-docs-28",
       "luma-docs-9",
-      "luma-docs-5",
-      "luma-docs-32"
+      "luma-docs-32",
+      "luma-modify-video-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -3592,16 +3571,16 @@
           "quote": "carrying style references, character references, and visual grounding into every asset."
         },
         {
+          "evidenceId": "luma-docs-28",
+          "quote": "text-to-video, image-to-video, video-to-video with character reference and keyframes"
+        },
+        {
           "evidenceId": "luma-docs-9",
           "quote": "Apply motion from a source video to new subjects, scenes, or styles."
         },
         {
-          "evidenceId": "luma-docs-5",
-          "quote": "text-to-video, image-to-video, video-to-video with character reference and keyframes"
-        },
-        {
-          "evidenceId": "luma-docs-32",
-          "quote": "Transfer cinematic camera moves across scenes, worlds, and styles."
+          "evidenceId": "luma-modify-video-20261106",
+          "quote": "applying a light stylistic filter without drastically altering the original content."
         }
       ]
     }
@@ -3609,37 +3588,43 @@
   {
     "productId": "luma",
     "storyId": "text-to-video",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Luma documents text-to-video generation and several ways to rework output without regenerating from scratch: a cheap 360p Draft Mode, Modify Video V2 for reshaping existing footage, and agents that 'generate, and refine.' However, the evidence never explicitly describes an iterate-on-a-generated-clip loop; extending or interpolating a prior video appears only as FAQ questions, and hands-on users struggled to reach demo-level results. missing for 10: explicit documentation of iterating on a prior text-to-video generation (extend/variation/edit-from-result), affirmative evidence for extend/interpolate, independent hands-on corroboration of a successful iteration workflow.",
+    "rationale": "Luma documents text-to-video generation and several ways to build on a prior result rather than starting over. Modify Video V2 reshapes existing footage with Adhere, Flex and Reimagine adherence modes, Draft Mode supports cheap low-resolution passes, and Luma Agents \"generate, and refine\" across assets. Community posts criticize output quality but do not show iteration failing, so they lower confidence rather than create a dispute. Missing for 10: explicit docs for extending or remixing a prior generation (extend and interpolate appear only as FAQ questions), region-level edits (no masking is documented), and independent hands-on evidence of the iteration workflow.",
     "evidenceIds": [
       "luma-docs-5",
+      "luma-docs-28",
       "luma-docs-15",
       "luma-docs-30",
+      "luma-modify-video-20261106",
       "luma-docs-21",
       "luma-docs-35"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a creator, I can turn a text prompt into a video clip and iterate on the result without starting from scratch each time",
       "citations": [
         {
-          "evidenceId": "luma-docs-5",
+          "evidenceId": "luma-docs-28",
           "quote": "text-to-video, image-to-video, video-to-video with character reference and keyframes, Draft Mode, HDR pipeline"
         },
         {
-          "evidenceId": "luma-docs-15",
-          "quote": "360p (Draft) ... T2V/I2V (5s) 20 credits"
+          "evidenceId": "luma-docs-30",
+          "quote": "Modify Video V2 reshapes footage you already have."
         },
         {
-          "evidenceId": "luma-docs-30",
-          "quote": "Modify Video V2 reshapes footage you already have. Swap the wall, the world, the wardrobe. The lighting holds. The performance survives."
+          "evidenceId": "luma-modify-video-20261106",
+          "quote": "Adhere - The output adheres very closely to the source video. This is ideal for subtle enhancements, minor retexturing, or applying a light stylistic filter without drastically altering the original content."
         },
         {
           "evidenceId": "luma-docs-21",
           "quote": "Agents research, generate, and refine across video, image, audio, and text"
+        },
+        {
+          "evidenceId": "luma-docs-15",
+          "quote": "360p (Draft) ... T2V/I2V (5s) 20 credits"
         }
       ]
     }
@@ -3650,7 +3635,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Video translation with voice and lip-sync carry-over is a fair question for an AI video generation product, so the axis applies. Nothing in the pack documents translation, dubbing, voice cloning or lip sync. The nearest features, facial-expression transfer, Modify Video and agents that work across audio, are adjacent capabilities and do not deliver this story.",
+    "rationale": "Video translation with voice and lip-sync carry-over is a fair question for an AI video generation platform, so the axis applies. Luma's evidence shows no translation, dubbing, or voice-cloning capability. Modify Video's preservation of facial performance and lip sync during restyling, and facial-expression transfer, are adjacent features and do not translate speech into other languages.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3665,11 +3650,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Luma's own docs list a Draft Mode and a cheaper 360p (Draft) tier at 20 credits for a 5s text-to-video or image-to-video clip, which covers the fast, cheap drafting half of the story. Nothing in the pack shows upscaling or re-rendering a chosen draft to final quality; Modify Video's 1080p output is a different feature. missing for 10: documented upscale/finalize path from a draft take to full resolution, details on draft speed, independent or hands-on corroboration of the draft-to-final workflow.",
+    "rationale": "Luma documents a Draft Mode for its current video model, with a cheaper 360p Draft tier priced at 20 credits for a 5s text-to-video or image-to-video clip. That covers the fast, cheap drafting half of the story. Nothing in the pack shows an upscale or promote step that takes a chosen draft take to final quality. Missing for 10: a documented upscale-to-final workflow for a selected draft, proof the chosen take carries over consistently to final resolution, and independent or hands-on corroboration of the draft-to-final flow.",
     "evidenceIds": [
-      "luma-docs-5",
+      "luma-docs-28",
       "luma-docs-15",
-      "luma-docs-28"
+      "luma-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -3677,12 +3662,12 @@
       "subject": "As a creator, I can draft fast in a cheaper mode and upscale the chosen take to final quality",
       "citations": [
         {
-          "evidenceId": "luma-docs-15",
-          "quote": "360p (Draft) ... T2V/I2V (5s) 20 credits"
+          "evidenceId": "luma-docs-28",
+          "quote": "Current video model — text-to-video, image-to-video, video-to-video with character reference and keyframes, Draft Mode, HDR pipeline"
         },
         {
-          "evidenceId": "luma-docs-28",
-          "quote": "text-to-video, image-to-video, video-to-video with character reference and keyframes, Draft Mode, HDR pipeline"
+          "evidenceId": "luma-docs-15",
+          "quote": "360p (Draft) ... T2V/I2V (5s) 20 credits"
         }
       ]
     }
@@ -3690,32 +3675,32 @@
   {
     "productId": "luma",
     "storyId": "video-inpaint-restyle",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Luma's Modify Video V2 is explicitly positioned for reshaping existing footage: swapping specific elements (wall, world, wardrobe) while lighting and performance are preserved. Related claims cover transforming people into new characters while keeping the performance. missing for 10: in-depth docs on how a creator targets or isolates a single element (masking or region selection) and how well untouched areas are guaranteed to stay intact, plus any independent or hands-on corroboration of Modify Video results.",
+    "rationale": "Luma's Modify Video V2 reshapes existing footage and is marketed for swapping specific elements (wall, world, wardrobe) while lighting and performance are preserved, up to 20s at 1080p. Its docs show control comes only from global adherence modes (Adhere/Flex/Reimagine), with no masking, region selection, or documented guarantee that untouched areas stay intact. Missing for 10: element-level masking or region targeting, a documented guarantee that the rest of the frame is preserved, and independent hands-on corroboration of element-only edits.",
     "evidenceIds": [
       "luma-docs-30",
       "luma-docs-7",
-      "luma-docs-33",
-      "luma-docs-11"
+      "luma-modify-video-20261106",
+      "luma-docs-33"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a creator, I can replace or restyle an element inside an existing video while the rest of the frame stays intact",
       "citations": [
         {
           "evidenceId": "luma-docs-30",
-          "quote": "Modify Video V2 reshapes footage you already have. Swap the wall, the world, the wardrobe. The lighting holds. The performance survives."
+          "quote": "Modify Video V2 reshapes footage you already have. Swap the wall, the world, the wardrobe. The lighting holds. The performance survives. Up to 20 seconds, all at 1080p."
+        },
+        {
+          "evidenceId": "luma-modify-video-20261106",
+          "quote": "Adhere - The output adheres very closely to the source video. This is ideal for subtle enhancements, minor retexturing, or applying a light stylistic filter without drastically altering the original content."
         },
         {
           "evidenceId": "luma-docs-33",
           "quote": "Transform people into entirely new characters while preserving performance."
-        },
-        {
-          "evidenceId": "luma-docs-11",
-          "quote": "Adapt products across campaigns without reshoots or manual editing."
         }
       ]
     }
