@@ -23,6 +23,9 @@ interface Scenario {
   deferred?: Array<Record<string, unknown>>
   fixture: Record<string, Record<string, unknown>>
   pack?: Array<Record<string, unknown>>
+  /** Earlier committed wave ledgers, keyed by file name, for the carry-forward. */
+  priorLedgers?: Record<string, Record<string, unknown>>
+  verdicts?: Array<Record<string, unknown>>
 }
 
 interface LedgerRow {
@@ -66,6 +69,12 @@ function run(scenario: Scenario): { ledger: Ledger; pack: PackRow[]; md: string;
   const evidenceDir = path.join(dir, 'open-rankings', 'widgets', 'evidence')
   fs.mkdirSync(evidenceDir, { recursive: true })
   fs.writeFileSync(path.join(evidenceDir, 'widget.json'), JSON.stringify(scenario.pack ?? [], null, 2) + '\n')
+  fs.writeFileSync(path.join(dir, 'open-rankings', 'widgets', 'verdicts.json'), JSON.stringify(scenario.verdicts ?? []) + '\n')
+  const reportsDir = path.join(dir, 'reports', 'evidence-parity')
+  fs.mkdirSync(reportsDir, { recursive: true })
+  for (const [name, content] of Object.entries(scenario.priorLedgers ?? {})) {
+    fs.writeFileSync(path.join(reportsDir, name), JSON.stringify(content) + '\n')
+  }
   const manifest = {
     wave: 'api-gap-repair ci wave 2026-11-12',
     date: '2026-11-12',
@@ -269,5 +278,41 @@ describe('api-gap-verify.py', () => {
     })
     expect(ledger.cells).toHaveLength(1)
     expect(issue).toBeNull()
+  })
+
+  it('carries outstanding withheld rows forward from earlier committed ledgers', () => {
+    const { issue, ledger } = run({
+      items: [],
+      withheld: [],
+      needsHuman: [],
+      deferred: [],
+      fixture: {},
+      priorLedgers: {
+        '2026-11-05-api-quality-ci.json': {
+          cells: [],
+          withheld: [
+            // Still unresolved: no covering cell anywhere, verdict cites nothing.
+            { arena: 'widgets', product: 'widget', storyId: 'api-sandbox', disposition: 'needs-research', reason: 'No mechanically verifiable surface.' },
+            // Covered later by a wave cell: resolved, must not carry.
+            { arena: 'widgets', product: 'widget', storyId: 'api-interactive-docs', disposition: 'needs-research', reason: 'No mechanically verifiable surface.' },
+            // Verdict now cites evidence: resolved through a research wave, must not carry.
+            { arena: 'widgets', product: 'widget', storyId: 'api-versioning-policy', disposition: 'needs-research', reason: 'No mechanically verifiable surface.' },
+          ],
+        },
+        '2026-11-06-api-quality-wave99.json': {
+          cells: [{ arena: 'widgets', product: 'widget', storyId: 'api-interactive-docs', disposition: 'checked-still-absent' }],
+          withheld: [],
+        },
+      },
+      verdicts: [
+        { productId: 'widget', storyId: 'api-versioning-policy', verdict: 'partial', quality: 5, evidenceIds: ['later-row'] },
+        { productId: 'widget', storyId: 'api-sandbox', verdict: 'none', quality: 0, evidenceIds: [] },
+      ],
+    })
+    expect(ledger.withheld).toEqual([]) // the carry-forward feeds the ISSUE, not this run's ledger
+    expect(issue).toContain('| widget | widgets | api-sandbox | needs-research |')
+    expect(issue).toContain('carried forward from 2026-11-05-api-quality-ci.json')
+    expect(issue).not.toContain('api-interactive-docs')
+    expect(issue).not.toContain('api-versioning-policy')
   })
 })

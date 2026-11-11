@@ -131,6 +131,24 @@ describe('specSignature', () => {
     const prose = 'Our reference is generated from an OpenAPI document.\nopenapi: 3.1.0 is the version we target.\n'
     expect(specSignature(prose)).toBeNull()
   })
+
+  it('accepts a YAML spec whose description block scalars carry indented markdown fences', () => {
+    const body = [
+      'openapi: 3.1.0',
+      'info:',
+      '  title: Widget API',
+      '  description: |',
+      '    Example request:',
+      '    ```bash',
+      '    curl https://api.widget.example.com/v1',
+      '    ```',
+      'paths:',
+      '  /v1: {}',
+      '',
+    ].join('\n')
+    const sig = specSignature(body)
+    expect(sig?.markers).toEqual(['openapi: 3.1.0', 'title: Widget API'])
+  })
 })
 
 describe('positiveEvidenceUrls', () => {

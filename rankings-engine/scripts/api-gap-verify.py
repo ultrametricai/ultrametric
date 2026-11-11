@@ -227,10 +227,70 @@ def build_ledger_md(ledger):
     return '\n'.join(lines) + '\n'
 
 
-def build_issue_md(ledger):
-    """The needs-human issue body: routed rows PLUS every withheld cell, so unfinished
-    research reaches the human queue even on a zero-append run (where no ledger is
-    committed). Returns None when there is nothing for a human to act on."""
+_verdicts_cache = {}
+
+
+def _verdict_cites_evidence(root, arena, product, story_id):
+    f = os.path.join(root, 'open-rankings', arena, 'verdicts.json')
+    if f not in _verdicts_cache:
+        try:
+            with open(f) as fh:
+                _verdicts_cache[f] = json.load(fh)
+        except (OSError, json.JSONDecodeError):
+            _verdicts_cache[f] = []
+    for v in _verdicts_cache[f]:
+        if v.get('productId') == product and v.get('storyId') == story_id:
+            return bool(v.get('evidenceIds'))
+    return False
+
+
+def load_prior_outstanding(root, exclude_file=None):
+    """Withheld rows from earlier committed wave ledgers that nothing has resolved yet.
+
+    A product drops out of the gap scan as soon as ONE api-quality cell gains a citation,
+    and the needs-human issue supersession closes the previous issue — so a withheld cell
+    recorded by an earlier wave would silently leave the queue. Carry it forward until a
+    ledger cell covers it or its current verdict cites evidence."""
+    reports_dir = os.path.join(root, 'reports', 'evidence-parity')
+    if not os.path.isdir(reports_dir):
+        return []
+    covered, withheld = set(), {}
+    for name in sorted(os.listdir(reports_dir)):
+        if not re.search(r'api-quality.*\.json$', name):
+            continue
+        path = os.path.join(reports_dir, name)
+        if exclude_file and os.path.abspath(path) == os.path.abspath(exclude_file):
+            continue
+        try:
+            with open(path) as fh:
+                data = json.load(fh)
+        except (OSError, json.JSONDecodeError):
+            continue
+        if not isinstance(data, dict):
+            continue
+        for c in data.get('cells') or []:
+            if isinstance(c, dict) and c.get('arena') and c.get('product') and c.get('storyId'):
+                covered.add((c['arena'], c['product'], c['storyId']))
+        for w in data.get('withheld') or []:
+            if isinstance(w, dict) and w.get('arena') and w.get('product') and w.get('storyId'):
+                withheld[(w['arena'], w['product'], w['storyId'])] = {**w, 'carriedFrom': name}
+    return [row for key, row in withheld.items()
+            if key not in covered and not _verdict_cites_evidence(root, *key)]
+
+
+def build_issue_md(ledger, carried=None):
+    """The needs-human issue body: routed rows PLUS every withheld cell — this run's and
+    the still-outstanding rows carried from earlier committed ledgers — so unfinished
+    research stays in the human queue even on a zero-append run (where no ledger is
+    committed) and after the gap signature clears. Returns None when there is nothing
+    for a human to act on."""
+    current_keys = {(w['arena'], w['product'], w['storyId']) for w in ledger['withheld']}
+    carried = [row for row in (carried or [])
+               if (row['arena'], row['product'], row['storyId']) not in current_keys]
+    ledger = {**ledger, 'withheld': ledger['withheld'] + [
+        {**row, 'reason': f"{row.get('reason', '')} (carried forward from {row['carriedFrom']})".strip()}
+        for row in carried
+    ]}
     if not ledger['needsHuman'] and not ledger['withheld']:
         return None
     lines = [f"## api-gap-repair: rows needing a human — {ledger['date']}", '']
@@ -307,7 +367,8 @@ def main(argv=None):
     outputs = [(args.ledger, json.dumps(ledger, indent=2, ensure_ascii=False) + '\n'),
                (args.ledger_md, build_ledger_md(ledger))]
     if args.issue_body:
-        issue_md = build_issue_md(ledger)
+        carried = load_prior_outstanding(args.root, exclude_file=args.ledger)
+        issue_md = build_issue_md(ledger, carried)
         if issue_md is not None:
             outputs.append((args.issue_body, issue_md))
         elif os.path.exists(args.issue_body):

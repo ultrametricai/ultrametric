@@ -186,10 +186,12 @@ export function specSignature(body: string): SpecSignature | null {
     const markers = [jsonVersion[0], ...(title ? [title[0]] : [])]
     return { markers, descriptor: markers.join(', ') }
   }
-  // YAML branch: a fenced code block means a prose page QUOTING a spec, not a spec; a
-  // real YAML document carries the version key plus the info and operation sections at
-  // the top level (column 0), which prose and markdown pages do not.
-  if (/^\s*```/m.test(body)) return null
+  // YAML branch: a column-0 fenced code block means a prose page QUOTING a spec, not a
+  // spec — real YAML documents can only carry fences INDENTED inside block scalars
+  // (`description: |` with markdown examples), so indented fences stay allowed. A real
+  // document also carries the version key plus the info and operation sections at the
+  // top level (column 0), which prose and markdown pages do not.
+  if (/^```/m.test(body)) return null
   const yamlVersion = body.match(/^(openapi|swagger):[^\n]*/m)
   if (!yamlVersion) return null
   if (!/^info:/m.test(body)) return null
