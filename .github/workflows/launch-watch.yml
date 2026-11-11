@@ -126,6 +126,8 @@ jobs:
           cut -d' ' -f1 /tmp/lw-applied.txt | sort -u | while read -r ARENA; do
             pnpm engine derive --category "$ARENA"
           done
+          # The noise model is fleet-wide; include every new entrant before the single pass.
+          pnpm tsx rankings-engine/scripts/compute-confidence-intervals.ts
           pnpm tsx rankings-engine/scripts/generate-vendor-reviews.ts
           pnpm tsx rankings-engine/scripts/generate-story-graph.ts
           pnpm tsx rankings-engine/scripts/generate-step-rankings.ts

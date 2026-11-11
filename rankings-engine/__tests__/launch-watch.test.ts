@@ -57,6 +57,29 @@ const NEWSROOM_HTML = `
   <article><a href="/blog/culture">How we think about remote culture at Mercury HQ</a></article>
 </body></html>`
 
+describe('launch-watch bring-up workflow', () => {
+  it('refreshes fleet score intervals once after all arena derives and before validation', () => {
+    const workflow = fs.readFileSync(
+      path.resolve(__dirname, '../../.github/workflows/launch-watch.yml'), 'utf8',
+    )
+    const step = workflow.match(
+      /^      - name: Apply auto-approved cross-arena entries\n[\s\S]*?(?=^      - name: |$(?![\s\S]))/m,
+    )?.[0]
+    expect(step).toBeDefined()
+    const lines = step!.split('\n').map((line) => line.trim())
+    const generator = 'pnpm tsx rankings-engine/scripts/compute-confidence-intervals.ts'
+    expect(lines.filter((line) => line === generator)).toHaveLength(1)
+    const derive = lines.indexOf('pnpm engine derive --category "$ARENA"')
+    const loopEnd = lines.indexOf('done', derive)
+    const refresh = lines.indexOf(generator)
+    expect(derive).toBeGreaterThan(-1)
+    expect(loopEnd).toBeGreaterThan(derive)
+    expect(refresh).toBeGreaterThan(loopEnd)
+    expect(lines.indexOf('pnpm tsx rankings-engine/scripts/generate-vendor-reviews.ts')).toBeGreaterThan(refresh)
+    expect(workflow.indexOf('      - name: Tests')).toBeGreaterThan(workflow.indexOf(generator))
+  })
+})
+
 describe('launch item parsing', () => {
   it('keeps same-host headline anchors, resolves relative hrefs, dedupes, drops nav and cross-host links', () => {
     const items = launchItemsFromHtml(NEWSROOM_HTML, 'https://mercury.com/blog')
