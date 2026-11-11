@@ -319,20 +319,24 @@ export function parseWorkflowSchedule(file: string, text: string): WorkflowSched
   return { file: path.basename(file), name, crons, triggers }
 }
 
-function lastJsonlDate(file: string, field: string): string | null {
+function newestJsonlDate(file: string, field: string): string | null {
   let raw: string
   try {
     raw = fs.readFileSync(file, 'utf8').trimEnd()
   } catch {
     return null
   }
-  const lastLine = raw.slice(raw.lastIndexOf('\n') + 1)
-  try {
-    const v = (JSON.parse(lastLine) as Record<string, unknown>)[field]
-    return typeof v === 'string' ? v : null
-  } catch {
-    return null
+  let latest: string | null = null
+  for (const line of raw.split('\n').filter(value => value.trim())) {
+    try {
+      const value = (JSON.parse(line) as Record<string, unknown>)[field]
+      if (typeof value === 'string' && Number.isFinite(Date.parse(value))
+          && (latest === null || Date.parse(value) > Date.parse(latest))) latest = value
+    } catch {
+      // A malformed observation does not erase the latest readable committed run.
+    }
   }
+  return latest
 }
 
 export function buildCronHealth(repoRoot: string = process.cwd(), dir: string = DEFAULT_DIR()): CronHealth {
@@ -355,12 +359,12 @@ export function buildCronHealth(repoRoot: string = process.cwd(), dir: string = 
   let newestScore: string | null = null
   let newestPopularity: string | null = null
   for (const c of categories) {
-    const s = lastJsonlDate(path.join(dir, c.id, 'score-history.jsonl'), 'date')
-    if (s && (!newestScore || s > newestScore)) newestScore = s
+    const s = newestJsonlDate(path.join(dir, c.id, 'score-history.jsonl'), 'date')
+    if (s && (!newestScore || Date.parse(s) > Date.parse(newestScore))) newestScore = s
     const p =
-      lastJsonlDate(path.join(dir, c.id, 'popularity-history.jsonl'), 'runAt') ??
-      lastJsonlDate(path.join(dir, c.id, 'popularity-history.jsonl'), 'date')
-    if (p && (!newestPopularity || p > newestPopularity)) newestPopularity = p
+      newestJsonlDate(path.join(dir, c.id, 'popularity-history.jsonl'), 'runAt') ??
+      newestJsonlDate(path.join(dir, c.id, 'popularity-history.jsonl'), 'date')
+    if (p && (!newestPopularity || Date.parse(p) > Date.parse(newestPopularity))) newestPopularity = p
   }
   const spike = readJsonTolerant<RawSpikeQueue>(path.join(dir, 'spike-queue.json'))
   const staleness = readJsonTolerant<{ generatedAt?: string }>(path.join(dir, 'staleness-report.json'))
