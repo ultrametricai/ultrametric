@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import authyClaims from '../../open-rankings/authenticator-apps/claims/authy.json'
 import enteClaims from '../../open-rankings/authenticator-apps/claims/ente-auth.json'
 import type { Evidence } from '@/lib/schemas'
+import { loadCategory } from '@/lib/data'
+import { claimsIntegrity } from '@/lib/claimsIntegrity'
 import { buildClaims, validateClaimRules } from '@/rankings-engine/stages/claims'
 
 const ev = (id: string, tier: Evidence['tier'], excerpt: string): Evidence => ({
@@ -80,5 +82,27 @@ describe('authenticator product boundaries', () => {
   it('Ente export claims do not use the Authy import extractor as export evidence', () => {
     expect(enteClaims.filter(claim => new URL(claim.url).pathname.replace(/\/$/, '') === '/help/auth/migration/authy'
       && claim.storyIds.some(id => id === 'open-format-export' || id === 'openness-full-export'))).toEqual([])
+  })
+})
+
+describe('Drata service-status claim boundaries', () => {
+  const data = loadCategory('compliance-automation')
+  const notifications = data.claims.drata.filter(claim =>
+    new URL(claim.url).hostname === 'status.drata.com'
+    && /(?:email|text message) notifications/i.test(claim.quote))
+
+  it('retains email and SMS incident notices as unmapped claims', () => {
+    expect(notifications).toHaveLength(2)
+    for (const claim of notifications) {
+      expect(claim.storyIds).toEqual([])
+      expect(data.evidence.drata.some(item => item.url === claim.url && item.excerpt === claim.quote)).toBe(true)
+    }
+  })
+
+  it('does not count service incidents as contradicted customer-control promises', () => {
+    const notificationOnly = { ...data, claims: { drata: notifications } }
+    expect(claimsIntegrity(notificationOnly, 'drata')).toEqual({
+      score: null, verified: 0, unverified: 0, contradicted: 0, untestable: 2, total: 2,
+    })
   })
 })

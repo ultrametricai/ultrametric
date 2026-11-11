@@ -64,6 +64,22 @@ describe('refresh repair policy', () => {
     expect(mergeData('old', 'new main', 'old', 'evidence.json')).toBe('new main')
     expect(mergeData('old', 'old', null, 'evidence.json')).toBeNull()
   })
+  it('preserves append-only popularity observations from both branches', () => {
+    const file = 'open-rankings/email/popularity-history.jsonl'
+    const row = (day: string, stars = 10) => JSON.stringify({ productId: 'vendor', stars, fetchedAt: '2026-10-01T00:00:00Z', runAt: `2026-10-${day}T00:00:00Z` }) + '\n'
+    const a = row('01'), b = row('02'), c = row('03')
+    expect(mergeData(a, a + c, a + b, file)).toBe(a + c + b)
+    expect(mergeData(a, a + b, a + b, file)).toBe(a + b)
+    expect(mergeData(a + a, a + a + c, a + a + b + b, file)).toBe(a + a + c + b + b)
+    expect(mergeData(a, (a + c).trimEnd(), a + b, file)).toBe(a + c + b)
+    for (const [base, main, incoming] of [
+      [null, a, a], [a, null, a], [a, a, null],
+      [a, b, a + c], [a, a + c, b], [a + a, a, a + a + b],
+      [a, a + b, a + row('02', 11)], [a, a, a + '{bad}'],
+      [a, a, a + JSON.stringify({ productId: 'vendor', runAt: 'bad' })],
+    ]) expect(() => mergeData(base, main, incoming, file)).toThrow()
+    expect(() => mergeData(a, a + c, a + b, 'open-rankings/email/popularity.json')).toThrow('Concurrent')
+  })
   it('unions original uptime batches regardless of chronology without rewriting main', () => {
     const line = (date: string, up = true) => JSON.stringify({ date, arena: 'email', productId: 'vendor', surface: 'mcp', url: 'https://example.invalid', up, status: up ? 200 : 503 } satisfies SloEntry) + '\n'
     const a = line('2026-10-01'), b = line('2026-10-02', false), c = line('2026-10-03'), d = line('2026-10-04')
