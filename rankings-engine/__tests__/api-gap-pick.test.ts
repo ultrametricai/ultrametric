@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import {
   buildMovesTable, buildNeedsHumanBody, buildSpecItem, discoverProduct, extractSpecUrls,
-  ExclusionsFileSchema, parseRoster, positiveEvidenceUrls, routeCandidates, snapshotProduct, specSignature,
+  ExclusionsFileSchema, parseRoster, positiveEvidenceUrls, resolveRosterCandidates, routeCandidates, snapshotProduct, specSignature,
   type Candidate, type DiscoveryFetcher, type ExclusionEntry,
 } from '../scripts/api-gap-pick'
 import type { Evidence, Product } from '../../lib/schemas'
@@ -62,6 +62,27 @@ describe('parseRoster', () => {
   it('rejects malformed entries', () => {
     expect(() => parseRoster('missive')).toThrow(/arena\/product/)
     expect(() => parseRoster('a/b/c')).toThrow(/arena\/product/)
+  })
+})
+
+describe('resolveRosterCandidates', () => {
+  const gapRows = [{ arena: 'email', productId: 'missive', staleness: 42 }]
+  const isKnown = (arena: string, product: string): boolean =>
+    (arena === 'email' && product === 'missive') || (arena === 'crm' && product === 'attio')
+
+  it('resolves roster entries against the gap rows', () => {
+    expect(resolveRosterCandidates([{ arena: 'email', product: 'missive' }], gapRows, isKnown))
+      .toEqual([{ arena: 'email', product: 'missive', staleness: 42 }])
+  })
+
+  it('rejects a known product without the gap signature: the roster narrows the pick, never widens eligibility', () => {
+    expect(() => resolveRosterCandidates([{ arena: 'crm', product: 'attio' }], gapRows, isKnown))
+      .toThrow(/does not carry the api-quality gap signature/)
+  })
+
+  it('rejects unknown products', () => {
+    expect(() => resolveRosterCandidates([{ arena: 'email', product: 'ghost' }], gapRows, isKnown))
+      .toThrow(/not found in email\/products.json/)
   })
 })
 

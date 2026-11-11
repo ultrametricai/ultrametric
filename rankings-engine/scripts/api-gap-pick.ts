@@ -121,6 +121,22 @@ export function parseRoster(roster: string): Array<{ arena: string; product: str
   })
 }
 
+// The roster narrows the scan pick; it never widens eligibility. An entry without a gap
+// row fails the run (loudly, so a typo cannot silently shrink a dispatched wave) instead
+// of spending discovery, judging, and a PR on an already-repaired product.
+export function resolveRosterCandidates(
+  pairs: Array<{ arena: string; product: string }>,
+  gapRows: Array<{ arena: string; productId: string; staleness: number }>,
+  isKnown: (arena: string, product: string) => boolean,
+): Candidate[] {
+  return pairs.map(({ arena, product }) => {
+    if (!isKnown(arena, product)) throw new Error(`roster entry not found in ${arena}/products.json: ${product}`)
+    const row = gapRows.find((r) => r.arena === arena && r.productId === product)
+    if (!row) throw new Error(`roster entry ${arena}/${product} does not carry the api-quality gap signature; the workflow only repairs gap rows`)
+    return { arena, product, staleness: row.staleness }
+  })
+}
+
 // ---------------------------------------------------------------------------------------------
 // Spec discovery (pure parts exported for tests; fetching is injectable)
 
@@ -484,12 +500,11 @@ async function runPick(args: CliArgs): Promise<void> {
 
   let candidates: Candidate[]
   if (args.roster) {
-    candidates = parseRoster(args.roster).map(({ arena, product }) => {
-      const known = loadArena(arena).products.some((p) => p.id === product)
-      if (!known) throw new Error(`roster entry not found in ${arena}/products.json: ${product}`)
-      const row = gapRows.find((r) => r.arena === arena && r.productId === product)
-      return { arena, product, staleness: row?.staleness ?? null }
-    })
+    candidates = resolveRosterCandidates(
+      parseRoster(args.roster),
+      gapRows.map((r) => ({ arena: r.arena, productId: r.productId, staleness: r.staleness })),
+      (arena, product) => loadArena(arena).products.some((p) => p.id === product),
+    )
   } else {
     candidates = gapRows.map((r) => ({ arena: r.arena, product: r.productId, staleness: r.staleness }))
   }
