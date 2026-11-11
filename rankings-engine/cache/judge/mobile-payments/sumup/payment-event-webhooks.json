@@ -1,15 +1,16 @@
 {
-  "hash": "3e3f8e84ef6eba8abddd13bb9e58502776eb336b51e5d24382a29e3766cc4610",
+  "hash": "7bb1321890c513f411c03b60ca4c49773adc71b11f6f25c28da3d21fa1a28832",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "high",
-    "rationale": "SumUp documents webhooks, but they only report a checkout status change, and you subscribe per checkout by passing a `return_url` when creating it. There is no evidence of separate authorized, captured, refunded or disputed events, or of account-level webhook registration. missing for 10: refund event notifications, dispute/chargeback event notifications, distinct authorization vs capture events, account-level webhook subscription management, independent corroboration.",
+    "rationale": "SumUp documents real outbound webhooks: a callback URL is set via `return_url` at checkout creation, and failed deliveries are retried. The docs also say the system only notifies on checkout status changes, so this covers roughly the payment-completion part of the lifecycle. Missing for 10: refund event notifications, dispute/chargeback event notifications, distinct authorized vs captured events, account-level webhook subscription (registration is per checkout only), and independent corroboration.",
     "evidenceIds": [
       "sumup-docs-41",
-      "sumup-docs-15",
-      "sumup-docs-24"
+      "sumup-docs-70",
+      "sumup-docs-71",
+      "sumup-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -19,6 +20,10 @@
         {
           "evidenceId": "sumup-docs-41",
           "quote": "At this time our system only allows you to get notified about a status change for a checkout. To subscribe to an event, specify a `return_url` parameter upon checkout creation."
+        },
+        {
+          "evidenceId": "sumup-docs-71",
+          "quote": "When an erroneous response is received, a webhook delivery is retried with the following delays:"
         }
       ]
     },

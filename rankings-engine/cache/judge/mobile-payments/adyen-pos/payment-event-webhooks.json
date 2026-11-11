@@ -1,14 +1,18 @@
 {
-  "hash": "9bd079dba2e8db2aa547d7eaed5ef5a0620dc86aacc43b7f4af619e858a09721",
+  "hash": "011fbf587f405abb7ba297ea5c0c7944f5d1743a80be466f5b0ae2e3dbab0e71",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Adyen's docs describe webhooks that send you a message with the final outcome of asynchronous processes, so you don't have to poll an API. That covers the core push-notification mechanism. The evidence does not list the specific lifecycle event types (authorized, captured, refunded, disputed), how endpoints are registered, or how this applies to in-person/terminal transactions. Missing for 10: documented event types for authorization, capture, refund and dispute; documented webhook endpoint registration; POS-specific webhook coverage; independent or hands-on corroboration.",
+    "rationale": "Adyen documents its own outbound webhooks. They send the final outcome of asynchronous processes to your server, are HMAC-signed, and come with Customer Area delivery logs and troubleshooting tools. 'Standard webhooks' can also carry transaction information. However, the pack never lists the specific lifecycle event types (authorized, captured, refunded, disputed) or shows how a developer subscribes to them. Missing for 10: explicit documentation of authorisation/capture/refund/dispute webhook event types, documented endpoint registration/subscription flow, POS-specific webhook coverage, independent or hands-on corroboration.",
     "evidenceIds": [
       "adyen-pos-docs-14",
-      "adyen-pos-docs-21"
+      "adyen-pos-docs-21",
+      "adyen-pos-docs-38",
+      "adyen-pos-docs-39",
+      "adyen-pos-docs-40",
+      "adyen-pos-docs-41"
     ],
     "support": {
       "relation": "direct",
@@ -22,6 +26,18 @@
         {
           "evidenceId": "adyen-pos-docs-21",
           "quote": "With webhooks, you can avoid having to continuously poll an API endpoint, waiting for a change in status for an asynchronous process"
+        },
+        {
+          "evidenceId": "adyen-pos-docs-38",
+          "quote": "In your Customer Area, you can find a log of all [webhook events](https://docs.adyen.com/development-resources/webhooks) sent to your server."
+        },
+        {
+          "evidenceId": "adyen-pos-docs-39",
+          "quote": "Verify the integrity of webhook events using HMAC signatures."
+        },
+        {
+          "evidenceId": "adyen-pos-docs-41",
+          "quote": "You can optionally receive more information about a transaction in your standard webhooks."
         }
       ]
     },

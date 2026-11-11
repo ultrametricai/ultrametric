@@ -1,15 +1,16 @@
 {
-  "hash": "41334c11f1f0ee5727789282298abec6767760f4a2d429224af171b1c36fd6bf",
+  "hash": "56edd2f359885d794358158fe61a10e24424ef77f134f1e30641041e9d938995",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "high",
-    "rationale": "SumUp documents webhooks that send outbound notifications to a callback URL. Coverage is narrow: the docs state the system only notifies about checkout status changes, and you subscribe per checkout by passing a `return_url` when creating it, not by registering a general subscription. missing for 10: event types beyond checkout status changes, an account-level webhook registration/management API, payload signing/verification and retry documentation, independent or hands-on corroboration.",
+    "rationale": "SumUp documents its own outbound webhooks with retry delivery, registered by setting a `return_url` when a checkout is created. The docs state the only supported event is a checkout status change, and subscription is per-checkout rather than a general event registry. missing for 10: subscriptions beyond checkout status changes (e.g. refunds, payouts, reader events), account-level webhook registration and management, documented signing/verification, independent or hands-on corroboration.",
     "evidenceIds": [
       "sumup-docs-41",
-      "sumup-docs-15",
-      "sumup-docs-24"
+      "sumup-docs-70",
+      "sumup-docs-71",
+      "sumup-docs-15"
     ],
     "support": {
       "relation": "direct",
@@ -17,8 +18,12 @@
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
       "citations": [
         {
-          "evidenceId": "sumup-docs-41",
-          "quote": "To subscribe to an event, specify a `return_url` parameter upon checkout creation."
+          "evidenceId": "sumup-docs-70",
+          "quote": "To subscribe to an event, specify a `return_url` parameter upon [checkout creation](/api/checkouts/create)."
+        },
+        {
+          "evidenceId": "sumup-docs-71",
+          "quote": "When an erroneous response is received, a webhook delivery is retried with the following delays:"
         },
         {
           "evidenceId": "sumup-docs-15",
