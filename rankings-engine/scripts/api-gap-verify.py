@@ -53,11 +53,14 @@ class Verifier:
         if delay:
             time.sleep(delay)
         # --http1.1: some hosts fail HTTP/2 negotiation but serve HTTP/1.1 fine (the
-        # tech.sevdesk.com lesson from wave 10).
+        # tech.sevdesk.com lesson from wave 10). Bytes are decoded with errors='replace'
+        # (matching discovery's fetch), so undecodable vendor bytes become a marker
+        # mismatch for that item instead of an exception that stops the wave.
         r = subprocess.run(
             ['curl', '-sL', '--http1.1', '--max-time', '60', '-A', UA, '-w', '\n---META %{http_code}', url],
-            capture_output=True, text=True, timeout=120)
-        body, _, meta = r.stdout.rpartition('\n---META ')
+            capture_output=True, timeout=120)
+        stdout = r.stdout.decode('utf-8', 'replace')
+        body, _, meta = stdout.rpartition('\n---META ')
         status = int(meta.strip() or 0)
         # Non-zero curl exits (partial transfer, timeout) must not pass as clean reads.
         if r.returncode != 0:
@@ -97,8 +100,9 @@ class Verifier:
                 ['curl', '-s', '--http1.1', '--max-time', '45', '-A', UA, '-X', 'POST',
                  '-H', 'Content-Type: application/json', '-d', payload,
                  '-w', '\n---META %{http_code}', url],
-                capture_output=True, text=True, timeout=90)
-            body, _, meta = r.stdout.rpartition('\n---META ')
+                capture_output=True, timeout=90)
+            stdout = r.stdout.decode('utf-8', 'replace')
+            body, _, meta = stdout.rpartition('\n---META ')
             status = int(meta.strip() or 0)
             if r.returncode != 0:
                 return f'POST {url}: curl exit {r.returncode} (incomplete transfer) — inconclusive'
@@ -116,12 +120,12 @@ class Verifier:
             exit_code, cert = hit.get('exit', 0), hit.get('cert', '')
         else:
             r = subprocess.run(['curl', '-s', '--max-time', '30', '-A', UA, url, '-o', '/dev/null'],
-                               capture_output=True, text=True, timeout=60)
+                               capture_output=True, timeout=60)
             exit_code = r.returncode
             s = subprocess.run(f'echo | openssl s_client -connect {host}:443 -servername {host} 2>/dev/null '
                                '| openssl x509 -noout -subject -ext subjectAltName 2>/dev/null',
-                               shell=True, capture_output=True, text=True, timeout=60)
-            cert = s.stdout
+                               shell=True, capture_output=True, timeout=60)
+            cert = s.stdout.decode('utf-8', 'replace')
         if exit_code not in (51, 60):
             return f'{url}: curl exit {exit_code}, expected a TLS verification failure — inconclusive'
         if not cert.strip() or host in cert or recorded_wrong_name not in cert:
@@ -285,7 +289,12 @@ def main(argv=None):
 
     results = []
     for item in manifest.get('items', []):
-        reason = verify_item(item, manifest, verifier)
+        # Per-item containment: any check that raises (curl timeout, connection teardown)
+        # withholds THIS item instead of stopping the wave before the ledger exists.
+        try:
+            reason = verify_item(item, manifest, verifier)
+        except Exception as exc:  # noqa: BLE001 — withheld-with-reason is the fail-closed path
+            reason = f'verification raised {type(exc).__name__}: {exc}'
         if reason is None:
             note = append_evidence(args.root, item, now)
             results.append((item, (True, note)))

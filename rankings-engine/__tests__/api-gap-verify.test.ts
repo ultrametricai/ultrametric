@@ -219,6 +219,18 @@ describe('api-gap-verify.py', () => {
     expect(ledger.withheld[0].reason).toContain('no live verification')
   })
 
+  it('contains a raising check as a withheld item instead of stopping the wave', () => {
+    const { ledger, pack } = run({
+      // A malformed postChecks spec raises KeyError inside the check; the wave must
+      // withhold the item and still write the ledger.
+      postChecks: { [baseItem.id]: { payload: '{}' } },
+      fixture: { [baseItem.url]: { status: 200, body: specBody } },
+    })
+    expect(pack).toEqual([])
+    expect(ledger.cells).toEqual([])
+    expect(ledger.withheld[0].reason).toContain('verification raised KeyError')
+  })
+
   it('never duplicates an id already in the pack', () => {
     const existing = { id: baseItem.id, tier: 'claimed-docs', url: baseItem.url, excerpt: 'earlier row', fetchedAt: '2026-11-01T00:00:00.000Z' }
     const { ledger, pack } = run({
