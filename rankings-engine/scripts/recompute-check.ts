@@ -89,6 +89,7 @@ const CATEGORIES = [
   'payroll',
   'product-analytics',
   'product-feedback',
+  'realtime-infra',
   'registered-agents',
   'robotics-platforms',
   'project-management',

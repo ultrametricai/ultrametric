@@ -1,0 +1,299 @@
+# Weekly api-quality gap repair: the CI counterpart of the dated local repair waves
+# (reports/evidence-parity/2026-11-0*-api-quality-wave*.{json,md}). The pipeline is
+# deliberately mechanical and fail-closed:
+#
+#   1. offline staleness scan (the corrected gap signature with wave-ledger suppression —
+#      staleness-scan.ts loadApiQualityRepairCoverage) ranks the fleet without touching
+#      the committed weekly report,
+#   2. api-gap-pick.ts keeps the genuinely unrepaired gap rows, skips the committed
+#      exclusions (rankings-engine/api-gap-exclusions.json), routes affiliated/disclosed
+#      products to the needs-human issue (their repairs land as their own disclosed,
+#      bias-audited PRs), picks the top rows, and discovers MECHANICAL evidence candidates
+#      only (OpenAPI/Swagger documents via llms.txt listings and well-known paths) into a
+#      wave manifest,
+#   3. api-gap-verify.py — the committed generic harness extracted from the wave scripts
+#      (fail-closed marker verify, exact-status NEGATIVE_CHECKS, POST_CHECKS,
+#      TLS_MISMATCH_CHECKS, per-host pacing) — re-verifies every candidate live and
+#      appends only what passes; everything else is withheld with a disposition in the
+#      dated committed ledger, never guessed. Withheld rows stay out of the ledger's
+#      `cells`, so the scan keeps flagging them for a human research wave,
+#   4. scoped judge --batch per touched product, derive + the dependent generators, the
+#      test gates, then a PR with the standard wave body (ledger, moves table,
+#      dispositions), a '@greptileai review' request, and the gated auto-merge arm.
+#
+# OUT OF SCOPE by design: review-finding fix rounds and pre-audit disputes are
+# judgment-heavy and stay with coordinator agents. If the bounded repair worker
+# (scripts/refresh-repair.py, three published attempts) cannot clear a review, the PR
+# stays open for a human — this workflow never argues with a reviewer. Items needing
+# judgment at pick or verify time land in the needs-human issue below.
+#
+# The LLM judge requires the ANTHROPIC_API_KEY repo secret — the SAME secret the other
+# engine loops read (story-runner.yml, vendor-radar.yml, refresh-repair.yml); no new
+# secret is introduced and key material is never echoed. Without it the run exits after
+# the keyless pick, leaving the needs-human issue as its only output.
+#
+# Cron offset from the other loops: story-runner '17 */6 * * *', daily-snapshot
+# '43 5 * * *', cert-sweep '29 7 * * 1' (Mondays), accuracy-engine '41 6 * * 3'
+# (Wednesdays), yc-coverage '53 6 * * 5' (Fridays), vendor-radar '31 8 * * *' (daily) —
+# this runs Thursdays 07:47 UTC, the day after accuracy-engine's fresh ranking.
+name: api-gap-repair
+
+on:
+  schedule:
+    - cron: '47 7 * * 4'
+  workflow_dispatch:
+    inputs:
+      roster:
+        description: 'Comma-separated arena/product pairs to repair (default: scan pick); entries must carry the gap signature, and exclusion/affiliation routing still applies'
+        required: false
+      top:
+        description: 'How many products to pick from the scan (default 12, the local wave size)'
+        required: false
+
+permissions:
+  actions: write # explicitly dispatch CI for GITHUB_TOKEN-created PRs
+  contents: write
+  pull-requests: write
+  issues: write # the needs-human issue + the PR→issue fallback (org policy may forbid Actions creating PRs)
+
+concurrency:
+  group: api-gap-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    # Canonical repo + main only (the story-runner/vendor-radar guard): a manual dispatch
+    # from another ref must not publish that ref's divergence as a repair PR.
+    if: github.repository == 'ultrametricai/ultrametric' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Check for API key
+        id: gate
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY secret not set — pick runs keyless; no evidence lands without the judge."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.22.2
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Offline: age + pure-data signatures only, no network — the gap signature and its
+      # wave-ledger suppression are both pure-data, so this is the full corrected ranking.
+      # --out keeps the run off the committed weekly report (accuracy-engine.yml owns it).
+      - name: Offline staleness scan
+        run: |
+          pnpm exec tsx rankings-engine/scripts/staleness-scan.ts --offline \
+            --out /tmp/api-gap-staleness.json
+
+      # Pick + mechanical discovery. The needs-human body file is written only when a row
+      # was routed to a human, so the issue step below files an issue iff it exists.
+      - name: Pick roster and generate the wave manifest
+        env:
+          INPUT_ROSTER: ${{ github.event.inputs.roster }}
+          INPUT_TOP: ${{ github.event.inputs.top }}
+        run: |
+          ARGS=(
+            --report /tmp/api-gap-staleness.json
+            --exclusions rankings-engine/api-gap-exclusions.json
+            --manifest /tmp/api-gap-manifest.json
+            --needs-human /tmp/api-gap-needs-human.md
+            --top "${INPUT_TOP:-12}"
+          )
+          if [ -n "$INPUT_ROSTER" ]; then ARGS+=(--roster "$INPUT_ROSTER"); fi
+          pnpm exec tsx rankings-engine/scripts/api-gap-pick.ts "${ARGS[@]}"
+
+      # The fail-closed append: only live-verified candidates reach the evidence packs;
+      # the dated ledger (committed with the PR) records every disposition. Ledger name
+      # matches staleness-scan's /api-quality.*\.json$/ suppression pattern on purpose —
+      # and only its `cells` (verified appends) suppress the signature.
+      - name: Verify candidates and append evidence (fail-closed)
+        id: verify
+        if: steps.gate.outputs.enabled == 'true'
+        run: |
+          LEDGER="reports/evidence-parity/$(date -u +%F)-api-quality-ci.json"
+          # --issue-body REWRITES the pick step's routing-only body with the full human
+          # queue: affiliated/excluded rows plus every withheld cell (needs-research and
+          # verification failures), so unfinished research reaches the issue even on a
+          # zero-append run (where no ledger is committed).
+          # The issue body keeps carried research rows until COMMITTED state proves
+          # completion (a merged ledger cell or a verdict citing evidence) — a local
+          # append never drops a row, so a judge/gate failure after a successful append
+          # cannot make a task vanish from the queue.
+          python3 rankings-engine/scripts/api-gap-verify.py \
+            --manifest /tmp/api-gap-manifest.json \
+            --ledger "$LEDGER" \
+            --ledger-md "${LEDGER%.json}.md" \
+            --issue-body /tmp/api-gap-needs-human.md
+          echo "ledger=$LEDGER" >> "$GITHUB_OUTPUT"
+          echo "appended=$(jq '.cells | length' "$LEDGER")" >> "$GITHUB_OUTPUT"
+
+      # Scoped re-judges — the judge's cellHash cache means untouched cells cost nothing —
+      # then derive + the analytic intervals once per touched arena. An arena with MORE
+      # THAN ONE touched product is judged category-wide (the local waves' convention):
+      # judge.ts blocks a scoped --product publication whenever any OTHER product's pack
+      # changed under its cache, so per-product calls would fail mid-wave.
+      - name: Judge and derive touched arenas
+        if: steps.gate.outputs.enabled == 'true' && steps.verify.outputs.appended != '0'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LEDGER: ${{ steps.verify.outputs.ledger }}
+        run: |
+          jq -r '.cells[] | "\(.arena) \(.product)"' "$LEDGER" | sort -u > /tmp/api-gap-touched.txt
+          cut -d' ' -f1 /tmp/api-gap-touched.txt | sort -u > /tmp/api-gap-arenas.txt
+          while read -r ARENA; do
+            COUNT=$(grep -c "^$ARENA " /tmp/api-gap-touched.txt)
+            echo "::group::judge $ARENA ($COUNT touched)"
+            if [ "$COUNT" -gt 1 ]; then
+              pnpm engine judge --batch --category "$ARENA"
+            else
+              PRODUCT=$(grep "^$ARENA " /tmp/api-gap-touched.txt | cut -d' ' -f2)
+              pnpm engine judge --batch --category "$ARENA" --product "$PRODUCT"
+            fi
+            echo "::endgroup::"
+            echo "::group::derive $ARENA"
+            pnpm engine derive --category "$ARENA"
+            pnpm exec tsx rankings-engine/scripts/compute-confidence-intervals.ts --category "$ARENA"
+            echo "::endgroup::"
+          done < /tmp/api-gap-arenas.txt
+
+      # Same dependent-generator chain as story-runner: derive restamps generatedAt and
+      # judge can flip verdicts, inputs of the vendor-review records, the story graph,
+      # and the step rankings — their drift gates fail inside `pnpm test` otherwise.
+      - name: Regenerate dependent artifacts
+        if: steps.gate.outputs.enabled == 'true' && steps.verify.outputs.appended != '0'
+        run: |
+          pnpm exec tsx rankings-engine/scripts/generate-vendor-reviews.ts
+          pnpm exec tsx rankings-engine/scripts/generate-story-graph.ts
+          pnpm exec tsx rankings-engine/scripts/generate-step-rankings.ts
+
+      - name: Build the moves table
+        if: steps.gate.outputs.enabled == 'true' && steps.verify.outputs.appended != '0'
+        run: |
+          pnpm exec tsx rankings-engine/scripts/api-gap-pick.ts --moves \
+            --manifest /tmp/api-gap-manifest.json --out /tmp/api-gap-moves.md
+
+      - name: Tests + recompute check
+        if: steps.gate.outputs.enabled == 'true' && steps.verify.outputs.appended != '0'
+        run: |
+          pnpm test
+          pnpm exec tsx rankings-engine/scripts/recompute-check.ts
+
+      # Same PR-or-issue fallback, Greptile request, and gated auto-merge arm as the other
+      # generators: branch protection on main holds the merge until validation/ci +
+      # Greptile Review pass and every thread resolves; Greptile does not review bot PRs
+      # unprompted, so the comment requests it. Both follow-ups are best-effort; a failure
+      # leaves the PR open for a manual merge.
+      - name: Open PR if anything changed
+        id: pr
+        if: steps.gate.outputs.enabled == 'true' && steps.verify.outputs.appended != '0'
+        env:
+          # Prefer the fine-grained PAT when the secret exists: a PR created with the
+          # workflow's GITHUB_TOKEN does not trigger pull_request workflows (GitHub's
+          # recursion guard), so required checks never report and auto-merge never
+          # completes. Falls back to GITHUB_TOKEN; no secrets are created here.
+          GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
+          LEDGER: ${{ steps.verify.outputs.ledger }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          if [ -z "$(git status --porcelain -- open-rankings rankings-engine/cache reports/evidence-parity)" ]; then
+            echo "No data change — done."
+            exit 0
+          fi
+          pnpm stats
+          DATE=$(date -u +%F)
+          BRANCH="api-gap-repair/$RUN_ID"
+          git config user.name "ultrametric-api-gap-repair"
+          git config user.email "noreply@ultrametric.ai"
+          git checkout -b "$BRANCH"
+          git add open-rankings rankings-engine/cache reports/evidence-parity README.md
+          git commit -m "chore(api-gap-repair): scheduled api-quality gap repairs ($DATE)"
+          # Re-judge stability gate on the committed candidate BEFORE any remote branch,
+          # PR, or review exists (the story-runner contract): a changed cellHash re-rolls
+          # every cell of a touched product, and an upgrade without new cited evidence or
+          # an unverified downgrade must not publish. A failure stops the wave here.
+          node rankings-engine/scripts/check-refresh-stability.mjs HEAD^ HEAD
+          git push -u origin "$BRANCH"
+          {
+            echo "Scheduled api-quality gap repairs (\`.github/workflows/api-gap-repair.yml\`): the CI counterpart of the dated local waves. Evidence rows were appended only after the committed fail-closed harness (\`rankings-engine/scripts/api-gap-verify.py\`) re-verified them live; everything unverifiable is withheld in the ledger and stays flagged for a research wave. Per-cell detail: \`$LEDGER\` and its markdown twin."
+            echo
+            echo "## Computed moves"
+            echo
+            cat /tmp/api-gap-moves.md
+            echo
+            echo "## Dispositions"
+            echo
+            cat "${LEDGER%.json}.md"
+            echo
+            echo "Review-finding fix rounds and pre-audit disputes are out of this workflow's scope: findings go through the bounded repair worker, and what it cannot clear waits for a coordinator agent."
+          } > /tmp/api-gap-pr-body.md
+          if PR_URL=$(gh pr create \
+            --title "api-gap-repair: scheduled wave $DATE" \
+            --body-file /tmp/api-gap-pr-body.md \
+            --base main --head "$BRANCH"); then
+            gh pr comment "$PR_URL" --body "@greptileai review" \
+              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
+            # Explicit dispatch is allowed by GitHub's workflow recursion guard.
+            gh workflow run ci.yml --ref "$BRANCH"
+            gh pr merge --auto --merge "$PR_URL"
+          else
+            gh issue create \
+              --title "api-gap-repair: wave ready on $BRANCH" \
+              --body "The scheduled gap-repair wave is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link; the ledger and moves table are in the branch's \`reports/evidence-parity/\` files." \
+              --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
+          fi
+
+      # The needs-human issue: affiliated/disclosed products, exclusion-routed rows, and
+      # every withheld cell (needs-research + verification failures) — the judgment-heavy
+      # work that never runs autonomously. The verify step rewrites the body with the full
+      # queue; on a keyless run the pick step's routing-only body stands.
+      # Same-day re-runs UPDATE the open issue; filing closes this generator's previous
+      # still-open issue naming the successor (the vendor-radar pattern).
+      # if: always() — a failure upstream must not swallow the routing; the step exits 0
+      # when there is no body file.
+      - name: File or update needs-human issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BODY=/tmp/api-gap-needs-human.md
+          if [ ! -f "$BODY" ]; then
+            echo "No needs-human rows — no issue to file."
+            exit 0
+          fi
+          TITLE="api-gap-repair: needs-human $(date -u +%F)"
+          EXISTING=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number,title \
+            --jq ".[] | select(.title == \"$TITLE\") | .number" | head -n1)
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body-file "$BODY" \
+              || { echo "issue update failed — the same routing is in the run log above"; exit 0; }
+            NUM="$EXISTING"
+          else
+            ISSUE_URL=$(gh issue create \
+              --title "$TITLE" \
+              --body-file "$BODY" \
+              --label "story-runner") \
+              || { echo "issue creation failed — the same routing is in the run log above"; exit 0; }
+            NUM="${ISSUE_URL##*/}"
+          fi
+          gh label create founder-call --color D93F0B \
+            --description "Generator output waiting on a human decision" --force \
+            && gh issue edit "$NUM" --add-label founder-call \
+            || echo "founder-call labeling failed — issue #$NUM is filed without it"
+          pnpm exec tsx rankings-engine/scripts/close-superseded.ts --kind issue \
+            --title-prefix "api-gap-repair: needs-human 20" \
+            --successor "$NUM" || echo "supersession close failed — see run logs"
