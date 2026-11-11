@@ -134,6 +134,7 @@ describe('feature-flag retained documented claims', () => {
   it.each([
     { product: 'unleash', claimId: 'unleash-claim-41', storyId: 'agentic-headless' },
     { product: 'launchdarkly', claimId: 'launchdarkly-claim-restored-headless-pipeline', storyId: 'agentic-headless' },
+    { product: 'launchdarkly', claimId: 'launchdarkly-claim-restored-flag-creation', storyId: 'create-toggle-flag-fast' },
     { product: 'growthbook', claimId: 'growthbook-claim-restored-experiment-results', storyId: 'agent-experiment-analysis' },
   ])('preserves $product documented $storyId claim with its existing evidence', ({ product, claimId, storyId }) => {
     expect(ClaimsArraySchema.safeParse(data.claims[product]).success).toBe(true)
