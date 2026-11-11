@@ -4,11 +4,13 @@ import superhumanClaims from '../../open-rankings/email/claims/superhuman.json'
 import fastmailClaims from '../../open-rankings/email/claims/fastmail.json'
 import missiveClaims from '../../open-rankings/email/claims/missive.json'
 import missiveEvidence from '../../open-rankings/email/evidence/missive.json'
+import { ClaimsArraySchema } from '../../lib/schemas'
 import { describe, expect, it } from 'vitest'
 import authyClaims from '../../open-rankings/authenticator-apps/claims/authy.json'
 import enteClaims from '../../open-rankings/authenticator-apps/claims/ente-auth.json'
 import type { Evidence } from '@/lib/schemas'
 import { loadCategory } from '@/lib/data'
+import { claimStatus } from '@/lib/claims'
 import { claimsIntegrity } from '@/lib/claimsIntegrity'
 import { buildClaims, validateClaimRules } from '@/rankings-engine/stages/claims'
 
@@ -91,6 +93,25 @@ describe('authenticator product boundaries', () => {
   })
 })
 
+describe('feature-flag background automation claims', () => {
+  const data = loadCategory('feature-flags')
+  const storyId = 'agentic-autonomous-automation'
+
+  it.each([
+    { product: 'flagsmith', quote: 'Define stages that your flags progress through automatically, with triggers and actions that control rollouts to selected environments and audiences.' },
+    { product: 'unleash', quote: 'you can define a reusable, structured rollout process that progresses automatically while monitoring application health' },
+  ])('keeps $product automatic rollout progression claimed on the cited background automation story', ({ product, quote }) => {
+    const claim = data.claims[product]!.find(item => item.quote === quote)!
+    const verdict = data.verdicts.find(item => item.productId === product && item.storyId === storyId)!
+    const evidence = data.evidence[product]!.find(item => item.excerpt === quote && item.url === claim.url)!
+    expect(claim.sourceTier).toBe('claimed-docs')
+    expect(verdict.evidenceIds).toContain(evidence.id)
+    expect(verdict.support?.citations).toContainEqual({ evidenceId: evidence.id, quote })
+    expect(claim.storyIds).toContain(storyId)
+    expect(claimStatus(data, product, storyId)).toBe('claimed-unverified')
+  })
+})
+
 describe('Drata service-status claim boundaries', () => {
   const data = loadCategory('compliance-automation')
   const notifications = data.claims.drata.filter(claim =>
@@ -110,6 +131,26 @@ describe('Drata service-status claim boundaries', () => {
     expect(claimsIntegrity(notificationOnly, 'drata')).toEqual({
       score: null, verified: 0, unverified: 0, contradicted: 0, untestable: 2, total: 2,
     })
+  })
+})
+
+describe('feature-flag retained documented claims', () => {
+  const data = loadCategory('feature-flags')
+
+  it.each([
+    { product: 'unleash', claimId: 'unleash-claim-41', storyId: 'agentic-headless' },
+    { product: 'launchdarkly', claimId: 'launchdarkly-claim-restored-headless-pipeline', storyId: 'agentic-headless' },
+    { product: 'launchdarkly', claimId: 'launchdarkly-claim-restored-flag-creation', storyId: 'create-toggle-flag-fast' },
+    { product: 'growthbook', claimId: 'growthbook-claim-restored-experiment-results', storyId: 'agent-experiment-analysis' },
+  ])('preserves $product documented $storyId claim with its existing evidence', ({ product, claimId, storyId }) => {
+    expect(ClaimsArraySchema.safeParse(data.claims[product]).success).toBe(true)
+    const claim = data.claims[product]!.find(item => item.id === claimId)!
+    expect(claim).toBeDefined()
+    expect(claim.storyIds).toContain(storyId)
+    expect(data.evidence[product]!.some(item => item.url === claim.url && item.excerpt === claim.quote)).toBe(true)
+    expect(claimStatus(data, product, storyId)).not.toBe('delivered-unclaimed')
+    const ids = data.claims[product]!.map(item => item.id)
+    expect(new Set(ids).size).toBe(ids.length)
   })
 })
 

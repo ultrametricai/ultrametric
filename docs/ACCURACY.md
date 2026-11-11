@@ -134,6 +134,18 @@ so a later run does not mistake a previously introduced source for new evidence.
 proofs are rechecked; the sidecar alone never authorizes retaining a grade. The final committed-diff stability
 guard still runs before any remote publication.
 
+When a maintainer integrates a retained snapshot with reviewed roster additions from main,
+run `pnpm exec tsx rankings-engine/scripts/migrate-retention-roster.ts --category ARENA
+--baseline SNAPSHOT_SHA --main MAIN_SHA` after the merge. Both SHA arguments are pinned
+ancestors of the checkout. The baseline must contain the original authenticated ledger;
+main supplies the complete expanded roster and every added product's evidence, verdicts
+and raw caches. The command preserves the baseline's complete product records, order,
+evidence, verdicts and caches, requires the same story taxonomy, rechecks every retained
+proof and updates only the ledger identity. Product removals, changed records, missing
+caches and unauthenticated additions fail before writing. Later repairs and refreshes
+accept the reviewed expansion while continuing to authenticate the original decisions.
+This migration makes no model calls and does not issue a workflow publication receipt.
+
 Product-scoped manual judging stops before model calls if it would overwrite an untouched
 retained decision with raw cache output. Explicit whole-category rejudges and isolated
 previews keep their existing behavior. Automated PR repair also stops before writes or
