@@ -1,3 +1,4 @@
+import { ClaimsArraySchema } from '../../lib/schemas'
 import { describe, expect, it } from 'vitest'
 import authyClaims from '../../open-rankings/authenticator-apps/claims/authy.json'
 import enteClaims from '../../open-rankings/authenticator-apps/claims/ente-auth.json'
@@ -135,6 +136,7 @@ describe('feature-flag retained documented claims', () => {
     { product: 'launchdarkly', claimId: 'launchdarkly-claim-restored-headless-pipeline', storyId: 'agentic-headless' },
     { product: 'growthbook', claimId: 'growthbook-claim-restored-experiment-results', storyId: 'agent-experiment-analysis' },
   ])('preserves $product documented $storyId claim with its existing evidence', ({ product, claimId, storyId }) => {
+    expect(ClaimsArraySchema.safeParse(data.claims[product]).success).toBe(true)
     const claim = data.claims[product]!.find(item => item.id === claimId)!
     expect(claim).toBeDefined()
     expect(claim.storyIds).toContain(storyId)
