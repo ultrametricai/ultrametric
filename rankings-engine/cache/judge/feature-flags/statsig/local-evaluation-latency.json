@@ -1,16 +1,16 @@
 {
-  "hash": "7f060d9c21b435f4e43627869d32d6e0976f610539e71acc177f422841fd756a",
+  "hash": "25d0039b8810d775fa3d684b43256fbb63301b9e71768b03bf7485ab64de1e1b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Statsig's docs state directly that after initialization, server SDKs evaluate gates and experiments without a network request, typically in under 1ms. Environment-specific SDK keys determine which rule sets the SDK downloads, and the SDKs handle caching and networking themselves, so flag checks run locally against a downloaded ruleset. Missing for 10: explicit microsecond-level latency figures (docs only say <1ms), documentation of how the cached ruleset is synced or refreshed, and independent or hands-on corroboration.",
+    "rationale": "Statsig's docs state that after initialization both Client and Server SDKs evaluate gates and experiments without a network request, typically in under 1ms. Environment-specific SDK keys determine which rule sets the SDK downloads, and Statsig handles caching. Missing for 10: an explicit microsecond-level latency figure (docs only say under 1ms), documentation of how the server-side cached ruleset is refreshed or synced in the background, and independent hands-on corroboration of local-evaluation performance.",
     "evidenceIds": [
       "statsig-docs-39",
       "statsig-docs-57",
-      "statsig-docs-55",
-      "statsig-environments-20261106"
+      "statsig-environments-20261106",
+      "statsig-docs-55"
     ],
     "support": {
       "relation": "direct",
@@ -18,16 +18,16 @@
       "subject": "As a platform engineer, my server SDKs evaluate flags locally from a cached ruleset — microsecond decisions with no network call per flag check",
       "citations": [
         {
-          "evidenceId": "statsig-docs-39",
-          "quote": "After initialization, both Client and Server SDKs evaluate experiments/gates _without a network request_, and typically in less than 1ms."
+          "evidenceId": "statsig-docs-57",
+          "quote": "After initialization, both Client and Server SDKs evaluate experiments/gates without a network request, and typically in less than 1ms."
+        },
+        {
+          "evidenceId": "statsig-environments-20261106",
+          "quote": "with environment-specific SDK keys determining which rule sets download"
         },
         {
           "evidenceId": "statsig-docs-55",
           "quote": "Statsig handles caching, retry mechanisms, and networking."
-        },
-        {
-          "evidenceId": "statsig-environments-20261106",
-          "quote": "environment-specific SDK keys determining which rule sets download"
         }
       ]
     },
