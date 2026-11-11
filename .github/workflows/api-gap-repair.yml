@@ -130,11 +130,15 @@ jobs:
           # queue: affiliated/excluded rows plus every withheld cell (needs-research and
           # verification failures), so unfinished research reaches the issue even on a
           # zero-append run (where no ledger is committed).
+          # The second body variant keeps carried rows that this run's appends would
+          # supersede; the issue step below posts it when the wave did not publish, so a
+          # judge/gate failure cannot drop a research task from the queue.
           python3 rankings-engine/scripts/api-gap-verify.py \
             --manifest /tmp/api-gap-manifest.json \
             --ledger "$LEDGER" \
             --ledger-md "${LEDGER%.json}.md" \
-            --issue-body /tmp/api-gap-needs-human.md
+            --issue-body /tmp/api-gap-needs-human.md \
+            --issue-body-unpublished /tmp/api-gap-needs-human-unpublished.md
           echo "ledger=$LEDGER" >> "$GITHUB_OUTPUT"
           echo "appended=$(jq '.cells | length' "$LEDGER")" >> "$GITHUB_OUTPUT"
 
@@ -195,6 +199,7 @@ jobs:
       # unprompted, so the comment requests it. Both follow-ups are best-effort; a failure
       # leaves the PR open for a manual merge.
       - name: Open PR if anything changed
+        id: pr
         if: steps.gate.outputs.enabled == 'true' && steps.verify.outputs.appended != '0'
         env:
           # Prefer the fine-grained PAT when the secret exists: a PR created with the
@@ -264,8 +269,16 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_OUTCOME: ${{ steps.pr.outcome }}
         run: |
-          if [ ! -f /tmp/api-gap-needs-human.md ]; then
+          # When this run appended evidence but the PR step did not succeed (judge, gates,
+          # stability, or push failed), the appends never reached a publishable branch —
+          # file the conservative body that keeps the carried research rows.
+          BODY=/tmp/api-gap-needs-human.md
+          if [ "$PR_OUTCOME" != "success" ] && [ -f /tmp/api-gap-needs-human-unpublished.md ]; then
+            BODY=/tmp/api-gap-needs-human-unpublished.md
+          fi
+          if [ ! -f "$BODY" ]; then
             echo "No needs-human rows — no issue to file."
             exit 0
           fi
@@ -273,13 +286,13 @@ jobs:
           EXISTING=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number,title \
             --jq ".[] | select(.title == \"$TITLE\") | .number" | head -n1)
           if [ -n "$EXISTING" ]; then
-            gh issue comment "$EXISTING" --body-file /tmp/api-gap-needs-human.md \
+            gh issue comment "$EXISTING" --body-file "$BODY" \
               || { echo "issue update failed — the same routing is in the run log above"; exit 0; }
             NUM="$EXISTING"
           else
             ISSUE_URL=$(gh issue create \
               --title "$TITLE" \
-              --body-file /tmp/api-gap-needs-human.md \
+              --body-file "$BODY" \
               --label "story-runner") \
               || { echo "issue creation failed — the same routing is in the run log above"; exit 0; }
             NUM="${ISSUE_URL##*/}"
