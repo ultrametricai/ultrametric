@@ -1,0 +1,41 @@
+{
+  "hash": "5a12a13329669e6a7868d102823a9fcfe5beb89bf1e55de8ef4b06131b6050df",
+  "keyVersion": "v2",
+  "verdict": {
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Cloudflare's MoQ relay is itself a relay. It organizes media into namespaces and tracks, and clients connect with subscribe-scoped tokens, so publish/subscribe routing through the relay is documented. The docs never explicitly state that each subscriber receives only the specific tracks it subscribes to; that per-track selective forwarding is only implied by the MoQ track model. Missing for 10: explicit documentation of per-track selective subscription and forwarding, details on fan-out behavior per participant, and independent hands-on corroboration of selective track delivery.",
+    "evidenceIds": [
+      "cloudflare-moq-docs-2",
+      "cloudflare-moq-docs-3",
+      "cloudflare-moq-docs-4",
+      "cloudflare-moq-docs-5"
+    ],
+    "support": {
+      "relation": "direct",
+      "coverage": "partial",
+      "subject": "As a platform engineer, media routes through a selective forwarding unit or relay that delivers only the tracks each participant subscribes to",
+      "citations": [
+        {
+          "evidenceId": "cloudflare-moq-docs-3",
+          "quote": "Each relay provides an isolated scope — your namespaces, tracks, and objects are separated from those belonging to other relays."
+        },
+        {
+          "evidenceId": "cloudflare-moq-docs-4",
+          "quote": "You control who can publish and who can subscribe by issuing tokens scoped to the operations each client needs."
+        },
+        {
+          "evidenceId": "cloudflare-moq-docs-5",
+          "quote": "Cloudflare returns a relay ID and two default tokens: one that can publish and subscribe, and one that can only subscribe."
+        },
+        {
+          "evidenceId": "cloudflare-moq-docs-2",
+          "quote": "It provides efficient, low-latency media streaming by leveraging QUIC's multiplexing and connection management capabilities."
+        }
+      ]
+    },
+    "productId": "cloudflare-moq",
+    "storyId": "selective-forwarding-tracks"
+  }
+}
