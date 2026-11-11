@@ -62,6 +62,9 @@ concurrency:
 
 jobs:
   repair:
+    # Canonical repo + main only (the story-runner/vendor-radar guard): a manual dispatch
+    # from another ref must not publish that ref's divergence as a repair PR.
+    if: github.repository == 'ultrametricai/ultrametric' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
