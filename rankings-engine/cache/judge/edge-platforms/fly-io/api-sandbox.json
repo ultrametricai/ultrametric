@@ -1,14 +1,15 @@
 {
-  "hash": "92ee7d39a5c9f07d0954a2792412dda157f830577226d40cdcf3a98bc36b3d9b",
+  "hash": "4ec1d946e888ce0003ac53c9013be8567240c31d0a5ac2a8f641046e4f7c3fbb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Fly.io documents its own sandbox capability: Sprites give each agent its own hardware-isolated, egress-locked, disposable Linux VM with a clean baseline per request and checkpoint rollback. That is genuine sandbox isolation for agent work, not a dry-run. The evidence does not show a test mode or staging environment explicitly separated from production data, and staging/production splits appear only as user-side arrangements. missing for 10: documented test/staging environment separated from production data, guidance on seeding or cloning non-production data, independent hands-on corroboration of Sprite isolation.",
+    "rationale": "Fly.io documents real sandbox isolation for agent work. Sprites are hardware-isolated, egress-locked, disposable VMs with a clean baseline per request, built for running untrusted code and evals, with checkpoint and rollback and per-Sprite scoping of service access. However, the evidence never describes a dedicated test or staging environment that is guaranteed to be separated from production data, such as a database branch or masked copy. That isolation from production is only implied by VM isolation and access scoping. missing for 10: explicit documentation of test/staging environments isolated from production data (e.g. database branching or sandboxed data copies), independent hands-on corroboration of the sandbox workflow.",
     "evidenceIds": [
-      "fly-io-docs-4",
       "fly-io-docs-7",
+      "fly-io-docs-37",
+      "fly-io-docs-33",
       "fly-io-docs-9",
       "fly-io-docs-12"
     ],
@@ -18,12 +19,16 @@
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
       "citations": [
         {
-          "evidenceId": "fly-io-docs-4",
-          "quote": "Every agent gets its own Linux box."
-        },
-        {
           "evidenceId": "fly-io-docs-7",
           "quote": "Run it in a hardware-isolated VM. A clean baseline per request, so no two users ever share state. Egress-locked and disposable."
+        },
+        {
+          "evidenceId": "fly-io-docs-37",
+          "quote": "Run untrusted code, evals, and RL rollouts in parallel. Checkpoint what works, throw away the rest."
+        },
+        {
+          "evidenceId": "fly-io-docs-33",
+          "quote": "Give your agent its own hardware-isolated Linux computer."
         },
         {
           "evidenceId": "fly-io-docs-9",
@@ -31,7 +36,7 @@
         },
         {
           "evidenceId": "fly-io-docs-12",
-          "quote": "Grant access on purpose: by Sprite name, by label, or down to a single endpoint, so a Slack bot can post messages and never touch admin."
+          "quote": "Grant access on purpose: by Sprite name, by label, or down to a single endpoint"
         }
       ]
     },

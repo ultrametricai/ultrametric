@@ -1,11 +1,11 @@
 {
-  "hash": "4d0e34e1b5df441698be46fa90fc8ee3ac9bf1cd9b2c5d3b879b00d5630e41d5",
+  "hash": "15e4a317d94a8b332645f12e10c2cb321c09fa90ae0e4ab04b491bdaaea99be2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
-    "confidence": "high",
-    "rationale": "Vercel's Fluid compute pricing bills Active CPU only during actual code execution, not during I/O waits such as database or AI model calls, which directly addresses idle-time billing for CPU. However, Provisioned Memory is billed for the entire instance lifetime, including I/O waits, so part of the compute bill still tracks wall-clock time. Missing for 10: memory billed only on active time rather than instance lifetime, independent or hands-on corroboration of the billing behavior.",
+    "confidence": "medium",
+    "rationale": "Vercel's Fluid compute pricing documents Active CPU billing: you pay only for CPU time during actual code execution, not during I/O waits such as database or AI model calls. The same page says Provisioned Memory is billed for the whole instance lifetime in GB-hours, including during I/O, so part of the compute bill still tracks idle wall-clock time. Missing for 10: memory billing that excludes idle or I/O time, independent or hands-on corroboration of actual bills.",
     "evidenceIds": [
       "vercel-parity-pay-for-active-compute-20261103",
       "vercel-docs-19",
@@ -18,11 +18,11 @@
       "citations": [
         {
           "evidenceId": "vercel-parity-pay-for-active-compute-20261103",
-          "quote": "You are only billed during actual code execution and not during I/O operations"
+          "quote": "You are only billed during actual code execution and not during I/O operations (database queries, like AI model calls, etc.)"
         },
         {
           "evidenceId": "vercel-parity-pay-for-active-compute-20261103",
-          "quote": "If your function takes 100ms to process data but spends 400ms waiting for a database query, you're only billed for the 100ms of active CPU time."
+          "quote": "Billed for the entire instance lifetime in GB-hours ... Continues billing while handling requests, even during I/O operations"
         },
         {
           "evidenceId": "vercel-docs-19",

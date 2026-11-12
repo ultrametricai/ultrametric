@@ -1,15 +1,15 @@
 {
-  "hash": "1f47aeecf2e3521f0cc09e9d7be211500a086036df640268cc01a49f646e4085",
+  "hash": "ad65bc618873db4895707bc2ea6c7123bd23821dc6a0150661da301993c7f606",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cloudflare documents a first-party Sandbox SDK, usable from Workers, that runs untrusted code in isolated containers, each with its own full Linux environment. The evidence never says the isolation is hardware-level (VM or microVM rather than container), and it never shows sandboxes being created and destroyed per task; the example uses a stable per-user sandbox ID, so disposability is unproven. missing for 10: evidence of hardware/VM-level isolation, documented disposable/ephemeral sandbox lifecycle, independent or hands-on corroboration.",
+    "rationale": "Cloudflare's Sandbox SDK, used from Workers applications, is documented as running untrusted code securely, with each sandbox in its own isolated container with a full Linux environment. The Worker also controls the sandbox's data access and whether it can reach the Internet. However, the evidence says only \"isolated container\" and never establishes hardware- or VM-level isolation, and nothing documents sandboxes as ephemeral or destroyed after use. missing for 10: evidence of hardware/VM-level isolation (vs. container isolation), documented disposable/ephemeral sandbox lifecycle and teardown, independent or hands-on corroboration.",
     "evidenceIds": [
       "cloudflare-supp-sandbox-sdk",
       "cloudflare-docs-26",
-      "cloudflare-docs-28"
+      "cloudflare-docs-57"
     ],
     "support": {
       "relation": "direct",
@@ -23,6 +23,10 @@
         {
           "evidenceId": "cloudflare-supp-sandbox-sdk",
           "quote": "Each sandbox runs in its own isolated container with a full Linux environment"
+        },
+        {
+          "evidenceId": "cloudflare-docs-57",
+          "quote": "Your Worker decides which application APIs and data the code receives, and whether the code can reach the public Internet."
         }
       ]
     },

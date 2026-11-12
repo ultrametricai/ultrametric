@@ -1,19 +1,20 @@
 {
-  "hash": "5804164e9ddcc49cde719dfdd9f7574fa6c711218408611ab66d91c57f4eb9ed",
+  "hash": "e0a80bec0ce36fb76f9fbea89686cf3a43a7ed3add68474a43532376c56311f2",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Cloudflare documents a serverless model with no servers, capacity planning, or region complexity, and says Agents scale from deploy-once to tens of millions of instances, which implies the same primitives carry from prototype to scale. A hands-on report of an API reaching production within an hour supports the prototype end. However, no evidence explicitly says core APIs stay unchanged as usage grows. Community-reported CPU time limits (30s free, 15min paid) suggest some workloads may outgrow the model. missing for 10: explicit documentation that apps scale without rearchitecting or plan/platform migration, independent corroboration of large-scale production use on unchanged primitives, clarity on how execution limits affect growing workloads.",
+    "rationale": "Cloudflare documents serverless Workers that scale globally with no servers to manage, and Agents that 'deploy once' and scale to tens of millions of instances. A founder also reports a startup built almost entirely on Workers, and another user had an API in production within an hour. However, no evidence explicitly promises API continuity from prototype to massive scale, and the documented 15-minute paid-plan execution limit is reported to break long-running agent tasks, which may force rearchitecting. Missing for 10: an explicit first-party statement that the same primitives and APIs hold unchanged from free tier to enterprise scale, documented scaling limits and quotas per binding, and independent case studies of growth without rearchitecture.",
     "evidenceIds": [
+      "cloudflare-gh-4",
       "cloudflare-docs-1",
-      "cloudflare-docs-3",
-      "cloudflare-docs-24",
+      "cloudflare-docs-68",
       "cloudflare-supp-agents-sdk",
-      "cloudflare-docs-32",
-      "cloudflare-comm-3",
-      "cloudflare-comm-9"
+      "cloudflare-docs-24",
+      "cloudflare-comm-16",
+      "cloudflare-comm-17",
+      "cloudflare-comm-27"
     ],
     "support": {
       "relation": "direct",
@@ -21,20 +22,20 @@
       "subject": "As a developer, I can rely on the same core APIs and primitives from prototype through massive scale, without rearchitecting or migrating platforms as usage grows",
       "citations": [
         {
+          "evidenceId": "cloudflare-gh-4",
+          "quote": "Cloudflare Workers let you deploy serverless code instantly across the globe for exceptional performance, reliability, and scale."
+        },
+        {
+          "evidenceId": "cloudflare-docs-68",
+          "quote": "Deploy once and Cloudflare runs your agents across its global network, scaling to tens of millions of instances."
+        },
+        {
           "evidenceId": "cloudflare-docs-1",
           "quote": "No servers to manage. No cold starts or region complexity."
         },
         {
-          "evidenceId": "cloudflare-supp-agents-sdk",
-          "quote": "Deploy once and Cloudflare runs your agents across its global network, scaling to tens of millions of instances."
-        },
-        {
-          "evidenceId": "cloudflare-docs-3",
-          "quote": "no GPUs to manage, no capacity planning"
-        },
-        {
-          "evidenceId": "cloudflare-comm-3",
-          "quote": "In an hour the API was running in production"
+          "evidenceId": "cloudflare-comm-16",
+          "quote": "A founder said their startup is built almost entirely on Workers."
         }
       ]
     },

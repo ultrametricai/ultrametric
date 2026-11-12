@@ -1,16 +1,18 @@
 {
-  "hash": "e8190d1da8929f7adb4d066c7bbf5760940455ae37b78787597a8ef85c013166",
+  "hash": "0bc36a0b2739ca3df962f648adfc4445f33a37301bd3e9c12923261ac4642886",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Netlify gives every PR its own preview environment through Deploy Previews, so changes can be tested before they go live, and it claims Netlify Database supports 'safely iterating' on managed Postgres. Nothing documents that previews use isolated or branched data rather than production data, so the 'without touching production data' half of the story is only implied. Missing for 10: explicit preview-scoped database branching or data isolation, per-environment secrets/env var separation for previews, independent hands-on corroboration of sandboxed data testing.",
+    "rationale": "Netlify's own Deploy Previews give every PR a separate preview URL, so changes can be tested in a real isolated deployment, not a dry run, before production; community users confirm per-PR preview builds. The evidence does not show that previews use data separate from production, and the claim that Netlify Database lets you 'safely iterate' is vague. missing for 10: documented separation of preview data from production (e.g. database branching or per-preview data stores), environment-scoped secrets for previews, agent-specific sandbox workflow docs.",
     "evidenceIds": [
       "netlify-docs-1",
       "netlify-docs-25",
+      "netlify-docs-27",
       "netlify-docs-19",
-      "netlify-docs-13"
+      "netlify-docs-13",
+      "netlify-comm-26"
     ],
     "support": {
       "relation": "direct",
@@ -22,16 +24,16 @@
           "quote": "Every PR gets a preview URL."
         },
         {
-          "evidenceId": "netlify-docs-25",
-          "quote": "Review every change before it goes live with Deploy Previews"
-        },
-        {
-          "evidenceId": "netlify-docs-19",
-          "quote": "Share a customizable preview environment where you and key collaborators can preview content updates alongside code updates in real-time."
+          "evidenceId": "netlify-docs-27",
+          "quote": "Share preview URLs of your in-progress content and code so you can review before launching changes to production."
         },
         {
           "evidenceId": "netlify-docs-13",
           "quote": "Deploy and safely iterate on managed Postgres with **Netlify Database**"
+        },
+        {
+          "evidenceId": "netlify-comm-26",
+          "quote": "The killer feature is the GitHub integration that renders a preview build of every PR."
         }
       ]
     },

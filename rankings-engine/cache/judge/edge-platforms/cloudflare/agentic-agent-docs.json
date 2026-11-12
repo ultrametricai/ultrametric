@@ -1,17 +1,17 @@
 {
-  "hash": "5db151b3da1843be4b66d96ba2e120147a55bcc99e0ab2a8cda980e32a67d4e4",
+  "hash": "294e10ed07710a7b48c39aae5b011805cf31c951dae835f606ef04d4bd4b1e81",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 10,
     "confidence": "high",
-    "rationale": "Cloudflare's docs are built for agents: a root llms.txt (confirmed live at HTTP 200 by probe) links to per-product llms.txt indexes, and there is a whole-corpus llms-full.txt. Every page is also available as Markdown via an /index.md mirror or an `Accept: text/markdown` header. On top of that, a dedicated agent-setup hub and a keyless Documentation MCP server (confirmed live by probe) let agents consume the docs directly.",
+    "rationale": "Cloudflare publishes a root llms.txt that links to per-product llms.txt indexes such as workers/llms.txt, plus a whole-corpus llms-full.txt. Every page is available as Markdown via an index.md mirror or an `Accept: text/markdown` header. A dedicated agent-setup hub, per-page \"View as Markdown\" links and a documentation MCP server round this out. A live probe confirmed llms.txt returns HTTP 200 with the expected index content.",
     "evidenceIds": [
-      "cloudflare-probe-1",
       "cloudflare-supp-llms-md-mirrors",
+      "cloudflare-probe-1",
       "cloudflare-supp-agent-setup",
-      "cloudflare-probe-4",
-      "cloudflare-supp-mcp-fleet"
+      "cloudflare-supp-mcp-fleet",
+      "cloudflare-docs-69"
     ],
     "support": {
       "relation": "direct",
@@ -19,20 +19,24 @@
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
       "citations": [
         {
-          "evidenceId": "cloudflare-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://developers.cloudflare.com/llms.txt"
+          "evidenceId": "cloudflare-supp-llms-md-mirrors",
+          "quote": "Each product below links to its own llms.txt, which contains a full index of that product's documentation pages"
         },
         {
           "evidenceId": "cloudflare-supp-llms-md-mirrors",
           "quote": "Any page can also be retrieved as Markdown by sending an `Accept: text/markdown` header to the page's URL without the `index.md` suffix"
         },
         {
+          "evidenceId": "cloudflare-probe-1",
+          "quote": "PROBE llms.txt: HTTP 200 at https://developers.cloudflare.com/llms.txt"
+        },
+        {
           "evidenceId": "cloudflare-supp-agent-setup",
           "quote": "Every docs page also carries \"Copy as Markdown\", \"View as Markdown\", and \"Agent setup\" links."
         },
         {
-          "evidenceId": "cloudflare-probe-4",
-          "quote": "a live remote MCP server usable with NO credentials at all"
+          "evidenceId": "cloudflare-docs-69",
+          "quote": "the `docs()` tool to search Cloudflare developer documentation"
         }
       ]
     },

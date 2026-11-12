@@ -1,15 +1,16 @@
 {
-  "hash": "6d35e809b5a5bb4abdbbb1f409cc54898890120e1cbf29914a8f7c0fdc828c9e",
+  "hash": "659312585b87f7b8fc7838c6b360d6f0e039202a729c36b831dfcabb8afb8971",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Vercel documents running server-side code (Fluid compute functions, and middleware-style code that runs before a request completes) and lets developers choose which regions functions run in, per project or per function, with failover regions on Enterprise. This places compute closer to users by explicit regional choice. However, the default is a single region (iad1), and no evidence shows code running automatically across a global edge network; the 'close to your users' CDN language covers cached files and images, not code. Missing for 10: documented global edge execution of code, evidence of a multi-location edge runtime, and independent corroboration of low-latency execution near users.",
+    "rationale": "Vercel documents configurable function regions, including per-function overrides and Enterprise failover regions, plus request-time code that can rewrite or personalize responses. A developer can therefore place server code near their users. However, functions default to a single region (iad1), and no evidence describes an automatically global edge runtime that runs code at locations near each user; only cached files and images are explicitly served from the CDN close to users. Missing for 10: an explicit global edge compute or edge runtime that runs code in many locations near users, documentation that middleware executes at the edge, and independent or hands-on corroboration of edge latency.",
     "evidenceIds": [
       "vercel-parity-regional-deployment-20261103",
       "vercel-docs-20",
-      "vercel-docs-19"
+      "vercel-docs-22",
+      "vercel-parity-privacy-data-residency-20261103"
     ],
     "support": {
       "relation": "direct",
@@ -22,15 +23,15 @@
         },
         {
           "evidenceId": "vercel-parity-regional-deployment-20261103",
-          "quote": "Enterprise users can also use functionFailoverRegions to specify regions that a Vercel Function should failover to if the default region is out of service."
+          "quote": "The default Function region is Washington, D.C., USA ( iad1 ) for all new projects."
         },
         {
           "evidenceId": "vercel-docs-20",
           "quote": "Run code before a request completes to rewrite, redirect, or personalize responses."
         },
         {
-          "evidenceId": "vercel-docs-19",
-          "quote": "Run server-side code on demand with Fluid compute, which scales concurrency for AI and I/O-heavy workloads."
+          "evidenceId": "vercel-docs-22",
+          "quote": "Resize and convert images on demand and serve them from the CDN in modern formats."
         }
       ]
     },
