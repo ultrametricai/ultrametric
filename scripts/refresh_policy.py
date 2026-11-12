@@ -2,7 +2,8 @@
 import re
 
 ACTIONS_BOT = {'id': 41898282, 'login': 'github-actions[bot]', 'type': 'Bot'}
-HOLDS = {'automerge-hold', 'do-not-merge', 'hold', 'manual-merge'}
+MAINTAINER_MANUAL_LABEL = 'maintainer-manual-merge'
+HOLDS = {'automerge-hold', 'do-not-merge', 'hold', 'manual-merge', MAINTAINER_MANUAL_LABEL}
 
 
 def family(pr):
