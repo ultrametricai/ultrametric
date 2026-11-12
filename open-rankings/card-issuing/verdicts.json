@@ -5216,9 +5216,9 @@
     "productId": "pomelo",
     "storyId": "agent-manages-program",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pomelo's API documents card creation, digital accounts with activity data, transaction handling and merchant/category blocking, so an agent could in principle drive the card program through the API. However, the official MCP server only searches endpoints and generates code samples; it does not perform operational actions. Nothing documents scoped or least-privilege API credentials for agents, and card updates and balance reads are not explicitly documented. Missing for 10: operational MCP tools (read balances and transactions, create and update cards, adjust controls), scoped credentials for agent access, explicit card-update and balance-read endpoints, a published API spec, and hands-on corroboration.",
+    "rationale": "Pomelo's own API documents creating cards, reading account activity and transactions (including adjustments), and spend controls by blocking merchants, categories, or merchant IDs, so an agent could operate core parts of a card program through the API. However, the documented MCP server only searches endpoints and generates code samples rather than executing card operations, and the only roles/permissions shown are for Dashboard operators, not scoped API credentials. Missing for 10: scoped/least-privilege API credentials for agents, an operational MCP surface that acts on cards, explicit card update/balance-read endpoints, and independent hands-on corroboration.",
     "evidenceIds": [
       "pomelo-docs-2",
       "pomelo-docs-5",
@@ -5226,7 +5226,7 @@
       "pomelo-docs-28",
       "pomelo-docs-20",
       "pomelo-docs-21",
-      "pomelo-docs-24"
+      "pomelo-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -5248,6 +5248,10 @@
         {
           "evidenceId": "pomelo-docs-28",
           "quote": "Recibirás las transacciones de tipo Reversal y Refund a través del endpoint de Ajustes."
+        },
+        {
+          "evidenceId": "pomelo-docs-20",
+          "quote": "Devuelve los endpoints que coincidan con una consulta específica en español o inglés."
         }
       ]
     }
@@ -5255,36 +5259,16 @@
   {
     "productId": "pomelo",
     "storyId": "agentic-agent-docs",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Probes show no llms.txt, no markdown docs and no OpenAPI spec (all 404). However, Pomelo documents an official MCP, installable in Cursor, whose tools search its API docs for matching endpoints and generate request code samples. That is a first-party, agent-oriented way into the docs, though not the static docs an agent can simply be pointed at. Missing for 10: llms.txt, markdown or plain-text doc exports, a downloadable OpenAPI spec, and independent corroboration that the docs MCP works well.",
-    "evidenceIds": [
-      "pomelo-docs-19",
-      "pomelo-docs-20",
-      "pomelo-docs-21",
-      "pomelo-probe-1",
-      "pomelo-probe-2",
-      "pomelo-probe-3"
-    ],
+    "rationale": "Direct probes found no llms.txt, no markdown docs variant and no OpenAPI spec; all returned 404. Pomelo does offer an MCP server that searches endpoints and an AI chat assistant, but those belong to different capabilities (an MCP server and an in-docs assistant), not agent-oriented docs or llms.txt, so they earn no credit here.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can point an agent at llms.txt or agent-oriented docs",
-      "citations": [
-        {
-          "evidenceId": "pomelo-docs-20",
-          "quote": "Devuelve los endpoints que coincidan con una consulta específica en español o inglés."
-        },
-        {
-          "evidenceId": "pomelo-docs-21",
-          "quote": "Genera un ejemplo de código para realizar el request al endpoint."
-        },
-        {
-          "evidenceId": "pomelo-docs-19",
-          "quote": "Para instalar nuestro MCP en Cursor, puedes hacer clic en el botón a continuación o seguir los pasos manualmente."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5320,16 +5304,23 @@
   {
     "productId": "pomelo",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The only built-in AI feature in the evidence is a documentation assistant for questions about the Pomelo API. It answers questions and does not take delegated tasks inside the product, such as in the Dashboard. The natural-language API access is through an MCP server used by external agents like Cursor, which is a different story and not a built-in assistant.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Pomelo documents a built-in AI assistant, but it is scoped to answering questions about the Pomelo API in the developer docs. Nothing shows it carrying out delegated tasks inside the product, such as issuing cards or managing transactions in the Dashboard. The MCP server is a separate external-agent capability and is not credited here. Missing for 10: evidence of task execution (not just Q&A) by the assistant, an assistant embedded in the operational Dashboard, documentation of the assistant's scope and actions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "pomelo-docs-15"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pomelo-docs-15",
+          "quote": "Asistente de inteligencia artificial para consultas sobre la API de Pomelo"
+        }
+      ]
     }
   },
   {
@@ -5382,10 +5373,10 @@
   {
     "productId": "pomelo",
     "storyId": "agentic-mcp-server",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Pomelo documents its own MCP server at developers.pomelo.la/mcp, with install instructions for Cursor (one-click button or manual steps) and documented tools that search endpoints and generate request code samples, so an agent can connect to an official MCP server. The documented tools only cover API discovery and code generation, not live account or card operations. Setup is evidenced only for Cursor. missing for 10: documented tools for live API operations, setup steps for agent clients other than Cursor, details on auth and transport, independent or hands-on corroboration.",
+    "rationale": "Pomelo documents an official MCP server at developers.pomelo.la/mcp with Cursor install steps (one-click or manual), so an agent can connect to it. However, its documented tools only search API endpoints and generate request code samples. They do not operate on the Pomelo account (users, cards, transactions), so the server is a documentation helper rather than an operational agent interface. missing for 10: MCP tools that execute real Pomelo API operations, setup docs for clients beyond Cursor, auth/scope documentation, independent or hands-on corroboration.",
     "evidenceIds": [
       "pomelo-docs-19",
       "pomelo-docs-20",
@@ -5394,7 +5385,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
       "citations": [
         {
@@ -5633,23 +5624,16 @@
   {
     "productId": "pomelo",
     "storyId": "api-versioning-policy",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo's API reference shows URL-versioned endpoint paths (/cards/v1, users v2, core-credit-v2) and labels one endpoint group \"Push Provisioning (Deprecado)\", so APIs are versioned and deprecations are flagged. However, no versioning policy, deprecation window or changelog is published, so the documented-policy half of the story is unmet. Missing for 10: a published versioning/deprecation policy with notice windows, a changelog, and independent corroboration of version stability.",
-    "evidenceIds": [
-      "pomelo-reference-20261106"
-    ],
+    "rationale": "Pomelo is an API-first card-issuing platform, so versioned APIs with a deprecation policy is a fair question to ask of it. Nothing in the evidence pack mentions API versioning, version identifiers, changelogs, or a deprecation or sunset policy. The cited docs cover product features and an MCP server only, so absence of evidence for this applicable capability yields none.",
+    "evidenceIds": [],
     "support": {
-      "relation": "direct",
-      "coverage": "partial",
+      "relation": "absent",
+      "coverage": "none",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
-      "citations": [
-        {
-          "evidenceId": "pomelo-reference-20261106",
-          "quote": "URL-versioned endpoint paths (/cards/v1, users v2, core-credit-v2) and a deprecated endpoint group labeled \"Push Provisioning (Deprecado)\""
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -6024,9 +6008,9 @@
     "productId": "pomelo",
     "storyId": "merchant-category-controls",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Pomelo's own guides document blocking specific merchants, merchant categories and merchant IDs, which covers the MCC/merchant blocklist part of the story. Only a one-line guide summary supports it, and nothing shows allowlists or locking a card to a single merchant. Missing for 10: MCC allowlists, single-merchant locks, explicit confirmation that rules apply at authorization time, in-depth configuration docs, independent or hands-on corroboration.",
+    "rationale": "Pomelo's own guides describe blocking specific merchants, merchant categories, or merchant IDs. That covers the blocklist side of MCC and merchant restriction. However, the evidence is a single one-line summary with no detail, and it never mentions allowlists or locking a card to a single merchant. missing for 10: MCC allowlists, single-merchant lock (allow-only-one-merchant), explicit confirmation that rules are enforced at authorization time, in-depth docs or hands-on corroboration.",
     "evidenceIds": [
       "pomelo-docs-5"
     ],
