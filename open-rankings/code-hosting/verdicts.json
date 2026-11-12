@@ -3178,13 +3178,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gitea lists \"Audit Logs\" and mentions \"audit logging\" as a generic security feature. Nothing in the evidence describes auditing AI agent sessions or actions, or attributing agent actions to the user who triggered them, including actions taken through the official MCP server. Generic audit logging is an adjacent feature, not the story's capability, so it earns no credit.",
-    "evidenceIds": [],
+    "rationale": "Gitea's docs mention generic audit logging, including an enterprise Audit Logs feature, and an official MCP server exists. However, no evidence shows Gitea records or audits AI agent sessions or attributes agent actions to the user who triggered them. Generic audit logging is an adjacent feature and does not earn credit for this story.",
+    "evidenceIds": [
+      "gitea-docs-28",
+      "gitea-docs-31"
+    ],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As a devops-lead, I can audit AI agent sessions and actions attributed to the user who triggered them",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "gitea-docs-28",
+          "quote": "offering features such as user permission management, access control lists, audit logging, and more to ensure the security of code and data."
+        },
+        {
+          "evidenceId": "gitea-docs-31",
+          "quote": "Audit Logs"
+        }
+      ]
     }
   },
   {
@@ -3193,7 +3205,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Governing AI agents is a fair question for a Git forge, since forges can ship agent features, so the axis applies. The evidence has no Gitea capability to enable or disable AI agents per group or instance, and none for allow/ask/deny tool policies. General user permission management, ACLs and an official MCP server are adjacent features and earn no credit.",
+    "rationale": "Governing AI agents per group or instance is a fair question for a code-hosting platform, so the axis applies. The pack has no evidence that Gitea can enable or disable AI agents per organization or instance, or set allow/ask/deny policies for agent tools. General user permissions, ACLs, admin configuration and the existence of an official MCP server are adjacent features, not this capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3208,7 +3220,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The probe shows https://docs.gitea.com/llms.txt returns HTTP 404, and no evidence shows agent-oriented documentation such as an llms.txt, llms-full.txt or AI/agent guide. The Swagger/OpenAPI documents, the MCP server and the tea CLI belong to separate stories (machine-readable API spec, MCP, CLI) and do not count as llms.txt or agent-oriented docs.",
+    "rationale": "The probe found no llms.txt: docs.gitea.com/llms.txt returns HTTP 404. No evidence describes agent-oriented documentation. The machine-readable OpenAPI/Swagger spec, the official MCP server and the tea CLI belong to separate stories and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3223,7 +3235,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A Git hosting platform could plausibly ship in-product AI insights, so this axis applies. However, the evidence pack documents no AI-generated insights or suggestions inside Gitea. The official MCP server lets external agents connect, which is adjacent, and repository activity stats are non-AI analytics.",
+    "rationale": "An in-product AI insight feature is a fair question for a Git hosting platform, so the axis applies. However, the evidence shows no built-in AI-generated insights or suggestions. The official MCP server lets external agents connect to Gitea, which is a building block rather than an in-product capability. Repository Activity and Code Frequency are non-AI statistics, an adjacent feature that earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3238,11 +3250,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitea ships its own automation engine, Gitea Actions: YAML workflows compatible with GitHub Actions, run by an official action runner, with autoscaling runners offered on the managed tier. That counts as product-native background automation. The evidence does not show recurring or scheduled triggers, how unattended runs behave, or any AI or agentic automation, so only the core CI/CD automation is established. Missing for 10: documented scheduled/recurring triggers, evidence of autonomous agent-style automations, hands-on corroboration of unattended background runs.",
+    "rationale": "Gitea Actions is Gitea's own CI/CD engine. Users write GitHub Actions-compatible YAML workflows that run on Gitea's action runners, which gives event-driven background automation. The evidence covers only CI/CD-style workflows and says nothing about recurring scheduled runs or agent-driven autonomous tasks, so the 'run autonomously in the background' part is only partly shown. missing for 10: documented recurring/cron schedule triggers, evidence of autonomous agent-style background tasks beyond CI/CD, hands-on corroboration of background workflow execution",
     "evidenceIds": [
       "gitea-docs-2",
-      "gitea-gh-6",
       "gitea-docs-15",
+      "gitea-gh-6",
       "gitea-docs-31"
     ],
     "support": {
@@ -3271,7 +3283,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair capability to ask of a Git forge, so this story applies to Gitea. The evidence shows no assistant inside the product that users can delegate tasks to. The official MCP server (gitea-mcp) and the tea CLI let external agents and tools reach Gitea, but they are adjacent building blocks, not a built-in assistant, so they earn no credit.",
+    "rationale": "A built-in AI assistant is a fair question for a Git hosting platform, so the axis applies. Nothing in the evidence shows Gitea shipping an in-product assistant that users can delegate tasks to. The official MCP server (gitea-mcp) lets external agents connect to Gitea, which is an adjacent integration rather than a built-in assistant, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3286,13 +3298,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Gitea documents its own automation surfaces: an official CLI (tea), a Go SDK, an action runner for Gitea Actions, GitHub Actions-compatible YAML workflows, and a versioned /api/v1 REST API with a built-in OpenAPI/Swagger document. Together these show the product can be driven programmatically and in CI pipelines. The evidence does not show tea or the API actually running non-interactively in CI (token-based auth for pipelines, scripted flags, machine-readable output), and there is no hands-on corroboration, so coverage is partial. Missing for 10: documented non-interactive/headless CLI usage in CI, a CI authentication pattern for tea, machine-readable CLI output, and independent hands-on corroboration of headless automation.",
+    "rationale": "Gitea documents several programmatic, non-UI surfaces for automation. These are an official CLI (tea), an official go-sdk, an action runner for Gitea Actions, and a versioned REST API with a built-in OpenAPI/Swagger document on every instance. Together they let the product be driven headlessly and from CI pipelines. However, the evidence for headless/CI use of the CLI is thin: there is no documentation of non-interactive authentication, CI usage examples or machine-readable CLI output, and the API guide notes no deprecation or backward-compatibility policy. missing for 10: documented non-interactive/CI usage of the tea CLI (token auth, scripting examples, structured output), an API stability/deprecation guarantee, independent hands-on corroboration of headless automation",
     "evidenceIds": [
       "gitea-gh-6",
       "gitea-probe-4",
-      "gitea-docs-2",
       "gitea-openapi-20261106",
-      "gitea-api-usage-20261106"
+      "gitea-api-usage-20261106",
+      "gitea-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -3304,16 +3316,16 @@
           "quote": "We provide an official go-sdk, a CLI tool called tea and an action runner for Gitea Action."
         },
         {
-          "evidenceId": "gitea-docs-2",
-          "quote": "Gitea Actions supports CI/CD functionality, compatible with GitHub Actions. Users can write workflows in familiar YAML format and reuse a variety of existing Actions plugins."
+          "evidenceId": "gitea-probe-4",
+          "quote": "official CLI documented at https://gitea.com/gitea/tea"
         },
         {
           "evidenceId": "gitea-openapi-20261106",
           "quote": "The OpenAPI document is at: https://gitea.your.host/swagger.v1.json"
         },
         {
-          "evidenceId": "gitea-probe-4",
-          "quote": "official CLI documented at https://gitea.com/gitea/tea"
+          "evidenceId": "gitea-docs-4",
+          "quote": "Extend Gitea's functionality with our API and webhooks, creating custom workflows to match your unique needs."
         }
       ]
     }
@@ -3324,7 +3336,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Gitea acting as an MCP client that can load external MCP servers and use their tools. The official gitea-mcp project is an MCP server exposing Gitea to other agents, which is the opposite role and earns no credit here. A forge could plausibly ship agent features that consume MCP servers, so the axis applies and the absence of evidence yields \"none\".",
+    "rationale": "A Git forge could plausibly ship built-in AI features that consume external MCP servers, so this axis applies. The pack shows no such MCP-client capability in Gitea. The official gitea-mcp project is an MCP server that exposes Gitea to other agents, which is the opposite role and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3339,7 +3351,7 @@
     "verdict": "full",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "A probe confirms Gitea has an official MCP server, documented at gitea.com/gitea/gitea-mcp, hosted on the vendor's own forge. That is a first-party server an agent can connect to, so the axis applies and is delivered, but the evidence is a single thin probe entry with no detail. Missing for 10: documentation of the exposed tools and resources, transport and auth setup for connecting an agent, and independent or hands-on corroboration of agent connections.",
+    "rationale": "Gitea is a self-hosted Git service, not an agent, so publishing an official MCP server is a fair axis. A probe confirms an official MCP server documented under the Gitea organization at gitea.com/gitea/gitea-mcp, which delivers the core of the story. The evidence is a single probe line with no detail on tools, setup or agent compatibility. Missing for 10: documentation of the exposed tools and operations, setup and authentication instructions for connecting an agent, and independent or hands-on corroboration of agent usage.",
     "evidenceIds": [
       "gitea-probe-3"
     ],
@@ -3361,7 +3373,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Natural-language operation is a fair question for a Git hosting product, but nothing in the evidence shows Gitea itself accepting or interpreting natural-language commands. The official MCP server (gitea-probe-3) is evidence for the separate MCP-server story: it exposes tools to an external AI agent, and that agent does the language understanding. The tea CLI, REST API and Swagger docs are structured-command and developer building blocks, not natural-language interfaces, so none of these earn credit here.",
+    "rationale": "The evidence pack shows no built-in natural-language command interface in Gitea. Its UI, API, webhooks, and the tea CLI are all structured interfaces. The official MCP server (gitea-probe-3) lets external AI agents call Gitea tools, but that is evidence for the separate MCP-server story. The natural-language interpretation would come from a third-party agent, so it is adjacent support and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -3376,7 +3388,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Gitea's own repository says it ships an official CLI tool called tea, and a probe confirms its documentation at gitea.com/gitea/tea. That directly satisfies the story's core requirement of an official CLI. However, the pack gives no detail on the CLI's commands, scripting or machine-readable output, or AI-agent workflow use. missing for 10: documented CLI command coverage and non-interactive/JSON output for agent workflows, independent or hands-on corroboration of tea in use.",
+    "rationale": "Gitea's own GitHub README says it provides an official CLI tool called tea, and a probe confirms the official CLI is documented at gitea.com/gitea/tea. That establishes a first-party CLI exists, but the pack contains nothing on its depth. Missing for 10: documented command coverage, agent-friendly features such as machine-readable or JSON output and non-interactive auth, and independent hands-on corroboration of CLI use.",
     "evidenceIds": [
       "gitea-gh-6",
       "gitea-probe-4"
@@ -3403,7 +3415,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Gitea ships a versioned REST API at /api/v1 on every instance, with a machine-readable Swagger 2.0 and OpenAPI 3.0.3 description, an interactive Swagger UI enabled by default, and an API usage guide covering authentication and pagination; an official go-sdk and the tea CLI build on it. The probe 404s for spec paths on docs.gitea.com do not contradict this, because the spec is served from each instance (live-verified on gitea.com). Missing for 10: a documented deprecation or backward-compatibility policy, and independent or community hands-on corroboration of driving the product through the API.",
+    "rationale": "Every Gitea instance ships a versioned /api/v1 REST API with a machine-readable Swagger 2.0 spec (342 paths) and an OpenAPI 3.0.3 spec. It also has an interactive Swagger UI that is enabled by default, and an API usage guide covering authentication and pagination; the API is also wrapped by an official go-sdk and the tea CLI. The probe 404s at docs.gitea.com paths do not contradict this, because the spec is served per instance and was live-verified on gitea.com. Missing for 10: a documented deprecation or backward-compatibility policy, a documented hosted test/sandbox instance, and independent community corroboration of driving the API.",
     "evidenceIds": [
       "gitea-openapi-20261106",
       "gitea-swagger-ui-20261106",
@@ -3445,7 +3457,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies to a self-hosted Git service with an API, but the pack never documents scoped or least-privilege API tokens. The API usage guide mentions only \"authentication\" in general, and the generic \"user permission management, access control lists\" claims are adjacent controls, not scoped credential issuance for an agent.",
+    "rationale": "The evidence says Gitea has an API, and its API usage guide covers authentication. Its security docs mention user permission management and access control lists, and community reports note OAuth2/OIDC support. None of this documents issuing scoped or least-privilege API tokens or credentials for an agent. User-level permission controls and identity-provider features are adjacent capabilities, not scoped credential issuance.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3460,10 +3472,9 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitea's own GitHub README says it ships an official Go SDK, and it exposes an API that SDK-based builds can target. The evidence is a single thin mention of one language, and the OpenAPI probes at the docs domain all returned 404. Missing for 10: official SDKs in languages beyond Go, SDK documentation or usage guides, a discoverable OpenAPI spec, and independent or hands-on corroboration of building against the SDK.",
+    "rationale": "Gitea's own GitHub README states it provides an official Go SDK, so developers can build against a first-party SDK. The evidence is a single thin mention covering only one language, with no SDK documentation, usage examples, or versioning details. The OpenAPI/Swagger spec is a building block for generating clients, not an official SDK, so it earns no credit here. Missing for 10: official SDKs in languages beyond Go, SDK documentation and examples, SDK versioning and compatibility guarantees, and independent or hands-on corroboration of SDK use.",
     "evidenceIds": [
-      "gitea-gh-6",
-      "gitea-docs-4"
+      "gitea-gh-6"
     ],
     "support": {
       "relation": "direct",
@@ -3472,11 +3483,7 @@
       "citations": [
         {
           "evidenceId": "gitea-gh-6",
-          "quote": "We provide an official go-sdk"
-        },
-        {
-          "evidenceId": "gitea-docs-4",
-          "quote": "Extend Gitea's functionality with our API and webhooks"
+          "quote": "We provide an official go-sdk, a CLI tool called tea and an action runner for Gitea Action."
         }
       ]
     }
@@ -3487,7 +3494,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Gitea's own marketing says it offers webhooks for building custom workflows, so this is a first-party capability, but the pack has only that one thin mention. The Slack/Discord/Teams sync does not count as programmatic webhooks. missing for 10: documentation of webhook registration (UI/API), supported event types, payload format, signing/secret verification, delivery/retry behavior, and independent or hands-on corroboration.",
+    "rationale": "Gitea's own marketing says it offers webhooks for building custom workflows, so the capability is first-party. The evidence is a single thin mention with no detail on event types, registration or payloads. The Slack/Discord/Teams sync does not count as programmatic webhooks. Missing for 10: documented list of subscribable events, how to register a webhook (UI or API), payload format and signing/secret verification, delivery and retry behavior, independent or hands-on corroboration.",
     "evidenceIds": [
       "gitea-docs-4"
     ],
@@ -3509,7 +3516,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Every Gitea instance ships an interactive Swagger UI at /api/swagger, enabled by default and live-verified on gitea.com. Its try-it feature runs requests against the instance's own live API, and the API usage guide documents it alongside a machine-readable Swagger/OpenAPI spec. The probe 404s on docs.gitea.com paths do not contradict this, because the spec is served from instance paths. Missing for 10: a documented hosted test or sandbox instance (try-it only hits a live instance, not an isolated environment), curated runnable examples beyond the auto-generated Swagger operations, and independent or community corroboration of the reference experience.",
+    "rationale": "Every Gitea instance ships an interactive Swagger UI at /api/swagger, enabled by default and backed by the instance's own OpenAPI document. Its try-it feature runs requests against the live API, and the vendor docs and the live gitea.com instance both confirm this. The probe 404s on docs.gitea.com paths don't contradict it, because the spec is served per instance at /swagger.v1.json. Missing for 10: independent or community hands-on corroboration of the try-it experience, and a documented hosted sandbox or test instance for running examples safely (try.gitea.io no longer resolves and demo.gitea.com is undocumented).",
     "evidenceIds": [
       "gitea-swagger-ui-20261106",
       "gitea-api-usage-20261106",
@@ -3541,7 +3548,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Every Gitea instance serves a downloadable Swagger 2.0 document at /swagger.v1.json and an OpenAPI 3.0.3 document at /openapi3.v1.json. Both were live-verified on gitea.com, alongside a built-in Swagger UI and an API usage guide that points to the spec. The probe 404s were against docs.gitea.com paths, not instance paths, so they do not contradict this. Missing for 10: independent community or hands-on corroboration of using the spec, and any deprecation or backward-compatibility statement for the API.",
+    "rationale": "Every Gitea instance serves a machine-readable spec: a Swagger 2.0 document at /swagger.v1.json (342 paths) and an OpenAPI 3.0.3 document at /openapi3.v1.json. Both were live-verified on gitea.com, alongside a default-enabled Swagger UI. The probe 404s were against the docs.gitea.com site, not instance paths, so they do not contradict this. Missing for 10: independent community corroboration of spec usage, and a documented deprecation or backward-compatibility policy for the versioned spec.",
     "evidenceIds": [
       "gitea-openapi-20261106",
       "gitea-swagger-ui-20261106",
@@ -3557,12 +3564,8 @@
           "quote": "the Swagger 2.0 document at /swagger.v1.json (342 paths, basePath /api/v1) and an OpenAPI 3.0.3 document at /openapi3.v1.json"
         },
         {
-          "evidenceId": "gitea-openapi-20261106",
-          "quote": "The OpenAPI document is at: https://gitea.your.host/swagger.v1.json"
-        },
-        {
           "evidenceId": "gitea-swagger-ui-20261106",
-          "quote": "By default, ENABLE_SWAGGER is true"
+          "quote": "Every Gitea instance ships an interactive Swagger UI reference at /api/swagger"
         },
         {
           "evidenceId": "gitea-api-usage-20261106",
@@ -3577,7 +3580,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Testing against a sandbox is a fair question for a Git hosting service with an API, so the axis applies. The evidence pack documents no first-party sandbox or test environment. The API guide notes that no vendor page documents a hosted test instance: try.gitea.io no longer resolves and demo.gitea.com is undocumented as a demo. The Swagger try-it feature runs against the live instance API, not an isolated sandbox. Spinning up a separate self-hosted instance would be a user-side workaround and earns no credit.",
+    "rationale": "Gitea's API docs explicitly state that no vendor page documents a hosted test instance: try.gitea.io no longer resolves and demo.gitea.com is undocumented as a demo. The built-in Swagger try-it runs against the live instance, so it offers no isolation. Standing up a separate self-hosted instance would be a user-side workaround, not a documented sandbox capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3590,9 +3593,9 @@
     "productId": "gitea",
     "storyId": "api-versioning-policy",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Gitea documents a versioned REST API: every example targets the /api/v1 base, and the Swagger and OpenAPI documents use basePath /api/v1. The docs site also keeps per-release versions. However, the vendor's own API guide evidence explicitly notes that no deprecation or backward-compatibility statement exists in the guide, FAQ, or per-release docs, so only the versioning half of the story is delivered. missing for 10: documented deprecation policy, backward-compatibility guarantees, independent corroboration of API version stability.",
+    "rationale": "Gitea exposes a versioned REST API under /api/v1, with Swagger/OpenAPI documents and per-release docs. The vendor's own API guide says no deprecation or backward-compatibility statement exists in the guide, FAQ, or per-release docs, so only the versioning half of the story is delivered. Missing for 10: a documented deprecation policy, a backward-compatibility or breaking-change guarantee, and any independent corroboration of API stability across releases.",
     "evidenceIds": [
       "gitea-api-usage-20261106",
       "gitea-openapi-20261106"
@@ -3604,7 +3607,7 @@
       "citations": [
         {
           "evidenceId": "gitea-api-usage-20261106",
-          "quote": "every example against the versioned /api/v1 base, and the docs site keeps per-release versions (29-dev back through 1.22)"
+          "quote": "with every example against the versioned /api/v1 base, and the docs site keeps per-release versions (29-dev back through 1.22)"
         },
         {
           "evidenceId": "gitea-openapi-20261106",
@@ -3619,7 +3622,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Gitea's own materials say it offers audit logging as a security feature, and the about.gitea.com feature list includes \"Audit Logs\". These are only bare mentions. Nothing describes which user or administrative actions are recorded, or how a devops-lead would view, search, filter or export the log. The listing next to SAML SSO and autoscaling runners hints it may be a paid or enterprise tier rather than core Gitea. Missing for 10: documentation of what user/admin actions are captured, a described review interface (UI/API, search, filter, export), clarity on which edition includes it, and independent or hands-on corroboration.",
+    "rationale": "Gitea's own materials name audit logging as a security feature, and the about page lists \"Audit Logs\" next to SAML SSO and autoscaling runners, which suggests a commercial or managed-tier offering. Beyond those bare mentions, nothing documents what is recorded or how a devops lead would review it. Missing for 10: documentation of which user and administrative actions are logged, a review interface (UI, API or export) for the log, clarity on which edition or tier includes it, and independent or hands-on corroboration.",
     "evidenceIds": [
       "gitea-docs-28",
       "gitea-docs-31",
@@ -3647,7 +3650,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations across many items are a fair question for a Git forge, so the axis applies. The evidence pack documents no batch or multi-select capability. The REST API (with pagination), the tea CLI and the MCP server are only building blocks a user could script loops with; they are not documented bulk operations, so they earn no credit.",
+    "rationale": "Bulk operations across many items are a fair question for a Git forge like Gitea, so the axis applies. However, no evidence item documents a native bulk or batch action, such as mass-editing issues, labels or repositories. The REST API (Swagger/OpenAPI), the tea CLI and the MCP server are developer building blocks a user could script loops against, and those earn no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3728,12 +3731,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitea Actions automations are written as YAML workflows. Gitea natively provides commit history and Pull Request/AGit code review, so automations kept as workflow files can plausibly be versioned and reviewed in-product. However, the evidence never explicitly ties workflow files to repo versioning, and it documents no rollback or revert mechanism for automations. Missing for 10: explicit documentation that workflow definitions are versioned in the repository, a documented rollback/revert path for automations, and hands-on corroboration of reviewing workflow changes.",
+    "rationale": "Gitea's automations are Gitea Actions workflows written as YAML. Gitea itself provides commit history plus Pull Request and AGit code review, so workflow definitions can be versioned and reviewed natively. However, the evidence never explicitly says workflow files live in the repository and are governed by these features, and nothing documents rollback of automations. Missing for 10: explicit documentation that workflow YAML is versioned in-repo, a documented rollback or revert path for automations, and independent or hands-on corroboration.",
     "evidenceIds": [
       "gitea-docs-2",
       "gitea-docs-1",
       "gitea-docs-3",
-      "gitea-docs-24"
+      "gitea-docs-33"
     ],
     "support": {
       "relation": "direct",
@@ -3761,10 +3764,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents branch or tag protection rules, required approving reviews, or required status checks before merge. It covers only adjacent features: pull-request code review, Gitea Actions CI, and general permission management/ACLs. None of these is the protection-rule capability itself, so they earn no credit.",
+    "rationale": "The evidence pack documents pull-request code review, Gitea Actions CI, branch handling, and general permission management and access control lists. None of it describes protected branches, protected tags, required approvals, or required passing status checks before merge. Those items are adjacent features, not the rule-based merge gating this story asks for, so the verdict is none.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As a devops-lead, I can protect branches and tags with rules requiring reviews and passing checks before merge",
       "citations": []
@@ -3874,7 +3877,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitea is documented as a self-hosted Git service, and users report deploying it as a Git server whose contributors clone from it, so basic Git hosting is clearly implied. The pack never explicitly documents clone, pull, or push over HTTPS or SSH, or compatibility with standard Git clients. Missing for 10: explicit documentation of HTTPS and SSH Git transport, confirmation that standard Git clients work for clone/pull/push, and hands-on corroboration of push and pull workflows.",
+    "rationale": "Gitea is documented as a self-hosted Git service, and community users deploy it as a Git server whose contributors clone repositories, which implies standard Git client access. The pack never explicitly documents clone, pull, or push over HTTPS or SSH. missing for 10: explicit documentation of HTTPS and SSH Git transport, standard-client compatibility for clone/pull/push, hands-on corroboration of push and pull over each protocol",
     "evidenceIds": [
       "gitea-docs-30",
       "gitea-docs-23",
@@ -3911,7 +3914,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Code-owner approval rules are a fair governance question for a Git forge like Gitea, so the axis applies. The evidence pack only documents generic pull-request code review and user permission/ACL management. Nothing mentions CODEOWNERS files, path-based ownership, or required approvals from designated owners, so these are adjacent features and earn no credit.",
+    "rationale": "Path-based code-owner approval is a fair question for a Git hosting service, so the axis applies. The evidence pack never mentions CODEOWNERS files, path ownership, or required approvals tied to owned paths. The pull-request review and generic permission/ACL claims are related features, not this capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3926,7 +3929,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Code search is a fair question for a self-hosted Git service, so the axis applies. However, the evidence pack documents only browsing commit history and code files and reading source in the web UI. No item mentions code search within or across repositories, and browsing is an adjacent feature, not search.",
+    "rationale": "Code search is a fair axis for a Git hosting service, but the evidence pack documents no code-search capability, whether within a repository or across repositories. The only nearby evidence is browsing code files and reading source through the web UI, which is adjacent but is not search.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3941,7 +3944,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents Gitea issues with branches, tags, milestones, assignments, time tracking, due dates and dependencies. Nothing in it describes linking commits or pull requests to issues, or keyword-based automatic issue status changes from commit messages. This is a fair axis for a Git hosting product, so the absence of evidence yields none rather than na.",
+    "rationale": "The evidence covers Gitea's issue features (branches, tags, milestones, assignments, time tracking, due dates, dependencies) and the pull-request workflow. None of it documents linking commits or pull requests to issues, or closing or updating issues automatically from keywords in commit messages. Issue tracking is a fair axis for a Git forge, so the lack of evidence makes this \"none\" rather than \"na\".",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3956,10 +3959,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers pull request review and merging, Gitea Actions CI/CD, and general permission and access-control features. None of it documents branch protection, required status checks, or any way to block a merge until custom quality or compliance checks pass. Actions workflows and webhooks are building blocks for running checks, not documented merge-gate enforcement, so they earn no credit.",
+    "rationale": "The evidence documents pull-request review and merging, plus GitHub Actions-compatible CI workflows. Nothing in the pack shows branch protection, required status checks, or any way to block a merge until custom quality or compliance checks pass. CI workflows are only a building block toward enforced merge gates, not the enforcement capability itself, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As a devops-lead, I can enforce custom quality and compliance merge checks on pull requests",
       "citations": []
@@ -3971,7 +3974,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Deployment environments with approval gates are a fair axis for a Git forge that ships CI/CD (Gitea Actions), so the story applies. The evidence only shows generic GitHub Actions-compatible workflows and third-party integrations such as Argo CD. Nothing documents environment definitions, approval gates, or tracking which change is deployed where.",
+    "rationale": "Gitea Actions provides GitHub Actions-compatible CI/CD workflows, but the evidence pack never documents deployment environments, approval or protection gates, or tracking of which change is deployed where. The Argo CD and Jenkins integrations are external tools, and running CI workflows is an adjacent capability, not the story's capability. Deployment management is a fair axis for a forge with built-in CI/CD, so the verdict is none rather than na.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4001,7 +4004,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers only Gitea's built-in issue tracking (columns, labels, milestones, dependencies), plus CI/chat integrations and webhooks. Nothing documents connecting an external issue tracker, viewing or managing its tickets inside Gitea, or opening them from pull requests. Built-in issues and chat or CI integrations are adjacent features and earn no credit for this story.",
+    "rationale": "Integrating an external issue tracker is a fair question for a code host like Gitea, so the axis applies. The evidence pack covers only Gitea's built-in issue tracking, chat-app syncing (Slack, Discord), and a general API and webhooks, which are developer building blocks. Nothing documents viewing or managing external tracker tickets inside Gitea or linking to them from pull requests.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4016,7 +4019,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitea's docs say it supports the Pull Request workflow (plus AGit) for submitting, reviewing and merging code, and that submitters can respond to review comments. However, the evidence never explicitly mentions forking repositories or contributions from outside, non-collaborator users. Missing for 10: explicit documentation of repository forking, cross-repository (fork-to-upstream) pull requests for external contributors, and independent or hands-on corroboration of the fork-and-PR flow.",
+    "rationale": "Gitea's docs say code review supports the Pull Request workflow and the AGit workflow, and that submitters can receive review comments and revise code. That covers proposing and merging changes. However, nothing in the pack documents forking a repository, or how outside contributors without write access submit cross-repo pull requests. Missing for 10: documented repository forking, cross-fork pull request flow for outside contributors, independent hands-on corroboration.",
     "evidenceIds": [
       "gitea-docs-3",
       "gitea-docs-12",
@@ -4071,7 +4074,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Gitea's own docs claim security features including user permission management and access control lists, and say repository collaborators can be managed. That is first-party permission capability, but nothing shows at which levels it applies. Missing for 10: documented organization/team-level permissions, project-level permissions, branch-level protection rules, environment-level permissions, and independent or hands-on corroboration of granular access control.",
+    "rationale": "Gitea's docs claim user permission management and access control lists, and mention managing repository collaborators. They do not say at which levels these permissions can be set. Missing for 10: documented organization/team-level permissions, project-level permissions, branch protection or branch-level permissions, environment-level permissions, and independent or hands-on corroboration of how granular the controls are.",
     "evidenceIds": [
       "gitea-docs-7",
       "gitea-docs-28",
@@ -4088,7 +4091,7 @@
         },
         {
           "evidenceId": "gitea-docs-1",
-          "quote": "managing collaborators, handling branches, and more"
+          "quote": "managing collaborators"
         }
       ]
     }
@@ -4099,7 +4102,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Second-factor authentication with a hardware security key or passkey is a fair axis for a self-hosted Git service, but nothing in the evidence pack mentions WebAuthn, FIDO2, security keys, passkeys, or 2FA. The documented security features (permission management, access control lists, audit logging, SAML SSO, OIDC provider use) are adjacent and earn no credit toward this story.",
+    "rationale": "Second-factor authentication is a fair question for a self-hosted Git service, so the axis applies. The pack never mentions WebAuthn, passkeys, U2F, hardware security keys or two-factor authentication. Its security evidence covers only permissions, access control lists, audit logs, SAML SSO, OAuth2 and OIDC, which are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4114,7 +4117,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Gitea's own marketing says it supports 'replication configurations' alongside single-server setups, and it lists Kubernetes as a supported environment, so the capability is vendor-claimed. The evidence is only a one-line claim with no detail on how high availability actually works. Missing for 10: documented HA architecture (shared storage, session and queue handling, failover), step-by-step replicated deployment docs, and independent or hands-on corroboration of an HA deployment.",
+    "rationale": "Gitea's own marketing says it supports replication configurations as well as single-server setups, and lists Kubernetes as a supported environment. That is a direct but thin claim: nothing in the pack shows how to configure replication or achieve high availability, and no hands-on report confirms it. missing for 10: documented HA architecture and setup guide (shared storage, session and queue handling, multi-node configuration), explicit high-availability or failover claims, independent or hands-on corroboration of replicated deployments.",
     "evidenceIds": [
       "gitea-docs-13",
       "gitea-docs-10"
@@ -4141,12 +4144,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Gitea documents its own CI/CD (Gitea Actions) and an official action runner, plus Kubernetes AutoScaling Runners, which supports running pipelines on runners you operate. Nothing shows vendor-hosted runners: the managed offering is a hosted Gitea environment, not a runner service. Centralized visibility across runners is also not documented. missing for 10: platform-hosted runner option, documented centralized runner/pipeline visibility across fleets, runner registration/scoping docs, independent or hands-on corroboration of Actions runners.",
+    "rationale": "Gitea ships its own CI/CD (Gitea Actions) and an official action runner you can deploy yourself, and lists Kubernetes AutoScaling Runners, so running pipelines on private runners is supported. There is no evidence of vendor-hosted runners: the managed offering is described only as a managed Gitea environment, not hosted compute for pipelines. Nothing documents a centralized view across runners. missing for 10: documented platform-hosted runners, centralized runner/pipeline visibility across fleets, runner registration and management docs, independent hands-on corroboration of Gitea Actions runners.",
     "evidenceIds": [
       "gitea-docs-2",
       "gitea-gh-6",
       "gitea-docs-31",
-      "gitea-docs-15"
+      "gitea-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -4174,10 +4177,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows Gitea can migrate repositories from another source: docs mention migrating repositories from Gogs, and a user migrated the TiDB repo onto a Gitea instance. Nothing shows that issues, pull requests, reviews, or comments come along, and one user found migrating existing repos surprisingly difficult. Missing for 10: documented import of issues, pull requests, reviews and comments, a list of supported source platforms (e.g. GitHub/GitLab), and first-party migration docs with hands-on corroboration of a full-fidelity import.",
+    "rationale": "Gitea's documentation recommends migrating repositories into Gitea, and a hands-on user reports migrating the TiDB repo to a Gitea instance. So bringing a repository in from elsewhere is evidenced, though another user found migrating existing repos 'surprisingly difficult.' Nothing in the pack shows that issues, pull requests, reviews, or comments come across with the repository. missing for 10: documented import of issues, pull requests, reviews and comments, named source platforms (e.g. GitHub/GitLab) beyond Gogs, and in-depth migration docs.",
     "evidenceIds": [
       "gitea-docs-11",
-      "gitea-comm-14-refresh-deae34a9bd603c11",
+      "gitea-comm-13",
       "gitea-comm-9"
     ],
     "support": {
@@ -4190,8 +4193,8 @@
           "quote": "The recommended method is to migrate repositories from Gogs to Gitea."
         },
         {
-          "evidenceId": "gitea-comm-14-refresh-deae34a9bd603c11",
-          "quote": "Migrated the TiDB repo to the 'Try Gitea' service"
+          "evidenceId": "gitea-comm-13",
+          "quote": "Migrated the TiDB repo to the 'Try Gitea' service."
         }
       ]
     }
@@ -4202,7 +4205,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Gitea can reuse existing GitHub Actions, pulled from any Git website, and can work alongside CI tools like Drone and Jenkins. None of it documents a Gitea marketplace or app directory where a developer browses and installs third-party integrations. Reusing Actions by reference, or pairing Gitea with external tools, is adjacent rather than the capability itself.",
+    "rationale": "The evidence shows Gitea can reuse existing GitHub Actions fetched from any Git website, and it lists external tools such as Drone, Jenkins and Argo CD as integrations. None of it documents a marketplace or app directory for browsing and installing third-party integrations. Pulling actions by repository reference and connecting outside CI tools are adjacent features, not an installable app directory, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4217,7 +4220,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents only general security features: user permission management, access control lists, audit logging and SAML SSO. None of it mentions restricting organization or repository access to an IP allowlist. One community user limits exposure by tunnelling over SSH, which is a user-side workaround and not a Gitea capability.",
+    "rationale": "The pack has no evidence that Gitea can restrict organization or repository access by source IP. The documented security features are user permission management, access control lists, SAML SSO and audit logs. These are adjacent identity and permission controls, not network-level IP allowlisting. One community user limits exposure by tunnelling over SSH, which is a user-side workaround and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4231,12 +4234,12 @@
     "storyId": "issue-tracking",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Gitea's own docs say it tracks requirements, features and bugs as issues. They name labels and assignments explicitly, plus milestones, due dates and dependencies, so every element of the story is covered. Missing for 10: in-depth first-party documentation of the label and assignee workflows (the evidence is overview-level marketing copy), and independent or hands-on corroboration of issue tracking.",
+    "confidence": "high",
+    "rationale": "First-party docs state that Gitea tracks requirements, features and bugs as issues, and that issues support labels, assignments, milestones, due dates and dependencies. That covers every element of the story. The evidence is short marketing-level summaries rather than in-depth feature docs, and no community or hands-on report confirms the labels/assignees workflow. Missing for 10: in-depth first-party documentation of labels and assignee management, independent or hands-on corroboration.",
     "evidenceIds": [
       "gitea-docs-6",
-      "gitea-docs-21",
-      "gitea-docs-17"
+      "gitea-docs-17",
+      "gitea-docs-21"
     ],
     "support": {
       "relation": "direct",
@@ -4244,12 +4247,16 @@
       "subject": "As a developer, I can track bugs, features, and requirements as issues with labels and assignees",
       "citations": [
         {
-          "evidenceId": "gitea-docs-6",
-          "quote": "Gitea tracks project requirements, features, and bugs through columns and issues. Issues support features like branches, tags, milestones, assignments, time tracking, due dates, dependencies, and more."
-        },
-        {
           "evidenceId": "gitea-docs-21",
           "quote": "Efficiently manage requirements, features, and bugs through issue tasks, labels, and kanban boards."
+        },
+        {
+          "evidenceId": "gitea-docs-6",
+          "quote": "Gitea tracks project requirements, features, and bugs through columns and issues."
+        },
+        {
+          "evidenceId": "gitea-docs-17",
+          "quote": "Issues support features like branches, tags, milestones, assignments, time tracking, due dates, dependencies, and more."
         }
       ]
     }
@@ -4260,11 +4267,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Gitea's own docs say it tracks requirements, features and bugs \"through columns and issues\" and manages work through \"kanban boards\", which covers both parts of the story: kanban boards and columns. The evidence is marketing-level only, with no detail on how boards work and no hands-on confirmation. Missing for 10: in-depth documentation of board and column management (creating or customizing columns, moving cards), and independent or hands-on corroboration of the kanban workflow.",
+    "rationale": "Gitea's own docs state that it tracks requirements, features, and bugs \"through columns and issues\" and manages work through \"kanban boards,\" so it directly provides the board-with-columns capability. Both statements are brief, marketing-level claims with no detail on how boards behave. Missing for 10: in-depth documentation of board and column behavior (creating or customizing columns, moving cards between columns, board scope), and independent or hands-on corroboration of kanban use.",
     "evidenceIds": [
       "gitea-docs-21",
-      "gitea-docs-6",
-      "gitea-docs-17"
+      "gitea-docs-6"
     ],
     "support": {
       "relation": "direct",
@@ -4288,7 +4294,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gitea is a forge with CI/CD (Gitea Actions), so connecting a Kubernetes cluster to deploy and monitor applications is a fair question. The evidence does not credit it. 'Kubernetes AutoScaling Runners' is about running CI runners on Kubernetes. Kubernetes compatibility is about where Gitea itself can be hosted. Argo CD appears only as a third-party integration. None of these is a documented first-party way to connect a cluster, including one behind a firewall or NAT, for deployment and monitoring.",
+    "rationale": "Connecting a Kubernetes cluster to deploy and monitor applications is a fair question for a forge with CI/CD, so the axis applies, but the evidence shows no first-party cluster-connection capability. 'Kubernetes AutoScaling Runners' is about running CI runners on Kubernetes, not connecting a cluster to deploy and monitor apps. 'Compatible with Kubernetes' describes where Gitea itself can be hosted. Argo CD is a third-party integration. None of these count toward the story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4350,7 +4356,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Markdown rendering is a fair question for a Git forge like Gitea, so the axis applies. However, nothing in the evidence pack mentions Markdown, rendered READMEs, formatted issue or comment text, or syntax-highlighted code. The pack only covers review comments, issue tracking and browsing source in the web UI, which are adjacent features and earn no credit.",
+    "rationale": "Markdown rendering applies to a Git hosting product like Gitea, but nothing in the evidence pack documents Markdown rendering for READMEs, issues, or comments, or syntax highlighting of code. The cited items cover issue tracking, code review comments, and browsing code in the web UI, none of which shows formatted Markdown output.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4362,26 +4368,27 @@
   {
     "productId": "gitea",
     "storyId": "milestones-due-dates",
-    "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Gitea's docs list milestones and due dates among its issue features, so grouping issues into milestones is a documented first-party capability. The evidence is only a single feature-list mention, and it ties due dates to issues rather than explicitly to milestones. Missing for 10: explicit documentation that milestones themselves carry due dates, detail on milestone management (creating milestones, assigning issues, tracking progress), and independent or hands-on corroboration.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Gitea's docs list milestones and due dates as issue features. The API's Milestone model carries a due_on date-time with open/closed issue counts, and the create and edit endpoints accept it, so issues can be grouped into milestones that have due dates. missing for 10: independent hands-on or community corroboration of milestone use, in-depth first-party docs on the milestone UI workflow.",
     "evidenceIds": [
       "gitea-docs-6",
-      "gitea-docs-17"
+      "gitea-docs-17",
+      "gitea-milestone-schema-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As a developer, I can group issues into milestones with due dates",
       "citations": [
         {
-          "evidenceId": "gitea-docs-6",
+          "evidenceId": "gitea-docs-17",
           "quote": "Issues support features like branches, tags, milestones, assignments, time tracking, due dates, dependencies, and more."
         },
         {
-          "evidenceId": "gitea-docs-17",
-          "quote": "Issues support features like branches, tags, milestones, assignments, time tracking, due dates, dependencies, and more."
+          "evidenceId": "gitea-milestone-schema-20261106",
+          "quote": "the spec's Milestone definition includes a due_on date-time property alongside title, description, state, and open/closed issue counts"
         }
       ]
     }
@@ -4392,7 +4399,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Gitea ships a broad, versioned REST API with built-in machine-readable Swagger/OpenAPI documents (342 paths under /api/v1), an interactive Swagger UI on every instance, an official Go SDK, and the tea CLI, so much of the UI surface is clearly reachable programmatically. Nothing in the evidence claims or shows UI parity, and dynamic config options are documented only through the admin panel or app.ini. missing for 10: any documented claim or verification of full UI-to-API parity, an API path for admin-panel dynamic configuration, independent hands-on corroboration of API coverage breadth.",
+    "rationale": "Gitea ships a substantial first-party REST API. Every instance publishes a 342-path Swagger/OpenAPI spec under /api/v1 and an interactive Swagger UI, alongside an official go-sdk and the tea CLI. However, no evidence documents or verifies that the API reaches parity with everything the UI can do, and some UI-side areas such as dynamic admin config are described only as panel operations. missing for 10: an explicit vendor statement or audit of API/UI feature parity, independent hands-on corroboration of parity, and API coverage evidence for admin configuration and other UI-only areas.",
     "evidenceIds": [
       "gitea-openapi-20261106",
       "gitea-swagger-ui-20261106",
@@ -4410,16 +4417,16 @@
           "quote": "the Swagger 2.0 document at /swagger.v1.json (342 paths, basePath /api/v1)"
         },
         {
+          "evidenceId": "gitea-swagger-ui-20261106",
+          "quote": "Every Gitea instance ships an interactive Swagger UI reference at /api/swagger"
+        },
+        {
           "evidenceId": "gitea-docs-4",
           "quote": "Extend Gitea's functionality with our API and webhooks, creating custom workflows to match your unique needs."
         },
         {
           "evidenceId": "gitea-gh-6",
           "quote": "We provide an official go-sdk, a CLI tool called tea and an action runner for Gitea Action."
-        },
-        {
-          "evidenceId": "gitea-swagger-ui-20261106",
-          "quote": "Every Gitea instance ships an interactive Swagger UI reference at /api/swagger"
         }
       ]
     }
@@ -4428,14 +4435,12 @@
     "productId": "gitea",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Gitea is a free, MIT-licensed, self-hosted Git service offering \"full control\". Its data sits in standard databases the operator runs (SQLite, MySQL, PostgreSQL and others), and every instance exposes a documented, versioned REST API described in Swagger/OpenAPI, so code and records can be retrieved in open formats. However, the pack documents no first-party export or dump feature that packages all data (issues, PRs, wikis, packages) for leaving, and a community user questioned whether good backup/restore exists. missing for 10: a documented all-data export/dump tool, a documented export format for issues/PRs/metadata, and independent hands-on corroboration of a full export-and-leave path.",
+    "rationale": "Gitea is a free, MIT-licensed, self-hosted Git service offering 'full control.' Its data lives in Git repositories and in standard databases the user runs (SQLite, MySQL, PostgreSQL, etc.), which implicitly keeps data in open, portable stores. However, the evidence documents no first-party export or dump feature covering issues, PRs, wikis, packages and other data. A community question about backup and restore is only a question, not concrete contradiction. missing for 10: a documented export/dump feature for all data (issues, PRs, users, packages), explicit open-format export documentation, and hands-on corroboration of a full exit or migration out of Gitea.",
     "evidenceIds": [
       "gitea-docs-30",
-      "gitea-docs-14",
-      "gitea-openapi-20261106",
-      "gitea-api-usage-20261106"
+      "gitea-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -4449,10 +4454,6 @@
         {
           "evidenceId": "gitea-docs-14",
           "quote": "Offers seamless integration with leading databases, including SQLite, MySQL, PostgreSQL, TiDB, and MS SQL."
-        },
-        {
-          "evidenceId": "gitea-openapi-20261106",
-          "quote": "The OpenAPI document is at: https://gitea.your.host/swagger.v1.json"
         }
       ]
     }
@@ -4463,7 +4464,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Gitea's own site describes it as a self-hosted Git service under the MIT license. The public go-gitea/gitea GitHub repository includes build and development docs, so the source is readable and buildable. A community user's critique of specific internals (go-macaron, Go templates) shows outsiders do read the codebase. Missing for 10: a citation of the repository's LICENSE file itself (the MIT claim comes only from the marketing page).",
+    "rationale": "Gitea's site states it is a self-hosted Git service under the MIT license. Its public GitHub repository (go-gitea/gitea) points readers to build and development docs, and community users discuss its Go codebase internals, which corroborates that the source is readable. Missing for 10: a direct citation of the repository's LICENSE file or license metadata, since the MIT statement comes only from the marketing page.",
     "evidenceIds": [
       "gitea-docs-30",
       "gitea-gh-2",
@@ -4484,7 +4485,7 @@
         },
         {
           "evidenceId": "gitea-comm-12-refresh-30c0d0ede706c990",
-          "quote": "'Gitea isn't a great Go codebase,' though much was inherited from Gogs."
+          "quote": "They cite migrations that go up but not down, a nonstandard web framework (go-macaron), too much logic in Go templates, and strange error reporting."
         }
       ]
     }
@@ -4495,20 +4496,18 @@
     "verdict": "full",
     "quality": 10,
     "confidence": "high",
-    "rationale": "First-party sources describe Gitea as a free, MIT-licensed, self-hosted Git service. It ships as a single binary or an official container image, runs across many OSes, architectures and databases, and supports single-server or replicated deployment. Multiple independent community reports corroborate painless self-hosted installs, smooth Docker setups, simple binary-swap upgrades and low resource use on modest hardware.",
+    "rationale": "Gitea is a free, MIT-licensed, self-hosted Git service. It ships as a single binary and an official container image, runs on many OSes and architectures, and supports single-server and replicated deployments. Community reports independently confirm easy self-hosting on VPSes, Docker, a Raspberry Pi-class machine and a USB stick, plus simple binary-swap upgrades.",
     "evidenceIds": [
       "gitea-docs-30",
       "gitea-docs-23",
       "gitea-gh-4",
       "gitea-gh-3",
       "gitea-docs-13",
-      "gitea-docs-14",
-      "gitea-gh-5",
+      "gitea-docs-27",
       "gitea-comm-1",
       "gitea-comm-6",
       "gitea-comm-10",
-      "gitea-comm-5",
-      "gitea-docs-27"
+      "gitea-comm-5"
     ],
     "support": {
       "relation": "direct",
@@ -4530,10 +4529,6 @@
         {
           "evidenceId": "gitea-docs-13",
           "quote": "Provides flexible deployment options, supporting both single server setups and replication configurations."
-        },
-        {
-          "evidenceId": "gitea-comm-10",
-          "quote": "Upgrades are super simple: stop the service, replace the single binary, start it again."
         }
       ]
     }
@@ -4544,10 +4539,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Gitea's docs state it supports over 20 public or private package types, including Container, Maven, npm and PyPI. A community user independently confirms the 1.17 package registry let them replace Verdaccio, a self-hosted npm registry. missing for 10: in-depth per-format documentation of publish/consume workflows and private-access authentication, and hands-on corroboration beyond npm (e.g. PyPI, Maven, container images).",
+    "rationale": "Gitea's docs state it supports over 20 public or private package types, including Container, Maven, npm and PyPI. A community user independently confirms the 1.17 package registry let them replace Verdaccio, an npm registry. missing for 10: in-depth first-party docs on publish/consume workflows per format (client configuration, authentication, visibility settings), hands-on evidence of container image push/pull.",
     "evidenceIds": [
       "gitea-docs-5",
       "gitea-docs-26",
+      "gitea-docs-34",
       "gitea-comm-19-refresh-5c0c56bdce1ad4cb",
       "gitea-comm-18"
     ],
@@ -4573,7 +4569,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Gitea's first-party docs say Gitea Actions is compatible with GitHub Actions at both the workflow and action syntax level. They also say users can reuse thousands of existing GitHub Actions and that action plugins can be fetched from any Git website, which covers reusing both workflow definitions and community actions. The evidence is marketing-level only. missing for 10: detailed documentation of compatibility limits or unsupported GitHub Actions features, independent or hands-on confirmation that existing workflows run unmodified.",
+    "rationale": "Gitea's own docs say Gitea Actions is compatible with GitHub Actions in both workflow and action syntax, so existing GitHub workflows and community actions can be reused, with actions downloadable from any Git website. The evidence is short marketing-level claims rather than in-depth compatibility documentation, and no hands-on report confirms workflows run unmodified. Missing for 10: detailed documentation of compatibility scope and unsupported features, independent or hands-on corroboration that workflows run without rewriting.",
     "evidenceIds": [
       "gitea-docs-2",
       "gitea-docs-15",
@@ -4610,7 +4606,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "First-party docs confirm a Pull Request code-review workflow. Reviewers can browse code online and leave review comments, and submitters can respond or modify code online. The evidence does not explicitly cover diff comparison or comments anchored inline next to specific lines. Missing for 10: explicit documentation of diff/compare views, explicit inline line-level review comments, independent or hands-on corroboration of the PR review experience.",
+    "rationale": "Gitea's docs say it supports a Pull Request workflow where reviewers browse code online and leave review comments, and submitters respond or modify code online. The pack never explicitly describes diff comparison views or comments anchored inline to specific lines. missing for 10: explicit documentation of diff/compare views, explicit line-level inline review comments, independent or hands-on corroboration of the PR review experience.",
     "evidenceIds": [
       "gitea-docs-3",
       "gitea-docs-24",
@@ -4670,11 +4666,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Gitea's managed offering explicitly lets users \"Choose your provider and region\". The self-hosted edition gives full control over where data lives, because it deploys on your own server via the binary or the official container image. Both paths directly deliver a user choice of storage location. Missing for 10: a documented list of available managed regions, explicit data-residency guarantees or terms, and independent or hands-on corroboration of managed-region selection.",
+    "rationale": "Gitea's managed offering explicitly lets teams \"Choose your provider and region\". The product is also a self-hosted Git service offering \"Full control\", deployable on your own servers, so users decide where their data physically lives. missing for 10: a documented list of available managed regions, formal data-residency guarantees or policy docs, and independent or hands-on corroboration of region selection.",
     "evidenceIds": [
       "gitea-docs-32",
       "gitea-docs-30",
-      "gitea-gh-4"
+      "gitea-gh-4",
+      "gitea-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -4702,10 +4699,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The privacy-posture axis applies, since a Git hosting service, including Gitea's managed offering, could plausibly document an AI-training opt-out or no-training policy. Nothing in the evidence addresses AI model training. Self-hosting and 'full control' claims are adjacent deployment properties, not a documented training opt-out or data-use commitment, so they earn no credit.",
+    "rationale": "Asking whether a Git hosting service lets users keep their data out of AI training is a fair privacy question, so the axis applies. The evidence contains no AI-training policy, opt-out control, or no-training commitment, including for the managed hosted offering. Self-hosting under the MIT license gives 'full control', but that is a deployment posture and only adjacent to this story, not a documented training opt-out.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can prevent my data from being used to train AI models",
       "citations": []
@@ -4717,7 +4714,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair privacy question for a self-hosted Git service, so the axis applies. The pack only offers a general claim that self-hosting gives 'full control', plus security features like permissions, ACLs and audit logs; none of these document retention policies, data purging, or deletion controls. No first-party or community evidence shows Gitea's own capability for this story.",
+    "rationale": "The evidence pack documents no Gitea capability for setting data-retention policies or deleting data, such as purging repositories, artifacts, logs or user data on a schedule or on request. The self-hosting 'full control' claim and the audit-log feature are adjacent; they are not documented retention or deletion controls.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4732,7 +4729,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair privacy question for a self-hosted Git service, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, or a switch to disable either. The general 'full control' self-hosting claim and the admin/app.ini configuration mechanism are adjacent and do not document a telemetry opt-out.",
+    "rationale": "Telemetry opt-out is a fair privacy question for a self-hosted Git service, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, or a switch to disable either. Self-hosting under the MIT license with 'full control' and the admin config panel are adjacent features, not a documented telemetry opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4746,8 +4743,8 @@
     "storyId": "repo-mirroring",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Community users report using Gitea's built-in repo mirror feature to keep local copies of external projects, which shows inbound (pull) mirroring from another Git server. No first-party documentation in the pack covers mirroring. missing for 10: first-party mirroring docs, evidence of push mirroring to another server, branch-level mirroring, sync scheduling/configuration details.",
+    "confidence": "low",
+    "rationale": "Community users report using Gitea's built-in repository mirror feature to keep local copies of projects from other Git servers. That is direct evidence of inbound (pull) mirroring, but it rests only on community anecdotes, with no first-party documentation. missing for 10: outbound/push mirroring to another server, branch-level mirroring, first-party documentation of mirror configuration and sync scheduling.",
     "evidenceIds": [
       "gitea-comm-12",
       "gitea-comm-13-refresh-7819798cea50e564"
@@ -4774,7 +4771,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Gitea's marketing page lists 'SAML SSO Integration' as a feature, so the product itself claims SAML SSO. Nothing documents the ability to require or enforce SAML for an organization. The community mentions of OIDC and OAuth2 are adjacent protocols and earn no credit here. missing for 10: documented organization-level enforcement of SAML SSO, configuration docs for SAML setup, which edition or tier includes it, independent or hands-on corroboration.",
+    "rationale": "Gitea's marketing page lists \"SAML SSO Integration\" as a product feature, so SAML SSO support is a first-party claim. Nothing in the evidence shows how it works, or that an admin can enforce SAML as mandatory for an organization rather than just offer it as a login option. Community mentions of OAuth2 and OIDC are a different protocol and earn no credit. Missing for 10: documentation of the SAML configuration, the ability to require or enforce SAML login per organization (blocking other login methods), clarity on which edition or tier includes it, and independent or hands-on corroboration.",
     "evidenceIds": [
       "gitea-docs-31",
       "gitea-docs-35"
@@ -4790,7 +4787,7 @@
         },
         {
           "evidenceId": "gitea-docs-35",
-          "quote": "SAML SSO Integration"
+          "quote": "SAML SSO Integration · Audit Logs · Kubernetes AutoScaling Runners"
         }
       ]
     }
@@ -4801,7 +4798,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies to a Git hosting service, but nothing in the evidence pack documents access tokens scoped to specific repositories, per-token permissions, or token expiry dates. The pack mentions only general user permission management, access control lists, and that the API guide covers authentication. These are adjacent controls, not the fine-grained token capability itself.",
+    "rationale": "The evidence pack never documents personal or fine-grained access tokens, whether scoped to repositories, limited to specific permissions, or given an expiry date. The API usage guide mentions only 'authentication' in general, and the docs cite user permission management and access control lists, which are adjacent features rather than token scoping.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4816,7 +4813,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Automated dependency and code security scanning is a fair capability for a Git hosting platform, but nothing in the evidence shows Gitea ships a native vulnerability, dependency, or code-scanning feature. Its stated security features cover permissions, access control lists, and audit logging, which are related controls rather than scanning. Gitea Actions compatibility only means a user could build scanning with third-party workflows, which earns no credit as a developer building block.",
+    "rationale": "Dependency and code security scanning is a fair question for a Git hosting platform, so the axis applies. The evidence pack documents no built-in vulnerability or code scanning: the security features listed are permissions, access control lists and audit logs. Gitea Actions could run third-party scanners, but that is a developer building block, not the product's own capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4880,7 +4877,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Commit-signature verification is a fair axis for a Git hosting service like Gitea. However, nothing in the evidence pack mentions GPG or SSH commit signing, key upload, or verified badges. The security evidence covers only permissions, ACLs and audit logging, which are adjacent controls and earn no credit.",
+    "rationale": "Commit signature verification is a fair axis for a self-hosted Git service like Gitea, but nothing in the evidence pack mentions GPG keys, SSH signing keys, or verified-commit badges. The security items cover only permissions, ACLs, audit logging and SSO, which are adjacent controls and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4895,7 +4892,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Registering SSH keys for Git authentication is a fair question for a self-hosted Git service, so the axis applies. No item in the evidence pack mentions SSH key registration or SSH-based Git authentication. The only SSH mention is a user tunnelling to the web UI over an SSH port-forward, which is a user-side workaround and unrelated to account keys.",
+    "rationale": "The evidence pack never mentions registering SSH public keys on a user account or using them to authenticate Git operations. The only SSH reference is a community user reaching the web UI through SSH port forwarding, which is a user-side workaround unrelated to account SSH keys. SSH key management is a fair question for a Git hosting service, so the axis applies, and with no evidence the verdict is none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4910,7 +4907,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only general pull request and AGit review-and-merge workflows, plus dependencies on issues. Nothing shows stacked pull requests, per-member readiness in a stack, or ordered stack merging. Stacked PRs are a fair question for a Git forge, so this is an applicable axis with no supporting evidence.",
+    "rationale": "The evidence documents general pull request and AGit review-and-merge workflows, plus issue dependencies. Nothing covers stacked pull requests, per-member readiness across a stack, or ordered stack merging, and issue dependencies are an adjacent feature that does not deliver this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4925,7 +4922,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Account two-factor authentication is a fair question for a self-hosted Git service with user accounts, so the axis applies. However, nothing in the evidence pack mentions 2FA, TOTP or authenticator apps. The security items cover only adjacent controls (user permission management, access control lists, audit logging, SAML SSO, OAuth2/OIDC), and these do not count as TOTP-based account protection.",
+    "rationale": "Two-factor authentication is a fair question for a self-hosted Git service with user accounts, so the axis applies. However, nothing in the evidence pack mentions 2FA, TOTP, or authenticator apps. The security claims cover only permission management, access control lists, audit logging, SAML SSO and OIDC, which are adjacent controls and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",

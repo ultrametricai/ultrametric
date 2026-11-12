@@ -116,3 +116,12 @@ unsupported re-rolls in those two arenas. The review supplement records every
 retained cell and both judgments. Evidence and raw model caches are unchanged;
 refresh-retention ledgers authenticate the effective decisions. This repair made
 no model calls. The earlier pre-audit counts describe the original proposal.
+
+While the lane push was blocked by host flakes, a maintainer reconciliation landed on
+the branch and retained the two third-round cells at their prior partials — correctly on
+the inputs it had, since the grounding rows existed only locally. The union merge keeps
+both: the maintainer verdicts were taken as base, the grounded packs re-judged, and the
+same reconcile-refresh stability machinery re-applied against the same pinned baseline.
+Both cells now publish as supported changes citing the direct-evidence rows (gitea
+milestones-due-dates full q9; quo ai-call-summaries full q7) while every unsupported
+re-roll stays retained to its prior value (13 + 10 cells, zero blocked).
