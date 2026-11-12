@@ -2,41 +2,40 @@
   "hash": "5c4c7f0404fccc2a320c204e46b143b4ba809b4e105a26e44986ea58d06110a9",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "productId": "fly-io",
+    "storyId": "full-nodejs-runtime-support",
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Fly.io runs whatever Docker image you give it as a hardware-isolated VM placed close to users, and it generates Dockerfiles for Node apps. That means Node.js code runs on a full Linux runtime rather than a restricted edge-function subset. Machines boot in under a second and scale out, giving serverless-like elasticity. missing for 10: explicit documentation that arbitrary npm packages (including native modules) run unmodified, a function-style (per-request) invocation model rather than app/VM deployment, and independent hands-on corroboration of Node workloads at the edge.",
+    "rationale": "Fly.io runs your own Docker images as full hardware-isolated VMs close to users. It generates Dockerfiles for Node apps, so Node code is not confined to a restricted runtime subset. However, the delivery model is VMs/apps rather than edge/serverless functions, and the evidence never states that unmodified npm packages are supported. The reviewer's concern is valid: VM hosting supports partial credit, not complete coverage. Missing for 10: a documented function-style serverless execution model, explicit statement of unmodified Node.js/npm package compatibility, independent or hands-on corroboration of running Node workloads at the edge.",
     "evidenceIds": [
-      "fly-io-docs-14",
-      "fly-io-docs-32",
       "fly-io-docs-39",
       "fly-io-docs-44",
-      "fly-io-docs-20"
+      "fly-io-docs-14",
+      "fly-io-docs-32"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can run unmodified Node.js code and npm packages in edge/serverless functions instead of a restricted runtime subset",
       "citations": [
         {
-          "evidenceId": "fly-io-docs-32",
-          "quote": "Fly.io converts Docker images to fast-booting VMs and runs them globally."
-        },
-        {
           "evidenceId": "fly-io-docs-39",
-          "quote": "No Dockerfile? No problem: we'll generate one for most popular frameworks, including Rails, Phoenix, Django, Node, Laravel, Go, Rust, .NET and more."
-        },
-        {
-          "evidenceId": "fly-io-docs-14",
-          "quote": "Fly Machines are hardware-isolated VMs that boot in under a second, run close to your users, and scale out to tens of thousands when the traffic arrives."
+          "quote": "we'll generate one for most popular frameworks, including Rails, Phoenix, Django, Node, Laravel, Go, Rust, .NET and more"
         },
         {
           "evidenceId": "fly-io-docs-44",
           "quote": "We build Machines out of the images you give us and we run them where you tell us to."
+        },
+        {
+          "evidenceId": "fly-io-docs-14",
+          "quote": "Fly Machines are hardware-isolated VMs that boot in under a second, run close to your users"
+        },
+        {
+          "evidenceId": "fly-io-docs-32",
+          "quote": "Fly.io converts Docker images to fast-booting VMs and runs them globally."
         }
       ]
-    },
-    "productId": "fly-io",
-    "storyId": "full-nodejs-runtime-support"
+    }
   }
 }
