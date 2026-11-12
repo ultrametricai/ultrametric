@@ -1,7 +1,11 @@
 name: Review findings gate
 
 # Reads review metadata only. Verified Renovate PRs may omit Greptile completion;
-# unresolved Greptile findings still block them. Foreloop is deliberately excluded.
+# unresolved Greptile findings still block them. Generated content normally needs
+# its workflow receipt. An explicit maintainer-manual-merge route instead requires
+# auto-merge off and a current-head approval from a write-capable human maintainer.
+# Both routes retain scope, hold, current-head and Greptile checks.
+# Foreloop is deliberately excluded.
 on:
   workflow_call:
     inputs:
@@ -88,7 +92,7 @@ jobs:
           sparse-checkout: scripts/refresh_policy.py
           sparse-checkout-cone-mode: false
       # Only trusted main policy code executes; candidate files are Git metadata.
-      - name: Gate unresolved Greptile findings
+      - name: Check source trust and Greptile findings
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
@@ -161,9 +165,17 @@ jobs:
               match = re.fullmatch(r'(story-runner|vendor-radar|vendor-radar-bringup)/[A-Za-z0-9_-]+', pr.get('head', {}).get('ref', ''))
               if match is None:
                   return
-              from refresh_policy import actions_author, content_author, held, check_scope, verify_provenance
+              from refresh_policy import actions_author, content_author, held, check_scope, verify_provenance, MAINTAINER_MANUAL_LABEL
               kind = match.group(1)
-              if held(pr) or pr.get('draft') is not False:
+              labels = pr.get('labels')
+              def manual_label(label):
+                  return (isinstance(label, dict) and isinstance(label.get('name'), str)
+                          and label['name'].lower() == MAINTAINER_MANUAL_LABEL)
+              manual = isinstance(labels, list) and any(manual_label(label) for label in labels)
+              # This label holds all automatic workers. Only this review gate may
+              # evaluate its explicit manual authority; every other hold remains.
+              hold_metadata = {**pr, 'labels': [label for label in labels if not manual_label(label)]} if manual else pr
+              if held(hold_metadata) or pr.get('draft') is not False:
                   raise RuntimeError('Internal refresh is held or draft; automatic merge is stopped')
               if (pr.get('base', {}).get('ref') != 'main' or
                   (pr.get('base', {}).get('repo') or {}).get('full_name') != repo or
@@ -177,18 +189,40 @@ jobs:
                   expected = api('users/' + quote(login, safe=''))
                   if expected.get('id') != author.get('id') or expected.get('type') != 'Bot':
                       raise RuntimeError('Configured content bot identity mismatch')
-              verify_provenance(api, repo, pr)
+              if not manual:
+                  verify_provenance(api, repo, pr)
               reviews = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
                         f"repos/{repo}/pulls/{pr['number']}/reviews?per_page=100"], text=True))
               latest = {}
               for review in sorted([review for page in reviews for review in page], key=lambda review: review['id']):
                   user = review.get('user') or {}
                   if (user.get('type') == 'User' or user.get('login') in ['greptile-apps', 'greptile-apps[bot]', 'greptileai']) and review['state'] in ['APPROVED', 'CHANGES_REQUESTED', 'DISMISSED']:
-                      latest[user['id']] = review['state']
-              if 'CHANGES_REQUESTED' in latest.values():
+                      latest[user['id']] = review
+              if any(review['state'] == 'CHANGES_REQUESTED' for review in latest.values()):
                   raise RuntimeError('A reviewer requested changes; automatic merge is stopped')
+              manual_reviewer = None
+              if manual:
+                  if 'auto_merge' not in pr or pr['auto_merge'] is not None:
+                      raise RuntimeError('Maintainer manual merge requires auto-merge disabled')
+                  for review in latest.values():
+                      user = review.get('user') or {}
+                      login = user.get('login', '')
+                      if (review['state'] != 'APPROVED' or review.get('commit_id') != pr['head']['sha']
+                          or user.get('type') != 'User' or type(user.get('id')) is not int
+                          or user['id'] <= 0 or not isinstance(login, str)
+                          or not re.fullmatch(r'[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?', login)):
+                          continue
+                      permission = api(f'repos/{repo}/collaborators/{quote(login, safe="")}/permission')
+                      identity = permission.get('user') or {}
+                      if (permission.get('permission') in ['write', 'admin']
+                          and type(identity.get('id')) is int and identity['id'] == user['id']
+                          and identity.get('login') == login and identity.get('type') == 'User'):
+                          manual_reviewer = login
+                          break
+                  if manual_reviewer is None:
+                      raise RuntimeError('Maintainer manual merge requires a current-head approval from a write-capable human')
               if not inspect_files:
-                  return
+                  return manual_reviewer
               files = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp',
                       f"repos/{repo}/pulls/{pr['number']}/files?per_page=100"], text=True))
               files = [file for page in files for file in page]
@@ -211,6 +245,7 @@ jobs:
                           return None
                       tree = entry['sha']
               check_scope(kind, files, pr.get('changed_files'), mode)
+              return manual_reviewer
           errors = []
           for number in numbers:
               initial = None
@@ -247,7 +282,7 @@ jobs:
                   current = api(f'repos/{repo}/pulls/{number}')
                   if current['head']['sha'] != sha or current['state'] != 'open':
                       continue
-                  internal_policy(current, inspect_files=False)
+                  manual_reviewer = internal_policy(current, inspect_files=False)
                   if exempt and not renovate_exempt(current):
                       raise RuntimeError('Renovate exemption metadata changed; retry')
                   if exempt:
@@ -255,9 +290,10 @@ jobs:
                               f'{blocked} unresolved Greptile findings; Renovate completion exempt'
                               if blocked else 'Greptile completion exempt: verified Renovate PR; no unresolved findings')
                   else:
+                      prefix = f'Maintainer-reviewed by {manual_reviewer}; ' if manual_reviewer else ''
                       publish(sha, ('failure' if blocked else 'success') if reviewed else 'pending',
-                              f'{blocked} unresolved Greptile findings; Foreloop excluded'
-                              if reviewed else 'Waiting for Greptile on this revision; Foreloop excluded')
+                              prefix + (f'{blocked} unresolved Greptile findings; Foreloop excluded'
+                              if reviewed else 'Waiting for Greptile on this revision; Foreloop excluded'))
                   print(f'#{number}: {blocked} unresolved Greptile findings')
               except Exception as error:
                   # Metadata/API failures revoke any stale approval for this head.

@@ -1,6 +1,6 @@
 """Metadata-only refresh recovery, shared by planning and exact-head application."""
 import json, os, re, subprocess, time
-from refresh_policy import content_author, family, verify_provenance, MissingProvenance
+from refresh_policy import content_author, family, verify_provenance, MissingProvenance, MAINTAINER_MANUAL_LABEL
 from refresh_update import check_commit, intent_name, verify_update_intent
 repo = os.environ['REPO']
 def api(path, method='GET', data=None, token=None):
@@ -17,7 +17,7 @@ def actions_author(author):
 def held(pr):
     labels = pr.get('labels')
     return (not isinstance(labels, list) or any(label.get('name', '').lower() in
-            ['automerge-hold', 'do-not-merge', 'hold', 'manual-merge'] for label in labels))
+            ['automerge-hold', 'do-not-merge', 'hold', 'manual-merge', MAINTAINER_MANUAL_LABEL] for label in labels))
 content_bot = os.environ.get('CONTENT_BOT_LOGIN', '')
 if content_bot and not re.fullmatch(r'[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\[bot\]', content_bot):
     print('::warning::Invalid CONTENT_BOT_LOGIN; configured App recovery is disabled', flush=True)

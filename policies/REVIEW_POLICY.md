@@ -29,12 +29,32 @@ because it has several playbooks — coverage is tracked per scenario and locale
   no quality increase. This cannot upgrade a verdict, raise quality, alter applicability,
   or invent a citation. An uncited none remains untested, not a verified failure. Repairs
   verify the current judge-cache provenance before publishing such a downgrade.
+- **Unsupported additions.** A new claim or capability credit needs direct support already
+  present in the candidate's evidence for the exact product and capability. Remove an
+  unsupported addition instead of acquiring evidence to justify it. Preserve recorded
+  observations, raw model outputs and exact-head provenance. Scored-cell corrections use
+  the reviewed reconciliation or withdrawal path; if that path cannot represent the
+  correction, keep publication blocked and report the limitation. Sparse sources may yield
+  few or no extracted stories; a count quota never supplies evidence.
 - **Owner-product bias audits.** Products affiliated with the maintainers (Foreloop, AFK,
   Ultrametric) carry affiliation disclosure on every surface and receive adversarial bias
   audits; favorable flips get extra scrutiny and have been reverted under this policy.
 - **Determinism.** Committed rankings recompute bit-identically
   (`rankings-engine/scripts/recompute-check.ts` must report ALL DETERMINISTIC); provenance is
   HMAC-fingerprinted.
+- **Maintainer-reviewed generated changes.** Unattended merges require an exact-head
+  receipt from a trusted workflow. A maintainer can instead select the
+  `maintainer-manual-merge` label, which pauses automatic merge and repair workers,
+  with native auto-merge disabled. This route requires
+  an approval on the current commit from a human account whose repository write,
+  maintain, or admin permission is authenticated through GitHub. The gate rechecks
+  that approval and permission before publishing its status. Label text, bot
+  approvals, old approvals, dismissed reviews, or unavailable permission metadata
+  supply no authority. Existing holds, same-repository bot identity, data-only scope,
+  regular-file checks, current-head Greptile completion and unresolved findings still
+  apply. Full required CI and normal branch protection remain mandatory. The
+  maintainer reviews the evidence, pipeline inputs and available producer records;
+  this route creates no workflow receipt and does not authorize hand-tuned scores.
 - **No paid placement.** Payment cannot change scores, rankings, routing, or inclusion — in
   arenas, in workflows, or in vendor reviews. Maintainers with a vendor relationship disclose
   it and recuse themselves from that vendor's review; a vendor may respond to factual errors
