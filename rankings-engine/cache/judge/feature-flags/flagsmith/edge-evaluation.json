@@ -1,14 +1,15 @@
 {
-  "hash": "03e88244f3271f9fcafe4f439149b8e07695b20c605880a094da2e22d2993529",
+  "hash": "865e0829ffbee7be45506578d3befcc655135016b34116cb0cf15b3fb70e7c5b",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Flagsmith documents a self-hosted Edge Proxy that runs an instance of the Flagsmith Engine in your own infrastructure, which is a first-party relay layer for flag evaluation. However, the docs describe it as running close to your servers and being reached from server-side SDKs, not close to end users, and nothing shows CDN-worker evaluation. The community remark about primarily server-side evaluation does not concretely contradict the Edge Proxy, so it creates no dispute. Missing for 10: CDN/edge-worker evaluation support (e.g., Cloudflare Workers or similar), evidence of deployment close to end users rather than servers, client-side SDK use of the relay, and independent or hands-on corroboration of Edge Proxy performance.",
+    "rationale": "Flagsmith documents a self-hosted Edge Proxy that runs the Flagsmith Engine close to your servers and serves requests at low latency near infrastructure and users. That covers the relay-layer half of the story. The docs only describe connecting server-side SDKs to it, it must be hosted yourself, and nothing shows flags evaluated inside CDN workers. Missing for 10: CDN/edge-worker evaluation support, a vendor-managed edge network, documented client-side SDK use through the proxy, and independent or hands-on corroboration of the Edge Proxy.",
     "evidenceIds": [
       "flagsmith-docs-14",
-      "flagsmith-docs-28"
+      "flagsmith-docs-28",
+      "flagsmith-docs-69"
     ],
     "support": {
       "relation": "direct",
@@ -22,6 +23,10 @@
         {
           "evidenceId": "flagsmith-docs-28",
           "quote": "Run the Edge Proxy within in your own infrastructure and connect to it from your server-side SDKs"
+        },
+        {
+          "evidenceId": "flagsmith-docs-69",
+          "quote": "This means you can serve a very large number of requests close to your infrastructure and users, at very low latency."
         }
       ]
     },

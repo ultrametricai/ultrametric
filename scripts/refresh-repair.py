@@ -45,6 +45,37 @@ def identity(pr):
             and actions_author(pr['user']) and not held(pr)
             and re.fullmatch(r'story-runner/([a-z0-9-]+)-[0-9]+', pr['head']['ref']))
 
+def confirm_publication(branch, previous_sha, new_sha):
+    """Wait only for stale pre-push metadata; a different writer or hold fails closed."""
+    ref = f'refs/heads/{branch}'
+
+    def remote_head():
+        rows = output(['git', 'ls-remote', '--refs', 'origin', ref]).splitlines()
+        if len(rows) != 1:
+            raise RuntimeError('Published branch is missing or ambiguous; no receipt emitted')
+        parts = rows[0].split()
+        if len(parts) != 2 or parts[1] != ref or not re.fullmatch('[a-f0-9]{40}', parts[0]):
+            raise RuntimeError('Invalid published branch readback; no receipt emitted')
+        if parts[0] not in (previous_sha, new_sha):
+            raise RuntimeError('Remote head changed after repair publication; no receipt emitted')
+        return parts[0]
+
+    for attempt in range(6):
+        before = remote_head()
+        live = current()
+        if not identity(live) or live['head']['ref'] != branch:
+            raise RuntimeError('PR identity or automation opt-in changed after publication; no receipt emitted')
+        observed = live['head']['sha']
+        if observed not in (previous_sha, new_sha):
+            raise RuntimeError('PR head changed after repair publication; no receipt emitted')
+        after = remote_head()
+        if before == new_sha and observed == new_sha and after == new_sha:
+            return
+        if attempt < 5:
+            time.sleep(2)
+    raise RuntimeError('Publication readback did not converge; no receipt emitted')
+
+
 def diagnostic_comments(comments):
     return '\n\n'.join(f"[{(entry.get('author') or {}).get('login')}] {entry['body']}"
                         for entry in comments
@@ -322,8 +353,7 @@ def main():
         return
     # Non-force push rejects a concurrent update, including one after the preceding check.
     command(['git', 'push', 'origin', f'{new_sha}:refs/heads/{branch}'])
-    if current()['head']['sha'] != new_sha:
-        raise RuntimeError('Remote head changed after repair publication; no receipt emitted')
+    confirm_publication(branch, EXPECTED, new_sha)
     if os.environ.get('GITHUB_OUTPUT'):
         with open(os.environ['GITHUB_OUTPUT'], 'a') as receipt:
             receipt.write(f'published_head={new_sha}\n')

@@ -15,7 +15,7 @@ vi.mock('node:child_process', async importOriginal => {
 })
 vi.mock('../llm', async importOriginal => ({ ...await importOriginal<typeof import('../llm')>(), llmJson: vi.fn() }))
 import { allowed, mergeData, projection, restoreChurn, rowAtLine, rekeyEvidence, remapVerdictEvidence, sourceCacheMatches, judgeRepairCell, repair, repairProgress } from '../refresh-repair'
-import type { Evidence, Verdict, Story } from '../../lib/schemas'
+import { ProductSchema, StorySchema, VerdictSchema, EvidenceSchema, type Evidence, type Verdict, type Story } from '../../lib/schemas'
 import { parseSloHistoryJsonl, summarizeSlo, type SloEntry } from '../../lib/slo'
 const old: Verdict = { productId: 'vendor', storyId: 'story', verdict: 'partial', quality: 5, confidence: 'high', rationale: 'missing for 10: callback documentation', evidenceIds: ['old'] }
 const evidence = (id: string): Evidence => ({ id, tier: 'claimed-docs', url: `https://example.invalid/docs/${id}`, excerpt: 'Documented behavior', fetchedAt: '2026-10-30T00:00:00Z' })
@@ -63,6 +63,22 @@ describe('refresh repair policy', () => {
     expect(mergeData('old', 'old', 'new PR', 'evidence.json')).toBe('new PR')
     expect(mergeData('old', 'new main', 'old', 'evidence.json')).toBe('new main')
     expect(mergeData('old', 'old', null, 'evidence.json')).toBeNull()
+  })
+  it('preserves append-only popularity observations from both branches', () => {
+    const file = 'open-rankings/email/popularity-history.jsonl'
+    const row = (day: string, stars = 10) => JSON.stringify({ productId: 'vendor', stars, fetchedAt: '2026-10-01T00:00:00Z', runAt: `2026-10-${day}T00:00:00Z` }) + '\n'
+    const a = row('01'), b = row('02'), c = row('03')
+    expect(mergeData(a, a + c, a + b, file)).toBe(a + c + b)
+    expect(mergeData(a, a + b, a + b, file)).toBe(a + b)
+    expect(mergeData(a + a, a + a + c, a + a + b + b, file)).toBe(a + a + c + b + b)
+    expect(mergeData(a, (a + c).trimEnd(), a + b, file)).toBe(a + c + b)
+    for (const [base, main, incoming] of [
+      [null, a, a], [a, null, a], [a, a, null],
+      [a, b, a + c], [a, a + c, b], [a + a, a, a + a + b],
+      [a, a + b, a + row('02', 11)], [a, a, a + '{bad}'],
+      [a, a, a + JSON.stringify({ productId: 'vendor', runAt: 'bad' })],
+    ]) expect(() => mergeData(base, main, incoming, file)).toThrow()
+    expect(() => mergeData(a, a + c, a + b, 'open-rankings/email/popularity.json')).toThrow('Concurrent')
   })
   it('unions original uptime batches regardless of chronology without rewriting main', () => {
     const line = (date: string, up = true) => JSON.stringify({ date, arena: 'email', productId: 'vendor', surface: 'mcp', url: 'https://example.invalid', up, status: up ? 200 : 503 } satisfies SloEntry) + '\n'
@@ -284,9 +300,9 @@ function retainedFixture(count = 2, sameProduct = false) {
   write(`${dir}/verdicts.json`, proposals)
   reconcileRefresh({ arena: 'fixture', baseline: main, root })
   const refreshIdentity = () => {
-    const rows: Verdict[] = read(`${dir}/verdicts.json`)
-    const snapshot = { products: read(`${dir}/products.json`), stories: read(`${dir}/stories.json`), rows,
-      packs: Object.fromEntries(products.map(p => [p.id, read(`${dir}/evidence/${p.id}.json`)])),
+    const rows = VerdictSchema.array().parse(read(`${dir}/verdicts.json`))
+    const snapshot = { products: ProductSchema.array().parse(read(`${dir}/products.json`)), stories: StorySchema.array().parse(read(`${dir}/stories.json`)), rows,
+      packs: Object.fromEntries(read(`${dir}/products.json`).map((p: { id: string }) => [p.id, EvidenceSchema.array().parse(read(`${dir}/evidence/${p.id}.json`))])),
       caches: Object.fromEntries(rows.map(row => [`${row.productId}:${row.storyId}`, read(cachePath(row.productId, row.storyId))])),
     }
     write(ledgerPath, { ...read(ledgerPath), identity: createHash('sha256').update(JSON.stringify(snapshot)).digest('hex') })
@@ -444,6 +460,43 @@ describe('provenance-aware retained repair', { timeout: 60000 }, () => {
       expect(f.read(`${f.dir}/verdicts.json`).find((row: Verdict) => row.productId === 'target-b').quality).toBe(7)
     } finally { process.chdir(previous); fs.rmSync(f.root, { recursive: true, force: true }) }
   })
+
+  it.each(['trusted-addition', 'untrusted-addition', 'changed-product', 'changed-story', 'removed-product', 'invalid-new-cache'])(
+    'authenticates historical retention across %s', kind => {
+      const f = retainedFixture()
+      try {
+        const added = { ...f.products[0], id: 'added', name: 'Added' }
+        f.write(`${f.dir}/products.json`, [...f.products, added])
+        f.write(`${f.dir}/evidence/added.json`, [evidence('old')])
+        const row = f.supported('added', 'old', 5)
+        f.cache(row)
+        f.write(`${f.dir}/verdicts.json`, [...f.read(`${f.dir}/verdicts.json`), row])
+        f.refreshIdentity()
+        const expanded = f.commit()
+        let main = expanded
+        if (kind === 'untrusted-addition') main = f.main
+        if (kind === 'changed-product') {
+          f.write(`${f.dir}/products.json`, [...f.products.map(p => ({ ...p, name: 'Changed' })), added])
+        }
+        if (kind === 'changed-story') f.write(`${f.dir}/stories.json`, [{ ...story, title: 'Changed story' }])
+        if (kind === 'removed-product') {
+          f.write(`${f.dir}/products.json`, [...f.products.filter(p => p.id !== 'target-b'), added])
+          f.write(`${f.dir}/verdicts.json`, f.read(`${f.dir}/verdicts.json`).filter((r: Verdict) => r.productId !== 'target-b'))
+        }
+        if (kind === 'invalid-new-cache') f.write(f.cachePath('added'), { ...f.read(f.cachePath('added')), hash: 'forged' })
+        f.refreshIdentity()
+        if (['changed-product', 'changed-story', 'removed-product'].includes(kind)) main = f.commit()
+        const candidate = (file: string) => fs.existsSync(path.join(f.root, file)) ? fs.readFileSync(path.join(f.root, file), 'utf8') : null
+        const prepare = () => prepareRetainedRepair({ arena: 'fixture', main, root: f.root, candidate, targets: [] })!
+        if (kind === 'trusted-addition') {
+          expect(prepare().cells.size).toBe(2)
+          const rows = f.read(`${f.dir}/verdicts.json`).map((r: Verdict) => ({ ...r, quality: 8 }))
+          for (const next of rows) f.cache(next)
+          f.write(`${f.dir}/verdicts.json`, rows)
+          expect(reconcileRefresh({ arena: 'fixture', baseline: expanded, root: f.root }).retained).toContain('retained-0:story')
+        } else expect(prepare).toThrow()
+      } finally { fs.rmSync(f.root, { recursive: true, force: true }) }
+    })
 
   it('rejects a post-plan retained cache rewrite before issuing a new ledger', () => {
     const f = retainedFixture()

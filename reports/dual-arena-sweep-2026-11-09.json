@@ -1,0 +1,258 @@
+{
+  "_comment": "Dual-arena membership sweep over the existing roster (maintainer-ordered, 2026-11-09). A product joins a second arena when its documented capabilities are on-axis there and the agentic-surface criterion holds; the identity-reuse precedents are statsig (feature-flags + product-analytics), sentry (error-tracking + observability), and the firstbase / stripe-atlas / legalzoom legal-ops + registered-agents cross-roster. Approved rows were executed through the standard scoped engine run in this PR; coordinator-review rows are recorded for a maintainer-side decision and were not executed; skipped rows record the evidence. No score or rank is set by this report.",
+  "generatedAt": "2026-11-09T00:00:00.000Z",
+  "policy": "policies/AGENT_POLICY.md#vendor-radar-candidate-approval",
+  "pairs": [
+    {
+      "product": "posthog",
+      "from": "product-analytics",
+      "to": "feature-flags",
+      "decision": "approved-executed",
+      "reason": "PostHog documents feature flags as a full product: flag creation, release conditions, percentage rollouts, person/cohort/group targeting, runtime evaluation and flag management through the public API, and flag CRUD from MCP clients. Same shape as the statsig precedent, reversed.",
+      "evidence": [
+        "https://posthog.com/docs/feature-flags — fetched 2026-11-09; \"Create flags, set release conditions, schedule changes\"; \"Evaluate flags at runtime and manage flag definitions from your own tooling and CI\"; MCP flag management documented."
+      ]
+    },
+    {
+      "product": "datadog",
+      "from": "observability",
+      "to": "llm-evals-observability",
+      "decision": "approved-executed",
+      "reason": "Datadog documents LLM/Agent Observability as a product: per-request traces with LLM-call and agent-workflow spans, quality and safety evaluations, cost/latency dashboards, and a Python SDK with auto-instrumentation for OpenAI, LangChain, Bedrock, and Anthropic. Identity reuse follows the sentry error-tracking + observability precedent.",
+      "evidence": [
+        "https://docs.datadoghq.com/llm_observability/ — fetched 2026-11-09; \"a platform for monitoring, troubleshooting, and improving LLM applications and AI agents\"; tracing, evaluations, and SDK documented."
+      ]
+    },
+    {
+      "product": "linear",
+      "from": "project-management",
+      "to": "product-feedback",
+      "decision": "approved-executed",
+      "reason": "Linear Customer Requests captures customer feedback from Intercom, Zendesk, Front, Asks, Slack, Salesforce, manual entry, and the API, links each request to the issue or project it concerns, and supports prioritization views by customer count, revenue, and tier: on-axis for an arena that ranks tools turning user feedback into prioritized, buildable work. Available on all currently offered plans. The product-families record calls Customer Requests a plan-gated feature rather than a product line; arena membership here tests the Linear identity against the product-feedback stories, the statsig single-product pattern, and that tension is flagged for the roster review.",
+      "evidence": [
+        "https://linear.app/docs/customer-requests — fetched 2026-11-09; sources, issue linking, importance flags, and plan availability documented.",
+        "open-rankings/product-families.json — linear family tagline noting Customer Requests as a feature, retained for the reviewer."
+      ]
+    },
+    {
+      "product": "elastic",
+      "from": "search-infra",
+      "to": "observability",
+      "decision": "coordinator-review",
+      "reason": "Elastic Observability (APM, logs, metrics, alerting) is a documented major product and plausibly on-axis; not verified live in this sweep, and the Elastic suite boundary (same identity vs a sub-product identity) needs the roster call.",
+      "evidence": [
+        "https://www.elastic.co/observability — vendor product page; verify capabilities against the observability definition at review."
+      ]
+    },
+    {
+      "product": "sentry",
+      "from": "error-tracking",
+      "to": "llm-evals-observability",
+      "decision": "coordinator-review",
+      "reason": "Sentry documents AI/agent monitoring surfaces, but whether they amount to a tracing/evals platform for LLM apps (versus error tracking extended to AI calls) was not verified live in this sweep. Sentry is already dual-rostered (error-tracking + observability); a third arena is a roster-shape call.",
+      "evidence": [
+        "https://docs.sentry.io — verify the AI agent monitoring docs against the llm-evals-observability definition at review."
+      ]
+    },
+    {
+      "product": "amplitude",
+      "from": "product-analytics",
+      "to": "feature-flags",
+      "decision": "coordinator-review",
+      "reason": "Amplitude Experiment bundles feature flags with experimentation; whether the flag surface stands alone with a public management API (the statsig/posthog bar) was not verified live in this sweep.",
+      "evidence": [
+        "https://amplitude.com/docs — verify Experiment's flag management and API surface at review."
+      ]
+    },
+    {
+      "product": "supabase",
+      "from": "backend-as-a-service",
+      "to": "auth-platforms",
+      "decision": "coordinator-review",
+      "reason": "Supabase Auth is documented (GoTrue-based auth with JWTs, RLS integration, OAuth providers) and plausibly on-axis beside auth0/clerk/workos; Supabase is already dual-rostered (backend-as-a-service + serverless-databases), so a third arena is a roster-shape call, and whether Auth is adopted standalone needs the review.",
+      "evidence": [
+        "https://supabase.com/docs/guides/auth — verify standalone adoption surface and API at review."
+      ]
+    },
+    {
+      "product": "github",
+      "from": "code-hosting",
+      "to": "project-management",
+      "decision": "coordinator-review",
+      "reason": "GitHub Issues and Projects are documented with full REST/GraphQL API coverage and plausibly on-axis; the call is whether a suite feature of the code host competes honestly against dedicated PM tools on that arena's stories.",
+      "evidence": [
+        "https://docs.github.com/en/issues — verify against the project-management stories at review."
+      ]
+    },
+    {
+      "product": "gitlab",
+      "from": "code-hosting",
+      "to": "security-scanners",
+      "decision": "coordinator-review",
+      "reason": "GitLab documents built-in SAST, secret detection, and dependency scanning; the call is whether the built-in scanner competes as a product against dedicated scanners (semgrep, snyk, trivy) or is a suite feature of the host.",
+      "evidence": [
+        "https://docs.gitlab.com — verify the application-security scanning docs against the security-scanners definition at review."
+      ]
+    },
+    {
+      "product": "hubspot",
+      "from": "crm",
+      "to": "email-marketing",
+      "decision": "coordinator-review",
+      "reason": "HubSpot Marketing Hub documents email marketing with API access; the suite boundary (CRM identity vs a marketing-hub sub-product identity) needs the roster call.",
+      "evidence": [
+        "https://developers.hubspot.com — verify the marketing email API surface at review."
+      ]
+    },
+    {
+      "product": "inngest",
+      "from": "durable-workflows",
+      "to": "workflow-automation",
+      "decision": "coordinator-review",
+      "reason": "temporal and trigger-dev are both dual-rostered across durable-workflows and workflow-automation; inngest has the same shape (durable functions plus event-driven automation). Whether its surface matches the workflow-automation stories was not verified live in this sweep. restate, hatchet, and dbos follow whatever this decision sets.",
+      "evidence": [
+        "https://www.inngest.com/docs — verify against the workflow-automation stories at review; precedent rows: temporal, trigger-dev in both arenas."
+      ]
+    },
+    {
+      "product": "modal",
+      "from": "agent-sandboxes",
+      "to": "gpu-clouds",
+      "decision": "coordinator-review",
+      "reason": "Modal documents serverless GPU compute; the gpu-clouds roster (runpod, lambda-labs, coreweave, vast-ai, paperspace, lium) is GPU rental clouds, so the fit depends on whether that arena's stories assume reservable instances or cover serverless GPU.",
+      "evidence": [
+        "https://modal.com/docs — verify GPU compute surface against the gpu-clouds stories at review."
+      ]
+    },
+    {
+      "product": "next-js",
+      "from": "(new identity; Vercel)",
+      "to": "frontend-frameworks",
+      "decision": "coordinator-review",
+      "reason": "The frontend-frameworks roster is UI libraries (react, vue, svelte, angular, solid); Next.js is a meta-framework. Adding it is a definition call, and it would enter as a distinct identity under the Vercel vendor, not the vercel edge-platforms identity.",
+      "evidence": [
+        "https://nextjs.org/docs — verify against the frontend-frameworks definition at review."
+      ]
+    },
+    {
+      "product": "figma-make",
+      "from": "(new identity; Figma)",
+      "to": "vibe-coding",
+      "decision": "coordinator-review",
+      "reason": "Figma Make is a documented AI app-generation product and plausibly on-axis beside lovable/bolt/v0; it would enter as a distinct identity (the claude-design precedent for arena-scoped identities), and its public/agentic surface was not verified in this sweep.",
+      "evidence": [
+        "https://www.figma.com — verify the Make product surface and any API at review."
+      ]
+    },
+    {
+      "product": "notion",
+      "from": "project-management",
+      "to": "notes-knowledge",
+      "decision": "coordinator-review",
+      "reason": "The notes-knowledge roster is personal knowledge tools (obsidian, logseq, anytype); Notion's workspace docs plausibly fit the subject, but mapping a team workspace onto personal-knowledge stories risks crediting the wrong claims (the agent-skills placement rationale makes the same argument for a different product). Needs the maintainer's arena-fit call.",
+      "evidence": [
+        "https://developers.notion.com — API surface is established; the open question is story fit, decided at review."
+      ]
+    },
+    {
+      "product": "notion",
+      "from": "project-management",
+      "to": "docs-platforms",
+      "decision": "skipped",
+      "reason": "docs-platforms ranks developer documentation platforms: authoring, API references, docs-as-code publishing (mintlify, gitbook, readme, docusaurus, fern). Notion documents no API-reference generation or docs-as-code publishing surface; publishing pages to the web is not that product.",
+      "evidence": [
+        "open-rankings/categories.json docs-platforms definition; roster peers all ship docs-as-code/API-reference pipelines."
+      ]
+    },
+    {
+      "product": "vercel",
+      "from": "edge-platforms",
+      "to": "ci-cd",
+      "decision": "no-live-arena",
+      "reason": "There is no live ci-cd arena (roadmap only, open-rankings/arena-roadmap.json). New-ranking creation is a human decision; recorded for when the arena exists.",
+      "evidence": [
+        "open-rankings/arena-roadmap.json — ci-cd entry with candidateProducts."
+      ]
+    },
+    {
+      "product": "stripe",
+      "from": "payments",
+      "to": "billing-subscriptions",
+      "decision": "already-covered",
+      "reason": "Covered by the sub-product identities stripe-billing and stripe-invoicing already rostered in billing-subscriptions (the product-families pattern).",
+      "evidence": [
+        "open-rankings/billing-subscriptions/products.json — stripe-billing, stripe-invoicing."
+      ]
+    },
+    {
+      "product": "airwallex",
+      "from": "payments / startup-banking",
+      "to": "expense-management",
+      "decision": "already-in-flight",
+      "reason": "The 2026-11-09 launch-watch scan auto-approved this placement; the bring-up rides on scan PR #670. No duplicate action here.",
+      "evidence": [
+        "PR #670 — open-rankings/expense-management/ airwallex bring-up files."
+      ]
+    },
+    {
+      "product": "zapier",
+      "from": "workflow-automation",
+      "to": "durable-workflows",
+      "decision": "skipped",
+      "reason": "durable-workflows requires checkpointed execution with exact resume after failure. Zapier documents retries and replays, not a durable-execution contract.",
+      "evidence": [
+        "open-rankings/categories.json durable-workflows definition; no checkpoint/exact-resume contract in Zapier's public docs surface."
+      ]
+    },
+    {
+      "product": "notion-calendar",
+      "from": "(new identity; Notion)",
+      "to": "scheduling",
+      "decision": "skipped",
+      "reason": "Notion Calendar documents no public API, MCP server, llms.txt, or agent docs, so the agentic-surface criterion fails regardless of arena fit.",
+      "evidence": [
+        "policies/AGENT_POLICY.md criterion 5; no developer surface on the Notion Calendar product pages."
+      ]
+    },
+    {
+      "product": "launchdarkly",
+      "from": "feature-flags",
+      "to": "experiments (not live)",
+      "decision": "no-live-arena",
+      "reason": "LaunchDarkly Experimentation (and GrowthBook's A/B core) would belong in an experiments arena, which does not exist as a live ranking. Recorded for when one does.",
+      "evidence": [
+        "open-rankings/ — no experiments arena directory; feature-flags definition already covers A/B tests behind toggles."
+      ]
+    },
+    {
+      "product": "deepgram",
+      "from": "speech-to-text",
+      "to": "voice-agents",
+      "decision": "already-covered",
+      "reason": "Already dual-rostered; listed as a worked precedent, no action.",
+      "evidence": [
+        "open-rankings/speech-to-text/products.json and open-rankings/voice-agents/products.json — deepgram in both."
+      ]
+    },
+    {
+      "product": "claude / anthropic family",
+      "from": "ai-assistants, frontier-models, ai-coding, agent-frameworks, design-tools",
+      "to": "(any further arena)",
+      "decision": "maintainer-only",
+      "reason": "Anthropic products are affiliated; second-arena additions for them are reserved for the maintainer with disclosure and bias audit. Recorded, not actioned.",
+      "evidence": [
+        "AGENTS.md house rules, evidence doctrine; policies/AGENT_POLICY.md criterion 4."
+      ]
+    },
+    {
+      "product": "ramp",
+      "from": "expense-management / startup-banking",
+      "to": "fp-a",
+      "decision": "skipped",
+      "reason": "fp-a requires financial models, forecasts, scenario planning, budget-vs-actuals, and board reporting. Ramp's documented surface is spend management and banking; no modeling/forecasting product is documented.",
+      "evidence": [
+        "open-rankings/categories.json fp-a definition; same test that skipped Airwallex → fp-a in reports/launch-watch/2026-11-09-issue-671-review.json."
+      ]
+    }
+  ]
+}

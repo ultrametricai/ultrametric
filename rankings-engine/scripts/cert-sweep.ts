@@ -24,8 +24,7 @@
 //
 //   pnpm tsx rankings-engine/scripts/cert-sweep.ts
 //
-// then `node scripts/generate-badges.mjs` to re-render the /badges SVGs from the updated
-// registry (the workflow does both).
+// The workflow commits the updated registry and reports.
 import fs from 'node:fs'
 import path from 'node:path'
 import { runCertify, type CertReport } from './certify'
