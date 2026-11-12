@@ -8,7 +8,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 subprocess.run([
-    "node", "node_modules/vitest/vitest.mjs", "run", "--maxWorkers=2",
+    "node", "node_modules/vitest/vitest.mjs", "run",
+    "--config", "scripts/config/vitest.config.ts", "--maxWorkers=2",
     "lib/__tests__/canonical-projections.test.ts",
     "lib/__tests__/process-catalog.test.ts",
     "lib/__tests__/shared-process-export.test.ts",
