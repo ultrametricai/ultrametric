@@ -159,6 +159,15 @@ describe('parseWorkflowSchedule / buildCronHealth', () => {
     expect(slo.source).toContain('slo-history/*.jsonl')
   })
 
+  it('uses the newest popularity run after older observations are appended', () => {
+    const dir = writeFixture()
+    const file = path.join(dir, 'alpha', 'popularity-history.jsonl')
+    const row = (runAt: string) => JSON.stringify({ productId: 'p1', runAt }) + '\n'
+    fs.writeFileSync(file, row('2026-10-01T00:00:00Z') + row('2026-10-03T00:00:00Z') + row('2026-10-02T00:00:00Z'))
+    const latest = buildCronHealth('/nonexistent', dir).lastRuns.find(run => run.source.includes('popularity-history'))!
+    expect(latest.date).toBe('2026-10-03T00:00:00Z')
+  })
+
   it('extracts name, cron lines, and non-schedule triggers', () => {
     const wf = parseWorkflowSchedule('spike-engine.yml', [
       'name: spike-engine',

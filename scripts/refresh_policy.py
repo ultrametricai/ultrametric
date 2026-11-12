@@ -27,10 +27,15 @@ def allowed_path(kind, path):
             any(part in ('', '.', '..') for part in path.split('/'))):
         return False
     if kind == 'vendor-radar':
+        # The reconciler retains launch-watch discoveries together with their reports.
+        # Accept those run reports and archived legacy bytes, not launch-watch code
+        # or roster/score changes. Receipts and all other scope checks still apply.
         return bool(re.fullmatch(
             r'(reports/vendor-radar/[A-Za-z0-9_./-]+\.(json|md)'
+            r'|reports/launch-watch/runs/[A-Za-z0-9_-]+\.(json|md)'
             r'|reports/radar-imports/manifests/[a-f0-9]{64}\.json'
             r'|reports/radar-imports/files/[a-f0-9]{64}/reports/vendor-radar/[A-Za-z0-9_./-]+\.(json|md)'
+            r'|reports/radar-imports/files/[a-f0-9]{64}/reports/launch-watch/[A-Za-z0-9_.-]+\.(json|md)'
             r'|rankings-engine/radar-discoveries/[A-Za-z0-9_./-]+\.json)', path))
     if kind not in ('story-runner', 'vendor-radar-bringup'):
         return False
@@ -48,7 +53,7 @@ def allowed_path(kind, path):
                     r'(score-history|popularity-history)\.jsonl)', path):
         return True
     return kind == 'vendor-radar-bringup' and bool(re.fullmatch(
-        r'(open-rankings/[a-z0-9-]+/products\.json|public/badges/[A-Za-z0-9_./-]+\.svg)', path))
+        r'open-rankings/[a-z0-9-]+/products\.json', path))
 
 
 def check_scope(kind, files, expected_count, mode):
@@ -59,7 +64,7 @@ def check_scope(kind, files, expected_count, mode):
         path = file.get('filename')
         if (file.get('status') not in ('added', 'modified') or file.get('previous_filename') or
                 not allowed_path(kind, path)):
-            raise RuntimeError('Generated-content scope changed; manual merge required')
+            raise RuntimeError(f"Generated-content scope changed; manual merge required: {path!r} ({file.get('status')!r})")
         if kind == 'vendor-radar-bringup' and path.endswith('/products.json') and file['status'] != 'modified':
             raise RuntimeError('Creating an arena requires an ordinary maintainer PR')
         if mode(path) != '100644':

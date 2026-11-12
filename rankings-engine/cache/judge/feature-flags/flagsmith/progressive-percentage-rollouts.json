@@ -1,15 +1,16 @@
 {
-  "hash": "bc77ba4ad47564e197930097d7d1bea1d618e75d28b01e165fa5b3b5e324749b",
+  "hash": "2a5b6eb526d0a05fc0317818dfdd783c5379a975b00c42fcc8b6571ee7926e7f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Flagsmith documents percentage rollouts through a % Split segment rule (any value from 1 to 100, applied globally or within a segment), and flag changes are made remotely without deploying new code, so a 1%→100% ramp is supported. The docs never say users are bucketed consistently as the percentage grows, so that part of the story is unproven. Missing for 10: documented consistent/deterministic bucketing (sticky assignment by identity as the percentage increases), independent or hands-on corroboration of the ramp behavior.",
+    "rationale": "Flagsmith documents percentage rollouts as a segment rule using a % Split condition, settable from 1 to 100. The docs describe raising that percentage until the feature reaches the whole user base, and flag changes take effect without deploying new code. Nothing in the evidence states that a given user stays in the same bucket as the percentage ramps (sticky/deterministic hashing), which is a named part of the story. missing for 10: documented consistent/sticky bucketing guarantee, independent or hands-on corroboration of percentage ramping.",
     "evidenceIds": [
-      "flagsmith-docs-2",
       "flagsmith-docs-21",
       "flagsmith-docs-33",
+      "flagsmith-docs-62",
+      "flagsmith-docs-2",
       "flagsmith-gh-1"
     ],
     "support": {
@@ -18,12 +19,12 @@
       "subject": "As a developer, I can roll a flag out progressively by percentage with consistent bucketing, ramping from 1% to 100% without redeploying",
       "citations": [
         {
-          "evidenceId": "flagsmith-docs-2",
-          "quote": "Gradually enable a feature for a percentage of users, either globally or within a segment."
+          "evidenceId": "flagsmith-docs-21",
+          "quote": "Add a rule defined with the % Split condition. Specify a value between 1 and 100 to define what percentage of your user base is included within this segment."
         },
         {
-          "evidenceId": "flagsmith-docs-21",
-          "quote": "Specify a value between 1 and 100 to define what percentage of your user base is included within this segment."
+          "evidenceId": "flagsmith-docs-62",
+          "quote": "If you are happy with the feature, you can increase the percentage of users that see the feature until it is available to your entire user base."
         },
         {
           "evidenceId": "flagsmith-docs-33",

@@ -134,6 +134,18 @@ so a later run does not mistake a previously introduced source for new evidence.
 proofs are rechecked; the sidecar alone never authorizes retaining a grade. The final committed-diff stability
 guard still runs before any remote publication.
 
+When a maintainer integrates a retained snapshot with reviewed roster additions from main,
+run `pnpm exec tsx rankings-engine/scripts/migrate-retention-roster.ts --category ARENA
+--baseline SNAPSHOT_SHA --main MAIN_SHA` after the merge. Both SHA arguments are pinned
+ancestors of the checkout. The baseline must contain the original authenticated ledger;
+main supplies the complete expanded roster and every added product's evidence, verdicts
+and raw caches. The command preserves the baseline's complete product records, order,
+evidence, verdicts and caches, requires the same story taxonomy, rechecks every retained
+proof and updates only the ledger identity. Product removals, changed records, missing
+caches and unauthenticated additions fail before writing. Later repairs and refreshes
+accept the reviewed expansion while continuing to authenticate the original decisions.
+This migration makes no model calls and does not issue a workflow publication receipt.
+
 Product-scoped manual judging stops before model calls if it would overwrite an untouched
 retained decision with raw cache output. Explicit whole-category rejudges and isolated
 previews keep their existing behavior. Automated PR repair also stops before writes or
@@ -263,7 +275,11 @@ change or bypass is needed for native merging or this continuation.
 
 GitHub marks `pull_request` runs created by `GITHUB_TOKEN` as `action_required` until a
 maintainer approves them. Generated PRs explicitly dispatch the same CI workflow on their
-head branch. Recovery treats an approval-required run with no dispatched result as missing
+head branch for diagnostics. GitHub excludes `workflow_dispatch` job checks from required
+PR checks, even when they pass on the exact head. The eligible PR run still needs approval.
+Recovery reports that hold as needing attention and does not approve or rerun it.
+See [GitHub's required-check event rules](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks#checks-from-some-workflow-jobs-are-not-evaluated).
+Recovery treats an approval-required run with no dispatched result as missing diagnostic
 CI. It preserves active runs from either event and the latest success/failure result within
 each event. Older completed runs cannot mask a newer cancelled run of the same event. It retries runs that
 ended without a result up to three dispatches per head. Exhausting that budget reports an
@@ -273,6 +289,24 @@ does not trigger another dispatch. See [GitHub's workflow-trigger rules](https:/
 Recovery, repair routing, and review requests select the same usable result: the newest
 success or failure among the latest runs per event. A newer cancelled dispatch cannot
 hide an approved PR result. Validation and review still bind checks to that exact suite.
+
+For approval-free PR CI, reuse the existing `ultrametric-content-bot` App installation and
+select only `ultrametricai/ultrametric` as the additional repository. This installation
+change and credential configuration require maintainer authorization. The publication
+token needs repository Contents and Pull requests read/write, with implicit Metadata read;
+it needs no Actions, Workflows, administration or ruleset-bypass permission. Configure the
+repository secrets `CONTENT_BOT_APP_ID` and `CONTENT_BOT_PRIVATE_KEY`, and repository variable
+`CONTENT_BOT_LOGIN` matching the verified App slug plus `[bot]`. Each minted token is
+restricted to this repository and the two write permissions. Provision secrets through
+GitHub's secret settings; keep their values out of logs, reports and source control.
+
+Vendor-radar scan and bring-up publication, review recovery and base updates already support
+this optional App identity. Story-runner still publishes with `GITHUB_TOKEN`; its publisher,
+review/recovery author checks and repair publisher need coordinated App support before the
+same setup can make story refreshes approval-free. That change must preserve canonical-run
+receipts, exact-head checks, file scope, holds, bounded repairs and every required check.
+App setup does not retroactively approve an existing held run. Verify a subsequent scheduled
+producer's exact-head `pull_request` CI and native merge before claiming automatic completion.
 
 The worker executes the current main branch only. It fetches the proposed branch as data,
 accepts changes only in its arena and declared generated projections, and rejects code,

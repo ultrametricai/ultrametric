@@ -11,6 +11,7 @@ import { CELL_HASH_VERSION, PROMPT_VERSION, RawVerdictSchema, SYSTEM, cellHash, 
 import { llmJson } from './llm'
 import { prepareRetainedRepair } from './refresh-reconciliation'
 import { runDerive } from './stages/derive'
+import { PopularityHistoryLineSchema } from '../lib/popularityHistory'
 import { combineSloHistory, isSloHistoryShard, readSloHistorySources } from '../lib/slo'
 
 export type Finding = { id: string; path: string; commit: string; line: number; body: string }
@@ -46,6 +47,36 @@ export function allowed(file: string, arena: string): boolean {
     || new RegExp(`^rankings-engine/cache/[a-z0-9-]+/${arena}/[a-z0-9/_-]+\\.json$`).test(file)
 }
 export function mergeData(base: string | null, main: string | null, proposed: string | null, file: string): string | null {
+  if (/^open-rankings\/[a-z0-9-]+\/popularity-history\.jsonl$/.test(file)) {
+    if (base === null || main === null || proposed === null) throw new Error('Popularity history cannot be removed or synthesized during repair')
+    const byKey = new Map<string, string>()
+    const counts = (text: string) => {
+      const result = new Map<string, number>()
+      for (const line of text.split('\n').filter(value => value.trim())) {
+        const row = PopularityHistoryLineSchema.parse(JSON.parse(line))
+        const identity = JSON.stringify([row.productId, row.runAt])
+        const previous = byKey.get(identity)
+        if (previous !== undefined && previous !== line) throw new Error('Conflicting popularity observation requires review')
+        byKey.set(identity, line)
+        result.set(line, (result.get(line) ?? 0) + 1)
+      }
+      return result
+    }
+    const original = counts(base), current = counts(main), incoming = counts(proposed)
+    for (const [line, count] of original) {
+      if ((current.get(line) ?? 0) < count || (incoming.get(line) ?? 0) < count) {
+        throw new Error('Popularity observations cannot be removed or rewritten')
+      }
+    }
+    // Keep trusted main byte-for-byte; append missing observations without changing
+    // timestamps, values, or duplicate counts inherited from either branch.
+    const missing: string[] = []
+    for (const [line, count] of incoming) {
+      for (let i = current.get(line) ?? 0; i < count; i++) missing.push(line)
+    }
+    const suffix = missing.length ? missing.join('\n') + '\n' : ''
+    return main + (main && suffix && !main.endsWith('\n') ? '\n' : '') + suffix
+  }
   if (isSloHistoryShard(file)) {
     // Existing shards are immutable. Identical add/add ingestion is harmless; every
     // other collision, rewrite or deletion needs review, including one-sided edits.
@@ -357,7 +388,14 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
   const headPacks = Object.fromEntries(products.map(product => [product.id,
     EvidenceSchema.array().parse(JSON.parse(show(head, `${dir}/evidence/${product.id}.json`)!))]))
   const headRows = VerdictSchema.array().parse(JSON.parse(show(head, `${dir}/verdicts.json`)!))
-  if (!repairProgress(headRows, rows, headPacks, packs)) {
+  const canonicalChanged = repairProgress(headRows, rows, headPacks, packs)
+  // An otherwise clean refresh can become unmergeable when trusted main advances
+  // shared projections. Rebuilding those projections is useful progress, but does
+  // not address a review finding. Keep the no-op guard for reviewed repairs and
+  // for heads that already contain main. The controller still verifies the input
+  // receipt, publishes from trusted main and records the new exact-head receipt.
+  const baseUpdate = !canonicalChanged && findings.length === 0 && base !== main
+  if (!canonicalChanged && !baseUpdate) {
     throw new Error('Repair made no canonical arena change; no projections, commit or review requested')
   }
   await runDerive({ category: arena })
@@ -365,6 +403,6 @@ export async function repair({ head, main, arena, findings, keyed }: { head: str
     ['compute-confidence-intervals.ts', '--category', arena], ['generate-predictions.ts'], ['settle-predictions.ts'],
     ['generate-vendor-reviews.ts'], ['generate-story-graph.ts'], ['generate-step-rankings.ts'],
   ]) execFileSync('pnpm', ['exec', 'tsx', `rankings-engine/scripts/${args[0]}`, ...args.slice(1)], { stdio: 'inherit' })
-  return { arena, head, main, evidenceRenames: renames, restored: restoreChurn(before, after, oldPacks, packs).restored, rejudged, audits,
+  return { arena, head, main, mode: baseUpdate ? 'base-update' : 'canonical-repair', evidenceRenames: renames, restored: restoreChurn(before, after, oldPacks, packs).restored, rejudged, audits,
     unresolved: findings.filter(finding => !audits.some(audit => audit.thread === finding.id && audit.addressed)).map(finding => finding.id) }
 }

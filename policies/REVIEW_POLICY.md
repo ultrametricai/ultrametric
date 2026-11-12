@@ -29,6 +29,13 @@ because it has several playbooks — coverage is tracked per scenario and locale
   no quality increase. This cannot upgrade a verdict, raise quality, alter applicability,
   or invent a citation. An uncited none remains untested, not a verified failure. Repairs
   verify the current judge-cache provenance before publishing such a downgrade.
+- **Unsupported additions.** A new claim or capability credit needs direct support already
+  present in the candidate's evidence for the exact product and capability. Remove an
+  unsupported addition instead of acquiring evidence to justify it. Preserve recorded
+  observations, raw model outputs and exact-head provenance. Scored-cell corrections use
+  the reviewed reconciliation or withdrawal path; if that path cannot represent the
+  correction, keep publication blocked and report the limitation. Sparse sources may yield
+  few or no extracted stories; a count quota never supplies evidence.
 - **Owner-product bias audits.** Products affiliated with the maintainers (Foreloop, AFK,
   Ultrametric) carry affiliation disclosure on every surface and receive adversarial bias
   audits; favorable flips get extra scrutiny and have been reverted under this policy.
