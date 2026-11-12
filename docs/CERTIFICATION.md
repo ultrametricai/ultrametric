@@ -12,8 +12,7 @@ repo; the maintainer-side implementation the weekly sweep runs is
 registry is `open-rankings/<arena>/certifications.json` (`CertificationSchema` in
 `lib/certifications.ts`, loaded tolerant-optionally by `lib/data.ts`), the public listing is
 [/certified](https://ultrametric.ai/certified), intake is the
-[Certification](../.github/ISSUE_TEMPLATE/certification.yml) issue form, and badges come from
-`scripts/generate-badges.mjs` (`<productId>-certified.svg`).
+[Certification](../.github/ISSUE_TEMPLATE/certification.yml) issue form.
 
 ## 1. The suite
 
@@ -59,7 +58,7 @@ Certification is claims-with-receipts, so the protocol is deliberately symmetric
 4. **On a match**, one PR commits: the registry entry in `open-rankings/<arena>/certifications.json`,
    the maintainer's re-run report at `open-rankings/<arena>/cert-reports/<productId>.json` (served at
    `/data/<arena>/cert-reports/<productId>.json` like every dataset file — that's the
-   `reportUrl`), and the regenerated badge.
+   `reportUrl`).
 
 Registry entry shape (`lib/certifications.ts`):
 
@@ -84,14 +83,17 @@ remains in history. Re-certifying is running the same command again.
 Only products already listed in a ranking can hold a registry entry (the loader enforces it).
 Not listed yet? [Request the product](../.github/ISSUE_TEMPLATE/request-a-product.yml) first.
 
-## 3. Badges + display
+<a id="3-badges--display"></a>
+
+## 3. Display
 
 - **Product page**: an active certification renders as an emerald chip near the header —
   level, date, and a link to the committed report.
 - **/certified**: the registry page — every certified product with level, dates, initiator,
   and report; lapsed certifications stay listed as the public record.
-- **Badge**: `public/badges/<productId>-certified.svg` — the shield variant reading
-  `CERTIFIED AGENT-READY · <year>` (or AGENT-NATIVE), hotlinkable like the score badges.
+
+Embeddable score and certification badges are retired. Link to the product page or
+[/certified](https://ultrametric.ai/certified) for current results.
 
 ## 4. Program rules
 

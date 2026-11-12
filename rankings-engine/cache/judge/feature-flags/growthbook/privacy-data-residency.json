@@ -1,17 +1,18 @@
 {
-  "hash": "9823875ed89dd8e4c67998c088ead313b6bea93380b5d9cde8a702b266f298d7",
+  "hash": "2e77ba66347fbb7a8fb032ac61c78d7fb8ed3233f326ac1999601db4857607be",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "GrowthBook documents self-hosting on your own infrastructure, so you control where application data lives. It is also warehouse-native: experiment data stays in your own warehouse, and targeting attribute values never leave the SDK. A hands-on probe confirmed the official Docker self-host works, but there is no evidence of choosing a storage region or residency for the cloud SaaS. Missing for 10: cloud region/residency selection (e.g. EU/US hosting), documented data-residency commitments for GrowthBook Cloud.",
+    "rationale": "GrowthBook documents self-hosting on your own infrastructure, including MongoDB, the API and the front-end, and a hands-on probe confirmed a working self-host roundtrip. That puts application data wherever you deploy it, and the warehouse-native design plus local-only targeting attributes keep event and user data in your own systems. However, no region or residency selection is documented for the managed GrowthBook Cloud, so choosing a location means running it yourself. Missing for 10: a documented region/data-residency choice for GrowthBook Cloud (e.g., EU vs US), and residency or compliance documentation for the managed offering.",
     "evidenceIds": [
       "growthbook-docs-10",
       "growthbook-probe-rt-2",
+      "growthbook-docs-87",
       "growthbook-docs-18",
-      "growthbook-comm-6-refresh-03ca0c6a606b8232",
-      "growthbook-comm-1-refresh-c446c2244098bb86"
+      "growthbook-gh-3",
+      "growthbook-comm-15"
     ],
     "support": {
       "relation": "direct",
@@ -27,12 +28,12 @@
           "quote": "The actual values of targeting attributes (e.g., user IDs, emails) are never sent to GrowthBook. They are only stored in memory locally within the SDK."
         },
         {
-          "evidenceId": "growthbook-comm-6-refresh-03ca0c6a606b8232",
-          "quote": "GrowthBook (like Eppo) connects to your existing data warehouse and supports any metric you can express as a query."
+          "evidenceId": "growthbook-gh-3",
+          "quote": "Warehouse Native. Query 11 data sources including BigQuery, Snowflake, and Databricks."
         },
         {
           "evidenceId": "growthbook-probe-rt-2",
-          "quote": "the official growthbook/growthbook docker image booted against mongo"
+          "quote": "full KEYLESS self-host roundtrip on this machine"
         }
       ]
     },

@@ -1,18 +1,18 @@
 {
-  "hash": "ae80bcbdbbc6f4e9d7a0c8a673a69577661f535eaf51e86ce3fe312c0615c5cb",
+  "hash": "738c6b9babdecf5aa3487eb7cf2b4e4e19a18bb72705f7922af5c152878ec2d8",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "GrowthBook's own SDKs evaluate flags locally against a single cacheable JSON payload fetched from the SDK Connection Endpoint. Server-side use needs no third-party requests, attribute values stay in SDK memory, and the probe confirmed the payload endpoint serves the flag definitions. However, the story's microsecond decision latency and an explicit no-network-call-per-flag-check guarantee for server SDKs are not documented, so coverage is partial rather than complete. missing for 10: documented or benchmarked microsecond evaluation latency for server SDKs, explicit first-party server-SDK docs describing in-process caching and refresh of the ruleset, independent hands-on corroboration of zero per-check network calls.",
+    "rationale": "GrowthBook SDKs download a cacheable ruleset through the SDK Connection Endpoint and evaluate flags locally wherever the SDK runs, including on the server. Server-side experiments need no third-party requests, and the Proxy caches SDK payloads close to the app. Coverage is partial because the microsecond-latency claim and server-SDK caching/refresh behavior are not documented in the pack. missing for 10: documented or benchmarked microsecond evaluation latency, explicit server-SDK in-memory cache and refresh semantics, independent hands-on corroboration of no per-check network calls.",
     "evidenceIds": [
       "growthbook-comm-6",
+      "growthbook-docs-97",
       "growthbook-docs-20",
       "growthbook-docs-19",
-      "growthbook-docs-18",
       "growthbook-docs-11",
-      "growthbook-probe-rt-2"
+      "growthbook-docs-18"
     ],
     "support": {
       "relation": "direct",
@@ -21,7 +21,11 @@
       "citations": [
         {
           "evidenceId": "growthbook-comm-6",
-          "quote": "there's a single cacheable JSON definition of all of the features and then evaluation happens locally within the SDKs"
+          "quote": "With GrowthBook, there's a single cacheable JSON definition of all of the features and then evaluation happens locally within the SDKs"
+        },
+        {
+          "evidenceId": "growthbook-docs-97",
+          "quote": "This evaluation happens wherever the SDK runs—in the browser, on your server, or at the edge."
         },
         {
           "evidenceId": "growthbook-docs-20",
@@ -30,10 +34,6 @@
         {
           "evidenceId": "growthbook-docs-19",
           "quote": "You can also run server-side experiments by using inline experiments directly with our SDK. This requires no 3rd party requests"
-        },
-        {
-          "evidenceId": "growthbook-docs-18",
-          "quote": "They are only stored in memory locally within the SDK."
         },
         {
           "evidenceId": "growthbook-docs-11",
