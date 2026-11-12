@@ -1468,25 +1468,33 @@
   {
     "productId": "channel3",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Channel3 is a product-data API. The evidence shows no built-in AI assistant users can hand tasks to. Its 'agentic mode' is an LLM-planned search option within the search endpoint, an adjacent feature rather than an assistant that takes on delegated tasks. The MCP server and UCP integration serve external agents, not an in-product assistant.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Channel3's own docs describe an agentic search mode in which a built-in LLM plans the user's request: it extracts filters and splits the query into sub-searches. That is narrow, product-native delegation of search tasks rather than a general in-product assistant. The MCP server and CLI let external agents call the product, so they are not a built-in assistant and are not credited. Missing for 10: a general-purpose in-product assistant that accepts delegated tasks beyond search, multi-step task execution, documentation of the assistant UX, and independent or hands-on corroboration of agentic mode.",
+    "evidenceIds": [
+      "channel3-docs-20",
+      "channel3-docs-21"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can delegate tasks to a built-in AI assistant inside the product",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "channel3-docs-20",
+          "quote": "Toggle to agentic mode, and an LLM plans the search: it extracts deterministic filters, may split the request into OR/AND sub-searches"
+        }
+      ]
     }
   },
   {
     "productId": "channel3",
     "storyId": "agentic-headless",
-    "verdict": "full",
+    "verdict": "partial",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Channel3 ships an official CLI that calls the API from a terminal or script, with JMESPath field extraction for machine-readable output. It also has an SDK and an API keyed without OAuth, so it can run non-interactively for automation. missing for 10: explicit CI/CD pipeline documentation (e.g., env-var auth, exit codes, CI examples), independent hands-on corroboration of headless/scripted use.",
+    "rationale": "Channel3 ships an official CLI that calls its API \"from a terminal or script\", with machine-friendly output (format selection and JMESPath field extraction). It also has an SDK and simple API-key auth with no OAuth flow, so it can clearly run headlessly from scripts. However, no evidence documents CI usage specifically, so the story is only partially covered. Missing for 10: documented CI integration (e.g., CI pipeline examples or non-interactive/env-var credential setup for CI runners), and independent or hands-on corroboration of headless automation.",
     "evidenceIds": [
       "channel3-docs-13",
       "channel3-docs-15",
@@ -1496,7 +1504,7 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
@@ -1508,12 +1516,12 @@
           "quote": "Select formats or extract fields with JMESPath."
         },
         {
-          "evidenceId": "channel3-docs-22",
-          "quote": "No OAuth flow is required for the public product data API. API keys are free to create."
-        },
-        {
           "evidenceId": "channel3-docs-12",
           "quote": "Install the Channel3 SDK, authenticate, and make async calls."
+        },
+        {
+          "evidenceId": "channel3-docs-22",
+          "quote": "No OAuth flow is required for the public product data API. API keys are free to create."
         }
       ]
     }
@@ -1604,9 +1612,9 @@
     "productId": "channel3",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Channel3 documents an official CLI that calls its API from a terminal or script. The docs show image search from URLs or local files, plus output-format selection and JMESPath field extraction, which suits scripted and agent workflows. Missing for 10: documented install and auth flow for the CLI, any agent-specific CLI features, and independent or hands-on corroboration.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Channel3 documents an official CLI that calls the Channel3 API from a terminal or script. It supports image search from URLs or local files and offers selectable output formats with JMESPath field extraction, which suits scripted and agent-driven workflows. The probe confirms official CLI docs exist. Missing for 10: independent or hands-on corroboration of CLI use, and documented install/auth details and command coverage beyond search.",
     "evidenceIds": [
       "channel3-docs-13",
       "channel3-docs-14",
@@ -1873,16 +1881,23 @@
   {
     "productId": "channel3",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Channel3 is a product-data API, and a rules-based automation feature is a fair question for it, so the axis applies. The only event-driven capability in the evidence is price-tracking webhooks (channel3-docs-16), which send notifications when a price changes. That is a developer building block for the separate webhooks story, not a way for users to define rules that trigger actions, and no rules engine or condition-to-action configuration is documented.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Channel3's only documented event-driven automation is price-tracking subscriptions: you subscribe to a product and get a webhook notification whenever its price changes. That is a narrow, fixed trigger-action pair rather than user-defined rules. missing for 10: user-defined rule or condition logic (e.g. thresholds or filters), event types beyond price changes, action types beyond webhook notifications, in-depth docs on rule management, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "channel3-docs-16"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As an AI-native user, I can define rules that trigger actions automatically on events",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "channel3-docs-16",
+          "quote": "When you subscribe to price tracking for a product, you can receive webhook notifications whenever the price changes."
+        }
+      ]
     }
   },
   {
@@ -2363,16 +2378,17 @@
     "productId": "channel3",
     "storyId": "structured-offer-data",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Channel3 documents a product-lookup API: pass a product URL and get structured pricing, variants, images and merchant offers in one response, under a consistent schema across retailers, with buy URLs included. Availability/stock status is never mentioned, and hands-on community reports show missing prices and a price of '0' for some items, so per-product price data is not reliably complete. missing for 10: documented availability/stock fields, evidence of consistently populated price data, independent corroboration of variant and offer completeness.",
+    "rationale": "Channel3's own API returns structured product metadata (pricing, variants, images and merchant offers) from any product URL under a consistent cross-retailer schema, and includes buy URLs in search responses. Availability is never documented, though. Hands-on reports of missing prices and a price shown as '0' point to uneven data quality rather than an absent capability. Missing for 10: documented availability/stock fields, a published OpenAPI schema (probe found none), and evidence of consistent price completeness.",
     "evidenceIds": [
       "channel3-docs-6",
       "channel3-docs-3",
       "channel3-docs-19",
-      "channel3-openapi-20261106",
+      "channel3-docs-5",
       "channel3-comm-4",
-      "channel3-comm-7"
+      "channel3-comm-7",
+      "channel3-probe-2"
     ],
     "support": {
       "relation": "direct",

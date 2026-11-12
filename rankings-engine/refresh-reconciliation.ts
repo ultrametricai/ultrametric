@@ -152,11 +152,17 @@ function verifyRetainedDecision(snapshot: Snapshot, row: Verdict, entry: z.infer
   git('merge-base', '--is-ancestor', entry.decisionBaseline, ancestor)
   git('merge-base', '--is-ancestor', entry.origin, entry.decisionBaseline)
   const source = load(entry.origin), comparison = load(entry.decisionBaseline)
+  // Reviewed roster additions do not change existing cells. Authenticate the whole
+  // current roster against trusted ancestry, and preserve every historical product
+  // record and its order. Removal, replacement and taxonomy changes still fail closed.
+  const trusted = load(ancestor)
+  const preservesProducts = (historical: Snapshot) => equal(historical.products,
+    snapshot.products.filter(product => historical.products.some(item => item.id === product.id)))
   const previous = comparison.rows.find(item => key(item) === key(row))
   const original = source.rows.find(item => key(item) === key(row))
   const raw = Cache.parse(snapshot.caches[key(row)]).verdict
-  if (!equal(source.products, snapshot.products) || !equal(source.stories, snapshot.stories)
-      || !equal(comparison.products, snapshot.products) || !equal(comparison.stories, snapshot.stories)
+  if (!equal(trusted.products, snapshot.products) || !preservesProducts(source) || !equal(source.stories, snapshot.stories)
+      || !preservesProducts(comparison) || !equal(comparison.stories, snapshot.stories)
       || !equal(previous, row) || !equal(original, row) || !validCache(source, row) || !validCache(snapshot, raw)
       || !supportIntact(row, source.packs[row.productId], comparison.packs[row.productId])
       || !supportIntact(row, comparison.packs[row.productId], snapshot.packs[row.productId])
@@ -234,6 +240,56 @@ export function prepareRetainedRepair({ arena, main, candidate, targets, root = 
       return { ...ledger, identity: identity(current) }
     },
   }
+}
+
+/** Maintainer integration only: preserve an authenticated snapshot and import reviewed products.
+ * This does not reconcile judgments or permit edits to either snapshot's inputs.
+ */
+export function migrateRetentionRoster({ arena, baseline, main, root = process.cwd() }: {
+  arena: string; baseline: string; main: string; root?: string;
+}) {
+  if (!identifier.test(arena) || !sha.test(baseline) || !sha.test(main)) throw new Error('Invalid roster migration identity')
+  const context = retentionContext(arena, root)
+  const { git, read, load, ledgerPath, regularPath } = context
+  git('merge-base', '--is-ancestor', baseline, 'HEAD')
+  git('merge-base', '--is-ancestor', main, 'HEAD')
+  const before = load(baseline), trusted = load(main), current = load(null)
+  const ledger = Ledger.parse(read(baseline, ledgerPath))
+  if (ledger.arena !== arena || ledger.identity !== identity(before)
+      || new Set(ledger.retained.map(entry => entry.cell)).size !== ledger.retained.length
+      || !equal(read(null, ledgerPath), ledger)) throw new Error('Roster migration requires the unchanged authenticated ledger')
+  if (!equal(before.stories, current.stories) || !equal(trusted.stories, current.stories)
+      || !equal(trusted.products, current.products)
+      || !equal(before.products, current.products.filter(p => before.products.some(old => old.id === p.id)))) {
+    throw new Error('Roster migration permits only reviewed product additions')
+  }
+  const cells = new Set(ledger.retained.map(entry => entry.cell))
+  for (const entry of ledger.retained) {
+    const row = before.rows.find(row => key(row) === entry.cell)
+    if (!row || validCache(before, row)) throw new Error('Orphan roster migration entry')
+    verifyRetainedDecision(before, row, entry, baseline, context)
+  }
+  for (const product of current.products) {
+    const source = before.products.some(p => p.id === product.id) ? before : trusted
+    if (!equal(source.packs[product.id], current.packs[product.id])) throw new Error(`Roster migration changed evidence: ${product.id}`)
+    for (const row of current.rows.filter(row => row.productId === product.id)) {
+      if (!equal(source.rows.find(old => key(old) === key(row)), row)
+          || !equal(source.caches[key(row)], current.caches[key(row)])
+          || (!cells.has(key(row)) && !validCache(current, row))
+          || validateVerdictRules(row, current.packs[product.id], current.stories.find(story => story.id === row.storyId))) {
+        throw new Error(`Roster migration changed or cannot prove cell: ${key(row)}`)
+      }
+    }
+  }
+  // Re-run historical proof against trusted main's expanded catalog before writing.
+  for (const entry of ledger.retained) {
+    verifyRetainedDecision(current, current.rows.find(row => key(row) === entry.cell)!, entry, main, context)
+  }
+  const migrated = { ...ledger, identity: identity(current) }
+  const target = regularPath(ledgerPath), temporary = regularPath(`${ledgerPath}.tmp`)
+  fs.writeFileSync(temporary, JSON.stringify(migrated, null, 2) + '\n')
+  fs.renameSync(temporary, target)
+  return migrated
 }
 
 /** Scheduled producer only. No model calls, cache rewrites, evidence edits or derivation. */

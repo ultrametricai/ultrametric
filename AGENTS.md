@@ -102,8 +102,7 @@ traps:
 - `open-rankings/<arena>/rankings.json` is derived. Change verdicts or evidence, then run
   `pnpm engine derive --category <id>`.
 - The README's generated count blocks are retired; `pnpm stats` fails if one reappears
-  or prose carries a count. The badge SVGs in `public/badges/` come from
-  `node scripts/generate-badges.mjs`.
+  or prose carries a count.
 - `open-rankings/reviews/generated/` regenerates deterministically from the arena data.
 - `open-rankings/step-rankings.json` is derived. After verdict, product, mapping, or process
   changes, run `pnpm exec tsx rankings-engine/scripts/generate-step-rankings.ts`.

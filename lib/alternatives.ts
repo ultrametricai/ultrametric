@@ -66,7 +66,7 @@ export function arenaMembershipsOf(categories: CategoryData[], productId: string
 }
 
 // A product id can (rarely) be ranked in two arenas — e.g. `square` in both payments and
-// mobile-payments. Same deterministic rule as scripts/generate-badges.mjs: the first category
+// mobile-payments. The first category
 // (categories.json / loadAll order) owns the id.
 export function findUltrametric(
   categories: CategoryData[],

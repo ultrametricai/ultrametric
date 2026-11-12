@@ -105,9 +105,14 @@ Video's actual semantics (global adherence modes with motion and performance
 preservation; no masking, region selection, or untouched-area guarantee documented), and
 the re-judged cell settles at partial q5 citing it.
 
-A third round flagged two side-effect fulls whose rationales named a missing
-requirement. Both had direct evidence available: the Gitea machine spec's Milestone
-model carries due_on (appended as its own row; the cell now publishes full q9 citing
-it), and Quo documents per-call summaries by call ID with a dedicated call-summary
-webhook and a business/scale plan gate (full q7 citing it). Re-rolls pre-audited; honest
-downs ship.
+
+A third-round review identified unsupported full credit for Gitea milestone due dates
+and Quo summaries attached to a conversation. The existing reconciliation engine
+applied the CONTRIBUTING.md stability policy to code-hosting and business-phone,
+verifying raw cache hashes, prior model judgments, and unchanged cited evidence
+against baseline `e94ade2b38c263c035edc75a6e5043812db6e22f`. Gitea retains its
+prior partial q5 and Quo its prior partial q6. The same checks retain 27 other
+unsupported re-rolls in those two arenas. The review supplement records every
+retained cell and both judgments. Evidence and raw model caches are unchanged;
+refresh-retention ledgers authenticate the effective decisions. This repair made
+no model calls. The earlier pre-audit counts describe the original proposal.
