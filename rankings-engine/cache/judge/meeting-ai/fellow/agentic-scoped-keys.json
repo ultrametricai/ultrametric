@@ -1,18 +1,18 @@
 {
-  "hash": "852163b7e036d7c205b5ba57ac0e6aca842a4ad04ec1872f9646b2a66243ada4",
+  "hash": "6369ad35f43be2e4efb132f068bee8832a82c2a8c09359b43f6ca46e5b8b7eef",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Fellow lets you create multiple named API keys, one per application, and distinguishes user-level keys from workspace and super-admin keys. Its MCP server is limited to data the user can already access, and admins choose which MCP tools assistants may use and can revoke connections. That gives tiered, revocable agent credentials, but the evidence shows no per-key permission scopes, read-only keys or endpoint-level restriction. missing for 10: per-credential scope/permission selection (e.g., read-only or resource-limited keys), per-key expiry, documented per-key revocation for API keys, independent corroboration.",
+    "rationale": "Fellow offers coarse privilege tiers and agent-related controls. Users can create multiple named API keys, one per application. Key tiers are separated: user and workspace keys versus Super Admin keys that can act on behalf of any user. For MCP agent connections, admins can restrict which tools members' AI assistants may use and revoke connections, and the MCP server only exposes data the user already has access to. However, no per-key permission scopes are documented, so a least-privilege credential cannot be minted for a specific agent. Missing for 10: per-key scopes (e.g. read-only or endpoint/resource-limited keys), per-credential MCP tool scoping rather than a workspace-wide allowlist, key expiry/TTL, independent corroboration.",
     "evidenceIds": [
       "fellow-docs-56",
       "fellow-help-api-20261106",
+      "fellow-docs-7",
       "fellow-docs-10",
       "fellow-docs-49",
-      "fellow-docs-75",
-      "fellow-docs-7"
+      "fellow-docs-50"
     ],
     "support": {
       "relation": "direct",
@@ -24,10 +24,6 @@
           "quote": "You can have multiple API keys, and we recommend generating a different one for each application"
         },
         {
-          "evidenceId": "fellow-help-api-20261106",
-          "quote": "admin-visible User API keys and Workspace API keys"
-        },
-        {
           "evidenceId": "fellow-docs-10",
           "quote": "As a workspace admin, you decide which MCP tools your members’ AI assistants can use."
         },
@@ -36,8 +32,12 @@
           "quote": "The MCP Server only gives users access to the data they already have access to within Fellow."
         },
         {
-          "evidenceId": "fellow-docs-75",
+          "evidenceId": "fellow-docs-50",
           "quote": "can revoke connections at any time, and see the last-used timestamp for every connection"
+        },
+        {
+          "evidenceId": "fellow-docs-7",
+          "quote": "Super Admin API keys can make requests on behalf of any user in the workspace using the `X-On-Behalf-Of` header."
         }
       ]
     },
