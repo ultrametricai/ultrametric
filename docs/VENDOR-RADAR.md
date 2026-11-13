@@ -126,12 +126,12 @@ mandatory for both scan and bring-up PRs.
    Normal runs leave the global legacy ledger unchanged.
 5. **Triage + bring-up**: `radar-triage.ts` applies the auto-approval criteria to the day's new
    candidates and writes `reports/vendor-radar/runs/<run-id>-triage.json`. When the triage routed
-   candidates to a human, the workflow files (or, on a same-day re-run, comments on) a
-   **`vendor-radar: needs-human candidates YYYY-MM-DD`** issue (labels `story-runner` +
-   `founder-call`) listing just those rows, then closes the generator's previous still-open
-   candidates issues with a comment naming the successor; auto-approved and skipped rows file no
-   issue. Scan PRs are never auto-closed as superseded, because the seen-ledger makes each dated
-   report additive. When the `ANTHROPIC_API_KEY` repo secret is present, `radar-bringup.ts`
+   candidates to a human, the workflow rebuilds the cumulative **`vendor-radar: unresolved
+   review queue`** issue (labels `story-runner` + `founder-call`) from retained reports,
+   including imported branch history. It also rebuilds on days with no new candidates.
+   Automated skips, approvals and new daily reports do not clear earlier human-review calls.
+   Legacy issues and their comments remain intact; date-based automatic closure is disabled.
+   Scan PRs remain additive. When the `ANTHROPIC_API_KEY` repo secret is present, `radar-bringup.ts`
    adds up to 3 auto-approved passers per run to their existing arenas and the workflow runs the
    scoped engine run on each, opening a **bring-up PR** with the full disposition table (including
    the skipped list) in the body. Without the key, passers stay approved-pending in the triage
@@ -261,3 +261,31 @@ inaugural run under `reports/vendor-radar/` is the end-to-end integration eviden
 legacy compatibility, deterministic unions, same-day identities, report provenance failures,
 and retention of historical reports whose ledger keys already reached main. These are storage
 checks; they do not establish the pending lifecycle guarantees above.
+
+## Human review queue
+
+`rankings-engine/vendor-review-ledger.json` records explicit cited human decisions and
+source-backed placement corrections. `vendor-review-queue.ts` combines that ledger with
+retained triage reports. The reports and ledger are the durable record; the standing GitHub
+issue is a view with chronological queue snapshots in comments. Updates leave maintainer
+annotations and previous comments intact. Closing the issue does not resolve its candidates.
+
+The initial migration starts with the reports behind issues #713 and #722. Earlier issues
+may contain human decisions not yet represented in structured data; preserve those issues
+and migrate their cited decisions before widening `reportsFrom`. The earlier automatically
+closed issue #713 is superseded only as a view: its three pending candidates are restored.
+
+To resolve a candidate, add its canonical key, `approved` or `rejected` outcome, reason,
+source URL(s), deciding human and timestamp to `decisions` through a reviewed PR. A
+`deferred` decision stays pending. Later scans cannot overwrite these decisions. An approval
+here does not enqueue bring-up or publish rankings; that remains a separate reviewed action.
+A later automatic approval for a previously reviewed key is withheld from automatic bring-up,
+including when popularity falls below the tripwire. This preserves human vetoes and placement
+corrections in execution as well as in the queue.
+Placement corrections retain the original review requirement and cannot approve a product.
+
+Rebuild the issue body locally with:
+
+```bash
+pnpm tsx rankings-engine/scripts/vendor-review-queue.ts --out /tmp/vendor-review.md
+```

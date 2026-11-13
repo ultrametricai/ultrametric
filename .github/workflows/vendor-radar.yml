@@ -10,11 +10,9 @@
 #   1. commits the dated candidates report (reports/vendor-radar/runs/<run-id>.{json,md}) + immutable
 #      discovery records via the usual PR-or-issue flow, with the candidates list and the full triage
 #      disposition table (auto-approved + skipped + needs-human) on the scan PR's body,
-#   2. when the triage routed candidates to a human (needs-human rows), files (or updates, on a
-#      same-day re-run) a 'vendor-radar: needs-human candidates YYYY-MM-DD' issue listing just
-#      those rows (labels: story-runner + founder-call), then closes this generator's previous
-#      still-open candidates issues naming the successor. Auto-approved and skipped rows file no
-#      issue (maintainer decision 2026-10-23: generator issues only for human calls).
+#   2. rebuilds the standing review queue from retained needs-human rows and cited decisions.
+#      Legacy issues stay intact; new dates do not resolve earlier candidates. An empty queue
+#      updates an existing issue but creates no new issue.
 #
 # Scan PRs are never auto-closed as superseded: the seen-ledger makes daily reports ADDITIVE
 # (each dated report holds only candidates absent from every earlier one), so no newer scan PR
@@ -96,9 +94,8 @@ jobs:
 
       # Criteria triage (policies/AGENT_POLICY.md): mechanical checks per candidate — fetches
       # the docs surface, applies the shipped-product and affiliation guards. The full disposition
-      # table (auto-approved / skipped-with-reason / needs-human) rides the scan PR's body below;
-      # needs-human-issue.ts writes the issue body ONLY when the triage routed a candidate to a
-      # human, so auto-approved and skipped rows file no issue.
+      # table (auto-approved / skipped-with-reason / needs-human) rides the scan PR's body below.
+      # The cumulative review queue is rebuilt separately, including on empty scan days.
       - name: Criteria triage
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -111,10 +108,14 @@ jobs:
             --report "reports/vendor-radar/runs/$RADAR_RUN_ID.json" \
             --out "reports/vendor-radar/runs/$RADAR_RUN_ID-triage.json" \
             --md /tmp/vendor-radar-triage.md
-          pnpm tsx rankings-engine/scripts/needs-human-issue.ts \
+
+      # Rebuild even when today's scan is empty. Reconciled reports retain pending work.
+      - name: Rebuild durable vendor review queue
+        run: |
+          pnpm tsx rankings-engine/scripts/vendor-review-queue.ts \
+            --out /tmp/vendor-radar-needs-human.md --count /tmp/vendor-review-count \
             --triage "reports/vendor-radar/runs/$RADAR_RUN_ID-triage.json" \
-            --out /tmp/vendor-radar-needs-human.md \
-            --generator vendor-radar
+            --triage-md /tmp/vendor-radar-triage.md
 
       - name: Tests
         run: pnpm test
@@ -218,12 +219,9 @@ jobs:
               --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
           fi
 
-      # The needs-human issue: filed only when the triage routed candidates to a human
-      # (needs-human-issue.ts writes the body file only then); auto-approved and skipped rows
-      # ride the scan PR's body above. Same-day re-runs UPDATE the existing open issue with a
-      # comment instead of filing a duplicate. Once the issue stands, this generator's previous
-      # still-open candidates issues close with a comment naming the successor (supersession;
-      # the dispositions stay in the committed reports/vendor-radar/ triage files).
+      # The standing needs-human issue carries unresolved candidates across daily reports.
+      # Auto-approved and skipped rows ride the scan PR's body above. Re-runs append queue
+      # snapshots to the standing issue, preserving human notes. Legacy issues are kept intact.
       # if: always() — a failure in the tests or the report-PR step must not swallow the issue;
       # the step itself exits 0 when there is no body file to post.
       - name: Record vendor-radar output provenance
@@ -244,7 +242,7 @@ jobs:
             echo "No needs-human candidates — no issue to file."
             exit 0
           fi
-          TITLE="vendor-radar: needs-human candidates $(date -u +%F)"
+          TITLE="vendor-radar: unresolved review queue"
           EXISTING=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number,title \
             --jq ".[] | select(.title == \"$TITLE\") | .number" | head -n1)
           if [ -n "$EXISTING" ]; then
@@ -252,6 +250,10 @@ jobs:
               || { echo "issue update failed — the same dispositions are committed in reports/vendor-radar/"; exit 0; }
             NUM="$EXISTING"
           else
+            if [ "$(cat /tmp/vendor-review-count)" = "0" ]; then
+              echo "No pending reviews and no existing queue issue."
+              exit 0
+            fi
             ISSUE_URL=$(gh issue create \
               --title "$TITLE" \
               --body-file /tmp/vendor-radar-needs-human.md \
@@ -266,14 +268,8 @@ jobs:
             --description "Generator output waiting on a human decision" --force \
             && gh issue edit "$NUM" --add-label founder-call \
             || echo "founder-call labeling failed — issue #$NUM is filed without it"
-          # Supersession: date-anchored prefixes (every dated issue starts "… 20YY-MM-DD"), so the
-          # standing founder-call list (#378, "vendor-radar: candidates needing a founder call")
-          # never matches. The second prefix covers this generator's pre-2026-10 issue title.
-          # Scan PRs are never closed here — the seen-ledger makes daily reports additive.
-          pnpm tsx rankings-engine/scripts/close-superseded.ts --kind issue \
-            --title-prefix "vendor-radar: needs-human candidates 20" \
-            --title-prefix "vendor-radar: candidates 20" \
-            --successor "$NUM" || echo "supersession close failed — see run logs"
+          # Date-based supersession loses disjoint unresolved candidates. Keep legacy issues
+          # and their comments intact; the standing queue has no automatic close path.
 
       # Bring-up PR for auto-approved passers: roster append (radar-bringup.ts, capped at 3 per
       # run to bound judge spend) + the scoped standard engine run per added product, landing as
