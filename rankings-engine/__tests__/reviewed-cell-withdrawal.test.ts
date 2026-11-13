@@ -12,7 +12,7 @@ const hash = (v: string | Buffer) => createHash('sha256').update(v).digest('hex'
 const digest = (v: unknown) => hash(JSON.stringify(v))
 const readJson = (file: string) => JSON.parse(fs.readFileSync(file, 'utf8'))
 const roots: string[] = []
-afterEach(() => roots.splice(0).forEach(root => fs.rmSync(root, { recursive: true, force: true })))
+afterEach(() => roots.splice(0).forEach(root => fs.rmSync(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })))
 const arena = 'customer-data-platforms', dir = `open-rankings/${arena}`
 const targets = ['hightouch:pii-field-controls', 'rudderstack:third-party-source-feeds']
 const cache = (r: Verdict) => `rankings-engine/cache/judge/${arena}/${r.productId}/${r.storyId}.json`
