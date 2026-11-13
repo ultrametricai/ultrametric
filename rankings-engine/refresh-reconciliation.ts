@@ -47,20 +47,23 @@ function validCache(snapshot: Snapshot, row: Verdict): boolean {
     && equal(cache.data.verdict, row))
 }
 
-/** Scheduled producer only. No model calls, cache rewrites, evidence edits or derivation. */
-export function reconcileRefresh({ arena, baseline, root = process.cwd() }: { arena: string; baseline: string; root?: string }): ReconciliationReport {
-  if (!identifier.test(arena) || !sha.test(baseline)) throw new Error('Expected an arena and pinned 40-character baseline SHA')
+function retentionContext(arena: string, root: string) {
   const git = (...args: string[]) => execFileSync('git', args, { cwd: root, encoding: 'utf8', maxBuffer: 128 * 1024 * 1024 }).trim()
   const dir = `open-rankings/${arena}`
   const ledgerPath = `rankings-engine/cache/refresh-retention/${arena}/decisions.json`
-  // Check every path component, including dangling links and temporary write targets.
-  // This is a local checkout guard, not a defense against concurrent filesystem mutation.
+  // Check every path component below the checkout root, including dangling links and
+  // temporary write targets. This is a local checkout guard, not a defense against
+  // concurrent filesystem mutation. The root itself is resolved first, so a checkout
+  // that merely lives under a symlinked prefix (macOS /tmp and /var, worktrees in
+  // symlinked locations) is accepted; only symlinks inside the repo-relative path are
+  // rejected.
+  const resolvedRoot = fs.realpathSync(path.resolve(root))
   const regularPath = (file: string) => {
-    const target = path.resolve(root, file)
-    const relative = path.relative(path.resolve(root), target)
+    const target = path.resolve(resolvedRoot, file)
+    const relative = path.relative(resolvedRoot, target)
     if (relative.startsWith('..') || path.isAbsolute(relative)) throw new Error(`Path escapes checkout: ${file}`)
-    const parts = target.split(path.sep).filter(Boolean)
-    let current = path.parse(target).root
+    const parts = relative.split(path.sep).filter(Boolean)
+    let current = resolvedRoot
     for (let i = 0; i < parts.length; i++) {
       current = path.join(current, parts[i])
       let stat: fs.Stats
@@ -114,26 +117,186 @@ export function reconcileRefresh({ arena, baseline, root = process.cwd() }: { ar
     if (!fs.lstatSync(target).isFile()) throw new Error(`Expected a regular current file: ${file}`)
     return JSON.parse(fs.readFileSync(target, 'utf8'))
   }
-  const load = (ref: string | null): Snapshot => {
-    const products = ProductSchema.array().parse(read(ref, `${dir}/products.json`))
-    const stories = StorySchema.array().parse(read(ref, `${dir}/stories.json`))
+  const loaded = new Map<string, Snapshot>()
+  const load = (ref: string | null, reader = (file: string, optional = false) => read(ref, file, optional)): Snapshot => {
+    if (ref && loaded.has(ref)) return loaded.get(ref)!
+    const products = ProductSchema.array().parse(reader(`${dir}/products.json`))
+    const stories = StorySchema.array().parse(reader(`${dir}/stories.json`))
     for (const collection of [products, stories]) {
       if (new Set(collection.map(item => item.id)).size !== collection.length
           || collection.some(item => !identifier.test(item.id))) throw new Error('Unsafe or duplicate catalog identifiers')
     }
-    const rows = VerdictSchema.array().parse(read(ref, `${dir}/verdicts.json`))
+    const rows = VerdictSchema.array().parse(reader(`${dir}/verdicts.json`))
     if (new Set(rows.map(key)).size !== rows.length || rows.length !== products.length * stories.length
         || rows.some(row => !products.some(p => p.id === row.productId) || !stories.some(s => s.id === row.storyId))) {
       throw new Error('Verdict matrix must contain every catalog cell exactly once')
     }
     const packs: Snapshot['packs'] = {}, caches: Snapshot['caches'] = {}
     for (const product of products) {
-      packs[product.id] = EvidenceSchema.array().parse(read(ref, `${dir}/evidence/${product.id}.json`))
+      packs[product.id] = EvidenceSchema.array().parse(reader(`${dir}/evidence/${product.id}.json`))
       if (new Set(packs[product.id].map(item => item.id)).size !== packs[product.id].length) throw new Error('Duplicate evidence IDs')
     }
-    for (const row of rows) caches[key(row)] = read(ref, `rankings-engine/cache/judge/${arena}/${row.productId}/${row.storyId}.json`, true)
-    return { products, stories, rows, packs, caches }
+    for (const row of rows) caches[key(row)] = reader(`rankings-engine/cache/judge/${arena}/${row.productId}/${row.storyId}.json`, true)
+    const snapshot = { products, stories, rows, packs, caches }
+    if (ref) loaded.set(ref, snapshot)
+    return snapshot
   }
+  return { git, dir, ledgerPath, regularPath, read, load }
+}
+
+// Shared proof for producer baselines and repair candidates. The decision baseline
+// records which support was known when the raw model proposal was rejected.
+function verifyRetainedDecision(snapshot: Snapshot, row: Verdict, entry: z.infer<typeof Ledger>['retained'][number],
+  ancestor: string, context: ReturnType<typeof retentionContext>) {
+  const { git, load } = context
+  git('merge-base', '--is-ancestor', entry.decisionBaseline, ancestor)
+  git('merge-base', '--is-ancestor', entry.origin, entry.decisionBaseline)
+  const source = load(entry.origin), comparison = load(entry.decisionBaseline)
+  // Reviewed roster additions do not change existing cells. Authenticate the whole
+  // current roster against trusted ancestry, and preserve every historical product
+  // record and its order. Removal, replacement and taxonomy changes still fail closed.
+  const trusted = load(ancestor)
+  const preservesProducts = (historical: Snapshot) => equal(historical.products,
+    snapshot.products.filter(product => historical.products.some(item => item.id === product.id)))
+  const previous = comparison.rows.find(item => key(item) === key(row))
+  const original = source.rows.find(item => key(item) === key(row))
+  const raw = Cache.parse(snapshot.caches[key(row)]).verdict
+  if (!equal(trusted.products, snapshot.products) || !preservesProducts(source) || !equal(source.stories, snapshot.stories)
+      || !preservesProducts(comparison) || !equal(comparison.stories, snapshot.stories)
+      || !equal(previous, row) || !equal(original, row) || !validCache(source, row) || !validCache(snapshot, raw)
+      || !supportIntact(row, source.packs[row.productId], comparison.packs[row.productId])
+      || !supportIntact(row, comparison.packs[row.productId], snapshot.packs[row.productId])
+      || validateVerdictRules(raw, snapshot.packs[row.productId], snapshot.stories.find(item => item.id === row.storyId))
+      || !unsupportedFlips([row], [raw], comparison.packs, snapshot.packs).length) {
+    throw new Error('Retained baseline origin does not prove this decision')
+  }
+  const violation = validateVerdictRules(row, snapshot.packs[row.productId], snapshot.stories.find(item => item.id === row.storyId))
+  if (violation) throw new Error(`Invalid retained decision: ${violation}`)
+}
+
+/** Authenticate the effective repair snapshot without writes or model calls. */
+export function prepareRetainedRepair({ arena, main, candidate, targets, root = process.cwd() }: {
+  arena: string; main: string; candidate: (file: string) => string | null; targets: string[]; root?: string;
+}) {
+  if (!identifier.test(arena) || !sha.test(main)) throw new Error('Invalid repair retention identity')
+  const context = retentionContext(arena, root)
+  const { ledgerPath, read, load, regularPath } = context
+  const text = candidate(ledgerPath)
+  if (text === null) {
+    if (read(main, ledgerPath, true) !== null) throw new Error('Repair cannot remove retention provenance')
+    const rows = candidate(`open-rankings/${arena}/verdicts.json`)
+    if (rows !== null) for (const row of VerdictSchema.array().parse(JSON.parse(rows))) {
+      if (![row.productId, row.storyId].every(id => identifier.test(id))) throw new Error('Unsafe retained cell identity')
+      const cache = candidate(`rankings-engine/cache/judge/${arena}/${row.productId}/${row.storyId}.json`)
+      if (cache !== null) {
+        const raw = Cache.safeParse(JSON.parse(cache))
+        if (raw.success && !equal(raw.data.verdict, row)) throw new Error(`Missing retention provenance: ${key(row)}`)
+      }
+    }
+    return null
+  }
+  const ledger = Ledger.parse(JSON.parse(text))
+  const snapshot = load(null, (file, optional = false) => {
+    regularPath(file)
+    const content = candidate(file)
+    if (content === null && !optional) throw new Error(`Missing repair candidate file: ${file}`)
+    return content === null ? null : JSON.parse(content)
+  })
+  if (ledger.arena !== arena || ledger.identity !== identity(snapshot)
+      || new Set(ledger.retained.map(item => item.cell)).size !== ledger.retained.length) {
+    throw new Error('Retained repair identity mismatch')
+  }
+  const cells = new Set(ledger.retained.map(entry => entry.cell))
+  if (targets.some(cell => cells.has(cell))) throw new Error('Retained review target needs human review')
+  for (const entry of ledger.retained) {
+    const row = snapshot.rows.find(row => key(row) === entry.cell)
+    if (!row || validCache(snapshot, row)) throw new Error('Orphan retained repair entry')
+    // Only trusted-main ancestry survives the repair commit, not arbitrary PR history.
+    verifyRetainedDecision(snapshot, row, entry, main, context)
+  }
+  for (const row of snapshot.rows) {
+    if (!cells.has(key(row)) && !validCache(snapshot, row)) throw new Error(`Unproven repair cache: ${key(row)}`)
+  }
+  regularPath(ledgerPath)
+  const assertPreserved = (rows: Verdict[], packs: Snapshot['packs']) => {
+    if (!equal(rows.map(key), snapshot.rows.map(key))) throw new Error('Repair changed the retained snapshot matrix')
+    for (const row of snapshot.rows.filter(row => cells.has(key(row)))) {
+      if (!equal(rows.find(item => key(item) === key(row)), row) || !equal(packs[row.productId], snapshot.packs[row.productId])) {
+        throw new Error(`Retained repair inputs changed: ${key(row)}; human review required`)
+      }
+    }
+  }
+  return {
+    cells, assertPreserved,
+    ledgerFor(rows: Verdict[], packs: Snapshot['packs'], caches: Snapshot['caches']) {
+      assertPreserved(rows, packs)
+      const current = { ...snapshot, rows, packs, caches }
+      for (const row of rows) {
+        const cell = key(row)
+        if (cells.has(cell) ? !equal(caches[cell], snapshot.caches[cell]) : !validCache(current, row)) {
+          throw new Error(`Repair changed retained provenance or invalidated a raw cache: ${cell}`)
+        }
+      }
+      return { ...ledger, identity: identity(current) }
+    },
+  }
+}
+
+/** Maintainer integration only: preserve an authenticated snapshot and import reviewed products.
+ * This does not reconcile judgments or permit edits to either snapshot's inputs.
+ */
+export function migrateRetentionRoster({ arena, baseline, main, root = process.cwd() }: {
+  arena: string; baseline: string; main: string; root?: string;
+}) {
+  if (!identifier.test(arena) || !sha.test(baseline) || !sha.test(main)) throw new Error('Invalid roster migration identity')
+  const context = retentionContext(arena, root)
+  const { git, read, load, ledgerPath, regularPath } = context
+  git('merge-base', '--is-ancestor', baseline, 'HEAD')
+  git('merge-base', '--is-ancestor', main, 'HEAD')
+  const before = load(baseline), trusted = load(main), current = load(null)
+  const ledger = Ledger.parse(read(baseline, ledgerPath))
+  if (ledger.arena !== arena || ledger.identity !== identity(before)
+      || new Set(ledger.retained.map(entry => entry.cell)).size !== ledger.retained.length
+      || !equal(read(null, ledgerPath), ledger)) throw new Error('Roster migration requires the unchanged authenticated ledger')
+  if (!equal(before.stories, current.stories) || !equal(trusted.stories, current.stories)
+      || !equal(trusted.products, current.products)
+      || !equal(before.products, current.products.filter(p => before.products.some(old => old.id === p.id)))) {
+    throw new Error('Roster migration permits only reviewed product additions')
+  }
+  const cells = new Set(ledger.retained.map(entry => entry.cell))
+  for (const entry of ledger.retained) {
+    const row = before.rows.find(row => key(row) === entry.cell)
+    if (!row || validCache(before, row)) throw new Error('Orphan roster migration entry')
+    verifyRetainedDecision(before, row, entry, baseline, context)
+  }
+  for (const product of current.products) {
+    const source = before.products.some(p => p.id === product.id) ? before : trusted
+    if (!equal(source.packs[product.id], current.packs[product.id])) throw new Error(`Roster migration changed evidence: ${product.id}`)
+    for (const row of current.rows.filter(row => row.productId === product.id)) {
+      if (!equal(source.rows.find(old => key(old) === key(row)), row)
+          || !equal(source.caches[key(row)], current.caches[key(row)])
+          || (!cells.has(key(row)) && !validCache(current, row))
+          || validateVerdictRules(row, current.packs[product.id], current.stories.find(story => story.id === row.storyId))) {
+        throw new Error(`Roster migration changed or cannot prove cell: ${key(row)}`)
+      }
+    }
+  }
+  // Re-run historical proof against trusted main's expanded catalog before writing.
+  for (const entry of ledger.retained) {
+    verifyRetainedDecision(current, current.rows.find(row => key(row) === entry.cell)!, entry, main, context)
+  }
+  const migrated = { ...ledger, identity: identity(current) }
+  const target = regularPath(ledgerPath), temporary = regularPath(`${ledgerPath}.tmp`)
+  fs.writeFileSync(temporary, JSON.stringify(migrated, null, 2) + '\n')
+  fs.renameSync(temporary, target)
+  return migrated
+}
+
+/** Scheduled producer only. No model calls, cache rewrites, evidence edits or derivation. */
+export function reconcileRefresh({ arena, baseline, root = process.cwd() }: { arena: string; baseline: string; root?: string }): ReconciliationReport {
+  if (!identifier.test(arena) || !sha.test(baseline)) throw new Error('Expected an arena and pinned 40-character baseline SHA')
+  const context = retentionContext(arena, root)
+  const { git, dir, ledgerPath, regularPath, read, load } = context
   const report: ReconciliationReport = { arena, baseline, retained: [], accepted: [], blocked: [] }
   let before: Snapshot, current: Snapshot
   try {
@@ -147,7 +310,6 @@ export function reconcileRefresh({ arena, baseline, root = process.cwd() }: { ar
   const oldRows = new Map(before.rows.map(row => [key(row), row]))
   const unsupported = new Set(unsupportedFlips(before.rows, current.rows, before.packs, current.packs).map(key))
   const retained: z.infer<typeof Ledger>['retained'] = []
-  const origins = new Map<string, Snapshot>()
   // The model origin proves the retained judgment; the decision baseline proves
   // which evidence was already known when the raw proposal was rejected. These can
   // differ after repeated refreshes. Both must resolve to verified Git ancestors.
@@ -159,24 +321,7 @@ export function reconcileRefresh({ arena, baseline, root = process.cwd() }: { ar
     const entry = ledger.retained.find(item => item.cell === key(row))
     if (!entry || entry.origin === baseline) throw new Error('Missing retained baseline origin')
     if (entry.decisionBaseline === baseline) throw new Error('Decision baseline must be a proper ancestor')
-    git('merge-base', '--is-ancestor', entry.decisionBaseline, baseline)
-    git('merge-base', '--is-ancestor', entry.origin, entry.decisionBaseline)
-    let source = origins.get(entry.origin)
-    if (!source) { source = load(entry.origin); origins.set(entry.origin, source) }
-    let comparison = origins.get(entry.decisionBaseline)
-    if (!comparison) { comparison = load(entry.decisionBaseline); origins.set(entry.decisionBaseline, comparison) }
-    const previous = comparison.rows.find(item => key(item) === key(row))
-    const original = source.rows.find(item => key(item) === key(row))
-    const raw = Cache.parse(before.caches[key(row)]).verdict
-    if (!equal(source.products, before.products) || !equal(source.stories, before.stories)
-        || !equal(comparison.products, before.products) || !equal(comparison.stories, before.stories)
-        || !equal(previous, row) || !equal(original, row) || !validCache(source, row) || !validCache(before, raw)
-        || !supportIntact(row, source.packs[row.productId], comparison.packs[row.productId])
-        || !supportIntact(row, comparison.packs[row.productId], before.packs[row.productId])
-        || validateVerdictRules(raw, before.packs[row.productId], before.stories.find(item => item.id === row.storyId))
-        || !unsupportedFlips([row], [raw], comparison.packs, before.packs).length) {
-      throw new Error('Retained baseline origin does not prove this decision')
-    }
+    verifyRetainedDecision(before, row, entry, baseline, context)
     return entry.origin
   }
   const rows = current.rows.map(row => {

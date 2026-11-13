@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { batchCode, canonicalYcDomain, MODERN_BATCHES, normalizeDomain } from '../yc-shared'
+import { batchCode, canonicalYcDomain, MODERN_BATCHES, normalizeDomain, withYcBatch } from '../yc-shared'
 
 describe('batchCode', () => {
   it('converts full YC batch names to short codes', () => {
@@ -40,6 +40,12 @@ describe('canonicalYcDomain', () => {
     expect(canonicalYcDomain('paradev.com')).toBe('superset.sh')
   })
 
+  it('maps the verified Mastra product site without collapsing arbitrary subdomains', () => {
+    expect(canonicalYcDomain('code.mastra.ai')).toBe('mastra.ai')
+    expect(canonicalYcDomain('other.mastra.ai')).toBe('other.mastra.ai')
+    expect(canonicalYcDomain('tenant.example.com')).toBe('tenant.example.com')
+  })
+
   it('is the identity for every other domain', () => {
     expect(canonicalYcDomain('mercury.com')).toBe('mercury.com')
     expect(canonicalYcDomain('superset.sh')).toBe('superset.sh')
@@ -54,5 +60,28 @@ describe('MODERN_BATCHES', () => {
       'Winter 2025', 'Spring 2025', 'Summer 2025', 'Fall 2025',
       'Winter 2026', 'Spring 2026', 'Summer 2026', 'Fall 2026',
     ])
+  })
+})
+
+describe('withYcBatch', () => {
+  const product = { id: 'fixture', name: 'Fixture', vendor: 'Fixture', type: 'commercial' as const, urls: { site: 'https://fixture.example' } }
+
+  it('retains a verified baseline affiliation when the mirror omits the company', () => {
+    const prior = { ...product, ycBatch: 'W25' }
+    expect(withYcBatch(prior, undefined)).toBe(prior)
+    expect(withYcBatch(prior, 'Unspecified')).toBe(prior)
+    expect(withYcBatch(product, undefined)).toBe(product)
+  })
+
+  it('applies a matched batch without changing the input product', () => {
+    expect(withYcBatch(product, 'Winter 2025')).toEqual({ ...product, ycBatch: 'W25' })
+    expect(product).not.toHaveProperty('ycBatch')
+  })
+
+  it('keeps retained-arena metadata byte-stable when a match proposes an addition or correction', () => {
+    const prior = { ...product, ycBatch: 'W25' }
+    expect(withYcBatch(product, 'Winter 2025', true)).toBe(product)
+    expect(withYcBatch(prior, 'Spring 2026', true)).toBe(prior)
+    expect(withYcBatch(prior, undefined, true)).toBe(prior)
   })
 })

@@ -27,11 +27,13 @@ class ReviewGateTests(unittest.TestCase):
                  pages=None, changed=False, metadata_error=False, status_read_error=False,
                  author=None, pr_head=None, final_head=None, final_state='open',
                  status_runs=None, poll_run_ids=None, internal=None, files=None,
-                 file_mode="100644", reviews=None, final_override=None, proof_error=False):
+                 file_mode="100644", reviews=None, final_override=None, proof_error=False,
+                 permissions=None, permission_error=False, final_reviews=None,
+                 final_permissions=None, proof_reads=None):
         source = (Path(__file__).resolve().parents[2] / '.github/workflows/review-findings.yml').read_text()
         selection = source.split('        run: |\n', 1)[1].split('\n  findings:', 1)[0]
         selection = '\n'.join(line[10:] if line.startswith('          ') else line for line in selection.splitlines())
-        source = source.split('- name: Gate unresolved Greptile findings', 1)[1].split('        run: |\n', 1)[1]
+        source = source.split('- name: Check source trust and Greptile findings', 1)[1].split('        run: |\n', 1)[1]
         code = '\n'.join(line[10:] if line.startswith('          ') else line for line in source.splitlines())
         posts, reads = [], []
         prior = list(status or [])
@@ -52,10 +54,16 @@ class ReviewGateTests(unittest.TestCase):
                 tree_nodes.setdefault(child,{})
                 parent=child
 
+        review_reads, permission_reads = 0, 0
+
         def output(args, input=None, **_kwargs):
+            nonlocal review_reads, permission_reads
             if '--slurp' in args:
                 if '/files?' in args[-1]:return json.dumps([files])
-                if '/reviews?' in args[-1]:return json.dumps([reviews or []])
+                if '/reviews?' in args[-1]:
+                    review_reads += 1
+                    current = final_reviews if review_reads > 1 and final_reviews is not None else reviews
+                    return json.dumps([current or []])
                 return json.dumps([prs])
             endpoint = args[2]
             reads.append(endpoint)
@@ -78,6 +86,12 @@ class ReviewGateTests(unittest.TestCase):
                     'headRefOid': OTHER if changed else SHA, 'reviewThreads': page}}}})
             if '/git/trees/' in endpoint:
                 return json.dumps({'truncated':False,'tree':list(tree_nodes[endpoint.rsplit('/',1)[1]].values())})
+            if '/collaborators/' in endpoint and endpoint.endswith('/permission'):
+                permission_reads += 1
+                if permission_error:
+                    raise RuntimeError('maintainer permissions unavailable')
+                current = final_permissions if permission_reads > 1 and final_permissions is not None else permissions
+                return json.dumps(current or {'permission': 'none', 'user': {}})
             if '/check-runs?' in endpoint:
                 return json.dumps({'check_runs': checks})
             if endpoint.endswith('/status'):
@@ -100,7 +114,12 @@ class ReviewGateTests(unittest.TestCase):
         env = {'REPO': 'owner/repo', 'SERVER_URL': 'https://github.com', 'RUN_ID': '123',
                'TARGET_PR': target, 'TARGET_HEAD': head}
         namespace = {}
-        with patch.dict(os.environ, env), patch('subprocess.check_output', side_effect=output), patch('refresh_policy.verify_provenance',side_effect=RuntimeError('No canonical receipt') if proof_error else None):
+        def provenance(*_args):
+            if proof_reads is not None:
+                proof_reads.append(True)
+            if proof_error:
+                raise RuntimeError('No canonical receipt')
+        with patch.dict(os.environ, env), patch('subprocess.check_output', side_effect=output), patch('refresh_policy.verify_provenance',side_effect=provenance):
             try:
                 with tempfile.NamedTemporaryFile(mode='r+') as selected:
                     with patch.dict(os.environ, {'GITHUB_OUTPUT': selected.name}):
@@ -153,6 +172,125 @@ class ReviewGateTests(unittest.TestCase):
         posts,_=self.run_gate(internal=self.internal_pr(),reviews=[
             {'id':1,'user':{'id':7,'type':'User'},'state':'CHANGES_REQUESTED'}])
         self.assertEqual(posts[0]['state'],'pending')
+
+    def manual_pr(self):
+        return {**self.internal_pr(), 'labels': [{'name': 'maintainer-manual-merge'}], 'auto_merge': None}
+
+    def maintainer_approval(self, *, head=SHA, state='APPROVED'):
+        return {'id': 10, 'user': {'id': 7, 'login': 'maintainer', 'type': 'User'},
+                'state': state, 'commit_id': head}
+
+    def maintainer_permission(self, permission='write'):
+        return {'permission': permission, 'user': {'id': 7, 'login': 'maintainer', 'type': 'User'}}
+
+    def test_explicit_current_head_maintainer_review_can_replace_a_missing_receipt(self):
+        for role in ['write', 'admin']:
+            with self.subTest(role=role):
+                proof_reads = []
+                posts, reads = self.run_gate(internal=self.manual_pr(), proof_error=True,
+                    reviews=[self.maintainer_approval()], permissions=self.maintainer_permission(role),
+                    proof_reads=proof_reads)
+                self.assertEqual(posts[0]['state'], 'success')
+                self.assertIn('Maintainer-reviewed by maintainer', posts[0]['description'])
+                self.assertEqual(proof_reads, [])
+                self.assertEqual(reads.count('repos/owner/repo/collaborators/maintainer/permission'), 2)
+        # GitHub maps the maintain role to the legacy write permission.
+        permission = {**self.maintainer_permission(), 'role_name': 'maintain'}
+        posts, _ = self.run_gate(internal=self.manual_pr(), proof_error=True,
+            reviews=[self.maintainer_approval()], permissions=permission)
+        self.assertEqual(posts[0]['state'], 'success')
+
+    def test_manual_label_alone_or_old_bot_comment_and_dismissed_reviews_cannot_approve(self):
+        approval = self.maintainer_approval()
+        cases = [[], [self.maintainer_approval(head=OTHER)],
+                 [self.maintainer_approval(state='COMMENTED')],
+                 [self.maintainer_approval(state='DISMISSED')],
+                 [{**approval, 'user': {**approval['user'], 'type': 'Bot'}}],
+                 [{**approval, 'user': {**approval['user'], 'id': '7'}}],
+                 [approval, {**self.maintainer_approval(state='DISMISSED'), 'id': 11}]]
+        for reviews in cases:
+            with self.subTest(reviews=reviews):
+                posts, _ = self.run_gate(internal=self.manual_pr(), proof_error=True,
+                    reviews=reviews, permissions=self.maintainer_permission(), status=[successful_status()])
+                self.assertEqual(posts[0]['state'], 'pending')
+
+    def test_manual_route_requires_auto_merge_explicitly_off(self):
+        for value in [{}, {'enabled_by': {'login': 'maintainer'}}, False]:
+            posts, _ = self.run_gate(internal={**self.manual_pr(), 'auto_merge': value},
+                reviews=[self.maintainer_approval()], permissions=self.maintainer_permission())
+            self.assertEqual(posts[0]['state'], 'pending')
+        pr = self.manual_pr()
+        del pr['auto_merge']
+        posts, _ = self.run_gate(internal=pr, reviews=[self.maintainer_approval()],
+                                 permissions=self.maintainer_permission())
+        self.assertEqual(posts[0]['state'], 'pending')
+
+    def test_manual_route_authenticates_identity_and_write_permission_and_fails_closed(self):
+        good = self.maintainer_permission()
+        cases = [{'permissions': self.maintainer_permission('read')},
+                 {'permissions': self.maintainer_permission('none')},
+                 {'permissions': {**good, 'user': {**good['user'], 'id': 8}}},
+                 {'permissions': {**good, 'user': {**good['user'], 'login': 'another'}}},
+                 {'permissions': {**good, 'user': {**good['user'], 'type': 'Bot'}}},
+                 {'permissions': {'permission': 'write'}}, {'permission_error': True}]
+        for case in cases:
+            with self.subTest(case=case):
+                posts, _ = self.run_gate(internal=self.manual_pr(), reviews=[self.maintainer_approval()],
+                    status=[successful_status()], **case)
+                self.assertEqual(posts[0]['state'], 'pending')
+
+    def test_manual_authority_is_revalidated_before_publishing(self):
+        cases = [{'final_reviews': []},
+                 {'final_reviews': [self.maintainer_approval(state='DISMISSED')]},
+                 {'final_permissions': self.maintainer_permission('read')},
+                 {'final_override': {'labels': []}, 'proof_error': True},
+                 {'final_override': {'auto_merge': {}}}]
+        for case in cases:
+            with self.subTest(case=case):
+                posts, _ = self.run_gate(internal=self.manual_pr(), reviews=[self.maintainer_approval()],
+                    permissions=self.maintainer_permission(), status=[successful_status()], **case)
+                self.assertEqual(posts[0]['state'], 'pending')
+
+    def test_manual_route_preserves_holds_scope_author_identity_and_current_head_checks(self):
+        pr = self.manual_pr()
+        cases = [{'internal': {**pr, 'labels': pr['labels'] + [{'name': 'hold'}]}},
+                 {'internal': {**pr, 'labels': pr['labels'] + [{'name': 'manual-merge'}]}},
+                 {'internal': {**pr, 'draft': True}},
+                 {'internal': {**pr, 'user': {**pr['user'], 'id': 1}}},
+                 {'internal': {**pr, 'head': {**pr['head'], 'repo': {'full_name': 'fork/repo'}}}},
+                 {'files': [{'filename': '.github/workflows/ci.yml', 'status': 'modified'}]},
+                 {'internal': {**pr, 'changed_files': 2}},
+                 {'file_mode': '120000'}, {'file_mode': '100755'}, {'changed': True}]
+        for case in cases:
+            with self.subTest(case=case):
+                posts, _ = self.run_gate(**{'internal': pr, 'reviews': [self.maintainer_approval()],
+                    'permissions': self.maintainer_permission(), 'status': [successful_status()], **case})
+                self.assertFalse(any(post['state'] == 'success' for post in posts))
+
+    def test_manual_approval_does_not_replace_current_greptile_review_or_findings(self):
+        for checks in [[], [{'id': 21, 'app': {'id': 867647}, 'status': 'in_progress', 'conclusion': None}]]:
+            posts, _ = self.run_gate(internal=self.manual_pr(), reviews=[self.maintainer_approval()],
+                permissions=self.maintainer_permission(), checks=checks)
+            self.assertEqual(posts[0]['state'], 'pending')
+        threads = [{'nodes': [{'isResolved': False, 'comments': {'nodes': [
+            {'author': {'login': 'greptile-apps'}}]}}],
+            'pageInfo': {'hasNextPage': False, 'endCursor': None}}]
+        posts, _ = self.run_gate(internal=self.manual_pr(), reviews=[self.maintainer_approval()],
+            permissions=self.maintainer_permission(), threads=threads)
+        self.assertEqual(posts[0]['state'], 'failure')
+        other = {'id': 11, 'user': {'id': 8, 'login': 'reviewer', 'type': 'User'},
+                 'state': 'CHANGES_REQUESTED', 'commit_id': SHA}
+        posts, _ = self.run_gate(internal=self.manual_pr(), reviews=[self.maintainer_approval(), other],
+            permissions=self.maintainer_permission())
+        self.assertEqual(posts[0]['state'], 'pending')
+
+    def test_automatic_generated_route_still_requires_its_receipt(self):
+        proof_reads = []
+        posts, _ = self.run_gate(internal=self.internal_pr(), proof_error=True,
+            reviews=[self.maintainer_approval()], permissions=self.maintainer_permission(),
+            proof_reads=proof_reads)
+        self.assertEqual(posts[0]['state'], 'pending')
+        self.assertEqual(len(proof_reads), 1)
 
     def test_unchanged_success_creates_no_status_and_never_resets_pending(self):
         posts, _ = self.run_gate(status=[successful_status()])

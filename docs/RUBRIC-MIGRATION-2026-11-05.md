@@ -39,7 +39,7 @@ Per the labeled-migration treatment the two precedents established:
    labeled discontinuity instead of a silent evidence-looking move.
 4. **Derived data regenerates through generators only**: `derive --category`,
    `compute-confidence-intervals`, `generate-vendor-reviews`, `generate-story-graph`,
-   `generate-step-rankings`, `generate-badges.mjs`.
+   `generate-step-rankings`.
 5. **Affiliated and own-vendor rows get a favorable-flip audit.** The judge is an
    Anthropic model; on rows for Anthropic products and founder-affiliated products, every
    favorable flip in a wave is adversarially re-read against its cited evidence and the

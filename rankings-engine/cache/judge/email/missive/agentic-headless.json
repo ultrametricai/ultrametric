@@ -1,19 +1,18 @@
 {
-  "hash": "b7798a72f393d96df629d12f686adbb708d0f333b2a71de3350df48960e24f46",
+  "hash": "52df4e4fba9e22ba080daba05a6add60b9fd74226afb50b95d946759cae41d62",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Missive is a hosted SaaS inbox, so headless use means driving it programmatically without the UI. It documents a REST API with endpoints for conversations, drafts, posts, contacts and labels, published rate limits with 429/Retry-After handling, and an official MCP server, so scripts or agents can act on the inbox. However, nothing documents a CLI, a CI integration, or headless/CI usage guidance, and no OpenAPI spec exists (probes returned 404). Missing for 10: official CLI or CI-runner tooling, documented CI/headless automation workflows, OpenAPI spec, independent or hands-on corroboration.",
+    "rationale": "Missive is a SaaS team inbox with no CLI or headless binary, but it documents its own public REST API (/v1 endpoints for conversations, drafts, posts, contacts, labels and analytics, with explicit rate limits and 429 handling) plus an MCP server. That lets scripts or CI jobs drive the product programmatically without the UI, and drafts can be created through the API. missing for 10: official CLI or headless runner, CI-specific documentation or examples, OpenAPI spec for tooling, independent hands-on corroboration of headless/CI usage.",
     "evidenceIds": [
+      "missive-docs-15",
       "missive-supp-endpoints-reference",
       "missive-supp-rate-limits",
-      "missive-docs-31",
-      "missive-docs-50",
       "missive-docs-47",
-      "missive-probe-4",
-      "missive-probe-3"
+      "missive-docs-50",
+      "missive-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -21,20 +20,24 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
-          "evidenceId": "missive-supp-endpoints-reference",
-          "quote": "Complete reference for Missive API endpoints: analytics, conversations, drafts, posts, contacts, labels, and more"
+          "evidenceId": "missive-docs-15",
+          "quote": "Use the Rest API to enrich Missive conversations with content from anywhere: commits from GitHub, transactions from Stripe,"
         },
         {
-          "evidenceId": "missive-docs-50",
-          "quote": "Drafts created outside the composer, by the assistant, by a rule, or through the API and MCP server, now resolve {{ user.name }} and {{ user.email }} from your organization profile"
+          "evidenceId": "missive-supp-endpoints-reference",
+          "quote": "Complete reference for Missive API endpoints: analytics, conversations, drafts, posts, contacts, labels, and more"
         },
         {
           "evidenceId": "missive-supp-rate-limits",
           "quote": "300 requests per minute (equivalent to 5 requests per second)"
         },
         {
-          "evidenceId": "missive-probe-4",
-          "quote": "official MCP server documented at https://missiveapp.com/docs/ai/mcp/server"
+          "evidenceId": "missive-docs-50",
+          "quote": "Drafts created outside the composer, by the assistant, by a rule, or through the API and MCP server, now resolve {{ user.name }} and {{ user.email }} from your organization profile, exactly like the composer does."
+        },
+        {
+          "evidenceId": "missive-docs-47",
+          "quote": "API & MCP access"
         }
       ]
     },

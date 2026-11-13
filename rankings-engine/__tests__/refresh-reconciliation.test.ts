@@ -5,7 +5,7 @@ import { execFileSync, spawnSync } from 'node:child_process'
 import { afterEach, describe, expect, it } from 'vitest'
 import type { Evidence, Story, Verdict } from '../../lib/schemas'
 import { CELL_HASH_VERSION, PROMPT_VERSION, cellHash } from '../stages/judge'
-import { reconcileRefresh, ReconciliationError } from '../refresh-reconciliation'
+import { migrateRetentionRoster, prepareRetainedRepair, reconcileRefresh, ReconciliationError } from '../refresh-reconciliation'
 
 const story: Story = { id: 'story', title: 'Install dependencies', persona: 'developer', theme: 'core', group: 'core', weight: 2 }
 const evidence: Evidence = { id: 'old', tier: 'claimed-docs', url: 'https://example.invalid/docs', excerpt: 'Install dependencies with the CLI.', fetchedAt: '2026-11-01T00:00:00Z' }
@@ -216,4 +216,131 @@ describe('scheduled refresh reconciliation', { timeout: 60000 }, () => {
     expect(f.read(`${f.dir}/verdicts.json`)).toEqual([{ ...proposal, quality: 8 }])
   })
 
+  it('accepts a checkout root reached through a symlinked prefix', () => {
+    // macOS tmpdirs live under the /var -> /private/var symlink; a checkout's location
+    // must not trip the regular-path guard, only symlinks inside the repo may.
+    const f = fixture(); f.save(proposal)
+    const alias = fs.mkdtempSync(path.join(os.tmpdir(), 'refresh-reconciliation-alias-')); roots.push(alias)
+    const link = path.join(alias, 'repo')
+    fs.symlinkSync(f.root, link)
+    expect(reconcileRefresh({ arena: 'test', baseline: f.baseline, root: link }).retained).toEqual(['vendor:story'])
+  })
+
+  it('rejects a symlinked component inside the repo-relative path', () => {
+    const f = fixture(); f.save(proposal)
+    const real = path.join(f.root, 'open-rankings/test/verdicts.json')
+    const aside = path.join(f.root, 'open-rankings/test/verdicts.real.json')
+    fs.renameSync(real, aside); fs.symlinkSync(aside, real)
+    const blocked = f.blocked()
+    expect(String(blocked[0].reason)).toContain('Expected regular file and directory parents')
+  })
+
+})
+
+
+describe('authenticated retention roster migration', { timeout: 60000 }, () => {
+  function migrationFixture() {
+    const f = fixture()
+    f.save(proposal); f.run()
+    const baseline = f.commit()
+    const originalProducts = f.read(`${f.dir}/products.json`)
+    const added = { ...originalProducts[0], id: 'added', name: 'Added' }
+    const addedRow = { ...old, productId: 'added' }
+    const addedCache = 'rankings-engine/cache/judge/test/added/story.json'
+    // Inserting a reviewed product before an existing one preserves its relative order.
+    f.write(`${f.dir}/products.json`, [added, ...originalProducts])
+    f.write(`${f.dir}/evidence/added.json`, [evidence])
+    f.write(`${f.dir}/verdicts.json`, [addedRow, old])
+    f.write(addedCache, { hash: cellHash(story, [evidence], PROMPT_VERSION), keyVersion: CELL_HASH_VERSION, verdict: addedRow, transport: 'mock' })
+    const main = f.commit()
+    const candidate = (file: string) => fs.existsSync(path.join(f.root, file)) ? fs.readFileSync(path.join(f.root, file), 'utf8') : null
+    const migrate = (base = baseline, trusted = main) => migrateRetentionRoster({ arena: 'test', baseline: base, main: trusted, root: f.root })
+    return { ...f, baseline, main, addedCache, candidate, migrate }
+  }
+
+  it('changes only the authenticated ledger identity and passes repair verification', () => {
+    const f = migrationFixture(), before = f.read(f.ledger)
+    expect(() => prepareRetainedRepair({ arena: 'test', main: f.main, root: f.root, candidate: f.candidate, targets: [] })).toThrow('identity mismatch')
+    const result = f.migrate()
+    expect(result.retained).toEqual(before.retained)
+    expect(result.identity).not.toBe(before.identity)
+    expect(f.git('diff', '--name-only')).toBe(f.ledger)
+    expect(prepareRetainedRepair({ arena: 'test', main: f.main, root: f.root, candidate: f.candidate, targets: [] })!.cells).toEqual(new Set(['vendor:story']))
+  })
+
+  it('authenticates a sibling reviewed main branch after explicit integration', () => {
+    const f = migrationFixture()
+    const origin = f.read(f.ledger).retained[0].origin
+    const tree = f.git('rev-parse', 'HEAD^{tree}')
+    const main = f.git('commit-tree', tree, '-p', origin, '-m', 'reviewed roster branch')
+    const integrated = f.git('commit-tree', tree, '-p', f.baseline, '-p', main, '-m', 'maintainer integration')
+    f.git('reset', '--hard', integrated)
+    f.migrate(f.baseline, main)
+    expect(prepareRetainedRepair({ arena: 'test', main, root: f.root, candidate: f.candidate, targets: [] })!.cells).toEqual(new Set(['vendor:story']))
+  })
+
+  it.each(['origin', 'decisionBaseline', 'duplicate', 'orphan'])('rejects historically tampered %s provenance', kind => {
+    const f = migrationFixture()
+    f.git('reset', '--hard', f.baseline)
+    const ledger = f.read(f.ledger)
+    if (kind === 'duplicate') ledger.retained.push(ledger.retained[0])
+    else if (kind === 'orphan') ledger.retained[0].cell = 'absent:story'
+    else ledger.retained[0][kind] = '0'.repeat(40)
+    f.write(f.ledger, ledger); const baseline = f.commit()
+    expect(() => f.migrate(baseline, baseline)).toThrow()
+    expect(f.git('status', '--porcelain')).toBe('')
+  })
+
+  it.each(['ledger', 'old-product', 'taxonomy', 'old-evidence', 'old-row', 'old-cache', 'new-product', 'new-evidence', 'new-row', 'new-cache'])('rejects %s tampering without writing', kind => {
+    const f = migrationFixture()
+    if (kind === 'ledger') f.write(f.ledger, { ...f.read(f.ledger), identity: 'forged' })
+    if (kind === 'old-product' || kind === 'new-product') {
+      const rows = f.read(`${f.dir}/products.json`)
+      rows[kind === 'new-product' ? 0 : 1].name = 'Changed'
+      f.write(`${f.dir}/products.json`, rows)
+    }
+    if (kind === 'taxonomy') f.write(`${f.dir}/stories.json`, [{ ...story, title: 'Changed' }])
+    if (kind.endsWith('evidence')) f.write(`${f.dir}/evidence/${kind.startsWith('old') ? 'vendor' : 'added'}.json`, [{ ...evidence, fetchedAt: '2026-11-02T00:00:00Z' }])
+    if (kind.endsWith('row')) {
+      const rows = f.read(`${f.dir}/verdicts.json`)
+      rows[kind.startsWith('new') ? 0 : 1].rationale = 'Changed rationale'
+      f.write(`${f.dir}/verdicts.json`, rows)
+    }
+    if (kind.endsWith('cache')) {
+      const file = kind.startsWith('old') ? f.cache : f.addedCache
+      f.write(file, { ...f.read(file), transport: 'changed metadata' })
+    }
+    const before = f.git('diff'), ledger = f.candidate(f.ledger)
+    expect(() => f.migrate()).toThrow()
+    expect(f.git('diff')).toBe(before)
+    expect(f.candidate(f.ledger)).toBe(ledger)
+    expect(fs.existsSync(path.join(f.root, `${f.ledger}.tmp`))).toBe(false)
+  })
+
+  it.each(['baseline', 'main'])('rejects a nonancestor %s without writing', kind => {
+    const f = migrationFixture()
+    f.write('divergent.json', {}); const divergent = f.commit()
+    f.git('reset', '--hard', f.main)
+    expect(() => f.migrate(kind === 'baseline' ? divergent : f.baseline, kind === 'main' ? divergent : f.main)).toThrow()
+    expect(f.git('status', '--porcelain')).toBe('')
+  })
+
+  it('rejects a historically forged ledger even when the current copy matches', () => {
+    const f = migrationFixture()
+    f.git('reset', '--hard', f.baseline)
+    const forged = { ...f.read(f.ledger), identity: 'forged' }
+    f.write(f.ledger, forged); const baseline = f.commit()
+    expect(() => f.migrate(baseline, baseline)).toThrow('unchanged authenticated ledger')
+    expect(f.git('status', '--porcelain')).toBe('')
+  })
+
+  it('rejects a symlinked temporary ledger before writing', () => {
+    const f = migrationFixture(), outside = path.join(f.root, 'sentinel')
+    fs.writeFileSync(outside, 'unchanged')
+    fs.symlinkSync(outside, path.join(f.root, `${f.ledger}.tmp`))
+    const before = f.candidate(f.ledger)
+    expect(() => f.migrate()).toThrow('regular file and directory parents')
+    expect(f.candidate(f.ledger)).toBe(before)
+    expect(fs.readFileSync(outside, 'utf8')).toBe('unchanged')
+  })
 })

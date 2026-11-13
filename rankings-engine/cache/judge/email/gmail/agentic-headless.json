@@ -1,19 +1,18 @@
 {
-  "hash": "9dccc46c6c6c65cc6a48902ab99359c2f4795eb78e0c06239440df40f3dca738",
+  "hash": "2a87827ef7cacb4d0b518200adff835f35fa1e1e08c20acc8a5219218d891766",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Gmail's own REST API lets the mailbox be driven without the UI. It documents automated or programmatic sending, a send endpoint, mailbox management, and server push notifications to a backend application, which together give a headless path for automation. Nothing in the evidence covers running it in CI specifically: there is no official CLI, no non-interactive or service-account authentication, and no CI pipeline guidance. Community reports of OAuth restrictions and costly security assessments for read access suggest real friction for unattended use. Missing for 10: official CLI or headless runner, documented non-interactive/CI authentication, CI-specific guidance, independent hands-on corroboration of CI usage.",
+    "rationale": "Gmail's first-party RESTful API supports headless, server-side automation: programmatic sending, mailbox management, and push notifications to a backend server. IMAP/SMTP with OAuth 2.0 also allows non-UI access. Nothing in the evidence covers CI-specific use, such as non-interactive or service-account auth for pipelines, a CLI, or CI guides, and community reports describe OAuth and verification restrictions on third-party access. missing for 10: documented non-interactive/CI authentication, an official CLI or CI workflow guidance, independent hands-on corroboration of CI usage",
     "evidenceIds": [
       "gmail-docs-1",
-      "gmail-docs-20",
-      "gmail-docs-34",
       "gmail-docs-56",
+      "gmail-docs-20",
       "gmail-docs-3",
-      "gmail-docs-21",
-      "gmail-docs-58"
+      "gmail-docs-59",
+      "gmail-docs-43"
     ],
     "support": {
       "relation": "direct",
@@ -25,16 +24,16 @@
           "quote": "Automated or programmatic message sending"
         },
         {
-          "evidenceId": "gmail-docs-20",
-          "quote": "POST https://gmail.googleapis.com/gmail/v1/users/{userId}/messages/send"
-        },
-        {
           "evidenceId": "gmail-docs-56",
-          "quote": "The Gmail API lets you view and manage Gmail mailbox data like threads, messages, and labels."
+          "quote": "The Gmail API is a RESTful API that lets you access Gmail mailboxes and send mail."
         },
         {
           "evidenceId": "gmail-docs-3",
           "quote": "Whenever a mailbox changes, the Gmail API notifies your backend server application."
+        },
+        {
+          "evidenceId": "gmail-docs-43",
+          "quote": "The Gmail IMAP, POP, and SMTP servers support authorization with the industry-standard OAuth 2.0 protocol."
         }
       ]
     },

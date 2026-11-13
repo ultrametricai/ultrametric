@@ -87,6 +87,15 @@ class ProvenanceTests(unittest.TestCase):
                         path.replace('fixture/', 'fixture/nested/'), path + '.bak']:
             self.assertFalse(policy.allowed_path('story-runner', invalid))
 
+    def test_retired_embeds_cannot_be_reintroduced_by_refreshes(self):
+        for kind in ['story-runner', 'vendor-radar', 'vendor-radar-bringup']:
+            for path in ['public/badges/stripe-score.svg',
+                         'public/badges/stripe-agent-ready.svg',
+                         'public/badges/stripe-certified.svg']:
+                self.assertFalse(policy.allowed_path(kind, path))
+        self.assertTrue(policy.allowed_path('vendor-radar-bringup',
+                                            'open-rankings/payments/products.json'))
+
     def test_only_explicit_continuation_workflows_can_attest_new_heads(self):
         for path in ['refresh-repair.yml','refresh-automerge.yml']:
             def change(d):
@@ -178,7 +187,7 @@ class ScopeTests(unittest.TestCase):
             self.assertFalse(policy.actions_author({**policy.ACTIONS_BOT,key:value}))
 
     def test_manual_stops_fail_closed(self):
-        for label in ['hold','HOLD','manual-merge','do-not-merge','automerge-hold']:
+        for label in ['hold','HOLD','manual-merge','do-not-merge','automerge-hold','maintainer-manual-merge']:
             self.assertTrue(policy.held({'labels':[{'name':label}]}))
         self.assertTrue(policy.held({}))
         self.assertFalse(policy.held({'labels':[]}))
@@ -194,6 +203,60 @@ class ScopeTests(unittest.TestCase):
                           ('vendor-radar',f'reports/radar-imports/files/{HEAD+HEAD[:24]}/reports/vendor-radar/2026-11-05.md'),
                           ('vendor-radar-bringup','open-rankings/email/products.json')]:
             self.check(kind,path)
+
+
+    def test_radar_scan_can_retain_both_producers_without_losing_report_provenance(self):
+        # Reproduce the path families in failed vendor-radar run 42988044065.
+        launch_run = '2026-11-09-42593381153-1'
+        radar_run = '2026-11-11-42988044065-1'
+        digest = 'a' * 64
+        paths = [
+            f'rankings-engine/radar-discoveries/launch-watch-{launch_run}-scan.json',
+            f'rankings-engine/radar-discoveries/launch-watch-{launch_run}-fixture-roster-selection.json',
+            f'reports/launch-watch/runs/{launch_run}.json',
+            f'reports/launch-watch/runs/{launch_run}.md',
+            f'reports/launch-watch/runs/{launch_run}-triage.json',
+            f'reports/launch-watch/runs/{launch_run}-fixture-selection-triage.json',
+            f'reports/radar-imports/manifests/{digest}.json',
+            f'rankings-engine/radar-discoveries/vendor-radar-{radar_run}-scan.json',
+            f'reports/vendor-radar/runs/{radar_run}.json',
+            f'reports/vendor-radar/runs/{radar_run}.md',
+            f'reports/vendor-radar/runs/{radar_run}-triage.json',
+        ]
+        for suffix in ['json', 'md']:
+            paths.append(f'reports/radar-imports/files/{digest}/reports/launch-watch/2026-10-26.{suffix}')
+        files = [{'filename': path, 'status': 'added'} for path in paths]
+        policy.check_scope('vendor-radar', files, len(files), lambda _: '100644')
+
+    def test_launch_watch_report_scope_remains_data_only_and_scan_only(self):
+        digest = 'a' * 64
+        live = 'reports/launch-watch/runs/fixture-triage.json'
+        archived = f'reports/radar-imports/files/{digest}/reports/launch-watch/2026-10-26.md'
+        for path in [live, archived]:
+            for kind in ['story-runner', 'vendor-radar-bringup']:
+                with self.subTest(kind=kind, path=path), self.assertRaises(RuntimeError):
+                    self.check(kind, path)
+            for status in ['removed', 'renamed', 'copied']:
+                with self.subTest(status=status), self.assertRaises(RuntimeError):
+                    self.check('vendor-radar', path, status=status)
+            with self.assertRaises(RuntimeError):
+                self.check('vendor-radar', path, previous_filename='scripts/evil.py')
+            for mode in ['120000', '100755', '160000', None]:
+                with self.subTest(mode=mode), self.assertRaises(RuntimeError):
+                    policy.check_scope('vendor-radar', [{'filename': path, 'status': 'added'}], 1, lambda _: mode)
+        for path in [
+            live.replace('.json', '.py'), live + '.sh', live.replace('/runs/', '/'),
+            live.replace('fixture-triage', '../fixture'), live.replace('fixture-triage', 'nested/fixture'),
+            archived.replace(digest, 'not-a-hash'), archived.replace('/launch-watch/', '/unrelated/'),
+            '.github/workflows/launch-watch.yml', 'rankings-engine/scripts/launch-watch.ts',
+            'open-rankings/email/products.json', 'open-rankings/email/verdicts.json',
+        ]:
+            with self.subTest(path=path), self.assertRaises(RuntimeError):
+                self.check('vendor-radar', path)
+
+    def test_rejected_scope_identifies_the_path_without_printing_file_contents(self):
+        with self.assertRaisesRegex(RuntimeError, 'reports/unexpected.json'):
+            self.check('vendor-radar', 'reports/unexpected.json')
 
     def test_code_taxonomy_unrelated_reports_and_path_tricks_fail(self):
         for kind in ['story-runner','vendor-radar','vendor-radar-bringup']:

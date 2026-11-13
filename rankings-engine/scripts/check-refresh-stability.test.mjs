@@ -103,6 +103,17 @@ test('publication rejects removed runtime observations even when no grade change
   assert.notEqual(result.status, 0)
   assert.match(result.stderr, /recorded probe vendor-probe-rt-1 was removed/)
 })
+for (const kind of ['mcp-keyless', 'mcp-oauth', 'ai-catalog']) {
+  test(`publication rejects lost legacy ${kind} observations without a grade change`, () => {
+    for (const id of ['vendor-probe-4', `vendor-probe-4-refresh-${'a'.repeat(16)}`]) {
+      const recorded = { ...item(id), tier: 'probe', excerpt: `PROBE ${kind} (2026-09-15): observed response` }
+      const result = repositoryCase({ rationale: 'Same grade' }, pack.vendor, false, false, [...pack.vendor, recorded])
+      assert.notEqual(result.status, 0)
+      assert.match(result.stderr, /recorded probe .* was removed or rewritten/)
+    }
+  })
+}
+
 test('publication rejects removal of a recorded probe preservation marker', () => {
   const recorded = { ...item('vendor-probe-1'), tier: 'probe', preserve: true }
   const { preserve, ...unmarked } = recorded
