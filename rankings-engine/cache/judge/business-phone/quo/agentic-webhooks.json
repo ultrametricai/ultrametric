@@ -1,22 +1,31 @@
 {
-  "hash": "f07c58f7a92f3fc8a08a4166c9909692093b039666eabcc8e8a754cabe3d0c3f",
+  "hash": "ccb7f6c4a0da97f553f75ae8e0b8dcc3bd125c4973af1d3aadd247ee36da2cb2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only webhook evidence is one line in the call-summaries doc saying a dedicated webhook fires on call-summary events. That shows Quo's own API has outbound event callbacks, but only one event type is evidenced, and nothing describes how to register or manage subscriptions or what the payloads contain. Missing for 10: documented webhook registration/management API, catalog of subscribable events (messages, calls, contacts), payload schema and signature verification, retry/delivery semantics, independent or hands-on corroboration.",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Quo's API documents registrable outbound webhooks with list, get, create and delete endpoints. Dedicated create endpoints cover messages, calls, call summaries and call transcripts, and the docs describe signature verification for webhook authenticity. Missing for 10: independent or hands-on corroboration of webhook delivery.",
     "evidenceIds": [
-      "quo-call-summaries-20261106"
+      "quo-webhooks-api-20261106",
+      "quo-summary-webhook-20261106"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "partial",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
       "citations": [
         {
-          "evidenceId": "quo-call-summaries-20261106",
-          "quote": "A dedicated webhook triggers on call-summary events."
+          "evidenceId": "quo-webhooks-api-20261106",
+          "quote": "Creates a new webhook that triggers on events from messages."
+        },
+        {
+          "evidenceId": "quo-summary-webhook-20261106",
+          "quote": "Creates a new webhook that triggers on events from call summaries."
+        },
+        {
+          "evidenceId": "quo-webhooks-api-20261106",
+          "quote": "Verify the OpenPhone-Signature header on legacy webhooks created in the Quo app or with the v1 API."
         }
       ]
     },

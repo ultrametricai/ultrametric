@@ -1,17 +1,35 @@
 {
-  "hash": "b36f1ec856aa2a86ef6d94d428651ab79762f285eabafc80487bc9d31f3f6083",
+  "hash": "be0de90fad21300eca759859605ec6ead0dd5b87fec0b7951f5c00ff815a68bb",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows a general Quo API with key auth, rate limits and a published OpenAPI spec, but no documented API endpoint for sending or receiving SMS and no delivery-status callbacks. Sending texts and pulling message history are documented only through the MCP/agent connector, which is a different interface. The only webhook mentioned covers call-summary events, which is a different capability and does not transfer to this story.",
-    "evidenceIds": [],
+    "rationale": "Quo documents its own message webhooks in a full webhooks API (\"Creates a new webhook that triggers on events from messages\"), which covers receiving message events programmatically. Sending a text from a Quo number is documented through its official MCP server, but the pack never shows a REST send-message endpoint or names delivery-status event types. missing for 10: an explicitly documented API send-SMS endpoint, documented delivery-status (sent/delivered/failed) callback events, an inbound-SMS event payload, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "quo-webhooks-api-20261106",
+      "quo-docs-11",
+      "quo-docs-12",
+      "quo-docs-1"
+    ],
     "support": {
-      "relation": "adjacent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can send and receive SMS on the number through the API with delivery status callbacks",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "quo-webhooks-api-20261106",
+          "quote": "Creates a new webhook that triggers on events from messages."
+        },
+        {
+          "evidenceId": "quo-docs-11",
+          "quote": "Send a text to one person or broadcast the same message to multiple team members from your Quo number, without opening your workspace."
+        },
+        {
+          "evidenceId": "quo-docs-12",
+          "quote": "Pull message history from any Quo inbox, filter by contact, date, or topic, or list all your inboxes to see which numbers are available."
+        }
+      ]
     },
     "productId": "quo",
     "storyId": "messaging-api"

@@ -125,3 +125,13 @@ same reconcile-refresh stability machinery re-applied against the same pinned ba
 Both cells now publish as supported changes citing the direct-evidence rows (gitea
 milestones-due-dates full q9; quo ai-call-summaries full q7) while every unsupported
 re-roll stays retained to its prior value (13 + 10 cells, zero blocked).
+
+A fourth round of maintainer findings landed two more inputs-only corrections. The alloy
+sandbox row was re-framed to lead with the vendor's own no-data-boundary statement (same
+verbatim quotes), and the re-judged cell withdraws the credit: none q0 — a dry-run of
+vendor calls over shared production data is not sandbox isolation under v6. The quo
+webhook claim, which had been bound to the summary-retrieval page, moved to its own
+properly-bound row, and the pre-audit of that re-roll caught a single-event full: a
+grounded full-surface row (webhook CRUD plus four event families) now carries the
+webhook cells. Reconcile-refresh re-applied at the pinned baseline each round; all
+unsupported re-rolls stay retained, zero blocked.

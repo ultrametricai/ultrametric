@@ -203,6 +203,16 @@ ITEMS = {
          'https://www.quo.com/docs/mdx/api-reference/calls/get-a-summary-for-a-call.md',
          ['Retrieve a detailed summary of a specific call identified by its unique call ID'],
          'Quo attaches AI summaries to the call record: "Retrieve a detailed summary of a specific call identified by its unique call ID. This endpoint supports summaries for both regular calls and calls handled by Sona." A dedicated webhook triggers on call-summary events. Gate caveat verbatim: "Call summaries are only available on business and scale plans."'),
+        # Provenance correction (PR #691 maintainer finding): the webhook claim binds to
+        # its own source page rather than riding the summary-retrieval row.
+        ('quo-summary-webhook-20261106', 'claimed-docs',
+         'https://www.quo.com/docs/mdx/api-reference/webhooks/create-a-new-webhook-for-call-summaries.md',
+         ['Creates a new webhook that triggers on events from call summaries'],
+         'Quo documents a dedicated call-summary webhook: "Creates a new webhook that triggers on events from call summaries."'),
+        ('quo-webhooks-api-20261106', 'claimed-docs',
+         'https://www.quo.com/docs/mdx/api-reference/webhooks/lists-all-webhooks.md',
+         ['List all webhooks for a user'],
+         'Quo documents a full webhooks API: list, get, and delete webhooks plus dedicated create endpoints per event family - messages ("Creates a new webhook that triggers on events from messages."), calls, call summaries, and call transcripts - alongside legacy signature validation ("Verify the OpenPhone-Signature header on legacy webhooks created in the Quo app or with the v1 API.").'),
         ('quo-versioning-20261106', 'claimed-docs',
          'https://www.quo.com/docs/2026-03-30/versioning.md',
          ['Every version is a date. Every request declares which date it was built for:',
@@ -280,6 +290,22 @@ REMOVALS: dict = {}
 # the committed deprecation-window sentence was removed and a dated changelog page
 # appeared. The row is re-derived to the current wording.
 UPDATES = {
+    ('business-phone', 'quo'): [
+        # Maintainer provenance finding: the get-a-summary page does not document the
+        # webhook; that claim moves to its own row bound to its own page.
+        ('quo-call-summaries-20261106',
+         'https://www.quo.com/docs/mdx/api-reference/calls/get-a-summary-for-a-call.md',
+         ['Retrieve a detailed summary of a specific call identified by its unique call ID'],
+         'Quo attaches AI summaries to the call record: "Retrieve a detailed summary of a specific call identified by its unique call ID. This endpoint supports summaries for both regular calls and calls handled by Sona." Gate caveat verbatim: "Call summaries are only available on business and scale plans." (The dedicated call-summary webhook is documented on its own page, cited as quo-summary-webhook-20261106.)'),
+    ],
+    ('compliance-screening', 'alloy'): [
+        # Maintainer rubric finding: the isolation caveat is the rubric-decisive fact
+        # for the sandbox story and now leads the excerpt.
+        ('alloy-sandbox-mode-20261106',
+         'https://developer.alloy.com/public/docs/sandbox-vs-production.md',
+         ["Alloy's API offers two modes", 'alloy-sandbox: true'],
+         'Alloy\'s Sandbox is a per-request processing mode, not an isolated environment. Vendor caveat verbatim: "**It\'s important to understand that Alloy\'s Sandbox and Production API modes are *not* two separate environments.** They are per-request processing modes only - Alloy does not enforce a data boundary. Most records in Alloy, including Entities, live in a single shared data store for your account, regardless of the mode used to create or update them." What the mode does: "Alloy\'s API offers two modes: **Production (Live)** and **Sandbox**... Sandbox makes no vendor calls, so you can test your integration without incurring additional charges", selected by base URL (https://sandbox.alloy.co) or the alloy-sandbox: true header, with the same keys in both modes (a dry-run of vendor calls over shared production data; customer-gated).'),
+    ],
     ('ai-video', 'luma'): [
         ('luma-versioning-20261106',
          'https://docs.agents.lumalabs.ai/guides/changelog/index.md',
