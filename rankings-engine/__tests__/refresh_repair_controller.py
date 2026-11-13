@@ -496,7 +496,7 @@ class RecoveryCITests(unittest.TestCase):
                 'user':{'id':999 if app else 41898282,'login':'fixture-content[bot]' if app else 'github-actions[bot]', 'type':'Bot'}}
 
     def test_manual_hold_skips_all_recovery_and_repair_actions(self):
-        for label in ['hold','manual-merge','do-not-merge','automerge-hold']:
+        for label in ['hold','manual-merge','do-not-merge','automerge-hold','maintainer-manual-merge']:
             ci,calls,error=self.recover([],pr={**PR,'number':536,'labels':[{'name':label}]})
             self.assertEqual(calls,[])
             self.assertIsNone(error)
