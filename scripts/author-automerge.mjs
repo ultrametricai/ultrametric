@@ -7,7 +7,7 @@ import { pathToFileURL } from 'node:url'
 export const REPO = 'ultrametricai/ultrametric'
 export const REPO_ID = 1347853946
 export const AUTHORS = new Map([[666306, 'judegomila'], [10182232, 'tylerlastovich']])
-export const HOLDS = new Set(['automerge-hold', 'do-not-merge', 'hold', 'manual-merge'])
+export const HOLDS = new Set(['automerge-hold', 'do-not-merge', 'hold', 'manual-merge', 'maintainer-manual-merge'])
 const ACTIONS = 15368
 const CHECKS = new Map([['ci', ACTIONS], ['validation', ACTIONS], ['Greptile Review', 867647]])
 const GREPTILE = new Set(['greptile-apps', 'greptile-apps[bot]', 'greptileai'])
