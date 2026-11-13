@@ -325,6 +325,25 @@ NEGATIVE_CHECKS = {
     ],
 }
 
+# Fail-closed structural JSON checks (PR #691 P2): substring markers can pass on the
+# wrong object, so facts that live at a specific place in a JSON document assert their
+# key path. Entries: evidence id -> (url, [dot-separated key paths that must exist]).
+JSON_CHECKS = {
+    'gitea-milestone-schema-20261106': (
+        'https://gitea.com/swagger.v1.json',
+        ['definitions.Milestone.properties.due_on'],
+    ),
+}
+
+# Fail-closed companion checks (PR #691 P2): claims an excerpt makes from a second page
+# replay against that page. Entries: evidence id -> [(url, [markers])].
+EXTRA_CHECKS = {
+    'quo-call-summaries-20261106': [
+        ('https://www.quo.com/docs/mdx/api-reference/webhooks/create-a-new-webhook-for-call-summaries.md',
+         ['Creates a new webhook that triggers on events from call summaries']),
+    ],
+}
+
 # Fail-closed recorded POST probes (none this wave).
 POST_CHECKS: dict = {}
 
@@ -366,6 +385,22 @@ def verify(url, markers):
     for marker in markers:
         if marker not in text and marker not in body:
             raise SystemExit(f'{url} no longer contains {marker!r}; the page changed - re-derive the excerpt')
+
+
+def verify_json_paths(url, paths):
+    status, body = fetch(url)
+    if status != 200:
+        raise SystemExit(f'{url} returned {status}; refusing to verify structural facts')
+    try:
+        doc = json.loads(body)
+    except ValueError:
+        raise SystemExit(f'{url} no longer parses as JSON; re-derive the excerpt')
+    for p in paths:
+        node = doc
+        for part in p.split('.'):
+            if not isinstance(node, dict) or part not in node:
+                raise SystemExit(f'{url} no longer carries {p!r}; the schema changed - re-derive the excerpt')
+            node = node[part]
 
 
 def verify_absent(checks):
@@ -425,6 +460,10 @@ def main() -> None:
                 verify_post(*POST_CHECKS[iid])
             if iid in TLS_MISMATCH_CHECKS:
                 verify_tls_mismatch(*TLS_MISMATCH_CHECKS[iid])
+            if iid in JSON_CHECKS:
+                verify_json_paths(*JSON_CHECKS[iid])
+            for extra_url, extra_markers in EXTRA_CHECKS.get(iid, []):
+                verify(extra_url, extra_markers)
             # Markers replay on every run, including for rows already appended, so a
             # rerun re-verifies saved sources (rotated kling CDN chunks included) and
             # fails closed on drift rather than skipping silently.
