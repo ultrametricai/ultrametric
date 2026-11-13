@@ -12,7 +12,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { ProductSchema } from '../../lib/schemas'
 import { readJson, resolveCategories, writeJson } from '../paths'
-import { batchCode, canonicalYcDomain, normalizeDomain, type YcRawCompany } from '../yc-shared'
+import { batchCode, canonicalYcDomain, normalizeDomain, withYcBatch, type YcRawCompany } from '../yc-shared'
 
 const ROOT = path.resolve(__dirname, '..', '..')
 const CACHE_DIR = path.join(ROOT, 'rankings-engine', 'cache', 'yc')
@@ -42,27 +42,32 @@ function main() {
   const categories = resolveCategories()
   const ycBatches: Record<string, string> = {}
   const matches: { productId: string; category: string; company: string; batch: string; code: string }[] = []
+  const retained: string[] = []
+  const deferred: string[] = []
   let totalProducts = 0
 
   for (const category of categories) {
     const productsPath = path.join(ROOT, 'open-rankings', category.id, 'products.json')
     const products = readJson(ProductSchema.array(), productsPath)
     totalProducts += products.length
+    const metadataFrozen = fs.existsSync(path.join(ROOT, 'rankings-engine/cache/refresh-retention', category.id, 'decisions.json'))
     let changed = false
     const updated = products.map((p) => {
       const domain = normalizeDomain(p.urls.site)
-      const company = domain ? byDomain.get(domain) : undefined
-      if (!company) {
-        if (!p.ycBatch) return p
-        changed = true
-        return { ...p, ycBatch: undefined }
+      const company = domain ? byDomain.get(canonicalYcDomain(domain)) : undefined
+      const code = company ? batchCode(company.batch) : null
+      const next = withYcBatch(p, company?.batch, metadataFrozen)
+      if (next.ycBatch) {
+        if (Object.hasOwn(ycBatches, p.id) && ycBatches[p.id] !== next.ycBatch) {
+          throw new Error(`Conflicting YC batches for ${p.id}; review the catalog metadata`)
+        }
+        ycBatches[p.id] = next.ycBatch
       }
-      const code = batchCode(company.batch)
-      if (!code) return p
-      ycBatches[p.id] = code
-      matches.push({ productId: p.id, category: category.id, company: company.name, batch: company.batch, code })
-      if (p.ycBatch !== code) changed = true
-      return { ...p, ycBatch: code }
+      if (!company && p.ycBatch) retained.push(`${category.id}/${p.id}: ${p.ycBatch}`)
+      if (metadataFrozen && code && p.ycBatch !== code) deferred.push(`${category.id}/${p.id}: ${code}`)
+      if (company && code) matches.push({ productId: p.id, category: category.id, company: company.name, batch: company.batch, code })
+      if (next !== p) changed = true
+      return next
     })
     if (changed) {
       const parsed = ProductSchema.array().parse(updated)
@@ -82,7 +87,9 @@ function main() {
     console.log(`\nDomain collisions in YC feed (skipped, kept first):`)
     for (const c of collisions) console.log(`  ${c}`)
   }
-  console.log(`\nWrote ${matches.length} entries to ${path.relative(ROOT, YC_BATCHES_PATH)}`)
+  if (retained.length) console.log(`Retained existing affiliations absent from mirror: ${retained.join(', ')}`)
+  if (deferred.length) console.log(`Deferred metadata changes requiring retention migration: ${deferred.join(', ')}`)
+  console.log(`\nWrote ${Object.keys(sorted).length} entries to ${path.relative(ROOT, YC_BATCHES_PATH)}`)
 }
 
 main()

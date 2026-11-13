@@ -426,7 +426,7 @@ async function main() {
     const products = readJson(ProductSchema.array(), path.join(ROOT, 'open-rankings', category.id, 'products.json'))
     for (const p of products) {
       const d = normalizeDomain(p.urls.site)
-      if (d) trackedDomains.add(d)
+      if (d) trackedDomains.add(canonicalYcDomain(d))
     }
   }
 
