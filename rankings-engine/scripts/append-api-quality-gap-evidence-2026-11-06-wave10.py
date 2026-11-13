@@ -233,7 +233,7 @@ ITEMS = {
         # fact in the already-cited machine spec.
         ('gitea-milestone-schema-20261106', 'claimed-docs',
          'https://gitea.com/swagger.v1.json',
-         ['"Milestone": {', '"due_on"'],
+         ['"due_on"'],
          'The Gitea API\'s Milestone model carries a due date directly on the milestone: the spec\'s Milestone definition includes a due_on date-time property alongside title, description, state, and open/closed issue counts (and the milestone endpoints accept it on create and edit).'),
         ('gitea-swagger-ui-20261106', 'claimed-docs',
          'https://gitea.com/api/swagger',
@@ -377,10 +377,20 @@ def fetch(url):
     return _fetch_cache[url]
 
 
-def verify(url, markers):
+def verify(url, markers, evidence_id=None):
     status, body = fetch(url)
     if status != 200:
         raise SystemExit(f'{url} returned {status}; refusing to append unverified evidence')
+    if evidence_id == 'gitea-milestone-schema-20261106':
+        # The token can occur on unrelated models; require the recorded association.
+        try:
+            schema = json.loads(body)
+            due_on = schema['definitions']['Milestone']['properties']['due_on']
+            valid = due_on.get('type') == 'string' and due_on.get('format') == 'date-time'
+        except (ValueError, KeyError, TypeError, AttributeError):
+            valid = False
+        if not valid:
+            raise SystemExit(f'{url} no longer defines Milestone.due_on as a date-time; re-derive the excerpt')
     text = re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', body))
     for marker in markers:
         if marker not in text and marker not in body:
@@ -468,7 +478,7 @@ def main() -> None:
             # rerun re-verifies saved sources (rotated kling CDN chunks included) and
             # fails closed on drift rather than skipping silently.
             if markers:
-                verify(url, markers)
+                verify(url, markers, evidence_id=iid)
             if iid in have:
                 print(f'{iid}: already present, markers re-verified')
                 continue

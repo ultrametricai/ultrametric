@@ -42,6 +42,19 @@ because it has several playbooks — coverage is tracked per scenario and locale
 - **Determinism.** Committed rankings recompute bit-identically
   (`rankings-engine/scripts/recompute-check.ts` must report ALL DETERMINISTIC); provenance is
   HMAC-fingerprinted.
+- **Maintainer-reviewed generated changes.** Unattended merges require an exact-head
+  receipt from a trusted workflow. A maintainer can instead select the
+  `maintainer-manual-merge` label, which pauses automatic merge and repair workers,
+  with native auto-merge disabled. This route requires
+  an approval on the current commit from a human account whose repository write,
+  maintain, or admin permission is authenticated through GitHub. The gate rechecks
+  that approval and permission before publishing its status. Label text, bot
+  approvals, old approvals, dismissed reviews, or unavailable permission metadata
+  supply no authority. Existing holds, same-repository bot identity, data-only scope,
+  regular-file checks, current-head Greptile completion and unresolved findings still
+  apply. Full required CI and normal branch protection remain mandatory. The
+  maintainer reviews the evidence, pipeline inputs and available producer records;
+  this route creates no workflow receipt and does not authorize hand-tuned scores.
 - **No paid placement.** Payment cannot change scores, rankings, routing, or inclusion — in
   arenas, in workflows, or in vendor reviews. Maintainers with a vendor relationship disclose
   it and recuse themselves from that vendor's review; a vendor may respond to factual errors
