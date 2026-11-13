@@ -187,7 +187,7 @@ class ScopeTests(unittest.TestCase):
             self.assertFalse(policy.actions_author({**policy.ACTIONS_BOT,key:value}))
 
     def test_manual_stops_fail_closed(self):
-        for label in ['hold','HOLD','manual-merge','do-not-merge','automerge-hold']:
+        for label in ['hold','HOLD','manual-merge','do-not-merge','automerge-hold','maintainer-manual-merge']:
             self.assertTrue(policy.held({'labels':[{'name':label}]}))
         self.assertTrue(policy.held({}))
         self.assertFalse(policy.held({'labels':[]}))
