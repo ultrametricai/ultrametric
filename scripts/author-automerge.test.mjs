@@ -117,7 +117,7 @@ for (const [name, change] of Object.entries(denyCases)) {
     assert.ok(eligibility(value, settings).length > 0)
   })
 }
-for (const label of ['automerge-hold', 'do-not-merge', 'hold', 'manual-merge', 'HOLD']) {
+for (const label of ['automerge-hold', 'do-not-merge', 'hold', 'manual-merge', 'maintainer-manual-merge', 'HOLD']) {
   test(`deny hold label: ${label}`, () => {
     const value = fixture(); value.pr.labels.push({ name: label })
     assert.ok(candidateReasons(value.pr, settings).length)
