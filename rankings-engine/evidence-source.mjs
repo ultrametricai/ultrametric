@@ -35,10 +35,10 @@ export function supportDisappeared(item, after) {
   return Boolean(item.sourceHash) && peers.every(next => next.sourceHash && next.sourceHash !== item.sourceHash)
 }
 
-// The scheduled probe owns only its numbered rows. Recorded runtime/audit rows
-// remain evidence even when older ingestion scripts omitted preserve:true (#556).
+// Scheduled probes replace numbered rows for checks they repeat. Keep recorded
+// runtime, audit, MCP and catalog observations even when legacy rows omit preserve:true.
 export function recordedProbe(item) {
   return item.tier === 'probe' && (item.preserve === true
     || !/-probe-\d+(?:-refresh-[a-f0-9]{16})*$/.test(item.id)
-    || /^PROBE (runtime|audit|recorded)\b/i.test(item.excerpt))
+    || /^PROBE (runtime|audit|recorded|mcp-keyless|mcp-oauth|ai-catalog)\b/i.test(item.excerpt))
 }
