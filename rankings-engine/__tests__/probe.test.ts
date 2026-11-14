@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Evidence, Product } from '@/lib/schemas'
+import { recordedProbe } from '@/rankings-engine/evidence-source.mjs'
 import {
   buildProbeEvidenceRows, mergeProbeEvidence, runProbeChecks,
   type ProbeFetchResult, type ProbeFetcher, type ProbeResult,
@@ -187,6 +188,24 @@ describe('mergeProbeEvidence', () => {
     expect(merged).toContainEqual(docs) // non-probe tiers untouched
     expect(merged.filter((e) => e.tier === 'probe')).toHaveLength(3) // 2 fresh + 1 preserved
     expect(merged.find((e) => e.id === 'acme-probe-1')?.fetchedAt).toBe('2026-10-14T00:00:00.000Z')
+  })
+
+  it.each(['mcp-keyless', 'mcp-oauth', 'ai-catalog'])('keeps legacy %s observations and reserves their IDs', kind => {
+    const positive = row('acme-probe-1', 'probe', { excerpt: `PROBE ${kind} (2026-09-15): HTTP 200 observed response` })
+    const negative = row(`acme-probe-2-refresh-${'a'.repeat(16)}`, 'probe', { excerpt: `PROBE ${kind}: HTTP 503 observed failure` })
+    const scheduled = row('acme-probe-4', 'probe', { excerpt: 'PROBE docs-md: HTTP 200' })
+    const existing = [positive, negative, scheduled]
+    const before = structuredClone(existing)
+    const ids = new Set(existing.filter(recordedProbe).map(e => e.id))
+    const fresh = buildProbeEvidenceRows('acme', [{
+      key: 'llms-txt', url: 'https://acme.example/llms.txt', positive: true, excerpt: 'PROBE llms.txt: HTTP 200',
+    }], ids, '2026-10-14T00:00:00.000Z')
+    expect(fresh[0].id).toBe('acme-probe-2')
+    expect(mergeProbeEvidence(existing, fresh)).toEqual([...fresh, positive, negative])
+    expect(mergeProbeEvidence(existing, [])).toEqual([positive, negative])
+    expect(existing).toEqual(before)
+    expect(recordedProbe({ ...positive, tier: 'claimed-docs' })).toBe(false)
+    expect(recordedProbe({ ...positive, excerpt: `PROBE ${kind}ish: unrelated text` })).toBe(false)
   })
 
   it('unmarked probe rows still refresh normally (wholesale replacement)', () => {
