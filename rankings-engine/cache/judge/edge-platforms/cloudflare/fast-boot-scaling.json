@@ -1,19 +1,15 @@
 {
-  "hash": "951d595e030df333b8f75a5a3cc8b40850fa429db053e25a77fe315950ff9ab1",
+  "hash": "515b53847c24e94f4464ed540d635124e05555a2c9f02b4844602de75cce5d0a",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "cloudflare",
-    "storyId": "fast-boot-scaling",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cloudflare's own docs claim Workers have \"No cold starts\" and deploy \"instantly\" with \"scale.\" The explicit \"tens of millions of instances\" scaling claim, however, comes from the Agents SDK (Durable Objects-based agents), not plain Worker instances. A community report also puts best-case Python Worker cold starts at about 1 second, so the sub-second boot claim is not shown for every runtime. missing for 10: quantified boot-time figures for Workers, a documented Workers-specific autoscaling capacity under load, and independent hands-on benchmarks of startup and scale.",
+    "rationale": "Cloudflare's docs claim Workers run with 'No cold starts', which implies near-instant boot. The scale claim ('scaling to tens of millions of instances', 'run millions of them') is made for Agents SDK instances built on Durable Objects on the Workers platform, not explicitly for plain Worker autoscaling under load. Missing for 10: explicit sub-second boot-time figures, documented autoscaling behavior for Workers under traffic spikes, and independent or hands-on corroboration of either boot latency or scale.",
     "evidenceIds": [
       "cloudflare-docs-1",
-      "cloudflare-gh-4",
-      "cloudflare-docs-68",
       "cloudflare-supp-agents-sdk",
-      "cloudflare-comm-32"
+      "cloudflare-docs-32"
     ],
     "support": {
       "relation": "direct",
@@ -25,18 +21,16 @@
           "quote": "No servers to manage. No cold starts or region complexity."
         },
         {
-          "evidenceId": "cloudflare-gh-4",
-          "quote": "Cloudflare Workers let you deploy serverless code instantly across the globe for exceptional performance, reliability, and scale."
-        },
-        {
-          "evidenceId": "cloudflare-docs-68",
+          "evidenceId": "cloudflare-supp-agents-sdk",
           "quote": "Deploy once and Cloudflare runs your agents across its global network, scaling to tens of millions of instances."
         },
         {
-          "evidenceId": "cloudflare-comm-32",
-          "quote": "Python Workers rely on Pyodide with V8 snapshots, giving best-case cold starts of about 1 second."
+          "evidenceId": "cloudflare-docs-32",
+          "quote": "Agents hibernate when idle and wake on demand. You can run millions of them"
         }
       ]
-    }
+    },
+    "productId": "cloudflare",
+    "storyId": "fast-boot-scaling"
   }
 }

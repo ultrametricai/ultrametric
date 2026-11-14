@@ -1,11 +1,11 @@
 {
-  "hash": "49672a32945f47fcbd472e6f576afdc3d28c9d270c2fa01298cf082742b0634d",
+  "hash": "10bc92a1538faac94221a109dd29a8e7569295f5098706b77b085734805fec15",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Vercel documents first-party WebSocket support in Vercel Functions on all plans. Functions keep a bidirectional connection open, each connection is pinned to one function instance, and Fluid compute lets one instance handle multiple connections. Standard libraries like `ws` upgrade connections with no extra configuration. Missing for 10: how long a connection can persist relative to the documented function maximum duration (300s/800s/1800s beta) is not stated, and there is no independent or hands-on corroboration of real-time workloads.",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Vercel documents first-party WebSocket support in Vercel Functions on all plans. Connections are bidirectional, pinned to one function instance, multiplexed via Fluid compute, and work with standard libraries like ws. However, function maximum durations are capped (300s default, 800s max, up to 1800s in beta), which limits how 'persistent' a connection can be, and nothing documents WebSockets in edge-runtime/middleware specifically. missing for 10: documented behavior for long-lived connections beyond function duration caps, edge-runtime WebSocket support, independent or hands-on corroboration.",
     "evidenceIds": [
       "vercel-parity-edge-websocket-support-20261103",
       "vercel-parity-standards-based-runtime-portability-20261103",
@@ -13,20 +13,24 @@
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a developer, I can handle persistent WebSocket connections from within edge/serverless functions for real-time apps",
       "citations": [
         {
           "evidenceId": "vercel-parity-edge-websocket-support-20261103",
-          "quote": "Vercel Functions can serve WebSocket connections, keeping a bidirectional connection open between a client and your server-side code. Use WebSockets for realtime features such as interactive AI streaming, chat, and collaborative apps."
+          "quote": "Vercel Functions can serve WebSocket connections, keeping a bidirectional connection open between a client and your server-side code."
         },
         {
           "evidenceId": "vercel-parity-edge-websocket-support-20261103",
-          "quote": "Fluid compute allows a single function instance to handle multiple WebSocket connections"
+          "quote": "Fluid compute allows a single function instance to handle multiple WebSocket connections."
         },
         {
           "evidenceId": "vercel-parity-standards-based-runtime-portability-20261103",
           "quote": "WebSockets in Vercel Functions work exactly like any distributed WebSocket server, so you can use libraries like ws to upgrade connections with no additional configuration"
+        },
+        {
+          "evidenceId": "vercel-parity-execution-time-limits-20261103",
+          "quote": "Maximum duration: 300s (5 minutes) default and max [Hobby] / 300s default, 800s max, up to 1800s (30 minutes) in beta [Pro and Enterprise]"
         }
       ]
     },

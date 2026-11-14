@@ -1,17 +1,19 @@
 {
-  "hash": "a749e38b90c56b93a3d8a5f83e8ff1e3ec53a2f785fc20cea6d26c22ca43c11c",
+  "hash": "6e5f7f6dd494caac2155307f5866ee7802cd32342864e6e45bb65b7ec75fbef9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Cloudflare documents a broad programmatic surface: an OpenAPI spec, an MCP server covering the entire Cloudflare API (over 2,500 endpoints across Workers and every other product), and Wrangler commands for managing Workers, including rollback via Wrangler or the dashboard. However, no evidence explicitly states that every dashboard action has an API equivalent, so UI parity is implied rather than documented. Missing for 10: an explicit API/UI parity guarantee or a parity matrix, and independent hands-on confirmation that no dashboard-only actions exist.",
+    "rationale": "Cloudflare documents a broad programmatic surface: a published OpenAPI spec, more than 2,500 API endpoints across Workers and every other product (reachable through the Code Mode MCP server), scoped API tokens for automation, and the Wrangler CLI. One concrete dashboard-parity example exists: rollbacks work via Wrangler or the dashboard. No source states that every UI action is available through the API, so full parity is implied by breadth rather than documented. Missing for 10: an explicit API/UI parity statement, independent or hands-on confirmation that dashboard-only gaps do not exist, and parity coverage beyond isolated examples like rollback.",
     "evidenceIds": [
       "cloudflare-docs-46",
-      "cloudflare-supp-codemode-mcp",
+      "cloudflare-docs-33",
       "cloudflare-probe-2",
       "cloudflare-docs-23",
-      "cloudflare-docs-11"
+      "cloudflare-supp-codemode-mcp",
+      "cloudflare-docs-11",
+      "cloudflare-docs-14"
     ],
     "support": {
       "relation": "direct",
@@ -27,8 +29,12 @@
           "quote": "You can roll back to a previously deployed version of your Worker using Wrangler or the Cloudflare dashboard."
         },
         {
-          "evidenceId": "cloudflare-docs-11",
-          "quote": "Wrangler offers a number of commands to manage your Cloudflare Workers."
+          "evidenceId": "cloudflare-probe-2",
+          "quote": "PROBE openapi: HTTP 200 at https://developers.cloudflare.com/openapi.json — contains \"openapi\" key"
+        },
+        {
+          "evidenceId": "cloudflare-supp-codemode-mcp",
+          "quote": "For CI/CD or automation, you can create a Cloudflare API token with the permissions you need and pass it as a bearer token in the Authorization header."
         }
       ]
     },

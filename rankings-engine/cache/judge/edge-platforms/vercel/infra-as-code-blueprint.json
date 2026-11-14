@@ -1,18 +1,15 @@
 {
-  "hash": "2138db5b1dce2818408892330ed63ee16bac4defa1ea4680f38225d60bf9bf49",
+  "hash": "c7600061a98b506329c4e45a531c5337e093b0e31f6f05b6a9aa750ccc20fc6c",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "vercel",
-    "storyId": "infra-as-code-blueprint",
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Vercel has its own project configuration file, vercel.json, which the docs show setting regions per project and per function. Deployments are driven from Git on every push, so committed config is versioned with the code. However, nothing shows one file defining the whole architecture: databases and Redis come from Marketplace integrations, and environments, domains and access controls are managed separately. Missing for 10: evidence that one file declares all resources (storage, databases, env vars, domains, protection), a documented full vercel.json schema reference, and independent or hands-on corroboration.",
+    "rationale": "Vercel documents a project configuration file, vercel.json, that sets deployment settings such as regions and per-function overrides. Because the file can live in a Git-connected repo, it is versioned and deployed on every push. Evidence shows only narrow slices of infrastructure defined there, not the whole architecture in one file. Missing for 10: evidence that a single file declares the entire architecture (storage/databases, environments, domains, firewall, marketplace services), documented schema breadth for vercel.json, and independent hands-on corroboration.",
     "evidenceIds": [
       "vercel-parity-regional-deployment-20261103",
-      "vercel-docs-27",
-      "vercel-parity-standards-based-runtime-portability-20261103",
-      "vercel-parity-serverless-sql-query-20261103"
+      "vercel-parity-docker-deploy-20261103",
+      "vercel-docs-27"
     ],
     "support": {
       "relation": "direct",
@@ -24,18 +21,16 @@
           "quote": "You can override regions for individual functions using the functions property in your project configuration."
         },
         {
-          "evidenceId": "vercel-parity-regional-deployment-20261103",
-          "quote": "in vercel.json via the regions key"
+          "evidenceId": "vercel-parity-docker-deploy-20261103",
+          "quote": "Run any code and library on Vercel Functions with an OCI container image built from a Dockerfile or Containerfile at the project root."
         },
         {
           "evidenceId": "vercel-docs-27",
           "quote": "Connect GitHub, GitLab, or Bitbucket to deploy on every push, with a preview URL for every branch."
-        },
-        {
-          "evidenceId": "vercel-parity-standards-based-runtime-portability-20261103",
-          "quote": "Framework authors can take advantage of framework-defined infrastructure by implementing this directory structure as the output of their build command."
         }
       ]
-    }
+    },
+    "productId": "vercel",
+    "storyId": "infra-as-code-blueprint"
   }
 }

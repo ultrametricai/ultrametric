@@ -1,20 +1,17 @@
 {
-  "hash": "c1c0e2791ae4da2501d9821723ba511100ab19e70ff00d7a3b8a7f469150f201",
+  "hash": "98799aa90a5c4eb7f6ac011644c829bb0afb1c6fd7556fa20f9e585f33569831",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "cloudflare",
-    "storyId": "agentic-scoped-keys",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Cloudflare documents API tokens that can be limited to specific resources and permission levels. Its example: Zone DNS Read on example.com lets the token read DNS records only for that zone. Templates are also documented. For agents specifically, the official MCP server uses OAuth where you select which permissions to grant your agent, and it also accepts scoped user or account API tokens for automation. Missing for 10: independent or hands-on corroboration, and documentation of token expiry/TTL and revocation for agent credentials.",
+    "rationale": "Cloudflare documents API tokens scoped to specific resources and permission levels, for example Zone DNS Read limited to a single zone. Its recommended MCP server lets users pick the permissions granted to an agent via OAuth, or pass a purpose-built API token as a bearer credential, and a live probe confirms that server is OAuth-gated. Missing for 10: independent or hands-on corroboration that scoped agent tokens are enforced as least-privilege in practice.",
     "evidenceIds": [
       "cloudflare-docs-14",
       "cloudflare-docs-21",
       "cloudflare-docs-45",
-      "cloudflare-docs-65",
       "cloudflare-supp-codemode-mcp",
-      "cloudflare-docs-53"
+      "cloudflare-probe-5"
     ],
     "support": {
       "relation": "direct",
@@ -22,12 +19,12 @@
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": [
         {
-          "evidenceId": "cloudflare-docs-21",
-          "quote": "granting Zone DNS Read access to a zone example.com will allow the token to read DNS records only for that specific zone"
-        },
-        {
           "evidenceId": "cloudflare-docs-14",
           "quote": "Select which resources the token is authorized to access."
+        },
+        {
+          "evidenceId": "cloudflare-docs-21",
+          "quote": "granting Zone DNS Read access to a zone example.com will allow the token to read DNS records only for that specific zone"
         },
         {
           "evidenceId": "cloudflare-docs-45",
@@ -39,9 +36,11 @@
         },
         {
           "evidenceId": "cloudflare-supp-codemode-mcp",
-          "quote": "you can create a Cloudflare API token with the permissions you need and pass it as a bearer token in the Authorization header. Both user tokens and account tokens are supported."
+          "quote": "you can create a Cloudflare API token with the permissions you need and pass it as a bearer token in the Authorization header"
         }
       ]
-    }
+    },
+    "productId": "cloudflare",
+    "storyId": "agentic-scoped-keys"
   }
 }

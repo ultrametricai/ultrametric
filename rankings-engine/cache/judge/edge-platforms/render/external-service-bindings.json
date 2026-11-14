@@ -1,16 +1,13 @@
 {
-  "hash": "80fa4558467ff534928a27f3791448f56feabed290d989c85aa494f987a01579",
+  "hash": "8b9232998f7232d5bef43c68a778e9f8d3d90ceeeff8076456af2a7f8d3827e5",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "render",
-    "storyId": "external-service-bindings",
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Render's own Managed OIDC lets services authenticate to Anthropic and OpenAI with automatically rotated short-lived tokens instead of stored API keys, which directly addresses credential hand-wiring for some external APIs. However, nothing shows native code-level bindings that auto-wire Render Postgres, Key Value, or storage into application code. Managed datastores, environment variables, and Blueprint YAML exist, but none is documented as a binding mechanism. Missing for 10: documented binding or auto-injection of database/Key Value/storage connections into code, minimal-boilerplate binding API beyond the two OIDC providers, broader provider coverage, independent or hands-on corroboration.",
+    "rationale": "Render's managed OIDC lets services authenticate to external providers without storing long-lived API keys, which is a first-party way to avoid hand-wiring credentials. It is documented only for Anthropic and OpenAI, though. Managed databases, environment variables and Blueprint YAML are adjacent features, not documented native code bindings. Missing for 10: native in-code bindings to databases, storage and APIs; documented automatic credential injection between services and datastores; credential-free auth beyond Anthropic/OpenAI; hands-on corroboration.",
     "evidenceIds": [
-      "render-docs-30",
-      "render-docs-38"
+      "render-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -22,6 +19,8 @@
           "quote": "Render services can authenticate to both providers without storing long-lived API keys. Render instead issues short-lived identity tokens for each service and automatically rotates them as needed."
         }
       ]
-    }
+    },
+    "productId": "render",
+    "storyId": "external-service-bindings"
   }
 }

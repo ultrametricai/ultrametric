@@ -1,13 +1,11 @@
 {
-  "hash": "81ab09b7401b0fc98ae06a88796746ab83beca8890ccb6a43d37d867d781e267",
+  "hash": "c9263704a592451e614de97f1b02dfa26655c81d89dfc42b34d4460b0ef5fa0e",
   "keyVersion": "v2",
   "verdict": {
-    "productId": "vercel",
-    "storyId": "standards-based-runtime-portability",
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Vercel's own docs show its functions accept portable, non-proprietary code: OCI container images built from a standard Dockerfile run on Vercel Functions, and WebSocket code uses the stock `ws` library with no extra configuration. Storage is also standard Postgres and Redis through providers like Neon and Upstash, since Vercel's proprietary KV and Postgres were retired. However, nothing documents a standards-based runtime API set (e.g. Web-standard Request/Response) promised to run unmodified across multiple edge platforms, and the Build Output API is a Vercel-specific spec. missing for 10: documented standard Web runtime API surface for functions or middleware, explicit cross-edge-platform portability claims, independent or hands-on corroboration of running unmodified elsewhere.",
+    "rationale": "Vercel documents some portability through standard interfaces. Functions can run any code from an OCI container image built from a Dockerfile. WebSocket handling works with standard libraries like `ws` 'with no additional configuration'. Storage moved away from proprietary Vercel KV/Postgres to standard external Redis/Postgres providers. However, the Build Output API is a Vercel-specific spec, and nothing shows code written against standard web runtime APIs running unmodified across multiple edge platforms. Missing for 10: documented support for standard (e.g., Web-standard) runtime APIs in edge/function code, explicit cross-platform portability claims, evidence that code runs unmodified on other edge platforms, and independent corroboration.",
     "evidenceIds": [
       "vercel-parity-docker-deploy-20261103",
       "vercel-parity-standards-based-runtime-portability-20261103",
@@ -29,9 +27,11 @@
         },
         {
           "evidenceId": "vercel-parity-redis-compatible-cache-20261103",
-          "quote": "Vercel KV is no longer available. If you had an existing Vercel KV store, we automatically moved it to Upstash Redis in December 2024."
+          "quote": "Vercel lets you connect external Redis databases through the Marketplace"
         }
       ]
-    }
+    },
+    "productId": "vercel",
+    "storyId": "standards-based-runtime-portability"
   }
 }
