@@ -4062,17 +4062,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Honeycomb documents an official MCP server that any MCP-capable external agent can connect to in order to query live telemetry, fetch traces and investigate latency or error spikes. It also offers a documented REST API with a downloadable OpenAPI spec, and a community user reports using Honeycomb's MCP server as an agent tool during incidents. The probe's 404s were on different paths than the documented /api/openapi-public.yaml, so they do not contradict the spec claim. Missing for 10: explicit documentation that metrics and logs (as distinct from traces) are each queryable through the agent tools, and more detailed independent hands-on evidence of production debugging.",
+    "rationale": "Honeycomb ships an official MCP server that lets any MCP-capable external agent query live telemetry and investigate latency or error spikes, with documented query and trace tools. It also has a documented REST API for queries with a downloadable OpenAPI spec, and it ingests and queries traces, logs, and metrics. A community report describes an LLM agent using Honeycomb's MCP server during incidents. The OpenAPI probe failing at guessed URL paths is not a contradiction, since the docs say the spec is offered as a download. Missing for 10: explicit documentation that agent query tools cover metrics as well as traces and logs, and an OpenAPI spec at a machine-discoverable standard path.",
     "evidenceIds": [
       "honeycomb-docs-9",
-      "honeycomb-docs-66",
       "honeycomb-docs-43",
-      "honeycomb-docs-67",
-      "honeycomb-docs-20",
+      "honeycomb-docs-10",
+      "honeycomb-docs-44",
       "honeycomb-docs-11",
-      "honeycomb-docs-58",
+      "honeycomb-docs-21",
       "honeycomb-docs-1",
-      "honeycomb-docs-70",
+      "honeycomb-docs-52",
       "honeycomb-comm-2",
       "honeycomb-probe-3"
     ],
@@ -4086,20 +4085,24 @@
           "quote": "Connect Honeycomb to any AI agent that supports the Model Context Protocol (MCP) so it can query your telemetry, investigate issues, and answer questions using your live Honeycomb data."
         },
         {
-          "evidenceId": "honeycomb-docs-67",
-          "quote": "Each tool corresponds to a specific Honeycomb capability, like running a query, fetching a trace, or creating a Board."
+          "evidenceId": "honeycomb-docs-43",
+          "quote": "Reference for the tools Honeycomb MCP exposes to AI agents, including discovery, query, trace, Board, Trigger, SLO, and Canvas investigation tools."
         },
         {
-          "evidenceId": "honeycomb-docs-20",
-          "quote": "Investigate and diagnose latency or error spikes"
+          "evidenceId": "honeycomb-docs-11",
+          "quote": "Build integrations and automate workflows with the Honeycomb API. Programmatically manage datasets, queries, triggers, SLOs, environments, API keys, and more."
         },
         {
-          "evidenceId": "honeycomb-docs-58",
-          "quote": "You can [download the Honeycomb OpenAPI spec](/api/openapi-public.yaml) to use with your own tooling."
+          "evidenceId": "honeycomb-docs-21",
+          "quote": "You can download the Honeycomb OpenAPI spec to use with your own tooling."
         },
         {
-          "evidenceId": "honeycomb-docs-70",
-          "quote": "In Honeycomb, traces and logs are stored as _structured events_: labeled JSON objects sent over HTTP, indexed automatically on every field at ingest, and queryable without a predefined schema."
+          "evidenceId": "honeycomb-docs-1",
+          "quote": "send traces, logs, and metrics to Honeycomb."
+        },
+        {
+          "evidenceId": "honeycomb-comm-2",
+          "quote": "An LLM agent given tool calls for each source, including Honeycomb's MCP server, can generate integrated hypotheses."
         }
       ]
     }
@@ -4110,12 +4113,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A hands-on probe confirms Honeycomb serves an llms.txt at docs.honeycomb.io/llms.txt (HTTP 200) that indexes markdown (.md) versions of its doc pages, and there is an _llms/send-data.md bundle for agent consumption. Honeycomb also ships an agent-skills plugin that gives AI coding assistants Honeycomb and observability knowledge. missing for 10: no independent community report of agents actually consuming the llms.txt or .md docs, and no evidence of a consolidated llms-full.txt.",
+    "rationale": "A live probe confirms https://docs.honeycomb.io/llms.txt returns HTTP 200 with a structured index linking to markdown versions of doc pages. Honeycomb also publishes LLM-oriented markdown bundles (/_llms/send-data.md) and an agent-skills plugin that gives AI assistants Honeycomb knowledge. Missing for 10: no independent community or hands-on report of agents actually consuming these docs in practice.",
     "evidenceIds": [
       "honeycomb-probe-1",
       "honeycomb-docs-30",
-      "honeycomb-docs-45",
-      "honeycomb-docs-35"
+      "honeycomb-docs-34",
+      "honeycomb-docs-35",
+      "honeycomb-docs-45"
     ],
     "support": {
       "relation": "direct",
@@ -4124,7 +4128,7 @@
       "citations": [
         {
           "evidenceId": "honeycomb-probe-1",
-          "quote": "PROBE llms.txt: HTTP 200 at https://docs.honeycomb.io/llms.txt"
+          "quote": "PROBE llms.txt: HTTP 200 at https://docs.honeycomb.io/llms.txt # Honeycomb Docs"
         },
         {
           "evidenceId": "honeycomb-docs-30",
@@ -4141,13 +4145,11 @@
     "productId": "honeycomb",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Inside the product, Query Assistant uses AI to turn natural-language questions into Honeycomb queries, and Canvas investigations accept skills that add instructions or context, which points to an in-product AI investigation surface. However, the evidence never directly shows Honeycomb surfacing AI-generated insights or suggestions about the data itself. The MCP-based diagnosis and optimization suggestions run in external agents, not inside the product, so they earn no credit here. Missing for 10: documented in-product AI-generated insights/findings from data, documented in-product suggestions or recommendations, details of what Canvas investigations produce, independent hands-on corroboration.",
+    "rationale": "Honeycomb documents Query Assistant, an in-product AI feature that turns natural-language input into Honeycomb queries over your data. That is AI assistance inside the product, but it generates queries rather than insights or suggestions. The documented 'suggest optimization opportunities' capability comes from external AI agents connected through the MCP server, not from the product itself, so it earns no credit here. Missing for 10: in-product AI-generated insights or summaries of data, in-product AI suggestions or recommendations, detail on Canvas investigation as an in-product AI experience, and independent or hands-on corroboration of Query Assistant quality.",
     "evidenceIds": [
-      "honeycomb-docs-4",
-      "honeycomb-docs-65",
-      "honeycomb-docs-43"
+      "honeycomb-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -4157,10 +4159,6 @@
         {
           "evidenceId": "honeycomb-docs-4",
           "quote": "Query Assistant is a feature that generates Honeycomb queries based on your natural language query (NLQ) input."
-        },
-        {
-          "evidenceId": "honeycomb-docs-65",
-          "quote": "Use skills to add instructions or context to your Canvas investigations."
         }
       ]
     }
@@ -4171,13 +4169,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Honeycomb's own Triggers and SLO burn alerts are the only documented background automation. Once configured, they evaluate thresholds without user involvement and fire JSON webhooks that can drive downstream integrations, but they only alert and take no autonomous actions. The API's 'automate workflows' is a developer building block, and the MCP server, agent skills and Canvas are interactive, agent-driven investigation; none is shown running autonomously in the background. Missing for 10: autonomous background agents or scheduled AI investigations, automations that take actions beyond alert notifications, user-configurable recurring jobs, and independent corroboration.",
+    "rationale": "Honeycomb's own Triggers and SLOs are rules you configure once that keep watching for threshold breaches and fire alerts or custom webhooks when conditions are met. That is a background automation, but it is limited to alerting. The API and MCP server are only building blocks or user-driven agent access, so they get no credit. Missing for 10: autonomous agentic background workflows (e.g., agents that investigate or remediate unattended), scheduled or recurring automation beyond alert evaluation, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "honeycomb-docs-6",
       "honeycomb-docs-8",
-      "honeycomb-docs-33",
-      "honeycomb-docs-59",
-      "honeycomb-docs-18"
+      "honeycomb-docs-18",
+      "honeycomb-docs-33"
     ],
     "support": {
       "relation": "direct",
@@ -4189,12 +4186,16 @@
           "quote": "Use triggers to send alerts when thresholds that you define and configure are passed."
         },
         {
-          "evidenceId": "honeycomb-docs-59",
-          "quote": "Once configured, Honeycomb sends JSON payloads to your webhook upon alerts firing."
+          "evidenceId": "honeycomb-docs-8",
+          "quote": "Set up Triggers and SLOs to alert your team when conditions are met, and route notifications to Slack, PagerDuty, Microsoft Teams, or a custom webhook."
         },
         {
           "evidenceId": "honeycomb-docs-18",
           "quote": "This allows you to build custom integrations that receive JSON payloads from Honeycomb upon alerts firing."
+        },
+        {
+          "evidenceId": "honeycomb-docs-33",
+          "quote": "Route Honeycomb Trigger and SLO burn alerts to any service that accepts a JSON payload, including third-party tools and custom integrations."
         }
       ]
     }
@@ -4203,12 +4204,11 @@
     "productId": "honeycomb",
     "storyId": "agentic-builtin-assistant",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Honeycomb documents an in-product AI feature, Query Assistant, which turns natural-language input into Honeycomb queries. It also mentions Canvas investigations that accept skills as instructions, which suggests an in-product investigation assistant, though the docs barely describe it. The MCP server and agent-skills plugin serve external agents, so they don't count as a built-in assistant. Missing for 10: documented end-to-end delegation of multi-step tasks to a built-in assistant, substantive documentation of what Canvas can do, independent or hands-on corroboration.",
+    "rationale": "Honeycomb documents one built-in AI feature, Query Assistant, which turns natural-language input into Honeycomb queries. That is a narrow, single-purpose delegation rather than a general in-product assistant. The MCP server and agent skills serve external AI agents, not an assistant inside the product, so they earn no credit here. Missing for 10: evidence of an in-product assistant that can take on broader tasks (investigation, Board/Trigger creation), multi-step agentic execution inside the UI, and independent or hands-on corroboration of Query Assistant.",
     "evidenceIds": [
-      "honeycomb-docs-4",
-      "honeycomb-docs-65"
+      "honeycomb-docs-4"
     ],
     "support": {
       "relation": "direct",
@@ -4218,10 +4218,6 @@
         {
           "evidenceId": "honeycomb-docs-4",
           "quote": "Query Assistant is a feature that generates Honeycomb queries based on your natural language query (NLQ) input."
-        },
-        {
-          "evidenceId": "honeycomb-docs-65",
-          "quote": "Use skills to add instructions or context to your Canvas investigations."
         }
       ]
     }
@@ -4232,12 +4228,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Honeycomb documents a first-party API for automating workflows: it can programmatically manage datasets, queries, triggers, SLOs, environments and API keys, and a downloadable OpenAPI spec is provided. It also ships honeymarker, a command-line tool, though that tool only covers marker CRUD. Headless operation is credible, but no evidence shows CI-specific usage or a general-purpose CLI. The probe's 404s on guessed OpenAPI paths do not contradict the documented spec location. Missing for 10: documented CI/CD integration guides or examples, a general-purpose official CLI beyond markers, and independent hands-on corroboration of headless/CI automation.",
+    "rationale": "Honeycomb documents its own headless interfaces: a management API for automating workflows over datasets, queries, triggers, SLOs and API keys, a downloadable OpenAPI spec, and the honeymarker CLI for scriptable marker CRUD. Nothing documents CI pipeline usage, and the CLI covers only markers. Missing for 10: CI-specific guidance or examples (e.g. pipeline integrations), a general-purpose CLI beyond markers, and independent or hands-on corroboration of headless/CI automation.",
     "evidenceIds": [
       "honeycomb-docs-11",
       "honeycomb-docs-27",
-      "honeycomb-docs-57",
-      "honeycomb-docs-58",
+      "honeycomb-docs-21",
       "honeycomb-docs-37",
       "honeycomb-docs-49"
     ],
@@ -4248,15 +4243,19 @@
       "citations": [
         {
           "evidenceId": "honeycomb-docs-11",
-          "quote": "Build integrations and automate workflows with the Honeycomb API. Programmatically manage datasets, queries, triggers, SLOs, environments, API keys, and more."
+          "quote": "Build integrations and automate workflows with the Honeycomb API."
         },
         {
-          "evidenceId": "honeycomb-docs-57",
-          "quote": "The Honeycomb API gives you programmatic access to manage resources, automate workflows, and integrate Honeycomb into your systems."
+          "evidenceId": "honeycomb-docs-27",
+          "quote": "Programmatically manage datasets, queries, triggers, SLOs, environments, API keys, and more."
         },
         {
           "evidenceId": "honeycomb-docs-37",
-          "quote": "To add markers via a command line tool, use either `curl` or [`honeymarker`](#honeymarker), a lightweight marker management tool that provides a CRUD command line interface."
+          "quote": "a lightweight marker management tool that provides a CRUD command line interface"
+        },
+        {
+          "evidenceId": "honeycomb-docs-21",
+          "quote": "You can download the Honeycomb OpenAPI spec to use with your own tooling."
         }
       ]
     }
@@ -4267,7 +4266,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only Honeycomb acting as an MCP server that external agents connect to, plus Canvas skills that add instructions or context. That is the server role and an adjacent feature, not Honeycomb consuming external MCP servers' tools. Honeycomb has in-product AI investigation (Canvas), so this client-side axis plausibly applies, but nothing shows Honeycomb can plug in third-party MCP servers.",
+    "rationale": "Honeycomb ships AI features such as Query Assistant, so it is fair to ask whether it can consume external MCP servers. However, every MCP item in the evidence describes Honeycomb acting as an MCP server that external agents connect to. Nothing shows Honeycomb plugging in third-party MCP servers to use their tools, and server-side evidence does not transfer to this client-side story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4282,13 +4281,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Honeycomb documents an official MCP server, with a configuration guide for connecting any MCP-capable agent, authentication, and a tools reference covering query, trace, Board, Trigger, SLO, and Canvas tools. An independent HN practitioner also describes using Honeycomb's MCP server as an agent tool source. Missing for 10: in-depth independent hands-on corroboration (the community mention is brief) and detailed per-client setup and auth specifics in the evidence.",
+    "rationale": "Honeycomb, an observability SaaS rather than an agent, documents an official Honeycomb MCP Server. Its docs cover a configuration guide for connecting any MCP-capable agent, a tools reference (discovery, query, trace, Board, Trigger, SLO, Canvas) and use cases, and a community report confirms engineers use Honeycomb's MCP server as an agent tool source. Missing for 10: specific setup and authentication details (transport, auth method, supported clients) are not quoted in the evidence.",
     "evidenceIds": [
       "honeycomb-docs-9",
       "honeycomb-docs-34",
       "honeycomb-docs-43",
-      "honeycomb-docs-66",
-      "honeycomb-docs-67",
+      "honeycomb-docs-44",
       "honeycomb-probe-3",
       "honeycomb-comm-2"
     ],
@@ -4298,20 +4296,16 @@
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
       "citations": [
         {
-          "evidenceId": "honeycomb-docs-34",
-          "quote": "Connect your AI agent to the Honeycomb MCP Server."
-        },
-        {
           "evidenceId": "honeycomb-docs-9",
           "quote": "Connect Honeycomb to any AI agent that supports the Model Context Protocol (MCP) so it can query your telemetry, investigate issues, and answer questions using your live Honeycomb data."
         },
         {
-          "evidenceId": "honeycomb-docs-43",
-          "quote": "Reference for the tools Honeycomb MCP exposes to AI agents, including discovery, query, trace, Board, Trigger, SLO, and Canvas investigation tools."
+          "evidenceId": "honeycomb-docs-34",
+          "quote": "Connect your AI agent to the Honeycomb MCP Server."
         },
         {
-          "evidenceId": "honeycomb-docs-66",
-          "quote": "Once your agent authenticates, it can query your telemetry, investigate issues, and answer questions using your live Honeycomb data."
+          "evidenceId": "honeycomb-docs-43",
+          "quote": "Reference for the tools Honeycomb MCP exposes to AI agents, including discovery, query, trace, Board, Trigger, SLO, and Canvas investigation tools."
         },
         {
           "evidenceId": "honeycomb-comm-2",
@@ -4364,7 +4358,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Honeycomb documents an official command-line tool, honeymarker, but its scope is limited to CRUD management of markers. There is no evidence of a general-purpose CLI for querying, triggers, SLOs, boards, or agent-oriented workflows; the MCP server, API, and agent skills are separate surfaces. Missing for 10: a general-purpose official CLI covering core resources (queries, datasets, triggers, SLOs, boards), AI-native or agent-oriented CLI workflows, and independent or hands-on corroboration.",
+    "rationale": "Honeycomb documents Honeymarker, its own lightweight CLI, but it only handles CRUD of markers. There is no evidence of a general-purpose official CLI for querying data or managing triggers, SLOs, boards or datasets, which the MCP server and REST API cover instead. Missing for 10: a general-purpose official CLI covering queries and resource management, AI-native or agent-oriented CLI workflows, and independent or hands-on corroboration of CLI use.",
     "evidenceIds": [
       "honeycomb-docs-37",
       "honeycomb-docs-49"
@@ -4424,7 +4418,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Honeycomb's own API documents programmatic management of API keys, so issuing credentials for an agent is supported. Nothing in the evidence shows those keys can be scoped or limited to least-privilege permissions, which is the core of this story. missing for 10: documented per-key permission scopes, least-privilege or read-only key types, agent-specific credential guidance (e.g., for MCP authentication), independent corroboration.",
+    "rationale": "Honeycomb's API docs say users can programmatically manage API keys, so the product can issue credentials an agent could use. Nothing in the evidence shows those keys can be scoped to specific permissions, datasets or environments for least-privilege use. Missing for 10: documented per-key permission scopes, least-privilege or read-only key options for agents or MCP, environment/dataset-level restriction, independent corroboration.",
     "evidenceIds": [
       "honeycomb-docs-11",
       "honeycomb-docs-27"
@@ -4435,12 +4429,12 @@
       "subject": "As an AI-native user, I can issue scoped/least-privilege API credentials for an agent",
       "citations": [
         {
-          "evidenceId": "honeycomb-docs-27",
+          "evidenceId": "honeycomb-docs-11",
           "quote": "Programmatically manage datasets, queries, triggers, SLOs, environments, API keys, and more."
         },
         {
-          "evidenceId": "honeycomb-docs-11",
-          "quote": "Build integrations and automate workflows with the Honeycomb API."
+          "evidenceId": "honeycomb-docs-27",
+          "quote": "Programmatically manage datasets, queries, triggers, SLOs, environments, API keys, and more."
         }
       ]
     }
@@ -4451,13 +4445,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Honeycomb officially documents building instrumentation against OpenTelemetry SDKs, including custom spans, attributes, events and metrics sent to Honeycomb. Its own Beeline SDKs appear only as a legacy path to migrate away from. For the management API, only a downloadable OpenAPI spec is documented, not a first-party client SDK. missing for 10: first-party Honeycomb-maintained SDKs (OTel SDKs are community-standard and Beelines are legacy), official API client libraries beyond the raw OpenAPI spec, language coverage details, independent hands-on corroboration.",
+    "rationale": "Honeycomb documents instrumenting applications with OpenTelemetry SDKs as its supported ingestion path, and its agent skills reference Honeycomb Beelines as a legacy SDK being migrated to OpenTelemetry. However, the OTel SDKs are an open standard rather than Honeycomb-owned, and for its management API it offers only a downloadable OpenAPI spec, not official client libraries. missing for 10: Honeycomb-maintained current SDKs or API client libraries, language coverage and reference docs for SDKs, independent corroboration of SDK developer experience",
     "evidenceIds": [
-      "honeycomb-docs-30",
-      "honeycomb-docs-31",
       "honeycomb-docs-1",
+      "honeycomb-docs-31",
+      "honeycomb-docs-30",
       "honeycomb-docs-47",
-      "honeycomb-docs-58"
+      "honeycomb-docs-21",
+      "honeycomb-docs-11"
     ],
     "support": {
       "relation": "direct",
@@ -4469,16 +4464,16 @@
           "quote": "Instrument your application with OpenTelemetry SDKs to create counters, histograms, and gauges, and send metrics to Honeycomb for analysis."
         },
         {
-          "evidenceId": "honeycomb-docs-30",
-          "quote": "Extend automatic OpenTelemetry instrumentation with custom spans, attributes, and events to capture the specific application behavior you need in Honeycomb."
+          "evidenceId": "honeycomb-docs-1",
+          "quote": "Instrument your applications with OpenTelemetry, the open-source standard for collecting telemetry, and send traces, logs, and metrics to Honeycomb."
         },
         {
           "evidenceId": "honeycomb-docs-47",
           "quote": "beeline-migration: Guidlines for migrating from Honeycomb Beelines to OpenTelemetry SDKs."
         },
         {
-          "evidenceId": "honeycomb-docs-58",
-          "quote": "You can [download the Honeycomb OpenAPI spec](/api/openapi-public.yaml) to use with your own tooling."
+          "evidenceId": "honeycomb-docs-21",
+          "quote": "You can download the Honeycomb OpenAPI spec to use with your own tooling."
         }
       ]
     }
@@ -4528,7 +4523,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack has no documented Honeycomb feature that generates incident summaries or AI alert context for responders. Query Assistant turns natural language into queries, the MCP server lets external agents investigate telemetry, Canvas investigations accept skills, and webhook variables fill in alert context without AI. These are adjacent features or developer building blocks, not the summarization capability itself.",
+    "rationale": "The evidence shows no first-party feature that writes AI summaries of incidents or alert context for responders. Query Assistant only turns natural language into queries, and alert webhooks carry template-variable context with no AI involved. The MCP server lets a user's own external AI agent investigate issues, which is a developer building block rather than a native incident-summary capability.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -4543,13 +4538,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Honeycomb documents its own AI investigation surface, Canvas, which supports skills for investigations. Its official MCP server exposes Canvas investigation tools and is documented as letting agents investigate and diagnose latency or error spikes. The docs never explicitly describe the platform's AI being launched from a fired alert or producing a stated probable root cause, and Canvas evidence is thin. One community note that an earlier LLM latency analysis was only an internal demo predates these docs and does not concretely contradict them. Missing for 10: explicit alert- or error-triggered AI investigation, documented root-cause hypothesis output, in-depth Canvas docs, independent hands-on corroboration.",
+    "rationale": "Honeycomb documents its own MCP server so that connected AI agents can \"investigate and diagnose latency or error spikes\". It exposes Canvas investigation tools, and a community user reports that an LLM agent using Honeycomb's MCP server generates integrated hypotheses. However, the reasoning AI is the user's external agent rather than a built-in platform AI, and nothing shows it being launched from an alert or explicitly proposing a root cause. Missing for 10: a native in-platform AI that investigates a fired alert or error, explicit root-cause proposal output, and documentation of Canvas behavior beyond a tool listing.",
     "evidenceIds": [
-      "honeycomb-docs-65",
-      "honeycomb-docs-43",
+      "honeycomb-docs-9",
       "honeycomb-docs-10",
+      "honeycomb-docs-43",
       "honeycomb-docs-44",
-      "honeycomb-docs-66"
+      "honeycomb-comm-2"
     ],
     "support": {
       "relation": "direct",
@@ -4557,16 +4552,20 @@
       "subject": "As an AI-native user, I can have the platform's AI investigate an alert or error and propose a probable root cause",
       "citations": [
         {
-          "evidenceId": "honeycomb-docs-65",
-          "quote": "Use skills to add instructions or context to your Canvas investigations."
+          "evidenceId": "honeycomb-docs-9",
+          "quote": "Connect Honeycomb to any AI agent that supports the Model Context Protocol (MCP) so it can query your telemetry, investigate issues, and answer questions using your live Honeycomb data."
+        },
+        {
+          "evidenceId": "honeycomb-docs-10",
+          "quote": "Investigate and diagnose latency or error spikes"
         },
         {
           "evidenceId": "honeycomb-docs-43",
           "quote": "Reference for the tools Honeycomb MCP exposes to AI agents, including discovery, query, trace, Board, Trigger, SLO, and Canvas investigation tools."
         },
         {
-          "evidenceId": "honeycomb-docs-10",
-          "quote": "Investigate and diagnose latency or error spikes"
+          "evidenceId": "honeycomb-comm-2",
+          "quote": "An LLM agent given tool calls for each source, including Honeycomb's MCP server, can generate integrated hypotheses."
         }
       ]
     }
@@ -4577,13 +4576,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Honeycomb documents threshold-based Triggers and SLO burn alerts, with notifications routed to Slack, PagerDuty, Microsoft Teams, or custom webhooks that accept JSON payloads. That covers the alerting and routing parts of the story. The evidence never mentions grouping or silencing of notifications, and it only implies that alerts can fire on all signal types (traces, logs, metrics). missing for 10: notification grouping, silencing/muting of alerts, explicit confirmation that triggers work on any telemetry signal type, independent corroboration.",
+    "rationale": "Honeycomb documents threshold-based Triggers and SLO burn alerts, with notifications routed to Slack, PagerDuty, Microsoft Teams, or custom webhooks that use templated JSON payloads. That covers alerting and routing. Nothing in the evidence covers grouping, deduplication or silencing/muting of notifications, and alerting on every signal type (metrics vs. traces vs. logs) is implied rather than stated. Missing for 10: notification grouping/deduplication, silencing/muting or maintenance windows, explicit documentation that triggers work across all signal types, independent corroboration.",
     "evidenceIds": [
       "honeycomb-docs-6",
       "honeycomb-docs-7",
       "honeycomb-docs-8",
       "honeycomb-docs-33",
-      "honeycomb-docs-59"
+      "honeycomb-docs-18",
+      "honeycomb-docs-39"
     ],
     "support": {
       "relation": "direct",
@@ -4654,7 +4654,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The documented alerting mechanism is Triggers, which fire on 'thresholds that you define and configure,' plus SLO burn alerts. Neither is anomaly detection that works without hand-written thresholds. The MCP docs say a connected external AI agent can 'identify performance outliers,' but that is prompted, agent-driven investigation rather than an automatic detection feature of the product, so it is adjacent at best. BubbleUp appears only as a pricing checkmark, with no description of what it does.",
+    "rationale": "The evidence shows Honeycomb's alerting is driven by user-defined thresholds (Triggers) and user-defined SLOs, with no documented automatic anomaly or outlier detection. The MCP docs say AI agents connected to Honeycomb can 'identify performance outliers', but that is an agent-driven investigation, not an alerting feature an SRE enables. BubbleUp appears only as a pricing checkmark with no description, so it cannot be credited.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4669,20 +4669,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Honeycomb documents an API and offers a downloadable OpenAPI spec for use 'with your own tooling.' That spec is a developer building block, not an interactive API reference with runnable examples, and no evidence shows a first-party try-it console or executable reference. The probe also found no OpenAPI spec at the standard candidate paths.",
-    "evidenceIds": [
-      "honeycomb-docs-58"
-    ],
+    "rationale": "Honeycomb documents an API and offers a downloadable OpenAPI spec for use 'with your own tooling'. However, nothing in the evidence shows an interactive API reference with try-it or runnable examples. The interactive demo is a product walkthrough, not an API explorer, and the downloadable spec is only a building block, so neither counts toward this story.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
-      "citations": [
-        {
-          "evidenceId": "honeycomb-docs-58",
-          "quote": "You can [download the Honeycomb OpenAPI spec](/api/openapi-public.yaml) to use with your own tooling."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -4718,7 +4711,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox testing is a fair question for an observability SaaS, so the axis applies. The pack never documents a sandbox or test environment that isolates agent or API work from production data. The API's mention of managing \"environments\" never says they serve as isolated test sandboxes, and the interactive demo is a product tour, not a test target. The MCP docs describe agents working against \"your live Honeycomb data\".",
+    "rationale": "The evidence pack does not document a sandbox or test environment for exercising Honeycomb, its API, or its MCP server without touching production data. The interactive demo is an exploration playground, not a test sandbox. The API's ability to 'manage ... environments' is only a building block, since nothing says environments isolate test traffic from production. Neither earns credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4733,7 +4726,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Honeycomb documents a programmatic API with a downloadable OpenAPI spec, but nothing in the evidence describes API versioning or an API deprecation policy. The product-lifecycle migration pages for the Kubernetes agent and Beelines cover deprecated agents and SDKs, not versioned APIs, so they are only adjacent and earn no credit.",
+    "rationale": "The evidence shows Honeycomb has a documented API and a downloadable OpenAPI spec, but nothing shows API versioning or a documented API deprecation policy. The 'product-lifecycle/recommended-migrations' page covers migrating off a Kubernetes agent, not API version deprecation, so it is only an adjacent feature.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4748,7 +4741,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a bulk-operation capability, such as multi-select edit or delete, batch endpoints, or bulk actions on triggers, SLOs, boards, or markers. The REST API, OpenAPI spec, Honeymarker CRUD CLI, and MCP tools are developer building blocks for scripting per-item operations, so they earn no credit. Queries that aggregate across many events are analysis, not bulk management of items.",
+    "rationale": "Bulk operations are a fair question for an observability SaaS, so the axis applies. However, the evidence shows no documented bulk or batch capability. The API and the Honeymarker CLI manage individual resources, which are developer building blocks rather than a bulk-operations feature. The MCP tools cover querying and investigation, not batch changes across many items.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4763,16 +4756,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Honeycomb Triggers and SLO burn alerts let users define threshold rules that fire automatically and send JSON payloads to Slack, PagerDuty, Teams, or a custom webhook. Payloads can be customized with variables and Go template functions, and triggers can be managed through the API and MCP tools. The only automatic action documented, though, is delivering an alert notification or webhook. Rules evaluate thresholds on query results rather than arbitrary events, and there is no native action or workflow engine. Missing for 10: built-in automated actions beyond alert delivery, rule conditions on arbitrary events, independent hands-on corroboration.",
+    "rationale": "Honeycomb Triggers let users define threshold rules that automatically send alerts. Those alerts route to Slack, PagerDuty, Teams, or a custom webhook with templated JSON payloads, which can drive downstream actions, and triggers can be managed via API and MCP. However, the only automatic 'action' is alert or notification delivery on query-threshold or SLO-burn conditions; there is no native rule engine for arbitrary actions. Missing for 10: native non-notification actions (e.g., remediation or workflow steps), event-level rule matching beyond aggregate thresholds, and independent hands-on corroboration.",
     "evidenceIds": [
       "honeycomb-docs-6",
       "honeycomb-docs-8",
       "honeycomb-docs-18",
       "honeycomb-docs-33",
-      "honeycomb-docs-59",
-      "honeycomb-docs-38",
       "honeycomb-docs-39",
-      "honeycomb-docs-27",
+      "honeycomb-docs-11",
       "honeycomb-docs-43"
     ],
     "support": {
@@ -4789,12 +4780,12 @@
           "quote": "Set up Triggers and SLOs to alert your team when conditions are met, and route notifications to Slack, PagerDuty, Microsoft Teams, or a custom webhook."
         },
         {
-          "evidenceId": "honeycomb-docs-59",
-          "quote": "Once configured, Honeycomb sends JSON payloads to your webhook upon alerts firing."
+          "evidenceId": "honeycomb-docs-18",
+          "quote": "This allows you to build custom integrations that receive JSON payloads from Honeycomb upon alerts firing."
         },
         {
-          "evidenceId": "honeycomb-docs-27",
-          "quote": "Programmatically manage datasets, queries, triggers, SLOs, environments, API keys, and more."
+          "evidenceId": "honeycomb-docs-33",
+          "quote": "Route Honeycomb Trigger and SLO burn alerts to any service that accepts a JSON payload, including third-party tools and custom integrations."
         }
       ]
     }
@@ -4805,7 +4796,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring work is a fair question for an observability SaaS, since products of this kind can offer scheduled reports or queries, so the axis applies. The pack does not document any user-schedulable recurring jobs or workflows. Triggers and SLOs are threshold-based alerting, a related but different feature. The API's \"automate workflows\" wording describes a developer building block, not a scheduler, so neither earns credit.",
+    "rationale": "Scheduling recurring jobs or workflows is a fair question for an observability platform, for example scheduled queries or reports, so the axis applies. The evidence offers only adjacent features: threshold-based Triggers and SLO alerts (honeycomb-docs-6, honeycomb-docs-8) and an API for building your own automation (honeycomb-docs-11). None of it documents a user-defined recurring schedule for jobs or workflows, so the verdict is none rather than partial.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4820,7 +4811,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Versioning, reviewing, and rolling back automations such as triggers, SLOs, and alert routing is a fair question for an observability SaaS, so the axis applies. The evidence only shows that the Honeycomb API can programmatically manage triggers and SLOs, with a downloadable OpenAPI spec. That is a developer building block a user could combine with external version control, not a product-provided version history, review flow, or rollback. Nothing in the pack documents any of the three.",
+    "rationale": "Honeycomb's automations are its Triggers, SLO alerts and webhooks, and versioning or rolling back that configuration is a fair question for an observability platform. However, the evidence pack documents no version history, change review, or rollback for these. The API's ability to programmatically manage triggers and SLOs is only a developer building block: a user could keep configs in their own version control, but that is a user-side workaround and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4835,7 +4826,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented feature for viewing Honeycomb spend or usage, attributing ingest volume to teams or services, or alerting on usage spikes before billing. The pricing page states only plan event-volume limits. Generic Triggers and Query Builder could approximate this only as a user-built workaround, which earns no credit.",
+    "rationale": "Cost visibility is a fair question for an observability platform, so the axis applies. The evidence pack documents no spend or usage dashboard, no attribution of cost to teams or services, and no usage-spike or billing alerts. The pricing page only lists plan event-volume limits, and Triggers and SLO alerts cover telemetry conditions rather than observability spend, so they are adjacent features that earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4850,7 +4841,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Honeycomb's own API lets a developer programmatically manage triggers, SLOs, and queries, and a downloadable OpenAPI spec supports tooling around it. That covers defining alerts as code through the API. No evidence shows Boards (dashboards) are manageable through the API, and no Terraform provider or JSON dashboard model is documented. Missing for 10: documented API or JSON support for Boards/dashboards, a Terraform provider, evidence of repeatable provisioning workflows, independent corroboration.",
+    "rationale": "Honeycomb's own API documents programmatic management of triggers and SLOs, which covers alerts-as-code through the API, and it offers a downloadable OpenAPI spec for tooling. The evidence never shows Boards (dashboards) being managed through the API (only \"and more\"), and nothing mentions Terraform or JSON dashboard models. missing for 10: documented API or JSON model for Boards/dashboards, Terraform provider, evidence of a repeatable provisioning workflow, independent corroboration.",
     "evidenceIds": [
       "honeycomb-docs-11",
       "honeycomb-docs-27",
@@ -4863,10 +4854,6 @@
       "citations": [
         {
           "evidenceId": "honeycomb-docs-11",
-          "quote": "Build integrations and automate workflows with the Honeycomb API. Programmatically manage datasets, queries, triggers, SLOs, environments, API keys, and more."
-        },
-        {
-          "evidenceId": "honeycomb-docs-27",
           "quote": "Programmatically manage datasets, queries, triggers, SLOs, environments, API keys, and more."
         },
         {
@@ -4882,7 +4869,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Honeycomb documents markers, which can be added, updated, and deleted via curl or its own honeymarker CLI. The docs path places markers under query-result customization, which implies they annotate results so changes can be lined up with regressions. However, the evidence never explicitly says markers represent deploys or config changes, nor shows how they overlay graphs for correlation. missing for 10: explicit documentation that markers record deploys/releases and configuration changes, a description of markers overlaid on query graphs for regression correlation, CI/CD or deploy-tool integrations, independent or hands-on corroboration.",
+    "rationale": "Honeycomb documents its own markers feature, managed via curl or the Honeymarker CRUD CLI and listed under customizing query results, which is a first-party annotation mechanism for overlaying events on query graphs. The evidence never explicitly ties markers to deploys or configuration changes, and never shows how they are used to correlate regressions, so only the mechanism is evidenced, not the full release-tracking workflow. Missing for 10: explicit documentation of markers as deploy/release or config-change events, CI/CD or deploy-integration evidence, a demonstrated regression-to-deploy correlation workflow, independent or hands-on corroboration.",
     "evidenceIds": [
       "honeycomb-docs-37",
       "honeycomb-docs-49"
@@ -4949,7 +4936,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Error tracking is a fair question for an observability platform like Honeycomb, so the axis applies. However, the evidence pack documents no grouping of errors into issues, no stack-trace views, no release tracking, and no regression detection. Query GROUP BY clauses, deploy markers, and MCP-driven investigation of error spikes are adjacent building blocks, not this capability.",
+    "rationale": "Honeycomb is an observability platform, so error tracking is a fair question to ask of it. However, the evidence never documents errors grouped into issues, stack-trace views, release tracking, or regression detection. Markers and MCP-assisted investigation of 'error spikes' are related features, not this capability, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4997,10 +4984,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Incident management with on-call schedules and escalation policies is a fair question for an observability platform, so the axis applies. The evidence only shows Triggers and SLO alerts that route notifications to PagerDuty, OpsGenie or incident.io, plus deployment markers. Those are adjacent alerting features and third-party integrations, not native incident declaration, timelines, on-call scheduling or escalation.",
+    "rationale": "Honeycomb's docs show alerting through Triggers and SLOs, with routing to PagerDuty, OpsGenie and incident.io webhooks. That hands incident response off to third-party tools. There is no evidence that Honeycomb itself lets you declare incidents, track incident timelines, or manage on-call schedules and escalation policies. Incident management is a fair question for an observability platform, so this is \"none\" rather than \"na\".",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an SRE, I can declare and track incidents with timelines, on-call schedules, and escalation policies",
       "citations": []
@@ -5012,11 +4999,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Honeycomb documents a first-party Kubernetes agent that collects logs and resource metrics from nodes, pods, containers, and volumes, which covers the container and Kubernetes parts of the story. That documentation sits under a \"recommended-migrations/migrate-from-honeycomb-kubernetes-agent\" path, which suggests the agent is being retired. The remaining ingestion evidence describes application instrumentation via the open-source OpenTelemetry SDKs and OTLP, not vendor-maintained host or cloud integrations. missing for 10: host-level agent coverage, cloud-service integrations (e.g. AWS/GCP/Azure), evidence the Kubernetes agent is current rather than deprecated, independent corroboration.",
+    "rationale": "Honeycomb documents its own Kubernetes integration for collecting application logs, cluster logs, and resource metrics. That page sits under a 'migrate-from-honeycomb-kubernetes-agent' path, which suggests the agent is being retired. The rest of the instrumentation evidence is OpenTelemetry SDK and OTLP ingestion for applications, not vendor-maintained agents for hosts, containers, or cloud services. Missing for 10: vendor-maintained host agents, container instrumentation, cloud-service integrations (e.g., AWS/GCP/Azure), confirmation that the Kubernetes agent is current rather than deprecated, and independent corroboration.",
     "evidenceIds": [
       "honeycomb-docs-40",
-      "honeycomb-docs-69",
-      "honeycomb-docs-2",
+      "honeycomb-docs-1",
       "honeycomb-docs-15"
     ],
     "support": {
@@ -5029,8 +5015,8 @@
           "quote": "Honeycomb integrates with Kubernetes to collect your applications' logs, cluster logs, and resource metrics so that you can answer all the questions you have."
         },
         {
-          "evidenceId": "honeycomb-docs-69",
-          "quote": "The Honeycomb Kubernetes agent can also collect resource and status metrics from nodes, pods, containers, and volumes."
+          "evidenceId": "honeycomb-docs-1",
+          "quote": "Instrument your applications with OpenTelemetry, the open-source standard for collecting telemetry, and send traces, logs, and metrics to Honeycomb."
         }
       ]
     }
@@ -5041,7 +5027,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Asking whether a developer can run a local or dev instance is a fair deployment-openness question for an observability platform, so the axis applies. However, the evidence shows only a hosted SaaS offering: a free-forever plan, an interactive demo, and API management of environments. These are adjacent conveniences, not a self-hostable, local, or separately deployable instance of the platform. No documentation describes running Honeycomb locally or spinning up a dev instance.",
+    "rationale": "Honeycomb is shown only as a hosted SaaS. Nothing in the evidence documents a local, self-hosted, or emulated instance of the platform for testing instrumentation and dashboards. The free plan, the interactive demo, and API management of 'environments' are related features (pricing tier, shared demo, SaaS account partitioning), not a spin-up-able dev instance of the platform.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5128,7 +5114,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Exporting data out of an observability SaaS is a fair question for this product, so the axis applies. The evidence shows OpenTelemetry/OTLP ingestion, which keeps instrumentation portable but only covers data coming in. It also shows an API and MCP tools for managing resources and running queries, but these are building blocks, not a documented bulk export of stored telemetry in open formats. Nothing in the pack documents a full-data export or exit path.",
+    "rationale": "The evidence shows Honeycomb accepts data in open formats: it ingests OpenTelemetry/OTLP, and an API manages datasets, queries and configuration. Nothing documents exporting all stored telemetry or account data in open formats for migration. Open-standard instrumentation lowers lock-in on the ingest side, but it is an adjacent capability, not data export.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5143,7 +5129,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Source availability is a fair question for an observability SaaS, so the axis applies. However, the pack contains no evidence that Honeycomb's own source is published under an open license. The OpenTelemetry references describe an open-source instrumentation standard Honeycomb accepts data from, and the community note about OTel contributions concerns a third-party project, not Honeycomb's own code.",
+    "rationale": "Whether a product's source is published under an open license is a fair question for a SaaS observability platform, so the axis applies. The evidence shows no Honeycomb source released under an open license. OpenTelemetry is a third-party open standard Honeycomb ingests, the downloadable OpenAPI spec is an interface description rather than source, and the honeymarker CLI is mentioned with no license or source availability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5158,7 +5144,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an observability platform, so the axis applies. Nothing in the evidence shows Honeycomb offers a self-hosted or on-prem deployment of its core product. The only deployment choice documented is picking an EU or North America region for a hosted account. The Kubernetes agent and OpenTelemetry ingestion are data-collection components that send telemetry to Honeycomb, not a way to run Honeycomb itself.",
+    "rationale": "Self-hosting is a fair question for an observability platform, so the axis applies. However, the evidence only describes Honeycomb as a hosted service: data is sent to Honeycomb via OTLP, and users choose between EU and North America account regions. Nothing documents a self-hosted or on-premises deployment of the core product. Region choice and OpenTelemetry ingestion are adjacent features, not self-hosting.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5173,14 +5159,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Honeycomb's docs say it natively receives OTLP over gRPC, HTTP/protobuf and HTTP/JSON, and that apps already instrumented with OpenTelemetry can send OTLP data directly. This covers traces, logs and metrics, with further guidance on extending OTel SDK instrumentation and migrating from Beelines to OpenTelemetry. missing for 10: independent or hands-on corroboration of direct OTLP ingestion.",
+    "rationale": "Honeycomb's own docs say it natively receives OTLP over gRPC, HTTP/protobuf, and HTTP/JSON, and that OTel-instrumented apps can send OTLP data directly. They also cover traces, logs, and metrics through OpenTelemetry SDKs, plus custom spans and attributes. Missing for 10: independent or hands-on corroboration of direct OTLP ingestion.",
     "evidenceIds": [
       "honeycomb-docs-2",
       "honeycomb-docs-15",
       "honeycomb-docs-1",
       "honeycomb-docs-30",
-      "honeycomb-docs-31",
-      "honeycomb-docs-47"
+      "honeycomb-docs-31"
     ],
     "support": {
       "relation": "direct",
@@ -5200,8 +5185,8 @@
           "quote": "Instrument your applications with OpenTelemetry, the open-source standard for collecting telemetry, and send traces, logs, and metrics to Honeycomb."
         },
         {
-          "evidenceId": "honeycomb-docs-31",
-          "quote": "Instrument your application with OpenTelemetry SDKs to create counters, histograms, and gauges, and send metrics to Honeycomb for analysis."
+          "evidenceId": "honeycomb-docs-30",
+          "quote": "Extend automatic OpenTelemetry instrumentation with custom spans, attributes, and events to capture the specific application behavior you need in Honeycomb."
         }
       ]
     }
@@ -5234,7 +5219,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Honeycomb is a SaaS observability platform with AI features such as Query Assistant, Canvas, and an MCP server, so a training opt-out is a fair question to ask of it. However, nothing in the evidence pack documents a policy or control that keeps customer telemetry out of AI model training. The EU/North America data-region choice is a separate data-residency control and earns no credit here.",
+    "rationale": "Honeycomb is an observability SaaS that ships AI features such as Query Assistant and an MCP server, so a buyer could fairly ask about an AI-training opt-out. The axis therefore applies. Nothing in the evidence pack documents a policy, setting, or opt-out that keeps customer telemetry out of AI model training. EU/NA region selection is a data-residency control, not a training opt-out, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5249,7 +5234,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion control is a fair axis for an observability SaaS that stores customer telemetry, so it applies. However, the pack documents no user-configurable retention period and no way to delete telemetry data. The only retention mention notes that SLO values are tracked past 'your retention period' without saying the user can set it. Generic API management of 'datasets' and deleting markers are adjacent features, not retention or deletion controls, and EU/NA region selection is data residency.",
+    "rationale": "The evidence mentions that a retention period exists (SLO values tracked past it), but no documentation shows users can configure retention or delete telemetry data. The closest items are adjacent: deleting markers, managing datasets via the API, and choosing an account region. None of these is a documented retention or deletion control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5264,7 +5249,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of a SaaS vendor's own usage tracking is a fair privacy question for an observability service, so the axis applies. The evidence pack never documents any opt-out of Honeycomb's product telemetry or usage analytics. Its 'telemetry' references describe customer data users deliberately send to Honeycomb, and EU/US region selection is a data-residency control, not an opt-out.",
+    "rationale": "Opting out of a SaaS vendor's own usage tracking is a fair question for an observability platform like Honeycomb, so the axis applies. The evidence pack covers only the customer telemetry Honeycomb ingests (OpenTelemetry traces, logs, metrics) and EU/North America region selection. Neither is a control for opting out of Honeycomb's own telemetry or usage tracking, so there is no documented support.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5279,7 +5264,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an observability platform, so the axis applies. However, the evidence only shows Honeycomb as a hosted service: data is sent to Honeycomb via OTLP, and accounts choose an EU or North America region. Nothing documents a self-hosted deployment of the full stack, its architecture, or an upgrade path. The Kubernetes agent is only a data collector, and the Kafka write-ups describe Honeycomb's own internal infrastructure, not a deployment customers can run.",
+    "rationale": "Self-hosting is a fair question for an observability platform, so the axis applies. The evidence describes only Honeycomb's hosted service: OTLP ingestion into Honeycomb, EU or North America account regions, and SaaS pricing plans. Nothing documents a self-hosted production deployment, its architecture, or an upgrade path.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5294,10 +5279,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Honeycomb Boards are documented as shareable workspaces for saving and organizing queries, SLOs and visualizations, so the dashboard-sharing core is directly supported. The pack gives no detail on the range of visualization types. Its 'Board Templates' are pre-configured starter boards, not dashboard template variables, so they earn no credit for that part of the story. missing for 10: documented rich visualization types, template/dashboard variables, independent or hands-on corroboration of Boards.",
+    "rationale": "Honeycomb Boards are documented as shareable workspaces where users save and organize queries and visualizations, which covers the shareable-dashboard core. The evidence does not show a range of visualization types or any template-variable mechanism. Board Templates are pre-built boards, not dashboard variables. Missing for 10: documented rich visualization types, template/dashboard variables, independent or hands-on corroboration.",
     "evidenceIds": [
       "honeycomb-docs-5",
-      "honeycomb-docs-51"
+      "honeycomb-docs-51",
+      "honeycomb-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -5321,7 +5307,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document any Honeycomb capability for configuring trace or log sampling, or for choosing among retention tiers. The only related items are passing mentions: a 'retention period' in the context of SLO graphs, and plan event-volume limits. Neither shows a control a developer can use to manage data volume deliberately.",
+    "rationale": "Sampling and retention controls are a fair axis for an observability backend like Honeycomb, but the evidence pack never documents trace or log sampling controls or selectable retention tiers. The only related items are a passing reference to a 'retention period' in the SLO docs and per-plan event-volume caps on the pricing page; neither is a developer-facing control for managing data volume.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5336,12 +5322,11 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Honeycomb documents defining SLOs and alerting when the SLO budget is threatened. It tracks error budgets through Budget Burndown graphs and sends SLO burn alerts to webhooks and other destinations, and SLOs can also be managed through the API. missing for 10: detailed documentation of burn-rate alert configuration (thresholds, windows, budget-rate vs exhaustion-time modes), independent or hands-on corroboration of the SLO feature.",
+    "rationale": "Honeycomb's docs show first-party SLO definition with alerting when the SLO budget is threatened. They also show error-budget tracking through Budget Burndown and Historical Compliance graphs, and SLO burn alerts routable to Slack, PagerDuty, or webhooks, with SLOs manageable via the API. missing for 10: detailed documentation of burn-rate alert configuration (thresholds/windows, exhaustion-time vs. rate settings), independent or hands-on corroboration of SLO/burn-alert behavior.",
     "evidenceIds": [
       "honeycomb-docs-7",
       "honeycomb-docs-22",
       "honeycomb-docs-33",
-      "honeycomb-docs-62",
       "honeycomb-docs-8",
       "honeycomb-docs-11"
     ],
@@ -5363,8 +5348,8 @@
           "quote": "Route Honeycomb Trigger and SLO burn alerts to any service that accepts a JSON payload, including third-party tools and custom integrations."
         },
         {
-          "evidenceId": "honeycomb-docs-62",
-          "quote": "Use variables to customize payloads for your Honeycomb trigger alerts and SLO burn alerts."
+          "evidenceId": "honeycomb-docs-11",
+          "quote": "Programmatically manage datasets, queries, triggers, SLOs, environments, API keys, and more."
         }
       ]
     }
