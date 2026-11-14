@@ -45,15 +45,15 @@ jobs:
             scripts/refresh-automerge.py
             scripts/refresh_main_ci.py
           sparse-checkout-cone-mode: false
-      # Only App-authored radar branch updates use this token. CI/review dispatches
+      # All internal content branch updates use this token. CI/review dispatches
       # retain GITHUB_TOKEN, so the App needs no Actions or workflow-write access.
-      - name: Mint radar branch-update token
+      - name: Mint content branch-update token
         id: content-app
-        continue-on-error: true # a broken App setup must not stop Actions-bot recovery
+        continue-on-error: true # metadata checks still run; branch publication fails closed
         if: vars.CONTENT_BOT_LOGIN != '' && env.HAS_CONTENT_BOT == 'true'
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
-          client-id: ${{ secrets.CONTENT_BOT_APP_ID }}
+          app-id: ${{ secrets.CONTENT_BOT_APP_ID }}
           private-key: ${{ secrets.CONTENT_BOT_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           repositories: ${{ github.event.repository.name }}
@@ -134,12 +134,12 @@ jobs:
             scripts/refresh_update.py
             scripts/refresh-automerge.py
           sparse-checkout-cone-mode: false
-      - name: Mint radar branch-update token
+      - name: Mint content branch-update token
         id: content-app
         if: matrix.plan.app && vars.CONTENT_BOT_LOGIN != '' && env.HAS_CONTENT_BOT == 'true'
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
-          client-id: ${{ secrets.CONTENT_BOT_APP_ID }}
+          app-id: ${{ secrets.CONTENT_BOT_APP_ID }}
           private-key: ${{ secrets.CONTENT_BOT_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           repositories: ${{ github.event.repository.name }}

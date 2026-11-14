@@ -12,7 +12,7 @@ on:
         required: true
         type: string
 permissions:
-  contents: write
+  contents: read
   pull-requests: write
   actions: write
   checks: read
@@ -30,11 +30,33 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+          persist-credentials: false
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
           node-version: 24.22.2
       - run: pnpm install --frozen-lockfile
+      - name: Mint content publication token
+        id: content-app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: ${{ secrets.CONTENT_BOT_APP_ID }}
+          private-key: ${{ secrets.CONTENT_BOT_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Verify content publication identity
+        env:
+          APP_SLUG: ${{ steps.content-app.outputs.app-slug }}
+          CONTENT_BOT_LOGIN: ${{ vars.CONTENT_BOT_LOGIN }}
+        run: |
+          if [ -z "$APP_SLUG" ] || [ "$CONTENT_BOT_LOGIN" != "${APP_SLUG}[bot]" ]; then
+            echo '::error::CONTENT_BOT_LOGIN must match the configured content App bot login.'
+            exit 1
+          fi
+
       - name: Repair, validate, publish, and independently recheck
         id: repair
         env:
@@ -42,6 +64,8 @@ jobs:
           PR_NUMBER: ${{ inputs.pr }}
           PR_HEAD: ${{ inputs.head }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONTENT_TOKEN: ${{ steps.content-app.outputs.token }}
+          CONTENT_BOT_LOGIN: ${{ vars.CONTENT_BOT_LOGIN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GIT_AUTHOR_NAME: ultrametric-story-runner
           GIT_AUTHOR_EMAIL: noreply@ultrametric.ai

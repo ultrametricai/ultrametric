@@ -62,7 +62,7 @@ class ReviewTests(unittest.TestCase):
             self.assertEqual(self.run_worker([],pr=candidate),[])
 
     def test_configured_radar_app_uses_existing_ci_review_reservation_and_budget(self):
-        for family in ['vendor-radar','vendor-radar-bringup']:
+        for family in ['story-runner','vendor-radar','vendor-radar-bringup']:
             pr={**PR,'head':{**PR['head'],'ref':f'{family}/fixture-123'},
                 'user':{'login':'fixture-content[bot]','type':'Bot'}}
             with patch.dict('os.environ',{'CONTENT_BOT_LOGIN':'fixture-content[bot]'}):
@@ -80,7 +80,7 @@ class ReviewTests(unittest.TestCase):
             'user':{'login':'fixture-content[bot]','type':'Bot'}}
         cases=[(pr,''),({**pr,'user':{'login':'other[bot]','type':'Bot'}},'fixture-content[bot]'),
                ({**pr,'user':{'login':'fixture-content[bot]','type':'User'}},'fixture-content[bot]'),
-               ({**pr,'head':PR['head']},'fixture-content[bot]'),
+               ({**pr,'head':{**PR['head'],'ref':'accuracy-engine/fixture'}},'fixture-content[bot]'),
                ({**pr,'draft':True},'fixture-content[bot]'),({**pr,'auto_merge':None},'fixture-content[bot]'),
                ({**pr,'head':{**pr['head'],'repo':{'full_name':'fork/repo'}}},'fixture-content[bot]')]
         for candidate,login in cases:

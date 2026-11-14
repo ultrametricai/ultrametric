@@ -1,6 +1,6 @@
 """Trusted-main repair controller. PR refs are read only as allowlisted JSON data."""
 import json
-from refresh_policy import actions_author, held, verify_provenance
+from refresh_policy import actions_author, content_author, held, verify_provenance
 import hashlib
 import os
 import re
@@ -42,7 +42,7 @@ def current():
 def identity(pr):
     return (pr['state'] == 'open' and not pr['draft'] and bool(pr['auto_merge']) and pr['base']['ref'] == 'main'
             and pr['head']['repo'] is not None and pr['head']['repo']['full_name'] == REPO
-            and actions_author(pr['user']) and not held(pr)
+            and (actions_author(pr['user']) or content_author(pr['user'])) and not held(pr)
             and re.fullmatch(r'story-runner/([a-z0-9-]+)-[0-9]+', pr['head']['ref']))
 
 def confirm_publication(branch, previous_sha, new_sha):
@@ -352,7 +352,11 @@ def main():
         print('Review became active; retain the existing head and discard this unpublished candidate')
         return
     # Non-force push rejects a concurrent update, including one after the preceding check.
-    command(['git', 'push', 'origin', f'{new_sha}:refs/heads/{branch}'])
+    token = os.environ.get('CONTENT_TOKEN')
+    if not token:
+        raise RuntimeError('Content App publication token is required; head unchanged')
+    command(['git', '-c', 'credential.helper=', '-c', 'credential.helper=!gh auth git-credential',
+             'push', 'origin', f'{new_sha}:refs/heads/{branch}'], env={**os.environ, 'GH_TOKEN': token})
     confirm_publication(branch, EXPECTED, new_sha)
     if os.environ.get('GITHUB_OUTPUT'):
         with open(os.environ['GITHUB_OUTPUT'], 'a') as receipt:

@@ -165,7 +165,7 @@ jobs:
               match = re.fullmatch(r'(story-runner|vendor-radar|vendor-radar-bringup)/[A-Za-z0-9_-]+', pr.get('head', {}).get('ref', ''))
               if match is None:
                   return
-              from refresh_policy import actions_author, held, check_scope, verify_provenance, MAINTAINER_MANUAL_LABEL
+              from refresh_policy import actions_author, content_author, held, check_scope, verify_provenance, MAINTAINER_MANUAL_LABEL
               kind = match.group(1)
               labels = pr.get('labels')
               def manual_label(label):
@@ -184,8 +184,7 @@ jobs:
               author = pr.get('user') or {}
               if not actions_author(author):
                   login = os.environ.get('CONTENT_BOT_LOGIN', '')
-                  if (kind == 'story-runner' or not re.fullmatch(r'[a-z0-9][a-z0-9-]*\[bot\]', login)
-                      or author.get('type') != 'Bot' or author.get('login') != login):
+                  if not content_author(author):
                       raise RuntimeError('Internal refresh author is not authenticated')
                   expected = api('users/' + quote(login, safe=''))
                   if expected.get('id') != author.get('id') or expected.get('type') != 'Bot':

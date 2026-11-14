@@ -25,9 +25,7 @@ on:
         required: false
 
 permissions:
-  actions: write # explicitly dispatch CI for GITHUB_TOKEN-created PRs
-  contents: write
-  pull-requests: write
+  contents: read
   issues: write # the PR-fallback `gh issue create` below needs it (daily-snapshot/cert-sweep already grant it)
 
 concurrency:
@@ -43,6 +41,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Pin refresh baseline
         id: baseline
@@ -188,12 +187,33 @@ jobs:
       - name: Validate combined SLO history
         run: pnpm test lib/__tests__/slo.test.ts --maxWorkers=2
 
+      - name: Mint content publication token
+        id: content-app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: ${{ secrets.CONTENT_BOT_APP_ID }}
+          private-key: ${{ secrets.CONTENT_BOT_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Verify content publication identity
+        env:
+          APP_SLUG: ${{ steps.content-app.outputs.app-slug }}
+          CONTENT_BOT_LOGIN: ${{ vars.CONTENT_BOT_LOGIN }}
+        run: |
+          if [ -z "$APP_SLUG" ] || [ "$CONTENT_BOT_LOGIN" != "${APP_SLUG}[bot]" ]; then
+            echo '::error::CONTENT_BOT_LOGIN must match the configured content App bot login.'
+            exit 1
+          fi
+
       - name: Open PR if anything changed
         id: publication
         env:
-          # Recovery/review/repair authenticate generated PRs by the Actions bot
-          # author. Use that identity consistently; explicit dispatch starts CI.
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # A required App identity starts ordinary pull_request checks.
+          GH_TOKEN: ${{ steps.content-app.outputs.token }}
+          GH_ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CATEGORY: ${{ steps.pick.outputs.category }}
           RUN_ID: ${{ github.run_id }}
         run: |
@@ -216,7 +236,8 @@ jobs:
           # Check the committed candidate before any remote branch, PR, or review exists.
           node rankings-engine/scripts/check-refresh-stability.mjs HEAD^ HEAD
           python3 scripts/refresh_policy.py story-runner
-          git push -u origin "$BRANCH"
+          : "${GH_TOKEN:?Content App publication token is required}"
+          git -c credential.helper= -c 'credential.helper=!gh auth git-credential' push -u origin "$BRANCH"
           # If organization policy prevents PR creation, leave the compare link
           # in an issue for maintainer attention.
           # Auto-merge opt-in (maintainer authorization 2026-10-23): branch protection
@@ -230,18 +251,19 @@ jobs:
             --body "Automated evidence/verdict refresh for \`$CATEGORY\`. Review verdict flips against the re-judge stability policy (README) before merging: revert no-new-citation flips when prior support is unchanged; verified downgrades after support loss follow the documented exception." \
             --base main --head "$BRANCH"); then
             python3 scripts/refresh_policy.py story-runner --published "$PR_URL"
-            # Preserve recovery opt-in if dispatch fails; opt-in failure must not skip CI.
+            # Ordinary PR checks start independently; preserve a visible opt-in failure.
             AUTOMERGE_STATUS=0
             gh pr merge --auto --merge --match-head-commit "$(git rev-parse HEAD)" "$PR_URL" || AUTOMERGE_STATUS=$?
-            gh workflow run ci.yml --ref "$BRANCH"
             if [ "$AUTOMERGE_STATUS" -ne 0 ]; then
               exit "$AUTOMERGE_STATUS"
             fi
           else
-            gh issue create \
+            PUBLICATION_STATUS=$?
+            GH_TOKEN="$GH_ACTIONS_TOKEN" gh issue create \
               --title "story-runner: $CATEGORY refresh ready on $BRANCH" \
-              --body "The scheduled refresh for \`$CATEGORY\` is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link and review flips per the re-judge stability policy. Enable org Settings → Actions → General → 'Allow GitHub Actions to create and approve pull requests' to remove this manual step." \
+              --body "The scheduled refresh for \`$CATEGORY\` is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Content Bot PR publication failed. Inspect the workflow failure and App installation permissions, then open the PR from the compare link and review flips per the re-judge stability policy." \
               --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
+            exit "$PUBLICATION_STATUS"
           fi
 
       - name: Record story-runner output provenance

@@ -224,6 +224,22 @@ class DiagnosticTests(unittest.TestCase):
 
 
 class ProducerOrderingTests(unittest.TestCase):
+    def test_publication_requires_repo_scoped_app_without_checkout_credentials(self):
+        for name in ['story-runner', 'vendor-radar', 'refresh-repair']:
+            workflow = (ROOT / f'.github/workflows/{name}.yml').read_text()
+            mint = workflow.split('      - name: Mint content publication token\n', 1)[1].split('      - name:', 1)[0]
+            self.assertNotIn('if:', mint)
+            self.assertIn('app-id: ${{ secrets.CONTENT_BOT_APP_ID }}', mint)
+            self.assertIn('repositories: ${{ github.event.repository.name }}', mint)
+            self.assertIn('permission-contents: write', mint)
+            self.assertIn('permission-pull-requests: write', mint)
+            self.assertNotIn('permission-workflows:', mint)
+            self.assertNotIn('skip-token-revoke:', mint)
+            self.assertIn('persist-credentials: false', workflow)
+            self.assertIn('contents: read', workflow)
+            self.assertNotIn('outputs.token || secrets.GITHUB_TOKEN', workflow)
+            self.assertIn('name: Verify content publication identity', workflow)
+
     def test_reconciliation_precedes_claims_and_derivation_and_stops_on_failure(self):
         workflow = (ROOT / '.github/workflows/story-runner.yml').read_text()
         block = workflow.split('      - name: Run engine stages for arena\n', 1)[1].split('\n      # Prediction layer', 1)[0]
