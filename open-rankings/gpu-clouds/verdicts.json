@@ -2794,7 +2794,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a GPU rental marketplace, and a buyer could reasonably ask such a platform for AI-generated insights on usage or spend, so the axis applies. The evidence shows non-AI spend reporting (burn per hour, spend per pod, runway), GPU performance scoring, and an MCP server for searching docs and prices. None of these is an in-product feature that generates AI insights or suggestions from the user's own data, so none earns credit.",
+    "rationale": "Lium is a GPU rental marketplace, so in-product AI-generated insights (for example spend or GPU recommendations) are a fair axis, but the evidence shows no such feature. `lium spend` reports burn rate and runway and rent-by-spec picks the cheapest matching node; both are deterministic tooling, not AI-generated suggestions. The docs MCP server lets an external agent query docs and prices, which is adjacent rather than in-product AI insight.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2809,7 +2809,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a GPU rental platform, so user-defined background automations such as scheduled or triggered jobs are a fair axis to judge it on. The evidence shows no such feature. What it does offer is pod auto-removal on a TTL or spend cap, an SDK that runs a function once and tears the pod down, and APIs/CLI that an external agent can script. These are building blocks or adjacent lifecycle controls, not a product-provided automation that runs on its own schedule. The 6-hourly volume backups are a platform maintenance behavior, not user-configurable automation.",
+    "rationale": "Lium is a GPU rental marketplace whose evidence shows only building blocks for automation: an API and CLI an external agent can drive, pod TTLs and spend caps that auto-delete pods, and an SDK that runs a single function on a rented node. There is no documented first-party feature for setting up recurring, scheduled or triggered automations that run on their own in the background. The autonomy described in the evidence lives in the user's own agent, and auto-removal is a one-off lifecycle control rather than an automation system.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -2824,7 +2824,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a GPU rental platform, and a built-in assistant is a fair capability for such a SaaS product, so the axis applies. The evidence only shows that the user's own external agents can drive Lium through its CLI, API, MCP server and skill file. Nothing shows an AI assistant built into the product that users can delegate tasks to.",
+    "rationale": "Lium's evidence shows the platform is built to be driven by the user's own external agents: an agent signup flow, a CLI and SDK, scoped budgeted API keys, and a docs and pricing MCP server. Nothing documents an AI assistant built into the product that users can delegate tasks to. Accommodating outside agents is an adjacent capability and earns no credit for this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2839,14 +2839,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Lium documents fully browser-free operation: an agent can sign up, fund, rent, connect and remove pods with no browser. Its CLI is built for scripts, with `lium exec` returning the remote command's exit code, `--ttl` auto-removal, scoped API keys with server-enforced budgets, and stable `error.code` values to branch on. This is the core of headless automation; the probe's 404 on docs.lium.io OpenAPI paths does not contradict the documented lium.io/api/openapi.json location. missing for 10: an explicit CI-pipeline guide (e.g., CI-runner examples or env-var non-interactive auth docs), independent hands-on corroboration of CI usage.",
+    "rationale": "Lium's first-party docs say an agent can do everything with no browser. The official CLI supports non-interactive flags, `lium exec` propagates the remote command's exit code for scripting, and scoped API keys carry server-enforced budgets, which together cover headless automation. Missing for 10: an explicit CI-pipeline integration guide or example (e.g. a CI workflow), independent hands-on corroboration of headless runs.",
     "evidenceIds": [
       "lium-docs-22",
       "lium-docs-23",
       "lium-docs-1",
-      "lium-docs-26",
       "lium-docs-7",
-      "lium-docs-21",
       "lium-docs-24",
       "lium-probe-3"
     ],
@@ -2864,12 +2862,12 @@
           "quote": "lium exec job \"nvidia-smi\"                              # exits with the remote command's exit code"
         },
         {
-          "evidenceId": "lium-docs-26",
-          "quote": "An AI agent with only a shell can rent, use and release a GPU on its own."
+          "evidenceId": "lium-docs-7",
+          "quote": "API keys with scopes and per-key daily, monthly and lifetime USD budgets enforced by the server"
         },
         {
-          "evidenceId": "lium-docs-21",
-          "quote": "**`error.code`** is stable. Branch on it, not on the message."
+          "evidenceId": "lium-docs-24",
+          "quote": "The SDK rents the cheapest matching node, runs the function there, returns the result and removes the pod (or keeps it warm)."
         }
       ]
     }
@@ -2880,7 +2878,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a GPU rental marketplace that agents consume. It is not an agent or host application that plugs in MCP servers to use their tools, so the MCP-client axis does not apply. Its documented MCP server at `/mcp` is the server role, which belongs to a different story and does not make this client axis applicable.",
+    "rationale": "Lium is a GPU rental marketplace (CLI, API, SDK). It is not an agent or LLM host that would consume tools from MCP servers, so plugging MCP servers into it is a category error for this kind of product. The only MCP evidence is Lium's own docs MCP server at `/mcp`. That is the server role, not MCP-client support, so it does not make this axis applicable.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -2917,13 +2915,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Lium has no built-in natural-language interface. It does ship first-party agent-facing pieces: an MCP server that lets an AI client search the docs and query live GPU prices and availability, and an agent skill (SKILL.md) for agents that can 'do everything on Lium with no browser'. However, the MCP tools are read-only (docs, prices, rent links), and actually renting or removing pods depends on the user's own agent driving the CLI or API. missing for 10: a first-party natural-language command interface, MCP tools that perform operations (rent/exec/remove) rather than only read docs and prices, and independent hands-on corroboration of natural-language operation.",
+    "rationale": "Lium ships first-party agent-facing assets: an MCP server, llms.txt instructions written around user questions, and an official agent skill repo. Together these let a user's AI agent operate Lium from natural-language requests (\"Your agent starts a pod, runs the job and removes it\"). However, the natural-language interpretation is done by the external agent, and the MCP server only covers docs search and prices, not pod operations. Missing for 10: a native natural-language command interface in the product itself, MCP tools covering rent and pod management, and hands-on or independent corroboration of NL-driven operation.",
     "evidenceIds": [
-      "lium-docs-28",
       "lium-docs-2",
+      "lium-docs-3",
+      "lium-docs-5",
       "lium-docs-22",
-      "lium-docs-26",
-      "lium-docs-44"
+      "lium-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -2931,12 +2929,16 @@
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": [
         {
-          "evidenceId": "lium-docs-28",
-          "quote": "Use the MCP server at `/mcp` to search and read the docs (`search`, `read_page`) and to see live GPU prices and availability with rent links (`search_gpus`, `get_gpu_prices`)."
-        },
-        {
           "evidenceId": "lium-docs-2",
           "quote": "Your agent starts a pod, runs the job and removes it, within a budget you set."
+        },
+        {
+          "evidenceId": "lium-docs-5",
+          "quote": "The user asks what a GPU costs to rent right now or which GPUs are available: read the public prices below, no account."
+        },
+        {
+          "evidenceId": "lium-docs-3",
+          "quote": "Use the MCP server at `/mcp` to search and read the docs (`search`, `read_page`) and to see live GPU prices and availability with rent links"
         },
         {
           "evidenceId": "lium-docs-22",
@@ -2951,15 +2953,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Lium ships an official `lium` CLI, installed with `pip install lium.io`. It covers renting with a TTL (`lium up`), remote exec that returns the remote exit code for agent scripting, quoting, spend tracking, file copy and clusters. The docs include a CLI reference, and a probe confirms the official GitHub repo. missing for 10: independent hands-on corroboration of CLI behavior beyond vendor docs and the vendor's own repo.",
+    "rationale": "Lium ships an official `lium` CLI. It installs via pip, and the first-party docs and the GitHub repo show agent-friendly commands: `lium up` with `--ttl` auto-removal, `lium exec` returning the remote exit code for scripting, and `lium quote` and `lium spend` for cost visibility. A probe confirms the official CLI is documented at the Datura-ai/lium GitHub repo. Missing for 10: independent or hands-on community corroboration of CLI usage in real agent workflows.",
     "evidenceIds": [
       "lium-docs-1",
       "lium-docs-23",
-      "lium-docs-26",
-      "lium-docs-40",
       "lium-gh-1",
       "lium-gh-2",
-      "lium-gh-5",
       "lium-probe-3"
     ],
     "support": {
@@ -2976,16 +2975,12 @@
           "quote": "lium exec job \"nvidia-smi\"                              # exits with the remote command's exit code"
         },
         {
-          "evidenceId": "lium-docs-40",
-          "quote": "From the terminal: `lium clusters up <fabric> --nodes N --name <name>`"
+          "evidenceId": "lium-gh-2",
+          "quote": "lium spend                                     # burn per hour, spend per pod, runway"
         },
         {
           "evidenceId": "lium-probe-3",
           "quote": "official CLI documented at https://github.com/Datura-ai/lium"
-        },
-        {
-          "evidenceId": "lium-gh-2",
-          "quote": "lium spend                                     # burn per hour, spend per pod, runway"
         }
       ]
     }
@@ -2995,15 +2990,15 @@
     "storyId": "agentic-public-api",
     "verdict": "full",
     "quality": 9,
-    "confidence": "medium",
-    "rationale": "Lium documents a public platform API with a live OpenAPI 3.1 schema at lium.io/api/openapi.json, named endpoints such as POST /executors/rent-by-spec and POST /auth/signup, scoped API keys, and stable machine-readable error codes. It states an agent can do everything without a browser. The probe's 404s hit docs.lium.io paths, not the documented lium.io/api/openapi.json, so they do not contradict the claim. Missing for 10: independent or hands-on corroboration that the documented OpenAPI endpoint and API work as claimed.",
+    "confidence": "high",
+    "rationale": "Lium documents a public REST API with an OpenAPI spec at lium.io/api/openapi.json. Named endpoints include `POST /executors/rent-by-spec` and `GET /executors`, alongside stable error codes, scoped API keys with server-enforced budgets, and an agent guide stating everything can be done without a browser. The probe's 404s were on docs.lium.io paths, not the documented lium.io/api/openapi.json, so they do not contradict the claim. Missing for 10: independent or hands-on confirmation that the documented OpenAPI spec and endpoints are reachable and work as described.",
     "evidenceIds": [
-      "lium-docs-41",
       "lium-docs-20",
       "lium-docs-6",
-      "lium-docs-7",
       "lium-docs-21",
       "lium-docs-22",
+      "lium-docs-7",
+      "lium-docs-11",
       "lium-docs-25"
     ],
     "support": {
@@ -3011,10 +3006,6 @@
       "coverage": "complete",
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
-        {
-          "evidenceId": "lium-docs-41",
-          "quote": "The Lium platform API publishes a live [OpenAPI 3.1](https://spec.openapis.org/oas/v3.1.0) schema."
-        },
         {
           "evidenceId": "lium-docs-20",
           "quote": "npx openapi-typescript https://lium.io/api/openapi.json -o lium.d.ts"
@@ -3029,7 +3020,11 @@
         },
         {
           "evidenceId": "lium-docs-21",
-          "quote": "**`error.code`** is stable. Branch on it, not on the message."
+          "quote": "**`error.code`** is stable. Branch on it, not on the message. **`error.hint`** says what to do next."
+        },
+        {
+          "evidenceId": "lium-docs-7",
+          "quote": "API keys with scopes and per-key daily, monthly and lifetime USD budgets enforced by the server"
         }
       ]
     }
@@ -3040,7 +3035,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Lium's docs describe API keys with scopes that limit what a key can do, set when the key is created, plus per-key daily, monthly and lifetime USD budgets enforced by the server. That is a direct least-privilege credential mechanism suited to handing keys to agents. missing for 10: enumeration of the available scopes and their granularity, independent or hands-on corroboration that scope enforcement works as documented.",
+    "rationale": "Lium's docs describe API keys with scopes that limit what a key can do, fixed at creation, plus per-key daily, monthly and lifetime USD budgets enforced by the server. That directly supports issuing least-privilege credentials to an agent. Missing for 10: an enumerated list of the available scopes and their granularity, and independent or hands-on corroboration that scope enforcement works.",
     "evidenceIds": [
       "lium-docs-7",
       "lium-docs-12"
@@ -3089,10 +3084,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a GPU rental platform with a public API, but the evidence pack documents no registrable outbound HTTP callbacks. The closest items are a public WebSocket for executor availability and e-mail notices of price changes. Both are adjacent push mechanisms, not webhooks a programmatic consumer can register to receive.",
+    "rationale": "Webhooks are a fair axis for a GPU rental platform with an API, but the evidence documents no registrable outbound HTTP callbacks. The closest item is a public WebSocket for executor availability. That is a different push mechanism the client connects to, not a webhook, so it earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can subscribe to events via webhooks",
       "citations": []
@@ -3104,10 +3099,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium publishes a live OpenAPI 3.1 schema and markdown docs with CLI snippets. Nothing in the evidence shows an interactive API reference, such as a try-it console or explorer, where examples can be run in place. A machine-readable schema is a building block for such a reference, not the reference itself. The probe 404s were at docs.lium.io paths, not the documented lium.io/api/openapi.json, so they neither confirm nor refute the schema.",
+    "rationale": "The evidence shows a published OpenAPI spec at lium.io/api/openapi.json and markdown API docs, but nothing documents an interactive API explorer or runnable 'try it' examples. A machine-readable spec is a building block for such a reference, not the reference itself. The probe found no spec at the docs-host paths, though that does not bear on interactivity.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can explore an interactive API reference with runnable examples",
       "citations": []
@@ -3141,7 +3136,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a GPU rental marketplace, so asking whether it offers a sandbox or test mode separate from production is a fair question; the axis applies. The evidence documents ephemeral pods with TTLs, spend caps, and price quotes that need no API key. None of these is a sandbox or test environment kept isolated from production data. A cost quote is a dry-run estimate, not sandbox isolation, and disposable pods are simply the product's normal compute, not a test mode. There is no documented test API, staging environment, or test credits.",
+    "rationale": "Lium is a GPU rental marketplace with an agent-facing API, so a sandbox or test mode is a fair question to ask. The evidence documents no sandbox, test-mode API keys or staging environment where agents can try actions without real rentals or spend. Ephemeral auto-removing pods, scoped keys with budgets, and public no-key price and availability feeds are adjacent controls, not a sandbox environment isolated from production.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3156,10 +3151,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a live OpenAPI 3.1 schema and stable `error.code` values. Neither establishes API versioning (e.g. versioned paths or headers) or a documented deprecation policy. These are adjacent API-stability signals, not the capability the story asks for.",
+    "rationale": "The evidence shows an OpenAPI spec at lium.io/api/openapi.json and stable `error.code` values. Neither establishes API versioning or a documented deprecation policy. Stable error codes are an adjacent stability guarantee, not a versioning or deprecation commitment, so no capability for this story is evidenced.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can rely on versioned APIs with a documented deprecation policy",
       "citations": []
@@ -3170,12 +3165,11 @@
     "storyId": "auto-shutdown-spend-guards",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Lium documents several product-native guards against runaway spend. At pod creation you can pick Hours, End time, or a USD Spend cap, and the pod is deleted when the limit is reached. The CLI offers `--ttl 1h` auto-removal, API keys carry server-enforced daily, monthly and lifetime USD budgets, and `lium spend` shows burn rate and runway. The 'shutdown' is pod deletion rather than a stop, but backups and volumes persist data. Missing for 10: independent or hands-on corroboration that the timers and spend caps actually trigger as documented.",
+    "confidence": "medium",
+    "rationale": "Lium documents pod-level termination triggers: a CLI `--ttl` that auto-removes the pod, and at pod creation a choice of Hours, End time or a USD spend cap after which the pod is deleted. It also offers server-enforced daily, monthly and lifetime USD budgets per API key, so a forgotten instance cannot keep billing. missing for 10: independent or hands-on corroboration that the timers and spend caps fire reliably (all evidence is vendor docs).",
     "evidenceIds": [
       "lium-docs-1",
       "lium-docs-15",
-      "lium-docs-36",
       "lium-docs-7",
       "lium-docs-2",
       "lium-gh-2"
@@ -3186,20 +3180,16 @@
       "subject": "As an ML engineer, I can set auto-shutdown timers or spend limits so a forgotten instance can't silently run up a huge bill",
       "citations": [
         {
-          "evidenceId": "lium-docs-15",
-          "quote": "Pick one, and the pod is deleted when it is reached: Hours... End time... Spend cap: a budget in USD"
-        },
-        {
           "evidenceId": "lium-docs-1",
           "quote": "lium up --gpu H100 --ttl 1h# auto-removes after 1h"
         },
         {
-          "evidenceId": "lium-docs-7",
-          "quote": "API keys with scopes and per-key daily, monthly and lifetime USD budgets enforced by the server"
+          "evidenceId": "lium-docs-15",
+          "quote": "Pick one, and the pod is deleted when it is reached: Hours... End time... Spend cap: a budget in USD"
         },
         {
-          "evidenceId": "lium-gh-2",
-          "quote": "lium spend                                     # burn per hour, spend per pod, runway"
+          "evidenceId": "lium-docs-7",
+          "quote": "API keys with scopes and per-key daily, monthly and lifetime USD budgets enforced by the server"
         }
       ]
     }
@@ -3210,7 +3200,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no documented bulk-operation capability, such as acting on many pods or volumes in one command or API call. `lium clusters up --nodes N` provisions one cluster resource for a single distributed job. The public nodes feed is a read-only listing, not a bulk action. Neither counts as performing operations across many items at once.",
+    "rationale": "Bulk operations are a fair question for a GPU-rental platform, for example removing or renting many pods in one action. The evidence documents only single-pod lifecycle commands, a one-call read-only node feed and multi-machine clusters for a single distributed job. None of these is a documented bulk-action capability across many items.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3252,7 +3242,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a GPU rental platform, so scheduled or recurring jobs are a fair question to ask of it. The evidence shows no user-facing recurring scheduler. What it does show is one-off lifecycle controls (TTL, end time, spend cap that delete a pod), agent-driven single runs, and an automatic volume backup schedule. That backup schedule is a platform maintenance feature, not user-scheduled workflows, so none of these count as recurring job scheduling.",
+    "rationale": "Scheduling recurring jobs is a fair question for a GPU compute platform, so the axis applies. The evidence shows only one-off job execution: an agent rents a pod, runs a job, and removes it, plus TTL, end-time and spend-cap auto-deletion. The 6-hour volume backup is a platform-side behavior, not a user-defined recurring schedule. Nothing documents a cron-like or recurring job or workflow scheduler.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3267,7 +3257,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a GPU rental marketplace driven by its CLI, API, SDK and agents, so asking whether it can version, review and roll back automations is a fair question. The evidence pack shows no first-party versioning, change review or rollback for automations, jobs or templates. Pod volume backups and restores only protect stored data, an adjacent capability that does not count toward this story.",
+    "rationale": "Lium documents agent-driven automation of the pod lifecycle through its CLI, SDK and API, so the axis applies. Nothing in the evidence shows versioning, review or rollback of automations. Volume backups and restores cover pod storage, not automation definitions, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3282,10 +3272,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Lium's official CLI offers `lium spend`, which reports burn per hour and spend per pod. That gives a per-workload usage breakdown from the terminal. There is no documented billing or usage API endpoint, export, or team/tag attribution. Per-key USD budgets are spending limits rather than spend reporting, and volume cost history is a UI click-through, so neither counts here. Missing for 10: a documented API endpoint for usage and billing breakdowns, attribution by team/project/tag or by API key, an exportable billing report, and independent or hands-on corroboration.",
+    "rationale": "The official CLI's `lium spend` command reports spend per pod and burn per hour, which gives programmatic per-workload spend visibility. Per-second billing is documented, so usage maps cleanly to cost. However, there is no documented usage or billing API endpoint, no export, and no team- or tag-level attribution. Per-key USD budgets are spend limits, not breakdown reports, so they earn no credit here. Missing for 10: documented usage/billing API or export endpoint, team or tag-based spend attribution, historical breakdown reports, hands-on corroboration.",
     "evidenceIds": [
       "lium-gh-2",
-      "lium-gh-4"
+      "lium-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -3295,6 +3285,10 @@
         {
           "evidenceId": "lium-gh-2",
           "quote": "lium spend                                     # burn per hour, spend per pod, runway"
+        },
+        {
+          "evidenceId": "lium-docs-13",
+          "quote": "You pay **per second**: `hourly price × seconds / 3600`, with no minimum."
         }
       ]
     }
@@ -3342,10 +3336,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Lium's own clusters feature puts several whole machines on the same RDMA fabric for one distributed job, which only loosely touches the private-networking half of the story. Nothing in the evidence documents exposing ports to serve applications from a pod; the Jupyter toggle is an adjacent feature, not general port exposure. missing for 10: documented port exposure/mapping for serving apps, private networking between independent pods (not just a cluster job), networking configuration details, independent corroboration.",
+    "rationale": "Lium documents clusters: several whole machines on the same RDMA fabric for one distributed job. That covers part of connecting instances over a private interconnect. Nothing in the evidence documents exposing or mapping ports to serve applications from a pod. The built-in Jupyter notebook toggle is a related feature, not general port exposure. Missing for 10: documented port exposure or mapping for serving apps, general private networking between individual pods outside clusters, and independent corroboration.",
     "evidenceIds": [
-      "lium-docs-19",
-      "lium-docs-40"
+      "lium-docs-19"
     ],
     "support": {
       "relation": "direct",
@@ -3355,10 +3348,6 @@
         {
           "evidenceId": "lium-docs-19",
           "quote": "A cluster is several whole machines on the same RDMA fabric, for one distributed job."
-        },
-        {
-          "evidenceId": "lium-docs-40",
-          "quote": "`lium clusters up <fabric> --nodes N --name <name>`"
         }
       ]
     }
@@ -3406,11 +3395,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Lium's own docs show you can pick a GPU type when renting, with an explicit `--gpu H100` example. It is described as a marketplace for renting NVIDIA GPUs by the hour, and you can rent the cheapest node matching a GPU spec. However, the pack never names H200 or B200, and never names any cheaper previous-generation model, so the breadth of choice the story asks for is not shown. Missing for 10: evidence of H200/B200 availability, evidence of named previous-generation options (e.g. A100/A6000-class) at lower prices, independent or hands-on confirmation of the GPU catalog.",
+    "rationale": "Lium is a GPU rental marketplace for NVIDIA GPUs. Its CLI documents renting an H100 directly, and rent-by-spec picks the cheapest node matching a GPU spec, which points to a choice of GPU types. However, nothing in the evidence names H200 or B200 availability or any specific cheaper previous-generation GPUs. Missing for 10: documented H200/B200 availability, named previous-generation options (e.g. A100/older), a published GPU catalog or price list showing the range, independent corroboration.",
     "evidenceIds": [
       "lium-docs-1",
-      "lium-probe-1",
       "lium-docs-6",
+      "lium-probe-1",
       "lium-docs-9"
     ],
     "support": {
@@ -3423,16 +3412,12 @@
           "quote": "lium up --gpu H100 --ttl 1h"
         },
         {
-          "evidenceId": "lium-probe-1",
-          "quote": "Lium (lium.io) is a GPU rental marketplace: rent NVIDIA GPUs by the hour, billed per second."
-        },
-        {
           "evidenceId": "lium-docs-6",
           "quote": "rents the cheapest node matching a GPU spec under a `max_price_per_gpu_hour` ceiling"
         },
         {
-          "evidenceId": "lium-docs-9",
-          "quote": "Every rentable GPU node on Lium in one JSON call."
+          "evidenceId": "lium-probe-1",
+          "quote": "Lium (lium.io) is a GPU rental marketplace: rent NVIDIA GPUs by the hour, billed per second."
         }
       ]
     }
@@ -3443,15 +3428,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lium documents programmatic start (`lium up`, `POST /executors/rent-by-spec`) and termination (agents remove pods, TTL and spend-cap auto-deletion), with per-second billing and no minimum. The evidence never shows stopping, pausing, or restarting a pod, so only half of the lifecycle verbs are covered. Missing for 10: documented stop/pause and restart of instances, billing behavior for stopped instances, and independent hands-on corroboration.",
+    "rationale": "Lium documents starting pods programmatically through the CLI (`lium up`) and API (`rent-by-spec`), and removing them via agents, the SDK, or TTL/spend-cap auto-deletion. Per-second billing with no minimum supports paying only for runtime. However, the evidence never shows a stop/pause or restart operation, and never says how a stopped instance would be billed. Missing for 10: documented stop/pause and restart operations, billing behavior for stopped instances, independent or hands-on corroboration of the lifecycle API.",
     "evidenceIds": [
       "lium-docs-1",
       "lium-docs-6",
       "lium-docs-22",
+      "lium-docs-24",
       "lium-docs-15",
       "lium-docs-13",
-      "lium-docs-33",
-      "lium-docs-24"
+      "lium-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -3463,20 +3448,20 @@
           "quote": "lium up --gpu H100 --ttl 1h# auto-removes after 1h"
         },
         {
-          "evidenceId": "lium-docs-6",
-          "quote": "rent-by-spec (`POST /executors/rent-by-spec`) that rents the cheapest node matching a GPU spec under a `max_price_per_gpu_hour` ceiling"
-        },
-        {
           "evidenceId": "lium-docs-22",
           "quote": "An agent can do everything on Lium with no browser: sign up, fund, rent, connect and remove pods."
+        },
+        {
+          "evidenceId": "lium-docs-6",
+          "quote": "rent-by-spec (`POST /executors/rent-by-spec`) that rents the cheapest node matching a GPU spec under a `max_price_per_gpu_hour` ceiling"
         },
         {
           "evidenceId": "lium-docs-13",
           "quote": "You pay **per second**: `hourly price × seconds / 3600`, with no minimum."
         },
         {
-          "evidenceId": "lium-docs-15",
-          "quote": "Pick one, and the pod is deleted when it is reached: Hours... End time... Spend cap: a budget in USD"
+          "evidenceId": "lium-docs-24",
+          "quote": "The SDK rents the cheapest matching node, runs the function there, returns the result and removes the pod (or keeps it warm)."
         }
       ]
     }
@@ -3487,7 +3472,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lium's pod-creation docs include its own toggle to get a Jupyter notebook on the pod, which covers the Jupyter half of the story in essentially one step. Nothing in the evidence shows a VS Code or Cursor remote/IDE connection flow, and the Jupyter feature is documented only by a single line with no detail on how it is opened or accessed. Missing for 10: documented one-step VS Code/Cursor IDE connection, detail on how the Jupyter URL is opened or accessed, independent or hands-on corroboration.",
+    "rationale": "Lium's pod-creation docs describe a toggle that provisions a Jupyter notebook on the pod, which covers the Jupyter half of the story. The pack has no evidence of a one-step VS Code or Cursor remote connection. missing for 10: documented one-step VS Code/Cursor connection, detail on how the Jupyter notebook is accessed (URL/auth), hands-on corroboration.",
     "evidenceIds": [
       "lium-docs-17"
     ],
@@ -3509,16 +3494,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Lium documents several keyless public endpoints for checking GPU prices and availability before renting: a JSON feed of every rentable node, a public price CSV, an availability WebSocket, MCP tools `search_gpus` and `get_gpu_prices`, and the public prices in llms.txt. A CLI `lium quote` command also prices a job before renting with no API key. missing for 10: independent or hands-on verification that the JSON nodes feed and pricing endpoints return live data (only llms.txt was probed as reachable).",
+    "rationale": "Lium documents several keyless public endpoints for checking prices and availability before spending: a one-call JSON feed of every rentable GPU node, a pricing CSV feed, a public availability WebSocket, and an MCP server that returns live GPU prices and availability. Its llms.txt tells agents to read public prices with no account, and a probe confirmed llms.txt is live. missing for 10: independent or hands-on confirmation that the nodes feed actually returns live pricing and availability data.",
     "evidenceIds": [
       "lium-docs-9",
-      "lium-docs-31",
       "lium-docs-10",
       "lium-docs-11",
-      "lium-docs-28",
+      "lium-docs-3",
       "lium-docs-5",
-      "lium-docs-30",
-      "lium-gh-3",
       "lium-probe-1"
     ],
     "support": {
@@ -3531,24 +3513,20 @@
           "quote": "Every rentable GPU node on Lium in one JSON call. No key, no signup."
         },
         {
-          "evidenceId": "lium-docs-31",
-          "quote": "GPU prices on Lium are public. No account or key needed."
+          "evidenceId": "lium-docs-3",
+          "quote": "to see live GPU prices and availability with rent links"
         },
         {
           "evidenceId": "lium-docs-11",
-          "quote": "A public WebSocket that keeps you up to date on which executors are rentable now. Use it instead of polling `GET /executors`. No API key needed."
-        },
-        {
-          "evidenceId": "lium-docs-28",
-          "quote": "to see live GPU prices and availability with rent links (`search_gpus`, `get_gpu_prices`)"
+          "quote": "A public WebSocket that keeps you up to date on which executors are rentable now."
         },
         {
           "evidenceId": "lium-docs-5",
-          "quote": "The user asks what a GPU costs to rent right now or which GPUs are available: read the public prices below, no account."
+          "quote": "read the public prices below, no account."
         },
         {
-          "evidenceId": "lium-gh-3",
-          "quote": "# Price a job on node #1 before renting it (no API key needed)"
+          "evidenceId": "lium-docs-10",
+          "quote": "Price feed, CSV | https://lium.io/pricing.csv"
         }
       ]
     }
@@ -3559,7 +3537,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a GPU rental marketplace, so asking whether it offers a managed scheduler is a fair question. Its clusters feature provides several whole machines on one RDMA fabric for a distributed job, but that is raw nodes, not a managed scheduler. Nothing in the evidence mentions managed Slurm, Kubernetes, or any job queue or scheduler. The CLI and SDK run-and-remove features are one-off pod executions, which count only as adjacent features.",
+    "rationale": "Lium is a GPU rental marketplace, so offering managed Slurm or Kubernetes is a fair question for it. The pack never mentions Slurm, Kubernetes or any managed job scheduler. The closest items, RDMA clusters of whole machines and per-pod job execution via the CLI and SDK, are raw-node rental and one-off execution, not a managed scheduling layer. They are adjacent capabilities and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3571,20 +3549,19 @@
   {
     "productId": "lium",
     "storyId": "multi-node-clusters",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Lium documents clusters as several whole machines on the same RDMA fabric for one distributed job. They are provisionable from the CLI with `lium clusters up <fabric> --nodes N`, and the self-serve path (one-call signup, card payment, per-second billing with no minimum or reservation) means no sales cycle is needed. Every part of the story is documented, but cluster coverage is thin and comes only from first-party docs. Missing for 10: interconnect bandwidth specs, cluster sizing limits and availability, cluster-specific pricing, and independent or hands-on corroboration of multi-node provisioning.",
+    "rationale": "Lium's own docs describe clusters as several whole machines on the same RDMA fabric for one distributed job, which covers the multi-node and fast-interconnect core. The no-sales-cycle part is only implied by general self-serve features (signup with no email, card billing, renting via API) that are documented for pods, not specifically for clusters. missing for 10: a documented self-serve cluster provisioning flow (CLI/API/console), cluster sizes and interconnect specs, explicit confirmation that clusters need no sales contact, and independent or hands-on corroboration.",
     "evidenceIds": [
       "lium-docs-19",
-      "lium-docs-40",
-      "lium-docs-44",
-      "lium-docs-33",
+      "lium-docs-22",
+      "lium-docs-25",
       "lium-docs-14"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ML engineer, I can provision a multi-node GPU cluster with fast interconnect for distributed training without a sales cycle",
       "citations": [
         {
@@ -3592,16 +3569,12 @@
           "quote": "A cluster is several whole machines on the same RDMA fabric, for one distributed job."
         },
         {
-          "evidenceId": "lium-docs-40",
-          "quote": "From the terminal: `lium clusters up <fabric> --nodes N --name <name>`"
+          "evidenceId": "lium-docs-22",
+          "quote": "An agent can do everything on Lium with no browser: sign up, fund, rent, connect and remove pods."
         },
         {
-          "evidenceId": "lium-docs-44",
-          "quote": "one call to `POST /auth/signup`, no email, no password, no confirmation link."
-        },
-        {
-          "evidenceId": "lium-docs-33",
-          "quote": "Lium bills every GPU per second with no minimum and no reservation."
+          "evidenceId": "lium-docs-25",
+          "quote": "fingerprint signup: one call to `POST /auth/signup`, no email, no password, no confirmation link."
         },
         {
           "evidenceId": "lium-docs-14",
@@ -3661,16 +3634,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "The docs explicitly claim that an agent can do everything on Lium without a browser: sign up, fund, rent, connect and remove pods. This is backed by a live OpenAPI 3.1 schema, scoped API keys, and CLI and SDK coverage of pods and clusters. The 404 probe tested docs.lium.io paths, not the documented lium.io/api/openapi.json, so it does not contradict the claim. Missing for 10: independent hands-on corroboration of parity, and evidence that UI-documented features such as volume COST HISTORY and the Confidential Computing filter in Browse Pods are also exposed via the API.",
+    "rationale": "Lium's docs state that an agent can do everything on Lium with no browser, including signup, funding, renting, connecting and removing pods. This is backed by a published OpenAPI spec, a one-call API signup, rent-by-spec endpoints and scoped API keys. The probe 404s were on docs.lium.io paths, not the documented lium.io/api/openapi.json, so they do not contradict the claim. Missing for 10: independent hands-on confirmation of UI/API parity, and explicit API coverage of UI features such as volumes, clusters, Jupyter and backups.",
     "evidenceIds": [
       "lium-docs-22",
-      "lium-docs-41",
       "lium-docs-20",
       "lium-docs-25",
       "lium-docs-6",
       "lium-docs-7",
-      "lium-docs-40",
-      "lium-docs-26"
+      "lium-docs-21"
     ],
     "support": {
       "relation": "direct",
@@ -3682,16 +3653,16 @@
           "quote": "An agent can do everything on Lium with no browser: sign up, fund, rent, connect and remove pods."
         },
         {
-          "evidenceId": "lium-docs-41",
-          "quote": "The Lium platform API publishes a live [OpenAPI 3.1](https://spec.openapis.org/oas/v3.1.0) schema."
+          "evidenceId": "lium-docs-20",
+          "quote": "npx openapi-typescript https://lium.io/api/openapi.json -o lium.d.ts"
         },
         {
           "evidenceId": "lium-docs-25",
           "quote": "fingerprint signup: one call to `POST /auth/signup`, no email, no password, no confirmation link."
         },
         {
-          "evidenceId": "lium-docs-40",
-          "quote": "From the terminal: `lium clusters up <fabric> --nodes N --name <name>`"
+          "evidenceId": "lium-docs-6",
+          "quote": "rent-by-spec (`POST /executors/rent-by-spec`) that rents the cheapest node matching a GPU spec under a `max_price_per_gpu_hour` ceiling"
         }
       ]
     }
@@ -3702,7 +3673,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability is a fair question for a GPU-rental cloud platform, so the axis applies. However, the evidence documents no first-party export of a user's account data (billing history, pod and volume records, API key metadata) in open formats, and no account-closure or exit flow. Volume backups restore only to another Lium node, the CSV and JSON feeds are public market data rather than user data, and copying files off a pod with root access is a user-side workaround.",
+    "rationale": "Data portability is a fair question for a GPU rental platform, but the evidence documents no first-party way to export a user's account data or files in open formats. Volume backups only restore onto another Lium node. The pricing CSV, public node feed and markdown docs are public platform data, not the user's own data. Copying files off a pod with root access would be a user-side workaround, not a product export capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3717,7 +3688,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows a public GitHub repository for Lium's official CLI (Datura-ai/lium) and a public lium-skill repo, so some client-side source appears readable. Nothing in the pack states an open-source license, and the platform/server source is never shown to be public. missing for 10: any stated open license (e.g. MIT/Apache), evidence that the core platform source is published, independent confirmation that the repo contains full readable source rather than just a README.",
+    "rationale": "The official Lium CLI is hosted in a public GitHub repository (Datura-ai/lium), and an agent skill file is served from a public GitHub repo, so some client-side source is readable. Nothing in the evidence states a license, and the core marketplace/platform source is not shown to be public. missing for 10: any evidence of an open-source license, evidence that the platform/backend source (not just the CLI/skill) is published, independent corroboration.",
     "evidenceIds": [
       "lium-probe-3",
       "lium-gh-1",
@@ -3745,7 +3716,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a hosted GPU rental marketplace, and self-hosting is a fair question for a platform of this kind. The evidence covers only the hosted service, its API, and the client CLI and SDK. The GitHub CLI repo is a client, and the provider quickstart is about listing hardware on the marketplace, not running the platform itself. No evidence shows the core product can be self-hosted.",
+    "rationale": "Lium is a hosted GPU rental marketplace, and self-hosting the platform is a fair question for a SaaS service. Nothing in the evidence shows the core marketplace or API can be deployed on your own infrastructure. The GitHub repo is only the client CLI, and the provider quickstart covers supplying GPU nodes to Lium's marketplace, not running Lium itself, so neither counts.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3757,20 +3728,19 @@
   {
     "productId": "lium",
     "storyId": "per-second-billing",
-    "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Lium's billing docs state pods are billed per second (hourly price × seconds / 3600) with no minimum and no reservation. Pods can be auto-removed by TTL, end time or spend cap, which ties charges to the pod's lifetime. Missing for 10: explicit documentation that billing stops the moment a pod is removed (or of any stopped/paused state), and independent or hands-on corroboration of the per-second billing.",
+    "verdict": "partial",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Lium's billing docs state per-second billing with no minimum, and the llms.txt probe corroborates it, so the granularity half of the story is delivered. The 'only while my instance is actually running' half is only implied: pods are auto-deleted at a TTL, end time, or spend cap, but nothing explicitly says billing stops when a pod is removed or that no charges accrue in non-running states. missing for 10: an explicit statement that billing stops on pod removal and that non-running states are not charged, independent or hands-on corroboration of actual billing behavior.",
     "evidenceIds": [
       "lium-docs-13",
-      "lium-docs-33",
       "lium-probe-1",
       "lium-docs-15",
       "lium-docs-1"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As an ML engineer, I am billed at per-second or per-minute granularity and only while my instance is actually running",
       "citations": [
         {
@@ -3778,12 +3748,16 @@
           "quote": "You pay **per second**: `hourly price × seconds / 3600`, with no minimum."
         },
         {
-          "evidenceId": "lium-docs-33",
-          "quote": "Lium bills every GPU per second with no minimum and no reservation."
+          "evidenceId": "lium-probe-1",
+          "quote": "rent NVIDIA GPUs by the hour, billed per second"
         },
         {
           "evidenceId": "lium-docs-15",
           "quote": "Pick one, and the pod is deleted when it is reached"
+        },
+        {
+          "evidenceId": "lium-docs-1",
+          "quote": "auto-removes after 1h"
         }
       ]
     }
@@ -3821,7 +3795,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only evidence of templates is a passing reference to Lium's own 'default templates' in a note about pod volume encryption. That suggests pre-built pod templates exist, but nothing says what they contain or how a developer picks one. Missing for 10: any documentation of a template catalog naming PyTorch, CUDA, vLLM or ComfyUI images, how to select a template at pod launch (UI, CLI or API), custom template support, and independent or hands-on corroboration.",
+    "rationale": "Lium's docs refer to 'default templates' for pods, which suggests it ships its own pre-built pod templates, but nothing shows what they contain or that they cover the named ML stacks. The Jupyter toggle is a related but separate feature and gets no credit. missing for 10: documented template catalog, PyTorch/CUDA/vLLM/ComfyUI templates specifically, how to select a template at launch via CLI/API/UI, independent or hands-on corroboration.",
     "evidenceIds": [
       "lium-docs-8"
     ],
@@ -3843,7 +3817,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a GPU rental marketplace that stores user data on pods, volumes and backups, so a data region/residency choice is a fair question for it. The evidence never documents choosing a storage region or residency, for pods, volumes or backups. The Confidential Computing node filter and encryption at rest are related privacy controls, not location choice, so they earn no credit.",
+    "rationale": "Region or data-residency choice is a fair question for a GPU rental marketplace that hosts pods and volumes. The evidence documents node selection only by GPU spec and price ceiling, plus at-rest encryption and backups. Nothing shows users can pick a geographic region or residency for their pods or volumes.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3858,7 +3832,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a GPU rental marketplace that handles customer workloads and data, so a policy or control against using that data for AI training is a fair question. The evidence never mentions a training opt-out or a no-training data policy. Encryption at rest and Confidential Computing nodes are adjacent security controls, not a guarantee against training use.",
+    "rationale": "Lium is a GPU rental marketplace, and a buyer could fairly ask any cloud or compute provider whether customer data is used for model training, so the axis applies. The evidence pack contains no training opt-out, data-use policy, or no-training commitment. Pod volume encryption at rest is a related security control and does not address training use of data.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3873,14 +3847,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lium documents its own data-lifecycle controls. Pods can be set to auto-delete when a TTL, end time or spend cap is reached. Users choose whether data persists by mounting a Volume that outlives the pod. Local-volume backups are on by default with a fixed 2-day retention window. Retention durations are not user-configurable, and deletion of account-level or platform-held data is not documented. Missing for 10: configurable backup/retention periods, documented deletion of volumes, backups and account data, deletion guarantees or a privacy/retention policy, independent corroboration.",
+    "rationale": "Lium lets users and agents control pod lifetime. A TTL, end time or spend cap triggers automatic pod deletion, and agents can remove pods programmatically. Pod local volumes are also backed up every 6 hours and kept for 2 days, a fixed retention window with no documented user control. Missing for 10: user-configurable backup retention or opt-out, documented deletion of persistent Volumes and backups, explicit data-deletion guarantees or policy, independent corroboration.",
     "evidenceIds": [
-      "lium-docs-15",
       "lium-docs-1",
-      "lium-docs-35",
-      "lium-docs-37",
+      "lium-docs-15",
       "lium-docs-16",
-      "lium-docs-18"
+      "lium-docs-18",
+      "lium-docs-22"
     ],
     "support": {
       "relation": "direct",
@@ -3892,16 +3865,16 @@
           "quote": "Pick one, and the pod is deleted when it is reached: Hours... End time... Spend cap: a budget in USD"
         },
         {
-          "evidenceId": "lium-docs-35",
-          "quote": "Mount a [Volume](./volumes) at `/mnt`. It keeps your data after the pod is deleted."
-        },
-        {
-          "evidenceId": "lium-docs-37",
-          "quote": "On by default: a new pod's local volume is backed up on a regular schedule and kept 2 days"
-        },
-        {
           "evidenceId": "lium-docs-1",
           "quote": "lium up --gpu H100 --ttl 1h# auto-removes after 1h"
+        },
+        {
+          "evidenceId": "lium-docs-16",
+          "quote": "the pod's local volume is backed up every 6 hours and kept 2 days, so you can restore it on another node"
+        },
+        {
+          "evidenceId": "lium-docs-22",
+          "quote": "An agent can do everything on Lium with no browser: sign up, fund, rent, connect and remove pods."
         }
       ]
     }
@@ -3912,7 +3885,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a GPU marketplace that ships a CLI, SDK and API, but nothing in the evidence documents a telemetry or usage-tracking setting or an opt-out mechanism. Account-free price feeds and email-less fingerprint signup are adjacent privacy features, not a way to opt out of usage tracking, so they earn no credit.",
+    "rationale": "Lium is a GPU rental marketplace with a CLI and SDK, so opting out of telemetry or usage tracking is a fair question to ask. Nothing in the evidence documents a telemetry opt-out, a do-not-track setting, or any analytics controls. Related privacy features, such as no-email fingerprint signup, no-key public feeds and encrypted volumes, are adjacent and do not count as telemetry opt-out.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3927,7 +3900,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Account quotas and instance limits are a fair question for a GPU rental marketplace, so the axis applies. However, the evidence never documents account quotas, per-account instance or GPU limits, or a process to raise them. What it does show is adjacent: user-set per-key USD budgets, per-pod spend caps, and live availability feeds. These are self-imposed spending controls and market supply data, not provider-enforced quotas with an increase process.",
+    "rationale": "Quotas and instance limits are a fair question for a GPU rental marketplace, so the axis applies. The evidence only shows user-set spend controls (per-key USD budgets, per-pod spend caps), which are adjacent budgeting features, not documented platform quotas or instance limits. Nothing describes a defined process for raising limits.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3941,8 +3914,8 @@
     "storyId": "reserved-committed-discounts",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Lium is a GPU rental marketplace, so reserved or committed-use discounts are a fair question to ask of it. Its own pricing page states it bills per second 'with no minimum and no reservation', and nothing in the evidence describes commitment-based discounts. Spend caps, budgets and price ceilings are cost controls, not discounted capacity commitments.",
+    "confidence": "medium",
+    "rationale": "Lium is a GPU rental marketplace, so reserved or committed-use pricing is a fair question to ask of it. The evidence documents only on-demand per-second billing with no minimum, price ceilings, and spend caps. Nothing in the pack describes reserved capacity, committed-use contracts, or sustained-use discounts.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -3957,11 +3930,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Lium documents some data-handling security controls: pod volumes are encrypted at rest by default on default templates, sensitive work can be filtered to Confidential Computing nodes, and volume backups are kept for 2 days. There is no evidence of SOC 2 or other compliance attestations, datacenter tier information, or a trust center for verifying posture before deployment. Missing for 10: SOC 2/compliance certifications, datacenter tier disclosures, a trust/security documentation page, data-handling/privacy policy detail, and independent corroboration.",
+    "rationale": "Lium's own docs cover only one slice of the story, data handling: pod volumes are encrypted at rest by default on the default templates, and local volumes are backed up every 6 hours and kept for 2 days. Nothing in the evidence lets a platform engineer verify SOC 2 or other compliance attestations, or the datacenter tiers behind the marketplace's GPU nodes. missing for 10: SOC 2 or other compliance certifications, datacenter tier and provider vetting documentation, a trust center or security whitepaper, a data residency and retention policy, independent corroboration.",
     "evidenceIds": [
       "lium-docs-8",
-      "lium-docs-38",
-      "lium-docs-37"
+      "lium-docs-16"
     ],
     "support": {
       "relation": "direct",
@@ -3973,12 +3945,8 @@
           "quote": "pod volumes encrypted at rest by default on the default templates"
         },
         {
-          "evidenceId": "lium-docs-38",
-          "quote": "For sensitive work, filter **Browse Pods** for **Confidential Computing** nodes."
-        },
-        {
-          "evidenceId": "lium-docs-37",
-          "quote": "a new pod's local volume is backed up on a regular schedule and kept 2 days"
+          "evidenceId": "lium-docs-16",
+          "quote": "the pod's local volume is backed up every 6 hours and kept 2 days, so you can restore it on another node"
         }
       ]
     }
@@ -3988,13 +3956,12 @@
     "storyId": "serverless-gpu-endpoints",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "Lium's first-party SDK runs a function on a freshly rented GPU node and then removes the pod, or keeps it warm. That is a first-party, ephemeral, serverless-like execution model that avoids always-on instances. TTL and spend-cap auto-deletion plus per-second billing support the no-idle-cost goal, but each call provisions one pod rather than a scaling worker pool. missing for 10: autoscaling worker pools that scale with load, a persistent serverless endpoint or queue that scales to zero and back up, any evidence of a deployable serverless endpoint product, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Lium's SDK can run a function on an ephemeral GPU node and remove the pod afterward, so you pay nothing once the job ends. That is a serverless-like, scale-to-zero pattern for one-off jobs, but it is not an autoscaling worker pool. The rest of the product is pod rental with TTL or spend-cap auto-deletion. Missing for 10: autoscaling worker pools that scale with request load, persistent serverless endpoints or queues, cold-start and scaling configuration, and independent corroboration.",
     "evidenceIds": [
       "lium-docs-24",
       "lium-docs-2",
       "lium-docs-1",
-      "lium-docs-15",
       "lium-docs-13"
     ],
     "support": {
@@ -4009,10 +3976,6 @@
         {
           "evidenceId": "lium-docs-2",
           "quote": "Your agent starts a pod, runs the job and removes it, within a budget you set."
-        },
-        {
-          "evidenceId": "lium-docs-13",
-          "quote": "You pay **per second**: `hourly price × seconds / 3600`, with no minimum."
         }
       ]
     }
@@ -4023,7 +3986,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Lium is a GPU rental marketplace, so a spot or interruptible tier is a fair question to ask of it. The evidence, however, documents only on-demand per-second billing, cheapest-node rental under a `max_price_per_gpu_hour` ceiling, and e-mail notice before price raises. Nothing describes a discounted interruptible tier or the preemption semantics (eviction notice, reclaim behavior). The price ceiling and per-second billing are adjacent cost controls, not spot capacity, so they earn no credit.",
+    "rationale": "Lium is a GPU rental marketplace, so a spot or interruptible tier is a fair question to ask of it. The evidence shows only on-demand per-second billing, cheapest-node selection under a `max_price_per_gpu_hour` ceiling, and volume backups. None of it documents a discounted spot or interruptible tier or any preemption semantics, and a price ceiling on on-demand rentals is an adjacent feature, not spot capacity.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -4038,7 +4001,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lium documents root access, plus Docker-in-Docker, on every pod, and says users and agents can connect to pods and run remote commands via `lium exec`. That covers the root-level-control half of the story. However, no evidence explicitly mentions SSH access or registering your own SSH public keys. missing for 10: explicit SSH access documentation, bring-your-own SSH key registration, independent or hands-on corroboration.",
+    "rationale": "Lium documents root access on every pod, and agents can 'connect' to pods and run remote commands via `lium exec`. That covers the root-level control half of the story. The pack never explicitly mentions SSH or bringing your own SSH keys. missing for 10: explicit SSH access documentation, support for uploading or using your own SSH public keys, independent or hands-on corroboration.",
     "evidenceIds": [
       "lium-docs-8",
       "lium-docs-22",
@@ -4059,7 +4022,7 @@
         },
         {
           "evidenceId": "lium-docs-23",
-          "quote": "lium exec job \"nvidia-smi\""
+          "quote": "lium exec job \"nvidia-smi\"                              # exits with the remote command's exit code"
         }
       ]
     }
@@ -4070,7 +4033,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Lium documents API keys with scopes set at creation and per-key daily, monthly and lifetime USD budgets enforced by the server, which covers the credential- and spend-control half of the story. The evidence never mentions team members, organizations or role-based access. Missing for 10: team/member management, role assignment, independent or hands-on corroboration of scoped keys and budget enforcement.",
+    "rationale": "Lium documents API keys whose scopes are fixed at creation, plus per-key daily, monthly and lifetime USD budgets enforced by the server. That covers the scoped-credential and spend-control half of the story. Nothing in the evidence shows team or organization member management or role-based access. missing for 10: team member management, roles/RBAC, independent or hands-on corroboration of key scoping and budget enforcement.",
     "evidenceIds": [
       "lium-docs-7",
       "lium-docs-12"
@@ -4095,15 +4058,14 @@
     "productId": "lium",
     "storyId": "transparent-gpu-pricing",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Lium documents that GPU prices are public with no account or key needed. It has a public pricing page at lium.io/pricing, a CSV price feed, and a no-signup JSON feed of every rentable node, so no sales contact is required. missing for 10: explicit evidence that the pricing page lists a per-GPU-hour rate for every GPU type (it is a marketplace with node-level asks), and independent or hands-on corroboration of the page contents.",
+    "rationale": "Lium publishes GPU rental prices with no account or sales contact. llms.txt points users to the public prices with no account needed, a public price feed is offered as CSV at lium.io/pricing.csv, and a public nodes feed lists every rentable GPU node with no key or signup. Billing is documented as hourly price prorated per second. Missing for 10: an explicitly evidenced human-readable pricing page showing a per-GPU-hour price for each GPU type, and independent or hands-on corroboration of the published prices.",
     "evidenceIds": [
-      "lium-docs-31",
-      "lium-docs-10",
-      "lium-docs-33",
       "lium-docs-5",
-      "lium-docs-9"
+      "lium-docs-9",
+      "lium-docs-10",
+      "lium-docs-13"
     ],
     "support": {
       "relation": "direct",
@@ -4111,24 +4073,20 @@
       "subject": "As an ML engineer, I can see the published per-GPU-hour price for every GPU type on a public pricing page without talking to sales",
       "citations": [
         {
-          "evidenceId": "lium-docs-31",
-          "quote": "GPU prices on Lium are public. No account or key needed."
+          "evidenceId": "lium-docs-5",
+          "quote": "read the public prices below, no account."
         },
         {
           "evidenceId": "lium-docs-10",
           "quote": "Price feed, CSV | https://lium.io/pricing.csv | spreadsheets, data warehouses"
         },
         {
-          "evidenceId": "lium-docs-33",
-          "quote": "Lium bills every GPU per second with no minimum and no reservation."
-        },
-        {
-          "evidenceId": "lium-docs-5",
-          "quote": "read the public prices below, no account."
-        },
-        {
           "evidenceId": "lium-docs-9",
           "quote": "Every rentable GPU node on Lium in one JSON call. No key, no signup."
+        },
+        {
+          "evidenceId": "lium-docs-13",
+          "quote": "You pay **per second**: `hourly price × seconds / 3600`, with no minimum."
         }
       ]
     }
@@ -5309,17 +5267,17 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents creating machines through its API and CLI, and publishes a machine-readable OpenAPI spec and the pspace CLI for programmatic resource management, so the provisioning step is directly covered. The rest of the lifecycle is not explicitly evidenced: there is no documented API or CLI step for monitoring a machine, running a workload, or deleting/tearing it down. The DigitalOcean MCP servers are not shown to expose Paperspace tools, and high-end GPUs such as the H100 need human approval. Missing for 10: documented API/CLI monitoring of machine status and GPU metrics, documented programmatic workload execution, documented API/CLI machine deletion/teardown, a Paperspace-specific MCP toolset, independent hands-on corroboration of an end-to-end agent run.",
+    "rationale": "Paperspace documents creating machines through its API and CLI, and it publishes a 61-path OpenAPI spec, a generated REST reference, team-scoped API keys and an official pspace CLI. That covers the provisioning leg of the lifecycle. The pack does not explicitly document the monitoring, workload-execution or teardown/delete steps, and high-end GPUs such as H100 need a human approval request before use. missing for 10: explicit API/CLI docs for monitoring machine state and deleting/tearing down machines, documented programmatic workload execution, approval-free GPU access, any MCP server, independent hands-on corroboration of an end-to-end agent run.",
     "evidenceIds": [
       "paperspace-docs-1",
       "paperspace-docs-23",
-      "paperspace-docs-30",
       "paperspace-openapi-spec-20261106",
       "paperspace-api-reference-20261106",
+      "paperspace-docs-30",
+      "paperspace-probe-4",
       "paperspace-docs-6",
       "paperspace-docs-17",
-      "paperspace-docs-25",
-      "paperspace-probe-4"
+      "paperspace-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -5349,12 +5307,12 @@
     "productId": "paperspace",
     "storyId": "agentic-agent-docs",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace's official docs live on docs.digitalocean.com, which serves an llms.txt (HTTP 200). Paperspace pages are also available as agent-friendly markdown (/products/paperspace/.md and index.html.md variants), alongside a machine-readable OpenAPI spec. However, the llms.txt is DigitalOcean-wide, and nothing in the evidence shows it indexes or curates Paperspace content specifically. missing for 10: evidence that llms.txt covers Paperspace docs, Paperspace-specific agent-oriented guidance, independent or hands-on corroboration of agents consuming these docs.",
+    "rationale": "Paperspace's docs live on docs.digitalocean.com, which serves an llms.txt (HTTP 200). The Paperspace API reference is available as a markdown (.md) page, and a machine-readable OpenAPI 3.0.3 spec is served at api.paperspace.com/v1/openapi.json, so an agent has some agent-consumable entry points. However, the llms.txt is DigitalOcean-wide with no shown Paperspace-specific coverage, and the Paperspace product-page .md variant returns 404. Missing for 10: evidence that llms.txt indexes Paperspace content, consistent markdown variants across Paperspace product docs, independent or hands-on corroboration of agent use.",
     "evidenceIds": [
       "paperspace-probe-1",
-      "paperspace-probe-2-refresh-93d12214373f757d",
+      "paperspace-probe-2",
       "paperspace-api-reference-20261106",
       "paperspace-openapi-spec-20261106"
     ],
@@ -5368,8 +5326,8 @@
           "quote": "PROBE llms.txt: HTTP 200 at https://docs.digitalocean.com/llms.txt # DigitalOcean Documentation"
         },
         {
-          "evidenceId": "paperspace-probe-2-refresh-93d12214373f757d",
-          "quote": "PROBE docs-md: HTTP 200 at https://docs.digitalocean.com/products/paperspace/.md"
+          "evidenceId": "paperspace-api-reference-20261106",
+          "quote": "Programmatically manage Paperspace resources using conventional HTTP requests"
         },
         {
           "evidenceId": "paperspace-openapi-spec-20261106",
@@ -5384,7 +5342,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace is a GPU cloud and ML platform, so in-product AI insights or suggestions are a fair question for it, but the evidence shows no such feature. The closest items do not count: DigitalOcean MCP servers let external clients reason about infrastructure, which is an external client capability on the host platform rather than inside the product. Deploying LLMs or running Notebooks are developer building blocks, not built-in insights.",
+    "rationale": "An ML/GPU cloud platform could plausibly ship an in-product AI assistant that surfaces insights from user data, so this axis applies. The evidence pack documents no such feature. Notebooks, Deployments and Workflows are compute primitives that a user could use to build their own analysis, which are developer building blocks rather than built-in AI-generated insights or suggestions.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5399,7 +5357,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Paperspace's own Workflows feature is documented as automating ML tasks as GPU-backed pipelines, which is a direct automation capability. The evidence is a single overview sentence, though. It does not show recurring schedules, event triggers, or unattended background operation; one-off pipeline runs are not the same as recurring autonomous automation. Auto-shutdown is an adjacent idle control, and DigitalOcean Managed Agents is a separate product, so neither is credited. missing for 10: documented scheduling/cron or event triggers, evidence that workflows run unattended in the background, in-depth workflow docs, independent or hands-on corroboration",
+    "rationale": "Paperspace documents Workflows, which 'automate machine learning tasks' as GPU-backed pipelines defined in code. That is a first-party automation capability, but the evidence never shows recurring schedules, event triggers, or unattended background operation. Auto-shutdown is only an adjacent inactivity control, and API/CLI access is a developer building block, so neither earns credit here. missing for 10: documented scheduling or triggers for Workflows, evidence of autonomous background execution without user intervention, depth of Workflows docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "paperspace-docs-9"
     ],
@@ -5421,7 +5379,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in AI assistant is a fair capability for a cloud ML platform's console, so the axis applies. The evidence pack documents no assistant inside Paperspace itself. The DigitalOcean MCP servers let external clients (Cursor, Claude, Copilot) act on resources, and DigitalOcean Managed Agents is a separate product; both are adjacent building blocks or other products, not an in-product assistant that a user delegates tasks to.",
+    "rationale": "A GPU cloud platform could plausibly ship a built-in AI assistant, so the axis applies. However, the evidence pack documents only machines, notebooks, deployments, workflows, the API and the CLI. Nothing shows an in-product AI assistant that users can delegate tasks to.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5436,14 +5394,15 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Paperspace documents its own headless interfaces: a CLI, a REST API with an OpenAPI 3.0.3 spec, a JavaScript SDK, team-scoped API keys for programmatic authentication, and Workflows for automating ML pipelines. Machines can be created through the API or CLI rather than the console. The evidence never shows these used in CI, so coverage is partial rather than complete. missing for 10: CI integration documentation (e.g., CI pipeline examples), documented non-interactive CLI authentication for CI runners, and independent or hands-on corroboration of headless/CI use.",
+    "rationale": "Paperspace documents its own CLI, a REST API with a machine-readable OpenAPI spec, a JavaScript SDK, and team-scoped API keys. Together these let users create and manage machines and resources programmatically without the console, which covers headless automation. Workflows are also described as automating ML pipelines in code. However, the evidence never explicitly documents CI usage or non-interactive auth flows. Missing for 10: explicit CI/CD integration docs (e.g. GitHub Actions or pipeline examples), documented non-interactive CLI authentication via API key in CI, and independent hands-on corroboration of headless/CI usage.",
     "evidenceIds": [
       "paperspace-docs-1",
       "paperspace-docs-6",
-      "paperspace-docs-9",
       "paperspace-docs-23",
       "paperspace-docs-30",
-      "paperspace-openapi-spec-20261106"
+      "paperspace-docs-9",
+      "paperspace-openapi-spec-20261106",
+      "paperspace-probe-4"
     ],
     "support": {
       "relation": "direct",
@@ -5455,24 +5414,16 @@
           "quote": "You can create a Linux machine using the Paperspace console, Paperspace API, or Paperspace CLI."
         },
         {
-          "evidenceId": "paperspace-docs-30",
-          "quote": "Programmatically manage resources using the Paperspace Command Line Interface."
-        },
-        {
           "evidenceId": "paperspace-docs-6",
           "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI)."
         },
         {
-          "evidenceId": "paperspace-docs-23",
-          "quote": "Programmatically manage Paperspace resources using conventional HTTP requests."
+          "evidenceId": "paperspace-docs-30",
+          "quote": "Programmatically manage resources using the Paperspace Command Line Interface."
         },
         {
           "evidenceId": "paperspace-docs-9",
-          "quote": "Workflows automate machine learning tasks"
-        },
-        {
-          "evidenceId": "paperspace-openapi-spec-20261106",
-          "quote": "serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json"
+          "quote": "Workflows automate machine learning tasks, combining GPU instances with an expressive syntax to generate production-ready machine learning pipelines with a few lines of code."
         }
       ]
     }
@@ -5483,7 +5434,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace is a GPU cloud and ML infrastructure platform (VMs, Notebooks, Deployments), not an agent or AI host that consumes tools. Asking whether it acts as an MCP client is therefore a category error. The MCP evidence in the pack concerns DigitalOcean's own MCP servers (the server role) and a separate DigitalOcean Managed Agents product, neither of which shows Paperspace itself plugging in MCP servers.",
+    "rationale": "Paperspace is GPU cloud infrastructure: VMs, Jupyter notebooks, container deployments and ML workflows. It is not a tool-using agent or assistant, so plugging MCP servers into it as a client is a category mismatch for this product type. Nothing in the evidence shows a built-in agent or MCP client mode that would make the axis apply.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5498,20 +5449,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows DigitalOcean (Paperspace's parent platform) offers remote and local MCP servers for managing DigitalOcean resources. Nothing in the pack says those servers expose Paperspace machines, notebooks, deployments or other Paperspace resources. Their listed tools cover DigitalOcean AI Platform resources, so this is a host-platform capability, not a Paperspace-specific official MCP server, and it earns no credit for this story.",
-    "evidenceIds": [
-      "paperspace-docs-20261119"
-    ],
+    "rationale": "Paperspace is a GPU cloud platform, not an agent, so publishing an official MCP server is a fair question to ask. The evidence documents only a REST API, an OpenAPI spec, a CLI, a JavaScript SDK and an llms.txt file. None of it mentions an official MCP server, and those developer building blocks earn no credit toward this story.",
+    "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can connect an agent via an official MCP server",
-      "citations": [
-        {
-          "evidenceId": "paperspace-docs-20261119",
-          "quote": "DigitalOcean provides remote MCP servers that expose tools and context for managing your DigitalOcean resources."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -5520,10 +5464,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace documents a console, REST API, OpenAPI spec and CLI. These are developer building blocks, not a natural-language operating interface. The DigitalOcean MCP servers let AI clients act on DigitalOcean resources, but nothing shows they cover Paperspace machines, notebooks or deployments, so that evidence belongs to the parent platform rather than this product.",
+    "rationale": "Natural-language operation is a fair question for a GPU cloud platform, so the axis applies. The evidence only documents a console, a REST API, an OpenAPI spec, an SDK and a conventional CLI. None of these is a first-party natural-language command interface, and machine-readable docs such as llms.txt or the OpenAPI spec are developer building blocks, not the capability itself.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can operate the product with natural-language commands",
       "citations": []
@@ -5535,12 +5479,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "high",
-    "rationale": "Paperspace documents a first-party CLI (pspace) in DigitalOcean's reference docs, with install and usage guidance for managing resources programmatically, including creating machines. A probe confirms the official CLI documentation exists. Evidence of its depth is thin: none of it describes command coverage, machine-readable output, or anything aimed at AI-native or agent workflows, and no community or hands-on account mentions using it. missing for 10: detail on command coverage and scriptable/structured output for AI-native workflows, independent or hands-on corroboration of the CLI.",
+    "rationale": "Paperspace documents an official CLI (pspace) for programmatically managing resources, including creating machines, and its API keys also authenticate the Gradient CLI. missing for 10: in-depth command reference or agent-friendly features (e.g. structured/JSON output, non-interactive auth) in evidence, independent or hands-on corroboration of CLI use.",
     "evidenceIds": [
-      "paperspace-docs-24",
       "paperspace-docs-30",
-      "paperspace-docs-1",
+      "paperspace-docs-24",
       "paperspace-probe-4",
+      "paperspace-docs-1",
       "paperspace-docs-6"
     ],
     "support": {
@@ -5549,12 +5493,12 @@
       "subject": "As an AI-native user, I can use an official CLI",
       "citations": [
         {
-          "evidenceId": "paperspace-docs-24",
-          "quote": "Install and use the new Paperspace Command Line Interface."
-        },
-        {
           "evidenceId": "paperspace-docs-30",
           "quote": "Programmatically manage resources using the Paperspace Command Line Interface."
+        },
+        {
+          "evidenceId": "paperspace-docs-24",
+          "quote": "Install and use the new Paperspace Command Line Interface."
         },
         {
           "evidenceId": "paperspace-docs-1",
@@ -5573,13 +5517,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Paperspace documents a public RESTful API for programmatically managing resources. It has a machine-readable OpenAPI 3.0.3 spec at api.paperspace.com/v1/openapi.json covering 61 paths, a generated per-endpoint reference with cURL examples, and team-scoped API keys that also cover a JavaScript SDK and CLI. Machine creation is explicitly documented as possible via the API. missing for 10: independent or hands-on corroboration of driving the product through the API, and an interactive in-page request runner in the reference.",
+    "rationale": "Paperspace documents a public RESTful API for managing resources over HTTP, authenticated with team-scoped API keys. A machine-readable OpenAPI 3.0.3 spec (61 paths) is served at api.paperspace.com/v1, and a generated per-endpoint reference with cURL examples is built from it; the 404s from the probe hit docs-domain paths, not the versioned API artifact, so they do not contradict this. Missing for 10: independent or hands-on corroboration that the API works end-to-end for agent-driven workflows.",
     "evidenceIds": [
       "paperspace-docs-23",
+      "paperspace-docs-40",
       "paperspace-openapi-spec-20261106",
       "paperspace-api-reference-20261106",
-      "paperspace-docs-6",
-      "paperspace-docs-40",
       "paperspace-docs-1"
     ],
     "support": {
@@ -5592,12 +5535,16 @@
           "quote": "Programmatically manage Paperspace resources using conventional HTTP requests."
         },
         {
-          "evidenceId": "paperspace-openapi-spec-20261106",
-          "quote": "The production API domain serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json"
+          "evidenceId": "paperspace-docs-40",
+          "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI). API Keys have team-scoped permissions"
         },
         {
-          "evidenceId": "paperspace-docs-6",
-          "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI)."
+          "evidenceId": "paperspace-openapi-spec-20261106",
+          "quote": "The production API domain serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json (info title \"Paperspace OpenAPI\", version \"1\", 61 paths; servers https://api.paperspace.com/v1)."
+        },
+        {
+          "evidenceId": "paperspace-api-reference-20261106",
+          "quote": "a static generated per-endpoint reference with copyable cURL examples"
         },
         {
           "evidenceId": "paperspace-docs-1",
@@ -5644,7 +5591,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Paperspace's API-key docs name an official \"Core JavaScript SDK\" that API keys work with, so a first-party SDK exists. That is the only mention, though: no SDK reference docs, install instructions, language coverage or maintenance status appear. The OpenAPI spec and the CLI are building blocks or adjacent tools, not SDKs, and earn no credit here. Missing for 10: dedicated SDK documentation and reference, SDKs in other languages (e.g. Python), evidence the JavaScript SDK is current rather than legacy \"Core\" tooling, independent or hands-on corroboration of building against it.",
+    "rationale": "Paperspace's API-key docs name an official \"Core JavaScript SDK\" alongside the REST API and CLI, so a first-party SDK exists. Beyond that one mention, the pack has no SDK documentation, install instructions, language coverage or maintenance status. The REST API, OpenAPI spec and CLI are adjacent interfaces, not SDKs. Missing for 10: dedicated SDK documentation, SDKs for additional languages (e.g. Python), evidence the SDK is current and maintained, and hands-on or independent corroboration of building against it.",
     "evidenceIds": [
       "paperspace-docs-6",
       "paperspace-docs-40"
@@ -5657,10 +5604,6 @@
         {
           "evidenceId": "paperspace-docs-6",
           "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI)."
-        },
-        {
-          "evidenceId": "paperspace-docs-40",
-          "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI)."
         }
       ]
     }
@@ -5671,7 +5614,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair question for a GPU cloud and ML platform, so the axis applies. The evidence pack documents a REST API, an OpenAPI spec, a CLI, a JavaScript SDK and DigitalOcean MCP servers, but nothing describes registrable outbound HTTP callbacks for Paperspace events. Those inbound and programmatic interfaces are adjacent features, not webhook subscriptions.",
+    "rationale": "Webhooks are a fair axis for a GPU cloud platform, but nothing in the evidence documents registrable outbound HTTP callbacks or event subscriptions. The REST API, OpenAPI spec and CLI let a caller manage resources on request; they do not push events to a consumer, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5686,10 +5629,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Paperspace publishes an official API reference, generated from its OpenAPI 3.0.3 spec, with per-endpoint cURL examples that a user can copy and run. However, the reference is explicitly static with no in-page runner, so the 'interactive' part of the story is not delivered. Importing the OpenAPI spec into a third-party tool would be a user-side workaround and earns no credit. Missing for 10: an interactive in-page request runner or try-it console, examples executable directly in the docs, and independent or hands-on corroboration.",
+    "rationale": "Paperspace publishes its own API reference, generated from a machine-readable OpenAPI 3.0.3 spec, with per-endpoint copyable cURL examples. However, the reference is explicitly static with no in-page runner, so the 'interactive' part of the story is not delivered and examples must be run outside the docs. missing for 10: interactive in-browser try-it/runner, in-page execution of examples, independent or hands-on corroboration of the reference quality.",
     "evidenceIds": [
       "paperspace-api-reference-20261106",
-      "paperspace-openapi-spec-20261106"
+      "paperspace-openapi-spec-20261106",
+      "paperspace-docs-23"
     ],
     "support": {
       "relation": "direct",
@@ -5698,11 +5642,15 @@
       "citations": [
         {
           "evidenceId": "paperspace-api-reference-20261106",
-          "quote": "a static generated per-endpoint reference with copyable cURL examples"
+          "quote": "a static generated per-endpoint reference with copyable cURL examples (no in-page runner)"
         },
         {
           "evidenceId": "paperspace-openapi-spec-20261106",
           "quote": "The DigitalOcean-hosted Paperspace API reference is generated from it."
+        },
+        {
+          "evidenceId": "paperspace-docs-23",
+          "quote": "Programmatically manage Paperspace resources using conventional HTTP requests."
         }
       ]
     }
@@ -5740,7 +5688,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Testing against an isolated sandbox is a fair question for a cloud ML platform, so the axis applies, but no evidence shows Paperspace offering a sandbox or test mode that is separated from production data. Spinning up separate machines from custom templates or snapshots would be a user-side workaround, not the capability itself. The sandbox and testing claims in the pack belong to separate DigitalOcean products (Managed Agents, Marketplace 1-Click Droplets), not Paperspace, so they earn no credit here.",
+    "rationale": "The evidence pack documents no sandbox, test mode, or staging environment for Paperspace's API or platform that isolates testing from production data. Users can create separate VMs, snapshots, and templates, but these are general infrastructure primitives. Building an isolated test setup from them would be a user-side workaround, not a documented sandbox capability.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5755,7 +5703,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Paperspace's own API is versioned: the production OpenAPI 3.0.3 document is served at /v1/openapi.json with version \"1\" and servers at https://api.paperspace.com/v1, and the unversioned path returns 404. Nothing in the evidence documents a deprecation policy, sunset timelines, or version-lifecycle guarantees, so only half the story is delivered. Missing for 10: documented deprecation policy, versioning/lifecycle guarantees (notice periods, sunset headers, changelog), independent corroboration of API stability.",
+    "rationale": "Paperspace serves a versioned API: the production OpenAPI 3.0.3 document is at /v1/openapi.json with version \"1\" and the server base is https://api.paperspace.com/v1, and the published API reference is generated from it. Nothing in the pack documents a deprecation policy, sunset timelines, or version-change guarantees, so only half the story is delivered. missing for 10: a documented deprecation/sunset policy, a changelog or versioning guarantees beyond the /v1 path, and independent corroboration of API stability.",
     "evidenceIds": [
       "paperspace-openapi-spec-20261106",
       "paperspace-api-reference-20261106"
@@ -5782,10 +5730,9 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Paperspace documents a first-party auto-shutdown feature for Machines. It places a machine in a stop state after a configurable idle period of one hour to one week, and Linux machines shut down after that idle time even when users are connected. That directly guards against a forgotten instance running up a bill, which satisfies the 'timers or spend limits' story. Missing for 10: any documented spend limits or budget caps, evidence that auto-shutdown can be set via the API or CLI, and independent or hands-on corroboration that it works reliably.",
+    "rationale": "Paperspace documents a built-in auto-shutdown feature that stops a machine after a configurable inactivity period of one hour to one week. That directly addresses the forgotten-instance scenario, and the story asks for timers OR spend limits. Missing for 10: any documented spend limits or billing alerts, wall-clock (non-inactivity) shutdown timers, API/CLI configuration detail for auto-shutdown, and independent hands-on corroboration that it works.",
     "evidenceIds": [
-      "paperspace-docs-5",
-      "paperspace-docs-20261111"
+      "paperspace-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -5795,10 +5742,6 @@
         {
           "evidenceId": "paperspace-docs-5",
           "quote": "The auto-shutdown feature places your machine in a stop state after a predefined period of inactivity, which can range from one hour to one week."
-        },
-        {
-          "evidenceId": "paperspace-docs-20261111",
-          "quote": "Linux-based machines shut down after the specified idle time, regardless of whether any users are connected."
         }
       ]
     }
@@ -5809,7 +5752,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a REST API, an OpenAPI spec, and a CLI that manage individual resources, but nothing describes bulk or batch operations across many machines, notebooks, or deployments in a single action. A user could script loops over the API or CLI, but that is a developer building block, not the capability itself. Shared drives being reachable from multiple machines is an adjacent storage feature, not a bulk operation.",
+    "rationale": "Paperspace documents a REST API, an OpenAPI spec and a CLI for managing resources, but these are building blocks a user could script loops over. Nothing in the evidence describes a native bulk operation, such as acting on many machines, notebooks or deployments in a single action. Templates and shared drives are adjacent features, not bulk operations.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5824,7 +5767,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no general event-triggered rules engine for Paperspace. Auto-shutdown is a single fixed idle-timeout switch, not user-defined rules. Workflows automate ML pipelines but show no event triggers. The API and CLI are developer building blocks only, so neither earns credit for this story.",
+    "rationale": "The evidence pack does not document a general rule or event-trigger system where users define conditions that automatically fire actions. Auto-shutdown is a single fixed idle-timeout control, not user-defined event rules. Workflows describe ML pipelines with no mention of event-based triggers. Both are adjacent features and earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5839,7 +5782,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a GPU cloud and ML platform, so the axis applies. However, the evidence never documents cron-style or recurring triggers. Workflows are described only as automated ML pipelines, with no schedule, and auto-shutdown is an inactivity-based stop, not a recurring job schedule. Neither earns credit.",
+    "rationale": "The evidence shows Paperspace Workflows automate ML pipelines and that machines can auto-shut down after inactivity, but nothing documents scheduling a job or workflow to run on a recurring basis (cron, timed triggers). Workflows are a one-off automation primitive and auto-shutdown is an adjacent inactivity control; neither is a recurring schedule, so the axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5854,7 +5797,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace documents Workflows for automating ML pipelines, so the axis applies. The evidence never mentions versioning, reviewing, or rolling back those automations. Machine snapshots that can be reverted are a backup feature for VMs, not version control for automations, so they earn no credit.",
+    "rationale": "Paperspace documents Workflows for automating ML pipelines, but nothing in the evidence shows versioning, review, or rollback of those automations. The machine snapshot and backup revert feature applies to VM state, not automations, so it is an adjacent control and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5869,7 +5812,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace documents a REST API (an OpenAPI spec with 61 paths), a CLI and team-scoped API keys for managing resources. Nothing in the evidence shows usage or billing endpoints, cost breakdowns, or ways to attribute GPU spend by team or workload. A general resource-management API is only an adjacent building block and does not deliver programmatic billing attribution.",
+    "rationale": "The evidence documents a REST API, an OpenAPI spec, a CLI and team-scoped API keys for managing resources. None of it mentions usage or billing endpoints, cost reports, or any way to break down GPU spend by team or workload. General resource-management API access is an adjacent building block, not the billing-attribution capability itself.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5884,13 +5827,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Paperspace documents custom templates that capture a machine and its configuration and can be used to create new machines with your specifications. Machine creation lets you pick an OS or a custom template, and Deployments run container images as containers-as-a-service. Missing for 10: explicit documentation of bringing your own Docker image (registry or custom image support) for machines and notebooks, step-by-step template-creation depth, and independent or hands-on corroboration.",
+    "rationale": "Paperspace documents custom templates, which capture a machine and its configuration so you can create new machines with your exact specifications, and lets you pick a custom template at machine creation. Separately, Deployments are containers-as-a-service that run container images. Root SSH access lets you shape the environment before templating it. missing for 10: explicit documentation of bringing your own Docker image (registry or private image support) for Deployments or Notebooks, in-depth template workflow docs, and independent hands-on corroboration.",
     "evidenceIds": [
       "paperspace-docs-3",
       "paperspace-docs-25",
-      "paperspace-docs-20261109",
       "paperspace-docs-8",
-      "paperspace-docs-36"
+      "paperspace-docs-12"
     ],
     "support": {
       "relation": "direct",
@@ -5918,7 +5860,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no S3-compatible endpoint, no cloud-storage sync, and no dedicated data-transfer tooling for Paperspace. What it does show is adjacent: shared drives within a private network, free unlimited bandwidth, SSH root access a user could use for their own copies, and a bare doc title about mounting datasets in Gradient Notebooks with no detail on sources or transfer mechanisms. None of these is the product's own documented capability for moving data in and out, and one community report says copying datasets into Core servers was very slow.",
+    "rationale": "The pack documents no S3-compatible endpoint, no cloud-storage sync, and no dedicated data-transfer tooling for moving data in and out. What it does show is adjacent only: shared drives are internal storage reachable from machines on a private network, plus 'free unlimited bandwidth', SSH root access and a bare doc title about mounting datasets in notebooks. None of these describes a transfer mechanism, and one community report says copying datasets onto Core servers was very slow.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5965,7 +5907,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence includes a static availability page, but its only quoted content says CPU machines exist in all regions. It also notes that high-end GPUs like the H100 require approval. Nothing shows real-time GPU availability or stock levels by type and region before provisioning, so this is adjacent documentation rather than the capability.",
+    "rationale": "The evidence pack has no feature showing real-time GPU stock or capacity by type and region before provisioning. The only related item is a static availability page stating CPU machines are offered in all regions. That is a catalog of where machine types are offered, not live stockout visibility, and there is no API or console capacity endpoint in evidence.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6018,14 +5960,15 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Paperspace documents programmatic machine management. Machines can be created through the API or CLI, and the HTTP API is described as a way to \"programmatically manage Paperspace resources.\" A creation-time starting state and an auto-shutdown that puts idle machines into a stop state are also documented, and a user reports paying an hourly rate for GPU VMs. However, none of the evidence names explicit start, stop, restart or terminate operations, and stop-state billing semantics are never stated. missing for 10: explicitly documented start/stop/restart/delete API or CLI operations, documented billing behavior for stopped vs running machines, hands-on corroboration of programmatic lifecycle control.",
+    "rationale": "Paperspace documents programmatic machine management through a REST API (an OpenAPI spec with 61 paths) and the pspace CLI, explicitly including machine creation. It also has a machine 'stop state', reachable via auto-shutdown, and a community user describes hourly billing for a GPU VM. The evidence never enumerates start, stop, restart, or terminate operations for the API/CLI, and never documents that stopped machines stop accruing compute charges. missing for 10: explicit documented API/CLI start, stop, restart and delete/terminate operations, first-party documentation that billing stops for stopped or terminated machines, independent hands-on corroboration of programmatic lifecycle control.",
     "evidenceIds": [
       "paperspace-docs-1",
       "paperspace-docs-23",
       "paperspace-docs-30",
+      "paperspace-openapi-spec-20261106",
       "paperspace-docs-5",
       "paperspace-docs-25",
-      "paperspace-comm-8"
+      "paperspace-comm-9-refresh-f8ba53cbbfefbf10"
     ],
     "support": {
       "relation": "direct",
@@ -6049,12 +5992,8 @@
           "quote": "The auto-shutdown feature places your machine in a stop state after a predefined period of inactivity"
         },
         {
-          "evidenceId": "paperspace-docs-25",
-          "quote": "When you create a new machine, you choose your machine type, operating system or custom template, disk size, region, authentication, starting state"
-        },
-        {
-          "evidenceId": "paperspace-comm-8",
-          "quote": "An hourly rate on a standard VM w/GPU is better than buying a local machine"
+          "evidenceId": "paperspace-comm-9-refresh-f8ba53cbbfefbf10",
+          "quote": "the hourly rate for a standard GPU VM beats buying a local machine"
         }
       ]
     }
@@ -6065,10 +6004,9 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents Notebooks as a web-based Jupyter IDE on accelerated compute, plus a thin mention of connecting alternative IDEs to remote Jupyter kernels. Machines are reachable over SSH from the console or desktop app, though one hands-on report says SSH access on Core servers was an uphill battle. Nothing documents one-step Jupyter launch on a Machine or a named VS Code/Cursor remote integration. Missing for 10: documented one-click Jupyter or IDE launch on a machine instance, an explicit VS Code/Cursor remote-connect workflow, and independent corroboration that IDE connection works smoothly.",
+    "rationale": "Paperspace documents Notebooks as a web-based Jupyter IDE and says users can connect to remote Jupyter kernels through alternative IDEs. Machines support SSH connections, which covers the core of opening Jupyter or attaching an IDE. However, nothing documents a one-step VS Code or Cursor connection, and one hands-on user reported that getting SSH access to Core machines was 'an uphill battle', which lowers confidence in how seamless this is. Missing for 10: documented one-step VS Code/Cursor integration, detail on the alternative-IDE kernel connection flow, independent corroboration of smooth IDE/Jupyter access.",
     "evidenceIds": [
       "paperspace-docs-7",
-      "paperspace-docs-28",
       "paperspace-docs-38",
       "paperspace-docs-2",
       "paperspace-docs-12",
@@ -6100,7 +6038,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace documents a public OpenAPI spec and REST API for managing resources. However, no evidence shows an endpoint that returns the GPU machine-type catalog with live pricing or live availability. The only availability material is a static docs page about CPU machines in all regions, and pricing appears only as marketing claims (\"save up to 70%\"), so the story's core capability is unevidenced.",
+    "rationale": "Paperspace documents a REST API with a published OpenAPI 3.0.3 spec and a CLI, but nothing in the evidence shows an endpoint that returns the GPU catalog with live pricing or availability. The only availability material is a static docs page saying CPU machines exist in all regions, and the marketing pages claim savings without any queryable prices. A general-purpose API is a building block, not the capability itself, so it earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6115,7 +6053,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no managed Slurm or Kubernetes scheduling for Paperspace. Paperspace offers VMs, Notebooks, Deployments (containers-as-a-service) and Workflows (ML pipelines), which are adjacent features rather than a managed cluster scheduler. The Kubernetes 1-Click App material describes DigitalOcean Marketplace, a separate parent-platform product, so it earns no credit here.",
+    "rationale": "Scheduling jobs on managed Slurm or Kubernetes is a fair question for a GPU cloud, so the axis applies. However, the evidence never mentions Slurm, Kubernetes, or any managed cluster scheduler. Paperspace's documented offerings are VMs (Machines), Jupyter Notebooks, container Deployments and ML Workflows. These are adjacent features, not a managed Slurm or Kubernetes job scheduler.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6130,35 +6068,13 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only single-VM provisioning. That includes multi-GPU machines with up to 8 A100s and NVLink between GPUs inside one machine, plus private networks and shared drives between separate machines. Nothing documents provisioning a multi-node GPU cluster with a fast inter-node interconnect for distributed training. NVLink is an intra-node, adjacent feature, and wiring machines together over a private network is a user-side workaround. High-end GPUs such as H100 also require an approval request.",
-    "evidenceIds": [
-      "paperspace-docs-20",
-      "paperspace-docs-27",
-      "paperspace-docs-4",
-      "paperspace-docs-17"
-    ],
+    "rationale": "The evidence shows only single-machine multi-GPU options: A100 machines with up to 8 GPUs and NVLink within a node. Separate machines can share a private network and shared drives, but that is a user-side arrangement, not a documented multi-node cluster with a fast inter-node interconnect for distributed training. High-end H100 machines also require an approval request, which works against the self-serve part of the story.",
+    "evidenceIds": [],
     "support": {
       "relation": "adjacent",
       "coverage": "none",
       "subject": "As an ML engineer, I can provision a multi-node GPU cluster with fast interconnect for distributed training without a sales cycle",
-      "citations": [
-        {
-          "evidenceId": "paperspace-docs-20",
-          "quote": "Enhance data transfer speeds and scalability between NVIDIA GPUs for high-performance computing tasks by enabling NVLink."
-        },
-        {
-          "evidenceId": "paperspace-docs-27",
-          "quote": "Leverage the latest NVIDIA GPUs including Ampere A100s with up to 8 GPUs."
-        },
-        {
-          "evidenceId": "paperspace-docs-4",
-          "quote": "Shared drives provide storage that is accessible from multiple machines in a private network."
-        },
-        {
-          "evidenceId": "paperspace-docs-17",
-          "quote": "If you choose any high-end machines, such as NVIDIA H100, you need to request for approval to use them."
-        }
-      ]
+      "citations": []
     }
   },
   {
@@ -6167,17 +6083,16 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Paperspace documents creating GPU machines through the console, API, or CLI, and connecting over SSH with root access. Its \"ML in a Box\" template comes with ML frameworks and CUDA drivers preinstalled, so code can run right after provisioning. Speed rests on a vendor claim (\"signup to training a model in seconds\"), high-end GPUs such as the H100 require approval, and one hands-on user called getting SSH access \"an uphill battle\" on Core servers. missing for 10: independent corroboration of minutes-scale provisioning-to-running time, instant on-demand access to high-end GPUs without approval, evidence that SSH setup is reliably smooth.",
+    "rationale": "Paperspace documents creating GPU machines from the console, API, or CLI, with an OpenAPI-backed REST API. An \"ML in a Box\" template comes preinstalled with ML frameworks and CUDA drivers, and SSH gives root access, so the core story is covered. One hands-on report describes SSH access as an uphill battle, and high-end GPUs such as the H100 require approval before use. missing for 10: independent corroboration of the 'within minutes' provisioning-to-running time, evidence that top-tier GPUs are available on demand without approval, and smooth hands-on access reports.",
     "evidenceIds": [
       "paperspace-docs-1",
       "paperspace-docs-16",
-      "paperspace-docs-12",
       "paperspace-docs-13",
+      "paperspace-docs-12",
       "paperspace-docs-10",
       "paperspace-docs-17",
-      "paperspace-docs-25",
-      "paperspace-comm-18",
-      "paperspace-comm-19"
+      "paperspace-openapi-spec-20261106",
+      "paperspace-docs-25"
     ],
     "support": {
       "relation": "direct",
@@ -6193,12 +6108,12 @@
           "quote": "Machines are Linux and Windows virtual machines with persistent storage, GPU options, and free unlimited bandwidth."
         },
         {
-          "evidenceId": "paperspace-docs-12",
-          "quote": "Bring your SSH key and connect directly to your VM with full root access."
-        },
-        {
           "evidenceId": "paperspace-docs-13",
           "quote": "Choose \"ML in a Box\" template that comes preinstalled with all the major ML frameworks and CUDA® drivers."
+        },
+        {
+          "evidenceId": "paperspace-docs-12",
+          "quote": "Bring your SSH key and connect directly to your VM with full root access."
         },
         {
           "evidenceId": "paperspace-docs-10",
@@ -6213,14 +6128,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents a REST API with a machine-readable OpenAPI 3.0.3 spec (61 paths), a CLI, and API keys. Machine creation is explicitly offered through the console, API, or CLI. However, nothing in the evidence claims UI–API parity, and some actions, such as revoking API keys, are documented only as console clicks. Missing for 10: an explicit parity statement or coverage mapping showing every console action has an API equivalent, documented API coverage for notebooks, deployments, key management and team or user access, and independent hands-on confirmation of parity.",
+    "rationale": "Paperspace documents a REST API with a machine-readable OpenAPI 3.0.3 spec (61 paths), a JavaScript SDK, and a CLI. Machine creation is explicitly available through the console, API, or CLI. However, nothing in the evidence claims or shows that the API matches the UI across all features: notebooks, deployments, workflows, team user management, snapshots and auto-shutdown are documented without stating API coverage. Missing for 10: an explicit UI–API parity statement, documented API coverage of notebooks, deployments, workflows, user access, templates and auto-shutdown, and independent hands-on confirmation of full parity.",
     "evidenceIds": [
       "paperspace-docs-1",
+      "paperspace-docs-6",
       "paperspace-docs-23",
       "paperspace-openapi-spec-20261106",
-      "paperspace-docs-6",
-      "paperspace-docs-30",
-      "paperspace-docs-20261115"
+      "paperspace-api-reference-20261106",
+      "paperspace-docs-30"
     ],
     "support": {
       "relation": "direct",
@@ -6240,8 +6155,8 @@
           "quote": "The production API domain serves a machine-readable OpenAPI 3.0.3 document at /v1/openapi.json"
         },
         {
-          "evidenceId": "paperspace-docs-30",
-          "quote": "Programmatically manage resources using the Paperspace Command Line Interface."
+          "evidenceId": "paperspace-docs-6",
+          "quote": "API keys let you interact with Paperspace through the Core RESTful API, the Core JavaScript SDK, and Gradient command-line utility (CLI)."
         }
       ]
     }
@@ -6252,10 +6167,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no data-export or portability feature for Paperspace: no export of machines, snapshots, templates, or notebooks in open formats, and no account-wide data takeout. Root SSH access, which would let users copy files off a VM themselves, and 'Cancel anytime' are adjacent behaviors or user-side workarounds rather than an export capability. Snapshots and custom templates are documented only for reuse inside Paperspace.",
+    "rationale": "The evidence pack documents no first-party data-export feature, no bulk download, and no open-format export of machines, notebooks, or account data. SSH root access lets a user copy files out manually, but that is a user-side workaround. Snapshots and custom templates are internal backups that stay on the platform, and \"Cancel anytime\" concerns billing rather than exporting data.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can export all of my data in open formats and leave",
       "citations": []
@@ -6267,7 +6182,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is published under an open license is a fair question for a cloud ML platform, so this axis applies. However, nothing in the evidence pack shows Paperspace publishing its platform, CLI, or SDK source under an open license. The documentation covers only a hosted service, an API/OpenAPI spec and a CLI, with no license or repository information.",
+    "rationale": "Openness of source code is a fair question for a cloud GPU and ML platform, so the axis applies. However, nothing in the evidence pack shows Paperspace publishing its platform, CLI or SDK source under an open license. The published OpenAPI spec and API reference are interface documentation, not source code under an open license, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6282,7 +6197,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an ML cloud platform, since a vendor could ship an on-prem or self-managed edition. The evidence only describes hosted Paperspace services (Machines, Notebooks, Deployments, Workflows) run in Paperspace datacenters. Root SSH access to rented VMs and the API/CLI let users control hosted resources, but they do not let users run Paperspace itself on their own infrastructure, so they earn no credit.",
+    "rationale": "Self-hosting is a fair question for a cloud ML platform, since some vendors ship on-prem or self-managed editions, so the axis applies. The evidence only describes Paperspace as a hosted cloud service (VMs, Notebooks, Deployments, API/CLI). Root SSH access to rented VMs is a feature of the hosted service, not a way to self-host the product itself, and nothing in the pack documents a self-hosted or on-prem distribution.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6297,7 +6212,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents Paperspace billing at per-second or per-minute granularity, or states that charges stop when a machine is stopped. Auto-shutdown only moves idle machines to a stopped state and does not describe how billing works. Community posts mention only an 'hourly rate' and a flat $9/mo Pro tier, neither of which shows sub-hour metering.",
+    "rationale": "Nothing in the evidence pack documents per-second or per-minute billing, or billing that stops when an instance is stopped. The auto-shutdown feature is a related control that stops idle machines, not a billing-granularity guarantee. Community posts mention only an 'hourly rate' and a flat monthly Pro tier, neither of which shows sub-hour metering.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6312,7 +6227,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents Shared Drives, network storage accessible from multiple machines in a private network. It also documents shared persistent storage for Notebooks, which implies the data is decoupled from any single instance. However, the evidence is a single sentence per feature and never states that data survives deleting a machine, nor how drives are attached or mounted. Missing for 10: explicit documentation that shared drives persist after machine teardown, attach/mount workflow details, capacity/performance specifics, and independent hands-on corroboration.",
+    "rationale": "Paperspace documents shared drives, network storage reachable from multiple machines on a private network, and Notebooks with shared persistent storage. This points to storage that is decoupled from any single machine. However, the evidence never states that shared drives survive when a machine is deleted, or that datasets and checkpoints carry over to later GPU rentals. missing for 10: explicit documentation that shared drives persist after machine teardown, attach/detach workflow details, capacity and pricing limits, and independent or hands-on corroboration.",
     "evidenceIds": [
       "paperspace-docs-4",
       "paperspace-docs-7",
@@ -6344,7 +6259,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents a pre-built \"ML in a Box\" machine template with the major ML frameworks and CUDA drivers preinstalled, so PyTorch/CUDA-style environments are available out of the box. Custom templates are user-created snapshots, not pre-built images, and the DigitalOcean Marketplace 1-Click models target GPU Droplets rather than Paperspace, so neither is credited here. missing for 10: explicit PyTorch template naming, vLLM template, ComfyUI template, a broader catalog of pre-built templates, independent or hands-on corroboration.",
+    "rationale": "Paperspace documents a pre-built \"ML in a Box\" machine template that comes preinstalled with the major ML frameworks and CUDA drivers. That covers the PyTorch/CUDA part of the story, and machine creation lets you pick a template. However, the evidence shows only this single generic template, and custom templates are user-made snapshots rather than pre-built ones. missing for 10: dedicated vLLM and ComfyUI templates, an explicit PyTorch-specific template listing or catalog of multiple pre-built images, independent hands-on corroboration of template launch.",
     "evidenceIds": [
       "paperspace-docs-13",
       "paperspace-docs-25"
@@ -6371,7 +6286,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents choosing a region when creating a machine, and its machines come with persistent storage, so users can pick the datacenter region where machine data lives. Region is only one creation parameter in the docs, with no residency commitments and no region choice shown for notebooks, shared drives or deployments. Missing for 10: list of available regions/geographies, explicit data-residency guarantees, region selection for notebooks/shared drives/deployments, independent corroboration.",
+    "rationale": "Paperspace's own machine-creation docs say users choose a region when creating a machine, and machines come with persistent storage across multiple datacenter regions, so users can pick where machine data lives. Nothing documents formal data-residency guarantees or region control for Notebooks, shared drives, or Deployments storage. missing for 10: enumerated region list, explicit data-residency/compliance commitments, region selection for non-machine storage (notebooks, datasets, shared drives), independent corroboration.",
     "evidenceIds": [
       "paperspace-docs-25",
       "paperspace-docs-35",
@@ -6403,7 +6318,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a cloud ML platform uses customer data to train AI models is a fair privacy question for a GPU cloud that hosts user data, so the axis applies. However, the evidence pack contains no documented training opt-out, no data-usage policy, and no statement that customer data is excluded from model training.",
+    "rationale": "Paperspace is a GPU cloud and ML platform that hosts user data and models. Whether customer data is excluded from AI training is therefore a fair privacy-posture question for this kind of product. The evidence pack has no data-use policy, training opt-out, or privacy commitment on the subject, so the axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6418,7 +6333,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a GPU cloud, so the axis applies. The pack never documents retention settings, data or machine deletion, or purge guarantees. The nearby features (optional backups at machine creation, snapshot templates, storage resizing, API key revocation) are adjacent controls and earn no credit for this story.",
+    "rationale": "The evidence pack documents no data retention policies, retention windows, or data or account deletion controls for Paperspace. Backups and snapshots, auto-shutdown, and storage resizing are related but different features and do not show user control over how long data is kept or how it is deleted.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6433,7 +6348,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a cloud ML platform with a console, CLI and SDK, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics opt-out or any privacy setting for Paperspace's console, CLI or SDK. Absence of evidence for an applicable capability yields none.",
+    "rationale": "Opting out of telemetry or usage tracking is a fair question for a GPU cloud platform with a console, CLI and API. Nothing in the evidence pack mentions telemetry, analytics or usage-tracking controls, or any way to opt out. The cited items cover machines, notebooks, the API, the CLI and pricing, none of which bear on this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6445,26 +6360,27 @@
   {
     "productId": "paperspace",
     "storyId": "quota-limit-transparency",
-    "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Paperspace documents a dedicated machine limits page that links to a team quota/service limits section with an increase-request process. It also documents an approval request for high-end machines such as the H100, so both visible limits and a defined way to raise them are covered. missing for 10: the actual quota and limit values aren't quoted in the evidence, the increase workflow (turnaround, criteria) isn't detailed, and there is no independent or hands-on corroboration.",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Paperspace documents that high-end machine types such as NVIDIA H100 require a request for approval. That is a gating limit with an implied raise path. It also documents some per-machine limits, such as storage resizable up to 2 TB. There is no evidence of documented account quotas, instance-count limits or a defined quota-increase workflow. Missing for 10: documented account/team quotas and instance-count limits, a defined step-by-step limit-increase process (form, SLA, API), a quota visibility dashboard, and independent corroboration.",
     "evidenceIds": [
-      "paperspace-docs-20261108",
-      "paperspace-docs-17"
+      "paperspace-docs-17",
+      "paperspace-docs-29",
+      "paperspace-docs-34"
     ],
     "support": {
       "relation": "direct",
-      "coverage": "complete",
+      "coverage": "partial",
       "subject": "As a platform engineer, I can see documented quotas and instance limits and raise them through a defined process",
       "citations": [
         {
-          "evidenceId": "paperspace-docs-20261108",
-          "quote": "You can submit an [increase request](/products/paperspace/accounts-and-teams/#team-quota-service-limits) to remove this limit."
-        },
-        {
           "evidenceId": "paperspace-docs-17",
           "quote": "If you choose any high-end machines, such as NVIDIA H100, you need to request for approval to use them."
+        },
+        {
+          "evidenceId": "paperspace-docs-29",
+          "quote": "You can resize the machine’s storage up to 2 TB."
         }
       ]
     }
@@ -6475,7 +6391,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace is a GPU cloud, so reserved or committed-use pricing is a fair question for it. The evidence documents no reserved-instance, commitment-term, or committed-use discount offering. The \"save up to 70%\" claim compares on-demand prices against other clouds, and the $9/mo Pro tier is a small notebook subscription, not a commitment on sustained GPU capacity. Neither delivers this capability.",
+    "rationale": "The evidence contains no reserved-instance, committed-use, or term-commitment discount offering for sustained GPU capacity. The \"save up to 70%\" claim is a general comparison against other clouds, \"cancel anytime\" describes no-commitment billing, and the $9/mo Pro tier is a notebook subscription with capped GPU hours, not a capacity commitment discount.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6490,7 +6406,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Security and compliance posture is a fair question for a GPU cloud provider. The evidence pack has no SOC 2 attestation, data-handling policy, trust center, or datacenter tier or certification information. The only related items are adjacent: team-scoped API keys, user access management, and a passing mention of 'datacenter regions'. None of these lets a platform engineer verify the provider's compliance posture.",
+    "rationale": "Nothing in the evidence pack documents SOC 2 or other compliance attestations, data-handling policies, or datacenter tier certifications for Paperspace. The pack mentions only datacenter regions, team-scoped API keys and machine user access, which are adjacent features, not a verifiable security or compliance posture.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6505,7 +6421,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Paperspace documents its own Deployments feature, a containers-as-a-service offering for running container images and serving ML models. That is a managed alternative to running VMs yourself. However, nothing in the evidence shows autoscaling GPU workers, scale-to-zero, or serverless per-request billing. Machine auto-shutdown only stops an idle VM and is not serverless scaling, so it earns no credit. Missing for 10: documented autoscaling of workers, scale-to-zero behavior, serverless billing/cold-start details, and any hands-on corroboration of Deployments.",
+    "rationale": "Paperspace documents Deployments, a containers-as-a-service offering for running container images and serving ML models. That is the product's own managed way to deploy code without hand-managing VMs. However, nothing in the evidence shows autoscaling, scale-to-zero, or serverless GPU billing. Machine auto-shutdown only stops an idle VM after one hour to one week, which is an adjacent control and earns no credit. Missing for 10: documented autoscaling of Deployment replicas, scale-to-zero behavior, GPU-backed serverless workers, per-request or idle billing semantics, and any hands-on corroboration.",
     "evidenceIds": [
       "paperspace-docs-8"
     ],
@@ -6527,7 +6443,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paperspace is a GPU cloud, so spot or interruptible capacity is a fair question to ask of it. However, the evidence never documents a spot, preemptible or interruptible instance type, and never describes preemption semantics. The 'Save up to 70% on compute costs' claim compares general pricing against the major public clouds and does not describe discounted interruptible capacity. Auto-shutdown is an idle-stop feature that the user configures, not provider preemption, so it earns no credit.",
+    "rationale": "Paperspace is a GPU cloud, so spot or interruptible capacity is a fair question to ask of it. However, nothing in the evidence pack documents spot, preemptible, or interruptible instances, or any preemption semantics. The 'Save up to 70% on compute costs' claim is a general comparison with major public clouds, not a discounted interruptible tier, so it is adjacent and earns no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6542,13 +6458,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Paperspace's GPU cloud page says you can \"Bring your SSH key and connect directly to your VM with full root access,\" and the machine docs confirm SSH connections and an authentication choice when creating a machine. One hands-on user called getting SSH access \"an uphill battle\" compared with the console/GUI. That describes friction, not a concrete failure, so it lowers confidence rather than creating a dispute. Missing for 10: in-depth first-party docs on SSH key setup and root privileges (the evidence is mostly marketing copy), and independent hands-on corroboration that key-based root SSH works smoothly.",
+    "rationale": "Paperspace states directly that you can bring your own SSH key and connect to the VM with full root access. Its docs confirm SSH connections to Linux and Windows machines and an authentication choice at machine creation. One hands-on community report calls getting SSH access an \"uphill battle\"; that describes friction, not a failure of the capability, so it lowers confidence rather than creating a dispute. Missing for 10: detailed first-party docs on SSH key upload and management, documented depth of root/sudo control, and independent hands-on confirmation that bring-your-own-key root SSH works smoothly.",
     "evidenceIds": [
-      "paperspace-docs-12",
       "paperspace-docs-19",
+      "paperspace-docs-12",
       "paperspace-docs-2",
       "paperspace-docs-25",
-      "paperspace-comm-7"
+      "paperspace-comm-8-refresh-43b4c2e26d9b0665"
     ],
     "support": {
       "relation": "direct",
@@ -6565,7 +6481,7 @@
         },
         {
           "evidenceId": "paperspace-docs-25",
-          "quote": "When you create a new machine, you choose your machine type, operating system or custom template, disk size, region, authentication, starting state"
+          "quote": "When you create a new machine, you choose your machine type, operating system or custom template, disk size, region, authentication"
         }
       ]
     }
@@ -6576,13 +6492,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Paperspace documents API keys with team-scoped permissions, a team admin role that can revoke other members' keys, and per-machine user access controls for adding or removing team members. The role model is only referenced, keys are scoped at the team level rather than per permission, and no team budget or spend controls are shown. Missing for 10: documented role catalog and member-management workflow, fine-grained per-key permission scopes, team spend or budget controls, independent corroboration.",
+    "rationale": "Paperspace documents team-scoped API keys and lets team admins revoke other members' keys, which implies an admin role. It also documents adding and removing users to control machine access. Missing for 10: a documented role model beyond the implied team admin, per-key permission scoping finer than team level, team member invitation and role assignment workflows, spend controls such as budgets or limits, and independent corroboration.",
     "evidenceIds": [
       "paperspace-docs-40",
-      "paperspace-docs-20261114",
       "paperspace-docs-41",
-      "paperspace-docs-20261116",
-      "paperspace-docs-20261115",
       "paperspace-docs-32"
     ],
     "support": {
@@ -6591,8 +6504,8 @@
       "subject": "As a platform engineer, I can manage team members with roles and scoped API keys so credentials and spend stay controlled",
       "citations": [
         {
-          "evidenceId": "paperspace-docs-20261114",
-          "quote": "API Keys have team-scoped permissions and are associated with your user account."
+          "evidenceId": "paperspace-docs-40",
+          "quote": "API Keys have team-scoped permissions"
         },
         {
           "evidenceId": "paperspace-docs-41",
@@ -6601,10 +6514,6 @@
         {
           "evidenceId": "paperspace-docs-32",
           "quote": "Add or remove users to control who can access and administer your machine."
-        },
-        {
-          "evidenceId": "paperspace-docs-20261115",
-          "quote": "You can revoke your API keys by clicking revoke in the console."
         }
       ]
     }
@@ -6615,7 +6524,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A public pricing page exists, but the quoted material only mentions Gradient and a free account, and no per-GPU-hour rates for any GPU type appear. Marketing claims like 'Save up to 70%' and community mentions of a $9/mo Pro tier or 'an hourly rate' do not show a published per-GPU-hour price list. The approval requirement for H100s concerns access, not pricing transparency.",
+    "rationale": "The evidence shows that a paperspace.com/pricing page exists. However, the quoted content covers only Gradient marketing and a free-account prompt, not per-GPU-hour rates for each GPU type. The '70% savings' claims and community mentions of a $9/mo Pro tier and an unspecified 'hourly rate' do not show a public per-GPU-hour price list, so the story is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
