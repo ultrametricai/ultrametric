@@ -5203,7 +5203,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing platform, so the agent-card axis applies. The evidence shows only generic issuing building blocks: virtual cards and blocking of specific merchants, categories or merchant IDs. Nothing documents issuing scoped cards to AI agents by name, nor per-card amount caps or expiry for autonomous purchases. Its MCP server is a docs and API-query assistant, not agent card provisioning, so the story is not delivered.",
+    "rationale": "Pomelo documents general card issuing, including virtual cards, and blocking of specific merchants, categories or merchant IDs. Nothing in the evidence documents issuing a scoped card to an AI agent by name. It also shows no per-card amount caps or card expiry controls for autonomous purchases. The 3DS threshold rule is a challenge trigger, not a spend cap, so this is adjacent general issuing functionality rather than the agent-card capability the story requires.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5277,10 +5277,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo's documented AI features are an assistant for questions about the Pomelo API and an MCP server that finds endpoints and generates code samples. These help developers with documentation; neither is shown to produce insights or suggestions from the customer's own operational data. The Dashboard monitoring feature is described with no AI-generated analysis, so the evidence offers only adjacent capabilities and no direct support for this story.",
+    "rationale": "Pomelo's AI features in the evidence are an assistant that answers questions about the Pomelo API and an MCP server that finds endpoints and generates code samples. Neither produces insights or suggestions from the customer's own card or transaction data. The Dashboard monitoring feature is documented, but nothing indicates it is AI-generated, so it is only an adjacent capability and earns no credit.",
     "evidenceIds": [],
     "support": {
-      "relation": "adjacent",
+      "relation": "absent",
       "coverage": "none",
       "subject": "As an AI-native user, I can get AI-generated insights and suggestions from my data inside the product",
       "citations": []
@@ -5292,10 +5292,10 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and processing platform, so user-configurable background automations are a fair axis for it. The evidence pack shows no feature that lets a user define autonomous background automations. The closest items are adjacent: a 3DS risk rule, stand-in authorization, merchant blocking and webhook notifications are fixed platform behaviors or event callbacks, and the MCP server only searches endpoints and generates code examples.",
+    "rationale": "Pomelo is a card-issuing and processing API platform, so user-configurable background automations are a fair question for it. However, the evidence documents no automation or workflow feature that users can set up to run on their own. The closest items are adjacent and earn no credit: a 3DS risk rule that forces a challenge above an amount threshold, stand-in authorization when the customer's services respond slowly, merchant blocking, and webhook notifications. None of these is a general-purpose automation, scheduled job, or background agent capability.",
     "evidenceIds": [],
     "support": {
-      "relation": "absent",
+      "relation": "adjacent",
       "coverage": "none",
       "subject": "As an AI-native user, I can set up automations that run autonomously in the background",
       "citations": []
@@ -5329,12 +5329,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Pomelo is an API-first card-issuing platform. Its documented APIs let users create accounts and authorize or adjust transactions programmatically, so it can be driven without a UI, which is the core of headless automation. Nothing in the evidence addresses CI use, and the OpenAPI spec probes returned 404. Missing for 10: CI/CD integration docs, a CLI, a test/sandbox environment for automated runs, service-account/API-key guidance for unattended use, a published OpenAPI spec, and independent corroboration.",
+    "rationale": "Pomelo is an API-first card-issuing platform, so its endpoints are a headless, programmatic interface. It also documents a separate Stage API environment alongside production that automated pipelines could target. It does not document CI usage, a CLI, or headless test tooling: the transaction simulator runs through a dashboard UI, and Stage access is provisioned through the integration team rather than self-serve. missing for 10: documented CI/automation guidance, an official CLI or headless runner, self-serve test credentials, a programmatic (non-UI) simulator, independent hands-on corroboration.",
     "evidenceIds": [
+      "pomelo-stage-20261106",
       "pomelo-docs-16",
-      "pomelo-docs-17",
-      "pomelo-docs-18",
-      "pomelo-probe-3"
+      "pomelo-simulator-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5342,16 +5341,16 @@
       "subject": "As an AI-native user, I can run the product headlessly / in CI for automation",
       "citations": [
         {
+          "evidenceId": "pomelo-stage-20261106",
+          "quote": "Nuestros dominios: Stage: https://api-stage.pomelo.la / Produccion: https://api.pomelo.la"
+        },
+        {
           "evidenceId": "pomelo-docs-16",
           "quote": "Conéctate a nuestras APIs usando lenguaje natural y tu stack favorito."
         },
         {
-          "evidenceId": "pomelo-docs-17",
-          "quote": "Crea cuentas digitales y obtén información sobre sus actividades."
-        },
-        {
-          "evidenceId": "pomelo-docs-18",
-          "quote": "Autorizar y ajustar transacciones sin usar nuestro Core de crédito o Autorizador."
+          "evidenceId": "pomelo-simulator-20261106",
+          "quote": "Todas las ejecuciones ocurren en nuestro ambiente de Stage."
         }
       ]
     }
@@ -5362,7 +5361,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is card-issuing and payments infrastructure, not an agent or AI client that consumes tools, so plugging third-party MCP servers into it is a category error. Its documented MCP (installable in Cursor, returning endpoints and code samples) is Pomelo acting as an MCP server for other agents. That belongs to the separate MCP-server story and does not make this client axis applicable.",
+    "rationale": "Pomelo is a card-issuing and payments API platform, not an agent or AI host that consumes external tools, so plugging third-party MCP servers into it is outside its product role. The evidence shows Pomelo publishes its own MCP server for installation in clients such as Cursor. That is the server role and does not show it can act as an MCP client. Its API-documentation AI assistant is also not documented as accepting MCP servers.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5414,7 +5413,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Pomelo ships its own natural-language layer: an AI assistant for API questions and an official MCP server whose tools find endpoints from Spanish or English queries and generate request code. It is marketed as connecting to the APIs 'using natural language.' However, the documented tools only cover discovery and code generation, not running card, user or transaction operations directly from natural-language commands. Missing for 10: documented natural-language execution of product operations (e.g., issuing cards, blocking merchants), any action-taking MCP tools, and hands-on or independent corroboration.",
+    "rationale": "Pomelo ships its own natural-language tooling: an AI assistant for API questions and an official MCP server (installable in Cursor). The MCP server returns endpoints matching a Spanish or English query and generates request code, and the docs promise connecting to the APIs 'using natural language'. The documented tools only help with discovery and code generation; no tool is shown that actually runs operations such as issuing cards or blocking merchants from a natural-language command. Missing for 10: documented natural-language execution of product operations (cards, users, transactions), a list of action tools in the MCP server, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pomelo-docs-15",
       "pomelo-docs-16",
@@ -5453,7 +5452,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and payments API platform, so an official CLI is a fair question for this kind of product. The evidence pack documents only an MCP server for Cursor, an AI assistant and natural-language API access. None of these is a command-line tool, and they cannot be credited as a CLI.",
+    "rationale": "Pomelo is a card-issuing and processing API platform, so an official CLI is a fair question for it. The evidence pack documents no CLI: it shows an MCP server for Cursor, an AI assistant for API questions, and static cURL/JavaScript samples. Those are adjacent features, not a command-line tool shipped by Pomelo.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5466,14 +5465,15 @@
     "productId": "pomelo",
     "storyId": "agentic-public-api",
     "verdict": "partial",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Pomelo publishes an API reference covering core operations: creating digital accounts, authorizing and adjusting transactions, and receiving reversals and refunds through an adjustments endpoint. That shows the product can be driven programmatically through its own documented API. However, probes found no machine-readable OpenAPI or Swagger spec at any candidate path, and the evidence pack lacks endpoint-level detail such as authentication, request/response schemas, and public self-serve access. Missing for 10: machine-readable OpenAPI spec, documented auth and access model for public use, endpoint-level reference detail, independent or hands-on corroboration.",
+    "rationale": "Pomelo publishes a public API reference covering users, cards, accounts, transactions, adjustments and credit. It has URL-versioned endpoints, cURL/JavaScript samples and separate Stage and production hosts, so the product can be driven programmatically. However, API access is provisioned through Pomelo's integration process rather than self-serve, and the reference is static, with no machine-readable spec (all OpenAPI/Swagger paths return 404) and no versioning policy, deprecation window or changelog. missing for 10: downloadable OpenAPI spec, self-serve API access/credentials, published versioning and deprecation policy or changelog, interactive try-it reference, independent hands-on corroboration",
     "evidenceIds": [
-      "pomelo-docs-16",
+      "pomelo-reference-20261106",
       "pomelo-docs-17",
-      "pomelo-docs-18",
       "pomelo-docs-28",
+      "pomelo-stage-20261106",
+      "pomelo-docs-16",
       "pomelo-probe-3"
     ],
     "support": {
@@ -5482,16 +5482,24 @@
       "subject": "As an AI-native user, I can drive the product through a documented public API",
       "citations": [
         {
+          "evidenceId": "pomelo-reference-20261106",
+          "quote": "Pomelo hosts a Spanish-first API reference (custom renderer) with language-tabbed static samples"
+        },
+        {
           "evidenceId": "pomelo-docs-17",
           "quote": "Crea cuentas digitales y obtén información sobre sus actividades."
         },
         {
-          "evidenceId": "pomelo-docs-18",
-          "quote": "Autorizar y ajustar transacciones sin usar nuestro Core de crédito o Autorizador."
-        },
-        {
           "evidenceId": "pomelo-docs-28",
           "quote": "Recibirás las transacciones de tipo Reversal y Refund a través del endpoint de Ajustes."
+        },
+        {
+          "evidenceId": "pomelo-stage-20261106",
+          "quote": "Nuestros dominios: Stage: https://api-stage.pomelo.la / Produccion: https://api.pomelo.la"
+        },
+        {
+          "evidenceId": "pomelo-docs-16",
+          "quote": "Conéctate a nuestras APIs usando lenguaje natural y tu stack favorito."
         }
       ]
     }
@@ -5502,7 +5510,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is an API platform, so issuing scoped API credentials for an agent is a fair question to ask of it. The evidence never documents API keys, scopes or least-privilege credentials. The only related item covers roles and permissions for Dashboard operators, which is an adjacent human-user control and not scoped API credentials for an agent.",
+    "rationale": "Pomelo is an API platform, so issuing scoped API credentials is a fair question to ask of it. The evidence pack, however, never documents API keys or client credentials scoped to least privilege for an agent or integration. The only related item covers roles and permissions for Dashboard operators, which is a human-user control and does not count as scoped API credentials.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5517,7 +5525,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is an API platform, so official SDKs are a fair question, but nothing in the evidence documents an official SDK or client library. The MCP server, its code-example generator and the 'your favorite stack' tagline are adjacent features, not SDKs.",
+    "rationale": "The evidence pack never documents an official SDK or client library for Pomelo's APIs. What it does show is static cURL/JavaScript samples in the API reference and an MCP tool that generates request code examples. Code samples and code generation are adjacent to SDKs but are not shipped SDKs, so the applicable axis gets no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5532,9 +5540,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pomelo's own 3D Secure docs say it notifies the integrator via webhook so the integrator can deliver the challenge through its own channel. That is a first-party outbound HTTP callback, but it is a single mention tied to one flow. missing for 10: documentation of webhook registration/subscription management, a catalog of subscribable event types (cards, transactions, users), payload/signature verification details, retry/delivery semantics, independent or hands-on corroboration.",
+    "rationale": "Pomelo's own docs say it sends outbound webhook notifications, but only for 3D Secure challenges, and transaction adjustments (Reversal/Refund) arrive at a client-side endpoint. The pack never shows a general event-subscription system or how a consumer registers a webhook. Missing for 10: documented webhook registration/subscription flow, an event-type catalog, payload/signature verification and retry docs, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "pomelo-docs-31"
+      "pomelo-docs-31",
+      "pomelo-docs-28"
     ],
     "support": {
       "relation": "direct",
@@ -5543,7 +5552,11 @@
       "citations": [
         {
           "evidenceId": "pomelo-docs-31",
-          "quote": "te notificamos vía webhook para que puedas entregarlo por tu propio canal"
+          "quote": "te notificamos vía webhook para que puedas entregarlo por tu propio canal (por ejemplo, una notificación push desde tu app)."
+        },
+        {
+          "evidenceId": "pomelo-docs-28",
+          "quote": "Recibirás las transacciones de tipo Reversal y Refund a través del endpoint de Ajustes."
         }
       ]
     }
@@ -5554,7 +5567,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows an API reference page exists, but nothing documents an interactive reference with runnable or try-it examples. The MCP tool that generates request code samples and the AI assistant for API questions are separate features, so they don't count toward this story. Probes also found no OpenAPI spec.",
+    "rationale": "Pomelo hosts an API reference, but it is documented as having only language-tabbed static samples with \"zero Probar/Ejecutar/try-it controls\", so there are no interactive, runnable examples. No downloadable OpenAPI spec exists to load into an external runner either. The MCP code-example generator and the Stage transaction simulator are separate features, not an interactive reference, so they earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5568,9 +5581,12 @@
     "storyId": "api-machine-spec",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Pomelo is an API platform, so a downloadable machine-readable spec is a fair question. The evidence pack does not document an OpenAPI or equivalent download, and the probe found every common OpenAPI/Swagger path returning 404. The MCP server's endpoint search and code generation is a different capability and does not count toward a downloadable spec.",
-    "evidenceIds": [],
+    "confidence": "high",
+    "rationale": "The evidence shows no downloadable OpenAPI or equivalent spec. Every candidate openapi/swagger path returns 404, and the vendor's API reference is described as having no downloadable spec artifact, with schema data embedded only in the app payload. The official MCP server that searches endpoints and generates code samples is a separate capability and earns no credit toward a downloadable spec.",
+    "evidenceIds": [
+      "pomelo-probe-3",
+      "pomelo-reference-20261106"
+    ],
     "support": {
       "relation": "absent",
       "coverage": "none",
@@ -5581,16 +5597,28 @@
   {
     "productId": "pomelo",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and payments API platform, so a sandbox or test environment is a fair axis to judge. However, no evidence item mentions a sandbox, test mode, or isolated non-production environment. The integration-stages item only cites time to a first real-world transaction, which does not show a sandbox exists.",
-    "evidenceIds": [],
+    "rationale": "Pomelo documents a dedicated Stage environment with its own API, private-link, mTLS and dashboard hosts separate from production. Its transaction simulator runs entirely in Stage and explicitly does not affect production or real user accounts, which covers both parts of the story: a test environment and isolation from production data. missing for 10: self-serve sandbox access (Stage is provisioned through Pomelo's integration team, and the simulator requires an active card and a configured authorization endpoint), independent or hands-on corroboration of the Stage environment.",
+    "evidenceIds": [
+      "pomelo-stage-20261106",
+      "pomelo-simulator-20261106"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "complete",
       "subject": "As an AI-native user, I can test against a sandbox environment without touching production data",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pomelo-stage-20261106",
+          "quote": "Nuestros dominios: Stage: https://api-stage.pomelo.la / Produccion: https://api.pomelo.la"
+        },
+        {
+          "evidenceId": "pomelo-simulator-20261106",
+          "quote": "Las simulaciones NO impactan tu ambiente productivo ni generan movimientos reales en las cuentas de tus usuarios. Todas las ejecuciones ocurren en nuestro ambiente de Stage."
+        }
+      ]
     }
   },
   {
@@ -5614,7 +5642,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo documents an external authorization flow ('Autorizar y ajustar transacciones sin usar nuestro Core de crédito o Autorizador'), so the axis applies. However, nothing in the evidence describes what each authorization event contains: merchant name, MCC, enhanced merchant data, wallet or entry-mode fields, or partial-approval and incremental-auth flags. Merchant/category blocking rules and wallet tokenization are adjacent features, not auth-event payload context, so they earn no credit here.",
+    "rationale": "Pomelo documents an external authorization flow ('Autorizar y ajustar transacciones') and a configured authorization endpoint, but nothing in the evidence describes the fields an authorization event carries. There is no mention of merchant name or MCC in the payload, enhanced merchant data, wallet or entry-mode details, or partial-approval and incremental-auth signals. Merchant/category blocking rules and wallet tokenization are adjacent features and earn no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5626,16 +5654,37 @@
   {
     "productId": "pomelo",
     "storyId": "auth-simulation-testing",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The evidence shows Pomelo processes authorizations and delivers Reversal and Refund transactions through an Adjustments endpoint in production, but nothing documents a sandbox or a simulator for generating authorizations, clearings, reversals, refunds or declines. Production handling of these transaction types is an adjacent capability and does not show they can be simulated before a real card is used.",
-    "evidenceIds": [],
+    "rationale": "Pomelo documents a first-party transaction simulator that runs entirely in its Stage environment against real cards and a configured authorization endpoint, so developers can exercise their auth logic before production. However, the evidence never lists which lifecycle events the simulator covers. Reversals and refunds are documented only as production adjustment types, not as simulatable cases. Missing for 10: explicit simulator coverage of authorizations, clearings, reversals, refunds and declines; self-serve sandbox access (it is provisioned through the integration team); independent or hands-on corroboration.",
+    "evidenceIds": [
+      "pomelo-simulator-20261106",
+      "pomelo-stage-20261106",
+      "pomelo-docs-28"
+    ],
     "support": {
-      "relation": "absent",
-      "coverage": "none",
+      "relation": "direct",
+      "coverage": "partial",
       "subject": "As a developer, I can simulate the whole transaction lifecycle in the sandbox — authorizations, clearings, reversals, refunds, and declines — so my auth logic is tested before a real card ever swipes",
-      "citations": []
+      "citations": [
+        {
+          "evidenceId": "pomelo-simulator-20261106",
+          "quote": "Prueba casos de simulación sobre tarjetas reales sin afectar tu ambiente productivo."
+        },
+        {
+          "evidenceId": "pomelo-simulator-20261106",
+          "quote": "Todas las ejecuciones ocurren en nuestro ambiente de Stage."
+        },
+        {
+          "evidenceId": "pomelo-stage-20261106",
+          "quote": "Prepararemos el ambiente de pruebas."
+        },
+        {
+          "evidenceId": "pomelo-docs-28",
+          "quote": "Recibirás las transacciones de tipo Reversal y Refund a través del endpoint de Ajustes."
+        }
+      ]
     }
   },
   {
@@ -5644,7 +5693,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pomelo's own docs describe issuing unnamed cards in batches (\"lotes\"), which is a first-party bulk operation, but it covers only card issuance and the evidence shows no bulk API endpoints or batch tooling for other resources. Merchant or category blocking is a related control, not a bulk operation, so it earns no credit. Missing for 10: documented bulk/batch API endpoints across resources (users, cards, transactions, accounts), batch update/delete semantics, limits and error handling for bulk jobs, AI/MCP-driven bulk workflows, independent corroboration.",
+    "rationale": "The only relevant evidence is Pomelo's documented ability to issue innominate cards in batches (lotes), which are shipped to and stored at a logistics partner. That is a first-party bulk operation, but only for one item type and one action, and the docs do not describe it as a programmatic bulk API. Missing for 10: a general bulk/batch API endpoint, bulk updates or actions on users, cards or transactions, documented batch limits and error handling, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pomelo-docs-26"
     ],
@@ -5666,7 +5715,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pomelo documents domain-specific rules that act automatically on transaction events. In 3D Secure, a rule can force a challenge above an amount threshold, and the platform also lets you block specific merchants, categories or merchant IDs. There is no evidence of a general-purpose, user-defined event→action rules engine; the rules shown are narrow fraud and authorization controls. Missing for 10: a general rules/automation builder, configurable triggers across event types, custom action definitions, and documentation depth or independent corroboration.",
+    "rationale": "Pomelo documents domain-specific rules that act automatically on transaction events. A 3D Secure rule can force a challenge when an amount exceeds a threshold, and merchant blocking can block by merchant, category or merchant ID. These are narrow fraud and authorization controls, not a general rule engine for user-defined event-to-action automation. Missing for 10: a general-purpose rule builder with configurable triggers and actions, documentation of how rules are defined (UI or API), breadth beyond 3DS and merchant blocking, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pomelo-docs-30",
       "pomelo-docs-5"
@@ -5693,7 +5742,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and payments API platform, and such a platform could plausibly offer scheduled or recurring operations, so the axis applies. Nothing in the evidence pack documents a way to schedule recurring jobs or workflows. The credit-lifecycle, webhook-notification and MCP items describe other capabilities and do not cover user-defined recurring schedules.",
+    "rationale": "Pomelo is a card-issuing and processing API platform, and such a platform could plausibly offer scheduled or recurring jobs, so the axis applies. The evidence pack covers card issuance, transactions, credit lifecycle, webhooks, an MCP server, Stage and a simulator, but nothing documents scheduling recurring jobs or workflows. Absence of evidence for an applicable capability yields none.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5708,7 +5757,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and processing API platform with configurable rules, such as 3DS challenge rules and merchant blocking, so versioning and rolling back automation logic is a fair question for it. However, the evidence never mentions versioning, review or approval flows, or rollback for any rules or automations. The rule and webhook features are adjacent capabilities and earn no credit for this story.",
+    "rationale": "Pomelo is a card-issuing and processing API platform, and it documents configurable rules such as 3DS challenge thresholds and merchant blocking, so versioning and rolling back those automations is a fair axis. The evidence shows no way to version, review, or roll back such rules or automations. URL-versioned API endpoints and a Stage environment are adjacent features, not automation version control.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5723,10 +5772,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pomelo's own docs show transaction monitoring in its Dashboard, digital accounts with activity information, and reversal/refund handling through an Adjustments endpoint. That covers only a sliver of the finance-lead story. Missing for 10: documented real-time account and card balances, a ledger linking each authorization to its clearing record, settlement reporting with reconciliation, and any independent or hands-on corroboration.",
+    "rationale": "Pomelo documents digital accounts with activity information, a Dashboard to monitor card and transaction operations, and reversals/refunds delivered through an Adjustments endpoint, which gives minimal ledger visibility. Nothing shows real-time balances, authorization-to-clearing linkage, or settlement reconciliation. Missing for 10: documented real-time account/card balances, a ledger tying each authorization to its clearing record, settlement reporting and reconciliation files, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "pomelo-docs-14",
       "pomelo-docs-17",
+      "pomelo-docs-14",
       "pomelo-docs-28"
     ],
     "support": {
@@ -5735,12 +5784,12 @@
       "subject": "As a finance lead, I can see money move in real time — account and card balances, a transaction ledger that ties every authorization to its clearing, and settlement reporting that reconciles to the penny",
       "citations": [
         {
-          "evidenceId": "pomelo-docs-14",
-          "quote": "Monitorea toda tu operación de tarjetas, transacciones y más."
-        },
-        {
           "evidenceId": "pomelo-docs-17",
           "quote": "Crea cuentas digitales y obtén información sobre sus actividades."
+        },
+        {
+          "evidenceId": "pomelo-docs-14",
+          "quote": "Monitorea toda tu operación de tarjetas, transacciones y más."
         },
         {
           "evidenceId": "pomelo-docs-28",
@@ -5755,7 +5804,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo's docs cover issuing cards (nominated, innominate, virtual, physical) and tracking shipment. None of the evidence documents API operations for activation, pausing or unpausing, lost/stolen reporting, linked reissue, or permanent closure. The 'ciclo de vida' claim refers to the credit line, not the card, so it does not transfer to this story.",
+    "rationale": "Pomelo is a card-issuing platform, so the card-lifecycle axis applies. The evidence only documents card creation, card types, shipment tracking and a /cards/v1 API path. Nothing shows API endpoints for activating, pausing or unpausing, reporting lost or stolen, reissuing with a linked replacement, or permanently closing cards.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -5770,7 +5819,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pomelo's guides index documents creating users and validating their identity before they can operate, so consumer identity verification is a native platform capability. There is no evidence of business KYB, verification data requirements, review states, or re-verification flows. Missing for 10: KYB for businesses, documented KYC data requirements, review/status states, re-verification flows, and independent corroboration.",
+    "rationale": "Pomelo's guides include a first-party capability to create users and validate their identity before they can operate, so some cardholder verification is built into the platform. That evidence is a single one-line guide summary. Missing for 10: KYB for business cardholders, documented KYC data requirements, review/verification states, re-verification flows, and any hands-on or independent corroboration.",
     "evidenceIds": [
       "pomelo-docs-1"
     ],
@@ -5791,8 +5840,8 @@
     "storyId": "clearing-settlement-events",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Pomelo documents that reversal and refund transactions are delivered to the developer through an Adjustments endpoint. This is a product-native push for some post-auth events, consistent with the 'authorize and adjust transactions' API. The evidence does not cover clearings/settlement or chargeback events, and nothing shows stable transaction identifiers linking adjustments to the original authorization. The 3DS webhook is a different flow, and dispute escalation is not an event feed. Missing for 10: clearing/settlement event delivery, chargeback event webhooks, documented stable transaction IDs for ledger reconciliation, payload and retry details, independent corroboration.",
+    "confidence": "medium",
+    "rationale": "Pomelo documents that Reversal and Refund transactions are pushed to the developer through the Adjustments endpoint, alongside its ability to authorize and adjust transactions outside its core, so some post-auth events do reach the developer programmatically. Clearings, chargeback notifications and stable transaction identifiers for reconciliation are not evidenced; chargebacks appear only as dispute escalation, not as delivered events. Missing for 10: clearing/settlement event delivery, chargeback events delivered as webhooks, documented stable transaction identifiers linking auth to post-auth events, payload/retry details, independent corroboration.",
     "evidenceIds": [
       "pomelo-docs-28",
       "pomelo-docs-18"
@@ -5819,12 +5868,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Pomelo's docs show it goes well beyond a single prepaid rail: tokenization covers Mastercard and Visa credit, debit and prepaid cards, and a credit core manages the full credit-line lifecycle from creation through authorization, collections and delinquency. Multi-app can combine two card types on one plastic. However, nothing separates commercial from consumer credit programs, and all evidence is vendor docs. Missing for 10: explicit commercial (business) credit program support, explicit consumer credit program positioning, independent or hands-on corroboration.",
+    "rationale": "Pomelo's own docs show it handles more than one prepaid rail. Tokenization covers Visa and Mastercard credit, debit and prepaid cards, a credit core manages the full credit-line lifecycle, and a Multi-app option combines two card types on one plastic. Nothing distinguishes commercial from consumer credit programs, so the story is only partly evidenced. Missing for 10: explicit commercial credit program support, explicit consumer credit program support, a dedicated page listing supported program types (debit/prepaid/credit), and independent corroboration.",
     "evidenceIds": [
       "pomelo-docs-29",
       "pomelo-docs-6",
       "pomelo-docs-25",
-      "pomelo-docs-24",
       "pomelo-docs-17"
     ],
     "support": {
@@ -5853,10 +5901,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Pomelo's own docs say its tokenization feature enables cards in Apple Pay, Google Pay and other digital wallets for Visa and Mastercard credit, debit and prepaid cards. So the core outcome of cards landing in wallets is a first-party capability. Nothing in the evidence describes how that happens: there is no mention of in-app push provisioning, the Apple/Google entitlements process, in-wallet card art, or a manual provisioning fallback. The card design guide covers physical card production, not wallet art. missing for 10: in-app push provisioning SDK/API docs, documented entitlements process, in-wallet card art configuration, manual provisioning fallback, independent or hands-on corroboration.",
+    "rationale": "Pomelo documents a tokenization feature that enables its Visa and Mastercard credit, debit and prepaid cards in Apple Pay, Google Pay and other digital wallets. Its API reference does include a push-provisioning endpoint group, but that group is labeled deprecated, which weakens the in-app push story. Missing for 10: a current, non-deprecated push-provisioning flow, documentation of the Apple/Google entitlements process, in-wallet card art configuration, a manual-provisioning fallback, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "pomelo-docs-11",
-      "pomelo-docs-29"
+      "pomelo-docs-29",
+      "pomelo-reference-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -5870,6 +5919,10 @@
         {
           "evidenceId": "pomelo-docs-29",
           "quote": "nuestra solución de Tokenización está disponible para tarjetas Mastercard y Visa de crédito, débito o prepagas"
+        },
+        {
+          "evidenceId": "pomelo-reference-20261106",
+          "quote": "a deprecated endpoint group labeled \"Push Provisioning (Deprecado)\""
         }
       ]
     }
@@ -5880,7 +5933,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pomelo's guides list a first-party capability to escalate fraud and dispute claims with the card networks, so the product does have its own disputes feature. Nothing shows it is exposed programmatically or how deep it goes. The 3DS webhook and refund/reversal adjustments are separate features and do not count here. Missing for 10: a documented disputes API for filing and tracking, network reason codes, evidence submission, provisional credit handling, dispute status webhooks through resolution, and independent or hands-on corroboration.",
+    "rationale": "Pomelo's guides list a first-party capability to escalate fraud and dispute claims to the card networks, so disputes handling is part of the product. Nothing shows a programmatic API for it or any of the story's specific elements. The webhook evidence covers 3DS notifications, not disputes, so it does not count here. Missing for 10: documented dispute-filing API endpoints, network reason codes, evidence submission, provisional credit handling, dispute status webhooks through resolution, independent corroboration.",
     "evidenceIds": [
       "pomelo-docs-12"
     ],
@@ -5902,11 +5955,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pomelo documents an external-authorizer mode in which the client's own system authorizes and adjusts each transaction without Pomelo's credit core or authorizer. That covers the 'my system approves each authorization' half of just-in-time funding. It also documents stand-in authorization for when the client's services are slow, and digital accounts that could hold balances, but nothing explicitly describes a prefunded-balance funding model or lets a buyer choose between the two. Missing for 10: an explicitly documented prefunded-balance option, explicit per-authorization funding (not just approval) in the external-authorizer flow, documentation of cash-flow tradeoffs between models, and independent corroboration.",
+    "rationale": "Pomelo documents letting the customer's own system authorize transactions instead of Pomelo's authorizer, via a customer authorization endpoint. That covers the approve-each-authorization half of just-in-time funding, but nothing shows a choice of funding models or explains how money moves. missing for 10: documented prefunded-balance funding model, explicit just-in-time funding flow (how authorized amounts are funded and settled), an option to choose between funding models, documented cash-flow tradeoffs, independent corroboration.",
     "evidenceIds": [
       "pomelo-docs-18",
-      "pomelo-docs-7",
-      "pomelo-docs-17"
+      "pomelo-simulator-20261106",
+      "pomelo-docs-7"
     ],
     "support": {
       "relation": "direct",
@@ -5918,8 +5971,8 @@
           "quote": "Autorizar y ajustar transacciones sin usar nuestro Core de crédito o Autorizador."
         },
         {
-          "evidenceId": "pomelo-docs-7",
-          "quote": "Mejora tu tasa de aprobación permitiendo que autoricemos transacciones cuando tus servicios demoren en responder."
+          "evidenceId": "pomelo-simulator-20261106",
+          "quote": "Un endpoint de autorización configurado con nuestro equipo de integradores."
         }
       ]
     }
@@ -5930,12 +5983,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Pomelo documents a risk-and-fraud-management area. It covers 3D Secure with a risk score and configurable rules that force a challenge, merchant, category and merchant-ID blocking, and escalation of fraud claims to the card brands. These cover only a slice of the story. The 3DS webhook delivers challenges to the cardholder and is not a suspicious-activity alert. Missing for 10: network or proprietary fraud scores surfaced at card authorization time, suspicious-activity alerts to ops, tooling to block and reissue compromised cards, and independent corroboration.",
+    "rationale": "Pomelo documents its own fraud controls in a risk-and-fraud-management section: 3D Secure uses a risk score with configurable challenge rules, and merchant, category and merchant-ID blocking protects cardholders. That covers part of the story, but only for 3DS authentication and merchant-level blocking. Missing for 10: fraud scores (network or proprietary) surfaced on authorization requests, suspicious-activity alerts to ops, tooling to block and reissue compromised cards, and independent or hands-on corroboration.",
     "evidenceIds": [
       "pomelo-docs-30",
-      "pomelo-docs-5",
-      "pomelo-docs-12",
-      "pomelo-docs-31"
+      "pomelo-docs-5"
     ],
     "support": {
       "relation": "direct",
@@ -5949,10 +6000,6 @@
         {
           "evidenceId": "pomelo-docs-5",
           "quote": "Protege a tus clientes bloqueando comercios específicos, categorías o IDs de comercio."
-        },
-        {
-          "evidenceId": "pomelo-docs-12",
-          "quote": "Escala los reclamos por fraude y controversia con las marcas."
         }
       ]
     }
@@ -5985,7 +6032,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo documents a tokenization feature that provisions Mastercard and Visa cards into Apple Pay, Google Pay and other digital wallets. However, nothing in the pack shows listing the tokens created for a card, identifying which wallet or merchant holds each token, or revoking tokens independently of the PAN. Wallet provisioning is an adjacent capability, not token lifecycle management, so this applicable axis earns no credit.",
+    "rationale": "The evidence shows Pomelo offers tokenization so cards can be enabled in Apple Pay, Google Pay and other wallets, for Visa and Mastercard credit, debit and prepaid cards. Nothing documents treating network tokens as first-class objects: no listing of the tokens on a card, no visibility into which wallet or merchant holds each token, and no way to suspend or revoke a token separately from the PAN. Token creation is an adjacent capability that does not satisfy a token-management story.",
     "evidenceIds": [],
     "support": {
       "relation": "adjacent",
@@ -5999,17 +6046,15 @@
     "storyId": "openness-api-parity",
     "verdict": "partial",
     "quality": 5,
-    "confidence": "medium",
-    "rationale": "Pomelo is an API-first card-issuing platform, and its own API covers core operations: creating users, cards and digital accounts, authorizing and adjusting transactions, and receiving reversals and refunds through the Adjustments endpoint. However, there is no explicit statement of API/UI parity. Some functions are shown only through the Dashboard, such as operator, role and permission management, operational monitoring, and the actions referenced by 'Usa nuestro Dashboard para'. No machine-readable OpenAPI spec could be found to confirm full coverage. Missing for 10: an explicit API/Dashboard parity statement, API evidence for Dashboard operator/role management and monitoring, a published OpenAPI spec, and independent corroboration.",
+    "confidence": "low",
+    "rationale": "Pomelo is API-first: its own API reference covers core operations such as creating digital accounts and authorizing and adjusting transactions, and adjustments arrive through an API endpoint. However, nothing documents parity with the Dashboard, and some features appear UI-only, such as the transaction simulator (hosted at dashboard-stage) and Dashboard operator role management, with no documented API equivalent. Missing for 10: an explicit API/UI parity statement, documented API equivalents for Dashboard-only features (operators/roles/permissions, monitoring, simulator), a downloadable spec to verify coverage, and independent corroboration.",
     "evidenceIds": [
-      "pomelo-docs-1",
-      "pomelo-docs-2",
       "pomelo-docs-17",
       "pomelo-docs-18",
       "pomelo-docs-28",
       "pomelo-docs-13",
-      "pomelo-docs-27",
-      "pomelo-probe-3"
+      "pomelo-simulator-20261106",
+      "pomelo-reference-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6027,10 +6072,6 @@
         {
           "evidenceId": "pomelo-docs-28",
           "quote": "Recibirás las transacciones de tipo Reversal y Refund a través del endpoint de Ajustes."
-        },
-        {
-          "evidenceId": "pomelo-docs-2",
-          "quote": "Crea tarjetas nominadas o innominadas para tus clientes."
         }
       ]
     }
@@ -6041,7 +6082,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and processing platform, so data export and portability is a fair question for it. However, the evidence pack documents no bulk export, no open-format download, and no offboarding or portability path. The API endpoints for reading account activity are developer building blocks, not an export capability. The \"migra\" marketing line refers to migrating onto Pomelo, not leaving it.",
+    "rationale": "Data export and portability is a fair question for a card-issuing and payments infrastructure platform, so the axis applies. The evidence pack documents no bulk data export, open-format download, or offboarding/migration-out capability. The API endpoints for reading account activity are developer building blocks, not an export feature, and the OpenAPI spec probes returned 404.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6056,7 +6097,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and payments SaaS platform. Whether its source is open is a fair question for this kind of product, so the axis applies. Nothing in the evidence pack mentions an open-source license, a public repository, or readable source code; the docs cover APIs, guides and an MCP server only.",
+    "rationale": "Pomelo is a card-issuing and payments API platform, and a buyer could fairly ask whether it publishes source under an open license, so the axis applies. Nothing in the evidence pack mentions a public repository, source code, or an open-source license. The MCP server, API reference and Stage environment are hosted services, not open source.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6071,7 +6112,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a hosted card-issuing and processing platform. A buyer could fairly ask whether such a platform can be deployed on-premises, so the axis applies. Nothing in the evidence pack documents a self-hosted, on-premises or downloadable deployment of the core product. The option to authorize transactions with your own authorizer instead of Pomelo's credit core or Autorizador is an adjacent integration choice, not self-hosting the core.",
+    "rationale": "Pomelo is a vendor-hosted card-issuing and processing platform, and self-hosting is a fair question for this kind of product, so the axis applies. Nothing in the evidence shows Pomelo can be deployed or run on customer infrastructure. The Stage environment runs on Pomelo's own domains, and the option to authorize transactions with your own authorizer is an adjacent integration choice, not a self-hosted core.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6086,7 +6127,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing platform, so a PCI-scope-reducing PAN/CVV reveal is a fair question to ask of it. The evidence pack documents card issuance, wallet tokenization and 3DS, but nothing on hosted card-data components, ephemeral-key reveal flows, or SAQ D scope. Wallet tokenization is a different feature and earns no credit here.",
+    "rationale": "Pomelo is a card-issuing platform, so a PCI-scope-reducing PAN/CVV reveal flow is a fair question for it. The evidence pack documents no hosted card-data component, secure iframe, or ephemeral-key reveal flow, and makes no claim about keeping integrators out of SAQ D. Wallet tokenization (Apple Pay/Google Pay) is a different capability and earns no credit here.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6101,13 +6142,13 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Pomelo documents issuing and distributing physical cards, including nominated and innominated cards with horizontal or vertical designs. It also documents a card design and production process, unnamed card batches handled by its logistics partner, and shipment tracking to the delivery address, so the user does not manage a manufacturer directly. The evidence does not show shipping-method selection, API endpoints for placing physical card orders, or how custom card art is supplied. Missing for 10: documented shipping-method options, explicit API endpoints for ordering physical and bulk cards, details on custom card art submission, independent or hands-on corroboration.",
+    "rationale": "Pomelo documents issuing and distributing physical cards, nominated or innominate, with horizontal or vertical designs. Its guides cover a card design and production process, batch issuance of innominate cards stored at its logistics partner, and shipment tracking to the delivery address, so Pomelo handles manufacturing and logistics itself. The evidence only shows these as guide-level claims, not detailed API mechanics. missing for 10: explicit API endpoints for ordering physical cards and submitting custom art, documented shipping-method options, API-level tracking detail (statuses/webhooks), independent or hands-on corroboration.",
     "evidenceIds": [
-      "pomelo-docs-2",
+      "pomelo-docs-24",
       "pomelo-docs-9",
       "pomelo-docs-10",
-      "pomelo-docs-24",
-      "pomelo-docs-26"
+      "pomelo-docs-26",
+      "pomelo-docs-2"
     ],
     "support": {
       "relation": "direct",
@@ -6119,16 +6160,16 @@
           "quote": "emitir y distribuir todo tipo de tarjetas, ya sean nominadas, innominadas, virtuales, físicas, con diseño horizontal o vertical."
         },
         {
-          "evidenceId": "pomelo-docs-26",
-          "quote": "Emites lotes de tarjetas innominadas que enviamos y almacenamos de forma segura en el centro de almacenamiento de nuestro partner logístico."
+          "evidenceId": "pomelo-docs-9",
+          "quote": "Revisa el proceso de diseño y producción de tarjetas."
         },
         {
           "evidenceId": "pomelo-docs-10",
           "quote": "Haz seguimiento al envío de tarjetas al domicilio de entrega."
         },
         {
-          "evidenceId": "pomelo-docs-9",
-          "quote": "Revisa el proceso de diseño y producción de tarjetas."
+          "evidenceId": "pomelo-docs-26",
+          "quote": "Emites lotes de tarjetas innominadas que enviamos y almacenamos de forma segura en el centro de almacenamiento de nuestro partner logístico."
         },
         {
           "evidenceId": "pomelo-docs-2",
@@ -6143,7 +6184,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Pomelo documents its own 3D Secure solution. It supports configurable challenge rules and webhook notifications so the developer can deliver the challenge through their own channel, which covers part of the online-credential side of the story. Nothing in the pack covers PIN management, and no evidence shows 3DS enrollment is done via API without support involvement. Missing for 10: PIN set/reset API flows, explicit API-driven 3DS enrollment per card or region, self-serve (no support ticket) confirmation, independent corroboration.",
+    "rationale": "Pomelo documents its own 3D Secure capability, including configurable challenge rules and webhook delivery of challenges through the customer's own channel. That covers part of the online-credential side of the story. Nothing in the pack shows PIN set or reset endpoints, or API-driven 3DS enrollment per card or region. Missing for 10: API PIN set/reset flows, explicit 3DS enrollment endpoints, regional 3DS requirement handling, evidence that no support tickets are needed, independent corroboration.",
     "evidenceIds": [
       "pomelo-docs-30",
       "pomelo-docs-31"
@@ -6170,7 +6211,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and payments infrastructure platform, so data region or residency choice is a fair question for it. Nothing in the evidence pack documents any option to select a data storage region. The only storage-related mention is physical storage of unnamed card batches at a logistics partner, which is not data residency.",
+    "rationale": "Pomelo is a card-issuing and processing SaaS platform, so letting customers choose a data storage region is a fair question for this kind of product. Nothing in the evidence pack documents region selection or data-residency controls. The Stage and production domains are test-versus-live environments, not storage regions, so they earn no credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6185,7 +6226,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and payments platform with an AI docs assistant and an MCP server, so a buyer could fairly ask about an AI-training opt-out or data-use policy. Nothing in the evidence pack mentions any control, policy, or setting that keeps customer data out of AI model training. The AI assistant and MCP items describe developer tooling, not data-use guarantees.",
+    "rationale": "Pomelo is a card-issuing and payments SaaS that ships an AI assistant and an MCP server, so a buyer could fairly ask whether customer data is excluded from AI training. Nothing in the evidence pack documents an AI-training opt-out, a data-use policy, or any related privacy control, so the axis applies but is unevidenced.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6200,7 +6241,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and payments platform that handles customer and transaction data, so controlling data retention and deletion is a fair axis for it. The evidence pack covers user creation, cards, transactions, tokenization, dashboard roles and an MCP server, but nothing documents retention policies, data deletion, or erasure controls.",
+    "rationale": "Pomelo is a card-issuing and processing API platform, so data retention and deletion controls are a fair question for it. However, the evidence pack contains nothing about retention periods, deletion APIs, or data-purge controls. The cited docs cover user creation, cards, transactions, tokenization, MCP and the Stage environment, none of which address this story.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6215,7 +6256,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and payments SaaS platform with a dashboard, an MCP server and an AI assistant, so a telemetry or usage-tracking opt-out is a fair question for it. However, nothing in the evidence pack mentions telemetry, analytics, usage tracking, or any opt-out control.",
+    "rationale": "Pomelo is a card-issuing and payments API platform with a dashboard and an official MCP server, so a telemetry or usage-tracking opt-out is a fair privacy question for it. The evidence pack does not mention telemetry, analytics or any opt-out control anywhere.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6230,15 +6271,16 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pomelo documents card program management it runs for the client: issuing nominated, unnominated, virtual and physical cards, design/production and logistics, tokenization, dashboard monitoring, and escalating disputes with the card brands. It also documents a time-to-first-card figure: a record 11 days from kickoff to the first real-world transaction on a virtual card. However, nothing in the pack explicitly says Pomelo provides BIN sponsorship or holds network membership on the founder's behalf, and the 11-day figure is a best case rather than a typical signup-to-live timeline. missing for 10: explicit BIN sponsorship / issuing-bank arrangement, documented Visa/Mastercard network membership handled by the platform, typical (not record) signup-to-first-live-card timeline, independent corroboration",
+    "rationale": "Pomelo documents platform-run card program management: card issuance and distribution, design and production, shipping, a dashboard, and a credit core. It also publishes an integration benchmark of 11 days from kickoff to the first real-world transaction on a virtual card. However, the pack never says Pomelo provides BIN sponsorship or holds Visa/Mastercard network membership on the founder's behalf; it only implies a network relationship through brand dispute escalation and Visa/Mastercard tokenization. The 11-day figure is a best-case record measured from project kickoff, not a typical signup-to-first-card timeline. missing for 10: explicit BIN sponsorship / sponsor-bank documentation, explicit network membership handled by the platform, a typical (not record) signup-to-live-card timeline, independent corroboration.",
     "evidenceIds": [
       "pomelo-docs-23",
       "pomelo-docs-24",
-      "pomelo-docs-26",
       "pomelo-docs-9",
-      "pomelo-docs-12",
+      "pomelo-docs-10",
       "pomelo-docs-14",
-      "pomelo-docs-29"
+      "pomelo-docs-12",
+      "pomelo-docs-29",
+      "pomelo-docs-26"
     ],
     "support": {
       "relation": "direct",
@@ -6254,12 +6296,12 @@
           "quote": "emitir y distribuir todo tipo de tarjetas, ya sean nominadas, innominadas, virtuales, físicas, con diseño horizontal o vertical."
         },
         {
-          "evidenceId": "pomelo-docs-26",
-          "quote": "Emites lotes de tarjetas innominadas que enviamos y almacenamos de forma segura en el centro de almacenamiento de nuestro partner logístico."
-        },
-        {
           "evidenceId": "pomelo-docs-12",
           "quote": "Escala los reclamos por fraude y controversia con las marcas."
+        },
+        {
+          "evidenceId": "pomelo-docs-14",
+          "quote": "Monitorea toda tu operación de tarjetas, transacciones y más."
         },
         {
           "evidenceId": "pomelo-docs-29",
@@ -6274,11 +6316,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Pomelo documents authorizing transactions with your own system instead of its credit core or authorizer. It also offers a fallback in which Pomelo approves transactions when your services are slow to respond, which covers the core of real-time decisioning plus a timeout fallback. Both are one-line guide summaries, though, so the mechanics are not shown. Missing for 10: the endpoint/webhook contract your code answers, the network time budget or timeout value, how you configure or control the fallback, and any independent or hands-on corroboration.",
+    "rationale": "Pomelo documents an authorization endpoint you run yourself: an external-authorizer API to authorize transactions without its Core/Autorizador, and an \"endpoint de autorización\" configured with its integrators. It also documents a stand-in feature that authorizes on your behalf when your services respond slowly. The evidence is limited to one-line guide summaries and does not show the time budget or how much control you have over the fallback. missing for 10: documented response time budget/timeout value, details of fallback configuration (approve/decline rules you control), self-serve endpoint registration rather than integrator-provisioned setup, request/response schema for the decision, independent or hands-on corroboration.",
     "evidenceIds": [
       "pomelo-docs-18",
       "pomelo-docs-7",
-      "pomelo-docs-28"
+      "pomelo-simulator-20261106"
     ],
     "support": {
       "relation": "direct",
@@ -6294,8 +6336,8 @@
           "quote": "Mejora tu tasa de aprobación permitiendo que autoricemos transacciones cuando tus servicios demoren en responder."
         },
         {
-          "evidenceId": "pomelo-docs-28",
-          "quote": "Recibirás las transacciones de tipo Reversal y Refund a través del endpoint de Ajustes."
+          "evidenceId": "pomelo-simulator-20261106",
+          "quote": "Un endpoint de autorización configurado con nuestro equipo de integradores."
         }
       ]
     }
@@ -6306,7 +6348,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing and processing platform, so settlement and reconciliation reporting is a fair question for it. However, the evidence pack shows no daily settlement files and no report API covering interchange, fees or network adjustments. The only nearby items are an Adjustments endpoint that delivers Reversal and Refund transactions and a monitoring Dashboard. Both are transaction-processing or UI features, not machine-readable reconciliation artifacts, so they earn no credit.",
+    "rationale": "The evidence pack does not document daily settlement files, reconciliation reports, or a report API covering interchange, fees, or network adjustments. The adjustments endpoint only delivers individual Reversal and Refund transactions, and the Dashboard is a monitoring UI rather than a machine-readable reconciliation artifact.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6321,7 +6363,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Pomelo issues virtual cards and can block specific merchants, categories or merchant IDs. Nothing documents single-use cards, locking a card to one merchant, or exact-amount limits. Merchant blocking is a related deny-list control, and the external-authorizer and 3DS threshold rules are building blocks or adjacent features, so none of them count as delivering this story.",
+    "rationale": "Pomelo documents virtual card issuance and merchant, category, and merchant-ID blocking. However, nothing in the pack describes single-use cards, locking a card to one merchant, or exact-amount limits. Merchant blocking is an adjacent control (a deny-list, not a lock to one merchant), and the external authorization endpoint is only a building block a developer could use to construct such logic, so neither earns credit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6336,7 +6378,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pomelo is a card-issuing platform, so per-card and per-cardholder spend limits are a fair question. The evidence pack does not document amount caps over daily, monthly or all-time windows, or transaction-count velocity rules. The nearest items are adjacent controls: merchant/category blocking, a 3DS rule that forces a challenge above an amount threshold, and credit-line lifecycle management. None of these are platform-enforced spend limits.",
+    "rationale": "Spend limits are a fair question for a card-issuing platform like Pomelo, but the evidence pack never documents per-card or per-cardholder amount caps over daily, monthly or all-time windows, nor transaction-count velocity rules. The closest items are adjacent controls: merchant/category/MCC blocking, a 3DS rule that forces a challenge above an amount threshold, and credit-line lifecycle management. None of these is a platform-enforced spend limit.",
     "evidenceIds": [],
     "support": {
       "relation": "absent",
@@ -6351,10 +6393,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Pomelo's developer docs say it can create cards, including virtual ones, so the core issuing capability exists. Nothing shows a one-call API creation that returns PAN, CVV and expiry right away. The integration guide also describes a formal project kickoff before the first live virtual-card transaction, which points to an onboarding process rather than self-serve sandbox-to-live. Missing for 10: evidence of a single-call virtual card creation endpoint, programmatic retrieval of PAN/CVV/expiry at issuance, a self-serve sandbox-to-production path without a sales or kickoff cycle, and independent hands-on corroboration.",
+    "rationale": "Pomelo documents issuing cards, including virtual ones, and offers a separate Stage environment. However, nothing shows that card details (PAN, CVV, expiry) can be retrieved programmatically at issuance. The path to live is gated: Pomelo prepares the test environment, and an 11-day kickoff-to-first-transaction record shows a managed integration process rather than self-serve. Missing for 10: explicit one-call card-creation API documentation, programmatic access to PAN/CVV/expiry at issuance, and self-serve sandbox-to-production without a sales or integration cycle.",
     "evidenceIds": [
       "pomelo-docs-2",
       "pomelo-docs-24",
+      "pomelo-stage-20261106",
       "pomelo-docs-23"
     ],
     "support": {
@@ -6371,8 +6414,8 @@
           "quote": "emitir y distribuir todo tipo de tarjetas, ya sean nominadas, innominadas, virtuales, físicas"
         },
         {
-          "evidenceId": "pomelo-docs-23",
-          "quote": "Nuestro récord de integración es de 11 días, contando desde la fecha de inicio formal del proyecto (kickoff) hasta la primera transacción en el mundo real con una tarjeta virtual"
+          "evidenceId": "pomelo-stage-20261106",
+          "quote": "Nuestros dominios: Stage: https://api-stage.pomelo.la / Produccion: https://api.pomelo.la"
         }
       ]
     }
