@@ -1,15 +1,15 @@
 {
-  "hash": "396ec0b1253575cf62f39382fd4783eba44667e44f5193a2aa8d028c6b56f3bc",
+  "hash": "5ec7070f2b38a1f0902e76266bc7a21d31ec8bd8d8bdafe2fc7514daf806f96d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Honeycomb documents ingesting traces, logs, and metrics through OpenTelemetry/OTLP into one platform. Traces and logs are stored as structured events, indexed on every field and queryable without a schema, which implies shared context between them. Explicit pivoting between metrics and traces/logs is not documented, and community reports describe teams still splitting logs and metrics across other tools. That is not a concrete failure of the capability. missing for 10: documented cross-signal pivot workflow (metrics↔traces↔logs with shared context), independent hands-on corroboration of unified correlation.",
+    "rationale": "Honeycomb documents ingesting all three signal types through OpenTelemetry, including metrics via SDK counters, histograms and gauges. It also documents that traces and logs share one structured-event store queryable on every field, which implies some shared context. However, no evidence shows a documented workflow for pivoting between metrics, logs and traces, such as jumping from a metric to related traces or logs. The community report of a team using separate tools for logs and metrics describes their own setup, not a failure of Honeycomb, so it does not create a dispute. missing for 10: documented cross-signal pivot/correlation workflow (metrics↔traces↔logs with shared context), evidence that metrics share the same event model or query surface as traces and logs, independent hands-on corroboration of unified use",
     "evidenceIds": [
       "honeycomb-docs-1",
       "honeycomb-docs-31",
-      "honeycomb-docs-52",
+      "honeycomb-docs-70",
       "honeycomb-docs-17",
       "honeycomb-docs-54"
     ],
@@ -23,12 +23,16 @@
           "quote": "send traces, logs, and metrics to Honeycomb"
         },
         {
-          "evidenceId": "honeycomb-docs-52",
-          "quote": "traces and logs are stored as structured events... indexed automatically on every field at ingest, and queryable without a predefined schema."
-        },
-        {
           "evidenceId": "honeycomb-docs-31",
           "quote": "Instrument your application with OpenTelemetry SDKs to create counters, histograms, and gauges, and send metrics to Honeycomb for analysis."
+        },
+        {
+          "evidenceId": "honeycomb-docs-70",
+          "quote": "In Honeycomb, traces and logs are stored as _structured events_: labeled JSON objects sent over HTTP, indexed automatically on every field at ingest, and queryable without a predefined schema."
+        },
+        {
+          "evidenceId": "honeycomb-docs-17",
+          "quote": "Relational field span prefixes follow your trace structure and include: root., parent., child., anyX."
         }
       ]
     },
